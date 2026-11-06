@@ -562,7 +562,7 @@ Called for by 3.10 Out of the product, method F-70, P-04, D17. The mark against 
 
 ### 6.9 First page
 
-Called for by 3.2 of the product (idle cash "meant to be the first thing a friend sees"), flow 11 and the founder's dilemma-first home (`routes/home.tsx`).
+Called for by 3.2 of the product (idle cash "meant to be the first thing a friend sees"), flow 11 of the release 1 flows (`research/2026-10-23-release-1/flows.md`) and the founder's dilemma-first home (`routes/home.tsx`).
 
 The site name, one line on what it does and the footer note; the question card (below), or with a saved goal the strip's rows (6.7) and the question card folded under them as "שאלה נוספת", in a box that holds the strip's height; then the search field, the doors and a small link to "מה האתר עוד לא מכסה", and a line that leads to the rules page. No figures. A phone shows the question first and the doors on its second screen; from `xl` the question stands at the start and the search and doors at the end. The question card leads only to the goal comparison and is held for review with it (D32).
 

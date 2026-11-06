@@ -1,3 +1,5 @@
+A record of release 1, kept as it was; the live rules are in docs/ and CLAUDE.md.
+
 # Design review of the release 1 mockups, 2026-10-23
 
 The founder asked for a design critique and an accessibility review of every mockup screen on the canvas (https://claude.ai/artifact/T2WWNHiNhqXxSkmssTFbCS), followed by fixes. The method is the design plugin's `design-critique` and `accessibility-review` skills. Each screen was rendered at its own width with headless Chromium and checked against `docs/design-system.md` and WCAG 2.1 AA.

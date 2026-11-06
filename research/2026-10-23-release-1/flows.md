@@ -1,3 +1,5 @@
+A record of release 1, kept as it was; the live rules are in docs/ and CLAUDE.md.
+
 # User flows, release 1
 
 Amended 2026-10-24 after the overnight user audit; see research/audit/2026-10-24-user-audit.md. Amended sentences carry their date.

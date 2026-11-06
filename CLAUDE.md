@@ -290,7 +290,7 @@ catches about half or more with noise under 30%.
 - `site/app/components/kit/` — the shared component kit every page builds from; the gallery at `/kit` shows each piece in its states, `docs/design-system.md` section 11 says when to use which
 - `docs/architecture.md` — stack and design (React Router, pre-rendered, GitHub Pages)
 - `docs/design-system.md` — tokens, conventions and components
-- `docs/flows.md` — user flows for release 1, the screens they need and a design brief per screen
+- `research/2026-10-23-release-1/` — records of release 1 kept as they were (the user flows and screen briefs, the design review of the mockups); the live rules are in `docs/` and this file
 - `docs/copy.md`, `docs/glossary.md` — the Hebrew voice, the word choices with their reasons and the style guide (section 10; the strings themselves are in `site/app/copy.ts`), and a sourced one-line explanation for every financial term
 - `docs/design-spec.md` — developer handoff for the release 1 screens
 

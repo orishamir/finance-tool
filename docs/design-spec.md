@@ -20,7 +20,7 @@ Written 2026-10-23 with the design plugin's `design-handoff` skill, for whoever 
 3. Values for the graph (board "טלפון · שינוי ההנחות", and the panel on the PC guide board)
 4. Company page in the decoder (boards "מפענח · טלפון", "מפענח · מחשב")
 
-The other screens in `docs/flows.md` section 6 have briefs but no approved mockup yet; they reuse the components below.
+The other screens in `research/2026-10-23-release-1/flows.md` section 6 have briefs but no approved mockup yet; they reuse the components below.
 
 **Sources this spec builds on** (it does not repeat them):
 
@@ -410,7 +410,7 @@ What a managing company offers, decoded (flow 5). The default view shows what th
 
 ## 6. Release 2: shared
 
-Added 2026-10-23 for the release 2 screens in `docs/flows.md` section 9 (goal form, comparison result, idle-cash screen, saved-goal strip, fit mark). Same format as sections 1 to 5; same stack. The components of 1.3 and 1.4 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 6; strings in `docs/copy.md` section 6; the engine outputs in `docs/method.md` F-60, F-80, F-81, F-83 and F-70.
+Added 2026-10-23 for the release 2 screens in `research/2026-10-23-release-1/flows.md` section 9 (goal form, comparison result, idle-cash screen, saved-goal strip, fit mark). Same format as sections 1 to 5; same stack. The components of 1.3 and 1.4 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 6; strings in `docs/copy.md` section 6; the engine outputs in `docs/method.md` F-60, F-80, F-81, F-83 and F-70.
 
 ### 6.1 Reused from release 1
 
@@ -790,7 +790,7 @@ The strip shows the goal saved on this device wherever it matters (flow 17); the
 -----
 ## 11. Release 3: shared
 
-Added 2026-10-23 for the release 3 screens in `docs/flows.md` section 12 (fee materiality page, holdings page, track workbench, export and import sheet). Same format as sections 1 to 10; same stack. The components of 1.3, 1.4 and 6.3 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 7; strings in `docs/copy.md` section 7; the engine outputs in `docs/method.md` F-61, F-62, F-64, F-68, F-70, F-72, F-81 and F-83. Three method notes in flows 20 and 25 (F-61 per month, F-81 for verdicts, F-83 outcomes for the workbench) must be settled in `docs/method.md` before the engine side is built; the types below assume the readings those flows chose.
+Added 2026-10-23 for the release 3 screens in `research/2026-10-23-release-1/flows.md` section 12 (fee materiality page, holdings page, track workbench, export and import sheet). Same format as sections 1 to 10; same stack. The components of 1.3, 1.4 and 6.3 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 7; strings in `docs/copy.md` section 7; the engine outputs in `docs/method.md` F-61, F-62, F-64, F-68, F-70, F-72, F-81 and F-83. Three method notes in flows 20 and 25 (F-61 per month, F-81 for verdicts, F-83 outcomes for the workbench) must be settled in `docs/method.md` before the engine side is built; the types below assume the readings those flows chose.
 
 ### 11.1 Reused from releases 1 and 2
 
@@ -1268,7 +1268,7 @@ The saved state as a versioned file, out of this device and into another (flow 2
 
 *Amended 2026-10-28 (D38):* the playbook types and components in this section (`Playbook`, `PlaybookStep`, `PlaybookSubjectStrip`, `StrengthChip` on steps, `ExperienceCard`, `RecordOfferCard`, `SwitchingCostLine`, `PostSwitchChecklist`) were deleted with the switching page. The engine's switching cost F-66 and the playbook ticks in the saved state stay.
 
-Added 2026-10-24 for the release 4 screens in `docs/flows.md` section 15 (provider workbench page, fund-variant page, switching playbook page, companies list and bank page additions). Same format as sections 1 to 15; same stack. The components of 1.3, 1.4, 6.3, 11.3 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 8; strings in `docs/copy.md` section 8; the engine outputs in `packages/engine/src/providers/workbench.ts` (F-63), `variants/fund-variants.ts` (F-65) and `variants/switching.ts` (F-66), whose exported types the shapes below extend for display (the engine returns codes, never Hebrew; the site maps them). Three method notes in flows 28 and 31 (A-28's deposits and FX counts as facts, the cumulative-cost series, the provider-to-provider move) and two data notes in flow 33 (`staleTariff`, `missing_reason_he`) must be settled before the engine and data sides are built; the types below assume the readings those flows chose. Decision D22 (2026-10-24) governs every average and list here: a figure a publisher's terms forbid copying is a link, not a number.
+Added 2026-10-24 for the release 4 screens in `research/2026-10-23-release-1/flows.md` section 15 (provider workbench page, fund-variant page, switching playbook page, companies list and bank page additions). Same format as sections 1 to 15; same stack. The components of 1.3, 1.4, 6.3, 11.3 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 8; strings in `docs/copy.md` section 8; the engine outputs in `packages/engine/src/providers/workbench.ts` (F-63), `variants/fund-variants.ts` (F-65) and `variants/switching.ts` (F-66), whose exported types the shapes below extend for display (the engine returns codes, never Hebrew; the site maps them). Three method notes in flows 28 and 31 (A-28's deposits and FX counts as facts, the cumulative-cost series, the provider-to-provider move) and two data notes in flow 33 (`staleTariff`, `missing_reason_he`) must be settled before the engine and data sides are built; the types below assume the readings those flows chose. Decision D22 (2026-10-24) governs every average and list here: a figure a publisher's terms forbid copying is a link, not a number.
 
 ### 16.1 Reused from releases 1 to 3
 
@@ -1765,7 +1765,7 @@ The catalogue grows to banks and brokers (from the tariff snapshots), to each ba
 
 ## 21. Release 5: shared
 
-Added 2026-10-24 for the release 5 screens in `docs/flows.md` section 18 (goal form additions, exposure result page, revisit notice and sheet, what changed since page, the not-covered status card). Same format as sections 1 to 20; same stack. The components of 1.3, 1.4, 6.3, 6.5, 11.3 and 16.3 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 9; strings in `docs/copy.md` section 9; the engine outputs in `packages/engine/src/compare/loss-filter.ts` (F-71), `exposures.ts` (exposure mode) and `revisit.ts` (F-82 and `changesSince`), whose exported types the shapes below extend for display (the engine returns codes, never Hebrew; the site maps them). Four notes in the flows must be settled before the engine and data sides are built: the holding-wrapper parameter P-08 (flow 34 step 3), the cash source of exposure mode against wrapper mode's parameter (flow 34 step 3), the exposure-mode saved comparison and revisit (flow 35 step 1, engine note) and the tier-2 status data file (flow 37 step 4); the types below assume the readings those flows chose. Every choice is "chosen 2026-10-24, revisable".
+Added 2026-10-24 for the release 5 screens in `research/2026-10-23-release-1/flows.md` section 18 (goal form additions, exposure result page, revisit notice and sheet, what changed since page, the not-covered status card). Same format as sections 1 to 20; same stack. The components of 1.3, 1.4, 6.3, 6.5, 11.3 and 16.3 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 9; strings in `docs/copy.md` section 9; the engine outputs in `packages/engine/src/compare/loss-filter.ts` (F-71), `exposures.ts` (exposure mode) and `revisit.ts` (F-82 and `changesSince`), whose exported types the shapes below extend for display (the engine returns codes, never Hebrew; the site maps them). Four notes in the flows must be settled before the engine and data sides are built: the holding-wrapper parameter P-08 (flow 34 step 3), the cash source of exposure mode against wrapper mode's parameter (flow 34 step 3), the exposure-mode saved comparison and revisit (flow 35 step 1, engine note) and the tier-2 status data file (flow 37 step 4); the types below assume the readings those flows chose. Every choice is "chosen 2026-10-24, revisable".
 
 ### 21.1 Reused from releases 1 to 4
 
