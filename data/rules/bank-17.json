@@ -103,9 +103,9 @@
       "value": 10,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7360%2Fheb%402014-03-26",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7360%2Fheb",
         "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות מסלול בסיסי), התשע\"ד-2014, קובץ התקנות 7360 (26.3.2014), סריקת רשומות, p.1001, s.3: \"סכום העמלה המרבי, שניתן לגבות בעד שירות מסלול בסיסי, יהיה 10 שקלים חדשים בחודש\"",
-        "publisher": "Reshumot (Ministry of Justice), official gazette",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
       "checked": "2026-10-26",
@@ -154,11 +154,11 @@
       "checked": "2026-10-26"
     },
     {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7360%2Fheb%402014-03-26",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7360%2Fheb",
       "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות מסלול בסיסי), התשע\"ד-2014, קובץ התקנות 7360 (26.3.2014), סריקת רשומות",
       "title_he": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות מסלול בסיסי), התשע\"ד-2014, קובץ התקנות 7360 (26.3.2014), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice), official gazette",
-      "publisher_he": "רשומות (משרד המשפטים)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.1001, ss.2-4, s.3",
