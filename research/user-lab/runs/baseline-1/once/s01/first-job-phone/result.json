@@ -1,0 +1,121 @@
+{
+  "task": "s01",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:17:39.788Z",
+  "structured": {
+    "answer": "I'm leaving the money where it is for now, not sure about it. The page says the עו\"ש doesn't always pay interest, the bank has to notify me above 15,000 ₪, and a קרן כספית might be better unless I need the money the same day, but it never says in shekels what keeping it there costs me or what to do first.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Big example card, 74,044 ₪",
+        "why": "It runs 5% a year on a current account that the page itself says doesn't always get interest, so I couldn't tell whether that number had anything to do with my account"
+      },
+      {
+        "where": "כמה זה עולה",
+        "why": "I looked for the cost and got 'לפי התעריפון של הגורם המציע', no number"
+      },
+      {
+        "where": "Red box at the top of screen 3",
+        "why": "It looks like a warning but says 'שאלה פתוחה' with a code. I didn't know whether it was about me"
+      },
+      {
+        "where": "מה האתר לקח בחשבון",
+        "why": "Locks, codes and 'חסום'. That's where I'd have closed the page"
+      }
+    ],
+    "used": [
+      "Heading חשבון עובר ושב and the subtitle 'לא תמיד מקבל ריבית'",
+      "Big number 74,044 ₪ and the 5% / 10,000 / 500 / 10 years line",
+      "Breakdown rows: מס 2,005 ₪, דמי ניהול 0 ₪, ההפקדות שלכם 62,681 ₪",
+      "The 15,000.00 ₪ notice line",
+      "Line comparing the עו\"ש to a קרן כספית יומית",
+      "'אין ביטוח פיקדונות'",
+      "כמה זה עולה table",
+      "מיסוי card titles"
+    ],
+    "skimmed": [
+      "Chart and its legend",
+      "Inputs panel (סכום היום, הפקדה חודשית, שנים, תשואה, אינפלציה, גיל)",
+      "כסף נכנס ויוצא cards",
+      "סיכונים ומה לא מוגן paragraphs",
+      "מי מציע ומי מפקח"
+    ],
+    "skipped": [
+      "הצגה כטבלה fold",
+      "מה האתר לקח בחשבון locked items and the 'מאיפה זה' folds",
+      "מונחים table",
+      "Footer",
+      "Small grey notes under the inputs",
+      "הצגת החוקים והכללים links"
+    ],
+    "unsure_meaning": [
+      "5% תשואה default on a current account",
+      "בכסף של היום / בשקלים של העתיד toggle",
+      "מזומן שקלי",
+      "BANK-20, BANK-23, BANK-15 tags",
+      "TXI OQ11, OQ7, BANK OQ9",
+      "מק\"ם",
+      "ריבית צמודה למדד, הריאלית",
+      "קיזוז הפסדים",
+      "המסלול הבסיסי / המורחב",
+      "Purple 'מחושב' tag",
+      "Colour dots in the chart legend (pink line = tax? I guessed)"
+    ],
+    "not_found": [
+      "What my idle 30,000 ₪ costs me per year in shekels",
+      "Actual account fee amount",
+      "How much a קרן כספית or deposit would earn instead, or how to open one",
+      "A first step to take"
+    ],
+    "findings": [
+      {
+        "what": "The headline example grows the current account at 5% a year to 74,044 ₪, which makes doing nothing look good even though the page says the account often pays no interest",
+        "where": "Screen 1, מה קורה לכסף לאורך הזמן card"
+      },
+      {
+        "what": "The cost section gives no shekel amount, just 'לפי התעריפון של הגורם המציע'",
+        "where": "Screen 2, כמה זה עולה"
+      },
+      {
+        "what": "The better alternative (קרן כספית) gets one line and no numbers or next step",
+        "where": "Top of screen 2"
+      },
+      {
+        "what": "A red warning box with only a code and 'שאלה פתוחה'. It scares you without explaining",
+        "where": "Top of screen 3"
+      },
+      {
+        "what": "The same 'הצגת החוקים והכללים' link sits next to every section, and every locked item repeats 'עד שהשאלה תיסגר, האתר לא מחשב את זה'",
+        "where": "Screens 1–3"
+      },
+      {
+        "what": "The chart legend is tiny coloured dots at the top. I had to match colours back and forth, and the thin pink line is hard to see",
+        "where": "Screen 1 chart"
+      },
+      {
+        "what": "Codes like BANK-20 and TXI OQ11 mean nothing to me",
+        "where": "Screens 2–3"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37776,
+    "turns": 6,
+    "usd": 0.17104160000000002,
+    "input": 8,
+    "cacheWrite": 12058,
+    "cacheRead": 31128,
+    "output": 3416,
+    "model": "claude-opus-5-5"
+  }
+}

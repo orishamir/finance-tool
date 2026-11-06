@@ -1,0 +1,78 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The reader's fund has no final number in the main list; it only says 'עוד לא נאסף' and 'אין מחיר כאן'.",
+      "The reader's fund comes out about 20,000 ₪ lower, which scared them, and they can't tell if the cause is the fund, the bank or tax.",
+      "The lower part of the page starts from Jerusalem MTF, which the reader never chose, and they don't know why.",
+      "The many coloured tags in the fund list are confusing.",
+      "The Interactive Brokers box is confusing: it shows a different iShares fund, so is that how they'd buy their own?",
+      "The reader only partly understood the explanation of why some funds have no price.",
+      "The 3 advertising claims against Psagot worried the reader, since Psagot is their choice.",
+      "The currency-hedging section and its dollar charts were not understood.",
+      "The small number under each bank in the account list and the orange, yellow and red bars were not understood.",
+      "Terms and codes are not understood: 4D, 4A, Swap, Acc, ISIN codes.",
+      "Fund terms are not understood: hedged, dollar exposure, צוברת vs dividend, trustee, W-8BEN.",
+      "'Open tax rule: shown but not ranked' is unclear: is the 59,196 figure real?",
+      "There is no final number for the reader's fund at Psagot, and no way to tell if it can be bought there.",
+      "The page doesn't show which accounts allow buying a fund abroad, or what that costs.",
+      "There is no plain yes/no answer on whether a foreign fund is worth it for someone like the reader.",
+      "The reader would drop the hedging section, the 'what changes most' chart and table, the waterfall, the advertising claims and most of the tags.",
+      "The table that shows the reader's fund is too far down the page and should sit next to the fund."
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is confused by the tags and doesn't understand terms like 'צוברת' and 'חשיפה לדולר', but never says these labels were put on their fund without their input or that they can't choose them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0590472
+  },
+  "b": {
+    "raised": [
+      "My fund gets no final number in the main list ('עוד לא נאסף', 'אין מחיר כאן')",
+      "My fund's only number (59,196 ₪) is almost 20,000 ₪ less, which scared me off",
+      "The lower part of the page starts from Jerusalem MTF, a choice I never made, and I don't know why",
+      "Can't tell whether the 20,000 ₪ gap comes from the bank or from my fund",
+      "The many coloured tags in the fund list confused me",
+      "Interactive Brokers box confusing: it shows a different iShares fund, not mine, and I don't know if that's how I'd buy mine",
+      "Only partly understood why some funds have no price",
+      "Worried that my top choice, Psagot, has 3 claims against what it advertises",
+      "Didn't understand the currency-hedging section and its dollar/year charts",
+      "Didn't understand the small number under each bank in the account list or the orange/yellow/red bars",
+      "Didn't understand codes and terms like 4D, 4A, Swap, Acc, and ISIN codes",
+      "Didn't understand terms like currency-hedged, dollar exposure, accumulating vs dividend, trustee, W-8BEN",
+      "Didn't understand 'relies on an open tax rule: shown but not ranked'; unsure if 59,196 is real",
+      "No single final number for my fund at Psagot; can't tell whether I can even buy it there",
+      "No explanation of why my fund comes out about 20,000 ₪ lower (fund, bank or tax)",
+      "Couldn't find which accounts let me buy a fund abroad and what it costs",
+      "No plain yes/no on whether a foreign fund is worth it for someone like me",
+      "Would drop the hedging section and the 'what changes most' chart and table",
+      "Would drop the waterfall chart and the advertising-claims list",
+      "Would drop most of the coloured tags on the funds",
+      "The table that showed my fund is too far down; it should be higher, next to my fund"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is confused by the tags and doesn't understand words like צוברת and חשיפה לדולר, but never complains that their added fund got labels they didn't give or that they can't choose its labels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0648472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12389439999999999
+}

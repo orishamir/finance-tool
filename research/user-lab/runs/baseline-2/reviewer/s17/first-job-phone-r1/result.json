@@ -1,0 +1,118 @@
+{
+  "task": "s17",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:26:10.716Z",
+  "structured": {
+    "answer": "I didn't choose anything today. If I did, it would probably be an S&P 500 tracker at a big name like Altshuler Shaham or Meitav, at about 0.54–0.58% fee, but 143 near-identical rows and a top group with no visible company name stopped me.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Screen 2, top of the table",
+        "why": "Rows start with no company name above them, so I didn't know whose cheapest 0.54% tracks these were"
+      },
+      {
+        "where": "Screen 8 and other screen breaks",
+        "why": "The company header row scrolled away and I lost which company the rows belonged to"
+      },
+      {
+        "where": "Screens 4–7",
+        "why": "Every row looks the same, the fees are all about 0.6%, I got bored and nearly closed the page"
+      },
+      {
+        "where": "Return column showing 'פחות מ־3 שנים'",
+        "why": "Didn't know whether it means bad or just new, so I couldn't compare the S&P tracks"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות' and '143 מסלולים של 12 חברות'",
+      "Big return numbers like 24.04%, 26.39%, 13.31%",
+      "דמי ניהול 'ההחיסכון' percentages",
+      "Company group header rows (מור, אנליסט, מיטב, אלטשולר שחם, ילין לפידות, כלל, איילון)",
+      "Track names, especially 'עוקב מדד S&P 500'"
+    ],
+    "skimmed": [
+      "Screens 3–11 of the table",
+      "Asset size column (מיליון/מיליארד ₪)",
+      "Category buttons at the top"
+    ],
+    "skipped": [
+      "Orange notice 'נתוני הרשות לא עודכנו'",
+      "Intro paragraph under heading",
+      "Screens 12–13",
+      "Grey note at the bottom about returns",
+      "Footer links",
+      "Search box and the 'לפי חברה' tab"
+    ],
+    "unsure_meaning": [
+      "מט\"ח with a percent and the yellow/green rings",
+      "ההפקדות 0%",
+      "פחות מ־3 שנים / פחות מ־5 שנים",
+      "גמיש",
+      "כספי (שקלי)",
+      "אג\"ח ממשלתי",
+      "קופה number (e.g. 15286)",
+      "123 מקורות / מחושב / הזנקה",
+      "עוד לא דווח with the orange icon"
+    ],
+    "not_found": [
+      "A recommendation or 'best for you' pick",
+      "Fees in shekels for my 30,000 ₪",
+      "Company name for the first group on screen 2",
+      "A simple explanation of which track type suits a young person"
+    ],
+    "findings": [
+      {
+        "what": "First group of rows (cheapest fees) has no visible company name",
+        "where": "Screen 2, top of the table"
+      },
+      {
+        "what": "143 rows that all look alike, with no summary or recommendation",
+        "where": "Whole table, screens 2–15"
+      },
+      {
+        "what": "Company header rows scroll away, so I lost which company the rows belong to",
+        "where": "Screens 8, 10, 12"
+      },
+      {
+        "what": "Fees shown only as small percentages, nothing in shekels",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Many 'עוד לא דווח' with orange warning icons look scary",
+        "where": "Screens 4, 9, 10, 14, 15"
+      },
+      {
+        "what": "'פחות מ־3 שנים' in place of a return is unclear",
+        "where": "Return column"
+      },
+      {
+        "what": "Rings and מט\"ח percent have no explanation next to them",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Huge 3-year returns (24–26%) pull attention away from the fees",
+        "where": "Screens 2, 5, 6"
+      }
+    ]
+  },
+  "steps": 13,
+  "reads": 13,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43035,
+    "turns": 15,
+    "usd": 0.2859122,
+    "input": 12,
+    "cacheWrite": 24405,
+    "cacheRead": 80021,
+    "output": 3731,
+    "model": "claude-opus-5-5"
+  }
+}

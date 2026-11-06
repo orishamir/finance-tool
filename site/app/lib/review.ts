@@ -1,4 +1,4 @@
-// What the founder holds back for review before the site is shared (2026-10-26, docs/roadmap.md "Held for review"): the site
+// What the founder holds back for review before the site is shared (D32; issues #45 to #48 say what each needs): the site
 // does not link to a held page or show a held visual, but the address still works, so he can review it. A held page shows a
 // note at its top (PageShell); a held "what makes it different" visual shows on its guide page with `?review` in the address.
 // Pure: no React, no storage.

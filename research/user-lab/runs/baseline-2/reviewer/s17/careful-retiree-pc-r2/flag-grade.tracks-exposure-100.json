@@ -1,0 +1,36 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the exposure column, its missing explanation, or values above 100%; the closest ones are about the table being busy and about jargon on the filter buttons, which are different complaints."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0146434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the exposure column, that it isn't explained, or that it shows figures above 100%. Finding 3 says the table is busy and finding 4 says risk isn't explained, but neither names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014783399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0294268
+}

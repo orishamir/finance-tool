@@ -1,0 +1,14 @@
+{
+ "id": "rows-together-legend",
+ "task": "t47",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The cost bars' legend has an item 'השפעת השורות יחד' that a reader cannot understand.",
+   "where": "the legend under the cost bars",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

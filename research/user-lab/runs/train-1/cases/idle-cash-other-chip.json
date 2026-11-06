@@ -1,0 +1,14 @@
+{
+ "id": "idle-cash-other-chip",
+ "task": "t22",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The choices for 'לכמה זמן ההצעה' look unlike the site's other choice controls, and 'אחר' looks different from the options beside it.",
+   "where": "the 'לכמה זמן ההצעה' choices",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

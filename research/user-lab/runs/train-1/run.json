@@ -1,0 +1,985 @@
+{
+ "personas": [
+  "first-job-phone",
+  "careful-retiree-pc"
+ ],
+ "parallel": 3,
+ "repeat": 1,
+ "tasks": [
+  {
+   "key": "t01",
+   "text": "You came to the home page of a site about saving and investing in Israel, because you want to start doing something better with your savings and are looking for where to begin.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t01/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t01/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t02",
+   "text": "You are looking around a site about saving and investing in Israel to see what it offers and whether it is worth coming back to.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t02/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t02/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t02/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t03",
+   "text": "You want to check the rules that apply to a kind of saving you are considering, such as how it is taxed, and found this page of a site about saving and investing in Israel.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t03/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t03/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t03/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t03/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t03/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t04",
+   "text": "You want to check the rules that apply to a kind of saving you are considering, such as how it is taxed, and found this page of a site about saving and investing in Israel.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t04/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-11.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-12.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-13.png",
+    "research/user-lab/runs/train-1/screens/t04/screen-14.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t05",
+   "text": "You told this site about money you want to save for a goal, and it now shows you where it thinks the money should go. You want to decide where to put it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t05/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t05/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t05/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t05/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t05/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t05/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t06",
+   "text": "You followed a link from a comparison of where to keep your savings to this page about what one option would cost you, and want to understand the cost.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t06/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t06/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t06/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t06/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t06/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t07",
+   "text": "You came to the home page of a site about saving and investing in Israel, because you want to start doing something better with your savings and are looking for where to begin.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t07/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t07/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t08",
+   "text": "You told this site about money you want to save for a goal, and it now shows you where it thinks the money should go. You want to decide where to put it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t08/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t08/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t08/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t08/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t08/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t09",
+   "text": "You came to the home page of a site about saving and investing in Israel, because you want to start doing something better with your savings and are looking for where to begin.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t09/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t09/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t09/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t09/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t09/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t09/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t09/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t09/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t10",
+   "text": "You came to the home page of a site about saving and investing in Israel, because you want to start doing something better with your savings and are looking for where to begin.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t10/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t10/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t10/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t10/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t11",
+   "text": "You came to the home page of a site about saving and investing in Israel, because you want to start doing something better with your savings and are looking for where to begin.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t11/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t11/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t12",
+   "text": "You want to invest in an index fund and are trying to work out which index, which fund and where to hold it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t12/screen-01.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t13",
+   "text": "You followed a link from a comparison of where to keep your savings to this page about what one option would cost you, and want to understand the cost.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t13/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t13/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t13/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t13/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t14",
+   "text": "You followed a link from a comparison of where to keep your savings to this page about what one option would cost you, and want to understand the cost.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t14/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t14/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t14/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t14/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t15",
+   "text": "You want to invest in an index fund and are trying to work out which index, which fund and where to hold it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t15/screen-01.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t16",
+   "text": "You want to invest in an index fund and are trying to work out which index, which fund and where to hold it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t16/screen-01.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t17",
+   "text": "You want to invest in an index fund and are trying to work out which index, which fund and where to hold it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t17/screen-01.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t18",
+   "text": "You want to invest in this index and want to find a cheap fund that follows it and a cheap place to hold it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t18/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t18/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t18/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t18/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t18/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t19",
+   "text": "You want to invest in this index and want to find a cheap fund that follows it and a cheap place to hold it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t19/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t19/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t19/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t19/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t19/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t20",
+   "text": "This page shows the controls a site is built from. Look at it and try it as a visitor would.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t20/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-11.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-12.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-13.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-14.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-15.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-16.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-17.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-18.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-19.png",
+    "research/user-lab/runs/train-1/screens/t20/screen-20.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t21",
+   "text": "You have money sitting in your bank current account and want to know how much to move and where to put it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t21/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t21/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t21/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t21/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t22",
+   "text": "You have money sitting in your bank current account and want to know how much to move and where to put it.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t22/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t22/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t23",
+   "text": "You came to the home page of a site about saving and investing in Israel, because you want to start doing something better with your savings and are looking for where to begin.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t23/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t23/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t24",
+   "text": "You want to put money into an index fund and want to choose an index and see where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t24/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t24/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t25",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t25/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-11.png",
+    "research/user-lab/runs/train-1/screens/t25/screen-12.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t26",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t26/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t26/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t26/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t26/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t26/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t26/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t27",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t27/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t27/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t27/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t27/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t27/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t27/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t27/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t28",
+   "text": "You have questions about saving and investing in Israel and found this page of questions and answers.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t28/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t28/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t28/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t28/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t28/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t29",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t29/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t29/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t29/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t29/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t29/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t29/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t29/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t30",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t30/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t30/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t30/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t30/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t30/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t30/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t30/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t31",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t31/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t31/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t31/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t31/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t31/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t31/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t31/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t32",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t32/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t32/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t32/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t32/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t32/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t32/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t32/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t33",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t33/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t33/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t33/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t33/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t33/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t33/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t33/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t34",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t34/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t34/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t34/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t34/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t34/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t34/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t34/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t35",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t35/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-11.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-12.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-13.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-14.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-15.png",
+    "research/user-lab/runs/train-1/screens/t35/screen-16.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t36",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t36/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t36/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t36/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t36/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t36/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t36/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t37",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t37/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t37/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t37/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t37/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t37/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t37/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t37/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t37/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t38",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t38/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t38/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t38/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t38/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t38/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t38/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t38/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t38/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t39",
+   "text": "You are thinking of opening a securities account to invest and want to understand what it is and what it would cost you.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t39/screen-01.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t40",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t40/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t40/screen-10.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t41",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t41/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t41/screen-10.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t42",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t42/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t42/screen-10.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t43",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t43/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t43/screen-10.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t44",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t44/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t44/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t45",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t45/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t45/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t46",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t46/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t46/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t47",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t47/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t47/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t48",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t48/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-11.png",
+    "research/user-lab/runs/train-1/screens/t48/screen-12.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t49",
+   "text": "You want to put money into a fund that follows this index and want to find where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t49/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t49/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t50",
+   "text": "You want to put money into an index fund and want to choose an index and see where holding it would cost you least.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t50/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-11.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-12.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-13.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-14.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-15.png",
+    "research/user-lab/runs/train-1/screens/t50/screen-16.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "t51",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t51/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t51/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t52",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t52/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t52/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t53",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t53/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-08.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-09.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-10.png",
+    "research/user-lab/runs/train-1/screens/t53/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t54",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t54/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t54/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t54/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t54/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t54/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t54/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t54/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t55",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t55/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t55/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t55/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t55/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t55/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t55/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t56",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t56/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t56/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t56/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t56/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t56/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t56/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t57",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t57/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t57/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t57/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t57/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t57/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t57/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t58",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t58/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t58/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t58/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t58/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t58/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t58/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t59",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t59/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t59/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t59/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t59/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t59/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t59/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t60",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t60/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t60/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t60/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t61",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t61/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t61/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t61/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t61/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t61/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t61/screen-06.png",
+    "research/user-lab/runs/train-1/screens/t61/screen-07.png",
+    "research/user-lab/runs/train-1/screens/t61/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t62",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t62/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t62/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t62/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t62/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t62/screen-05.png",
+    "research/user-lab/runs/train-1/screens/t62/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t63",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t63/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t63/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t63/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t64",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t64/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t64/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t64/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "t65",
+   "text": "You are helping a small site about saving and investing in Israel choose between designs for one of its pages. Look at the options as someone who would use that page.",
+   "shots": [
+    "research/user-lab/runs/train-1/screens/t65/screen-01.png",
+    "research/user-lab/runs/train-1/screens/t65/screen-02.png",
+    "research/user-lab/runs/train-1/screens/t65/screen-03.png",
+    "research/user-lab/runs/train-1/screens/t65/screen-04.png",
+    "research/user-lab/runs/train-1/screens/t65/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  }
+ ]
+}

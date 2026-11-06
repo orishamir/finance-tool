@@ -1,0 +1,71 @@
+{
+  "case": "tracks-chevron-not-link",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The '<' at the end of each row does not look like a link to the track's own page.\",\"where\":\"the arrow at the end of each row\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Nearly picked the wrong fund: the top row looked best, and the small 'מהיקר לזול' sort-order line was easy to miss",
+      "Unsure whether the 0.48% average is the fee they would actually pay",
+      "The '123 מקור / מחושב / הזנתה' line is confusing",
+      "Did not understand what the yellow-and-turquoise exposure rings add",
+      "Did not understand how exposure can be 101% (Analyst)",
+      "Only some rows show a track-name line, which made them doubt the others are S&P tracks",
+      "Did not understand what 'PF-06' is",
+      "Did not understand what 'קופה' with a number means or whether it matters",
+      "Could not tell if the fee is personal or negotiable, or depends on balance size",
+      "No shekel translation of the fee (e.g. per 100,000 ₪)",
+      "Could not find how to move an existing fund or whether it costs anything",
+      "Could not find whether there are other hidden costs beyond the management fee",
+      "Could not see returns after fees",
+      "Would drop the coloured dots",
+      "Would drop the 'מההפקדות' column, since every row says 'אין'",
+      "Would drop the unused investment-type buttons"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the '<' arrows and never says the arrows fail to look like links to the track's page, so no raised problem matches."
+      }
+    ],
+    "liked": [],
+    "usd": 0.050411199999999996
+  },
+  "b": {
+    "raised": [
+      "Nearly picked the wrong fund because the top row looked best; the small 'most expensive to cheapest' sort line is easy to miss and should be bigger",
+      "Unsure whether the 0.48% average fee is what they would actually pay",
+      "The '123 מקור / מחושב / הזנתה' line is confusing and should be removed",
+      "Did not understand what the yellow-and-turquoise rings and coloured dots add; would drop them",
+      "Did not understand what 'קופה' with a number means or whether it is needed; would drop it",
+      "Did not understand how exposure can be 101% (Analyst)",
+      "Only Altshuler and Analyst show a track-name line, which made them doubt whether the others are really S&P tracks",
+      "Did not know what 'PF-06' is",
+      "Could not find whether the fee can be negotiated or depends on balance size",
+      "Missing a translation of the fee into shekels per year",
+      "Could not find how to move an existing fund or whether it costs anything (only in footer)",
+      "Could not find whether there are other hidden costs beyond the management fee",
+      "Could not see returns after fees",
+      "The 'מההפקדות' column says 'אין' on every row and could be dropped",
+      "The unused investment-type buttons could be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only lists the '<' arrows among things they ignored and never says they fail to look like a link to the track's page, so none of the raised problems is this one."
+      }
+    ],
+    "liked": [],
+    "usd": 0.051191200000000006
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.10160240000000001
+}

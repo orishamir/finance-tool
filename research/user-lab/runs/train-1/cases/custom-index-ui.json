@@ -1,0 +1,14 @@
+{
+ "id": "custom-index-ui",
+ "task": "t50",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A page for an index the reader added looks different from the pages of the built-in indices.",
+   "where": "the added index's page against a built-in index's page",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

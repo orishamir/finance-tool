@@ -1,0 +1,77 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Counted only 9 tracks though the page says 11; two are missing",
+      "Didn't check the S&P 500 tracks, so doesn't know whether they are cheaper",
+      "The fee is a 2025 average actually charged, not a promise of what the reader would pay",
+      "The '123 מקור / מחושב / הזנתה' labels are confusing and unexplained",
+      "Unsure whether they want 'עוקב מדדי מניות' or 'עוקב s&p 500'; no plain explanation of the difference",
+      "Companies are sorted by size, not price, so the reader had to scan every row to find the cheapest",
+      "'From 0.56% to 0.56%' reads oddly",
+      "Ayalon's fee is 'not reported yet' and its 'new' label is off-putting",
+      "Return column has nothing to compare (mostly under 3 years; Meitav's figure is before fees)",
+      "Doesn't understand what 'מט\"ח 99%' means or whether it is a risk",
+      "Doesn't know what the coloured rings mean",
+      "The ▾ next to 'מההיסכון' makes the table look sorted by fee, but it isn't",
+      "Unclear whether 'פחות מ־3 שנים' means the track is new or there is no data",
+      "Doesn't understand why tracks of the same kind have very different track numbers",
+      "No cost shown in shekels (e.g. on 100,000 ₪)",
+      "No information on negotiating a lower fee or what a new customer actually pays",
+      "Doesn't say which index each track follows",
+      "Would remove the 'קיבוץ לפי' (group by) switch",
+      "Would remove the rings and the stock and foreign-currency exposure column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 12,
+        "why": "Raised item 12 says the sort indicator on the fee column suggests the table is sorted by fee but the order isn't. That is the visible effect the person named: sorting by fee changes nothing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07155120000000001
+  },
+  "b": {
+    "raised": [
+      "Counted only 9 tracks though the page says 11; two are missing",
+      "Menora is almost the same price; a 0.01% gap isn't enough to decide on",
+      "Unsure whether to pick 'stock indices' or 'S&P 500'; no plain explanation of the difference",
+      "The fee shown is the 2025 average actually charged, not a promise of what they would pay",
+      "The '123 מקור / מחושב / הזנתה' labels are confusing",
+      "Companies are sorted by size, not price, so they had to check every row for the cheapest (wanted cheapest first)",
+      "'From 0.56% to 0.56%' reads oddly",
+      "Ayalon's fee is 'not reported yet' and the 'new' label put them off",
+      "The return column has nothing to compare (mostly 'less than 3 years') and is before fees",
+      "Doesn't understand 'מט\"ח 99%' or whether it is a risk",
+      "Doesn't know what the ring colours mean",
+      "The ▾ next to 'מההיסכון' suggests the table is sorted by fee, but it isn't",
+      "Unclear whether 'פחות מ־3 שנים' means the track is new or has no data",
+      "Doesn't understand why tracks of the same kind have very different track numbers",
+      "No cost in shekels (e.g. on 100,000 ₪)",
+      "Can't find whether the fee can be negotiated or what a new customer would pay",
+      "Can't find which index each track follows",
+      "Would drop the 'קיבוץ לפי' (group by) switch"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 12,
+        "why": "The reader sees that the ▾ by the fee column suggests a fee sort, yet the order doesn't follow fees, so the fee sort does nothing visible, which is the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0629712
+  },
+  "third": null,
+  "ranks": {
+    "k": 12
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13452240000000001
+}

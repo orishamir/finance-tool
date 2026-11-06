@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Repeated per-row labels (savings, deposits 0%, shares, FX, 3/5 years) make scanning for differences tedious",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Company name only in group header that scrolls away; lower rows can't be tied to a company",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "143 near-identical rows with no guidance on which track suits the reader",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Many tracks show 'less than 3 years' instead of a return figure, so they can't be compared",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Exposure ring colours explained only by tiny dots; FX (מט\"ח) term unexplained",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Fees shown only in percent, not shekels, so differences feel negligible",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "'Not yet reported' with orange warning icon on new tracks looks alarming and is unexplained",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Sticky column headers small, grey, and far from the numbers",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0459068
+}

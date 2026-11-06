@@ -1,0 +1,332 @@
+{
+ "about": "Site sweep 3 of 3 of the criticism look-back (2026-11-06): the live site at 1440x900 and 390x844 with touch, with a goal saved on the device, against the rules of kind words (R49 to R58) and pages (R41 to R48). Eyes on whole-page shots, screen-sized slices and every page's text; the DOM listed every link with its words and the heading of the page it opens, every source link out of the site (PDFs with no page, dataset pages), words addressed to one person, process words and ids, the style guide's retired terms, repeated sentences and table heads. The breaks are words, the same at both widths; each is shot at the width it was seen. No words addressed to one person were found (R58). Scripts: sweep/sweep3.mjs (capture and measures) and sweep/crops3.mjs (the cropped shots).",
+ "counts": {
+  "R43": 1,
+  "R44": 1,
+  "R45": 1,
+  "R46": 3,
+  "R47": 1,
+  "R49": 2,
+  "R50": 4,
+  "R51": 1,
+  "R52": 6,
+  "R53": 4,
+  "R56": 1,
+  "R57": 1
+ },
+ "breaks": [
+  {
+   "rule": "R43",
+   "page": "/guide",
+   "width": 1440,
+   "what": "The guide list still opens by saying every guide has the same structure 'so it is easy to compare', the fixed template he rejected; the guides no longer share one.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r43-guide-same-structure-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R44",
+   "page": "/guide/money-market-fund-daily",
+   "width": 1440,
+   "what": "The link 'לעמוד של עו״ש ופיקדון לשנה' promises the current account and the one-year deposit, but it opens only the current-account guide.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r44-mmf-door-current-and-deposit-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R45",
+   "page": "/companies",
+   "width": 1440,
+   "what": "The page that answers 'what does a company offer me' ends with two sections that are not about any company's offer: what the documents of eight index makers and exchanges say (BlackRock, MSCI, S&P...) and 'not kept as a rule' records (forum threads, articles, places the site 'searched and did not find').",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r45-companies-records-dump-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R46",
+   "page": "/companies",
+   "width": 1440,
+   "what": "The groups mislead about what each company is: the insurers הפניקס, הראל and מגדל are listed under 'בתי השקעות' while כלל and מנורה sit under 'חברות מנהלות', and the investment house פסגות sits under 'בנקים ובתי השקעות נוספים'.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r46-companies-groups-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R46",
+   "page": "/not-covered",
+   "width": 1440,
+   "what": "The page says it lists products the site cannot yet explain, but the cards include a gold price benchmark (LBMA Gold Price AM / PM), a rating company, a bondholders' trustee, a law amendment and a hedging label: things that are not products.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r46-not-covered-not-products-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R46",
+   "page": "/rules/costs",
+   "width": 1440,
+   "what": "The 'לפי מוצר' filter mixes in chips that are not products: 'עומד להשתנות' (about to change), 'משותף לכל הקופות' (common to all funds) and 'עוד לא באתר' (not on the site yet).",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r46-rules-product-filter-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R47",
+   "page": "/guide",
+   "width": 1440,
+   "what": "The pension guides are named 'קרן חדשה מקיפה', 'קרן חדשה כללית' and 'תגמולים ואישית לפיצויים', the law's terms, with what a person calls them ('קרן פנסיה...', 'קופת גמל לתגמולים') only as a second line; the glossary chose the law's terms, so this comes to him with that choice beside it.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r47-guide-pension-names-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R49",
+   "page": "/companies",
+   "width": 1440,
+   "what": "A product called 'מטרה אחרת' (another purpose) appears in the product lists of two managing companies with nothing saying what it is.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r49-companies-other-purpose-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R49",
+   "page": "/companies/513173393",
+   "width": 1440,
+   "what": "Under the column head 'average yearly return, before fees' every young track shows 'פחות מ־3 שנים' and 'פחות מ־5 שנים', underlined like figures, so the return seems to be a number of years.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r49-return-column-years-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R50",
+   "page": "/guide/keren-hishtalmut",
+   "width": 1440,
+   "what": "'הפטור עוצר לאורך כל השנים באותו שכר של 15,712 ₪ בחודש' under the study-fund graphic: I can't tell what 'the exemption stops' means.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r50-keren-exemption-stops-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R50",
+   "page": "/exposure/index-sp500",
+   "width": 1440,
+   "what": "The 'what is it' section opens with 'הנכס המעקב של קרן ישראלית על המדד הוא \"S&P 500 100%, דולר ארה\"ב 100%\", בגרסת תשואה כוללת נטו', a data field quoted as an explanation.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r50-exposure-tracked-asset-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R50",
+   "page": "/companies/leumi",
+   "width": 390,
+   "what": "Beside the deposit rate's date 25.10.2026 an amber warning says 'התאריך מאוחר מיום הקריאה' (the date is later than the reading date) while the page says the price list was collected on 04.11.2026; I can't tell what it warns about.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r50-leumi-date-later-390.png",
+   "held": false
+  },
+  {
+   "rule": "R51",
+   "page": "/fees?wrapper=keren-hishtalmut",
+   "width": 1440,
+   "what": "Two different 'authority averages' sit one under the other, 0.51% for general study-fund tracks (median 0.6%) and 0.53% 'for all funds of this kind', and nothing says which one the verdict 'worth negotiating' uses.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r51-fees-two-averages-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R52",
+   "page": "/guide/current-account",
+   "width": 1440,
+   "what": "'רוב הבנקים משלמים בעו״ש 0%: 4 מתוך 8 הבנקים שנאספו': four of eight is half, not most.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r52-current-account-most-banks-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R52",
+   "page": "/guide",
+   "width": 1440,
+   "what": "Only the S&P 500 card says the money is invested in dollars; the other foreign indices say shekels with or without dollar exposure, and the indices page lists a hedged S&P 500 fund, so the S&P line reads as false.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r52-guide-sp500-dollars-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R52",
+   "page": "/fees?wrapper=keren-hishtalmut",
+   "width": 1440,
+   "what": "'לפי המספרים בעמוד, המוצר הזה במקום הראשון מבין כל האפשרויות, גם אחרי העמלות' on a page that compares nothing: first among which options?",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r52-fees-first-place-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R52",
+   "page": "/companies/interactive-israel",
+   "width": 1440,
+   "what": "The product filter says 'כל המוצרים 0' right beside the one product the page then shows, a securities account.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r52-interactive-zero-products-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R52",
+   "page": "/not-covered",
+   "width": 1440,
+   "what": "Every card promises that once closed it will appear 'בהשוואה למטרה' and on a page called 'איזו קרן לקנות'; the first is held off the site and the second does not exist.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r52-not-covered-promise-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R52",
+   "page": "/not-covered",
+   "width": 1440,
+   "what": "'מנוטרלת מט\"ח' (currency-hedged) is listed as not covered and not computed, while the indices page computes and ranks hedged funds.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r52-not-covered-hedged-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R53",
+   "page": "/rules/costs",
+   "width": 1440,
+   "what": "Reader text on the costs shelf carries the site's internal decision id '(D22)', 'לפי קריאת החוקר' (the researcher's reading) and 'קריאה שלנו' (our reading), talk about the site's makers.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r53-costs-decision-id-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R53",
+   "page": "/parameters",
+   "width": 1440,
+   "what": "Every parameter carries internal codes (P-01, A-01, A-02, A-03, A-06) and 'משמש ב: F-80', ids that mean nothing to a reader.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r53-parameters-codes-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R53",
+   "page": "/not-covered",
+   "width": 1440,
+   "what": "The same long sentence 'כשייסגר: יופיע במדריך, בהשוואה למטרה...' is repeated in nine cards.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r53-not-covered-repeat-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R53",
+   "page": "/companies/513173393/14865",
+   "width": 1440,
+   "what": "'חסום: קיזוז הפסדים' is said twice, one line above the same item, under a line that explains the site's own checking method.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r53-track-blocked-twice-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R57",
+   "page": "/companies/513173393",
+   "width": 1440,
+   "what": "The filter says 'כל המוצרים 75' across ten product chips, and the line under it says '72 מסלולים ב־7 מוצרים', with nothing explaining the gap.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r57-altshuler-75-vs-72-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R50",
+   "page": "/goal/compare",
+   "width": 1440,
+   "what": "'16 אפשרויות לא נבדקו: הזינו תשואה / סוג העסקה (לחלק מהן)' reads as a code, not a sentence, and the line above calls the winner's fee 'the biggest difference between the first two'.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r50-held-goal-compare-not-checked-1440.png",
+   "held": true
+  },
+  {
+   "rule": "R56",
+   "page": "/goal/compare",
+   "width": 1440,
+   "what": "The money-market fund option is priced on one company's fund, 'לפי אלטשולר שחם (00) כספית בדמי ניהול 0.23%', with a stray '(00)', instead of a range over every fund.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r56-held-goal-compare-one-fund-1440.png",
+   "held": true
+  }
+ ],
+ "known": [
+  {
+   "rule": "R41",
+   "page": "/",
+   "issue": 197,
+   "what": "The home page's first screen gives a first-time visitor no plain reason to care; issue 198 covers the half-empty first screen on a wide screen."
+  },
+  {
+   "rule": "R41",
+   "page": "/",
+   "issue": 198,
+   "what": "On a wide screen the opening screen is half empty."
+  },
+  {
+   "rule": "R53",
+   "page": "every guide page, /exposure/index-sp500, /fees, /holdings (held)",
+   "issue": 203,
+   "what": "Rule codes such as BANK-17, TXI-03, PF-39 beside each line read as clutter (the holdings page shows PF-33 PF-22 and BANK-32 on their own)."
+  },
+  {
+   "rule": "R48",
+   "page": "/indices/sp500, /companies, /documents, /rules/costs, /not-covered",
+   "issue": 19,
+   "what": "275 links to PDFs open the whole document with no page (249 of them on /documents, 13 price-list links on the indices page); three links on /documents go to data.gov.il dataset pages."
+  },
+  {
+   "rule": "R46",
+   "page": "/guide",
+   "issue": 17,
+   "what": "'מסלול כללי' (general track) is listed under 'במה הכסף מושקע' beside the indices."
+  },
+  {
+   "rule": "R56",
+   "page": "/fees?wrapper=keren-hishtalmut",
+   "issue": 171,
+   "what": "With no fee entered, the fee page prices one company's track (Meitav's general track at 0.6%) as the reader's fee."
+  },
+  {
+   "rule": "R54",
+   "page": "/holdings (held), /indices/sp500",
+   "issue": 206,
+   "what": "Wording that breaks the style guide: 'יתווספו בהמשך' on the holdings page, 'הוזן על ידך', the indices page's cost names 'דמי משמרת' and 'דמי ניהול חשבון', two payout wordings."
+  },
+  {
+   "rule": "R49",
+   "page": "/indices/sp500",
+   "issue": 193,
+   "what": "Words readers did not know (מחקה, סל, נאמן, 4D) open no explanation, and the hint 'בחרו קרן אחרת, והרשימה תסתדר מחדש' does not say what is true."
+  },
+  {
+   "rule": "R53",
+   "page": "/indices/sp500",
+   "issue": 190,
+   "what": "Rule ids and builder words in reader text, internal ids shown as fund identifiers, '1 שנים'."
+  },
+  {
+   "rule": "R54",
+   "page": "site-wide",
+   "issue": 68,
+   "what": "Whether the word 'חשיפה' should change."
+  }
+ ],
+ "pages_checked": [
+  "/",
+  "/indices",
+  "/indices/sp500",
+  "/guide",
+  "/guide/current-account",
+  "/guide/bank-deposit",
+  "/guide/savings-plan",
+  "/guide/keren-hishtalmut",
+  "/guide/kupat-gemel-lehashkaa",
+  "/guide/pension-comprehensive",
+  "/guide/pension-general",
+  "/guide/provident-for-annuity",
+  "/guide/child-savings-provident",
+  "/guide/child-savings-bank",
+  "/guide/brokerage-account",
+  "/guide/ira-hishtalmut",
+  "/guide/ira-provident",
+  "/guide/mutual-funds",
+  "/guide/money-market-fund-daily",
+  "/guide/money-market-fund-renewable",
+  "/guide/makam",
+  "/guide/government-bond",
+  "/guide/limited-bond-fund",
+  "/exposure/index-sp500",
+  "/companies",
+  "/companies/513173393",
+  "/companies/513173393/14865",
+  "/companies/leumi",
+  "/companies/interactive-israel",
+  "/tracks",
+  "/fees?wrapper=keren-hishtalmut",
+  "/transfer",
+  "/rules",
+  "/rules/costs",
+  "/documents",
+  "/parameters",
+  "/not-covered",
+  "/goal (held)",
+  "/goal/compare (held)",
+  "/idle-cash (held)",
+  "/holdings (held)"
+ ]
+}

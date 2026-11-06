@@ -1,0 +1,125 @@
+{
+  "task": "s19",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:29:10.287Z",
+  "structured": {
+    "answer": "I didn't choose anything. I'll ask my son or the bank. The only tracks I recognised as safe were \"גמל אג\"ח ממשלות\" (about 4.9% over 3 years, fee 0.52%) and \"כספי (שקלי)\", but I'm not sure they're right for long-term pension money.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Screen 2, top of table",
+        "why": "No company name visible; didn't know whose tracks these were until a grey bar 'מור' appeared on screen 3"
+      },
+      {
+        "where": "Column 'חשיפה למניות ולמט\"ח'",
+        "why": "Didn't understand מט\"ח or how shares can be 101%/103%"
+      },
+      {
+        "where": "Column 'תשואה שנתית ממוצעת, לפני דמי ניהול'",
+        "why": "Not sure whether 4.9% is per year or for the 3 years, or whether the fee is still taken off"
+      },
+      {
+        "where": "Fee column with two numbers",
+        "why": "Didn't know which fee, 'מהחיסכון' or 'מההפקדות', is the one I actually pay"
+      },
+      {
+        "where": "Screen 6",
+        "why": "Tired and anxious from the dense dark table; stopped"
+      }
+    ],
+    "used": [
+      "Title 'כל המסלולים בכל החברות' and the selected button 'תגמולים ואישית לפיצויים'",
+      "Line about fees from 0.15% to 2%",
+      "Row 'גמל אג\"ח ממשלות' with 4.9% / 2.69% and fee 0.52%",
+      "Rows 'גמל כספי (שקלי)' / 'כספי (שקלי)' with 0% shares",
+      "Company bars מור, הפניקס, אלטשולר שחם",
+      "הפניקס 'גמל בניהול אישי' 0.15%"
+    ],
+    "skimmed": [
+      "Filter buttons (מניות, עוקב מדד s&p 500, הלכה, 50-60...)",
+      "Share-heavy rows with 20%+ returns",
+      "Column 'כסף מנוהל'"
+    ],
+    "skipped": [
+      "Screens 7–19",
+      "Question-mark help icons",
+      "Search box",
+      "Top menu (מדריך, חוקים וכללים, השוואה למטרה...)",
+      "Coloured ring charts"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "חשיפה",
+      "101% / 103% shares",
+      "s&p500 / S&P 500",
+      "עוקב מדד, מחקה",
+      "לפני דמי ניהול",
+      "תשואה שנתית ממוצעת: per year or total",
+      "מהחיסכון vs מההפקדות",
+      "פחות מ־3 שנים",
+      "לא דווח / עוד לא דווח with orange icon",
+      "green vs yellow ring colours",
+      "123 מקומי / מחושב / הזנתה"
+    ],
+    "not_found": [
+      "A plain sentence saying which tracks are safe like a deposit",
+      "A comparison with a bank deposit",
+      "An explanation of which fee is the one I pay",
+      "Which company the first rows belong to, on the screen where they appeared"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with small grey text; column headers very hard to read",
+        "where": "Table headers, all screens"
+      },
+      {
+        "what": "Dense table full of percentages with no plain-language summary of what is safe",
+        "where": "Screens 2–6"
+      },
+      {
+        "what": "Company name only appears as a grey bar between rows, so the first rows have no visible owner",
+        "where": "Screen 2–3"
+      },
+      {
+        "what": "Unexplained terms: מט\"ח, חשיפה, shares over 100%",
+        "where": "Exposure column"
+      },
+      {
+        "what": "English letters s&p 500 in the buttons and track names",
+        "where": "Screen 1 filters, table rows"
+      },
+      {
+        "what": "Two fee numbers per row without saying which one I pay",
+        "where": "Fee column"
+      },
+      {
+        "what": "Rings in green and yellow that are hard to tell apart and explained nowhere",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Warning that the data isn't updated since September 2026 made me doubt the numbers",
+        "where": "Yellow box, screen 1"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38484,
+    "turns": 8,
+    "usd": 0.171741,
+    "input": 8,
+    "cacheWrite": 12227,
+    "cacheRead": 27265,
+    "output": 3422,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "case": "bank-deposit-inert-fields",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The bank-deposit guide asks for age, linkage and term, but those fields do not change its graph.\",\"where\":\"the input fields beside the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The example returns less than was deposited (68,270 vs 70,000), and the page never explains next to the number that inflation is the reason",
+      "The '123 מקור/מחושב/הזנתי' legend is confusing",
+      "Didn't know where to find the 8-types table that banks must publish",
+      "Doesn't understand 'מדד', 'צמוד למדד', 'ריבית ריאלית', 'הבטחת קרן'",
+      "Didn't understand the anchor-rate line about the banks, or 'ריבית הפריים'",
+      "The age ('גיל') field: unclear why age matters or what it changes",
+      "The 'no deposit insurance' line is worrying",
+      "Codes like TXI-03 and BANK-06 mean nothing",
+      "'כסף נכנס ויוצא' section is too thin",
+      "'דמי יציאה' is unclear (is it the break fine or always charged?) and has no number",
+      "Unclear whether the low-income tax exemption applies to the reader",
+      "The site doesn't calculate the fine for breaking a deposit, and there's no idea of the cost",
+      "No law returns the money if the bank collapses, which is frightening",
+      "The purple 'מחושב' tag means nothing",
+      "Chart: the thin edge line is hard to tell from the green area, and the dashed rate line isn't visible",
+      "The chart adds nothing beyond the summary numbers",
+      "The purple dotted underline under the numbers means nothing",
+      "Missing current deposit rates by bank and term",
+      "Missing a side-by-side comparison with the S&P 500 or a money fund in the calculator",
+      "Missing information on a minimum amount",
+      "Would drop most of the glossary, or at least the 'איפה מופיע' column",
+      "Would drop 'מה האתר לקח בחשבון' (looks technical)",
+      "Would drop the securities-loss paragraph in taxation",
+      "Would drop 'מי מציע ומי מפקח'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader asks what the age field actually changes and doesn't see why age matters here, which is a clear part of the person's complaint that the age field has no effect on the graph, even though the reader doesn't mention linkage or term."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0842272
+  },
+  "b": {
+    "raised": [
+      "Reader ends up with less than they put in, and the page never explains why (inflation) next to the number",
+      "The '123 source / calculated / entered' legend is confusing",
+      "Doesn't know where to find the 8-deposit-types table banks must publish",
+      "Doesn't understand 'מדד' / indexed to the index",
+      "Doesn't understand the line about which interest rate is the anchor at each bank",
+      "Age field (optional): unclear why age matters or what it changes",
+      "'No deposit insurance' line is scary",
+      "Codes like TXI-03 and BANK-06 mean nothing",
+      "'Money in and out' section is too thin",
+      "'Exit fees' in the cost table are unclear (same as the breaking fine?) and have no number",
+      "Unclear whether the low-income tax exemption applies to them",
+      "The site doesn't calculate the fine for breaking a deposit, so the cost of breaking is unknown",
+      "Frightening that no law returns the money if the bank collapses",
+      "Purple 'calculated' tag means nothing",
+      "Chart: thin line can't be told apart from the green area, and the promised dashed rate line isn't visible",
+      "Chart adds nothing beyond the summary numbers (would drop it)",
+      "Purple dotted underline under numbers means nothing",
+      "Doesn't understand real interest, principal guarantee, prime rate",
+      "Missing current deposit rates by bank and term",
+      "Missing a side-by-side comparison with the S&P 500 or a money fund in the calculator",
+      "Missing whether there is a minimum amount",
+      "Missing a clear yes/no on whether they lose money to inflation",
+      "Would drop most of the glossary / the 'where it appears' column",
+      "Would drop 'what the site took into account'",
+      "Would drop the securities-loss tax paragraph",
+      "Would drop 'who offers and who supervises'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader questions what the age input next to the graph changes, which is part of the person's complaint that age (and the other fields) don't affect the graph, though the reader never says the field has no effect."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0768472
+  },
+  "third": null,
+  "ranks": {
+    "k": 6
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1610744
+}

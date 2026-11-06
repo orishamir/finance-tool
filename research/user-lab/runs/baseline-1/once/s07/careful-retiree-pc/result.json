@@ -1,0 +1,123 @@
+{
+  "task": "s07",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:20:05.268Z",
+  "structured": {
+    "answer": "A fixed deposit is money you give the bank for an agreed time. It pays fixed or changing interest, and 15% of the interest goes to tax. If you need the money before the end, the bank charges a fine that the site doesn't calculate, unless the deposit has an \"exit point\" (תחנת יציאה). It also doesn't keep up with prices, which is why their example ended at 68,270 after putting in 70,000. I'm not moving anything: I'll ask the clerk how big the fine is and whether there are exit points, and ask my son about that 68,270.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the box 'מה קורה לכסף לאורך הזמן'",
+        "why": "The big number 68,270 is smaller than the 70,000 I put in. I didn't understand whether I lose money or what 'בכסף של היום' means."
+      },
+      {
+        "where": "Screen 2, 'שווה לדעת' / 'אין ביטוח פיקדונות'",
+        "why": "It frightened me. Is my money at the bank not safe?"
+      },
+      {
+        "where": "Screen 3, the red box about breaking a deposit",
+        "why": "It says there's a fine but not how much. This was exactly what I wanted to know."
+      }
+    ],
+    "used": [
+      "Title and opening sentence 'כסף שמפקידים בבנק לתקופה מוסכמת…'",
+      "Paragraph on fixed or changing interest and automatic renewal",
+      "The big number 68,270 and 'ההפקדות שלכם 70,000'",
+      "Interest 1.8 and inflation 2 in the boxes",
+      "'מס על ריבית מפיקדון לא צמוד 15%'",
+      "The red box 'שבירת פיקדון לפני הזמן… הקנס הוא תנאי של הבנק'",
+      "'פיקדון לא צמוד לא מגן מעליית מחירים'",
+      "Glossary rows 'קנס שבירה' and 'תחנת יציאה'"
+    ],
+    "skimmed": [
+      "The 'מיסוי' cards",
+      "'סיכונים ומה לא מוגן'",
+      "'מי מציע ומי מפקח'",
+      "The table under 'כמה זה עולה'"
+    ],
+    "skipped": [
+      "The sliders and input boxes in the calculator",
+      "The chart (I only looked at the big number)",
+      "'למה משתמשים בזה' (it mentions קרנות כספיות and מק\"מ)",
+      "'הצגת החוקים והכללים' links",
+      "'מה האתר לקח בחשבון'",
+      "Most of the glossary table and the bottom of the page"
+    ],
+    "unsure_meaning": [
+      "123 מחקר / 123 מחושב / 123 הזנה",
+      "בכסף של היום / בשקלים של העתיד",
+      "BANK-06, BANK-23, TXI-03, TXI-17, TXI 0Q14, TXI-04",
+      "מוצרי שוק הכסף",
+      "חשבון במערכת סגורה",
+      "ריבית הפריים",
+      "הבטחת קרן",
+      "המדד (price index or something else?)",
+      "'הגורם המציע' (does that mean the bank?)",
+      "ריבית צמודה: 25% מהריבית הריאלית"
+    ],
+    "not_found": [
+      "How big the fine is for breaking a deposit early",
+      "What a big bank like mine actually pays today",
+      "Whether my bank takes too much from me",
+      "Anything about a lump sum without monthly deposits"
+    ],
+    "findings": [
+      {
+        "what": "The headline result 68,270 is lower than the 70,000 deposited, and nothing next to it says in plain words why. It looks like a loss.",
+        "where": "Screen 1, the calculator box"
+      },
+      {
+        "what": "It says there's a fine for breaking a deposit early but gives no amount, and the red colour is alarming.",
+        "where": "Screen 3, red box"
+      },
+      {
+        "what": "'אין ביטוח פיקדונות' appears on its own with no explanation and is frightening.",
+        "where": "Screen 2, 'שווה לדעת'"
+      },
+      {
+        "what": "Dark background with small grey text that's hard to read even enlarged",
+        "where": "Whole page, especially notes under the boxes and the tax cards"
+      },
+      {
+        "what": "The example uses a 10,000 start plus 500 a month, which doesn't fit someone with a lump sum, and changing it needs sliders",
+        "where": "Screen 1, 'ההנחות של הגרף'"
+      },
+      {
+        "what": "Codes in English letters (BANK-06, TXI-03) after the sentences mean nothing to me",
+        "where": "Screens 2–3"
+      },
+      {
+        "what": "Every glossary row repeats the same grey tags ('אתר הגורם המציע', 'פרסומת'), so you read them again on each row",
+        "where": "Screens 3–4, 'מונחים'"
+      },
+      {
+        "what": "The cost table gives no number, only 'לפי התעריפון של הגורם המציע'",
+        "where": "Screen 2, 'כמה זה עולה'"
+      },
+      {
+        "what": "I don't know who runs the site. It isn't a bank.",
+        "where": "Top of page, 'מקור'"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41603,
+    "turns": 6,
+    "usd": 0.19763999999999998,
+    "input": 8,
+    "cacheWrite": 13825,
+    "cacheRead": 26740,
+    "output": 4083,
+    "model": "claude-opus-5-5"
+  }
+}

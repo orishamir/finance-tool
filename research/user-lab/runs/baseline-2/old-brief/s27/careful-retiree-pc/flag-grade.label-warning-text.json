@@ -1,0 +1,85 @@
+{
+  "case": "label-warning-text",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The explanation that opens from the label 'מס רק במכירה' ('לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צוברת … זו שאלה פתוחה') is hard to understand and reads as a warning.\",\"where\":\"the box that opens from the label\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The 'מס רק במכירה' popup stayed open on every screen and hid parts of the page, including the yearly-return box, the % input and the hedging tables",
+      "Worry that Ylin Lapidot has only one year of history and that its 0% fee may be a launch offer that could go up",
+      "The cost breakdown bar has too many colours",
+      "The coloured tags in the fund list were confusing",
+      "The Psagot pricing note about a monthly purchase counting as a standing order was hard to follow even after two readings",
+      "The year-by-year hedging table was too much and partly hidden",
+      "Didn't know what the '+0.37%' figures meant, and their explanation was half hidden under the popup",
+      "Didn't understand what '4D' and '4A' mean",
+      "Didn't understand the difference between a tracker fund and an ETF, or why ETFs cost more",
+      "Unclear whether 'מס גם על שינוי המטבע' means tax on a profit that came only from the dollar",
+      "Didn't understand 'עמלות זו על זו' in the colour legend",
+      "Didn't understand the popup's text ('...זו שאלה פתוחה, ולכן הדרך מוצגת בלי דירוג') or why it was open the whole time",
+      "Unclear who hasn't collected the data marked 'עוד לא נאסף'",
+      "Couldn't find how the tax at the end is calculated, such as whether it is 25% of the profit only and whether age matters",
+      "Wanted a ready answer for needing the money after 5 years",
+      "Couldn't find how safe the money is if the broker or fund manager gets into trouble",
+      "Couldn't find how to start: opening an account and setting up a standing order",
+      "Couldn't find what differs between the top two funds apart from 43 ₪",
+      "Would drop the foreign funds (iShares, Vanguard)",
+      "Would drop the dollar chart since 2002",
+      "Would drop the coloured line chart under 'what matters most'",
+      "Would drop the list of advert claims for each broker",
+      "Would drop the 'not in the calculation' discounts for young people and soldiers"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 12,
+        "why": "The reader quotes the popup's 'זו שאלה פתוחה' text and lists it among the things they didn't understand, which matches the person's complaint that the explanation is hard to understand."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0791352
+  },
+  "b": {
+    "raised": [
+      "The 'מס רק במכירה' popup stayed open on every screen and hid numbers (the yearly-return box, the % input, parts of the hedging tables)",
+      "Ylin Lapidot has only one year of history; the 0% fee might be a launch offer and the reader couldn't find out whether it can go up",
+      "Didn't dare press the inflation button",
+      "The cost breakdown bar has too many colours",
+      "The coloured tags in the fund list were confusing",
+      "The Psagot pricing note (standing order, 3 of 15 banks) was hard to follow even after two readings",
+      "The foreign funds (no price, US estate tax, W-8BEN form) were not usable",
+      "The year-by-year hedging table was too much to take in",
+      "The coloured line chart of the four factors was not useful",
+      "Unclear what the +0.37% figures mean; their explanation sat at the bottom, half under the popup",
+      "Didn't understand what '4D' and '4A' mean",
+      "Didn't understand tracker fund vs ETF, or why ETFs cost more",
+      "Unclear whether tax is charged on gains that come only from the currency change",
+      "Didn't understand 'עמלות זו על זו' (fees on fees) in the legend",
+      "Didn't understand the popup's text ('זו שאלה פתוחה... בלי דירוג') or why it was open over everything",
+      "Didn't understand 'עוד לא נאסף' (collected by whom?)",
+      "Couldn't find exactly how tax is calculated at the end, or whether age changes anything",
+      "No ready answer for a 5-year horizon",
+      "Couldn't find how safe the money is if the broker or fund manager gets into trouble",
+      "Couldn't find how to start: opening an account and setting up a standing order",
+      "Couldn't find what separates the top two funds beyond the 43 ₪",
+      "Would drop the advert-claims list, the dollar chart since 2002 and the 'not in the calculation' discounts"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 15,
+        "why": "The reader lists the popup's text ('זו שאלה פתוחה, ולכן הדרך מוצגת בלי דירוג') under things they didn't understand, which matches the person's point that this explanation is hard to understand; the reader doesn't mention it reading as a warning."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0826472
+  },
+  "third": null,
+  "ranks": {
+    "k": 12
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1617824
+}

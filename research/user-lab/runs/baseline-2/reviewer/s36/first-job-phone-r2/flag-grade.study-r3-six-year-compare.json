@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 does touch the 'less than waiting' comparison, but it calls the wording confusing and says it is placed too small; no finding says the year-6 comparison shows up even when it doesn't apply."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0161914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 touches the 'less than waiting' comparison, but it complains that the wording is confusing and the sentence is small, not that the year-6 comparison shows up when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0320748
+}

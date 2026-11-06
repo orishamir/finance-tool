@@ -1,0 +1,14 @@
+{
+ "id": "indices-missing-brokers",
+ "task": "t40",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Altshuler Trade and Meitav Trade are not in the account ranking.",
+   "where": "the account ranking",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

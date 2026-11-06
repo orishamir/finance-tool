@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The first screen opens with English index names, so an older reader feels the page is not meant for them and may give up.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The minus signs next to the chosen fund (-0.04%, -1,030 ₪) look like a loss and frighten the reader, which could lead them to a wrong decision.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Grey text on a dark background is hard to read on every screen, even when enlarged.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The cheapest choice is a company the reader doesn't know rather than a big bank. This is about trust and preference, not a page fault.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The amounts are set with sliders. The reader names no real obstacle.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The colours in the cost bar are too close together and the legend uses jargon, so the reader cannot tell which part of the bar is which fee.",
+      "serious": true,
+      "names_listed": 3
+    },
+    {
+      "n": 7,
+      "summary": "The fund list is long and each row is crowded with numbers. This is tiring but does not stop the reader.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The starting amount (10,000) and the monthly amount (500) were already filled in and were not the reader's own figures. This is a minor annoyance.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.04032
+}

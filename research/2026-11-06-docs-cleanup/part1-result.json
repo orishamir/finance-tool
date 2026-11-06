@@ -1,0 +1,304 @@
+[
+ {
+  "commit": "e98d0909",
+  "done": "Rewrote /home/ori/dev/finance-tool/docs/product.md in place. Not pushed.\n\nSection 1 is still named \"1. Decisions\". It has one row per decision, D1 to D62, as each stands now. Each row ends with \"Made <date>.\" and, where it changed, \"Changed <date>: <reason>.\". D46 is a one-line row: \"Replaced by D59\". The discovery ids (O1 to O8) moved from \"(was O1)\" into the Basis column. The founder quotes in Basis are kept but shortened.\n\nAmendments folded into their rows:\n- D6: the 2026-10-26 and 2026-10-27 changes.\n- D7 and D60: the column-head mark.\n- D9: the provisional past-record rule, kept as provisional.\n- D20: the policy rate is quoted.\n- D21: Doron's case.\n- D25: now reflects D47 and D58.\n- D28: the 10-27, 10-28, 10-29 and 11-05 changes, with the parts D45, D59 and D61 replaced taken out.\n- D29: the parts D49 and D50 changed.\n- D34: the rings.\n- D36: the D51 note.\n- D41: issues 131 and 132.\n- D42: D56.\n- D43: amendments 1 to 5.\n- D50: the 11-03 change.\n- D51: the full count of 43 companies.\n- D54: the switch removed.\n- D57: the 11-04 and 11-05 changes.\n\nStatus lines, re-check lists and history were dropped.\n\nAppendices A to E were folded in and then deleted:\n- A: the review's choices are in D2 and D12, and section 4 gains \"no offer tracker\" (design-system.md cites it as appendix A item 26).\n- B: in D2, D13 and 3.10.\n- C: in 3.1 and section 2's \"Interactive by default\".\n- D: a new \"The first page\" paragraph in section 2, checked against site/app/routes/home.tsx, plus the copy button in 3.10.\n- E: in D2, D17 and 3.10 (\"not an app decoder\").\n\nSection 3 now describes the site as it is (checked against site/app/routes.ts and site/app/lib/review.ts):\n- 3.1 follows D6, D29, D49, D50 and D55.\n- 3.2 and 3.6 say they are held for review.\n- 3.4 says where it lives: the indices page, the track browser at /tracks, and the provident listings at /workbench/providers/<wrapper>. The fit mark, the orders-a-month input and the cost chart are gone, and the Maya fallback applies.\n- 3.7 is a short stub (off the site, rebuilt with no steps, what stays meanwhile).\n- 3.8 now points to the D25 and D47 rules page and data/open-questions.json.\n- 3.9 takes in the export format (N3), the side stores and /transfer.\n- 3.10 has no fit mark, gains D34's exposure rings, and lists a group's collected funds only.\n- \"tests/cases\" became tests/golden, the folder that exists.\n\nThe 3.3 heading lost its [R ...] suffix (the marks now sit on a line under each heading). That makes its anchor match the URL in packages/pipeline/scripts/gen-terms.ts, which was broken before.\n\nSections 5 to 8:\n- Section 5 keeps items 1 to 10 and 6a, because other files cite dependencies 3, 4, 5, 6, 6a, 7, 9 and 10. Each item is now a standing precondition with its current terms; status counts and dates were removed.\n- Section 6: the Bank of Israel row follows D20, and an ECB row was added (D26).\n- Section 7 is now two lines pointing to the issues and to CLAUDE.md's work order.\n- Section 8 is deleted. Its facts were folded in and its N ids still resolve: N1 in 3.8, N3 in 3.9, N4 in dependency 6, N5 in D9, N6 in 6a, N7 in D24. Its open items are listed under open work.",
+  "conflicts": [
+   "The header still says \"No figure, rate, ceiling or fee appears in this document\", but D15 (20,566 NIS), D41, D57, D59, D61 and D62 all quote figures. Left as it was.",
+   "3.5 still says the fee page writes \"Plain-Hebrew text for the negotiation\", and FeeRow.tsx does have negotiation text. D44 says \"The site gives no steps and no advice on negotiating\", while D57 says the site encourages negotiating but gives no steps for it. Both left as they were.",
+   "The old 3.1 said values entered on a guide \"follow them to the catalogue and the goal comparison\". D34 and D37 say those pages do not read a saved goal, and D37 says the guide values are shared with the indices and fee pages. I followed D37: values \"are kept on the device and used by the pages that take the same values (D37)\". Please confirm whether the goal comparison still reads them.",
+   "D17 named \"every track in the catalogue for the fit mark (3.10)\" as a candidate set. D34 and D54 removed the fit mark, so I dropped that clause; the rest of D17 is unchanged.",
+   "The old 3.4 tested \"changing trades per month from one to ten re-ranks\", and its inputs included trades per month. D52 and D53 removed that field, and the indices page assumes one order a month. I dropped the clause and wrote the inputs as the plan sliders (D37) plus D44.",
+   "The old 3.2 labelled the idle-cash Bank of Israel figure \"average paid at this bank last month\", and its data named Bank of Israel series as sourced. That conflicts with D20, under which those series are links and the rates are entered by the person. I followed D20.",
+   "The old 3.10 said a fund manager's page lists its funds from the Maya list. That conflicts with D33 and CAT-43 (only collected records). I followed D33.",
+   "D32 said what each held item needs is in docs/roadmap.md, \"Held for review\". CLAUDE.md says GitHub issues #45 to #48 hold it. I followed CLAUDE.md.",
+   "Four other files still cite the deleted appendices or section 8. These are other agents' files, so I did not change them. They are: docs/design-system.md lines 12, 741 and 788 (appendix E; appendix A item 26, now in section 4 and D2); docs/roadmap.md line 3 (appendix E, now D17); docs/flows.md line 451 (appendix E) and line 1089 (N3, still resolves in 3.9); docs/design-spec.md line 362 (appendix E).",
+   ".claude/skills/il-finance/references/switching-and-transfers.md line 4 says it \"Serves docs/product.md 3.7 (switching playbook: ordered steps, ...)\". 3.7 is now a stub, and D40 bans steps. That file belongs to its owner, so I did not change it."
+  ],
+  "openWork": [
+   "D9: the published past record (MKT-01) is provisional until the founder confirms it, and the Damodaran series (1928 to 2025, 7-year windows) waits for his reading of its terms. Issue #59.",
+   "D27: the old row said the comparison's securities-account option was priced on the S&P 500 fund P-05 names without saying so, which would be a silent index choice. It needs a re-check. No issue found; it may fall under #154.",
+   "D28: two readings to confirm with the founder: ranking with an illustrative return when the order holds between 0% and 10%, and the goal card placing the account by its lowest value over the indices until one is chosen. No issue found.",
+   "D28 'Later': a hedging explanation with a worked example, and the standing-order fact per account (data to collect). The latter may be #194, which covers whether an account buys monthly by itself.",
+   "D29: the child-savings and self-managed IRA guide visuals are left for later. Under issue #122, the guides milestone.",
+   "D55: the funds guide's visual waits for the founder's pick among the mockups. Issue #177.",
+   "D57: a later fees page that says which fees matter most and are most worth negotiating. Possibly #171.",
+   "D52: ranking houses for makam and government bonds on those securities' guide pages. Issues #56 and #169.",
+   "D61 (7): research into the regulator and protection of the two houses that sell only funds bought abroad. Issue #194. All of D61's work is issue #193.",
+   "D20 and dependency 7: asking the Bank of Israel, TASE and the ISA for written consent. Issue #77.",
+   "N3 / 3.9: merging the four device side stores into the state document. Issue #52.",
+   "N7 / D24: a news section. Issue #121.",
+   "N1: the founder's sign-off on the site parameters. Issue #76.",
+   "Dependency 8: the CMA register of financial-service providers is still unread (REG OQ3). No issue found.",
+   "Dependency 5: Meitav Trade's tariff had contradicted its own pages. data/fees now holds meitav-trade snapshots up to 2026-11-04, so check whether this is closed; issue #150 is closed.",
+   "Dependency 6a / N6: whether the Bank of Israel's uniform deposit-disclosure format (since April 2025) is machine-readable is unverified; the bank side has only Leumi's savings plan. Issues #96 and #153.",
+   "N4: which exposures get full fund records first (the ones the founder and friends name first). No issue found.",
+   "D38: switching's rebuild, once the founder says what it should be. Issue #50 (long horizon)."
+  ],
+  "idsDeleted": [
+   "Appendices A to E: deleted after their content was folded in. Only five docs cite them by name: docs/design-system.md, docs/roadmap.md, docs/flows.md and docs/design-spec.md (listed under conflicts), and docs/architecture.md line 356 (found by grepping for 'product.md.*appendix'). No site, package or data file cites them (grep -rnE 'product\\.md.{0,15}(appendix|N[0-9]|section [5-8])' over site/app, packages, .github, data and tests).",
+   "Section 8 'Open questions carried forward': deleted. Only D24's own 'section 8, N7' cited it, and that now reads N7. N1 and N3 to N7 still resolve. N2 appeared only in D2's '(was O2, N2)' and nowhere else in the repo.",
+   "Section 7's suggested build order: replaced by two lines. 'Section 7' is cited only by the old file's intro.",
+   "Ids no longer mentioned: BRK OQ18, REG OQ3, SW OQ6, SW OQ11, F-60, F-93, G-28, G-30, K8, S40, S41, O9. All of these are defined in other docs (method.md, the rule base, tests/golden, architecture.md); this file only referred to them in removed status and history lines.",
+   "No D id was deleted: D1 to D62 each still have a row."
+  ],
+  "checks": "npm run validate passed (\"data/ is valid\"); its warnings were there before this change and none relate to docs/product.md. I ran validate rather than npm run check because no code parses product.md: code only cites it in comments (dependency 7, 3.8, D22, D51, section 2) plus one anchor URL in gen-terms.ts, which the new 3.3 heading now matches. Other checks: grep shows all 62 decision rows (D1 to D62) present, every table row has exactly four pipes, and no date outside the decision log except the confirmation date in the intro and the date of a circular."
+ },
+ {
+  "commit": "bce4830f",
+  "verdict": "The rewrite is faithful. All 62 decision rows are still there, each now ends with when it was made and changed, and no rule, number or threshold changed meaning. The only id that disappeared outright is F-93, which survives only as a pointer: method.md still defines it and the site still uses it. N1 to N7 now resolve to the place each was folded into. I found and fixed 4 small problems in commit bce4830f: one lost guide rule, one tightened wording, one reworded exclusion list, and the \"review item\" citations, which pointed at nothing once appendix A was deleted. Nothing in the code parses the file; its one anchor (gen-terms.ts, section 3.3) now resolves better than before. `npm run validate` passes. The full `npm run check` was not run because no code reads this file and another session's site build was running. Nothing was pushed. Not fixed here, needs follow-up: decisions D59 to D61 are written as if built, but they are open issues #191 to #193, and the \"stairs\" section still shows on the indices page.",
+  "findings": [
+   {
+    "old": "Appendix E re-check: \"3.1 guide: unchanged. Its 'who offers it' list links to the company pages (docs/flows.md flow 2).\"",
+    "what": "Lost rule: guide pages link each provider in \"who offers it\" to its company page. It was missing from the new 3.1, and flows.md is being archived. The site does this (components/guide/sections.tsx links /companies/<id>).",
+    "action": "Restored in 3.1 Out: \"who offers it (each institution linking to its company page) and under which regulator\"."
+   },
+   {
+    "old": "D21: \"never an amount (the loss filter waits for release 5, D11)\"",
+    "what": "Meaning tightened: the writer made it \"never an amount and never the loss filter\". The old text only said presets do not fill the loss filter yet; it was not a permanent ban.",
+    "action": "Changed to \"never an amount, and not the loss filter, which the person sets (D11)\"."
+   },
+   {
+    "old": "D25: \"Not built: a cross-provider tariff table, per-rule pages, counts or boasts, a myth section, full-text search over rule bodies.\"",
+    "what": "\"Not built\" was rewritten as \"Not part of it\", which turns \"not built\" into \"excluded\".",
+    "action": "Restored \"Not built\"."
+   },
+   {
+    "old": "Appendix A, review log: 34 numbered review items, cited as \"review item n\" in D2, D5, D6, D7, D9, D10, D11, D12 and section 4.",
+    "what": "The citations stayed but appendix A was deleted and no research file holds the review, so \"review item n\" pointed nowhere.",
+    "action": "Added one line to the section 1 intro: a review item is one of the 34 findings of the 2026-10-22 review, and its log is in this file's git history."
+   },
+   {
+    "old": "Section 8 defined N1, N3, N4, N5, N6 and N7. These are cited by method.md 2.3, data-schema.md 3.2, packages/schema parameters.ts, glossary.md, design-system.md, architecture.md and il-finance coverage.md.",
+    "what": "Checked, not lost: the writer folded each id into place (N1 in 3.8 parameters, N3 in 3.9 export format, N4 in dependency 6, N5 in D9, N6 in dependency 6a, N7 in D24), so each still resolves.",
+    "action": "None needed."
+   },
+   {
+    "old": "Ids F-60, F-93 and G1 appear in the old file only.",
+    "what": "F-60 was only in appendix E's history list, and G1 was part of a report filename. F-93 (the dollar-by-year section) was dropped from D28: D45's F-95 section replaced that section on the page. F-93 itself is still defined in method.md and feeds F-95.",
+    "action": "None needed."
+   },
+   {
+    "old": "D28 basis: \"Provisional readings to confirm with the founder: ranking with an illustrative return when the order holds between 0% and 10% (D9), and the goal card placing the account by its lowest value over the indices until one is chosen (D27, D10).\" D27 basis: \"To re-check: the comparison's securities-account option is priced today on the S&P 500 fund...\"",
+    "what": "Dropped. The lowest-over-indices rule is in method.md F-80 (\"The securities account over the indices\"). The 0% to 10% footer reading is replaced by D61 (5). What is still unconfirmed is open work.",
+    "action": "None. Belongs in the writer's open-work report."
+   },
+   {
+    "old": "D43: \"no ranking, cheapest pair or stairs reads it\". D46 described the stairs section. D59: \"the stairs leave\".",
+    "what": "Possible gap: D59, D60 and D61 are written as present fact, but they are not built yet (open issues #191, #192 and #193). The stairs section still renders on the indices page (routes/invest.tsx, StairsSection), and the new D43 no longer says the group pick must not reach the stairs.",
+    "action": "Left as written, because the decision log records decisions and build status lives in issues. Flagged for the lead."
+   },
+   {
+    "old": "Open items removed from the file: D9 Damodaran series waiting on the founder; D28 \"Later:\" items (hedging explanation, negotiated fee, standing-order fact); D29 child savings and IRA visuals \"left for later\"; D57 a later fees page; D61 (7) \"being researched\"; dependency 5 Meitav Trade missing record; dependency 8 CMA register of financial-service providers unread (REG OQ3); N3 side stores not yet merged into the state document; section 8 statuses.",
+    "what": "Open work removed, as the brief requires. Not a loss.",
+    "action": "None. These belong in the writer's open-work report. The side-store merge is also recorded in CLAUDE.md."
+   },
+   {
+    "old": "Appendix E is cited by docs/data-inventory.md:92, docs/roadmap.md:3, docs/design-spec.md and docs/flows.md. \"Appendix A, review item 26 / 27 / 16\" is cited by roadmap.md:264-266 and design-spec.md.",
+    "what": "These references in other files now point at deleted appendices. Roadmap, design-spec and flows are being archived. data-inventory.md is a live doc that another agent owns.",
+    "action": "Not changed, since those files belong to other agents. data-inventory.md:92 should cite D17 instead of appendix E."
+   }
+  ]
+ },
+ {
+  "commit": "337f3783",
+  "done": "Rewrote /home/ori/dev/finance-tool/docs/method.md in place so it says what holds today. It went from 172 KB to 164 KB and is committed, not pushed.\n- Folded: every dated amendment, \"changed 2026-10-26\", \"until then\", \"since\", \"added\", review, request and issue note is now part of the text it changed. What those notes replaced is deleted: the D3 correction paragraph after F-09, the makam run's old custody behaviour, the tracking-fund `etf_units` history, F-63's old index-page cost split (now described through F-91), F-62's saved-goal reading (now D37: the fee page's own plan), F-94's removed crossing and chart, F-86's history of what Leumi and `hi` quoted, F-80's \"until then Leumi\" note, and the typed-fund \"until that day\" notes.\n- Doron's case is kept in F-80 as one example with its figures.\n- Merged: F-52's employer part above the ceiling was said twice and is now said once. F-61's reference and holding-under-review passages are said once each. F-44's duplicate withholding sentence is removed.\n- Moved by topic: F-85 to F-100 had collected in section 3. They are now in section 10: 10.1 comparisons, fees, providers and guides; 10.2 cash rates across the banks (F-85, F-86); 10.3 provident tracks (F-87, F-88, F-99, F-100); 10.4 the indices page (F-89 to F-95, with F-91's closing \"The three add up…\" and \"Not covered\" paragraphs put back after F-91); 10.5 the study fund's drawing (F-96 to F-98). Section 3 keeps F-01 to F-07 and F-84.\n- Rewrote the header and status to drop history and the old rule count. The section 13 golden-tests bullet no longer carries the 2026-10-23 answer note.\n- Made match the code:\n  - P-09 now describes what the code reads: questions the rules page names when its filters match, the facts of the \"הידעת?\" block, and the guide blocks. There is no questions page in `site/app/routes.ts`.\n  - P-10 lost its option-A history.\n  - F-63 says the page's view computes `worth` and `bars` but the indices page shows neither. I checked this by grep; the doc used to say they \"sit in a fold\".\n- Machine-read parts are unchanged:\n  - All 80 bold `**F-nn` headings, checked by diff.\n  - The `### 2.3` and `### 2.4` headings and the P rows: `loadParameterUses` gives the same result before and after.\n  - The `| G-24 |` row keeps every question code `tier2Table` needs (checked).\n  - Every A, B, G and P id.\n  - The section numbers that code comments cite (§2.3, §2.4, §3, §4.1, §5 to §9, §12, §13).",
+  "conflicts": [
+   "P-09: the old text said the twelve questions have 'the questions page' and left the rules page; CLAUDE.md's status paragraph also says they have their own page. site/app/routes.ts has no questions route, and rules.tsx reads P-09's rows (as named filter presets) and facts. I described the code; the CLAUDE.md sentence may be stale, for the lead to judge.",
+   "F-63 ended 'A fund the person types is a record of its kind with the typed fees, accumulating, so a foreign kind stays listed and not ranked until G-18 closes'. The later F-65 passage (2026-11-05) says nothing is filled in and the payout is what the person states. I followed the later passage: 'with the typed fees and the payout the person states (F-65), so a foreign accumulating one stays listed and not ranked until G-18 closes'. The 'accumulating' qualifier on the foreign case is my reading.",
+   "F-63's worth lines: 'The larger of the two is written first. The earlier bars ... sit in a fold.' A grep shows view.worth and view.bars are computed in site/app/lib/invest.ts but not rendered by any indices-page component. I changed it to say the view computes both and the page shows neither. If they are rendered somewhere I missed, restore the old sentence.",
+   "G-28 says 'savings-plan terms are not collected yet', but data/terms/deposits/leumi-tashlumim-shekeli-3y.json is a savings-plan record. Left as was, except for dropping the release tag '(R4)'.",
+   "F-70 still says the mark is computed on the horizon band alone (`lossFilter: not-applied-release-5`). The engine (packages/engine/src/holdings/fit.ts) still does this, so I kept it and dropped only 'Until release 5 (2026-10-24)'."
+  ],
+  "openWork": [
+   "Whether to keep showing the 15%-of-nominal sensitivity line at the kupat gemel lehashkaa exit now that the real base is the law's (F-44, G-02; it was 'open for the founder'). No issue found.",
+   "The tax with the refund not claimed (A-14 off) at the kupat gemel lehashkaa exit should be max(20%, min(bracket rate, 25%)) for each part, not a flat 25%. Correcting it moves golden S51 (F-44). Issue #73 'The tax when a refund at 60 is not claimed' may cover it.",
+   "Re-read TXP-02's floor (money paid only) against the official text of s.45A(d) (F-31, 'README step 6'). No issue found; the rule base issue #87 may be the place.",
+   "Whether the comparison assumes one account for everything or a separate pick per security (F-80, 'a reading left to the founder'). Issue #54.",
+   "F-48 (early pension withdrawal) is not built, so the wrapper stays listed, not ranked. Issue #88; the IRA provident fund case is #90."
+  ],
+  "idsDeleted": [],
+  "checks": "npm run check passed (typecheck, tests including engine registry.test.ts and pipeline validate.test.ts, which read the bold F ids, data validation, and the site build that runs loadParameterUses and the G-24 check in compare.server.ts). I checked that no other build was running before starting. I also ran the data.server.ts §2.3 regex and the G-24 code check on the file before and after: same parameter-to-formula map, G-24 complete. The bold F-id set and the A, B, G and P id set are identical before and after. The only references that dropped out of the text are closed open-question codes (BRK OQ11, GOV OQ4, TX2 OQ1, TX2 OQ12, TXA OQ3, OQ9, OQ11, OQ15, TXI OQ2, TXK OQ12), ETF-04 and D1, each named only in history notes. No method id was deleted."
+ },
+ {
+  "commit": "46e2d02d",
+  "findings": [
+   {
+    "old": "| A-20 | ... | BoI EDGE (BANK-22); since 2026-10-26 the figure in the Bank's latest rate press release, quoted under D20 as amended, held as P-05 `cash_rate` | ...",
+    "what": "The rewrite moved the BANK-22 citation onto the press release ('...held as P-05 `cash_rate` (BANK-22)'). BANK-22 is the Bank of Israel's EDGE deposit-rate publication, which is the old superseded source. The cash_rate record in data/parameters/illustrative-scenario.json cites only the 21.10.2026 press release, so the citation changed the meaning.",
+    "action": "Dropped the misattributed '(BANK-22)' from A-20 so the row names only the press release under D20. Committed as 46e2d02d."
+   },
+   {
+    "old": "F-80: 'Each security takes its own pick, independently of the account's: one account for everything is a reading left to the founder (roadmap).' F-44: 'whether to keep it now that the base is the law's is open for the founder.' F-44: 'Correcting it moves golden S51's A-14-off figure, so it is left for the lead (2026-10-26)'",
+    "what": "These open-work notes were removed as the brief says (item 8). The decisions behind them are still not settled, and the first one lives only in docs/roadmap.md line 446, which is being archived.",
+    "action": "Not restored, because they are open work. The writer or lead should list them under Open work: one account versus a separate pick per security, keeping or dropping the 15%-of-nominal sensitivity line (G-02), and the exact A-14-off figure (golden S51)."
+   },
+   {
+    "old": "F-63: 'The larger of the two is written first. The earlier bars (broker, fund, ETF against tracking fund, Israel against abroad) keep their definitions above and sit in a fold.'",
+    "what": "The new text says the page's view computes both (`worth`, `bars`) and 'the indices page shows neither'. I checked this against the code. site/app/lib/invest.ts builds `bars` and `worth`, and neither site/app/routes/invest.tsx nor components/invest/pair.tsx renders them. The new wording describes the site as it is (brief item 9).",
+    "action": "No change."
+   },
+   {
+    "old": "F-63: 'A fund the person types is a record of its kind with the typed fees, accumulating, so a foreign kind stays listed and not ranked until G-18 closes.'",
+    "what": "The new text reads '...with the typed fees and the payout the person states (F-65), so a foreign accumulating one stays listed and not ranked until G-18 closes'. It follows the later D44 amendment in F-65, under which a typed fund's payout is what the person says. G-18 covers accumulating foreign funds only, and the engine follows that (fund-variants.ts line 273). The later passage holds.",
+    "action": "No change."
+   },
+   {
+    "old": "F-31: '(TXP-02's guide quote; the official text is still to be re-read against s.45A(d), README step 6; 2026-10-23)'",
+    "what": "The re-read note was removed. The il-finance file tax-pension-gemel-lekitzba.md records that s.45א(ד) was re-read on 2026-10-25 and the reading stands, so nothing is lost.",
+    "action": "No change."
+   },
+   {
+    "old": "Readers: the G-24 row (compare.server.ts), the §2.3 P-table (data.server.ts loadParameterUses) and the bold formula ids (pipeline readFormulaIds)",
+    "what": "The G-24 row still names all nine question codes the site checks for. The P-table parses to the same parameter-to-formula map as before. The bold F ids are the same set as before. Every other A, P, G and B id is still there. The only removed paragraph with no counterpart is the dated D3 correction note, which is history. The moved F-67 visuals paragraph matches the old one apart from its heading date. npm run check passed on the writer's version, and npm run validate passed after my fix.",
+    "action": "No change."
+   }
+  ],
+  "verdict": "The rewrite keeps every formula, rule, number and id, and every part the code reads, apart from one change in meaning: A-20 had moved the BANK-22 citation onto the press release. I fixed that in commit 46e2d02d (not pushed). Three removed open-work items need to reach the Open work report: one account versus a separate pick per security, the G-02 sensitivity line, and the golden S51 A-14-off figure."
+ },
+ {
+  "commit": "1cf2982697481a6bf57d97adf71b73af402415d5",
+  "done": "Rewrote /home/ori/dev/finance-tool/docs/design-system.md so it describes the design system as it holds today, organised by topic. The sections are: 1 principles (V1 to V7); 2 tokens and layout; 3 site-wide pieces (shell, provenance, inputs, timeline, guide pages, dimension checklist, companies/tracks/search, reference pages, knowledge-layer pieces, primitives); 6 to 9 single-feature pieces (goal comparison; fees, holdings and transfer; banks and investment houses; exposure mode, revisit and not-covered); 10 guide-page visuals; 11 kit; and a new 12 charts. Section numbers remain ids, and 4 and 5 are left unused, as the intro says. Every cited id resolves to the same heading as before: 2.2, 2.3, 2.5a, 2.7, 2.8, 3.1 to 3.4, 3.8a, 3.9, 6.2 to 6.6, 6.9, 7.1 to 7.3, 7.5, 7.6, 7.8, 7.9, 8.7, 9.1 to 9.4, 9.6 and section 11 with \"Lists of products\".\n\nWhat moved:\n- Dated amendments are folded into the rules they amend. History and struck text are gone.\n- Gain and loss moved from the end of the file into 2.2, and the info callout roles were added there.\n- 2.3's chart roles now match theme.css. A new table lists the roles that belong to one chart. The fee-kind rationale is shortened.\n- The daily money-market table moved from 2.3 to 10.\n- 2.4 folds in the font loading, the 450 body weight and the root size steps.\n- From 6.9 into 2.5: the minmax two-column rule and \"a control sits above what it changes\" (jump-check.mjs).\n- 2.5a: the D62 exception and useHeldHeight are merged in.\n- 2.7's chart-tick row absorbs the old Q4.\n- 2.9's fixed-label table is replaced by a pointer to docs/copy.md and site/app/copy.ts.\n- The 3.3 slider absorbs the old Q6, with its ranges in illustrative-scenario.json.\n- 3.1 shows the shell as it is now: the doors, the \"מאחורי הקלעים\" group and the footer, with held pages hidden.\n- 3.5, 3.7 and 3.8 describe the pages as built, including the D47 rules page with its address state and per-shelf fetch.\n- 3.8a drops the pinned row, shelf card, question entry and home questions block.\n- 6.7 and 6.8 are trimmed to what exists. 6.9 is the first page as built.\n- Section 11 gains entries for the kit exports that lacked one: LongestCase/useUnseen/useHeldHeight, InputSlot, TableCols, ShareRings, PeriodStrip, HelpMark, GroupPriceFold/GroupPriceRows, ClaimCheck/ClaimList, DocLink/atPdfPage, FieldState/ParameterLine/flushPendingFields, the FeeFigure/FundFeesHead/FundFeesPhoneHelp/FeeWordsNote helpers, TrackFundId/GemelNetLink, DiffBar and cx.\n- In \"Lists of products\", the label rule now has its D60 form.\n- Section 12 gathers \"Reading the visuals\", colour inside a chart (with the validator thresholds) and the axis and label rules.\n\nHebrew strings were kept exactly. The commit is local and not pushed.",
+  "conflicts": [
+   "CLAUDE.md still says the twelve questions have their own page and a block on the home page. The code removed the questions page (commit ce86f01f, D58). The doc follows the code, which drops the questions entry and the home questions block from 3.8a. CLAUDE.md itself is unchanged.",
+   "site/app/theme.css uses red-500 for --chart-cost-fixed, green-300 for --chart-cost-fund and green for --label-payout. That conflicts with CLAUDE.md ground rule 6: red, amber and green stay status colours, never a series. The doc only points to the theme file for these roles. The code is unchanged.",
+   "The old doc line 'No page is built before its mockup is approved' was dropped. CLAUDE.md ground rule 1 narrows mockups to major graphic visualizations, and section 12 points to that rule.",
+   "6.1 said the loss filter line is quiet text, not a control. 9.1 specifies the accepted-fall field in the goal form's constraints card. The later passage (9.1) is kept and the 6.1 line dropped.",
+   "7.3 gave the fee-drag total line as neutral-200, while 2.3 and theme.css give neutral-50. The theme value, neutral-50, is used in both places.",
+   "The 2.9 fixed-label table had gone stale against the copy files (for example, 'עוד לא קוטלג' is now 'עוד לא באתר', and the legend says 'הזנתם'). It is replaced by a pointer to docs/copy.md and site/app/copy.ts.",
+   "6.4's 'לא לבחור' bank chips and 6.5's 'Pin a listed option' ('להציג בגרף') are not in the code. Both are dropped as specs for things no longer built."
+  ],
+  "openWork": [
+   "The fee-kind hues follow fee size on the fees page but a fixed kind on other charts. The founder never settled this. The provider page it was raised for no longer exists, so only the fees page and the pension visual are left to decide.",
+   "The pension deposit bar borrows fee kind 4's magenta (chart-fee-4) for severance. This was open for the founder in the chart audit: a role of its own, or keep the borrowed one.",
+   "The kit exports FitMarkCard but nothing uses it. Remove it or use it.",
+   "Unused copy strings: consolidation.guideLater and r4catalogue.headings.fundManagers are left over from removed pieces.",
+   "Old section 5 (open questions): Q1, Q2, Q3 and Q7 were answered, Q4 (chart ticks) and Q6 (slider ranges) are folded into 2.7 and 3.3, and Q5 is closed. Nothing from it is still open."
+  ],
+  "idsDeleted": [
+   "Section 4 (unused number, noted in the intro)",
+   "Section 5 (open questions)",
+   "7.7 (workbench track table; the workbench is gone and /workbench/tracks redirects to /tracks)",
+   "8.1 to 8.6 (providers ranking, issue 172; the funds page, cf592d09; switching, D38)",
+   "8.8 (removed with switching)",
+   "The fund-manager row of 8.7",
+   "9.5 (removed feature)",
+   "9.7 (removed feature)",
+   "Grep: grep -rnoE \"design-system(\\.md)?`? *(section |§)?[0-9]+(\\.[0-9]+a?)?\" site/app packages .github .claude/skills CLAUDE.md docs. In code and live docs it found no citation of 4, 5, 7.7, 8.1 to 8.4, 8.6, 8.8, 9.5 or 9.7. 8.5 is cited only in docs/copy.md, beside playbook strings that were removed too. The other matches are in research/ reports and docs/flows.md, which are dated records."
+  ],
+  "checks": "- pgrep -f \"react-router build\" found no build running (only the shell running the check).\n- npm run validate printed \"data/ is valid\", with the usual warnings, none from this file.\n- A grep of the new file found every cited section heading (2.2 to 9.6, and section 11 under '## 11. Kit').\n- npm run check was not run: no code reads this doc.\n- Only docs/design-system.md was committed. docs/method.md.ids is untracked and was not touched.\n- Nothing was pushed."
+ },
+ {
+  "commit": "00e64a25",
+  "findings": [
+   {
+    "old": "3.5 Guide section: \"One per item of 3.1's fixed structure, always in the same order with the same IDs: what it is; who offers it and who regulates it; how money goes in and out; what it costs; how it is taxed; risks and what is not protected; typical use and horizon; what to check (3.6); terms.\" (the writer kept this almost word for word, and 3.1's section index also said \"fixed structure\")",
+    "what": "Conflicts with product.md D49, which says there is no fixed structure for every guide and no guide has a \"what the site considered\" section. It also does not match the code's section list in copy.ts (what, use, different, worth, who, inout, cost, tax, risk, terms).",
+    "action": "Restored: rewrote the row to the code's order and ids and added D49's rule (a guide keeps only the sections that say something about its product, may name a section its own way, and has no \"what the site considered\" section). In 3.1's section index, changed \"fixed structure\" to \"one section order\"."
+   },
+   {
+    "old": "3.6: \"Called for by 3.3, shown on every guide page and every track page.\"",
+    "what": "Conflicts with D49 and with the code. DimensionChecklist is rendered on routes/track.tsx, routes/goal-compare.tsx and exposure-mode/result.tsx, not on guide pages.",
+    "action": "Restored: it is shown on every track page and in the goal comparison in both modes, and no guide or exposure page has it (D49)."
+   },
+   {
+    "old": "9.4 revisit line: \"the date is the entry's new checked date, or the change log's date for a parameter or an assumption (which carry none in the engine's diff)\"",
+    "what": "The writer dropped the change-log date, which is correct because the change log went with D24. That left nothing on what an entry with no checked date shows. The code (revisit.tsx, copy changedSince) shows \"השתנה מאז {date}\" with the saved date.",
+    "action": "Restored the fallback as the code has it."
+   },
+   {
+    "old": "3.7 Track list and track row: 'A \"ברירת המחדל\" tag on the company's default or \"most common\" track.'",
+    "what": "Removing the old track row was right (TrackList is gone), but this tag still exists in the kit's TrackLabels and was not described anywhere in the new text.",
+    "action": "Restored: added it to section 11's track-cells row, as TrackLabels with the default tag and then the track's facts, such as \"חדש\"."
+   },
+   {
+    "old": "6.5 \"Why one hue in steps rather than four hues: the ranking is ordinal… the site keeps its one accent (V5)\"; 9.3 \"Why not seven hues: the ranking is ordinal and the site keeps one accent (V5)\"",
+    "what": "Conflicts with CLAUDE.md ground rule 6 (2026-11-05): inside a chart every line has its own clearly different hue, and that comes before one meaning per colour. The old text already had this conflict and the writer carried it over. theme.css still draws chart-option-1 to 3 as teal-200, 400 and 600, so the doc describes the code accurately.",
+    "action": "Left as it was and reported here. Fixing it needs a chart change on the comparison and exposure charts (held pages), with a drawing first under ground rule 1, not a doc edit."
+   },
+   {
+    "old": "2.3 Chart audit: \"Open for the founder: the fee-kind hues follow the size of each fee on the fees page but a fixed kind on the provider page…; the pension visual's severance segment wears fee kind 4's magenta.\" Also section 5 (Q1 to Q7)",
+    "what": "Open items the writer removed, as the brief says. The provider-page half no longer applies: the provider ranking was removed (issue 172). Still open: the severance segment of the pension deposit bar reuses fee kind 4's magenta. Q4 to Q6 are folded into 2.7 and 3.3. Q1 to Q3 and Q7 are answered: look approved, dark only, labels in copy.md, site name \"מקור\" in copy.ts.",
+    "action": "Nothing lost. Reported for the open-work list: the severance magenta reuse on the pension deposit bar."
+   }
+  ],
+  "verdict": "The rewrite is accurate and careful. Nothing is lost that isn't elsewhere or gone from the code, and the colour values, kit names, footer, menu, font stack and Hebrew strings I checked all match the code. I corrected four things: the guide-section list and checklist placement that contradicted D49, the revisit date fallback, and the default-track tag. The teal-steps comparison palette against ground rule 6 is reported, not changed."
+ },
+ {
+  "commit": "0d78bfba",
+  "done": "I rewrote docs/copy.md (it went from 2,900 lines to about 250) and committed it with the CLAUDE.md repo-layout line in 0d78bfba. Nothing is pushed.\n\nWhat the file holds now:\n- Title and opening: a new title, \"Hebrew copy: voice, style guide and word choices\". The opening says the strings themselves live in site/app/copy.ts, the page prose in site/app/content/, and record-held Hebrew in data/. It also says that a code comment citing an old per-screen section (3.x, 6.x to 9.x) now means the copy.ts string beside it.\n- Section 1, Voice: kept as it was, including the plural-forms rule that format.ts cites as §1. The old localisation notes (section 5) are folded in.\n- Sections 2 to 9, word choices by topic: every word choice whose word is still on the site, with its reason. They come from the four \"Why these words\" sections (6.6, 7.6, 8.6, 9.7), the notes beside table rows, the knowledge-layer rename (חוקים וכללים, a single record has no noun), the naming rules for publishers and documents, the P-09 question style, and the founder's choices (מה המטרה שלכם, מראה מקום, no copy \"for an easy read\", העמלות זו על זו, the short labels on the fee chart, the index-page words). The topics are:\n  - the site, home page and search\n  - numbers, sources and their state\n  - laws, rules, documents and questions\n  - fees and prices\n  - comparisons and results\n  - coverage\n  - holdings and moving to another device\n  - banks, brokers and funds\n- Choices that were later reversed now state what holds: ההבדל הגדול ביותר replaced מכריע, אי אפשר replaced לא ניתן, תעריפון replaced מחירון, החזקה replaced אחזקה, העברה למכשיר אחר replaced להעביר למכשיר אחר, ראשי (עותק) replaced ראשי, בעותק, and the headline now puts האפשרות before the product's name.\n- Section 10, style guide: numbering 10.1 to 10.8 kept (search-aliases.ts cites 10.3 and scope.ts cites 10.4; the rows those comments cite are kept). The editor's open questions in 10.9 became \"Settled decisions\", and each one is folded into the rule it changed: the narrator is \"האתר\", \"הזנתם\", אי אפשר, תעריפון, no \"שולחן העבודה\", לוח הנתונים של בנק ישראל. \"10.x Chip labels\" moved into 10.5. 10.3 has a \"לא\" column listing the replaced wordings in place of the old \"variants found\" column.\n\nDeleted:\n- every per-screen string table\n- all the \"Added ... for the founder's review\", \"QA fixes\", audit-wave (WP1a, WP6, WP9), scenario-fix (6.8, 7.x) and knowledge-layer tables\n- the Hebrew editor's applied log (10.10)\n- the amendment headers and the \"Swept\" and \"Folded\" notes\n- all rows and word choices for removed pages: switching (D38), the change log (D24), the provider workbench for the securities account (D52), the funds page (D53), and the shelf and pinned-question cards\n\nCopy.ts differences (I did not edit copy.ts):\n- I checked every table row by script: about 610 rows had Hebrew not found word for word in copy.ts.\n- About 340 are rows of removed pages: 102 switching, 83 provider workbench, 80 fund variants, 47 change log, and others.\n- The other roughly 270 are mostly:\n  - (a) the knowledge-layer rename, which the doc said the tables did not apply (for example \"לכל הכללים\", now \"לכל החוקים והכללים\"; \"מאגר הכללים\", now \"מאגר החוקים והכללים\"; \"כללים\" as the rules page title);\n  - (b) the comparison headline rewrite (\"{אפשרות} היא הטובה ביותר למטרה הזו, כי …\" and the \"Reason: …\" rows, now \"מבין {n} האפשרויות שדורגו, …\" and \"ההבדל הגדול ביותר …\");\n  - (c) section 3 search rows the doc itself marked out of date (\"שמרנו אותו במכשיר שלכם …\");\n  - (d) the D37 removals, such as the goal strip and \"להגדיר מטרה\" on non-goal pages;\n  - (e) false positives where copy.ts splits a sentence around a number placeholder, or the doc joined a tax-step headline and its sentence with a dash.\n- Other differences in what the site shows:\n  - The index page's cost key says \"דמי משמרת\" and \"דמי ניהול חשבון\", while the glossary terms are \"דמי ניהול פיקדון ניירות ערך\" and \"דמי חשבון קבועים\".\n  - The tax-step headlines F-42, F-45 and F-54 no longer hold an age. The doc had marked them \"typed figure\".",
+  "conflicts": [
+   "Code comments cite section numbers that no longer exist: copy.ts (3.5a, 3.6, 3.8, 3.11, 3.12, 3.14, 3.15, 6.0-6.4, 6.8, 7.0-7.3, 8.0, 8.1, 8.4, 8.5, 8.7, 'added 2026-10-23' tables, the WP1a section), revisit.tsx (9.3), track-browser.ts (7.3), providers.ts (3.8), tpl.tsx and sentence.tsx. The brief says cited section numbers keep resolving, but the task notes say to remove the string tables. I followed the task notes and added one sentence at the top: an old 3.x or 6.x-9.x citation now means the copy.ts string beside it. The comments are untouched because the brief allows code changes only for machine-read parts.",
+   "Home question card: the earlier note said never 'מטרה' on the card; the founder later changed the heading to 'מה המטרה שלכם?'. I kept the founder's later choice.",
+   "Old 10.1 let the site say 'אנחנו' for failures and finished actions ('לא הצלחנו', 'מילאנו', 'שמרנו'), and old 10.6 gave 'לא הצלחנו ל…' as the failure pattern. The same day's decision made the narrator 'האתר'. I folded the decision into both rules. copy.ts still says 'זיהינו חברה לפי חלק מהמילים…' (r3holdings.companyPartial, on the held holdings page), which breaks that rule; I left copy.ts unchanged.",
+   "Old 10.6 rule 3 allows a short comparison with no subject ('גדול מהיתרה בעו״ש.'), but the editor's applied edits added a subject in both places that used it ('הסכום גדול מהיתרה בעו״ש.', 'החלק הזמין גדול מהסכום היום.'). I left the rule and its example as they were.",
+   "Old 10.3 marks 'פער המעקב של הקרן' (guideBlocks.terms.labels.fundTracking) for a decision against the glossary's 'הפרש עקיבה'. The decision says the glossary term stays, but copy.ts still shows 'פער המעקב של הקרן'. My 10.3 row names only the canonical term.",
+   "Fund payout: old 8.6 chose the tags 'לא מחלקת / מחלקת', with 'צוברת' only as another name; a later passage made the fund labels 'צוברת / מחלקת דיבידנד' (MF-49). copy.ts has both (the policy words at line 2309, the labels at lines 3923-3924). I wrote the later labels and kept the glossary headwords as the terms.",
+   "Old 10.4 gave the maqaf as 'U+05B2', but the character shown, ־, is U+05BE (U+05B2 is a vowel point). I corrected it to U+05BE.",
+   "Old 7.6 said 'אחזקות' stays as the list heading because it is the statements' word; the later decision changed every 'אחזקה' to 'החזקה' as 'the Academy's and the statements' word'. I followed the later decision."
+  ],
+  "openWork": [
+   "Typed figures: formulaNames F-42 'מגיל שישים' and flag CS-18 'אחרי גיל עשרים ואחת' write an age in words instead of passing the rule's figure through the number component, which needs a code change. No issue found (search 'typed figure').",
+   "Narrator: 'זיהינו' in r3holdings.companyPartial breaks the decision that the site says 'האתר', not 'אנחנו'. No issue found.",
+   "Terms: 'פער המעקב של הקרן' in guideBlocks.terms.labels.fundTracking should be the glossary's 'הפרש עקיבה' by the settled decision. No issue found.",
+   "Terms: the index page's cost key ('דמי משמרת', 'דמי ניהול חשבון') differs from the glossary terms 'דמי ניהול פיקדון ניירות ערך' and 'דמי חשבון קבועים'. It may be a deliberate choice for the index page; no issue found.",
+   "Code: when a filled value can be Latin or Hebrew, the component should decide at runtime whether a maqaf goes before it. Old 10.4 left this to the code; scope.ts does it only for lists.",
+   "Pending-work promises ('יתווסף בהמשך') may be out of date after releases 4 and 5 (old 10.6). copy.ts still has 'פיקדונות וחשבונות השקעות יתווספו בהמשך, עם התעריפונים.' on the held holdings page, and 'יתווסף בגרסה' as a fallback for a pending formula.",
+   "Payout words: decide whether the policy words 'לא מחלקת / מחלקת' (copy.ts line 2309) should become the labels 'צוברת / מחלקת דיבידנד'."
+  ],
+  "idsDeleted": [
+   "Section numbers 2 to 9 of the old file (2, 3.1-3.15 with 3.5a, 4, 5, 6.0-6.6 and 6.8, 7.0-7.6, 7.x, 8.0-8.9, 9.0-9.7) are reused with new meanings or gone; 10.10 and 10.x are gone. Grep found them cited only in code comments (copy.ts, revisit.tsx, track-browser.ts, providers.ts), and in docs/design-spec.md, docs/flows.md and docs/roadmap.md (other agents' files) and research reports. No code parses them, and none is an anchor. §1, 10.3 and 10.4, which code cites, keep their meaning."
+  ],
+  "checks": "npm run validate: 'data/ is valid' (only the four standing warnings). npm run check not run: no code reads docs/copy.md (grep of site, packages and .github found only comments). The copy.md to copy.ts string comparison is a script in the scratchpad: /tmp/claude-1000/-home-ori-dev-finance-tool/d699993e-48cb-44ea-a321-d53b3c193f71/scratchpad/diff.py. Commit 0d78bfba contains only docs/copy.md and CLAUDE.md; not pushed."
+ },
+ {
+  "commit": "35b3e6ee",
+  "findings": [
+   {
+    "old": "6.6: \"עמית מוטב\" in the F-32 headline: the law's term (TXP-03), and it opens its one-line explanation; \"מי שהפקדותיו מגיעות לסף שבחוק\" was masculine and said less.",
+    "what": "Dropped, but the word is still on the site (copy.ts guideBlocks F-32 and pension.beneficiary).",
+    "action": "Restored in section 4."
+   },
+   {
+    "old": "6.6: \"כשעוברות מההפקדה הראשונה {שנים}\" names where the clock starts (TXH-09: from the first payment into the fund); \"רק אחרי {שנים}\" left the reader guessing.",
+    "what": "Dropped, but the wording is still in copy.ts (guideBlocks afterYears).",
+    "action": "Restored in section 4."
+   },
+   {
+    "old": "6.6: \"העו״ש עצמו · הושוו אליו\" in the idle-cash coverage sentence, and \"הושוותה\" on one row: the words follow a count, so each is a predicate, not a heading.",
+    "what": "Dropped, but both strings are still in copy.ts (idle kinds and kindsTag). The idle-cash page is held but not deleted.",
+    "action": "Restored in section 6."
+   },
+   {
+    "old": "3.5a: guideBlocks.notComputed.releaseBefore \"יתווסף בגרסה {מספר}\": was \"מתוכנן לגרסה\"; the register is \"יתווסף בהמשך\"; the component appends the release number, so the number stays until the code drops it.",
+    "what": "The rewrite kept only \"יתווסף בהמשך is the register\". copy.ts still shows \"יתווסף בגרסה\", so the doc contradicted the site.",
+    "action": "Restored the exception in section 2."
+   },
+   {
+    "old": "8.6: \"ראשי, בעותק\" chip / section 2: label \"מקור ראשי (עותק)\"",
+    "what": "The new file listed \"ראשי (עותק)\" as a strength word. The site shows \"מקור ראשי (עותק)\", plus the tag \"עותק\" after a date.",
+    "action": "Corrected in section 3."
+   },
+   {
+    "old": "Rename note: experience label \"ניסיון של אדם אחד, לא חוק ולא כלל\"; \"עובדה שלכם, לא חוק או כלל\"",
+    "what": "The new sections 3 and 4 quote both strings, but neither is in copy.ts. copy.ts has the tag \"ניסיון של אדם אחד\", the line \"עדויות של אנשים מהפורום, לא חוקים ולא כללים\", and the counts \"נמצא חוק או כלל אחד\" / \"לא נמצא חוק או כלל\". copy.ts was not edited.",
+    "action": "Changed the quotes in the doc to match copy.ts. The rule itself is unchanged."
+   },
+   {
+    "old": "searchMore.figureLine \"מספר מתוך כלל\" (was \"מספר בכלל\")",
+    "what": "The table differed from copy.ts, which now shows \"מספר מתוך המאגר\". The new file repeated the table's text.",
+    "action": "Section 4 now says \"מספר מתוך המאגר\" and keeps the reason. copy.ts was not edited."
+   },
+   {
+    "old": "Word choices for removed screens: \"לפי העלות, מהזולה ליקרה\" (provider workbench), \"ברירת המחדל: החודש האחרון\" (what-changed page), \"הפעילות שלכם\" (provider behaviour section)",
+    "what": "These strings are no longer in site/app. The writer kept them as general guidance or as settled decisions. That is not a loss and does not change any meaning.",
+    "action": "Left as they are, reported only."
+   },
+   {
+    "old": "10.4: maqaf given as U+05B2",
+    "what": "The writer changed it to U+05BE. That is the real maqaf code point (U+05B2 is a vowel sign), so this fixes a factual error and does not change the meaning.",
+    "action": "Kept the writer's correction."
+   }
+  ],
+  "verdict": "The rewrite keeps the voice, the style guide (10.1 to 10.9, numbering intact, 10.3 still there for search-aliases.ts) and nearly every word choice. It had dropped four reasons for wordings still on the site, and four of its quotes did not match copy.ts. I restored the four reasons and corrected the four quotes in docs/copy.md, then committed as 35b3e6ee (not pushed). No code reads the file, and npm run validate passes. The CLAUDE.md repo-layout line matches the file. Open work: none."
+ }
+]

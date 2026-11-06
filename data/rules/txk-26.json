@@ -1,10 +1,12 @@
 {
   "id": "TXK-26",
-  "title": "Withholding rate on interest a provident fund pays an individual: 20% in reg. 3(א) (15% on older deposits)",
-  "title_he": "שיעור הניכוי במקור על ריבית שקופת גמל משלמת ליחיד",
-  "text_he": "תקנות הניכוי במקור קובעות שיעור ניכוי לריבית שקופת גמל משלמת ליחיד, ושיעור נמוך יותר לריבית על כספים שהופקדו לפני תחילת התקנות. התקנה חלה גם על הרווח שמושכים מקופת גמל להשקעה. התיקון שהעלה את שיעורי הניכוי של הבנקים ושל משלמים אחרים לא שינה את התקנה הזאת, ובנוסח המשולב לא רשום תיקון מאוחר יותר שלה. הניכוי הוא מקדמה: המס הסופי נקבע לפי הכלל על המשיכה, ומה שלא נוכה משולם בדוח השנתי.",
+  "title": "Withholding on gains withdrawn from a kupat gemel lehashkaa: 25%, by the Tax Authority's withholder file; reg. 3(א)'s text reads 20%",
+  "title_he": "הניכוי במקור ברווחים שמושכים מקופת גמל להשקעה",
+  "text_he": "החברה המנהלת מנכה במקור מהרווחים שקופת גמל להשקעה משלמת, ולא מנכה כלום מהקרן ומהפרשי ההצמדה עליה. כך קובע מבנה הקובץ שרשות המסים מפרסמת לגופים שמנכים במקור, לדוחות משנת 2018 ואילך: סוג ניכוי אחד לקרן עם ההצמדה, פטור, וסוג אחד לריבית ולרווחים האחרים, בשיעור קבוע. בנוסח המשולב של תקנות הניכוי במקור שנמצא, השיעור לריבית שקופת גמל משלמת ליחיד נמוך יותר, ולא נמצאה ההוראה שקובעת את השיעור שבקובץ. הניכוי הוא מקדמה: המס הסופי נקבע לפי הכלל על המשיכה, ומה שנוכה יותר מדי חוזר רק דרך דוח שנתי או בקשת החזר מס.",
   "figure_names_he": {
-    "regulation_text_rate": "שיעור הניכוי בתקנה"
+    "withholding_on_gains": "שיעור הניכוי במקור מהרווחים",
+    "withholding_on_principal": "שיעור הניכוי במקור מהקרן עם ההצמדה",
+    "regulation_text_rate": "השיעור שבנוסח התקנה (לא השיעור שמנוכה)"
   },
   "strength": "primary",
   "dimensions": [
@@ -14,6 +16,46 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "figures": {
+    "withholding_on_gains": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf#page=14",
+        "title": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026, p.14, withholding type 88: תשלום מחשבון חדש או קופת גמל להשקעה - \"ריבית ורווחים אחרים\" (25%)",
+        "publisher": "Israel Tax Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-06",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXK-26"
+      ],
+      "state": "sourced",
+      "notes": "What the managing company withholds from the gains of a kupat gemel lehashkaa payment, by the Tax Authority's file layout for withholders' annual reports (types 87 and 88 added for reports from 2018, p.2 item 7). Which provision sets 25% is open: reg. 3(א) as read reads 20% (regulation_text_rate; TXK OQ3). An advance; the final tax is TXK-07."
+    },
+    "withholding_on_principal": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf#page=14",
+        "title": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026, p.14, withholding type 87: תשלום מחשבון חדש או קופת גמל להשקעה - קרן כולל הפרשי הצמדה על הקרן (פטור)",
+        "publisher": "Israel Tax Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-06",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXK-26"
+      ],
+      "state": "sourced",
+      "notes": "The principal with its linkage differentials is exempt and nothing is withheld from it (type 87, \"(פטור)\"); it matches the law's base, the real gain (TXK-07)."
+    },
     "regulation_text_rate": {
       "value": 20,
       "unit": "pct",
@@ -32,13 +74,41 @@
         "TXK-26"
       ],
       "state": "sourced",
-      "notes": "The rate in reg. 3(א) as consolidated to 27.12.2017; 15% on interest for sums deposited before the regulations' start. The 2012 amendment (ק\"ת 7076) raised regs. 4 and 5 to 25% and did not amend reg. 3; the Wikisource consolidated text lists no later amendment of reg. 3 (read 2026-10-26). Harel's stated 25% moved to TXK-28 on 2026-10-26."
+      "notes": "The rate printed in reg. 3(א) of National Insurance's consolidated copy (to 27.12.2017), not the rate withheld (withholding_on_gains, since 2026-11-06); 15% on interest for sums deposited before the regulations' start. The 2012 amendment (ק\"ת 7076, read in an olaw.org.il copy) raised regs. 4 and 5 to 25% and did not amend reg. 3. Reading both in Reshumot is open (TXK OQ3). Harel's stated 25% moved to TXK-28 on 2026-10-26."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-06",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf#page=14",
+      "title": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "title_he": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.14",
+      "locator_he": "עמוד 14",
+      "page": 14,
+      "quote": "קרן כולל הפרשי הצמדה על הקרן (פטור)",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf#page=14",
+      "title": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "title_he": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2, item 7",
+      "locator_he": "עמוד 2, פרט 7",
+      "page": 2,
+      "quote": "לדוחות משנת 2018 ואילך",
+      "checked": "2026-11-06"
+    },
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (המוסד לביטוח לאומי)",
@@ -52,7 +122,7 @@
       "page": 2,
       "quote": "קופת גמל המשלמת ליחיד ריבית, תנכה ממנה מס בשיעור של 20%",
       "checked": "2026-10-26",
-      "qualifier": "(consolidated to ק\"ת 7907, 27.12.2017)"
+      "qualifier": "(National Insurance's consolidated copy to ק\"ת 7907, 27.12.2017, not the Reshumot publication; open question 3)"
     },
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf#page=2",
@@ -63,7 +133,8 @@
       "kind": "regulation",
       "strength": "primary",
       "quote": "תשע״ב, 600",
-      "checked": "2026-10-31"
+      "checked": "2026-10-31",
+      "qualifier": "(National Insurance's consolidated copy, not the Reshumot publication)"
     },
     {
       "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)?action=raw",
@@ -88,7 +159,7 @@
       "locator_he": "עמוד 600, סעיפים 1-9",
       "page": 600,
       "checked": "2026-10-25",
-      "qualifier": "(mirror of Reshumot)"
+      "qualifier": "(copy of Reshumot at olaw.org.il, not the official publication; open question 3)"
     }
   ],
   "derived_from": [

@@ -1,0 +1,109 @@
+{
+  "case": "tracks-r2-companies",
+  "sessions": 6,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 0,
+      "caughtIn10": 0,
+      "of": 6,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "first-job-phone": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.18761679999999997,
+  "rows": [
+    {
+      "task": "s38",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0321108
+    },
+    {
+      "task": "s38",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0328948
+    },
+    {
+      "task": "s38",
+      "session": "careful-retiree-pc-r3",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0289468
+    },
+    {
+      "task": "s38",
+      "session": "first-job-phone-r1",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0310068
+    },
+    {
+      "task": "s38",
+      "session": "first-job-phone-r2",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0313228
+    },
+    {
+      "task": "s38",
+      "session": "first-job-phone-r3",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.031334799999999996
+    }
+  ]
+}

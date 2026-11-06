@@ -1,0 +1,173 @@
+{
+ "run": "research/user-lab/runs/baseline-2/reviewer",
+ "sessions": "/-r[12]$/",
+ "kinds": {
+  "headline": {
+   "cases": 36,
+   "pairs": 144,
+   "single10": [
+    30,
+    144
+   ],
+   "singleAny": [
+    30,
+    144
+   ],
+   "pooled10": [
+    12,
+    36
+   ],
+   "pooledAny": [
+    12,
+    36
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 11,
+     "of": 72
+    },
+    "first-job-phone": {
+     "in10": 19,
+     "of": 72
+    }
+   },
+   "steadiness": {
+    "caughtOnlyOnce": 6,
+    "caughtMoreThanOnce": 12,
+    "meanShare": 0.208,
+    "groups": 72
+   },
+   "ranks": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    4,
+    4,
+    4,
+    4,
+    5,
+    5,
+    6,
+    7,
+    7,
+    8
+   ],
+   "caughtCases": [
+    "companies-fee-column-unclear",
+    "current-account-chart-unrelated",
+    "current-account-one-bank",
+    "guides-useless-sections",
+    "hg-huge-profit",
+    "hg-tax-after-six",
+    "hg-within-ceiling",
+    "label-warning-text",
+    "study-r1-decoder-table",
+    "tracks-exposure-100",
+    "tracks-sort-does-nothing",
+    "tracks-stale-annuity"
+   ]
+  },
+  "outside": {
+   "cases": 7,
+   "pairs": 28,
+   "single10": [
+    1,
+    28
+   ],
+   "singleAny": [
+    1,
+    28
+   ],
+   "pooled10": [
+    1,
+    7
+   ],
+   "pooledAny": [
+    1,
+    7
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 14
+    },
+    "first-job-phone": {
+     "in10": 0,
+     "of": 14
+    }
+   },
+   "steadiness": {
+    "caughtOnlyOnce": 1,
+    "caughtMoreThanOnce": 0,
+    "meanShare": 0.036,
+    "groups": 14
+   },
+   "ranks": [
+    1
+   ],
+   "caughtCases": [
+    "company-missing-fund-kinds"
+   ]
+  },
+  "taste": {
+   "cases": 9,
+   "pairs": 36,
+   "single10": [
+    1,
+    36
+   ],
+   "singleAny": [
+    1,
+    36
+   ],
+   "pooled10": [
+    1,
+    9
+   ],
+   "pooledAny": [
+    1,
+    9
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 18
+    },
+    "first-job-phone": {
+     "in10": 0,
+     "of": 18
+    }
+   },
+   "steadiness": {
+    "caughtOnlyOnce": 1,
+    "caughtMoreThanOnce": 0,
+    "meanShare": 0.028,
+    "groups": 18
+   },
+   "ranks": [
+    7
+   ],
+   "caughtCases": [
+    "label-icons"
+   ]
+  }
+ },
+ "findingsPerSession": 6.9
+}

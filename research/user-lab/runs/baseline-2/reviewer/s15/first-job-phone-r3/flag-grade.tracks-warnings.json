@@ -1,0 +1,36 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the date warning marks repeated on nearly every row; finding 3 is about returns being replaced by 'less than 3 years' text, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014003400000000003
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the date warning marks repeated in every row; finding 3 is about the return column showing a text label instead of a number, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013867400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.027870800000000005
+}

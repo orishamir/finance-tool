@@ -1,0 +1,137 @@
+{
+  "task": "p04-far-legend-ta125-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:01:34.067Z",
+  "structured": {
+    "answer": "I wouldn't buy anything yet. The page says the cheapest way is an account at פסגות and the fund אי.בי.אי. מחקה (4A) ת\"א 125 (5112628), leaving 86,045 ₪ from 70,000 ₪ after 10 years in its example. But that rests on a \"7%\" it calls only an example, and the minus sign next to that fund scared me, so I'll ask my son or the bank first.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2, 'תשואה בשנה 7%' with 'לדוגמה של האתר'",
+        "why": "Not sure whether the 7% is a promise or a guess, and the whole 86,045 depends on it"
+      },
+      {
+        "where": "Screen 7, '−0.04%' under the chosen fund",
+        "why": "A minus sign on the fund the page picked; looks like it lost money, which made me back away"
+      },
+      {
+        "where": "Screens 1-2, the amount boxes",
+        "why": "The task gave no amount, so I left the page's 10,000 and 500 and didn't touch the sliders"
+      },
+      {
+        "where": "Screen 4-5, list of banks",
+        "why": "Long and busy with many numbers; I don't know which line counts for me"
+      }
+    ],
+    "used": [
+      "Title 'איפה ואיך הכי זול להשקיע במדד'",
+      "Index button 'ת\"א-125' and its description",
+      "Boxes סכום היום 10,000, הפקדה חודשית 500, תשואה בשנה 7%",
+      "'הפקדתם 70,000 ₪' and 'הבחירה שלכם · הזול 86,045 ₪ נשאר לכם בעוד 10 שנים'",
+      "'פסגות ניירות ערך בע\"מ' account box",
+      "Bank list with final sums (לאומי 82,968, מזרחי טפחות 77,294...)",
+      "Fund box 'אי.בי.אי. מחקה (4A) ת\"א 125' 5112628, דמי ניהול 0.1%"
+    ],
+    "skimmed": [
+      "Cost breakdown 'העלות אצלכם, לעומת הזוג השני'",
+      "'כל החשבונות' explanation paragraph",
+      "Lower part of the bank list (אקסלנס, מיטב טרייד, Interactive Brokers)"
+    ],
+    "skipped": [
+      "Colour bars in each row",
+      "'לא בחישוב' notes and fold arrows",
+      "'+ הוספת חשבון בתנאים שקיבלתם'",
+      "Everything after the start of 'כל הקרנות על מדד ת\"א-125' (screens 8-13)",
+      "Sliders"
+    ],
+    "unsure_meaning": [
+      "MSCI World, MSCI AC World, S&P 500",
+      "מדד (as a stock index)",
+      "קרן מחקה",
+      "נאמן 0.025%",
+      "דמי משמרת",
+      "העמלות זו על זו",
+      "תכלית סל / קרן סל",
+      "מחזיקה את המניות / כמה דרכים יחד",
+      "−0.04% בשנה · שנה אחת",
+      "Purple dotted underlines under numbers",
+      "'בכסף של היום'",
+      "'הפסד נחתך: הסכום ארוך מהשתש'"
+    ],
+    "not_found": [
+      "Whether this is safe like a deposit or can lose money",
+      "A plain sentence on whether the 7% is guaranteed",
+      "Which line is my own bank's actual price for me",
+      "Who runs this site (only 'מקור')"
+    ],
+    "findings": [
+      {
+        "what": "Minus signs (−0.04%, −1,030 ₪) right under the chosen fund look like losses and scare me off",
+        "where": "Screen 7, fund list"
+      },
+      {
+        "what": "The big result 86,045 depends on a 7% return described only as 'לדוגמה של האתר', with no warning it can be less or lose money",
+        "where": "Screen 2"
+      },
+      {
+        "what": "Opens with English letters (MSCI, S&P 500) and words like מדד in an unfamiliar sense",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Dark background with grey small text is hard to read even enlarged",
+        "where": "All screens, especially notes and legend"
+      },
+      {
+        "what": "Colour bars with four close colours (orange, yellow, red, grey) can't be told apart",
+        "where": "Screens 4-7"
+      },
+      {
+        "what": "Long list of banks with two numbers each; busy and tiring",
+        "where": "Screens 4-6"
+      },
+      {
+        "what": "Unfamiliar companies (פסגות, אי.בי.אי.) recommended over my own bank; unknown site name 'מקור'",
+        "where": "Screens 3, 7"
+      },
+      {
+        "what": "Sliders for amounts",
+        "where": "Screens 1-2"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37482,
+    "turns": 9,
+    "usd": 0.1866022,
+    "input": 10,
+    "cacheWrite": 13802,
+    "cacheRead": 36631,
+    "output": 3441,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p04-far-legend-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "far-legend",
+        "type": "move",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

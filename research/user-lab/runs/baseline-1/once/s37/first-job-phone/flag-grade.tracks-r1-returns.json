@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the companies behind the tracks can't be told apart; finding 3 says the funds look the same because returns are missing, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the lists fail to show the different companies behind the tracks; finding 3 says the S&P funds look identical, but it blames missing returns, not missing company identity."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015611400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0314748
+}

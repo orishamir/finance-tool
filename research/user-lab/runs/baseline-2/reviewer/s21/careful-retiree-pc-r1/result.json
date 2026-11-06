@@ -1,0 +1,125 @@
+{
+  "task": "s21",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:31:48.020Z",
+  "structured": {
+    "answer": "I didn't decide anything. I'll ask my son or the bank. Harel's page only shows funds, with fees of about half a percent a year, and nothing that says it is safe like a deposit. The \"כספי (שקלי)\" one shows 4.25%, but I don't know what it is.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Screen 1, row of track buttons",
+        "why": "English letters 'S&P 500' and 'עוקב מדד' right at the start made me feel it's not for me"
+      },
+      {
+        "where": "Screen 2, main table",
+        "why": "Too many numbers and coloured rings, I got anxious; many rows say 'פחות מ־3 שנים' instead of a return and I didn't understand why"
+      },
+      {
+        "where": "Screen 3, note under the table",
+        "why": "Says there are extra costs 'שלא מופיעות כאן' — so what do I actually pay?"
+      },
+      {
+        "where": "Screen 4, folded headings",
+        "why": "Everything is closed; I didn't know which one to open"
+      }
+    ],
+    "used": [
+      "Title 'הראל'",
+      "Fee summary 'דמי ניהול מההיסכון: מ־0.54% עד 0.61%'",
+      "Track names in the right column of the table",
+      "Return figures 24.04% (מניות) and 4.25%/3.08% (כספי שקלי)",
+      "'תקרה בחוק: 1.05% מההיסכון, 4% מההפקדות'",
+      "Sentence that past return doesn't say what will happen"
+    ],
+    "skimmed": [
+      "Grey intro lines at top about data sources",
+      "Column 'חשיפה למניות ולמט\"ח'",
+      "Column 'כסף מנוהל' (7.3 מיליארד etc.)",
+      "Folded headings list on screen 4"
+    ],
+    "skipped": [
+      "Coloured ring charts",
+      "Folds: קרנות מחקות, מרכזית לפיצויים, קרנות סל",
+      "'מה כתוב במסמכים של הראל' sections",
+      "Search box 'לא מצאתם שם?'",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "עוקב מדד",
+      "S&P 500",
+      "אג\"ח סחיר",
+      "כספי (שקלי)",
+      "מט\"ח percentages",
+      "חשיפה",
+      "אשראי",
+      "קרנות מחקות / קרנות סל",
+      "מרכזית לפיצויים",
+      "PF-10",
+      "לפני דמי ניהול",
+      "123 ממקור / מחושב / הזנתה",
+      "פחות מ־3 שנים (instead of a number)",
+      "the coloured rings"
+    ],
+    "not_found": [
+      "Anything called פיקדון or a guaranteed/safe option",
+      "A comparison with bank deposit interest",
+      "A plain sentence saying which option is low-risk",
+      "What the fee means in shekels on my amount",
+      "What the costs are that 'don't appear here'"
+    ],
+    "findings": [
+      {
+        "what": "Nothing is explained in terms of safety or compared with a deposit, so I can't answer my question",
+        "where": "Whole page"
+      },
+      {
+        "what": "English and jargon at the top ('S&P 500', 'עוקב מדד') make it feel like it's for investors, not for me",
+        "where": "Screen 1, track buttons"
+      },
+      {
+        "what": "Says there are extra costs that aren't shown here, which worries me about the real cost",
+        "where": "Screen 3, note under the table"
+      },
+      {
+        "what": "Dense table full of numbers and coloured rings; the rings mean nothing to me",
+        "where": "Screen 2"
+      },
+      {
+        "what": "Small grey text on a black background is hard to read even enlarged",
+        "where": "Top intro lines, notes under the table, footer"
+      },
+      {
+        "what": "Many returns are just 'פחות מ־3 שנים' with no number, so I can't tell how they did",
+        "where": "Screen 2, return column"
+      },
+      {
+        "what": "The site is 'מקור', not Harel or the bank; I don't know who they are",
+        "where": "Header and footer"
+      },
+      {
+        "what": "Important things are hidden in closed folds with unclear names",
+        "where": "Screens 3–4"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38343,
+    "turns": 6,
+    "usd": 0.1365008,
+    "input": 8,
+    "cacheWrite": 8154,
+    "cacheRead": 22984,
+    "output": 3332,
+    "model": "claude-opus-5-5"
+  }
+}

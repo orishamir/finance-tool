@@ -1,0 +1,64 @@
+{
+  "case": "tracks-chevron-not-link",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The '<' at the end of each row does not look like a link to the track's own page.\",\"where\":\"the arrow at the end of each row\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Ayalon's fee says 'not reported yet', so the reader can't tell whether it would be cheaper",
+      "Unclear whether the fee, a 2025 average, is what the reader would actually pay, or whether a lower fee can be negotiated",
+      "The '123 מקור / מחושב / הזנחה' line near the top is confusing",
+      "The 'חשיפה למניות ולמט\"ח' column with its rings isn't understood (what is מט\"ח, how can it be 101%)",
+      "'מההיסכון' vs 'מההפקדה' is unclear until the footnote at the bottom explains it",
+      "Puzzling that Ayalon's S&P 500 track shows only 40%/54% exposure",
+      "The page says 12 tracks but the reader counted only 11 rows",
+      "Couldn't find how to actually open or move to the chosen fund (next steps, employer involvement)",
+      "No shekel figure showing what the fee differences mean in practice",
+      "Would drop the 'כסף מנוהל' column",
+      "Would drop the grey 'מסלולים / כסף מנוהל' lines under each company name",
+      "Would drop the returns column, since the page says not to rank by it"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only mentions the arrows at the end of each row to say they didn't click them, and never says the arrows fail to look like links to each track's own page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0519512
+  },
+  "b": {
+    "raised": [
+      "Ayalon's fee is 'not reported yet', so it might turn out cheaper and the reader can't tell",
+      "The fee is a 2025 average; unclear whether the reader would actually pay 0.48%",
+      "The '123 מקור / מחושב / הזנחה' line was confusing and not understood",
+      "The 'חשיפה למניות ולמט\"ח' column with rings was not understood (what is מט\"ח, how can it be 101%)",
+      "'מההיסכון' vs 'מההפקדה' was unclear until the footnote at the bottom of the table",
+      "Unclear why Ayalon's S&P 500 track shows only 40%/54% exposure",
+      "The page says 12 tracks but the reader counted only 11 rows",
+      "No guidance on what to do next (how to open or move to the fund, whether the employer is involved)",
+      "No indication of what the fee difference means in shekels or whether it matters",
+      "Would drop the 'כסף מנוהל' column",
+      "Would drop the grey 'מסלולים / כסף מנוהל' lines under each company name",
+      "Would drop the returns column, since the page says not to use it"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the little arrows and didn't click them, and never says the arrows fail to look like a link to the track's page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0540912
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.10604240000000001
+}

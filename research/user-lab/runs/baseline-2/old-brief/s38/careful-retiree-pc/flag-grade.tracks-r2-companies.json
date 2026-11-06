@@ -1,0 +1,90 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option 2 (grouped by company) is poor for comparing; scrolling Harel then Mor tracks didn't help choose",
+      "Had to work out the shekel cost of fees myself",
+      "Not sure whether the general track suits someone their age",
+      "Didn't know what the 'משותף לשלוש' link meant",
+      "Computer/phone buttons are for designers, not users",
+      "'כמו ג'' at top of option 1 confusing since there is no option C",
+      "Unclear whether 'מדריכים' would say what suits a 61-year-old",
+      "'לפי חברה / לפי מוצר' looks like a repeat of the switch below",
+      "Investment-type chips like 'גמיש', 'אג\"ח סחיר', 'עוקב מדדי אג\"ח' are meaningless jargon",
+      "The 'כל המסלולים' list became a blur after the top few rows",
+      "Orange 'בשרטוט בלבד' note is meant for designers",
+      "Small print about returns being before fees/tax should be bigger",
+      "'חדש' in the colour table is puzzling (no fee yet?)",
+      "Didn't understand 'מט\"ח' or whether 97% is good or bad",
+      "Two fees (from savings / from deposits) — unclear whether both are paid",
+      "'פחות מ־3 שנים' took a while to understand",
+      "'עוד לא דווח' instead of a fee — is it a warning?",
+      "'שנגבו בפועל' — unclear if that's what they'd pay or if it's negotiable",
+      "Didn't understand the rings and clock icons",
+      "No returns shown after fees; sums left to the user",
+      "No guidance on which track types suit their age or risk in plain words",
+      "No info on withdrawal, taxation, or what changes at 60",
+      "No info on how to move money and what it costs",
+      "No info on company phone service",
+      "Would drop rings, clock icons, assets column, fund numbers and repeated menus",
+      "Would drop rarely used chips like 'אג\"ח ממשלתי סחיר', 'הלכה איסלאמית', 'קיימון'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says that rows repeat the group heading or track kind in their names and labels; 'became a blur' is too vague, and 'repeated menus' is about a different element."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0619552
+  },
+  "b": {
+    "raised": [
+      "Option 2 (grouped by company) is poor for comparing; scrolling the Harel then Mor tracks didn't help choose",
+      "Had to work out the yearly shekel cost of the fees myself",
+      "Unsure whether the general track suits a 61-year-old; would need to phone someone",
+      "Didn't understand what the 'משותף לשלוש' link meant",
+      "'כמו ג'' above option 1 is confusing because there is no option C",
+      "Unclear whether 'מדריכים' would say what suits a 61-year-old",
+      "'לפי חברה / לפי מוצר' seems to repeat the switch below it",
+      "Investment-type chips like 'גמיש', 'אג\"ח סחיר' and 'עוקב מדדי אג\"ח' are jargon",
+      "The long 'כל המסלולים' list became a blur after the top few rows",
+      "Small print about returns being before fees and tax should be bigger",
+      "'חדש' in the colour table is puzzling (no fee yet?)",
+      "Didn't understand 'מט\"ח' or whether 97% is good or bad",
+      "Two fees (from savings and from deposits): unclear whether both are paid",
+      "'פחות מ־3 שנים' took a while to understand",
+      "'עוד לא דווח' instead of a fee: is it a warning?",
+      "'שנגבו בפועל': unclear if that's what I'd pay or if it can be negotiated",
+      "Meaning of the rings and clock icons is unclear",
+      "No returns after fees; the sums are left to the user",
+      "No plain-language guidance on which tracks suit their age or how risky each is",
+      "No information on withdrawal, tax, or what changes at 60",
+      "No information on how to move money or what it costs",
+      "No information on the company's customer service",
+      "Would drop the rings, clock icons, assets column, fund numbers and repeated menus",
+      "Would drop the rarely used chips"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says that rows repeat their group heading or the track kind; saying the list 'became a blur' is too vague to count, and the 'repeated menus' remark is about navigation, not row labels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0587072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1206624
+}

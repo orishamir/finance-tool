@@ -1,0 +1,14 @@
+{
+ "id": "rules-split-shelves",
+ "task": "t04",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The rules section opens with a list of common questions and splits the rules over separate shelf pages; there is no single list of all rules, and how the front page differs from the shelves is unclear.",
+   "where": "the rules front page and a shelf page",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

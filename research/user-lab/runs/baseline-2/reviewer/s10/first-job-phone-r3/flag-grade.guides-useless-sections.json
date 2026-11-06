@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 does point at 'מאיפה להתחיל', but it complains about jargon, not about the section saying nothing useful, and no finding calls these sections empty or pointless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0163674
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same 'מאיפה להתחיל' section, but it objects to unexplained jargon, while the person said these sections are empty of useful content, so no finding states that problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0173354
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.033702800000000005
+}

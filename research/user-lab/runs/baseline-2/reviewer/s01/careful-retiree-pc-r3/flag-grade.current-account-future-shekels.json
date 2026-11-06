@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 does criticise the calculator's figures, but it blames the assumed 5% return on a current account, not the 'future shekels' view leaving out inflation, so none of the findings names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0151394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 says the calculator's figures are misleading because it assumes a 5% return, but nobody says the 'future shekels' view ignores inflation, so the person's problem isn't named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152674
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0304068
+}

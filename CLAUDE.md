@@ -10,8 +10,9 @@ text is corrected. Product decisions, each with its date and reason, are in
 
 ## What exists
 
-- **The site.** All five releases of `docs/roadmap.md` are built; switching
-  was removed to be built again (D38). Pages and visuals held for my review
+- **The site.** All five releases of the roadmap are built (its record is
+  `research/2026-10-23-release-1/roadmap.md`); switching was removed to be
+  built again (D38). Pages and visuals held for my review
   are off the site's links but still at their addresses (D32): the list is
   `site/app/lib/review.ts`, and issues #45 to #48 say what each needs.
 - **The product.** `docs/product.md` defines the site: who it is for, its
@@ -63,18 +64,26 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    text, may grow from the right with the row. Inside a chart every line,
    part and category has its own clearly different hue, with a direct label
    or a legend, checked pair by pair with the palette validator and then by
-   fresh readers' eyes; that comes before one meaning per colour across the
-   page. Within one chart or panel a colour means one thing; a distant
+   fresh readers' eyes. That is the requirement; one meaning per colour
+   across the page is a bonus, never worth a round of drawings of its own.
+   Within one chart or panel a colour means one thing; a distant
    section of the same page may give it another meaning, each chart with its
    own legend or labels. Blue and violet are reserved for entered and
    computed numbers; red, amber and green are status colours, never a
    series. Each page's spec carries its colour table.
-7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
-   and every other place of the same kind is fixed with it. Before the fix
-   the reviewer learns from it: the screen I saw becomes a test case, the
-   reviewer runs on it first, and a miss becomes one general instruction
-   about what bothers a person, kept only if it catches other cases it was
-   not built from and adds no noise (`research/user-lab/learning-loop.md`).
+7. **One flaw means a sweep and a lesson.** A flaw I report is fixed in the
+   shared piece, and every other place of the same kind is fixed with it.
+   Every criticism of mine is learned three ways. The reviewer: before the
+   fix, the screen I saw becomes a test case, the reviewer runs on it first,
+   and a miss becomes one general instruction about what bothers a person,
+   kept only if it catches other cases it was not built from and adds no
+   noise (`research/user-lab/learning-loop.md`). The builders: the reason
+   goes, as one general rule, into the doc they build from
+   (`docs/design-system.md`, `docs/copy.md`), because notes kept anywhere
+   else never reach them. The checks: where the rule can be named, a guard
+   or a script enforces it. A criticism that repeats a rule already written
+   is told to me as a repeat and gets its check, since the writing did not
+   reach the work.
 8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
    screen is also checked at 390 px before it goes live, with 44 px touch
    targets and nothing that depends on hover.
@@ -88,18 +97,24 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 
 ## Work order
 
-The main line is the indices page, then the guides; the workbench, holdings
-and idle-cash pages wait. This overrides the Roadmap issue's ranking, which
+The main line is the guides: knowledge first (D68). A strong, sourced rule
+base and research come first, the guide pages are their readable face; the
+site explains every kind of holding and every financial term before any goal
+feature starts; the goal
+comparison, workbench, holdings and idle-cash pages wait, and so does the
+indices page (founder, 2026-11-06: "its less important"; its branches
+indices-pc-fixes and indices-pricing are kept as they are). This overrides the Roadmap issue's ranking, which
 counts what unblocks the most.
 
 The user lab (`research/user-lab/`) is a habit beside it, at most about 5% of
 a week: a reviewer that runs with no project context and flags what people
 flag, measured against every problem I flagged (`metric.md`). Every problem I
 flag goes through it first (`learning-loop.md`), and its held-out set is
-scored again every couple of weeks. Its second score decides its use: if it
-catches about half or more of my general problems with noise under 30%, it
-is a first pass on every site change; if not, it is a check for movement and
-dead controls beside the fresh readers.
+scored again every couple of weeks. It is a check for movement and dead
+controls beside the fresh readers, not a first pass on every site change: its
+second score caught about one in five of my general problems in a session
+(`runs/baseline-2/report.md`). It becomes a first pass if a later score
+catches about half or more with noise under 30%.
 
 ## Fixed constraints
 
@@ -126,7 +141,10 @@ dead controls beside the fresh readers.
   and stop; do not guess or approximate. Site judgements (thresholds,
   bounds) live in `data/parameters/` and are not rules.
 - **General sources first; a company's term is never general.** Cite the
-  law, regulation or regulator (gov.il and the like) whenever one exists;
+  law, regulation or regulator (gov.il and the like) whenever one exists,
+  from its official publication (Reshumot, the Knesset, gov.il, the
+  regulator's or exchange's own site), never a copy such as Nevo, Wikisource
+  or a mirror: a copy only helps find the official text (founder, 2026-11-06);
   cite a company's document only for that company's own terms, which appear
   named or on that company's page, never as a fact about a product. A
   statement about the whole market comes from law or from a count over every
@@ -147,10 +165,6 @@ dead controls beside the fresh readers.
   collect or research them. The list, by legal id, is `EXCLUDED_COMPANIES`
   in `packages/pipeline/src/adapters/cma.ts`, and `closedTrack` beside it
   leaves out any other track closed to joiners (D51).
-- **Never get past a bot check.** A page behind Cloudflare, Radware or a
-  similar check is read in my Chrome only if it opens normally there;
-  otherwise its link comes to me. No FlareSolverr, no disguised headless
-  browser, no completing a check, even where an older note allows it.
 
 ### Building the site
 
@@ -160,17 +174,20 @@ dead controls beside the fresh readers.
   named, a guard in `kit/guards.test.ts` or a ratchet in
   `kit/ratchets.test.ts` (leftovers listed by name, the list only shrinks);
   never into a feature folder. Every builder's brief says so.
-- **Nothing moves when a number changes.** When the person moves a slider,
-  picks an option, types a number or switches an index, only the figures
-  change; every column, row, block and line keeps its place and size. A
-  table has a fixed width per column, for computer and phone
-  (`table-layout: fixed`); figures use tabular digits and do not wrap; a
-  block whose content varies keeps one height, sized for its longest case; a
-  blank for a number has a fixed width; a list that re-sorts keeps the
-  tapped row where it was. One exception (D62): switching index on a phone
-  may move what lies below the switch, with a short, gentle transition,
-  never a jump. A movement script that changes the inputs and compares the
-  boxes checks it whenever the size rule below asks for it. Patterns:
+- **Nothing on the screen moves when a number changes.** When the person
+  moves a slider, picks an option, types a number or switches an index,
+  only the figures change; every column, row, block and line on the screen
+  at that moment keeps its place and size. A block out of sight may change
+  its own height (D63). A table has a fixed width per column, for computer
+  and phone (`table-layout: fixed`); figures use tabular digits and do not
+  wrap; a block on the screen whose content varies keeps one height, sized
+  for its longest case; a blank for a number has a fixed width; a list that
+  re-sorts keeps the tapped row where it was. One exception (D62):
+  switching index on a phone may move what lies below the switch, with a
+  short, gentle transition, never a jump. A movement script checks it
+  whenever the size rule below asks for it: it brings each control onto the
+  screen, changes it, and compares the boxes in view
+  (`research/audit/tools/box-check.mjs`). Patterns:
   `docs/design-system.md` 2.5a.
 
 ### Checking a change
@@ -265,7 +282,10 @@ dead controls beside the fresh readers.
   run one at a time, and small work stays in the main conversation. A job
   likely to use more than 5% of the week gets a one-line estimate and my yes
   first (a one-topic conversation costs about 1 to 2%, one subagent's job
-  about 1 to 3%). Above 90% of the week, do only what I directly ask for.
+  about 1 to 3%). Above 90% of the week, do only what I directly ask for,
+  except in the last hours before the weekly reset: what is left of the
+  week is lost at the reset, so it goes on ready work then, several jobs at
+  once, not after (founder, 2026-11-06).
   Every subagent runs on Opus 5.5 at high effort; the lab's simulated readers
   stay at medium until a measured run says otherwise
   (`research/user-lab/tools/lib/session.mjs`); extra high and Fable only when
@@ -274,7 +294,7 @@ dead controls beside the fresh readers.
 
 ## Repo layout
 
-- `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `roadmap.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
+- `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
 - `research/` — dated research reports and findings: records of their day, not rules, except the procedures this file names (the user lab's `learning-loop.md` and `metric.md`, the flag log, the process by size)
 - `.claude/skills/il-finance/references/` — the rule base: the latest research on every rule, sourced and kept current (closed questions struck); the only copy. Everyone reads it; only each file's owner (the tax-specialist for the tax files, the domain-specialist for the rest) or the lead edits it, and other agents put rule findings in their reports
 - `research/library/` — every document already read, searchable by page: look there before downloading, and file each new one with `library.mjs add`. The index is in git; the files and their text are not, because the repository is public. `library.mjs recheck` says which linked documents changed since they were read
@@ -286,9 +306,8 @@ dead controls beside the fresh readers.
 - `site/app/components/kit/` — the shared component kit every page builds from; the gallery at `/kit` shows each piece in its states, `docs/design-system.md` section 11 says when to use which
 - `docs/architecture.md` — stack and design (React Router, pre-rendered, GitHub Pages)
 - `docs/design-system.md` — tokens, conventions and components
-- `docs/flows.md` — user flows for release 1, the screens they need and a design brief per screen
-- `docs/copy.md`, `docs/glossary.md` — all Hebrew UI text with its style guide (section 10), and a sourced one-line explanation for every financial term
-- `docs/design-spec.md` — developer handoff for the release 1 screens
+- `research/2026-10-23-release-1/` — records of release 1 kept as they were (the user flows and screen briefs, the design review of the mockups, the developer handoff of the screens, the roadmap of the five releases); the live rules are in `docs/` and this file
+- `docs/copy.md`, `docs/glossary.md` — the Hebrew voice, the word choices with their reasons and the style guide (section 10; the strings themselves are in `site/app/copy.ts`), and a sourced one-line explanation for every financial term
 
 ## Design system
 

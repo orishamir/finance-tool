@@ -1,0 +1,60 @@
+# s37: first-job-phone (old brief)
+
+pc; 44 s, $0.22
+
+I'd pick **option ג** ("ג. כמו א׳, ועוד תשואה עבר וגודל").
+
+## 1. My answer
+
+I'd put my savings in the S&P 500 track at **מנורה מבטחים** ("מנורה מבטחים גמל להשקעה עוקב מדד S&P500"). It has the lowest fee in the "עוקב מדד s&p 500" group, "0.52% מהחיסכון", and the best 3-year number I saw, "13.79% 3 שנים".
+
+I'm about 60% sure. It's not that I doubt Menora. The fees only go from 0.52% to 0.71%, and the 3-year and 5-year returns are almost the same for every company. So I mostly feel these all do the same thing and I'm picking from a near-tie. Altshuler at "0.54%" with "0% מההפקדות" and "100% / 100%" almost won. If someone told me Phoenix's "3.4 מיליארד ₪" makes it the safer choice, I'd switch.
+
+I picked ג over א because seeing past returns and fund size calmed me down, even though the note under the table says the past "לא אומרת מה יקרה בהמשך". I didn't like ב. Its first row, "אינפיניטי… עוקב מדדים גמיש" at 0.50%, looks like the cheapest, but it isn't S&P. I almost fell for it.
+
+## 2. What I actually used
+
+- The text at the top of the page, just enough to learn that "143 מסלולים של 12 חברות" exist.
+- The **"במה הכסף מושקע"** buttons. I clicked "עוקב מדד s&p 500 12" in my head, or just used the S&P group, which is already first in א and ג.
+- The **"עוקב מדד s&p 500"** group header with "דמי ניהול מהחיסכון: מ־0.52% עד 0.71%". That one line told me the range right away.
+- The table columns **"שם המסלול"**, **"דמי ניהול, ממוצע 2025"** and, in ג, **"תשואה שנתית ממוצעת"** and **"נכסים בסוף ספטמבר 2026"**.
+
+## 3. Block by block
+
+- **Top title and three bullets ("משותף לשלושתן", "מה שהנתונים מראים", "בשתי הקרנות החדשות")**: I skimmed them. They talk to the designers ("העמוד הזה", "לפי ספק"), not to me. One line helped: "ההבדל בין הזול ליקר… מה שבאמת מבדיל… הוא במה הכסף מושקע". It told me to choose the type first and the company second.
+- **Top menu (מקום, מדריכים, חוקים וכללים, שאלות, חברות ומסלולים, השקעה במדד)**: I skipped it. Next time I might click "השקעה במדד".
+- **"לפי מוצר / לפי חברה"**: I skipped it.
+- **Product buttons ("תגמולים ואישית לפיצויים", "קרן השתלמות", "קופת גמל להשקעה"…)**: I only checked that "קופת גמל להשקעה" was selected. I don't know what the others are. "מה זה קופת גמל להשקעה" is a link I'd actually click.
+- **"במה הכסף מושקע" buttons**: I used them, but there are too many. "הלכה יהודית", "הלכה איסלאמית", "אג"ח ממשלתי סחיר" and "כספי (שקלי)" mean nothing to me, and I didn't know if "כללי" is "normal".
+- **"מיון לפי" and "חיפוש בשם המסלול"**: I left the default, "דמי ניהול מהחיסכון", which was what I wanted anyway. I never used the search box.
+- **Table in א**: used, but only the S&P group. I skimmed "מניות" and "עוקב מדדי מניות" to see whether they were cheaper. They weren't really. I don't understand how "מניות" (active) differs from "עוקב מדדי מניות".
+- **Orange line "בציור בלבד… עוד 13 קבוצות"**: skimmed. It's just a list of names.
+- **ב "רשימה אחת מהזול ליקר"**: confusing. Every type is mixed together, so I had to read the small tag under each name to find S&P. Cheapest-first pulled my eye to things I didn't want, like 0% stocks in "כספי (שקלי)".
+- **ג**: used the most.
+
+## 4. Tables
+
+- **Looked at**: track names; "מהחיסכון" percent; "תשואה… 3 שנים / 5 שנים"; "נכסים" in millions or billions (מיליון / מיליארד). I also noticed the "חדש" tag and "עוד לא דווח", and I avoided Ayalon because of them.
+- **Glanced at, didn't really use**: "מההפקדות". Almost always 0%, so I stopped looking. The rings: full yellow-and-teal = "all in", a thin broken ring = something different. I used them only as a quick "is this a real S&P fund" check.
+- **Ignored**: the **"קופה"** numbers (13874 etc.), the little clock icons, the dotted underlines under the numbers, and the "מט"ח" line.
+
+## 5. What I didn't understand
+
+- "מהחיסכון" vs "מההפקדות". Is that two separate fees? Do I pay both?
+- "חשיפה": "מניות 99%" I sort of get, but "מט"ח 97%" vs "100%"? Is that good or bad?
+- What "קופה" with a 5-digit number is.
+- Why some returns say "פחות מ־3 שנים" when the company is well known (Altshuler, Infinity).
+- "לפני דמי ניהול ולפני מס". So what do I actually get?
+- What the ">" at the end of each row opens.
+
+## 6. What I wanted and couldn't find
+
+- What 0.52% vs 0.71% means in shekels for someone like me, say per ₪10,000 a year.
+- How to actually join, and whether there's a minimum amount.
+- Whether I can switch track or company later, and if that costs anything.
+- Tax, and when I can take the money out.
+- Whether a kupat gemel is better than just buying an S&P fund through a bank or app. That's the comparison I came in with.
+
+## 7. If half the page had to go
+
+First, the top designer notes and the "בציור בלבד" lines. Then all of option ב. Then the rarely used "במה הכסף מושקע" buttons (הלכה, אג"ח types, כספי), which could sit behind a "more" button. Then the "קופה" number column. I'd keep the S&P group, the fees, and the ג columns for returns and size.

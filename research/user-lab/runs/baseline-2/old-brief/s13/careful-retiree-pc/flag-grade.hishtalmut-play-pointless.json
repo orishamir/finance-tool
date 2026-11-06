@@ -1,0 +1,90 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page never says what retirement age is, so unclear whether the tax-free wait is 3 or 6 years for a 61-year-old",
+      "The '123 מקור / מחושב / הזנה' line is confusing; reader distrusts clicking numbers",
+      "'מתחת לגיל 60 זה לפחות 31%' leaves unclear what applies to someone over 60",
+      "Grey labels like 'חוקים וכללים · 15' have unexplained numbers",
+      "Four boxes cut off at top of the chart section couldn't be seen or used",
+      "Doesn't know how to choose among the 19 tracks, especially near retirement",
+      "47% withholding at source was scary; unclear if an annual report must now be filed",
+      "The 'שחקו עם המספרים' panel is closed and reader was afraid to enter wrong numbers",
+      "Codes TXH-09, KH-15, PF-18 in 'שווה לדעת' mean nothing",
+      "Taxation section is hard work, too many numbers",
+      "Big chart's '5 שנים' was easy to miss; wanted to see the result after 6 (or 3) years",
+      "Couldn't work out 'עד 25% מהרווח הריאלי' in shekels",
+      "Unclear what the ₪15,712 determining-salary cap means for higher earners",
+      "Worry that the chief economist's recommendation means the rules may change",
+      "Not found: whether money can stay in after it becomes tax-free and keep the exemption",
+      "Not found: what happens to the fund at retirement or death",
+      "Not found: what to do with an old keren hishtalmut from a previous job",
+      "Would drop the glossary, or at least its 'איפה מופיע' column",
+      "Would drop the round investment buttons and 'כדאי להכיר גם'",
+      "Would drop 'שווה לדעת' because it only repeats what is written above it",
+      "Would drop the small 12-bar chart because the big chart is enough",
+      "Would drop 'הכי קרוב לזה: חשבון ניירות ערך'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader's only complaint about the 'שחקו עם המספרים' panel is that it is closed and they feared entering wrong numbers; they never say it repeats what the graphic above already lets them do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0823912
+  },
+  "b": {
+    "raised": [
+      "The page never says what retirement age is, so the reader can't tell whether the wait is 3 or 6 years",
+      "The '123 מקור / מחושב / הזנה, click a number' line is confusing, and the reader distrusts clicking on numbers",
+      "'Under 60 it is at least 31%' is worrying and doesn't say what applies to someone over 60",
+      "Grey labels like 'חוקים וכללים · 15' are unclear: the reader doesn't know what the numbers mean",
+      "The four boxes at the top of the chart are cut off and can't be seen or used",
+      "The 19 tracks and their fees are only half understood, and the reader wouldn't know how to choose a track",
+      "The 47% tax withheld at source is frightening",
+      "The 'שחקו עם המספרים' panel is closed, the reader is afraid of entering wrong numbers and didn't open it",
+      "The codes in 'שווה לדעת' (TXH-09, KH-15, PF-18) mean nothing to the reader",
+      "The taxation section is hard work because it has too many numbers",
+      "The big chart's '5 שנים' is easy to miss, so it isn't clear the example is an early withdrawal",
+      "The reader wants to see the same chart after the tax-free point (6 or 3 years)",
+      "The reader can't turn 'up to 25% of the real profit' into shekels",
+      "It's unclear what the determining-salary cap of ₪15,712 means for someone who earns more",
+      "It's unclear whether getting back the 47% means the reader must start filing an annual report",
+      "The chief economist's recommendation to cut the benefit raises a worry that the rules will change",
+      "There is no simple answer for the reader's age about which year withdrawal becomes tax-free",
+      "The page doesn't say whether the money can stay in after it becomes tax-free and keep the exemption",
+      "The page doesn't say what happens to the fund at retirement or on death",
+      "The page doesn't say what to do with an existing old keren hishtalmut",
+      "The page doesn't say how to choose a track close to retirement",
+      "It's unclear what the boxes and the closed calculator do with the reader's real salary",
+      "The reader would drop the glossary, or at least its 'איפה מופיע' column",
+      "The reader would drop the round investment buttons and 'כדאי להכיר גם'",
+      "'שווה לדעת' only repeats what is written above it",
+      "The small 12-bar chart is unnecessary because the big chart is enough",
+      "The reader would drop 'הכי קרוב לזה: חשבון ניירות ערך' because it doesn't apply to them",
+      "The reader would drop the '123 מקור / מחושב / הזנה' line"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they didn't open the 'שחקו עם המספרים' panel because it was closed and they feared entering wrong numbers; they never say it repeats what the graphic above already lets them do, and their redundancy complaint is about the small 12-bar chart, not this panel."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0849232
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1673144
+}

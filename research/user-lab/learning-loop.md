@@ -1,13 +1,18 @@
 # Every flag teaches the reviewer
 
-The founder, 2026-11-05: "when something in the site bothers me, i dont want you to simply fix it. i want you to make
-the reviewer understand from it. understand whats the thing that annoys humans about it, and be able to flag it next
-time. (but no overfitting yeah?)"
+The founder: "when something in the site bothers me, i dont want you to simply fix it. i want you to make the reviewer
+understand from it. understand whats the thing that annoys humans about it, and be able to flag it next time. (but no
+overfitting yeah?)"
+
+CLAUDE.md (ground rule 7 and the work order) makes this the first step for every problem he flags. It sets no bar of
+its own: whether the reviewer is adopted as the judge is `metric.md`'s bar, and whether it becomes a first pass on
+every site change is CLAUDE.md's.
 
 ## When the founder flags something
 
-1. **Keep the screen.** The whole screen he was looking at, before anything is changed, becomes a case in
-   `bench/cases.jsonl` with his words and a neutral key (as `metric.md` describes). Nothing is fixed before this.
+1. **Keep the screen.** The whole screen he was looking at, before anything is changed, becomes a case with his words
+   and a neutral key (as `metric.md` describes), kept in `live/` (its README says the layout). Nothing is fixed before
+   this.
 2. **Ask the reviewer first.** Run the current instruction set on that screen, three times, with no context. Did the
    problem appear among its first 10 findings? Log the result in `lessons.md` (a catch or a miss); it counts toward the
    live miss rate.
@@ -29,7 +34,9 @@ time. (but no overfitting yeah?)"
 6. **Keep the instruction set small.** It has a size limit. A new instruction merges with one about the same reason, or
    replaces the weakest; every few rounds, an instruction that no longer adds a held-out catch is removed. Every
    version is kept with its scores in `versions/`.
-7. **Then fix the site**, in the shared piece and every place of the same kind (ground rule 7).
+7. **Then fix the site**, in the shared piece and every place of the same kind, and teach the builders and the checks
+   (ground rule 7): the reason goes, as one general rule, into the doc they build from (`docs/design-system.md`,
+   `docs/copy.md`), and a guard or a script enforces it where it can be named.
 
 A catch in step 2 needs no change to the instructions; it is the evidence that the reviewer already sees what a person
 sees.

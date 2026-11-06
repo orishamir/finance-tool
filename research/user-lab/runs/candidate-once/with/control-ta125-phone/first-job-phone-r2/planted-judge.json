@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Fund list shows minus percentages that read like losses, and nothing next to the number explains what it means.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Comparison amounts in ₪ have a minus sign where a loss would go, which is alarming until the reader works out it means 'less than the top one'.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The calculator starts with default inputs (10,000 + 500), so the first big result isn't the user's own and sticks in memory.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Every bank row repeats the same grey 'לא בחישוב' box, which the reader has to skip past each time.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The fee colours are explained once in a legend on screen 3, so the reader has to scroll back to match bar colours in later ranking rows.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "'18 ₪ יותר' and '1,390 ₪ פחות' sit side by side, and it's unclear which one is good for the user.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Fund cards repeat the same tags (קרן סל, מחזיקה את המניות), which are cut off at the left edge.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0465548
+}

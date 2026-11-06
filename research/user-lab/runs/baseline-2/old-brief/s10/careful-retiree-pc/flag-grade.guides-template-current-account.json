@@ -1,0 +1,79 @@
+{
+  "case": "guides-template-current-account",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.\",\"where\":\"the sections 'who', 'in and out', 'tax' of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page gives no figures (returns, fees, risk), so the promised comparison isn't possible and deciding is hard",
+      "Nothing tells a 61-year-old what to do with pension money; nothing is aimed at someone near retirement",
+      "The 'כסף שוטף וקצר' cards are cut off and can't be read properly",
+      "The retirement section is the hardest to understand",
+      "The 'לילדים' section isn't relevant to the reader",
+      "'לבחירה עצמית' seems to be for experts only",
+      "The nine index ('מדד') cards all sound alike",
+      "Footer says 'data correct as of' but no numbers are visible",
+      "The 'יומית' and 'מתחדשת' buttons under קרן כספית are unexplained",
+      "Abbreviations (מק\"מ, אג\"ח) in the top block are not explained",
+      "'Exposure to the dollar or neutralised' is unclear: more risk or less?",
+      "'תגמולים ואישית לפיצויים' is a mouthful, and the difference between קרן מקיפה and כללית at 61 is unclear",
+      "'At the discretion of the investment committee' leaves unclear who decides and what they charge",
+      "MSCI AC World vs MSCI World difference is unclear",
+      "No information on what changes at 60/67: withdrawals and tax at that age",
+      "No mention of management fees anywhere",
+      "Risk of each product (can it lose money, how much) is missing",
+      "No rough returns given",
+      "Lock-up period for קרן השתלמות ('period set by law') not stated",
+      "No information on deposit guarantee if the bank or fund fails",
+      "Would drop most index cards, the children section, and the self-directed section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's problems says the current-account guide is padded with template sections that don't fit it ('who', 'in and out', 'tax'). The reader only saw the guide-list page and its cut-off cards, and never commented on the sections inside a product guide."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0567072
+  },
+  "b": {
+    "raised": [
+      "The page doesn't say what to do with pension money at the reader's age (61) or what changes near retirement; nothing is aimed at someone near retirement",
+      "No figures at all (returns, fees, risk), so the reader can't actually decide or compare, despite the intro promising easy comparison",
+      "The short-term money cards are cut off in the screenshots and can't be read properly",
+      "The retirement section is the hardest to understand: jargon like 'תגמולים ואישית לפיצויים', and the difference between קרן מקיפה and כללית is unclear",
+      "Nine 'מדד' (index) cards all sound alike; the reader would cut them down to one",
+      "Footer says 'data correct as of' a date, but no data or numbers are visible",
+      "The 'יומית' / 'מתחדשת' buttons under קרן כספית are unexplained",
+      "Abbreviations מק\"מ and אג\"ח appear unexplained in the top block",
+      "Unclear what 'exposure to the dollar or neutralised from it' means for risk",
+      "'At the discretion of the investment committee': who they are and what they charge is unclear",
+      "Can't tell MSCI AC World from MSCI World without reading both cards twice",
+      "No fees (דמי ניהול) mentioned anywhere",
+      "Risk isn't stated for most products (which can lose money and how much)",
+      "No indication of typical returns",
+      "Lock-up period for קרן השתלמות ('period set by law') not stated",
+      "No information on whether there is a deposit guarantee",
+      "The 'לילדים' section isn't relevant; the reader would drop it",
+      "The 'לבחירה עצמית' section seems for experts; the reader would drop it"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never opened the current account's guide page, and nothing they raised is about its template sections (who offers it, money in and out, tax) not fitting it and padding the page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0638952
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1206024
+}

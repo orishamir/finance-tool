@@ -1,0 +1,36 @@
+{
+  "case": "guides-template-current-account",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.\",\"where\":\"the sections 'who', 'in and out', 'tax' of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention template sections that don't fit the current-account guide or padding. Their points are about missing numbers, a section cut off between screens, jargon and look-alike index cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0130074
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the current-account guide is padded with template sections that don't fit it. They are about missing numbers, a section cut off between screens, jargon, and look-alike index cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0137754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.026782800000000002
+}

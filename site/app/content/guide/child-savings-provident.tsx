@@ -45,18 +45,21 @@ export const content: GuideContent = {
   switchLine: "בכל עת: מסלול אחר, או קופה אחרת מהרשימה; לא לבנק. אם יש מס במעבר, לא נאמר במקור רשמי",
   switchRules: ["CS-11", "TXK-22"],
   termIds: ["חיסכון לכל ילד", "סכום החיסכון הבסיסי", "סכום החיסכון הנוסף", "מענק", "מסלול השקעה", "מסלול ברירת מחדל", "חוסכים המעדיפים סיכון מוגבר", "חברה מנהלת", "משיכה", "גיל הפדיון", "קצבה", "דמי ניהול", "מס רווחי הון"],
-  afterTax: () => (
-    <>
-      <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור. החוק מתייחס לקופת גמל להשקעה בלי להזכיר חיסכון לכל ילד. שאלה פתוחה (<IdRef id="TXK OQ1" />).
-      </Callout>
-      <Callout tone="blocked" className="max-w-measure">
-        <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.
-      </Callout>
-      <RulesLine ids={["TXK-20", "TXK-23", "TXK-25"]} />
-      <OpenLossOffset />
-    </>
-  ),
+  afterTax: ({ figure }) => {
+    const niiRate = figure("TXK-20", "nii_circular_rate");
+    return (
+      <>
+        <Callout tone="caution" className="max-w-measure">
+          <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> לא מופיע בשום טקסט של רשות המסים.</span> הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי לומר על איזה רווח. החוק מתייחס לקופת גמל להשקעה בלי להזכיר חיסכון לכל ילד. בחישוב משמש שיעור ממקור משני. שאלה פתוחה (<IdRef id="TXK OQ1" />).
+        </Callout>
+        <Callout tone="blocked" className="max-w-measure">
+          <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.
+        </Callout>
+        <RulesLine ids={["TXK-20", "TXK-23", "TXK-25"]} />
+        <OpenLossOffset />
+      </>
+    );
+  },
   risks: () => (
     <>
       <p className="max-w-measure">הכסף שייך לילד, מוחזק בנאמנות של ההורה שמקבל את הקצבה, ואי אפשר להעביר, לשעבד או לעקל אותו. נכסי הקופה מופרדים מרכוש החברה המנהלת, ואם היא קורסת, הניהול עובר לחברה אחרת.</p>

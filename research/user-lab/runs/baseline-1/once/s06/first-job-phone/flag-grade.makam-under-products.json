@@ -1,0 +1,36 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "This is a borderline match: finding 3 doesn't say makam isn't a product, but it does say makam's placement muddles the split between accounts ('where the money is held') and products ('what it's invested in'), which is the core of the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0241394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says מק\"מ being placed in the 'where money is held' half as well as the investments half muddles the structure, and the person would recognise that as their complaint that it's grouped as a product rather than something bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0249794
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0491188
+}

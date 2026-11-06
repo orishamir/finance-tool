@@ -1,0 +1,129 @@
+{
+  "task": "s07",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:19:56.862Z",
+  "structured": {
+    "answer": "A פיקדון locks your money in the bank for a set time at about 1.8% a year, minus 15% tax on the interest, and if you pull it out early you pay a bank fine the page doesn't calculate. In the example you end up with 68,270 ₪ \"in today's money\" against 70,000 ₪ put in, so with 2% inflation it doesn't really grow, and I don't think it's for my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result rows (נשאר לכם 68,270 vs ההפקדות שלכם 70,000)",
+        "why": "I end up with less than I put in and the page never says why in words; I guessed it's the 'בכסף של היום' toggle plus 2% inflation being higher than 1.8% interest"
+      },
+      {
+        "where": "Red box on screen 3 about שבירת פיקדון",
+        "why": "I wanted to know what I give up by locking the money, but the fine isn't calculated, so I got no number"
+      },
+      {
+        "where": "אין ביטוח פיקדונות paragraph",
+        "why": "It made me unsure whether a bank deposit is even safe"
+      }
+    ],
+    "used": [
+      "Heading פיקדון and subtitle",
+      "First lines of מה זה (קבועה/משתנה, מתחדש אוטומטית)",
+      "Big number 68,270 ₪ and the rows נשאר לכם / מס 986.20 / ההפקדות 70,000",
+      "Inputs: סכום היום 10,000, הפקדה חודשית 500, 10 שנים, ריבית 1.8%, אינפלציה 2%",
+      "Toggle בכסף של היום",
+      "מס 15% line in שווה לדעת",
+      "Red box on breaking a deposit early",
+      "אין ביטוח פיקדונות line"
+    ],
+    "skimmed": [
+      "למה משתמשים בזה",
+      "מי מציע ומי מפקח",
+      "כסף נכנס ויוצא",
+      "כמה זה עולה table",
+      "מיסוי cards",
+      "מונחים table (term names only)"
+    ],
+    "skipped": [
+      "All הצגת החוקים והכללים links",
+      "הצגה כטבלה fold",
+      "Grey note under interest field (נכון ל־25.10.2026)",
+      "Tax paragraph about 69,840 / 10,920 ₪",
+      "תנאי המוצר בדוגמה box details",
+      "מה האתר לקח בחשבון fold",
+      "Footer",
+      "Right-side page menu"
+    ],
+    "unsure_meaning": [
+      "בכסף של היום vs בשקלים של העתיד",
+      "Why נשאר לכם is lower than ההפקדות",
+      "123 מחקר / 123 מחושב / 123 הזנה marks",
+      "מק\"מ",
+      "מוצרי שוק הכסף",
+      "צמוד למדד / לא צמוד",
+      "הבטחת קרן",
+      "ריבית הפריים",
+      "חשבון במערכת סגורה",
+      "פטור למעוט הכנסה",
+      "Codes TXI-03, BANK-06, BANK-23, TXI OQ14, TXI-04",
+      "Chart: guessed the thin grey line is my deposits and the teal is what's left"
+    ],
+    "not_found": [
+      "Size of the early-withdrawal fine in shekels",
+      "A plain sentence saying the deposit loses to inflation in the example",
+      "A clear what-to-do-first step",
+      "Comparison with investing in the S&P, which is what I actually want"
+    ],
+    "findings": [
+      {
+        "what": "Main result 68,270 ₪ sits next to 70,000 ₪ deposited with no explanation that this means losing to inflation; easy to read as a mistake or as a loss",
+        "where": "Calculator, screen 1"
+      },
+      {
+        "what": "The cost of locking the money (break fine) is never shown as a number; the page says it doesn't calculate it",
+        "where": "Red box in מיסוי, screen 3, and כמה זה עולה, screen 2"
+      },
+      {
+        "what": "אין ביטוח פיקדונות sounds alarming and is not put in proportion for an ordinary person",
+        "where": "סיכונים ומה לא מוגן, screen 3"
+      },
+      {
+        "what": "'הצגת החוקים והכללים' repeats on every section heading, so it's noise you have to read past each time",
+        "where": "Left side of every section"
+      },
+      {
+        "what": "Glossary rows each repeat the same source tags (אתר הגורם המציע, פרסומת, דוח שנתי), so I had to scan them again on every row",
+        "where": "מונחים table, screens 3-4"
+      },
+      {
+        "what": "Chart colours are explained only in a small legend above the chart, so I had to look back and forth; the grey deposits line is hard to see",
+        "where": "Chart, screen 1"
+      },
+      {
+        "what": "Codes like TXI-03, BANK-06, TXI OQ14 are meaningless clutter",
+        "where": "שווה לדעת and מיסוי"
+      },
+      {
+        "what": "123 מחקר/מחושב/הזנה legend at the top is unclear",
+        "where": "Under page heading, screen 1"
+      },
+      {
+        "what": "Jargon such as מק\"מ, מוצרי שוק הכסף and ריבית הפריים is used in body text",
+        "where": "למה משתמשים בזה, screen 2"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 44334,
+    "turns": 6,
+    "usd": 0.20257599999999998,
+    "input": 8,
+    "cacheWrite": 13709,
+    "cacheRead": 27560,
+    "output": 4368,
+    "model": "claude-opus-5-5"
+  }
+}

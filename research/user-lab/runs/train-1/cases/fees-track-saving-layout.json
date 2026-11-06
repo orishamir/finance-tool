@@ -1,0 +1,14 @@
+{
+ "id": "fees-track-saving-layout",
+ "task": "t13",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "In the management-fee card, the word 'שווה' is not lined up with its amount, and a stray dot sits alone on a line.",
+   "where": "the 'אם יורידו ל' saving lines of the fee card",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Black background with small grey text is hard to read even when enlarged, including the table headers",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Too many numbers per row (8 or more) feels overwhelming",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "No sentence explains which tracks are low risk; reader must infer from 'מניות 0%'",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Return column shows 'פחות מ־3 שנים' instead of a return figure, which is unclear",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Exposure ring charts use blue and yellow that the reader cannot tell apart",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Unknown site name 'מקור' in the top bar; unclear who runs the site",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "English letters and jargon in track buttons and names",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "No comparison with bank deposits",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0359828
+}

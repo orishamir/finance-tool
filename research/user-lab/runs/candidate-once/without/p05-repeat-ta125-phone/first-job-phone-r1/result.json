@@ -1,0 +1,131 @@
+{
+  "task": "p05-repeat-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:02:33.511Z",
+  "structured": {
+    "answer": "I'd open an account at פסגות and buy \"אי.בי.אי. מחקה (4A) ת\"א 125\" (5112628). With the page's own example of 10,000 ₪ plus 500 ₪ a month for 10 years at 7%, that comes to about 86,045 ₪ after fees and tax. I couldn't set my own 30,000, so for my money it would be more, but I don't know how much.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Account list, Leumi in 2nd place",
+        "why": "Leumi is a bank I know, Psagot less so; I hesitated before going with the top one because it was ~3,000 more"
+      },
+      {
+        "where": "Fund list with -0.04%, -0.37%, -1,030 ₪",
+        "why": "Minus signs everywhere, even on the chosen fund; looked like losses"
+      },
+      {
+        "where": "Steps chart starting at 'הראל סל... ירושלים 79,910'",
+        "why": "A different starting number from the 86,045 I'd already locked onto; for a moment I thought my result had changed"
+      },
+      {
+        "where": "Amount fields (10,000 / 500)",
+        "why": "Not my 30,000; couldn't change them on the screenshots, so the final number isn't really mine"
+      }
+    ],
+    "used": [
+      "Main heading and chosen index chip ת\"א-125",
+      "Big box 'הפקדתם 70,000 ₪' and 'הבחירה שלכם · הזול 86,045 ₪'",
+      "Account ranking list (פסגות 86,045 at top, לאומי 82,968)",
+      "Fund card אי.בי.אי. מחקה (4A) ת\"א 125, דמי ניהול 0.1%",
+      "Summary line 'הכי הרבה בכל המחירונים: 86,045 ₪, אי.בי.אי. מחקה ת\"א 125, פסגות'"
+    ],
+    "skimmed": [
+      "Cost breakdown bar and legend (החשבון/הקרן/המדינה)",
+      "'העלות אצלכם' 18 ₪ יותר / 1,390 ₪ פחות / 342 ₪ יותר",
+      "Lower part of the account list (Altshuler, Excellence, Meitav, Interactive)",
+      "List of other 125 funds with minus percentages",
+      "Chart of what changes the result and the table (12 שנים, 600 ₪...)",
+      "Steps chart and the 'עכשיו: הראל סל' table"
+    ],
+    "skipped": [
+      "'לא בחישוב' folds and special prices for young people/soldiers",
+      "Explanation paragraph under the fund list (מול המדד...)",
+      "Inflation button",
+      "Notes at the bottom, פירוט, חוקים וכללים, footer links",
+      "Price-list explanation text at the top of the list"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.025%",
+      "משתנים 0%",
+      "(4A), (40), MTF in fund names",
+      "−0.04% בשנה · שנה אחת (thought it meant the fund loses)",
+      "−1,030 ₪ לעומת הבחירה שלכם",
+      "בכסף של היום",
+      "המס 342 ₪ יותר",
+      "Difference between קרן מחקה and קרן סל",
+      "Coloured lines in the chart, guessed from labels"
+    ],
+    "not_found": [
+      "A way to enter my own 30,000 ₪ that I could actually use",
+      "A plain 'first step: open an account here' instruction",
+      "Whether the 86,045 already accounts for inflation in a way I understand"
+    ],
+    "findings": [
+      {
+        "what": "Minus signs (−0.04%, −1,030 ₪) next to the chosen/best fund look like losses and are scary",
+        "where": "Fund list under 'כל הקרנות על מדד ת\"א-125'"
+      },
+      {
+        "what": "The steps chart starts from a different fund/account (הראל סל, ירושלים 79,910) than the top choice, so it's confusing which number is mine",
+        "where": "'מתחילים מבחירה אחת' section"
+      },
+      {
+        "what": "Defaults are 10,000 / 500, so the big 86,045 isn't my case and sticks in my head anyway",
+        "where": "Amount fields at the top and the result box"
+      },
+      {
+        "what": "Many near-identical 125 funds; without the star I'd have given up",
+        "where": "Fund list"
+      },
+      {
+        "what": "Jargon like דמי משמרת, נאמן, 4A with no explanation next to it",
+        "where": "Cost legend and fund card"
+      },
+      {
+        "what": "'המס 342 ₪ יותר' sounds bad but sits on the winning choice",
+        "where": "Cost comparison box"
+      },
+      {
+        "what": "Long page; I got bored around the coloured lines chart",
+        "where": "'מה הכי משנה' chart"
+      }
+    ]
+  },
+  "steps": 13,
+  "reads": 13,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 52357,
+    "turns": 15,
+    "usd": 0.3041374,
+    "input": 14,
+    "cacheWrite": 24327,
+    "cacheRead": 86027,
+    "output": 4613,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "repeat",
+        "type": "insert",
+        "shots": 14,
+        "applied": 14,
+        "most": 6
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

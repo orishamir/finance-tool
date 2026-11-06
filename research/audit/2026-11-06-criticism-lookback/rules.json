@@ -1,0 +1,1253 @@
+{
+ "generated": "2026-11-06",
+ "about": "Step 2 of the criticism look-back: for each of the 72 rules in criticisms.json, whether it is written where builders read it (CLAUDE.md, docs/design-system.md, docs/copy.md, docs/method.md, the kit gallery), whether a check enforces it, whether one can be named, and whether he raised it again after it was first written (in the docs or in Claude's notes). Process rules are checked only against CLAUDE.md and Claude's notes. Dates of first writing come from git history of the docs; Claude's notes carry no history, so their dates are those the notes themselves state. 'enforced' counts a check that covers at least part of the rule.",
+ "summary": {
+  "written": {
+   "conflicts": 3,
+   "yes": 30,
+   "no": 13,
+   "partly": 26
+  },
+  "written_site_rules": {
+   "conflicts": 3,
+   "yes": 22,
+   "no": 12,
+   "partly": 21
+  },
+  "written_process_rules": {
+   "yes": 8,
+   "partly": 5,
+   "no": 1
+  },
+  "enforced": 19,
+  "nameable": 35,
+  "nameable_not_enforced": 18,
+  "repeats_after_written": 32
+ },
+ "rules": [
+  {
+   "id": "R1",
+   "kind": "visual",
+   "rule": "Inside one chart, parts or series that a legend tells apart have colours too alike (one hue, near neighbours or all grey), so they cannot be told apart.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-27",
+    "2026-11-02",
+    "2026-11-05",
+    "2026-11-06"
+   ],
+   "instances": 8,
+   "reversed": "Not his reversal: Claude had pushed one meaning per colour across a whole page; on 2026-11-06 he said only telling series apart inside a chart matters, a page-wide meaning is a bonus.",
+   "written": "conflicts",
+   "written_where": "CLAUDE.md ground rule 6: \"Inside a chart every line, part and category has its own clearly different hue ... checked pair by pair with the palette validator and then by fresh readers' eyes\"; docs/design-system.md section 12 \"Colour inside a chart\" and 2.3 \"Fee kinds\" say the same. Against it, docs/design-system.md 6.5 (comparison chart, held for review): \"Why one hue in steps rather than four hues: the ranking is ordinal\" (teal-200, teal-400, teal-600 told apart by a legend).",
+   "check": "none (a palette validator exists only under research/specs/2026-11-05-indices-colours/, run by hand)",
+   "nameable": true,
+   "check_spec": "Static test over site/app/theme.css and the chart components: for each chart, collect the --chart-* roles it draws (a map chart -> roles kept beside the kit), compute OKLab ΔE for every pair under normal vision and deuteranopia/protanopia, fail below 15 normal or 8 colour-blind (6 with a word on the mark). Add it to kit/guards.test.ts with the palette code moved from research/specs into site/app/lib. A second leg in a Playwright script: read the computed fill of every legend swatch in a rendered chart and run the same pairs, so a colour set inline is caught too.",
+   "repeat_after_written": "Yes: the rule was first written on 2026-10-24 (fee kinds as four clearly different hues, commit 2686f537); he flagged the same fault again on 2026-10-25, 2026-10-27, 2026-11-02 and 2026-11-05."
+  },
+  {
+   "id": "R2",
+   "kind": "visual",
+   "rule": "Labels or chips of different kinds look alike: each kind needs its own icon and a clearly different colour.",
+   "dates": [
+    "2026-10-27",
+    "2026-11-05"
+   ],
+   "instances": 2,
+   "written": "yes",
+   "written_where": "docs/design-system.md section 11, LabelChip: \"A neutral label takes its family's colour (founder: 'i want all labels to have a nice icon with nice distinct color')\".",
+   "check": "site/app/lib/labels.test.ts \"labels about different things never share an icon\" (icons only; colours unchecked)",
+   "nameable": true,
+   "check_spec": "Extend labels.test.ts: every --label-* family colour pair, computed from theme.css, at least 15 ΔE normal and 8 colour-blind; every family has its own icon.",
+   "repeat_after_written": "Yes: written 2026-10-27 (LabelChip, commit 5b65ed0e); on 2026-11-05 he asked again to sweep the label icons and improve them."
+  },
+  {
+   "id": "R3",
+   "kind": "visual",
+   "rule": "Names and amounts sit in a legend or a table beside the chart instead of on the marks themselves, so the reader has to decode the chart.",
+   "dates": [
+    "2026-11-02",
+    "2026-11-06"
+   ],
+   "instances": 2,
+   "written": "yes",
+   "written_where": "docs/design-system.md section 12, Reading the visuals 1: \"its figure printed on the mark itself, or right beside it where it does not fit; a legend never carries the figures in the marks' place\"; Axes and labels: \"Names and numbers are written on the chart, with no table needed to decode it.\" Both added 2026-11-06.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Playwright script over every page with a chart (research/audit/tools): for each SVG chart and each CostStack/PairBars bar part wider than a threshold, find a text element whose box lies on or beside the part; fail a part whose value appears only in a legend or table. Plus a static guard: a ChartLegend whose items carry a Num fails.",
+   "repeat_after_written": "Yes: \"Names and numbers are written on the marks\" was in Claude's notes from 2026-11-02; on 2026-11-06 he found the cost bars' amounts only in a legend. The rule reached the docs only after that."
+  },
+  {
+   "id": "R4",
+   "kind": "visual",
+   "rule": "A legend that repeats what is already written on the marks: a duplicate that adds clutter.",
+   "dates": [
+    "2026-10-26",
+    "2026-10-27"
+   ],
+   "instances": 2,
+   "written": "conflicts",
+   "written_where": "docs/design-system.md section 12, Reading the visuals 3: \"Every encoding has a legend, said once. Whatever a colour, a pattern or a shape means is said on the screen, even when every figure is also printed\"; 3.4: \"Direct labels at the horizon end of each band, with a legend above the chart\". Nothing says a legend is left out when the marks already name themselves.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Static guard: a chart component that renders both direct labels (LaneLabel or a text per series) and a ChartLegend listing the same series fails, unless an allow-list names it with a reason. A DOM leg: on the built page, a legend item whose words equal a text drawn on the chart's marks is a finding.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R5",
+   "kind": "visual",
+   "rule": "A mark or a whole visual whose meaning is not said on the screen: the reader cannot tell what the dots, stripes or bars stand for.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-28",
+    "2026-11-01"
+   ],
+   "instances": 6,
+   "written": "yes",
+   "written_where": "docs/design-system.md section 12, Reading the visuals 3 (\"Whatever a colour, a pattern or a shape means is said on the screen\") and \"the reading test: for each mark on the screen, one sentence says what it is from what is on the screen alone\".",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs a person's judgement: whether the screen says what a mark means is a reading question. Fresh readers (research/audit/tools/fresh-reader.mjs) asked to name each mark from a screenshot are the check.",
+   "repeat_after_written": "Yes: written 2026-10-26 (\"Every encoding has a legend\" and the reading test, commit dce0df76); he flagged unexplained marks again on 2026-10-28 and 2026-11-01."
+  },
+  {
+   "id": "R6",
+   "kind": "visual",
+   "rule": "A decorative mark where a plain bar would show the number better: the creativity belongs in what is shown, not in the shape.",
+   "dates": [
+    "2026-11-02"
+   ],
+   "instances": 1,
+   "written": "no",
+   "written_where": "Only in Claude's notes (not read by builders) charts-and-visuals: \"No decorative marks: coin towers were rejected ('why not a bar?')\". docs/design-system.md section 12 rule 2 covers decorating colour only (\"a colour that only ranks or decorates is left out\"); ShareRings in section 11 is called \"decoration for the eye\".",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement: whether a mark's shape is decoration or the clearest form is a design call, made on the drawing of ground rule 1.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R7",
+   "kind": "visual",
+   "rule": "A visual that does not answer the question the page is about, or whose answer is the same for every option shown, so it helps no choice.",
+   "dates": [
+    "2026-10-25",
+    "2026-11-01"
+   ],
+   "instances": 5,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 1: \"A chart's drawing opens with the choice the reader makes differently after seeing it; a chart whose answer is the same for every option on its page does not go on that page.\" (added 2026-11-05)",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement on the drawing; a partial script could compute, for a chart's inputs, whether its ranking or headline differs across the page's options, but which question the page is about is a person's call.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R8",
+   "kind": "visual",
+   "rule": "Forcing a complex truth into a simple picture misleads; no visual is better than a forced one.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-30",
+    "2026-11-01"
+   ],
+   "instances": 3,
+   "written": "no",
+   "written_where": "Only in Claude's notes (not read by builders) charts-and-visuals: \"No visual is better than a forced one: the brokerage-account guide has none ('the truth is just more complex than that', 2026-10-25)\".",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement: whether a picture distorts the truth is a reading of the domain.",
+   "repeat_after_written": "Yes, in the notes: written there on 2026-10-25; he flagged forced visuals again on 2026-10-30 and 2026-11-01."
+  },
+  {
+   "id": "R9",
+   "kind": "visual",
+   "rule": "A comparison between things that are not a real choice for the same holding (apples to oranges): one broker on one product, a product a person would never weigh, a container with no named holding, or two absolutes priced on different things.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-27",
+    "2026-11-01",
+    "2026-11-02"
+   ],
+   "instances": 7,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 2: \"Name the holding; change one thing at a time; show differences rather than two absolutes; use a range or a count over every collected institution, never one bank and never my own case.\" docs/design-system.md section 10: the nearest alternative \"on the same holding\".",
+   "check": "site/app/lib/stairs.test.ts \"has one row per single change\" (the stairs only)",
+   "nameable": false,
+   "check_spec": "Mostly judgement (is this a choice a person really has). Nameable part: a data check that every compared pair on a page names its holding (the same fund or index on both sides) in the comparison's inputs.",
+   "repeat_after_written": "Yes: the same-holding comparison was written 2026-10-25 (docs/design-system.md section 10, commit 9c06bc41) and ground rule 2 on 2026-10-28; he flagged comparisons that are no real choice again on 2026-10-27, 2026-11-01 and 2026-11-02."
+  },
+  {
+   "id": "R10",
+   "kind": "visual",
+   "rule": "An analysis section that compares only two things at a time, or is too plain for a section of its own: when the question is about everything at once, the visual must show everything at once.",
+   "dates": [
+    "2026-10-28"
+   ],
+   "instances": 2,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 3: \"Analysis gets a section of its own, and that section is genuinely informative: it compares everything at once, not a list and not two things at a time.\"",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement on the drawing.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R11",
+   "kind": "visual",
+   "rule": "A chart axis that runs right to left on a Hebrew page: charts read left to right.",
+   "dates": [
+    "2026-10-28"
+   ],
+   "instances": 1,
+   "reversed": "Refined, not reversed (2026-10-28): a bar inside a table row beside its Hebrew text may grow from the right (\"im fine with this in that case sense the charts arent full charts but are part of a table\").",
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 6: \"Every chart axis runs left to right, not only time; a bar inside a table row, beside its Hebrew text, may grow from the right with the row.\" docs/design-system.md V3 and section 12 Axes.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Static guard over chart components: an x scale whose range runs from the plot's right to left (range([w, 0]) or an x computed as width minus value) fails outside table-row bars on an allow-list; a DOM leg checks on the built page that the first tick's x is less than the last tick's.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R12",
+   "kind": "visual",
+   "rule": "A gain and a loss drawn alike: more money and less money must look different at a glance.",
+   "dates": [
+    "2026-11-01"
+   ],
+   "instances": 1,
+   "written": "yes",
+   "written_where": "docs/design-system.md section 11, DiffRow: \"goes right in --gain green for more money and left in --loss red for less (never one colour for both signs)\".",
+   "check": "site/app/components/kit/guards.test.ts \"draw a gain with the gain role and a loss with the loss role\" (the stairs and difference rows only)",
+   "nameable": true,
+   "check_spec": "Widen the guard: any component that draws a signed difference (a prop or variable named diff, delta, gain) must pick its fill by sign from --gain and --loss; a DOM leg checks that a positive and a negative bar on one page never share a computed fill.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R13",
+   "kind": "visual",
+   "rule": "Options compared as two absolute figures or as bars side by side, where a difference on one shared scale (bars one above the other) reads far easier.",
+   "dates": [
+    "2026-10-27"
+   ],
+   "instances": 2,
+   "written": "yes",
+   "written_where": "docs/design-system.md section 11, CostStack: \"Bars that compare are drawn one above the other, never side by side (founder: '10x easier to comprehend')\"; CLAUDE.md ground rule 2: \"show differences rather than two absolutes\".",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "DOM script: for every set of bars a page compares on one scale (CostStack, ValueBar, PairBars), their boxes share a left edge and stack vertically; two cards each with one absolute total side by side are a finding for review.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R14",
+   "kind": "visual",
+   "rule": "A what-if no one would plan on, or a conclusion the data cannot carry, presented as if it were a likely outcome.",
+   "dates": [
+    "2026-10-29",
+    "2026-10-30"
+   ],
+   "instances": 3,
+   "written": "no",
+   "written_where": "Not written anywhere builders read; not in the notes either.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement about what a person would plan on.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R15",
+   "kind": "visual",
+   "rule": "A warning mark where nothing is wrong: a caution sign reads as missing or doubtful data, so it must appear only where there is a real doubt, and once rather than on every row.",
+   "dates": [
+    "2026-10-25",
+    "2026-11-03",
+    "2026-11-05"
+   ],
+   "instances": 3,
+   "written": "partly",
+   "written_where": "CLAUDE.md, Number states: a company's figure about its own product \"is plain sourced, D31\" (no caution); docs/design-system.md 3.2: under a notice that already says the source is old, \"StaleSaid leaves the clock out of every figure inside\". Missing: the general rule that a caution mark appears only where there is a real doubt, once per list, and that an explanation is not worded as a warning.",
+   "check": "site/app/components/own-figures.test.ts \"shows no caution icon for a company's own figure\"",
+   "nameable": true,
+   "check_spec": "DOM script over every page: count caution icons per table or list; fail a list where more than one row carries the same caution (same icon and same reason) instead of one notice above it.",
+   "repeat_after_written": "Yes: the own-figure rule was written 2026-10-26 (D31); on 2026-11-03 a table had a date warning on nearly every row, and on 2026-11-05 a label explanation was worded as a warning."
+  },
+  {
+   "id": "R16",
+   "kind": "lists",
+   "rule": "A list repeats on every row what one heading or one central note would say once: the same label, legend, warning, line or group name on each row.",
+   "dates": [
+    "2026-11-03",
+    "2026-11-04",
+    "2026-11-06"
+   ],
+   "instances": 5,
+   "reversed": "Reversed by him: on 2026-10-27 he allowed it (\"its ok to duplicate the labels even if all the rows are the same. if in the future i find it annoying we'll remove the duplication\"); from 2026-11-03 on he rejected repetition, and on 2026-11-05 approved a label once in the group's head (decision D60). The later word stands.",
+   "written": "yes",
+   "written_where": "docs/design-system.md section 11, Lists of products: \"Nothing that repeats ... A label true of every row of a group shows once, in the group's head\"; section 12 rule 3: \"a list whose rows each carry the same kind of bar has one legend above the list, never one per row\".",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "DOM script on every list (ProductTable, PickList, CompareTable rows): for each row collect its labels, legends and secondary lines as text; fail any text that appears identically on every row of a group of three or more (it belongs in the head). Static guard: a ChartLegend rendered inside a row component fails.",
+   "repeat_after_written": "Yes: \"Nothing that repeats\" and the column head carrying the words were written 2026-10-27 (commit 939ecaa3); he flagged repetition on every row on 2026-11-03, 2026-11-04 and 2026-11-06."
+  },
+  {
+   "id": "R17",
+   "kind": "lists",
+   "rule": "A column, figure or line that does not help the reader choose among the rows, or says again what a label already says.",
+   "dates": [
+    "2026-10-27",
+    "2026-11-05"
+   ],
+   "instances": 4,
+   "written": "partly",
+   "written_where": "docs/design-system.md section 11, Lists of products: \"no column whose value is the same on every row\", \"No figure that says again what a label says\". Missing: a column or line that does not help the reader choose among the rows (only in Claude's notes (not read by builders) judging-the-site: \"tie every ... column ... to one\" decision).",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Nameable part: DOM script, a column whose value is the same on every row fails. The help-to-choose part needs judgement (the relevance sweep).",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R18",
+   "kind": "lists",
+   "rule": "A kind, a yes/no or a side note gets a column of its own instead of a short label on the row.",
+   "dates": [
+    "2026-10-27",
+    "2026-11-02"
+   ],
+   "instances": 2,
+   "written": "yes",
+   "written_where": "docs/design-system.md section 11, Lists of products: \"A kind is a label, not a row or a column ... A yes/no or a kind never gets its own column\"; RulesLine: \"never a column\".",
+   "check": "site/app/components/kit/ratchets.test.ts \"a row of rule chips\" (rules only)",
+   "nameable": true,
+   "check_spec": "DOM script: a table column whose cells take two or three distinct short values across all rows (yes/no, a kind) fails.",
+   "repeat_after_written": "Yes: written 2026-10-27 (commit 939ecaa3); on 2026-11-02 a drawing again put the rules beside a fee table as a column."
+  },
+  {
+   "id": "R19",
+   "kind": "lists",
+   "rule": "Rows of one list that do not follow one pattern: some rows carry an extra line the others lack.",
+   "dates": [
+    "2026-11-03"
+   ],
+   "instances": 1,
+   "written": "conflicts",
+   "written_where": "No general rule that rows of one list follow one pattern. docs/design-system.md section 11, ProductTable: \"In the one list of a kind, a track's short name shows under its company only when the company has two tracks of that kind\": written the day he asked to remove that very line (2026-11-03), it keeps an extra line under some rows only.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "DOM script on every list: rows of one group must have the same set of line slots; a row with a line kind (class or data-role) that other rows of the group lack is a finding.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R20",
+   "kind": "lists",
+   "rule": "A secondary line under a row (group prices, a promotion) that is confusing as placed, or does not say which of its figures the calculation uses.",
+   "dates": [
+    "2026-11-04"
+   ],
+   "instances": 2,
+   "written": "partly",
+   "written_where": "docs/design-system.md section 11, GroupPriceFold: one closed line under a house's row with a \"not in the figure\" tag. Missing: the general rule that a secondary line under a row says which of its figures the calculation uses.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement: whether a line is clear in its place.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R21",
+   "kind": "lists",
+   "rule": "A list that leaves out options a person really has, or whose unpriced row says only what is missing instead of what the place does offer: a comparison blind to real choices cannot recommend.",
+   "dates": [
+    "2026-10-22",
+    "2026-10-30",
+    "2026-10-31",
+    "2026-11-01",
+    "2026-11-03",
+    "2026-11-04"
+   ],
+   "instances": 8,
+   "written": "partly",
+   "written_where": "CLAUDE.md ground rule 2: \"use a range or a count over every collected institution\"; docs/design-system.md section 11, PickList: \"a row that cannot be priced stays, muted (never filtered out)\"; FoldGroup: \"Every option is accounted for once\". Missing in builder docs: that the list must include options a person really has (foreign funds, other brokers), and that an unpriced row says what the place does offer (decision D17 in docs/product.md is not in the docs searched).",
+   "check": "packages/pipeline/src/validate.ts availability checks (a row greys when a house's documents do not name the kind)",
+   "nameable": true,
+   "check_spec": "Data check: for each house in data/ that its documents show sells a kind of holding the page ranks, the page's list has a row for it (priced or grey with a reason); a grey row's reason text must name what is offered, not only what is missing.",
+   "repeat_after_written": "Yes: \"no blind spots\" was a product decision from 2026-10-23 (D17, docs/product.md); he flagged missing real options on 2026-10-30, 2026-10-31, 2026-11-01, 2026-11-03 and 2026-11-04."
+  },
+  {
+   "id": "R22",
+   "kind": "lists",
+   "rule": "Little-known institutions crowd a list; the names people know should come first and the irrelevant small ones can go.",
+   "dates": [
+    "2026-10-25",
+    "2026-11-04"
+   ],
+   "instances": 2,
+   "written": "no",
+   "written_where": "Only in Claude's notes (not read by builders) research-habits: \"Popular first ... familiar names first on pages\".",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Data check: every institution in a list carries a sourced popularity measure (assets, members) and the list's default order puts the top of that measure first; an institution outside the top set is a finding for review.",
+   "repeat_after_written": "Yes, in the notes: written there after 2026-10-25; on 2026-11-04 he flagged a small irrelevant broker again."
+  },
+  {
+   "id": "R23",
+   "kind": "lists",
+   "rule": "A ranking or a best pick the reader can see is wrong: an option that cannot actually be bought there, a price taken from advertising, or a cheaper option that leaves less money with nothing explaining why.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-31",
+    "2026-11-01",
+    "2026-11-04"
+   ],
+   "instances": 4,
+   "written": "yes",
+   "written_where": "CLAUDE.md, No price from analogy: \"A house ranks on a kind of holding only where its own document or fund list names it ... A house is priced on its binding documents, never its advertising (D56)\".",
+   "check": "packages/pipeline/test/price-premises.test.ts and packages/pipeline/src/validate.ts (no price from analogy, advertising set against binding documents)",
+   "nameable": true,
+   "check_spec": "Already partly named; add a check that a cheaper option leaving less money carries a visible reason line (engine test over the ranking: if cost order and money-left order differ, a reason field is set).",
+   "repeat_after_written": "Yes: written 2026-10-31 (commit dcba217b); he flagged wrong picks again on 2026-11-01 and 2026-11-04."
+  },
+  {
+   "id": "R24",
+   "kind": "lists",
+   "rule": "A list across companies loses who offers what: showing only tracks, with no sense of the companies behind them.",
+   "dates": [
+    "2026-11-03"
+   ],
+   "instances": 1,
+   "written": "no",
+   "written_where": "Not written.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement on the list's design.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R25",
+   "kind": "layout",
+   "rule": "Something on the screen moves when a number or an option changes: a field appears or vanishes, a line wraps, a column widens, a block grows, and what the person was looking at jumps.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-27",
+    "2026-10-28",
+    "2026-11-01",
+    "2026-11-02"
+   ],
+   "instances": 8,
+   "reversed": "Loosened by him, not reversed: 2026-11-06 \"ok maybe we shouldnt be this pedantic\" (a block out of sight may change height, decision D63) and \"its ok, make that exception\" (switching index on a phone may move what is below, gently, decision D62).",
+   "written": "yes",
+   "written_where": "CLAUDE.md standing rule \"Nothing on the screen moves when a number changes\"; docs/design-system.md 2.5a Stable layout.",
+   "check": "research/audit/tools/box-check.mjs, jump-check.mjs, pick-check.mjs; site/app/components/kit/guards.test.ts \"every table has fixed columns\"",
+   "nameable": true,
+   "check_spec": "Already named; make box-check run on every page with inputs in npm run check (or CI) rather than by hand.",
+   "repeat_after_written": "Yes: written 2026-10-28 (commit 02f8b8f5); he flagged movement again on 2026-11-01 and 2026-11-02."
+  },
+  {
+   "id": "R26",
+   "kind": "layout",
+   "rule": "A chart, list or page redraws abruptly when something changes: rows snap to a new order and graphs glitch instead of gliding.",
+   "dates": [
+    "2026-10-30",
+    "2026-10-31",
+    "2026-11-03",
+    "2026-11-06"
+   ],
+   "instances": 4,
+   "written": "yes",
+   "written_where": "docs/design-system.md V7 (\"a bar grows, a line glides\") and section 11 useGlidingSeries and useFlip: \"Rows of a list slide to their new places ... instead of the list snapping or the whole list fading\".",
+   "check": "site/app/components/kit/guards.test.ts \"a chart's motion is the kit's\" and \"a list of products sorted or filtered again slides its rows with useFlip\"",
+   "nameable": true,
+   "check_spec": "Already partly named; add a DOM leg: after a change, sample a list's row boxes over 400 ms and fail a jump of more than a few pixels in one frame; and a static guard that a form does not remount (a key that changes with an option) when an option is chosen.",
+   "repeat_after_written": "Yes: \"a line glides\" was written 2026-10-28; he flagged abrupt redraws on 2026-10-30, 2026-10-31, 2026-11-03 and 2026-11-06."
+  },
+  {
+   "id": "R27",
+   "kind": "layout",
+   "rule": "Elements out of line or broken: text wrapping where it should not, a field lower than its neighbours, a word apart from its figure, a stray mark, clipped text, a help mark alone on a line.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-26",
+    "2026-10-27",
+    "2026-11-03",
+    "2026-11-04"
+   ],
+   "instances": 8,
+   "written": "partly",
+   "written_where": "docs/design-system.md 2.5a \"A mark is never alone on a line\"; 2.5a figures \"do not wrap\"; 3.3 field row (boxes start at one height); section 11 Sentence (no flex around a number). Missing: one general line on alignment and clipping.",
+   "check": "research/audit/tools/alone-check.mjs, flex-sentence-sweep.mjs; site/app/components/kit/guards.test.ts \"a sentence with numbers is flowed text\"",
+   "nameable": true,
+   "check_spec": "Add to a Playwright sweep: fields in one row whose boxes' tops differ; text whose scrollWidth exceeds its box (clipped); a figure or header name broken over two lines.",
+   "repeat_after_written": "Yes: the kit's flowed-sentence guard and the field row were written 2026-10-24 and 2026-10-25; he flagged misaligned or broken pieces again on 2026-10-26, 2026-10-27, 2026-11-03 and 2026-11-04."
+  },
+  {
+   "id": "R28",
+   "kind": "layout",
+   "rule": "Space used badly: a wide screen left half empty, pages narrower than others, or loose gaps that make the page longer than it needs to be; an empty first screen looks unfinished.",
+   "dates": [
+    "2026-10-27",
+    "2026-10-30",
+    "2026-11-03",
+    "2026-11-06"
+   ],
+   "instances": 6,
+   "written": "partly",
+   "written_where": "docs/design-system.md 2.5 Widths: \"max-w-wide (96rem) is the page frame, the same on every page ... What fills the room is the page's own\"; Lists of products: \"A card with a facts column left half of every card empty.\" Missing: loose gaps and an empty first screen.",
+   "check": "site/app/components/kit/guards.test.ts \"the page frame is the shell's alone\"",
+   "nameable": true,
+   "check_spec": "DOM script at 1440 and 2000 px: share of the frame's width covered by content in the first screen; fail under a set share; fail a section gap above the gap-section token.",
+   "repeat_after_written": "Yes: one page width was written 2026-10-27 (max-w-wide); he flagged space used badly again on 2026-10-30, 2026-11-03 and 2026-11-06."
+  },
+  {
+   "id": "R29",
+   "kind": "layout",
+   "rule": "The same kind of control, card or page looks different in different places: the site should present one thing one way, from shared pieces.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-26",
+    "2026-11-03",
+    "2026-11-04"
+   ],
+   "instances": 7,
+   "written": "yes",
+   "written_where": "CLAUDE.md standing rule \"Shared components first\"; docs/design-system.md section 11 \"The rule\".",
+   "check": "site/app/components/kit/ratchets.test.ts (pill, card, input, select, stat grid, heading fold, old ui); research/audit/tools/merge-review.mjs",
+   "nameable": true,
+   "check_spec": "Already named; each new duplicate he finds becomes a ratchet pattern.",
+   "repeat_after_written": "Yes: written 2026-10-25 (commit 0f5b2f2f); he flagged the same thing looking different again on 2026-10-26, 2026-11-03 and 2026-11-04."
+  },
+  {
+   "id": "R30",
+   "kind": "layout",
+   "rule": "Order on the page does not follow what the reader needs: the main thing should come first, a side matter last or folded, and a filter above the list it filters.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-30",
+    "2026-11-02",
+    "2026-11-06"
+   ],
+   "instances": 5,
+   "written": "partly",
+   "written_where": "docs/design-system.md 2.5: \"A control sits above what it changes\"; CLAUDE.md ground rule 1: \"a section that replaces nothing starts folded\". Missing: the main thing first and a side matter last.",
+   "check": "research/audit/tools/jump-check.mjs (a control that moves when pressed)",
+   "nameable": true,
+   "check_spec": "Nameable part: DOM check that every filter or sort control's box is above the list it controls. Order by importance needs judgement.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R31",
+   "kind": "layout",
+   "rule": "What takes the most room reads as what matters most: a big graph beside small controls, or a tiny box for a long list, sends the reader to the wrong place.",
+   "dates": [
+    "2026-11-06"
+   ],
+   "instances": 2,
+   "written": "no",
+   "written_where": "Only in Claude's notes (not read by builders) charts-and-visuals (from another site, 2026-11-06).",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement: what matters most on a page.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R32",
+   "kind": "controls",
+   "rule": "A control or field that changes nothing on its page: a choice that looks like a choice but has no effect, a sort that moves nothing, a filter with one option, a toggle over nothing.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-28",
+    "2026-10-30",
+    "2026-11-02",
+    "2026-11-03"
+   ],
+   "instances": 9,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 4: \"A control changes something on its page, visibly; a field the page never reads is left out\".",
+   "check": "research/audit/tools/jump-check.mjs (reports a press after which the page's text is the same: \"still\")",
+   "nameable": true,
+   "check_spec": "Already partly named; extend box-check to sliders and fields (a change after which no text on the page changes is a finding), and a static check that a filter with one option is not rendered.",
+   "repeat_after_written": "Yes: written 2026-10-28 (commit f551fd3a); he flagged dead controls again on 2026-10-30, 2026-11-02 and 2026-11-03."
+  },
+  {
+   "id": "R33",
+   "kind": "controls",
+   "rule": "Input controls made clever (preset jumps, plus-X buttons, knobs with built-in analysis): inputs should be plain fields and sliders, and the analysis gets a section of its own.",
+   "dates": [
+    "2026-10-28"
+   ],
+   "instances": 1,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 3: \"Inputs are plain fields and sliders with nothing clever built in.\"",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Static guard: no button near a field that sets it to a preset or adds a fixed amount (a field component with an onClick that writes a constant), outside an allow-list.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R34",
+   "kind": "controls",
+   "rule": "The reader cannot enter or change their own values where they would want to: amounts shown but not editable, no way to add their own broker, fund or labels.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-31",
+    "2026-11-05"
+   ],
+   "instances": 3,
+   "written": "partly",
+   "written_where": "docs/design-system.md V4: \"Every graph and computed number shows the inputs it uses, each editable on the same page.\" Missing: adding one's own broker, fund or labels.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement on what a person would want to change; a partial DOM check could find a figure marked entered-able in the method with no field on its page.",
+   "repeat_after_written": "Yes: V4 was written 2026-10-23; he flagged values he could not change on 2026-10-25, 2026-10-31 and 2026-11-05."
+  },
+  {
+   "id": "R35",
+   "kind": "controls",
+   "rule": "The site asks the reader for something it can know itself, or asks who they are, when the page is meant to work without questions about the person.",
+   "dates": [
+    "2026-10-25",
+    "2026-11-04"
+   ],
+   "instances": 2,
+   "written": "no",
+   "written_where": "Not written in builder docs.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R36",
+   "kind": "controls",
+   "rule": "A control that does something other than it looks like: arrows that move the other way, a figure that changes the pick when clicked, section names that look like tabs but jump the page, a picker that replaces instead of adding, an action found only by accident.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-28",
+    "2026-11-06"
+   ],
+   "instances": 5,
+   "written": "partly",
+   "written_where": "docs/design-system.md section 11, PickList: \"A click on a control inside a row ... is that control's and does not pick the row\"; PageTabs \"each a link\". Missing: the general rule that a control does what it looks like.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement (and fresh readers).",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R37",
+   "kind": "controls",
+   "rule": "An obvious action is missing: no delete, no rename, no dragging where a person expects to drag.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25"
+   ],
+   "instances": 2,
+   "written": "partly",
+   "written_where": "docs/design-system.md section 11, ChipList: a pencil (rename), a bin (delete), dragged sideways. Missing as a general rule.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R38",
+   "kind": "controls",
+   "rule": "A control that answers slowly: a laggy slider or a page that waits on the network at every click.",
+   "dates": [
+    "2026-10-26",
+    "2026-10-28",
+    "2026-11-06"
+   ],
+   "instances": 3,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 5: \"A slider or field answers in under 100 ms; work that takes longer waits until the hand rests; measured before it goes live.\"",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Playwright script: on every page with inputs, set each slider and field and measure the time to the next paint with the new figure (PerformanceObserver or a requestAnimationFrame stamp); fail over 100 ms on the PC profile; fail any network request triggered by a control.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R39",
+   "kind": "controls",
+   "rule": "What acts must look like it acts, and what does not act must not look like a button: a link that looks like plain text, an id that cannot be clicked, a label that looks like a button, sort buttons where the column heads should be clickable.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-30",
+    "2026-11-03"
+   ],
+   "instances": 4,
+   "written": "partly",
+   "written_where": "docs/design-system.md 3.3 Link (\"text-link with an underline\"), 3.2 Num as a button, SortHead in section 11. Missing: the general rule that what acts looks like it acts and what does not act does not look like a button.",
+   "check": "site/app/components/kit/guards.test.ts \"every enabled button and summary shows the hand\"",
+   "nameable": true,
+   "check_spec": "DOM script: every element with a click handler or role button/link has the hand cursor and a visible affordance (underline, border or fill); every non-interactive element styled as a chip or button (classes of Button, FilterChip) without a handler is a finding.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R40",
+   "kind": "controls",
+   "rule": "A form squeezed into a small panel or built as a bare form: hard to move around in and set.",
+   "dates": [
+    "2026-11-05",
+    "2026-11-06"
+   ],
+   "instances": 3,
+   "written": "no",
+   "written_where": "Not written.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R41",
+   "kind": "pages",
+   "rule": "The answer to the person's question is hidden behind clicks while the first screen has room; the first screen should draw the person in and answer.",
+   "dates": [
+    "2026-10-24",
+    "2026-11-06"
+   ],
+   "instances": 2,
+   "written": "partly",
+   "written_where": "docs/design-system.md 6.9 First page: built on \"the founder's dilemma-first home\", the question card first. The general rule (the first screen answers and draws the person in) is only in Claude's notes (not read by builders) dilemma-first-home.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement.",
+   "repeat_after_written": "Yes, in the notes: written there on 2026-10-24; on 2026-11-06 he found the first screen unappealing."
+  },
+  {
+   "id": "R42",
+   "kind": "pages",
+   "rule": "A page or section that helps no decision, or a second page for a question another page already answers.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-27",
+    "2026-10-30",
+    "2026-10-31",
+    "2026-11-03"
+   ],
+   "instances": 6,
+   "written": "partly",
+   "written_where": "CLAUDE.md ground rule 1 (a chart whose answer is the same for every option does not go on its page). For pages and sections only in Claude's notes (not read by builders) judging-the-site (\"tie every section ... to one\" decision).",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R43",
+   "kind": "pages",
+   "rule": "One fixed mould forced on things that vary: a fixed set of goal types, or one section template for every guide.",
+   "dates": [
+    "2026-10-22",
+    "2026-10-30"
+   ],
+   "instances": 2,
+   "written": "no",
+   "written_where": "Not written.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R44",
+   "kind": "pages",
+   "rule": "A link or door that promises more than it opens, or a place with no way to reach the whole of what it is part of.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-26"
+   ],
+   "instances": 2,
+   "written": "no",
+   "written_where": "Not written.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Link check over the built site: every door's words name a page, and the page it opens has that title; every section page has a link to its parent's whole list.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R45",
+   "kind": "pages",
+   "rule": "A page judged by why a person came to it: a page about one thing should not drag in another (a saved goal on pages that are not about goals, other companies on one company's page); a need one page does not meet is a fault only if the site does not meet it or the way there is long.",
+   "dates": [
+    "2026-10-26",
+    "2026-10-28",
+    "2026-11-06"
+   ],
+   "instances": 5,
+   "written": "partly",
+   "written_where": "docs/copy.md 2: \"Only the goal pages speak of a goal (D37)\"; CLAUDE.md, a company's term appears \"named or on that company's page\". The general rule (judge a page by why a person came; a missing need is checked across the site) is only in Claude's notes (not read by builders) judging-the-site.",
+   "check": "site/app/lib/scope.test.ts (a company's term only inside VariesByCompany)",
+   "nameable": false,
+   "check_spec": "Needs judgement for the general rule.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R46",
+   "kind": "pages",
+   "rule": "A thing filed under the wrong heading in the site's structure, so the reader is misled about what it is.",
+   "dates": [
+    "2026-10-27",
+    "2026-10-30"
+   ],
+   "instances": 2,
+   "written": "no",
+   "written_where": "Not written.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement of the domain.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R47",
+   "kind": "pages",
+   "rule": "A page or goal named abstractly instead of by what a person would call it or what they would come to do there.",
+   "dates": [
+    "2026-10-30",
+    "2026-10-31"
+   ],
+   "instances": 3,
+   "written": "partly",
+   "written_where": "CLAUDE.md, Open work: \"A goal is a feature the site provides, named as its page would be named\". Missing for page names themselves.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs judgement.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R48",
+   "kind": "pages",
+   "rule": "A source link that lands on a whole document or a generic dataset page instead of the exact place that says it.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-30",
+    "2026-11-03"
+   ],
+   "instances": 3,
+   "written": "partly",
+   "written_where": "docs/design-system.md section 11, DocLink and atPdfPage: \"A link out to a document where a word or a figure stands ... atPdfPage points a PDF link at its page\"; TrackFundId links each fund to its own page. Missing: the general rule for every source link.",
+   "check": "site/app/lib/sources.test.ts \"adds the page to a PDF\" and \"adds the anchor to a page\"",
+   "nameable": true,
+   "check_spec": "Data check in the validator: every source of a figure that is a PDF carries a page, every HTML source of a long page an anchor; a source URL that is a dataset index (data.gov.il/.../datasets/...) where the record is one fund fails.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R49",
+   "kind": "words",
+   "rule": "A short label, column head, tag or link text that does not say what it is or what it does.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-28",
+    "2026-11-03",
+    "2026-11-04",
+    "2026-11-05"
+   ],
+   "instances": 8,
+   "written": "partly",
+   "written_where": "docs/copy.md 10.5 (a button names its action; a link names its destination) and docs/design-system.md Lists of products (\"The column head carries the words\"). Missing: the general rule that every short label says what it is or does.",
+   "check": "none",
+   "nameable": false,
+   "check_spec": "Needs fresh readers (research/audit/tools/fresh-reader.mjs).",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R50",
+   "kind": "words",
+   "rule": "A sentence that is true but a reader cannot follow: built from jargon, explained like a robot, or needing a note in chat to be understood.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-27",
+    "2026-10-31",
+    "2026-11-02"
+   ],
+   "instances": 8,
+   "written": "yes",
+   "written_where": "docs/copy.md 1 \"Direct and plain\" and 10.7 \"'אמא שלכם לא תבין' test\"; CLAUDE.md \"Fresh readers judge what a reader sees\".",
+   "check": "none (fresh-reader.mjs runs readers by hand)",
+   "nameable": false,
+   "check_spec": "Needs fresh readers.",
+   "repeat_after_written": "Yes: the plain-words test was in docs/copy.md by 2026-10-24; he flagged unreadable sentences again on 2026-10-25, 2026-10-27, 2026-10-31 and 2026-11-02."
+  },
+  {
+   "id": "R51",
+   "kind": "words",
+   "rule": "A general word where the exact one is needed: which tax (income or capital gains), which money (the employer's, one's own, the returns), which percent, or which of two figures the calculation uses.",
+   "dates": [
+    "2026-11-02",
+    "2026-11-04"
+   ],
+   "instances": 6,
+   "written": "partly",
+   "written_where": "docs/copy.md 10.3 Terminology (one term per concept for the fees). Missing: name which tax, which money, which percent, which figure the calculation uses.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Partial static scan of copy.ts and content: a bare \"מס\" not followed by a kind (הכנסה, רווחי הון) and a bare \"הפקדה\" without whose are findings for review.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R52",
+   "kind": "words",
+   "rule": "A label or sentence that claims more than is known, or reads as something false: an unknown stated as fact, a value said to be missing when it was filled by default, 'not collected' looking like 'does not exist', a freshness promise the data breaks.",
+   "dates": [
+    "2026-10-30",
+    "2026-11-01",
+    "2026-11-02",
+    "2026-11-03",
+    "2026-11-05"
+   ],
+   "instances": 7,
+   "written": "partly",
+   "written_where": "docs/copy.md 3: \"'לא נאסף' ... never implies that a product or provider is missing or worse\"; 2: \"'יתווסף בהמשך' ... only while it is still true\"; 10.6. Missing: a value filled by default is never called missing; an unknown is never stated as fact.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Partial: a test that a label shown on a reader-added fund comes only from what the reader set (no default label); a data test that every freshness promise in copy matches the data's cadence.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R53",
+   "kind": "words",
+   "rule": "Words that add nothing: they repeat what is on the screen or above, explain the site's own method, talk about the site's makers or tools, or wrap a name in a parenthesis.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-30",
+    "2026-11-02",
+    "2026-11-05"
+   ],
+   "instances": 9,
+   "written": "partly",
+   "written_where": "CLAUDE.md ground rule 9: \"no process language on the site (Claude, audit ids, test names)\"; docs/copy.md 2: document ids and developers' words stay out. Missing: words that repeat the screen, explain the site's method, or wrap a name in a parenthesis.",
+   "check": "site/app/lib/parameter-text.test.ts (no Claude, audit, test scenario in a parameter's reader text); site/app/components/question-chip.test.ts",
+   "nameable": true,
+   "check_spec": "Static scan of copy.ts and content: Claude, audit, D-numbers, test names fail (extend parameter-text.test to all copy); a name followed by a parenthesis in copy strings is a finding.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R54",
+   "kind": "words",
+   "rule": "A name that does not match the thing: a heading that asks for a question where it sets a goal, a brand under the wrong name, a coined term where an official or everyday one exists.",
+   "dates": [
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-26",
+    "2026-10-31",
+    "2026-11-01"
+   ],
+   "instances": 5,
+   "written": "partly",
+   "written_where": "docs/copy.md 1: \"Use the official Hebrew term from the glossary, not a synonym\"; 10.3 Terminology table; 9 Brands. Missing: a heading must name what the block does.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Static scan: each 'לא' column word of the copy.md 10.3 table is absent from copy.ts and content (a list test).",
+   "repeat_after_written": "Yes: the official-term rule was written 2026-10-23; he flagged coined or wrong names again on 2026-10-24, 2026-10-25, 2026-10-26, 2026-10-31 and 2026-11-01."
+  },
+  {
+   "id": "R55",
+   "kind": "words",
+   "rule": "A term with no way to learn what it means where it stands; a '?' beside it should open an explanation, but only where the explanation adds something.",
+   "dates": [
+    "2026-10-25",
+    "2026-11-03",
+    "2026-11-06"
+   ],
+   "instances": 4,
+   "written": "yes",
+   "written_where": "docs/design-system.md section 11, HelpMark: \"Use it only where the card says what the label leaves out (founder: 'only add tooltips when they actually add anything')\"; 3.9 Term: a glossary term opens its explanation.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Partial: a list test that every column head word that is a glossary term carries a Term or HelpMark; whether it adds anything needs judgement.",
+   "repeat_after_written": "Yes: the glossary-term tap was written 2026-10-23; he asked for explanations of unexplained terms again on 2026-10-25 and 2026-11-03."
+  },
+  {
+   "id": "R56",
+   "kind": "words",
+   "rule": "One bank, one company's term or one person's case shown as if it were general: what is the same everywhere is stated from the law or regulator, what varies is a range over every institution.",
+   "dates": [
+    "2026-10-25",
+    "2026-10-26"
+   ],
+   "instances": 7,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 2 and \"General sources first; a company's term is never general\".",
+   "check": "site/app/lib/scope.test.ts \"guide and exposure prose cites general rules only\"; packages/pipeline/src/scope.ts",
+   "nameable": true,
+   "check_spec": "Already named.",
+   "repeat_after_written": "Yes: written 2026-10-25 (commit 630316e3); he flagged a company's term shown as general again on 2026-10-26."
+  },
+  {
+   "id": "R57",
+   "kind": "words",
+   "rule": "A figure that looks impossible, shown with nothing explaining how it can be.",
+   "dates": [
+    "2026-10-29",
+    "2026-10-31",
+    "2026-11-01",
+    "2026-11-02",
+    "2026-11-04"
+   ],
+   "instances": 5,
+   "written": "no",
+   "written_where": "Not written in builder docs.",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Engine test: a figure beyond a sanity bound (a tracking fund beating its index by more than a set gap, a yearly change beyond a bound) must carry a reason line; a script lists them.",
+   "repeat_after_written": null
+  },
+  {
+   "id": "R58",
+   "kind": "words",
+   "rule": "Words addressed to one gender: the site speaks in the plural or impersonally.",
+   "dates": [
+    "2026-10-31"
+   ],
+   "instances": 1,
+   "written": "yes",
+   "written_where": "docs/copy.md 1 and 10.2: \"Never 'אתה' or 'את'\"; CLAUDE.md RTL and formats: \"Hebrew is plural or impersonal, never addressed to one gender\".",
+   "check": "none",
+   "nameable": true,
+   "check_spec": "Static scan of copy.ts, content/ and data *_he fields: the words אתה, שלך, לך, עליך, תוכל, הזן, בחר as words fail, with a list of allowed phrases.",
+   "repeat_after_written": "Yes: written 2026-10-23; he flagged wording addressed to one gender on 2026-10-31."
+  },
+  {
+   "id": "R59",
+   "kind": "process",
+   "rule": "Process: talking to him in internal ids, codes or jargon instead of plain words, so he cannot tell what is being asked.",
+   "dates": [
+    "2026-10-22",
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-30",
+    "2026-10-31"
+   ],
+   "instances": 7,
+   "written": "yes",
+   "written_where": "CLAUDE.md, Open work: a waiting issue \"says in plain words, with no internal ids\"; Claude's notes (not read by builders) talking-to-the-founder: \"Plain words, no ids\" (from 2026-10-23).",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": "Yes: in the notes from 2026-10-23; he flagged ids and jargon again on 2026-10-24, 2026-10-25, 2026-10-30 and 2026-10-31."
+  },
+  {
+   "id": "R60",
+   "kind": "process",
+   "rule": "Process: bringing him questions that research, a document or Claude's own judgement should settle, and reporting technical choices he did not ask about.",
+   "dates": [
+    "2026-10-22",
+    "2026-10-31",
+    "2026-11-05"
+   ],
+   "instances": 4,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 1: \"technical settings are Claude's to set\"; Claude's notes (not read by builders) talking-to-the-founder: \"Ask him only what he can answer\" and law research is never a question for him.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": "Yes: in the notes from 2026-10-23; he flagged it again on 2026-10-31 and 2026-11-05."
+  },
+  {
+   "id": "R61",
+   "kind": "process",
+   "rule": "Process: spending effort on effects too small to change anyone's choice; a detail worth less than about 0.5% of the result is not worth modelling or asking about.",
+   "dates": [
+    "2026-10-22"
+   ],
+   "instances": 1,
+   "written": "partly",
+   "written_where": "Only in Claude's notes (not read by builders) talking-to-the-founder: \"Money first ... Under 0.5% of the final amount ... do not ask\". Not in CLAUDE.md.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": null
+  },
+  {
+   "id": "R62",
+   "kind": "process",
+   "rule": "Process: describing a screen in words instead of showing it; he judges what he sees, on a drawing that is easy to look at (but text and label changes need no drawing).",
+   "dates": [
+    "2026-10-22",
+    "2026-10-24",
+    "2026-10-25",
+    "2026-11-03",
+    "2026-11-05"
+   ],
+   "instances": 5,
+   "reversed": "Narrowed by him 2026-10-31: \"you do not need to mock up text changes and label changes. only major graphic visualizations.\"",
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 1 (draw before building; text and labels need no drawing).",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": "Yes: written 2026-10-28; he asked for a drawing instead of words again on 2026-11-03 and 2026-11-05."
+  },
+  {
+   "id": "R63",
+   "kind": "process",
+   "rule": "Process: explaining in chat what the site itself should make clear; he must understand from the site alone.",
+   "dates": [
+    "2026-11-01",
+    "2026-11-02"
+   ],
+   "instances": 2,
+   "written": "partly",
+   "written_where": "Only in Claude's notes (not read by builders) charts-and-visuals: \"He must understand from the site alone\". Not in CLAUDE.md.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": null
+  },
+  {
+   "id": "R64",
+   "kind": "process",
+   "rule": "Process: work called done that he then finds broken or unchanged: the symptom he saw was not removed, or an obvious fault in a screenshot was not noticed before pushing.",
+   "dates": [
+    "2026-10-27",
+    "2026-10-31",
+    "2026-11-02",
+    "2026-11-03"
+   ],
+   "instances": 5,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 1: \"A fix to one shows the symptom I saw and the same screen without it\"; Claude's notes (not read by builders) checking-my-own-work.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": "Yes: in the notes from 2026-10-27; he found work called done still broken on 2026-10-31, 2026-11-02 and 2026-11-03."
+  },
+  {
+   "id": "R65",
+   "kind": "process",
+   "rule": "Process: a flaw fixed in one place only; every place of the same kind should be swept, and each criticism learned so it is not repeated.",
+   "dates": [
+    "2026-10-22",
+    "2026-10-24",
+    "2026-10-28",
+    "2026-11-01",
+    "2026-11-03",
+    "2026-11-05",
+    "2026-11-06"
+   ],
+   "instances": 7,
+   "written": "yes",
+   "written_where": "CLAUDE.md ground rule 7 \"One flaw means a sweep\".",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": "Yes: a sweep was first written on 2026-10-24 and ground rule 7 on 2026-10-28; he asked again on 2026-11-01, 2026-11-03, 2026-11-05 and 2026-11-06."
+  },
+  {
+   "id": "R66",
+   "kind": "process",
+   "rule": "Process: Claude cannot tell the essential from the incidental on its own site because it knows what everything means; judgement of what readers see needs fresh, unbiased readers shown the whole page.",
+   "dates": [
+    "2026-11-05"
+   ],
+   "instances": 3,
+   "written": "yes",
+   "written_where": "CLAUDE.md \"Fresh readers judge what a reader sees\".",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": null
+  },
+  {
+   "id": "R67",
+   "kind": "process",
+   "rule": "Process: agreeing and changing at once instead of discussing first, following his ideas blindly, or reading silence and going along as approval.",
+   "dates": [
+    "2026-10-24",
+    "2026-11-02",
+    "2026-11-05"
+   ],
+   "instances": 4,
+   "written": "partly",
+   "written_where": "Only in Claude's notes (not read by builders) reading-his-signals: \"Discuss before changing\" (2026-11-02) and \"Three signals\". Not in CLAUDE.md.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": "Yes, in the notes: written there on 2026-11-02; he flagged it again on 2026-11-05."
+  },
+  {
+   "id": "R68",
+   "kind": "process",
+   "rule": "Process: acting beyond what he asked or on a misreading of what he meant: changing more than asked, making his choices for him, or reading his example too literally.",
+   "dates": [
+    "2026-10-22",
+    "2026-10-24",
+    "2026-10-31"
+   ],
+   "instances": 4,
+   "written": "no",
+   "written_where": "Not written in CLAUDE.md or the notes as a rule.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": null
+  },
+  {
+   "id": "R69",
+   "kind": "process",
+   "rule": "Process: overfitting: building case by case instead of a general model, or taking studies and data as proof; a real person's complaint outranks any study.",
+   "dates": [
+    "2026-11-01",
+    "2026-11-05"
+   ],
+   "instances": 3,
+   "written": "partly",
+   "written_where": "CLAUDE.md: \"Nor does a published study: what a real person says bothers them outranks any study\"; Claude's notes (not read by builders) judging-the-site. Overfitting (case by case instead of a general model) is not written.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": null
+  },
+  {
+   "id": "R70",
+   "kind": "process",
+   "rule": "Process: research that believes a company's advertising or infers a price by analogy; a claim like 'no fee forever' is to be disproved from the binding documents, and his first-hand word beats an inference.",
+   "dates": [
+    "2026-10-31",
+    "2026-11-04"
+   ],
+   "instances": 2,
+   "written": "yes",
+   "written_where": "CLAUDE.md \"No price from analogy\" (binding documents, never advertising; first-hand reports treated as true then checked).",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": "Yes: written 2026-10-31; he flagged advertising believed on 2026-11-04."
+  },
+  {
+   "id": "R71",
+   "kind": "process",
+   "rule": "Process: redoing work already done: reading the same documents again, or using tokens far faster than the work needs.",
+   "dates": [
+    "2026-10-22",
+    "2026-10-30",
+    "2026-10-31"
+   ],
+   "instances": 3,
+   "written": "yes",
+   "written_where": "CLAUDE.md repo layout: research/library \"look there before downloading\"; \"Big jobs have a budget\".",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": null
+  },
+  {
+   "id": "R72",
+   "kind": "process",
+   "rule": "Process: checking the live page after a push; he looks at the live site himself.",
+   "dates": [
+    "2026-10-26"
+   ],
+   "instances": 1,
+   "written": "partly",
+   "written_where": "Only in Claude's notes (not read by builders) checking-my-own-work: \"After a push, say it is pushed and stop\". Not in CLAUDE.md.",
+   "check": null,
+   "nameable": null,
+   "check_spec": null,
+   "repeat_after_written": null
+  }
+ ]
+}

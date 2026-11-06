@@ -1,0 +1,14 @@
+{
+ "id": "kit-rangefield-shift",
+ "task": "t20",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "When a slider's value is changed, a line 'הזנתם · חזרה לערך ההתחלתי' appears under it and shifts what follows; when reset it disappears, so the layout jumps.",
+   "where": "the slider ('RangeField') block, between the two states",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

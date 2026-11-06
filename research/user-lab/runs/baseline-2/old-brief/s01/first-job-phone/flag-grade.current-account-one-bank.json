@@ -1,0 +1,90 @@
+{
+  "case": "current-account-one-bank",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide's interest example and chart are one bank's (Leumi) terms and one person's case, shown as if general, though most people's idle money earns nothing and slowly loses value.\",\"where\":\"the interest lines and the expanded chart\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know what to do next: where to buy a money-market fund, whether their bank sells one, or what it costs",
+      "The page never says where the S&P 500 fits",
+      "The '123 מקמר / מחושב / הזנת' line makes no sense to them",
+      "The fee-plan paragraph gives transaction counts but not what each plan costs",
+      "The calculator shows 5% growth on a current account that earns nothing, and it's unclear what the example represents",
+      "The 'מזומן שקלי' button makes no sense to them",
+      "The BANK-xx tags mean nothing (ignored; would drop)",
+      "The 'מי מציע ומי מפקח' block didn't help their decision (would drop)",
+      "The 'כסף נכנס ויוצא' cards don't answer their question (would drop)",
+      "'כמה זה עולה' gives no actual fee number, only 'לפי התעריפון'",
+      "The third tax card (linked interest, 25%) went over their head",
+      "The red 'שאלה פתוחה' box with codes looked broken",
+      "Worried by 'no deposit insurance in Israel'",
+      "The padlock section 'מה האתר לקח בחשבון' is just codes (would drop)",
+      "The terms table appears twice",
+      "The chart's pink line and lighter line aren't labelled",
+      "The deposits figure of ₪62,681 doesn't match their own sum of ₪70,000",
+      "They don't see the difference between the 'בכסף של היום' and 'בשקלים של העתיד' toggles",
+      "The 'חוקים וכללים' column is empty",
+      "Doesn't understand 'מנת הקישו להסבר'",
+      "'מק\"ם' isn't explained",
+      "Linkage terms ('לא צמוד', 'ריבית צמודה למדד') are unclear",
+      "Unclear how long redeeming fund units on a trading day takes",
+      "No figure for how much money in the current account loses to inflation; the calculator shows something else",
+      "No guidance on how much to keep in the current account"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader complains that the calculator shows 5% growth even though current-account money earns nothing, and they can't tell whether it shows their own case. That is the person's point that the interest example and chart are presented as general when most idle money earns nothing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0809072
+  },
+  "b": {
+    "raised": [
+      "Doesn't know where to buy a money-market fund, whether their bank sells one, or what it costs",
+      "The page never mentions the S&P 500 or how it compares",
+      "The small '123 מקמר / מחושב / הזנת' line isn't understandable",
+      "The fee-plan paragraph in 'מה זה' gives transaction counts but not what each plan costs",
+      "On a page about a current account that earns nothing, the calculator shows 5% growth to ₪74,044, so it's unclear whose money that is",
+      "Didn't understand the 'מזומן שקלי' button",
+      "The BANK-xx tags are noise and would be dropped",
+      "'כמה זה עולה' gives no actual number, only 'according to the provider's price list'",
+      "The third tax card (linked interest, 25%) went over their head",
+      "The red 'שאלה פתוחה' box with a code looked like something was broken",
+      "Worried by 'Israel has no deposit insurance'",
+      "The 'מה האתר לקח בחשבון' padlock section is just codes and would be dropped",
+      "The terms table is repeated",
+      "The chart's pink line and lighter line have no labels",
+      "Deposits shown as ₪62,681 don't match their own ₪70,000 calculation",
+      "Didn't understand the 'today's money / future shekels' buttons",
+      "The 'חוקים וכללים' column is empty",
+      "Didn't understand 'מנת הקישו להסבר'",
+      "Didn't understand 'מק\"ם'",
+      "Didn't understand 'הצמדה: לא צמוד' or index-linked interest",
+      "Unclear how long it takes to redeem fund units ('only on a trading day')",
+      "Wanted to see how much money in the current account loses to inflation, which the calculator doesn't show",
+      "Wanted guidance on how much to keep in the current account",
+      "Wanted to know what a fund or deposit roughly pays and how quickly the money comes back",
+      "Would drop the 'מי מציע ומי מפקח' block and the 'כסף נכנס ויוצא' cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader objects that a page about a current account that earns nothing shows the money growing at 5% to ₪74,044, which is the person's point that the example is shown as if general when idle money earns nothing; the reader just doesn't name Leumi."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0716472
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.15255439999999998
+}

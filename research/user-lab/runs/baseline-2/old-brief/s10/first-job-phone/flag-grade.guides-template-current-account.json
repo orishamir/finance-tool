@@ -1,0 +1,89 @@
+{
+  "case": "guides-template-current-account",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.\",\"where\":\"the sections 'who', 'in and out', 'tax' of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page gives no amounts, fees, returns or time periods, so nothing can be compared (low confidence on what to do)",
+      "Small gray line about the per-product investment row is barely noticeable",
+      "Tops and titles of the 'כסף שוטף וקצר' cards are cut off, so the reader had to guess what they were",
+      "'קרן חדשה כללית' is confusing: the 'maximum amount' is never explained",
+      "'תגמולים ואישית לפיצויים' is confusing: why is severance in a savings fund?",
+      "Top of the 'לבחירה עצמית' section is cut off; it seems aimed at experts",
+      "מק\"מ, government bonds and the general track were not understood (why would I want מק\"מ?)",
+      "The 'בשפה פשוטה' line only rewords the title and doesn't help",
+      "Grey 'יומית' / 'מתחדשת' buttons on the קרן כספית card are unclear",
+      "MSCI World vs MSCI AC World difference is only visible by reading the number of countries",
+      "Terms like אג\"ח, קרן נאמנות and 'קרן שעוקבת אחריו' are not understood",
+      "Dollar exposure vs hedged (S&P 500) is not understood at all",
+      "Pension terms קצבה, תגמולים and פיצויים are not understood",
+      "Unclear who the מנהל תיקים and בית השקעות are",
+      "'תקרה שנתית' has no amount",
+      "'תקופה שקבע החוק' has no length (how many years the קרן השתלמות locks money)",
+      "Unclear whether paying tax on profit at withdrawal is better or worse than buying the S&P 500 directly",
+      "No guidance on how much to put where, or in what order",
+      "Fees, risk and returns are missing",
+      "No comparison of the S&P 500 inside a קופת גמל vs buying through a broker",
+      "No guidance on how to check what you already have through work",
+      "Would cut the Tel Aviv indexes (ת\"א-35/90/125)",
+      "Would cut 'לילדים'",
+      "Would cut 'מה האתר עוד לא מכסה'",
+      "Would cut Nasdaq 100 and MSCI AC World"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never mentions the current-account guide or any sections there that don't fit it (who offers it, money in and out, tax); the only nearby comment is about cut-off card tops, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0690392
+  },
+  "b": {
+    "raised": [
+      "The page gives no amounts, fees, returns or time periods, so options can't be compared and confidence about what to do is low",
+      "The tops of the 'כסף שוטף וקצר' cards, including their titles, were cut off, so the reader had to guess what they were",
+      "'קרן חדשה כללית': 'deposits above the maximum amount' was unclear because the maximum isn't stated",
+      "'תגמולים ואישית לפיצויים' was confusing: why is severance pay in a savings fund?",
+      "The 'לבחירה עצמית' cards were also cut off at the top and seemed to be only for experienced investors",
+      "מק\"מ, government bonds and מסלול כללי were skimmed without being understood",
+      "The 'בשפה פשוטה' line didn't help because it only reworded the title",
+      "The 'יומית' and 'מתחדשת' buttons on the קרן כספית card were confusing",
+      "The difference between MSCI World and MSCI AC World was hard to spot (it only showed in the country counts)",
+      "Investment terms weren't understood: why you'd want מק\"מ, אג\"ח, קרן נאמנות, 'a fund that tracks it'",
+      "'With exposure to the dollar or neutralized from it' on the S&P 500 wasn't understood at all",
+      "Pension terms weren't understood: קצבה, תגמולים, פיצויים",
+      "It was unclear who a מנהל תיקים and a בית השקעות are",
+      "'תקרה שנתית' is vague: how much is it?",
+      "'תקופה שקבע החוק' is vague: how many years is קרן השתלמות money locked?",
+      "Unclear whether paying tax on profit at withdrawal is better or worse than buying the S&P 500 directly",
+      "No guidance on how much to put where, or in what order after the basics",
+      "No fees, risk or return information (e.g. is the S&P 500 risky at my age?)",
+      "No comparison of the S&P 500 inside a קופת גמל vs buying it through a broker",
+      "No explanation of how to check what you already have through work",
+      "Would cut the Tel Aviv index cards (ת\"א-35/90/125)",
+      "Would cut 'לילדים'",
+      "Would cut 'מה האתר עוד לא מכסה'",
+      "Would cut the Nasdaq 100 and MSCI AC World cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions a current-account guide padded with template sections that don't fit it (who offers it, money in and out, tax); it only says the current-account cards were cut off at the top."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0675792
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1366184
+}

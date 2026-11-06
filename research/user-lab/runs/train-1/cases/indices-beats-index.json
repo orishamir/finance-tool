@@ -1,0 +1,14 @@
+{
+ "id": "indices-beats-index",
+ "task": "t27",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Some funds are shown earning more each year than the index they track, and the currency-hedged ones less, with nothing explaining how.",
+   "where": "the funds' yearly-return figures against the index",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

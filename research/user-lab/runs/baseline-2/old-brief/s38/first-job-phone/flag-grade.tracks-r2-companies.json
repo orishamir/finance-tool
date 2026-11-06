@@ -1,0 +1,84 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option 3 puts a big coloured grid before the list, which the reader didn't need",
+      "Option 2 sorts by company first, so the reader would have to dig through all 16 of Harel's tracks to reach S&P",
+      "Can't tell whether Menora's 0.52% plus 0.01% deposit fee costs more than Altshuler's 0.54%/0%",
+      "Unclear what switching between 'לפי חברה / לפי מוצר' would gain",
+      "Product chips are confusing: unclear how they differ from the chosen product",
+      "Investment-type chips (אג\"ח, מט\"ח, גמיש, הלכה יהודית, משולב סחיר) mean nothing to the reader",
+      "The note that returns are before fees and tax worries the reader, who can't tell what they'd really get",
+      "Grid colours in option 3 weren't clear at first, and the grid felt like noise",
+      "The 'קופה' number column is meaningless",
+      "Unclear why the מט\"ח percentage matters",
+      "The small clock icons' meaning was never figured out",
+      "Dotted underlines on numbers are unclear (the reader only guessed they lead somewhere)",
+      "Difference between 'דמי ניהול מההפקדה' and 'מהחיסכון' is unclear",
+      "Unclear whether 'עוד לא דווח' and 'חדש' are bad signs",
+      "Wants the actual yearly cost in shekels, for example when saving 1,000 ₪ a month",
+      "Wants to know whether the fee is negotiable",
+      "Wants to know how to join, whether there's a minimum, and whether money can be taken out early",
+      "Wants to know why to use this rather than buying the S&P 500 through a bank or app",
+      "Wants to know whether the company matters when the S&P tracks look nearly the same",
+      "Wants a plain 'cheapest overall' answer that combines both fees",
+      "Would cut the 'מקור / מדריכים' navigation and the 'לפי חברה / לפי מוצר' tabs",
+      "Would cut every investment group except the chosen one",
+      "Would cut the circle charts"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says that rows repeat the track kind or the group heading in their names or labels; it only describes the company name being shown with the track's long name, without complaining."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0586232
+  },
+  "b": {
+    "raised": [
+      "Option 3 puts a big coloured grid the reader didn't need before the list",
+      "Option 2 sorts by company, so the reader would have to dig through all 16 of Harel's tracks to reach the S&P one",
+      "Can't tell whether Menora's 0.52% + 0.01% costs more than Altshuler's 0.54% / 0%",
+      "Unclear what switching between 'לפי חברה / לפי מוצר' would give",
+      "Product chips are confusing; unclear how they differ from the chosen product",
+      "Investment-type chips (אג\"ח, מט\"ח, גמיש, הלכה יהודית) mean nothing to the reader",
+      "Grey note about past returns being before fees and tax worried the reader",
+      "Grid in option 3 is noise, and its colours weren't clear at first",
+      "The 'קופה' number column is meaningless",
+      "Didn't understand the מט\"ח percentage or why it matters",
+      "Clock icons never understood",
+      "Dotted underlines on numbers: unclear what they lead to",
+      "Difference between 'מההפקדה' and 'מהחיסכון' fees is unclear",
+      "Unclear whether 'עוד לא דווח' and 'חדש' are bad signs",
+      "No yearly cost in shekels for a sample monthly saving",
+      "No information on whether the fee is negotiable",
+      "No information on how to join, minimums, or early withdrawal",
+      "No explanation of why to use this instead of buying the S&P 500 through a bank or app",
+      "Unclear whether the choice of company matters, since the S&P tracks look nearly the same",
+      "No plain 'cheapest overall' answer that combines both fees",
+      "Would cut the navigation, the other investment groups and the circle charts"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report only says that each row shows the company name plus the track's long name, and it never complains that rows repeat the group heading or the track kind."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0542512
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1128744
+}

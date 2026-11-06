@@ -1,0 +1,100 @@
+{
+  "task": "s36",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:49:41.362Z",
+  "structured": {
+    "answer": "I'd pick ב: each row has the words and the shekel amount together on the right, so on the phone I just read down. Either way the keren is obviously worth it because the employer puts in 54,000 ₪ against my 18,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Sentence under the chart: 'אם מושכים עכשיו ושמים את הכסף בחשבון ניירות ערך עד שנה 6: 68,837 ₪, כלומר 15,141 ₪ פחות מאשר לחכות'",
+        "why": "68,837 is more than the 66,513 'נשאר בידיים' next to it, so I couldn't tell what it is 'less' than; I guessed the 83,978. The securities account comparison I came for is only this small sentence, not in the chart."
+      },
+      {
+        "where": "Option א vertical bars",
+        "why": "The amounts are on top and the labels underneath, so I had to look up and down to match them."
+      },
+      {
+        "where": "Dashed bar 'אם מחכים לשנה 6'",
+        "why": "Not sure it means what I'd get by waiting one more year without paying in more."
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות: הסיפור של הכסף, שלב אחרי שלב'",
+      "Big numbers 18,000 / +54,000 / +8,487 / −13,974 / 66,513 / 83,978",
+      "'המעסיק הוסיף' label",
+      "'לפני 6 שנים: מס' / 'מ-6 שנים: פטור ממס' above the small year bars",
+      "Year 6 view: 98,738 and 'המס לקח 0 ₪'",
+      "Option ב row labels with amounts on the right"
+    ],
+    "skimmed": [
+      "Option intro texts under 'א. הערימה גדלה' and 'ב. אותו סיפור בשורות'",
+      "The small year bars 1–12",
+      "Line 'קרן השתלמות במסלול מדד. 300 ₪ בחודש מכם, 900 ₪ מהמעסיק'"
+    ],
+    "skipped": [
+      "The thumbnail picture on screen 1 (too small to read)",
+      "The orange 'הדוגמה: שכר ברוטו...' paragraph",
+      "Grey line 'בין 19 המסלולים שנאספו... דמי ניהול של 0.7%... 0.19%'",
+      "Footer line 'הגובה נמתח בכל שנה...'",
+      "The 'עצמאים' tab"
+    ],
+    "unsure_meaning": [
+      "Colours: I guessed grey is my money, yellow the employer's, green the return and pink stripes the tax; no legend next to the bars",
+      "The dashed outline bar 83,978",
+      "'15,141 ₪ פחות' compared to what",
+      "Dark green block in the 'המס לקח 0 ₪' column at year 6",
+      "'אחרי דמי ניהול' (I don't know how much the fee was)"
+    ],
+    "not_found": [
+      "A securities account bar inside the main chart next to the keren",
+      "Fees shown in shekels"
+    ],
+    "findings": [
+      {
+        "what": "The securities account comparison, the whole question, is only a small sentence under the chart, and its wording ('15,141 ₪ פחות מאשר לחכות') is confusing next to 66,513",
+        "where": "Under the chart in both options"
+      },
+      {
+        "what": "Option א keeps the amounts on top and the labels under the bars, so matching them on a phone takes effort; ב puts them together on the right",
+        "where": "Option א vs ב"
+      },
+      {
+        "what": "No colour legend next to the bars; I had to guess what grey, yellow, green and the pink stripes mean",
+        "where": "Both charts"
+      },
+      {
+        "what": "The red striped '−13,974 ₪' is scary and the only explanation of the tax rule is small text above the year bars",
+        "where": "'המס לקח' column/row"
+      },
+      {
+        "what": "The 'מומלץ' tag is on א although ב was easier for me to read",
+        "where": "Heading of option א"
+      },
+      {
+        "what": "The thumbnail on screen 1 is unreadable at that size",
+        "where": "Screen 1"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39525,
+    "turns": 6,
+    "usd": 0.13395020000000002,
+    "input": 6,
+    "cacheWrite": 7647,
+    "cacheRead": 14751,
+    "output": 3490,
+    "model": "claude-opus-5-5"
+  }
+}

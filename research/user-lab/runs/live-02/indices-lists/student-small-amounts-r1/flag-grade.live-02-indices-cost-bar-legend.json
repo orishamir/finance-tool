@@ -1,0 +1,48 @@
+{
+  "case": "live-02-indices-cost-bar-legend",
+  "stamp": "{\"keys\":[{\"id\":\"legend-every-row\",\"problem\":\"Every row of the list repeats the same colour key under its bar (which colour is which kind of cost), so the same names are read again on every row instead of once for the whole list.\",\"where\":\"the small bar in each row of the list of accounts, and the line of coloured squares with names under it\",\"kind\":\"general\"},{\"id\":\"amounts-off-bar\",\"problem\":\"The amount each coloured part of a row's bar stands for is written apart from the bar, in a line under it, not on the part itself, so the eye goes back and forth between colour and number.\",\"where\":\"the small bar in each row of the list of accounts, and the amounts in the line under it\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the colour key being repeated on every account row. Finding 3 is about the same account cards, but it complains that the term 'דמי משמרת' isn't explained, not about the repeated key."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "None of the reader's findings says the amounts sit in a line under the bar instead of on its coloured parts. The closest, finding 1, is about unlabeled tick marks on a different chart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0183794
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "No finding mentions a colour key being repeated under each account row's bar; finding 3 is about the same cards but complains about an unexplained term and the cost level."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "No finding says the amounts sit in a line under the bar instead of on the coloured parts, or that the eye has to move back and forth."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017399400000000002
+  },
+  "third": null,
+  "ranks": {
+    "legend-every-row": 0,
+    "amounts-off-bar": 0
+  },
+  "agreed": {
+    "legend-every-row": true,
+    "amounts-off-bar": true
+  },
+  "against": {},
+  "usd": 0.0357788
+}

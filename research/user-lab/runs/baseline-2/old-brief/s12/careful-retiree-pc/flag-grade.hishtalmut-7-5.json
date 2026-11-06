@@ -1,0 +1,93 @@
+{
+  "case": "hishtalmut-7-5",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide's 7.5% does not say whether it is deposited to the study fund itself or to a pension fund.\",\"where\":\"the opening explanation of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unclear whether the 3-year period counts from joining or from reaching retirement age",
+      "The page never says what the retirement age is",
+      "The bar comparison shows only a small gap, could even be negative, and leaves out the employer's money",
+      "The '123 מקור / מחושב / הזנתו' legend is confusing",
+      "Investment track buttons (S&P 500, אג\"ח etc.) are not understood",
+      "Fund names with codes in the lock box (e.g. 13245, 4D) mean nothing",
+      "Codes TXH-09, KH-15, PF-18 mean nothing",
+      "No overall cap on direct expenses is a little worrying",
+      "The 47% withholding warning is frightening",
+      "The chief economist's recommendation to cut the benefit is worrying",
+      "Didn't know the chart cursor could be dragged",
+      "Fees are five times higher in the keren, which is bothersome",
+      "Grey tags in the word list are not understood",
+      "'הרווח הריאלי' is still not understood",
+      "Unclear whether 'משכורת קובעת' means gross salary",
+      "Unclear whether the under-60 tax rates mean it is cheaper for someone over 60",
+      "Unclear whether the 47% is refunded and whether they must file a report themselves",
+      "Unclear why higher fees still come out ahead",
+      "Missing: what happens if they leave or lose their job early",
+      "Missing: what happens to the money on death",
+      "Missing: effect on pension or allowances",
+      "Missing: amounts based on their own salary",
+      "Would drop the word list",
+      "Would drop the fund company cards",
+      "Would drop the 'חוקים וכללים · N' chips",
+      "Would drop the 'כמה זה עולה' table"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader takes the 7.5% to be the employer's deposit into the keren and never says it is unclear which fund it goes to. The closest point, whether 'משכורת קובעת' means gross salary, is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0664032
+  },
+  "b": {
+    "raised": [
+      "Unclear whether the 3-year period counts from joining or from reaching retirement age",
+      "The page never says what the retirement age is",
+      "The chart difference is small (415.84 ₪) and could even be negative, so you could come out behind",
+      "The comparison leaves out the employer's money, which is the main reason to join",
+      "The '123 מקור / מחושב / הזנתו' legend is confusing",
+      "Investment track names (S&P 500, אג\"ח, etc.) are not understood",
+      "Fund names in the lock box (מיטב… (13245), ילין לפידות… (4D)) meant nothing",
+      "Codes TXH-09, KH-15, PF-18 mean nothing",
+      "Cost table: 'הוצאות ישירות – אין תקרה כוללת' is worrying",
+      "Orange warning about 47% withholding on early withdrawal is frightening",
+      "Chief economist recommendation to cut the benefit raises worry that it could be taken away",
+      "Grey tags in the word list are not understood",
+      "Did not know the chart marker could be dragged",
+      "Keren fees are five times higher than the regular account",
+      "'הרווח הריאלי' is still not understood even after the word list",
+      "Unclear whether 'משכורת קובעת' means gross salary",
+      "Orange box gives rates for under 60 but doesn't say what applies to someone over 60",
+      "Unclear whether the 47% withheld comes back and whether you must file a report yourself",
+      "Unclear why the keren comes out ahead despite five times higher fees",
+      "No information on what happens if you leave or lose your job before the period ends",
+      "No information on what happens to the money on death",
+      "No information on effects on pension or allowances",
+      "No figures for the reader's own salary in shekels per month",
+      "Would drop the word list with tags",
+      "Would drop the fund company cards",
+      "Would drop the 'חוקים וכללים · N' chips",
+      "Would drop the 'כמה זה עולה' table"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader took the 7.5% to be a deposit into the keren itself and never says it is unclear whether it goes to the study fund or to a pension fund; the closest point, whether 'משכורת קובעת' means gross salary, is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0654032
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1318064
+}

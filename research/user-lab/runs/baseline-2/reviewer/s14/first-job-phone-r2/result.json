@@ -1,0 +1,113 @@
+{
+  "task": "s14",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:22:06.137Z",
+  "structured": {
+    "answer": "I'm joining: with my 30,000 salary I put in 750 a month, the employer puts in 2,250, and after 5 years my 45,000 turns into 136,457 ₪. I didn't really get what the pink −64,761 is.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Waterfall chart, pink striped bar −64,761 ₪",
+        "why": "Big minus with no words next to it saying what it is (tax? fees?); I guessed tax"
+      },
+      {
+        "where": "Small bar chart header 'לפני 6 שנים: מס' with 5 years selected",
+        "why": "Not sure if the 136,457 is after a tax I'd avoid by waiting 6 years; didn't touch the slider"
+      },
+      {
+        "where": "Calculator inputs between screen 2 and 3",
+        "why": "Scrolled past where my salary was entered, so I took 750/2,250 on trust as being from my 30,000"
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and subtitle",
+      "'אחרי 6 שנים ... בלי מס הכנסה' line",
+      "שכירים toggle",
+      "תשואה בשנה 7 / דמי ניהול 0.54 fields",
+      "'קרן השתלמות במסלול מדד. 750 ₪ בחודש מכם, 2,250 ₪ מהמעסיק'",
+      "Waterfall numbers 45,000 / +135,000 / +21,218 / −64,761 / 136,457",
+      "'בין 19 המסלולים ... 135,908 ₪ עד 137,668 ₪'",
+      "Company names הראל, אלטשולר שחם, מיטב"
+    ],
+    "skimmed": [
+      "Bullet list about withdrawing before 6 years",
+      "למה משתמשים בזה",
+      "Small bar chart years 1-12",
+      "Grey explanatory text under chart (47%, 15,712, inflation 2%)",
+      "שווה לדעת",
+      "מי מציע ומי מפקח",
+      "כסף נכנס ויוצא",
+      "כמה זה עולה table"
+    ],
+    "skipped": [
+      "מיסוי cards and orange warning box",
+      "סיכונים ומה לא מוגן",
+      "חוקים וכללים badges",
+      "הצגת החברות fold",
+      "Screens 8-9",
+      "Link to חשבון ניירות ערך page"
+    ],
+    "unsure_meaning": [
+      "−64,761 ₪ pink hatched bar",
+      "התקרה / 15,712 ₪",
+      "47% מס במקור",
+      "הרווח הריאלי",
+      "מוטבת",
+      "נאמנות",
+      "מסלול כללי",
+      "אג\"ח ממשלתית צמודה / לא צמודה",
+      "Codes TXH-09, KH-15, PF-18"
+    ],
+    "not_found": [
+      "A plain line saying what the −64,761 is",
+      "A clear 'what to do first' step for joining",
+      "Comparison of 5 vs 6 years end amount in shekels"
+    ],
+    "findings": [
+      {
+        "what": "Large minus bar −64,761 ₪ with no label next to it saying what it is",
+        "where": "Waterfall chart under 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "Default horizon is 5 years, the year that's still taxed, so the headline result includes a big tax cut without saying so up front",
+        "where": "Calculator, 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "Ceiling of 15,712 ₪ is mentioned in small grey text, but the deposits shown are on the full 30,000 salary; unclear what that means for me",
+        "where": "Grey notes under the chart"
+      },
+      {
+        "what": "Explanations of the tax and assumptions are all small grey text that I would not read",
+        "where": "Under the chart"
+      },
+      {
+        "what": "Lots of jargon and rule codes (TXH-09 etc.) make the lower page feel like a legal document",
+        "where": "שווה לדעת, כסף נכנס ויוצא"
+      },
+      {
+        "what": "No clear next step / how to join button",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41715,
+    "turns": 9,
+    "usd": 0.1910214,
+    "input": 8,
+    "cacheWrite": 13595,
+    "cacheRead": 31947,
+    "output": 3792,
+    "model": "claude-opus-5-5"
+  }
+}

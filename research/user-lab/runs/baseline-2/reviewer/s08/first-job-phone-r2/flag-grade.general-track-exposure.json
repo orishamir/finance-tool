@@ -1,0 +1,36 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says that 'general track' doesn't belong among the exposures because it's a mix; findings 3 and 6 are about the same cards but complain about how many there are and about jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0148474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'general track' is wrongly grouped among the exposures. Findings 3 and 6 cover the same cards, but they complain about there being too many cards and about jargon, not about the categorisation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013715399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0285628
+}

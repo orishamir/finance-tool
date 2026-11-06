@@ -1,0 +1,113 @@
+{
+  "task": "s26",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:27:48.231Z",
+  "structured": {
+    "answer": "Psagot Trade charges 0.07% per buy/sell (min 2 ₪), about 0.03% a quarter for holding, 0 ₪ monthly account fee, needs 10,000 ₪ to open; you can buy mutual funds and קרן סל, foreign stocks say \"לא ידוע\". Their ads say no fees but the page says the documents say otherwise, so I'm holding off.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Two המרת מטבע rows (1.5 אגורות לדולר and 0.5%)",
+        "why": "Same heading, two different prices, nothing says which applies when"
+      },
+      {
+        "where": "ניירות ערך זרים marked לא ידוע",
+        "why": "I wanted the S&P and couldn't tell if I can buy it here; the explanation was a long paragraph I didn't read"
+      },
+      {
+        "where": "מה כתוב בפרסום, ומה במסמכים section",
+        "why": "Ad says no fees, document says fees; made me doubt every number above"
+      }
+    ],
+    "used": [
+      "Heading פסגות ניירות ערך (פסגות טרייד)",
+      "0.07% מינימום לפעולה 2.00 ₪",
+      "0.03% לרבעון",
+      "המרת מטבע 1.5 אגורות לדולר / 0.5%",
+      "דמי חשבון קבועים 0.00 ₪ לחודש",
+      "מה אפשר לקנות כאן: אפשר / לא ידוע tags",
+      "המסמך אומר אחרת tags and the ad quotes",
+      "מינימום לפתיחת חשבון 10,000 ₪"
+    ],
+    "skimmed": [
+      "11 שורות עמלה נאספו line",
+      "Ad vs document quotes",
+      "מחירים לקבוצות ומבצעים",
+      "Bottom buttons"
+    ],
+    "skipped": [
+      "Long paragraph under ניירות ערך זרים",
+      "Grey dates and בתעריפון links",
+      "מה מגן על הכסף fold",
+      "הודעה על שינוי בעמלות",
+      "מה כתוב במסמכים של פסגות / חשבון ניירות ערך",
+      "Search box on the left",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "מק\"מ",
+      "לרבעון",
+      "מרווח ההמרה",
+      "Why there are two המרת מטבע prices",
+      "לא ידוע (orange)",
+      "חבר בורסה"
+    ],
+    "not_found": [
+      "Whether I can buy an S&P 500 fund here",
+      "What the fees come to in shekels for 30,000 ₪",
+      "Monthly deposit option",
+      "The other ~6 of the 11 fee rows"
+    ],
+    "findings": [
+      {
+        "what": "Ads promise no management/conversion/trading fees while documents charge them; the orange tag makes the whole broker feel untrustworthy",
+        "where": "מה כתוב בפרסום, ומה במסמכים"
+      },
+      {
+        "what": "Two המרת מטבע rows with different values and no explanation of which applies",
+        "where": "העמלות"
+      },
+      {
+        "what": "Foreign securities is 'לא ידוע', so I can't tell if the S&P is available",
+        "where": "מה אפשר לקנות כאן"
+      },
+      {
+        "what": "Fees only shown as percents, never in shekels for my amount",
+        "where": "העמלות"
+      },
+      {
+        "what": "Says 11 fee rows were collected but only about 5 are shown",
+        "where": "Top of העמלות"
+      },
+      {
+        "what": "Same בתעריפון / תעריפון עמלות פסגות טרייד link repeated under every item, which I had to read past each time",
+        "where": "Every fee and product row"
+      },
+      {
+        "what": "Quarterly rate (0.03% לרבעון) vs yearly 0.12% shown in different places, so I had to match them myself",
+        "where": "Fee row vs ad/document section"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 28726,
+    "turns": 4,
+    "usd": 0.11504500000000001,
+    "input": 4,
+    "cacheWrite": 6626,
+    "cacheRead": 8105,
+    "output": 3020,
+    "model": "claude-opus-5-5"
+  }
+}

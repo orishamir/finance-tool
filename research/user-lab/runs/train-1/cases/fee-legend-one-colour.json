@@ -1,0 +1,14 @@
+{
+ "id": "fee-legend-one-colour",
+ "task": "t06",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "In the chart of fees over time, every fee kind in the legend and the bands has nearly the same orange colour, so the kinds cannot be told apart.",
+   "where": "the fee-over-time chart and its legend",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

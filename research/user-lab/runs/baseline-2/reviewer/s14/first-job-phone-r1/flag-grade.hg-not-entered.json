@@ -1,0 +1,36 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the contradiction between the sentence saying no percentages were entered and the percentage fields that are already filled; finding 5 is about the ceiling, but only because the small print makes it unclear, not because of this mismatch."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159154
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings points out that the sentence claims no percentages were entered while the fields actually hold default values; finding 5 mentions the ceiling but complains about small print and tax-free status, not this contradiction."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015543399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031458799999999995
+}

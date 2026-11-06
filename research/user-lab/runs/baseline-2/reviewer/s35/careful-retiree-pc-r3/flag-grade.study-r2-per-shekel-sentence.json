@@ -1,0 +1,36 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the per-shekel conversion sentence is unhelpful; findings 3 and 8 are about jargon and long lines in other text, not this sentence's value."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015063400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the per-shekel conversion sentence fails to help; findings 3 and 8 are about jargon and line length in the example text, not about whether that sentence is useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015231399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0302948
+}

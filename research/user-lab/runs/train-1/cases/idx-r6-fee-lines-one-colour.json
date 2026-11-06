@@ -1,0 +1,14 @@
+{
+ "id": "idx-r6-fee-lines-one-colour",
+ "task": "t57",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The account's fee lines in the cost bar have colours too alike to tell apart.",
+   "where": "the cost bar and its parts",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

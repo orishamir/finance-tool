@@ -1,0 +1,94 @@
+{
+  "case": "tracks-assets-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.\",\"where\":\"that column's head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The first company group has no company name, so the reader can't tell whose tracks they are",
+      "Returns are so close that the page doesn't help choose a company",
+      "Unclear which tab (לפי חברה / לפי מוצר) is selected",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing ('הזנתה' unclear)",
+      "The orange 'not updated since September' warning is worrying, and its date conflicts with the footer date 03.11.2026",
+      "Unclear what 'קיבוץ לפי' would change",
+      "Investment-type chip names are confusing (עוקב מדדים - גמיש, s&p 500, קיימות, עוקב מדדי אג\"ח vs אג\"ח סחיר)",
+      "The big table is very long (about 13 screens)",
+      "The איילון group / new tracks with 'חדש', 'עוד לא דווח' and 'פחות מ־3 שנים' are useless for comparing",
+      "Tracks with assets of '0 מיליון ₪' are off-putting",
+      "The teal/yellow rings don't make sense beyond the two numbers",
+      "'קופה' numbers mean nothing to the reader",
+      "'מניות 101%' doesn't make sense (over 100%)",
+      "What מט\"ח exposure means for the money is unclear",
+      "Unclear which fee is actually paid: מההפקדה or מהחיסכון",
+      "Dotted underlines under almost every number are unexplained",
+      "'עוד לא דווח' is unexplained (not reported by whom, and why?)",
+      "Unclear why the page won't sort by return but will sort by fees",
+      "No return after fees and tax",
+      "No tax rules for withdrawal or special options after 60",
+      "No worst-year figure per track",
+      "No last-year return",
+      "No fee in shekels",
+      "No info on how to open, withdraw or move between companies",
+      "No info on whether the fee can be negotiated",
+      "Chips for other products are unnecessary and would be dropped",
+      "The 'מההפקדה' fee line is nearly always 0% and would be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they glanced at the assets column and preferred billions; nowhere do they say the head fails to explain that it is the money pooled in the track rather than the fund's own assets."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0649592
+  },
+  "b": {
+    "raised": [
+      "The first group of tracks has no company name, so the reader can't tell whose they are",
+      "Results are so close that the page doesn't help pick one company",
+      "Unsure which tab (לפי חברה / לפי מוצר) is selected",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing; 'הזנתה' is not understood",
+      "The stale-data warning was worrying, and its date clashes with the footer date (which one is real?)",
+      "Unclear what 'קיבוץ לפי' would change",
+      "Track-type chip names (עוקב מדדים - גמיש, s&p 500, קיימות, אג\"ח types) are confusing",
+      "The table is very long (about 13 screens)",
+      "The איילון group and the new/unreported rows are useless for comparing",
+      "Assets showing '0 מיליון ₪' were off-putting",
+      "The teal/yellow rings' meaning is unclear",
+      "The 'קופה' numbers mean nothing to the reader",
+      "'מניות 101%' doesn't make sense (over 100%)",
+      "Unclear what מט\"ח exposure means for the reader's money",
+      "Unclear whether the reader pays the 'מההפקדה' fee or the 'מהחיסכון' fee",
+      "The dotted underlines under the numbers aren't explained",
+      "'עוד לא דווח' is unclear: not reported by whom, and why?",
+      "Unclear why the table can't be sorted by return but can be sorted by fees",
+      "No return after fees and tax",
+      "No tax rules for withdrawal or for after age 60",
+      "No worst-year figure for each track",
+      "No figure for last year's return",
+      "No fee shown in shekels",
+      "No information on how to open a fund, withdraw or switch",
+      "No information on whether the fee can be negotiated",
+      "Chips for other products could be dropped",
+      "The 'מההפקדה' fee line could be dropped because it is almost always 0%"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only glanced at the assets column and was put off by '0 מיליון'; they never say the header is unclear about whether it means the money pooled in the track or the fund's own assets."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0687832
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13374239999999998
+}

@@ -1,0 +1,14 @@
+{
+ "id": "self-report-label",
+ "task": "t31",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A foreign fund (IE00B5BMR087) is labelled as needing self-reporting for tax, which holds at a foreign broker but not when bought through an Israeli bank or house.",
+   "where": "the label on that fund's row",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

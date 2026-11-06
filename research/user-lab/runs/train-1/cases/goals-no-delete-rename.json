@@ -1,0 +1,14 @@
+{
+ "id": "goals-no-delete-rename",
+ "task": "t08",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "There is no visible way to delete or rename a saved goal.",
+   "where": "the row of saved goals at the top",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

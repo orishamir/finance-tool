@@ -1,0 +1,78 @@
+# s07: careful-retiree-pc (run 2)
+
+shots mode, pc; 6 steps, 52 s, $0.21
+
+## Answer
+
+From what I read, a deposit locks the money until the agreed date for a fixed (or changing) interest, about 1.8% in their Leumi example. The bank takes 15% tax off the interest, and if I take the money out early the bank charges a fine and the page doesn't say how much. The thing that worried me most is it says there's no deposit insurance in Israel and a plain deposit doesn't keep up with rising prices, so I won't change anything yet. I'll ask you and the clerk about the penalty and about that insurance.
+
+Confidence: fairly sure; gave up: false
+
+## Stuck
+
+- Calculator box, screen 1–2: It showed 'ההפקדות שלכם 70,000 ₪' but 'נשאר לכם 68,270 ₪'. I didn't understand why a safe deposit leaves me with less than I put in. I only guessed it was because of 'בכסף של היום' and the 2% inflation.
+- 'כמה זה עולה' table, screen 4: 'דמי יציאה ... לפי התעריפון של הגורם המציע' gives no number, so I still don't know what breaking the deposit costs.
+- Tax paragraph, screen 5: 'פטור למעוט הכנסה' with 69,840 ₪ and 10,920 ₪. I couldn't tell if it applies to me and Avi.
+
+## Used
+
+- Title and opening: 'כסף שמפקידים בבנק לתקופה מוסכמת, ובתמורה הבנק משלם עליו ריבית'
+- 'מה זה' paragraph: fixed or changing interest, the money returns to the עו"ש or renews automatically
+- Calculator results: 70,000 put in, 68,270 left, tax 986.20, interest 1.8, inflation 2
+- 'למה משתמשים בזה': money you know when you'll need, a fixed rate locked for the whole period
+- 'שווה לדעת': 15% tax, breaking a deposit needs the bank's consent and costs, no deposit insurance
+- 'משיכה: בסוף התקופה שנקבעה בהסכם'
+- Tax cards: 15% taken off by the bank
+- Red box: the early-break penalty is the bank's condition and the site doesn't calculate it
+- 'סיכונים': no deposit insurance law in Israel
+- 'פיקדון לא צמוד לא מגן מעליית מחירים'
+
+## Skimmed
+
+- Calculator input boxes and sliders
+- Paragraph about opening a deposit in another bank since 01.12.2025 / 'חשבון במערכת סגורה'
+- Linked-to-index (צמוד) tax lines at 25%
+- Glossary table 'מונחים'
+
+## Skipped
+
+- Small grey line '123 מקור 123 מחושב 123 הזנתה מונח הקישו להסבר'
+- 'הצגת החוקים והכללים' links
+- 'הצגה כטבלה' fold
+- 'הצגת כל הבדיקות' fold
+- Screens 7 and 8 (too tired)
+- Top menu items like 'השקעה במדד'
+
+## What would bother this person, most first
+
+- Calculator, screens 1–2: The calculator shows less coming out (68,270) than going in (70,000) for a 'safe' deposit, and nothing next to it explains why in plain words. It frightened me.
+- שווה לדעת and סיכונים, screens 3 and 5: 'אין ביטוח פיקדונות' is thrown in with no reassurance or context. It made me worried about my whole savings.
+- כמה זה עולה and red box, screens 4–5: The early-withdrawal penalty, the thing I most wanted to know, has no number. It's only 'לפי התעריפון' and 'האתר לא מחשב אותה'.
+- All screens, especially the calculator notes and the side menu: Dark background with pale grey small text that's hard to read even enlarged
+- Screens 3 and 5: English letter codes (TXI, BANK) scattered in the text
+- Screen 1: A confusing grey line of '123 מקור / מחושב / הזנתה' right at the top
+- Screen 2: Sliders in the calculator
+
+## Not sure what it meant
+
+- TXI-03, BANK-06, BANK-23, TXI-17, TXI OQ14, TXI-04 (English letter codes)
+- 123 מקור / 123 מחושב / 123 הזנתה
+- קרנות כספיות ומק"מ
+- מוצרי שוק הכסף
+- פטור למעוט הכנסה
+- ריבית ריאלית
+- חשבון במערכת סגורה
+- 'בכסף של היום' vs 'בשקלים של העתיד'
+- 'זו סמכות, לא זכות'
+- The purple 'מחושב' badge
+
+## Looked for and did not find
+
+- The actual cost or penalty for breaking a deposit early
+- Whether there's something as safe as a deposit that pays more
+- A plain sentence saying whether my bank's rate is good or low compared to others
+- What the bank takes from me beyond the tax
+
+## What it said along the way
+
+

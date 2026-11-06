@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Every account row repeats the same tag and same yellow/orange bar, making differences hard to spot",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Fee colours explained only in a legend elsewhere, so lower bars are a guess",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Minus signs on fund returns look like losses, scaring the reader even on the recommended fund",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Amount is a default 10,000, so the big result isn't the reader's own number",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Waterfall starts from Harel/Jerusalem instead of the user's choice, confusing",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Fund fee shown in % while account fee in shekels, hard to compare",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Many underlined numbers look clickable with unclear effect",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0498788
+}

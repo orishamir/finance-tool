@@ -1,0 +1,118 @@
+{
+  "task": "s05",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:10:03.009Z",
+  "structured": {
+    "answer": "I get it now: every saving has a container (bank, קרן השתלמות, securities account) and what's inside it (stocks, bonds, an index like S&P 500). The ones for me to look into are a חשבון ניירות ערך with an S&P 500 fund, my קרן השתלמות, and maybe קופת גמל להשקעה, but the page gives no fees or numbers, so I still can't pick.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "מאיפה להתחיל",
+        "why": "It points to קרן השתלמות, קרן חדשה מקיפה and קרן כספית, none of which is about investing my 30k to grow; I expected a start-here for investing"
+      },
+      {
+        "where": "מק\"מ cards",
+        "why": "מק\"מ shows up both under where the money sits and under what it's invested in; confusing"
+      },
+      {
+        "where": "screens 4 and 5",
+        "why": "Almost the same screen twice; I thought I hadn't scrolled"
+      },
+      {
+        "where": "top of screen 2",
+        "why": "Jumped into the middle of cards; the first row (עו\"ש, פיקדון, תכנית חיסכון) got cut off"
+      }
+    ],
+    "used": [
+      "Heading מדריך and subtitle",
+      "שני חלקים בכל חיסכון box",
+      "Section headings: איפה הכסף מוחזק, חיסכון עם הטבת מס, לבחירה עצמית, במה הכסף מושקע",
+      "Card חשבון ניירות ערך",
+      "Card מדד S&P 500",
+      "Card קופת גמל להשקעה (first line, אפשר למשוך בכל עת)",
+      "Card קרן השתלמות"
+    ],
+    "skimmed": [
+      "מאיפה להתחיל links",
+      "קרן כספית / קרן כספית מתחדשת cards",
+      "Index cards ת\"א-35, ת\"א-125, ת\"א-90, MSCI, נאסד\"ק",
+      "מזומן שקלי card"
+    ],
+    "skipped": [
+      "פרישה section (קרן חדשה מקיפה, כללית, תגמולים)",
+      "לילדים section",
+      "Bond cards: איגרות חוב ממשלתיות, אג\"ח צמודה/לא צמודה, מק\"מ",
+      "ניהול אישי cards",
+      "מה האתר עוד לא מכסה",
+      "Footer links and grey footer line",
+      "Top nav tabs"
+    ],
+    "unsure_meaning": [
+      "מק\"מ",
+      "אג\"ח צמודה / לא צמודה",
+      "קופון",
+      "ניירות ערך",
+      "מסלול כללי",
+      "תמהיל",
+      "MSCI AC World vs MSCI World",
+      "נאמנות",
+      "מנוטרלת ממנו"
+    ],
+    "not_found": [
+      "Any fees in shekels or percent",
+      "Any returns or numbers to compare",
+      "A clear recommendation of where to start investing a lump sum",
+      "What to actually do first (which bank/company to open with)"
+    ],
+    "findings": [
+      {
+        "what": "No numbers at all: no fees, no returns, nothing to judge which option is better",
+        "where": "All cards"
+      },
+      {
+        "what": "About 25 look-alike cards with no highlight of which suit a young person investing savings; overwhelming",
+        "where": "Screens 2–4"
+      },
+      {
+        "what": "מאיפה להתחיל doesn't cover investing spare money, only employer funds and a money-market fund",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Lots of jargon in card text (מק\"מ, צמודה, קופון, ניירות ערך)",
+        "where": "Bond and מק\"מ cards"
+      },
+      {
+        "what": "מק\"מ appears in two sections, which is confusing",
+        "where": "Screens 2 and 4"
+      },
+      {
+        "what": "Screens 4 and 5 are nearly identical; looks like the scroll didn't move",
+        "where": "Screens 4–5"
+      },
+      {
+        "what": "First row of cards cut off between screens 1 and 2",
+        "where": "Screen 1 bottom / Screen 2 top"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 33864,
+    "turns": 7,
+    "usd": 0.142403,
+    "input": 8,
+    "cacheWrite": 9654,
+    "cacheRead": 24495,
+    "output": 3012,
+    "model": "claude-opus-5-5"
+  }
+}

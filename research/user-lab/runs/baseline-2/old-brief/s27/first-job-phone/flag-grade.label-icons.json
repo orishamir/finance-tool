@@ -1,0 +1,83 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Youth prices at Leumi/Hapoalim/Mizrahi/Discount are left out of the calculation, so the reader can't tell if one is cheaper than Psagot",
+      "Unclear what the 'אינפלציה' button would change",
+      "The note 'אם הדולר לא זז מול השקל' on the result cards was a little worrying",
+      "The coloured cost bar has too many colours",
+      "The coloured tags in the fund list were confusing",
+      "Didn't see why the 'מה כתוב בפרסום, מול התעריפון' claims section matters",
+      "The hedging section ('נטרול מט\"ח') was confusing",
+      "The waterfall starts from MTF and Jerusalem at 79,176 ₪, which the reader never chose",
+      "Couldn't tell if the yearly percent ('בשנה · 4 שנים') in the fund list is good or bad",
+      "The orange and yellow bars in the account list have no clear colour meaning",
+      "What '(4D)' vs '(4A)' means",
+      "Whether 'קרן מחקה' vs 'קרן סל' is a difference that matters",
+      "Didn't understand 'נאמן' and 'קבועים / משתנים' in the fees line",
+      "Didn't understand 'חשיפה לדולר', 'עסקת החלף', 'צוברת', 'W-8BEN', 'מס עיזבון אמריקאי'",
+      "The 'מס רק במכירה' popup can't be understood, stays open, and covers the left side of the page",
+      "Unclear what 'הדרך מוצגת בלי דירוג' refers to",
+      "No next steps on how to open the account, buy the fund, minimums, or set up automatic monthly deposits",
+      "No breakdown of Psagot's 1,057 ₪ cost",
+      "No simple number or percent for the tax paid on sale",
+      "No information on risk (market drops, safety if the fund or broker fails)",
+      "The foreign funds (iShares, Vanguard, 'אין מחיר כאן') would be cut",
+      "The line chart in the sensitivity section would be cut"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says the coloured tags 'lost' them and they'd cut them, which is about not understanding the tags, not about weak icons that fail to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0664072
+  },
+  "b": {
+    "raised": [
+      "Youth prices at Leumi/Hapoalim/Mizrahi/Discount are left out of the calculation, so the reader can't tell if one of them beats Psagot",
+      "The note \"if the dollar doesn't move against the shekel\" worried the reader",
+      "The coloured cost bar has too many colours",
+      "The coloured tags on the fund list lost the reader",
+      "Didn't see why the advertising-vs-price-list claims section matters",
+      "Didn't understand the currency-hedging (נטרול מט\"ח) section",
+      "The waterfall chart's starting point (MTF + Jerusalem at 79,176 ₪) was confusing",
+      "Didn't know if the yearly percent over 4 years is good or bad",
+      "Didn't know what the orange and yellow bar colours in the account list mean",
+      "Didn't know what (4D) vs (4A) means",
+      "Unclear whether 'קרן מחקה' vs 'קרן סל' matters",
+      "Didn't understand the fee terms נאמן / קבועים / משתנים",
+      "Didn't understand the jargon עסקת החלף, צוברת, W-8BEN, US estate tax",
+      "The 'tax only on sale' popup was hard to understand and stayed open, covering the left side of the page",
+      "Unclear which 'path' 'הדרך מוצגת בלי דירוג' refers to",
+      "No next steps for opening the account, minimums, or a monthly auto-deposit",
+      "No breakdown of Psagot's 1,057 ₪ cost",
+      "No simple number or percent for the tax when selling",
+      "No information on risk or how safe the money is if Ilin or Psagot runs into trouble",
+      "Would cut the foreign funds (iShares, Vanguard, no price)",
+      "Would cut the line chart in the sensitivity section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that the coloured tags on fund rows are confusing and full of jargon, but never says the icons are weak or fail to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.061187200000000004
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1275944
+}

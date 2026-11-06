@@ -1,0 +1,14 @@
+{
+ "id": "changelog-page",
+ "task": "t02",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The site has a public page listing its own changes, which does not help a reader decide anything about money.",
+   "where": "the whole page, and its link in the menu",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

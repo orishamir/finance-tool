@@ -1,0 +1,14 @@
+{
+ "id": "indices-loose-spacing",
+ "task": "t29",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The sections and the sliders are spread out with large empty gaps, so the page is longer than it needs to be.",
+   "where": "spacing between sections and around the sliders",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

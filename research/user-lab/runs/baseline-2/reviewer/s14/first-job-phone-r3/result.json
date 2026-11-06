@@ -1,0 +1,115 @@
+{
+  "task": "s14",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:22:30.727Z",
+  "structured": {
+    "answer": "Joining is clearly worth it: I put in 750 ₪ a month and the employer adds 2,250 ₪. But if I take it out at 5 years a big chunk (−64,761 ₪) goes, leaving 136,457 ₪, so I'd join and not touch it for 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Waterfall chart under 'מושכים את הכסף אחרי 5 שנים'",
+        "why": "The −64,761 ₪ red striped bar isn't labelled in words, and the final 136,457 ₪ is less than 45,000 + 135,000, so I had to guess it's tax for early withdrawal"
+      },
+      {
+        "where": "Small text block after the chart (135,908 עד 137,668, 15,712 ₪, 47%)",
+        "why": "Too dense; I couldn't tell whether my 30,000 salary is fully counted or capped"
+      },
+      {
+        "where": "Calculator top",
+        "why": "I never saw my 30,000 in a field. It fell between screenshots, so I only trusted the 750/2,250 line"
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and first lines of מה זה (6 years tax-free)",
+      "שכירים toggle",
+      "תשואה בשנה 7, דמי ניהול 0.54",
+      "Label 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור עד התקרה'",
+      "Line '750 ₪ בחודש מכם, 2,250 ₪ מהמעסיק'",
+      "Bars 45,000 / +135,000 / +21,218 / −64,761 / 136,457"
+    ],
+    "skimmed": [
+      "למה משתמשים בזה",
+      "Small text after the chart (19 מסלולים, 135,908–137,668)",
+      "כמה זה עולה table (only 'עד 2% בשנה')",
+      "מיסוי cards"
+    ],
+    "skipped": [
+      "שווה לדעת list",
+      "מי מציע ומי מפקח",
+      "כסף נכנס ויוצא",
+      "Orange warning box in מיסוי",
+      "סיכונים ומה לא מוגן",
+      "Screens 8–9",
+      "All חוקים וכללים tags",
+      "Year slider"
+    ],
+    "unsure_meaning": [
+      "−64,761 ₪ (tax? loss?)",
+      "Pink striped bar segments in the chart",
+      "Yellow vs teal colours (guessed employer money vs profit)",
+      "15,712 ₪ ceiling and how it affects a 30,000 salary",
+      "הפקדה מוטבת",
+      "משכורת קבועת",
+      "הרווח הריאלי",
+      "47% מס במקור",
+      "חוקים וכללים · 15 tags",
+      "הזנתי / מחושב / מקור labels with 123"
+    ],
+    "not_found": [
+      "The field showing my 30,000 salary",
+      "A plain statement of how much I get if I wait 6+ years",
+      "Management fee in shekels",
+      "A recommended company or track"
+    ],
+    "findings": [
+      {
+        "what": "Big red '−64,761 ₪' with no word saying what it is; scary, and the end result looks smaller than what was paid in",
+        "where": "Waterfall chart, screen 3"
+      },
+      {
+        "what": "Default view shows withdrawal at 5 years (taxed), so the first result I see is the bad case, not the 6-year tax-free one",
+        "where": "'מושכים את הכסף אחרי 5 שנים' chart"
+      },
+      {
+        "what": "Salary ceiling 15,712 ₪ is buried in small text; with a 30,000 salary I can't tell what part counts",
+        "where": "Small text under chart, screen 4; מיסוי, screen 7"
+      },
+      {
+        "what": "Chart colours not explained next to the bars",
+        "where": "Bar chart, screen 3"
+      },
+      {
+        "what": "Fees only in percent (0.54%, עד 2%), never in shekels",
+        "where": "Calculator and כמה זה עולה"
+      },
+      {
+        "what": "Lots of jargon and little tags (חוקים וכללים · N) that clutter the text",
+        "where": "Throughout"
+      },
+      {
+        "what": "Company names listed without guidance on which to pick",
+        "where": "מי מציע ומי מפקח, כמה זה עולה"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40430,
+    "turns": 9,
+    "usd": 0.18833740000000002,
+    "input": 8,
+    "cacheWrite": 13447,
+    "cacheRead": 31947,
+    "output": 3717,
+    "model": "claude-opus-5-5"
+  }
+}

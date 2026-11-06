@@ -1,0 +1,98 @@
+{
+  "case": "rules-toggle-empty",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A 'הצגת/הסתרת החוקים והכללים' button is repeated on sections across the site, and on some sections pressing it changes nothing because there are no rules there.\",\"where\":\"the show/hide rules buttons on the page's sections\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never says what banks actually pay today, so the reader can't tell if the 1.8% example rate is realistic",
+      "The calculator shows less money left (68,270) than was deposited (70,000), and the reader had to work out for themselves that inflation was the reason",
+      "The '123 מקור / 123 מחושב / 123 הזנתי' line under the title is confusing",
+      "The second paragraph of 'מה זה' (8 deposit types, 'אפשרות השבירה ותחנות היציאה') went over the reader's head",
+      "The 'צמוד למדד' paragraph only made sense after a second reading",
+      "The term 'עוגן' and the anchor-rate line naming the banks were confusing",
+      "The note says an entered rate shows as a dashed line, but the reader couldn't find one",
+      "The 'תקופה 12 חודשים' text is cut off",
+      "The reader didn't understand why the example adds ₪500 a month to a deposit",
+      "The comparison with 'קרן כספית' lost the reader",
+      "The codes (TXI-03, BANK-06, etc.) and the green code tags meant nothing",
+      "'אין ביטוח פיקדונות' is worrying, and the reader doesn't know how worried to be",
+      "'חשבון במערכת סגורה' makes opening a deposit at another bank sound complicated",
+      "The 'כמה זה עולה' table doesn't say how much anything costs",
+      "The 'הפסד ממכירת ניירות ערך' paragraph wasn't understood",
+      "The red box admits the site doesn't know how tax treats a broken deposit",
+      "The bank-collapse warning is scary, and the reader wants more information",
+      "The thin pinkish line on the chart is unexplained",
+      "The dotted purple underline on the result lines makes it unclear whether they can be clicked",
+      "The 'חוקים וכללים' column in the cost table is empty",
+      "The glossary's 'איפה מופיע' column and its tags meant nothing",
+      "Terms like 'מוצרי שוק הכסף', 'מערכת סגורה' and 'הבטחת קרן' weren't understood",
+      "The line 'הריבית שבבנק פרסם; ריבית שתזינו תחול על כל היתרה' wasn't understood",
+      "No example in shekels of what breaking the deposit early costs",
+      "No comparison with leaving the money in a current account or with the S&P 500",
+      "Can't find a minimum amount or how to actually open a deposit",
+      "No guidance on whether a fixed or variable rate suits the reader",
+      "Would remove the long glossary, 'מה האתר לקח בחשבון', and the 'פטור למעוט הכנסה' paragraph",
+      "'מי מציע ומי מפקח' and 'כמה זה עולה' said almost nothing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report notes that the rules column in one table is empty, but it never mentions a repeated show/hide rules button or a button that does nothing when pressed."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07905519999999999
+  },
+  "b": {
+    "raised": [
+      "Calculator shows ending with less (68,270) than deposited (70,000), which was unsettling and only explained by inflation after working it out",
+      "Page never says what banks actually pay today, so unclear if the 1.8% example rate is realistic",
+      "The '123 מקור 123 מחושב 123 הזנתי' line under the title is confusing",
+      "Second paragraph of 'מה זה' (8 deposit types table, exit stations) went over their head",
+      "'צמוד למדד' paragraph needed two reads to understand",
+      "'עוגן' and the anchor-rate-by-bank line were confusing",
+      "Text says entered rate shows as a dashed line, but no dashed line could be found",
+      "The 'תקופה 12 חודשים' text is cut off",
+      "Unclear why the deposit example adds ₪500 every month when a deposit is a one-time lump",
+      "Comparison with 'קרן כספית' lost them since the term is unknown",
+      "Codes like TXI-03 / BANK-06 / TXI-17 / BANK-23 mean nothing",
+      "'אין ביטוח פיקדונות' is worrying; unclear how worried to be",
+      "'חשבון במערכת סגורה' makes opening at another bank sound complicated",
+      "'כמה זה עולה' table doesn't say how much exit fees actually are",
+      "'הפסד ממכירת ניירות ערך' paragraph not understood",
+      "Red box admits the site doesn't know how tax treats a broken deposit",
+      "Bank-collapse warning is scary and they want more information",
+      "Thin pinkish line on the chart is unexplained",
+      "Dotted purple underline on result lines leaves it unclear whether to click",
+      "'חוקים וכללים' column in the cost table is empty",
+      "'איפה מופיע' glossary tags mean nothing",
+      "Green code tags not understood",
+      "Terms 'מוצרי שוק הכסף' and 'הבטחת קרן' not understood",
+      "'הריבית שבבנק פרסם; ריבית שתזינו תחול על כל היתרה' not understood",
+      "No shekel example of how much is lost by breaking the deposit early; site doesn't calculate it",
+      "No comparison with leaving money in a current account or with an S&P 500 fund",
+      "No info on minimum amount or how to actually open a deposit",
+      "No guidance on whether fixed or variable rate suits them",
+      "Would drop the glossary table, 'מה האתר לקח בחשבון', tax-exemption paragraphs, 'מי מציע ומי מפקח' and 'כמה זה עולה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions repeated show/hide rules buttons that do nothing when pressed; it only notes an empty 'חוקים וכללים' table column, which is a different element and gives a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0744872
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1535424
+}

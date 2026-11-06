@@ -1,0 +1,36 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings object to comparing against one named bank (Leumi) or quoting its deposit rate. Findings 4 and 8 cover the same comparison area but complain about tax and about the missing after-cost figure."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0165274
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding objects to comparing against one named bank (Leumi) and its deposit rate. Finding 8 is about the comparison box, but it complains about missing after-tax figures, and finding 4 is about tax rates, not about singling out one bank."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0164194
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0329468
+}

@@ -1,0 +1,115 @@
+{
+  "task": "s12",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:19:34.943Z",
+  "structured": {
+    "answer": "It's savings my employer and I pay into from my salary; the earnings are tax-free and I can take it out without tax 6 years after the first payment (3 if it's for training), or earlier with tax. The employer puts in most of it, so yes, worth having.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "10-year bars in 'מה מייחד' (17,370 ₪ vs 16,955 ₪)",
+        "why": "Not clear if 17,370 is what I end up with or only the profit ('הרווח נטו… פחות מה שהפקדת'); and a 415 ₪ difference over 10 years made me doubt it's worth it"
+      },
+      {
+        "where": "Line 'ההפרש נע בין ‎−342.02 ₪ לבין 2,106 ₪'",
+        "why": "Minus sign suggests the keren can come out worse; didn't understand when"
+      },
+      {
+        "where": "'מההפקדה החודשית שלכם רק 300 ₪ נחשבים הפקדה מוטבת'",
+        "why": "Didn't get what happens to the other 200 ₪ of the 500"
+      }
+    ],
+    "used": [
+      "Heading and subtitle 'קרן השתלמות'",
+      "'מה זה' section: 6 years after first payment, 3 for השתלמות, can withdraw earlier with tax, 7.5% / 2.5%",
+      "Bar chart after 10 years: 17,370 ₪ vs 16,955 ₪, difference 415.84 ₪",
+      "'כסף נכנס ויוצא' cards: 'כשעוברות 6 שנים', 'עד 4 ימי עסקים', transfer without tax",
+      "'מיסוי' card headings: 'אין מס על הרווחים', 'פטור במשיכה אחרי תקופת ההמתנה'",
+      "First line of orange warning: 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "'למה משתמשים בזה' section",
+      "Example box with Meitav vs Yelin Lapidot and salary 12,000",
+      "Costs/tax table under the bars",
+      "'שווה לדעת' list",
+      "'מי מציע ומי מפקח'",
+      "'סיכונים ומה לא מוגן' first line",
+      "Glossary 'מונחים'"
+    ],
+    "skipped": [
+      "'שינוי הסכומים' fold",
+      "'שחקו עם המספרים שלכם' fold",
+      "'כמה זה עולה' fees table",
+      "Company cards / 'הצגת החברות'",
+      "All 'חוקים וכללים' tags",
+      "Rest of orange warning (31%, 47%)",
+      "Screen 9"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "משכורת קבועת",
+      "ותק",
+      "סכום מוטב",
+      "שכר נאמן",
+      "123 מקור / מחושב / הזנתה",
+      "−342.02 ₪",
+      "17,370 ₪ — total or profit"
+    ],
+    "not_found": [
+      "How to find out which company runs my keren and which track I'm in",
+      "What to actually do first",
+      "An example for my own salary"
+    ],
+    "findings": [
+      {
+        "what": "Big figure 17,370 ₪ reads like the final amount; it's only explained in small text that it's net profit",
+        "where": "10-year bar chart in 'מה מייחד'"
+      },
+      {
+        "what": "Range with a minus sign (−342.02 ₪) scares and isn't explained up front",
+        "where": "'ההפרש תלוי גם במי שבוחרים' bullets"
+      },
+      {
+        "what": "Difference of only 415.84 ₪ makes the keren look barely worth it, confusing the main message",
+        "where": "Under the bars"
+      },
+      {
+        "what": "Example is preset to 12,000 salary and specific funds, not my situation",
+        "where": "Example box in 'מה מייחד'"
+      },
+      {
+        "what": "Jargon like 'הפקדה מוטבת', 'הרווח הריאלי', 'משכורת קבועת' with no plain explanation inline",
+        "where": "Text under the bars and 'מיסוי'"
+      },
+      {
+        "what": "No clear next step for an employee who already has one",
+        "where": "Whole page"
+      },
+      {
+        "what": "Unexplained '123 מקור / מחושב / הזנתה' markers at the top",
+        "where": "Under the page heading"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41380,
+    "turns": 10,
+    "usd": 0.2071344,
+    "input": 8,
+    "cacheWrite": 15316,
+    "cacheRead": 34072,
+    "output": 3888,
+    "model": "claude-opus-5-5"
+  }
+}

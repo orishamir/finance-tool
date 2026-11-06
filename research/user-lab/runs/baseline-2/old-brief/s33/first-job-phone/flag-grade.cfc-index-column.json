@@ -1,0 +1,80 @@
+{
+  "case": "cfc-index-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Text under the index name in the index column is unnecessary, and the column is wider than its content.\",\"where\":\"the index column\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The cost/fees part is not fully understandable",
+      "The grey note makes them wonder which of the company's funds are missing",
+      "Doesn't know what \"(4A)\" / \"(4D)\" in fund names mean",
+      "The grey tags under the name confuse more than they help",
+      "Doesn't know what \"צוברת\" (accumulating) means for them",
+      "Unclear why \"מחזיקה את המניות\" appears only on the Israeli funds",
+      "\"עסקת החלף\" (swap) is unknown and sounds risky, making them nervous about the S&P 500 fund",
+      "\"מס גם על שינויי המטבע\" sounds bad but they can't tell how bad",
+      "Doesn't know what \"מאיה\" (Maya) is; the link seems to lead to another site",
+      "On the first page, the index names in green with an arrow didn't help",
+      "Green text looks like links but it's unclear whether to click",
+      "Underlined fee numbers may open something on hover, but that isn't clear from looking",
+      "Didn't know what to do with the \"נאמן\" (trustee) fee line",
+      "Unclear whether to add up the fixed, variable and trustee fees, and whether the variable fee can go up",
+      "Doesn't understand why US/world funds cost so much more than Israeli ones",
+      "Wants a single total yearly cost number (e.g. per 10,000 ₪)",
+      "Can't compare the S&P 500 fund's cost with other companies' funds",
+      "No past performance shown",
+      "Would drop the security number column and the Maya link",
+      "Would drop most grey tags unless each comes with an explanation"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never calls the text under the index name unnecessary or the column too wide. They praise those description lines as the main reason they chose the screen."
+      }
+    ],
+    "liked": [],
+    "usd": 0.047555200000000006
+  },
+  "b": {
+    "raised": [
+      "The cost/fees part is not fully understood, which limits the reader's confidence",
+      "The grey note makes the reader wonder which of the company's funds are missing",
+      "Doesn't know what the (4A)/(4D) codes in fund names mean",
+      "The grey tags confused more than helped; 'צוברת' (accumulating) is unclear",
+      "Unclear why 'מחזיקה את המניות' (holds the shares) appears only on Israeli funds",
+      "'עסקת החלף' (swap deal) is unknown and sounds risky, making the reader nervous about the S&P 500 fund",
+      "'מס גם על שינויי המטבע' sounds bad but the reader can't tell how bad",
+      "Doesn't know what 'מאיה' (Maya) is; the link seems to lead to another site",
+      "On the first page the green index names with an arrow didn't help understand the index",
+      "Green text looks like links but the reader doesn't know whether to click",
+      "Underlined fee numbers might open something on hover, but it isn't clear",
+      "Didn't know what to do with the 'נאמן' (trustee) fee line",
+      "Unclear whether fee lines should be added up; the total seems high, and the reader doesn't know if 'משתנה' (variable) can go up",
+      "Doesn't understand why US/world funds are much more expensive than Israeli ones",
+      "Wants a single total yearly cost number (e.g., on 10,000 ₪ you pay X)",
+      "Can't compare the S&P 500 fund's cost against other companies' funds",
+      "Missing past performance information",
+      "Wants to know in practice whether the swap structure is riskier",
+      "Would remove the security number column and the Maya link",
+      "Would remove most grey tags unless each comes with an explanation"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader found the text under the index names to be the most valuable part of the page, the opposite of calling it unnecessary, and never mentioned the column's width."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0510752
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.09863040000000001
+}

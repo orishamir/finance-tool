@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Chosen fund shows −0.04%, reads as losing money and nearly scared reader off",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "IBI fund cheapest but IBI account ranked 11th with red bar; same name confusing",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Headline result is for an example amount, not the user's own, easy to mistake as theirs",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Jargon on fund card and cost legend",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Long account list with grey notes; entries look alike",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Deposited 70,000 ₪ box first read as a result",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0428428
+}

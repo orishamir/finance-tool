@@ -1,0 +1,125 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:14:26.201Z",
+  "structured": {
+    "answer": "Harel, the \"מניות\" track (קופה 8522): known name, 24.04% over 3 years, and the cheapest fee I saw at 0.55% with 0% on deposits. I'd open that with the 30K.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screens 7-8",
+        "why": "company group header had scrolled away, couldn't tell which company the rows belonged to"
+      },
+      {
+        "where": "comparing Harel מניות 24.04% vs Analyst עוקב מדדים - גמיש 26.39% and Meitav 25.86%",
+        "why": "higher return elsewhere but higher fee; went with the known name and lowest fee"
+      },
+      {
+        "where": "return column",
+        "why": "many rows say 'פחות מ־3 שנים' instead of a number, couldn't compare them"
+      }
+    ],
+    "used": [
+      "heading 'כל המסלולים בכל החברות'",
+      "'קופת גמל להשקעה 143' button already selected",
+      "Harel group line 'דמי ניהול ההחיסכון: מ־0.54% עד 0.61%'",
+      "Harel מניות row: 0.55%, 24.04% for 3 years, 14.64% for 5 years",
+      "Analyst עוקב מדדים - גמיש 26.39% / 0.61%",
+      "Meitav עוקב מדדי מניות 25.86% / 0.65%",
+      "S&P 500 tracks around 13.7%"
+    ],
+    "skimmed": [
+      "filter chips 'במה הכסף מושקע'",
+      "Mor, Analyst and Meitav track rows",
+      "כסף מנוהל column",
+      "חשיפה column with ring charts"
+    ],
+    "skipped": [
+      "grey intro text under heading about 2025 and ספטמבר 2026",
+      "'מה זה קופת גמל להשקעה' link",
+      "search box",
+      "'?' icons in column headers",
+      "top menu (מדריך, השקעה במדד, חוקים וכללים)",
+      "screens 9-15"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "ההפקדות vs ההחיסכון",
+      "קופה numbers like 8522",
+      "green vs yellow in the ring chart (guessed green=shares, yellow=dollars)",
+      "whether 24.04% is per year (header says 'תשואה שנתית ממוצעת')",
+      "'פחות מ־3 שנים'",
+      "'עוד לא דווח' with orange icon",
+      "'(עד 25% מניות)'",
+      "dotted underlines on numbers",
+      "'123 מקור / 123 מחושב'"
+    ],
+    "not_found": [
+      "a recommended track or 'start here' pick",
+      "what fees mean in shekels for my amount",
+      "how to actually open the fund / first step",
+      "company name staying visible while scrolling"
+    ],
+    "findings": [
+      {
+        "what": "Every row repeats 'ההחיסכון', 'ההפקדות 0%', 'מניות', 'מט\"ח', '3 שנים', '5 שנים'; I had to re-read them on each row to find what differs",
+        "where": "track table, all screens"
+      },
+      {
+        "what": "Company name lives only in the group header, which scrolls away; on lower screens I couldn't tell which company a row belonged to",
+        "where": "screens 7-8"
+      },
+      {
+        "what": "143 near-identical rows and no hint which one fits someone like me",
+        "where": "whole table"
+      },
+      {
+        "what": "Many tracks show 'פחות מ־3 שנים' instead of a number, so they can't be compared",
+        "where": "return column"
+      },
+      {
+        "what": "Exposure ring chart colours explained only by tiny dots next to two percents; unclear what מט\"ח means",
+        "where": "חשיפה column"
+      },
+      {
+        "what": "Fees only in percent, nothing in shekels, so 0.55% vs 0.65% feels like nothing",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "'עוד לא דווח' with orange warning icon looks scary and isn't explained",
+        "where": "new tracks (הלכה, משולב סחיר) screens 4 and 7"
+      },
+      {
+        "what": "Column headers are far from the numbers and in small grey text",
+        "where": "sticky table header"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40573,
+    "turns": 10,
+    "usd": 0.2049774,
+    "input": 8,
+    "cacheWrite": 15150,
+    "cacheRead": 34427,
+    "output": 3843,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

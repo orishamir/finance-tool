@@ -1,0 +1,88 @@
+{
+  "case": "hishtalmut-pf18",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שווה לדעת' note 'קרן השתלמות: אין העברה חלקית, ואיחוד רק כשנזיל' reads as if a study fund could not be moved between companies without tax.\",\"where\":\"the 'שווה לדעת' block\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page doesn't say what 'גיל פרישה' is in years or when the 3-year period starts",
+      "The '123 מקור / חושב / הזנתי' line is confusing",
+      "Doesn't know what 'קופת גמל להשקעה' is (the price comparison is lost on them)",
+      "Investment-track / related-product buttons are jargon; unclear which to pick",
+      "Calculator compares with a 'חשבון ניירות ערך' they don't have and didn't ask about",
+      "Product numbers and company names (13245, יילין לפידות...) mean nothing",
+      "Unclear where the 10,000 ₪ initial deposit in the example would come from",
+      "The slider doesn't show where a 61-year-old would be",
+      "The 415.84 ₪ difference looks hardly worth it, because the example leaves out employer money",
+      "'300 ₪ ... הפקדה מוטבת' is confusing: is it only their own part or the whole deposit?",
+      "Bank/fund-manager ranges don't say which company to choose",
+      "Codes like TXH-09, KH-15, PF-18 mean nothing",
+      "Doesn't know what 'נזיל' means in the 'אין העברה חלקית, ואיחוד רק כשנזיל' line",
+      "Unsure whether they or the employer choose the company",
+      "Worried that the Treasury may cut the benefit before the 6 years are up",
+      "Only the heading of 'מה האתר לקח בחשבון' was visible",
+      "Unclear what clicking the company names in the fees table does",
+      "'הוצאות ישירות – אין תקרה כוללת' is worrying, and no typical amount is given",
+      "Couldn't work out what 25% of the real profit would be in shekels",
+      "No example that includes the employer's 7.5%",
+      "Missing: what happens to the money if they stop working, retire or change jobs before 6 years",
+      "Missing: whether the 2.5% comes from net salary and how much take-home pay drops",
+      "Missing: which investment track suits someone close to retirement",
+      "Missing: what management fee people actually pay, as opposed to the maximum",
+      "Would drop the glossary's 'איפה מופיע' column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader stopped at this line only because they didn't know the word 'נזיל'; they never say it suggests the fund can't be moved between companies without tax."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0723632
+  },
+  "b": {
+    "raised": [
+      "Page doesn't say what 'גיל פרישה' means in years or when the 3-year period starts, so unclear if it applies at 61",
+      "The '123 מקור 123 חושב 123 הזנתי' line is confusing",
+      "'קופת גמל להשקעה' in the price comparison line is not understood",
+      "Investment-track / related-product buttons are jargon; unclear which one to pick",
+      "Calculator compares with a 'חשבון ניירות ערך' the reader never asked about, with meaningless product numbers and company names",
+      "Unclear where the 10,000 ₪ initial deposit in the example would come from",
+      "The year slider doesn't show where a 61-year-old would be",
+      "The 415.84 ₪ difference makes the fund look hardly worth it at first glance",
+      "'300 ₪ ... הפקדה מוטבת' is confusing: only own part or the whole?",
+      "Bank vs fund-manager ranges don't say which company to choose",
+      "Codes in 'שווה לדעת' (TXH-09, KH-15, PF-18) mean nothing",
+      "'אין העברה חלקית, ואיחוד רק כשנזיל': reader doesn't know what 'נזיל' (or איחוד/העברה חלקית) means",
+      "Unsure whether the employer or the worker chooses the company",
+      "Worried the Treasury discussion of cutting the benefit could change the rules before 6 years pass",
+      "Unclear what clicking company names in the fees table does",
+      "'הוצאות ישירות – אין תקרה כוללת' is worrying, with no typical amount given",
+      "Can't work out what 25% tax on the real profit would be in shekels",
+      "No example that includes the employer's 7.5% contribution",
+      "Missing: what happens if you stop working, retire or change jobs before 6 years",
+      "Missing: whether the 2.5% comes out of net salary and how much take-home drops",
+      "Missing: which investment track to choose near retirement",
+      "Missing: what a typical management fee actually is, not just the 2% maximum",
+      "Glossary 'איפה מופיע' column could be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they don't understand the word 'נזיל' in that note (item 12). They never say it reads as if the fund can't be moved between companies without tax, so this is a vocabulary gap, not the person's misreading problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0709232
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1432864
+}

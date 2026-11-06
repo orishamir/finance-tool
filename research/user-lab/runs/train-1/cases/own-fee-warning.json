@@ -1,0 +1,14 @@
+{
+ "id": "own-fee-warning",
+ "task": "t18",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Each fund's own fee figures carry an amber caution mark ('לפי החברה'), which reads as if data were missing or doubtful, though a fund manager's figure for its own fund is the official one.",
+   "where": "the fee figures under every fund row",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

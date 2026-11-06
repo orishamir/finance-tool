@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 is about the same table, but it complains about a confusing red minus sign, not about needing a separate table to decode the graph instead of labelling the graph directly, and no other finding raises that."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014415400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding objects that the table only exists to decode the graph instead of putting the labels on the graph; finding 1 is about the same table but complains about a confusing minus sign and red colour."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0141114
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0285268
+}

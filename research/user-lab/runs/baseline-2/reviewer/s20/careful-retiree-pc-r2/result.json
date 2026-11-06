@@ -1,0 +1,127 @@
+{
+  "task": "s20",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:30:35.537Z",
+  "structured": {
+    "answer": "I saw that Harel has many products, and in its קופת גמל להשקעה (16 tracks) it takes about half a percent a year, 0.54%–0.61%, and nothing on deposits, while the law allows up to 1.05%. But I didn't see anything that says it's as safe as a deposit, and I didn't see all the products, so I'll ask my son or the bank before I do anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Table, column 'תשואה שנתית ממוצעת'",
+        "why": "Not sure if 24.04% for 3 years is per year or for all three years together"
+      },
+      {
+        "where": "Track 'כספי (שקלי)'",
+        "why": "Don't know what כספי means here or whether it is like a deposit"
+      },
+      {
+        "where": "Product buttons at top",
+        "why": "Only קופת גמל להשקעה was shown; to see the others I'd have to press buttons, so I didn't see 'everything Harel offers'"
+      },
+      {
+        "where": "Small line under table about הוצאות ישירות",
+        "why": "Says there are more expenses not shown here, and I couldn't tell how much"
+      }
+    ],
+    "used": [
+      "Title הראל and the product buttons with counts",
+      "Line '16 מסלולים · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%'",
+      "Fee column 0.54–0.61% מהחיסכון, 0% מההפקדה",
+      "Return of מניות 24.04%/14.64% and כספי (שקלי) 4.25%/3.08%",
+      "'פחות מ־3 שנים' on many rows",
+      "'התקרה בחוק: 1.05% מהחיסכון, 4% מההפקדה'",
+      "Sentence that past return doesn't say what will happen"
+    ],
+    "skimmed": [
+      "Track filter buttons row",
+      "Rows of the table in the middle (עוקב מדדים, משולב סחיר, אג\"ח סחיר)",
+      "Column כסף מנוהל",
+      "Fold headings at the bottom"
+    ],
+    "skipped": [
+      "S&P 500 track",
+      "The coloured circles and percentages of מניות/מט\"ח",
+      "Folds: קרנות מחקות, מרכזיות לפיצויים, קרנות סל, מה כתוב במסמכים של הראל",
+      "Search box 'לא מצאתם שם?'",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדד מניות / עוקב מדדי אג\"ח (מדד)",
+      "כספי (שקלי)",
+      "מט\"ח",
+      "חשיפה",
+      "גמיש",
+      "קיימות",
+      "הוצאות ישירות (עמלות מסחר, משמרות)",
+      "PF-10",
+      "קופה numbers like 15283",
+      "123 ממקור / מחושב / הזנתה",
+      "תשואה שנתית ממוצעת — per year or total?"
+    ],
+    "not_found": [
+      "Anything comparing to a bank deposit or saying which track is safe",
+      "The other Harel products' fees and returns (only קופת גמל להשקעה shown)",
+      "How much the extra direct expenses are",
+      "Who runs this site"
+    ],
+    "findings": [
+      {
+        "what": "Dark black background with grey small text is hard to read even enlarged",
+        "where": "All screens, especially the notes under the table"
+      },
+      {
+        "what": "Note that direct expenses are taken on top of the management fee but not shown, which made me worry the real cost is hidden",
+        "where": "Line under the table, screen 3"
+      },
+      {
+        "what": "Table crowded with numbers, circles and two close colours (green/yellow) I can't tell apart",
+        "where": "Main table, screens 1–3"
+      },
+      {
+        "what": "English letters and index words in the track names, so I felt it wasn't for me",
+        "where": "Track buttons and rows (S&P 500, עוקב מדד)"
+      },
+      {
+        "what": "No plain sentence telling which track is low-risk or like a deposit",
+        "where": "Whole page"
+      },
+      {
+        "what": "Most tracks show only 'פחות מ־3 שנים', with no returns to see",
+        "where": "Return column"
+      },
+      {
+        "what": "Unclear whether the average yearly return is per year or the total, and 24% stuck with me",
+        "where": "מניות row"
+      },
+      {
+        "what": "Only one product type is shown; seeing everything Harel offers needs clicking each button",
+        "where": "Product buttons, screen 1"
+      },
+      {
+        "what": "Unknown site name 'מקור', not Harel's own site, so I'm not sure I can trust it",
+        "where": "Top bar"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 45262,
+    "turns": 6,
+    "usd": 0.1467522,
+    "input": 8,
+    "cacheWrite": 7696,
+    "cacheRead": 21661,
+    "output": 4041,
+    "model": "claude-opus-5-5"
+  }
+}

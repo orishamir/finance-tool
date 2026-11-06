@@ -1,0 +1,48 @@
+{
+  "case": "live-02-indices-cost-bar-legend",
+  "stamp": "{\"keys\":[{\"id\":\"legend-every-row\",\"problem\":\"Every row of the list repeats the same colour key under its bar (which colour is which kind of cost), so the same names are read again on every row instead of once for the whole list.\",\"where\":\"the small bar in each row of the list of accounts, and the line of coloured squares with names under it\",\"kind\":\"general\"},{\"id\":\"amounts-off-bar\",\"problem\":\"The amount each coloured part of a row's bar stands for is written apart from the bar, in a line under it, not on the part itself, so the eye goes back and forth between colour and number.\",\"where\":\"the small bar in each row of the list of accounts, and the amounts in the line under it\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "Finding 3 complains about repeated tag chips in the fund list, not the colour key repeated under each cost bar in the account list, so no finding names this problem."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 4,
+        "why": "Finding 4 says the cost bar colours and their amounts are in separate places, so the reader matches back and forth, which is the person's problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0164634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "Finding 3 is about tag chips repeated on fund-list rows rather than the colour key under the cost bars in the account list, so none of the findings names this problem."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 4,
+        "why": "Finding 4 says the cost-bar colours and their amounts sit in separate places, which makes the reader match them back and forth; this is the same problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017115400000000003
+  },
+  "third": null,
+  "ranks": {
+    "legend-every-row": 0,
+    "amounts-off-bar": 4
+  },
+  "agreed": {
+    "legend-every-row": true,
+    "amounts-off-bar": true
+  },
+  "against": {},
+  "usd": 0.033578800000000006
+}

@@ -1,0 +1,113 @@
+{
+  "task": "s32",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:45:59.467Z",
+  "structured": {
+    "answer": "I'd take the third drawing because it has the fewest numbers and doesn't show \"מניות עד 120%\" on every row. But these are קרנות סל, not deposits, and on my own I'd have closed the page at the heading.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Heading \"קרנות סל\" on every screen",
+        "why": "Not deposits or saving. I'd have left here if I hadn't been asked to compare."
+      },
+      {
+        "where": "\"עד 120%\" in the חשיפה column",
+        "why": "More than 100% of the money doesn't make sense to me and it scared me"
+      },
+      {
+        "where": "Second drawing, \"פרופיל 4A: מניות עד 120%, מט\"ח עד 10%\"",
+        "why": "Long line with English letters, I lost it in the middle"
+      },
+      {
+        "where": "Fees, three lines for each fund",
+        "why": "Didn't know whether to add them up, and what נאמן is"
+      }
+    ],
+    "used": [
+      "Fund names",
+      "\"עוקבת אחרי מדד\" column",
+      "Fees column: קבועים / משתנים",
+      "The 120% numbers in the חשיפה column",
+      "Differences in the חשיפה column between the three drawings"
+    ],
+    "skimmed": [
+      "Tags under the fund names (עסקת החלף, חשיפה לדולר, מס גם על שינויי המטבע)",
+      "The line at the bottom \"כל הקרנות כאן לא מחלקות\"",
+      "The grey line under the heading"
+    ],
+    "skipped": [
+      "The fund names in English letters (S&P 500, MSCI AC World)",
+      "Security numbers (מספר נייר)",
+      "Links \"בדף הקרן במאיה\"",
+      "Second line at the bottom about החשיפה המרבית"
+    ],
+    "unsure_meaning": [
+      "נאמן",
+      "עסקת החלף",
+      "חשיפה מרבית",
+      "מט\"ח עד 120%",
+      "4A / 4D / פרופיל",
+      "מדד (I know it as the price index)",
+      "לא מחלקות",
+      "מאיה",
+      "S&P 500, MSCI AC World",
+      "Underlined numbers - do I press them?"
+    ],
+    "not_found": [
+      "Anything about deposits or safe saving",
+      "One total sum of what I pay",
+      "A simple explanation of what 120% means",
+      "Whether I can lose money"
+    ],
+    "findings": [
+      {
+        "what": "\"עד 120%\" next to מניות and מט\"ח looks like more than all the money and frightens me",
+        "where": "חשיפה מרבית column, first drawing"
+      },
+      {
+        "what": "Page opens with \"קרנות סל\" and English letters, nothing safe that I know",
+        "where": "Heading and fund names"
+      },
+      {
+        "what": "Fees split into three lines with no total, and נאמן is unexplained",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Small grey text on a dark background is hard to read even enlarged",
+        "where": "Column headings and the line under the heading"
+      },
+      {
+        "what": "Long line with \"פרופיל 4A\" in the middle of the row, lost halfway",
+        "where": "Second drawing, under עוקבת אחרי מדד"
+      },
+      {
+        "what": "\"מס גם על שינויי המטבע\" worries me with no explanation",
+        "where": "Tags on the two foreign funds"
+      },
+      {
+        "what": "Words with no explanation: עסקת החלף, לא מחלקות, מאיה",
+        "where": "Tags and bottom line"
+      }
+    ]
+  },
+  "steps": 3,
+  "reads": 3,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34035,
+    "turns": 5,
+    "usd": 0.18000619999999998,
+    "input": 6,
+    "cacheWrite": 14611,
+    "cacheRead": 16971,
+    "output": 2985,
+    "model": "claude-opus-5-5"
+  }
+}

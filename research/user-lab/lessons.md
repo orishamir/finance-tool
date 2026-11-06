@@ -22,6 +22,45 @@ most one candidate instruction, which enters only through the held-out test.
 - **Instruction change:** none (a catch).
 - **The site:** the fix is a layout choice made from whole-page options (issue #198).
 
+### 2. The key under every bar (2026-11-06, indices page, the account and fund lists, PC, 1440 px)
+
+- **His words:** "and here - the legend is repeated on every broker? why? just put it somewhere central... and put the
+  amounts on the bar itself". Two keys (`live/2026-11-06-02-indices-cost-bar-legend/case.json`): the same colour key
+  under every row's bar, and each part's amount written apart from its part.
+- **Reviewer, run before anything changed:** a miss. Neither key in 9 sessions (three personas, three runs each,
+  `runs/live-02`); the graders agreed on 17 of 18 calls. The sessions flagged small grey text, jargon, the unlabelled
+  marks of the chart above the lists and minus figures; the student twice named the size of the custody fee on these
+  very rows, and never the key repeated under each of them.
+- **Human reason:** a person scanning a list wants to read only what differs from item to item. Words, marks or a
+  colour key that are the same on every item make them read the same thing again on each one, when telling them once
+  would do; and a number written away from the coloured part it belongs to makes them look back and forth to match the
+  two.
+- **The same reason behind earlier flags:** `tracks-warnings` (a warning mark on nearly every row; "keep the one at
+  the top"), `own-terms-line-every-row`, `tracks-r2-companies` ("this is repeated a lot of times"), `cfc-exposure`;
+  and for the matching half `study-r1-decoder-table` ("names and numbers written on the graph") and `study-r1-coins`.
+  Planted kinds p04 (a legend far from what it keys) and p05 (a label repeated on every row) already carry it, so no
+  new kind. Published: behaviour guide 1.4 (a legend costs back-and-forth; weak evidence) and item 14 of section 5.
+  The v0 reviewer had missed all of them: 0 of 8 on the four held-out cases, and p05 in every session of the first
+  planted run.
+- **Candidate (`versions/candidates/once.md`):** "You notice the reading a screen makes you do again and again ..."
+  Tested where it was not built from (`once.json` has every number):
+  - the four held-out cases of the same reason: 5 of 8 with it, 0 of 8 without;
+  - the whole held-out benchmark: 17 of 72 with it, 13 of 72 without (pooled 12 against 8 of 36); four earlier catches
+    were pushed out of the first ten, eight new ones came in;
+  - planted, another page and device: the far legend on the TA-125 page, phone, 4 of 4 against 1 of 4; the planted
+    repeated line 1 of 8 against 0 of 8, because the sessions named the live page's own louder repeats instead;
+  - its own case: the key on every row 3 of 9, the amounts away from the bar 8 of 9 (built from it, so not proof).
+- **Why it is not kept yet:** it is loud. With it, 139 of 578 held-out findings (24%) are about repetition or
+  matching, in every session; without it, 26 of 544 (5%). Nearly all of them quote words that really do repeat on
+  the screen, but whether a person would be bothered by each is the founder's call, and the grader of the planted
+  controls rated most repeats "not serious". And the negative check could not be made: every screen tried repeats
+  something, so the instruction never had a place to stay silent. **Next:** put a sample of its findings into the
+  founder's next noise sample (`metric.md`); try it on a screen with no repeated text; keep it only if the noise stays
+  under the bar. About $28.
+- **For the fix (#204), from the controls:** on the phone the key is shown only on the chosen row, and readers on the
+  clean TA-125 phone page said the bars further down were "a guess" without it. A key placed once for the whole list
+  can be screens away on a phone (planted kind p04), so the amounts on the bar are what carries the meaning there.
+
 ## Other sites
 
 Reactions to sites this project did not build (`elsewhere/`). Graded the same way; a reason seen here and on this

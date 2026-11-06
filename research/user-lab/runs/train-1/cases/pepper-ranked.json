@@ -1,0 +1,14 @@
+{
+ "id": "pepper-ranked",
+ "task": "t32",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Pepper is ranked among the cheapest places to buy an S&P 500 fund, though Pepper has no investment account of its own.",
+   "where": "the account ranking",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

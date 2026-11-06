@@ -1,0 +1,36 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 is about a tag on the added fund, but it only says the red tag looks like a warning and isn't clear; it never says the labels were applied without the reader's input or that the reader can't choose them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0173674
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 is about a tag on the added fund, but it complains that the tag looks like a warning and is unclear, not that the system gave the fund labels the reader never chose and can't change."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0165394
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0339068
+}

@@ -1,0 +1,36 @@
+{
+  "case": "tracks-assets-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.\",\"where\":\"that column's head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'נכסים בסוף ספטמבר' column is unclear about whether it means the track's pooled money or the fund's own assets; finding 3 only lists assets among too many numbers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158554
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'נכסים בסוף ספטמבר' column could be mistaken for the fund's own assets; finding 3 lists assets only as one of too many numbers in a row."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0157154
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031570799999999996
+}

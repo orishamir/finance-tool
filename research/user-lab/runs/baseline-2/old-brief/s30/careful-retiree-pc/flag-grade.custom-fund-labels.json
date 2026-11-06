@@ -1,0 +1,80 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The main fund list doesn't price the reader's own fund ('עוד לא נאסף', 'אין מחיר כאן').",
+      "The 'סוג קרן אחר' table puts the Swap fund 19,980 ₪ worse, about 22,000 ₪ from the similar Core fund, with no explanation; the 'כלל מס פתוח' lock reads as unsettled tax and worries them.",
+      "The Swap fund and Core share the same ID code IE00B5BMR087, so the page may be looking at the wrong fund.",
+      "The coloured cost bar has too many colours.",
+      "The coloured tags in the fund list are too many to read on every row.",
+      "The long 'לא בחישוב' notes about soldiers and students don't apply to them.",
+      "The Interactive Brokers box prices the Core fund, not theirs, so it's only half useful.",
+      "The list of complaints (טענות) made them trust the advertised prices less.",
+      "The 'מה הכי משנה' chart is common sense and doesn't help choose a fund.",
+      "The currency-hedging section confused them, and its 4-year base is too small to rely on.",
+      "The step chart starts from MTF at Jerusalem ('עכשיו'), which they never told the page and don't hold.",
+      "Unclear whether the 'מול המדד' column (+0.37%) is good or bad.",
+      "They don't understand what '4D' and '4A' mean in fund names.",
+      "They don't understand what 'מס גם על שינוי המטבע' means in shekels compared with 'מס רק במכירה'.",
+      "Unclear who the trustee in 'נאמן 0.02%' is and whether that is paid on top.",
+      "No clear line showing their own fund's end amount with a broker next to the winner.",
+      "Can't find which Israeli account can buy their fund and what it costs there.",
+      "No plain explanation of the tax on a swap fund held from Israel.",
+      "Unclear whether their 0.05% fee was used in the 59,196 ₪ figure.",
+      "Nothing about safety if the foreign broker or the fund company goes bust."
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader accepts the 'חשיפה לדולר' tag on their fund and only complains that the tags in general are too many; they never say the fund got labels they didn't give or that they can't choose its labels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0678272
+  },
+  "b": {
+    "raised": [
+      "The main fund list doesn't price my fund; it shows only 'עוד לא נאסף' / 'אין מחיר כאן'.",
+      "One bottom table puts my fund 19,980 ₪ worse, while the similar Core fund comes out better, and I can't see why they're about 22,000 ₪ apart.",
+      "The lock note 'כלל מס פתוח' makes the tax on my fund sound uncertain, which worries me.",
+      "My fund shows the same ID code (IE00B5BMR087) as iShares Core, so the page may not be looking at the fund I mean.",
+      "The coloured cost bar has too many colours.",
+      "The fund list has too many coloured tags to read on every row.",
+      "The long 'לא בחישוב' notes about soldiers and students don't apply to me.",
+      "The Interactive Brokers box prices the Core fund, not mine, so it's only half useful.",
+      "The 'מה הכי משנה' chart states the obvious and doesn't help me choose a fund.",
+      "The currency-hedging section and its charts are confusing and rest on only 4 years of data.",
+      "The step chart starts from MTF at Jerusalem as 'עכשיו', which I never told the page.",
+      "It's unclear whether a bigger figure in the 'מול המדד' column is good or bad.",
+      "I don't know what '4D' and '4A' mean in the fund names.",
+      "I don't understand what 'מס גם על שינוי המטבע' vs 'מס רק במכירה' means in shekels.",
+      "It's unclear who the trustee in 'נאמן 0.02%' is and whether I pay that on top.",
+      "There's no single clear line showing my own fund's result next to the winner.",
+      "The page doesn't say which Israeli account can buy my fund or what it costs there.",
+      "There's no plain explanation of the tax on a swap fund held from Israel.",
+      "It's unclear whether my 0.05% fee was used in the 59,196 ₪ figure.",
+      "There's nothing on safety if the foreign broker or the fund company goes bust."
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader treats the 'חשיפה לדולר' tag as a true fact about their fund and never complains that the page added labels they didn't give or that they can't choose them; the ID-code complaint is about something else."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0686272
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1364544
+}

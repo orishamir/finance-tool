@@ -1,0 +1,14 @@
+{
+ "id": "home-question-heading",
+ "task": "t23",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The home card is headed 'מה השאלה שלכם?' but its fields ask for a goal (sums and years), not a question.",
+   "where": "the heading of the home question card",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

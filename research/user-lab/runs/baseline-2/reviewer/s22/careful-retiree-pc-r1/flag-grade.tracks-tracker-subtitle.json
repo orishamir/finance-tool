@@ -1,0 +1,36 @@
+{
+  "case": "tracks-tracker-subtitle",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Only some rows (Altshuler, Analyst) carry an extra line 'עוקב …' under the company name; the inconsistency adds noise.\",\"where\":\"the company cells of the table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the extra 'עוקב …' line that shows up under only some company names; finding 6 complains that the rows are busy with numbers, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145234
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the 'עוקב …' line that appears under only some company names. Finding 6 talks about busy rows, but it blames numbers like returns and money managed, not the uneven extra line."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0144834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0290068
+}

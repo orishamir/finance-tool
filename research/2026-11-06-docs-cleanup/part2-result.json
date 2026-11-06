@@ -1,0 +1,799 @@
+{
+ "docs": [
+  {
+   "path": "docs/glossary.md",
+   "writer": {
+    "commit": "d8d46e9f",
+    "done": "I rewrote docs/glossary.md in place and committed it as d8d46e9f (not pushed). `npm run check` passed: typecheck, tests, data check and site build.\n\n- **Header.** The four \"release N section added\" notes, the dated status line, the switching sweep note and the strength-label amendment are now one short intro. It covers four points:\n  - Strength words: the rule base's \"מקור מוסדי\" is shown on the site as \"לפי החברה\" (D23).\n  - Generated parts: sections 1, 2, 3 and 5 and the appendices come out of gen_glossary.py.\n  - Hand-kept parts: sections 4 and 6 must be carried over when the file is regenerated.\n  - Code readers: gen-terms.ts reads section 2's rows; data.server.ts, graduation.server.ts and compare.server.ts read section 3's rows, each sliced between the \"## 2.\", \"## 3.\" and \"## 4.\" headings.\n- **Unchanged.** Sections 1, 2, 3 and 5 and Appendices A and B are byte-for-byte the same; a script compared them with HEAD.\n- **Section 4** now holds every term that is still missing, in three parts:\n  - Missing from the rule base: the old rows plus the missing-term rows of the old 7.2, 8.2, 9.2 and 10.2.\n  - \"Shown as a link, not a number\" (D20, D22): the ISA, Bank of Israel and TASE averages, the Maya and foreign-fund lists, the makam yield and the dollar start rate.\n  - \"Not in the method or the data\": method and data facts, such as twelve deposits a year, no formula for moving the same securities between providers, the 90-day stale reading, a government bond series the engine does not run, and which banks' deposits are collected.\n- **Deleted from section 4:**\n  - Rows now closed: the annual statement structure, the child-savings statement, the default holding wrapper P-08 (the parameter now exists), the cumulative-cost series, the Hebrew `missing_reason_he` field (now in the schema), and exposure-mode revisit.\n  - The dated S&P 500 and TA-125 closure table, the \"updated 2026-10-24\" table, and the \"Tier-2 closures\" history.\n  - Both lists of glossary rows still to add (moved to open work). I kept their one shared behaviour as a single sentence: a term without a row is named without a tap-through explanation.\n  - Rows about removed things: the switching playbook (D38), the change log (D24) and the funds page (D53).\n- **Old section 6 (conflicts inside the rule base)** is removed. Each conflict is noted on its own row, and the list is open work.\n- **Old sections 7 to 10** (site definitions by release) are merged into one new section 6, \"Site definitions\", in 13 topics: comparing for a goal, starting points, comparing by exposure, saved comparisons, idle cash, fees, holdings, tracks, providers, funds, bank products, moving to another device, sources and coverage.\n- **Rows deleted from the site definitions:**\n  - Removed pages: the switching playbook (8 rows), the change log and its \"what changed\" page (5 rows), and the funds page (5 rows).\n  - Two Maya-list rows: CLAUDE.md says the site holds no fund list.\n  - The fund-manager page row: no such page exists in site/app.\n  - \"הממוצע ששולם בבנק הזה בחודש שעבר\": D20 forbids showing that number, and the site no longer uses the term.\n- **Cross-references.** References to flows, roadmap and design-spec are dropped or pointed at the code (state.ts, providers.ts, graduation.server.ts). Release and amendment dates in running text are gone; the \"checked\" dates in the source column stay.\n- **Hebrew.** Every Hebrew string is unchanged, except one clause deleted from the \"לבדיקה מחדש\" row (\"או תאריך השורה ביומן השינויים...\") because the change log is gone.",
+    "conflicts": [
+     "Maya and foreign-fund lists: the old row said their republication terms were 'unconfirmed'; CLAUDE.md and docs/data-inventory.md say TASE's terms forbid republishing the fund list. I followed CLAUDE.md: the lists are not collected and the site shows only funds that have records.",
+     "Pension clearing house: old 9.2 said the price of asking it directly was 'not found (SW OQ5, PF OQ6)', while old 8.2's later narrowing said the price side is sourced (SW-44, caps per action from 1.1.2027). I followed the later narrowing: price sourced, how consent is checked still open.",
+     "Fit mark: old 7.1's Hebrew says the track fit mark goes by the horizon only ('בגרסה הזו לפי האופק בלבד'); old 10.1's 'הירידה הגדולה ביותר שתסכימו לספוג' says the accepted fall is also used by the fit mark. method.md F-70 says the mark uses the horizon alone. Both rows left as they were.",
+     "'איפה זה בדוח': its Hebrew still says the statement's structure has no official source in the rule base, but that was closed by PF-33 to PF-38 and CS-27, and holdings/statement.tsx renders those rules. I updated the English source column and left the Hebrew for the Hebrew editor.",
+     "'מדד' and 'ירידה צפויה לחשיפה': the rows said the rule base describes two indices; it now also describes TA-35, TA-90, NASDAQ-100 and MSCI World and ACWI (ETF-44 to ETF-50). I rewrote the English to match; what the rows say is missing did not change.",
+     "Foreign broker: the old row said no 49A broker has a price-list snapshot, but data/fees has Interactive Brokers snapshots. I deleted the row. Its other half (how securities move to a foreign broker, SW-37 and SW OQ12) only served the removed switching page.",
+     "'איגרות חוב מובנות': the row's text is cut off mid-quote ('TX2 OQ16 also names 'תעודות'). Left as it was."
+    ],
+    "openWork": [
+     "Add glossary rows for S&P 500 and TA-125 (and the other index names) citing ETF-37 to ETF-42 and ETF-44 to ETF-50; no row exists in research/glossary/terms or data/terms. No issue found.",
+     "Add glossary rows for terms that a rule defines but that have no row: קרן כספית יומית (MF-34), מבחן 90% בקרן זרה (TXF-04), ניכוי בפדיון (MF-22), דמי חשבון קבועים, טיפול בריבית ובדיבידנד and מרווח קנייה ומכירה (BRK-24), עמלת יצירה ופדיון (ETF-05), העברה החוצה (BRK-18), הדוח השנתי המפורט (PF-33, PF-36), שכבות המס בקרן השתלמות (PF-36 ב.8), ממוצע דמי ניהול בקופה (PF-35), עמלת העברת ניירות ערך (SW-33, SW-34), חשבון נפרד בהעברה (SW-39). No issue found (#94, about glossary entries, is closed).",
+     "Five conflicts in the rule base for its owners to settle, from the removed section 6: whether a kupat gemel lehashkaa can be self-directed (IRA-01 and IRA-03 against TXK-16); child savings moving once from a bank to a provident fund (CS-12 against CS-25); whether the pension return-guarantee target is CPI-linked (the pension file against REG-21); what a fund distribution is (tax law against MF-49); and 'שכר קובע' and 'מסלול ברירת המחדל' each having two meanings.",
+     "PF OQ16: the gov.il copy of the 2020 uniform statement circular, and whether the 2025-26 draft is in force.",
+     "Cash rate in the two comparison modes: product mode used P-05's cash_rate while exposure mode uses a published rate, an entered rate or none; the method owner was to settle one reading. method.md 2.4 now swaps cash_rate per candidate for each product's own rate, which may already settle it.",
+     "docs/data-schema.md 3.6 does not yet write the stale rule for price lists (staleTariff, 90 days) or a refresh cadence for data/terms/deposits/. The site uses the 90-day reading meanwhile (institutions.server.ts).",
+     "Gaps for when switching is rebuilt (issue #50, long horizon): the figure files for SW-05 to SW-09 are not in data/rules; retention calls (SW OQ3); whether an offer made before joining binds (SW OQ4); who tells the employer to redirect deposits (SW OQ6); removing an agent from an account (SW OQ16); 'experience' as a kind of rule record; moving securities to a foreign broker (SW-37, SW OQ12).",
+     "Cross-reference to fix in another agent's file: docs/design-system.md line 679 cites 'glossary 10.2' for the worst-fall gap, which is now in glossary section 4. docs/roadmap.md (lines 129, 168, 211, 249) and docs/flows.md (lines 1127, 1417, 1696) cite glossary §7 to §10 / sections 8 to 10; those documents are being archived as records.",
+     "Hebrew editor: the Hebrew of the 'איפה זה בדוח' row (section 6.7) still says the statement's structure has no official source; it should match PF-33 to PF-38."
+    ],
+    "idsDeleted": [
+     "Old glossary sections 7, 7.1, 7.2, 8, 8.1, 8.2, 9, 9.1, 9.2, 10, 10.1 and 10.2 (their content is now in sections 4 and 6). I searched site/app, packages, .github, data, .claude and docs (excluding .claude/worktrees). No code reads them. Docs that cite them: docs/design-system.md:679 ('glossary 10.2'), docs/roadmap.md lines 129, 168, 211, 249 (§7 to §10) and docs/flows.md lines 1127, 1417, 1696 (sections 8 to 10); the last two are being archived.",
+     "Old section 6, 'Conflicts inside the rule base': the same search found no reference. The number 6 now names 'Site definitions'.",
+     "No rule, decision, formula, parameter or test-scenario id was removed. D, F, P, A, G and S ids, rule ids and OQ codes are cited as before; SW and change-log codes appear only inside deleted rows."
+    ],
+    "checks": "`npm run check` passed with exit 0: typecheck, tests, data check and the full site prerender. No other build was running. A script confirmed that sections 1, 2, 3 and 5 and Appendices A and B are identical to HEAD, so the headings and row layouts that code parses (\"## 2. The checklist\", \"## 3. Not covered yet\", \"## 4. Missing from the rule base\", and the bold-headword rows) are unchanged. compare.server.ts's check that all nine tier-2 instruments have a section 3 row passed during the build."
+   },
+   "checker": {
+    "commit": "a19af05a",
+    "findings": [
+     {
+      "old": "Section 4 row (carried over unchanged from old 8.2): \"| **תקופת ההנחה המינימלית** | five years (circular 2017-9-15, PF-13) or two (some bylaws, KGL-16); which applies to which wrapper is open (PF OQ1, OQ2). ...\"",
+      "what": "The writer kept a conflict with the rule base. provident-family-common.md PF OQ2 and kupat-gemel-lehashkaa.md KGL OQ8 were closed on 2026-10-25: the period is five years, circular 2017-9-15 covers kupat gemel lehashkaa managers, and the bylaws' two years is the replaced circular 2012-9-22 (KGL-30). PF OQ1, whether the circular is still in force as read, is still open.",
+      "action": "Corrected in docs/glossary.md: the row now gives five years (PF-13), says the two-year bylaws follow the replaced circular (PF OQ2 and KGL OQ8 closed, KGL-30), keeps PF OQ1 as the open part, and keeps the sentence about the negotiation card unchanged."
+     },
+     {
+      "old": "Old preamble: \"The rows are generated from ... gen_glossary.py\". The new preamble says \"Sections 4 and 6 are kept by hand: carry them over when the file is regenerated.\"",
+      "what": "This does not describe the tool correctly. research/glossary/gen_glossary.py writes section 4's heading and its first eight rows. It also writes its own \"## 6. Conflicts inside the rule base\", which would collide with the new \"## 6. Site definitions\".",
+      "action": "Reworded in docs/glossary.md: section 4 is the generator's rows extended by hand, and section 6 is kept by hand. The generator still writes a section 6 of its own (the rule base's conflicts), which is open work for the rule base and is not kept here. Both sections are carried over on regeneration."
+     },
+     {
+      "old": "docs/design-system.md line 679: \"... no drawdown figure is in the rule base, glossary 10.2\"",
+      "what": "This is a broken cross-reference. Glossary section 10.2 no longer exists, and its content is now the section 4 row \"ירידה צפויה לחשיפה\". No other file in docs, site/app, packages, .claude, data or CLAUDE.md cites a removed glossary section. Section 3 (read by data.server.ts, graduation.server.ts and compare.server.ts) and section 2 (read by gen-terms.ts) are byte-identical to the base.",
+      "action": "Not changed: design-system.md belongs to another agent, and the brief forbids touching it. The lead should change \"glossary 10.2\" to \"glossary section 4\" there."
+     },
+     {
+      "old": "Old section 6 \"Conflicts inside the rule base\" listed five conflicts: (1) kupat gemel lehashkaa self-directed, IRA-01/IRA-03 vs TXK-16; (2) child savings moving from bank to provident fund, CS-12 vs CS-25; (3) whether the pension return-guarantee target is CPI-linked (REG-21); (4) what a fund distribution is (tax law vs MF-49); (5) \"שכר קובע\" has two meanings, and \"מסלול ברירת המחדל\" is used for both the insurance default and the investment default.",
+      "what": "The writer deleted the list. It is an open-question list, so deleting it is allowed under brief item 8. However, only (1) is closed in the rule base (IRA OQ4, closed 2026-10-26), and only (2) is tracked there (coverage.md, CS OQ14). Items (3), (4) and (5) are recorded nowhere else in the repository.",
+      "action": "Not restored, because it is open work. Reported here so that (3) to (5) can become rule-base questions or issues."
+     },
+     {
+      "old": "Old section 4 and 7.2: \"Glossary rows still missing for terms the screens use, though a rule defines them\": קרן כספית יומית (MF-34), מבחן 90% בקרן זרה (TXF-04), ניכוי בפדיון (MF-22), דמי חשבון קבועים · טיפול בריבית ובדיבידנד · מרווח קנייה ומכירה (BRK-24), עמלת יצירה ופדיון (ETF-05), העברה החוצה (BRK-18), הדוח השנתי המפורט (PF-33, PF-36), שכבות המס בקרן השתלמות (PF-36 ב.8), ממוצע דמי ניהול בקופה (PF-35), עמלת העברת ניירות ערך (SW-33, SW-34), חשבון נפרד בהעברה (SW-39)",
+      "what": "The writer replaced the named list with one general sentence: a term without a section 1 row is named on its page without a tap-through explanation. All of these terms except הפרש עקיבה still have no row in docs/glossary.md or data/terms/.",
+      "action": "Not restored, because it is open work. Reported so the missing glossary rows can be filed."
+     },
+     {
+      "old": "Old 9.2 and 10.2 notes: \"מקור הריבית למזומן בשני המצבים\" (wrapper mode uses P-05 cash_rate, exposure mode uses a published, entered or no rate; the method owner should settle one reading for both) and \"בדיקה מחדש להשוואה לפי חשיפה\" (exposure-mode saved record and re-run are only an engine note, flow 35)",
+      "what": "The writer dropped two method gaps without an equivalent row.",
+      "action": "Not restored, because they are open work. Reported."
+     },
+     {
+      "old": "Old 7.1, 9.1 and 10.1 rows dropped: switching-playbook terms (איך עוברים, עלות המעבר, רשמו כל הצעה, מה לבדוק אחרי המעבר, המועד הקובע, העברה בעין / במזומן); change-log terms (יומן השינויים, אוסף, משפיע על דירוגים, הביקור הקודם, snapshot row); site rows no longer on the site (הממוצע ששולם בבנק הזה בחודש שעבר, הפרטים עוד לא נאספו, כל הקרנות שעוקבות, קרנות הנאמנות של {מנהל}, רשימת קרנות החוץ של הבורסה, נלקח כאפס בחישוב, מקור משני: רשות המסים לא אישרה); and stale gap rows (foreign broker with no snapshot, missing_reason_he)",
+      "what": "I checked each of these. Switching was removed (D38) and the change log was removed (D24). Each site row has no string in site/app; A-21 is unused until the Bank of Israel consents (D20). The G-18 substance survives in the \"לא מחלקת / מחלקת\" tag row. The two gap rows are no longer true: interactive-brokers snapshots exist in data/fees, and the fees schema now has missing_reason_he. The remaining kept rows in sections 4 and 6 lost only flow-note and date references; their meaning is unchanged. Section 1, section 2, section 3, section 5 and both appendices are identical to the base.",
+      "action": "No change needed. npm run check passed after my edits: 105 test files and 1,589 tests, validation and site build all passed."
+     }
+    ],
+    "verdict": "The rewrite keeps every part code reads: the section 2 and 3 headings and rows are byte-identical, and npm run check passes. Old sections 7 to 10 were folded correctly into section 4 and a new section 6 (site definitions); I compared every removed row with the site, the data and the rule base. I made two corrections and committed them as a19af05a: a section 4 row that still called a closed rule-base question open, and the note on which sections the generator writes. Open items for the lead: a broken \"glossary 10.2\" reference in docs/design-system.md, which belongs to another agent; three rule-base conflicts that were deleted and are recorded nowhere else; the list of glossary rows still missing; and two method gaps."
+   }
+  },
+  {
+   "path": "docs/data-schema.md",
+   "writer": {
+    "commit": "a29c61c8",
+    "done": "I rewrote /home/ori/dev/finance-tool/docs/data-schema.md and committed it as a29c61c8 (not pushed). `npm run check` passed, `npm run validate` passed, and the doc test in packages/schema/test/data-schema-doc.test.ts passed.\n\nWhat was folded in:\n- The dated amendment paragraphs are now part of the text they changed, in sections 2, 3.4, 3.5, 3.6, 3.7, 3.13 and 4.\n- Section 3.5 (funds) is now grouped by topic: schema, fees, load, distribution, how the fund is built, tracking record, tax ruling, Israeli funds.\n- Section 3.6 (fee snapshots) is now grouped as: the provider and the document, lines, what can be bought there, who pays, group prices (the sub-row and a price's numbers), and advertising.\n- The status and authorship lines, the \"added <date>\" notes, the review-round history and the text about the removed change log are gone.\n- In section 3.1, the two Hebrew-field bullets were merged into one.\n- In section 2, each extra unit is explained once.\n\nWhere the doc and the Zod schema differed, the doc now describes the schema:\n- `provider.class` is bank, broker, foreign_broker, provident-manager, fund-manager or insurer. The doc said bank, tase_member_nonbank, foreign_broker, fund_manager, provident_manager, pension_manager or insurer. `provider.regulator` is BoI, ISA, CMA or foreign.\n- A fee line's `level` enum has no `entered` value; an entered line lives only in saved state.\n- Fields added that the doc left out: the group price `fee` enum (trade_israel, trade_abroad, custody_israel, custody_abroad), `read_in: \"chrome\"` (what that value means is my inference; no code reads it), `missing_reason_he`, `reverts_to`, `tariff.format`, `period`, and the 240- and 400-character limits on `claim_he` and `binding_he`.\n- P-05 `instruments` has an `employment` key. `track` is used by keren-hishtalmut, pension-general and provident-for-annuity, not only keren-hishtalmut.\n- The parameter schema is a loose object, and the doc now lists P-07 to P-10.\n- The fund-list example used `export` and `exported_on`; it now uses the schema's `list`, `snapshot`, `terms_of_use`, `raw` and `isin`. The row fields that can be null or left out are listed.\n- `update_rule` accepts \"frozen <any years>\"; the doc gave only \"frozen 2025-2027\".\n- `lawful_exit.kind`: the schema accepts any non-empty string, so the vocabulary is not enforced. This is noted in the doc.\n- New bullet on publishers.json and documents.json, including the document-library fields.\n\nCorrections to what exists:\n- The ECB month-end command was wrong: the doc said `npm run fetch:ecb-month`, which does not exist. The real command is `npm run refresh -- ecb-fx ecb-fx-month-end`.\n- Section 3.8 now lists the four series actually in data/series.\n- Section 3.9 (data/averages) is now marked not built: there is no schema and no file.\n- Section 3.14 now says no fund-list file is in the repository.\n- The \"(3.9)\" reference for saved state now points to site/app/lib/state.ts.\n- The `fund:<id>` variants check runs every time, not only \"once the folder has files\".\n\nAll section numbers (1, 2, 3.1 to 3.15, 3.3a, 4 and items 1 to 16) and the line formats the doc test reads (the `Field rules:` table and the `Units:` line) are unchanged.",
+    "conflicts": [
+     "P-05 and the money-market funds. The old doc said: \"The two money-market wrappers read no tariff line (`tariff` stays, unread).\" The data (data/parameters/illustrative-scenario.json) and docs/method.md F-80 say P-05 names no tariff for them. I followed the data and the method: \"The two money-market funds name a `fund` and no `tariff`\".",
+     "Fund lists. The old section 3.14 said: \"Until [terms are confirmed], the lists are used to build the candidate set and counts, and the pages link to the source for the list itself.\" CLAUDE.md says \"There is no fund list\", and product.md dependency 6 says \"the counts with a link ... and no fund list\". CLAUDE.md wins, so the section now says no file is in the repository and the site reads only lists whose terms are confirmed (variants.server.ts). The design text (the lists are the set the workbench chooses from; section 3.4's candidate-set sentence; validator item 11) is kept as it was.",
+     "data/averages/ (section 3.9) was described as a collection, but there is no schema, no folder and no reader, so the validator would fail any file put there. I rewrote it as \"not built\". Other files still name data/averages/ as a destination and are not mine to edit: .claude/skills/data-update/SKILL.md line 18 (which also says the sections run 3.1 to 3.14, but there are 3.15), docs/architecture.md lines 93 and 94, and docs/data-inventory.md row 13.",
+     "Section 3.12 (removed by D24) is still cited by docs/flows.md lines 1624 and 1635 for the change log. I kept a one-line stub; flows.md is due for the archive."
+    ],
+    "openWork": [
+     "Regulator averages that belong to no single provider: the ISA's category averages (MF-18, MF-19, ETF-17) in the never-built data/averages/ collection. No issue found.",
+     "The cpi-expectations series (A-02, G-01) is not sourced. No issue found.",
+     "The average-wage series (TXP-03, PEN-04, PEN OQ5) is not sourced: the National Insurance publication was not reached. No issue found.",
+     "The Bank of Israel series (A-20 to A-23) need the Bank's written consent: issue #77.",
+     "Unrelated: `npm run validate` warns that data/open-questions.json is behind the rule base (KH OQ12 and KGL OQ11 were closed in the markdown on 2026-11-03). The fix is `npm run gen:open-questions -w @finance-tool/pipeline`."
+    ],
+    "idsDeleted": [],
+    "checks": "`npm run check` passed (exit 0). Before starting it I found no other build running: the earlier pgrep hits matched the command line of my own shell. `npm run validate` printed \\\"data/ is valid\\\" with warnings only. The doc test vitest packages/schema/test/data-schema-doc.test.ts passed 2 of 2."
+   },
+   "checker": {
+    "commit": "4ca285ef",
+    "findings": [
+     {
+      "old": "`distribution` (optional): `{ yield, per_year }`. `yield` is a value object in `pct_per_year` ... (old section 3.5, issue 147, A-10)",
+      "what": "The rewrite turned this into the bold heading \"**Distribution** (optional, A-10)\", so the fund record's field name `distribution` (funds.ts line 74) no longer appeared anywhere in the doc.",
+      "action": "Restored: \"**Distribution** (`distribution`, optional, A-10)\". Committed as 4ca285ef. npm run check passes."
+     },
+     {
+      "old": "Provider classes: `bank`, `tase_member_nonbank`, `foreign_broker`, `fund_manager`, `provident_manager`, `pension_manager`, `insurer`",
+      "what": "Changed to `bank`, `broker`, `foreign_broker`, `provident-manager`, `fund-manager`, `insurer`, plus regulators BoI/ISA/CMA/foreign. Checked against fees.ts lines 185-186: this is what the schema says.",
+      "action": "No change. The writer's correction is right."
+     },
+     {
+      "old": "P-05 `track` for a provident-family wrapper with no list fee (today `keren-hishtalmut`, track `880`); the two money-market wrappers read no tariff line (`tariff` stays, unread)",
+      "what": "Now names keren-hishtalmut, pension-general and provident-for-annuity, adds `employment`, and says the money-market funds name a `fund` and no `tariff`. Checked against data/parameters/illustrative-scenario.json and instrumentSpec: correct. Track 880 is still in the data.",
+      "action": "No change."
+     },
+     {
+      "old": "3.8: series fetched with `npm run fetch:ecb-month -w @finance-tool/pipeline`; required series include `fx-usd-nis` (A-03 start value) and `cpi` (F-03)",
+      "what": "Now uses `npm run refresh -- <source>` with the ecb-fx and ecb-fx-month-end sources and the cbs-cpi series. fetch:ecb-month does not exist (cli.ts SOURCES has the ecb sources). A-03's start rate is the ECB cross rate in method.md, so dropping fx-usd-nis loses nothing.",
+      "action": "No change."
+     },
+     {
+      "old": "3.9 data/averages/: ISA category averages (MF-18, MF-19, ETF-17), CMA fee averages per track, the Comptroller's figures. Same value-object shape, with `category` and `period`.",
+      "what": "Now marked not built. The folder does not exist, there is no schema for it, and validate.ts fails a folder with no schema. The planned content is still recorded in data-inventory.md row 13, architecture.md lines 93-94 and D22. This is unbuilt planning, which brief item 9 asks to drop.",
+      "action": "No change."
+     },
+     {
+      "old": "3.14: saved by hand each month; Republishing terms are not confirmed (product.md dependency 7)... the lists are used to build the candidate set",
+      "what": "Now says no file is in the repository: TASE's terms forbid publishing the lists (CAT-43, product.md dependency 6, D22), and the reader is loadFundLists. Product.md line 303 says this, data/fund-lists is absent and loadFundLists exists. The monthly cadence is still in architecture.md line 98 and product.md line 326.",
+      "action": "No change."
+     },
+     {
+      "old": "Value-object fields, units, update_rule `frozen 2025-2027`, rules `examples`, `recheck_date`, wrapper/exposure/series/fund-list/sources/open-questions schema details",
+      "what": "Every claim the writer added about the schema was checked against packages/schema/src: null value needs notes, formula F-nn or A-nn, `frozen <YYYY-YYYY>`, only a general rule carries examples, likely_to_change yes needs a recheck_date, ceiling nullable, tier 1 or 2, mark regex, transfer_routes to a product id, return_source mode, series names and stale_after_days, nullable fund fields, fund-list row optionality, publishers and documents rows, open-question ids unique, group price fee enum, read_in chrome, claim_he 240 and binding_he 400, tariff format and published, missing_reason_he, reverts_to. All match.",
+      "action": "No change."
+     },
+     {
+      "old": "Section numbers 3.1 to 3.15, 3.3a and section 4 items 1 to 16, cited by validate.ts and the schema comments",
+      "what": "All still resolve. The doc test (data-schema-doc.test.ts, which reads the field table and the Units line) passes.",
+      "action": "No change."
+     }
+    ],
+    "verdict": "The rewrite of docs/data-schema.md is faithful. One field name had dropped out (`distribution` in 3.5); I restored it and committed (4ca285ef, not pushed). The writer's other changes are either history removed as the brief asks or corrections that match the Zod schema and the data. Nothing else was lost, no meaning changed, and I found no conflict with CLAUDE.md. Every section and item number that code cites still resolves, and npm run check passes. The untracked file research/2026-11-06-docs-cleanup/part1-result.json is not mine and was not touched."
+   }
+  },
+  {
+   "path": "docs/data-inventory.md",
+   "writer": {
+    "commit": "ad815061",
+    "done": "Rewrote /home/ori/dev/finance-tool/docs/data-inventory.md in place and committed it as ad815061 (not pushed).\n\nWhat changed:\n- **Status paragraphs folded in.** The three dated status paragraphs (2026-10-23, 10-24 and 10-28), the dated notes inside rows and the \"superseded\" notes are now part of the rows. The release headings are gone. The table is grouped by topic: rules and sources; wrappers and exposures; checklist, terms and catalogue; the regulator's data; fees, funds and deposits; series; parameters; and \"Not in data/\". The last one covers fund-lists, averages, the Bank of Israel series and the ISA averages.\n- **Every count recounted from data/.** 626 rules, 13 wrappers and 4 securities, 12 exposures, 26 dimensions, 448 terms (was 449), 38 Meitav catalogue entries. Fees: 54 snapshots for 20 providers (Pepper added; Meitav Trade's tariff is now found). Funds: 70 snapshots of 60 funds, broken down by index; 43 have a tracking record. Also 16 deposit terms, 4 series, 10 parameters (P-01 to P-10, all signed off) and 529 open questions. The regulator's files hold 573 and 270 tracks.\n- **New rows.** 31 for P-10 (home-guide-door), 32 for data/open-questions.json, 33 for docs/glossary.md (the site reads it). Row 29 now covers all four data/sources tables, including brands and institutions.\n- **\"Read by\" columns match the site.** Checked against the site's routes and its data-loading code (site/app/lib/*.server.ts). Removed: the playbook, the changes page, the fund-variant page and the house-ranking workbench. Added: the indices page, company pages, the documents page and the goal comparison where they read the data.\n- **Corrected facts.** P-09 was described as provisional; it is now signed off. MKT-01 is now read by the goal comparison's explanation. Exposure prose files: 4, not 7. Guide modules: 17, plus the two fund pages and the shared open-tax file. Section references now point to data-schema 3.3/3.3a and product 3.10, the current section numbers.\n- **Deleted.** Row 12 (the change log, removed by D24); row 12a, merged into row 21; the dated release-1 \"not read\" paragraph. I also dropped the per-fund fee figures of the S&P 500 collection pass, because the fund records hold the current values.\n- **Section 3 removed.** Settled items 1 to 6 are deleted. One rule from item 1 stays in row 6: the catalogue holds no UI wording. Item 7 (merging the side stores) is in Open work.\n\nCheck: `npm run validate` passed (data/ is valid). No code reads this file, so `npm run check` was not needed.",
+    "conflicts": [
+     "Fund-list counts. Old row 25 said the pages show '2,009 Israeli funds (CAT-42) and 40 foreign funds on TASE (ETF-43)' with a link. docs/glossary.md says the site 'names no count for a list it did not read', and no such count is in site/app. I followed the glossary and the site.",
+     "Funds without a tracking record. The old status note said 5 have no full year, including iShares. docs/data-schema.md 3.5 says a foreign fund's record has no field because its yearly figures were not collected, which says nothing about its age. I followed the data schema: 4 Israeli funds with no full year (1218916, 5140165 and the two money-market funds) and 13 foreign-domiciled listings.",
+     "Side stores. Old section 3 item 7 said the stores are 'outside the export file'. CLAUDE.md says they are carried in the export file. CLAUDE.md wins; the doc now points to CLAUDE.md 'Saved state'.",
+     "Rule sources. Old row 29 said the validator 'warns, then fails' and that 144 mirror rules lack their official publications. Today every rule has sources and validate.ts fails a rule with none. I count 27 rules citing a mirror host and none resting on a mirror alone (by host, against publishers.json). I removed the 144 figure."
+    ],
+    "openWork": [
+     "Merge the four side stores on the device (offers, variants, playbook ticks, own-rates) into the saved state: issue #52.",
+     "The track page's 'why someone might pick this track' line has no data file and is not shown. No issue found.",
+     "The two draft tier-2 records stay outside data/ until their ids and formulas exist. No issue found.",
+     "Quoting past index returns from Damodaran, MSCI or the UBS Yearbook depends on their terms, which is a founder decision: related to issue #59.",
+     "VOO, IVV and iShares ACWI are rows without a price until a US trust-form fund's tax is settled (TXF-37): issue #152. The doc keeps this as a fact.",
+     "Invesco funds (invesco.com refuses scripts) and iShares TA-35 (only third-party pages, which disagree on whether it is active) are not collected. No issue found; the doc keeps this as a fact.",
+     "The validator warns that data/open-questions.json is behind the rule base (KH OQ12 and KGL OQ11 were closed on 2026-11-03): run `npm run gen:open-questions -w @finance-tool/pipeline`. The file is outside this job."
+    ],
+    "idsDeleted": [
+     "Row 12 (data/changelog.jsonl, removed by D24) and row 12a (merged into row 21). No live doc, code or .claude file cites inventory row numbers: `grep -rn -i inventory docs site/app packages .claude/skills .github CLAUDE.md` finds only plain mentions of docs/data-inventory.md. Rows 13 and 25 lost their numbers and moved into the 'Not in data/' list; they were cited only in dated research reports. All other row numbers were kept, and 31, 32 and 33 are new."
+    ],
+    "checks": "npm run validate passed (data/ is valid; existing warnings only). No code reads docs/data-inventory.md, so npm run check was not run. Committed as ad815061; not pushed."
+   },
+   "checker": {
+    "commit": "f9b6a514",
+    "findings": [
+     {
+      "old": "Row 12a: `data/fees/meitav@2026-10-23.json` | Guide page timeline: the list fees the illustrative run uses (method F-67, scenario S47 via S20; KGL-15)",
+      "what": "Lost: the rewrite folded row 12a into row 21 and dropped which snapshot supplies the illustrative runs' list fees. The code (compare.server.ts) takes them from the one snapshot whose list lines name the wrapper, which is Meitav's (kupat gemel lehashkaa, keren hishtalmut deposit, comprehensive pension).",
+      "action": "Restored in row 21: \"Meitav's snapshot holds the list fees the illustrative runs use (method F-67, scenario S47 via S20, KGL-15).\""
+     },
+     {
+      "old": "Leumi@2026-10-23.json (12 tariff lines, the tariff the illustrative runs of the deposit, fund, makam and bond wrappers use)",
+      "what": "A conflict carried over, contradicting method.md F-80 and P-05. P-05 names Leumi's tariff only for brokerage-account, makam and government-bond. Method F-80 says that entry serves the fee page and the comparison's start, while the guide pages run on the collected tariff that leaves the example plan the most. Deposit wrappers use deposit terms and money-market funds use no tariff.",
+      "action": "Corrected to: P-05 names Leumi's tariff for the securities account, makam and the government bond; it serves the fee page and the goal comparison's start, while the guide pages run those three on the collected tariff that leaves P-05's example plan the most (method F-80)."
+     },
+     {
+      "old": "(new text) \"Ten are foreign-domiciled funds.\" ... \"the 13 foreign-domiciled listings\"",
+      "what": "The rewrite contradicted itself and the data. data/funds/ holds 13 foreign-domiciled records: 10 IE (three of them Tel Aviv lines) and 3 US. Of these, 10 are listed abroad.",
+      "action": "Changed to \"Thirteen are foreign-domiciled: ten listed abroad and three Tel Aviv lines of Irish funds.\""
+     },
+     {
+      "old": "Nothing from Damodaran, MSCI or the UBS Yearbook (their terms are a founder decision).",
+      "what": "The reason why nothing is taken from those sources was dropped. It is the open question in issue #59.",
+      "action": "Restored the parenthetical."
+     },
+     {
+      "old": "(new text) earlier snapshots of Bank of Jerusalem, Meitav Trade, One Zero and Yahav, each followed by a snapshot with the tariff",
+      "what": "The count of six missing records was right but the list read as five, because Meitav Trade has two missing snapshots (2026-10-23 and 2026-10-31).",
+      "action": "Clarified as \"(one each) and Meitav Trade (two)\"."
+     },
+     {
+      "old": "Section 3 item 4: the track page's \"why someone might pick this track\" line still has no file and is not shown; row 29: official publications beside the 144 mirror rules are not yet recorded",
+      "what": "Open work removed from the doc, as the brief allows. No issue was found for either.",
+      "action": "Not restored. Reported here as open work."
+     },
+     {
+      "old": "Counts checked against data/ today",
+      "what": "These all match the files: rules 626 (all with sources and text_he), open questions 529, 13 wrappers, 4 securities, 12 exposures, 26 dimensions, 448 terms, 16 deposit terms, and 38 catalogue entries (17 KGL, 7 + 7 + 7; the old '6 child-savings' was an arithmetic slip, and the new 7 is right). Also 573 and 270 CMA tracks, 54 fee snapshots for 20 providers with 6 missing, 70 fund snapshots of 60 funds with the per-index split right, 43 with tracking_record, 4 series, 10 parameters all signed off, 4 source tables. The routes, content files, readers and cited section numbers exist.",
+      "action": "No change. npm run validate passes (no code reads this doc)."
+     }
+    ],
+    "verdict": "The rewrite is sound and its counts match data/ today. Four real fixes were committed (f9b6a514): a lost line on Meitav's list-fee role, a stale Leumi-tariff claim corrected to match method F-80 and P-05, a foreign-domiciled count that contradicted itself, and a dropped reason on MKT-01. Meitav Trade's two missing snapshots were also named. Open work for the report: the track page's \"why pick this track\" line has no source file, and official publications beside the mirror rules are not recorded."
+   }
+  },
+  {
+   "path": "docs/architecture.md",
+   "writer": {
+    "commit": "613858fe",
+    "done": "Rewrote /home/ori/dev/finance-tool/docs/architecture.md to describe what is built today. Removed the status header, the revision history and every dated amendment, folding each into the text it changed.\n- Section 1 (K1 to K12) is kept with the dates removed. K7 now says PC judged first (ground rule 8). K8 includes D34 and D37 (the goal stays on the goal pages and the workbench).\n- Section 3.3 now has a table of the adapters that actually exist (cma, cbs-cpi, mof-child-savings, ecb-fx) and the folders they write to. It says why the Bank of Israel series and the Maya fund list are not in data/, and describes exit codes and commit policy as the workflows run them: the refresh job dispatches ci.yml; there is no REFRESH_PUSH_TOKEN. The raw archive is described as GitHub Releases named raw-cma-<period>. It names the weekly watchdog and the real helper scripts.\n- Corrected to match the code: the engine runs on the page's own thread (no Web Worker); state is kept in localStorage, not IndexedDB; there is no web manifest, persistent-storage request, stylelint, shadcn/Radix or Motion library; provenance opens in a native <dialog>, not a popover that works before scripts load; the questions page is gone, and the rules page has pinned rows, \"הידעת?\" facts and /rules-data/companies.json; golden expected values come from tests/golden/expected_calc.py, not the founder's spreadsheet; the offline artifact is built only from main.\n- The knowledge-layer, side-store and own-terms passages were merged into topic paragraphs.\n- 3.8 lists where each kind of test lives. Section 4 shows the real npm workspace and its commands; the old infra/ folder and the \"not under git yet\" note are gone.\n- Section 5 is now one line: React was chosen, with the reason. Section 7 keeps two lines, because packages/engine/src/registry.ts and packages/engine/test/golden/golden.test.ts cite \"architecture §7\": the release 1 formula list and a pointer to the registry's pending list. Section 9 and the H1/H2/H3 table are deleted. The H3 fallback paragraph stays because the workflows cite \"gap H3\".\n- Section 8 is deleted. The time-axis answer moved to 3.5 Charts with \"(this settled gap 8.6)\", because design-system.md cites gap 8.6.\n- Ids kept: K1 to K12, 3.1 to 3.9, 3.2 item 6 (now the pinned-rules digit check), 3.7 item 5, section 6, H3.",
+    "conflicts": [
+     "3.2 item 6 and 3.7 items 4 and 5: the old text said the validator rejects digits in guide prose and that a browser crawl checks every page for untraced digits. Neither exists. The validator only rejects typed digits in the pinned-rules facts and answers. I described what exists and stated plainly that the guide-prose check and the crawl are not built. The numbered items are kept because docs/design-system.md cites 'architecture 3.7 item 5'.",
+     "3.5 provenance: the old text said 'native HTML popover, works in the pre-rendered first view before any script has loaded'. The code uses a native <dialog> opened by script (Sheet.tsx). I wrote what the code does. docs/design-system.md line 308 still makes the old claim while citing architecture 3.5; that file belongs to another agent and needs correcting.",
+     "docs/design-system.md line 280 says components are 'built on shadcn/ui and Radix where a primitive exists (architecture section 5, option C)'. The site depends on neither, and section 5 no longer names them. Another agent's file needs correcting.",
+     "CLAUDE.md ground rule 1 and the old 3.9 'design pass and mockups before building pages' cover the same ground. Kept once, by pointing 3.9 to ground rule 1 (CLAUDE.md wins). The old 3.9 'Review' bullet (the founder reviews screenshots before a release) is replaced by a pointer to CLAUDE.md 'Checking a change'.",
+     "3.4 'Where it runs': the old text said the engine runs in a Web Worker so the sensitivity panel never freezes a phone. No worker exists. I described the main-thread run and pointed to ground rule 5 for the rule about slow work."
+    ],
+    "openWork": [
+     "Old gap 8.2, still open: docs/method.md section 13 does not say that today's tax-year figures apply to every future month of a projection. The engine and the golden scenarios already work that way. No issue found.",
+     "Content digit check over guide prose (old 3.2 item 6) is not built. No issue found.",
+     "Provenance crawl (old 3.7 item 5): a browser test failing on any digit outside a provenance element or data-scale tick is not built. No issue found.",
+     "iPhone storage eviction: no web-app manifest and no persistent-storage request. The old text asked for a check on a real iPhone; the founder said this is not a concern now (old gap 8.5). No issue found.",
+     "Scaffolding helpers for new catalogue, tariff and fund records and for importing uncatalogued names as catalogue stubs (old 3.3) are not built. No issue found.",
+     "docs/design-system.md (another agent's file) should point its 'gap 8.6' references (lines 29, 353, 355) to ground rule 6 and fix its provenance-popover and shadcn/Radix claims (lines 280 and 308)."
+    ],
+    "idsDeleted": [
+     "Gaps 8.1, 8.3, 8.4, 8.5, 8.7, 8.8, 8.9 (all closed): searching site/app, packages, .github, docs, .claude, data and tests for 'gap 8.' or 'architecture 8.' found only 'gap 8.6' in docs/design-system.md, whose text moved to 3.5. The other 'gap N' hits in design-spec.md, flows.md and tests/golden are score gaps, not these ids.",
+     "Section 9 (next step): searching for 'architecture.*9' and 'architecture §9' found no citations.",
+     "Stack options A, B and C and the hosting options H1 and H2 with their table: searching found 'architecture section 5, option C' only in docs/design-system.md:280; section 5 still exists and names React. H3 is kept.",
+     "The section 7 release table: cited as 'architecture §7' by registry.ts and golden.test.ts. The section is kept with the release 1 formula list and the pending-list pointer they depend on."
+    ],
+    "checks": "npm run validate passes ('data/ is valid', existing warnings only). No code reads docs/architecture.md (searched site, packages and .github: comments only), so npm run check was not needed. Another session's site build was running (pid 2355821) and I did not start a build. Commit 613858fe, not pushed."
+   },
+   "checker": {
+    "commit": "5cca8d6f",
+    "findings": [
+     {
+      "old": "Section 6 before: \"The original file each refresh downloads is attached, compressed, to a GitHub Release in the same repository (one release per source and month).\" The writer changed it to: \"The original file each CMA refresh downloads is attached ... (one release per report period).\"",
+      "what": "Meaning changed and now wrong. The cbs-cpi, mof-child-savings and ecb-fx adapters also upload their raw file to a release named raw-<source>-<YYYY-MM>. Only CMA uses one release per report period.",
+      "action": "Restored: every source archives one release per source and month (`raw-<source>-<YYYY-MM>`), and CMA one per report period (`raw-cma-<period>`)."
+     },
+     {
+      "old": "Old gap 8.5: \"Founder, 2026-10-22: fine as is, not a concern now. Revisit if a friend loses saved state.\"",
+      "what": "A founder decision and its condition for reopening were deleted. They are not in product.md or anywhere else. The new 3.6 says only that the export file is the backup.",
+      "action": "Added to 3.6 \"Phones may clear it\": the founder accepted this risk, and it is revisited if a friend loses saved state."
+     },
+     {
+      "old": "K8 and 3.5 \"Inputs\" before and after the rewrite: \"the goal now stays on the goal pages and the workbench\".",
+      "what": "The writer carried over a conflict with D37 (\"Only the goal pages speak of a goal\"). The workbench routes (workbench-tracks.tsx, workbench-providers.tsx) do not read the goal. home.tsx does show the saved goal.",
+      "action": "Corrected both places: only the home page and the goal pages show or read the saved goal; the other pages run on their own plan numbers (D34, D37)."
+     },
+     {
+      "old": "Old section 5: \"Option C: React, pre-rendered (recommended; chosen 2026-10-22)\", with options A (Astro) and B (SvelteKit).",
+      "what": "docs/design-system.md:280 cites \"architecture section 5, option C\". The one line the writer kept no longer named the option, so that citation no longer pointed to anything. The old shadcn/Radix fact was rightly dropped: neither is a dependency.",
+      "action": "Section 5 now names option C, and Astro and SvelteKit as options A and B."
+     },
+     {
+      "old": "Old section 6 defined H1, H2 and H3 in a table; H3 was the hybrid fallback.",
+      "what": "The table was deleted (correct, it is history), but the label \"(H3)\" was kept with no meaning. .github/workflows/refresh.yml:10 cites \"gap H3\".",
+      "action": "Glossed it: \"H3, the hybrid option named when hosting was chosen\"."
+     },
+     {
+      "old": "Old section 7, R3 as built: routes `/fees`, `/holdings`, `/workbench/tracks/:wrapper`, `/transfer`.",
+      "what": "The rewritten list of tools in 3.5 left out the track workbench, which is still a route in site/app/routes.ts.",
+      "action": "Added \"the track workbench\" to the list of tools in 3.5."
+     },
+     {
+      "old": "Old gap 8.2: \"method.md §13 ... does not say explicitly that today's figures apply to every future month of the projection. The engine will do that ... once method.md states it.\"",
+      "what": "Still open: method.md line 457 says only that a run in tax year y reads the figure for y. This is open work, so it rightly left the doc.",
+      "action": "Not restored. Reported as open work: method.md should state that the run year's figures apply to every month of the projection."
+     },
+     {
+      "old": "Old 3.2 item 6 (validator rejects digits in guide prose), 3.7 item 5 (provenance crawl), Web Worker, IndexedDB, native popover, manifest, persistent-storage request, stylelint, Playwright.",
+      "what": "Checked against the code. The new text is accurate as built: there is no digit check over guide prose (only pinned-rules), no crawl, no Worker, localStorage, a <dialog> sheet, no manifest, no stylelint and no Playwright. The two unbuilt checks are now stated as missing rather than lost.",
+      "action": "No change. The unbuilt prose-digit check and provenance crawl are open work for an issue, if wanted."
+     },
+     {
+      "old": "Other references into the file: flows.md (2, K9, 3.6), design-system.md (gap 8.6, 3.9), code comments (K1, 3.1 to 3.9, section 6, §7), validate.ts (\"terms gate: not shipped\", architecture 3.3).",
+      "what": "All of these still resolve. Gap 8.6 is named in 3.5 Charts. §7 still says that release 1 computes F-01 to F-28 and so on, and that the registry's `pending` list carries the release. No code parses the file.",
+      "action": "None needed. npm run validate passes (\"data/ is valid\")."
+     }
+    ],
+    "verdict": "The rewrite is accurate and well checked against the code. Five meaning or reference fixes were restored in commit 5cca8d6f: the raw archive covers every source, the founder accepted the Safari risk, the goal is only on the home and goal pages (D37), options A to C are named again in section 5, and H3 is glossed; the track workbench was also added back to the list of tools. One open item remains for an issue: method.md does not say that the run year's figures apply to every future month. Not pushed."
+   }
+  },
+  {
+   "path": "docs/parameters-rationale.md",
+   "writer": {
+    "commit": "69714ab6",
+    "done": "I rewrote /home/ori/dev/finance-tool/docs/parameters-rationale.md so it has one section for each of the ten files in data/parameters/ (P-01 to P-10), in id order. Each section gives the current value, as read from the JSON file, and the reason for it. The ten heading anchors the data files and code cite still resolve (tie-threshold, sensitivity-bounds, fee-verdict-thresholds, classification-fit, illustrative-scenario, golden-tolerance, goal-presets, exposure-holding-wrapper, pinned-rules, home-guide-door).\n\nFolded into the text:\n- P-05: the dated amendments went into three parts (Inputs, Sliders, Representative instruments). A-01 is now 7%. cash_rate is the Bank of Israel policy rate, 3.25%, which replaces the old line about release-2 series. The indices-page sliders and change chart sit under Sliders. The Leumi direct-channel rule is kept without its audit figures. The note on the brokerage fund 5139282 keeps the comparison with the nine collected S&P 500 funds as its reason.\n- The guide pages' own picks (best tariff F-80, middle deposit F-86) and the comparison's best-tariff rule (\"Doron's case\") are described as the code and the P-05 file do them today.\n- The reader-text section now points to data-schema section 3.2 and parameter-text.test.ts instead of repeating them; the A-02 reason stays.\n- P-03: the fee-page wording rule (the \"saved goal\" became the comparison on the fee page's own numbers, D37) and the idle-cash uses are kept without dates.\n- P-04: the \"no upper bound\" on the horizon is added from the file.\n- P-09: two guide lists brought into line with the file (keren-hishtalmut is KH-19, KH-15, PF-18; child-savings-bank is CS-05, CS-12, CS-10). The 36-fact \"הידעת?\" block and its validator checks are added.\n- P-10 (home guide door) is added; it had no entry before.\n- The \"chosen by Claude\" section became two lines in the introduction.\n\nDeleted as history: the old values (5%, 3.5%, IBI fund 1148162 as P-05's fund, the branch-channel default), the effects measured in the scenario audit, and the dates in running text.",
+    "conflicts": [
+     "P-03 negotiate_share: the old doc said 'method F-62 does not use it yet'; the data file's notes say 'method F-62 reports the share beside the verdict and compares it with this threshold, it does not change the verdict'. I followed the data file, which is later.",
+     "P-08's S&P 500 row: the old doc said 'through fund 1148162 (the fund P-05's brokerage entry names)', but P-05 now names 5139282. exposure-holding-wrapper.json still has fund 1148162 and instrument 'P-05 instruments.brokerage-account.fund', and exposure-mode.ts takes the fund collected for the exposure, not that field. I wrote 'through fund 1148162' as the file says, without the parenthesis, and added how the page actually picks the fund. The data file is left as it was.",
+     "docs/product.md D21 says P-05's tariff entry 'serves the guide page and the fee page only'. The guide pages now price the securities account, makam and the government bond on the best collected tariff (F-80), and the bank deposit on the middle deposit (F-86), per guide-signature-bundle.server.ts and P-05's own rationale. The doc describes the code; D21 is not my file and is left as it was.",
+     "Private details vs 'meaning never changes': CLAUDE.md forbids the founder's own finances in the public repo, and CLAUDE.md wins. I removed 'the income of the founder's own case' (annual_income), 'which fits the founder's 22' (track 2158), and 'the founder's apartment case' and 'the founder's ETF-vs-provident case' (P-07 presets, which now cite golden scenarios S40 and S39). The values are unchanged. The same wording still appears in git history and possibly in other docs or data notes (the annual_income notes in illustrative-scenario.json do not mention it).",
+     "P-08 rationale_he in exposure-holding-wrapper.json still cites the open question 'GOV OQ4' as the reason the unlinked bond is not evaluated. The doc follows the English rationale (the engine has no fixed-rate unlinked series; the yearly coupon is GOV-13). The data file is not mine to change."
+    ],
+    "openWork": [
+     "Each cash product on its own figure (a renewing fund's expected yield, a makam series' yield), which needs a schema field and a method change: issue #93.",
+     "Recheck cash_rate at the Bank of Israel decision of 23.11.2026: issue #119.",
+     "Collect more kupat gemel lehashkaa list prices (only Meitav's is collected; regulator data shows S&P 500 tracks at 0.39% to 0.71% in 2026-09): no issue found.",
+     "Evaluate the unlinked government bond in exposure mode now that GOV-13 gives a yearly coupon (the old doc said it was the lead's call): no issue found.",
+     "A finer classification-fit table by sub-classification (the old doc said it would come with the fit mark in release 2): related to #70 (no row for a general pension fund); no issue for the sub-classification itself.",
+     "Whether P-08's `fund` field for the S&P 500 (1148162) should follow P-05's 5139282 or be removed, since exposure mode does not read it: no issue found."
+    ],
+    "idsDeleted": [],
+    "checks": "I ran npm run validate and it passed (\"data/ is valid\", with only the usual warnings about other files). No code parses this doc's structure; code and data reach it only by anchors, and a script confirmed all ten heading anchors exist. I did not run npm run check because no code reads the file's layout. I did not push."
+   },
+   "checker": {
+    "commit": "25ed30a0",
+    "findings": [
+     {
+      "old": "the S&P 500 in a brokerage account through fund 1148162 (the fund P-05's brokerage entry names)",
+      "what": "The writer dropped the parenthetical, so the rewrite says the S&P 500 exposure row runs on fund 1148162. That is the expensive fund P-05 replaced. The code (site/app/lib/compare.server.ts exposureData) takes P-05's brokerage fund, 5139282, when it is collected for the exposure. The value 1148162 in exposure-holding-wrapper.json is stale and nothing reads it.",
+      "action": "Restored the intent in docs/parameters-rationale.md: the row runs 'through the fund P-05's brokerage entry names (5139282; the file's fund field still says 1148162, which the page does not read)'. I did not touch the data file, because data/ is outside this job. Open work: remove or correct the stale fund field in data/parameters/exposure-holding-wrapper.json."
+     },
+     {
+      "old": "(new sentence by writer) For a fund-held exposure the page takes the terms of the fund collected for that exposure (exposure_id in data/funds/); with none collected the row is not evaluated.",
+      "what": "The sentence was vague about which fund the page uses when several are collected for one exposure (7 for TA-125, about 20 for the S&P 500).",
+      "action": "Rewrote it to match the code: the page uses the fund P-05's entry for that product names, if that fund is collected for the exposure; otherwise the first fund collected for it; with none collected, the row is not evaluated."
+     },
+     {
+      "old": "each file in data/parameters/ records who chose it in chosen_by",
+      "what": "The rewrite says every file has chosen_by. P-01 (tie-threshold) and P-10 (home-guide-door) have no chosen_by field.",
+      "action": "Changed it to: 'Each of those files records who chose it in chosen_by, and every file records the sign-off in signed_off_by and signed_off_on'."
+     },
+     {
+      "old": "income of the founder's own case (12,000 a month) ... the founder's own case; the founder's 22; the founder's apartment case, S40; the founder's ETF-vs-provident case, S39",
+      "what": "The writer removed the founder's own income, age and cases as reasons. This leaves 144,000 NIS of income without its old reason. The removal looks deliberate under CLAUDE.md's rule that the public repository holds nothing about the founder's own finances.",
+      "action": "Left it as the writer had it. It is reported here so the lead can decide. The golden scenario ids S39 and S40 are still in the file."
+     },
+     {
+      "old": "Each product's own figure ... is the next step; it needs a schema field and a method change. / collecting more list prices is the open hand-off (S&P 500 gemel lehashkaa tracks 0.39% to 0.71% in 2026-09) / evaluating the unlinked bond is the lead's call (GOV-13)",
+      "what": "These are open work items the writer deleted correctly under brief item 8.",
+      "action": "No change. Open work: (1) a per-product cash rate in place of cash_rate; (2) collect more kupat gemel lehashkaa list fees beyond Meitav; (3) decide whether to evaluate the unlinked government bond now that GOV-13 gives a yearly coupon."
+     },
+     {
+      "old": "all other values, ids, anchors and rules",
+      "what": "Checked every value against the 10 files in data/parameters/: P-01 to P-10, the sliders, instruments, presets, bounds, the 12 rows, guide_blocks (the writer correctly brought in the current KH-19 and CS-10) and the 36 facts. Also checked the new F-62, F-80, F-86 and D20 wording against docs/method.md and docs/product.md, the reader-text rules against data-schema 3.2, and the validator wording against validate.ts. Every anchor cited from data/ and the code (#illustrative-scenario, #goal-presets and the others) still resolves. No code parses the file.",
+      "action": "No change needed. npm run validate passes."
+     }
+    ],
+    "verdict": "The rewrite is sound. Every parameter matches its data file, no rule, number or id that is still in use was lost, and every anchor still resolves. I made 3 small corrections to the text, mainly on which S&P 500 fund the exposure row uses, and committed them as 25ed30a0. One data inconsistency remains for someone else to fix: data/parameters/exposure-holding-wrapper.json still names fund 1148162, which the page does not read."
+   }
+  },
+  {
+   "path": "research/user-lab/README.md, research/user-lab/metric.md, research/user-lab/learning-loop.md, research/user-lab/versions/README.md, research/user-lab/bench/README.md",
+   "writer": {
+    "commit": "eddbf384",
+    "done": "Rewrote all five user-lab procedure files in one commit (eddbf384), not pushed. npm run validate passes (data/ is valid). No code parses these files; the only readers are comments in tools/score.mjs, grade-flag.mjs, old-brief.mjs and flag-summary.mjs, and the section names they cite are kept (\"Planted problems, a second check\", \"No tuning to the plant\", \"The grader\", \"Studies are a starting point, not the judge\", number 5 \"Against the usual\", learning-loop steps 5 and 6).\n\nWhich use each bar sets:\n- metric.md's bar (\"Adopted\" at 70% of findings in the first 10, \"Trusted alone\", \"Stepped back\") decides whether the reviewer is adopted as the judge.\n- CLAUDE.md's bar (about half or more, with noise under 30%) decides whether it becomes a first pass on every site change.\n- metric.md, learning-loop.md, versions/README.md, bench/README.md and the lab README now each say this. No bar or number changed.\n\nmetric.md:\n- The \"written 2026-11-05, before any result, cannot move\" statement is kept as the fact about the bar.\n- The \"How the numbers are read\" amendment is folded in:\n  - the two catch rates with ranks go into number 1;\n  - one run against three merged runs goes into Steadiness;\n  - the goal rule goes into The benchmark;\n  - the grader agreement rule goes into The grader;\n  - the founder's \"this page does not do X\" note becomes its own bullet.\n- The dates are dropped from the \"added\" headings.\n- \"Trying a change on readers before building it\" moved into the README (Variants, first use).\n- The \"real people outrank studies\" bullet is shortened to point at CLAUDE.md, which holds that rule; the lab-only part stays.\n- The \"bar above\" reference now says \"below\", because the bar section comes later.\n\nREADME.md:\n- New \"Its place\" paragraph from CLAUDE.md's work order (5% habit, every flag goes through the lab first, a check beside the fresh readers and not a first pass), with both bars.\n- The contents table now covers evidence/, live/, elsewhere/, lessons.md, versions/ and planted.md.\n- New lines for grade-flag.mjs, flag-summary.mjs, planted.mjs and the panel's behaviourBrowser option.\n- The act.mjs movement amendment (dated 2026-11-06) is folded into the tool's description; the old behaviour it replaced is deleted.\n- The \"Planted runs (2026-11-06)\" and \"Since 2026-11-06\" notes are folded into Score.\n- The smoke runs and the first planted run are kept as dated run records. planted.md cites the \"DCA\" finding, and runs/smoke and runs/variant-plant have no report of their own.\n- \"What does not work yet\" is renamed \"Known limits\".\n\nlearning-loop.md: a short line on its place and its bars was added; step 1 now names live/ (see Conflicts).\n\nversions/README.md: v1 is marked as the default with the date amendment folded in. The 30% noise figure is labelled as the adoption bar's limit, and the candidates' JSON files are described.\n\nbench/README.md:\n- The heading date is dropped and the year is added to the date range.\n- The three-signals rule now lives only in metric.md; this file keeps its own details (the eight approvals, choices between drawings).\n- A pointer to live/ for later flags was added.\n- All counts were re-checked against cases.jsonl and match: 123 cases, 97 live and 26 drawings, 1,411 tiles, 18 needing outside knowledge, 122 seen on PC and 1 on a phone.",
+    "conflicts": [
+     "learning-loop.md step 1 said a new flag 'becomes a case in bench/cases.jsonl'. live/README.md is the later text and says flags from 2026-11-06 on are kept in live/<folder>/ (screen.png, case.json), and the benchmark covers only 24 October to 5 November. I followed the later text: step 1 now says the case is kept in live/. The rule itself is unchanged (keep the whole screen with his words and a neutral key before anything is fixed).",
+     "metric.md says 'About a third of the cases are held out'; bench/README.md gives the actual figure, 52 of 123 (42%), 'a little more than a third'. Left as it was; metric.md now points to bench/README.md 'Split'.",
+     "README's variant test line said '2026-11-05: 23 of 23 passed', but runs/variant-test/report.md is stamped 2026-11-06 01:58 Israel time. I dropped the date and kept '23 of 23 passed'."
+    ],
+    "openWork": [
+     "versions/candidates/elsewhere.md is a candidate instruction marked 'untested' in elsewhere.json, with a test plan; it is not mentioned as a to-do in the files, and no issue was looked up.",
+     "elsewhere/README.md says the founder answered 2 of the 15 sites on the form and may answer more. That file is not mine; noted only."
+    ],
+    "idsDeleted": [],
+    "checks": "npm run validate passes: 'data/ is valid', with only the existing warnings (rule strength, tax-year figures, open-questions behind the rule base, glossary citations), none from these files. npm run check was not run because no code reads these files: a grep found only comment references in research/user-lab/tools/*.mjs, and the section names they cite are kept. The other session's untracked files (research/2026-11-06-docs-cleanup/part1-result.json, research/specs/2026-11-05-indices-colours/round2/readers/) were left alone and not committed."
+   },
+   "checker": {
+    "commit": "none (nothing to restore; the writer's commit eddbf384 stands as is)",
+    "findings": [
+     {
+      "old": "learning-loop.md step 1: \"becomes a case in `bench/cases.jsonl` with his words and a neutral key\"",
+      "what": "Now says the case is kept in `live/`. Checked: research/user-lab/live/README.md says every flag from 2026-11-06 on is kept there before anything is fixed, and bench/README.md now points there. The doc now describes the practice as it stands, and CLAUDE.md ground rule 7 ('the screen I saw becomes a test case') is still met. Not a loss.",
+      "action": "none"
+     },
+     {
+      "old": "metric.md, 'Real people outrank studies': \"What a real person says bothers them about the site is never argued away with a study, just as it is never argued away with a recorded decision.\"",
+      "what": "Shortened to a pointer to CLAUDE.md's fresh readers rule. CLAUDE.md says the same thing ('Nor does a published study: what a real person says bothers them outranks any study'), and the recorded-decision half is still in metric.md's 'Rationale is not a defence'. Not a loss.",
+      "action": "none"
+     },
+     {
+      "old": "metric.md's 'Trying a change on readers before building it' section, the 'Graders' and 'Goal, never the problem' bullets, the merged-runs rule and the rank rule",
+      "what": "Each one moved instead of being dropped: the first to README 'Variants' (first use), the graders bullet into 'The grader', the goal bullet into 'The benchmark', merged runs into Steadiness and ranks into the catch rate. Every bar, number and condition is unchanged: 70% at 10, one in five, under 30% noise, 20 flags at 70%, more than 40% over the last 10, 95% intervals, 1 in 10 grader error. The section names cited elsewhere still resolve: 'The benchmark', 'The bar', 'The grader', 'Planted problems, a second check', 'No tuning to the plant', 'Studies are a starting point, not the judge', 'Split' and 'Variants'.",
+      "action": "none"
+     },
+     {
+      "old": "CLAUDE.md work order: \"It becomes a first pass if a later score catches about half or more with noise under 30%\"",
+      "what": "README, metric.md, learning-loop.md, versions/README.md and bench/README.md each now say which use their bar sets. metric.md's bar decides adoption as the judge, and CLAUDE.md's bar decides a first pass on every site change. Both bars are unchanged. README and metric.md describe CLAUDE.md's bar as 'a later held-out score'. That reading fits, because the only score metric.md reports is the held-out one and CLAUDE.md's next sentence talks about the held-out set's scores. No conflict.",
+      "action": "none"
+     },
+     {
+      "old": "README contents table and tools section",
+      "what": "Checked that everything newly named exists: evidence/, live/, elsewhere/, lessons.md, versions/ and planted.md; tools/grade-flag.mjs, flag-summary.mjs and planted.mjs (list, check and run); behaviourBrowser in panel.mjs; and the candidates/*.json files, which hold what each candidate was built from, its status and its tests or plan. The descriptions match the tools' own headers. No code parses any of the five files.",
+      "action": "none"
+     }
+    ],
+    "verdict": "Clean. I found no lost rule, number, id or instruction, no change in meaning, no new conflict with CLAUDE.md and no broken reader, so there is nothing to restore and nothing was committed."
+   }
+  },
+  {
+   "path": ".claude/agents/*.md (all six)",
+   "writer": {
+    "commit": "915cfb6a",
+    "done": "I checked all six files in /home/ori/dev/finance-tool/.claude/agents/ against CLAUDE.md as it stands today and committed the changes (915cfb6a, not pushed). None of the files had dated amendments or history to fold in. I left each agent's role, tools, model and effort as they were (all six already use opus at high effort, which matches CLAUDE.md). None of the files had anything that conflicted with the budget rule, the kit rule or the size rule.\n\nWhat I changed:\n- data-researcher: a company's prices now come from its binding documents, never its advertising (D56). \"When the data-update skill exists, follow it\" is now just \"Follow the data-update skill\", because the skill exists.\n- domain-specialist: \"Aim for complete coverage\" now leaves out the companies CLAUDE.md says never to research.\n- qa-engineer: the file still talked about releases (\"before each release\", \"every flow in docs/flows.md for the current release\"), but all releases are built and changes now go live one at a time. The agent now tests every page the change touches at 1440 px and 390 px wide, PC first, and checks 44 px touch targets and that nothing depends on hover (ground rule 8). It runs after UI changes, before they go live. It no longer points to docs/flows.md, the release 1 flows file that is due to be archived.\n- ux-researcher: it loads the project's context, so it is never one of the fresh readers; it may plan their briefs and analyse their reports.\n- finance-reviewer and tax-specialist: unchanged, because nothing in them conflicts with CLAUDE.md.\n\nI kept the reference to the user-research and research-synthesis skills because they exist as installed plugins.",
+    "conflicts": [
+     "qa-engineer: the old text said \"Test every flow in docs/flows.md for the current release at a phone size and a desktop size\". That conflicts with CLAUDE.md: all releases are built, changes now go live one at a time by size, and screens are checked at 1440 and 390 px with 44 px targets and no hover (ground rule 8). I chose \"every page the change touches at 1440 px and at 390 px wide, PC first\" plus the 44 px and hover checks, and dropped the reference to docs/flows.md. This is a judgement call: the lead may prefer to keep pointing it at the archived flows file."
+    ],
+    "openWork": [],
+    "idsDeleted": [],
+    "checks": "npm run validate: data/ is valid. It printed four warnings that were already there before this change: rule strength, figures behind the tax year, open-questions.json behind the rule base, and glossary terms citing a rule that is not general. None of them come from these files. No code reads .claude/agents, so I did not run npm run check."
+   },
+   "checker": {
+    "commit": "none (no findings; HEAD stays 915cfb6a)",
+    "findings": [],
+    "verdict": "I found nothing to restore in the six agent files under /home/ori/dev/finance-tool/.claude/agents/, so I made no commit. Two files are unchanged since the base: finance-reviewer and tax-specialist. The other four have changes, and each one matches CLAUDE.md. (1) data-researcher: it now prices a company from its binding documents, never its advertising, which matches D56 in CLAUDE.md. \"When the data-update skill exists, follow it\" became \"Follow the data-update skill\", which is right because the skill exists in .claude/skills/data-update. (2) domain-specialist: it now leaves out the companies CLAUDE.md says never to research, which matches the excluded-companies rule. (3) qa-engineer: \"Test every flow in docs/flows.md for the current release at a phone size and a desktop size\" became \"every page the change touches at 1440 px and 390 px, PC first, 44 px touch targets, nothing depends on hover\". This follows ground rule 8 and the screenshot sizes in CLAUDE.md. All five releases are built, docs/flows.md is a record of release 1, and the agent is still a tester that never fixes anything. (4) ux-researcher: it now says it is never one of the fresh readers, which matches CLAUDE.md, where subagents load CLAUDE.md and so cannot be fresh readers. Other things I checked: every agent is set to opus at high effort, as CLAUDE.md requires. The user-research and research-synthesis skills the ux-researcher names exist as synced plugins. The finance-reviewer is still used after engine and schema changes, as CLAUDE.md says. Nothing in the files conflicts with CLAUDE.md on the budget rule, the kit, the size rule or sources. No code reads these files, so no reader can break and I ran no tests."
+   }
+  }
+ ],
+ "archive": [
+  {
+   "paths": "docs/flows.md and docs/design-review-2026-10-23.md",
+   "writer": {
+    "commit": "753a1e88",
+    "done": "Moved docs/flows.md and docs/design-review-2026-10-23.md with git mv to research/2026-10-23-release-1/. Each now opens with the line \"A record of release 1, kept as it was; the live rules are in docs/ and CLAUDE.md.\" The rest of each file is unchanged.\n\nFour intents still held and were in no live doc. They went into docs/product.md:\n- Section 2, Users: a friend often arrives on a page from a link the founder sends, so every page stands on its own and leads back to its list (flows section 2).\n- Section 2, the \"No blind spots\" principle: a gap is never read as an answer. A reader cannot mistake old data for current data, a missing or old input for a considered one, a missing reference for a fair price, a missing rule for permission, an unmatched track for one that fits, a missing tariff for an absent provider, an uncollected fund for one that does not exist, or an institution's statement for a rule. These are the \"done when\" lines of flows 9, 19, 27 and 33.\n- 3.1: what the not-covered page is for and who reads it. It is for a friend holding or asking about a tier-2 product. It says the site cannot help yet and why, shows the questions that have closed, says where an instrument went once it is fully covered, and lists what the site deliberately does not do (flows 7 and 37, brief 6.13; checked against routes/not-covered.tsx).\n- 3.8: what the documents page is for and who reads the reference pages. It answers \"where does all this come from\": every document the rules and figures were read from, and the data records the site read, each with what rests on it and the page that uses it. It claims no size and lists no TASE funds. These pages are for the founder, a careful friend and a reviewer (flows 8, brief 6.16; checked against copy.ts `documents`).\n\nNothing else needed moving:\n- Every other screen brief is already in the code, docs/design-system.md (shell, provenance, 3.7, 3.8a, 6.x to 9.6), docs/copy.md, docs/glossary.md, or a decision in product.md.\n- Some briefs describe things a decision removed: switching (D38), the change log (D24), the questions page (D58), the shelf pages, the fit mark on the catalogue pages (D34, D37), and the funds page (D53).\n- Every fix in the design review is already in design-system.md and the code: focus ring (2.6), 44 px hit areas (2.5), codes not in brackets (2.9, citing C5), numbers as buttons and aria-pressed (3.2, 3.9), the native dialog sheets, and the placeholder colour in app.css.\n- The review's \"Not tested\" line (VoiceOver, TalkBack, 200% zoom) is accessibility testing, which CLAUDE.md puts out of scope, so it was dropped.\n\nReferences updated:\n- CLAUDE.md's repo layout: the `docs/flows.md` line is replaced by a `research/2026-10-23-release-1/` entry.\n- docs/roadmap.md (4 places) and docs/design-spec.md (5 places) now give the new path. Both are the next archiver's files; I changed only the path.\n- docs/design-system.md 6.9 cites flow 11 with its new path.\n\n`git grep` now finds neither old path outside research/.\n\nLeft as they were:\n- About 50 code comments cite flows sections by name with no path (\"flows 6.2\", \"flow 26\", for example in site/app/components/shell.tsx, search.tsx and copy.ts). The archived file keeps those section numbers, so they still resolve by name.\n- design-system.md 2.9 and design-spec.md cite \"design review C1\" and \"design review C5\" by name.\n\nResearch files that cite the old paths are records of their day and were not touched.",
+    "conflicts": [
+     "Ground rule 8 against the briefs: flows section 6 says phone is the base design, while CLAUDE.md ground rule 8 says PC is judged first. CLAUDE.md wins, and the archived flows file already notes this. Nothing about it was moved into the live docs.",
+     "Flow 10 against the push rule: flow 10 says catalogue additions go through a pull request, while CLAUDE.md says to push to main and never open a pull request. CLAUDE.md wins. Only the intent moved (the validator checks that every catalogue fund number exists in the CMA data, packages/pipeline/src/validate.ts), and that was already in the code.",
+     "The code itself breaks the rule against codes in brackets in two strings: site/app/copy.ts lines 2849 and 3027 end sentences with \"(שאלה פתוחה BANK-OQ12)\" and \"(שאלה פתוחה PEN OQ7)\". design-system.md 2.9 and copy.md 10.4 forbid this. I left the docs and the code as they are; it is a copy fix for whoever owns copy.ts."
+    ],
+    "openWork": [
+     "docs/data-schema.md section 3.6 has no stale rule for tariff snapshots. The code applies 90 days (`staleTariff`) and cites flow 33's data note for it (site/app/lib/institutions.server.ts line 30). The rule should be written into data-schema beside `staleCmaFee`. I found no issue for it.",
+     "Two strings in site/app/copy.ts (lines 2849 and 3027) put an open-question code in brackets at the end of a sentence, against design-system.md 2.9 and copy.md 10.4. This is a small copy fix. I found no issue for it."
+    ],
+    "idsDeleted": [],
+    "checks": "`npm run validate` ends with \"data/ is valid\". It still prints the warnings that were there before, none from this change. Before the move, `git grep` for code that reads either file found none, so the full `npm run check` was not needed. Only packages/pipeline/scripts/gen-terms.ts cites product.md, by its 3.3 anchor, and that heading is unchanged. After the move, `git grep -nE \"docs/flows\\.md|docs/design-review-2026-10-23\" -- . ':!research'` finds nothing. Committed as 753a1e88 and not pushed. The untracked research/2026-11-06-docs-cleanup/part1-result.json belongs to the workflow and was left alone."
+   },
+   "checker": {
+    "commit": "836bd80d",
+    "findings": [
+     {
+      "old": "research/2026-10-23-release-1/flows.md, flow 38 'Done when': \"a person can never mistake an entered return for the site's view, an unfiltered row for a filtered one, a bank's published rate for an offer, a change to a rule the comparison never read for a change to their decision, or an instrument with closed questions for a covered one.\"",
+      "what": "The archiver merged the 'done when' lines of flows 9, 19, 27 and 33 into the 'No blind spots' sentence in docs/product.md section 2, but left out flow 38's. Its five items still hold: exposure mode, revisit and the not-covered page are all still built. Before this, they existed only piecemeal in design-system.md 9.x and the code, not as a general rule.",
+      "action": "Added the five items to the end of the same sentence in /home/ori/dev/finance-tool/docs/product.md. npm run validate passed, and no code reads that line. Committed as 836bd80d. Verdict: restored."
+     },
+     {
+      "old": "Old paths docs/flows.md and docs/design-review-2026-10-23.md",
+      "what": "grep -rn across the repository outside research/ (site, packages, .github, docs, .claude, CLAUDE.md) finds no reference to the old paths. CLAUDE.md's repo layout, docs/roadmap.md (line 129), docs/design-spec.md (lines 23, 413, 793, 1271, 1768) and docs/design-system.md 6.9 all point at research/2026-10-23-release-1/. Both archived files match their pre-move text, except for the added header line.",
+      "action": "None needed. Verdict: clean."
+     },
+     {
+      "old": "Unpathed citations into the archived record, for example 'flows 6.5' (site/app/components/timeline/Timeline.tsx), 'flow 16' (compare/assumptions.tsx), 'design review C1' (provenance.tsx:489, design-system.md 3.2 and 3.4), and many 'flow N' / 'flows 6.x' mentions in docs/design-spec.md and docs/roadmap.md",
+      "what": "About 50 code comments and many doc lines still cite flow or brief section numbers without a path. They still resolve, because the archive kept its section numbers and CLAUDE.md's repo layout names the folder. But a reader no longer finds them under docs/.",
+      "action": "Left as is: they are citations into a record that still resolves, not broken paths. Rewriting about 30 site files' comments is outside a checker's scope (brief item 9). Verdict: noted for the lead, no change."
+     },
+     {
+      "old": "design-review-2026-10-23.md: C1 rule chips at paragraph end; C2 two-column readout; C5 no brackets around codes; A1 placeholder in muted-foreground; A4 focus ring; A5/A6 numbers and chips as buttons/links; A7 44 px hit areas; A3 inert background, aria-modal; A8 table view as aria-expanded button; A10 segmented role=group + aria-pressed; Escape returns focus to the number",
+      "what": "Checked each one against the live docs and the code.",
+      "action": "All are present: design-system.md 2.5 (hit areas), 2.6 (focus), 3.2 (rule chips, C1), 3.4 (readout, C2), the table-view disclosure; copy.md 'Codes' (no brackets); design-spec.md (SegmentedControl aria-pressed, Disclosure aria-expanded, sheet inert and focus return); app.css ::placeholder. Verdict: nothing lost."
+     },
+     {
+      "old": "flows.md cross-cutting intents: names exactly as the source writes them; a blocked option never in the headline; no reference means never 'negotiate'; 'does not fit' never red; a failed import never touches the state; stale checks run in the browser against today; a rule figure past its end date stops the run; a name is saved only on 'העתקה'; a document is never shown in English alone; a deposit rate is the bank's published minimum, not an offer; experience entries kept apart from rules; rows that don't apply stay visible with the reason; a friend lands from a shared link; what the not-covered and documents pages are for",
+      "what": "Checked each one against the live docs and the code.",
+      "action": "All are present: design-system.md 272, 592 and 6.8; design-spec.md 246, 346, 675 and 1077; architecture.md K4, section 2 item 2, 3.5 and 3.6; copy.md (plural imperative, 'ניסיון של אדם אחד'); copy.ts notAnOffer; documents.test.ts; product.md section 2, 3.1 and 3.8 (added by the archiver). The rest of the briefs are built as described, or were removed by later decisions (D24, D32, D34, D37, D38, D49, D53, D54). Verdict: nothing lost."
+     }
+    ],
+    "verdict": "The archive move lost one thing, now restored: flow 38's 'done when' list was missing from product.md's 'No blind spots' rule and is added to it. Every other rule or intent that still holds in the two archived files is already in a live doc or the code. No reference to the old paths is left outside research/. One item is noted but not changed: many code comments and design-spec/roadmap lines still cite 'flow N' or 'flows 6.x' without a path. They still resolve to the archived record."
+   }
+  },
+  {
+   "paths": "docs/design-spec.md and docs/roadmap.md",
+   "writer": {
+    "commit": "eedadea6",
+    "done": "Moved docs/design-spec.md and docs/roadmap.md to research/2026-10-23-release-1/ with git mv. Each now starts with the line \"A record of release 1, kept as it was; the live rules are in docs/ and CLAUDE.md.\" Not pushed.\n\nRules that still held and were in no live doc, now moved:\n- docs/design-system.md 2.9: a long institution, product or track name (also a bank's product name and the negotiation text) wraps and is never cut with an ellipsis, because the exact name is how people recognise it. Source: design-spec sections 2, 5, 12 and 20, \"Edge cases\".\n- docs/design-system.md 2.4 Numbers: a headline figure keeps its size. Where it does not fit beside its label it moves under the label rather than shrinking. Source: design-spec section 2.\n- docs/product.md section 4: there is no profile switching on one device; export and import cover the founder helping a friend (review item 27). Source: the roadmap's \"Not planned\" table.\n\nEverything else in design-spec is already covered. It is described by the code and by design-system sections 2 to 12, copy.md (for example the noun-label and maqaf rule in 10.5), architecture.md (\"the engine returns codes, never Hebrew\"), or a decision in product.md section 1. The rest was removed by a decision: switching (D38), the change log (D24), the providers and funds pages (D52, D53), and the goal UI on the company, fee and holdings pages (D34, D37).\n\nThe roadmap's risks that still hold are already in D4, D9, D10, D17, the \"No blind spots\" principle, product.md 3.9 and 3.10 and dependency 6a. Its other \"Not planned\" rows are in D2, D9, D12, section 4 and 3.10. The GitHub setting for refresh pull requests is in the comment in .github/workflows/refresh.yml.\n\nReferences updated:\n- docs/design-system.md: five \"roadmap R1/R5\" citations (lines 89, 371, 689, 696, 705, 715 before the edit) now state the intent itself (D9; telling a change that affects the ranking from routine refresh noise) instead of citing the archived file.\n- CLAUDE.md: the \"What exists\" line now names research/2026-10-23-release-1/roadmap.md. In the repo layout, roadmap.md is dropped from the docs/ list, the docs/design-spec.md line is deleted, and the research/2026-10-23-release-1/ line now names the design handoff and the roadmap.\n- docs/product.md section 7 and docs/architecture.md section 7 point to the new roadmap path.\n- Code comments:\n  - site/app/lib/review.ts now cites D32 and issues #45 to #48 instead of roadmap \"Held for review\".\n  - site/app/app.css: the component rules now follow design-system.\n  - site/app/routes/home.tsx, site/app/lib/quick-goal.ts and site/app/components/compare/quick-goal.tsx now cite design-system 6.9 for the question card. The purpose-to-preset table in quick-goal.ts cites research/2026-10-23-release-1/design-spec.md 1a.\n\nLeft as they were:\n- About 60 code comments that cite the spec by bare name and section (\"design-spec 21.3\", \"roadmap R5 risk\"). They still find the archived file by its name, as the earlier archive left its bare \"flows N\" citations.\n- research/2026-10-23-release-1/flows.md, which still cites docs/design-spec.md. It is archived as it was.\n- research/ reports.\n- .claude/skills/il-finance/evals/trigger-evals.json and trigger-results-2026-10-22.json. Their \"docs/roadmap.md\" is an eval query string and a dated run record, not a reference.",
+    "conflicts": [
+     "Names cut with an ellipsis. Old text (design-spec 2, Edge cases): \"Long Hebrew names wrap; product, track and company names are never cut with an ellipsis, because the exact name is how people recognise them.\" Today, site/app/components/invest/pair.tsx line 159 cuts the account name in the indices page's cost bars with `truncate` (showing the full name in a `title`). site/app/components/kit/chip-list.tsx line 197 also cuts chip labels (goal and index names). I could not tell which one holds, so I kept the rule as it was (design-system 2.9) and did not change the code.",
+     "PC layout. Old text (design-spec 1.1): \"Why phone first ... The PC layout adds a side index and side-by-side panels; it never adds content the phone lacks.\" CLAUDE.md ground rule 8 now judges PC first, and design-system 2.5a lets a phone leave out a table column (width 0), so the PC shows more than the phone. I did not move this rule: CLAUDE.md wins."
+    ],
+    "openWork": [
+     "Decide whether account names in the indices page cost bars (site/app/components/invest/pair.tsx) may be cut with an ellipsis, or must wrap as design-system 2.9 says. No issue found.",
+     "The roadmap's open lists ('Held for review', 'Not final', 'Removed, to build again', 'After release 5', 'What continues') were copied into GitHub issues on 2026-10-31, as the file itself says. Spot-checked: #45 to #48 (held pages and visuals), #49 (workbench not final), #50 (switching), #52 (merge the four side stores), #88 (F-48 early pension withdrawal), #117 (F-18, the stale it.todo), #17 (general track as an exposure), #54 (one account or a pick per option), #44 (load on purchase, closed), #189 and #183 (tariff gaps)."
+    ],
+    "idsDeleted": [],
+    "checks": "npm run check passed with exit code 0: typecheck, tests, data validation and the full site build. No other build was running at the time. After the move, a grep for docs/design-spec and docs/roadmap outside research/ finds only the two il-finance eval JSON files, which were deliberately left alone."
+   },
+   "checker": {
+    "commit": "bee8f970",
+    "findings": [
+     {
+      "old": "site/app/lib/side-stores.ts:6 \"The merge of the three INTO the state document is pending the founder's approval (roadmap), so the document's version stays 3.\"",
+      "what": "A stale reference. It cited the roadmap's open list, which is now archived. The pending merge is tracked in GitHub issue #52, \"Merge the four device side stores into the saved state\".",
+      "action": "Fixed: the comment now says \"(issue 52)\"."
+     },
+     {
+      "old": "site/app/components/exposure-mode/fields.tsx:292 \"(design-system 9.2, roadmap R5 risk)\"",
+      "what": "A stale reference. It cited the archived roadmap's release 5 risk (an entered return can be misread as the site's view). That intent now lives in product D9 and in product section 2, \"No blind spots\".",
+      "action": "Fixed: the comment now cites \"D9: an entered return is never read as the site's view\"."
+     },
+     {
+      "old": "88 code comments in about 55 files under site/app cite \"design-spec <section>\" by bare name, for example \"design-spec 11.4\" and \"design-spec 21.3\".",
+      "what": "These are bare-name section citations, not paths. They still point to the archived research/2026-10-23-release-1/design-spec.md, which keeps its section numbers. The flows archive's checker kept the matching \"flows N\" citations the same way.",
+      "action": "Left as they are, a judgement call. No path to docs/design-spec.md or docs/roadmap.md is left outside research/."
+     },
+     {
+      "old": ".claude/skills/il-finance/evals/trigger-evals.json:19 and trigger-results-2026-10-22.json:174-180 contain \"docs/roadmap.md\".",
+      "what": "The first is the query string of a should-not-trigger eval: test input, not a working link. The second is a dated record of an eval run.",
+      "action": "Left as they are."
+     },
+     {
+      "old": ".claude/skills/il-finance/references/*.md \"Serves:\" lines cite \"roadmap R1\", \"R2\" and \"R5\".",
+      "what": "These are stale citations of the archived roadmap's releases. The brief forbids editing the il-finance references.",
+      "action": "Not touched. For the reference files' owners."
+     },
+     {
+      "old": "design-spec 1.1: \"The PC layout ... never adds content the phone lacks.\"",
+      "what": "This is in no live doc, but the site no longer follows it. On a phone, lists of products leave columns out (design-system 2.5a) and rule chips show their short title only on PC (3.2). CLAUDE.md ground rule 8 now says \"PC judged first\".",
+      "action": "Not restored: it no longer holds."
+     },
+     {
+      "old": "design-spec 3 edge cases: \"Several flags at once (stale and secondary): both lines show, stale first.\"",
+      "what": "The provenance sheet (provenance.tsx about line 1163) shows both lines, but the strength callout comes before the stale line. The ordering rule no longer holds.",
+      "action": "Not restored: the code is the current behaviour."
+     },
+     {
+      "old": "The roadmap's \"Not planned\" table and its risks: photo input, offer tracker, profile switching, service-quality data, expected equity return, allocation across goals, scope exclusions, negotiated prices (\"the best listed deal unless you enter an offer\"), track names that repeat, old track names, revisit noise, an entered return misread as the site's view.",
+      "what": "Each one checked against the live docs.",
+      "action": "No change: all are in product.md. That covers 3.10 (photo input, same-name tracks, old names), section 4 (offer tracker, profile switching, service quality, allocation, scope), D4, D9, D17 and \"No blind spots\", and 3.9 (revisit). The archiver had added profile switching."
+     },
+     {
+      "old": "Design-spec rules that cut across the site: long names wrap and are never cut with an ellipsis; a headline figure moves under its label rather than shrinking; values beyond a slider's range; reduced motion; the chart dims after 150 ms of computing; FLIP re-ordering; no hover tooltips; a gap is never read as an answer; an accepted fall is never pre-filled; no placeholder number for a return; the exposure caption always shows; \"עוד לא נרשמו סגירות.\"; payslip and statement labels never typed into the page; an unreadable saved comparison is never migrated by guesswork; goal-changed revisit; deleting a goal removes its saved comparisons; tabs re-read on a storage event; an invalid field keeps the last valid result.",
+      "what": "Each one checked against design-system.md, copy.md, product.md and the code.",
+      "action": "No change: each is in design-system.md (2.4, 2.5, 2.5a, 2.6, 2.9, 3.2 to 3.9, 6 to 9), copy.md 7, product.md, or the code (state.ts, panel.tsx, revisit.tsx, the kit's fields validating before commit)."
+     }
+    ],
+    "verdict": "The archive move is sound and nothing needed restoring. The archiver's three additions (design-system 2.9 on long names, 2.4 on headline figures, product section 4 on profile switching) were the only rules from the spec and roadmap that still held and were in no live doc. Every other one that still holds is in design-system.md, copy.md, product.md, method.md, the code or the GitHub issues. No path to the old files is left outside research/, apart from the il-finance eval inputs. I fixed two code comments that still cited the roadmap and committed them as bee8f970 (Size: small, not pushed). I did not run `npm run check` because the change touches only comments. The 88 bare \"design-spec N\" citations in code comments are left on purpose: they still lead to the archived file, which keeps its section numbers."
+   }
+  }
+ ],
+ "sweep": [
+  {
+   "files": "CLAUDE.md, docs/product.md, docs/method.md, docs/data-schema.md, docs/data-inventory.md, docs/parameters-rationale.md, docs/architecture.md",
+   "result": {
+    "commit": "dcb3c42a",
+    "findings": [
+     {
+      "what": "Exposure ids: data-schema §2 named ids that no file uses (cash-nis, cash-fx, gov-bond-unlinked, gov-bond-linked, track-<classification>). data-inventory row 3 and the files under data/instruments/exposures/ use shekel-cash, government-bond-unlinked and government-bond-cpi.",
+      "old": "data-schema §2: `cash-nis`, `cash-fx`, `makam`, `gov-bond-unlinked`, `gov-bond-linked`, `index-<index-code>` ..., `track-<cma-classification>` for provident tracks, `general-track` / data-inventory row 3: `shekel-cash`, `makam`, `government-bond-unlinked`, `government-bond-cpi`, `general-track` + seven indices",
+      "action": "Fixed data-schema §2 to match the data files and the inventory. Nothing in the code or data used the old ids."
+     },
+     {
+      "what": "P-01 value: data-schema's example gave 2. parameters-rationale and data/parameters/tie-threshold.json both say 0.5%.",
+      "old": "data-schema 3.2 example: \"value\": 2, \"unit\": \"pct\" / rationale: Value: 0.5%",
+      "action": "Fixed the data-schema example to 0.5."
+     },
+     {
+      "what": "P-05 sliders: data-schema listed only the monthly deposit and the years. The rationale and method F-90 also include amount today, return and change_share, and the data file holds all five.",
+      "old": "data-schema 3.2: `sliders` (`min`, `max`, `step` for the monthly deposit and the years) / rationale Sliders: also amount today, return, change share −50% to +50%, opens at +20%",
+      "action": "Fixed data-schema to list all five, with change_share's `start`."
+     },
+     {
+      "what": "P-07 presets: method left out the monthly deposit. Product D21 and the rationale say presets fill a monthly deposit, and the data file has it.",
+      "old": "method §2.3 P-07: the starting horizon, kept-available share and any-time constraint each preset fills / product D21: each fills horizon, monthly deposit, how much must stay available and whether it must be withdrawable at any time",
+      "action": "Fixed the method row, which D21 settles. The table layout that the site parses is unchanged, and I checked the parse output."
+     },
+     {
+      "what": "P-05's scope: method said it was for guide pages only. Product D37 and the rationale say the indices and fee pages also start from P-05.",
+      "old": "method P-05: Illustrative scenario for guide pages / D37: indices and fee pages ... start from the illustrative scenario (P-05)",
+      "action": "Fixed the method row, which D37 settles."
+     },
+     {
+      "what": "A-28: method described a trades-a-month input that starts as a site parameter and is shown on the provider workbench. That page was removed (D52). Product 3.4 and D53 say the indices page assumes one order a month, and invest.ts hard-codes ordersPerMonth 1 on the direct channel.",
+      "old": "method A-28: the provider workbench shows both as facts of the goal. The inputs are trades a month (starts at 1, a site parameter; typing makes it entered) and the channel ... / product 3.4: a monthly saver buys with one order a month (D53)",
+      "action": "Fixed A-28, which D52 and D53 settle."
+     },
+     {
+      "what": "Guide checklist: data-inventory and data-schema both describe a dimension checklist on guide pages. D49 says guide and exposure pages have none, and the code renders DimensionChecklist only on the track page and the goal comparison.",
+      "old": "data-inventory row 4: Dimension checklist on guide, exposure, company and track pages, the rules page and the goal comparison / data-schema 3.3: The guide's checklist and fee rows say \"תלוי בחברה\" / product D49: No guide or exposure page has \"מה האתר לקח בחשבון\"",
+      "action": "Fixed both docs to match D49 and the code: company terms appear in the fee rows and under \"מי מציע ומי מפקח\"."
+     },
+     {
+      "what": "Questions page: data-schema validation item 12 still called answer_he part of \"the questions page\". D58 says there is no questions page.",
+      "old": "data-schema §4 item 12: a row's `answer_he` (the questions page) carries a digit ... / D58: There is no questions page",
+      "action": "Removed the parenthetical, which D58 settles."
+     },
+     {
+      "what": "Page name: method used \"index page\" 12 times, product twice and data-schema once (as \"invest page\"), all meaning /indices. Product's own name is \"indices page\", and in D18 \"an index page\" means an exposure page, so the short name was ambiguous.",
+      "old": "method: (index page), The index page (D28), the index page's cost split ... / data-schema 3.4: The invest page reads it / product D31 and D45: the index page",
+      "action": "Renamed to \"indices page\" everywhere it means /indices. D18's \"An index page\" (the exposure page) was left alone."
+     },
+     {
+      "what": "Fixed constraint on numbers: product §2 said only files under data/ count as a source. CLAUDE.md also allows a computation defined in docs/method.md and the person's own entry.",
+      "old": "product §2: every number traces to a file under `data/` with source and date / CLAUDE.md: come from a file under data/ ..., or be a computation defined in docs/method.md ..., or be entered by the person",
+      "action": "Fixed product.md to match CLAUDE.md."
+     },
+     {
+      "what": "Fund lists: product §6 listed the Maya and TASE fund lists as refreshed monthly. CLAUDE.md says there is no fund list because TASE's terms forbid republishing it.",
+      "old": "product §6 row: Maya fund list ... | Monthly, by hand (the pages block scripts) / CLAUDE.md: There is no fund list, because TASE's terms forbid republishing it",
+      "action": "Fixed the row to say the lists are not collected while TASE's terms forbid it (dependency 6), and become monthly by hand only once TASE consents."
+     },
+     {
+      "what": "CMA file contents: data-inventory row 7 left out the foreign-currency holdings and the yields, said every other column is unread, and gave the wrong rule ids. data-schema 3.13, D34, D54 and the data file all hold them, and the data's rule ids are CAT-35, 36, 37 and 06; no fee object carries CAT-40.",
+      "old": "inventory row 7: rules CAT-35 to CAT-37 and CAT-40 ... `holdings` holds `TOTAL_ASSETS` and `STOCK_MARKET_EXPOSURE` ...; raw_fields keeps the CSV's other numeric columns as received, unread / data-schema 3.13: CAT-35, CAT-36, CAT-37, CAT-06; holdings incl. foreign_currency_exposure; yields 3y and 5y",
+      "action": "Fixed the inventory row to match data-schema and the data."
+     },
+     {
+      "what": "P-05 coverage: data-inventory row 2 said every product's illustrative run takes its terms from P-05 instruments. data-schema, the rationale and the data say a product with no entry has no timeline, and 11 of the 17 products have one.",
+      "old": "inventory row 2: the illustrative run of each takes its terms from the record P-05 `instruments` names / data-schema 3.2: A product with no entry has no timeline",
+      "action": "Fixed the inventory row."
+     },
+     {
+      "what": "Validator warnings: architecture said the validator never warns. data-schema §4 items 12 to 14 list warnings, and validate.ts prints them.",
+      "old": "architecture 3.2: A problem fails the run; it never warns and continues. / data-schema §4: Warns (printed, not failing)",
+      "action": "Fixed architecture to match data-schema and the code."
+     },
+     {
+      "what": "Who shows the saved goal: architecture said the home page shows or reads it. D37 says only the goal pages speak of a goal, and D58 holds the home page's question card. In home.tsx the card and the goal strip render only when /goal/compare is shown.",
+      "old": "architecture K8 and 3.5: Only the home page and the goal pages show or read the saved goal / product D37: Only the goal pages speak of a goal; D58: the home page's question card ... waits with it",
+      "action": "Fixed architecture, which D37 and D58 settle."
+     },
+     {
+      "what": "Track workbench: architecture still listed it as a tool page. D54 replaced it with the track browser, and its old address only redirects.",
+      "old": "architecture 3.5: the tools (goal comparison, idle cash, fees, holdings, the track workbench, ...) / product D54: The old address of the track workbench (`/workbench/tracks/<product>`) sends the browser on",
+      "action": "Fixed architecture."
+     },
+     {
+      "what": "Providers workbench: parameters-rationale still mentioned it as a page. D52 removed it.",
+      "old": "rationale: agrees with \"Leumi\" as the providers workbench and the broker picker rank it / product D52: a separate page ... was removed",
+      "action": "Fixed it to name the indices page and the goal comparison's broker picker."
+     },
+     {
+      "what": "Representative S&P 500 fund (not settled): product D21 says P-05 names IBI's S&P 500 ETF. method F-67, parameters-rationale, data-inventory and the data file all name 5139282, Yelin Lapidot's tracking fund, and the rationale explicitly rejects IBI 1148162 for its cost. By the ordering rule product would win, but that would contradict the data.",
+      "old": "product D21: (`instruments`: Leumi's deposit terms and tariff, two Altshuler Shaham money-market funds and IBI's S&P 500 ETF, ...) / rationale: Brokerage fund, 5139282 (Yelin Lapidot tracking fund (4D) S&P 500) ... IBI 1148162 ... would misrepresent",
+      "action": "Not fixed; reported. Updating D21's description to 5139282 needs a decision on wording."
+     },
+     {
+      "what": "Stairs on the indices page (not settled): product says D46 (the stairs) was replaced by D59. method F-91 still describes the stairs, and the code still renders StairsSection last on the indices page whenever a pick exists.",
+      "old": "product D46: Replaced by D59. A section of stairs ... replaced 2026-11-05 / method F-91: The stairs on the indices page show a step as the difference between two ways ...",
+      "action": "Not fixed; reported. The method matches the live code, so either the stairs should be removed from the site (ground rule 10) or D59 should say they stay."
+     },
+     {
+      "what": "Fund-list gap column (not settled): D61 item 2 says the fund list's \"מול המדד\" column becomes the yearly cost the calculation counts, and the past gap moves to the picked fund's card. method F-92(a) still says the gap shows on every fund, and the site still shows colGap \"מול המדד\" as the past gap.",
+      "old": "D61 (2): The fund list's column \"מול המדד\" becomes the yearly rate the calculation counts ... (changes, for the rows, method F-92 (a)) / method F-92 (a): It is shown on every fund with the number of years",
+      "action": "Not fixed; reported. D61 is decided but not built yet (it waits for fresh readers). The method describes the site as it is."
+     },
+     {
+      "what": "Track workbench in the method (not settled): method F-64 and F-83 still describe a track workbench with an F-70 fit mark and a coverage line, and data-schema 3.13 cites it twice. D54 says the track browser ranks nothing and shows no fit mark; the engine's trackWorkbench remains but no page uses it.",
+      "old": "method F-64: Track workbench ... and the fit mark from F-70 / data-schema 3.13: the two fee fields the track workbench (F-64) / product D54: the track browser ... ranks and recommends nothing",
+      "action": "Not fixed; reported. Deciding whether F-64 stays as an engine-only formula or is rewritten for the browser goes beyond a name fix."
+     },
+     {
+      "what": "Idle-cash rates (not settled): product D20 and 3.2 say the idle-cash preset runs on rates the person enters (A-26, and A-20 and A-22 entered). method F-60 runs the money-market fund and makam rows on P-05's cash_rate as a site parameter, and the bank row on the bank's published rate.",
+      "old": "product D20: the idle-cash preset (3.2) runs on the rates the person enters, shown as \"entered by you\" (method A-26, and A-20 and A-22 in that state) / method F-60: the money-market fund and makam rows use P-05's `cash_rate` as a site parameter",
+      "action": "Not fixed; reported. The page is held for review, and rewriting F-60 would change a formula's meaning."
+     },
+     {
+      "what": "Advertising block on the indices page (not settled; both texts are product decisions): D57, changed 2026-11-05, says the indices page's advertising block is removed. D65, from 2026-11-06, says the page notes the spread once, in that same block.",
+      "old": "D57: Changed 2026-11-05: the indices page's block on advertising is removed. / D65: the indices page says once, in its block on what the houses advertise against their price lists, that most houses leave the spread open",
+      "action": "Not fixed; reported for the founder to settle."
+     },
+     {
+      "what": "Fund counts (not settled): product dependency 6 and 3.4 say the site shows the number of Israeli funds with a link to Maya. data-inventory says the site names no count for a list it did not read. CLAUDE.md only says there is no fund list.",
+      "old": "product dependency 6: the counts with a link (CAT-42, ETF-43); 3.4: the Israeli funds without a record are one line with their count and a link to Maya / data-inventory: it names no count for a list it did not read",
+      "action": "Not fixed; reported."
+     },
+     {
+      "what": "Tracks no page reads (minor, inside product.md, not fixed): D34 says no page reads the CSV's other numeric columns, but D54 later made the track browser read the 3- and 5-year yields. data-inventory, which repeated D34, was fixed above.",
+      "old": "D34: The adapter also keeps the CSV's other numeric columns as received, with no page reading them. / D54: Each row shows ... the average annual yield over 3 and over 5 years",
+      "action": "Left the decision text as it was; reported."
+     },
+     {
+      "what": "Pull request on refresh (not changed; I read it as no conflict): architecture says a refresh that trips a sanity check opens a pull request. CLAUDE.md says never open a pull request, but that rule governs Claude's finished work, not the automated pipeline.",
+      "old": "architecture 3.3: written once more with `--force` ..., only to give a pull request a diff to review / CLAUDE.md: Push to main; never open a pull request",
+      "action": "Left as it was; reported for the lead to confirm."
+     }
+    ],
+    "verdict": "I committed dcb3c42a (\"Docs cleanup: conflicts between docs fixed\"; not pushed) with 17 fixes to six of the seven docs. CLAUDE.md is unchanged; three fixes bring other docs in line with it. Product decisions settled most of the rest, and a few were factual, checked against the data files and code. Eight conflicts I did not settle are reported with both texts, plus one passage I read as no conflict. Two need the founder: whether the stairs leave the indices page, and the D57 against D65 advertising block. Two are stale text to correct: D21's naming of IBI's ETF, and the track workbench in method F-64. `npm run validate` passes, as do the schema-document, validator, registry and comparison tests, and the method table the site parses gives the same result as before. I did not run `npm run check`, because another build was running."
+   }
+  },
+  {
+   "files": "CLAUDE.md, docs/design-system.md, docs/copy.md, docs/glossary.md, the five user-lab procedure files (research/user-lab/README.md, metric.md, learning-loop.md, versions/README.md, bench/README.md) and .claude/agents/*.md",
+   "result": {
+    "commit": "7939796a",
+    "findings": [
+     {
+      "old": "design-system V2: \"every screen is also checked at 390 px before merging\"",
+      "what": "CLAUDE.md ground rule 8 says \"before it goes live\" (work lands on main; merging is not the gate).",
+      "action": "Fixed: now \"before it goes live\"."
+     },
+     {
+      "old": "design-system 2.2 flags table: \"caution: stale, secondary or institution source\"",
+      "what": "CLAUDE.md (and design-system 3.2, D31) puts only a company's figure used outside its own context under caution; a company's figure about its own product, shown on that product, is plain sourced.",
+      "action": "Fixed: the row now reads \"stale, secondary source, or a company's figure out of its own context (D31)\"."
+     },
+     {
+      "old": "design-system 2.9: \"Address the reader with the plural imperative\"",
+      "what": "CLAUDE.md, copy 1 and copy 10.2 allow the plural imperative or the impersonal form, never one gender. The design-system line allowed only the imperative.",
+      "action": "Fixed: the line now says plural imperative or impersonal, never one gender, and cites copy 1 and 10.2."
+     },
+     {
+      "old": "design-system 3.2 popover \"Entered: 'הזנת את הערך הזה'\"; 3.3 \"the 'הוזן על ידך' tag\"; 6.4 idle-cash label table \"A-26 | הוזן על ידך\"; 9.4 \"היה פרמטר · עכשיו הוזן על ידך\"",
+      "what": "copy 3, 10.2 and 10.9 item 2 replaced these second-person-singular forms with \"הזנתם\" everywhere, and so does copy.ts (numbers.entered, the idle-cash labels, the revisit stateChange). The old forms also break CLAUDE.md's rule against addressing one gender.",
+      "action": "Fixed: all four quotes now match copy.ts (\"הזנתם את הערך הזה.\", \"הזנתם\", \"היה פרמטר · עכשיו הזנתם\"). Not fixed because it is code, outside these docs: site/app/lib/value.ts:95 and lib/revisit.ts:281 still write \"הוזן על ידך\" as an entered value's source title."
+     },
+     {
+      "old": "design-system 3.3 Button: \"Labels are verbs in the plural imperative.\"",
+      "what": "copy 10.5 (the style guide CLAUDE.md names) says buttons use a noun of action or an infinitive and never the imperative, which is kept for instructions in running text. The site follows copy 10.5 (\"שמירה\", \"להשוואה\").",
+      "action": "Fixed: the Button entry now points to copy 10.5 (\"שמירה\", \"לשמור את ההשוואה\", never the imperative)."
+     },
+     {
+      "old": "design-system 9.6 path line: \"כשייסגר: יופיע במדריך, בהשוואה למטרה, בשולחן העבודה ובקטלוג, ויימנה בשורת הכיסוי של כל השוואה.\"",
+      "what": "copy 2, 10.7 and 10.9 ban \"שולחן העבודה\" and \"קטלוג\" from what readers see. copy.ts (notCovered path) already holds the new sentence.",
+      "action": "Fixed: the doc now quotes copy.ts exactly (\"…ב״חברות ומסלולים״ ובעמודים ״השקעה במדד״ ו״איזו קרן לקנות״…\")."
+     },
+     {
+      "old": "design-system 11, The rule: \"A pattern that appears a second time goes into the kit first, then the feature uses it\"",
+      "what": "CLAUDE.md, Shared components first: a new pattern goes into the kit, its gallery and, where it can be named, a guard or ratchet; never into a feature folder. The old line let a pattern's first use live in a feature folder.",
+      "action": "Fixed: the rule now follows CLAUDE.md, with the gallery, guard and ratchet. \"Where the kit stops\" (chart plots and one feature's own anatomy) is unchanged."
+     },
+     {
+      "old": "design-system 11 PlanChips: \"Used by the comparison, exposure mode, the fees page and the index page, which all edit the current goal.\"",
+      "what": "D37 says the indices and fee pages run on their own numbers and never read the saved goal. In the code only compare/assumptions (the goal comparison and exposure mode) renders PlanChips; the indices page uses KnobStrip.",
+      "action": "Fixed: PlanChips is now described as the goal comparison's and exposure mode's; the indices and fee pages run on their own numbers (D37), and the indices page uses KnobStrip."
+     },
+     {
+      "old": "design-system 2.5a and 11: \"the index page's PairResult / IndexHeader / account and fund headers\", \"the indices on the index page\", CostStack \"(the index page)\", PickList \"(the index page's two linked lists)\", ProductTable \"the index page's funds\"",
+      "what": "Two names for one page. CLAUDE.md and the rest of the doc call it \"the indices page\", and the first sweep renamed it the same way in method.md and data-schema.md.",
+      "action": "Fixed: all 8 uses of \"the index page\" are now \"the indices page\"."
+     },
+     {
+      "old": "copy 2: \"the home page, the goal pages and the track workbench show and read the saved goal\"",
+      "what": "D54 replaced the track workbench with the track browser, and its old address redirects. D34 and D37 keep goal UI on the goal pages only, design-system 6.7 says the strip appears on the first page and the goal pages and nowhere else, and in the code only home, goal and goal-compare read the goal.",
+      "action": "Fixed: now \"the home page and the goal pages show and read the saved goal (the track browser has none, D34, D54)\"."
+     },
+     {
+      "old": "glossary intro: \"UI text is in `docs/copy.md`.\"",
+      "what": "This file named the wrong home. CLAUDE.md's repo layout and copy.md's own intro put the UI strings in site/app/copy.ts; copy.md holds the voice and the word choices.",
+      "action": "Fixed: the strings are in site/app/copy.ts and the voice and word choices in docs/copy.md."
+     },
+     {
+      "old": "glossary 2: \"The rows every guide page and track page shows.\"",
+      "what": "D49 says no guide or exposure page has the checklist; design-system 3.6 puts it on every track page and in the goal comparison.",
+      "action": "Fixed: the checklist is now on every track page and the goal comparison, and on no guide or exposure page (D49). The section heading and row layout that gen-terms reads are unchanged."
+     },
+     {
+      "old": "glossary 4, TASE averages row: \"and the provider workbench's published-average level reads 'אין ממוצע שנאסף' (`docs/copy.md` section 5)\"",
+      "what": "D52 removed the brokerage providers page (/workbench/providers/brokerage-account), the only page with a published-average level for broker fees.",
+      "action": "Fixed: that clause is deleted; the rest of the row is unchanged."
+     },
+     {
+      "old": "user-lab README, Old brief: \"The fresh-reader brief used before the lab (research/audit/tools/fresh-reader.mjs …)\"; metric.md number 5: \"run with the old fresh-reader brief\"",
+      "what": "CLAUDE.md still names fresh-reader.mjs as the tool its fresh readers run today. \"Used before the lab\" and \"old\" read as if it had been replaced.",
+      "action": "Fixed: both now say it is older than the lab and still the brief CLAUDE.md's fresh readers run. The tool keeps its name, old-brief.mjs, and no bar or rule in metric.md changed."
+     },
+     {
+      "old": "learning-loop step 7: \"Then fix the site, in the shared piece and every place of the same kind (ground rule 7).\"",
+      "what": "The current ground rule 7 learns every criticism three ways: the reviewer, the builders' docs (design-system.md, copy.md) and a guard or script. The loop left out the last two.",
+      "action": "Fixed: step 7 now also writes the reason as one general rule into the builders' doc and enforces it with a guard or script where the rule can be named."
+     },
+     {
+      "old": "bench README, Split: \"Score `holdout` once per change of instructions.\"",
+      "what": "CLAUDE.md's work order also has the held-out set scored again every couple of weeks.",
+      "action": "Fixed: the bench README now adds \"and again every couple of weeks (CLAUDE.md's work order)\"."
+     },
+     {
+      "old": "design-system 6.5 (\"Why one hue in steps rather than four hues … the site keeps its one accent\") and 9.3 (\"Why not seven hues\"): option lines in chart-option-1..3 = teal-200/400/600; 2.3 the same roles",
+      "what": "CLAUDE.md ground rule 6 (and design-system 12): inside a chart every line has its own clearly different hue. The comparison and exposure charts draw up to three options as steps of one teal hue, and their rationale argues against distinct hues. The doc correctly describes the built charts, which are on pages held for review.",
+      "action": "Not fixed; reported. The rule wins, but changing the doc alone would misdescribe the code. Redrawing these charts is open work, under ground rule 1's drawing when they come back from review."
+     },
+     {
+      "old": "design-system 11 StairsChart (\"in `--loss` red when it leaves less\") and DiffRow/DiffBar (\"`--gain` green for more money and … `--loss` red for less\"); 2.2 Money more and money less",
+      "what": "CLAUDE.md ground rule 6: red, amber and green are status colours, never a series. The stairs and difference bars on the indices page use green and red for the sign of a change. The founder chose gain against loss, but no decision in product.md section 1 records it as an exception.",
+      "action": "Not fixed; reported. The founder decides whether gain and loss count as status or need a decision recorded as an exception."
+     },
+     {
+      "old": "CLAUDE.md Design system, Charts: \"dashed blue for a series that rests on an entered return\"",
+      "what": "design-system 6.5 and 9.3 draw an entered-return line dashed in its own option colour, \"not chart-entered blue\". Dashed blue is kept only for the single series on the timeline (3.4, 2.3). CLAUDE.md's summary does not mention that case.",
+      "action": "Not fixed; reported. It is a gap in CLAUDE.md's summary, and only the founder or lead edits CLAUDE.md."
+     },
+     {
+      "old": "design-system 6.9 question card: \"two sec-chip links at 32 px … Chips under 44 px are a departure from the touch-target rule\"; 6.1 goals list \"two 36 px icon buttons\"; 3.9 Sheet back and close buttons \"36 px, round\"",
+      "what": "CLAUDE.md ground rule 8 and the design-system summary require 44 px touch targets. These pieces are built smaller, and one is recorded as a deliberate departure with no decision behind it.",
+      "action": "Not fixed; reported. The doc describes the code, and the departure needs the founder's decision or a code fix. The question card and goal form are held for review (D32, D58)."
+     },
+     {
+      "old": "glossary 6.8 rows \"מתאים למטרה שלכם?\" (a fit mark on a track's page), \"כל המסלולים של {מוצר} בכל החברות\" (\"…וסימון ההתאמה למטרה; המסלולים של סיווגים אחרים מהנבחר מוצגים מקופלים\"), \"במה הכסף מושקע (בשולחן העבודה)\", \"נבדקו {מספר} מסלולים ב־{מספר} חברות\" (the workbench's coverage line); 6.9 \"רמת העמלה\" (\"הרמה חלה על כל הספקים בטבלה\"); 6.13 \"עבר לכיסוי מלא\" (\"…בשולחן העבודה ובקטלוג…\")",
+      "what": "D34, D54 and D52 settle these: the track and company pages have no fit mark, the track workbench became the track browser (no fit mark, no folding by classification, no coverage line), and the brokerage providers page with its fee levels is gone. copy.ts's graduation path no longer names the workbench or the catalogue. No site code reads these hand-kept rows.",
+      "action": "Not fixed; reported. The fix means writing new Hebrew definitions, which CLAUDE.md sends through the Hebrew editor, so it is for a glossary writer, not this sweep."
+     },
+     {
+      "old": "copy 1 \"שאלה פתוחה: TXK OQ10\" (with a colon) against copy 10.3, 10.4 and design-system 2.9 \"שאלה פתוחה TXG OQ4\" / \"שאלה פתוחה TXK OQ10\" (no colon)",
+      "what": "The rule agrees everywhere (code after the words, never in brackets), but the examples disagree on the colon. Nothing in CLAUDE.md or product.md settles it.",
+      "action": "Not fixed; reported. Left as it was."
+     }
+    ],
+    "verdict": "I committed 7939796a and did not push it. It fixes 16 conflicts that CLAUDE.md, the style guide (copy.md section 10), the code or a decision in product.md section 1 settled, across design-system.md, copy.md, glossary.md and four of the five user-lab files. I reported 6 conflicts that the docs cannot settle on their own. The agents' files had none. `npm run validate` passes, and the 1 test file the vitest filter matched (4 tests) passes. I did not run `npm run check`, because another worktree's site build was running, so the site build and the full test suite were not run. The glossary headings and row layouts that code reads are unchanged."
+   }
+  }
+ ]
+}

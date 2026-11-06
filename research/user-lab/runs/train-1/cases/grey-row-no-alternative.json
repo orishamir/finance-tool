@@ -1,0 +1,14 @@
+{
+ "id": "grey-row-no-alternative",
+ "task": "t34",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Interactive Brokers' grey row only says it has no Israeli fund and no shekel price; it does not offer the foreign funds (such as iShares) that it does sell.",
+   "where": "the grey rows of the account list",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

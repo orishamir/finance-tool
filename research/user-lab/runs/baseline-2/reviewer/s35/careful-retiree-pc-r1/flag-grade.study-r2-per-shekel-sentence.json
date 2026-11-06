@@ -1,0 +1,36 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the per-shekel sentence or say it doesn't help; finding 6's complaint about too many numbers is about the 12-year strip, a different part of the screen."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015043399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the per-shekel sentence or say it isn't helpful; finding 6 is about the 12-year strip having too many numbers, which is a different part and a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014959400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0300028
+}

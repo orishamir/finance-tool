@@ -1,0 +1,36 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 says the same labels repeat on every fund, and finding 1 says the added fund gets no result, but neither says the added fund is given labels the user never chose and can't change."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 complains that the same labels repeat on every fund, and finding 1 is about the added fund having no result, but no finding says the added fund gets labels the reader never gave or that the reader can't choose them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0160794
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0319988
+}

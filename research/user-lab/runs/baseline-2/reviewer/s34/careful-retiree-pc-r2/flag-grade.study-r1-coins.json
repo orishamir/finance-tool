@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the coin drawing is redundant or that a bar would work better; findings 5 and 6 are about the sentence above the coins and the bars, not the value of the coins."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155834
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the coin drawing is redundant compared with a simple bar; finding 5 praises the sentence above the coins and finding 6 is about numbers changing in the bars, which are different issues."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0157914
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0313748
+}

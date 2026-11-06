@@ -1,0 +1,76 @@
+{
+  "case": "tracks-tracker-subtitle",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Only some rows (Altshuler, Analyst) carry an extra line 'עוקב …' under the company name; the inconsistency adds noise.\",\"where\":\"the company cells of the table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fee is only a 2025 average, not a promise of what I would actually pay",
+      "Ailon shows 'not yet reported' for its fee, so it might be cheaper and I can't tell",
+      "The page says 12 tracks/companies but I counted only 11",
+      "The '123 מקור / מחושב / הזנה' line is confusing (why '123' three times?)",
+      "Didn't understand the PF-06 tag",
+      "Ailon manages only 4 million ₪, which makes me nervous",
+      "Ailon's exposure of 40%/54% seems strange for an S&P tracker when the others are near 100%",
+      "Didn't understand what 101% exposure at Analyst means or whether it is riskier",
+      "Unclear what the turquoise number in the קופה column is for",
+      "The track name appears only for Altshuler and Analyst, not for the others such as Clal, so I can't tell what track to ask for",
+      "Two 'כסף מנוהל' figures in every row seem duplicated",
+      "Unclear whether the dotted lines under numbers mean they are clickable",
+      "Couldn't find whether the fee can be negotiated",
+      "Couldn't find whether the S&P track is currency-hedged",
+      "Couldn't find how to move my fund to Clal or whether moving costs anything",
+      "Couldn't find whether there is another hidden fee inside the fund",
+      "Couldn't find when Ailon will report its fee",
+      "The search box and the other investment-type buttons are irrelevant and could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader points out the same inconsistency: only Altshuler and Analyst have the extra track-name line under the company name. The reader's concern is the missing name in other rows, but the person would still recognise this as their problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.060751200000000005
+  },
+  "b": {
+    "raised": [
+      "The fee is only a 2025 average, so it's unclear whether 0.48% is what they would actually pay or whether it can be negotiated",
+      "Ailon shows 'not yet reported' for its fee, so it might be cheaper and they can't tell",
+      "The page says 12 tracks but they counted only 11 companies",
+      "The '123 מקור / מחושב / הזנה' line is confusing",
+      "The PF-06 tag next to the note isn't understood",
+      "Ailon manages only 4 million ₪, which makes them nervous",
+      "Ailon's exposure of 40%/54% seems strange for an S&P-tracking track",
+      "They don't understand what 101% exposure at Analyst means or whether it's riskier",
+      "The turquoise number in the קופה column isn't explained",
+      "The track name ('עוקב S&P 500…') appears only for Altshuler and Analyst, not for the others like Clal",
+      "Each row shows two 'כסף מנוהל' figures, which seems like duplication",
+      "The dotted underlines under numbers leave them unsure whether they can click them",
+      "Whether the S&P track is currency-hedged isn't stated",
+      "How to move the fund to another company, and whether it costs anything, isn't explained",
+      "They worry there may be another hidden fee inside the fund",
+      "There's no word on when Ailon will report its fee",
+      "The exposure column with rings is confusing and unhelpful, so they would drop it",
+      "The search box and the other investment-type buttons are irrelevant and could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader notices the same inconsistency the person named: only the Altshuler and Analyst rows carry the 'עוקב…' track-name line under the company name, and the other rows don't."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0701192
+  },
+  "third": null,
+  "ranks": {
+    "k": 10
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1308704
+}

@@ -3,7 +3,7 @@
 // assumptions (`mekor.v2.variants`; the funds page that wrote them is gone, issue 174, and they stay on the device) and the
 // switching checklist's ticks (`mekor.v2.playbook-ticks`; the switching page is gone, D38, and the ticks stay on the device).
 // This file only reads and writes their storage keys, checks every item, and merges. The merge of the three INTO the state
-// document is pending the founder's approval (roadmap), so the document's version stays 3.
+// document is pending the founder's approval (issue 52), so the document's version stays 3.
 //
 // File shape (`StateFile.sideStores`, optional: a file from before this carries none):
 //   { offers: EnteredOffer[], variantAssumptions: { [exposureId]: FundAssumptions }, playbookTicks: { [key]: string[] },

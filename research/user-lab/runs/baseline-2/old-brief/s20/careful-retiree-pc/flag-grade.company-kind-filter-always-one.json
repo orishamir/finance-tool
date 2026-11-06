@@ -1,0 +1,85 @@
+{
+  "case": "company-kind-filter-always-one",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a company's page, the filter 'במה הכסף מושקע' is useless: each of its choices holds a single track.\",\"where\":\"the filter chips above the tracks list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Not sure whether this product (קופת גמל להשקעה) or this company entity holds my money",
+      "Most tracks show no return history (פחות מ־3/5 שנים)",
+      "The '123 ממקור · מחושב · הזנתה' line is incomprehensible, and 'הזנתה' looks like a typo",
+      "The 'במה הכסף מושקע' chips are too many, some names not understood, and the reader would drop them",
+      "Extra direct costs aren't shown and their amount is unknown; 'PF-10' is unexplained",
+      "'Terms in Harel's documents and not in the law' made the reader nervous",
+      "Footer date (03.11.2026) conflicts with the table's September data date",
+      "The 'קופה' number column and its icon are unexplained",
+      "The coloured rings add nothing beyond the percentages",
+      "קיימות has 93% shares but only 1.78% return, which looks odd",
+      "Unclear whether 99% foreign-currency exposure is good or bad",
+      "'עוקב מדדים - גמיש' is unexplained",
+      "The difference between the bond tracks is unclear",
+      "'קיימות' meaning is unclear",
+      "Dotted underlines are unexplained",
+      "Can't see which track the reader's money is in or their personal fee",
+      "No information on worst-year losses or downside risk",
+      "No real return after fees and tax, or a shekel example",
+      "No guidance by age or time horizon",
+      "No information on whether switching tracks costs money or has tax consequences"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says the chips were too many and had unclear names, and never says that each chip holds a single track so the filter is useless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0680152
+  },
+  "b": {
+    "raised": [
+      "Most tracks show no return history ('פחות מ־3 שנים'), so they can't be judged",
+      "Can't tell whether the selected product (קופת גמל להשקעה) is the one holding the reader's money",
+      "The list of companies (הראל פנסיה וגמל / הראל קרנות נאמנות) doesn't say which one holds the reader's money",
+      "The '123 ממקור · מחושב · הזנתה' line is incomprehensible, and 'הזנתה' looks like a typo",
+      "Too many chips under 'במה הכסף מושקע', and some chip names aren't understood",
+      "Extra direct costs not shown on the page; how much are they?",
+      "'PF-10' is not understood",
+      "'תנאים שכתובים במסמכים של הראל ולא בחוק' made the reader nervous",
+      "Footer date (03.11.2026) conflicts with the September data date",
+      "The 'קופה' number column and its icon are not understood",
+      "The coloured rings add nothing beyond the percentages",
+      "Not every row is visible; one row near the bottom is cut off",
+      "'קיימות' looks odd: 93% shares but only 1.78% return",
+      "'מט\"ח' unclear: is 99% foreign currency good or bad?",
+      "'עוקב מדדים - גמיש': flexible in what way?",
+      "Difference between אשראי ואג\"ח, אג\"ח סחיר and עוקב מדדי אג\"ח is unclear",
+      "'קיימות' track name meaning unclear",
+      "Dotted underlines are not understood",
+      "Can't see which track the reader is in or their personal fee (only an average is shown)",
+      "No indication of how badly each track did in a bad year",
+      "No return after fees and tax, and none shown in shekels",
+      "No guidance suited to the reader's age or time horizon",
+      "No information on whether switching tracks costs money or has tax consequences",
+      "Would drop the collapsed קרנות מחקות / מרכזית לפיצויים / קרנות סל sections",
+      "Would drop the 'לא מצאתם שם?' search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that there are too many chips and some names are unclear, but never says each chip holds only one track, so the filter is useless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0645152
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1325304
+}

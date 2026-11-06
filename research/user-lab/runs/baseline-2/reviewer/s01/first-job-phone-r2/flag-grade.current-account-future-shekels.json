@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention inflation or the 'future shekels' mode; finding 1 objects to the assumed 5% return on a current account, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0149474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 objects to the assumed 5% yearly growth on a current account, not to the 'בשקלים של העתיד' view ignoring inflation, and no other finding mentions inflation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0154074
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0303548
+}

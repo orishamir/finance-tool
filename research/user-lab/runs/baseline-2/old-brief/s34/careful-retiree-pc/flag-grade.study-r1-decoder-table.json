@@ -1,0 +1,76 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The note that the drawings are live and the years can be dragged meant nothing to them, since they were only looking at pictures",
+      "The left card (+1,721 ₪, then 394 ₪ less after 5 years) was confusing, and they couldn't see why it was shown",
+      "The grey small print about assumptions was only half understood; the rest was names and codes",
+      "They gave up counting the coins in the coin towers",
+      "The '+527 ₪' step (same money moves to the fund) was confusing, especially since the fund's fees are higher",
+      "In the coin towers they couldn't tell whether the striped tax coins are included in the 66,513 ₪ or taken out of it",
+      "The fund names and ID codes (S&P500 13245, 5139282, 4D, Fair Financial) meant nothing to them",
+      "'Up to the legal ceiling' doesn't say what the ceiling is in shekels",
+      "The '19 tracks' range left them unsure whether they have to pick a track, and which one",
+      "They weren't sure about the salaried / self-employed switch and just assumed 'salaried'",
+      "Missing: what happens if they need the money before 6 years",
+      "Missing: what happens if they leave the job or retire early (does the 6-year clock keep running?)",
+      "Missing: what happens if the market falls instead of rising 7%",
+      "Missing: whether their age changes anything",
+      "Missing: how to check whether their employer offers this at all",
+      "Would drop the coin towers and the 'same drawing one year later' repeat",
+      "Would drop the small print with fund codes, the coloured legend line and the drag hints",
+      "Would drop option ב (steps) because option ג shows the same thing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader gave up counting the coins but praised the table under the graph as excellent, and never complained that the numbers should be written on the graph instead of being read from a separate table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0542392
+  },
+  "b": {
+    "raised": [
+      "The subtitle's 'drag the years' hint meant nothing to someone just looking at the pictures",
+      "The left card (+1,721, yet 394 ₪ less after 5 years) was confusing, and it's unclear why it's shown",
+      "The grey small print about assumptions was only half understood; the rest is names and codes",
+      "Gave up counting the coins in the coin towers",
+      "The step 'same money moves to the fund +527 ₪' was confusing, since the fund's fees are higher",
+      "Couldn't tell whether the striped tax coins on top of the yellow ones are inside the 66,513 or taken out of it",
+      "Fund names and ID codes (S&P500 13245, 5139282, 4D, Fair Financial) are not understood",
+      "'Up to the legal ceiling' doesn't say what the ceiling is in shekels",
+      "'Across the 19 tracks' is unclear: do I have to pick a track, and which one?",
+      "Unsure about the salaried/self-employed switch",
+      "Missing: what happens if the money is needed before 6 years and whether it can be taken out",
+      "Missing: what happens when leaving the job or retiring early, and whether the 6-year clock keeps running",
+      "Missing: what happens if the market falls instead of rising 7%",
+      "Missing: whether age changes anything",
+      "Missing: how to check whether the employer offers this",
+      "Would drop the coin towers and the 'same drawing one year later' repeat",
+      "Would drop the small print with fund codes, the coloured legend line and the drag hints",
+      "Would drop option ב as a duplicate of ג"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader couldn't count the coins, but they praised the table under the graph and never said that numbers or names should be written on the graph itself instead of in a separate table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0519112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1061504
+}

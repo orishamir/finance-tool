@@ -1,0 +1,112 @@
+{
+  "task": "s20",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:25:22.792Z",
+  "structured": {
+    "answer": "In Harel's קופת גמל להשקעה all 16 tracks cost about the same (0.54%–0.61% of savings, 0% of deposits), so I'd go with the מניות track. It shows 24.04% a year over 3 years and 14.64% over 5, more than the S&P 500 track's 13.7%/11.92%. I only saw this one product tab, not my קרן השתלמות.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Product buttons at top (קופת גמל להשקעה preselected)",
+        "why": "I wanted to see everything Harel offers, but the page shows one product at a time and my screens only had קופת גמל להשקעה, which sounds like an older-people pension thing to me"
+      },
+      {
+        "where": "Return column",
+        "why": "Most rows say 'פחות מ־3 שנים', so there's no number to compare and only a few tracks can be judged"
+      },
+      {
+        "where": "Folded 'קרנות סל 4 קרנות' section",
+        "why": "It's the ETF thing I'd heard about, but the label didn't say cost or returns, so I didn't open it"
+      }
+    ],
+    "used": [
+      "Heading 'הראל'",
+      "Product tabs row, 'קופת גמל להשקעה 16' selected",
+      "Line '16 מסלולים · דמי ניהול מההחיסכון: מ־0.54% עד 0.61%'",
+      "Table track names on the right",
+      "Fee column 'מההחיסכון' / 'מההפקדה 0%'",
+      "Return column header 'תשואה שנתית ממוצעת, לפני דמי ניהול' and values like 24.04% / 14.64% for מניות, 13.7% / 11.92% for S&P 500"
+    ],
+    "skimmed": [
+      "Donut charts and the מניות/מט\"ח percentages",
+      "'כסף מנוהל' column (e.g. 431 מיליון ₪)",
+      "Track-number column (15283 etc.)",
+      "Folded section headings קרנות מחקות, מרכזית לפיצויים, קרנות סל"
+    ],
+    "skipped": [
+      "Grey lines under the heading about data source and companies",
+      "'123 ממקור / מחושב / הזנתה' line",
+      "Footnote 'התקרה בחוק' and the PF-10 note",
+      "Grey sentence under the table about returns",
+      "'מה כתוב במסמכים של הראל' section and its folds",
+      "'לא מצאתם שם?' search box",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מט\"ח (guessed: foreign currency)",
+      "סחיר",
+      "עוקב מדדים - גמיש",
+      "אשראי ואג\"ח",
+      "מרכזית לפיצויים",
+      "תגמולים ואישית לפיצויים",
+      "teal vs yellow in the donuts (guessed teal = מניות, yellow = מט\"ח from the dots)",
+      "what 'כסף מנוהל' means for me"
+    ],
+    "not_found": [
+      "What Harel's קרן השתלמות tracks look like (another tab, not on my screens)",
+      "The fee in shekels for my amount",
+      "A clear recommendation of which track to pick",
+      "Returns for most tracks (under 3 years)"
+    ],
+    "findings": [
+      {
+        "what": "Only one product shows at a time; seeing everything Harel offers means tapping through 6 tabs",
+        "where": "Product tabs at the top"
+      },
+      {
+        "what": "Every row repeats 'ההפקדה 0%', 'מניות/מט\"ח' with dots and 'פחות מ־3 שנים' twice, so I reread the same text to find what differs",
+        "where": "Main table rows"
+      },
+      {
+        "what": "Fees all look nearly the same and appear only as percentages, never in shekels, so they feel like nothing",
+        "where": "Fee column"
+      },
+      {
+        "what": "Most tracks have no return number, just 'פחות מ־3 שנים'",
+        "where": "Return column"
+      },
+      {
+        "what": "Donut colours are explained only by small dots next to the numbers; I had to match them back and forth",
+        "where": "Asset mix column"
+      },
+      {
+        "what": "Folded sections like 'קרנות סל' don't say what's inside, so I didn't open them",
+        "where": "Below the table"
+      },
+      {
+        "what": "Product name 'קופת גמל להשקעה' doesn't sound like something for someone my age",
+        "where": "Selected tab"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40563,
+    "turns": 4,
+    "usd": 0.1444682,
+    "input": 4,
+    "cacheWrite": 7404,
+    "cacheRead": 8101,
+    "output": 4180,
+    "model": "claude-opus-5-5"
+  }
+}

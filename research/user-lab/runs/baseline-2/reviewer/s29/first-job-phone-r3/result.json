@@ -1,0 +1,117 @@
+{
+  "task": "s29",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:41:38.328Z",
+  "structured": {
+    "answer": "Open a trading account at Pesagot (פסגות ניירות ערך) and buy the IBI tracker fund \"אי.בי.אי. מחקה (4A) ת\"א 125\" every month. The page marks it as the cheapest pair, ending at 86,045 ₪ after 10 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Fund list, screen 2",
+        "why": "My chosen fund shows '-0.04%' and the others show '-1,030 ₪'. Minus signs everywhere, and I wasn't sure whether minus meant bad"
+      },
+      {
+        "where": "Account list, top",
+        "why": "Pesagot is first, but it isn't a bank I know. I hesitated before trusting it over Leumi"
+      },
+      {
+        "where": "Sliders, screen 1",
+        "why": "The defaults are 10,000 and 500, not my 30,000, so the shekel numbers aren't really mine. I didn't change them"
+      },
+      {
+        "where": "Line chart 'מה הכי משנה את מה שיישאר לכם'",
+        "why": "Lost interest here. Too many lines"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "Selected chip 'ת\"א-125'",
+      "Box 'הבחירה שלכם · ★ הזול' 86,045 ₪",
+      "Fund card 'אי.בי.אי. מחקה (4A) ת\"א 125' with 'קרן מחקה'",
+      "Account list 'כל החשבונות' ranking: פסגות 86,045, לאומי 82,968, etc.",
+      "Waterfall chart top 'הכי הרבה בכל המחירונים 86,045 ₪ ... פסגות'",
+      "Table 'חשבון אחר, אותה קרן' with Pesagot green 'עוד 5,022 ₪'"
+    ],
+    "skimmed": [
+      "Fee bar legend (עמלות קנייה ומכירה, דמי משמרת, דמי ניהול חשבון)",
+      "Lower accounts 4-15",
+      "Line chart and table under 'מה הכי משנה את מה שיישאר לכם'",
+      "Waterfall chart 'מתחילים מבחירה אחת'",
+      "Table 'קרן אחרת מאותו סוג'"
+    ],
+    "skipped": [
+      "Small text explaining how accounts are calculated",
+      "'לא בחישוב' notes and their folds",
+      "'מול המדד' explanation paragraph",
+      "Inflation button",
+      "Screen 8",
+      "'+ הוספת חשבון בתנאים שקיבלתם'"
+    ],
+    "unsure_meaning": [
+      "'-0.04%' under 'מול המדד'",
+      "'דמי משמרת'",
+      "'צוברת'",
+      "'מחזיקה את המניות' / 'כמה דרכים יחד'",
+      "'קרן מחקה' vs 'קרן סל'",
+      "'4A' / '(40)' in fund names",
+      "'נאמן 0.025%'",
+      "Bar colours orange/yellow/red: guessed orange = buy/sell fees, red = account fee",
+      "'70,000 ₪ הפקדתם' vs 86,045"
+    ],
+    "not_found": [
+      "A clear 'first step' / how to open the account button",
+      "My own amounts (30,000 ₪) — I didn't try changing the sliders",
+      "Whether Pesagot is a safe/known company"
+    ],
+    "findings": [
+      {
+        "what": "Minus signs on the good fund ('-0.04%') and on the alternatives ('-1,030 ₪') make it hard to tell what's good and what's bad",
+        "where": "Fund list 'כל הקרנות על מדד ת\"א-125'"
+      },
+      {
+        "what": "The top recommendation is a non-bank name I'm unsure about. Nothing says whether it's safe",
+        "where": "Account list, Pesagot #1"
+      },
+      {
+        "what": "Lots of unexplained jargon tags on each fund (צוברת, מחזיקה את המניות, כמה דרכים יחד)",
+        "where": "Fund rows"
+      },
+      {
+        "what": "Defaults (10,000 / 500) aren't my numbers, so the big shekel figures don't feel like mine",
+        "where": "Sliders, screen 1"
+      },
+      {
+        "what": "Fee bars are coloured, but the legend is far away (top of screen 2 / bottom of list)",
+        "where": "Account list bars"
+      },
+      {
+        "what": "No obvious 'what to do next' step after the recommendation",
+        "where": "Whole page"
+      },
+      {
+        "what": "The line chart with four coloured lines is hard to read on a phone",
+        "where": "'מה הכי משנה את מה שיישאר לכם'"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41484,
+    "turns": 9,
+    "usd": 0.18906420000000002,
+    "input": 12,
+    "cacheWrite": 13354,
+    "cacheRead": 53921,
+    "output": 3570,
+    "model": "claude-opus-5-5"
+  }
+}

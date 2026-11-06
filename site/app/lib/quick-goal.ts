@@ -1,4 +1,4 @@
-// The home page's question card (docs/design-spec.md section 1a): three plain questions turned into a saved goal.
+// The home page's question card (docs/design-system.md 6.9): three plain questions turned into a saved goal.
 // The purpose chips are words for the P-07 presets (D13, D21); this file maps words to presets, says which fields each
 // purpose asks, and checks the answers. Pure: no React, no storage. The card applies the plan (components/compare/quick-goal.tsx).
 import { childAgeFrom, type Goal, type GoalPatch, type NumField, type PresetId } from "./goal";
@@ -65,7 +65,7 @@ export type QuickPlan =
   | { kind: "idle"; to: string }
   | { kind: "invalid"; field: QuickField; message: string };
 
-/** The purpose to preset table (docs/design-spec.md 1a). "none" depends on whether a monthly deposit was typed. */
+/** The purpose to preset table (research/2026-10-23-release-1/design-spec.md 1a). "none" depends on whether a monthly deposit was typed. */
 export function presetFor(purpose: PurposeId | null, input: Pick<QuickInput, "monthly">): QuickPreset {
   switch (purpose) {
     case "apartment":

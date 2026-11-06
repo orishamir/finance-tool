@@ -1,0 +1,81 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option B leaves out the line saying what it costs (300 ₪ from you, 900 ₪ from the employer)",
+      "Unsure what applies at age 61: tax before 6 years, and whether the money can be taken tax-free at retirement",
+      "Subtitle 'בלי כדורים ובלי טבלה' means nothing to someone who never saw the old version",
+      "The 'מה היה' small picture is tiny, can't be read, and seems pointless",
+      "Fine print fund names, ID numbers and company names are confusing",
+      "In Option B the parts run left to right, so 'נשאר בידיים' comes before the start",
+      "Option B's left chart has no ₪ signs",
+      "The last screenshot is empty",
+      "In Option A the striped tax block on top of the column looks like money added",
+      "Tax block uses two colours (orange-striped and green-striped) for no clear reason",
+      "Doesn't understand why the year-5 tax is bigger than the whole profit",
+      "Jargon not understood: דמי ניהול, מסלולים, תעריפים, מחקה, עד התקרה בחוק, הכול בכסף של היום",
+      "Unclear whether the 19,595 ₪ shown is the best case out of a range of 14 rates",
+      "No information on what happens if you leave or change jobs before 6 years",
+      "No information on whether you get the 900 ₪ in salary if you don't join",
+      "No information on how much less of the paycheck actually reaches the bank",
+      "No information on bad market years; the page assumes 7% every year",
+      "No way to enter your own salary instead of 12,000",
+      "Would drop Option B",
+      "Would drop the 'עצמאים' toggle"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says the per-shekel sentence settled the decision and was clear on the first read, so they praise it and never complain about it."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0517592
+  },
+  "b": {
+    "raised": [
+      "Unsure whether the 6-year tax rule fits at age 61, and what happens if the money is needed sooner",
+      "The subtitle 'בלי כדורים ובלי טבלה' means nothing without having seen the old version",
+      "The small 'מה היה' picture is tiny, unreadable and pointless",
+      "The fine print about funds is confusing (fund names, ID numbers, '(4D)', company names)",
+      "In Option B the parts run left to right, so 'נשאר בידיים' comes before the start",
+      "Option B leaves out the '300 ₪ בחודש מכם' cost line",
+      "Option B's left chart has no ₪ signs",
+      "The last screenshot is empty",
+      "In Option A the striped tax block sits on top of the column and looks like money being added",
+      "The tax block has two striped colours (orange and green), and it's not clear why",
+      "Unclear why the year-5 tax is bigger than the whole profit (is the employer's money taxed?)",
+      "Terms not understood: דמי ניהול, מסלולים, תעריפים, מחקה, עד התקרה בחוק, הכול בכסף של היום",
+      "The ID numbers in brackets in the fine print are not understood",
+      "The '14 התעריפים' range line suggests the 19,595 shown is the best case, so the account could be half that",
+      "No information on what happens if you leave the job before 6 years",
+      "No information on whether you get the 900 in salary if you don't join",
+      "No information on how much less of the paycheck will arrive each month",
+      "Nothing about bad market years; the page assumes 7% every year",
+      "No way to enter your own salary",
+      "Would drop Option B",
+      "Would drop the 'עצמאים' toggle"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the per-shekel sentence as the one that settled the decision and says they understood it on the first read, so it is not raised as a problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.052467200000000005
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1042264
+}

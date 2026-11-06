@@ -1,0 +1,104 @@
+{
+  "task": "s12",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:22:04.949Z",
+  "structured": {
+    "answer": "It's a savings fund where the employer adds up to 7.5% and I add up to 2.5%. After 6 years I can take the money out without tax on the profit, and it seems worth having because of the employer's money. Which company and which מסלול to pick, I'll ask my son or the bank.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "מה מייחד – comparison with S&P 500 and the two bars",
+        "why": "English letters and מדד in a sense I don't know. I couldn't tell what was being compared to what"
+      },
+      {
+        "where": "Numbers under the comparison",
+        "why": "Lots of small numbers and a minus sign (−342.02 ₪). It made me anxious"
+      },
+      {
+        "where": "Slider on the years graph",
+        "why": "I don't use sliders, and the graph has no sentence that explains it"
+      }
+    ],
+    "used": [
+      "Subtitle and 'מה זה' section: employer deposits, 6 years, tax-free",
+      "7.5% employer / 2.5% employee",
+      "'כסף נכנס ויוצא' cards: כשעוברות 6 שנים, עד 4 ימי עסקים",
+      "'כמה זה עולה' table: עד 2% בשנה, no exit fee",
+      "Orange warning box: early withdrawal possible but expensive",
+      "'סיכונים': assets held in trust, separate from the company"
+    ],
+    "skimmed": [
+      "'למה משתמשים בזה'",
+      "'מיסוי' cards",
+      "'שווה לדעת' list",
+      "'מי מציע ומי מפקח'"
+    ],
+    "skipped": [
+      "Comparison figures (עלויות, מס) and bullets about investment houses",
+      "שחקו עם המספרים שלכם",
+      "הצגת החברות / כל החברות",
+      "מונחים glossary and everything below it (screen 5)"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "מדד",
+      "חוקים וכללים · 4 (the repeated badge)",
+      "TXH-09, KH-15, PF-18",
+      "הרווח הריאלי",
+      "ותק",
+      "מסלול כללי, אג\"ח צמודה/לא צמודה, מזומן שקלי",
+      "שכר נאמן",
+      "dotted underlines under numbers"
+    ],
+    "not_found": [
+      "A plain sentence saying which מסלול is safe, like a deposit",
+      "A plain explanation of the bar graph"
+    ],
+    "findings": [
+      {
+        "what": "The comparison opens with S&P 500 and a מדד, which makes the fund look like stock gambling right at the start",
+        "where": "מה מייחד box, screen 1"
+      },
+      {
+        "what": "Many small numbers, including a minus figure (−342.02 ₪), with no summary sentence",
+        "where": "Under the bars, screen 2"
+      },
+      {
+        "what": "The same 'חוקים וכללים · N' badge on almost every paragraph and card; I re-read it each time and never learned what it means",
+        "where": "Throughout, screens 1–4"
+      },
+      {
+        "what": "Grey text on a dark background is too pale to read",
+        "where": "Notes under the comparison and under the cost table"
+      },
+      {
+        "what": "A slider is the only obvious way to change the years",
+        "where": "Years graph, top of screen 2"
+      },
+      {
+        "what": "Codes like TXH-09 next to facts mean nothing to me",
+        "where": "שווה לדעת, screen 2"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32845,
+    "turns": 6,
+    "usd": 0.1846168,
+    "input": 10,
+    "cacheWrite": 14952,
+    "cacheRead": 41504,
+    "output": 2833,
+    "model": "claude-opus-5-5"
+  }
+}

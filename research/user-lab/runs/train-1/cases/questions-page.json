@@ -1,0 +1,14 @@
+{
+ "id": "questions-page",
+ "task": "t28",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The page of questions everyone asks, each with a one-line answer, adds little on its own.",
+   "where": "the whole page",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

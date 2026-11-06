@@ -1,0 +1,36 @@
+{
+  "case": "hg-fund-withholds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'הקרן מנכה קודם … מס במקור, ו… מהם חוזרים רק אם מגישים דוח שנתי' is jargon; the reader does not understand what the fund deducts.\",\"where\":\"the early-withdrawal sentence of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the early-withdrawal sentence is jargon or unclear about what the fund deducts: finding 1 is about a missing label on the chart's minus bar, and finding 5 is about jargon in the lower 'שווה לדעת' section, not in this sentence."
+      }
+    ],
+    "liked": [],
+    "usd": 0.022591399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The person's complaint is that the early-withdrawal sentence about tax withheld at source is full of jargon; finding 1 is about a minus bar with no label, finding 4 about small grey text, and finding 5 about jargon in a different, lower section, so none of them names this sentence's wording."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0215114
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0441028
+}

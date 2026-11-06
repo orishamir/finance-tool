@@ -1,0 +1,14 @@
+{
+ "id": "fee-parts-unlabelled",
+ "task": "t19",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The fund fee parts are labelled only 'קבועים', 'משתנים', 'נאמן', which do not say they are fees.",
+   "where": "the fee line under every fund row",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Minus percentages on every fund, including the recommended one, read as losses, because the reader can't tell what the differences are measured against.",
+      "serious": true,
+      "names_listed": 6
+    },
+    {
+      "n": 2,
+      "summary": "86k at the end from 70k deposited felt low, and the 'in today's money' label is easy to miss, so the main figure can be misread.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The colours in the cost bars are only explained after scrolling, and the legend is small and far from the bars.",
+      "serious": true,
+      "names_listed": 4
+    },
+    {
+      "n": 4,
+      "summary": "Jargon such as custody fee, trustee and 4A has no plain explanation.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "There's no clear next step for opening the account.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Large cost gaps between investment houses look alarming with no explanation.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.03811199999999999
+}

@@ -1,0 +1,79 @@
+# p05-repeat-ta125-phone: first-job-phone (run 2)
+
+shots mode, phone; 11 steps, 42 s, $0.25
+
+## Answer
+
+I'd open the account at פסגות and buy "אי.בי.אי. מחקה (4A) ת"א 125". The page's own example (10,000 ₪ now plus 500 ₪ a month for 10 years at 7%) says I'd be left with about 86,045 ₪, "בכסף של היום". Fairly sure on the choice because the page marks it "הזול" with a star and it comes out top in both lists. I'm less sure about the amount, since it isn't for my real 30,000 and I'm not sure what "בכסף של היום" does to it.
+
+Confidence: fairly sure; gave up: false
+
+## Stuck
+
+- Screen 2, top box: 'הפקדתם 70,000 ₪' next to '86,045 ₪': I figured 7% a year for 10 years is about 70% more, so roughly 119,000. 86,045 looks way too low and I don't get why. Maybe 'בכסף של היום' or the tax (the 5,555 bar), but nothing told me straight.
+- Screen 1–2, amount fields: They're set to 10,000 and 500, not my 30,000. On these screenshots I couldn't change them, so every number I got is for somebody else's amount.
+- Screen 7–8, fund list: My 'chosen' fund shows '−0.04%' and every other fund shows a minus in shekels ('−1,030 ₪'). Minus signs everywhere made me wonder if I'm losing money. I think the shekel amounts mean less than my choice, but the percent I just don't get.
+- Screen 3, cost bar and its legend: The colour key sits away from the bar. I had to go back and forth to match pink = מס and green = דמי ניהול הקרן, and the small yellow/orange bits I never really matched.
+
+## Used
+
+- Heading 'איפה ואיך הכי זול להשקיע במדד'
+- Index chip 'ת"א-125' already selected
+- Big box: 'הבחירה שלכם ★ הזול 86,045 ₪', 'נשאר לכם בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום'
+- 'הפקדתם 70,000 ₪'
+- Account card 'פסגות ניירות ערך בע"מ', 'מה החשבון גובה ב־10 שנים: 1,049 ₪'
+- Accounts list: פסגות first at 86,045 vs לאומי 82,968, דיסקונט 79,491, etc.
+- Fund card 'אי.בי.אי. מחקה (4A) ת"א 125', 'קרן מחקה', 'דמי ניהול 0.1%'
+- Fund list: other funds '−1,030 ₪', '−1,113 ₪', '−1,733 ₪'
+- Screen 11 line 'הכי הרבה בכל המחירונים: 86,045 ₪, אי.בי.אי. מחקה ת"א 125, פסגות'
+
+## Skimmed
+
+- Accounts list from item 6 down (Hapoalim, Yahav, Discount, Mercantile, Altshuler, Excellence, Meitav)
+- The grey 'לא בחישוב מחיר אחר ל...' lines on each account
+- 'אין נתון' rows for Interactive and Interactive Brokers
+- Chart on screen 9 'מה הכי משנה את מה שיישאר לכם' and the table under it
+- Step chart on screen 10–11
+
+## Skipped
+
+- Small text above the accounts list about price per line / group prices
+- Footnote under fund list 'מול המדד: כמה הקרן הקדימה...'
+- Fold arrows on each account
+- 'התעריפון' and 'קיבלתם מחיר אחר? הזינו אותו' links
+- '+ הוספת קרן שלא ברשימה'
+- Screens 12–13
+
+## What would bother this person, most first
+
+- Screen 2, top result box: Final amount (86,045) next to 'הפקדתם 70,000' looks like tiny growth for 7% a year. No plain line saying why (tax? inflation?). Makes me doubt the whole thing.
+- Screens 7–8, fund list: Minus signs on every fund (−1,030 ₪, −0.04%) read like losses. The scary look sits on the very fund the page recommends.
+- Screens 4–6, accounts list: Every account row repeats the same grey 'לא בחישוב · מחיר אחר ל...' tag and the same coloured bar. I had to re-read each row to find what's different.
+- Screens 7–8: Every fund row repeats 'מדד ת"א-125', 'קרן סל', the pink tag and 'בשנה · שנה אחת'. Only the name and number change.
+- Screens 2–3, and the bars in the accounts list: Colour legend for the cost bar is separate from the bar. Small segments I couldn't match to anything.
+- Screen 1: The amount is preset to 10,000 / 500, not what I have. Easy to walk away with a number that isn't mine.
+- Screen 7: Fund-company name אי.בי.אי. is not one I really know. It made me hesitate even though it's marked cheapest.
+- Screen 7, fund card: Jargon in the fund card: נאמן, משתנים, קבועים
+
+## Not sure what it meant
+
+- נאמן 0.025%
+- דמי משמרת (yellow in the bars)
+- העמלות זו על זו (grey)
+- 'בכסף של היום' / the 'אינפלציה' button
+- '−0.04%' 'בשנה · שנה אחת' under each fund
+- '(4A)' in fund names
+- קרן מחקה vs קרן סל: is there a real difference?
+- the pink 'מחזיקה את המ...' tag cut off at the left
+- 'הפסד נחתך: הסכום ארוך מהשטח'
+- dotted purple underline under every number
+
+## Looked for and did not find
+
+- A place where my real 30,000 ends up in the result (only the default 10,000 / 500 shown)
+- A plain 'first step: do this' (how to actually open the פסגות account)
+- Why 70,000 deposited grows only to about 86,000 over 10 years
+
+## What it said along the way
+
+

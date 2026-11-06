@@ -1,0 +1,14 @@
+{
+ "id": "fees-call-script-open",
+ "task": "t14",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The block 'מה להגיד בשיחה' (a script for calling the fund) is open by default, a long block most readers do not need.",
+   "where": "the 'מה להגיד בשיחה' block in the fee card",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

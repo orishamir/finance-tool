@@ -1,0 +1,63 @@
+{
+  "case": "live-02-indices-cost-bar-legend",
+  "stamp": "{\"keys\":[{\"id\":\"legend-every-row\",\"problem\":\"Every row of the list repeats the same colour key under its bar (which colour is which kind of cost), so the same names are read again on every row instead of once for the whole list.\",\"where\":\"the small bar in each row of the list of accounts, and the line of coloured squares with names under it\",\"kind\":\"general\"},{\"id\":\"amounts-off-bar\",\"problem\":\"The amount each coloured part of a row's bar stands for is written apart from the bar, in a line under it, not on the part itself, so the eye goes back and forth between colour and number.\",\"where\":\"the small bar in each row of the list of accounts, and the amounts in the line under it\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "Finding 3 complains that each fund has too many coloured jargon tags and that this is overwhelming, but it never says the same colour key is repeated on every row, so it doesn't name the person's problem."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "None of the findings says the amounts are written in a line under the bar instead of on the coloured parts themselves."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0250914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 3,
+        "why": "Finding 3 complains about too many coloured cost-name labels on each fund row, which plausibly matches the person's colour key repeated under every row's bar, though the reader never says it is the same key each time, so this is a judgement call."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "No finding says the amounts sit in a line below the bar instead of on the coloured parts; finding 5 is about the top chart's legend, not the row bars."
+      }
+    ],
+    "liked": [],
+    "usd": 0.021599399999999998
+  },
+  "third": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "Finding 3 complains about too many coloured jargon tags on the fund list, but not that the same colour key repeats on every account row instead of appearing once, so it doesn't name the redundancy problem."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "None of the findings says that the amounts sit in a line under the bar instead of on each coloured part."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0242314
+  },
+  "ranks": {
+    "legend-every-row": 0,
+    "amounts-off-bar": 0
+  },
+  "agreed": {
+    "legend-every-row": false,
+    "amounts-off-bar": true
+  },
+  "against": {},
+  "usd": 0.07092219999999999
+}

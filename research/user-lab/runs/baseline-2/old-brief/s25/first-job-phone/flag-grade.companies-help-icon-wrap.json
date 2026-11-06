@@ -1,0 +1,92 @@
+{
+  "case": "companies-help-icon-wrap",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.\",\"where\":\"the column heads with a '?' mark\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never says which product the reader's own savings are in",
+      "\"123 מקור · 123 מחושב\" is confusing; unclear what clicking a number shows",
+      "Counts don't match: \"כל המוצרים 105\" vs \"96 מסלולים ב־7 מוצרים\" vs 9 buttons",
+      "Main table is very long, about 9 screens of near-identical rows",
+      "Rows sorted by fee within each product, so the S&P 500 track moves around and has to be hunted for",
+      "Grey product bars scroll away, so the reader loses track of which product they are in",
+      "\"תגמולים ואישית לפיצויים\" is unclear; doesn't know what it is or whether it's theirs",
+      "PF-06 / PF-10 note codes mean nothing",
+      "Unclear whether the cheap S&P 500 options under \"קרנות מחקות\"/\"קרנות סל\" are the same kind of thing or available to them",
+      "Donut charts and teal/yellow dots are not understood (what a full yellow ring means)",
+      "Many rows say \"פחות מ־3 שנים\" and give nothing to compare",
+      "Doesn't understand \"מהחיסכון\" vs \"מההפקדות\" in real money or which is cheaper",
+      "Unclear whether \"אין\" and \"0%\" mean the same thing",
+      "Doesn't understand \"מט\"ח\" or how a track can be 99% shares and 99% foreign currency",
+      "Unclear whether returns \"לפני דמי ניהול\" mean they must subtract the fee themselves",
+      "Doesn't understand \"קבועים / משתנים / נאמן\", \"4A / 4D\", \"צוברת\"",
+      "Doesn't understand \"עוד לא דווח\", \"הלכה יהודית\", \"גמיש\", \"קיימות\"",
+      "Unclear what makes \"מרכזית לפיצויים\" different from the others",
+      "Missing: what the fees mean in shekels for them",
+      "Missing: how to switch tracks and whether it costs money or triggers tax",
+      "Missing: a simple side-by-side view of just the S&P 500 track across products",
+      "Missing: performance in bad years / worst drop, since only averages are shown",
+      "Would drop the \"מה כתוב במסמכים של הראל\" documents list",
+      "Would drop \"חיסכון לכל ילד\" and \"מרכזית לפיצויים\"",
+      "Would drop the \"קופה\" number column",
+      "Would drop the \"לא מצאתם שם?\" search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions column headings only for the sort arrows they ignored, and never says anything about a '?' help mark dropping onto its own line or looking out of place."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0626552
+  },
+  "b": {
+    "raised": [
+      "The page never says which Harel product the reader's own savings are in",
+      "Unclear what '123 מקור · 123 מחושב' does or what clicking a number would show",
+      "The counts don't match: 'כל המוצרים 105', '96 מסלולים ב־7 מוצרים' and 9 buttons",
+      "The main table is very long, about 9 screens of near-identical rows",
+      "Rows are sorted by fee, so the S&P 500 track sits in a different place in each product and is hard to find",
+      "The grey product bars scroll away, so the reader loses track of which product they are in",
+      "Didn't understand 'תגמולים ואישית לפיצויים' or whether it applies to them",
+      "Didn't know what 'מרכזית לפיצויים' is",
+      "The PF-06 / PF-10 note codes mean nothing",
+      "Unclear whether the cheaper S&P 500 options in 'קרנות מחקות'/'קרנות סל' are the same kind of thing, or whether money can move there",
+      "Didn't understand the donut charts or the teal/yellow 'מניות'/'מט\"ח' dots",
+      "Half the rows show 'פחות מ־3 שנים' instead of a number, so there is nothing to compare",
+      "Didn't understand 'מהחיסכון' vs 'מההפקדות' in real money, or which fee combination is cheaper",
+      "Unclear whether 'אין' and '0%' mean the same thing",
+      "Didn't understand 'מט\"ח' or how a track can be 99% shares and 99% foreign currency",
+      "Unclear whether 'לפני דמי ניהול' means they must subtract the fee themselves",
+      "Didn't understand 'קבועים / משתנים / נאמן', '4A / 4D' and 'צוברת'",
+      "Didn't understand 'עוד לא דווח', 'הלכה יהודית', 'גמיש' and 'קיימות'",
+      "No fee shown in shekels for the reader's own savings",
+      "No information on how to switch tracks, or on switching costs and tax",
+      "No simple side-by-side view of just the S&P 500 track across all products",
+      "No information on bad years or the worst drop, only averages",
+      "Would drop the 'מה כתוב במסמכים של הראל' documents list",
+      "Would drop 'חיסכון לכל ילד'",
+      "Would drop the 'קופה' number column",
+      "Would drop the 'לא מצאתם שם?' search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report mentions the sort arrows next to the headings but never mentions a '?' help mark dropping onto its own line in the column heads."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0639072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1265624
+}

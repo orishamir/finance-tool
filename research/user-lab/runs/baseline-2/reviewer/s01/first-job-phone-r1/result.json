@@ -1,0 +1,109 @@
+{
+  "task": "s01",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:04:21.565Z",
+  "structured": {
+    "answer": "The page never put a shekel cost on keeping my money in the current account. One line says the current account only beats a קרן כספית if I need the money the same day, so I'd move most of the 30,000 to a קרן כספית. I'm not sure, because the page doesn't explain what one is or how to open it.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator at top (74,044 ₪, תשואה בשנה 5%)",
+        "why": "It showed my current-account money growing 5% a year, but my bank pays me nothing. That made it look like staying put is fine, the opposite of what I came to find out."
+      },
+      {
+        "where": "כמה זה עולה",
+        "why": "It only says 'לפי התעריפון של הגורם המציע'. There's no shekel amount, so I still don't know what the account costs me."
+      },
+      {
+        "where": "Chart lines",
+        "why": "The pink and grey lines have no label next to them. I guessed the green area is my money."
+      }
+    ],
+    "used": [
+      "Heading חשבון עובר ושב",
+      "Big number 74,044 ₪ and the list under it (מס 2,005, דמי ניהול 0, ההפקדות 62,681)",
+      "Line 'מול קרן כספית יומית העו\"ש עדיף רק כשצריך את הכסף באותו יום'",
+      "כמה זה עולה table: דמי חשבון קבועים לפי התעריפון",
+      "First line of סיכונים: אין בישראל ביטוח פיקדונות"
+    ],
+    "skimmed": [
+      "שווה לדעת list",
+      "מי מציע ומי מפקח",
+      "מה האתר לקח בחשבון",
+      "מונחים glossary table"
+    ],
+    "skipped": [
+      "מיסוי cards",
+      "Red notice box",
+      "Locked 'חסום: שאלה פתוחה' items",
+      "כסף נכנס ויוצא cards",
+      "הצג בטבלה / הצגת כל המונחים folds",
+      "Small grey text and footer"
+    ],
+    "unsure_meaning": [
+      "מק\"ם",
+      "BANK-20, BANK-23, BANK-15, TXI OQ11 tags",
+      "הצמדה: לא צמוד",
+      "ריבית צמודה / הריאלית",
+      "Pink and grey lines in the chart",
+      "Why the return is 5% in a current account",
+      "קרן כספית יומית – what exactly it is"
+    ],
+    "not_found": [
+      "How much the current account costs me in shekels (fees or lost value from inflation)",
+      "What a קרן כספית is and how to open one",
+      "A clear recommendation for how much to keep in the current account and how much to move",
+      "Any comparison in shekels: current account vs. the alternative"
+    ],
+    "findings": [
+      {
+        "what": "The calculator shows the current account growing 5% a year to 74,044 ₪, which makes staying put look good while my real account pays nothing",
+        "where": "Top calculator, screens 1–2"
+      },
+      {
+        "what": "The cost section has no shekel number, only 'לפי התעריפון'",
+        "where": "כמה זה עולה, screen 4"
+      },
+      {
+        "what": "The page never shows what I lose by leaving money in the current account",
+        "where": "Whole page"
+      },
+      {
+        "what": "The only pointer to an alternative (קרן כספית) is one sentence that's easy to miss, with nothing about how to get one",
+        "where": "למה משתמשים בזה, screen 3"
+      },
+      {
+        "what": "Chart lines in pink and grey with no label next to them",
+        "where": "Chart, screen 2"
+      },
+      {
+        "what": "'אין בישראל ביטוח פיקדונות' is scary and nothing next to it says what to do about it",
+        "where": "סיכונים, screen 5"
+      },
+      {
+        "what": "Codes like BANK-20 and TXI OQ11 and locked 'חסום' boxes look like junk to me",
+        "where": "Screens 3 and 5"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 45327,
+    "turns": 9,
+    "usd": 0.2258984,
+    "input": 12,
+    "cacheWrite": 17881,
+    "cacheRead": 46612,
+    "output": 3674,
+    "model": "claude-opus-5-5"
+  }
+}

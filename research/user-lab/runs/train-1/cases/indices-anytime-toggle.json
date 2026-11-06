@@ -1,0 +1,14 @@
+{
+ "id": "indices-anytime-toggle",
+ "task": "t24",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The option 'חייב להיות ניתן למשיכה בכל רגע' on the index page seems to change nothing, so what it means there is unclear.",
+   "where": "the option and the page around it, between the two states",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

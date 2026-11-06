@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 7 is about the coin picture, but its complaint is that the picture repeats and causes extra scrolling, not that coins are a worse way to show the numbers than a simple bar."
+      }
+    ],
+    "liked": [],
+    "usd": 0.019011399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 7 is about the coin drawing, but it complains that the same picture appears twice and needs a lot of scrolling, not that coins add nothing a simple bar would show better."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0182394
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0372508
+}

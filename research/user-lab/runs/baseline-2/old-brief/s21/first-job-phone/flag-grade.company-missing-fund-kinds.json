@@ -1,0 +1,80 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know whether their existing Harel savings are in this product at all (page just opened on קופת גמל להשקעה)",
+      "\"רשות שוק ההון\" in the gray text means nothing to them",
+      "The \"123 ממקור / מחושב / הזנתה\" line is confusing and seems pointless",
+      "Product buttons are confusing: can't tell which one is 'my savings'; \"תגמולים ואישית לפיצויים\" unclear",
+      "Fine print about the legal cap and trading fees is only half understood; extra costs they can't see",
+      "Donut charts and colored dots add nothing; yellow \"מט\"ח\" meaning has to be guessed",
+      "\"קופה\" column and its blue numbers mean nothing",
+      "\"ההפקדה 0%\" lines are useless since everything is 0%",
+      "\"פחות מ־3 שנים\" in most rows means no return figure for most tracks",
+      "Unclear whether the fee is on savings (ההיסכון) or on each deposit (ההפקדה)",
+      "\"PF-10\" not understood",
+      "\"לפני מס\" unclear: how much tax and when",
+      "Doesn't understand why S&P 500 track shows 13.7% while מניות shows 24%",
+      "Tags under track names (e.g. עוקב מדדי אג\"ח, אג\"ח סחיר) not understood",
+      "Page doesn't explain what קופת גמל להשקעה is (withdrawal, minimum)",
+      "No shekel-based example of what an investment would be worth after fees",
+      "No way to tell if Harel is cheap or expensive compared to other companies",
+      "No information on how to actually sign up",
+      "Would drop the \"מה כתוב במסמכים של הראל\" list",
+      "Would drop the collapsed \"קרנות מחקות / מרכזית לפיצויים / קרנות סל\" sections"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions the collapsed קרנות מחקות/קרנות סל sections only to skip them or drop them, and never says index-tracking or money-market funds are missing from the product choices at the top."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0564992
+  },
+  "b": {
+    "raised": [
+      "Unsure whether their existing Harel savings are in this product at all; the page opened on קופת גמל להשקעה by default",
+      "\"רשות שוק ההון\" in the gray text under the title means nothing to them",
+      "The \"123 ממקור / מחושב / הזנתה\" line is confusing; they don't see why it's there",
+      "Product buttons are confusing: can't tell which one holds their savings; \"תגמולים ואישית לפיצויים\" is unclear",
+      "Fine print about the legal fee cap and trading fees only half understood; there are hidden extra costs",
+      "Donut charts add nothing beyond the numbers; the yellow \"מט\"ח\" dot is unclear",
+      "The \"קופה\" column numbers mean nothing",
+      "\"ההפקדה 0%\" is the same everywhere and useless (would drop)",
+      "\"פחות מ־3 שנים\" in most rows means there's no return number for most tracks",
+      "Unclear whether the fee is taken from savings (ההיסכון) or from each deposit (ההפקדה)",
+      "\"PF-10\" is not understood",
+      "\"לפני מס\" is unclear: how much tax, and when is it paid",
+      "Doesn't understand why the S&P 500 track shows 13.7% while \"מניות\" shows 24%",
+      "Tags under track names like \"עוקב מדדי אג\"ח\" and \"אג\"ח סחיר\" are not understood",
+      "The page doesn't explain what קופת גמל להשקעה is (withdrawal rules, minimum)",
+      "No example of the actual outcome in shekels after fees",
+      "No comparison showing whether Harel is cheap or expensive compared with other companies",
+      "Can't find how to actually sign up",
+      "Would drop the \"מה כתוב במסמכים של הראל\" list",
+      "Would drop the collapsed \"קרנות מחקות / מרכזית לפיצויים / קרנות סל\" sections"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is confused by the product buttons and doesn't know which one holds their savings, but never says that index-tracking or money-market funds are missing from them; they only skip the collapsed קרנות מחקות/קרנות סל sections lower down."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0551472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1116464
+}

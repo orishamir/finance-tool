@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 7 covers the year bars but complains about the drag interaction, and finding 1 says the grey text is hard to read; neither says that the year graph is all grey so nothing stands out."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0160114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 7 is about the year bars, but it complains about dragging, and finding 1 is about grey text being hard to read across the page; neither says the year graph is all grey with nothing standing out."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0174794
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0334908
+}

@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the large profit figure lacks an explanation; finding 5 is about the final amount being lower than the contributions, and finding 4 is about small grey assumption text, so neither is the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0161754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the large profit figure lacks an explanation of where it comes from: #5 is about a different number (the final amount being less than the contributions), and #4 is about small, hard-to-read assumption text, not a missing explanation of the profit."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0190834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0352588
+}

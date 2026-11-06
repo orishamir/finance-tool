@@ -1,0 +1,111 @@
+{
+  "task": "s36",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:49:46.852Z",
+  "structured": {
+    "answer": "I'd go with ב, the rows. On my phone I start reading from the right, and there each line gives me the name and the big shekel number together: \"הפקדתם 18,000\", \"המעסיק הוסיף +54,000\", \"נשאר בידיים 66,513\". Either chart convinces me the keren is worth it, because the employer puts in three times what I do, but I see that faster in ב.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the green 'מומלץ' tag next to 'א. הערימה גדלה'",
+        "why": "It made me think I should just take א. Then on the phone I liked ב better, so I had to choose between what the page recommends and what I like."
+      },
+      {
+        "where": "The wide dark brown/olive bars in both charts (under 'התשואה הוסיפה' and 'המס לקח')",
+        "why": "Nothing labels them. I guessed it's the same money carried over from the column before, but I'm not sure."
+      },
+      {
+        "where": "The dashed bar 'אם מחכים לשנה 6 / בלי להפקיד עוד 83,978 ₪'",
+        "why": "At first I took it for a fifth step. Then I understood it's 'if you wait one more year'. It's a different kind of thing, but it looks like the other bars."
+      },
+      {
+        "where": "Comparing with a securities account",
+        "why": "The chart itself doesn't show the securities account. The comparison is only in the line underneath ('68,837 ₪ ... 15,141 ₪ פחות'), and I nearly skipped it."
+      }
+    ],
+    "used": [
+      "The heading 'קרן השתלמות: הסיפור של הכסף, שלב אחרי שלב'",
+      "The 'מומלץ' tag on option א",
+      "The big numbers on the chart: 18,000 / +54,000 / +8,487 / −13,974 / 66,513 / 83,978 ₪",
+      "The labels 'המעסיק הוסיף', 'המס לקח', 'נשאר בידיים'",
+      "The top strip with 'לפני 6 שנים: מס' / 'מ-6 שנים: פטור ממס'",
+      "Screen 3, year 6: 'המס לקח 0 ₪', 'נשאר בידיים 98,738 ₪'",
+      "The row layout in option ב, where the label and number sit on the right"
+    ],
+    "skimmed": [
+      "The line 'קרן השתלמות במסלול מדד. 300 ₪ בחודש מכם, 900 ₪ מהמעסיק'",
+      "The sentence about the securities account, '68,837 ₪ ... 15,141 ₪ פחות'",
+      "The small image at the top that compares 'חשבון ניירות ערך' with 'קרן השתלמות'",
+      "The text under 'א' and 'ב'"
+    ],
+    "skipped": [
+      "The orange/grey example paragraph ('הדוגמה: שכר ברוטו 12,000...', 'דמי ניהול 0.54%', tickers)",
+      "The line 'בין 19 המסלולים שנאספו... 0.7%... 0.19%'",
+      "'הגובה נמתח בכל שנה...' note",
+      "The 'עצמאים' tab"
+    ],
+    "unsure_meaning": [
+      "The dark olive/brown wide bars, which have no label",
+      "The pink striped box: I guessed it means tax taken off",
+      "'במסלול מדד', which index it means",
+      "'אחרי דמי ניהול', how much the fees actually were in shekels",
+      "The green cap on top of the bars in the top strip: return?",
+      "The tiny numbers in the thumbnail at the top, '1.09 ₪' and '3.70 ₪'"
+    ],
+    "not_found": [
+      "The securities-account comparison inside the chart itself, not just in a sentence",
+      "The management fee shown in shekels",
+      "What to do first, e.g. which company to call or how to check my track"
+    ],
+    "findings": [
+      {
+        "what": "The chart never shows the securities account next to the keren. The question 'is it worth it compared with a securities account' is answered only in a small sentence underneath, which I almost skipped.",
+        "where": "Under the chart in both options (screens 2 and 4)"
+      },
+      {
+        "what": "The wide dark brown bars have no explanation. They look like extra money and confused me.",
+        "where": "Columns/rows 'התשואה הוסיפה', 'המס לקח' in both options"
+      },
+      {
+        "what": "The dashed 'אם מחכים לשנה 6' bar sits in line with the steps as if it were one of them. Its 83,978 is bigger than the 66,513, so at first I didn't know which number was the real one.",
+        "where": "Far left column in א / last row in ב"
+      },
+      {
+        "what": "In א, the names are small and under the columns and the numbers are above, so on a phone my eyes jump up and down. In ב, the name and the number are together on the right.",
+        "where": "Option א, screen 2"
+      },
+      {
+        "what": "The 'מומלץ' tag pushes you towards א even though ב reads better on a phone",
+        "where": "Screen 1 heading א"
+      },
+      {
+        "what": "Management fees appear only as percentages in small text, never in shekels",
+        "where": "Example paragraph and the '19 המסלולים' line"
+      },
+      {
+        "what": "The minus sign in '−13,974 ₪' is on the left in א, so I might miss it. In ב it's clear.",
+        "where": "Option א top numbers"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36486,
+    "turns": 6,
+    "usd": 0.12157860000000001,
+    "input": 8,
+    "cacheWrite": 7589,
+    "cacheRead": 24673,
+    "output": 2795,
+    "model": "claude-opus-5-5"
+  }
+}

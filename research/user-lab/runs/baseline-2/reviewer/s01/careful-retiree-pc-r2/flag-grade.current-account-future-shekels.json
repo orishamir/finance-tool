@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the 'future shekels' figures ignore inflation: finding 2 calls the big number misleading, but because a current account is shown earning 5% interest, and finding 7 only flags 'ריאלית' as jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0167394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the future-shekel figures leave out inflation; finding 2 calls the big number misleading, but its reason is that a current account is shown earning 5% interest, and finding 7 only complains that terms like ריאלית are jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0174194
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0341588
+}

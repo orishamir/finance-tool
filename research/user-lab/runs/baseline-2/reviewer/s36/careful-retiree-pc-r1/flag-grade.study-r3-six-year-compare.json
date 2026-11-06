@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 says the year-5 and year-6 charts are hard to tell apart, but no finding says the year-6 comparison is always shown even when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0154874
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 says the year-5 and year-6 charts look too similar to tell apart, but no finding says the year-6 comparison is always shown even when it doesn't apply."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155274
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031014800000000002
+}

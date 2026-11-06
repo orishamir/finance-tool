@@ -1,0 +1,78 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure what they actually have to do next to join",
+      "Doesn't understand what the ₪15,712 'תקרה' means for a ₪30,000 salary, or how much is taxed after 6 years",
+      "The '123 מקור · מחושב · הזנתם' line at the top is confusing",
+      "The bullet about at least 31% tax before age 60 was a bit scary",
+      "The 'כדאי להכיר גם' terms are unfamiliar",
+      "The small 1–12 year chart has no numbers, so they learned little from it",
+      "The company cards under 'מי מציע ומי מפקח' were not understood",
+      "The chief economist's recommendation to cut the benefit was slightly worrying",
+      "The tax section is confusing",
+      "Big chart colours aren't explained and there are no labels under the bars",
+      "Unclear whether the −64,761 is a sure loss or only for early withdrawal, and what the final tax is (47% vs 'not the final tax')",
+      "Terms like 'רווח ריאלי', 'הפקדה מוטבת', 'מסלול כללי', 'אג\"ח ממשלתית צמודה' are not understood",
+      "Unclear why company names appear under 'תלוי בחברה' and whether to pick one",
+      "The amount received after the full 6 years isn't shown without clicking",
+      "Can't find how much less net pay they'll get each month",
+      "Can't find which company offers the S&P 500 track most cheaply or whether to go through HR",
+      "Can't tell whether every employer gives 7.5%",
+      "Can't find what happens to employer money above the ceiling, and whether it's taxed on the payslip",
+      "Would drop the terms table, rule tags/codes, top legend line, 'כדאי להכיר גם', the closest-alternative block, risks section, company cards and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader reads the +21,218 growth figure without questioning where it comes from; their chart complaints are about unlabelled colours and the tax deduction, not an unexplained profit figure."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0638552
+  },
+  "b": {
+    "raised": [
+      "Not sure what they actually have to do next to join",
+      "Doesn't understand what the ₪15,712 ceiling ('תקרה') means for a ₪30,000 salary",
+      "The '123 מקור · מחושב · הזנתם' legend line is confusing",
+      "The 'at least 31%' early-withdrawal tax bullet scared them a bit",
+      "Terms on the 'כדאי להכיר גם' buttons are unfamiliar",
+      "The small 1–12 year chart has no numbers, so they learned little from it",
+      "Didn't understand the cards under 'מי מציע ומי מפקח'",
+      "The tax section is confusing",
+      "Slight worry from the chief economist's recommendation to cut the benefit",
+      "Big chart colours aren't explained and the bars have no labels",
+      "The chart doesn't show how much is taxed above the ceiling after 6 years",
+      "Unclear whether −64,761 is a certain loss, and what the final tax is beyond '47% withheld'",
+      "Doesn't understand terms like 'רווח ריאלי', 'הפקדה מוטבת', 'מסלול כללי', 'אג\"ח ממשלתית צמודה'",
+      "Unclear why company names appear under 'תלוי בחברה' and whether to pick one",
+      "No clear statement of what they get after the full 6 years (only shown by clicking on 6)",
+      "Can't find how much less will reach their bank account each month",
+      "Can't find whether every employer contributes 7.5%",
+      "Can't find what happens to employer money above the ceiling and whether it's taxed monthly on the payslip",
+      "Would cut the terms table, rule tags/codes, legend line, related-products links, risks section, company cards and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader takes the +21,218 growth figure at face value. Their chart complaints are about unlabeled colours, the tax deduction and the missing 6-year figure, and none of them say the profit amount is unexplained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0661352
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1299904
+}

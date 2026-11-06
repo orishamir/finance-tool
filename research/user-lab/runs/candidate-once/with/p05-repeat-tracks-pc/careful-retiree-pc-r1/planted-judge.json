@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "Finding 1 complains about repeated per-row labels, but only lists metric labels (stocks, FX, from savings, from deposits, years), not the company name repeated under each track despite the group heading. No finding names the company-name repetition.",
+  "usd": 0.02114
+}

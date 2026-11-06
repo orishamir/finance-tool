@@ -1,0 +1,51 @@
+{
+ "personas": [
+  "first-job-phone",
+  "careful-retiree-pc"
+ ],
+ "tasks": [
+  {
+   "key": "p04-far-legend-ta125-phone",
+   "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+   "variant": "planted/p04-far-legend-ta125-phone",
+   "device": "phone",
+   "findings": true,
+   "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+  },
+  {
+   "key": "p05-repeat-ta125-phone",
+   "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+   "variant": "planted/p05-repeat-ta125-phone",
+   "device": "phone",
+   "findings": true,
+   "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+  },
+  {
+   "key": "p05-repeat-tracks-pc",
+   "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+   "variant": "planted/p05-repeat-tracks-pc",
+   "device": "pc",
+   "findings": true,
+   "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+  },
+  {
+   "key": "control-ta125-phone",
+   "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+   "variant": "planted/control-ta125-phone",
+   "device": "phone",
+   "findings": true,
+   "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+  },
+  {
+   "key": "control-tracks-pc",
+   "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+   "variant": "planted/control-tracks-pc",
+   "device": "pc",
+   "findings": true,
+   "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+  }
+ ],
+ "parallel": 3,
+ "repeat": 2,
+ "behaviourBrowser": "research/user-lab/versions/candidates/moving.md"
+}

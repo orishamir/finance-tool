@@ -1,0 +1,36 @@
+{
+  "case": "custom-fund-form-small",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The form for adding a fund is cramped in a narrow panel and hard to move around in.\",\"where\":\"the add-a-fund form\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the add-a-fund form is cramped or in a narrow panel; finding 1 is about the added fund's row getting no result, not about the form's layout."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014523399999999999
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the add-a-fund form is cramped in a narrow panel or hard to move around in; they talk about results, labels, colours, text contrast and charts."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0149034
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0294268
+}

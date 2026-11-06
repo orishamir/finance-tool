@@ -1,0 +1,81 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never says what the current account costs in shekels; the cost table only points to the bank's price list",
+      "No real interest rates are given, so deposits, money market funds and the current account can't be compared",
+      "The coloured-number key ('123 מקמר / חושב / הזנתם') and the word 'מקמר' are confusing",
+      "Didn't understand the basic vs extended fee packages or what they would cost",
+      "The calculator assumes a 5% return, but a current account pays nothing or almost nothing, so where does the 5% come from?",
+      "Unclear which figure is shown: 'בכסף של היום' or 'בשקלים של העתיד'",
+      "Nothing suggests entering 0% to see what happens to money left in the current account",
+      "The BANK-20/23/15 (and BANK OQ9) codes mean nothing to the reader",
+      "Text in 'כסף נכנס ויוצא' is cut off between the pictures",
+      "The dark red strip 'שאלה פתוחה: TXI OQ11' looks like a warning, but it isn't clear what it's about",
+      "Worried that Israel has no deposit insurance and the 250,000 ₪ protection is only a proposal",
+      "'מה האתר לקח בחשבון', full of padlocks and 'חסום', reads like internal notes; would drop it",
+      "The terms table appears twice",
+      "The chart colours (green area, pink line, pale line) have no labels",
+      "The 62,681 deposits figure doesn't match 10,000 + 500/month over 10 years (70,000)",
+      "Unclear whether the 'מזומן שקלי' chip is clickable or just a label",
+      "Couldn't find how much is lost each year by leaving money at 0% while prices rise",
+      "Couldn't find how much to keep in the current account for everyday needs",
+      "Couldn't find whether a money market fund is protected if the fund company or bank fails",
+      "Couldn't find what to say to the bank",
+      "Would drop the 'כסף נכנס ויוצא' cards about moving shares"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader objects that the growth calculator assumes an investment return (5%) that has nothing to do with a current account paying nothing, which is the same complaint as the person's, even though the rate differs."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0645712
+  },
+  "b": {
+    "raised": [
+      "The page never says what the current account costs in shekels",
+      "No real interest rates are given, so nothing can be compared",
+      "The coloured-number key ('123 מקמר / חושב / הזנתם') is confusing, and 'מקמר' is not understood",
+      "The sentence about the basic and extended fee packages is unclear, and so is what they cost",
+      "The calculator assumes a 5% return for a current account that pays little or nothing, so the 5% has no clear source",
+      "It is unclear whether the figure is 'בכסף של היום' or 'בשקלים של העתיד'",
+      "The BANK-20/BANK-23/BANK-15 tags (and codes like BANK OQ9) mean nothing to the reader",
+      "'כסף נכנס ויוצא' is partly cut off and not relevant to the reader; they would drop it",
+      "The cost table gives no numbers, only 'לפי התעריפון של הגורם המציע'",
+      "The dark red strip 'שאלה פתוחה: TXI OQ11' is confusing; it looks like a warning about something unknown",
+      "It is worrying that there is no deposit insurance and the 250,000 ₪ protection is only a proposal",
+      "'מה האתר לקח בחשבון' reads like internal notes, full of padlocks; the reader would drop it",
+      "The terms table appears twice",
+      "The chart's colours (green area, pink line, pale line) have no legend",
+      "The 62,681 deposits figure doesn't match the reader's count of 70,000",
+      "It is unclear whether the 'מזומן שקלי' chip is clickable",
+      "Missing: how much the reader loses each year leaving money at 0% while prices rise",
+      "Missing: how much to leave in the current account for everyday needs",
+      "Missing: whether a money market fund is protected if the fund company or bank fails",
+      "Missing: what to say to the bank"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader objects that the growth chart assumes an investment return for a current account that pays nothing. That is the person's point that the return chart doesn't fit a current account, even though the reader saw 5% rather than 10%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0577512
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1223224
+}

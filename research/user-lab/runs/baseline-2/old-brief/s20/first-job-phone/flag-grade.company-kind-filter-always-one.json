@@ -1,0 +1,88 @@
+{
+  "case": "company-kind-filter-always-one",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a company's page, the filter 'במה הכסף מושקע' is useless: each of its choices holds a single track.\",\"where\":\"the filter chips above the tracks list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't tell which Harel product (pension, קרן השתלמות or קופת גמל להשקעה) their savings are in",
+      "The '123 ממקור / מחושב / הזנתה' line is confusing (why '123' three times in different colours)",
+      "Product names like 'תגמולים ואישית לפיציויים' and 'קרן חדשה כללית' mean nothing; unclear what makes a pension מקיפה or כללית",
+      "Doesn't know what 'קופת גמל להשקעה' actually is",
+      "The 'במה הכסף מושקע' buttons are too many and most names aren't understood",
+      "Footnote says direct expenses aren't shown, which is worrying: the fee isn't the whole cost",
+      "'PF-10' in the footnote means nothing",
+      "The past-returns warning (returns before fees and tax) makes the returns feel less trustworthy",
+      "The fee column doesn't help choose: all fees are 0.54–0.61% and the deposit fee is 0% everywhere",
+      "The 'קופה' number column (15283, 13414) is unclear; doesn't know why to click its link icon",
+      "Doesn't understand 'מט\"ח' or the teal/yellow colours and ring drawings in the exposure column",
+      "Many rows show 'פחות מ־3 שנים' with no return, so they can't be compared",
+      "Unclear what the difference is between the 'מההיסכון' and 'מההפקדה' fees",
+      "Doesn't understand the jargon אג\"ח, סחיר, גמיש, כספי (שקלי), קיימות",
+      "Unclear why the 'מניות' track is 94% stocks and how it differs from 'עוקב מדד מניות'",
+      "Unclear whether 'ממוצע 2025' is what they would pay or what people paid on average",
+      "Can't find what they're personally paying now or whether they could get a lower fee",
+      "Can't find returns after fees and tax",
+      "Can't find whether or how they can switch tracks, and whether it costs anything or affects tax",
+      "No comparison with other companies' S&P 500 tracks on this page",
+      "Would drop the 'מה כתוב במסמכים של הראל' section first",
+      "Would drop the closed sections (קרנות מחקות, מרכזיות לפיצויים, קרנות סל)",
+      "Would drop the 'לא מצאתם שם?' search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that the 'במה הכסף מושקע' chips are too many and hard to understand, but never says that each chip holds only one track and so the filter is useless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06996720000000001
+  },
+  "b": {
+    "raised": [
+      "Unsure if the S&P 500 track is best, since the 'מניות' track has a lower fee and much higher returns",
+      "Doesn't know which Harel product their work savings are in (מקיפה / השתלמות / גמל להשקעה)",
+      "Confused by the '123 ממקור / מחושב / הזנתה' line with three coloured 123s",
+      "Product button names don't say which one is mine; 'תגמולים ואישית לפיצויים', 'קרן חדשה כללית', מקיפה vs כללית mean nothing",
+      "Doesn't understand what 'קופת גמל להשקעה' is",
+      "'במה הכסף מושקע' buttons: too many, and most names not understood",
+      "Fee footnote is worrying: extra direct costs aren't shown; 'PF-10' means nothing",
+      "The past-returns note makes the returns feel less trustworthy",
+      "Fee column doesn't help choose: 'מההפקדה' is 0% everywhere and all fees are similar",
+      "Doesn't know what the 'קופה' numbers are for or why to click the link icon",
+      "Doesn't understand 'מט\"ח'; ring drawings and teal/yellow colours unclear",
+      "Many tracks show 'פחות מ־3 שנים' with no return, so they can't be compared",
+      "Doesn't understand the difference between 'מההיסכון' and 'מההפקדה'",
+      "Unclear why 'מניות' is 94% stocks, not 100%, and how it differs from 'עוקב מדד מניות'",
+      "Unclear whether 'ממוצע 2025' is what I would pay or an average",
+      "Can't find what I'm personally paying now or whether I could get a lower fee",
+      "Can't find how large the extra costs not shown are",
+      "Can't find returns after fees and tax",
+      "Can't find whether/how I can switch tracks and what it costs",
+      "No comparison with other companies' S&P 500 tracks on this page",
+      "Would drop 'מה כתוב במסמכים של הראל' and its list",
+      "Would drop the closed sections (קרנות מחקות, מרכזיות לפיצויים, קרנות סל)",
+      "Would drop the '123' line and 'כולל את החברות'",
+      "Would drop the 'קופה' number column and the ring drawings",
+      "Would drop the 'לא מצאתם שם?' search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that the filter has too many choices with unclear names, but never says each choice holds only one track, so the filter is useless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06852720000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13849440000000002
+}

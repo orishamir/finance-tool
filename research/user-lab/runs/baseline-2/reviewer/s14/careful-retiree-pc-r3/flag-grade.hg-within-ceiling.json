@@ -1,0 +1,36 @@
+{
+  "case": "hg-within-ceiling",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the sentence about all 12 years of deposits staying under the exemption ceiling, or say it is confusing or illogical. Findings 3, 6 and 7 are about text near the chart, but they complain about contrast, crowded percentages and codes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015623400000000003
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the sentence about 12 years of deposits staying under the exemption ceiling, or says it is unclear or illogical; findings 3 and 6 only concern how hard the notes are to read and how crowded they are."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152434
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.030866800000000003
+}

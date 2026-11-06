@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 4,
+  "why": "Finding 4 says the colour bars only make sense with a legend that sits far below the list, on screens 6-7. That matches the problem: the bars' colours aren't explained where the bars are, because the key is far away.",
+  "usd": 0.016843999999999998
+}

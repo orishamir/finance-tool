@@ -1,0 +1,81 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never connects the S&P 500 index to the brokerage account or investment gemel, so it's unclear how to actually invest in it",
+      "The 'מאיפה להתחיל' section is too short; the reader wishes it were longer",
+      "מק\"מ appears both under where the money is held and under what it's invested in; is it a place or a thing, and why is it listed twice?",
+      "Three pension types are confusing, and the reader doesn't know which one they have",
+      "Nothing says whether the other index cards are better or worse than the S&P 500",
+      "Not every card has the 'בשפה פשוטה' plain-language line",
+      "The reader doesn't understand why they would want אג\"ח",
+      "Unclear whether 'בניהול אישי' is for them or for experts",
+      "Didn't understand 'במשקל לפי שווי השוק הסחיר' on the S&P 500 card",
+      "MSCI AC World and MSCI World look almost the same; the difference is unclear",
+      "The keren hishtalmut card doesn't say how long the legal waiting period is",
+      "No fee or return numbers anywhere on the page",
+      "No guidance on how much to put where",
+      "No information on risk for each option",
+      "No guidance on how to find out what you already have through work",
+      "Would cut the 'לילדים' section",
+      "Would cut the government bond cards",
+      "Would cut the Tel Aviv index cards and one of the two MSCI cards",
+      "Would cut 'מזומן שקלי' (and the second מק\"מ)",
+      "Would cut 'קרן כספית מתחדשת'",
+      "Would cut the two 'בניהול אישי' cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "The reader is confused that מק\"מ is listed twice in different sections of the guide list and asks why, which is the person's point about makam having duplicate entries for one thing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0623272
+  },
+  "b": {
+    "raised": [
+      "The page never links the S&P 500 index to where it could be held (brokerage account, investment gemel or keren hishtalmut), so the reader can't tell how to invest in it",
+      "The 'מאיפה להתחיל' (where to start) section is too short",
+      "מק\"מ appears in two lists (where the money is held, and what it's invested in), so the reader can't tell whether it's a place or a thing",
+      "Three pension types are confusing, and the reader doesn't know which one they have",
+      "The 'בניהול אישי' (self-managed) cards seem too advanced, and it's unclear who they're for",
+      "The government bond cards are too technical (coupon, linked to the price index)",
+      "The index cards don't say whether any index is better or worse than the S&P 500",
+      "Not every card has the 'בשפה פשוטה' (in simple language) line",
+      "The page doesn't explain why anyone would want אג\"ח (government bonds)",
+      "The phrase 'weighted by tradable market value' on the S&P 500 card isn't explained",
+      "The MSCI AC World and MSCI World cards look almost the same and aren't told apart",
+      "The keren hishtalmut card doesn't say how long the legally set period is",
+      "No fees or returns numbers anywhere on the page",
+      "No guidance on how much to put where",
+      "No information on risk",
+      "No way to find out what the reader already has through work",
+      "Would cut the 'לילדים' (for kids) section",
+      "Would cut the Tel Aviv index cards and one of the MSCI cards",
+      "Would cut the 'מזומן שקלי' (shekel cash) card",
+      "Would cut 'קרן כספית מתחדשת'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "The reader is confused that מק\"מ appears as an entry in two different lists and later would cut the second one, which is the person's complaint that one thing is split into separate guide entries."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0737112
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1360384
+}

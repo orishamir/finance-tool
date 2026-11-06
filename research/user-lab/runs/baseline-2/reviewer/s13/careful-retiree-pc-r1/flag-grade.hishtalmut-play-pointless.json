@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the 'שחקו עם המספרים' panel or say it repeats what the graphic above already does."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0146914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'שחקו עם המספרים' panel repeats what the graphic above already does; the closest is finding 1, which calls a chart busy, and that is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0147634
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0294548
+}

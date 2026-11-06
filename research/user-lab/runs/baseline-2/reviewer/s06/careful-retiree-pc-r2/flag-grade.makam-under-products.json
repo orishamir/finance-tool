@@ -1,0 +1,36 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 mentions מק\"מ, but it complains that the two descriptions contradict each other about interest, not that makam is wrongly placed under 'מוצרים' when it is bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015275400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 does deal with מק\"מ, but it complains that the two descriptions contradict each other about interest, not that makam is wrongly grouped under 'מוצרים' when it is bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0150554
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0303308
+}

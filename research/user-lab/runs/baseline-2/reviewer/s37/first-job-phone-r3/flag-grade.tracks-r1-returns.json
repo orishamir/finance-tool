@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "Finding 8 says the lists give no information about the companies (small names like אינפיניטי and אנליסט next to the big ones, with nothing saying who they are), which is the person's complaint that the companies can't be told apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0150594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "Finding 8 says the lists put small company names next to big ones without saying who they are, which is the person's complaint that the lists give no sense of the different companies."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014467400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 8
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029526800000000002
+}
