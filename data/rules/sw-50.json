@@ -32,7 +32,7 @@
         "SW-50"
       ],
       "state": "sourced",
-      "notes": "Leumi's free clearing-house report: \"המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד\". Institution page; the clearing house's own price list was not read (SW OQ5)."
+      "notes": "Leumi's free clearing-house report: \"המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד\". Institution page; what the clearing house itself may charge is capped in SW-44."
     }
   },
   "il_finance_file": "switching-and-transfers.md",

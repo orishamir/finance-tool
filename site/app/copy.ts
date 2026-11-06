@@ -831,7 +831,7 @@ export const guideBlocks = {
   } as Record<string, any>,
   taxSteps: {
     "F-33": { headline: "אין הטבת מס", text: "מפקידים מכסף שכבר שולם עליו מס." },
-    "F-27": { headline: "אין מס על הרווחים", text: "גם מעבר בין מסלולים לא ממוסה." },
+    "F-27": { headline: "אין מס על הרווחים", text: "גם מעבר בין מסלולים לא ממוסה.", textSwitchOpen: "המס משולם רק כשמושכים את הכסף." },
     "F-44": { before: "עד", after: "מהרווח הריאלי", text: "כלומר מהרווח שמעבר לעליית המחירים.", baseTag: "בסיס המס: לפי החברה", altBefore: "האתר מציג גם חלופה:", altAfter: "מהרווח הנומינלי." },
     // every other formula a wrapper record may name (method.md 5 to 9); one headline and one sentence each; copy.md 3.5a
     "F-21": { headline: "מס על הריבית בסוף כל פיקדון", text: "הבנק מנכה את המס מהריבית בסוף התקופה, והסכום נטו נפתח מחדש כפיקדון." },
@@ -867,10 +867,12 @@ export const guideBlocks = {
     linkedInterestCeiling: { before: "ריבית צמודה למדד: עד", after: "מהריבית הריאלית, מנוכה בבנק" },
     linkedInterest: { before: "ריבית צמודה למדד:", after: "מהריבית הריאלית, מנוכה בבנק" },
     hishtalmutExcess: { before: "על הרווח הזה: עד", after: "מהחלק שמעל האינפלציה" },
-    childProvident: { before: "במסלול קופת גמל:", after: "מהרווח הריאלי" },
-    childBankLinked: { before: "בבנק, פיקדון צמוד למדד:", after: "מהרווח הריאלי" },
+    childProvident: { before: "במסלול קופת גמל: עד", after: "מהרווח הריאלי" },
+    childBankLinked: { before: "בבנק, פיקדון צמוד למדד: עד", after: "מהרווח הריאלי" },
     childBankUnlinked: { before: "בבנק, פיקדון לא צמוד:", after: "מהרווח הנומינלי" },
   } as Record<string, { before: string; after: string }>,
+  /** The tag on a tax-at-exit step whose rate is the law's, but whose reach to this product no official text states (the child-savings bank route, TXK-29). */
+  exitReadingTag: "קריאה של האתר",
   /** Shown on a tax step whose formula the site does not compute yet. */
   notComputed: { text: "האתר עוד לא מחשב את זה", releaseBefore: "יתווסף בגרסה", releaseAfter: "" },
   regulatorNames: { CMA: "רשות שוק ההון, ביטוח וחיסכון", BoI: "בנק ישראל", ISA: "רשות ניירות ערך", MoF: "משרד האוצר" } as Record<string, string>,
@@ -2853,7 +2855,7 @@ export const guideSignature = {
     outOfRange: { before: "הסכום מחוץ לטווח שהריבית שפורסמה נקבעה לו:", middle: "עד", after: "." },
     gaps: {
       depositBreak: "הבנק מתאר שבירה בתנאים שהאתר עוד לא מחשב.",
-      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אף מקור לא אומר אם כך זה בפועל (שאלה פתוחה BANK-OQ12); בחוזה של בנק אחד נקראו תוכניות שנפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית.",
+      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אין כלל כללי שקובע את זה: כל בנק קובע בהסכם התוכנית שלו (שאלה פתוחה BANK-OQ12); בחוזה של בנק אחד נקראו תוכניות שנפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית.",
       renewableDates: "מועדי הסדרות הבאות עוד לא נאספו: הם כתובים בהסכם הקרן ובתשקיף שלה, והאתרים שמפרסמים אותם חוסמים קריאה אוטומטית.",
       seriesDate: "תאריך הפדיון של הסדרה לא נמצא בנתוני הקרן.",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",

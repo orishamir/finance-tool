@@ -169,6 +169,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase)) report(file, message);
     }
   }
+  checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
+  checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
@@ -573,6 +575,81 @@ function isPdfUrl(url: string): boolean {
 }
 
 /** Every record of data/rules/ by id (those that parse). */
+/**
+ * A product value left unknown (`value: null`) whose rules were checked again after it was: the research may have
+ * answered it since (2026-11-07: child savings' switch tax stayed "unknown" two weeks after TXK-23 settled it).
+ * A warning, listed by file and field, so each is re-read against today's rule base.
+ */
+export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): string[] {
+  const out: string[] = [];
+  const latest = (r: RuleLike) => [r.checked, ...(r.sources ?? []).map((s) => (s as { checked?: string }).checked ?? "")].reduce((a, b) => (b > a ? b : a), "");
+  const walk = (node: unknown, path: string) => {
+    if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${path}[${i}]`));
+    if (!node || typeof node !== "object") return;
+    const v = node as { value?: unknown; checked?: string; rule_ids?: string[] };
+    if ("value" in v && v.value === null && typeof v.checked === "string" && Array.isArray(v.rule_ids)) {
+      const newer = v.rule_ids.filter((id) => { const r = rules.get(id); return r !== undefined && latest(r) > v.checked!; });
+      if (newer.length) out.push(`${path.slice(1)} (${newer.join(", ")})`);
+    }
+    // a fee cap of null means "no cap" (the guide prints it so), not unknown
+    for (const [k, child] of Object.entries(node)) if (k !== "fee_caps") walk(child, `${path}.${k}`);
+  };
+  walk(record, "");
+  return out;
+}
+
+/**
+ * CLAUDE.md "General sources first" (founder, 2026-11-07): cite only official publications. A source whose strength
+ * is `secondary` or `primary-mirror`, or whose host data/sources/publishers.json calls an `article`, fails, unless it is
+ * a leftover named in unofficial-leftovers.json (`<file> <url>`). The list only shrinks: a leftover that is gone fails
+ * too, so it is struck when its source is replaced. A blog, forum, press article or copy is a lead, recorded in notes.
+ */
+export function unofficialSources(record: unknown, articleHosts: Set<string>): string[] {
+  const out: string[] = [];
+  const walk = (node: unknown) => {
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (!node || typeof node !== "object") return;
+    const v = node as { url?: unknown; strength?: unknown };
+    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || v.strength === "primary-mirror" || articleHosts.has(hostOf(v.url)))) out.push(v.url);
+    Object.values(node).forEach(walk);
+  };
+  walk(record);
+  return [...new Set(out)];
+}
+
+function checkUnofficialSources(files: string[], dataDir: string, report: (file: string, message: string) => void): void {
+  const pubPath = join(dataDir, "sources", "publishers.json");
+  const pubs = existsSync(pubPath) ? (parseJson(readFileSync(pubPath, "utf8")).value as Record<string, { kind?: string }>) : {};
+  const articleHosts = new Set(Object.entries(pubs).filter(([, p]) => p.kind === "article").map(([h]) => h));
+  const leftovers = new Set<string>(JSON.parse(readFileSync(new URL("./unofficial-leftovers.json", import.meta.url), "utf8")) as string[]);
+  const seen = new Set<string>();
+  for (const f of files) {
+    if (!f.endsWith(".json")) continue;
+    const rel = relative(dataDir, f).split(/[\\/]/).join("/");
+    if (rel.startsWith("sources/")) continue;
+    for (const url of unofficialSources(parseJson(readFileSync(f, "utf8")).value, articleHosts)) {
+      const key = `${rel} ${url}`;
+      seen.add(key);
+      if (!leftovers.has(key)) report(f, `cites ${url}, which is not an official publication: cite the official text, and keep this one as a lead in notes`);
+    }
+  }
+  // a leftover whose file is scanned here and no longer cites it is struck; a fixture directory without the file is left alone
+  const scanned = new Set(files.map((f) => relative(dataDir, f).split(/[\\/]/).join("/")));
+  for (const key of leftovers) {
+    const file = key.slice(0, key.indexOf(" "));
+    if (scanned.has(file) && !seen.has(key)) report(join(dataDir, file), `unofficial-leftovers.json still lists "${key}", which is gone: strike it (the list only shrinks)`);
+  }
+}
+
+function checkStaleUnknowns(files: string[], dataDir: string, rules: Map<string, RuleLike>, warn: (category: string, id: string) => void): void {
+  for (const file of files) {
+    const rel = relative(dataDir, file);
+    if (!rel.startsWith("instruments") || !file.endsWith(".json")) continue;
+    const name = rel.split(/[\\/]/).pop()!.replace(/\.json$/, "");
+    for (const at of staleUnknowns(parseJson(readFileSync(file, "utf8")).value, rules)) warn("value left unknown, its rules checked since", `${name}:${at}`);
+  }
+}
+
 function readRuleRecords(files: string[], dataDir: string): Map<string, RuleLike> {
   const out = new Map<string, RuleLike>();
   for (const file of files) {
@@ -772,6 +849,11 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
       if (typeof mark === "string" && mark.startsWith("blocked:") && closed(mark.slice("blocked:".length)))
         report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} is closed in data/open-questions.json; unblock it`);
     }
+    // a dimension still marked open while the record's own value for it is known (child savings, 2026-11-07)
+    const known = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
+    const sw = marks["switching-tax-event"];
+    if (known !== undefined && known !== null && typeof sw === "string" && sw.startsWith("blocked:"))
+      report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${String(known)}); mark it covered`);
   }
 }
 

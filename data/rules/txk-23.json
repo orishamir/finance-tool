@@ -2,13 +2,11 @@
   "id": "TXK-23",
   "title": "Child savings, provident track: taxed as a lump sum from a kupat gemel lehashkaa, up to 25% of the real gain, withheld by the managing company",
   "title_he": "חיסכון לכל ילד במסלול הקופה: מס כמו במשיכה מקופת גמל להשקעה",
-  "text_he": "החוק מחזיק את כספי מסלול הקופה בקופת גמל להשקעה, ורשות שוק ההון קובעת שחלים על הקופה הזאת כל הכללים של קופת גמל להשקעה. משרד האוצר, בתשובות שאישר הממונה על שוק ההון, כתב שחלות עליה כל הוראות הדין של קופת גמל להשקעה ושמשיכה ממנה חייבת במס. לכן חל הכלל של הפקודה על משיכה מקופת גמל להשקעה: הרווחים נחשבים ריבית, חלק ההצמדה פטור, המס הוא בשיעור מרבי על הרווח הריאלי, והוא מנוכה במקור. רשות המסים לא כתבה זאת על חיסכון לכל ילד, והגיל במשיכה לא משנה את הסיווג. שתי הנחות עומדות בבסיס הקריאה הזאת: חוק הביטוח הלאומי קובע שהסכומים שנחסכו אינם הכנסה, אבל לא אומר זאת על הרווחים עליהם; והרווחים נחשבים הכנסה של הילד, אף שהחוק מחזיק את הכסף בחשבון נאמנות לטובתו, ואם דיני הנאמנות בפקודה חלים עליו לא נבדק. השיעורים שהאתר מחשב לפיהם עדיין מצוטטים ממדריך עיתונאי שנותן את אותם שיעורים, ולכן הם מסומנים 'מקור משני'.",
+  "text_he": "החוק מחזיק את כספי מסלול הקופה בקופת גמל להשקעה, ורשות שוק ההון קובעת שחלים על הקופה הזאת כל הכללים של קופת גמל להשקעה. משרד האוצר, בתשובות שאישר הממונה על שוק ההון, כתב שחלות עליה כל הוראות הדין של קופת גמל להשקעה ושמשיכה ממנה חייבת במס. לכן חל הכלל של הפקודה על משיכה מקופת גמל להשקעה: הרווחים נחשבים ריבית, חלק ההצמדה פטור, המס הוא בשיעור מרבי על הרווח הריאלי, והוא מנוכה במקור. רשות המסים לא כתבה זאת על חיסכון לכל ילד, והגיל במשיכה לא משנה את הסיווג. שתי הנחות עומדות בבסיס הקריאה הזאת: חוק הביטוח הלאומי קובע שהסכומים שנחסכו אינם הכנסה, אבל לא אומר זאת על הרווחים עליהם; והרווחים נחשבים הכנסה של הילד, אף שהחוק מחזיק את הכסף בחשבון נאמנות לטובתו, ואם דיני הנאמנות בפקודה חלים עליו לא נבדק.",
   "figure_names_he": {
-    "provident_rate": "שיעור המס על הרווח הריאלי, מסלול קופת גמל",
-    "bank_linked_rate": "שיעור המס על הרווח הריאלי, פיקדון בנקאי צמוד",
-    "bank_unlinked_rate": "שיעור המס על הרווח הנומינלי, פיקדון בנקאי לא צמוד"
+    "provident_rate": "שיעור המס על הרווח הריאלי, מסלול קופת גמל"
   },
-  "strength": "secondary",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "real-vs-nominal"
@@ -19,12 +17,12 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://www.tashkif.co.il/news/hisachon-lekol-yeled-gil-18-21-meshicha-mas",
-        "title": "תשקיף, \"חיסכון לכל ילד בגיל 18 ובגיל 21: משיכה, מס ומענק ההתמדה\", 25.9.2026",
-        "publisher": "tashkif.co.il",
-        "strength": "secondary"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=204",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.204, s.125ג(ב) \"יחיד חייב במס על הכנסה מריבית בשיעור שלא יעלה על 25%\", applied by s.125ג(ה) to the gains withdrawn from a kupat gemel lehashkaa, which s.3(ה4)(3) (p.21) makes interest income and whose linkage part s.9(13) (p.41) exempts",
+        "publisher": "Tax Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -35,53 +33,11 @@
         "TXK-07"
       ],
       "state": "sourced",
-      "notes": "Child savings, provident track: up to 25% of the REAL gain, withheld by the managing company. Since 2026-11-06 the rule rests on the law and the regulator: the CMA circular and the Ministry of Finance's tender answers make the fund a kupat gemel lehashkaa for every purpose, so TXK-07 applies. This figure still cites the press guide, which gives the same rate; re-sourcing it to s.125C(b) (TXK-07) is pending, and with it the 'secondary source' label."
-    },
-    "bank_linked_rate": {
-      "value": 25,
-      "unit": "pct",
-      "source": {
-        "url": "https://www.tashkif.co.il/news/hisachon-lekol-yeled-gil-18-21-meshicha-mas",
-        "title": "תשקיף, \"חיסכון לכל ילד בגיל 18 ובגיל 21: משיכה, מס ומענק ההתמדה\", 25.9.2026",
-        "publisher": "tashkif.co.il",
-        "strength": "secondary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2026,
-      "update_rule": "fixed in law",
-      "rule_ids": [
-        "TXK-23",
-        "TXI-02"
-      ],
-      "state": "sourced",
-      "notes": "Child savings, bank track, CPI-linked deposit: 25% of the REAL gain, withheld at source. Same secondary source. A reading of the general deposit-interest rules (TXK-29), which the Ministry of Finance says apply; no official text gives the rate for child savings (TXK OQ1)."
-    },
-    "bank_unlinked_rate": {
-      "value": 15,
-      "unit": "pct",
-      "source": {
-        "url": "https://www.tashkif.co.il/news/hisachon-lekol-yeled-gil-18-21-meshicha-mas",
-        "title": "תשקיף, \"חיסכון לכל ילד בגיל 18 ובגיל 21: משיכה, מס ומענק ההתמדה\", 25.9.2026",
-        "publisher": "tashkif.co.il",
-        "strength": "secondary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2026,
-      "update_rule": "fixed in law",
-      "rule_ids": [
-        "TXK-23",
-        "TXI-03"
-      ],
-      "state": "sourced",
-      "notes": "Child savings, bank track, unlinked shekel deposit: 15% of the NOMINAL gain, withheld at source. Same secondary source. A reading of the general deposit-interest rules (TXK-29), which the Ministry of Finance says apply; no official text gives the rate for child savings (TXK OQ1)."
+      "notes": "Child savings, provident track: up to 25% of the REAL gain, withheld by the managing company (TXK-26). The fund is a kupat gemel lehashkaa for every purpose (National Insurance Law s.74ב(א)(2א); the CMA circular 2022-9-29; the Ministry of Finance's tender answers, TXK-23), so the Ordinance's rule for a lump sum from one applies (TXK-07): s.125ג(ב) caps the rate at 25% as the top slice, and lower brackets apply first where the person has room (TXK-06). Re-sourced 2026-11-07 to the Ordinance from a dated press guide (Tashkif, 25.9.2026) that gives the same rate; the Tax Authority's file of 14.1.2026 is byte-identical to the one read on 2026-10-31."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-11-06",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -175,7 +131,8 @@
       "locator": "p.204, s.125ג(ב)",
       "locator_he": "עמוד 204, סעיף 125ג(ב)",
       "page": 204,
-      "checked": "2026-10-25"
+      "checked": "2026-11-07",
+      "quote": "יחיד חייב במס על הכנסה מריבית בשיעור שלא יעלה על 25%"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=10",

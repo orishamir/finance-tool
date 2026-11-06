@@ -94,7 +94,7 @@
         "TXG-35"
       ],
       "state": "sourced",
-      "notes": "Employee rate from the threshold up to the maximum income: 7% National Insurance + 5.17% health. Whether an employer's study-fund deposit above the s.3(e) ceiling is in this base is not stated on the page; the Chief Economist paper implies it is (an inference, TXH-01, TXH-03): the engine labels it a reading."
+      "notes": "Employee rate from the threshold up to the maximum income: 7% National Insurance + 5.17% health. An employer's study-fund deposit above the s.3(e) ceiling (TXH-01, TXH-03) is in this base as imputed value: National Insurance's circular 1473 (employers 1487, 21.2.2019, p.3 row 5) says \"הפרשות המעסיק מעבר לתקרה-חייבות בזקיפת שווי\" (TXH-26), so the engine charges it without a label; only the month it falls in is the rule base's inference (TXH-26)."
     }
   },
   "il_finance_file": "tax-general.md",

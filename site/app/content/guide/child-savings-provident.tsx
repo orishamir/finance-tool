@@ -2,7 +2,7 @@
 // figure is a Num). Written 2026-10-23 from the rule base (CS, TXK, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
+import { Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 import { OpenLossOffset } from "./open-tax";
 
@@ -42,16 +42,16 @@ export const content: GuideContent = {
       <RulesLine ids={["CS-08", "CS-06", "CS-11", "REG-23"]} />
     </>
   ),
-  switchLine: "בכל עת: מסלול אחר, או קופה אחרת מהרשימה; לא לבנק. אם יש מס במעבר, לא נאמר במקור רשמי",
-  switchRules: ["CS-11", "TXK-22"],
+  switchLine: "בלי מס הכנסה, בכל עת: מסלול אחר, או קופה אחרת מהרשימה; לא לבנק. אחרי גיל הפדיון אפשר לעבור לכל קופת גמל להשקעה",
+  switchRules: ["CS-11", "CS-16", "TXK-22", "TXK-04"],
   termIds: ["חיסכון לכל ילד", "סכום החיסכון הבסיסי", "סכום החיסכון הנוסף", "מענק", "מסלול השקעה", "מסלול ברירת מחדל", "חוסכים המעדיפים סיכון מוגבר", "חברה מנהלת", "משיכה", "גיל הפדיון", "קצבה", "דמי ניהול", "מס רווחי הון"],
   afterTax: ({ figure }) => {
     const niiRate = figure("TXK-20", "nii_circular_rate");
     return (
       <>
-        <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> לא מופיע בשום טקסט של רשות המסים.</span> הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי לומר על איזה רווח. החוק מתייחס לקופת גמל להשקעה בלי להזכיר חיסכון לכל ילד. בחישוב משמש שיעור ממקור משני. שאלה פתוחה (<IdRef id="TXK OQ1" />).
-        </Callout>
+        <p className="max-w-measure">
+          <span className="font-medium"><Term prefix="ב" id="משיכה">משיכה</Term> משלמים מס הכנסה כמו במשיכה מקופת גמל להשקעה.</span> החוק מחזיק את הכסף בקופת גמל להשקעה, ורשות שוק ההון, ביטוח וחיסכון ומשרד האוצר קובעים שחלים עליה כל הכללים של קופה כזאת. רשות המסים לא כתבה זאת על חיסכון לכל ילד. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי לומר על איזה רווח.
+        </p>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.
         </Callout>
@@ -84,9 +84,9 @@ export const content: GuideContent = {
         <VariesByCompany ids={[{ rule: "CS-30", companies: ["harel", "altshuler-shaham"] }]} lead="דמי הניהול אחרי הגיל הזה תלויים בחברה" />
       </p>
       <Sentence measure>
-        כסף שלא נמשך ממשיך להתנהל בקופה, אבל אי אפשר להוסיף אליו כסף חדש. אחרי גיל {until ? <Num value={until} /> : null} הילד יכול להעביר אותו לכל קופת גמל להשקעה, גם כזו שלא נועדה לחיסכון לילד.
+        כסף שלא נמשך ממשיך להתנהל בקופה, אבל אי אפשר להוסיף אליו כסף חדש. אחרי גיל {until ? <Num value={until} /> : null} הילד יכול להעביר אותו בלי מס הכנסה לכל קופת גמל להשקעה, גם כזו שלא נועדה לחיסכון לילד.
       </Sentence>
-      <RulesLine ids={["CS-04", "CS-18", "CS-13", "CS-07", "CS-16"]} />
+      <RulesLine ids={["CS-04", "CS-18", "CS-13", "CS-07", "CS-16", "TXK-04"]} />
     </>
     );
   },
