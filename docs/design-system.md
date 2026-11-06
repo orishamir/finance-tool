@@ -201,7 +201,7 @@ Why this pair: Heebo is clear on small screens and matches Inter's proportions; 
 
 ### 2.5a Stable layout
 
-**Nothing moves when a number changes** (founder; CLAUDE.md standing rule). Moving a slider, picking an option, typing a number or switching an index changes the figures and nothing else: no column widens, no row or block grows or shrinks, no line wraps differently, and the part of the page under the person's finger stays where it was. One exception (D62): switching index on a phone may move what lies below the switch, with a short, gentle transition instead of a jump; a list keeps one height across the states and plans of the index it shows, not across indices.
+**Nothing on the screen moves when a number changes** (founder; CLAUDE.md standing rule; D63). Moving a slider, picking an option, typing a number or switching an index changes the figures and nothing else on the screen: no column in view widens, no row or block in view grows or shrinks, no line in view wraps differently, and the part of the page under the person's finger stays where it was. A block out of sight at that moment, such as a note far below the slider, may change its own height; the movement check (`research/audit/tools/box-check.mjs`) brings each control onto the screen and measures only the boxes in view. One exception (D62): switching index on a phone may move what lies below the switch, with a short, gentle transition instead of a jump; a list keeps one height across the states and plans of the index it shows, not across indices.
 
 | Case | How the site does it | Where |
 |---|---|---|

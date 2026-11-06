@@ -161,17 +161,20 @@ catches about half or more with noise under 30%.
   named, a guard in `kit/guards.test.ts` or a ratchet in
   `kit/ratchets.test.ts` (leftovers listed by name, the list only shrinks);
   never into a feature folder. Every builder's brief says so.
-- **Nothing moves when a number changes.** When the person moves a slider,
-  picks an option, types a number or switches an index, only the figures
-  change; every column, row, block and line keeps its place and size. A
-  table has a fixed width per column, for computer and phone
-  (`table-layout: fixed`); figures use tabular digits and do not wrap; a
-  block whose content varies keeps one height, sized for its longest case; a
-  blank for a number has a fixed width; a list that re-sorts keeps the
-  tapped row where it was. One exception (D62): switching index on a phone
-  may move what lies below the switch, with a short, gentle transition,
-  never a jump. A movement script that changes the inputs and compares the
-  boxes checks it whenever the size rule below asks for it. Patterns:
+- **Nothing on the screen moves when a number changes.** When the person
+  moves a slider, picks an option, types a number or switches an index,
+  only the figures change; every column, row, block and line on the screen
+  at that moment keeps its place and size. A block out of sight may change
+  its own height (D63). A table has a fixed width per column, for computer
+  and phone (`table-layout: fixed`); figures use tabular digits and do not
+  wrap; a block on the screen whose content varies keeps one height, sized
+  for its longest case; a blank for a number has a fixed width; a list that
+  re-sorts keeps the tapped row where it was. One exception (D62):
+  switching index on a phone may move what lies below the switch, with a
+  short, gentle transition, never a jump. A movement script checks it
+  whenever the size rule below asks for it: it brings each control onto the
+  screen, changes it, and compares the boxes in view
+  (`research/audit/tools/box-check.mjs`). Patterns:
   `docs/design-system.md` 2.5a.
 
 ### Checking a change
