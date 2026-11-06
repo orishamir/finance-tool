@@ -439,7 +439,8 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // plus TXS OQ24 (the US tax on dividends inside an exempt Israeli fund holding US shares), opened 2026-11-06
     // plus TXH OQ15 (how a study-fund withdrawal splits between deposits and gains), opened 2026-11-06
     // plus INS OQ17 (savings-policy withdrawal: partial floors, the two-year condition on one deposit, surrender charges, when the 30 days start), opened 2026-11-06
-    expect(items.length).toBe(553);
+    // plus PEN OQ31 (where the bylaws' exception for money moved in only to start a pension came from), opened 2026-11-06
+    expect(items.length).toBe(554);
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
