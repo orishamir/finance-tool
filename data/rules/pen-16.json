@@ -53,47 +53,44 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "pp.28-29, ss.36-37",
       "locator_he": "עמודים 28 עד 29, סעיפים 36-37",
       "page": 28,
       "quote": "כיסוי ביטוחי לעמית שחדל להיות עמית פעיל בקרן יישמר לתקופה של חמישה חדשים מלאים ורצופים",
-      "checked": "2026-10-25",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "p.23, s.28",
       "locator_he": "עמוד 23, סעיף 28",
       "page": 23,
-      "checked": "2026-10-25",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "p.26, ss.33-34",
       "locator_he": "עמוד 26, סעיפים 33-34",
       "page": 26,
-      "checked": "2026-10-25",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25"
     }
   ]
 }

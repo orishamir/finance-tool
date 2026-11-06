@@ -95,19 +95,18 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "p.35, s.51(א)-(ה)",
       "locator_he": "עמוד 35, סעיף 51(א)-(ה)",
       "page": 35,
       "quote": "ובלבד שסכום קצבת הזקנה נמוך מסכום הקצבה המזערי או שווה לו",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-26"
     }
   ]
 }
