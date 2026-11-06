@@ -199,7 +199,7 @@ Why this pair: Heebo is clear on small screens and matches Inter's proportions; 
 
 ### 2.5a Stable layout (founder, 2026-10-28)
 
-**Nothing moves when a number changes.** Moving a slider, picking an option, typing a number or switching an index changes the figures and nothing else: no column widens, no row or block grows or shrinks, no line wraps differently, and the part of the page under the person's finger stays where it was. The founder asked for this case by case at least five times before it became a rule (the index page's result block, its header, its picked row, the guide's sentence blanks, the change table).
+**Nothing moves when a number changes.** Moving a slider, picking an option, typing a number or switching an index changes the figures and nothing else: no column widens, no row or block grows or shrinks, no line wraps differently, and the part of the page under the person's finger stays where it was. *2026-11-06 (D62), one exception:* switching index on a phone may move what lies below the switch, with a short, gentle transition instead of a jump; a list keeps one height across the states and plans of the index it shows, not across indices. The founder asked for this case by case at least five times before it became a rule (the index page's result block, its header, its picked row, the guide's sentence blanks, the change table).
 
 | Case | How the site does it | Where |
 |---|---|---|
