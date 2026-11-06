@@ -1250,6 +1250,26 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 4.0,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
+        "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: חשבון עובר ושב, פעולה על ידי פקיד והערות 02 ו-07",
+        "publisher": "Bank Yahav for State Employees Ltd.",
+        "strength": "institution",
+        "quote": "4.00 לפעולה (בפיקוח)"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Sheet row 65, 'פעולה על ידי פקיד' at '4.00 לפעולה (בפיקוח)', charged 'בתחילת כל חודש עבור החודש קודם'; note (02), rows 70-71: 'לקוחות שחיובם הכולל בגין פעולות שבוצעו ע\"י פקיד ופעולות בערוץ ישיר לא הגיע לכדי 4.00 ש\"ח יחוייבו בהפרש'; note (07): the higher of the actions and a minimum not above one clerk action. So at least 4.00 NIS a month. Young customers, soldiers and students are exempt (a group, D43). Read in the library copy (5a675100ac5dc956), 2026-11-06; the same figure as research/2026-11-04-binding-prices/yahav.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"

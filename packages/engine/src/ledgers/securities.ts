@@ -1,7 +1,7 @@
 // Funds and ETFs held as securities: the F-08 month step and the F-09 exit, with F-10 drag, F-12 to F-14
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
-import { buyWithCash, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+import { buyWithCash, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { RecordInputError, ruleBook } from "../resolver.ts";
@@ -55,6 +55,13 @@ export type SecuritiesTariff = {
   custody?: Custody;
   /** F-17 monthly account fee in NIS. */
   monthlyFee?: number;
+  /** F-102 (D64): the monthly minimum of the current account at a bank, NIS a month. Read from the run's first tariff, whatever its periods. */
+  currentAccount?: number;
+  /**
+   * F-103 (D67): a charge for each dividend of a fund bought abroad, in the instrument's currency (`currency` must be set). Read from the run's
+   * first tariff, whatever its periods.
+   */
+  perDividend?: number;
   /**
    * F-13 FX conversion on each order and at exit: a bare number is the percentage with no bounds (kept for
    * callers that pass one); the `Commission` shape adds the tariff's minimum and maximum, in the instrument's
@@ -240,6 +247,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   }
 
   const fxRate = (m: number) => (tariff.currency ? tariff.currency.startRate * X[m]! : 1);
+  if (tariff.perDividend && !tariff.currency) throw new RecordInputError("F-103: a charge per dividend is in the instrument's currency, and the tariff names none");
   // F-101: the tariff in force in month m. Without `until`, the one tariff, as always.
   const tariffAt = (m: number): SecuritiesTariff => {
     let at: TariffSequence = tariff;
@@ -355,18 +363,28 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       distThisYear += dist;
       buy(t.net, m, m, false);
       units = totalUnits(lots);
+      // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by
+      const event = corporateEventFee(tariff.perDividend, fxRate(m), units * nav);
+      if (event > 0) {
+        lots = removeFifo(lots, event / nav);
+        units = totalUnits(lots);
+        tally.fee("custody", event);
+      }
     }
 
     // 5. Holding costs, paid by removing units oldest first (F-14, F-17, F-15 for the IRA manager).
     const manager = (wrapperFee / 12) * units * nav;
     const custody = custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
     const fixed = fixedFee(tariffAt(m).monthlyFee, units * nav - manager - custody);
-    if (custody + fixed + manager > 0) {
-      lots = removeFifo(lots, (custody + fixed + manager) / nav);
+    // F-102: the current account at a bank, after the account's own fees; it stays out of the exit year's fees (TXS-06)
+    const account = currentAccountFee(tariff.currentAccount, units * nav - manager - custody - fixed);
+    if (custody + fixed + manager + account > 0) {
+      lots = removeFifo(lots, (custody + fixed + manager + account) / nav);
       units = totalUnits(lots);
     }
     tally.fee("custody", custody);
     tally.fee("fixed", fixed);
+    tally.fee("account", account);
     tally.fee("manager", manager);
     if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + fixed;
 

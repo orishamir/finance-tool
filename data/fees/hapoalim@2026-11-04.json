@@ -1041,6 +1041,26 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 5.3,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: חשבון עובר ושב, פעולה על ידי פקיד והערה (03)",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution",
+        "quote": "5.30 בפיקוח"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-05",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Sheet row 671, 'פעולה על ידי פקיד', price '5.30 בפיקוח', charged 'בתחילת כל חודש עבור חודש קודם'; note (03), rows 705-706: 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י פקיד'. So an ordinary customer pays at most 5.30 NIS a month as the minimum; the site counts the ceiling (D56). Read in the library copy of the sheet (e939af51e5b97376, the file of 2026-10-07), 2026-11-06; the same figure as research/2026-11-04-binding-prices/hapoalim.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"

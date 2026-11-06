@@ -275,6 +275,8 @@ const rateOf: Record<FeeLine, (p: RunPlan) => number | undefined> = {
     return typeof fx === "object" ? fx.rate : fx;
   },
   fixed: (p) => (p.run === "runSecurities" ? p.input.tariff.monthlyFee : undefined),
+  // F-102: the indices page alone counts a bank's current account; this page never runs it
+  account: (p) => (p.run === "runSecurities" ? p.input.tariff.currentAccount : undefined),
   spread: (p) => (p.run === "runSecurities" ? p.input.fund.halfSpread : undefined),
   fund: (p) => {
     if (p.run !== "runSecurities") return undefined;
@@ -290,11 +292,11 @@ export function lineRate(plan: RunPlan, line: FeeLine): number | undefined {
 }
 
 /** The lines a typed reduction applies to: a rate of a base, not a monthly sum. */
-export const reducible = (line: FeeLine) => line !== "fixed" && line !== "spread";
+export const reducible = (line: FeeLine) => line !== "fixed" && line !== "account" && line !== "spread";
 
 const feeKindOf: Partial<Record<FeeLine, FeeKind>> = { balance: "balance", deposit: "deposit", direct: "direct", fund: "fund", trade: "trade", custody: "custody" };
 
-const feeValueKey: Record<FeeLine, string | null> = { balance: "balance", deposit: "deposit", direct: "direct", trade: "tradeRate", custody: "custodyRate", fx: "fxRate", fixed: "monthlyFee", spread: "fundHalfSpread", fund: null, manager: "iraManagerFee" };
+const feeValueKey: Record<FeeLine, string | null> = { balance: "balance", deposit: "deposit", direct: "direct", trade: "tradeRate", custody: "custodyRate", fx: "fxRate", fixed: "monthlyFee", account: null, spread: "fundHalfSpread", fund: null, manager: "iraManagerFee" };
 const dragKeys = ["fundManagement", "fundVariable", "fundTrustee"] as const;
 
 function rateValue(wrapper: WrapperEntry, line: FeeLine, today: string): SiteValue | null {

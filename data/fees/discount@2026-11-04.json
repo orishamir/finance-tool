@@ -1194,6 +1194,27 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 5.9,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.discountbank.co.il/media/edjn1tis/abridged_taarif_current_account-11026.pdf",
+        "title": "תעריפון מצומצם עובר ושב - בנק דיסקונט (01/10/2026), פעולות בסיסיות, (א) פעולה על ידי פקיד",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "5.90 ₪ (בפיקוח) לפעולה"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Row 2(א) 'פעולה על ידי פקיד' at 5.90 NIS an action; note (*): 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י הפקיד'. The ceiling is counted (D56). The digital branch ('דיגיטל קלאסיק', annex A p.39 of the full tariff) exempts its members from the minimum; joining it is a choice of service, so it is an offer under D56 and not the ordinary price. Read in the library copy (7a22f08024c4cf3d), 2026-11-06; the same figure as research/2026-11-04-binding-prices/discount-mercantile.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"

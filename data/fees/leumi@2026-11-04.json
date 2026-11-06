@@ -1445,6 +1445,26 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 5.5,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.xlsx",
+        "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 1 - חשבון עובר ושב, 1(א) שירותים נפוצים, (2) פעולה על ידי פקיד, הערה 3",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution",
+        "quote": "5.50 ש\"ח לפעולה (בפיקוח)"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Sheet 'חלק 1', row 8: 'פעולה על ידי פקיד' at '5.50 ש\"ח לפעולה (בפיקוח)', charged 'בתחילת החודש עבור החודש שקדם לו'; note 3: 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת - על ידי פקיד'. The ceiling is counted (D56). The sheet is the twin of the PDF price list (AmlotYechidimL.pdf, p.17), whose extracted text is scrambled. Read in the library copy (c3c577471efe712d), 2026-11-06; the same figure as research/2026-11-04-binding-prices/leumi.md. PEPPER is priced as a group under Leumi (D43), so its own current account is not counted apart."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"

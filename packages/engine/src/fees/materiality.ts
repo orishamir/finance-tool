@@ -12,7 +12,7 @@ import { computedValue, weakestStrength } from "./computed.ts";
 export type FeeLine = FeeType;
 
 /** Every line, in the order the result lists them. */
-export const feeLineOrder: readonly FeeLine[] = ["deposit", "balance", "direct", "trade", "spread", "custody", "fixed", "fund", "fx", "manager"];
+export const feeLineOrder: readonly FeeLine[] = ["deposit", "balance", "direct", "trade", "spread", "custody", "fixed", "account", "fund", "fx", "manager"];
 
 const positive = (n: number | undefined) => (n ?? 0) > 0;
 const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min) || ("perCurrencyUnit" in c && positive(c.perCurrencyUnit)));
@@ -40,6 +40,9 @@ export function feeLines(plan: RunPlan): FeeLine[] {
         if (typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) has.add("fx");
         if (positive(t.monthlyFee)) has.add("fixed");
       }
+      // F-102 and F-103 are read from the first tariff only; the custodian's charge per dividend counts with custody where a dividend is paid
+      if (positive(tariff.currentAccount)) has.add("account");
+      if (positive(tariff.perDividend) && fund.distribution) has.add("custody");
       if (positive(fund.halfSpread)) has.add("spread");
       const d = fund.drag;
       if (positive(d?.management) || positive(d?.variable) || positive(d?.trustee)) has.add("fund");
@@ -133,9 +136,12 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "custody":
-          if (!tariff.custody) return noLine(plan, line);
-          if (rate === 0) delete tariff.custody;
-          else tariff.custody = { ...tariff.custody, rate };
+          if (!tariff.custody && !tariff.perDividend) return noLine(plan, line);
+          // F-103: the custodian's charge per dividend is part of custody; removing custody removes it too
+          if (rate === 0) {
+            delete tariff.custody;
+            delete tariff.perDividend;
+          } else if (tariff.custody) tariff.custody = { ...tariff.custody, rate };
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fx":
           if (tariff.fx === undefined) return noLine(plan, line);
@@ -158,6 +164,11 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           if (tariff.monthlyFee === undefined) return noLine(plan, line);
           if (rate === 0) delete tariff.monthlyFee;
           else tariff.monthlyFee = rate;
+          return { run: "runSecurities", input: { ...input, tariff } };
+        case "account":
+          if (tariff.currentAccount === undefined) return noLine(plan, line);
+          if (rate === 0) delete tariff.currentAccount;
+          else tariff.currentAccount = rate;
           return { run: "runSecurities", input: { ...input, tariff } };
         case "spread": {
           if (input.fund.halfSpread === undefined) return noLine(plan, line);

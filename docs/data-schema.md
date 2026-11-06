@@ -63,16 +63,17 @@ Field rules:
 
 ## 2. Units and enumerations
 
-Units: `nis`, `nis_millions`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `usd_per_trade`, `gbp_per_trade`, `nis_per_usd`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+Units: `nis`, `nis_millions`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `usd_per_trade`, `gbp_per_trade`, `usd_per_event`, `nis_per_usd`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
 
 Units that need a word:
 
 - `nis_millions`: an amount in millions of shekels, as the CMA datasets report amounts (CAT-03), used by the `holdings` of §3.13 (D34). The site shows it as `25,706.14 מיליון ₪` and does not convert it.
 - `usd_per_share`: a dollar amount per share, a per-share commission rate. `usd_per_trade` and `gbp_per_trade`: a dollar or pound amount per trade, a minimum or maximum commission in a foreign currency. They serve the foreign brokers' tariffs; the engine converts them at the run's exchange rate.
+- `usd_per_event`: a dollar amount for each corporate event of a security held abroad, as One Zero prints its custodian's cost (D67). F-103 charges it on each dividend of a fund bought abroad, converted at the run's rate.
 - `nis_per_usd`: shekels per dollar converted, for a conversion printed as agorot a dollar (Psagot's 1.5 agorot). F-13 charges it on the dollars converted.
 - `fx_per_eur`: units of a currency per one euro, the ECB reference rate, for the FX series of §3.8.
 
-Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
+Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `corporate_event`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
 
 Security types for tariff lines (`fee.applies_to`, and a snapshot's `availability.applies_to`): `tase_shares_bonds`, `tase_bonds` (a bonds-only line, for a tariff that prices bonds apart from shares and ETFs), `makam`, `foreign_securities`, `mutual_fund_units`, `money_market_units`, `etf_units`, `tase_foreign_fund_units`, `all`.
 
@@ -380,7 +381,9 @@ One file per provider per snapshot: `fees/<provider-id>@<date>.json`. The schema
 - A line takes an optional `flat_up_to: { amount, up_to }`, two value objects: an order up to `up_to` pays `amount`; a larger order pays the line's rate, minimum and maximum.
 - Provident and pension managers use the same file with `base: deposit`, `base: balance`, `base: direct_expenses` lines per track (`track_id` = CMA fund number), the discount period (`discount_months`, A-19) and the list fee the discount reverts to (`reverts_to`).
 - Non-bank extra lines (BRK-24) use `fixed_period` (monthly fee), `distribution_handling`, `spread`.
+- A `corporate_event` line (unit `usd_per_event`, `applies_to: ["foreign_securities"]`) is a charge for each corporate event of a security held abroad; F-103 reads it as a charge on each dividend of a fund bought abroad that pays dividends, and an accumulating fund pays none (D67).
 - **The place of a value.** A value's `source` may also carry its exact place, both optional: `page`, the file's own page of a PDF (the document library's count, not the number printed on the sheet), and `quote`, the document's own words that carry the value, at most 240 characters. A web page has only `quote`. A value gets them only when its own line was read on that page; no `page` means not yet confirmed, not absent from the document. The same two fields may sit on an `availability` entry's `source`. They are read by nothing on the site yet.
+- `current_account: { monthly_minimum }` (D64): what the current account a bank's securities account rests on costs an ordinary customer a month, the price list's monthly minimum as a value object in `nis_per_month`, with its page and quote. A bank's latest record must carry it; a house that is not a bank, or that is part of another (`part_of`), must not. F-102 counts it on the bank's row on the indices page unless the person marks that bank as their own.
 - `averages[]` holds `{ line_id, level, band, rate }`, `level` being `regulator_average` or `tase_average`. `minimums.account_opening` is a value object or `null`.
 
 **What can be bought there** (S3). The snapshot takes an optional `availability: [{ applies_to, available, source: { url, title, checked, page?, quote? }, note?, reason_he? }]`. `applies_to` lists instrument classes (the security types of §2, `all` included), and a class appears in at most one entry. `available: false` is a sourced statement that a private client cannot buy that class there (Interactive Israel and TASE securities: 'ללקוחות מוסדיים בלבד'); `true` is a sourced statement that it can. With no entry for a class, availability is derived: it is available when a trade line applies. A class the source does not settle gets no entry ("not found" is not "not available").

@@ -525,6 +525,25 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 0,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+        "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בתוקף מיום 26.7.2026), חלק 1 - חשבון עובר ושב, פעולה על ידי פקיד ופעולה בערוץ ישיר",
+        "publisher": "One Zero Digital Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-04",
+      "effective_from": "2026-07-26",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "The price list prints 'פעולה על ידי פקיד' and 'פעולה בערוץ ישיר' at 0 NIS, and the basic and extended plans at 0 NIS, so the current account costs an ordinary customer (ZERO, no plan) nothing a month. Read in the founder's Chrome on 2026-11-04 (research/2026-11-04-binding-prices/one-zero.md, section 3); the host refuses scripts, so the page and the words were not re-read here."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"

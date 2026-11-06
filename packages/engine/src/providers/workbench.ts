@@ -74,6 +74,22 @@ export interface ProviderInput {
    * list row would be.
    */
   layered?: (list: SecuritiesInput["tariff"], run: LayeredRun) => EnteredTariff | LayeredUnusable;
+  /**
+   * F-102 (D64): count the current account the snapshot records (a bank's monthly minimum). The caller decides where it applies
+   * (`countsCurrentAccount`); left out, no current account is counted, as on every page but the indices page.
+   */
+  currentAccount?: boolean;
+}
+
+/** The id a current account's source takes among a tariff's `lineSources` (F-102): it is the snapshot's, not one of its lines. */
+export const CURRENT_ACCOUNT_LINE = "current-account";
+
+/**
+ * F-102 (D64): whether a provider's row counts its current account: a bank whose record names one, unless it is the bank the person marks
+ * as their own (`own`, a snapshot id), which they pay anyway. A house that needs no current account with it has none to count.
+ */
+export function countsCurrentAccount(snapshot: Pick<FeesSnapshot, "id" | "current_account">, own: string | null): boolean {
+  return snapshot.current_account !== undefined && snapshot.id !== own;
 }
 
 export interface WorkbenchInput {
@@ -501,6 +517,30 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     }
   }
 
+  // F-103 (D67): a charge for each corporate event of a security held abroad, read as one on each dividend of a fund bought abroad that pays
+  // dividends; an accumulating fund has no dividend, and a fund in Tel Aviv is never in the line's class. A list price at every level.
+  if (input.currency && input.fund?.distribution) {
+    const l = pick("corporate_event", "list");
+    if (l) {
+      if (l.rate.unit !== "usd_per_event") throw new RecordInputError(`${l.id}: unit is ${l.rate.unit}, expected usd_per_event`);
+      if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.id} has no value`);
+      // in the instrument's currency, as the run charges it: dollars as they are, another currency through the shekel
+      const usd = input.fx?.USD;
+      if (input.currency.code !== "USD" && !usd) throw new Unusable("needs-fx-rate", `${l.id}: the charge is in USD and the run holds no USD rate`);
+      out.tariff.perDividend = input.currency.code === "USD" ? l.rate.value : (l.rate.value * usd!) / input.currency.startRate;
+      used(l, l.rate);
+    }
+  }
+
+  // F-102 (D64): the current account at a bank, where the caller counts it (the indices page: every bank but the one the person marks)
+  if (p.currentAccount && snapshot.current_account) {
+    const m = snapshot.current_account.monthly_minimum;
+    if (m.unit !== "nis_per_month" || typeof m.value !== "number") throw new RecordInputError(`provider ${snapshot.id}: current_account.monthly_minimum must be a number in nis_per_month`);
+    out.tariff.currentAccount = m.value;
+    out.lineSources.push({ lineId: CURRENT_ACCOUNT_LINE, level: "list", url: m.source.url, publisher: m.source.publisher, strength: m.source.strength });
+    out.strengths.push(m.source.strength);
+  }
+
   // F-101: a price for a time. The tariff after it is built the same way from its own lines, over the provider's list lines.
   if (entered?.until) {
     const after = buildTariff(input, { ...p, level: "entered", entered: entered.until.then, layered: undefined }, snapshot);
@@ -511,7 +551,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   }
 
   // Lines that apply to the fund but that no formula here charges (F-18 is pending; the rest are not part of a holding's running cost).
-  const modelled = new Set<SnapLine["base"]>(["trade", "custody", "fixed_period", "fx"]);
+  const modelled = new Set<SnapLine["base"]>(["trade", "custody", "fixed_period", "fx", "corporate_event"]);
   for (const l of snapshot.lines.filter(applicable)) {
     if (l.base === "distribution_handling") {
       if (input.fund?.distribution) {
@@ -525,7 +565,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   return out;
 }
 
-const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed"];
+const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed", "account"];
 
 /** The function's result, computed at the first call. */
 function once<T>(work: () => T): () => T {
@@ -710,7 +750,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
         { nominal_value_without_provider_fees: none12.nominal, nominal_value_with_provider_fees: run12.nominal, month: 12, level: p.level, lines: built.linesUsed },
         common,
       ),
-      yearOneFeesPaid: run12.fees.trade + run12.fees.custody + run12.fees.fixed + run12.fees.fx,
+      yearOneFeesPaid: run12.fees.trade + run12.fees.custody + run12.fees.fixed + run12.fees.fx + run12.fees.account,
       get byType() {
         return split().byType;
       },
@@ -791,7 +831,7 @@ export interface CumulativeFeePoint {
  */
 export function cumulativeProviderFees(row: ComparedProvider): CumulativeFeePoint[] {
   const run = row.run;
-  const total = run.fees.trade + run.fees.custody + run.fees.fx + run.fees.fixed;
+  const total = run.fees.trade + run.fees.custody + run.fees.fx + run.fees.fixed + run.fees.account;
   return run.series.map((p) => {
     const nominal = p.month === run.exitMonth ? total : (p.providerFees ?? 0);
     return { month: p.month, nominal, real: nominal / p.index };

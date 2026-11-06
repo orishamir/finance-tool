@@ -240,7 +240,8 @@ const NAMES_CLASS: Record<string, RegExp> = {
   foreign_securities: /קרנות|קרן|ETF|תעודו?ת סל|ניירות ערך בחוץ לארץ(?!\s*-)/,
 };
 interface PremiseSnapshot {
-  provider: { class: string };
+  provider: { class: string; part_of?: string };
+  current_account?: { monthly_minimum: { value: unknown; unit: string } };
   missing?: boolean;
   price_for_he?: string;
   left_out?: unknown[];
@@ -449,6 +450,12 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   const out: string[] = [];
   if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
   if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
+  // D64: a bank's securities account rests on a current account there, whose monthly minimum its row counts (F-102); a house that is
+  // not a bank needs none with it, and a house that is part of another is priced on that house's row
+  const ca = snap.current_account;
+  if (snap.provider.class === "bank" && !snap.provider.part_of && !ca) out.push("current_account: a bank's record says what its current account costs a month, from its price list (D64)");
+  if ((snap.provider.class !== "bank" || snap.provider.part_of) && ca) out.push("current_account: only a bank's own record carries a current account (D64)");
+  if (ca && (ca.monthly_minimum.unit !== "nis_per_month" || typeof ca.monthly_minimum.value !== "number")) out.push("current_account.monthly_minimum: a number in nis_per_month (F-102)");
   const g = snap.groups;
   if (!g) out.push("groups: a bank's or broker's record says its group prices, or that it has none, or that they could not be read");
   else {

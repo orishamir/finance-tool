@@ -1818,6 +1818,27 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 6.3,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/e11agh3s/חלק-1-חשבון-עובר-ושב-46.pdf",
+        "title": "תעריפון ליחידים - בנק מסד (החל מ-06.09.2026), חלק 1 חשבון עובר ושב, סעיף 1.2.1 פעולה על ידי פקיד והערה 4",
+        "publisher": "Bank Massad Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-09-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Section 1.2.1 'פעולה על ידי פקיד' at 6.3 NIS (בפיקוח); note 4: 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד'; section 1.3.2 'השלמה למינימום דמי ניהול' at 6.3. The ceiling is counted (D56). Read in the library copy (594a97c31770e26d), 2026-11-06; the same figure as research/2026-11-04-binding-prices/fibi-massad.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"

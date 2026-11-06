@@ -1194,6 +1194,27 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 6.4,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.mercantile.co.il/media/gjwluxm4/taarifon_private_short_osh_11026.pdf",
+        "title": "תעריפון מצומצם עובר ושב - בנק מרכנתיל (01/10/2026), פעולות, (א) פעולה על ידי פקיד",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "6.40 ₪ לפעולה (בפיקוח)"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Row 2(א) 'פעולה על ידי פקיד' at 6.40 NIS an action; note (*): 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י הפקיד'. The ceiling is counted (D56). Read in the library copy (897991154e216138), 2026-11-06; the same figure as research/2026-11-04-binding-prices/discount-mercantile.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"

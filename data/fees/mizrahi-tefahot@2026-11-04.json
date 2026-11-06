@@ -1239,6 +1239,27 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 6.8,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד), חלק 1 - חשבון עובר ושב ('מעודכן לתאריך: 01/10/2026'), סעיף 1.2.1 פעולה ע\"י פקיד והערה 3",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "עמלת מינימום במחיר של פעולה אחת על ידי פקיד"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Section 1.2.1 'פעולה ע\"י פקיד' at 6.80 NIS (בפיקוח), charged at the start of each month; note (3): 'הבנק יגבה בכל חודש את הגבוה מבין שני אלה ... עמלת מינימום במחיר של פעולה אחת על ידי פקיד'. The minimum is the price of one clerk action, not a ceiling. Read in the library copy (8dedbb45235cd662), 2026-11-06; the same figure as research/2026-11-04-binding-prices/mizrahi-tefahot.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
