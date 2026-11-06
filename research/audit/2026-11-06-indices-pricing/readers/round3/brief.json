@@ -1,5 +1,5 @@
 {
- "task": "A friend sent you screenshots of a Hebrew web page about investing in a stock index, here the S&P 500, through a securities account and a fund. Your goal: decide which account and which fund to use for investing in this index.\nThe screenshots come in sets, in reading order. After the number, each file name starts with its set letter.\nSet A: the whole page as it first opens, top to bottom (each screenshot overlaps the one before a little).\nSet B: the account list after your friend chose \"לאומי\" in the box \"הבנק שבו כבר יש לכם חשבון עו״ש\".\nSet C: the same, after tapping \"מה לא נכנס למחיר של קרן שנקנית בחו״ל\".\n\nAnswer in plain English, as yourself, quoting the Hebrew you react to:\n1. Your decision: which account and which fund would you use, and how sure are you? Which parts of the page did you use to decide?\n2. For each line below, find it on the screenshots and say in your own words what it tells you: what it means for your money or your choice. Then say whether anything in it is unclear or could be read two ways, quoting the exact Hebrew words you trip on. If you do not know what a line means, say so plainly rather than guessing.\n a. The line under the box \"הבנק שבו כבר יש לכם חשבון עו״ש\" in set A, starting \"השורה של כל בנק סופרת\". Whose figures include this fee, and whose do not? Does the page tell you to do anything?\n b. In set C, the first point under \"מה לא נכנס למחיר של קרן שנקנית בחו״ל\", starting \"מעבר לעמלת המרת המטבע\". For the houses it names at its end, is the gap it talks about part of their figures or not? And for the other houses?\n3. Anything else on the account list or around it that confused you, bothered you, or that you expected and did not find.",
+ "task": "A friend sent you screenshots of a Hebrew web page about investing in a stock index, here the S&P 500, through a securities account and a fund. Your goal: decide which account and which fund to use for investing in this index.\nThe screenshots come in sets, in reading order. After the number, each file name starts with its set letter. You may not have every set.\nSet A: the whole page as it first opens, top to bottom (each screenshot overlaps the one before a little).\nSet B: the account list after your friend chose \"לאומי\" in the box \"הבנק שבו כבר יש לכם חשבון עו״ש\".\nSet C: the same page, after tapping \"מה לא נכנס למחיר של קרן שנקנית בחו״ל\".\nSet D: after tapping Leumi's smaller figure in the account list (5,283 ₪): the box that opens, from its top to its end.\nSet E (phone only): the top of the page after your friend typed a very large plan: 50,000,000 ₪ now, 100,000 ₪ a month, 40 years, 12% a year.\nSet F (computer only): another page of the same site, about the investment company Kesem, with a list of what its documents say opened.\n\nAnswer in plain English, as yourself, quoting the Hebrew you react to:\n1. Your decision: which account and which fund would you use, and how sure are you? Which parts of the page did you use to decide?\n2. For each line below, find it on the screenshots and say in your own words what it tells you: what it means for your money or your choice. Then say whether anything in it is unclear or could be read two ways, quoting the exact Hebrew words you trip on. If you do not know what a line means, say so plainly rather than guessing.\n a. In set A, the line under the box \"הבנק שבו כבר יש לכם חשבון עו״ש\", starting \"השורה של כל בנק סופרת\". Whose figures include this fee, and whose do not? Does the page tell you to do anything?\n b. In set A, the colour key under the chart \"כמה זה עולה לכם ב־10 שנים, בכל אחד מהזוגות\" (near the top) has a red item \"דמי ניהול חשבון ניירות ערך\"; the colour key under the account list further down has a red item \"דמי ניהול חשבון ניירות ערך ועו״ש\". What does red stand for in each? Does the difference make sense to you?\n c. In set C, the first point under \"מה לא נכנס למחיר של קרן שנקנית בחו״ל\", starting \"מעבר לעמלת המרת המטבע\". For the companies it names at its end, is the gap it talks about part of their figures or not? And for the others?\n d. In set C, the second point, starting \"גם גופים בחו״ל גובים עמלות\". What is left out of the figures, and what does the part starting \"יוצא מן הכלל\" tell you?\n e. In set D: the row \"דמי ניהול חשבון עו״ש בחודש\" with its amount: what is it, and where does the number come from? The amber box starting \"מיולי 2027 הסכום כאן יכול להיות גבוה מדי\": what does it tell you about Leumi's figure, and should you do anything about it? The line under \"התקרות החדשות לעמלות העו״ש\", starting \"רשומות ·\": what is this source?\n f. Only if you have set E: the figures with the word \"מיליארד\". What amount does each stand for? Is anything about them confusing, for example when two of them look the same?\n g. Only if you have set F: in the card \"ETF-64\", the blue source line starting \"מאיה\". What document is it, and can you read the fund's name in it? Is any part of it garbled or out of order?\n3. Anything else on the account list or around it that confused you, bothered you, or that you expected and did not find.",
  "readers": [
   {
    "key": "has-account-pc",
@@ -13,7 +13,13 @@
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/A-open-pc-05.png",
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/A-open-pc-06.png",
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/B-leumi-pc.png",
-    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/C-fold-open-pc.png"
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/C-fold-open-pc.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-00.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-01.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-02.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-03.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/F-kesem-top-pc.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/F-kesem-ETF-64-pc.png"
    ]
   },
   {
@@ -35,7 +41,18 @@
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/A-open-phone-12.png",
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/A-open-phone-13.png",
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/B-leumi-phone.png",
-    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/C-fold-open-phone.png"
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/C-fold-open-phone.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-phone-00.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-phone-01.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-phone-02.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-00.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-01.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-02.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-03.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-04.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-05.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-06.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/E-typed-plan-phone-07.png"
    ]
   },
   {
@@ -50,7 +67,13 @@
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/A-open-pc-05.png",
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/A-open-pc-06.png",
     "research/audit/2026-11-06-indices-pricing/readers/round3/shots/B-leumi-pc.png",
-    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/C-fold-open-pc.png"
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/C-fold-open-pc.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-00.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-01.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-02.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/D-leumi-cost-pc-03.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/F-kesem-top-pc.png",
+    "research/audit/2026-11-06-indices-pricing/readers/round3/shots/F-kesem-ETF-64-pc.png"
    ]
   }
  ]
