@@ -15,6 +15,10 @@ research/knowledge/2026-10-25-scope/tools/work/
 research/user-lab/bench/raw/
 # 246 MB of rebuilt screens; rebuilt by bench/tools, checked by bench/shots.sha256
 research/user-lab/bench/shots/
+research/user-lab/bench/shots-vp/
+research/user-lab/runs/train-*/screens/
+research/user-lab/runs/train-*/**/*.png
+research/user-lab/runs/*/browser/variants/
 
 # other sites the founder reacted to: their screens stay out of the public repository
 research/user-lab/elsewhere/**/*.png

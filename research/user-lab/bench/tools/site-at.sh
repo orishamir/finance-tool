@@ -8,11 +8,12 @@ out=$base/site/$sha
 if [ -f "$out/.ok" ]; then echo "$out"; exit 0; fi
 mkdir -p "$out" "$base/art"
 id=$(awk -F'\t' -v s="$sha" '$2=="finance-tool-site" && $3=="false" && index($5,s)==1 {print $1; exit}' "$repo/research/user-lab/bench/raw/ci-artifacts.tsv" || true)
-if [ -n "${id:-}" ]; then
-  gh api "repos/orishamir/finance-tool/actions/artifacts/$id/zip" > "$base/art/$sha.zip"
+# CI keeps an artifact for a limited time: when the download fails (expired), build locally instead.
+if [ -n "${id:-}" ] && gh api "repos/orishamir/finance-tool/actions/artifacts/$id/zip" > "$base/art/$sha.zip" 2>/dev/null; then
   ( cd "$base/art" && rm -rf "x$sha" && mkdir "x$sha" && unzip -q -o "$sha.zip" -d "x$sha" && tar -xzf "x$sha/finance-tool-site.tar.gz" -C "$out" && rm -rf "x$sha" "$sha.zip" )
   echo ci > "$out/.ok"
 else
+  rm -f "$base/art/$sha.zip"
   client=$("$repo/research/user-lab/bench/tools/build-at.sh" "$sha" "$base")
   mkdir -p "$out/finance-tool" && cp -r "$client/." "$out/finance-tool/"
   echo local > "$out/.ok"

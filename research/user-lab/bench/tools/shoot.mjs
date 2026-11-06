@@ -1,6 +1,10 @@
 // Screens for the benchmark: serve the site as it was live at a commit and photograph whole pages.
 //
-//   node shoot.mjs <screens.json> [caseId ...]
+//   node shoot.mjs <screens.json> [--viewport] [--width 1440] [caseId ...]
+//
+// --viewport: one picture per screen as a person scrolls (the window's height: 900 on a computer, 844 on a phone, the
+// sticky header on each, as the panel's own capture does), written to ../shots-vp/<case>/ instead of ../shots/.
+// --width: shoot only that width of each screen.
 //
 // screens.json: [{ case, sha, screens: [{ name, path, widths?: [1440, 390], steps?: [...], state? }] }]
 // A screen is the whole page at that width, after the steps, cut into tiles in reading order
@@ -20,9 +24,14 @@ const require = createRequire("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules
 const { chromium } = require("playwright");
 
 const here = dirname(fileURLToPath(import.meta.url));
-const shotsDir = join(here, "..", "shots");
+const argv = process.argv.slice(2);
+const flag = (n) => { const i = argv.indexOf(n); if (i < 0) return false; argv.splice(i, 1); return true; };
+const value = (n) => { const i = argv.indexOf(n); if (i < 0) return null; const v = argv[i + 1]; argv.splice(i, 2); return v; };
+const viewport = flag("--viewport");
+const onlyWidth = value("--width");
+const shotsDir = join(here, "..", viewport ? "shots-vp" : "shots");
 const BASE = process.env.BENCH_SITES || "/home/ori/dev/bench-wt";
-const [planPath, ...only] = process.argv.slice(2);
+const [planPath, ...only] = argv;
 const plan = JSON.parse(readFileSync(planPath, "utf8")).filter((c) => !only.length || only.includes(c.case));
 
 const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json",
@@ -95,7 +104,7 @@ for (const [sha, cases] of bySha) {
     mkdirSync(dir, { recursive: true });
     const done = [];
     for (const sc of c.screens) {
-      for (const width of sc.widths || [1440, 390]) {
+      for (const width of (sc.widths || [1440, 390]).filter((w) => !onlyWidth || w === Number(onlyWidth))) {
         const phone = width < 600;
         const ctx = await browser.newContext({ viewport: { width, height: phone ? 844 : 900 }, deviceScaleFactor: phone ? 2 : 1,
           isMobile: phone, hasTouch: phone, locale: "he-IL", timezoneId: "Asia/Jerusalem", colorScheme: "dark" });
@@ -114,6 +123,24 @@ for (const [sha, cases] of bySha) {
           // header where the window was, in the middle of the page, where no person ever sees it (readers flagged it).
           await page.evaluate(() => window.scrollTo(0, 0));
           await page.waitForTimeout(300);
+          if (viewport) {
+            // As a person scrolls: one window's height at a time, waiting for what loads as it comes into view.
+            const vh = phone ? 844 : 900;
+            const files = [];
+            for (let i = 1; i <= 40; i++) {
+              const dest = join(dir, `${sc.name}-${width}-${String(i).padStart(2, "0")}.png`);
+              await page.screenshot({ path: dest });
+              files.push(dest);
+              const before = await page.evaluate(() => scrollY);
+              await page.evaluate((d) => scrollBy(0, d), vh);
+              await page.waitForTimeout(250);
+              if ((await page.evaluate(() => scrollY)) === before) break;
+              await settle(page);
+            }
+            done.push({ screen: sc.name, width, tiles: files.length, errors });
+            await ctx.close();
+            continue;
+          }
           // The whole page, cut into tiles by clipping (no single huge image: Chrome and PNG both have height limits).
           const tileCss = phone ? 1200 : 1800;
           const total = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
