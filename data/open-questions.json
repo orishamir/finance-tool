@@ -178,7 +178,7 @@
   },
   {
     "id": "BRK OQ2",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "BRK OQ3",
@@ -227,7 +227,8 @@
   },
   {
     "id": "BRK OQ12",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-06",
     "title_he": "המחיר המפוקח להעברת ניירות ערך לחשבון שלכם במוסד אחר"
   },
   {
@@ -236,7 +237,7 @@
   },
   {
     "id": "BRK OQ14",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "BRK OQ15",
@@ -453,7 +454,7 @@
   },
   {
     "id": "ETF OQ7",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "ETF OQ8",
@@ -484,7 +485,8 @@
   },
   {
     "id": "ETF OQ14",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-11-06"
   },
   {
     "id": "ETF OQ15",
@@ -991,7 +993,7 @@
   },
   {
     "id": "MF OQ3",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "שעות ההוראה בקרנות לפי סוג, והאם קונים ופודים גם ביום שישי"
   },
   {
@@ -1003,7 +1005,7 @@
   },
   {
     "id": "MF OQ5",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "האם הכלל שמנהל קרן מעלה דמי ניהול רק בתחילת שנה מחייב"
   },
   {
@@ -1055,7 +1057,8 @@
   },
   {
     "id": "MF OQ17",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-06",
     "title_he": "מה קובעים התיקונים האחרונים לחוק השקעות משותפות בנאמנות"
   },
   {

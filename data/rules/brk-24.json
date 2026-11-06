@@ -25,10 +25,10 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "p.23, s.18; p.35, s.29ב, 29ג(2)",
-      "locator_he": "עמוד 23, סעיף 18; עמוד 35, סעיף 29ב, 29ג(2)",
+      "locator": "p.23, s.18; p.35, s.29ב, 29ג(2), 29ג(3)",
+      "locator_he": "עמוד 23, סעיף 18; עמוד 35, סעיף 29ב, 29ג(2), 29ג(3)",
       "page": 23,
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "qualifier": "(exchange rules, ISA-approved)"
     },
     {
