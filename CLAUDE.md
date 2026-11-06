@@ -96,10 +96,11 @@ The user lab (`research/user-lab/`) is a habit beside it, at most about 5% of
 a week: a reviewer that runs with no project context and flags what people
 flag, measured against every problem I flagged (`metric.md`). Every problem I
 flag goes through it first (`learning-loop.md`), and its held-out set is
-scored again every couple of weeks. Its second score decides its use: if it
-catches about half or more of my general problems with noise under 30%, it
-is a first pass on every site change; if not, it is a check for movement and
-dead controls beside the fresh readers.
+scored again every couple of weeks. It is a check for movement and dead
+controls beside the fresh readers, not a first pass on every site change: its
+second score caught about one in five of my general problems in a session
+(`runs/baseline-2/report.md`). It becomes a first pass if a later score
+catches about half or more with noise under 30%.
 
 ## Fixed constraints
 
