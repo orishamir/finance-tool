@@ -21,9 +21,9 @@
       "value": 5,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb%402026-06-17",
         "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3(1): \"בוצעו 0 עד 2 פעולות בחודש – עד חמישה שקלים חדשים\"",
-        "publisher": "Open Law (copy of Reshumot)",
+        "publisher": "Reshumot (Ministry of Justice), official gazette",
         "strength": "primary"
       },
       "checked": "2026-10-26",
@@ -41,9 +41,9 @@
       "value": 10,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb%402026-06-17",
         "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3",
-        "publisher": "Open Law (copy of Reshumot)",
+        "publisher": "Reshumot (Ministry of Justice), official gazette",
         "strength": "primary"
       },
       "checked": "2026-10-26",
@@ -61,9 +61,9 @@
       "value": 1,
       "unit": "nis",
       "source": {
-        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb%402026-06-17",
         "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3",
-        "publisher": "Open Law (copy of Reshumot)",
+        "publisher": "Reshumot (Ministry of Justice), official gazette",
         "strength": "primary"
       },
       "checked": "2026-10-26",
@@ -81,9 +81,9 @@
       "value": 7,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb%402026-06-17",
         "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.4",
-        "publisher": "Open Law (copy of Reshumot)",
+        "publisher": "Reshumot (Ministry of Justice), official gazette",
         "strength": "primary"
       },
       "checked": "2026-10-26",
@@ -103,30 +103,28 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb%402026-06-17",
       "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, וכללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
       "title_he": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, וכללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "publisher": "Reshumot (Ministry of Justice), official gazette",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.2246",
       "locator_he": "עמוד 2246",
-      "page": 2246,
       "quote": "בוצעו 0 עד 2 פעולות בחודש – עד חמישה שקלים חדשים",
       "checked": "2026-10-26"
     },
     {
-      "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb%402026-06-17",
       "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, וכללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
       "title_he": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, וכללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "publisher": "Reshumot (Ministry of Justice), official gazette",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.2247",
       "locator_he": "עמוד 2247",
-      "page": 2247,
       "quote": "ו״אדם עם מוגבלות",
       "checked": "2026-10-26"
     }

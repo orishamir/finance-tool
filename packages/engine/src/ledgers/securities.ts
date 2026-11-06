@@ -338,14 +338,19 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   // actions, lower for 0 to 2 actions than the minimum a bank's row counts. How the amended rules count an action is not in the rule base,
   // so the run keeps the price list's minimum for the whole plan and flags the first month, from the cap's start on, whose stretch charges a
   // minimum above the lower cap (an exempt stretch charges nothing): the account's cost may be too high from then on (method F-102).
+  // The cap is looked at without citing it, and cited only where it flags: a row it changes nothing on does not list it among its rules
+  // (lens review M1, 2026-11-07). A record without the figure is cited at once, so the run fails as any missing rule does.
   if (tariff.currentAccount !== undefined) {
-    const lowCap = book.amount("BANK-35", "account_fee_up_to_2_actions");
-    const from = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { effective_from?: string | null } | undefined;
-    const capMonth = from?.effective_from ? monthOfDate(ctx.runDate, from.effective_from) : 1;
-    for (let m = Math.max(1, capMonth); m <= T; m++) {
-      if ((tariffAt(m).currentAccount ?? 0) > lowCap) {
-        tally.flag("BANK-35", m);
-        break;
+    const cap = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { value?: unknown; effective_from?: string | null } | undefined;
+    if (typeof cap?.value !== "number") book.amount("BANK-35", "account_fee_up_to_2_actions");
+    else {
+      const capMonth = cap.effective_from ? monthOfDate(ctx.runDate, cap.effective_from) : 1;
+      for (let m = Math.max(1, capMonth); m <= T; m++) {
+        if ((tariffAt(m).currentAccount ?? 0) > cap.value) {
+          book.amount("BANK-35", "account_fee_up_to_2_actions");
+          tally.flag("BANK-35", m);
+          break;
+        }
       }
     }
   }

@@ -89,6 +89,15 @@ describe("F-102 with BANK-35: the payment-account cap from 1.7.2027 is flagged, 
     const short = { ...israeli({ snapshot: leumi, level: "list", currentAccount: true }), goal: { amountNow: 10_000, monthly: 500, months: 6 } };
     expect(compared(short).run.flags.map((f) => f.code)).not.toContain("BANK-35");
   });
+  it("lists BANK-35 among the run's rules only where it flags (lens review M1): a minimum under the cap, or none, cites nothing", () => {
+    const yahavLike = { ...leumi, current_account: { monthly_minimum: vo(4, "nis_per_month") } };
+    const zero = { ...leumi, current_account: { monthly_minimum: vo(0, "nis_per_month") } };
+    const ids = (input: WorkbenchInput) => compared(input).run.rules.map((r) => r.id);
+    expect(ids(israeli({ snapshot: leumi, level: "list", currentAccount: true }))).toContain("BANK-35");
+    expect(ids(israeli({ snapshot: yahavLike, level: "list", currentAccount: true }))).not.toContain("BANK-35");
+    expect(ids(israeli({ snapshot: zero, level: "list", currentAccount: true }))).not.toContain("BANK-35");
+    expect(ids(israeli({ snapshot: leumi, level: "list" }))).not.toContain("BANK-35");
+  });
 });
 
 describe("F-103 a charge for each corporate event abroad (D67)", () => {
