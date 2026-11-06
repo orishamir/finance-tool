@@ -288,7 +288,7 @@ catches about half or more with noise under 30%.
 - `docs/architecture.md` — stack and design (React Router, pre-rendered, GitHub Pages)
 - `docs/design-system.md` — tokens, conventions and components
 - `docs/flows.md` — user flows for release 1, the screens they need and a design brief per screen
-- `docs/copy.md`, `docs/glossary.md` — all Hebrew UI text with its style guide (section 10), and a sourced one-line explanation for every financial term
+- `docs/copy.md`, `docs/glossary.md` — the Hebrew voice, the word choices with their reasons and the style guide (section 10; the strings themselves are in `site/app/copy.ts`), and a sourced one-line explanation for every financial term
 - `docs/design-spec.md` — developer handoff for the release 1 screens
 
 ## Design system
