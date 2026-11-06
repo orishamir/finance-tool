@@ -168,6 +168,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase)) report(file, message);
     }
   }
+  checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
@@ -513,6 +514,37 @@ function isPdfUrl(url: string): boolean {
 }
 
 /** Every record of data/rules/ by id (those that parse). */
+/**
+ * A product value left unknown (`value: null`) whose rules were checked again after it was: the research may have
+ * answered it since (2026-11-07: child savings' switch tax stayed "unknown" two weeks after TXK-23 settled it).
+ * A warning, listed by file and field, so each is re-read against today's rule base.
+ */
+export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): string[] {
+  const out: string[] = [];
+  const latest = (r: RuleLike) => [r.checked, ...(r.sources ?? []).map((s) => (s as { checked?: string }).checked ?? "")].reduce((a, b) => (b > a ? b : a), "");
+  const walk = (node: unknown, path: string) => {
+    if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${path}[${i}]`));
+    if (!node || typeof node !== "object") return;
+    const v = node as { value?: unknown; checked?: string; rule_ids?: string[] };
+    if ("value" in v && v.value === null && typeof v.checked === "string" && Array.isArray(v.rule_ids)) {
+      const newer = v.rule_ids.filter((id) => { const r = rules.get(id); return r !== undefined && latest(r) > v.checked!; });
+      if (newer.length) out.push(`${path.slice(1)} (${newer.join(", ")})`);
+    }
+    for (const [k, child] of Object.entries(node)) walk(child, `${path}.${k}`);
+  };
+  walk(record, "");
+  return out;
+}
+
+function checkStaleUnknowns(files: string[], dataDir: string, rules: Map<string, RuleLike>, warn: (category: string, id: string) => void): void {
+  for (const file of files) {
+    const rel = relative(dataDir, file);
+    if (!rel.startsWith("instruments") || !file.endsWith(".json")) continue;
+    const name = rel.split(/[\\/]/).pop()!.replace(/\.json$/, "");
+    for (const at of staleUnknowns(parseJson(readFileSync(file, "utf8")).value, rules)) warn("value left unknown, its rules checked since", `${name}:${at}`);
+  }
+}
+
 function readRuleRecords(files: string[], dataDir: string): Map<string, RuleLike> {
   const out = new Map<string, RuleLike>();
   for (const file of files) {
