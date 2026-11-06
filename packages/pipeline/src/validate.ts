@@ -126,6 +126,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "funds" && result.success) {
       for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
       for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
+      for (const message of checkFundNames(parsed.value as Pick<FundRecord, "names">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
@@ -201,6 +202,22 @@ export function checkFundDistribution(record: Pick<FundRecord, "distribution_pol
   const out: string[] = [];
   if (record.distribution_policy !== "distributing") out.push("distribution: a yield on a fund that does not distribute");
   if (d.yield.unit !== "pct_per_year" || typeof d.yield.value !== "number" || d.yield.value <= 0) out.push("distribution.yield: a number above zero in pct_per_year, read from the fund's document");
+  return out;
+}
+
+/** A name's brackets close in order, and no Hebrew letter is glued to the outside of one: names read off a report's PDF came out as
+ * "MTF סל (S&P 500 (4D" and "מור סל (4D)י S&P 500", and the page showed them so (2026-11-05). */
+export function checkFundNames(record: Pick<FundRecord, "names">): string[] {
+  const out: string[] = [];
+  for (const name of [...record.names.he, ...record.names.en]) {
+    let depth = 0;
+    for (const ch of name) {
+      if (ch === "(") depth++;
+      else if (ch === ")" && --depth < 0) break;
+    }
+    if (depth !== 0) out.push(`names: "${name}" has a bracket that does not close in order; copy the name from the fund's report`);
+    if (/[\u05d0-\u05ea]\(|\)[\u05d0-\u05ea]/.test(name)) out.push(`names: "${name}" has a Hebrew letter glued to the outside of a bracket; copy the name from the fund's report`);
+  }
   return out;
 }
 

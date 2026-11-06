@@ -8,7 +8,7 @@ import type { Route } from "./+types/invest";
 import { brands, invest as c, site } from "../copy";
 import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Pick } from "../components/invest/pair";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
 import { IndexHeader } from "../components/invest/sections";
@@ -16,7 +16,7 @@ import { Foot } from "../components/invest/foot";
 import { DollarSection } from "../components/invest/dollar";
 import { StairsSection } from "../components/invest/stairs";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
-import { Callout } from "../components/kit";
+import { Callout, useSwapGlide } from "../components/kit";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
@@ -228,7 +228,23 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const shownView = picked?.view ?? view;
   const shownBundle = picked?.bundle ?? bundle;
   const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
-  const onPick = (p: Pick) => {
+  // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick (2026-11-05)
+  const [moved, setMoved] = useState<Moved | null>(null);
+  const onPick = (p: Pick, m?: Moved) => {
+    // the way back puts back the address as it was before the tap: no pick (the page's own pair, never made the person's), or the pick
+    // with its group (#190: it wrote the pair back as a pick, and a group's held account in place of its house)
+    const before = search;
+    setMoved(
+      m
+        ? {
+            ...m,
+            back: () => {
+              setMoved(null);
+              navigate(`${pathname}${before}`, { replace: true, preventScrollReset: true });
+            },
+          }
+        : null,
+    );
     // a pick on the group's account (another fund, from the fund list) stays on that group of that house
     const next: Pick = picked && own?.group && p.house === picked.id ? { house: own.house, fund: p.fund, group: own.group } : p;
     const q = new URLSearchParams(search);
@@ -238,11 +254,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     else q.delete("group");
     navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
   };
+  const movedNow = moved && shown && moved.at.house === (own?.house ?? shown.house) && moved.at.fund === shown.fund ? moved : null;
   // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
+  // another index replaces what lies below the pills, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
+  const swap = useSwapGlide<HTMLDivElement>(index?.id ?? customId ?? "");
+  const go = (p: string) => swap.begin(() => navigate(p));
   const chips = (
     <IndexChips
       known={known}
@@ -251,11 +271,11 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
-        if (index?.id === id) navigate(INDICES_PATH);
+        if (index?.id === id) go(INDICES_PATH);
       }}
       onRename={invest.rename}
       onSave={(x) => invest.add(x)}
-      onGo={(p) => navigate(p)}
+      onGo={go}
     />
   );
 
@@ -267,6 +287,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       today={data.today}
       example={Object.keys(released.state.entered).length === 0}
       dollar={!index?.israeli}
+      inflation={fi.values.inflation}
     />
   );
 
@@ -279,6 +300,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           <Head />
           {chips}
         </div>
+        <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
         {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
           <p className="text-muted-foreground">{c.chips.none}</p>
@@ -290,13 +312,13 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {planBlock}
             {pick && shown && shownView ? (
               <>
-                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} onPick={onPick} />
+                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} chosen={picks} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} pick={shown} onPick={onPick} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
+                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} monthly={plan.monthly} pick={shown} onPick={onPick} moved={movedNow} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
-                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
+                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} filter={labelFilter} onFilter={setLabelFilter} />
                 </div>
               </>
             ) : (
@@ -304,7 +326,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
               <>
                 <NoFundCall view={view} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} chosen={genericHouse} onPick={setGenericHouse} />
+                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
@@ -319,11 +341,12 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
             {shown && shownView && hasKinds(view) && wb.dollarRange && <DollarSection view={shownView} bundle={shownBundle} plan={plan} pick={shown} />}
             {/* the stairs: which single change leaves more, one step at a time; appended last (founder, 2026-11-01) */}
-            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} />}
+            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} example={!picks} />}
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>
         )}
+        </div>
       </div>
       <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">

@@ -5,7 +5,7 @@
 // left between two ways on one plan is the gap in their costs). No I/O, no React.
 import { isGroupProvider } from "./group-pick";
 import type { FeesSnapshot } from "@finance-tool/schema";
-import { doubtOf, type InvestView, type OptionId } from "./invest";
+import { doubtOf, leftEmpty, type InvestView, type OptionId } from "./invest";
 
 export type Lane = "account" | "kind" | "fund";
 export const LANES: readonly Lane[] = ["account", "kind", "fund"];
@@ -58,7 +58,9 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
       const w = byFund.get(f);
       const at = w?.byHouse[a];
       if (at && "availability" in at && at.availability) return "u";
-      return w && doubtOf(snap.get(a), optionOf.get(f)!) ? "d" : "n";
+      // a conversion the person left empty is a price not known, not a doubt of the documents
+      const s = snap.get(a), o = optionOf.get(f)!;
+      return w && doubtOf(s, o) && !leftEmpty(s, o) ? "d" : "n";
     },
   };
 }
@@ -86,25 +88,63 @@ export interface Row {
 }
 
 /** Every single change from one holding: another account, another kind of fund, another fund of the same kind. */
+const rowOf = (g: Grid, cur: number | null, lane: Lane, to: Pos, key: string, kind: string | null): Row => {
+  const v = val(g, to);
+  return { lane, to, key: `${lane}|${key}`, kind, v, d: v == null || cur == null ? null : Math.round(v) - Math.round(cur), open: openAt(g, to), hedged: fundOf(g, to.f).hedged, why: v == null ? g.why(to.a, to.f) : null };
+};
+/** The kind lane's row for kind `k` at account `a`: the kind's fund that leaves the most there; a currency-hedged fund is another holding, so it does not stand for the kind. */
+const kindRow = (g: Grid, cur: number | null, a: string, k: string): Row | null => {
+  const cand = fundsOfKind(g, k).filter((x) => !x.hedged);
+  if (!cand.length) return null;
+  const priced = cand.filter((x) => val(g, { a, f: x.id }) != null).sort((x, y) => val(g, { a, f: y.id })! - val(g, { a, f: x.id })!);
+  return rowOf(g, cur, "kind", { a, f: (priced[0] ?? cand[0]!).id }, k, k);
+};
+
 export function rowsAt(g: Grid, pos: Pos): Row[] {
   const cur = val(g, pos);
-  const row = (lane: Lane, to: Pos, key: string, kind: string | null): Row => {
-    const v = val(g, to);
-    return { lane, to, key: `${lane}|${key}`, kind, v, d: v == null || cur == null ? null : Math.round(v) - Math.round(cur), open: openAt(g, to), hedged: fundOf(g, to.f).hedged, why: v == null ? g.why(to.a, to.f) : null };
-  };
   const out: Row[] = [];
-  for (const a of g.accounts) if (a !== pos.a) out.push(row("account", { a, f: pos.f }, a, null));
+  for (const a of g.accounts) if (a !== pos.a) out.push(rowOf(g, cur, "account", { a, f: pos.f }, a, null));
   const here = fundOf(g, pos.f).kind;
   for (const k of g.kinds) {
     if (k === here) continue;
-    // the kind's fund that leaves the most at this account; a currency-hedged fund is another holding, so it does not stand for the kind
-    const cand = fundsOfKind(g, k).filter((x) => !x.hedged);
-    if (!cand.length) continue;
-    const priced = cand.filter((x) => val(g, { a: pos.a, f: x.id }) != null).sort((x, y) => val(g, { a: pos.a, f: y.id })! - val(g, { a: pos.a, f: x.id })!);
-    out.push(row("kind", { a: pos.a, f: (priced[0] ?? cand[0]!).id }, k, k));
+    const r = kindRow(g, cur, pos.a, k);
+    if (r) out.push(r);
   }
-  for (const x of fundsOfKind(g, here)) if (x.id !== pos.f) out.push(row("fund", { a: pos.a, f: x.id }, x.id, null));
+  for (const x of fundsOfKind(g, here)) if (x.id !== pos.f) out.push(rowOf(g, cur, "fund", { a: pos.a, f: x.id }, x.id, null));
   return out;
+}
+
+/**
+ * Every list a lane can show on this grid, each one row longer than any start can show (the start's own row is among them), told apart
+ * by what sets a row's height (priced or why not, open, hedged, the kind's fund) and kept once: what each lane's held height is measured
+ * from, so a pick or a step moves nothing below a lane (#190: on a phone the lanes stand one under another, and a fund bought abroad
+ * after one bought here grew the account lane by 357 px). The figures are any priced start's; only their presence counts.
+ */
+export function laneCases(g: Grid): Record<Lane, Row[][]> {
+  const seen: Record<Lane, Map<string, Row[]>> = { account: new Map(), kind: new Map(), fund: new Map() };
+  const add = (lane: Lane, rows: Row[]) => {
+    if (!rows.length) return;
+    const sig = rows.map((r) => `${r.key}:${r.d == null ? r.why : "p"}:${r.open ? 1 : 0}:${r.hedged ? 1 : 0}:${r.lane === "kind" ? r.to.f : ""}`).join(",");
+    if (!seen[lane].has(sig)) seen[lane].set(sig, rows);
+  };
+  const anyAt = (pick: (a: string) => number | null) => {
+    for (const a of g.accounts) {
+      const v = pick(a);
+      if (v != null) return v;
+    }
+    return null;
+  };
+  for (const f of g.funds) {
+    const cur = anyAt((a) => val(g, { a, f: f.id }));
+    if (cur != null) add("account", g.accounts.map((a) => rowOf(g, cur, "account", { a, f: f.id }, a, null)));
+  }
+  for (const a of g.accounts) {
+    const cur = g.funds.map((f) => val(g, { a, f: f.id })).find((v) => v != null) ?? null;
+    if (cur == null) continue;
+    add("kind", g.kinds.map((k) => kindRow(g, cur, a, k)).filter((r): r is Row => r != null));
+    for (const k of g.kinds) add("fund", fundsOfKind(g, k).map((x) => rowOf(g, cur, "fund", { a, f: x.id }, x.id, null)));
+  }
+  return { account: [...seen.account.values()], kind: [...seen.kind.values()], fund: [...seen.fund.values()] };
 }
 
 /** The larger gain first; a row with no figure last. */

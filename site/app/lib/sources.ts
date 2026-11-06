@@ -4,7 +4,7 @@
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy, sourceBlock } from "../copy";
 import { fmt } from "./format";
-import { hostOf, isHebrewTitle } from "./source-label";
+import { hostOf, isHebrewTitle, hebrewCitation } from "./source-label";
 import { ruleTitle } from "./rule-title";
 
 export type SourceStrength = "primary" | "primary-mirror" | "institution" | "secondary";
@@ -151,7 +151,7 @@ export function wikisourcePageTitle(url: string): string | null {
 /** The title as shown, in this order: a Hebrew title as it is; the Wikisource page's own Hebrew name; the document kind's word
  * ("מסמך של החברה", "עמוד של הרשות"); the link's host. The English working title is never shown (QA 2026-10-24, F1 and F4). */
 export function shownTitle(title: string, url: string, kind?: string): { text: string; host: boolean } {
-  if (isHebrewTitle(title)) return { text: title, host: false };
+  if (isHebrewTitle(title)) return { text: hebrewCitation(title), host: false };
   const page = wikisourcePageTitle(url);
   if (page) return { text: page, host: false };
   const word = kind ? (documentsCopy.kinds as Record<string, string>)[kind] : undefined;

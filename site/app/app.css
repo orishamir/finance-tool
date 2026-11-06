@@ -587,7 +587,8 @@
     outline-offset: 1px;
   }
   .field-box-compact {
-    width: 128px;
+    /* holds "50,000,000" and its unit: a plan typed past the slider's end showed "50,000,00(" (#190) */
+    width: 152px;
     height: var(--target);
     padding: 0 10px;
   }

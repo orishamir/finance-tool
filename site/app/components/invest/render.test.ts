@@ -14,8 +14,10 @@ import { Fees } from "./funds";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
 import { LabelSheetHost } from "../kit";
 import { IndexHeader } from "./sections";
-import { AccountColumn, allFunds, bestFor, FundColumn, GapCell, PairResult, pickOfHeadline } from "./pair";
+import { AccountColumn, allFunds, bestFor, crowned, FundColumn, GapCell, PairResult, pickOfHeadline, tieCount } from "./pair";
+import { tieShareOf } from "../../lib/invest";
 import { Foot } from "./foot";
+import { Terms } from "./custom-entries";
 import { DollarSection } from "./dollar";
 import { hasKinds, kindOf } from "../../lib/invest";
 import { PlanBlock } from "./chips";
@@ -29,6 +31,8 @@ const plan: WorkbenchInputs = {
   fromGoal: true, returnFromParameter: false,
 };
 const data = { rules: {}, terms: {}, dimensions: {}, today: t };
+/** What the reader sees: the page's text without the unseen longest cases that only hold a block's height (LongestCase). */
+const shown = (out: string) => out.replace(/<div aria-hidden="true" class="invisible">[\s\S]*?<\/div>/g, "").replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, el) })));
 
 describe("the pair set beside the person's (2026-10-28)", () => {
@@ -55,8 +59,8 @@ describe("the index page's sections render", () => {
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
       createElement(IndexHeader, { view }),
-      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, onPick: () => undefined }),
-      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, onPick: () => undefined }),
+      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined }),
+      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
       createElement(Foot, { view }),
@@ -79,9 +83,17 @@ describe("the index page's sections render", () => {
   it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: { ...plan, returnFromParameter: true } });
     const pick = pickOfHeadline(ta)!;
-    const out = html(createElement(PairResult, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, onPick: () => undefined }));
+    const out = html(createElement(PairResult, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, chosen: true, onPick: () => undefined }));
     expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
     expect(out).not.toContain("עם נטרול");
+  });
+  it("before any pick, the page's own pair is never called the person's, and each tile names its account and fund (2026-11-05)", () => {
+    const pick = pickOfHeadline(view)!;
+    const out = shown(html(createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined })));
+    expect(out).not.toContain("הבחירה שלכם");
+    const fund = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund)!;
+    // an index's name keeps its number on the line ("S&P\u00a0500")
+    expect(out.replace(/\u00a0/g, " ")).toContain(fund.name);
   });
   it("neither list leaves a row out: every account and every fund is listed, priced or with its reason", () => {
     const pick = pickOfHeadline(view)!;
@@ -248,5 +260,104 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
       expect(html(createElement(DollarSection, { view: v, bundle, plan, pick: pickOfHeadline(v)! }))).toContain("השורה התחתונה");
     }
     expect(allFunds(sp).some((f) => kindOf(f.rec) === "hedged")).toBe(true);
+  });
+});
+
+describe("the tie set of F-80 in the tiles (#190)", () => {
+  // the review's plan: 10,000 now, 500 a month, 10 years, 7%; on the S&P 500 three pairs are within the threshold of the top
+  const base: WorkbenchInputs = {
+    ...plan, amountNow: 10000, monthly: 500, years: 10,
+    values: { ...plan.values, amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t) },
+  };
+  const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: base });
+  const theta = tieShareOf(bundle);
+  const head = pickOfHeadline(sp)!;
+  it("counts every pair within the threshold of the top, and crowns none", () => {
+    expect(tieCount(sp, head, theta)).toBe(3);
+    expect(crowned(sp, head, theta)).toBe(false);
+  });
+  it("the tied pair in neither tile is named under them, with its number where another fund has its name (#190, fourth pass)", () => {
+    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }))).replace(/\u00a0/g, " ");
+    const line = out.slice(out.indexOf(invest.pair.tieWhy(3)));
+    expect(line).toContain(`${invest.pair.tieThird} פסגות ${invest.pair.tieWith} iShares Core S&P 500 UCITS ETF USD (Accumulating)`);
+    expect(line).toContain("1159250");
+  });
+  it("before any pick, the tile says how many pairs share the top, and no pair is called first or next", () => {
+    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined })));
+    expect(out).toContain(invest.pair.tieTop(3));
+    expect(out).toContain(invest.pair.tieOther);
+    expect(out).toContain(invest.pair.tieWhy(3));
+    expect(out).not.toContain(invest.pair.next);
+    expect(out).not.toContain("★");
+  });
+  it("with the person's own pick far from the best pair, the best pair's tile is not crowned either (the account list's test)", () => {
+    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: { house: "leumi", fund: head.fund }, chosen: true, onPick: () => undefined })));
+    expect(out).not.toContain(invest.pair.cheapestStar);
+    expect(out).toContain(invest.pair.tieTop(3));
+  });
+  it("a pick inside the tie set: the other pair is not called the cheap one, and the tie is counted as the title counts", () => {
+    const tiedPick = { house: "psagot", fund: "5139100" };
+    expect(tieCount(sp, head, theta)).toBe(3);
+    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: tiedPick, chosen: true, onPick: () => undefined })));
+    expect(out).toContain(invest.pair.tieTop(3));
+    expect(out).toContain(invest.pair.tieWhy(3));
+    expect(out).not.toContain(invest.pair.tieWhy(2));
+    expect(out).not.toContain(invest.pair.moreIfCheapest);
+    expect(out).toContain(invest.pair.vsYours);
+  });
+  it("the account list stars the one house all the tied pairs are at: its own funds tie with one another, no other house does", () => {
+    // the shown row's own markup: a row's other states, laid out unseen beside it, carry every tag they can
+    const rowOf = (out: string, key: string) => { const a = out.indexOf(`data-pick-key="${key}"`); const rest = out.slice(a + 1); const b = rest.search(/data-pick-key=|data-case-of=/); return shown(b < 0 ? rest : rest.slice(0, b)); };
+    const out = rowOf(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined })), "psagot");
+    expect(head.house).toBe("psagot");
+    expect(out).toContain(invest.pair.cheapestTag);
+    // and not with a fund outside the set, nor when another house is in it (the tiles' R1 case keeps no star there)
+    const far = allFunds(sp).find((f) => f.rec.id !== head.fund && "valueN" in (f.byHouse.psagot ?? {}) && !["5139100", "1159250"].includes(f.rec.id))!;
+    const farOut = rowOf(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: { house: "psagot", fund: far.rec.id }, onPick: () => undefined })), "psagot");
+    expect(farOut).not.toContain(invest.pair.cheapestTag);
+  });
+  it("a cost bar's fund name is never cut: on a phone it has the bar's whole width, and it wraps, held at the index's longest name", () => {
+    const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));
+    expect(out).toContain("[overflow-wrap:anywhere] max-md:row-start-3 max-md:col-span-2");
+    expect(out).not.toContain("truncate text-xs");
+    const longest = allFunds(sp).map((f) => f.name).sort((a, b) => b.length - a.length)[0]!;
+    expect(out.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/\u00a0/g, " ").split(longest).length - 1).toBeGreaterThanOrEqual(2);
+  });
+  it("a pick of another fund moves nothing below the lists: each account row carries the grey states it takes with the other funds; the fold holds the rows of every account's order (pick-list-hold)", () => {
+    const out = html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined }));
+    const abroad = allFunds(sp).find((f) => f.option === "abroad" && f.best && !("valueN" in (f.byHouse.psagot ?? {})))!;
+    expect(abroad).toBeDefined();
+    expect(out).toMatch(/data-case-of="psagot" data-case="grey\|/);
+    const funds = html(createElement(FundColumn, { view: sp, bundle, plan: base, today: t, pick: head, onPick: () => undefined, filter: null, onFilter: () => undefined }));
+    // no row is marked as one the fold never shows: the fold reads every account's order instead (#190, fourth pass: a row so marked stood
+    // in the fold the page opened with, and the first pick after a link moved what lies below by 233 px)
+    expect(funds).toContain('data-pick-key="us-voo"');
+    expect(funds).not.toContain("data-cannot");
+  });
+  it("why no pair is first is a line under both tiles, not inside one: held there, it left a hole in the tile when there was no tie", () => {
+    const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));
+    const tilesEnd = out.indexOf(invest.pair.pickCheapest);
+    const why = out.indexOf(invest.pair.tieWhy(10));
+    expect(why).toBeGreaterThan(tilesEnd);
+  });
+  it("the account list's head holds every fund's name laid out as the shown one, a wrapping tag on each, so a long name moves nothing", () => {
+    const out = html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined }));
+    const headPart = out.slice(out.indexOf(invest.pair.accounts), out.indexOf(invest.pair.accountsHint));
+    const tags = headPart.match(/<span class="inline-flex w-fit items-center[^"]*"/g) ?? [];
+    expect(tags.length).toBe(allFunds(sp).length + 1);
+    expect(tags.filter((x) => x.includes("whitespace-nowrap"))).toEqual([]);
+  });
+  it("each cost bar's figure has a column of one width on a phone, so a plan's long figure never rewraps the lines beside it", () => {
+    const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));
+    expect(out).not.toContain("grid-cols-[minmax(0,1fr)_auto]");
+    expect(out).toContain("grid-cols-[minmax(0,1fr)_7rem]");
+  });
+});
+
+describe("a typed entry's line (#190)", () => {
+  it("with nothing typed, the line says what is not known, with no entered tag before its own negation", () => {
+    const out = shown(html(createElement(Terms, { terms: { shown: [], empty: [invest.customEntries.fields.fx] }, editing: { kind: "fund", id: "x" } })));
+    expect(out).toContain(invest.customEntries.unknownLine(invest.customEntries.fields.fx));
+    expect(out.replace(invest.customEntries.unknownLine(invest.customEntries.fields.fx), "")).not.toContain("הזנתם");
   });
 });

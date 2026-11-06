@@ -1,0 +1,71 @@
+{
+ "base": "main",
+ "width": 1440,
+ "slugs": [
+  "msci-acwi",
+  "msci-world",
+  "nasdaq100",
+  "sp500",
+  "ta125",
+  "ta35",
+  "ta90"
+ ],
+ "minutes": 9.2,
+ "results": {
+  "pick account": {
+   "px": 248,
+   "what": "msci-acwi psagot: /section.flex.flex-col.gap-4#0/div.bg-card.border.border-border#1/div.grid.items-start.gap-x-9#0/div.flex.flex-col.gap-[22px]#0 \"סוג קרן אחר, אותו חשבוןסוג הקרןנשאר בסוף\" top 7243->7243 bottom 7736->7487",
+   "n": 119
+  },
+  "pick fund": {
+   "px": 304,
+   "what": "msci-world 5139696: /section.flex.flex-col.gap-4#0 \"מתחילים מבחירה אחת, ורואים מה משפר אותה \" top 6138->6138 bottom 7737->8041 (landmarks 194->192)",
+   "n": 58
+  },
+  "?fund= then a fund": {
+   "px": 264,
+   "what": "msci-world ?fund=5139696 -> fund 5122569: /section.flex.flex-col.gap-4#0 \"מתחילים מבחירה אחת, ורואים מה משפר אותה \" top 5961->5961 bottom 7864->7600",
+   "n": 58
+  },
+  "?fund= then an account": {
+   "px": 102,
+   "what": "sp500 ?fund=ie00b5bmr087 -> account fibi: /div.grid.gap-5.lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)]#0/div.bg-card.border.border-border#1/div.px-5.py-3.flex#0 \"+ הוספת קרן שלא ברשימהלמה חלק מהקרנות בל\" top 4044->4044 bottom 4393->4292 (landmarks 198->197)",
+   "n": 58
+  },
+  "?house= then a fund": {
+   "px": 260,
+   "what": "msci-acwi ?house=interactive-brokers -> fund 1201003: /section.flex.flex-col.gap-4#0/div.bg-card.border.border-border#1/div.grid.items-start.gap-x-9#0/div.flex.flex-col.gap-[22px]#0 \"סוג קרן אחר, אותו חשבוןסוג הקרןנשאר בסוף\" top 7431->7431 bottom 7629->7890 (landmarks 198->196)",
+   "n": 119
+  },
+  "?house= then an account": {
+   "px": 128,
+   "what": "sp500 ?house=interactive-brokers -> account fibi: /section.flex.flex-col.gap-4#0/div.bg-card.border.border-border#1/div.grid.items-start.gap-x-9#0/div.flex.flex-col.gap-[22px]#0 \"סוג קרן אחר, אותו חשבוןסוג הקרןנשאר בסוף\" top 7752->7752 bottom 8100->8228 (landmarks 198->197)",
+   "n": 119
+  },
+  "reload": {
+   "px": 0,
+   "what": "",
+   "n": 7
+  },
+  "plan slider at its end": {
+   "px": 189,
+   "what": "msci-acwi slider 3 End: /div.grid.gap-5.lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)]#0 \"חשבון ניירות ערךאינטראקטיב ישראלאלטשולר \" top 1178->1178 bottom 3904->4093 (landmarks 196->195)",
+   "n": 112
+  },
+  "amount 0": {
+   "px": 0,
+   "what": "",
+   "n": 7
+  },
+  "amount and deposit 0": {
+   "px": 36,
+   "what": "sp500 deposit back: /div.grid.gap-5.lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)]#0/div.bg-card.border.border-border#0 \"חשבון ניירות ערךאינטראקטיב ישראלאלטשולר \" top 1178->1178 bottom 3900->3936",
+   "n": 14
+  },
+  "typed entries, picks": {
+   "px": 326,
+   "what": "sp500 5127527: /section.flex.flex-col.gap-4#0 \"מתחילים מבחירה אחת, ורואים מה משפר אותה \" top 7249->7249 bottom 8993->9318",
+   "n": 75
+  }
+ }
+}

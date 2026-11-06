@@ -10,6 +10,9 @@
 // The second argument picks the widths: phone (390), pc (1280), wide (1920). `--pick=<text>` first clicks the visible element with that
 // text (a list's row that shows more once picked). `--tables` opens every closed fold first, so the tables behind them are measured too. `--goal` saves a goal on the device first.
 // `--whole` measures the whole page instead of the screen, as the check did before D63 (to find every block that changes, seen or not).
+// `--plans` types whole plans into the slider rows' boxes, past the sliders' ends too, then text that fails the
+// box's check ("abc", "-5") and the start plan again; after each it also lists every figure cut by the box that holds it ("CUT") and
+// every chart label drawn outside its chart. `--switch` then presses every index chip on the page in turn (another index, same page).
 import { createRequire } from "node:module";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
@@ -23,6 +26,43 @@ const pick = flags.find((f) => f.startsWith("--pick="))?.slice(7);
 const openFolds = flags.includes("--tables");
 const seedGoal = flags.includes("--goal");
 const WHOLE = flags.includes("--whole");
+const typePlans = flags.includes("--plans");
+const switchIndex = flags.includes("--switch");
+// the plans a reader can make: the sliders' far ends, a large plan, a plan typed past the ends, then text the boxes refuse
+const PLANS = [
+  ["500000", "10000", "40", "12"],
+  ["1000000", "10000", "30", "7"],
+  ["50000000", "100000", "40", "12"],
+  ["abc", null, null, null],
+  ["-5", null, null, null],
+  ["10000", "500", "10", "7"],
+];
+
+// a figure cut by a box that hides what overflows it, a chart's text outside its chart
+const cuts = () => {
+  const out = [];
+  for (const e of document.querySelectorAll(".num, input")) {
+    if (!e.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true })) continue;
+    if (e.tagName === "INPUT" && e.scrollWidth > e.clientWidth + 1) out.push(`box "${e.value}" (${e.scrollWidth} > ${e.clientWidth} px)`);
+    const r = e.getBoundingClientRect();
+    for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
+      const b = a.getBoundingClientRect();
+      if (r.left < b.left - 1 || r.right > b.right + 1) out.push(`figure "${(e.textContent ?? "").trim()}" (${Math.round(r.left)}..${Math.round(r.right)} in ${Math.round(b.left)}..${Math.round(b.right)})`);
+      break;
+    }
+  }
+  for (const svg of document.querySelectorAll("svg")) {
+    if (!svg.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true })) continue;
+    const w = svg.width.baseVal.value;
+    for (const t of svg.querySelectorAll("text")) {
+      const b = t.getBBox();
+      if (b.width > 0 && (b.x < -1 || b.x + b.width > w + 1)) out.push(`chart text "${t.textContent}" (${Math.round(b.x)}..${Math.round(b.x + b.width)} in 0..${Math.round(w)})`);
+    }
+  }
+  return [...new Set(out)];
+};
 const VIEW = { phone: { width: 390, height: 844, hasTouch: true }, pc: { width: 1280, height: 900 }, wide: { width: 1920, height: 1080 } };
 const TOL = 1; // a pixel of rounding is not a jump
 // a width that must hold: a bar's or a figure's own width is meant to follow its number
@@ -166,6 +206,29 @@ for (const path of paths.split(",")) {
         await onScreen(m);
         await page.keyboard.press(key);
         await after(`${label} ${key} = ${await m.getAttribute("aria-valuenow")}`);
+      }
+    }
+    if (typePlans) {
+      const boxes = page.locator(".field-box-compact input:visible");
+      const n = Math.min(4, await boxes.count());
+      for (const plan of PLANS) {
+        if (n) await onScreen(boxes.nth(0));
+        for (let i = 0; i < n; i++) {
+          if (plan[i] === null) continue;
+          await boxes.nth(i).fill(plan[i]);
+          await boxes.nth(i).blur();
+        }
+        await after(`plan ${plan.filter((x) => x !== null).join(" / ")}`);
+        for (const cut of await page.evaluate(cuts)) console.log(`    CUT ${cut}`);
+      }
+    }
+    if (switchIndex) {
+      const hrefs = await page.locator('a[href*="/indices/"]:visible').evaluateAll((as) => [...new Set(as.map((a) => a.getAttribute("href")))]);
+      for (const href of [...hrefs, hrefs[0]]) {
+        const chip = page.locator(`a[href="${href}"]:visible`).first();
+        await onScreen(chip);
+        await chip.click();
+        await after(`index ${href.replace(/^.*\/indices\//, "")}`);
       }
     }
     for (let i = 0; i < selects; i++) {

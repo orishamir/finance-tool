@@ -463,12 +463,15 @@ describe("the entry (saved, followed, kept)", () => {
     const inputs = Object.values(withCustomEntries(bundle, [student], []).entered!.inputs[student.id]!);
     expect(inputs.some((v) => v.state === "sourced")).toBe(true);
   });
-  it("a house that is no longer on the site leaves the row with what the person typed, an empty fee counting as zero", () => {
+  it("a house that is no longer on the site leaves the row with what the person typed; an empty fee there is not known, so it is not ranked (D56, #190)", () => {
     const gone = { ...top, base: { ...top.base!, houseId: "nobody" } };
     const b = withCustomEntries(bundle, [gone], []);
     expect(b.snapshots.find((s) => s.id === gone.id)!.lines).toEqual([]);
     expect(b.entered!.layered[gone.id]).toBeUndefined();
-    expect(b.entered!.tariffs[gone.id]).toEqual(tariffOfBroker(gone));
+    expect(b.entered!.tariffs[gone.id]).toBeUndefined();
+    expect(b.snapshots.find((s) => s.id === gone.id)!.missing).toBe(true);
+    const whole = { ...gone, tradePct: entered(0.05, "pct_of_trade", t), tradeMin: entered(12, "nis_per_trade", t), custodyPct: entered(0, "pct_per_year", t), custodyMin: entered(0, "nis_per_month", t), fxPct: entered(0.2, "pct_of_trade", t), monthlyFee: entered(0, "nis_per_month", t) };
+    expect(withCustomEntries(bundle, [whole], []).entered!.tariffs[gone.id]).toEqual(tariffOfBroker(whole));
   });
   it("a bad base or years leave the entry out, not the file", () => {
     const bad = [
@@ -527,12 +530,16 @@ describe("an entry saved before this change", () => {
     monthlyFee: null,
     sells: { israeli: true, abroad: true },
   };
-  it("loads unchanged, with no base, and is read as it always was", () => {
+  it("loads unchanged, with no base; a line left empty is a price not known (2026-11-05), so it has no tariff until it is filled", () => {
     const loaded = validCustomBrokers([JSON.parse(JSON.stringify(old))]);
     expect(loaded).toEqual([old]);
     expect("base" in loaded[0]!).toBe(false);
     const b = withCustomEntries(bundle, loaded, []);
-    expect(b.entered!.tariffs[old.id]).toEqual({ buy: { rate: 0.0005, min: 1 }, sell: { rate: 0.0005, min: 1 }, custody: { rate: 0.0002 / 12, everyMonths: 1 }, fx: 0.002, monthlyFee: 0 });
+    expect(b.entered!.tariffs[old.id]).toBeUndefined();
+    expect(b.snapshots.find((s) => s.id === old.id)!.missing).toBe(true);
+    const filled = { ...old, custodyMin: entered(0, "nis_per_month", t, "מינימום לחודש"), monthlyFee: entered(0, "nis_per_month", t, "דמי ניהול חשבון") };
+    const b2 = withCustomEntries(bundle, validCustomBrokers([JSON.parse(JSON.stringify(filled))]), []);
+    expect(b2.entered!.tariffs[old.id]).toEqual({ buy: { rate: 0.0005, min: 1 }, sell: { rate: 0.0005, min: 1 }, custody: { rate: 0.0002 / 12, everyMonths: 1 }, fx: 0.002, monthlyFee: 0 });
     expect(b.entered!.layered).toEqual({});
     expect(b.snapshots.find((s) => s.id === old.id)!.lines).toEqual([]);
   });

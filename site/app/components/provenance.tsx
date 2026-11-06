@@ -222,13 +222,18 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const unseen = useUnseen();
   // a copy that only holds a block's size (LongestCase) is not on the page
   useEffect(() => (!unseen && states ? states.add(value.state) : undefined), [value.state, unseen, states]);
-  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
+  // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (#190: a list's cases counted on every key)
+  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
   const roundState = keepDecimals ? undefined : value.state;
+  // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped (#190)
+  const target = typeof value.value === "number" ? value.value : null;
+  const landing = target === null || shown === target ? null : typeof display === "function" ? display(target) : formatValue(target, value.unit, roundState, param);
+  const frame = shown !== null && landing !== null && !/\d\.\d/.test(landing ?? "") ? Math.round(shown) : shown;
   // a formatter gets the moving value, so a signed figure counts like any other
-  const written = typeof display === "function" ? (shown !== null ? display(shown) : undefined) : display;
-  const text = written ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  const written = typeof display === "function" ? (frame !== null ? display(frame) : undefined) : display;
+  const text = written ?? (frame !== null && typeof value.value === "number" ? formatValue(frame, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
   const strength = strengthOf(value);
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
@@ -359,7 +364,7 @@ export function idKind(id: string): IdKind | null {
  * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
-export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean }) {
+export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own (#190). */ titled?: boolean }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
   const data = useContext(DataCtx);
@@ -370,7 +375,14 @@ export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
   // an open question's chip says a word, not its code (2026-11-02): the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
-  const chip = title ? <span className="text-start">{title}</span> : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
+  const ruleTitle = titled && kind === "rule" ? ruleOf(data, shown)?.title_he : undefined;
+  const chip = title ? (
+    <span className="text-start">{title}</span>
+  ) : ruleTitle ? (
+    <span className="text-start">
+      {ruleTitle} · <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{shown}</bdi>
+    </span>
+  ) : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
   if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}>{chip}</span>;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
@@ -388,7 +400,7 @@ export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string
   const closed = closedOn ?? (known?.status === "closed" ? known.closed_on : undefined);
   const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closed ? { closedOn: closed } : {}) } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", title && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
+    <button type="button" className={cx("rule-chip", (title || ruleTitle) && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
       {chip}
     </button>
   );
@@ -415,12 +427,12 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
  * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
  * "ועוד" and the count of the others. The code stays in the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className }: { id: string; className?: string }) {
+export function RuleRef({ id, className, titled }: { id: string; className?: string; /** A general rule's chip says its Hebrew title before its id (`IdRef`'s `titled`). */ titled?: boolean }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
   const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
-  if (!name) return <IdRef id={id} className={className} />;
+  if (!name) return <IdRef id={id} className={className} titled={titled} />;
   return (
     <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
       <bdi className="whitespace-nowrap">{name}</bdi>
@@ -1031,7 +1043,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           <Row label={copy.sourced.rule}>
             <span className="flex flex-wrap gap-2">
               {value.rule_ids.map((id) => (
-                <RuleRef key={id} id={id} />
+                <RuleRef key={id} id={id} titled />
               ))}
             </span>
           </Row>
@@ -1079,7 +1091,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             <Row label={copy.sourced.rule}>
               <span className="flex flex-wrap gap-2">
                 {value.rule_ids.map((id) => (
-                  <RuleRef key={id} id={id} />
+                  <RuleRef key={id} id={id} titled />
                 ))}
               </span>
             </Row>
@@ -1120,7 +1132,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                 {value.rulesUsed.map((r) => (
                   <div key={r.id} className="flex flex-col gap-0.5 min-w-0">
                     <span className="inline-flex items-center gap-1.5">
-                      <RuleRef id={r.id} />
+                      <RuleRef id={r.id} titled />
                       <StrengthLabel strength={r.strength} />
                     </span>
                     {ruleOf(data, r.id) && <FirstSourceLine rule={ruleOf(data, r.id)!} />}
@@ -1299,7 +1311,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>{ruleCardMore.derivedFrom}</span>
             {derived.map((d) => (
-              <RuleRef key={d} id={d} />
+              <RuleRef key={d} id={d} titled />
             ))}
           </p>
           <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
@@ -1310,7 +1322,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>{ruleCardMore.examples}</span>
           {examples.map((d) => (
-            <RuleRef key={d} id={d} />
+            <RuleRef key={d} id={d} titled />
           ))}
         </p>
       )}

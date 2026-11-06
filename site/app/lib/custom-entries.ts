@@ -17,7 +17,8 @@ const c = copy.customEntries;
 // ---------------------------------------------------------------- what the state holds
 
 /**
- * Null: left empty, which counts as zero (the row says so). In an account built on a house (`base`, F-101) it means "as the base": the house's
+ * Null: left empty, a price not known (D56, silence is not zero): an account typed from scratch with a field left empty is listed without a
+ * price (`unknownLines`). In an account built on a house (`base`, F-101) it means "as the base": the house's
  * price list, with the group's prices over it where the account started from a group; only what the person typed is theirs.
  */
 export interface CustomBroker {
@@ -46,7 +47,7 @@ export interface CustomBroker {
   untilYears?: number | null;
 }
 
-/** Null: left empty, which counts as zero. A foreign fund has one yearly charge, held in `fixed`. */
+/** Null: left empty, a fee not known, so the fund is listed without a price (`customFundGap`). A foreign fund has one yearly charge, held in `fixed`. */
 export interface CustomFund {
   id: string;
   name: string;
@@ -332,6 +333,36 @@ export function brokerTerms(b: CustomBroker): { shown: EntryTerm[]; empty: strin
   return { shown, empty };
 }
 
+/**
+ * The fields of an account typed from scratch that the person left empty (2026-11-05, the founder's rule that silence is not zero, D56):
+ * each is a price not known, a minimum as much as a percent (#190: a blank minimum was charged as none, and the account took first place).
+ * `fx`: the conversion, asked of an account that sells abroad. An account built on a house has none: what is left empty there is the
+ * house's price list.
+ */
+function emptyFields(b: CustomBroker, onHouse = !!b.base): { word: string; fx?: true }[] {
+  if (onHouse) return [];
+  const w = c.fields;
+  return [
+    ...(b.tradePct === null ? [{ word: w.trade }] : []),
+    ...(b.tradeMin === null ? [{ word: w.minOf(w.tradeMin, w.trade) }] : []),
+    ...(b.custodyPct === null ? [{ word: w.custody }] : []),
+    ...(b.custodyMin === null ? [{ word: w.minOf(w.custodyMin, w.custody) }] : []),
+    ...(b.sells.abroad && b.fxPct === null ? [{ word: w.fx, fx: true as const }] : []),
+    ...(b.monthlyFee === null ? [{ word: w.monthly }] : []),
+  ];
+}
+/** The words of every field left empty, for the row (the conversion too). */
+export const unknownLines = (b: CustomBroker): string[] => emptyFields(b).map((x) => x.word);
+/** A field left empty that every fund pays: the account has no price anywhere. */
+/** `onHouse` false: an account built on a house that is no longer on the site keeps only what was typed, and an empty field is not known. */
+export const unpricedEverywhere = (b: CustomBroker, onHouse = !!b.base): boolean => emptyFields(b, onHouse).some((x) => !x.fx);
+/**
+ * The conversion left empty: only a fund bought abroad converts (#190: on an Israeli index, where nothing converts, the account was not
+ * ranked), so only that kind is without a price at the account.
+ */
+export const fxUnknown = (b: CustomBroker, onHouse = !!b.base): boolean => emptyFields(b, onHouse).some((x) => x.fx);
+
+/** A fund's terms: the fees typed, and the words of those left empty, which are not known (D56). */
 export function fundTerms(f: CustomFund): { shown: EntryTerm[]; empty: string[] } {
   const w = c.fields;
   const foreign = isForeignKind(f.kind);
@@ -364,24 +395,31 @@ export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSna
     const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
     return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut] };
   }
+  // a field left empty is not known: the account has no price, and its row says so (2026-11-05); the conversion alone leaves it priced
+  // for every fund that does not convert, and without a price for a fund bought abroad, with the reason on that row
+  const unknown = unpricedEverywhere(b, false);
+  const fxOpen = fxUnknown(b, false) ? [{ applies_to: [...ABROAD_CLASSES], available: "unknown" as const, reason_he: c.fxUnknown, source: { url: "local", title: c.tariffTitle, checked: b.added } }] : [];
   return {
     id: b.id,
     provider: { name_he: b.name, class: "broker", regulator: "ISA", tase_member: false, protection_rule_ids: [] },
     tariff: { url: "local", title: c.tariffTitle, published: null, format: "html" },
     snapshot: b.added,
-    missing: false,
-    missing_reason: null,
+    missing: unknown,
+    missing_reason: unknown ? "entered-incomplete" : null,
+    ...(unknown ? { missing_reason_he: c.incomplete } : {}),
     lines: [],
     averages: [],
     minimums: { account_opening: null },
     notice_rule_ids: [],
-    availability: shut,
+    availability: [...shut, ...fxOpen],
   };
 }
 
 /**
- * The tariff the engine runs (F-63, level "entered"; docs/method.md, D44). An empty fee is zero. Custody is typed as a percent a year with a
- * minimum a month, so it is charged monthly at a twelfth of the year's percent, with the minimum as typed (F-14).
+ * The tariff the engine runs (F-63, level "entered"; docs/method.md, D44). An account with a field left empty has none
+ * (`unpricedEverywhere`), and a conversion left empty is never read: the kind of fund that converts has no price there (`fxUnknown`), so
+ * the zeros below stand for nothing a run uses. Custody is typed as a percent a year with a minimum a month, so it is charged monthly at
+ * a twelfth of the year's percent, with the minimum as typed (F-14).
  */
 export function tariffOfBroker(b: CustomBroker): EnteredTariff {
   const trade = { rate: (num(b.tradePct) ?? 0) / 100, ...(num(b.tradeMin) ? { min: num(b.tradeMin)! } : {}) };
@@ -401,12 +439,11 @@ const UNKNOWN_DOMICILE = "unknown";
 /**
  * A fund as the record of its kind, with what the person said of it and nothing more (2026-11-05: it used to be taken as accumulating): a
  * payout not said is null, and the page lists the fund without a price. A foreign fund is in its index's currency, in dollars where the index
- * is in shekels or is a custom one (as the page's generic fund abroad). An empty fee is zero, as a figure in the entered state.
+ * is in shekels or is a custom one (as the page's generic fund abroad). An empty fee stays empty: a fee not known, so the fund has no price
+ * (`customFundGap`; #190, it was taken as zero and a fund with no fees typed went to the top).
  */
 export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): FundRecord {
   const foreign = isForeignKind(f.kind);
-  const zero = (v: ValueObject | null, about: string) => v ?? entered(0, "pct_per_year", f.added, about);
-  const w = c.fields;
   return {
     id: f.id,
     names: { en: [], he: [f.name], tase: [] },
@@ -420,7 +457,7 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     trading_currency_on_tase: f.kind === "abroad" ? null : "NIS",
     distribution_policy: f.payout,
     tax_status: { il_fund_tax_track: foreign ? null : "exempt", tase_foreign_fund_90pct_test: null },
-    fees: { fixed_management: zero(f.fixed, foreign ? w.yearly : w.fixed), variable_management: foreign ? null : zero(f.variable, w.variable), trustee: foreign ? null : zero(f.trustee, w.trustee), tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
+    fees: { fixed_management: f.fixed, variable_management: foreign ? null : f.variable, trustee: foreign ? null : f.trustee, tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
     dimensions: {},
     prospectus: { url: "local", date: null },
     ...(f.hedged ? { hedged: true } : {}),
@@ -431,8 +468,11 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
 }
 
 /** Why a fund the person typed has no price, from what they said of it; null: nothing they left out stops it. The page and the panel's preview both read it. */
-export type CustomFundGap = "payout-unknown" | "need-yield" | "domicile-unknown" | "no-hedge-entered";
+export type CustomFundGap = "fee-unknown" | "payout-unknown" | "need-yield" | "domicile-unknown" | "no-hedge-entered";
 export function customFundGap(rec: FundRecord): CustomFundGap | null {
+  // a fee left empty is not known (D56): a foreign fund has its one yearly charge, an Israeli one its three fees
+  const fees = rec.domicile === "IL" ? [rec.fees.fixed_management, rec.fees.variable_management, rec.fees.trustee] : [rec.fees.fixed_management];
+  if (fees.some((v) => !v)) return "fee-unknown";
   if (rec.distribution_policy === null) return "payout-unknown";
   if (rec.hedged === true) return "no-hedge-entered";
   if (rec.distribution_policy === "distributing") {
@@ -454,6 +494,9 @@ export interface EnteredInBundle {
   tariffs: Record<string, EnteredTariff>;
   /** By broker id: an account built on a house (F-101) is priced on the house's own list tariff for each fund, so its tariff is built per run. */
   layered: Record<string, NonNullable<ProviderInput["layered"]>>;
+  /** By broker id: the house an account built on a house stands on. It is priced where that house is, on that house's own reading of its
+   *  price list, and nowhere else (#190: an account built on One Zero was priced on funds abroad that One Zero's price list leaves out). */
+  bases?: Record<string, string>;
   /** By broker or fund id: what its run's provenance sheet lists. */
   inputs: Record<string, Record<string, SiteValue>>;
   /** What a fund on a custom index needs of its index: no exposure record exists for one (F-65). */
@@ -477,8 +520,11 @@ export function withCustomEntries(bundle: WorkbenchBundle, brokers: readonly Cus
     snapshots: [...bundle.snapshots, ...brokers.map((b) => snapshotOfBroker(b, houseOf(b)))],
     funds: [...bundle.funds, ...funds.map((f) => recordOfFund(f, currencyOf(f)))],
     entered: {
-      tariffs: Object.fromEntries(brokers.filter((b) => !houseOf(b)).map((b) => [b.id, tariffOfBroker(b)])),
+      // an account with a line left empty has no tariff to run: its snapshot is marked missing, and the engine lists it without a price
+      // an account whose house is gone keeps only what was typed: an empty field there is not known either (D56)
+      tariffs: Object.fromEntries(brokers.filter((b) => !houseOf(b) && !unpricedEverywhere(b, false)).map((b) => [b.id, tariffOfBroker(b)])),
       layered: Object.fromEntries(onHouse.map((b) => [b.id, layeredOf(b)])),
+      bases: Object.fromEntries(onHouse.map((b) => [b.id, b.base!.houseId])),
       inputs: Object.fromEntries([...brokers.map((b) => [b.id, { ...(houseOf(b) ? groupInputs(b) : {}), ...inputsOf(brokerTerms(b), b.name) }] as const), ...funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)]),
       exposures,
       shekelFunds: funds.filter((f) => f.shekelIndex).map((f) => f.id),

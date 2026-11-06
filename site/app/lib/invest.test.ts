@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf } from "./invest";
+import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -273,3 +273,21 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
   });
 });
 
+
+describe("places in a ranked list (F-80, P-01, 2026-11-05)", () => {
+  it("a value within the threshold of the first shares the first place", () => {
+    // 86,449 is 0.05% under 86,492: a tie at 0.5%
+    expect(placesOf([86_492, 86_449, 84_148], 0.005)).toEqual([1, 1, 3]);
+    expect(firstCount(placesOf([86_492, 86_449, 84_148], 0.005))).toBe(2);
+  });
+  it("equal figures share a place, and the next keeps its own", () => {
+    expect(placesOf([86_492, 84_148, 81_471, 81_471, 80_000], 0.005)).toEqual([1, 2, 3, 3, 5]);
+  });
+  it("with nothing put in, every row is zero and every row ties", () => {
+    expect(placesOf([0, 0, 0], 0.005)).toEqual([1, 1, 1]);
+  });
+  it("with no threshold only equal figures share", () => {
+    expect(placesOf([100, 98, 50], 0)).toEqual([1, 2, 3]);
+    expect(placesOf([100, 99.9, 50], 0)).toEqual([1, 1, 3]);
+  });
+});

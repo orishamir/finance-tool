@@ -6,6 +6,8 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { Disclosure, Sentence, Stat, StatRow } from "./index";
+import { isoNumbers } from "./stairs-chart";
+import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
 
 const today = "2026-10-25";
@@ -49,5 +51,48 @@ describe("Sentence and Stat", () => {
     expect(out).toContain("<dl");
     expect(out).toContain("<dt");
     expect(out).toContain("sm:grid-cols-3");
+  });
+});
+
+describe("the stairs chart's text", () => {
+  it("isolates a number among Hebrew words, and leaves a number inside a Latin name to the name", () => {
+    expect(isoNumbers("נשארים 79,176 ₪")).toBe("נשארים ⁦79,176 ₪⁩");
+    expect(isoNumbers("+2,345 ₪ יותר")).toBe("⁦+2,345 ₪⁩ יותר");
+    // isolated alone, the 4 and the 500 stepped out of the name: "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05)
+    expect(isoNumbers("ילין לפידות מחקה (4D) S&P 500")).toBe("ילין לפידות מחקה (4D) S&P 500");
+    expect(isoNumbers("הראל מחקה (4D) NASDAQ 100")).toBe("הראל מחקה (4D) NASDAQ 100");
+  });
+});
+
+describe("figureFit", () => {
+  it("steps a list's figure down a size past nine digits and again past twelve, so its fixed column never cuts it (#190)", () => {
+    expect(figureFit(86_492)).toBe("");
+    expect(figureFit(99_999_999)).toBe("");
+    expect(figureFit(999_999_999)).toBe("max-md:text-sm");
+    expect(figureFit(1_860_753_604)).toBe("text-sm max-md:text-xs");
+    expect(figureFit(-1_000_000_000)).toBe("text-sm max-md:text-xs");
+    expect(figureFit(2_000_000_000_000)).toBe("text-xs");
+  });
+  it("steps a phone tile's figure down past seven digits, nine and eleven", () => {
+    expect(figureFit(9_999_999, "tile")).toBe("");
+    expect(figureFit(45_073_491, "tile")).toBe("max-md:text-xl");
+    expect(figureFit(1_860_753_604, "tile")).toBe("max-md:text-lg");
+    expect(figureFit(100_000_000_000, "tile")).toBe("max-md:text-base");
+  });
+});
+
+describe("PickList holds its height (#190)", () => {
+  const row = (key: string, extra: Partial<PickRow> = {}): PickRow => ({ key, selected: false, onSelect: () => {}, cells: createElement("span", null, key), ...extra });
+  const folded = (out: string) => (out.match(/data-folded=""/g) ?? []).length;
+  it("the phone's fold shows the same number of rows whichever is chosen: a chosen row further down takes the last place", () => {
+    const keys = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    const outs = keys.map((sel) => renderToString(createElement(PickList, { label: "x", columns: "1fr", phoneLimit: 3, more: () => "more", rows: keys.map((k) => row(k, { selected: k === sel })) })));
+    expect(new Set(outs.map(folded))).toEqual(new Set([5]));
+  });
+  it("a row's other states are laid out unseen, out of the flow, never as a row to choose", () => {
+    const out = renderToString(createElement(PickList, { label: "x", columns: "1fr", states: [{ a: "one" }, { a: "two" }], rows: [row("a", { caseKey: "one", cases: [{ key: "two", cells: createElement("span", null, "LONG-STATE") }] })] }));
+    expect(out).toContain('data-case-of="a"');
+    expect(out).toMatch(/aria-hidden="true" data-case-of="a" data-case="two" class="[^"]*absolute[^"]*invisible/);
+    expect((out.match(/role="radio"/g) ?? []).length).toBe(1);
   });
 });
