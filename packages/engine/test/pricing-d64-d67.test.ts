@@ -13,7 +13,8 @@ const vo = (value: number, unit: string) => ({ value, unit, source, checked: "20
 const leumi = { ...read("fees/leumi@2026-11-04.json"), current_account: { monthly_minimum: vo(5.5, "nis_per_month") } };
 // the indices page reads a conversion between two foreign currencies apart (site lib/invest `scoped`); so does this test
 const oneZeroRecord = read("fees/one-zero@2026-11-04.json");
-const oneZero = { ...oneZeroRecord, lines: oneZeroRecord.lines.filter((l: { id: string }) => !l.id.endsWith("fx-to-fx")) };
+// and without its own corporate-event line (D67), so the test sets the line it measures
+const oneZero = { ...oneZeroRecord, lines: oneZeroRecord.lines.filter((l: { id: string; base: string }) => !l.id.endsWith("fx-to-fx") && l.base !== "corporate_event") };
 const eventLine = { id: "one-zero-test-corporate-event", base: "corporate_event", applies_to: ["foreign_securities"], level: "list", rate: vo(50, "usd_per_event"), min: null, max: null, period: null, channel: null, band: null, statement_code: null, names: { tariff: ["הוצאות קסטודיאן בחו\"ל"] } };
 const oneZeroEvents = { ...oneZero, lines: [...oneZero.lines.filter((l: { base: string }) => l.base !== "corporate_event"), eventLine] };
 
@@ -101,6 +102,11 @@ describe("F-103 a charge for each corporate event abroad (D67)", () => {
     expect(paying.linesUsed).toContain("one-zero-test-corporate-event");
     expect(paying.byType.map((t) => t.line)).toContain("custody");
     expect((paying.horizonCost.value as number) - (plain.horizonCost.value as number)).toBeGreaterThan(3_000);
+  });
+
+  it("the record's own line is the one measured: 50 dollars for each event, on funds bought abroad", () => {
+    const own = oneZeroRecord.lines.filter((l: { base: string }) => l.base === "corporate_event");
+    expect(own.map((l: { id: string; rate: { value: number; unit: string }; applies_to: string[] }) => [l.id, l.rate.value, l.rate.unit, l.applies_to])).toEqual([["one-zero-custodian-corporate-event", 50, "usd_per_event", ["foreign_securities"]]]);
   });
 
   it("leaves an accumulating fund at its price, and a fund in Tel Aviv too", () => {

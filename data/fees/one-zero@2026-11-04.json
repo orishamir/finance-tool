@@ -279,6 +279,45 @@
       }
     },
     {
+      "id": "one-zero-custodian-corporate-event",
+      "base": "corporate_event",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 50,
+        "unit": "usd_per_event",
+        "source": {
+          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 11 הוצאות צד ג', הוצאות קסטודיאן בחו\"ל (עמ' 17)",
+          "publisher": "One Zero Digital Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2026-07-26",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Part 11 (PDF page 17, read in the founder's Chrome with pdf.js on 2026-11-04 and checked against the page image): 'הוצאות קסטודיאן בחו\"ל, לרבות בגין אירועי חברה | בהתאם להוצאה הממשית | בעלות מרבית של עד 5,000 דולר ארה\"ב לחודש, ובעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה'. Priced at its ceiling, 50 USD per corporate event (D56), charged on each dividend of a fund bought abroad that pays dividends (D67, issue #179): the price list does not define 'אירוע חברה', and that a dividend is one is the site's reading, decided by the founder. The 5,000 USD a month is a ceiling the price list does not tie to one customer, so it is not priced."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "הוצאות קסטודיאן בחו\"ל, לרבות בגין אירועי חברה"
+        ]
+      }
+    },
+    {
       "id": "one-zero-transfer-out-same-client",
       "base": "transfer_out",
       "applies_to": [
@@ -601,8 +640,8 @@
       "why": "An offer with a condition (a monthly inflow), advertised as 'אינה מוגבלת בזמן' in the securities page FAQ and 'בהתאם לתקנון ההטבה' on lp/tradenew; no promotion terms were found on the site (information/5504 and /one/ answer 404). Not a price for the ordinary customer (D56)."
     },
     {
-      "what": "הוצאות קסטודיאן בחו\"ל: 'עד 5,000 דולר ארה\"ב לחודש' ו'עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה'; העברת ני\"ע זרים 'עד 2 דולר ארה\"ב לכל סימבול'; נתוני בורסות בחו\"ל 'עד 10 דולר ארה\"ב ללקוח לחודש'",
-      "why": "Third-party costs in part 11 (PDF page 17) charged 'בהתאם להוצאה הממשית' on top of the 0% custody abroad. No field holds a per-event or per-month third-party cost; recorded in the foreign custody line's notes. The 5,000 USD monthly ceiling is not stated per client."
+      "what": "הוצאות קסטודיאן בחו\"ל: 'עד 5,000 דולר ארה\"ב לחודש'; העברת ני\"ע זרים 'עד 2 דולר ארה\"ב לכל סימבול'; נתוני בורסות בחו\"ל 'עד 10 דולר ארה\"ב ללקוח לחודש'",
+      "why": "Third-party costs in part 11 (PDF page 17) charged 'בהתאם להוצאה הממשית' on top of the 0% custody abroad. The 5,000 USD monthly ceiling is not stated per client; a transfer and real-time data abroad are not part of the plan the site prices. The same row's 'עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה' is priced (line one-zero-custodian-corporate-event, D67)."
     },
     {
       "what": "הוצאות ברוקר בחו\"ל 'עד 1 דולר ארה\"ב לעסקה'; קורספונדנט 'עד 100 יורו לעסקה'; SEC ומסים בארה\"ב 'עד 30 דולר ארה\"ב בגין כל 1 מיליון דולר' במכירה",
