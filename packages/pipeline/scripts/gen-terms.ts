@@ -2,11 +2,15 @@
 // from research/glossary/terms/*.json and docs/glossary.md section 2. Re-runnable: it deletes and rewrites both
 // folders (but never data/terms/deposits/). Run: npx tsx packages/pipeline/scripts/gen-terms.ts
 //
+// A research row that carries an `id` keeps it, so a record's file name does not change when another row with the same name
+// is added or removed; a new row gets the id below. The row's `source.publisher` and `seen_by` are written as they are.
+//
 // Mapping of the research `where` values:
 //  - `guide:<page>[:tax|:protection|:regulator]` is read as `guide:<page>`. A page name that is a wrapper id stays;
 //    older page names map to wrapper ids (PAGE_WRAPPERS below). `guide:index-sp500`, `guide:index-ta125` and
 //    `guide:government-bonds-and-makam` also give `exposure_ids` (PAGE_EXPOSURES).
-//  - `guide:*` (any suffix) means every page: all wrapper ids from the schema enum.
+//  - `guide:*` (any suffix) means every page: all wrapper ids from the schema enum. `guide:<product id>` (a wrapper or a
+//    security) gives that product's page; `exposure:<id>` gives an exposure page (`exposure_ids`).
 //  - form-106, form-867, tax-return, tax-form -> tax-form; bank, manager-site, nii-site, institution-table,
 //    bank-rate-table -> provider-site; pension-net -> pensia-net; prospectus, tariff, fund-name, and the places already
 //    in the schema enum stay as they are.
@@ -15,28 +19,32 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { dimensionId, termWhere, wrapperId, termRecord, dimensionRecord } from "@finance-tool/schema";
+import { dimensionId, termWhere, wrapperId, productIds, termRecord, dimensionRecord } from "@finance-tool/schema";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const TODAY = "2026-10-23";
 
 interface Research {
+  id?: string;
   kind?: string;
+  seen_by?: string;
   term_he: string;
   variants_he?: string[];
   explain_he?: string | null;
   rule_ids?: string[];
-  source?: { title?: string; url?: string; checked?: string; strength?: string } | null;
+  source?: { title?: string; url?: string; checked?: string; strength?: string; publisher?: string } | null;
   where?: string[];
 }
 type Strength = "primary" | "primary-mirror" | "institution" | "secondary";
 interface Merged {
+  id?: string;
+  seenBy?: string;
   topic: string;
   he: string;
   meaning: string;
   variants: string[];
   ruleIds: string[];
-  source: { url: string; title: string; strength: Strength; checked: string } | null;
+  source: { url: string; title: string; strength: Strength; checked: string; publisher?: string } | null;
   where: string[];
 }
 const rank: Record<string, number> = { primary: 0, "primary-mirror": 1, institution: 2, secondary: 3 };
@@ -51,8 +59,8 @@ for (const f of readdirSync(termsDir).filter((x) => x.endsWith(".json")).sort())
     if (r.kind === "dimension" || !r.explain_he) continue;
     const he = r.term_he.trim();
     const s = r.source;
-    const src = s?.url && s.title && s.checked ? { url: s.url, title: s.title, strength: (s.strength ?? "secondary") as Strength, checked: s.checked } : null;
-    const row: Merged = { topic, he, meaning: r.explain_he.trim(), variants: (r.variants_he ?? []).filter((v) => v && v !== he), ruleIds: r.rule_ids ?? [], source: src, where: r.where ?? [] };
+    const src = s?.url && s.title && s.checked ? { url: s.url, title: s.title, strength: (s.strength ?? "secondary") as Strength, checked: s.checked, ...(s.publisher ? { publisher: s.publisher } : {}) } : null;
+    const row: Merged = { ...(r.id ? { id: r.id } : {}), ...(r.seen_by ? { seenBy: r.seen_by } : {}), topic, he, meaning: r.explain_he.trim(), variants: (r.variants_he ?? []).filter((v) => v && v !== he), ruleIds: r.rule_ids ?? [], source: src, where: r.where ?? [] };
     const key = `${topic}|${he}`;
     const prev = merged.get(key);
     if (!prev) {
@@ -64,6 +72,7 @@ for (const f of readdirSync(termsDir).filter((x) => x.endsWith(".json")).sort())
     keep.variants = [...new Set([...keep.variants, ...other.variants])];
     keep.ruleIds = [...new Set([...keep.ruleIds, ...other.ruleIds])];
     keep.where = [...new Set([...keep.where, ...other.where])];
+    keep.id ??= other.id;
     merged.set(key, keep);
   }
 }
@@ -94,6 +103,10 @@ let hashed = 0;
 for (const [s, group] of bySlug) {
   const distinct = new Set(group.map((g) => g.he));
   for (const g of group) {
+    if (g.id) {
+      idOf.set(g, g.id);
+      continue;
+    }
     let id = s;
     if (distinct.size > 1 || !s) {
       id = [s, hash4(g.topic, g.he)].filter(Boolean).join("-");
@@ -159,7 +172,7 @@ const WHERE_MAP: Record<string, string> = {
   "pension-net": "pensia-net",
 };
 const places = new Set<string>(termWhere.options);
-const wrappers = new Set<string>(wrapperId.options);
+const wrappers = new Set<string>(productIds);
 const droppedWhere = new Map<string, number>();
 const droppedGuide = new Map<string, number>();
 let noPublisher = 0;
@@ -175,7 +188,8 @@ for (const r of rows) {
   const wrapper_ids: string[] = [];
   const exposure_ids: string[] = [];
   for (const w of r.where) {
-    if (w.startsWith("guide:")) {
+    if (w.startsWith("exposure:")) exposure_ids.push(w.slice(9));
+    else if (w.startsWith("guide:")) {
       const page = w.slice(6).replace(/:(tax|protection|regulator)$/, "");
       const ws = page === "*" ? [...wrapperId.options] : wrappers.has(page) ? [page] : (PAGE_WRAPPERS[page] ?? []);
       const es = PAGE_EXPOSURES[page] ?? [];
@@ -191,7 +205,7 @@ for (const r of rows) {
     continue;
   }
   noPublisher++;
-  let publisher = publisherOf(r.source.url);
+  let publisher = r.source.publisher ?? publisherOf(r.source.url);
   if (!publisher) {
     publisher = "see title";
     publisherSeeTitle++;
@@ -208,6 +222,7 @@ for (const r of rows) {
     variants: r.variants,
     rule_ids: [...new Set(r.ruleIds)].sort(),
     source: { url: r.source.url, title: r.source.title, publisher, strength: r.source.strength, checked: r.source.checked },
+    ...(r.seenBy ? { seen_by: r.seenBy } : {}),
   };
   termRecord.parse(rec);
   for (const w of rec.wrapper_ids) count(perWrapper, w);
