@@ -75,7 +75,7 @@
         "GOV-11"
       ],
       "state": "sourced",
-      "notes": "Bonds are issued in face value of NIS 1,000 or multiples (s.3). Issue unit, not the TASE trading unit (GOV open question 7)."
+      "notes": "Bonds are issued in face value of NIS 1,000 or multiples (s.3). Issue unit, not the TASE trading unit, which is NIS 1 face value (GOV-24)."
     },
     "term_min_months": {
       "value": 12,
