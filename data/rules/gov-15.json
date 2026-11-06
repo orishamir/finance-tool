@@ -75,7 +75,7 @@
         "GOV-15"
       ],
       "state": "sourced",
-      "notes": "Issued in face value of NIS 1,000 or multiples (s.3). Issue unit, not the TASE trading unit (GOV open question 7)."
+      "notes": "Issued in face value of NIS 1,000 or multiples (s.3). Issue unit, not the TASE trading unit, which is NIS 1 face value (GOV-24)."
     },
     "term_max_months": {
       "value": 12,
