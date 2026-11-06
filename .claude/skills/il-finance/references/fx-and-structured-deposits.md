@@ -193,7 +193,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 ### FXD-16 Protection for each of these
 - Rule:
-  - **FX deposits, FX-linked deposits and structured deposits at a bank** are bank deposits. Israel has no deposit insurance. The only state backstop is the Governor's discretionary power, with Government approval, to announce a BoI guarantee of deposits at a failing bank, and a private bill would cover only small banks (`regulators-and-protection.md` REG-04 to REG-06; BANK-23).
+  - **FX deposits, FX-linked deposits and structured deposits at a bank** are bank deposits. Israel has no deposit insurance. The only state backstop is the Governor's discretionary power, with Government approval, to announce a BoI guarantee of deposits at a failing bank, and a private bill would cover only small banks (`regulators-and-protection.md` REG-04 to REG-06; BANK-23). In a bank's liquidation a deposit has no priority and is a general debt (REG-33, derived; added 2026-11-06).
   - A structured deposit's "principal guarantee" is the issuing bank's own promise in the base currency (FXD-11, FXD-12), not a third-party guarantee.
   - **Altshuler Shaham Financial Services** deposits are held in the company's account (FXD-13); no segregation, trust or guarantee statement was found.
   - **LAYA** balances are recorded under the company's account with operating and customer accounts kept separate (FXD-14); the statutory safeguarding regime was not read.
