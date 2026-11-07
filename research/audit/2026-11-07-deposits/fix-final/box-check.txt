@@ -1,0 +1,8 @@
+
+== /guide/bank-deposit at 1280 px: 2 sliders, 0 selects; page wider than the screen: false
+
+total boxes that changed on the screen: 0
+
+== /companies/discount at 1280 px: 0 sliders, 0 selects; page wider than the screen: false
+
+total boxes that changed on the screen: 0

@@ -9,7 +9,7 @@
       }
     ],
     "cma_legal_id": "513173393",
-    "fees_id": null,
+    "fees_id": "altshuler-shaham",
     "deposit_bank_id": null,
     "own_hosts": [
       "as-invest.co.il"
@@ -25,7 +25,7 @@
       }
     ],
     "cma_legal_id": "512267592",
-    "fees_id": null,
+    "fees_id": "harel",
     "deposit_bank_id": null,
     "own_hosts": [
       "harel-group.co.il"
@@ -64,7 +64,7 @@
       }
     ],
     "cma_legal_id": "514956465",
-    "fees_id": null,
+    "fees_id": "mor",
     "deposit_bank_id": null,
     "own_hosts": [
       "moreinvest.co.il"
@@ -96,9 +96,11 @@
       }
     ],
     "cma_legal_id": "512237744",
-    "fees_id": null,
+    "fees_id": "migdal",
     "deposit_bank_id": null,
-    "own_hosts": [],
+    "own_hosts": [
+      "migdal.co.il"
+    ],
     "filing_names": [
       "Migdal main prospectus",
       "Migdal prospectus"
@@ -114,9 +116,11 @@
       }
     ],
     "cma_legal_id": "512244146",
-    "fees_id": null,
+    "fees_id": "clal",
     "deposit_bank_id": null,
-    "own_hosts": []
+    "own_hosts": [
+      "clalbit.co.il"
+    ]
   },
   {
     "id": "menora-mivtachim",
@@ -128,9 +132,11 @@
       }
     ],
     "cma_legal_id": "512245812",
-    "fees_id": null,
+    "fees_id": "menora-mivtachim",
     "deposit_bank_id": null,
-    "own_hosts": []
+    "own_hosts": [
+      "menoramivt.co.il"
+    ]
   },
   {
     "id": "infinity",
@@ -142,7 +148,7 @@
       }
     ],
     "cma_legal_id": "513621110",
-    "fees_id": null,
+    "fees_id": "infinity",
     "deposit_bank_id": null,
     "own_hosts": [
       "infinity.co.il"
@@ -158,7 +164,7 @@
       }
     ],
     "cma_legal_id": "511880460",
-    "fees_id": null,
+    "fees_id": "analyst",
     "deposit_bank_id": null,
     "own_hosts": [
       "analyst.co.il"
@@ -202,10 +208,29 @@
       }
     ],
     "cma_legal_id": "513611509",
-    "fees_id": null,
+    "fees_id": "yalin-lapidot",
     "deposit_bank_id": null,
-    "own_hosts": [],
+    "own_hosts": [
+      "yl-invest.co.il"
+    ],
     "note": "Added 2026-10-26 for the Yalin Lapidot brand page (D33): the managing company of its provident and study funds in the CMA data. The rule base names only the fund manager (yalin-funds)."
+  },
+  {
+    "id": "ayalon",
+    "name_he": "איילון",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Ayalon"
+      }
+    ],
+    "cma_legal_id": "517085874",
+    "fees_id": "ayalon",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "ayalon-ins.co.il"
+    ],
+    "note": "Added 2026-11-07: Ayalon Kupot Gemel, a manager of the provident fund for investing (fund 15969) in the CMA data; its list fees are in data/fees/ayalon."
   },
   {
     "id": "leumi",
@@ -363,7 +388,7 @@
     ],
     "cma_legal_id": null,
     "fees_id": "jerusalem",
-    "deposit_bank_id": null,
+    "deposit_bank_id": "jerusalem",
     "own_hosts": [
       "bankjerusalem.co.il"
     ]
@@ -379,7 +404,7 @@
     ],
     "cma_legal_id": null,
     "fees_id": "one-zero",
-    "deposit_bank_id": null,
+    "deposit_bank_id": "one-zero",
     "own_hosts": [
       "onezerobank.com"
     ]

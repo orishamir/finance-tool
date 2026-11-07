@@ -8,6 +8,9 @@ import {
   decompose,
   executeCandidate,
   enteredGoal,
+  feeCharged,
+  withHeldRate,
+  withFeeScaled,
   isTie,
   outcomeOrder,
   rankCandidates,
@@ -54,6 +57,17 @@ Object.assign(formulaNames, {
 
 export type Family = "provident" | "pension" | "deposit" | "securities" | "makam" | "bond";
 
+/**
+ * Whether a run of a wrapper of these families may carry a reading label that depends on what the person types: the provident
+ * ledger labels KH-12 (an age typed in), TXK-07 (an index typed below the deposit's) and TXH-11 (deposits above the ceiling). A
+ * card holds the reading tag's place when any family it may run in is one of these, whatever its run cites now, so the reserved
+ * place never appears later (fourth check, 2026-11-07). A reading that never depends on an input (TXF-11, a foreign fund's
+ * sale-only tax) is there from the first run and needs no hold.
+ */
+export function readingMayAppear(families: readonly (Family | null | undefined)[]): boolean {
+  return families.some((f) => f === "provident");
+}
+
 export interface WrapperEntry {
   id: ProductId;
   /** The glossary name: the record's first Hebrew name. */
@@ -98,6 +112,12 @@ export interface WrapperEntry {
    * pension wrapper, or "equity" for a fund-based wrapper whose fund holds an equity-index exposure. Absent: no classification, never demoted.
    */
   fitBasis?: { track: { specialization: string; subSpecialization: string; classification: string } } | { equity: true };
+  /**
+   * A provident or pension wrapper's balance fee as the person may enter it (D86): a rate below `revertsTo` holds for `months` (PF-13's
+   * period, `years` as the rule's figure) and then returns to `revertsTo`, a fraction (`rate`, its value object): the rate the record's
+   * discount reverts to, else the record's own rate. Absent when the record gives neither.
+   */
+  ownFeeHold?: { months: number; years: SiteValue; revertsTo: number; rate: SiteValue };
   /** Why there are no terms, one line each (log text, not shown). */
   missing: string[];
 }
@@ -176,8 +196,6 @@ export interface CompareBundle {
   site?: { version: string; data: string };
   /** P-04, the site's fit table (scenario fix 2026-10-24): the equity row's minimum horizon and fall, for the limitation-first headline and for listing equity options the person's accepted drop does not fit. */
   fit?: FitTableData;
-  /** MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500, as sourced figures; shown, never fed into a run. */
-  pastRecord?: { rule: { id: string }; figures: Record<string, SiteValue>; source: { url: string; title: string } } | null;
 }
 
 // ---------------------------------------------------------------- the goal as numbers
@@ -348,13 +366,18 @@ export function feeFor(w: WrapperEntry, g: Pick<RunGoal, "ownFees">, today: stri
   return base;
 }
 
-/** The terms with the person's entered fee in place of the representative instrument's fee (D4): the balance fee, or the fund's management line with its variable and trustee lines at zero. */
+/**
+ * The terms with the person's entered fee in place of the representative instrument's fee (D4): the balance fee, or the fund's management
+ * line with its variable and trustee lines at zero. An entered balance fee below what the run would otherwise charge holds for PF-13's
+ * period and then returns to that rate (`ownFeeHold`, D86): a lower fee a company agrees to is a discount, and no binding document
+ * promises it for longer. The deposit fee keeps the record's terms, its discount included.
+ */
 export function withOwnFee(w: WrapperEntry, terms: InstrumentTerms, g: Pick<RunGoal, "ownFees">): InstrumentTerms {
   const own = g.ownFees?.[w.id];
   const target = feeTargetOf({ family: w.family, terms });
   if (own === undefined || !Number.isFinite(own) || !target) return terms;
   const t = clone(terms);
-  if (target === "balance") t.fees!.balance = own / 100;
+  if (target === "balance") t.fees = withHeldRate(t.fees!, "balance", own / 100, w.ownFeeHold?.months ?? 0, w.ownFeeHold?.revertsTo);
   else {
     const d = t.fund!.drag!;
     d.management = own / 100;
@@ -464,7 +487,7 @@ export interface ProviderOutcome {
   real: number;
   nominal: number;
   /** For the figure's provenance (`makeValues().nis`). */
-  run: { usedRules: UsedRule[]; flags: { code: string }[] };
+  run: { usedRules: UsedRule[]; flags: { code: string }[]; labels: { code: string; ruleId: string }[] };
 }
 
 /** The picker's rows: the card's own run when it is the site's choice, and the wrapper run once on each provider it carries. */
@@ -485,7 +508,7 @@ export function providerOutcomes(bundle: CompareBundle, g: RunGoal, wrapperId: s
   const w = bundle.wrappers.find((x) => x.id === wrapperId);
   if (!w?.providers) return none;
   const ran = (b: CompareBundle) => evaluate(b, g, { only: new Set([wrapperId]) }).candidates.find((c) => c.id === wrapperId)?.run;
-  const outcome = (id: string, name: string, channel: string, run: NonNullable<ReturnType<typeof ran>>, current?: boolean): ProviderOutcome => ({ id, name, channel, ...(current ? { current } : {}), real: run.real, nominal: run.nominal, run: { usedRules: run.rules, flags: run.flags } });
+  const outcome = (id: string, name: string, channel: string, run: NonNullable<ReturnType<typeof ran>>, current?: boolean): ProviderOutcome => ({ id, name, channel, ...(current ? { current } : {}), real: run.real, nominal: run.nominal, run: { usedRules: run.rules, flags: run.flags, labels: run.labels } });
   const providers: ProviderOutcome[] = [];
   for (const [id, p] of Object.entries(w.providers)) {
     const run = ran(applyOwnProviders(bundle, { ownProviders: { [wrapperId]: id } }));
@@ -512,13 +535,13 @@ export function providerOutcomes(bundle: CompareBundle, g: RunGoal, wrapperId: s
 
 export type FeeKind = "balance" | "deposit" | "direct" | "fund" | "trade" | "custody";
 
-/** The fees of a wrapper's terms, one entry per kind with a non-zero rate (F-81 moves each one at a time). */
+/** The fees of a wrapper's terms, one entry per kind with a non-zero rate, or a discount that reverts to one (A-19; F-81 moves each one at a time). */
 export function feeKinds(terms: InstrumentTerms | undefined): FeeKind[] {
   const out: FeeKind[] = [];
   if (!terms) return out;
-  if ((terms.fees?.balance ?? 0) > 0) out.push("balance");
-  if ((terms.fees?.deposit ?? 0) > 0) out.push("deposit");
-  if ((terms.fees?.direct ?? 0) > 0) out.push("direct");
+  if (terms.fees && feeCharged(terms.fees, "balance")) out.push("balance");
+  if (terms.fees && feeCharged(terms.fees, "deposit")) out.push("deposit");
+  if (terms.fees && feeCharged(terms.fees, "direct")) out.push("direct");
   const drag = terms.fund?.drag;
   if (drag && Object.entries(drag).some(([k, v]) => (k === "management" || k === "variable" || k === "trustee") && (v ?? 0) > 0)) out.push("fund");
   const t = terms.tariff;
@@ -531,11 +554,8 @@ function scaleTerms(terms: InstrumentTerms, id: string, scale: Record<string, nu
   const k = (kind: FeeKind) => scale[`${id}:${kind}`] ?? 1;
   if (Object.keys(scale).every((key) => !key.startsWith(`${id}:`))) return terms;
   const t = clone(terms);
-  if (t.fees) {
-    t.fees.balance *= k("balance");
-    t.fees.deposit *= k("deposit");
-    t.fees.direct *= k("direct");
-  }
+  // a discounted line moves in both of its periods (F-81 with A-19): the discounted rate and the rate it reverts to
+  if (t.fees) t.fees = withFeeScaled(withFeeScaled(withFeeScaled(t.fees, "balance", k("balance")), "deposit", k("deposit")), "direct", k("direct"));
   if (t.fund?.drag) {
     const d = t.fund.drag;
     for (const f of ["management", "variable", "trustee"] as const) if (d[f] !== undefined) d[f] = d[f]! * k("fund");
@@ -626,8 +646,38 @@ export function comparisonGoal(g: RunGoal): ComparisonGoal {
 }
 
 
+/**
+ * The dimensions the given records mark `blocked`, with the options blocked on each grouped by the open question their record names
+ * (`blocked:TXK-OQ10`), or "" for a bare `blocked` (not answered, no question named). `code` is the one question when every option
+ * blocked on the dimension names the same one, else absent: the groups then carry their own codes.
+ */
+export function blockedMarks(records: readonly { id: string; dimensions?: Record<string, string> }[]): Map<string, { code?: string; options: string[]; groups: { code: string; options: string[] }[] }> {
+  const byDim = new Map<string, Map<string, string[]>>();
+  for (const r of records) {
+    for (const [d, m] of Object.entries(r.dimensions ?? {})) {
+      if (m !== "blocked" && !m.startsWith("blocked:")) continue;
+      const code = m.slice("blocked:".length);
+      const groups = byDim.get(d) ?? byDim.set(d, new Map()).get(d)!;
+      const ids = groups.get(code) ?? groups.set(code, []).get(code)!;
+      if (!ids.includes(r.id)) ids.push(r.id);
+    }
+  }
+  const out = new Map<string, { code?: string; options: string[]; groups: { code: string; options: string[] }[] }>();
+  for (const [d, groups] of byDim) {
+    const list = [...groups].map(([code, options]) => ({ code, options }));
+    const only = list.length === 1 && list[0]!.code ? list[0]!.code : undefined;
+    out.set(d, { ...(only ? { code: only } : {}), options: list.flatMap((g) => g.options), groups: list });
+  }
+  return out;
+}
+
 /** Dimensions of a wrapper record that decide whether this person can hold it at all (D17 2026-10-24: an open rule among them keeps it from being ranked). */
 const eligibilityDimensions = ["minimum", "eligibility"] as const;
+
+/** Does an open question on this checklist dimension keep the options it blocks from rank? Only an eligibility one does (F-83); any other leaves them ranked, and the checklist says "blocked for", never "keeps from rank" (third check, 2026-11-07). */
+export function keepsFromRank(dimension: string): boolean {
+  return (eligibilityDimensions as readonly string[]).includes(dimension);
+}
 
 /**
  * F-83 (2026-10-24): an option whose minimum-amount (or other eligibility) rule is open is shown, not ranked: its ranked value would
@@ -636,12 +686,13 @@ const eligibilityDimensions = ["minimum", "eligibility"] as const;
 export function openConstraintOf(record: Pick<ProductRecord, "dimensions">): Reason | null {
   for (const d of eligibilityDimensions) {
     const m = (record.dimensions as Record<string, string> | undefined)?.[d];
-    if (typeof m === "string" && m.startsWith("blocked:")) return { code: "rule-open", ruleIds: [], gapIds: [], detail: `${d}:${m.slice("blocked:".length)}` };
+    // a bare `blocked` (no question named; the data check refuses one, the page still must not rank on it) keeps an empty code
+    if (m === "blocked" || (typeof m === "string" && m.startsWith("blocked:"))) return { code: "rule-open", ruleIds: [], gapIds: [], detail: `${d}:${m.slice("blocked:".length)}` };
   }
   return null;
 }
 
-/** The open question's code of a `rule-open` reason from `openConstraintOf` as the page writes it ("GOV OQ7"), or null for any other reason. */
+/** The open question's code of a `rule-open` reason from `openConstraintOf` as the page writes it ("GOV OQ7"), or null for any other reason and for a bare `blocked`. */
 export function openConstraintCode(r: Pick<Reason, "code" | "detail">): string | null {
   if (r.code !== "rule-open" || !r.detail) return null;
   const m = /^(?:minimum|eligibility):(.+)$/.exec(r.detail);
@@ -779,6 +830,10 @@ export interface RankedOption {
   enteredFee?: SiteValue;
   cashLike: boolean;
   secondaryRules: string[];
+  /** Rules the run applied as the site's reading of official texts (the engine's "reading" label: TXK-29, TXK-07, TXH-11, KH-12 ...); the row shows ReadingTag. */
+  readingRules: string[];
+  /** A run of this wrapper may come to carry a reading label as the person types (`readingMayAppear`): the card holds ReadingTag's place on its assumptions line, so the tag appearing moves nothing. Keyed on the wrapper, never on what this run cites. */
+  mayRead: boolean;
   staleRules: { id: string; since: string }[];
   usedRules: UsedRule[];
   chips: Chip[];
@@ -830,8 +885,12 @@ export interface MarkRow {
   rules: string[];
   /** The options the dimension affected (covered) or keeps from being ranked (blocked). */
   options: string[];
-  /** The options shown that are blocked on this dimension in their own record, filled even when another option covers it (scenario fix 2026-10-24: coverage is pooled). */
-  blockedOptions?: { code: string; options: string[] };
+  /**
+   * The options shown that are blocked on this dimension in their own record, by the open question each names, filled even when another
+   * option covers it (scenario fix 2026-10-24: coverage is pooled). `code` is "" for a record marked `blocked` with no question named
+   * (not answered, and no question opened yet), so one option's question is never shown as another's (2026-11-07, the self-managed funds).
+   */
+  blockedGroups?: { code: string; options: string[] }[];
 }
 
 export type HeadlineKind = "winner" | "single" | "tie" | "all-tied" | "only-baseline" | "nothing-ranked" | "excludes-all";
@@ -959,6 +1018,7 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
     }
     const enteredReturn = needsReturn(w) && g.returnPct !== null;
     const secondaryRules = run.labels.filter((l) => l.code === "secondary-source").map((l) => l.ruleId);
+    const readingRules = run.labels.filter((l) => l.code === "reading").map((l) => l.ruleId);
     const chips = chipsFor(w, g, goalValues, cashRate, bundle.runDate);
     const enteredFee = g.ownFees?.[w.id] !== undefined && feeTargetOf(w) ? feeFor(w, g, bundle.runDate) : undefined;
     return {
@@ -977,6 +1037,8 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
       ...(enteredFee ? { enteredFee } : {}),
       cashLike: isCashLike(w),
       secondaryRules,
+      readingRules,
+      mayRead: readingMayAppear([w.family]),
       staleRules: staleOf(run.rules, bundle),
       usedRules: run.rules,
       chips,
@@ -1060,23 +1122,13 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
       }
     }
   }
-  const blockedDims = new Map<string, { code: string; options: Set<string> }>();
-  for (const c of [...ranked.map((o) => o.candidate), ...listed.map((l) => l.candidate)]) {
-    const w = byId.get(c.id);
-    for (const [d, m] of Object.entries(w?.record.dimensions ?? {})) {
-      if (!m.startsWith("blocked:")) continue;
-      const b = blockedDims.get(d) ?? { code: m.slice("blocked:".length), options: new Set<string>() };
-      b.options.add(c.id);
-      blockedDims.set(d, b);
-    }
-  }
+  const blockedDims = blockedMarks([...ranked.map((o) => o.candidate), ...listed.map((l) => l.candidate)].map((c) => ({ id: c.id, dimensions: byId.get(c.id)?.record.dimensions })));
   const marks: MarkRow[] = bundle.checklist.map((row) => {
     const rules = [...(dimRules.get(row.id) ?? [])];
     const covered = rules.length > 0;
     const blocked = blockedDims.get(row.id);
-    const blockedOptions = blocked && covered ? { code: blocked.code, options: [...blocked.options] } : undefined;
-    if (covered) return { ...row, mark: "covered", rules, options: [...(dimOptions.get(row.id) ?? [])], ...(blockedOptions ? { blockedOptions } : {}) };
-    if (blocked) return { ...row, mark: "blocked", code: blocked.code, rules: [], options: [...blocked.options] };
+    if (covered) return { ...row, mark: "covered", rules, options: [...(dimOptions.get(row.id) ?? [])], ...(blocked ? { blockedGroups: blocked.groups } : {}) };
+    if (blocked) return { ...row, mark: "blocked", ...(blocked.code ? { code: blocked.code } : {}), rules: [], options: blocked.options, blockedGroups: blocked.groups };
     return { ...row, mark: "na", rules: [], options: [] };
   });
 
@@ -1193,8 +1245,8 @@ export function makeValues(bundle: CompareBundle, g: RunGoal) {
   return {
     goal: gv,
     /** A figure of one run (a NIS amount at the horizon). */
-    nis(value: number, formula: string, about: string, run?: { usedRules: readonly UsedRule[]; flags?: { code: string }[] }, extra?: Record<string, SiteValue>): SiteValue {
-      return computed(value, "nis", formula, { ...base, ...(extra ?? {}) }, { today, about, rules: run ? rulesOf(run.usedRules) : [], flags: run?.flags?.map((f) => f.code) });
+    nis(value: number, formula: string, about: string, run?: { usedRules: readonly UsedRule[]; flags?: { code: string }[]; labels?: readonly { code: string; ruleId: string }[] }, extra?: Record<string, SiteValue>): SiteValue {
+      return computed(value, "nis", formula, { ...base, ...(extra ?? {}) }, { today, about, rules: run ? rulesOf(run.usedRules) : [], flags: run?.flags?.map((f) => f.code), labels: run?.labels?.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
     },
     pct(value: number, formula: string, about: string, extra?: Record<string, SiteValue>): SiteValue {
       return computed(value, "pct", formula, { ...base, ...(extra ?? {}) }, { today, about });
@@ -1385,6 +1437,12 @@ export function feeAxisKey(id: string, kind: FeeKind): string {
 }
 
 /** F-81 over the options that ran in the base result. The bounds are P-02's; the person cannot edit them here. */
+/** F-81: the shortest holding period the horizon axis tests, P-05's slider minimum, so a page never says "0 years" (fee page, 2026-11-07). */
+export function horizonFloorOf(bundle: CompareBundle): number | undefined {
+  const min = (parameterOf(bundle, "P-05") as unknown as { sliders?: Record<string, { min?: ValueObject }> }).sliders?.horizon_years?.min?.value;
+  return typeof min === "number" ? min : undefined;
+}
+
 export function computeSensitivity(bundle: CompareBundle, g: RunGoal, ev: Evaluated, feeLabel: (kind: FeeKind, name: string) => string, labels: { return: string; inflation: string; horizon: string }): SensitivityView | null {
   const only = new Set(ev.candidates.filter((c) => c.tier === 1 && (c.kind === "ranked" || (c.kind === "listed-not-ranked" && c.run))).map((c) => c.id));
   if (only.size === 0 || !ev.ranking.top) return null;
@@ -1399,7 +1457,8 @@ export function computeSensitivity(bundle: CompareBundle, g: RunGoal, ev: Evalua
   const inflationNow = g.inflationPct ?? ((p05 as unknown as { inputs: Record<string, ValueObject> }).inputs["A-02"]!.value as number);
   const current: Record<string, number> = { "A-02": inflationNow / 100 };
   if (g.returnPct !== null) current["A-01"] = g.returnPct / 100;
-  const axes = sensitivityAxes(bundle.parameters, { current, horizonYears: g.horizonYears, fees });
+  const floor = horizonFloorOf(bundle);
+  const axes = sensitivityAxes(bundle.parameters, { current, horizonYears: g.horizonYears, fees, ...(floor !== undefined ? { horizonMinYears: floor } : {}) });
   // 2026-10-24: the in-fund cost is searched down to P-02's A-06 floor (the cost inside a fund, 0 to 3 % a year), not only to half of the record's:
   // a cheap tracker costs a tenth of an active fund and half is not far enough. A floor below the lowest cost collected stays visible (`classMinPct`).
   const feeInfo = new Map<string, NonNullable<SensitivityRowView["fee"]>>();

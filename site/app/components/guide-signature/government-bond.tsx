@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { bondModel, fact } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
 import { GainBars, NumberField, Sentence, Stat, StatRow } from "../kit";
-import { Num, RulesLine } from "../provenance";
+import { Num, RulesLine, Term } from "../provenance";
 import { SourceLine, figure, inputSite, useSigInputs, type VisualProps } from "./kit";
 
 const SHIFT_MIN = -3;
@@ -79,7 +79,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
         label={copy.bond.shift}
         valueText={
           <>
-            <Num value={shiftIn} display={signed(shift)} /> {copy.bond.shiftUnit}
+            <Num value={shiftIn} display={signed(shift)} /> <Term id="נקודת אחוז">{copy.bond.shiftUnit}</Term>
           </>
         }
         min={SHIFT_MIN}
@@ -118,7 +118,9 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
       )}
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
-        <p className="text-muted-foreground">{copy.bond.note}</p>
+        <p className="text-muted-foreground">
+          {copy.bond.note.before} <Term id="עמלה">{copy.bond.note.term}</Term> {copy.bond.note.after}
+        </p>
         {every && linkage && (
           <p>
             {copy.bond.termsLine.before} <Num value={linkage} display={copy.bond.linkage[String(linkage.value)] ?? String(linkage.value)} />

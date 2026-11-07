@@ -1,0 +1,36 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same text under the graphic and even mentions the ceiling, but it only says the small grey text is easy to miss, not that it wrongly claims no percentages were entered when the fields have defaults."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0154794
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same grey text under the chart, but it only says the text is too small to get read; it never says the text wrongly claims no percentages were entered when the fields hold default values."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155994
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0310788
+}

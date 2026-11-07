@@ -1,7 +1,7 @@
 // The rules page's filters as pure functions (the page is one list with filters; all state lives in the address): parse and
 // write the address, match the light list (and, once a shelf file has loaded, the full text), and lay the matches out in
 // sections and groups. No React, no I/O.
-import { fileRank, isExperience, shelfIds, type ShelfId } from "./rule-shelves";
+import { fileRank, shelfIds, type ShelfId } from "./rule-shelves";
 import { ruleTitle } from "./rule-title";
 
 /** What the loader sends for every rule: enough to filter, count and group, no text. */
@@ -94,9 +94,9 @@ export function matchRules(light: readonly LightRule[], f: Filters, hay: Haystac
 }
 
 export interface Group {
-  /** Anchor id, unique on the page: "<shelf>-<file without .md>", "<shelf>-experience" or "month-YYYY-MM" (a file can sit on two shelves). */
+  /** Anchor id, unique on the page: "<shelf>-<file without .md>" or "month-YYYY-MM" (a file can sit on two shelves). */
   id: string;
-  kind: "file" | "experience" | "month";
+  kind: "file" | "month";
   file?: string;
   month?: string;
   ids: string[];
@@ -112,8 +112,7 @@ export interface Section {
 const byScore = (a: LightRule, b: LightRule) => b.score - a.score || a.id.localeCompare(b.id, "en", { numeric: true });
 
 /**
- * Sections in the fixed shelf order, each with its topic groups in `fileRank` order and cards by score; the experience entries
- * last in the access shelf. With `changing` on, one section with a group per recheck month, the earliest first.
+ * Sections in the fixed shelf order, each with its topic groups in `fileRank` order and cards by score. With `changing` on, one section with a group per recheck month, the earliest first.
  */
 export function buildSections(matches: readonly LightRule[], changing: boolean): Section[] {
   if (changing) {
@@ -137,15 +136,13 @@ export function buildSections(matches: readonly LightRule[], changing: boolean):
   for (const shelf of shelfIds) {
     const mine = matches.filter((r) => r.shelf === shelf);
     if (mine.length === 0) continue;
-    const files = [...new Set(mine.filter((r) => !isExperience(r.id)).map((r) => r.file))].sort((a, b) => fileRank(a) - fileRank(b));
+    const files = [...new Set(mine.map((r) => r.file))].sort((a, b) => fileRank(a) - fileRank(b));
     const groups: Group[] = files.map((file) => ({
       id: `${shelf}-${file.replace(/\.md$/, "")}`,
       kind: "file" as const,
       file,
-      ids: mine.filter((r) => r.file === file && !isExperience(r.id)).sort(byScore).map((r) => r.id),
+      ids: mine.filter((r) => r.file === file).sort(byScore).map((r) => r.id),
     }));
-    const experience = mine.filter((r) => isExperience(r.id)).sort(byScore).map((r) => r.id);
-    if (experience.length > 0) groups.push({ id: `${shelf}-experience`, kind: "experience", ids: experience });
     out.push({ shelf, groups, count: mine.length });
   }
   return out;

@@ -7,7 +7,7 @@ import type { WrapperId } from "@finance-tool/schema";
 import { r3holdings as copy } from "../../copy";
 import { IconSearch } from "../icons";
 import { Sheet } from "../Sheet";
-import { Button, cx, flushPendingFields, NumberField, SegmentedControl, Sentence } from "../kit";
+import { Button, cx, flushPendingFields, gershayim, NumberField, SegmentedControl, Sentence } from "../kit";
 import { Num, RuleRef } from "../provenance";
 import { feeYear, type SiteValue } from "../../lib/value";
 import { IconCopy } from "../icons";
@@ -285,7 +285,7 @@ function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, ru
                     {shown.map((c, i) => (
                       <li key={c.id}>
                         <button type="button" className={cx("w-full text-start min-h-target px-3 hover:bg-accent flex items-center justify-between gap-2", i === active && "bg-accent")} onClick={() => pickCompany(c)}>
-                          <bdi>{c.name}</bdi>
+                          <bdi>{gershayim(c.name)}</bdi>
                           <span className="text-xs text-muted-foreground">{trackCountWord(c.count) ?? `${fmt.number(c.count)} ${copy.trackCount.many}`}</span>
                         </button>
                       </li>

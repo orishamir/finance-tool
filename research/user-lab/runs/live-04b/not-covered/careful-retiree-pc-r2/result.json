@@ -1,0 +1,118 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:58:12.719Z",
+  "structured": {
+    "answer": "I wouldn't rely on this site yet. It says itself that it doesn't calculate a long list (\"לא מחושב\"): structured deposits, foreign-currency and dollar-linked deposits, managers' insurance and savings policies, corporate bonds and Israel Bonds, gold, ETC, the digital currency wallet and turning a pension into a lump sum, and more further down that I didn't reach. The things closest to my deposits are among them, so I'll ask my son or the bank.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Red box at top and red 'לא מחושב' labels on every card",
+        "why": "Red everywhere made me feel the whole page was dangerous; I nearly backed away"
+      },
+      {
+        "where": "'מצב הכיסוי' folds with crossed-out 'נסגר ב־' dates and codes like TX2-01, TXA-28, MF-28",
+        "why": "Couldn't tell whether 'closed' with a line through it is good or bad, or what the codes are"
+      },
+      {
+        "where": "Two-column card layout, screens 2–6",
+        "why": "Long lines, I lost my place in the middle; tired by screen 4, stopped after 6"
+      }
+    ],
+    "used": [
+      "Heading 'מה האתר עוד לא מכסה' and subtitle",
+      "Red box 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם'",
+      "Card titles and 'לא מחושב' badges",
+      "'מה ידוע' sentences on deposit cards (פיקדון מובנה, פיקדון במטבע חוץ, צמוד דולר, מענק, מוצר מובנה)",
+      "Open questions on tax on foreign-currency deposit interest and on savings policy",
+      "Memory of the securities-account guide: 'אין תקרה בחוק' on fees"
+    ],
+    "skimmed": [
+      "Blue law/source citation lines",
+      "Dates and 'מקור ראשי' tags",
+      "'חוקים וכללים · N' chips",
+      "Cards on gold, ETC, ratings company, commercial paper",
+      "Securities account guide glossary"
+    ],
+    "skipped": [
+      "Screens 7–10 of the page",
+      "Pale grey 'כשייסגר: יופיע במדריך...' lines",
+      "'נקרא גם' lines",
+      "Top menu links"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "ICE Benchmark Administration",
+      "LAYA",
+      "ISA",
+      "Funder-hosted copy",
+      "MF-28, TX2-01, TXA-28",
+      "'לפי החברה' orange tag",
+      "crossed-out 'נסגר ב־' dates",
+      "'חסום: שאלה פתוחה אחת'",
+      "מנוטרלת מט\"ח",
+      "קרן סל / קרן מחקה",
+      "מסלולי האירוח"
+    ],
+    "not_found": [
+      "A simple sentence saying which of these is as safe as a bank deposit",
+      "Whether the bank's fees on my deposits are too high",
+      "The full list below screen 6"
+    ],
+    "findings": [
+      {
+        "what": "Exactly the products closest to my deposits (structured, foreign-currency, dollar-linked deposits) are not calculated, with open questions about tax on the interest",
+        "where": "Cards פיקדון מובנה, פיקדון במטבע חוץ, צמוד דולר, screens 4–6"
+      },
+      {
+        "what": "Small, pale grey text on a black background, hard to read even enlarged",
+        "where": "'כשייסגר...' lines and 'נקרא גם' lines on every card"
+      },
+      {
+        "what": "Red badges on every card are alarming and make everything look risky",
+        "where": "'לא מחושב' badges and top red box"
+      },
+      {
+        "what": "Unexplained English names and codes",
+        "where": "ETC, LBMA, ICE, LAYA, MF-28, TX2-01, TXA-28"
+      },
+      {
+        "what": "Crossed-out 'closed' dates are confusing: is a crossed-out line good news?",
+        "where": "'מצב הכיסוי' folds, screens 5–6"
+      },
+      {
+        "what": "Two columns of long lines, easy to lose my place",
+        "where": "Whole card grid"
+      },
+      {
+        "what": "The list is very long; I stopped at screen 6 without seeing the end, and there's no short summary of how many products are missing",
+        "where": "Screens 7–10"
+      },
+      {
+        "what": "Fees with 'אין תקרה בחוק' left me worried that nobody limits charges",
+        "where": "Securities account guide, 'כמה זה עולה'"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 48435,
+    "turns": 10,
+    "usd": 0.21159999999999998,
+    "input": 10,
+    "cacheWrite": 15092,
+    "cacheRead": 42920,
+    "output": 4112,
+    "model": "claude-opus-5-5"
+  }
+}

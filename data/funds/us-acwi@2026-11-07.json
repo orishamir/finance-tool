@@ -1,0 +1,137 @@
+{
+  "id": "us-acwi",
+  "names": {
+    "en": [
+      "iShares MSCI ACWI ETF"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": null,
+    "cusip": "464288257",
+    "ticker": {
+      "NASDAQ": "ACWI"
+    }
+  },
+  "manager": "BlackRock (iShares)",
+  "domicile": "US",
+  "legal_form": "US-listed ETF; launch 03/26/2008; distribution frequency semi-annual; benchmark 'MSCI All Country World Index (Net)'. Replication and ISIN are not printed on this fact sheet.",
+  "exposure_id": "index-msci-acwi",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "distributing",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.32,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/us/literature/fact-sheet/acwi-ishares-msci-acwi-etf-fund-fact-sheet-en-us.pdf#page=1",
+        "title": "iShares MSCI ACWI ETF (ACWI), fact sheet as of September 30, 2026, p. 1: 'Expense Ratio 0.32%' (library 6278e1accc3bc2e3)",
+        "publisher": "BlackRock (iShares)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXF-12",
+        "TXF-27",
+        "TXF-29"
+      ],
+      "state": "sourced",
+      "notes": "Management fee 0.31% plus other expenses 0.01% on the same page. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Its legal form is not printed on this fact sheet, so whether Israeli tax treats it as a company or a trust stays open (tax open question 19, job 1). The prospectus was not opened."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/us/literature/fact-sheet/acwi-ishares-msci-acwi-etf-fund-fact-sheet-en-us.pdf",
+        "title": "iShares MSCI ACWI ETF, ACWI, Fact Sheet as of September 30, 2026, p. 1 'Calendar year performance (%)'",
+        "publisher": "BlackRock (iShares Trust)",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The Fact Sheet as of September 30, 2026 prints the fund's return and its benchmark's for each calendar year 2021 to 2025 on p. 1; they are in tracking_record. Fund basis: the 'NAV' row (the sheet also prints a 'Market Price' row, not copied), in US dollars. Benchmark as the document names it: 'MSCI All Country World Index (Net)'. The difference is not computed here (data-update rule)."
+    },
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-12",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28"
+  },
+  "prospectus": {
+    "url": "https://www.ishares.com/us/literature/fact-sheet/acwi-ishares-msci-acwi-etf-fund-fact-sheet-en-us.pdf",
+    "date": null
+  },
+  "snapshot": "2026-11-07",
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2021,
+        "fund_pct": 18.38,
+        "tracking_pct": 18.54
+      },
+      {
+        "year": 2022,
+        "fund_pct": -18.27,
+        "tracking_pct": -18.36
+      },
+      {
+        "year": 2023,
+        "fund_pct": 22.22,
+        "tracking_pct": 22.2
+      },
+      {
+        "year": 2024,
+        "fund_pct": 17.41,
+        "tracking_pct": 17.49
+      },
+      {
+        "year": 2025,
+        "fund_pct": 22.43,
+        "tracking_pct": 22.34
+      }
+    ],
+    "years_printed": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "source": {
+      "url": "https://www.ishares.com/us/literature/fact-sheet/acwi-ishares-msci-acwi-etf-fund-fact-sheet-en-us.pdf",
+      "title": "iShares MSCI ACWI ETF, ACWI, Fact Sheet as of September 30, 2026, p. 1 'Calendar year performance (%)'",
+      "publisher": "BlackRock (iShares Trust)",
+      "strength": "institution"
+    },
+    "page": 1,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "MSCI All Country World Index (Net)",
+      "dividends": "net"
+    }
+  }
+}

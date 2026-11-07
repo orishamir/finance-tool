@@ -2,6 +2,7 @@
 // Inputs are the scenario's own; expected values are the approved independent check.
 import { describe, expect, it } from "vitest";
 import {
+  BlockedError,
   runBond,
   runChildSavings,
   runDeposit,
@@ -12,7 +13,7 @@ import {
   type RunResult,
   type SecuritiesInput,
 } from "../../src/index.ts";
-import { context, golden } from "./harness.ts";
+import { context, golden, loadRules, withTxf04AsTheLetterCopy } from "./harness.ts";
 
 const ctx = context();
 const flagCodes = (r: RunResult) => r.flags.map((f) => f.code);
@@ -356,16 +357,16 @@ describe("Part A: the ledger on single instruments", () => {
   });
 
   it("S16 TASE-registered foreign fund, FX index for tax", () => {
-    const r = runSecurities(
-      {
-        goal: { amountNow: 100_000, monthly: 0, months: 60 },
-        market: { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
-        fund: { kind: "tase-foreign-fund", ninetyPercentTest: true, drag: { management: 0.0007, foreignWithholding: 0.0023 } },
-        tariff: { ...s14Tariff, custody: { rate: 0.0015, everyMonths: 3 } },
-        profile: {},
-      },
-      ctx,
-    );
+    const s16: SecuritiesInput = {
+      goal: { amountNow: 100_000, monthly: 0, months: 60 },
+      market: { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
+      fund: { kind: "tase-foreign-fund", ninetyPercentTest: true, drag: { management: 0.0007, foreignWithholding: 0.0023 } },
+      tariff: { ...s14Tariff, custody: { rate: 0.0015, everyMonths: 3 } },
+      profile: {},
+    };
+    // TXF-04 is open since 2026-11-07, so the data blocks this run; the arithmetic is checked on the letter's copy (harness)
+    expect(() => runSecurities(s16, ctx)).toThrow(BlockedError);
+    const r = runSecurities(s16, context(withTxf04AsTheLetterCopy(loadRules())));
     const g = golden("S16");
     g.value("real", r.real, 106_853.98);
     g.value("nominal", r.nominal, 120_895.47);
@@ -376,7 +377,7 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("tax at exit", r.taxAtExit, 6_279.39);
     g.value("real gain vs the exchange rate", r.detail.realGain, 25_117.56);
     g.done();
-    expect(labelOf(r, "TXF-11")).toBe("secondary-source");
+    expect(labelOf(r, "TXF-11")).toBe("reading");
     expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-18" });
   });
 
@@ -475,19 +476,17 @@ describe("Part B: provident-family wrappers", () => {
     const g = golden("S20");
     g.value("real", r.real, 148_018.98);
     g.value("nominal", r.nominal, 167_469.89);
-    g.value("alternative real", r.detail.altReal, 147_690.35);
-    g.value("alternative nominal", r.detail.altNominal, 167_098.08);
     g.value("gross balance", r.detail.grossBalance, 170_494.14);
     g.value("balance fees", r.fees.balance, 3_686.78);
     g.value("direct expenses", r.fees.direct, 460.85);
     g.value("deposit fees", r.fees.deposit, 0);
     g.value("tax during", r.taxDuring, 0);
     g.value("tax at exit", r.taxAtExit, 3_024.25);
-    g.value("alternative tax", r.detail.altTaxAtExit, 3_396.06);
     g.value("year 2 balance", yearEnd(r, 2).balance, 73_920.26);
     g.done();
     expect(r.routed).toEqual([]);
-    expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-02"]));
+    // 2026-11-07: G-02 is answered by law (TXK-07), so the run no longer flags it.
+    expect(flagCodes(r)).not.toContain("G-02");
     // 2026-10-26: no National Insurance on the lump sum's gains (TXK-27), so G-11 is no longer flagged for it.
     expect(flagCodes(r)).not.toContain("G-11");
     expect(r.rules.map((u) => u.id)).toContain("TXK-27");
@@ -512,11 +511,24 @@ describe("Part B: provident-family wrappers", () => {
     const g = golden("S22");
     g.value("real", r.real, 149_026.95);
     g.value("nominal", r.nominal, 168_610.32);
-    g.value("alternative real", r.detail.altReal, 148_832.72);
     g.value("balance fees", r.fees.balance, 2_317.48);
     g.value("tax at exit", r.taxAtExit, 3_404.39);
     g.done();
     expect(flagCodes(r)).toContain("PF-13");
+  });
+
+  it("F-16 a discounted deposit fee reverts to its list rate after PF-13's 5 years, not before", () => {
+    // 0% on deposits for 60 months, then the 4% list rate: the 12 nominal deposits of months 61 to 72 pay 4% of 2,000 each
+    const run = (months: number, depositDiscount?: { months: number; listRate: number }) =>
+      runProvident({ ...kgl, goal: { ...kgl.goal, months, contributions: "nominal" as const }, fees: { ...kgl.fees, deposit: 0, ...(depositDiscount ? { depositDiscount } : {}) } }, ctx);
+    const inside = run(60, { months: 0, listRate: 0.04 });
+    expect(inside.fees.deposit).toBe(0);
+    expect(inside.real).toBeCloseTo(run(60).real, 9);
+    const after = run(72, { months: 0, listRate: 0.04 });
+    expect(after.fees.deposit).toBeCloseTo(0.04 * 2_000 * 12, 9);
+    expect(flagCodes(after)).toContain("PF-13");
+    // a printed period longer than five years holds: 84 months covers all 72
+    expect(run(72, { months: 84, listRate: 0.04 }).fees.deposit).toBe(0);
   });
 
   const s23 = {
@@ -594,7 +606,8 @@ describe("Part B: provident-family wrappers", () => {
       g.value("grant at 21", r.grants[2]!.amount, 882.12);
       g.done();
       expect(r.grants.map((x) => x.month)).toEqual([36, sex === "boy" ? 156 : 144, 252]);
-      expect(labelOf(r, "TXK-23")).toBe("secondary-source");
+      // workings S31: 25% of the real gain, no label (TXK-23 reads the Ordinance since 2026-11-07)
+      expect(labelOf(r, "TXK-23")).toBeUndefined();
     });
   }
 
@@ -616,6 +629,8 @@ describe("Part B: provident-family wrappers", () => {
     g.value("net at 21", r.nominal, 42_331.47);
     g.done();
     expect(flagCodes(r)).toContain("CS-23");
+    // workings S32: 15% of the nominal gain, label "reading", TXK-29 (the Ordinance's rate; applying it to child savings is the site's reading)
+    expect(labelOf(r, "TXK-29")).toBe("reading");
   });
 
   it("S33 IRA hishtalmut with brokerage inside", () => {

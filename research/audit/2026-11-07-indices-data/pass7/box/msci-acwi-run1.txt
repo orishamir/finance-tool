@@ -1,0 +1,39 @@
+
+== /indices/msci-acwi at 390 px: 4 sliders, 1 selects; page wider than the screen: false
+    held: field HELD (select 1 = )
+  select 1 = discount: page height +0, 0 moved (0 outside a list's rows), 0 blocks new
+    h -78 w 0 y 0 <span > 301x36 "השורה של דיסקונט לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של"
+    held: field HELD (select 1 = discount)
+  select 1 = fibi: page height +0, 0 moved (0 outside a list's rows), 1 blocks new
+    h 20 w -25 y 0 <span > 276x55 "השורה של הבינלאומי לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות "
+    held: field HELD (select 1 = fibi)
+  select 1 = hapoalim: page height +0, 0 moved (0 outside a list's rows), 1 blocks new
+    h -19 w 25 y 0 <span > 301x36 "השורה של הפועלים לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של"
+    held: field HELD (select 1 = hapoalim)
+    held: field HELD (select 1 = yahav)
+    held: field HELD (select 1 = jerusalem)
+    held: field HELD (select 1 = leumi)
+  select 1 = mizrahi-tefahot: page height +0, 0 moved (0 outside a list's rows), 1 blocks new
+    h 20 w -25 y 0 <span > 276x55 "השורה של מזרחי טפחות לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורו"
+    held: field HELD (select 1 = mizrahi-tefahot)
+  select 1 = massad: page height +0, 0 moved (0 outside a list's rows), 1 blocks new
+    h -19 w 23 y 0 <span > 299x36 "השורה של מסד לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של שאר"
+    held: field HELD (select 1 = massad)
+    held: field HELD (select 1 = mercantile)
+  list 1 rows tapped: psagot HELD; ibi HELD; altshuler-trade HELD; yahav HELD; hapoalim HELD; leumi HELD; jerusalem HELD; mercantile HELD; discount HELD; mizrahi-tefahot HELD; fibi HELD; massad HELD; meitav-trade HELD; excellence HELD; one-zero HELD; interactive-brokers (other list's pick changed) HELD; interactive-israel HELD
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.boundingBox: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[role=radiogroup]').nth(1).locator(':scope > [data-pick-key="1147362"]')[22m
+
+    at /home/ori/dev/finance-tool/.claude/worktrees/idx-data/research/audit/tools/box-check.mjs:339:44 {
+  log: [
+    `  - waiting for locator('[role=radiogroup]').nth(1).locator(':scope > [data-pick-key="1147362"]')`
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.1

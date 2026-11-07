@@ -30,7 +30,7 @@
         "TXK-20"
       ],
       "state": "sourced",
-      "notes": "National Insurance's statement in its circular to its own staff, for both routes, with no base named; not a tax authority's. No Tax Authority figure exists (TXK OQ1). The site's computation uses TXK-23's rates, not this one."
+      "notes": "National Insurance's statement in its circular to its own staff, for both routes, with no base named; not a tax authority's. No Tax Authority figure exists (TXK OQ1). The site's computation uses TXK-23's rate (provident route) and TXK-29's (bank route), not this one."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",

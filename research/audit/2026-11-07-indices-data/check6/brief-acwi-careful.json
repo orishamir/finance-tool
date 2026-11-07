@@ -1,0 +1,23 @@
+{
+ "task": "These are screenshots of one page of a Hebrew website, seen on a computer screen, top of the page first; the last screenshot shows the same page after clicking one figure in the list of funds, which opened a small panel. Go through the page as the person described above would, with their goal in mind. Then answer in English, quoting the Hebrew you mean: 1. Which fund would you pick for your goal, and which lines on the page brought you there? 2. Every line, label, column heading or figure you misread, could not understand, or had to guess at, quoted, with what you thought it meant. 3. In the list of funds, the selected row has a few words at its far left, where the other rows have a shekel figure. What do they tell you, and which other rows do they refer to? 4. The chart 'כמה זה עולה לכם' splits each cost into coloured parts with figures. Do the figures make sense together and with the total beside each bar? 5. In the opened panel: what does it say the figure at its top is and how it was worked out? 6. Under that chart, a line compares the two bars part by part, and each group of funds in the list has a heading with a count: do they agree with the bars and the rows you see? 7. Anything that looked wrong, contradictory, or untrustworthy. Be blunt and specific; do not praise.",
+ "readers": [
+  {
+   "key": "acwi-careful",
+   "who": "You are 45, live in Israel, read Hebrew natively, and want to save every month for the next 20 years in a fund that tracks the MSCI ACWI, the all-country world index (MSCI AC World), through an Israeli trading account. You compare numbers carefully before you decide.",
+   "shots": [
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-01.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-02.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-03.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-04.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-05.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-06.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-07.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-08.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-09.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-10.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440/page-11.png",
+    "research/audit/2026-11-07-indices-data/check6/shots/indices_msci-acwi-1440-sheet.png"
+   ]
+  }
+ ]
+}

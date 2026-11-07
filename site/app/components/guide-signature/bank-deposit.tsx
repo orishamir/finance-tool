@@ -8,8 +8,8 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { depositEndBanks, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, InputSlot, KeyValue, LaneLabel, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
-import { Num, RulesLine } from "../provenance";
+import { Callout, GainBars, InputSlot, KeyValue, LaneLabel, Marker, MarkerMark, NumberField, PrintedText, Sentence, Stat, StatRow, useWidth } from "../kit";
+import { Num, RulesLine, Term } from "../provenance";
 import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 150;
@@ -203,7 +203,7 @@ export function BankDepositVisual({ data, today }: VisualProps) {
               {copy.deposit.atEnd.range.before} <Num value={count} /> {copy.deposit.atEnd.range.middle} <Num value={depositGainLow} /> (<bdi>{ends.bottom.name}</bdi>) {copy.deposit.atEnd.range.to}
               <Num value={depositGainHigh} /> (<bdi>{ends.top.name}</bdi>
               {ends.top.exit ? <>: {copy.deposit.banks.exit[String(ends.top.exit.value)] ?? copy.deposit.breakOther}</> : null}
-              {ends.top.conditions ? <>; {ends.top.conditions}</> : null}).
+              {ends.top.conditions ? <>; <PrintedText text={ends.top.conditions} /></> : null}).
             </Sentence>
           )}
           <p className="text-xs text-muted-foreground">{copy.deposit.afterTax}</p>
@@ -212,16 +212,17 @@ export function BankDepositVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
         <p>
-          {copy.deposit.rateLine.before} <Num value={rate} /> {copy.deposit.rateLine.middle} <bdi>{example?.name}</bdi>, {copy.deposit.rateLine.term} <Num value={termFact} display={fmt.months(term)} />. {copy.deposit.rateLine.kind} {depositBundle.pick && <Num value={depositBundle.pick.count} />} {copy.deposit.rateLine.after}
+          {copy.deposit.rateLine.before} <Num value={rate} /> {copy.deposit.rateLine.middle} <bdi>{example?.name}</bdi>, {copy.deposit.rateLine.term} <Num value={termFact} display={fmt.months(term)} />. {copy.deposit.rateLine.kind.before} <Term id="הצמדה">{copy.deposit.rateLine.kind.term}</Term>{copy.deposit.rateLine.kind.after} {depositBundle.pick && <Num value={depositBundle.pick.count} />} {copy.deposit.rateLine.after}
         </p>
         <Sentence tone="muted">
-          {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
+          {copy.common.fundAssumption.lead} <Term id="תשואה">{copy.common.fundAssumption.term}</Term> {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
         </Sentence>
       </div>
       {banks.length > 0 && lo && hi && (
         // the list the money-market ladder links to (F-86): each bank's rate on the line that names it (D31)
         <section id={copy.ladder.range.anchorId} className="flex flex-col gap-2 max-w-measure scroll-mt-[112px] lg:scroll-mt-[88px]">
           <h3 className="text-sm font-medium">{copy.deposit.banks.title}</h3>
+          <p className="text-xs text-muted-foreground">{copy.deposit.banks.plain}</p>
           <dl className="flex flex-col gap-1">
             {banks.map((b) => (
               <KeyValue key={b.id} label={<bdi>{b.name}</bdi>}>
@@ -232,7 +233,7 @@ export function BankDepositVisual({ data, today }: VisualProps) {
                     <Num value={b.exit} display={copy.deposit.banks.exit[String(b.exit.value)] ?? copy.deposit.breakOther} />
                   </>
                 )}
-                {b.conditions && <> · {b.conditions}</>}
+                {b.conditions && <> · <PrintedText text={b.conditions} /></>}
               </KeyValue>
             ))}
           </dl>

@@ -8,8 +8,7 @@ import { TrackBrowser } from "../components/tracks/browser";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { NumAfter, NumberLegend, RulesLine, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Callout } from "../components/kit";
-import { fmt } from "../lib/format";
+import { Callout, When } from "../components/kit";
 
 /** The data covers the six products, so moving between them keeps it (the address is read from the params). */
 export function shouldRevalidate() {
@@ -60,7 +59,7 @@ export default function Tracks() {
           <NumberLegend />
           {data.period.stale && (
             <Callout tone="caution">
-              {copy.oldData} <bdi dir="ltr">{fmt.period(String(data.period.value))}</bdi>.
+              <When iso={String(data.period.value)} lead={`${copy.oldData} `} />.
             </Callout>
           )}
         </header>

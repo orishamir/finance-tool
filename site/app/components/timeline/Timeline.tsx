@@ -13,7 +13,7 @@ import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineCh
 import { IconPencil, IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, cx, useChartPick, InputSlot, LongestCase, NumberField, ParameterLine, RangeField, SegmentedControl, Swatch } from "../kit";
+import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, cx, useChartPick, InputSlot, LongestCase, NumberField, ParameterLine, RangeField, SegmentedControl, Swatch } from "../kit";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -95,8 +95,9 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
       [ci.inflation]: inputValue("A-02"),
     };
     const feeInputs: Record<string, SiteValue> = {};
-    if (bundle.feeValues.balance) feeInputs[ci.balanceFee] = bundle.feeValues.balance;
-    if (bundle.feeValues.deposit) feeInputs[ci.depositFee] = bundle.feeValues.deposit;
+    // a provident list names its fees by their own labels below (in the discount period and after it), so they are not listed twice
+    if (bundle.feeValues.balance && !bundle.feeValues.listBalance && !bundle.feeValues.discountBalance) feeInputs[ci.balanceFee] = bundle.feeValues.balance;
+    if (bundle.feeValues.deposit && !bundle.feeValues.listDeposit && !bundle.feeValues.discountDeposit) feeInputs[ci.depositFee] = bundle.feeValues.deposit;
     for (const [key, label] of Object.entries(guideBlocks.terms.labels)) if (bundle.feeValues[key] && typeof bundle.feeValues[key]!.value === "number") feeInputs[feeLabel(label, feeYear(bundle.feeValues[key]!))] = bundle.feeValues[key]!;
     const rules = rulesUsed(timeline);
     const taxRate = feeRule("TXK-07", "rate");
@@ -354,68 +355,96 @@ function labelOf(key: P05Input): string {
 /** The product terms the run read (flows 6.5): each a provenance number, in the order of the label table; not editable. */
 function TermsList({ bundle }: { bundle: Bundle }) {
   const tiedCopy = guideBlocks.terms.pick.tied;
+  const managerTied = guideBlocks.terms.pick.managerTied;
   const rows = Object.entries(guideBlocks.terms.labels).filter(([key]) => bundle.feeValues[key]);
   const employment = bundle.feeValues.employment;
   if (rows.length === 0 && !employment) return null;
   const show = (key: string, v: SiteValue) => {
     if (key === "linkage") return guideBlocks.terms.linkage[String(v.value)] ?? undefined;
     if (v.unit === "months" && typeof v.value === "number") return fmt.months(v.value);
+    // "שנתיים", never "2 שנים" (copy.md 1): the figure carries its own word, so no unit word follows it
+    if (v.unit === "years" && typeof v.value === "number") return fmt.years(v.value);
     return undefined;
   };
   // D31: the company whose terms the example runs on is named here, so its figures are its own
   const owners = [...new Set(Object.values(bundle.feeValues).map((v) => v.own).filter((n): n is string => !!n))];
-  const unitWord = (v: SiteValue) => (provCopy.unit as Record<string, string>)[v.unit] ?? "";
+  const unitWord = (v: SiteValue) => (v.unit === "years" ? "" : ((provCopy.unit as Record<string, string>)[v.unit] ?? ""));
+  // folded (independent check, 2026-11-07): open, the provident fund's terms made the PC aside about 1,770 px beside a 970 px chart card,
+  // and the page about 1,000 px longer; a block that replaces nothing starts folded (ground rule 1)
   return (
-    <div className="flex flex-col gap-2 border-t border-border pt-4 mt-1">
-      <h4 className="font-medium">{guideBlocks.terms.title}</h4>
-      <p className="text-xs text-muted-foreground">{guideBlocks.terms.line}</p>
-      {owners.length > 0 && (
-        <p className="text-sm">
-          {guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>
-        </p>
-      )}
-      {bundle.pick && (
-        <p className="text-sm">
-          {bundle.pick.tied ? (
-            <>
-              {tiedCopy.before} <Num value={bundle.pick.count} /> {tiedCopy.middle}{" "}
-              {bundle.pick.tied.names.map((name, i) => (
-                <span key={name}>
-                  {i > 0 && <> {tiedCopy.and}</>}
-                  <bdi>{name}</bdi>{" "}
-                </span>
-              ))}
-              {tiedCopy.tie} <Num value={bundle.pick.tied.theta} />, {tiedCopy.after} <bdi>{bundle.pick.tied.names[0]}</bdi>. {tiedCopy.end}
-            </>
-          ) : (
-            <>
-              {guideBlocks.terms.pick[bundle.pick.kind].before} <Num value={bundle.pick.count} /> {guideBlocks.terms.pick[bundle.pick.kind].after}
-            </>
-          )}
-        </p>
-      )}
-      <dl className="readout">
-        {rows.map(([key, label]) => {
-          const v = bundle.feeValues[key]!;
-          return (
-            <div key={key} className="readout-row">
-              <dt>{feeLabel(label, feeYear(v))}</dt>
+    <FoldGroup title={guideBlocks.terms.title} level={4} className="border-t border-border pt-2 mt-1">
+      <div className="flex flex-col gap-2 pb-1">
+        <p className="text-xs text-muted-foreground">{guideBlocks.terms.line}</p>
+        {owners.length > 0 && (
+          <p className="text-sm">
+            {bundle.pick?.kind === "manager" ? guideBlocks.terms.whoseManager : guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>
+          </p>
+        )}
+        {bundle.pick && (
+          <p className="text-sm">
+            {bundle.pick.tied && bundle.pick.kind === "manager" ? (
+              <>
+                {managerTied.before} <Num value={bundle.pick.count} /> {managerTied.middle}{" "}
+                {bundle.pick.tied.names.map((name, i) => (
+                  <span key={name}>
+                    {i > 0 && <> {managerTied.and}</>}
+                    <MixedName>{name}</MixedName>{" "}
+                  </span>
+                ))}
+                {managerTied.after} <MixedName>{bundle.pick.tied.names[0]!}</MixedName>. {managerTied.end}
+              </>
+            ) : bundle.pick.tied ? (
+              <>
+                {tiedCopy.before} <Num value={bundle.pick.count} /> {tiedCopy.middle}{" "}
+                {bundle.pick.tied.names.map((name, i) => (
+                  <span key={name}>
+                    {i > 0 && <> {tiedCopy.and}</>}
+                    <MixedName>{name}</MixedName>{" "}
+                  </span>
+                ))}
+                {/* a manager tie has no threshold figure: the comma goes with the figure, so no ", ," is left (Hebrew editor, 2026-11-07) */}
+                {tiedCopy.tie}
+                {bundle.pick.tied.theta && (
+                  <>
+                    , <Num value={bundle.pick.tied.theta} />
+                  </>
+                )}
+                , {tiedCopy.after} <MixedName>{bundle.pick.tied.names[0]!}</MixedName>. {tiedCopy.end}
+              </>
+            ) : (
+              <>
+                {guideBlocks.terms.pick[bundle.pick.kind].before} <Num value={bundle.pick.count} /> {guideBlocks.terms.pick[bundle.pick.kind].after}
+              </>
+            )}
+          </p>
+        )}
+        {/* D83: the discount's period is the regulator's minimum or the company's own longer one, and it can end earlier (PF-14) */}
+        {(bundle.feeValues.discountYears || bundle.feeValues.discountMonths) && (
+          <p className="text-sm">{bundle.feeValues.discountMonths ? guideBlocks.terms.pick.discountOwn : guideBlocks.terms.pick.discount}</p>
+        )}
+        <dl className="readout">
+          {rows.map(([key, label]) => {
+            const v = bundle.feeValues[key]!;
+            return (
+              <div key={key} className="readout-row">
+                <dt>{feeLabel(label, feeYear(v))}</dt>
+                <dd>
+                  <Num value={v} display={show(key, v)} /> {unitWord(v)}
+                </dd>
+              </div>
+            );
+          })}
+          {employment && (
+            <div className="readout-row">
+              <dt>{valuesCopy.fields.employment}</dt>
               <dd>
-                <Num value={v} display={show(key, v)} /> {unitWord(v)}
+                <Num value={employment} display={(valuesCopy.employment as Record<string, string>)[String(employment.value)]} />
               </dd>
             </div>
-          );
-        })}
-        {employment && (
-          <div className="readout-row">
-            <dt>{valuesCopy.fields.employment}</dt>
-            <dd>
-              <Num value={employment} display={(valuesCopy.employment as Record<string, string>)[String(employment.value)]} />
-            </dd>
-          </div>
-        )}
-      </dl>
-    </div>
+          )}
+        </dl>
+      </div>
+    </FoldGroup>
   );
 }
 

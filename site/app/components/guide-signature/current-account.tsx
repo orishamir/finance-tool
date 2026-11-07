@@ -5,7 +5,7 @@
 // bank's own rate (spec section 7). Figures come from engine runs of the two bundles (guide-signature.ts `currentAccountModel`).
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
-import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { guideSignature as copy, values as valuesCopy, kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { p05Value } from "../../lib/engine";
@@ -14,8 +14,8 @@ import type { SiteValue } from "../../lib/value";
 import { AxisLabels, yearTicksIn } from "../chart/TimelineChart";
 import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { ChartLegend, ChartTip, cx, Disclosure, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn } from "../kit";
-import { Num, RuleRef, RulesLine } from "../provenance";
+import { ChartLegend, ChartTip, cx, Disclosure, DoubtNote, PrintedText, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When } from "../kit";
+import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { CommonRateLine, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
@@ -29,28 +29,6 @@ const FOLD_ID = copy.account.fold.anchorId;
 
 /** A ceiling is a round amount of shekels: "10,000 ₪", not "10,000.00 ₪". */
 const wholeNis = (v: SiteValue) => fmt.nisWhole(Number(v.value));
-
-const NUMBER = /\d+(?:[.,]\d+)*(?:\s?(?:₪|%))?/g;
-
-/**
- * Hebrew prose that carries figures (the record's own text: "3,000 ₪", "31.03.2026", "2%"): each figure is isolated left to right, so the
- * shekel sign and the digits keep one order beside Hebrew words, as in a `Num`. The figures stay the bank's printed ones, not site figures.
- */
-function Isolated({ text }: { text: string }) {
-  const parts: ReactNode[] = [];
-  let last = 0;
-  for (const m of text.matchAll(NUMBER)) {
-    parts.push(text.slice(last, m.index));
-    parts.push(
-      <bdi key={m.index} dir="ltr" className="whitespace-nowrap">
-        {m[0]}
-      </bdi>,
-    );
-    last = m.index + m[0].length;
-  }
-  parts.push(text.slice(last));
-  return <>{parts}</>;
-}
 
 /** "a, b and c" in Hebrew. */
 const joinHe = (parts: string[]): string => (parts.length <= 1 ? (parts[0] ?? "") : `${parts.slice(0, -1).join(", ")} ו${parts[parts.length - 1]}`);
@@ -153,11 +131,11 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                     {copy.account.picked.none.mid} <Num value={bank.rate} />.
                   </>
                 )}{" "}
-                <button type="button" onClick={() => setBankId(null)} className="text-link hover:underline min-h-9">
+                <button type="button" onClick={() => setBankId(null)} className="text-link hover:underline min-h-target">
                   {copy.account.picked.clear}
                 </button>
               </p>
-              {bank.doubt && <Doubt text={bank.doubt} />}
+              {bank.doubt && <DoubtNote text={bank.doubt} />}
             </div>
           )}
         </div>
@@ -207,7 +185,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             <Stat label={`${copy.account.figures.account} ${copy.account.after} ${fmt.years(years)}`} tone="net">
               {values && <Num value={values.account} size="inline" />}
             </Stat>
-            <Stat label={copy.account.figures.fund} tone="alt">
+            <Stat label={<Term prefix="ב" id="קרנות כספיות יומיות">{copy.account.figures.fundTerm}</Term>} tone="alt">
               {values && <Num value={values.fund} />}
             </Stat>
             <Stat label={copy.account.figures.cost}>{cost && <Num value={cost} />}</Stat>
@@ -219,13 +197,16 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       ) : null}
 
       <Sentence size="sm" tone="muted" measure>
-        {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
+        {copy.common.fundAssumption.lead} <Term id="תשואה">{copy.common.fundAssumption.term}</Term> {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
       </Sentence>
 
       {everyBank.length > 0 ? (
         <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border scroll-mt-24" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
           <div className="flex flex-col gap-4 px-4 pb-4">
-            <p className="text-sm text-muted-foreground max-w-measure">{f.lead}</p>
+            <p className="text-sm text-muted-foreground max-w-measure">
+              {f.lead.before} <Term id="בנק ישראל">{f.lead.term}</Term>
+              {f.lead.after}
+            </p>
 
             <div className="flex flex-col gap-1.5">
               <span className="field-label" id="sig-account-bank">
@@ -271,7 +252,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                           <span className="font-medium"><bdi>{b.name}</bdi></span>
                           {b.until && (
                             <Tag tone="neutral">
-                              {f.until} <bdi dir="ltr">{fmt.date(b.until)}</bdi>
+                              <When iso={b.until} lead={`${f.until} `} />
                             </Tag>
                           )}
                           {b.doubt && (
@@ -286,8 +267,8 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                         <Num value={b.rate} />
                       </td>
                       <td className="md:table-cell md:py-3 md:pe-4 md:align-top basis-full text-muted-foreground">
-                        {b.conditions && <Isolated text={b.conditions} />}
-                        {b.doubt && <Doubt text={b.doubt} className="mt-1.5" />}
+                        {b.conditions && <PrintedText text={b.conditions} />}
+                        {b.doubt && <DoubtNote text={b.doubt} className="mt-1.5" />}
                       </td>
                       <td className="md:table-cell md:py-3 md:align-top basis-full">
                         <span className="md:hidden text-xs text-muted-foreground">{f.columns.max}: </span>
@@ -318,7 +299,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                               {f.silent.printedZero.mid} <Num value={b.rate} />
                               {f.silent.printedZero.end}
                             </p>
-                            {b.doubt && <Doubt text={b.doubt} />}
+                            {b.doubt && <DoubtNote text={b.doubt} />}
                           </div>
                         ))}
                       </div>
@@ -338,18 +319,6 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       )}
       <RulesLine ids={data.ruleIds} />
     </div>
-  );
-}
-
-/** An open doubt about a record, with the caution mark: the sentence the record carries (`doubt_he`). */
-function Doubt({ text, className }: { text: string; className?: string }) {
-  return (
-    <span className={cx("flex items-start gap-1.5 text-caution-foreground", className)}>
-      <IconAlert size={14} className="text-caution shrink-0 mt-1" aria-hidden="true" />
-      <span>
-        <Isolated text={text} />
-      </span>
-    </span>
   );
 }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fmt, formatValue, nisShown, parseNumber, withMinus } from "./format";
+import { fmt, formatValue, nisShown, parseNumber, readerRound, withMinus } from "./format";
 import { hasHebrew, isHebrewTitle, sourceLabel } from "./source-label";
 
 describe("parseNumber (audit A6)", () => {
@@ -112,5 +112,35 @@ describe("negative figures (polish 2026-10-24)", () => {
   });
   it("parses the printed negative back", () => {
     expect(parseNumber(fmt.pct(-2))).toBe(-2);
+  });
+});
+
+describe("a date a document prints as a month (2026-11-07)", () => {
+  it("is said as the month, never with an invented first day", () => {
+    expect(fmt.date("2025-11")).toBe(fmt.period("2025-11"));
+    expect(fmt.date("2025-11")).not.toMatch(/01\.11/);
+    expect(fmt.date("2025-11-01")).toBe("01.11.2025");
+  });
+});
+
+// fresh readers, 2026-11-07: "8.17 שנים" read as oddly precise; a point where the conclusion changes is shown as a reader means it
+describe("readerRound: a flip point as a reader means it, rounded away from the value now", () => {
+  it("years whole, or halves under 3, toward the side the conclusion has changed on", () => {
+    expect(readerRound(8.17, "lo", "years")).toBe(8);
+    expect(readerRound(8.17, "hi", "years")).toBe(9);
+    expect(readerRound(2.3, "lo", "years")).toBe(2);
+    expect(readerRound(2.3, "hi", "years")).toBe(2.5);
+    expect(readerRound(0.2, "lo", "years")).toBe(0.2); // finer, never up across the point
+    expect(readerRound(12, "hi", "years")).toBe(12);
+  });
+  it("a return in percent whole from 3, halves from 1, tenths from 0.1; a fee in tenths", () => {
+    expect(readerRound(0.44, "lo", "pct")).toBe(0.4);
+    expect(readerRound(0.44, "hi", "pct")).toBe(0.5);
+    expect(readerRound(1.37, "hi", "pct")).toBe(1.5);
+    expect(readerRound(1.17, "hi", "fee")).toBe(1.2);
+    expect(readerRound(0.44, "lo", "fee")).toBe(0.4);
+    expect(readerRound(0.044, "lo", "fee")).toBe(0.04);
+    expect(readerRound(4.37, "lo", "pct")).toBe(4);
+    expect(readerRound(0.04, "lo", "pct")).toBe(0.04);
   });
 });

@@ -17,12 +17,12 @@
       "value": 10,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(מחירי_קניה_ומכירה_של_נכסי_קרן_ושווי_נכסי_קרן)",
-        "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ\"ה-1994, נוסח משולב (ויקיטקסט, מראה של התקנות), reg. 15(א): \"בקרן שעל פי מדיניות ההשקעות שלה, לא יעלה שווי ניירות ערך חוץ שיוחזקו בה על עשרה אחוזים מהשווי הנקי של נכסיה\"",
-        "publisher": "Hebrew Wikisource",
-        "strength": "primary-mirror"
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5987%2Fheb#page=6",
+        "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), reg. 15(א) (ק\"ת 5637, 1994, file p.24) as amended by ק\"ת 5987 (1999), file p.6, s.12: \"שעל פי מדיניות ההשקעות שלה לא יעלה שווי ניירות ערך חוץ שיוחזקו בה על עשרה אחוזים מהשווי הנקי של נכסיה\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-26",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -141,21 +141,6 @@
       "locator_he": "עמוד 8, סעיף 4",
       "page": 8,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(מחירי_קניה_ומכירה_של_נכסי_קרן_ושווי_נכסי_קרן)",
-      "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ\"ה-1994, נוסח משולב (ויקיטקסט, מראה של התקנות), unofficial consolidated text, the only copy found of the current wording",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 15(א)-(ב)",
-      "locator_he": "תקנה 15(א)-(ב)",
-      "anchor": "סעיף_15.א",
-      "quote": "בקרן שעל פי מדיניות ההשקעות שלה, לא יעלה שווי ניירות ערך חוץ שיוחזקו בה על עשרה אחוזים מהשווי הנקי של נכסיה",
-      "checked": "2026-10-31",
-      "note": "(gazette for the text as enacted or amended there; the Wikisource page, unofficial, is the only consolidated copy of the current wording found)"
     },
     {
       "url": "https://olaw.org.il/takanot/takanot-5637.pdf#page=24",

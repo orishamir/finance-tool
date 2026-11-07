@@ -67,6 +67,14 @@ describe("exposure mode", () => {
     expect(v.rows.find((r) => r.id === "makam")).toMatchObject({ kind: "not-evaluated", noSeries: true });
   });
 
+  it("lists makam, not ranked, while its minimum amount is an open question, as the product comparison does (F-83; third check, 2026-11-07)", () => {
+    const v = run(goal({ makam: { return: entered(4, "pct_per_year", day) } }));
+    const row = v.rows.find((r) => r.id === "makam")!;
+    expect(row.kind).toBe("listed-not-ranked");
+    expect(row.candidate.reasons).toContainEqual(expect.objectContaining({ code: "rule-open", detail: "minimum:GOV-OQ7" }));
+    expect(v.ranked.some((r) => r.id === "makam")).toBe(false);
+  });
+
   it("names a security by how it is held in the account (D6, 2026-10-26)", () => {
     const options = run(goal()).rows.find((r) => r.id === "makam")!.holding.options;
     expect(options.find((o) => o.id === "makam")!.name).toMatch(/^מק.מ, קנייה ישירה בחשבון ניירות ערך$/);

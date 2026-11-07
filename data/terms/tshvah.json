@@ -1,0 +1,29 @@
+{
+  "id": "tshvah",
+  "he": "תשואה",
+  "en": null,
+  "meaning": "הרווח או ההפסד על השקעה, בדרך כלל באחוזים מהסכום שהושקע ולתקופה מסוימת",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "savings-plan"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.tase.co.il/he/terms-page",
+    "title": "הבורסה לניירות ערך בתל אביב, דף מונחים: תשואה",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

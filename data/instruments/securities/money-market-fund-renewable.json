@@ -31,12 +31,12 @@
     "value": "ISA",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ss.4, 9, 13, 25(א), 129ג (Wikisource mirror); חוק ניירות ערך, התשכ\"ח-1968, s.2 (Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=84",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, Securities Authority's consolidated text (to 1.10.2024): s.9 (p.9), s.13(א) (p.12), s.25(א) (p.28), s.129ג (p.84, money-market funds); חוק ניירות ערך s.2 (ISA text)",
+      "publisher": "Israel Securities Authority",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -49,7 +49,7 @@
       "MF-07"
     ],
     "state": "sourced",
-    "notes": "The Israel Securities Authority (רשות ניירות ערך) approves fund managers (s.13) and trustees (s.9), permits every prospectus (s.25(א)) and may set rules for money-market funds (s.129ג, added by Amendment 31 in force 3.10.2024). Fund law read on a mirror; re-read on the official text before relying on wording (coverage §0)."
+    "notes": "The Israel Securities Authority (רשות ניירות ערך) approves fund managers (s.13) and trustees (s.9), permits every prospectus (s.25(א)) and may set rules for money-market funds (s.129ג, added by Amendment 31 in force 3.10.2024). Fund law read on the Securities Authority's consolidated text (to 1.10.2024), 2026-11-07."
   },
   "fee_bases_allowed": [
     "balance",
@@ -64,12 +64,12 @@
       "value": null,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-        "title": "חוק השקעות משותפות בנאמנות, ss.5(א)(12), 80(א)(1) (Wikisource mirror); ISA investor guide (2017) pp. 7, 22-24",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=58",
+        "title": "חוק השקעות משותפות בנאמנות, Securities Authority's consolidated text: s.5(א)(12) (p.6, the agreement states the trustee's and manager's pay), s.80(א)(1) (p.58, expenses paid from fund assets: \"שכר הנאמן ומנהל הקרן\"); ISA investor guide (2017) pp. 7, 22-24",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -82,7 +82,7 @@
         "MF-24"
       ],
       "state": "sourced",
-      "notes": "No regulated cap on the management fee (שכר מנהל הקרן) or the trustee fee (שכר נאמן): both are set in the fund agreement and prospectus, computed daily as an annual % of assets and deducted inside the unit price (MF-16, MF-20). The ISA's end-2025 average for money-market funds is in MF-18. Increases only on 1 January (MF-17). The distribution fee the manager pays the bank is capped at 0.1% a year for money-market funds and comes out of the manager's fee (MF-24)."
+      "notes": "No regulated cap on the management fee (שכר מנהל הקרן) or the trustee fee (שכר נאמן): both are set in the fund agreement and prospectus, computed daily as an annual % of assets and deducted inside the unit price (MF-16, MF-20). The ISA's end-2025 average for money-market funds is in MF-18. Increases only on 1 January, by each manager's own undertaking in its prospectus, not by law (MF-17). The distribution fee the manager pays the bank is capped at 0.1% a year for money-market funds and comes out of the manager's fee (MF-24)."
     },
     "trustee": {
       "value": null,
@@ -108,12 +108,12 @@
       "value": null,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-        "title": "Law, ss.5(א)(7), 42(ג), 82(א)(1) (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=35",
+        "title": "חוק השקעות משותפות בנאמנות, Securities Authority's consolidated text: s.5(א)(7) (p.6, the maximum load in the agreement), s.42(ג) (p.35, the load is set in the prospectus and is part of the manager's pay), s.82(א)(1) (p.60)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -128,12 +128,12 @@
       "value": null,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-        "title": "Law, ss.5(א)(7), 46(ב) (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=35",
+        "title": "חוק השקעות משותפות בנאמנות, Securities Authority's consolidated text: s.5(א)(7) (p.6, the agreement states whether a deduction from the redemption price is allowed), s.42(ג) (p.35), s.46 (p.36)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -148,12 +148,12 @@
       "value": null,
       "unit": "pct_of_trade",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה)",
-        "title": "Distribution fee regulations 2006, reg. 2(ב)-(ד) (Wikisource mirror); BoI fees rules 2008, First Schedule part 4(א)(1)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=10",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016, ק\"ת 7653, p.1098 (file p.10), s.2: reg. 2(ב) as substituted and reg. 2(ד) added (the regulations as made: ק\"ת 6464, 2006); BoI fees rules 2008, First Schedule part 4(א)(1)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -241,12 +241,12 @@
     "value": true,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance, s.88 definition \"מכירה\" (includes פדיון and חליפין) (Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "Income Tax Ordinance, s.88 definition \"מכירה\" (Tax Authority's text, p.148): \"לרבות חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון\"",
+      "publisher": "Israel Tax Authority",
       "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -334,8 +334,6 @@
   "tier": 1,
   "open_questions": [
     "MF-OQ1",
-    "MF-OQ3",
-    "MF-OQ5",
     "MF-OQ11",
     "MF-OQ12"
   ],

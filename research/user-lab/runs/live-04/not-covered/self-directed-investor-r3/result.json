@@ -1,0 +1,92 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:03:36.600Z",
+  "structured": {
+    "answer": "The site can't calculate yet: commodity and currency products (ETC, gold and gold funds, currency-hedged funds, FX deposits and accounts, the LAYA wallet, dollar-linked), bonds and debt (corporate bonds, Israel bonds, commercial paper, debt restructuring), insurance and pension products (ביטוח מנהלים, קופת ביטוח, profit-sharing life insurance, קרן י', insurance investment tracks), structured products and deposits, digital portfolios, REITs, annuity and tax items (קצבה מוכרת, היוון, תיקון 190), and also the FX conversion fee. It will never cover loans and mortgages, stock picking and trading, physical property, rankings by past returns, or executing trades.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Card headings at the breaks between screenshots (between 3/4, 4/5, 5/6)",
+        "why": "Headings were cut off, so I may have missed a product name or two"
+      },
+      {
+        "where": "'מצב הכיסוי' folds",
+        "why": "Some questions are crossed out as 'נסגר ב־' but the card still says 'לא מחושב'. Not clear how close it is to being covered"
+      }
+    ],
+    "used": [
+      "Page title 'מה האתר עוד לא מכסה' and the red banner",
+      "Card headings plus 'לא מחושב' tags",
+      "'מצב הכיסוי' open-question lines",
+      "'מה האתר לא משווה ולא עושה' list",
+      "Footer 'אישי, לא מסחרי, בלי קישורי שיווק'"
+    ],
+    "skimmed": [
+      "'מה ידוע' definitions on each card",
+      "'נקרא גם' lines"
+    ],
+    "skipped": [
+      "Law citation links and page numbers",
+      "'חוקים וכללים' count chips",
+      "Closed (crossed-out) questions"
+    ],
+    "unsure_meaning": [
+      "'פי החברה' orange tag",
+      "'מקור ראשי (עותק)'",
+      "Codes like TX2-01, TXA-28, MF-28",
+      "Whether 'נסגר ב־' means partly covered"
+    ],
+    "not_found": [
+      "Any number or cost figure I could compare with what I pay",
+      "A timeline for when items will be covered",
+      "Who runs the site, beyond 'אישי, לא מסחרי'"
+    ],
+    "findings": [
+      {
+        "what": "The FX conversion fee ('עמלת חליפין') isn't calculated, so the site can't show the cost of buying US ETFs",
+        "where": "עמלת חליפין card, screen 5"
+      },
+      {
+        "what": "Stock picking and trading excluded permanently, so my single stocks are out",
+        "where": "'מה האתר לא משווה ולא עושה' list, screens 9–10"
+      },
+      {
+        "what": "The same boilerplate 'כשייסגר: יופיע במדריך…' on every card, with no dates",
+        "where": "Coverage folds throughout"
+      },
+      {
+        "what": "Long wall of cards with no numbers; feels like a catalogue of gaps",
+        "where": "Whole page"
+      },
+      {
+        "what": "ETC card cites ESMA (European) as 'מקור ראשי'",
+        "where": "ETC card, screen 1"
+      },
+      {
+        "what": "Some card headings fall between scroll positions and are hard to catch",
+        "where": "Screens 3–6"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 45973,
+    "turns": 12,
+    "usd": 0.2666336,
+    "input": 10,
+    "cacheWrite": 22723,
+    "cacheRead": 44348,
+    "output": 3797,
+    "model": "claude-opus-5-5"
+  }
+}

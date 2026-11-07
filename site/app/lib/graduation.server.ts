@@ -2,10 +2,10 @@
 // "Graduation status" sections of the rule base's tier-2 files (.claude/skills/il-finance/references/) and from method
 // G-24's open questions (the table in compare.server.ts); never typed by hand. The `data/instruments/tier2/` files the
 // design spec proposes do not exist, so a closure is a struck-through item with "closed <date>" in a status section,
-// and an instrument with none shows "עוד לא נרשמו סגירות". Server-only.
+// and an instrument with none says so. Server-only.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { loadRules, root } from "./data.server";
+import { loadNotCovered, loadRules, root, type NotCoveredRow } from "./data.server";
 import { tier2Table } from "./compare.server";
 import { parseMdLink } from "./md-link";
 import { readTextCached } from "./read-cache.server";
@@ -144,6 +144,25 @@ export function graduationStatuses(): GraduationStatusView[] {
 /** Every rule id the status cards cite, so the page can open their rule cards. */
 export function graduationRuleIds(list: GraduationStatusView[]): string[] {
   return [...new Set(list.flatMap((s) => [...s.closed.flatMap((c) => c.ruleIds), ...s.open.flatMap((o) => [o.narrowedBy, o.institutionAnswer?.ruleId].filter((x): x is string => !!x))]))];
+}
+
+/**
+ * The cards of the "not covered yet" page: one per tier-2 kind of holding (product D2, `tier2Table`), each with its
+ * glossary row from docs/glossary.md section 3 joined by name. The list comes from what the site lacks, never from the
+ * glossary section: its other rows (fees, roles, labels, events of those holdings) stay terms, and a term the site
+ * explains on a covered page never lands here (founder, 2026-11-07: "we dont know עמלת חליפין?"). Throws when a kind has
+ * no row, so a renamed row fails the build instead of dropping a card.
+ */
+export function notCoveredCards(list: GraduationStatusView[] = graduationStatuses()): { status: GraduationStatusView; row: NotCoveredRow }[] {
+  const rows = new Map(loadNotCovered().map((r) => [r.he, r]));
+  const whole = notCoveredSources();
+  return list.map((status) => {
+    const row = rows.get(status.name);
+    if (!row) throw new Error(`not-covered: docs/glossary.md section 3 has no row "${status.name}" for tier-2 kind ${status.id}`);
+    // the glossary parser cuts a url at the first ")": take the whole address from the balanced reader
+    const w = whole.get(row.he);
+    return { status, row: row.source && w ? { ...row, source: { ...row.source, title: w.title, url: w.url } } : row };
+  });
 }
 
 /**

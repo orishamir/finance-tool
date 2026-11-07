@@ -1,0 +1,28 @@
+{
+  "id": "FXD-21",
+  "title": "Israel Bonds: who stands behind them, and what happens if the State does not pay",
+  "title_he": "אגרות בונדס: מי עומד מאחוריהן ומה קורה אם המדינה לא משלמת",
+  "text_he": "אגרות הבונדס הן התחייבות ישירה ובלתי מותנית של מדינת ישראל, בלי בטוחה, ובדרגה שווה לשאר החוב החיצוני שלה. אם המדינה מפגרת בתשלום 90 יום, המחזיק רשאי לדרוש בכתב את כל הקרן והריבית. אפשר לתבוע את המדינה בניו יורק או בבית משפט בישראל, אבל לפי הדין הישראלי אי אפשר לבצע עיקול על נכסי המדינה. האגרות בדולרים, ולכן שוויין בשקלים משתנה עם שער החליפין.",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm",
+      "title": "State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)",
+      "publisher": "U.S. SEC EDGAR (the issuer's own filing)",
+      "publisher_he": "מאגר EDGAR של רשות ניירות הערך האמריקאית (מסמך שהמנפיק הגיש)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "S-3, S-8, S-11, S-16",
+      "checked": "2026-11-07",
+      "qualifier": "(the State's own prospectus, filed by the State)"
+    }
+  ]
+}

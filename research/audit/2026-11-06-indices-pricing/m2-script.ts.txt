@@ -1,0 +1,39 @@
+// one-off evidence for lens review M2 (not committed): an account built on Mercantile's students and released soldiers, on every index's
+// headline plan, its value left and place among the collected houses
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { brokerDraftOf, brokerFromDraft, withCustomEntries } from "./custom-entries";
+import { buildInvest, knownIndices, indexById } from "./invest";
+import { baseOf, startingPointsOf } from "./own-account";
+import { buildWorkbenchBundle } from "./providers.server";
+import type { WorkbenchInputs } from "./providers";
+import { entered } from "./value";
+
+const bundle = buildWorkbenchBundle();
+const t = bundle.today;
+const plan = (amountNow: number, monthly: number): WorkbenchInputs => ({
+  amountNow, monthly, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
+  values: { amount: entered(amountNow, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
+  fromGoal: false, returnFromParameter: false, currentAccounts: { own: null },
+});
+it("evidence", () => {
+  const merc = bundle.snapshots.find((s) => s.id === "mercantile")!;
+  const out: unknown[] = [];
+  for (const name of ["סטודנטים", "חיילים משוחררים"]) {
+    const start = startingPointsOf(merc).find((p) => p.nameHe === name);
+    if (!start) { out.push({ group: name, missing: true }); continue; }
+    const b = brokerFromDraft({ ...brokerDraftOf(null), name: "החשבון שלי", base: baseOf(merc, start), untilYears: null }, "custom-m2", t);
+    const withIt = withCustomEntries(bundle, [b], []);
+    for (const [amount, monthly] of [[6000, 400], [100000, 0]] as const) {
+      for (const k of knownIndices(bundle)) {
+        const v = buildInvest({ bundle: withIt, index: indexById(bundle, k.id)!, plan: plan(amount, monthly) });
+        const mine = v.houses.find((h) => h.provider.id === b.id);
+        if (!mine?.best?.price) { out.push({ group: name, index: k.id, plan: `${amount}+${monthly}`, price: null }); continue; }
+        const rivals = v.houses.filter((h) => h.group === mine.group && !h.provider.custom && h.best?.price);
+        const place = 1 + rivals.filter((h) => h.best!.price!.valueN > mine.best!.price!.valueN).length;
+        out.push({ group: name, index: k.id, plan: `${amount}+${monthly}/mo, 20y, 7%`, fund: mine.best.fund.rec.id, left: Math.round(mine.best.price.valueN), place, of: rivals.length + 1 });
+      }
+    }
+  }
+  writeFileSync(process.env.OUT!, JSON.stringify(out, null, 1));
+});

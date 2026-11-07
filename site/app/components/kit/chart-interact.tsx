@@ -186,7 +186,7 @@ export function ZoomBar({ zoom, yearWord = String }: { zoom: YearZoom; yearWord?
           <span>
             {kitCopy.chart.showing} <bdi dir="ltr">{yearWord(view.lo)}</bdi> {kitCopy.chart.to} <bdi dir="ltr">{yearWord(view.hi)}</bdi>
           </span>
-          <button type="button" onClick={zoom.reset} className="text-link hover:underline min-h-7 cursor-pointer">
+          <button type="button" onClick={zoom.reset} className="text-link hover:underline min-h-7 tap-area cursor-pointer">
             {kitCopy.chart.allYears}
           </button>
         </>

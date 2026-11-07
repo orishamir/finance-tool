@@ -4,7 +4,7 @@
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy, sourceBlock } from "../copy";
 import { fmt } from "./format";
-import { hostOf, isHebrewTitle } from "./source-label";
+import { hostOf, isHebrewTitle, hebrewCitation } from "./source-label";
 import { ruleTitle } from "./rule-title";
 
 export type SourceStrength = "primary" | "primary-mirror" | "institution" | "secondary";
@@ -24,6 +24,7 @@ export interface RuleSource {
   page?: number;
   anchor?: string;
   quote?: string;
+  fragment?: TextFragment;
   checked: string;
   qualifier?: string;
 }
@@ -97,12 +98,48 @@ export function pickSources(rule: Pick<SourcedRule, "sources" | "figures">): Rul
 export const isPdfUrl = (url: string): boolean =>
   /\.pdf(?:$|[?#])/i.test(url) || /BlobFolder/i.test(url) || /^https:\/\/free-justice\.openapi\.gov\.il\/.*\/Documents\//i.test(url);
 
-/** The link target: url + `#page=N` for a PDF with a page, url + `#anchor` for an anchor. */
-export function sourceHref(source: Pick<RuleSource, "url" | "page" | "anchor">): string {
-  if (source.url.includes("#")) return source.url;
-  if (source.page && isPdfUrl(source.url)) return `${source.url}#page=${source.page}`;
-  if (source.anchor && !isPdfUrl(source.url)) return `${source.url}#${source.anchor}`;
-  return source.url;
+/** The words a link to a web page opens at (`#:~:text=`), as data/sources/fragments.json keeps them: the page's own characters, checked on the page. */
+export interface TextFragment {
+  prefix?: string;
+  start: string;
+  end?: string;
+  suffix?: string;
+}
+
+/**
+ * Anything the site links to as a source: the document's address, the PDF's page, the web page's anchor, and the words a web page
+ * opens at. `fragment` is never written in a record: the build attaches it when it reads the record (`fragments.server.ts`), only
+ * where the quoted words were found on the page as it prints them.
+ */
+export interface CitedPlace {
+  url: string;
+  page?: number | null;
+  anchor?: string;
+  fragment?: TextFragment;
+}
+
+/** One term of a text directive, percent-encoded with "-", "," and "&" escaped too (the spec's term syntax). */
+const fragmentTerm = (s: string) => encodeURIComponent(s).replace(/-/g, "%2D");
+
+/** `text=[prefix-,]start[,end][,-suffix]`. */
+export function textDirective(f: TextFragment): string {
+  const parts = [...(f.prefix ? [`${fragmentTerm(f.prefix)}-`] : []), fragmentTerm(f.start), ...(f.end ? [fragmentTerm(f.end)] : []), ...(f.suffix ? [`-${fragmentTerm(f.suffix)}`] : [])];
+  return `text=${parts.join(",")}`;
+}
+
+/**
+ * The one way the site links to a source (2026-11-07, the founder: a link opens at the cited words). A PDF opens at its page
+ * (`#page=N`; Chrome's PDF viewer does not follow a text fragment); a web page at its anchor and at the quoted words
+ * (`#anchor:~:text=…`). An address that already carries a `#` keeps it, and gains only the words.
+ */
+export function sourceHref(source: CitedPlace): string {
+  const pdf = isPdfUrl(source.url);
+  const words = source.fragment && !pdf ? `:~:${textDirective(source.fragment)}` : "";
+  // an address that carries a directive already gains the words as a second one (`&text=`)
+  if (source.url.includes("#")) return words ? `${source.url}${source.url.includes(":~:") ? words.replace(":~:", "&") : words}` : source.url;
+  if (pdf) return source.page ? `${source.url}#page=${source.page}` : source.url;
+  if (source.anchor) return `${source.url}#${source.anchor}${words}`;
+  return words ? `${source.url}#${words}` : source.url;
 }
 
 export interface SourceNames {
@@ -151,7 +188,7 @@ export function wikisourcePageTitle(url: string): string | null {
 /** The title as shown, in this order: a Hebrew title as it is; the Wikisource page's own Hebrew name; the document kind's word
  * ("מסמך של החברה", "עמוד של הרשות"); the link's host. The English working title is never shown (QA 2026-10-24, F1 and F4). */
 export function shownTitle(title: string, url: string, kind?: string): { text: string; host: boolean } {
-  if (isHebrewTitle(title)) return { text: title, host: false };
+  if (isHebrewTitle(title)) return { text: hebrewCitation(title), host: false };
   const page = wikisourcePageTitle(url);
   if (page) return { text: page, host: false };
   const word = kind ? (documentsCopy.kinds as Record<string, string>)[kind] : undefined;

@@ -1,0 +1,129 @@
+{
+  "id": "discount-pikadon-leshana-yetzia-riv-0192",
+  "bank": "discount",
+  "names": {
+    "447": [
+      "פקדון לשנה"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון לשנה' (קוד 0192), 'סוג מוצר (לפי תקופה)'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-06",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "Printed period '1 שנה' (365 days in the data); recorded as 12 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון לשנה' (קוד 0192), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-06",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax, printed 1.0; code 0192 'פקדון לשנה', interest type 'קבועה', linkage 'לא צמוד', exit points 'There are exit stations' רבעונית; renewal 'No renewal option' (max renewals 0); 'שיעור הריבית לפיקדון שכיח' 1.25; deposit channels 'סניף,טלבנק,אתר פרטיים,אתר עסקים,משוב'; remarks ''; deposit button: a link to deposit. Read 2026-11-06 from the data the page loads (https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-11-06T18:00, prime 4.75%); column titles from the page's own table definition. The data also carries 'OfferedCalculatedNominalInterest' 3.75, which no column of the page shows; on every fixed row it equals prime 4.75 less the rate (read, not used)."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read there 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 250,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+        "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון לשנה' (קוד 0192), 'טווח סכום להפקדה'",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-11-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-250 שח'."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column); the page's 'מנגנון קנס השבירה': the penalty is set on the day of the break from the bank's 'טבלת ריבית לווים', is never less than the deposit rate plus a 'מרווח שבירה', and a deposit of a year or more cannot be partly broken in its first year; 'ייתכן ובמסגרת הקנס לא ישולמו ללקוח ריבית ... ואף תיתכן פגיעה בקרן הפיקדון'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14",
+      "BANK-33"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 3
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": 0
+  },
+  "snapshot": "2026-11-06",
+  "source": {
+    "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+    "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון'",
+    "publisher": "Israel Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

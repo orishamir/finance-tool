@@ -1,0 +1,155 @@
+{
+  "id": "mercantile-hisachon-10y-0632",
+  "bank": "mercantile",
+  "names": {
+    "447": [
+      "חיסכון ל-10 שנים",
+      "פיקדון חיסכון ל 10 שנים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "חיסכון ל-10 שנים",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 120,
+    "unit": "months",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+      "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון חיסכון ל 10 שנים'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The product page names it 'פיקדון חיסכון ל 10 שנים' with 'תחנות שנתיות מתום 2 שנים' and stations to 9 years then 'ריבית לפירעון'; the 447 name is 'חיסכון ל-10 שנים'. Recorded as 120 months. The 447 row prints the period 'שנתים' (730 days), read here as the first exit point (its remark: 'תחנות מתום שנתיים כל שנה'), which the table does not say. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4, re-fetched today with the same row). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002, re-fetched today with the same 0632 section; it says 'תוקף הריביות החל מ 3.9.26')."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.75,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'חיסכון ל-10 שנים' קוד 0632, 'שנתים', 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The 447 row: 'ProductName' 'חיסכון ל-10 שנים', code 0632, 'PeriodLengthInDays' 730, 'MaturityPeriodDesc' 'שנתים', 'קבועה', 'לא צמוד', 'החל מ 50 עד 30000', break 'קיימת עם קנס שבירה', 'MaxRenewals' 0, exits 'שנתית', remark 'תחנות מתום שנתיים כל שנה', offered and common nominal rate 1.75 ('OfferedCalculatedNominalInterest' and 'CommonCalculatedNominalInterest' 3.0, unexplained), 'InterestAtMaturity' 1.75, increment type 'עולה גורפת-תוספת לסוף תקופת הפקדון'. The product page prints 'שיעור הריבית השנתית': 'בתחנה של שנתיים 1.00%', 'בתחנה של 3 שנים 1.05%', '4 שנים 1.10%', '5 שנים 1.15%', '6 שנים 1.25%', '7 שנים 1.35%', '8 שנים 1.45%', '9 שנים 1.55%', 'ריבית לפירעון 1.70%'; and 'שיעור הריבית הנוכחית בפיקדון תחושב ממועד ההפקדה עד מועד הפירעון/משיכה'. CONFLICT: the 447 table's only row for the plan sits at a two-year period ('שנתים', 730 days) with 1.75%, while the product page gives 1.00% at the two-year exit and 1.70% at maturity; neither 1.75% nor a two-year term appears on the page. No plan-specific terms are published: the forms page (/private/generalinfo/accounts/forms-and-agreements/) holds only the general terms, whose deposits part ('חלק ג' - פיקדונות', /media/lnbjq0dd/part_c.pdf, 07/2025, the same text as the booklet's chapter, library 62474a808f06947d) leaves exit points and their interest to 'תנאי הפיקדון הספציפי'; the plan is opened through the bank's logged-in channels. Recorded is the 447 table, the bank's regulated publication and the newer of the two (06.11.2026 against rates 'החל מ 3.9.26'), as for 0670. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4, re-fetched today with the same row). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002, re-fetched today with the same 0632 section; it says 'תוקף הריביות החל מ 3.9.26')."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the product page's 'מגזר – שקלי'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+        "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון חיסכון ל 10 שנים', 'מידע נוסף בפיקדון חיסכון ל 10 שנים'",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The product page prints 'מינימום הפקדה חודשית 50 ש\"ח, מקסימום הפקדה חודשית 30,000 ש\"ח'; the 447 table prints ' החל מ 50 עד 30000'."
+    },
+    "max": {
+      "value": 30000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+        "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון חיסכון ל 10 שנים', 'מידע נוסף בפיקדון חיסכון ל 10 שנים'",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound as printed; see min."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column); the table page's 'הבהרות': 'שבירת הפיקדון (ככל והיא מאושרת על ידי הבנק) גורמת להקדמת התשלום ללקוח' and, to compensate the bank, the customer is credited at most with 'שווי הפיקדון למועד הפירעון המוסכם כשהוא מהוון ליום השבירה'. General terms, part C 'פיקדונות' s.10.1 (07/2025): 'אם התיר הבנק על פי שיקוליו, משיכת כל ההפקדה או חלק ממנה לפני תום התקופה (להלן - \"שבירה\"), יחייב הבנק את הלקוחות בקנס שבירה, בשיעור שיהיה נהוג בבנק במועד ביצוע השבירה'; s.10.2: the customer also forgoes all interest and linkage accrued.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 12
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "תחנות יציאה מתום שנתיים ואחר כך כל שנה, בריבית שעולה מתחנה לתחנה. אפשר להקפיא עד 20 הפקדות בלי פגיעה בריבית; כשיש הפסקה ברצף ההפקדות, הריבית יורדת ב-0.25%.",
+  "doubt_he": "טבלת הריביות של הבנק מציגה 1.75% בשורה של שנתיים, ודף המוצר 1.00% בתחנה של שנתיים ו-1.70% בפירעון; נרשם המספר שבטבלה, ותנאי התוכנית עצמם אינם מפורסמים.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+    "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע'",
+    "publisher": "Mercantile Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

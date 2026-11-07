@@ -1,0 +1,15 @@
+pc kgl page height 6331
+pc click "9" -> "9"; top/bottom edge -> 9 / 9
+pc click "12" -> "12"; top/bottom edge -> 12 / 12
+pc click "0.7%" -> "0.7%"; top/bottom edge -> 0.7% / 0.7%
+pc click "0%" -> "0%"; top/bottom edge -> 0% / 0%
+pc click "5 שנים" -> "5 שנים"; top/bottom edge -> 5 שנים / 5 שנים
+pc kgl page height with the terms open 6986
+pc keren-hishtalmut height 8018
+phone kgl page height 7904
+phone click "9" -> "9"; top/bottom edge -> 9 / 9
+phone click "12" -> "12"; top/bottom edge -> 12 / 12
+phone click "0.7%" -> "0.7%"; top/bottom edge -> 0.7% / 0.7%
+phone click "0%" -> "0%"; top/bottom edge -> 0% / 0%
+phone click "5 שנים" -> "5 שנים"; top/bottom edge -> 5 שנים / 5 שנים
+phone keren-hishtalmut height 10503

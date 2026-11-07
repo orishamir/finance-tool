@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build && node scripts/pages-layout.mjs",
+    "build": "react-router build && node scripts/pages-layout.mjs && node scripts/hebrew-quotes.mjs",
     "typecheck": "react-router typegen && tsc -p ."
   },
   "dependencies": {

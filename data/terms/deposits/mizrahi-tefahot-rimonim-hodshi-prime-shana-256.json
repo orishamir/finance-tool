@@ -1,0 +1,168 @@
+{
+  "id": "mizrahi-tefahot-rimonim-hodshi-prime-shana-256",
+  "bank": "mizrahi-tefahot",
+  "names": {
+    "447": [
+      "256 - רימונים- חודשי פריים לשנה",
+      "רימונים- חודשי פריים לשנה"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "12 חודשים",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '256 - רימונים- חודשי פריים לשנה', 'סוג מוצר (לפי תקופה)'",
+      "publisher": "Mizrahi Tefahot Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-06",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "Printed '12 חודשים'."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -3.75,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '256 - רימונים- חודשי פריים לשנה', 'מרווח מעוגן'",
+      "publisher": "Mizrahi Tefahot Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-06",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'מרווח מעוגן' 'P-3.75%' for the first amount tier, anchor 'P=4.75%': prime less 3.75 points."
+  },
+  "rate_offered": {
+    "value": 1.0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '256 - רימונים- חודשי פריים לשנה', 'שיעור הריבית המוצע (נומינלי שנתי)'",
+      "publisher": "Mizrahi Tefahot Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-06",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax printed '1.00%' for the first amount tier. Row '256 - רימונים- חודשי פריים לשנה': period '12 חודשים', rate type 'משתנה', linkage 'אין', first amount tier (upper bound, 'לא כולל') 50000, break 'לא ניתן לשבור', renewal 'לא מתחדש' / 'לא מתחדש', exit points 'יש' 'תחנת יציאה ראשונה לאחר 1 חודשים ולאחר מכן תחנת יציאה מדי 1 חודשים', anchor 'P=4.75%', spread 'P-3.75%', offered '1.00%', common '', effective '1.00%'; further tiers (bound / [spread] / offered / [common] / effective): 100000 / P-3.75% / 1.00% / 1.00%; 250000 / P-3.75% / 1.00% / 1.00%; 1000000 / P-3.75% / 1.00% / 1.00%; 1000000< / P-3.75% / 1.00% / 1.00%; deposit options 'בנקאי אתר פעולות אפליקציה'. Read 2026-11-06 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed), 'כל המידע המוצג נכון לתאריך ושעה' 06/11/2026 08:30:52. Terms document (https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_150_256.pdf): 'סכום מזערי למשיכה ₪ 500', 'סכום מזערי להשארה במשיכה חלקית ₪ 2000'."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read there 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 2000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_150_256.pdf",
+        "title": "בנק מזרחי טפחות, תנאי פיקדון רימונים - חודשי פריים לשנה (256), 'סכום הפקדה מזערי' / 'סכום הפקדה מקסימלי'",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-11-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Terms document: 'סכום הפקדה מזערי ₪ 2,000'."
+    },
+    "max": {
+      "value": 5000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_150_256.pdf",
+        "title": "בנק מזרחי טפחות, תנאי פיקדון רימונים - חודשי פריים לשנה (256), 'סכום הפקדה מזערי' / 'סכום הפקדה מקסימלי'",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-11-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Terms document: 'סכום הפקדה מקסימלי ₪ 5,000,000'."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "447 table: 'לא ניתן לשבור'; terms document: 'לא ניתן למשוך את הפיקדון לפני מועד פירעונו המוסכם'. Withdrawal is allowed at the exit points the table prints.",
+    "rule_ids": [
+      "BANK-06"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 1
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "אפשר למשוך את הכסף, כולו או חלק ממנו, בתחנת יציאה בכל חודש.",
+  "snapshot": "2026-11-06",
+  "source": {
+    "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+    "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים'",
+    "publisher": "Mizrahi Tefahot Bank Ltd.",
+    "strength": "institution"
+  }
+}

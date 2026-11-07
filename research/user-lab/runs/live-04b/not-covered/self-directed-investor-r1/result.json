@@ -1,0 +1,103 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:54:44.826Z",
+  "structured": {
+    "answer": "The site can't yet compare gold (ETCs and gold ETFs, plus open questions about how foreign gold funds are taxed), REITs, corporate and dollar-linked bonds, FX deposits and dollar money-market funds, structured products, robo portfolios and insurance savings policies; all are marked \"לא מחושב\", with their rules \"עוד בבדיקה\". It also says outright that it will never cover single-stock picking, trading or derivatives, physical real estate, or ranking by past returns.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Coverage-status folds (gold fund, FX deposit, savings policy)",
+        "why": "Struck-through 'נסגר ב־' lines sit next to open questions, and other cards say 'עוד לא נרשמו סגירות'; took a moment to see that strikethrough means resolved"
+      },
+      {
+        "where": "Whole card grid",
+        "why": "No count, filter or category grouping, so I couldn't quickly tell which of my own holdings are affected; I had to scroll through about 30 cards"
+      },
+      {
+        "where": "US-listed index ETFs",
+        "why": "Not on the uncovered list, so I assume they're covered, but nothing here confirms it"
+      }
+    ],
+    "used": [
+      "Top banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה'",
+      "Card titles and 'לא מחושב' badges",
+      "Open 'מצב הכיסוי' folds on gold fund, FX deposit, savings policy, REIT, structured deposit",
+      "Closing section 'מה האתר לא משווה ולא עושה'",
+      "Footer 'אישי, לא מסחרי, בלי קישורי שיווק'",
+      "Brokerage guide 'כמה זה עולה' table (earlier)"
+    ],
+    "skimmed": [
+      "'מה ידוע' definitions on each card",
+      "'נקרא גם' lines",
+      "Brokerage glossary (מונחים)"
+    ],
+    "skipped": [
+      "Law citations and source links",
+      "Pension-side cards: תיקון 190, קצבה מוכרת, תשלומים פטורים, היוון קצבה",
+      "Repeated 'כשייסגר: יופיע במדריך...' boilerplate"
+    ],
+    "unsure_meaning": [
+      "Codes MF-28, TXA-28, TX2-01",
+      "Orange 'לפי החברה' badge",
+      "'מקור ראשי (עותק)' and Wikisource listed as a source",
+      "Strikethrough 'נסגר ב־' dates"
+    ],
+    "not_found": [
+      "A summary table or count of uncovered products",
+      "A filter by category or by product I hold",
+      "Explicit confirmation that US-listed ETFs are covered",
+      "Any actual cost figures to compare with what I pay"
+    ],
+    "findings": [
+      {
+        "what": "Wall of near-identical cards with no table, count or filter; hard to map onto my own holdings",
+        "where": "Main card grid, screens 1-9"
+      },
+      {
+        "what": "Single stocks and trading are excluded permanently, so half my account will never be covered",
+        "where": "'מה האתר לא משווה ולא עושה' list"
+      },
+      {
+        "what": "Gold funds and how foreign gold ETFs are taxed are still open",
+        "where": "'השקעה בזהב דרך קרנות סל' card, ETC card"
+      },
+      {
+        "what": "Brokerage cost table gives no numbers, only 'אין תקרה בחוק'",
+        "where": "Brokerage guide, 'כמה זה עולה'"
+      },
+      {
+        "what": "Unexplained internal codes in the coverage status",
+        "where": "'צומצם ב' lines (TX2-01, TXA-28, MF-28)"
+      },
+      {
+        "what": "The same 'כשייסגר' boilerplate repeated on every card is noise",
+        "where": "Bottom of each open fold"
+      },
+      {
+        "what": "Some sources are copies or Wikisource, or the company itself ('לפי החברה')",
+        "where": "ISA/דירוג cards, LAYA card, LBMA card"
+      }
+    ]
+  },
+  "steps": 12,
+  "reads": 12,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 50415,
+    "turns": 14,
+    "usd": 0.2803482,
+    "input": 10,
+    "cacheWrite": 23139,
+    "cacheRead": 54881,
+    "output": 4211,
+    "model": "claude-opus-5-5"
+  }
+}

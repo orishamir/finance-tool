@@ -50,7 +50,7 @@
   {
     "id": "BANK OQ12",
     "status": "narrowed",
-    "title_he": "בתוכנית חיסכון: האם לכל הפקדה נעילה משלה, ואיך בנק מתמחר שבירה",
+    "title_he": "בתוכנית חיסכון: כמה עולה שבירה בפועל בבנקים שמאפשרים אותה",
     "blocks_he": "הנזילות של תוכנית חיסכון, וחישוב שבירה לפני הזמן"
   },
   {
@@ -92,15 +92,16 @@
   },
   {
     "id": "BPN OQ2",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "BPN OQ3",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "BPN OQ4",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "BPN OQ5",
@@ -314,7 +315,8 @@
   },
   {
     "id": "CS OQ8",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-07",
     "title_he": "דמי הניהול שכל חברה גובה בפועל אחרי גיל 21"
   },
   {
@@ -423,6 +425,26 @@
   {
     "id": "CORP OQ16",
     "status": "open"
+  },
+  {
+    "id": "CORP OQ17",
+    "status": "open",
+    "title_he": "אילו ניירות ערך הבורסה מסווגת כאיגרות חוב מובנות, ומה התנאים של כל סדרה"
+  },
+  {
+    "id": "CORP OQ18",
+    "status": "open",
+    "title_he": "המסחר והנזילות של איגרות חוב מובנות בבורסה"
+  },
+  {
+    "id": "CORP OQ19",
+    "status": "open",
+    "title_he": "כמה מנפיק של איגרת חוב מובנת שומר לעצמו בתוך התנאים"
+  },
+  {
+    "id": "CORP OQ20",
+    "status": "open",
+    "title_he": "האם הפיקדונות שמגבים תעודת פיקדון משועבדים למחזיקים"
   },
   {
     "id": "ETF OQ1",
@@ -597,7 +619,8 @@
   },
   {
     "id": "FXD OQ4",
-    "status": "open"
+    "status": "narrowed",
+    "title_he": "תנאי השבירה של פיקדון במטבע חוץ בכל בנק"
   },
   {
     "id": "FXD OQ5",
@@ -605,11 +628,11 @@
   },
   {
     "id": "FXD OQ6",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "FXD OQ7",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "FXD OQ8",
@@ -621,7 +644,8 @@
   },
   {
     "id": "FXD OQ10",
-    "status": "open"
+    "status": "narrowed",
+    "title_he": "האם תושבי ישראל רשאים לקנות אגרות בונדס, ודרך מי"
   },
   {
     "id": "FXD OQ11",
@@ -630,6 +654,11 @@
   {
     "id": "FXD OQ12",
     "status": "open"
+  },
+  {
+    "id": "FXD OQ13",
+    "status": "open",
+    "title_he": "כמה הבנק שומר לעצמו בתוך הנוסחה של פיקדון מובנה"
   },
   {
     "id": "GOV OQ1",
@@ -665,7 +694,7 @@
     "id": "GOV OQ7",
     "status": "narrowed",
     "title_he": "גודל יחידת המסחר במק״מ, מועד האקס של הקופון באג״ח ממשלתית, והאם מסכי הבנקים מפרידים בין מק״מ לאג״ח ממשלתית קצרה",
-    "blocks_he": "גודל הפקודה הקטנה ביותר במק״מ מחוץ למסחר הרציף. בהשוואה, מק״מ ואג״ח ממשלתית עדיין מוצגות בלי דירוג בגלל השאלה הזאת, אף שהפקודה המזערית של שתיהן במסחר הרציף ידועה."
+    "blocks_he": "גודל הפקודה הקטנה ביותר במק״מ מחוץ למסחר הרציף. בהשוואה, מק״מ עדיין מוצג בלי דירוג בגלל השאלה הזאת, אף שהפקודה המזערית שלו במסחר הרציף ידועה."
   },
   {
     "id": "GOV OQ8",
@@ -684,7 +713,7 @@
   },
   {
     "id": "GOV OQ11",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "GOV OQ12",
@@ -918,7 +947,9 @@
   },
   {
     "id": "MGD OQ2",
-    "status": "narrowed"
+    "status": "narrowed",
+    "title_he": "מה דורשת הוראת רשות ניירות ערך לבירור צורכי הלקוח בניהול תיקים",
+    "blocks_he": "הכיסוי של ניהול תיקי השקעות באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
   },
   {
     "id": "MGD OQ3",
@@ -993,7 +1024,8 @@
   },
   {
     "id": "MF OQ3",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-07",
     "title_he": "שעות ההוראה בקרנות לפי סוג, והאם קונים ופודים גם ביום שישי"
   },
   {
@@ -1005,7 +1037,8 @@
   },
   {
     "id": "MF OQ5",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-07",
     "title_he": "האם הכלל שמנהל קרן מעלה דמי ניהול רק בתחילת שנה מחייב"
   },
   {
@@ -1215,7 +1248,8 @@
   },
   {
     "id": "PEN OQ30",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "PEN OQ31",
@@ -1297,6 +1331,11 @@
     "status": "open"
   },
   {
+    "id": "PF OQ18",
+    "status": "open",
+    "title_he": "האם מותר לחברה לסיים הנחה בדמי הניהול חצי שנה אחרי הפקדה אחת, כשלא מפקידים שוב"
+  },
+  {
     "id": "REG OQ1",
     "status": "closed",
     "closed_on": "2026-10-22"
@@ -1332,13 +1371,12 @@
   {
     "id": "REG OQ9",
     "status": "narrowed",
-    "title_he": "מה קורה לנכסי הלקוחות אם חבר בורסה שאינו בנק קורס",
-    "blocks_he": "ההגנה בחשבון ניירות ערך"
+    "title_he": "מי מעביר את חשבונות הלקוחות של חבר בורסה שאינו בנק אם הוא קורס, ומי נושא בחוסר"
   },
   {
     "id": "REG OQ10",
     "status": "narrowed",
-    "title_he": "האם ניירות ערך של לקוחות נשארים מחוץ לנכסים של בנק שקורס"
+    "title_he": "מי מעביר את חשבונות ניירות הערך של בנק שקורס"
   },
   {
     "id": "REG OQ11",
@@ -1399,7 +1437,8 @@
   },
   {
     "id": "REG OQ23",
-    "status": "open"
+    "status": "narrowed",
+    "title_he": "מה קורה לניירות ערך זרים שמוחזקים דרך בנק ישראלי אם הבנק קורס"
   },
   {
     "id": "REG OQ24",
@@ -1407,7 +1446,8 @@
   },
   {
     "id": "REG OQ25",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "REG OQ26",
@@ -1428,7 +1468,8 @@
   },
   {
     "id": "RG OQ2",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "RG OQ3",
@@ -1458,7 +1499,8 @@
   },
   {
     "id": "RG OQ9",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "RG OQ10",
@@ -1485,6 +1527,10 @@
     "status": "open"
   },
   {
+    "id": "RG OQ16",
+    "status": "open"
+  },
+  {
     "id": "INS OQ1",
     "status": "narrowed"
   },
@@ -1496,7 +1542,8 @@
   },
   {
     "id": "INS OQ3",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "INS OQ4",
@@ -1557,6 +1604,10 @@
     "status": "open"
   },
   {
+    "id": "SHR OQ1",
+    "status": "open"
+  },
+  {
     "id": "SW OQ1",
     "status": "closed",
     "closed_on": "2026-10-26"
@@ -1592,11 +1643,13 @@
   },
   {
     "id": "SW OQ7",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "SW OQ8",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-07",
     "title_he": "האם מעבר בין קרנות פנסיה וקופות גמל לקצבה פטור ממס",
     "blocks_he": "המס במעבר בקרן פנסיה ובקופת גמל לקצבה"
   },
@@ -1653,7 +1706,7 @@
     "id": "TXK OQ1",
     "status": "narrowed",
     "title_he": "שיעור המס, הבסיס והניכוי במשיכה מחיסכון לכל ילד",
-    "blocks_he": "המס במעבר בחיסכון לכל ילד; המס במשיכה מחושב לפי מקור משני"
+    "blocks_he": "המס כשמסלול הבנק משתנה בתחנת יציאה; המס במשיכה ממסלול הבנק מחושב לפי מקור משני"
   },
   {
     "id": "TXK OQ2",
@@ -1695,7 +1748,7 @@
     "id": "TXK OQ10",
     "status": "open",
     "title_he": "האם משיכה מתחת להפקדות יוצרת הפסד שאפשר לקזז",
-    "blocks_he": "קיזוז ההפסדים בקופת גמל להשקעה, בניהול אישי ובחיסכון לכל ילד בקופה"
+    "blocks_he": "קיזוז ההפסדים בקופת גמל להשקעה, גם בניהול אישי, ובחיסכון לכל ילד בקופה"
   },
   {
     "id": "TXK OQ11",
@@ -1706,6 +1759,10 @@
     "id": "TXK OQ12",
     "status": "closed",
     "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXK OQ13",
+    "status": "open"
   },
   {
     "id": "TXG OQ1",
@@ -1773,6 +1830,10 @@
     "status": "open"
   },
   {
+    "id": "TXG OQ15",
+    "status": "open"
+  },
+  {
     "id": "TXH OQ1",
     "status": "closed",
     "closed_on": "2026-10-26"
@@ -1837,6 +1898,16 @@
   },
   {
     "id": "TXH OQ15",
+    "status": "open"
+  },
+  {
+    "id": "TXH OQ16",
+    "status": "open",
+    "title_he": "האם משיכה מקרן השתלמות מתחת להפקדות יוצרת הפסד, ואיך היא ממוסה",
+    "blocks_he": "קיזוז ההפסדים בקרן השתלמות ובקרן השתלמות בניהול אישי"
+  },
+  {
+    "id": "TXH OQ17",
     "status": "open"
   },
   {
@@ -2016,6 +2087,12 @@
     "closed_on": "2026-10-26"
   },
   {
+    "id": "TXI OQ19",
+    "status": "open",
+    "title_he": "איך ממוסה פיקדון שמשלם בסוף התקופה את הטוב מבין ריבית קבועה לא צמודה והצמדה מלאה למדד",
+    "blocks_he": "שיעור מס ההכנסה על הרווח בפיקדון עם בחירה בסוף התקופה"
+  },
+  {
     "id": "TXP OQ1",
     "status": "closed",
     "closed_on": "2026-10-22"
@@ -2082,10 +2159,25 @@
   },
   {
     "id": "TXP OQ15",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "TXP OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TXP OQ17",
+    "status": "open"
+  },
+  {
+    "id": "TXP OQ18",
+    "status": "open",
+    "title_he": "האם תשלום מקרן פנסיה או מקופת גמל מתחת להפקדות יוצר הפסד שאפשר לקזז",
+    "blocks_he": "קיזוז ההפסדים בקרן פנסיה, בקופת גמל לקצבה ובקופת גמל בניהול אישי"
+  },
+  {
+    "id": "TXP OQ19",
     "status": "open"
   },
   {
@@ -2198,6 +2290,10 @@
   },
   {
     "id": "TXF OQ26",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ27",
     "status": "open"
   },
   {
@@ -2349,7 +2445,8 @@
   },
   {
     "id": "TX2 OQ9",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "TX2 OQ10",
@@ -2359,7 +2456,7 @@
   },
   {
     "id": "TX2 OQ11",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TX2 OQ12",
@@ -2380,11 +2477,24 @@
   },
   {
     "id": "TX2 OQ16",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "TX2 OQ17",
     "status": "narrowed"
+  },
+  {
+    "id": "TX2 OQ18",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ19",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ20",
+    "status": "open"
   },
   {
     "id": "CAT OQ1",
@@ -2497,6 +2607,42 @@
   },
   {
     "id": "CAT OQ26",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ27",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ28",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ29",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ30",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ31",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ32",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ33",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ34",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ35",
     "status": "open"
   }
 ]

@@ -1,17 +1,24 @@
 // One read of each file per process (tests, the build's prerender, the dev server): a page's loader reads the same records many times
 // (every rule card's page reads all ~600 rule records), and reading and checking them again each time was most of the tests' and the
 // build's time. A file is read again when its modification time changes, so the dev server still shows an edit. What comes back is
-// frozen, deep: it is shared by every caller, so a caller that changed it would change it for every page; copy before changing.
+// frozen, deep: it is shared by every caller, so a caller that changed it would change it for every page; copy before changing. A record
+// under data/ first gains the words its cited web pages open at (`withFragments`, fragments.server.ts).
 import { readFileSync, statSync } from "node:fs";
 import type { z } from "zod";
+import { fragmentsMtime, withFragments } from "./fragments.server";
 
 interface Entry<T> {
-  mtime: number;
+  mtime: number | string;
   value: T;
 }
 
 function mtimeOf(path: string): number {
   return statSync(path).mtimeMs;
+}
+
+/** A record's own time and the fragments file's, so either change reads the record again (the words a cited page opens at). */
+function recordMtime(path: string): string {
+  return `${mtimeOf(path)}:${fragmentsMtime(path)}`;
 }
 
 function deepFreeze<T>(value: T): T {
@@ -37,10 +44,10 @@ const raw = new Map<string, Entry<unknown>>();
 
 /** A JSON file as it stands (no schema), read once while it is unchanged; frozen. */
 export function readJsonCached<T = unknown>(path: string): T {
-  const mtime = mtimeOf(path);
+  const mtime = recordMtime(path);
   const hit = raw.get(path);
   if (hit && hit.mtime === mtime) return hit.value as T;
-  const value = deepFreeze(JSON.parse(readFileSync(path, "utf8")) as unknown);
+  const value = deepFreeze(withFragments(JSON.parse(readFileSync(path, "utf8")) as unknown, path));
   raw.set(path, { mtime, value });
   return value as T;
 }
@@ -51,12 +58,12 @@ const parsed = new WeakMap<z.ZodType, Map<string, Entry<unknown>>>();
 export function readParsedCached<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
   let bySchema = parsed.get(schema);
   if (!bySchema) parsed.set(schema, (bySchema = new Map()));
-  const mtime = mtimeOf(path);
+  const mtime = recordMtime(path);
   const hit = bySchema.get(path);
   if (hit && hit.mtime === mtime) return hit.value as z.infer<T>;
   const result = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
   if (!result.success) throw new Error(`${path}: ${result.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
-  const value = deepFreeze(result.data);
+  const value = deepFreeze(withFragments(result.data, path));
   bySchema.set(path, { mtime, value });
   return value;
 }

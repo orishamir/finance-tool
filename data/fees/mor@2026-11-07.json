@@ -1,0 +1,223 @@
+{
+  "id": "mor",
+  "provider": {
+    "name_he": "מור גמל ופנסיה בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.moreinvest.co.il/media/3eyhwnbj/1-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+    "title": "בקשת הצטרפות לקופת גמל להשקעה",
+    "notes": "Mor's joining request for מור גמל להשקעה (form 1), 3 pages, footer 1.6.3.26 (read as form 1 of 6.3.2026, an inference from the footer's pattern; the file was modified 2026-05-20); fees on p.2. Found through the forms search of moreinvest.co.il (פעולות נפוצות, טפסים שימושיים). Every joining form Mor publishes for this fund prints the same fees with the same asterisk: joining kit form 156 (p.3, footer 1.6.3.26), joining and transfer kit form 57 (p.3, 1.6.3.26), and for a minor form 141 (p.3, 141.5.3.26), kit 171 (p.4) and joining and transfer kit 172 (p.4). The fund's bylaws (מור קופת גמל להשקעה, fund 7956, edition 18 February 2026, printed on every page, https://www.moreinvest.co.il/media/baee3ufm/, listed as the current bylaws on moreinvest.co.il) let the company charge up to the legal maximum (s.35.1, p.10) and offer a lower fee for at least two years (s.36.1). Read 2026-11-07 (form first read 2026-11-06). The product page's calculator assumes 0.8% of the balance (an illustration, not used). The discount letter the asterisk names is sent to each member after joining and is not published.",
+    "published": null,
+    "printed": {
+      "kind": "version",
+      "version": "1.6.3.26"
+    },
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-07",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "mor-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.8,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.moreinvest.co.il/media/3eyhwnbj/1-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+          "title": "בקשת הצטרפות לקופת גמל להשקעה, דמי ניהול בקופת גמל",
+          "publisher": "Mor Gemel and Pension",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.8% שיעור דמי ניהול מצבירה (שנתי)"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14",
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Printed by the company, not left blank, on every joining form Mor publishes for מור גמל להשקעה (form 1 p.2; kits 156 and 57 p.3; minor's forms 141 p.3, 171 and 172 p.4), so it is the fee offered to every new member who joins on them, not one filled in case by case. It is a discount from the bylaws' maximum, under the asterisk \"*בכפוף לקבוע במכתב תנאי הנחה בדמי ניהול שיישלח בסמוך להצטרפות\": the bylaws (edition 18.2.2026, s.35.1, p.10) bind only \"בשיעור שלא יעלה על\" the legal maximum, 1.05% of the balance and 4% of deposits (PF-02), and s.36.1 lets the company offer a lower fee \"תקפה במהלך תקופה של לפחות שנתיים\". How long the discount lasts and when it ends are set in the letter, not published; the CMA circular 2017-9-15 has a discount last at least five years, raised earlier only on a withdrawal or transfer, six months after deposits stop, or a balance mechanism in the agreement (KGL-16; the bylaws' two years and s.36.2 are the older wording, KGL-30). See `discount_months` and `reverts_to`. On top of the fees the company may charge direct expenses for transactions (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "discount_months": {
+        "value": null,
+        "unit": "months",
+        "source": {
+          "url": "https://www.moreinvest.co.il/media/3eyhwnbj/1-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+          "title": "בקשת הצטרפות לקופת גמל להשקעה, דמי ניהול בקופת גמל",
+          "publisher": "Mor Gemel and Pension",
+          "strength": "institution",
+          "page": 2,
+          "quote": "*בכפוף לקבוע במכתב תנאי הנחה בדמי ניהול שיישלח בסמוך להצטרפות"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Not printed: the joining request leaves the discount's terms to a letter sent after joining, which is not published. The bylaws (edition 18.2.2026, s.36.1, p.10) say \"לפחות שנתיים\"; the CMA circular 2017-9-15 sets at least five years from the day the lower fee starts (KGL-16), which method A-19 applies."
+      },
+      "reverts_to": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.moreinvest.co.il/media/baee3ufm/res_%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2026-%D7%A0%D7%A7%D7%99-%D7%94%D7%95%D7%A1%D7%A4%D7%AA-%D7%9E%D7%A1%D7%9C%D7%95%D7%9C-%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+          "title": "תקנון קופות הגמל מור קופות גמל להשקעה (מהדורה 18 בפברואר 2026), סעיף 35.1",
+          "publisher": "Mor Gemel and Pension",
+          "strength": "institution",
+          "page": 10,
+          "quote": "בשיעור שלא יעלה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2026-02-18",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The bylaws bind the fee only up to the maximum the law sets (s.35.1.1 on the balance, s.35.1.2 on payments), recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. A footnote of the standard bylaw (p.10) tells a company that set a cap lower than the regulations to write its rates to that cap; the bylaws carry no lower rate."
+      },
+      "offer_he": "בכפוף לקבוע במכתב תנאי הנחה בדמי ניהול שיישלח בסמוך להצטרפות",
+      "names": {
+        "tariff": [
+          "שיעור דמי ניהול מצבירה (שנתי)"
+        ]
+      }
+    },
+    {
+      "id": "mor-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.moreinvest.co.il/media/3eyhwnbj/1-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+          "title": "בקשת הצטרפות לקופת גמל להשקעה, דמי ניהול בקופת גמל",
+          "publisher": "Mor Gemel and Pension",
+          "strength": "institution",
+          "page": 2,
+          "quote": "שיעור דמי ניהול מהפקדה (חודשי/חד פעמי) 0%"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14",
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Printed by the company, not left blank, on every joining form Mor publishes for מור גמל להשקעה (form 1 p.2; kits 156 and 57 p.3; minor's forms 141 p.3, 171 and 172 p.4), so it is the fee offered to every new member who joins on them, not one filled in case by case. It is a discount from the bylaws' maximum, under the asterisk \"*בכפוף לקבוע במכתב תנאי הנחה בדמי ניהול שיישלח בסמוך להצטרפות\": the bylaws (edition 18.2.2026, s.35.1, p.10) bind only \"בשיעור שלא יעלה על\" the legal maximum, 1.05% of the balance and 4% of deposits (PF-02), and s.36.1 lets the company offer a lower fee \"תקפה במהלך תקופה של לפחות שנתיים\". How long the discount lasts and when it ends are set in the letter, not published; the CMA circular 2017-9-15 has a discount last at least five years, raised earlier only on a withdrawal or transfer, six months after deposits stop, or a balance mechanism in the agreement (KGL-16; the bylaws' two years and s.36.2 are the older wording, KGL-30). See `discount_months` and `reverts_to`. On top of the fees the company may charge direct expenses for transactions (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "discount_months": {
+        "value": null,
+        "unit": "months",
+        "source": {
+          "url": "https://www.moreinvest.co.il/media/3eyhwnbj/1-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+          "title": "בקשת הצטרפות לקופת גמל להשקעה, דמי ניהול בקופת גמל",
+          "publisher": "Mor Gemel and Pension",
+          "strength": "institution",
+          "page": 2,
+          "quote": "*בכפוף לקבוע במכתב תנאי הנחה בדמי ניהול שיישלח בסמוך להצטרפות"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Not printed: the joining request leaves the discount's terms to a letter sent after joining, which is not published. The bylaws (edition 18.2.2026, s.36.1, p.10) say \"לפחות שנתיים\"; the CMA circular 2017-9-15 sets at least five years from the day the lower fee starts (KGL-16), which method A-19 applies."
+      },
+      "reverts_to": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.moreinvest.co.il/media/baee3ufm/res_%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2026-%D7%A0%D7%A7%D7%99-%D7%94%D7%95%D7%A1%D7%A4%D7%AA-%D7%9E%D7%A1%D7%9C%D7%95%D7%9C-%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+          "title": "תקנון קופות הגמל מור קופות גמל להשקעה (מהדורה 18 בפברואר 2026), סעיף 35.1",
+          "publisher": "Mor Gemel and Pension",
+          "strength": "institution",
+          "page": 10,
+          "quote": "בשיעור שלא יעלה על שיעור דמי הניהול המרבי הקבוע בהסדר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2026-02-18",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The bylaws bind the fee only up to the maximum the law sets (s.35.1.1 on the balance, s.35.1.2 on payments), recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. A footnote of the standard bylaw (p.10) tells a company that set a cap lower than the regulations to write its rates to that cap; the bylaws carry no lower rate."
+      },
+      "offer_he": "בכפוף לקבוע במכתב תנאי הנחה בדמי ניהול שיישלח בסמוך להצטרפות",
+      "names": {
+        "tariff": [
+          "שיעור דמי ניהול מהפקדה (חודשי/חד פעמי)"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+ "task": "You are reading a Hebrew page of a free website that explains saving products in Israel. Read all the screenshots, top to bottom: together they are one page. Then answer briefly, in Hebrew or English, without guessing beyond what the page says: (1) Based on this page, would you lock the money in a one-year bank deposit? What on the page decided it? (2) If you need the money after six months, what happens? (3) What would breaking the deposit early cost you? (4) Say in your own words what the part about breaking a deposit early tells you, and which banks each sentence of it is about. (5) What does the red box in the tax part tell you? (6) Quote every word or sentence you did not understand, that confused you, or that seemed to contradict another part of the page, and say why. (7) Is anything you needed to decide missing? (8) Did any link or label look like it should lead somewhere or explain something but did not?",
+ "readers": [
+  {
+   "key": "guide-phone",
+   "who": "You are 52 and have 20,000 shekels in your current account. You are deciding whether to lock it in a one-year bank deposit. You read Hebrew natively and know little about banking terms. You are reading on your phone.",
+   "shots": [
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-1.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-2.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-3.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-4.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-5.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-6.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-7.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-8.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-9.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-10.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-11.png",
+    "research/audit/2026-11-07-deposits/readers/shots-guide-390/page-12.png"
+   ]
+  }
+ ]
+}

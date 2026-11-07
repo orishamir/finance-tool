@@ -1,5 +1,5 @@
-// The "not covered yet" page (flows 6.13, product D2): the tier-2 instruments, what is known and that
-// the rules behind each are still open.
+// The "not covered yet" page (flows 6.13, product D2): the tier-2 kinds of holding, what is known and what still blocks
+// each. The cards are the D2 list (`notCoveredCards`), never every row of the glossary's section 3 (2026-11-07).
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/not-covered";
 import { notCovered as copy, r5, site } from "../copy";
@@ -8,37 +8,33 @@ import { IconDashed } from "../components/compare/icons";
 import { Tpl } from "../components/exposure-mode/tpl";
 import { IdRef, LeadTail, RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, Tag } from "../components/kit";
+import { Callout, Card, Disclosure, LinkButton, Tag, gershayim, When } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
-import { fmt } from "../lib/format";
+
 import { sourceLabel } from "../lib/source-label";
 import { provenance } from "../copy";
+import { sourceHref } from "../lib/sources";
 
 export async function loader() {
-  const { loadNotCovered, loadRules, pointedRecords, today } = await import("../lib/data.server");
-  const rows = loadNotCovered();
+  const { loadRules, pointedRecords, today } = await import("../lib/data.server");
+  const { graduationStatuses, graduationRuleIds, notCoveredCards } = await import("../lib/graduation.server");
   const rules = loadRules();
-  const { graduationStatuses, graduationRuleIds } = await import("../lib/graduation.server");
-  const { notCoveredSources } = await import("../lib/graduation.server");
   const statuses = graduationStatuses();
-  // the glossary parser cuts a url at the first ")": take the whole address from the balanced reader
-  const whole = notCoveredSources();
-  for (const r of rows) {
-    const w = whole.get(r.he);
-    if (r.source && w) r.source = { ...r.source, title: w.title, url: w.url };
-  }
-  const cited = new Set([...rows.flatMap((r) => r.ruleIds), ...graduationRuleIds(statuses)]);
+  // one card per kind of holding the site lacks (product D2), never a glossary section's every row (2026-11-07)
+  const cards = notCoveredCards(statuses).filter((c) => c.status.status !== "graduated");
+  const cited = new Set([...cards.flatMap((c) => c.row.ruleIds), ...graduationRuleIds(statuses)]);
   const mine = Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r]));
-  return { rows, statuses, rules: mine, pointed: pointedRecords(mine, rules), today: today() };
+  return { cards, statuses, rules: mine, pointed: pointedRecords(mine, rules), today: today() };
 }
 
 export function meta() {
   return [{ title: `${copy.title} · ${site.name}` }];
 }
 
-const dateNode = (d: string) => <bdi dir="ltr">{fmt.date(d)}</bdi>;
+const dateNode = (d: string) => <When iso={d} />;
 
-/** "מצב הכיסוי" (flow 37): the status line with its icon, what blocks, what closed, the fixed path sentence. Computed from the rule base, never typed. */
+/** "מה חסר כדי שהאתר יחשב את זה" (flow 37): the status line with its icon, what blocks, what closed. Computed from the rule base, never typed. The fixed
+ * "when it closes" sentence went on 2026-11-07: the same promise on every card said more than the site would do for each. */
 function GraduationStatus({ s }: { s: GraduationStatusView }) {
   const g = r5.graduation;
   const line =
@@ -72,7 +68,9 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
               </span>
               {o.narrowedOn && o.narrowedBy && (
                 <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
-                  <Tpl t={g.narrowed} vars={{ date: dateNode(o.narrowedOn), rule: <RuleRef id={o.narrowedBy} /> }} />
+                  {/* the narrowing rule as the rules chip, never its bare code (2026-11-07) */}
+                  <Tpl t={g.narrowed} vars={{ date: dateNode(o.narrowedOn) }} />
+                  <RulesChip ids={[o.narrowedBy]} />
                 </span>
               )}
               {o.institutionAnswer && (
@@ -92,8 +90,15 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
           <ul className="flex flex-col gap-1">
             {s.closed.map((c, i) => (
               <li key={`${c.code}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
-                <span className="line-through">
-                  {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} />}
+                {/* a closure is said in words, not struck: a struck date and a bare count read as a fragment (2026-11-07) */}
+                <span>
+                  {!c.code ? (
+                    <Tpl t={c.closedOn ? g.closureNoCode : g.closureNoCodeNoDate} vars={{ date: c.closedOn ? dateNode(c.closedOn) : "", topic: g.closureTopics[s.id] ?? "" }} />
+                  ) : c.closedOn ? (
+                    <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} />
+                  ) : (
+                    <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} />
+                  )}
                 </span>
                 <RulesChip ids={c.ruleIds} />
               </li>
@@ -101,7 +106,6 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
           </ul>
         )}
       </div>
-      <p className="text-sm text-muted-foreground">{g.path}</p>
     </div>
   );
   return (
@@ -121,17 +125,22 @@ export default function NotCovered() {
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
+          {/* what the site does cover, so the page is not only a list of gaps (a fresh reader, 2026-11-07) */}
+          <p className="max-w-measure flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span>{copy.covered.line}</span>
+            <LinkButton to="/guide">{copy.covered.link}</LinkButton>
+          </p>
         </header>
-        {data.rows.length > 0 && <Callout tone="blocked">{copy.notice}</Callout>}
-        {data.rows.length === 0 ? (
+        {data.cards.length > 0 && <Callout tone="blocked">{copy.notice}</Callout>}
+        {data.cards.length === 0 ? (
           <p>{copy.empty}</p>
         ) : (
           <ul className="grid gap-4 lg:grid-cols-2">
-            {data.rows.map((r) => (
-              <Card as="li" key={r.he} id={data.statuses.find((s) => s.name === r.he)?.id} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
+            {data.cards.map(({ status: s, row: r }) => (
+              <Card as="li" key={s.id} id={s.id} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
                 <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
                   <h2 className="text-lg font-semibold">
-                    <bdi>{r.he}</bdi>
+                    <bdi>{gershayim(r.he)}</bdi>
                   </h2>
                   <Tag tone="blocked" icon={<IconLock size={14} />}>
                     {copy.blockedTag}
@@ -139,19 +148,19 @@ export default function NotCovered() {
                 </div>
                 {r.variants.length > 0 && (
                   <p className="text-sm text-muted-foreground">
-                    {copy.alsoCalled}: {r.variants.join(" · ")}
+                    {copy.alsoCalled}: {r.variants.map(gershayim).join(" · ")}
                   </p>
                 )}
                 <dl className="flex flex-col gap-3">
                   <div className="flex flex-col gap-1">
                     <dt className="text-sm text-muted-foreground">{copy.rows.known}</dt>
-                    <dd>{r.explanation}</dd>
+                    <dd>{gershayim(r.explanation)}</dd>
                     {r.source && (
                       <dd className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
                         {(() => {
                           const label = sourceLabel(r.source, provenance.sourced.localFile);
                           return (
-                            <a href={r.source.url} target="_blank" rel="noopener noreferrer" className="text-link hover:underline" title={label.english ?? undefined}>
+                            <a href={sourceHref(r.source)} target="_blank" rel="noopener noreferrer" className="text-link hover:underline" title={label.english ?? undefined}>
                               {/* the arrow is held to the title's last word: alone, it stood on a line under a long title (2026-11-03) */}
                               {label.host ? (
                                 <span className="whitespace-nowrap">
@@ -166,21 +175,20 @@ export default function NotCovered() {
                             </a>
                           );
                         })()}
-                        <bdi dir="ltr">{fmt.date(r.source.checked)}</bdi>
+                        <span>
+                          <Tpl t={copy.checked} vars={{ date: dateNode(r.source.checked) }} />
+                        </span>
                         <StrengthLabel strength={r.source.strength} />
                       </dd>
                     )}
                     {r.ruleIds.length > 0 && (
                       <dd>
-                        <RulesLine ids={r.ruleIds} />
+                        <RulesLine ids={r.ruleIds} lead={copy.rulesLead} />
                       </dd>
                     )}
                   </div>
                 </dl>
-                {(() => {
-                  const s = data.statuses.find((x) => x.name === r.he);
-                  return s && s.status !== "graduated" ? <GraduationStatus s={s} /> : null;
-                })()}
+                <GraduationStatus s={s} />
               </Card>
             ))}
           </ul>

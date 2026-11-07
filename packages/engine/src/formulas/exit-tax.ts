@@ -52,10 +52,10 @@ export function surtax(
 
 /**
  * F-44 Kupat gemel lehashkaa, lump sum at any age. `τ = 0.25 × max(0, real)` on the real gain (TXK-07; in law since the
- * 2026-10-25 tax-bases research), with the 15%-of-nominal line (TXK-06 second limb) as the sensitivity the page shows (G-02).
+ * 2026-10-25 tax-bases research).
  */
-export function kglExitTax(real: number, nominalGain: number, realRate: number, nominalRate: number) {
-  return { tax: realRate * Math.max(0, real), alternative: nominalRate * Math.max(0, nominalGain) };
+export function kglExitTax(real: number, realRate: number): number {
+  return realRate * Math.max(0, real);
 }
 
 /**
@@ -67,9 +67,10 @@ export function hishtalmutExitTax(excessRealGain: number, rate: number): number 
 }
 
 /**
- * F-50 Child savings. Gains are taxed on withdrawal (TXK-20) at the secondary-source rates (TXK-23):
- * provident route and CPI-linked bank deposit 25% of the real gain; unlinked bank deposit 15% of the
- * nominal gain.
+ * F-50 Child savings. Gains are taxed on withdrawal (TXK-20): the provident route 25% of the real gain, from the
+ * law (TXK-23); the bank route at the general deposit-interest rates the Ordinance sets (TXK-29), a CPI-linked deposit
+ * 25% of the real gain and an unlinked deposit 15% of the nominal gain, which applying to child savings is the site's
+ * reading (labelled `reading`). 25% is the ceiling and the amount withheld; lower brackets come back only through a return.
  */
 export function childSavingsExitTax(gain: number, rate: number): number {
   return rate * Math.max(0, gain);

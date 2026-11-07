@@ -1,0 +1,84 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "stamp": "{\"keys\":[{\"id\":\"list-holds-what-it-is-not\",\"problem\":\"The page says it lists the products the site knows but cannot yet explain, yet many of its entries are not products at all: a fee, a fund's label, a gold price benchmark, a role, an event, a grant. A reader cannot trust that the list says what is really missing, and a fee the site does handle elsewhere shows up as unknown, so the whole list reads as unchecked.\",\"where\":\"the cards of the list under the title and subtitle at the top (for example the cards of an exchange fee, a gold price, a rating company, a debt settlement)\",\"kind\":\"general\"},{\"id\":\"bare-code\",\"problem\":\"Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.\",\"where\":\"the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'\",\"kind\":\"general\"},{\"id\":\"fragment-no-noun\",\"problem\":\"Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.\",\"where\":\"the 'what was closed' lines of the open cards\",\"kind\":\"general\"},{\"id\":\"source-names-not-for-reader\",\"problem\":\"Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.\",\"where\":\"the source line under 'what is known' on a few cards\",\"kind\":\"general\"},{\"id\":\"same-promise-every-card\",\"problem\":\"Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.\",\"where\":\"the line starting 'when it is closed' at the bottom of each open card\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 1,
+        "why": "Finding 1 makes the same point: items like a debt arrangement, a rating company, a gold price and a fee aren't products, so the reader doubts the whole list."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 complains about unexplained internal codes like 'MF-28', which is the bare code shown in place of the question in words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 4,
+        "why": "Finding 4 also flags the struck-out 'נסגר ב-24.10.2026' line as unexplained, which is a clear part of the person's 'closed' fragment that has no noun."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 3 complains that the source lines hold too many legal citations, not that sources are named in English or as copies while still labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 2 says the cards look alike overall but never mentions the repeated 'when it is closed' promise or that it is hard to believe."
+      }
+    ],
+    "liked": [],
+    "usd": 0.028843399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 1,
+        "why": "Finding 1 says the list promises products but includes a debt arrangement, a rating company, a gold price and a fee, and that this makes the reader doubt the whole list, which is the same problem."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 complains about unexplained jargon codes like 'MF-28', which matches the complaint about bare internal codes shown instead of the question in words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 4,
+        "why": "Finding 4 also flags the crossed-out 'נסגר ב-24.10.2026' with no explanation, which the person would recognise as their struck-out date line that says nothing to a reader."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 3 objects to the number of legal citations on the source lines, not to sources being named in English or as copies while still labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 2 complains that the cards look alike and the grid never ends, but it never mentions the repeated 'when it is closed' promise line."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0289434
+  },
+  "third": null,
+  "ranks": {
+    "list-holds-what-it-is-not": 1,
+    "bare-code": 4,
+    "fragment-no-noun": 4,
+    "source-names-not-for-reader": 0,
+    "same-promise-every-card": 0
+  },
+  "agreed": {
+    "list-holds-what-it-is-not": true,
+    "bare-code": true,
+    "fragment-no-noun": true,
+    "source-names-not-for-reader": true,
+    "same-promise-every-card": true
+  },
+  "against": {},
+  "usd": 0.0577868
+}

@@ -23,19 +23,23 @@ export interface BrokerageTo {
   broker?: SecuritiesInput["broker"];
 }
 
-/** A switch inside the provident family (`keren-hishtalmut` or `kupat-gemel-lehashkaa`), or a transfer between pension funds. */
+/** One side of a track switch or a transfer in the provident family: a study fund, a kupat gemel lehashkaa, a pension fund or a provident fund for annuity. */
 export interface ProvidentSide {
   kind: "provident";
   wrapper: "kupat-gemel-lehashkaa" | "keren-hishtalmut" | "pension-comprehensive" | "pension-general" | "provident-for-annuity";
   /**
-   * `track-switch` (default): the member changes track inside one fund (TXK-04, TXH-19, PF-23 ...). `fund-transfer`: the
-   * member moves money between two funds of the same kind (SW-39, SW-40); the carry-over of payment dates is
-   * stated, but that the member's own transfer is not a tax event is a reading (SW-40: no official text says so).
+   * `track-switch` (default): the member changes track inside one fund (TXK-04, TXH-17, TXP-32, PF-23 ...). `fund-transfer`:
+   * the member moves money between two funds of the same kind. Study funds: payment dates carry over for tax law (SW-39,
+   * TXH-19); that the move is not a tax event is a reading (TXH open question 11). Kupat gemel lehashkaa: not a withdrawal, so
+   * not taxed (TXK-04, a reading); whether payment dates carry over is open (SW open question 17). Annuity funds: payment
+   * dates carry over (SW-40, reg. 2(ב); a provident fund for annuity moves by the same process, SW-23) and the member's transfer
+   * is not taxed (TXP-32, a reading); severance money moved to a new account in a provident fund for annuity (TXP-32) is not
+   * modelled.
    */
   move?: "track-switch" | "fund-transfer";
-  /** Rule IDs from the wrapper records that say the switch costs nothing (TXK-04, TXH-17, TXH-19, PF-19, PF-23). */
+  /** Rule IDs from the wrapper records that say the switch costs nothing (TXK-04, TXH-17, TXH-19, TXP-32, PF-19, PF-23). */
   ruleIds: readonly string[];
-  /** Share of the balance moved, 0 to 1; default 1. A hishtalmut moves whole only (PF-18, KH-17). */
+  /** Share of the balance moved, 0 to 1; default 1. A hishtalmut moves to another fund whole only (PF-18, KH-17); a track switch may move part (KH-18, PF-23). */
   share?: number;
   /** Rule IDs for the whole-only rule of a hishtalmut, from its wrapper record (PF-18, KH-17). */
   wholeOnlyRuleIds?: readonly string[];
@@ -80,21 +84,29 @@ export interface ProvidentSwitch {
   formula: "F-66";
   kind: "provident";
   wrapper: ProvidentSide["wrapper"];
-  /** Zero: a switch inside the family is not a withdrawal and not taxed. */
+  /** Zero: a switch inside the family is not a withdrawal and not taxed (a reading, `labels`); no fee is set by the rules, though a fee discount may end (`flags`). */
   cost: ValueObject;
   ruleIds: string[];
   outcome: Outcome;
   /** `fund-transfer` when two funds of the same kind are involved (additive, 2026-10-24). */
   move: "track-switch" | "fund-transfer";
-  /** The labels the rules read carry; a fund transfer's tax neutrality is a reading, `secondary-source` on SW-40. */
+  /** The labels the rules read carry; the tax neutrality of every provident switch or transfer is the site's reading: `reading` on TXK-04, TXP-32, or for a study fund TXH-17 (track switch) and TXH-19 (transfer). */
   labels: Label[];
+  /**
+   * What the page must show beside the 0: `PF-14` on every move (a track switch or a transfer, whole or part, lets the manager
+   * end a fee discount early: PF-14 case 2, SW-15, PF-23, KGL-16); `SW-OQ17` on a transfer between two kupot gemel lehashkaa
+   * (whether payment dates carry over is open: no tax at the move, the later exit tax unknown, so the outcome is listed, not
+   * ranked); `SW-40` on a transfer into a comprehensive pension fund (reg. 2(ד)(1) caps what it may receive; not modelled);
+   * `TXP-32` on a transfer between provident funds for annuity (severance money moved to a new account is taxed first; not modelled).
+   */
+  flags: Flag[];
 }
 
 /** The method cannot cost this switch: it is not allowed, or the rules or the run are not there. */
 export interface SwitchRefused {
   formula: "F-66";
   kind: "not-allowed" | "not-evaluated";
-  /** `hishtalmut-whole-only` (PF-18, KH-17), `different-kind` (no rule says a transfer between kinds is free), `rule-open`, `rule-missing`. */
+  /** `hishtalmut-whole-only` (PF-18, KH-17), `different-kind` (not modelled: see `providentSwitch`), `rule-open`, `rule-missing`. */
   code: "hishtalmut-whole-only" | "different-kind" | "rule-open" | "rule-missing";
   ruleIds: string[];
 }
@@ -105,9 +117,13 @@ export type SwitchingCost = BrokerageSwitch | ProvidentSwitch | SwitchRefused;
  * F-66 Switching cost. Brokerage: A's run is cut at month `s` and sold there, tax per F-40 on A's lots (TXS-21), the
  * net proceeds open B's lot, and B runs to the horizon `T` of A's goal. Contributions after `s` go to B. Cost of
  * switching `= V_T^real(no switch) − V_T^real(switch)`. Provident: a track switch or a transfer to the same kind of
- * fund costs nothing (TXK-04, TXH-17, TXH-19, PF-19, PF-23, rule IDs from the wrapper records); a hishtalmut moves
- * whole, never in part (PF-18, KH-17), so a share below 1 is "not allowed"; a transfer to a different kind is
- * "not evaluated" because no rule says it is free.
+ * fund is costed 0, its tax neutrality a reading (TXK-04, TXH-17, TXH-19, TXP-32, PF-19, PF-23, rule IDs from the wrapper
+ * records); a transfer between two kupot gemel lehashkaa is listed, not ranked, while SW open question 17 is open; a hishtalmut
+ * moves to another fund whole, never in part (PF-18, KH-17), so a transfer of a share below 1 is "not allowed", while a
+ * track switch may move part (KH-18, PF-23); a transfer to a different kind is "not evaluated" (between annuity kinds TXP-32
+ * says it is not taxed, but the conditions are not modelled: which money may move between the kinds, the severance
+ * exception, TXP-32, and reg. 2(ד)(1)'s cap on what a comprehensive fund may receive, SW-40). That cap binds a transfer
+ * between two comprehensive funds too, which is costed 0 with the `SW-40` flag naming the cap, not modelled.
  */
 export function switchingCost(from: SwitchFrom, to: SwitchTo, atMonth: number, ctx: RunContext): SwitchingCost {
   if (from.kind === "provident" || to.kind === "provident") return providentSwitch(from, to, ctx);
@@ -117,11 +133,15 @@ export function switchingCost(from: SwitchFrom, to: SwitchTo, atMonth: number, c
 function providentSwitch(from: SwitchFrom, to: SwitchTo, ctx: RunContext): SwitchingCost {
   if (from.kind !== "provident" || to.kind !== "provident") throw new RecordInputError("F-66: a switch is between two brokerage funds or two provident tracks, not one of each");
   const move = from.move ?? to.move ?? "track-switch";
-  // A transfer between two funds of the same kind rests on SW-39 (payment dates carry over) and SW-40 (the same for
-  // annuity funds, and the reading that a member's own transfer is not a tax event); a track switch keeps the ids
-  // the wrapper record gives (TXK-04, TXH-19, PF-23, ...).
-  const transferIds = move === "fund-transfer" ? ["SW-39", "SW-40"] : [];
-  const ids = [...new Set([...from.ruleIds, ...to.ruleIds, ...transferIds])];
+  // A transfer between two funds of the same kind: a track switch keeps the ids the wrapper record gives (TXK-04, TXH-17,
+  // TXP-32, PF-23, ...); a fund transfer adds the rules of its pair (`transferRules`).
+  const transferIds = move === "fund-transfer" && from.wrapper === to.wrapper ? transferRules(from.wrapper) : [];
+  // The rule that holds the reading of the tax neutrality, for a track switch and a transfer alike (finance review, 2026-11-07)
+  const taxRule = from.wrapper === to.wrapper ? readingRule(from.wrapper, move) : undefined;
+  // Between two annuity kinds the refusal names the rules its reasons rest on: TXP-32 (not taxed, but the severance exception),
+  // SW-40 (reg. 2(ד)(1)'s cap into a comprehensive fund) and SW-22 (reg. 4(8): no move into a comprehensive fund while active elsewhere).
+  const acrossAnnuity = from.wrapper !== to.wrapper && ANNUITY.includes(from.wrapper) && ANNUITY.includes(to.wrapper) ? ["TXP-32", "SW-40", ...(to.wrapper === "pension-comprehensive" ? ["SW-22"] : [])] : [];
+  const ids = [...new Set([...from.ruleIds, ...to.ruleIds, ...transferIds, ...(taxRule ? [taxRule] : []), ...acrossAnnuity])];
   if (ids.length === 0) throw new RecordInputError("F-66: a provident switch needs the rule IDs from the wrapper records (TXK-04, PF-23, ...)");
   if (from.wrapper !== to.wrapper) return { formula: "F-66", kind: "not-evaluated", code: "different-kind", ruleIds: ids };
   const book = ruleBook(ctx);
@@ -129,14 +149,21 @@ function providentSwitch(from: SwitchFrom, to: SwitchTo, ctx: RunContext): Switc
   if (!(share > 0 && share <= 1)) throw new RangeError(`share ${share} must be above 0 and at most 1`);
   const wholeOnly = [...new Set([...(from.wholeOnlyRuleIds ?? []), ...(to.wholeOnlyRuleIds ?? [])])];
   try {
-    if (from.wrapper === "keren-hishtalmut") {
+    if (from.wrapper === "keren-hishtalmut" && move === "fund-transfer") {
       if (wholeOnly.length === 0) throw new RecordInputError("F-66: a hishtalmut switch needs the whole-only rule IDs (PF-18, KH-17) from its wrapper record");
       wholeOnly.forEach((id) => book.cite(id));
       if (share < 1) return { formula: "F-66", kind: "not-allowed", code: "hishtalmut-whole-only", ruleIds: wholeOnly };
     }
     ids.forEach((id) => book.cite(id));
-    // SW-40: no official text says a member's own transfer between funds is not a tax event; the neutrality is a reading.
-    if (move === "fund-transfer") book.label("secondary-source", "SW-40");
+    // the fee discount that may end (flag PF-14) and, on a kupat gemel lehashkaa transfer, the exit tax the open dates bear on
+    feeRules(from.wrapper).forEach((id) => book.cite(id));
+    if (move === "fund-transfer" && from.wrapper === "kupat-gemel-lehashkaa") ["TXK-05", "TXK-07"].forEach((id) => book.cite(id));
+    // No official text says in those words that a provident switch or transfer is not a tax event: TXK-04 and TXP-32 hold that
+    // reading, and for a study fund TXH-19 (reg. 3(ב)(1) keeps the payment dates, TXH open question 11 is only narrowed) and TXH-17
+    // (the Chief Economist's non-binding paper), so each carries the "reading" label, not "secondary-source" (checker and finance
+    // reviews, 2026-11-07). Every such rule cited is labelled, whichever the caller passed.
+    const readings = new Set([readingRule(from.wrapper, "track-switch"), readingRule(from.wrapper, "fund-transfer")]);
+    for (const id of ids) if (readings.has(id)) book.label("reading", id);
   } catch (e) {
     if (e instanceof BlockedError) return { formula: "F-66", kind: "not-evaluated", code: "rule-open", ruleIds: [e.ruleId] };
     if (e instanceof MissingRuleError) return { formula: "F-66", kind: "not-evaluated", code: "rule-missing", ruleIds: [e.ruleId] };
@@ -145,14 +172,71 @@ function providentSwitch(from: SwitchFrom, to: SwitchTo, ctx: RunContext): Switc
   const used = book.used();
   const cost = computedValue(0, "nis", "F-66", { wrapper: from.wrapper, share, move, rule_ids: ids }, {
     checked: ctx.runDate,
-    strength: weakestStrength([...used.map((r) => r.strength), ...(move === "fund-transfer" ? (["secondary"] as const) : [])]),
+    strength: weakestStrength(used.map((r) => r.strength)),
     ruleIds: used.map((r) => r.id),
-    notes:
-      move === "fund-transfer"
-        ? "payment dates carry over on a transfer between two funds of the same kind (SW-39, SW-40); that the member's own transfer is not taxed is a reading (SW-40); no fee is set by these rules"
-        : "a switch inside the provident family is not a withdrawal and is not taxed; no fee is set by these rules",
+    notes: `${move === "fund-transfer" ? transferNote(from.wrapper) : `a switch inside the provident family is not a withdrawal and is not taxed${taxRule ? ` (${taxRule}, a reading)` : ""}`}; ${FEE_NOTE}`,
   });
-  return { formula: "F-66", kind: "provident", wrapper: from.wrapper, cost, ruleIds: ids, outcome: { code: "eligible" }, move, labels: book.labels() };
+  const flags: Flag[] = [{ code: "PF-14" }];
+  const openDates = move === "fund-transfer" && from.wrapper === "kupat-gemel-lehashkaa";
+  if (openDates) flags.push({ code: "SW-OQ17" });
+  if (move === "fund-transfer" && from.wrapper === "pension-comprehensive") flags.push({ code: "SW-40" });
+  if (move === "fund-transfer" && from.wrapper === "provident-for-annuity") flags.push({ code: "TXP-32" });
+  // F-66's cost is V_T(no switch) − V_T(switch), after exit tax: while the payment dates are open the later exit tax may differ
+  // (TXK-07's linkage runs from each deposit's date), so the 0 is the tax at the move only, shown and not ranked (finance review, 2026-11-07)
+  const outcome: Outcome = openDates ? { code: "listed-not-ranked", reason: "SW-OQ17" } : { code: "eligible" };
+  return { formula: "F-66", kind: "provident", wrapper: from.wrapper, cost, ruleIds: ids, outcome, move, labels: book.labels(), flags };
+}
+
+const ANNUITY: readonly ProvidentSide["wrapper"][] = ["pension-comprehensive", "pension-general", "provident-for-annuity"];
+
+/**
+ * The rules a member's transfer between two funds of the same kind rests on, by kind; PF-17 names every route. Study funds:
+ * reg. 3(ב)(1) carries the payment dates over for tax law (SW-39, TXH-19). Kupat gemel lehashkaa: not a withdrawal (TXK-04);
+ * SW-39 and SW-40 say the carry-over of the payment dates is not stated for this route (SW open question 17). Annuity funds:
+ * reg. 2(ב) carries the payment dates over (SW-40), a provident fund for annuity by the same process (SW-23), and the member's
+ * side is TXP-32. An annuity fund is never a source under reg. 3 (PF-17), so reg. 3(ב)(1) (SW-39) is not cited for one.
+ */
+function transferRules(wrapper: ProvidentSide["wrapper"]): string[] {
+  if (wrapper === "keren-hishtalmut") return ["PF-17", "SW-39", "TXH-19"];
+  if (wrapper === "kupat-gemel-lehashkaa") return ["PF-17", "TXK-04", "SW-39", "SW-40"];
+  if (wrapper === "provident-for-annuity") return ["PF-17", "SW-40", "SW-23", "TXP-32"];
+  return ["PF-17", "SW-40", "TXP-32"];
+}
+
+/** The rules of the fee discount a move may end early: PF-14 case 2 and SW-15 for every kind, KGL-16 for a kupat gemel lehashkaa's bylaws. */
+function feeRules(wrapper: ProvidentSide["wrapper"]): string[] {
+  return wrapper === "kupat-gemel-lehashkaa" ? ["PF-14", "SW-15", "KGL-16"] : ["PF-14", "SW-15"];
+}
+
+/**
+ * The rule whose reading says a switch or a transfer inside this kind is not taxed: TXK-04, TXP-32; for a study fund TXH-17 on a
+ * track switch (the Chief Economist's non-binding paper) and TXH-19 on a transfer (reg. 3(ב)(1) keeps the payment dates and
+ * says nothing of a tax event; TXH open question 11, narrowed, not closed).
+ */
+function readingRule(wrapper: ProvidentSide["wrapper"], move: "track-switch" | "fund-transfer"): string {
+  if (wrapper === "kupat-gemel-lehashkaa") return "TXK-04";
+  if (wrapper === "keren-hishtalmut" && move === "fund-transfer") return "TXH-19";
+  if (wrapper === "keren-hishtalmut") return "TXH-17";
+  return "TXP-32";
+}
+
+/** What every provident move's note says of fees: no transfer fee, but the move may end a discount early. */
+const FEE_NOTE = "no fee is set by these rules, but the move, whole or part, lets the manager end a fee discount early (PF-14 case 2, SW-15, PF-23; flagged PF-14); the higher fee is not modelled";
+
+function transferNote(wrapper: ProvidentSide["wrapper"]): string {
+  if (wrapper === "keren-hishtalmut") return "payment dates carry over for tax law on a transfer between two study funds (SW-39, TXH-19); that the transfer is not a tax event is a reading (TXH-19, TXH open question 11)";
+  if (wrapper === "kupat-gemel-lehashkaa")
+    return "a transfer between two kupot gemel lehashkaa is not a withdrawal and is not taxed at the move (TXK-04, a reading; KGL-16 for the bylaws' discount); whether the payment dates carry over on this route is open (SW open question 17: reg. 3(ב)(1) leaves out reg. 3(א)(11א) by its numbering, SW-39, TXK-04), and the dates bear on the tax at a later withdrawal (TXK-05, TXK-07: the linkage is computed from each deposit's date), so the 0 is the tax at the move only: flagged SW-OQ17, listed, not ranked";
+  const dates =
+    wrapper === "provident-for-annuity"
+      ? "payment dates carry over on a transfer between two provident funds for annuity (SW-40, reg. 2(ב); the same process, SW-23; routes PF-17)"
+      : "payment dates carry over on a transfer between two annuity funds (SW-40, reg. 2(ב); routes PF-17)";
+  const base = `${dates}; the member's transfer is not taxed and keeps its tax history (TXP-32, a reading)`;
+  // reg. 2(ד)(1) caps what a comprehensive fund may receive, from any fund (SW-40)
+  const cap = wrapper === "pension-comprehensive" ? "; not modelled: a comprehensive fund may not receive more than the monthly deposit ceiling times the months since the first payment to the transferring fund (reg. 2(ד)(1), SW-40), so money above it cannot move there; flagged SW-40" : "";
+  // the new account of s.23(א)(2א) is never in a pension fund or a central fund (TXP-32), so the exception reaches only this kind
+  const severance = wrapper === "provident-for-annuity" ? "; not modelled: severance money moved to a new account has income tax withheld under s.164 before it moves on its part not exempt under s.9(7א) (TXP-32, s.23(א)(2א)), so that transfer is not free; flagged TXP-32" : "";
+  return `${base}${cap}${severance}`;
 }
 
 function brokerageSwitch(a: SecuritiesInput, b: BrokerageTo, s: number, ctx: RunContext): SwitchingCost {

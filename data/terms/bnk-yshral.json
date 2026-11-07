@@ -1,0 +1,28 @@
+{
+  "id": "bnk-yshral",
+  "he": "בנק ישראל",
+  "en": null,
+  "meaning": "הבנק המרכזי של המדינה: מנהל את המדיניות המוניטרית כדי לשמור על יציבות המחירים, ומפקח על הבנקים",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "child-savings-bank",
+    "current-account",
+    "makam",
+    "savings-plan"
+  ],
+  "exposure_ids": [
+    "shekel-cash"
+  ],
+  "variants": [
+    "הבנק המרכזי"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301176.pdf#page=3",
+    "title": "חוק בנק ישראל, התש\"ע-2010, ספר החוקים 2232, סעיפים 3 ו־4, עמוד 3",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

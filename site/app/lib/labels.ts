@@ -4,7 +4,7 @@
 // (founder, 2026-10-27); its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
 import { invest as c } from "../copy";
-import { atPdfPage } from "../components/kit/doc-link";
+import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 
 export type LabelTone = "neutral" | "caution" | "open";
@@ -17,7 +17,8 @@ export type LabelIconKey =
   | "dollar" | "euro" | "pound" | "yen" | "franc" | "currency" | "shield"
   | "trendUpDown" | "badgePercent" | "percent" | "lock" | "gavel"
   | "piggy" | "handCoins"
-  | "filePen" | "receipt" | "scroll" | "eyeOff" | "fileSignature" | "ban";
+  | "filePen" | "receipt" | "scroll" | "eyeOff" | "fileSignature" | "ban"
+  | "megaphone" | "building" | "coins" | "scale";
 type IconDef = LabelIconKey | "sign";
 
 export type LabelId =
@@ -90,17 +91,22 @@ export const labelDefs: Record<LabelId, LabelDef> = {
 const signOf = (code: string | undefined): LabelIconKey =>
   ({ USD: "dollar", EUR: "euro", GBP: "pound", JPY: "yen", CHF: "franc" } as Record<string, LabelIconKey>)[code ?? ""] ?? "currency";
 
+/** A bank deposit's kind (`variant` in its record), labelled on the bank page (lib/deposit-kind.ts); not one of the index page's labels. */
+export type DepositLabelId = "deposit-campaign" | "deposit-closed-system" | "deposit-interest-during-term" | "deposit-best-of";
+
 export interface Label {
-  id: LabelId;
+  id: LabelId | DepositLabelId;
   text: string;
   explain: string;
   icon: LabelIconKey;
   tone: LabelTone;
   rules: string[];
   /** The label's family, for the "what do the labels mean" list. */
-  family: keyof typeof c.labelFamilies;
+  family: keyof typeof c.labelFamilies | "deposit";
   /** A document of the fund's own that the label rests on, shown under its rules (the ruling its annex reports, TXF-11). */
   doc?: { href: string; title: string };
+  /** The words before that document, where it is not the fund's ("מסמך הקרן"): a bank's own table of rates for a deposit's kind. */
+  docLead?: string;
 }
 
 const familyOf: Record<LabelId, Label["family"]> = {
@@ -145,6 +151,15 @@ export function label(id: LabelId, arg?: string): Label {
   return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, rules: def.rules, family: familyOf[id] };
 }
 
+/**
+ * D60: the labels every row of a group carries (by id and words, in the first row's order). They show once, in the group's head, or in one
+ * line over a list with no groups, and leave each row; a group of one row keeps its labels on the row.
+ */
+export function sharedLabels(rows: readonly (readonly Label[])[]): Label[] {
+  if (rows.length < 2) return [];
+  return rows[0]!.filter((l) => rows.every((r) => r.some((x) => x.id === l.id && x.text === l.text)));
+}
+
 /** What holds for every fund in the option (shown once on its card): where it is held and how it trades. */
 export function optionLabels(option: OptionId): Label[] {
   switch (option) {
@@ -181,7 +196,7 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   // an accumulating foreign fund: taxed only at sale on the ruling its own annex reports, else an open question (TXF-11, 2026-11-05);
   // the same test the engine ranks it by (instruments.server.ts, saleOnlyRuling)
   else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
-    out.push(rec.tax_ruling ? { ...label("tax-on-sale-ruling"), doc: { href: atPdfPage(rec.tax_ruling.source.url, rec.tax_ruling.pages.ruling), title: rec.tax_ruling.source.title } } : label("tax-on-sale-open"));
+    out.push(rec.tax_ruling ? { ...label("tax-on-sale-ruling"), doc: { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title } } : label("tax-on-sale-open"));
   if (rec.domicile === "US") out.push(label("ask-estate"), label("ask-w8"));
   void option;
   return out;

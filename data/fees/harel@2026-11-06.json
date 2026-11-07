@@ -1,0 +1,119 @@
+{
+  "id": "harel",
+  "provider": {
+    "name_he": "הראל פנסיה וגמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://media.harel-group.co.il/media/xajlxlhr/%D7%98%D7%95%D7%A4%D7%A1-%D7%91%D7%A7%D7%A9%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%94%D7%A8%D7%90%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A2%D7%9E%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%A8.pdf",
+    "title": "בקשת הצטרפות ל\"הראל גמל להשקעה\" עמית בגיר",
+    "notes": "Joining request, 10 pages, version 11/2025 in the footer (file created 2026-01-04); fees on p.2, section ה. Read 2026-11-06. The digital joining on harel-group.co.il shows an expected annual cost during the process (not read: script-only).",
+    "published": null,
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-06",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "harel-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.7,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://media.harel-group.co.il/media/xajlxlhr/%D7%98%D7%95%D7%A4%D7%A1-%D7%91%D7%A7%D7%A9%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%94%D7%A8%D7%90%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A2%D7%9E%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%A8.pdf",
+          "title": "בקשת הצטרפות ל\"הראל גמל להשקעה\" עמית בגיר, דמי ניהול בהראל גמל להשקעה",
+          "publisher": "Harel Pension and Gemel",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.7% שיעור דמי ניהול מצבירה"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Printed on Harel's joining request for an adult member of fund 8207 (form version 11/2025, printed in its footer), section ה, filled in by the company, not left blank. The same request says the company may change the fees named there as the law and the bylaws allow (\"החברה רשאית לשנות את דמי הניהול הנקובים\"), and that on top of the fees it may charge direct expenses for transactions from the fund's assets, their past-year rates published on its website (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "שיעור דמי ניהול מצבירה"
+        ]
+      }
+    },
+    {
+      "id": "harel-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://media.harel-group.co.il/media/xajlxlhr/%D7%98%D7%95%D7%A4%D7%A1-%D7%91%D7%A7%D7%A9%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%94%D7%A8%D7%90%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A2%D7%9E%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%A8.pdf",
+          "title": "בקשת הצטרפות ל\"הראל גמל להשקעה\" עמית בגיר, דמי ניהול בהראל גמל להשקעה",
+          "publisher": "Harel Pension and Gemel",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0% שיעור דמי ניהול מהפקדה"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Printed on Harel's joining request for an adult member of fund 8207 (form version 11/2025, printed in its footer), section ה, filled in by the company, not left blank. The same request says the company may change the fees named there as the law and the bylaws allow (\"החברה רשאית לשנות את דמי הניהול הנקובים\"), and that on top of the fees it may charge direct expenses for transactions from the fund's assets, their past-year rates published on its website (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "שיעור דמי ניהול מהפקדה"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

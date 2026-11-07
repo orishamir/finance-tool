@@ -1,0 +1,24 @@
+{
+ "personas": [
+  "self-directed-investor",
+  "careful-retiree-pc",
+  "student-small-amounts"
+ ],
+ "tasks": [
+  {
+   "key": "companies-list",
+   "text": "You want to open an account to buy funds on the stock exchange, and you are looking at which bank or investment house to use.",
+   "shots": [
+    "live/2026-11-07-03-companies-no-date/pc/pc-1.png",
+    "live/2026-11-07-03-companies-no-date/pc/pc-2.png",
+    "live/2026-11-07-03-companies-no-date/pc/pc-3.png",
+    "live/2026-11-07-03-companies-no-date/pc/pc-4.png"
+   ],
+   "device": "pc",
+   "findings": true
+  }
+ ],
+ "parallel": 3,
+ "repeat": 1,
+ "behaviour": "research/user-lab/versions/candidates/heading.md"
+}

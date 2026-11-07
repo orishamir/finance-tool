@@ -239,12 +239,12 @@ describe("F-61 existing balance in a study fund (review S42)", () => {
       expect(r.detail.grossBalance! - at.detail.grossBalance!).toBeCloseTo(over * growth, 4);
       // Salary 20,000: the 321.60 above is 3,859.20 a year on top of 240,000, in the 31% band (TXG-02): 1,196.352 a year, 11,963.52 over 10.
       expect(r.detail.employerDepositTax!).toBeCloseTo(11_963.52, 2);
-      // National Insurance and health at the full rate 12.17% (TXG-35, a reading): 0.1217 × 321.60 × 120 = 4,696.6464.
+      // National Insurance and health at the full rate 12.17% (TXG-35, sourced to National Insurance's circular 1473, TXH-26): 0.1217 × 321.60 × 120 = 4,696.6464.
       expect(r.detail.employerSocial!).toBeCloseTo(4_696.6464, 3);
       // The split of the monthly money: own 300 and employer 1,178.40 benefited, 321.60 above.
       expect(r.detail.benefitedMonthly).toBeCloseTo(1_478.4, 9);
       expect(r.detail.excessMonthly).toBeCloseTo(321.6, 9);
-      expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXG-35" });
+      expect(r.labels.some((l) => l.ruleId === "TXG-35")).toBe(false);
       // Its gains are taxed at exit (TXH-11); the benefited part is not.
       expect(r.taxAtExit).toBeGreaterThan(0);
       expect(r.formulas).toContain("F-52");
@@ -363,33 +363,104 @@ describe("F-68 and F-70 wording (review)", () => {
 
 // ---------------------------------------------------------------- F-66 provident transfers
 
-describe("F-66 a transfer between two funds of the same kind cites SW-39 and SW-40 and labels the neutrality a reading", () => {
+describe("F-66 a transfer between two funds of the same kind cites the rules of its pair and labels the neutrality a reading on TXK-04, TXP-32 or TXH-19", () => {
   const wrappers = readdirSync(new URL("instruments/wrappers/", dataDir))
     .filter((f) => f.endsWith(".json"))
     .map((f) => readJson(`instruments/wrappers/${f}`) as { id: string; transfer_routes: { to: string; rule_ids: string[] }[] });
   /** The rule ids the site passes: the wrapper record's route to its own kind. */
-  const routeIds = (id: string) => wrappers.find((w) => w.id === id)!.transfer_routes.find((t) => t.to === id)!.rule_ids;
+  const routeIdsTo = (id: string, to: string) => wrappers.find((w) => w.id === id)!.transfer_routes.find((t) => t.to === to)!.rule_ids;
+  const routeIds = (id: string) => routeIdsTo(id, id);
+  const transfer = (wrapper: ProvidentSide["wrapper"]) => {
+    const side: ProvidentSide = { kind: "provident", wrapper, move: "fund-transfer", ruleIds: routeIds(wrapper), ...(wrapper === "keren-hishtalmut" ? { wholeOnlyRuleIds: ["PF-18", "KH-17"] } : {}) };
+    const r = switchingCost(side, side, 0, ctx);
+    if (r.kind !== "provident") throw new Error(`expected a provident switch, got ${r.kind}`);
+    expect(r.move).toBe("fund-transfer");
+    expect(r.cost.value).toBe(0);
+    expect(r.cost.rule_ids).toEqual(expect.arrayContaining(["PF-14", "SW-15"]));
+    return r;
+  };
 
-  for (const wrapper of ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "provident-for-annuity"] as const) {
-    it(`${wrapper}: the route's ids plus SW-39 and SW-40, SW-40 labelled secondary, strength secondary`, () => {
-      const side: ProvidentSide = { kind: "provident", wrapper, move: "fund-transfer", ruleIds: routeIds(wrapper), ...(wrapper === "keren-hishtalmut" ? { wholeOnlyRuleIds: ["PF-18", "KH-17"] } : {}) };
-      const r = switchingCost(side, side, 0, ctx);
-      if (r.kind !== "provident") throw new Error(`expected a provident switch, got ${r.kind}`);
-      expect(r.move).toBe("fund-transfer");
-      expect(r.ruleIds).toEqual(expect.arrayContaining([...routeIds(wrapper), "SW-39", "SW-40"]));
-      expect(r.labels).toContainEqual({ code: "secondary-source", ruleId: "SW-40" });
-      expect(r.cost.source.strength).toBe("secondary");
-      expect(r.cost.value).toBe(0);
+  for (const wrapper of ["pension-comprehensive", "pension-general", "provident-for-annuity"] as const) {
+    it(`${wrapper}: SW-40, PF-17 and TXP-32, TXP-32 labelled a reading; SW-23 for a provident fund for annuity and never SW-39 (an annuity fund is no source under reg. 3); the severance exception only where the new account can be; the reg. 2(ד)(1) cap only into a comprehensive fund`, () => {
+      const r = transfer(wrapper);
+      expect(r.ruleIds).toEqual(expect.arrayContaining([...routeIds(wrapper), "SW-40", "PF-17", "TXP-32"]));
+      if (wrapper === "provident-for-annuity") expect(r.ruleIds).toContain("SW-23");
+      expect(r.ruleIds).not.toContain("SW-39");
+      expect(r.outcome).toEqual({ code: "eligible" });
+      expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXP-32" });
+      expect(r.labels.some((l) => l.ruleId === "SW-40")).toBe(false);
+      expect(r.flags).toEqual(wrapper === "pension-comprehensive" ? [{ code: "PF-14" }, { code: "SW-40" }] : wrapper === "provident-for-annuity" ? [{ code: "PF-14" }, { code: "TXP-32" }] : [{ code: "PF-14" }]);
+      if (wrapper === "pension-comprehensive") expect(r.cost.notes).toContain("reg. 2(ד)(1), SW-40");
+      else expect(r.cost.notes).not.toContain("2(ד)(1)");
+      // TXP-32: the new account of s.23(א)(2א) is never in a pension fund or a central fund; withheld only on the part not exempt
+      if (wrapper === "provident-for-annuity") expect(r.cost.notes).toContain("not modelled: severance money moved to a new account has income tax withheld under s.164 before it moves on its part not exempt under s.9(7א)");
+      else expect(r.cost.notes).not.toContain("severance");
     });
   }
 
-  it("a track switch keeps TXK-04, TXH-19, PF-23 and carries no reading label", () => {
-    const side: ProvidentSide = { kind: "provident", wrapper: "kupat-gemel-lehashkaa", ruleIds: ["TXK-04", "PF-23"] };
-    const r = switchingCost(side, side, 0, ctx);
-    if (r.kind !== "provident") throw new Error("expected a provident switch");
-    expect(r.move).toBe("track-switch");
-    expect(r.ruleIds).toEqual(["TXK-04", "PF-23"]);
+  it("kupat-gemel-lehashkaa: TXK-04, SW-39 and SW-40, TXK-04 labelled a reading; the payment dates are open (SW OQ17, flagged)", () => {
+    const r = transfer("kupat-gemel-lehashkaa");
+    expect(r.ruleIds).toEqual(expect.arrayContaining([...routeIds("kupat-gemel-lehashkaa"), "TXK-04", "SW-39", "SW-40"]));
+    expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXK-04" });
     expect(r.labels.some((l) => l.ruleId === "SW-40")).toBe(false);
-    expect(r.cost.source.strength).not.toBe("secondary");
+    expect(r.cost.notes).toContain("open (SW open question 17");
+    expect(r.cost.notes).toContain("the 0 is the tax at the move only: flagged SW-OQ17, listed, not ranked");
+    expect(r.flags).toEqual([{ code: "PF-14" }, { code: "SW-OQ17" }]);
+    // F-66's cost is after exit tax, which the open payment dates bear on (TXK-07): shown, not ranked
+    expect(r.outcome).toEqual({ code: "listed-not-ranked", reason: "SW-OQ17" });
+  });
+
+  it("keren-hishtalmut: SW-39 and TXH-19 from the pair itself, no SW-40; TXH-19 labelled a reading (reg. 3(ב)(1) keeps the dates, TXH open question 11 is not closed)", () => {
+    const own = switchingCost({ kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["PF-19"], wholeOnlyRuleIds: ["PF-18", "KH-17"] }, { kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["PF-19"] }, 0, ctx);
+    if (own.kind !== "provident") throw new Error("expected a provident switch");
+    expect(own.ruleIds).toEqual(expect.arrayContaining(["SW-39", "TXH-19"]));
+    const r = transfer("keren-hishtalmut");
+    expect(r.ruleIds).toEqual(expect.arrayContaining([...routeIds("keren-hishtalmut"), "SW-39", "TXH-19"]));
+    expect(r.ruleIds).not.toContain("SW-40");
+    expect(r.labels).toEqual([{ code: "reading", ruleId: "TXH-19" }]);
+    expect(r.cost.notes).toContain("TXH open question 11");
+  });
+
+  const trackSwitch = (side: ProvidentSide) => {
+    const r = switchingCost(side, side, 0, ctx);
+    if (r.kind !== "provident") throw new Error(`expected a provident switch, got ${r.kind}`);
+    expect(r.move).toBe("track-switch");
+    expect(r.cost.value).toBe(0);
+    return r;
+  };
+  it("a track switch rests on the same reading as a transfer (TXK-04, TXP-32), a study fund's on TXH-17; every move flags the fee discount that may end (PF-14)", () => {
+    const kgl = trackSwitch({ kind: "provident", wrapper: "kupat-gemel-lehashkaa", ruleIds: ["TXK-04", "PF-23"] });
+    expect(kgl.ruleIds).toEqual(["TXK-04", "PF-23"]);
+    expect(kgl.labels).toContainEqual({ code: "reading", ruleId: "TXK-04" });
+    expect(kgl.cost.source.strength).not.toBe("secondary");
+    const annuity = trackSwitch({ kind: "provident", wrapper: "provident-for-annuity", ruleIds: ["PF-23", "PEN-17", "TXP-13", "TXP-32"] });
+    expect(annuity.labels).toContainEqual({ code: "reading", ruleId: "TXP-32" });
+    const study = trackSwitch({ kind: "provident", wrapper: "keren-hishtalmut", ruleIds: ["TXH-17", "PF-23"], wholeOnlyRuleIds: ["PF-18", "KH-17"] });
+    expect(study.labels).toEqual([{ code: "reading", ruleId: "TXH-17" }]);
+    for (const r of [kgl, annuity, study]) {
+      expect(r.flags).toEqual([{ code: "PF-14" }]);
+      expect(r.cost.notes).toContain("end a fee discount early (PF-14 case 2, SW-15, PF-23");
+      expect(r.outcome).toEqual({ code: "eligible" });
+    }
+  });
+  it("a reading rule the caller cites is labelled whichever the move: TXH-17 passed on a study fund's transfer is a reading too", () => {
+    const side = { kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["TXH-17", "TXH-19"], wholeOnlyRuleIds: ["PF-18", "KH-17"] } as const;
+    const r = switchingCost(side, side, 0, ctx);
+    if (r.kind !== "provident") throw new Error(r.kind);
+    expect(r.labels).toEqual(expect.arrayContaining([{ code: "reading", ruleId: "TXH-17" }, { code: "reading", ruleId: "TXH-19" }]));
+  });
+  it("between two annuity kinds the refusal cites the rules its reasons rest on (TXP-32, SW-40, and SW-22 into a comprehensive fund)", () => {
+    const general = { kind: "provident", wrapper: "pension-general", move: "fund-transfer", ruleIds: routeIdsTo("pension-general", "pension-comprehensive") } as const;
+    const comprehensive = { kind: "provident", wrapper: "pension-comprehensive", move: "fund-transfer", ruleIds: [] } as const;
+    const r = switchingCost(general, comprehensive, 0, ctx);
+    expect(r).toMatchObject({ kind: "not-evaluated", code: "different-kind" });
+    if (r.kind !== "not-evaluated") throw new Error(r.kind);
+    expect(r.ruleIds).toEqual(expect.arrayContaining(["TXP-32", "SW-40", "SW-22"]));
+  });
+  it("a study fund's track switch may move part (KH-18, PF-23); only a transfer to another fund moves whole (PF-18, KH-17)", () => {
+    const part = { kind: "provident", wrapper: "keren-hishtalmut", ruleIds: ["TXH-17", "PF-23"], wholeOnlyRuleIds: ["PF-18", "KH-17"], share: 0.5 } as const;
+    expect(switchingCost(part, part, 0, ctx).kind).toBe("provident");
+    const away = { ...part, move: "fund-transfer" } as const;
+    expect(switchingCost(away, away, 0, ctx)).toMatchObject({ kind: "not-allowed", code: "hishtalmut-whole-only" });
   });
 });

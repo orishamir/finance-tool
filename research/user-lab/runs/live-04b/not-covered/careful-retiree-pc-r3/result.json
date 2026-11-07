@@ -1,0 +1,106 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:59:01.156Z",
+  "structured": {
+    "answer": "The page \"מה האתר עוד לא מכסה\" says the rules for all the products listed are still being checked and the site doesn't calculate them yet. As far as I read, that includes structured deposits and structured products, foreign-currency and dollar-linked deposits, the bonus on structured deposits, manager's insurance and savings policies, corporate bonds, gold and a few more. So I won't rely on the site for those, and I'll ask my son or the bank.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Cards with 'שאלה פתוחה' and codes like MF-28, TX2-01, TXA-28",
+        "why": "I don't know what the codes mean or whether I need to do anything about them"
+      },
+      {
+        "where": "Crossed-out lines 'נסגר ב-24.10.2026'",
+        "why": "I couldn't tell if crossed out means the question is done or cancelled"
+      },
+      {
+        "where": "Screen 6, after six screens",
+        "why": "I was tired from small grey text on black and stopped before the end of the list"
+      }
+    ],
+    "used": [
+      "Page title 'מה האתר עוד לא מכסה' and the subtitle",
+      "Red notice: 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "The red 'לא מחושב' label on every card",
+      "Card headings and the 'מה ידוע' lines: פיקדון מובנה, מוצר מובנה, פיקדון במטבע חוץ, צמוד דולר, מענק, ביטוח מנהלים, ביטוח חיים משתתף ברווחים, savings policy, אג\"ח קונצרניות, אגרת בונדס, gold"
+    ],
+    "skimmed": [
+      "ETC and LBMA gold cards",
+      "ארנק מט\"ח דיגיטלי, היוון קצבה, הסדר חוב, חברת דירוג, מנוטרלת מט\"ח, מסלולי האירוע, נע\"מ, עמלת חליפין cards",
+      "'מצב הכיסוי' sections"
+    ],
+    "skipped": [
+      "Blue lines citing laws and page numbers",
+      "Dates, 'מקור ראשי' and 'חוקים וכללים · N' tags",
+      "Pale grey 'כשייסגר:' sentences",
+      "Screens 7-10",
+      "Securities-account guide screens (read earlier)"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "ICE",
+      "MF-28, TX2-01, TXA-28",
+      "שאלה פתוחה",
+      "crossed-out 'נסגר ב-...'",
+      "לפי החברה (orange tag)",
+      "קרן מחקה",
+      "השקעה במדד",
+      "מנוטרלת מט\"ח",
+      "מסלולי האירוע",
+      "נע\"מ"
+    ],
+    "not_found": [
+      "A short summary list of what isn't covered, at the top",
+      "Whether ordinary bank deposits and savings plans ARE covered",
+      "The end of the list (I didn't reach it)"
+    ],
+    "findings": [
+      {
+        "what": "Small pale grey text on a black background, hard to read even enlarged",
+        "where": "All screens, especially the 'כשייסגר' lines and the dates"
+      },
+      {
+        "what": "No simple summary list of uncovered products; you have to go through many cards",
+        "where": "Top of the page"
+      },
+      {
+        "what": "A red 'לא מחושב' label and red lock on every card feels alarming",
+        "where": "Every card"
+      },
+      {
+        "what": "Busy two-column cards packed with law citations, dates and codes",
+        "where": "Screens 1-6"
+      },
+      {
+        "what": "Unexplained codes and crossed-out dates",
+        "where": "'מצב הכיסוי' sections, screens 3, 5 and 6"
+      },
+      {
+        "what": "English names and letters with no Hebrew explanation",
+        "where": "ETC and LBMA cards, screen 1"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37012,
+    "turns": 8,
+    "usd": 0.1624116,
+    "input": 8,
+    "cacheWrite": 11394,
+    "cacheRead": 27638,
+    "output": 3285,
+    "model": "claude-opus-5-5"
+  }
+}

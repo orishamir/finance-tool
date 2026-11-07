@@ -1,0 +1,6 @@
+
+== /holdings/ at 390 px: 1 sliders, 0 selects; page wider than the screen: false
+
+== /holdings/ at 1280 px: 1 sliders, 0 selects; page wider than the screen: false
+
+total boxes that changed on the screen: 0

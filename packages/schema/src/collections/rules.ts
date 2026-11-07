@@ -1,6 +1,6 @@
 // data/rules/: rule figures the engine reads. docs/data-schema.md §3.1.
 import { z } from "zod";
-import { isoDate, valueObject } from "../value.ts";
+import { isoDate, textFragment, valueObject } from "../value.ts";
 import { ruleScope, scopeInstitution } from "../scope.ts";
 
 const bracket = z.object({ up_to: valueObject, rate: valueObject });
@@ -42,6 +42,8 @@ export const ruleSource = z.object({
   anchor: z.string().optional(),
   /** The document's own words, verbatim, Hebrew, at most 240 characters; only when the markdown holds them inside quotes. */
   quote: z.string().optional(),
+  /** Attached when the site reads the record, never written here (`textFragment`). */
+  fragment: textFragment.optional(),
   checked: isoDate,
   /** "(historical)", "(unofficial consolidation)" ... */
   qualifier: z.string().optional(),

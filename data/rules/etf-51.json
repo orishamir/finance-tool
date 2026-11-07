@@ -53,12 +53,12 @@
       "value": 20,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(אופציות,_חוזים_עתידיים_ומכירות_בחסר)",
-        "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), תקנה 7(א)",
-        "publisher": "Hebrew Wikisource",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=23",
+        "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר) (תיקון), התשס\"ח-2007, ק\"ת 6625, file p.23, reg. 7(א) as substituted: \"לא יעלה בכל עת על עשרים אחוזים מהשווי הנקי של נכסי הקרן, ובקרן ממונפת - על ארבעים אחוזים\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,

@@ -1,0 +1,119 @@
+{
+  "id": "migdal",
+  "provider": {
+    "name_he": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.migdal.co.il/_files/ugd/5adfdb_ff1bf67da7474104961f01d6c1c44a36.pdf",
+    "title": "בקשת הצטרפות עמית לקופת מגדל גמל להשקעה (מ\"ה 7930), טופס 2501",
+    "notes": "Form 2501, 10 pages, edition 02.2025 printed in its footer; fees on p.3, section ה. Linked from migdal.co.il/product/investment-provident-fund with the fund's bylaws (version 11.2024, fees in section 35 on p.10). Read 2026-11-07. Edition 02.2025 is printed as a month; its first day is recorded as published.",
+    "published": "2025-02-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-07",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "migdal-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.migdal.co.il/_files/ugd/5adfdb_ff1bf67da7474104961f01d6c1c44a36.pdf",
+          "title": "טופס 2501, בקשת הצטרפות עמית לקופת מגדל גמל להשקעה, ה. דמי ניהול בגמל להשקעה",
+          "publisher": "Migdal Makefet Pension and Provident Funds",
+          "strength": "institution",
+          "page": 3,
+          "quote": "דמי הניהול הרגילים בקופה הינם בשיעור של 1.05% שנתי מהיתרה הצבורה"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Migdal's joining form leaves the agreed rate blank (\"שיעור דמי ניהול מצבירה (שנתי): __%\") and prints the fund's ordinary fee beside it: \"דמי הניהול הרגילים בקופה הינם בשיעור של 1.05% שנתי מהיתרה הצבורה\", which equals the legal maximum (PF-02). What a joiner is offered is set in the blank, not published. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי הניהול הרגילים בקופה"
+        ]
+      }
+    },
+    {
+      "id": "migdal-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.migdal.co.il/_files/ugd/5adfdb_f54c80d5004d421fb87b7367d91593d0.pdf",
+          "title": "תקנון קופת גמל להשקעה מגדל (גרסה 11.2024), סעיף 35.1.2",
+          "publisher": "Migdal Makefet Pension and Provident Funds",
+          "strength": "institution",
+          "page": 10,
+          "quote": "בשיעור שלא יעלה על שיעור דמי הניהול המרבי הקבוע"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Migdal's joining form names no fee on deposits; the fund's bylaws (s.35.1.2) let the company take from each payment up to the maximum the law sets, so the fee is recorded at that maximum, 4% of deposits (PF-02), as D56 prices an \"up to\" fee and silence is not zero. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול מתוך התשלומים, עד המרבי"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

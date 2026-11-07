@@ -9,7 +9,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -39,17 +39,17 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(דוח_שנתי_של_קרן)",
-      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (ויקיטקסט, מראה), unofficial; the state's own copy was not read",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=14",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 18(ב)(10)",
-      "locator_he": "תקנה 18(ב)(10)",
-      "anchor": "סעיף_18.ב",
-      "checked": "2026-10-25"
+      "strength": "primary",
+      "locator": "file p.14 (gazette p.1014), reg. 18(ב)(10)",
+      "locator_he": "עמוד הקובץ 14 (עמוד הרשומות 1014), תקנה 18(ב)(10)",
+      "quote": "אם נכס הייחוס של הקרן נקוב במטבע חוץ או צמוד לו",
+      "checked": "2026-11-07"
     }
   ]
 }

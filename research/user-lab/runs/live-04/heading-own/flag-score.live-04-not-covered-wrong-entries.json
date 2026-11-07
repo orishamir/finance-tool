@@ -1,0 +1,334 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "sessions": 9,
+  "perKey": {
+    "list-holds-what-it-is-not": {
+      "kind": "general",
+      "caught": 9,
+      "caughtIn10": 9,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            1,
+            1,
+            1
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            1,
+            1,
+            1
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "bare-code": {
+      "kind": "general",
+      "caught": 6,
+      "caughtIn10": 6,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            5,
+            5,
+            5
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 1,
+          "of": 3,
+          "ranks": [
+            5,
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 2,
+          "of": 3,
+          "ranks": [
+            0,
+            7,
+            4
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "fragment-no-noun": {
+      "kind": "general",
+      "caught": 3,
+      "caughtIn10": 3,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 2,
+          "of": 3,
+          "ranks": [
+            5,
+            0,
+            5
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 1,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            4
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "source-names-not-for-reader": {
+      "kind": "general",
+      "caught": 0,
+      "caughtIn10": 0,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "same-promise-every-card": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 2,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            6
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 1,
+          "of": 3,
+          "ranks": [
+            4,
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.5111932,
+  "rows": [
+    {
+      "task": "not-covered",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 5,
+        "fragment-no-noun": 5,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.0597188
+    },
+    {
+      "task": "not-covered",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 5,
+        "fragment-no-noun": 0,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.0642708
+    },
+    {
+      "task": "not-covered",
+      "session": "careful-retiree-pc-r3",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 5,
+        "fragment-no-noun": 5,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 6
+      },
+      "against": {},
+      "usd": 0.06506680000000001
+    },
+    {
+      "task": "not-covered",
+      "session": "self-directed-investor-r1",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 5,
+        "fragment-no-noun": 0,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 4
+      },
+      "against": {},
+      "usd": 0.0545948
+    },
+    {
+      "task": "not-covered",
+      "session": "self-directed-investor-r2",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 0,
+        "fragment-no-noun": 0,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.051978800000000006
+    },
+    {
+      "task": "not-covered",
+      "session": "self-directed-investor-r3",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 0,
+        "fragment-no-noun": 0,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.0519708
+    },
+    {
+      "task": "not-covered",
+      "session": "student-small-amounts-r1",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 0,
+        "fragment-no-noun": 0,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.049954799999999994
+    },
+    {
+      "task": "not-covered",
+      "session": "student-small-amounts-r2",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 7,
+        "fragment-no-noun": 0,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.0558508
+    },
+    {
+      "task": "not-covered",
+      "session": "student-small-amounts-r3",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "list-holds-what-it-is-not": 1,
+        "bare-code": 4,
+        "fragment-no-noun": 4,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.0577868
+    }
+  ]
+}

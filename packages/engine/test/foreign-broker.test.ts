@@ -1,8 +1,8 @@
 // Index page engine changes E1 to E5 (method F-12, F-63, F-65, 2026-10-25): per-share lines, dollar and pound
 // bounds, the cap, a fund in another currency than its exposure, and a provider's bad record as its own row.
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { buildTariff, fundVariants, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
+import { buildTariff, fundOf, fundVariants, gapListOf, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -153,5 +153,54 @@ describe("F-14: a custody bound printed per month", () => {
     const excellence = read("fees/excellence@2026-10-31.json");
     expect(buildTariff(input({ providers: [] }), { snapshot: altshuler, level: "list" }, altshuler).tariff.custody).toMatchObject({ everyMonths: 12, min: 900 });
     expect(buildTariff(input({ providers: [] }), { snapshot: excellence, level: "list" }, excellence).tariff.custody).toMatchObject({ everyMonths: 3, min: 120 });
+  });
+});
+
+describe("F-65 with F-92 (c) and (d): a hedged fund with no compared year (finance review)", () => {
+  const world = read("instruments/exposures/index-msci-world.json");
+  const exposure = {
+    record: world,
+    theta: 0.005,
+    run: {
+      goal: { amountNow: 20_000, monthly: 400, months: 120 },
+      grossReturn: 0.06,
+      inflation: 0.025,
+      tariff: { buy: { rate: 0.001, min: 5 }, sell: { rate: 0.001, min: 5 } },
+      profile: {},
+      fxStartRates: { USD: 3.7 },
+    },
+  };
+  const noYears = read("funds/5140165@2026-10-25.json"); // hedged, its report has no full year
+  const withYears = read("funds/5139696@2026-10-25.json"); // hedged, a full year against MSCI World's net index
+  const rowOf = (records: unknown[], id: string) => fundVariants(exposure as never, [], records, ctx).rows.find((r) => r.recordId === id)!;
+
+  it("is listed with its reason, never ranked at A-07 = 0", () => {
+    const r = rowOf([noYears, withYears], "5140165");
+    expect(r.kind).toBe("not-evaluated");
+    expect(r.reasons[0]).toMatchObject({ code: "missing-record" });
+    expect(r.reasons[0]!.detail).toMatch(/F-92 \(c\)/);
+    expect(r.run).toBeUndefined();
+  });
+  it("a hedged fund whose years are compared runs, and falls back to the same reason when they are not (an unstated index)", () => {
+    expect(rowOf([noYears, withYears], "5139696").run).toBeDefined();
+    const unstated = { ...withYears, tracking_record: { ...withYears.tracking_record, benchmark: { ...withYears.tracking_record.benchmark, dividends: "unstated" } } };
+    expect(rowOf([noYears, unstated], "5139696").kind).toBe("not-evaluated");
+  });
+  it("counts forward the variable fee it was charged, not its listed rate (F-92 (b), pass 6): 0.215% paid back in 2025 at today's 0.3%", () => {
+    expect(withYears.fees.variable_management.value).toBe(0.3);
+    expect(fundOf(withYears, "israeli-fund", undefined, undefined).fund.drag!.variable).toBeCloseTo(-0.00215, 12);
+    // a record that does not say since when its rate is in force keeps the listed rate
+    const unread = { ...withYears, tracking_record: { ...withYears.tracking_record, variable_rate_since: undefined } };
+    expect(fundOf(unread, "israeli-fund", undefined, undefined).fund.drag!.variable).toBeCloseTo(0.003, 12);
+  });
+  it("no fund's forward cost is negative, now that a variable fee paid back is counted forward (finance review of pass 6, F1)", () => {
+    const all = readdirSync(new URL("../../../data/funds/", import.meta.url)).filter((f) => f.endsWith(".json")).map((f) => read(`funds/${f}`));
+    const neg = all.flatMap((rec) => {
+      const list = gapListOf(rec, { id: rec.exposure_id }, all.filter((x) => x.exposure_id === rec.exposure_id));
+      const d = fundOf(rec, rec.domicile === "IL" ? "israeli-fund" : "foreign-fund", undefined, undefined, list).fund.drag ?? {};
+      const sum = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0);
+      return sum < 0 ? [`${rec.id} ${sum}`] : [];
+    });
+    expect(neg).toEqual([]);
   });
 });

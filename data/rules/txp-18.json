@@ -101,9 +101,10 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2006",
-      "locator_he": "עמוד 2006",
-      "page": 2006,
+      "locator": "file p.3 (gazette p.2006), reg. 3(1)",
+      "locator_he": "עמוד 3 (עמוד 2006 ברשומות), תקנה 3(1)",
+      "page": 3,
+      "quote": "חבר בקופת גמל ששולמו לו כספים על ידי הקופה חייב במס על אותם כספים",
       "checked": "2026-10-31",
       "qualifier": "(gazette; a scanned booklet of 1962 with poor text, it shows the enacted wording only)"
     },
@@ -172,20 +173,6 @@
       "locator_he": "עמוד 145, סעיף 87",
       "page": 145,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_בדבר_חיוב_במס_על_תשלומים_לקרן_שלא_אושרה_ותשלומים_שלא_כדין)?action=raw",
-      "title": "Wikisource raw text",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 3(1)",
-      "locator_he": "תקנה 3(1)",
-      "anchor": "סעיף_3",
-      "quote": "חבר בקופת גמל ששולמו לו כספים על ידי הקופה חייב במס על אותם כספים",
-      "checked": "2026-10-26"
     }
   ]
 }

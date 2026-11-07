@@ -2,7 +2,10 @@
 import { parameterRecord, type ValueObject } from "@finance-tool/schema";
 import { RecordInputError } from "../resolver.ts";
 
-/** P-03 as numbers: NIS thresholds on the real cost over the horizon, and the share of the total drag as a fraction. */
+/**
+ * P-03 as numbers: NIS thresholds over the horizon, real (negotiate on the worth of bringing the fee to its reference, avoid on the fee's
+ * cost, D90 revised 2026-11-07), and the share of the total drag as a fraction.
+ */
 export interface FeeThresholds {
   negotiateNis: number;
   avoidNis: number;
@@ -42,11 +45,24 @@ export type FeeVerdictCode = "worth-negotiating" | "worth-avoiding" | "not-worth
 /** The fee being judged. `nis` is the F-61 cost over the horizon, real. */
 export interface FeeCost {
   nis: number;
-  /** The fee's current rate; with `reference.rate`, in the same unit. */
+  /**
+   * F-61's value of a stated reduction to the reference rate (`valueOfReduction` at `reference.rate`), real NIS over the same horizon: what
+   * asking for the reference is worth. The negotiate test reads it, not the cost (D90 revised, 2026-11-07: fresh readers read "worth
+   * negotiating" beside a cost of 3,911 NIS as advice to call, while the cut was worth 187 NIS). Absent, or zero, when there is nothing to
+   * bring down now (the reference is not below the rate charged now, or the line is at 0% during a discount).
+   */
+  worthNis?: number;
+  /**
+   * The fee's current rate; with `reference.rate`, in the same unit. For a discounted provident line whose discount ends within the horizon,
+   * the rate after the discount (`rateAfterDiscount`, D88): the caller passes the rate the fee is judged by.
+   */
   currentRate?: number;
   /** F-61's total drag over the same plan, for the share test. */
   totalDrag?: number;
-  /** Whether another provider or wrapper in the same comparison removes this fee (the caller knows the comparison). */
+  /**
+   * Whether an option in the same comparison that charges no such fee, or a lower rate of it, ranks above the subject (the caller knows the
+   * comparison and the places; D90 revised the same day, 2026-11-07: "avoid" only when there is something better to pick).
+   */
   removedByAlternative?: boolean;
 }
 
@@ -58,34 +74,37 @@ export interface FeeReference {
 export interface FeeVerdict {
   formula: "F-62";
   verdict: FeeVerdictCode;
-  /** The negotiate test: cost at the threshold or more and a reference below the current rate. */
+  /** The negotiate test: the worth of bringing the fee to the reference at the threshold or more, and a reference below the current rate. */
   negotiate: boolean;
-  /** The avoid test: cost at the threshold or more and an alternative removes the fee. */
+  /** The avoid test: cost at the threshold or more and an option above the subject charges no such fee, or less of it. */
   avoid: boolean;
   /** Set when both tests pass: the verdict follows the method's order (negotiate first), and this says the avoid test passed too. */
   alsoAvoid: boolean;
   /** Share of the total drag; the test against `negotiate_share` is reported beside the verdict and does not change it. */
   share?: { fraction: number; atLeastThreshold: boolean };
   /** Why a test did not pass, as codes. */
-  reasons: ("cost-below-negotiate-threshold" | "no-reference" | "reference-not-below-current" | "cost-below-avoid-threshold" | "no-alternative-removes-it")[];
+  reasons: ("worth-below-negotiate-threshold" | "no-reference" | "reference-not-below-current" | "cost-below-avoid-threshold" | "no-alternative-removes-it")[];
 }
 
 /**
- * F-62 Fee verdict. "Worth negotiating" when the cost is at least `negotiate_nis` and a reference exists below
- * the current rate; "worth avoiding" when it is at least `avoid_nis` and another provider or wrapper in the same
- * comparison removes it; else "not worth the effort". The method's order decides when both hold. The share of
- * the total drag (`negotiate_share`) is reported as a second test beside the verdict.
+ * F-62 Fee verdict. "Worth negotiating" when the worth of bringing the fee to the reference (`worthNis`, F-61's value of
+ * that reduction) is at least `negotiate_nis` and a reference exists below the current rate; "worth avoiding" when the
+ * cost is at least `avoid_nis` and an option that charges no such fee, or a lower rate of it, ranks above the subject in
+ * the same comparison (picking it is worth the fee's cost); else "not worth the effort". The method's order decides when both hold. The share of the total drag
+ * (`negotiate_share`) is reported as a second test beside the verdict.
  */
 export function feeVerdict(cost: FeeCost, reference: FeeReference | null, thresholds: unknown): FeeVerdict {
   const t = isParsed(thresholds) ? thresholds : feeThresholds(thresholds);
   const reasons: FeeVerdict["reasons"] = [];
-  const costHigh = cost.nis >= t.negotiateNis;
-  if (!costHigh) reasons.push("cost-below-negotiate-threshold");
+  // D90 revised (2026-11-07): what a call is worth is what the reduction it asks for is worth, not what the fee costs
+  // nothing to bring down is never worth negotiating, whatever the threshold (finance review, 2026-11-07)
+  const worthHigh = (cost.worthNis ?? 0) > 0 && (cost.worthNis ?? 0) >= t.negotiateNis;
+  if (!worthHigh) reasons.push("worth-below-negotiate-threshold");
   let refBelow = false;
   if (!reference) reasons.push("no-reference");
   else if (cost.currentRate === undefined || !(reference.rate < cost.currentRate)) reasons.push("reference-not-below-current");
   else refBelow = true;
-  const negotiate = costHigh && refBelow;
+  const negotiate = worthHigh && refBelow;
 
   const avoidHigh = cost.nis >= t.avoidNis;
   if (!avoidHigh) reasons.push("cost-below-avoid-threshold");

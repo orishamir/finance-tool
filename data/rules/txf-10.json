@@ -2,7 +2,7 @@
   "id": "TXF-10",
   "title": "An Israeli intermediary that receives a foreign dividend for an Israeli resident withholds 25%",
   "title_he": "מתווך ישראלי שמקבל דיבידנד זר לתושב ישראל מנכה מס",
-  "text_he": "מי שמקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו מנכה ממנו מס: ליחיד לפי שיעור הניכוי במקור, ולחבר בני אדם בשיעור המס המרבי. התקנה אינה מזכירה מס זר שכבר נוכה בחו\"ל. בפועל המנכה מזכה את המס הזר עד שיעור האמנה ומנכה רק את ההפרש: כך כתוב בהחלטת מיסוי שרשות המסים פרסמה על קרן ריט אמריקנית הרשומה בבורסה, ובמכתב שלה על קרנות חוץ. החלטה כזו חלה על המקרה שלה ואינה הוראה כללית, והוראה כללית לבנקים לא נמצאה. לכן על דיבידנד אמריקני עם טופס W-8BEN לא מנוכה בישראל מס נוסף. אצל ברוקר זר אין מתווך ישראלי ושום דבר אינו מנוכה בישראל.",
+  "text_he": "מי שמקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו מנכה ממנו מס: ליחיד לפי שיעור הניכוי במקור, ולחבר בני אדם בשיעור המס המרבי. התקנה אינה מזכירה מס זר שכבר נוכה בחו\"ל. בפועל המנכה מזכה את המס הזר עד שיעור האמנה ומנכה רק את ההפרש: כך כתוב בהחלטת מיסוי שרשות המסים פרסמה על קרן ריט אמריקנית הרשומה בבורסה. החלטה כזו חלה על המקרה שלה ואינה הוראה כללית, והוראה כללית לבנקים לא נמצאה. לכן על דיבידנד אמריקני עם טופס W-8BEN לא מנוכה בישראל מס נוסף. אצל ברוקר זר אין מתווך ישראלי ושום דבר אינו מנוכה בישראל.",
   "figure_names_he": {
     "rate": "שיעור הניכוי במקור על דיבידנד זר ליחיד"
   },
@@ -17,12 +17,12 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב, p.2, reg. 2(ד)(1)",
-        "publisher": "המוסד לביטוח לאומי",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012), gazette p.600, s.2(6), amending reg. 2(ד)",
+        "publisher": "רשומות",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -35,22 +35,35 @@
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 2(ד)",
-      "locator_he": "עמוד 2, תקנה 2(ד)",
-      "page": 2,
+      "locator": "file p.7 (gazette p.289), reg. 2(ד)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 2(ד)",
+      "page": 7,
       "quote": "המקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו, ינכה ממנו מס בשיעורים אלה",
-      "checked": "2026-10-26"
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.600), s.2(6), amending reg. 2(ד)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 600), סעיף 2(6), תיקון תקנה 2(ד)",
+      "quote": "בפסקה (1), במקום \"20%\" יבוא \"25%\"",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://secapp.taxes.gov.il/TMMISUYWEB/frmShowLinkedAbs.aspx?num=20200015&new=true",
@@ -74,22 +87,6 @@
       "strength": "primary",
       "quote": "בכפוף לקיום מערכת נסיבות דומה",
       "checked": "2026-10-26"
-    },
-    {
-      "url": "https://www.capitax.co.il/Attachments/04072019.pdf",
-      "title": "רשות המסים, מחלקת מיסוי שוק ההון: ניכוי מס במקור – קרנות חוץ, 4.7.2019 (עותק באתר קפיטקס)",
-      "title_he": "ניכוי מס במקור – קרנות חוץ (מכתב מחלקת מיסוי שוק ההון, 4.7.2019)",
-      "publisher": "Capitax",
-      "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.2, s.4.1.4",
-      "locator_he": "עמוד 2, סעיף 4.1.4",
-      "page": 2,
-      "quote": "הנמוך מבניהם",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host: capitax.co.il; no gov.il copy found)"
     },
     {
       "url": "https://www.mercantile.co.il/private/investments-savings/taxation/securities-taxation/",

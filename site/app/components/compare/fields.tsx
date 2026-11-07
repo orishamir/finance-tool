@@ -175,7 +175,7 @@ export function SwitchRow({ label, checked, onChange, source, onReset }: { label
           aria-checked={checked}
           aria-labelledby={id}
           onClick={() => onChange(!checked)}
-          className={cx("relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-[var(--duration-fast)]", checked ? "bg-primary border-primary" : "bg-muted border-input")}
+          className={cx("relative h-7 w-12 tap-area shrink-0 rounded-full border transition-colors duration-[var(--duration-fast)]", checked ? "bg-primary border-primary" : "bg-muted border-input")}
         >
           <span className={cx("absolute top-0.5 size-5 rounded-full transition-all duration-[var(--duration-fast)]", checked ? "bg-background start-6" : "bg-muted-foreground start-0.5")} />
         </button>

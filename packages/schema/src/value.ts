@@ -20,6 +20,8 @@ export const unit = z.enum([
   "usd_per_share",
   "usd_per_trade",
   "gbp_per_trade",
+  /** A dollar amount for each corporate event, as One Zero prints its custodian's cost abroad (D67, F-103). */
+  "usd_per_event",
   "nis_per_usd",
   "fx_per_eur",
   "months",
@@ -64,6 +66,18 @@ export const updateRule = z.union([
   ]),
   z.string().regex(/^frozen \d{4}-\d{4}$/, 'update_rule "frozen" must name its years, e.g. "frozen 2025-2027"'),
 ]);
+
+/**
+ * The words a link to a cited web page opens at (`#:~:text=`; founder, 2026-11-07). Never written in a record under data/: the site
+ * attaches it when it reads the record, from data/sources/fragments.json (the validator fails a record file that carries one). Declared
+ * on the places that can carry it so a record the site checks again after reading keeps it.
+ */
+export const textFragment = z.strictObject({
+  prefix: z.string().min(1).optional(),
+  start: z.string().min(1),
+  end: z.string().min(1).optional(),
+  suffix: z.string().min(1).optional(),
+});
 
 export const source = z.object({
   url: z.string().min(1),
@@ -119,6 +133,8 @@ export const feeBase = z.enum([
   "fx",
   "exit",
   "fixed_period",
+  /** A charge for each corporate event of a security held abroad, such as a fund's dividend (D67, F-103). */
+  "corporate_event",
   "distribution_handling",
   "spread",
   "creation_redemption",

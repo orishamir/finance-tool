@@ -1,0 +1,37 @@
+{
+  "id": "aykvl",
+  "he": "עיקול",
+  "en": null,
+  "meaning": "תפיסה של כסף או נכס של מי שחייב כסף, אצל מי שמחזיק אותו, כמו בנק או קופת גמל, כדי לפרוע את החוב",
+  "where": [],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "exposure_ids": [
+    "general-track"
+  ],
+  "variants": [
+    "לעקל",
+    "עיקולים"
+  ],
+  "rule_ids": [
+    "KGL-18",
+    "PF-29",
+    "REG-18"
+  ],
+  "source": {
+    "url": "https://www.gov.il/he/service/third_party_confiscation_request",
+    "title": "רשות האכיפה והגבייה, בקשה לעיקול כספי צד ג' בתיקי הוצאה לפועל",
+    "publisher": "Enforcement and Collection Authority (gov.il)",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

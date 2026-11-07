@@ -1,0 +1,97 @@
+{
+  "task": "not-covered",
+  "persona": "student-small-amounts",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:12:19.929Z",
+  "structured": {
+    "answer": "Honestly I couldn't get one clear list out of it. The page says \"מה האתר עוד לא מכסה\" and lists cards marked \"לא מחושב\": ETC, gold, אג\"ח קונצרניות, אגרת בונדס, ביטוח מנהלים, מוצר מובנה, מנוטרלת מט\"ח, חשבון מטבע חוץ and more. But it also lists things that aren't products at all, like \"חברת דירוג\", \"LBMA Gold Price\", \"עמלת חליפין\", \"מענק\" and \"הסדר חוב\", so I don't trust that list. I didn't see the normal index fund/Nasdaq stuff on it, as far as I scrolled.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top, subtitle 'מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף'",
+        "why": "It promises a list of products, but the second card is 'LBMA Gold Price AM / PM', a gold price. That's not something you put money into, so I started doubting the list right away"
+      },
+      {
+        "where": "Screen 3–4, 'חברת דירוג' card",
+        "why": "A rating company in a list of products? That one really doesn't fit. Same for 'הסדר חוב', 'מענק' and 'עמלת חליפין' (a fee). I can't tell which cards are real things I could invest in"
+      },
+      {
+        "where": "Red banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה'",
+        "why": "I wasn't sure if it means the site has nothing worked out for any of these, or just the rules part"
+      }
+    ],
+    "used": [
+      "Title 'מה האתר עוד לא מכסה' and its subtitle",
+      "Red banner 'עד שייסגרו, האתר לא מחשב אותם'",
+      "Card titles and the red 'לא מחושב' tags",
+      "Card bits starting 'מה ידוע'"
+    ],
+    "skimmed": [
+      "'מצב הכיסוי' / 'שאלה פתוחה' parts inside the cards",
+      "'כשייסגר: יופיע במדריך...' lines"
+    ],
+    "skipped": [
+      "Source links, dates, 'מקור ראשי' and 'חוקים וכללים · N' chips",
+      "Screens 6–10: I got bored after 'עמלת חליפין' / 'ניירות ערך מסחריים'"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "אג\"ח קונצרניות",
+      "אגרת בונדס",
+      "מנוטרלת מט\"ח",
+      "היוון קצבה מוכרת",
+      "ביטוח חיים משתתף ברווחים",
+      "מסלולי האירוח",
+      "נע\"מ / ני\"ע",
+      "MF-28",
+      "לפי החברה (orange tag)",
+      "the struck-out 'נסגר ב-24.10.2026'"
+    ],
+    "not_found": [
+      "A short summary at the top saying which ones matter for someone like me",
+      "Whether ETFs/קרן מחקה/Nasdaq funds are covered or not (I didn't see them in this list)",
+      "Any sorting or grouping by type (product vs fee vs company)"
+    ],
+    "findings": [
+      {
+        "what": "The heading promises 'מוצרים', but some items aren't products: 'חברת דירוג' (a company), 'LBMA Gold Price AM / PM' (a price), 'עמלת חליפין' (a fee), 'מענק', 'הסדר חוב'. That makes me doubt the whole list",
+        "where": "Cards on screens 1, 3, 4, 5"
+      },
+      {
+        "what": "A long wall of near-identical dark cards with legal citations. On a phone I quit after about 5 screens",
+        "where": "Whole page"
+      },
+      {
+        "what": "No grouping and no order that makes sense to me, so I can't tell what applies to a few hundred shekels a month",
+        "where": "Card grid"
+      },
+      {
+        "what": "Lots of jargon and law references in each card ('חוק ניירות ערך, התשכ\"ח-1968...')",
+        "where": "Under each 'מה ידוע'"
+      },
+      {
+        "what": "Small typo-looking title 'מסלולי האירוה'",
+        "where": "Screen 4"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 30067,
+    "turns": 7,
+    "usd": 0.1461724,
+    "input": 8,
+    "cacheWrite": 11809,
+    "cacheRead": 25042,
+    "output": 2333,
+    "model": "claude-opus-5-5"
+  }
+}

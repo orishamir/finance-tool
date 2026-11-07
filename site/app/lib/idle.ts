@@ -147,7 +147,7 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
       const owner = id === "bank-deposit:average" ? (bankRate as SiteValue | undefined)?.own : undefined;
       const rate = owner ? ownBy(r.rate as SiteValue, owner) : (r.rate as SiteValue);
       const baseline = current.cashRate!.own ? ownBy(main.baseline.rate as SiteValue, current.cashRate!.own) : (main.baseline.rate as SiteValue);
-      const cost = computed(r.monthlyCost, "nis", "F-60", { amount: enteredValue(main.amount, "nis", today), rate, baseline }, { today, about: id, rules: r.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: r.run.flags.map((f) => f.code) });
+      const cost = computed(r.monthlyCost, "nis", "F-60", { amount: enteredValue(main.amount, "nis", today), rate, baseline }, { today, about: id, rules: r.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: r.run.flags.map((f) => f.code), labels: r.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
       rows.push({ id, label, rate, cost, monthlyCost: r.monthlyCost, notes: r.notes });
     }
     const failed: IdleFailedRow[] = main.candidates.filter((c) => c.tier === 1 && cashOptions.has(c.id) && c.kind === "not-evaluated").map((c) => ({ id: c.id, reasons: c.reasons }));
@@ -158,7 +158,7 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
     let verdict: IdleVerdict | null = null;
     if (offerOnTerm && fundRow && termMonths !== null && threshold) {
       const after = (row: IdleCash["rows"][number], label: string) =>
-        computed(row.run.nominal - main.amount, "nis", "F-60", { הסכום: amount, הריבית: row.rate as SiteValue }, { today, about: label, rules: row.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: row.run.flags.map((f) => f.code) });
+        computed(row.run.nominal - main.amount, "nis", "F-60", { הסכום: amount, הריבית: row.rate as SiteValue }, { today, about: label, rules: row.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: row.run.flags.map((f) => f.code), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
       const offerAfterTax = after(offerOnTerm, "הרווח אחרי מס בשנה אחת מההצעה שהזנתם");
       const fundAfterTax = after(fundRow, "הרווח אחרי מס בשנה אחת מהקרן הכספית");
       const diff = (offerOnTerm.run.nominal - main.amount) - (fundRow.run.nominal - main.amount);

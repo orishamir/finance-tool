@@ -2,7 +2,7 @@
 // a chip of an icon and two or three words, a row of them, and the one sheet per page that a tap opens with the label's meaning
 // and its rules. The words and the rules come from lib/labels.ts.
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
-import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, CalendarClock, Currency, DollarSign, Euro, EyeOff, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Percent, Package, PiggyBank, PoundSterling, ReceiptText, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, type LucideProps } from "lucide-react";
+import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
 import type { Label, LabelIconKey } from "../../lib/labels";
 import { RuleRef } from "../provenance";
@@ -41,6 +41,10 @@ const icons: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
   eyeOff: EyeOff,
   fileSignature: FileSignature,
   ban: Ban,
+  megaphone: Megaphone,
+  building: Building2,
+  coins: Coins,
+  scale: Scale,
 };
 
 export function LabelIcon({ name, size = 14 }: { name: LabelIconKey; size?: number }) {
@@ -65,15 +69,17 @@ export function LabelSheetHost({ children }: { children: ReactNode }) {
               {open.label.text}
             </h2>
             <p className="max-w-measure">{open.label.explain}</p>
-            <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
-              {c.labelsSheet.rules}:
-              {open.label.rules.map((r) => (
-                <RuleRef key={r} id={r} />
-              ))}
-            </p>
+            {open.label.rules.length > 0 && (
+              <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
+                {c.labelsSheet.rules}:
+                {open.label.rules.map((r) => (
+                  <RuleRef key={r} id={r} titled />
+                ))}
+              </p>
+            )}
             {open.label.doc && (
               <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
-                {c.labelsSheet.doc}:
+                {open.label.docLead ?? c.labelsSheet.doc}:
                 <DocLink href={open.label.doc.href}>{open.label.doc.title}</DocLink>
               </p>
             )}
@@ -128,12 +134,12 @@ export function LabelChip({ label, still = false }: { label: Label; /** Drawn on
 export function LabelFilter({ options, value, onChange, lead, allLabel }: { options: { label: Label; count: number }[]; value: string | null; onChange: (id: string | null) => void; lead: ReactNode; allLabel: string }) {
   if (options.length === 0) return null;
   return (
-    <div className="flex md:flex-wrap items-center gap-1.5 max-md:overflow-x-auto max-md:pb-1" role="group" aria-label={typeof lead === "string" ? lead : undefined}>
+    <div className="label-strip flex md:flex-wrap items-center gap-1.5 max-md:pb-1" role="group" aria-label={typeof lead === "string" ? lead : undefined}>
       <span className="text-sm text-muted-foreground me-1 shrink-0">{lead}</span>
       {options.map(({ label, count }) => {
         const on = value === label.id;
         return (
-          <button key={label.id} type="button" aria-pressed={on} onClick={() => onChange(on ? null : label.id)} className={cx(chipShape, "shrink-0 min-h-8 hover:brightness-110", chipClass(label), on && "ring-2 ring-current ring-offset-1 ring-offset-card")}>
+          <button key={label.id} type="button" aria-pressed={on} onClick={() => onChange(on ? null : label.id)} className={cx(chipShape, "shrink-0 min-h-8 tap-area hover:brightness-110", chipClass(label), on && "ring-2 ring-current ring-offset-1 ring-offset-card")}>
             <LabelIcon name={label.icon} />
             {label.text}
             <span className="tabular-nums opacity-75">{count}</span>
@@ -141,7 +147,7 @@ export function LabelFilter({ options, value, onChange, lead, allLabel }: { opti
         );
       })}
       {value !== null && (
-        <button type="button" onClick={() => onChange(null)} className="shrink-0 text-sm text-link hover:underline min-h-8 px-1">
+        <button type="button" onClick={() => onChange(null)} className="shrink-0 text-sm text-link hover:underline min-h-8 tap-area px-1">
           {allLabel}
         </button>
       )}

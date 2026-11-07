@@ -1,0 +1,23 @@
+{
+  "id": "shar-chlypyn",
+  "he": "שער חליפין",
+  "en": null,
+  "meaning": "המחיר בשקלים של מטבע חוץ, למשל כמה שקלים עולה דולר אחד",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "שער המטבע"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.boi.org.il/information/bankipedia/moneyandeconomy/%D7%9B%D7%9E%D7%94-%D7%A2%D7%95%D7%9C%D7%94-%D7%93%D7%95%D7%9C%D7%A8-%D7%95%D7%90%D7%99%D7%A8%D7%95/",
+    "title": "בנק ישראל, בנקיפדיה: כמה עולה דולר? ואירו? (עודכן 1.10.2023)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

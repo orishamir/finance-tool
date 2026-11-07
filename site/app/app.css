@@ -134,6 +134,22 @@
   }
 }
 
+/* A control that stands alone but draws shorter than a touch target (a link in a strip, a footer, a chart's legend on a computer): its
+   tap area reaches 44 px tall, centred on it, and the look does not change (ground rule 8, kit guard 22). Never on a link inside running
+   text, whose area would cover the lines above and below it. */
+@utility tap-area {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset-inline: 0;
+    top: 50%;
+    height: max(100%, var(--target));
+    translate: 0 -50%;
+  }
+}
+
 @layer components {
   /* ---- the provenance number (D7) */
   .num {
@@ -152,13 +168,35 @@
     text-underline-offset: var(--num-underline-offset);
     line-height: inherit;
   }
-  .num::after {
+  /* The tap area (ground rule 8). Every figure and term gets a touch target 11 px above and below it, and never less than 44 px tall
+     (::after). Its own box (::before) sits above every such area, so where areas reach a figure on the line above or below, that
+     figure still takes its own click: in running text 11 px up and down reached the figure on the next line ("0.7%" opened "5 שנים",
+     independent check 2026-11-07), and an area that grew only sideways took the 44 px from about 1,200 lone figures (re-check 2,
+     2026-11-07). Where two areas overlap in the space between lines, the later figure takes it; never a figure's own box.
+     Three layers (fix pass 8, 2026-11-07: a value pencil's area was 24 to 35 px and a rule chip's 36 to 42, under the figures' areas around
+     them): a figure's or a term's area at 0, a control's that stands alone (a rule chip, a value pencil, the kit's tap-area) at 1, and every
+     own box at 2, so a control keeps its 44 px over the figures in the text beside it and nobody's area takes another's own box. */
+  .num::after,
+  .term::after {
     content: "";
     position: absolute;
-    inset: -11px -4px;
+    z-index: 0;
+    inset-inline: -4px;
+    top: 50%;
+    height: max(calc(100% + 22px), 44px);
+    translate: 0 -50%;
+  }
+  .num::before,
+  .term::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0;
   }
   .num-static::after,
-  .num-sample::after {
+  .num-sample::after,
+  .num-static::before,
+  .num-sample::before {
     content: none;
   }
   .num-sample,
@@ -217,17 +255,37 @@
     border: 1px solid var(--border);
     border-radius: 999px;
     padding: 1px 8px;
+    /* a 44 px band in its line (fix pass 8, 2026-11-07): the chip's area reaches 44 px, and the line holds it, so a figure in the line
+       above or a card below never covers half of it (hit-check measured 36 to 42 px) */
+    margin-block: 12.5px;
     font-variant-numeric: tabular-nums slashed-zero;
     cursor: pointer;
     white-space: nowrap;
   }
-  .rule-chip::after {
+  .rule-chip::after,
+  .input-slot-edit::after {
     content: "";
     position: absolute;
-    inset: -12px -4px;
+    z-index: 1;
+    inset-inline: -4px;
+    top: 50%;
+    height: max(calc(100% + 22px), 44px);
+    translate: 0 -50%;
+  }
+  .rule-chip::before,
+  .input-slot-edit::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0;
   }
   .rule-chip:hover {
     text-decoration: underline;
+  }
+  /* the punctuation that closes a sentence on a chip (kit ChipEnd): drawn close to the frame, where the pill's round end leaves room
+     at the baseline, so it reads as the sentence's end and not as a stray mark after a gap (reader round 5, 2026-11-07) */
+  .chip-end {
+    margin-inline-start: -0.2em;
   }
   /* A glossary term: a dashed teal underline, a third pattern next to the solid grey (sourced) and dotted violet
      (computed) of numbers (audit 2026-10-24, A78). */
@@ -245,12 +303,6 @@
     text-decoration-thickness: 1.5px;
     text-underline-offset: 0.25em;
   }
-  .term::after {
-    content: "";
-    position: absolute;
-    inset: -11px -4px;
-  }
-
   /* ---- a number the reader sets, inside a sentence (kit InputSlot, 2026-10-26): a fixed-width blank, so the line never jumps */
   .input-slot {
     display: inline-flex;
@@ -259,6 +311,8 @@
     gap: 2px;
     padding-inline: 2px;
     border-bottom: 1px dashed color-mix(in oklab, var(--entered) 55%, var(--border));
+    /* the pencil's 44 px area needs a 44 px line: the figure on the line below covered half of it (24 to 35 px, fix pass 8, 2026-11-07) */
+    margin-block: 11px;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
@@ -274,12 +328,6 @@
     border-radius: 4px;
     color: var(--entered);
     cursor: pointer;
-  }
-  .input-slot-edit::after {
-    /* a 44 px touch target around a 16 px pencil */
-    content: "";
-    position: absolute;
-    inset: -14px -8px;
   }
   .input-slot-edit:hover {
     background: var(--entered-subtle);
@@ -342,6 +390,17 @@
     background: var(--accent);
   }
 
+  /* ---- a line of labels that scrolls sideways on a phone (kit LabelFilter, a fund row's labels): its far end fades, so a chip that runs past
+     the edge reads as more to scroll to, not as a chip cut under the next column (independent check of pass 7: "מחזיקה" on IE00B6R52259 at
+     390 px); the end's padding lets the last chip clear the fade once scrolled to. The page is right to left, so the far end is the left */
+  @media (max-width: 47.99rem) {
+    .label-strip {
+      overflow-x: auto;
+      padding-inline-end: 20px;
+      mask-image: linear-gradient(to right, transparent, #000 20px);
+    }
+  }
+
   /* ---- readout and definition lists in sheets */
   /* the part of a bar that is a range, not a value: stripes of the bar's own colour (ValueBar, 2026-10-26) */
   .hatch-value {
@@ -354,9 +413,11 @@
   .readout-row {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     gap: 12px;
     padding: 6px 0;
+    /* each row's figure opens its source: 44 px a row, so the figure of the next row never covers its area (40 px, fix pass 8) */
+    min-height: 44px;
     border-bottom: 1px solid var(--border);
   }
   .readout-row:last-child {
@@ -437,10 +498,48 @@
   }
   .sheet-body {
     overflow-y: auto;
-    padding: 4px 16px calc(28px + env(safe-area-inset-bottom, 0px));
+    padding: 4px 16px 4px;
     display: flex;
     flex-direction: column;
     gap: 14px;
+  }
+  /* More of the body lies below the edge: a strip of its own under the scrolling body says so, in words with an arrow, so it never covers a
+     line (independent check of pass 7: in a still shot the cue over the last line hid it, and a reader misread the sheet). The strip is
+     always there at one height, empty at the end of the body, so the body's room never changes when the sign comes or goes; the body's
+     own bottom padding is the strip's (independent check of pass 5: a third year sat under the edge with no sign that more followed) */
+  .sheet-more {
+    flex-shrink: 0;
+    height: calc(32px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid transparent;
+    color: var(--muted-foreground);
+    pointer-events: none;
+    transition: border-color var(--duration-fast) linear;
+  }
+  .sheet-more > * {
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity var(--duration-fast) linear;
+  }
+  .sheet-more[data-more] {
+    border-top-color: var(--border);
+  }
+  .sheet-more[data-more] > * {
+    opacity: 1;
+  }
+  .sheet-more-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    line-height: 20px;
   }
   /* The back and close buttons float over the body's top corners, centred on its first line (the handle, 16px, and the
      body's 4px above it on a phone); the first child keeps clear of them. The head is outside the scrolling, so the buttons
@@ -490,7 +589,7 @@
       max-height: 70vh;
     }
     .sheet-body {
-      padding: 12px 20px 20px;
+      padding: 12px 20px 4px;
     }
     .sheet-head {
       top: 8px;
@@ -587,7 +686,8 @@
     outline-offset: 1px;
   }
   .field-box-compact {
-    width: 128px;
+    /* holds "50,000,000" and its unit: a plan typed past the slider's end showed "50,000,00(" (#190) */
+    width: 152px;
     height: var(--target);
     padding: 0 10px;
   }
@@ -613,6 +713,8 @@
     color: var(--popover-foreground);
   }
   .field-input {
+    /* over the box's 1 px border too, so the field's tap area is the box's full 44 px, not 42 (hit check, 2026-11-07) */
+    margin-block: -1px;
     flex: 1;
     min-width: 0;
     background: transparent;

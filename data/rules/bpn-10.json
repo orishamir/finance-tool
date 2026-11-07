@@ -1,15 +1,15 @@
 {
   "id": "BPN-10",
-  "title": "Bank Hapoalim's savings plans: what the contracts say about instalments",
-  "title_he": "תוכניות חיסכון של הפועלים: מה החוזים אומרים על ההפקדות",
-  "text_he": "בתוכניות ההפקדה התקופתית של בנק הפועלים טבלת ריבית אחת לפי מועד המשיכה חלה על כל ההפקדות מתחילת התוכנית, תחנות היציאה נספרות מתחילת התוכנית, ובתחנת יציאה אפשר למשוך רק את כל הסכום ולא חלק ממנו. לכן בתוכניות האלה של הפועלים להפקדה בודדת אין נעילה משלה. כך כתוב ב־4 תוכניות של הפועלים; בתוכניות של בנקים אחרים נקראו רק תנאי השבירה, וכל בנק קובע אותם בעצמו.",
+  "title": "Bank Hapoalim's savings plans: what the contracts and its 447 table say about instalments, withdrawals and breaking",
+  "title_he": "תוכניות חיסכון של הפועלים: מה החוזים וטבלת הריביות אומרים על ההפקדות, המשיכה והשבירה",
+  "text_he": "בארבע תוכניות של בנק הפועלים (חושבים קדימה, חושבים קדימה צמוד, שקלי לצעד הבא וחיסכון צומח לעתיד) טבלת ריבית אחת לפי מועד המשיכה חלה על כל ההפקדות מתחילת התוכנית, תחנות היציאה נספרות מתחילת התוכנית, ובתחנת יציאה אפשר למשוך רק את כל הסכום. לכן בתוכניות האלה של הפועלים להפקדה בודדת אין נעילה משלה. בחיסכון הגמיש של הפועלים אפשר למשוך חלק בכל תחנת יציאה, כל עוד נשאר סכום המינימום של הוראת הקבע. טבלת הריביות של הפועלים כותבת שאין אפשרות לשבור אף אחת מחמש התוכניות.",
   "strength": "institution",
   "dimensions": [
     "liquidity-lockup"
   ],
   "likely_to_change": "no",
   "il_finance_file": "bank-product-names.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -18,6 +18,20 @@
     }
   ],
   "sources": [
+    {
+      "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/פקדונות/gamish.pdf",
+      "title": "הפועלים: חיסכון גמיש",
+      "title_he": "הפועלים: חיסכון גמיש",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "משיכה חלקית",
+      "checked": "2026-10-31"
+    },
     {
       "url": "https://www.bankhapoalim.co.il/api/media/PDFS/%D7%90%D7%97%D7%95%D7%96%D7%99%D7%9D%20%D7%90%D7%97%D7%99%D7%93%D7%99%D7%9D/hwsbym_qdymh.pdf",
       "title": "הפועלים: תנאי התכנית חושבים קדימה",
@@ -69,9 +83,20 @@
       "locator_he": "עמוד 1, סעיף 1.3-1.5",
       "page": 1,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
+      "title_he": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "אפשרות לשבירת פיקדון",
+      "checked": "2026-11-07"
     }
   ],
   "derived_from": [
-    "BANK-13"
+    "BANK-28"
   ]
 }

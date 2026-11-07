@@ -2,12 +2,12 @@
 // line, remainder line, thresholds line. Every figure goes through the provenance number.
 import { Link } from "react-router";
 import { r3fees } from "../../copy";
-import { headlineGap, type CapView, type LineView, type NoRefReason, type ReferenceView, type SubjectView } from "../../lib/fees";
+import { headlineGap, REACH_LIMITS, type CapView, type Factory, type FeeReach, type LineView, type NoRefReason, type ReferenceView, type SubjectView } from "../../lib/fees";
 import { anyWeak, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconAlert, IconExternal, IconLock } from "../icons";
-import { IdRef, LeadTail, Num, NumberLegend, RuleRef, RulesChip, StateTag, StrengthLabel } from "../provenance";
-import { Callout, Card, cx, LongestCase, Sentence, Tag } from "../kit";
+import { IdRef, LeadTail, Num, NumberLegend, ReadingTag, RuleRef, RulesChip, StateTag } from "../provenance";
+import { Callout, Card, cx, gershayim, LongestCase, MixedName, Sentence, Tag, When } from "../kit";
 import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
 // ---------------------------------------------------------------- subject strip
@@ -15,7 +15,7 @@ import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 export function SubjectStrip({ subject, publisherNames, otherRecords }: { subject: SubjectView; publisherNames: Record<string, string>; otherRecords?: { href: string; label: string } | null }) {
   const s = r3fees.strip;
   // The record is named by its publisher, which the data keeps in English: show the provider's Hebrew name, keep the record for the popover.
-  const recordName = publisherNames[subject.record] ?? subject.record;
+  const recordName = gershayim(publisherNames[subject.record] ?? subject.record);
   const record = (
     <bdi className="font-medium" title={subject.record}>
       {recordName}
@@ -27,7 +27,7 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
     body = (
       <>
         {s.compare}
-        <bdi>{subject.productName}</bdi>
+        <bdi>{gershayim(subject.productName)}</bdi>
         {s.compareRecord}
         {record}
       </>
@@ -37,7 +37,7 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
     body = (
       <>
         {s.track}
-        <bdi className="font-medium">{subject.track.name}</bdi> (<bdi>{subject.track.company}</bdi>
+        <bdi className="font-medium">{gershayim(subject.track.name)}</bdi> (<bdi>{gershayim(subject.track.company)}</bdi>
         {s.trackAverage}
         <bdi dir="ltr">{subject.feeYear ?? subject.track.period.slice(0, 4)}</bdi>
       </>
@@ -55,7 +55,7 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
     body = (
       <>
         {s.guide}
-        <bdi>{subject.productName}</bdi>
+        <bdi>{gershayim(subject.productName)}</bdi>
         {s.compareRecord}
         {record}
       </>
@@ -67,11 +67,11 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
       <p className="min-w-0">{body}</p>
       <span className="flex flex-wrap items-center gap-x-4 gap-y-1 shrink-0">
         {otherRecords && (
-          <Link to={otherRecords.href} className="text-link hover:underline">
+          <Link to={otherRecords.href} className="text-link hover:underline tap-area">
             {otherRecords.label}
           </Link>
         )}
-        <Link to={subject.fromHref} className="text-link hover:underline">
+        <Link to={subject.fromHref} className="text-link hover:underline tap-area">
           {back}
         </Link>
       </span>
@@ -81,11 +81,11 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
 
 // ---------------------------------------------------------------- headline
 
-/** A value the engine read a rule into as an inference (the "reading" label, TXG-35): marked as a secondary source is (audit 2026-10-24, A2). */
+/** A value the engine read a rule into as an inference (the "reading" label, e.g. TXK-07 when the CPI fell): marked as the site's reading (audit 2026-10-24, A2; 2026-11-07: no longer as a secondary source, which it is not). */
 export const hasReading = (v: SiteValue) => !!v.labels?.some((l) => l.code === "reading");
 
 export function ReadingMark({ value }: { value: SiteValue }) {
-  return hasReading(value) ? <StrengthLabel strength="secondary" /> : null;
+  return hasReading(value) ? <ReadingTag /> : null;
 }
 
 /** A plain-Hebrew reason first, the code after it in a chip (audit 2026-10-24, A2): never the code inside the sentence. */
@@ -105,13 +105,27 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
   const rk = r3fees.ranked;
   // stands in for any figure in the unseen longest case of a line: what the longest amount a slider can reach takes on the screen
   const big: SiteValue = { ...total, value: 9_999_999 };
+  // D86, D90: the figure is a reduction held for the discount period, then back to the rate after it; said in the field's own words
+  const held = gap?.kind === "more" ? gap.held : undefined;
   const gapLine = (worth: SiteValue, overYears: number) => (
-    <p className="text-lg font-medium">
-      {g.more[0]}
-      <Num value={worth} size="figure" />
-      <LeadTail lead={g.more[1]}>{fmt.years(overYears)}</LeadTail>
-      {g.more[2]}
-    </p>
+    <div className="flex flex-col gap-1">
+      <p className="text-lg font-medium">
+        {g.more[0]}
+        <Num value={worth} size="figure" />
+        <LeadTail lead={g.more[1]} text={fmt.years(overYears)}>{fmt.years(overYears)}</LeadTail>
+        {g.more[2]}
+      </p>
+      {held && (
+        <Sentence size="sm" tone="muted">
+          {r3fees.reduction.held.before}
+          <Num value={held.period} display={fmt.number(Number(held.period.value))} />
+          <LeadTail lead={r3fees.reduction.held[held.unit]}>
+            <Num value={held.rate} />
+            {r3fees.reduction.held.end}
+          </LeadTail>
+        </Sentence>
+      )}
+    </div>
   );
   const placeLine = (rank: number, tied: boolean) => (
     <p>
@@ -133,19 +147,23 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
       <span className="figure">
         <Num value={value} size="figure" animate={animate} />
       </span>
-      <LeadTail lead={h.in}>{fmt.years(overYears)}</LeadTail>
+      <LeadTail lead={h.in} text={fmt.years(overYears)}>{fmt.years(overYears)}</LeadTail>
       {h.after}
-      {/* On a phone the state tag sits under the sentence (UX fix 31); from md it follows it inline. */}
-      <span className="mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:inline-flex">
-        <StateTag state="computed" />
-        <ReadingMark value={value} />
-        {preTax.length > 0 && (
-          <Tag tone="blocked" icon={<IconLock size={14} className="text-blocked" />}>
-            {r3fees.preTax} <bdi dir="ltr">{preTax[0]}</bdi>
-          </Tag>
-        )}
-      </span>
+      {/* from md the state tag follows the sentence inline; on a phone it sits under the sentence's held room (UX fix 31), so a
+          longer figure that wraps the sentence onto another line no longer moves it (box check, 2026-11-07: 29 px at 390) */}
+      <span className="hidden md:ms-2 md:inline-flex md:flex-wrap md:items-center md:gap-2">{totalTags(value)}</span>
     </Sentence>
+  );
+  const totalTags = (value: SiteValue) => (
+    <>
+      <StateTag state="computed" />
+      <ReadingMark value={value} />
+      {preTax.length > 0 && (
+        <Tag tone="blocked" icon={<IconLock size={14} className="text-blocked" />}>
+          {r3fees.preTax} <bdi dir="ltr">{preTax[0]}</bdi>
+        </Tag>
+      )}
+    </>
   );
   const underLine = (without: SiteValue, withThem: SiteValue) => (
     <Sentence tone="muted">
@@ -160,14 +178,16 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
       <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
       <NumberLegend canEnter institution={anyWeak([total, withFees, withoutFees])} />
       {/* the one plain sentence first (audit 2026-10-24, A18): what bringing the fee to the average is worth, from the figure of the "אם יורידו ל־" field */}
-      {gap && (
-        <LongestCase cases={[gapLine(big, 40), <p key="less" className="text-lg font-medium">{g.less}</p>]}>
-          {gap.kind === "more" ? gapLine(gap.worth, years) : <p className="text-lg font-medium">{g.less}</p>}
-        </LongestCase>
-      )}
+      {/* the first line is always there: with no average of similar tracks it says so, and the header kept growing by a line at 390 px
+          when an average came and went (box check, 2026-11-07) */}
+      <LongestCase cases={[gapLine(big, 40), <p key="less" className="text-lg font-medium">{g.less}</p>, <p key="after" className="text-lg font-medium">{g.after}</p>, <p key="none" className="text-lg font-medium">{g.none}</p>]}>
+        {gap?.kind === "more" ? gapLine(gap.worth, years) : <p className="text-lg font-medium">{gap ? g[gap.kind] : g.none}</p>}
+      </LongestCase>
       {/* the place among the options is not there on every plan: its room stays, or the page moves when it comes back */}
       <LongestCase cases={[placeLine(1, true), placeLine(99, true)]}>{place && placeLine(place.rank, place.tied)}</LongestCase>
       <LongestCase cases={[totalLine(big, 40, false)]}>{totalLine(total, years, true)}</LongestCase>
+      <span className="flex flex-wrap items-center gap-2 md:hidden">{totalTags(total)}</span>
+      <Sentence tone="muted">{h.meaning}</Sentence>
       <LongestCase cases={[underLine(big, big)]}>{underLine(withoutFees, withFees)}</LongestCase>
       {omitted.length > 0 && (
         <Callout tone="caution">
@@ -185,9 +205,15 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
 
 // ---------------------------------------------------------------- verdict
 
-export function VerdictTag({ line, thresholds, soften }: { line: LineView; thresholds: { negotiate: SiteValue; avoid: SiteValue }; soften?: boolean }) {
-  // lead decision 4c: the product ranks first among every option on the page's numbers, so "avoid" reads as a relative statement
-  const word = soften && line.verdict === "avoid" ? r3fees.verdictSoft : r3fees.verdict[line.verdict]!;
+/** The badge's word for a card (the sensitivity names the verdict a flip leaves in the same words). */
+export function verdictWord(line: LineView): string {
+  // D90 revised: a fee not worth negotiating now whose discount ends within the period says "not now", since it may be worth it then; "avoid"
+  // comes only with an option that ranks above the product (D90 revised the same day), so no softened word is needed for the first place
+  return line.reason === "check-after" ? r3fees.verdictLater : r3fees.verdict[line.verdict]!;
+}
+
+export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; thresholds: { negotiate: SiteValue; avoid: SiteValue }; /** What would make the cut worth negotiating (the sensitivity's search); its room is held before it comes */ reach?: FeeReach; mk?: Factory }) {
+  const word = verdictWord(line);
   const tag =
     line.verdict === "negotiate" ? (
       <Tag tone="caution" icon={<IconPhone size={14} />} className="text-sm">
@@ -203,48 +229,141 @@ export function VerdictTag({ line, thresholds, soften }: { line: LineView; thres
       </Tag>
     );
   const r = r3fees.reason;
-  let reason: React.ReactNode;
-  switch (line.reason) {
-    case "negotiate":
-      reason = (
-        <>
-          {r.negotiate[0]}
-          <Num value={thresholds.negotiate} />
-          {r.negotiate[1]}
-        </>
-      );
-      break;
-    case "avoid":
-      reason = (
-        <>
-          {r.avoid[0]}
-          <Num value={thresholds.avoid} />
-          {r.avoid[1]}
-        </>
-      );
-      break;
-    case "below":
-      reason = (
-        <>
-          {r.below[0]}
-          <Num value={thresholds.negotiate} />
-          {r.below[1]}
-        </>
-      );
-      break;
-    case "no-reference":
-      reason = r.noReference;
-      break;
-    case "nothing-removes":
-      reason = r.nothingRemoves;
-      break;
-    default:
-      reason = r3fees.review.refNotBelow;
-  }
+  // D90: when the discount ends and what the fee can rise to, which is when to check again; each maqaf lead is bound to its figure, and the
+  // colon to the rate before it, so neither starts or ends a line alone (390 px, 2026-11-07)
+  const ends = (rate: SiteValue | null, a: NonNullable<LineView["after"]>) => {
+    const n = Number(a.period.value);
+    return (
+      <>
+        <LeadTail lead={r.ends.lead}>
+          <Num value={a.period} display={a.unit === "years" ? fmt.years(n) : fmt.months(n)} />
+        </LeadTail>
+        {rate && (
+          <LeadTail lead={r.ends.from}>
+            <Num value={rate} />
+          </LeadTail>
+        )}
+        <LeadTail lead={rate ? r.ends.to : r.ends.risesTo}>
+          <Num value={a.rate} />
+          {r.ends.end}
+        </LeadTail>
+      </>
+    );
+  };
+  // fresh readers, 2026-11-07: "the page never says what would push the 108 ₪ above 1,000 ₪": one plain line after a "not worth it" reason
+  const reachLine = (x: FeeReach | undefined) => {
+    if (!x || !mk || (x.amountNow === undefined && x.horizonYears === undefined)) return null;
+    const rr = r3fees.reach;
+    return (
+      <>
+        {rr.lead}
+        {x.amountNow !== undefined && (
+          <>
+            {rr.amount[0]}
+            <Num value={mk.nis(x.amountNow, "F-61", rr.amountName)} />
+            {rr.amount[1]}
+          </>
+        )}
+        {x.amountNow !== undefined && x.horizonYears !== undefined && rr.or}
+        {x.horizonYears !== undefined && (
+          <>
+            {rr.years[0]}
+            <Num value={mk.plain(x.horizonYears, "years", "F-61", rr.yearsName)} display={fmt.years(x.horizonYears)} />
+            {rr.years[1]}
+          </>
+        )}
+        {rr.end}
+      </>
+    );
+  };
+  const reasonOf = (kind: LineView["reason"], l: LineView, x?: FeeReach): React.ReactNode => {
+    switch (kind) {
+      case "negotiate":
+      case "negotiate-ends":
+        return (
+          <>
+            {r.negotiate[0]}
+            <Num value={thresholds.negotiate} />
+            {r.negotiate[1]}
+          </>
+        );
+      case "check-after":
+        // the cut to the average now is worth less than the threshold, or the fee is not above the average now: not "worth negotiating" now
+        return (
+          <>
+            {l.suggestion !== null ? (
+              <>
+                {r.nowSmall[0]}
+                <Num value={thresholds.negotiate} />
+                {r.nowSmall[1]}
+              </>
+            ) : (
+              r.nowNothing
+            )}
+            {l.suggestion !== null && reachLine(x)}
+          </>
+        );
+      case "avoid":
+        // a discount that ends within the period: the card says when the fee rises, whatever the verdict (D90 revised)
+        return (
+          <>
+            {r.avoid[0]}
+            <Num value={thresholds.avoid} />
+            {r.avoid[1]}
+          </>
+        );
+      case "below":
+        return (
+          <>
+            {r.below[0]}
+            <Num value={thresholds.negotiate} />
+            {r.below[1]}
+            {reachLine(x)}
+          </>
+        );
+      case "no-reference":
+        return r.noReference;
+      case "nothing-removes":
+        return r.nothingRemoves;
+      default:
+        return r3fees.review.refNotBelow;
+    }
+  };
+  // every reason a slider can bring is laid out unseen: "העלות נמוכה מ־1,000 ₪." took one line at 390 px where the others took two (box check, 2026-11-07)
+  // the reach line comes after the sensitivity's search: its room is held by a case with the longest sum and horizon it can say
+  const longReach: FeeReach = { amountNow: REACH_LIMITS.amountNow, horizonYears: REACH_LIMITS.years - 1 };
+  const casesOf = (l: LineView): [LineView["reason"], LineView, FeeReach?][] => [
+    ["negotiate", l],
+    ["avoid", l],
+    ["below", l, longReach],
+    ["no-reference", l],
+    ["nothing-removes", l],
+    ["not-below", l],
+    ...(l.after
+      ? ([
+          ["negotiate-ends", l],
+          ["avoid", { ...l, judgedFraction: l.judgedFraction ?? 0 }],
+          ["check-after", { ...l, suggestion: l.suggestion ?? 0 }, longReach],
+          ["check-after", { ...l, suggestion: null }],
+        ] as [LineView["reason"], LineView, FeeReach?][])
+      : []),
+  ];
+  // the cards keep their order (fix pass 8: an earlier note said they re-sort; they never did), so a card holds only its own reasons
+  const cases = casesOf(line);
+  // when the discount ends comes first, on its own line, the same under every verdict: inside the reason it followed words that change
+  // with the verdict, and at a 40-year horizon at 390 px it rose a line with its three figures (box check, fix pass 8, 2026-11-07)
+  const endsShown = (kind: LineView["reason"], l: LineView) => kind === "negotiate-ends" || kind === "check-after" || (kind === "avoid" && l.judgedFraction !== undefined);
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">{tag}</div>
-      <p className="text-sm text-muted-foreground">{reason}</p>
+      {line.after && (
+        <LongestCase cases={[<p key="e" className="text-sm">{ends(line.rate, line.after)}</p>]}>
+          <p className="text-sm text-muted-foreground">{endsShown(line.reason, line) && ends(line.rate, line.after)}</p>
+        </LongestCase>
+      )}
+      <LongestCase cases={cases.map(([k, l, x], i) => <p key={i} className="text-sm">{reasonOf(k, l, x)}</p>)}>
+        <p className="text-sm text-muted-foreground">{reasonOf(line.reason, line, reach)}</p>
+      </LongestCase>
       {!line.avoidEvaluated && (
         <p className="text-sm text-muted-foreground flex items-start gap-2">
           <IconUnevaluatedInline />
@@ -272,7 +391,8 @@ function LinkOutA({ link, label }: { link: { href: string }; label: string }) {
 
 const linkLabel = (reason: NoRefReason) => (reason === "D20" ? r3fees.linkOuts.boi : reason === "isa-unconfirmed" ? r3fees.linkOuts.isa : reason === "tase-uncollected" ? r3fees.linkOuts.tase : "");
 
-export function ReferenceLine({ reference }: { reference: ReferenceView }) {
+/** `noAverageSaid`: the verdict's reason above already says there is no average, so the line gives only why (lead, 2026-11-07: the deposit card said "אין ממוצע להשוואה" twice). */
+export function ReferenceLine({ reference, noAverageSaid = false }: { reference: ReferenceView; noAverageSaid?: boolean }) {
   const r = r3fees.referenceLine;
   const cma = reference.cma;
   return (
@@ -284,8 +404,6 @@ export function ReferenceLine({ reference }: { reference: ReferenceView }) {
             <bdi>{cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification}</bdi>
             {r.mid}
             <Num value={cma.mean} />
-            {r.median}
-            <Num value={cma.median} />
             {r.yearBefore}
             {cma.year && <Num value={cma.year} display={String(cma.year.value)} />}
             {cma.count.value === 1 ? (
@@ -305,12 +423,28 @@ export function ReferenceLine({ reference }: { reference: ReferenceView }) {
               {r3fees.ownAverage[1]}
             </Sentence>
           )}
+          {/* the class comes from a track the site chose, not from the record the run prices: said plainly, and that the average is of no
+              one fund (2026-11-07: a reader asked "which fund is this?" beside a strip that names another company) */}
+          {reference.bySite && (
+            <Sentence tone="muted">
+              {r3fees.bySite[0]}
+              <bdi dir="ltr" className="slashed-zero">{reference.bySite.trackId}</bdi>
+              {r3fees.bySite[1]}
+              <Link to={`/companies/${reference.bySite.companyId}/${reference.bySite.trackId}`} className="text-link hover:underline">
+                <MixedName>{reference.bySite.name}</MixedName>
+              </Link>
+              {r3fees.bySite[2]}
+              <MixedName>{reference.bySite.company}</MixedName>
+              {r3fees.bySite[3]}
+            </Sentence>
+          )}
         </>
       ) : (
         reference.none && (
           <p className="text-muted-foreground flex flex-col gap-0.5">
             <span>
-              <span className="font-medium">{r3fees.noReference}</span>: {r3fees.noReferenceReasons[reference.none.reason] ?? (reference.none.reason === "no-class" ? r3fees.review.noClass : r3fees.review.emptyClass)}
+              {!noAverageSaid && <><span className="font-medium">{r3fees.noReference}</span>: </>}
+              {r3fees.noReferenceReasons[reference.none.reason] ?? (reference.none.reason === "no-class" ? r3fees.review.noClass : r3fees.review.emptyClass)}
             </span>
             {reference.none.linkOut && <LinkOutA link={reference.none.linkOut} label={linkLabel(reference.none.reason)} />}
           </p>
@@ -320,14 +454,14 @@ export function ReferenceLine({ reference }: { reference: ReferenceView }) {
         <Sentence tone="muted">
           {r3fees.review.official[0]}
           <bdi dir="ltr">{reference.official.year}</bdi>
-          {r3fees.review.official[1]} <Num value={reference.official.value} /> <RuleRef id="PF-39" />
+          {r3fees.review.official[1]} <Num value={reference.official.value} /> <RuleRef id="PF-39" end="." /> {r3fees.review.officialNotUsed}
         </Sentence>
       )}
       {reference.stale && (
         <p className="text-caution-foreground flex items-start gap-2">
           <IconAlert size={16} className="text-caution shrink-0 mt-0.5" />
           <span>
-            {r3fees.review.staleLine} <bdi dir="ltr">{fmt.date(/^\d{4}-\d{2}$/.test(reference.stale.since) ? `${reference.stale.since}-01` : reference.stale.since)}</bdi>.
+            <When iso={reference.stale.since} lead={`${r3fees.review.staleLine} `} />.
           </span>
         </p>
       )}

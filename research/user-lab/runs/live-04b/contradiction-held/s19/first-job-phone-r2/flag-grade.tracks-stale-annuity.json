@@ -1,0 +1,36 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 points to the top date saying the data is correct to end of September 2026 and to the banner saying it hasn't been updated since September, which is the stale-data problem the person raised, even though the reader frames it as dates that disagree."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0165994
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 points to the top saying data is correct only to end of September and a banner saying it hasn't been updated since September, while the footer says November, which is the same stale-date problem at the top of the page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017131399999999998
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0337308
+}

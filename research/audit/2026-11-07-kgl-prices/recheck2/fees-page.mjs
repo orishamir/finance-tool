@@ -1,0 +1,14 @@
+import { createRequire } from "node:module";
+const require = createRequire("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
+const { chromium } = require("playwright");
+const browser = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: "he-IL" })).newPage();
+page.on("console", (m) => { if (m.type() === "error") console.log("console:", m.text().slice(0, 200)); });
+await page.goto("http://127.0.0.1:4393/finance-tool/guide/kupat-gemel-lehashkaa", { waitUntil: "networkidle" });
+await page.locator("a", { hasText: "כמה העמלות האלה עולות לאורך זמן" }).first().click();
+await page.waitForTimeout(8000);
+console.log(page.url());
+const OUT = process.argv[2];
+await page.screenshot({ path: `${OUT}/fees-from-guide-1440.png`, fullPage: true });
+console.log((await page.locator("main").innerText()).slice(0, 4000));
+await browser.close();

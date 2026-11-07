@@ -1,0 +1,42 @@
+{
+ "personas": [
+  "first-job-phone",
+  "careful-retiree-pc"
+ ],
+ "parallel": 1,
+ "repeat": 2,
+ "behaviour": "research/user-lab/versions/candidates/contradiction.md",
+ "tasks": [
+  {
+   "key": "s14",
+   "text": "You are salaried and your employer offers a keren hishtalmut. You entered your monthly salary of 30,000 to see what joining would mean for you in money.",
+   "shots": [
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s14/screen-01.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s14/screen-02.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s14/screen-03.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s14/screen-04.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s14/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s19",
+   "text": "You want to compare the pension savings tracks (תגמולים ואישית לפיצויים) that companies offer, to choose a good track for your long-term retirement money.",
+   "shots": [
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-01.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-02.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-03.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-04.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-05.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-06.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-07.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-08.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-09.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s19/screen-10.png"
+   ],
+   "device": "pc",
+   "findings": true
+  }
+ ]
+}

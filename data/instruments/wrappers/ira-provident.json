@@ -19,12 +19,12 @@
     "value": "CMA",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1 (\"קופת גמל בניהול אישי\"), 13, 39, 57 (Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (ס\"ח תשס\"ה, 889): s.1 \"קופת גמל בניהול אישי\" (p.2; קופת גמל לקצבה added by תיקון מס' 3, ס\"ח תשס\"ח, 160, p.2), s.13 (p.8), s.39(א) (p.15), s.57 (p.21)",
+      "publisher": "The Knesset",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -50,12 +50,12 @@
       "value": 2,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Hebrew Wikisource; cross-read on Nevo)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, ק\"ת 7131, p.1262 (file p.6), reg. 4: a keren hishtalmut or an IRA may charge from the balance \"בשיעור שלא יעלה על 2% לשנה\"",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": "2013-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -72,12 +72,12 @@
       "value": 0,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Hebrew Wikisource; cross-read on Nevo)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, ק\"ת 7131, p.1262 (file p.6), reg. 4: a keren hishtalmut or an IRA may charge from the balance \"בשיעור שלא יעלה על 2% לשנה\"",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": "2013-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -93,12 +93,12 @@
       "value": null,
       "unit": "pct_of_trade",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, regs. 7 (closed list of charges), 12 (competitive process) (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009, ק\"ת 6820: reg. 7 (file p.5, closed list of charges), reg. 12 (file p.6, competitive process); reg. 12(ג) replaced by ק\"ת 7819 (2017)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -114,12 +114,12 @@
       "value": null,
       "unit": "pct_of_balance_per_period",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, regs. 7 (closed list of charges), 12 (competitive process) (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017, ק\"ת 7819, file p.4, s.5 (reg. 7(א)(2): custody fees no higher than the company's other funds pay); the regulations as made, ק\"ת 6820, file p.5, reg. 7",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -197,12 +197,12 @@
       "value": 60,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law 2004, s.5 (early retirement age 60) (Wikisource mirror); Provident Funds Law s.13(א)(4)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf#page=1",
+        "title": "חוק גיל פרישה, התשס\"ד-2004, ס\"ח 1930, p.1, s.5: \"גיל הפרישה המוקדמת ... הוא גיל 60 לגבר ולאישה\"; Provident Funds Law s.13(א)(4)",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -221,12 +221,12 @@
     "value": false,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance (Wikisource PDF), s.9(2)(a) (fund income exempt), s.9(16A) (study-fund exemption after 6 years); no provision uses \"בניהול אישי\"",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=32",
+      "title": "Income Tax Ordinance, s.9(2) (Tax Authority's text, p.32): \"הכנסתה של קופת גמל\" exempt; no provision uses \"בניהול אישי\"",
+      "publisher": "Israel Tax Authority",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -301,7 +301,8 @@
     "IRA-OQ11",
     "PEN-OQ7",
     "TXK-OQ7",
-    "TXK-OQ8"
+    "TXK-OQ8",
+    "TXP-OQ18"
   ],
   "checked": "2026-10-23",
   "dimensions": {
@@ -319,7 +320,7 @@
     "foreign-withholding-domicile": "covered",
     "insurance-cover": "covered",
     "liquidity-lockup": "covered",
-    "loss-offset": "blocked:TXK-OQ10",
+    "loss-offset": "blocked:TXP-OQ18",
     "minimum": "covered",
     "protection": "covered",
     "regulator": "covered",

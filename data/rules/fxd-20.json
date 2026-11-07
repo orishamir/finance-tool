@@ -1,0 +1,29 @@
+{
+  "id": "FXD-20",
+  "title": "Israel Bonds: getting the money out, and moving them",
+  "title_he": "אגרות בונדס: איך מוציאים את הכסף והאם אפשר להעביר אותן",
+  "text_he": "מחזיקים את האגרות עד הפדיון: אין להן שוק משני ואי אפשר למכור אותן. המדינה קונה אגרת לפני הפדיון לבקשת המחזיק רק בארבעה מקרים, כמו מות הבעלים המקוריים, ביום העסקים הראשון של חודש ותוך 60 יום מהבקשה. המדינה רשאית לפדות אותן בכל עת בהודעה של 30 עד 60 יום. אפשר להעביר אגרת רק לרשימה סגורה של נעברים, כמו המדינה, בני משפחה קרובים, יורשים או מוסד צדקה.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-08-01",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm",
+      "title": "State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)",
+      "publisher": "U.S. SEC EDGAR (the issuer's own filing)",
+      "publisher_he": "מאגר EDGAR של רשות ניירות הערך האמריקאית (מסמך שהמנפיק הגיש)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-11-07",
+      "qualifier": "(the State's own prospectus, filed by the State)"
+    }
+  ]
+}

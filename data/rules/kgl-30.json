@@ -40,9 +40,81 @@
     {
       "id": "analyst",
       "name_he": "אנליסט"
+    },
+    {
+      "id": "mor",
+      "name_he": "מור"
+    },
+    {
+      "id": "yalin-lapidot",
+      "name_he": "ילין לפידות"
     }
   ],
   "sources": [
+    {
+      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/investment-routes/doclib/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%94%D7%A7%D7%95%D7%A4%D7%94/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%A2%D7%93%D7%9B%D7%A0%D7%99/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%A7%D7%95%D7%A4%D7%AA%20%D7%92%D7%9E%D7%9C%20%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94%2007.2024.pdf",
+      "title": "Harel 07/2024",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.36.1",
+      "locator_he": "עמוד 10, סעיף 36.1",
+      "page": 10,
+      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים או יותר",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/investment-routes/doclib/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%94%D7%A7%D7%95%D7%A4%D7%94/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%A2%D7%93%D7%9B%D7%A0%D7%99/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%A7%D7%95%D7%A4%D7%AA%20%D7%92%D7%9E%D7%9C%20%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94%2007.2024.pdf",
+      "title": "Harel 07/2024",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, s.37.3",
+      "locator_he": "עמוד 11, סעיף 37.3",
+      "page": 11,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/baee3ufm/res_%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2026-%D7%A0%D7%A7%D7%99-%D7%94%D7%95%D7%A1%D7%A4%D7%AA-%D7%9E%D7%A1%D7%9C%D7%95%D7%9C-%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+      "title": "Mor 18.2.2026",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.36.1",
+      "locator_he": "עמוד 10, סעיף 36.1",
+      "page": 10,
+      "quote": "תקופה של לפחות שנתיים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/baee3ufm/res_%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2026-%D7%A0%D7%A7%D7%99-%D7%94%D7%95%D7%A1%D7%A4%D7%AA-%D7%9E%D7%A1%D7%9C%D7%95%D7%9C-%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+      "title": "Mor 18.2.2026",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, s.37.3",
+      "locator_he": "עמוד 11, סעיף 37.3",
+      "page": 11,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
+      "title": "Yalin Lapidot 16.10.2025",
+      "publisher": "yl-invest.co.il",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.36.1",
+      "locator_he": "עמוד 10, סעיף 36.1",
+      "page": 10,
+      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים או יותר",
+      "checked": "2026-11-07"
+    },
     {
       "url": "https://media.harel-group.co.il/media/zzqn4mnc/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%94%D7%A8%D7%90%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2021.pdf",
       "title": "Harel 02/2021",

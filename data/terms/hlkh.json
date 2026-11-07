@@ -2,7 +2,7 @@
   "id": "hlkh",
   "he": "הלכה",
   "en": null,
-  "meaning": "מסלול שמנהל את ההשקעות לפי כללי דת, יהודית או מוסלמית, לפי סוג המסלול",
+  "meaning": "מסלול שמשקיע בסוגי נכסים שונים רק לפי כללי ההלכה היהודית; ועדת ההשקעות קובעת את התמהיל",
   "where": [
     "app"
   ],
@@ -14,20 +14,19 @@
   "variants": [
     "הלכתי",
     "הלכה יהודית",
-    "הלכה איסלאמית",
     "מסלול הלכה"
   ],
   "rule_ids": [
     "CAT-10",
-    "CAT-17",
     "CAT-18",
+    "CAT-50",
     "PEN-17"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-    "publisher": "see title",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול הלכה\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
     "strength": "primary",
-    "checked": "2026-10-22"
+    "checked": "2026-11-07"
   }
 }

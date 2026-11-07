@@ -46,6 +46,60 @@ describe("makam custody follows the account's member (F-14)", () => {
     expect(broker.taxAtExit).toBeLessThan(bank.taxAtExit);
     expect(broker.rules.map((r) => r.id)).toContain("TXS-06");
   });
+
+  // 2026-11-07 (a fresh reader of the makam guide): 15% of the gain shown was not the tax shown, because the tax is on the gain less
+  // the exit year's custody. The run now says its base, so the page can show it.
+  it("the run states the taxed base: the sale's gain less the exit year's fees, and the tax is the rate on it", () => {
+    const sold = { ...base, goal: { ...base.goal, months: 18 }, tariff: { ...base.tariff, sell: { rate: 0.001, min: 20 } } };
+    const broker = runMakam({ ...sold, memberKind: "non-bank" }, ctx);
+    const bank = runMakam({ ...sold, memberKind: "bank" }, ctx);
+    expect(broker.detail.exitYearFees).toBeGreaterThan(0);
+    expect(broker.detail.exitYearFees).toBeLessThanOrEqual(broker.fees.custody);
+    // the slices sold that year to pay custody are sales too: their gain joins the sale's (TXI-12), before the year's fees come off
+    expect(broker.detail.exitYearSliceGain).toBeGreaterThan(0);
+    expect(broker.detail.taxedGain).toBeCloseTo(broker.detail.saleGain! + broker.detail.exitYearSliceGain! - broker.detail.exitYearFees!, 9);
+    expect(broker.taxAtExit).toBeCloseTo(0.15 * broker.detail.taxedGain!, 9);
+    // at a bank nothing is deducted: the base is the sale's gain, and the sale commission does not reduce it (G-20)
+    expect(bank.detail.exitYearFees).toBe(0);
+    expect(bank.detail.taxedGain).toBeCloseTo(bank.detail.saleGain!, 9);
+    expect(bank.taxAtExit).toBeCloseTo(0.15 * bank.detail.saleGain!, 9);
+  });
+
+  // 2026-11-07 (an independent check): custody is paid by selling a slice of the paper, and each slice is a sale before redemption, so its own
+  // gain is a capital gain of its tax year (TXI-12) that the year's custody comes off (TXS-06). Before, it was taxed nowhere, and the page's
+  // gain and the tax's base differed by a few agorot.
+  it("the gain on the slices sold for custody is counted: with the fees deducted it adds up to every gain of the run, in each case", () => {
+    // a lump sum and monthly deposits, a year that starts in month 1 or in month 7, with and without the account's monthly fee
+    const shapes = [{}, { monthly: 1_000, firstMonth: 7 }] as const;
+    for (const months of [6, 12, 13, 18, 24, 30]) for (const shape of shapes) for (const monthlyFee of [0, 15]) {
+      for (const memberKind of ["bank", "non-bank"] as const) {
+        const r = runMakam({ ...base, goal: { ...base.goal, ...shape, months }, memberKind, tariff: { ...base.tariff, monthlyFee, sell: { rate: 0.001, min: 20 } } }, ctx);
+        const fees = Object.values(r.fees).reduce((a, b) => a + b, 0);
+        // every gain of the run: what it paid out, plus its tax and fees, less what was paid in
+        const gain = r.nominal + r.taxAtExit + r.taxDuring + fees - r.paidIn;
+        expect(r.detail.saleGain! + r.detail.sliceGain! + r.detail.taxedDiscount!).toBeCloseTo(gain, 6);
+        expect(Math.max(0, r.detail.taxedGain!) + r.detail.deductedFees! + r.detail.taxedDiscount!).toBeCloseTo(gain, 6);
+        if (memberKind === "bank" && monthlyFee === 0) expect(r.detail.sliceGain).toBe(0);
+        else expect(r.detail.sliceGain).toBeGreaterThan(0);
+        if (r.detail.sliceGain! > 0) expect(r.rules.map((x) => x.id)).toEqual(expect.arrayContaining(["TXI-12", "TXS-06"]));
+      }
+    }
+  });
+
+  it("a year with no sale owes nothing on its slices: the year's fees are more than the slices' gain", () => {
+    const one = runMakam({ ...base, goal: { ...base.goal, months: 12 }, memberKind: "non-bank" }, ctx);
+    expect(one.detail.sliceGain).toBeGreaterThan(0);
+    expect(one.detail.sliceGain).toBeLessThan(one.fees.custody);
+    expect(one.detail.deductedFees).toBeCloseTo(one.detail.sliceGain!, 9);
+    expect(one.taxDuring).toBeCloseTo(0.15 * one.detail.taxedDiscount!, 9);
+  });
+
+  it("at redemption the run states the discount taxed, and the tax is the rate on it (TXI-11)", () => {
+    const one = runMakam({ ...base, goal: { ...base.goal, months: 12 }, memberKind: "non-bank" }, ctx);
+    expect(one.detail.taxedGain).toBe(0);
+    expect(one.detail.taxedDiscount).toBeGreaterThan(0);
+    expect(one.taxDuring).toBeCloseTo(0.15 * one.detail.taxedDiscount!, 9);
+  });
 });
 
 describe("the account's monthly fee follows a security into the account (F-17)", () => {

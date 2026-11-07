@@ -2,13 +2,13 @@
 import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Link, useLocation, useRouteLoaderData } from "react-router";
 import { companies as companiesCopy, formulaNames, home as homeCopy, knowledgeEntry, r3workbench, site } from "../copy";
-import { fmt } from "../lib/format";
+
 import { isHeld, shown } from "../lib/review";
 import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
-import { Button, Callout, CountingFigures, cx } from "./kit";
+import { Button, Callout, CountingFigures, cx, gershayim, When } from "./kit";
 
 export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
 
@@ -209,8 +209,7 @@ function Footer({ width }: { width: string }) {
           <span>{site.footerNote}</span>
           {dataAsOf && (
             <span>
-              {site.footerAsOf}
-              <bdi>{fmt.date(dataAsOf)}</bdi>
+              <When iso={dataAsOf} lead={site.footerAsOf} />
             </span>
           )}
         </p>
@@ -279,15 +278,15 @@ export function Breadcrumb({ parent, current }: { parent: { href: string; label:
   if (parent.href === "/") parent = { href: "/", label: site.homeCrumb };
   return (
     <nav aria-label="מיקום" className="text-sm text-muted-foreground">
-      <Link to={parent.href} className="inline-flex items-center gap-0.5 min-h-target lg:min-h-0 lg:py-0 hover:underline">
+      <Link to={parent.href} className="inline-flex items-center gap-0.5 min-h-target lg:min-h-0 lg:py-0 lg:tap-area hover:underline">
         <IconBack size={16} className="lg:hidden" />
-        {parent.label}
+        {gershayim(parent.label)}
       </Link>
       <span className="hidden lg:inline" aria-hidden="true">
         {" › "}
       </span>
       <span className="hidden lg:inline" aria-current="page">
-        {current}
+        {gershayim(current)}
       </span>
     </nav>
   );

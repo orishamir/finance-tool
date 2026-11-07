@@ -17,12 +17,13 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
-        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
-        "strength": "primary"
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6380%2Fheb#page=3",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ה-2005, קובץ התקנות 6380 (10.4.2005), סריקת רשומות, file p.3 (gazette p.603), reg. 9 (in reg. 41יא '5 ימי עסקים' becomes '4 ימי עסקים', with the deferral to the fourth business day of the month); reg. 41יא itself as substituted by קובץ התקנות 6332, file p.19 (gazette p.873), reg. 44",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary",
+        "quote": "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -35,36 +36,34 @@
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=19",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.16, reg. 41יא(א)",
-      "locator_he": "עמוד 16, תקנה 41יא(א)",
-      "page": 16,
-      "quote": "יקבל את הכספים כאמור בתוך 4 ימי עסקים מהיום שהגיעה בקשתו לקופה",
-      "checked": "2026-10-25"
+      "locator": "file p.19 (gazette p.873), reg. 44 (substituting reg. 41יא; payment within 5 business days, monthly instalments on a fixed day); reg. 42 (substituting reg. 41ח(א) and adding (א1)), reg. 41ח(א1)(2)",
+      "locator_he": "עמוד הקובץ 19 (עמוד הרשומות 873), תקנה 44 (החלפת תקנה 41יא); תקנה 42, תקנה 41ח(א1)(2)",
+      "quote": "ביקש העמית לקבל את הכספים בתשלומים חודשיים רצופים",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6380%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ה-2005, קובץ התקנות 6380 (10.4.2005), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ה-2005, קובץ התקנות 6380 (10.4.2005), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.16, reg. 41ח(א1)(2)",
-      "locator_he": "עמוד 16, תקנה 41ח(א1)(2)",
-      "page": 16,
-      "quote": "החזרי הלוואה שהקופה רשאית לנכות",
-      "checked": "2026-10-25"
+      "locator": "file p.3 (gazette p.603), reg. 9 (amending reg. 41יא: '5 ימי עסקים' becomes '4 ימי עסקים', and the deferral to the fourth business day)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 603), תקנה 9 (תיקון תקנה 41יא)",
+      "quote": "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש",
+      "checked": "2026-11-07"
     }
   ]
 }

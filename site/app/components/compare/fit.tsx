@@ -4,13 +4,13 @@
 import { Link } from "react-router";
 import { fit as copy, r5 } from "../../copy";
 import { Tpl } from "../exposure-mode/tpl";
-import { fmt } from "../../lib/format";
+import { fmt, joinLead } from "../../lib/format";
 import { fitOf, type FitResult, type FitTableData } from "../../lib/fit";
 import { useGoals } from "../../lib/goal";
 import type { Staleness } from "../../lib/value";
 import { IconClock } from "../icons";
 import { Num } from "../provenance";
-import { Card, cx, LinkButton } from "../kit";
+import { Card, cx, LinkButton, When } from "../kit";
 import { goalTitle } from "./goal-form";
 import { IconDash, IconHelp, IconOk } from "./icons";
 
@@ -79,13 +79,13 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
         {result.kind !== "no-rule" && (
           <>
             {" "}
-            {copy.ruleRange}<Num value={result.minYears} display={fmt.years(result.minYears.value as number)} />
+            {joinLead(copy.ruleRange, fmt.years(result.minYears.value as number))}<Num value={result.minYears} display={fmt.years(result.minYears.value as number)} />
           </>
         )}
       </p>
       {stale && (
         <p className="text-sm text-caution-foreground">
-          {copy.stale} <bdi dir="ltr">{fmt.period(period)}</bdi>.
+          <When iso={period} lead={`${copy.stale} `} />.
         </p>
       )}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">

@@ -1,0 +1,29 @@
+msci-acwi [125000,2500,11,3]: 25 rows tapped
+msci-acwi [0,0,1,0]: 25 rows tapped
+msci-acwi [1000000000000,1000000,80,-50]: 25 rows tapped
+sp500 [125000,2500,11,3]: 38 rows tapped
+BAD sp500 {"סכום היום":0,"הפקדה חודשית":0,"שנים":1,"תשואה בשנה":0} tap 1183441: console: Error: <rect> attribute height: A negative value is not valid. ("-2")
+BAD sp500 {"סכום היום":0,"הפקדה חודשית":0,"שנים":1,"תשואה בשנה":0} tap ie00bfmxxd54: console: Error: <rect> attribute height: A negative value is not valid. ("-2")
+sp500 [0,0,1,0]: 38 rows tapped
+sp500 [1000000000000,1000000,80,-50]: 38 rows tapped
+msci-world [125000,2500,11,3]: 24 rows tapped
+BAD msci-world {"סכום היום":0,"הפקדה חודשית":0,"שנים":1,"תשואה בשנה":0} tap interactive-israel: console: Error: <rect> attribute height: A negative value is not valid. ("-2")
+BAD msci-world {"סכום היום":0,"הפקדה חודשית":0,"שנים":1,"תשואה בשנה":0} tap interactive-brokers: console: Error: <rect> attribute height: A negative value is not valid. ("-2")
+BAD msci-world {"סכום היום":0,"הפקדה חודשית":0,"שנים":1,"תשואה בשנה":0} tap 1185164: console: Error: <rect> attribute height: A negative value is not valid. ("-2")
+BAD msci-world {"סכום היום":0,"הפקדה חודשית":0,"שנים":1,"תשואה בשנה":0} tap ie00b4l5y983: console: Error: <rect> attribute height: A negative value is not valid. ("-2")
+msci-world [0,0,1,0]: 24 rows tapped
+msci-world [1000000000000,1000000,80,-50]: 24 rows tapped
+nasdaq100 [125000,2500,11,3]: 25 rows tapped
+BAD nasdaq100 {"סכום היום":0,"הפקדה חודשית":0,"שנים":1,"תשואה בשנה":0} tap 1186063: console: Error: <rect> attribute height: A negative value is not valid. ("-2")
+nasdaq100 [0,0,1,0]: 25 rows tapped
+nasdaq100 [1000000000000,1000000,80,-50]: 25 rows tapped
+ta35 [125000,2500,11,3]: 22 rows tapped
+ta35 [0,0,1,0]: 22 rows tapped
+ta35 [1000000000000,1000000,80,-50]: 22 rows tapped
+ta90 [125000,2500,11,3]: 23 rows tapped
+ta90 [0,0,1,0]: 23 rows tapped
+ta90 [1000000000000,1000000,80,-50]: 23 rows tapped
+ta125 [125000,2500,11,3]: 23 rows tapped
+ta125 [0,0,1,0]: 23 rows tapped
+ta125 [1000000000000,1000000,80,-50]: 23 rows tapped
+7 problems in 540 taps

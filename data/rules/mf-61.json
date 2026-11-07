@@ -2,8 +2,8 @@
   "id": "MF-61",
   "title": "TASE's bullet indices (מדדי בולט): the exchange's word, for an index",
   "title_he": "מדדי בולט של הבורסה: המילה היא של הבורסה, ונאמרת על מדד",
-  "text_he": "בנובמבר 2024 השיקה הבורסה שלושה מדדי תל־בונד בולט, שמורכבים מאיגרות חוב שמועד הפדיון הסופי שלהן חל באותה שנה. לפי הבורסה, למדדים האלה יש מועד סיום: בניגוד לרוב המדדים, הם מפסיקים להתקיים כשהאיגרת האחרונה נפדית. כסף מאיגרת שנפדתה עובר לאיגרת ממשלתית או למק״מ עד הסוף. ההודעה נקראה בפרסום חוזר, ולא באתר הבורסה, והיא מתארת מדדים ולא מגדירה קרן או איגרת.",
-  "strength": "secondary",
+  "text_he": "בנובמבר 2024 השיקה הבורסה שלושה מדדי תל־בונד בולט, שמורכבים מאיגרות חוב שמועד הפדיון הסופי שלהן חל באותה שנה. לפי הבורסה, למדדים האלה יש מועד סיום: בניגוד לרוב המדדים, הם מפסיקים להתקיים כשהאיגרת האחרונה נפדית. כסף מאיגרת שנפדתה עובר לאיגרת ממשלתית או למק״מ עד הסוף. ההודעה של הבורסה מתארת מדדים ולא מגדירה קרן או איגרת.",
+  "strength": "primary",
   "dimensions": [
     "product-marking"
   ],
@@ -20,22 +20,15 @@
   ],
   "sources": [
     {
-      "url": "https://www.funder.co.il/article/178662",
-      "title": "TASE notice of 18.3.2025, Hebrew reprint on Funder",
-      "publisher": "Funder",
-      "publisher_he": "פאנדר",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-11-01",
-      "qualifier": "(reprint of the exchange's notice)"
-    },
-    {
-      "url": "https://mondovisione.com/news/tel-aviv-stock-exchange-launches-3-new-bullet-indices-tel-bond-bullet-2029-ils-2025318",
-      "title": "English reprint on Mondo Visione",
-      "publisher": "mondovisione.com",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-11-01"
+      "url": "https://www.tase.co.il/he/content/news-lobby/20250318_pr",
+      "title": "הבורסה לניירות ערך: הבורסה השיקה 3 מדדי בולט חדשים (הודעה לעיתונות, 18.3.2025)",
+      "title_he": "הבורסה לניירות ערך: הבורסה השיקה 3 מדדי בולט חדשים (הודעה לעיתונות, 18.3.2025)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "quote": "מדדי בולט נועדו לאפשר למשקיעים לקבע תשואה לפדיון של תיק אג״ח בעל מאפיינים מוגדרים",
+      "checked": "2026-11-07"
     }
   ]
 }

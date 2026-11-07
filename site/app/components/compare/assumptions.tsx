@@ -43,7 +43,7 @@ function Suggest({ s, field, onAdopt, children }: { s: Suggestion | null; field:
           <bdi dir="ltr" className="font-medium">
             {field === "horizonYears" ? fmt.years(s.value) : fmt.pct(s.value)}
           </bdi>
-          <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={() => onAdopt(s.value)}>
+          <Button variant="secondary" className="!h-target px-3 text-sm" onClick={() => onAdopt(s.value)}>
             {r2.result.adopt}
           </Button>
         </p>

@@ -5,7 +5,7 @@ import { buttons, kit as kitCopy } from "../../copy";
 import type { ChartPick } from "./chart-interact";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
-import { TableCols } from "./table-cols";
+import { PHONE_GONE, TableCols } from "./table-cols";
 
 /** A sideways-scrolling table wrapper's cue without script: a card-colour fade at each end that is still hidden content, and a soft edge shadow. */
 export const scrollCueStyle: CSSProperties = {
@@ -51,7 +51,7 @@ export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: Chart
       {items.map((it) => (
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
           {pick && it.swatch ? (
-            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
+            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target md:tap-area cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
               {it.swatch}
               {it.label}
             </button>
@@ -122,7 +122,7 @@ export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: React
         <tr>
           <th scope="col">{rowHead}</th>
           {columns.map((c) => (
-            <th key={c.id} scope="col" className={c.hideOnPhone ? "max-md:hidden" : undefined}>
+            <th key={c.id} scope="col" className={c.hideOnPhone ? PHONE_GONE : undefined}>
               {c.head}
             </th>
           ))}
@@ -133,7 +133,7 @@ export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: React
           <tr key={r.key} className={r.strong ? "border-t-2 border-border font-semibold" : undefined}>
             <th scope="row">{r.head}</th>
             {r.cells.map((cell, i) => (
-              <td key={columns[i]?.id ?? i} className={columns[i]?.hideOnPhone ? "max-md:hidden" : undefined}>
+              <td key={columns[i]?.id ?? i} className={columns[i]?.hideOnPhone ? PHONE_GONE : undefined}>
                 {cell}
               </td>
             ))}

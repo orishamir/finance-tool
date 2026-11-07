@@ -24,7 +24,7 @@ export function ExposureReason({ row, ctx }: { row: ExposureRowView; ctx: ExpCtx
       case "p08-gov":
         return (
           <span key={i} className="block">
-            {r5.exposure.p08.gov} {r5.exposure.p08.govCoupon} <RuleRef id="GOV-13" />.
+            {r5.exposure.p08.gov} {r5.exposure.p08.govCoupon} <RuleRef id="GOV-13" end="." />
           </span>
         );
       case "no-fund":

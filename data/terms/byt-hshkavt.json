@@ -1,0 +1,25 @@
+{
+  "id": "byt-hshkavt",
+  "he": "בית השקעות",
+  "en": null,
+  "meaning": "גוף פיננסי שאינו בנק, שאפשר לפתוח אצלו חשבון ניירות ערך ולקנות ולמכור דרכו",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account",
+    "government-bond",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "בתי השקעות"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://boi.org.il/media/uo4k5b20/מודלי-תגמול-בפעילות-הציבור-בניירות-ערך-דוח-סופי.pdf#page=38",
+    "title": "בנק ישראל, משרד האוצר ורשות ניירות ערך, מודלי תגמול בפעילות הציבור בניירות ערך, דוח סופי, יוני 2026, עמוד 38",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

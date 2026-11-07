@@ -128,7 +128,7 @@ export class Tally {
   point(month: number, index: number, balance: number) {
     let fees = 0;
     for (const type in this.fees) fees += this.fees[type as FeeType];
-    const providerFees = this.fees.trade + this.fees.custody + this.fees.fx + this.fees.fixed;
+    const providerFees = this.fees.trade + this.fees.custody + this.fees.fx + this.fees.fixed + this.fees.account;
     this.series.push({ month, index, paidIn: this.paidIn, balance, fees, providerFees, taxDuring: this.taxDuring });
   }
 

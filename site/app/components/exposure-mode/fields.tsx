@@ -15,7 +15,7 @@ import type { ValueObject } from "@finance-tool/schema";
 import { GoalNumber } from "../compare/fields";
 import { IconAlert, IconClock, IconExternal, IconFile, IconInfo, IconPencil } from "../icons";
 import { Num, StateTag, startsAfter, useToday } from "../provenance";
-import { Button, cx, NumberField, Tag } from "../kit";
+import { Button, cx, NumberField, Tag, When } from "../kit";
 import { Tpl } from "./tpl";
 
 const pct100 = (n: number) => (n < 0 || n > 100 ? `${r2.form.errPercentBefore}100.` : null);
@@ -54,7 +54,7 @@ function InfoToggle({ label, children }: { label: string; children: ReactNode })
   const [open, setOpen] = useState(false);
   return (
     <span className="inline-flex flex-col gap-1">
-      <button type="button" aria-label={label} aria-expanded={open} onClick={() => setOpen((o) => !o)} className="size-6 inline-flex items-center justify-center rounded-full text-muted-foreground hover:bg-accent align-middle">
+      <button type="button" aria-label={label} aria-expanded={open} onClick={() => setOpen((o) => !o)} className="size-6 tap-area inline-flex items-center justify-center rounded-full text-muted-foreground hover:bg-accent align-middle">
         <IconInfo size={16} />
       </button>
       {open && <span className="text-xs text-muted-foreground font-normal max-w-[30ch]">{children}</span>}
@@ -112,14 +112,14 @@ export function CashRateLine({ row, onChange, cashLink, range }: { row: Exposure
           {note}
         </div>
         <span className="text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-          <Tpl t={f.cashPublished} vars={{ date: <bdi dir="ltr">{row.published.effectiveFrom ? fmt.date(row.published.effectiveFrom) : ""}</bdi> }} />
+          <Tpl t={f.cashPublished} vars={{ date: row.published.effectiveFrom ? <When iso={row.published.effectiveFrom} /> : "" }} />
           {row.published.effectiveFrom && startsAfter(row.published.rate, today) && (
             <Tag tone="caution" icon={<IconAlert size={14} />}>
               {r4catalogue.asOfAfterRead}
             </Tag>
           )}
         </span>
-        <Button variant="quiet" className="self-start -ms-2 text-sm min-h-9" onClick={() => setOpen(true)}>
+        <Button variant="quiet" className="self-start -ms-2 text-sm min-h-target" onClick={() => setOpen(true)}>
           {f.cashOverride}
         </Button>
       </div>
@@ -142,7 +142,7 @@ export function CashRateLine({ row, onChange, cashLink, range }: { row: Exposure
       {row.published && (
         <Button
           variant="quiet"
-          className="self-start -ms-2 text-sm min-h-9"
+          className="self-start -ms-2 text-sm min-h-target"
           onClick={() => {
             onChange(undefined);
             setOpen(false);
@@ -225,7 +225,7 @@ export function AcceptedFallChip({ row, onChange }: { row: ExposureRowView; onCh
       {row.acceptedFall.perExposure ? (
         <Button
           variant="quiet"
-          className="-ms-2 text-sm min-h-9"
+          className="-ms-2 text-sm min-h-target"
           onClick={() => {
             onChange(undefined);
             setOpen(false);
@@ -235,7 +235,7 @@ export function AcceptedFallChip({ row, onChange }: { row: ExposureRowView; onCh
         </Button>
       ) : (
         !open && (
-          <Button variant="quiet" className="-ms-2 text-sm min-h-9" onClick={() => setOpen(true)}>
+          <Button variant="quiet" className="-ms-2 text-sm min-h-target" onClick={() => setOpen(true)}>
             {f.acceptedSeparate}
           </Button>
         )
@@ -261,7 +261,7 @@ export function HoldingWrapperChips({ row, onChange }: { row: ExposureRowView; o
           <StateTag state="entered" />
         )}
       </span>
-      <Button variant="quiet" className="-ms-2 text-sm min-h-9" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+      <Button variant="quiet" className="-ms-2 text-sm min-h-target" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
         {f.holdingChange}
       </Button>
       {open && (

@@ -35,11 +35,13 @@ export interface FieldProps {
   autoFocus?: boolean;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
+  /** Compact only: hands the error to the row that holds the box, which shows it in a line it already keeps, instead of a line under the box that would push what follows down (nothing moves, #190). */
+  errorOut?: (error: ReactNode | null) => void;
 }
 
 /** A box for one typed number, with its unit, hint, error and the state line (start value, or entered with a reset). The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
-  const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode = "decimal", autoFocus, externalError = null } = props;
+  const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode = "decimal", autoFocus, externalError = null, errorOut } = props;
 
   const ids = useId();
   const [text, setText] = useState(value === null ? "" : formatTyped(value));
@@ -92,6 +94,11 @@ export function NumberField(props: FieldProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, focused]);
   const shownError = error ?? externalError;
+  const errorOutRef = useRef(errorOut);
+  errorOutRef.current = errorOut;
+  useEffect(() => {
+    errorOutRef.current?.(shownError);
+  }, [shownError]);
   const change = (t: string) => {
     setText(t);
     drop();
@@ -138,7 +145,7 @@ export function NumberField(props: FieldProps) {
           {label}
         </label>
         {box}
-        {shownError && (
+        {shownError && !errorOut && (
           <span id={`${ids}-err`} className="text-xs text-destructive">
             {shownError}
           </span>
@@ -206,6 +213,8 @@ export interface RangeFieldProps extends FieldProps {
 export function RangeField(props: RangeFieldProps) {
   const { label, min, max, step, value, onCommit, disabled, isEntered, onReset, footer } = props;
   const id = useId();
+  // with no line under the slider, the box's error takes the reset's place under the label: the row keeps its height (#190)
+  const [error, setError] = useState<ReactNode | null>(null);
   const current = value ?? min;
   const clamped = Math.max(min, Math.min(max, current));
   const fill = ((clamped - min) / (max - min)) * 100;
@@ -219,16 +228,22 @@ export function RangeField(props: RangeFieldProps) {
             <span className="field-label whitespace-nowrap" id={`${id}-l`}>
               {label}
             </span>
-            <button type="button" onClick={onReset} className={cx("relative h-5 text-xs text-link hover:underline whitespace-nowrap after:absolute after:inset-x-0 after:-top-4 after:-bottom-2", !(isEntered && !disabled) && "invisible")}>
-              {buttons.resetOne}
-            </button>
+            {error ? (
+              <span role="alert" className="h-5 text-xs leading-5 text-destructive whitespace-nowrap">
+                {error}
+              </span>
+            ) : (
+              <button type="button" onClick={onReset} className={cx("h-5 tap-area text-xs text-link hover:underline whitespace-nowrap", !(isEntered && !disabled) && "invisible")}>
+                {buttons.resetOne}
+              </button>
+            )}
           </span>
         ) : (
           <span className="field-label min-w-0" id={`${id}-l`}>
             {label}
           </span>
         )}
-        <NumberField {...props} compact />
+        <NumberField {...props} compact errorOut={footer === false ? setError : undefined} />
       </div>
       <input
         type="range"

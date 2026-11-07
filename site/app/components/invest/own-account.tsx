@@ -17,8 +17,9 @@ import { isoToday } from "../../lib/state";
 import { computed, entered, type SiteValue } from "../../lib/value";
 import { withCustomEntries } from "../../lib/custom-entries";
 import { Num, StateTag } from "../provenance";
-import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, atPdfPage, useChartPick, cx, type CostPart } from "../kit";
+import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, useChartPick, cx, type CostPart } from "../kit";
 import { Actions, EditButton, isInvalid, nisCheck, useDraft, useEditors, type PanelWorld } from "./editors";
+import { sourceHref, type CitedPlace } from "../../lib/sources";
 
 const c = root.customEntries;
 const p = root.ownAccount.panel;
@@ -28,6 +29,10 @@ const pctCheck = percentCheck();
 /** The cost bars' colours by fee type: the index page's own (pair.tsx). */
 const LINE_CLASS: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
 const lineClass = (l: string) => LINE_CLASS[l] ?? "bg-chart-cost-other";
+/** A bank's current account (F-102, D64) is shown as the account's fee, as on the index page's lists (pair.tsx `lineOf`). */
+const lineOf = (l: FeeLine): string => (l === "account" ? "fixed" : l);
+/** The account fee's name, which covers the current account too where the account has one (pair.tsx `legendName`). */
+const fixedName = (line: string, current: boolean): string | undefined => (line === "fixed" && current ? pairWords.legendAccount : pairWords.lines[line]);
 const FEE_OF_LINE: Record<string, FeeType> = { trade: "trade", custody: "custody", fixed: "fixed", fx: "conversion" };
 
 const plus = (n: number) => (n > 0 ? `⁦+${fmt.nisWhole(n)}⁩` : undefined);
@@ -55,8 +60,8 @@ function Figures({ figs, asEntered, today, about }: { figs: LayerFigure[]; /** T
 }
 
 /** The link to the document a figure is from: its own page of a PDF where the record names one. */
-function SourceLink({ source, children }: { source: { url: string; title?: string; page?: number }; children: ReactNode }) {
-  return <DocLink href={atPdfPage(source.url, source.page)}>{children}</DocLink>;
+function SourceLink({ source, children }: { source: CitedPlace & { title?: string }; children: ReactNode }) {
+  return <DocLink href={sourceHref(source)}>{children}</DocLink>;
 }
 
 // ---------------------------------------------------------------- the person's column
@@ -173,8 +178,9 @@ function ListCell({ layer }: { layer: FeeLayers }) {
 /** The bars' parts for one account: its fee types in their colours, each with where its price comes from. */
 function costParts(pc: PairCosts, lines: readonly string[], source: (line: string) => ReactNode): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: pairWords.lines[line] ?? pairWords.lines.other, value: pc.account.filter((l) => l.line === (line as FeeLine)).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
-  return [...parts, { id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }];
+  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: fixedName(line, pc.account.some((l) => l.line === "account")) ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
+  // the account's fees on each other first, as on every bar of the page (pass 7)
+  return [{ id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }, ...parts];
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
 
@@ -184,7 +190,7 @@ function Bar({ who, parts, scale, label, today, highlight }: { who: string; part
     <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[7rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
       <span className="text-sm text-muted-foreground">{who}</span>
       <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
-        <CostStack parts={parts} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(sum)}`} />
+        <CostStack parts={parts} total={Math.round(sum)} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(sum)}`} />
       </div>
       <span className="text-end font-semibold">
         <Num animate value={computed(Math.round(sum), "nis", "F-91", {}, { today, about: label })} />
@@ -253,7 +259,8 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   };
 
   // the bars: the house's price list against the account, one scale, every fee type in both so a part that falls to zero shrinks in its place
-  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => l.line as string))] : [];
+  const withCurrentAccount = !!result && [...result.yours.account, ...(result.list?.account ?? [])].some((l) => l.line === "account");
+  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))] : [];
   const layerOf = (line: string) => layers?.find((l) => l.fee === FEE_OF_LINE[line]);
   const sourceYours = (line: string): ReactNode => {
     const l = layerOf(line);
@@ -264,7 +271,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   const yoursParts = result ? costParts(result.yours, lineIds, sourceYours) : [];
   const scale = Math.max(total(listParts), total(yoursParts));
   const barLabels = { list: p.costs.total(p.costs.list), yours: p.costs.total(p.costs.yours) };
-  const legendLines = [...lineIds.filter((l) => l !== "remainder"), "remainder"];
+  const legendLines = ["remainder", ...lineIds.filter((l) => l !== "remainder")];
 
   const noWay = !option || (answer !== null && !result);
   const nameError = errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null;
@@ -369,7 +376,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
           <>
             <Bar who={p.costs.list} parts={listParts} scale={scale} label={barLabels.list} today={today} highlight={legend.active} />
             <Bar who={p.costs.yours} parts={yoursParts} scale={scale} label={barLabels.yours} today={today} highlight={legend.active} />
-            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: pairWords.lines[l] ?? pairWords.lines.other ?? l }))} />
+            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: fixedName(l, withCurrentAccount) ?? pairWords.lines.other ?? l }))} />
           </>
         ) : (
           <p className="text-sm text-muted-foreground min-h-[7rem]">{p.computing}</p>

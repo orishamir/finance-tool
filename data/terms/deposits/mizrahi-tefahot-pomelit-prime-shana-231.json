@@ -18,12 +18,12 @@
     "unit": "months",
     "source": {
       "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
-      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; טבלת 'פיקדונות מקובלים' נטענת בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed), 'כל המידע המוצג נכון לתאריך ושעה' 26/10/2026 08:31, שורת '231 - פומלית- פריים שנה', 'סוג מוצר (לפי תקופה)'",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '231 - פומלית- פריים שנה', 'סוג מוצר (לפי תקופה)'",
       "publisher": "Mizrahi Tefahot Bank Ltd.",
       "strength": "institution"
     },
-    "checked": "2026-10-26",
-    "effective_from": "2026-10-26",
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
@@ -31,7 +31,7 @@
       "BANK-27"
     ],
     "state": "sourced",
-    "notes": "Printed '12 חודשים'; the terms document says '12 עד 12.5 חודשים'. Recorded as 12 months."
+    "notes": "Printed '12 חודשים'; the terms document says '12 עד 12.5 חודשים'. Recorded as 12 months. Re-read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=100&currencyCode=99), 'כל המידע המוצג נכון לתאריך ושעה' 06/11/2026 08:30:53, the same publication the other Mizrahi-Tefahot rows were read from on 2026-11-06: the row is unchanged from the 26/10/2026 08:31 reading."
   },
   "rate_type": "variable",
   "anchor": "prime",
@@ -40,12 +40,12 @@
     "unit": "pct_per_year",
     "source": {
       "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
-      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; טבלת 'פיקדונות מקובלים' נטענת בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed), 'כל המידע המוצג נכון לתאריך ושעה' 26/10/2026 08:31, שורת '231 - פומלית- פריים שנה', 'מרווח מעוגן'",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '231 - פומלית- פריים שנה', 'מרווח מעוגן'",
       "publisher": "Mizrahi Tefahot Bank Ltd.",
       "strength": "institution"
     },
-    "checked": "2026-10-26",
-    "effective_from": "2026-10-26",
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
@@ -53,19 +53,19 @@
       "BANK-25"
     ],
     "state": "sourced",
-    "notes": "Printed 'מרווח מעוגן' 'P-3.55%': prime less 3.55 points, fixed for the deposit's life (terms: 'מרווח קבוע מהפריים')."
+    "notes": "Printed 'מרווח מעוגן' 'P-3.55%': prime less 3.55 points, fixed for the deposit's life (terms: 'מרווח קבוע מהפריים'). Re-read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=100&currencyCode=99), 'כל המידע המוצג נכון לתאריך ושעה' 06/11/2026 08:30:53, the same publication the other Mizrahi-Tefahot rows were read from on 2026-11-06: the row is unchanged from the 26/10/2026 08:31 reading."
   },
   "rate_offered": {
     "value": 1.2,
     "unit": "pct_per_year",
     "source": {
       "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
-      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; טבלת 'פיקדונות מקובלים' נטענת בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed), 'כל המידע המוצג נכון לתאריך ושעה' 26/10/2026 08:31, שורת '231 - פומלית- פריים שנה', 'שיעור הריבית המוצע (נומינלי שנתי)'",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '231 - פומלית- פריים שנה', 'שיעור הריבית המוצע (נומינלי שנתי)'",
       "publisher": "Mizrahi Tefahot Bank Ltd.",
       "strength": "institution"
     },
-    "checked": "2026-10-26",
-    "effective_from": "2026-10-26",
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
@@ -75,7 +75,7 @@
       "BANK-34"
     ],
     "state": "sourced",
-    "notes": "Printed anchor 'P=4.75%', spread 'P-3.55%', offered nominal annual rate '1.20%' for every amount tier (upper bounds 100000, 250000, 1000000, 1000000<); effective '1.20%'. The terms document: 'פיקדון שקלי בריבית ניידת כמרווח קבוע מהפריים'. Renewal 'לא מתחדש'; exit points 'אין'. Other prime-linked one-year rows in the same table: '256 - רימונים- חודשי פריים לשנה' P-3.74% = 1.01% with monthly exit points; '287 - רימונים- יומי פריים לשנה' P-4.65% = 0.10% with daily exit points after 7 days; '261 - דובדבן-חודשי פריים שנה' P-3.03% = 1.72% (effective 1.73%). The fixed one-year row is record mizrahi-tefahot-pomelit-kvua-shana-131."
+    "notes": "Printed anchor 'P=4.75%', spread 'P-3.55%', offered nominal annual rate '1.20%' for every amount tier (upper bounds 100000, 250000, 1000000, 1000000<); effective '1.20%'. The terms document: 'פיקדון שקלי בריבית ניידת כמרווח קבוע מהפריים'. Renewal 'לא מתחדש'; exit points 'אין'. Other prime-linked one-year rows in the same table: '256 - רימונים- חודשי פריים לשנה' P-3.74% = 1.01% with monthly exit points; '287 - רימונים- יומי פריים לשנה' P-4.65% = 0.10% with daily exit points after 7 days; '261 - דובדבן-חודשי פריים שנה' P-3.03% = 1.72% (effective 1.73%). The fixed one-year row is record mizrahi-tefahot-pomelit-kvua-shana-131. Re-read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=100&currencyCode=99), 'כל המידע המוצג נכון לתאריך ושעה' 06/11/2026 08:30:53, the same publication the other Mizrahi-Tefahot rows were read from on 2026-11-06: the row is unchanged from the 26/10/2026 08:31 reading."
   },
   "linkage": "none",
   "tax_bucket": {
@@ -158,10 +158,10 @@
     "value": false,
     "max_renewals": null
   },
-  "snapshot": "2026-10-26",
+  "snapshot": "2026-11-06",
   "source": {
     "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
-    "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; טבלת 'פיקדונות מקובלים' נטענת בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed), 'כל המידע המוצג נכון לתאריך ושעה' 26/10/2026 08:31",
+    "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים'",
     "publisher": "Mizrahi Tefahot Bank Ltd.",
     "strength": "institution"
   }

@@ -1,0 +1,36 @@
+{
+  "case": "live-03-companies-no-date",
+  "stamp": "{\"keys\":[{\"id\":\"missing-date-warning\",\"problem\":\"A few rows of the list say, in a warning colour, only that something is missing (no date), where the other rows give a date; the line does not say what is known instead, so the reader cannot tell whether to distrust that row's figures, or how old they are.\",\"where\":\"the small line under the name of three rows in the list of banks and other investment houses, where the other rows give a date\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "missing-date-warning",
+        "rank": 6,
+        "why": "Finding 6 points to the same orange 'no publication date' line in the banks list and complains that it looks like a warning but isn't explained, which is the person's own complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166954
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "missing-date-warning",
+        "rank": 6,
+        "why": "Finding 6 names the same line: the orange 'no publication date' note in the banks list that looks like a warning and isn't explained, which is the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0156554
+  },
+  "third": null,
+  "ranks": {
+    "missing-date-warning": 6
+  },
+  "agreed": {
+    "missing-date-warning": true
+  },
+  "against": {},
+  "usd": 0.0323508
+}

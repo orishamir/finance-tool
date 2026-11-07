@@ -196,7 +196,6 @@ describe("S39 wrapper mode: the founder's ETF-vs-provident case (F-80, F-81)", (
     g.value("brokerage real", byId(set, "brokerage-account").run!.real, x.s39.brokerageReal);
     g.value("brokerage nominal", byId(set, "brokerage-account").run!.nominal, x.s39.brokerageNominal);
     g.value("kgl real", ranking.entries[0]!.real, x.s39.kglReal);
-    g.value("kgl real, 15% nominal alternative", byId(set, "kupat-gemel-lehashkaa").run!.detail.altReal, x.s39.kglAltReal);
     g.done();
     expect(ranking.topTwo!.gap * 100).toBeCloseTo(x.s39.gapPct, 2);
     expect(ranking.topTwo!.tie).toBe(false);
@@ -262,6 +261,18 @@ describe("S39 wrapper mode: the founder's ETF-vs-provident case (F-80, F-81)", (
     expect(s.rows.every((r) => !r.lo.flips && !r.hi.flips)).toBe(true);
     // Deterministic: the same inputs give the same panel.
     expect(sensitivity(axes, topOf)).toEqual(s);
+  });
+});
+
+describe("F-81 holding-period axis", () => {
+  it("never tests fewer years than the shortest the pages offer, nor moves a shorter horizon lower (fee page, 2026-11-07: \"ל־0 שנים\")", () => {
+    const lo = (horizonYears: number, horizonMinYears?: number) => sensitivityAxes(parameters, { current: {}, horizonYears, ...(horizonMinYears !== undefined ? { horizonMinYears } : {}) }).find((a) => a.key === "horizon")!;
+    expect([lo(2).lo, lo(2).hi]).toEqual([1, 4]);
+    expect(lo(1).lo).toBe(1);
+    expect(lo(10).lo).toBe(8);
+    expect(lo(3, 2).lo).toBe(2);
+    // a horizon already shorter than the floor is not moved lower
+    expect(lo(0.5).lo).toBe(0.5);
   });
 });
 

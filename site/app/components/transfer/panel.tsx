@@ -6,7 +6,7 @@ import { Link } from "react-router";
 import { r3transfer as copy, r5 } from "../../copy";
 import { Tpl } from "../exposure-mode/tpl";
 import { loadHoldingsBundle } from "../../lib/holdings";
-import { fmt } from "../../lib/format";
+
 import { todayLocal } from "../../lib/today";
 import {
   applyImport,
@@ -35,8 +35,8 @@ import type { Rejected } from "../../lib/import-check";
 import { computed } from "../../lib/value";
 import { IconAlert, IconCopy } from "../icons";
 import { IconDownload, IconFileUp, IconShare } from "../holdings/icons";
-import { LeadTail, Num } from "../provenance";
-import { Button, Callout, Card, cx, SegmentedControl, Sentence } from "../kit";
+import { Num } from "../provenance";
+import { Button, Callout, Card, cx, SegmentedControl, Sentence, When } from "../kit";
 import { shown } from "../../lib/review";
 
 type Site = { version: string; data: string };
@@ -375,9 +375,7 @@ function ImportHalf() {
               {done.mode === "add" && done.added.goals + done.added.holdings + done.added.names > 0 && (
                 <>
                   {" "}
-                  <LeadTail lead={copy.afterImport.tag}>
-                    <bdi dir="ltr">{fmt.date(done.date)}</bdi>
-                  </LeadTail>
+                  <When iso={done.date} lead={copy.afterImport.tag} />
                   ״.
                 </>
               )}
@@ -472,9 +470,7 @@ function Preview({ p, mode, onMode, confirm, onConfirm, onLoad }: { p: ImportPre
   return (
     <Card className="flex flex-col gap-3">
       <p className="text-sm">
-        <LeadTail lead={copy.previewCreated.before}>
-          <bdi dir="ltr">{fmt.date(Number.isNaN(Date.parse(p.file.exported)) ? p.file.exported.slice(0, 10) : todayLocal(new Date(p.file.exported)))}</bdi>
-        </LeadTail>{" "}
+        <When iso={Number.isNaN(Date.parse(p.file.exported)) ? p.file.exported.slice(0, 10) : todayLocal(new Date(p.file.exported))} lead={copy.previewCreated.before} />{" "}
         · {copy.previewCreated.mid} <bdi dir="ltr" className="num-id">{p.file.site.version}</bdi>
       </p>
       <p className="text-sm flex flex-wrap items-center gap-x-1.5">

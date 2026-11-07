@@ -2,7 +2,7 @@
 // fee line removed, all other assumptions (A-01 to A-29) held fixed. Built on ranking's `withoutFees`.
 import type { ValueObject } from "@finance-tool/schema";
 import { RecordInputError, runPlanned, type RunPlan } from "../inputs.ts";
-import type { Commission, Custody } from "../formulas/fees.ts";
+import { feeCharged, revertRate, withFee, withHeldRate, type Commission, type Custody, type Discount } from "../formulas/fees.ts";
 import { withoutFees } from "../compare/ranking.ts";
 import { MissingRuleError, ruleBook } from "../resolver.ts";
 import type { FeeType, RunContext, RunResult } from "../result.ts";
@@ -12,7 +12,7 @@ import { computedValue, weakestStrength } from "./computed.ts";
 export type FeeLine = FeeType;
 
 /** Every line, in the order the result lists them. */
-export const feeLineOrder: readonly FeeLine[] = ["deposit", "balance", "direct", "trade", "spread", "custody", "fixed", "fund", "fx", "manager"];
+export const feeLineOrder: readonly FeeLine[] = ["deposit", "balance", "direct", "trade", "spread", "custody", "fixed", "account", "fund", "fx", "manager"];
 
 const positive = (n: number | undefined) => (n ?? 0) > 0;
 const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min) || ("perCurrencyUnit" in c && positive(c.perCurrencyUnit)));
@@ -24,8 +24,9 @@ export function feeLines(plan: RunPlan): FeeLine[] {
     case "runProvident":
     case "runPension": {
       const f = plan.input.fees;
-      if (positive(f.deposit)) has.add("deposit");
-      if (positive(f.balance)) has.add("balance");
+      // A-19: a line at 0% whose discount reverts to a positive rate is charged after the discount
+      if (feeCharged(f, "deposit")) has.add("deposit");
+      if (feeCharged(f, "balance")) has.add("balance");
       if (positive(f.direct)) has.add("direct");
       break;
     }
@@ -37,9 +38,13 @@ export function feeLines(plan: RunPlan): FeeLine[] {
       for (const t of chain) {
         if (configured(t.buy) || configured(t.sell)) has.add("trade");
         if (configured(t.custody)) has.add("custody");
-        if (typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) has.add("fx");
+        if ((typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) || positive(t.fxSpread)) has.add("fx");
         if (positive(t.monthlyFee)) has.add("fixed");
       }
+      // F-102 is read from each stretch (F-101: a group exempt for a time); F-103 from the first tariff only, and the custodian's charge per
+      // dividend counts with custody where a dividend is paid
+      if (chain.some((t) => positive(t.currentAccount))) has.add("account");
+      if (positive(tariff.perDividend) && fund.distribution) has.add("custody");
       if (positive(fund.halfSpread)) has.add("spread");
       const d = fund.drag;
       if (positive(d?.management) || positive(d?.variable) || positive(d?.trustee)) has.add("fund");
@@ -63,9 +68,12 @@ function noLine(plan: RunPlan, line: FeeLine): never {
   throw new RecordInputError(`${plan.run} has no "${line}" fee line to change (F-61)`);
 }
 
-/** The same plan with one fee line zeroed (V(F \ {f})). Everything else, including non-fee drag and tax, stays. */
+/**
+ * The same plan with one fee line zeroed (V(F \ {f})). Everything else, including non-fee drag and tax, stays. A discounted line (A-19)
+ * is one line over both of its periods: removing it removes the rate it reverts to as well.
+ */
 export function withoutFeeLine(plan: RunPlan, line: FeeLine): RunPlan {
-  return changeLine(plan, line, 0);
+  return changeLine(plan, line, 0, false);
 }
 
 /**
@@ -73,20 +81,73 @@ export function withoutFeeLine(plan: RunPlan, line: FeeLine): RunPlan {
  * direct, fund or manager fee; a fraction of each deposit, trade or conversion for a deposit, trade or fx fee;
  * a fraction of the half-spread for spread; a fraction a period for custody; NIS a month for fixed. A trade
  * line keeps its minimum and maximum. A fund line becomes one rate (the manager fee), with its variable and
- * trustee parts removed. A balance fee replaced this way is no longer discounted (A-19).
+ * trustee parts removed. A provident or pension balance or deposit fee at a new rate below what the run charges is a
+ * discount too (A-19, D83, D86): a lower rate a company agrees to holds for PF-13's period and is no longer promised. On a
+ * discounted line the new rate replaces the discounted rate and the line keeps its period and the rate it reverts to; on a
+ * line with no discount it holds for PF-13's period and then returns to the line's own rate (`heldRevertRate`). So a stated
+ * reduction is worth only what it changes. Without `ctx`, a move to another fund at that fund's own rate (F-72), the line takes the
+ * new rate for the whole run and drops its own discount: the old fund's discount does not follow the money (D86).
  */
-export function withFeeRate(plan: RunPlan, line: FeeLine, newRate: number): RunPlan {
+export function withFeeRate(plan: RunPlan, line: FeeLine, newRate: number, ctx?: RunContext): RunPlan {
   if (!Number.isFinite(newRate) || newRate < 0) throw new RangeError(`newRate ${newRate} must be a number of zero or more`);
-  return changeLine(plan, line, newRate);
+  return changeLine(plan, line, newRate, ctx ? { ctx } : true);
 }
 
-function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
+/** PF-13's minimum discount period in months, from the rule book (A-19). */
+export function minDiscountMonthsOf(ctx: RunContext): number {
+  return 12 * ruleBook(ctx).amount("PF-13", "min_discount_years");
+}
+
+/**
+ * D86: the rate a held line reverts to after PF-13's period, as a fraction: what the run charges on that line once the period is over. On a
+ * discounted line that is the rate its discount reverts to (the record's `reverts_to`, else the regulations' cap); on a line with no discount,
+ * its own rate: on a provident list the data check asks a line below the cap for its `reverts_to`, so the line is at the cap; a pension list
+ * may print a line below the cap with none (Meitav's comprehensive fund, 0.22% and 1%), and a rate from a statement or a regulator's
+ * average is one the run already holds for every year, so returning to the cap there would make a lower fee cost more. So a reduction changes one thing: the rate
+ * during the period. Undefined where the run reads no discount on the line (direct expenses, and every line outside the provident family).
+ */
+export function heldRevertRate(plan: RunPlan, line: FeeLine): number | undefined {
+  if (plan.run !== "runProvident" && plan.run !== "runPension") return undefined;
+  if (line !== "balance" && line !== "deposit") return undefined;
+  return revertRate(plan.input.fees, line) ?? plan.input.fees[line];
+}
+
+/**
+ * F-62 with A-19 (D88, 2026-11-07): the rate the verdict judges a provident or pension line by, when it is not the rate charged now. A
+ * discounted line whose discount ends within the run (at its period, never before PF-13's minimum) is judged by the rate after it: the
+ * rate charged during the discount (0% on a deposit fee) says nothing about what the fee costs. Null when the line has no discount or it
+ * lasts the whole run; the verdict then judges the rate charged now. Never above the line's regulated cap, which is the most the run charges. The page names when the discount ends beside the verdict, since a
+ * reduction agreed now holds only through the discount (D86) and is worth only that (D90).
+ */
+export function rateAfterDiscount(plan: RunPlan, line: FeeLine, exitMonth: number, ctx: RunContext): number | null {
+  if (plan.run !== "runProvident" && plan.run !== "runPension") return null;
+  if (line !== "balance" && line !== "deposit") return null;
+  const f = plan.input.fees;
+  const d: Discount | undefined = line === "balance" ? f.discount : f.depositDiscount;
+  if (!d) return null;
+  if (Math.max(d.months, minDiscountMonthsOf(ctx)) >= exitMonth) return null;
+  // the run charges no more than the regulated cap (F-11, F-15): a rate after the discount scaled past it (F-81's sensitivity) is judged at the cap;
+  // a study fund has no deposit fee at all (PF-06 has no deposit item), and its ledger charges none (finance review, 2026-11-07)
+  const cap = plan.run === "runProvident" && plan.input.wrapper === "keren-hishtalmut" && line === "deposit" ? 0 : feeCap(plan, line, ctx)?.rate;
+  return cap === undefined ? d.listRate : Math.min(d.listRate, cap);
+}
+
+function changeLine(plan: RunPlan, line: FeeLine, rate: number, keepDiscount: boolean | { ctx: RunContext }): RunPlan {
   switch (plan.run) {
     case "runProvident":
     case "runPension": {
       if (line !== "deposit" && line !== "balance" && line !== "direct") return noLine(plan, line);
-      const fees = { ...plan.input.fees, [line]: rate };
-      if (line === "balance") delete fees.discount;
+      // A-19: removed, the line's own discount goes with it, so "without this fee" charges nothing in any month; a move to another fund
+      // at that fund's own rate is one rate for the whole run, so the old fund's discount does not follow it (D86); a stated reduction
+      // replaces only the discounted rate, and on a line with no discount holds for PF-13's period, then returns to the line's own rate (D86)
+      const f = plan.input.fees;
+      const own: Discount | undefined = line === "balance" ? f.discount : line === "deposit" ? f.depositDiscount : undefined;
+      const fees =
+        keepDiscount === false || keepDiscount === true
+          ? withFee(f, line, rate)
+          : own || line === "direct"
+            ? { ...f, [line]: rate }
+            : withHeldRate(f, line, rate, minDiscountMonthsOf(keepDiscount.ctx), heldRevertRate(plan, line));
       return plan.run === "runProvident"
         ? { run: "runProvident", input: { ...plan.input, fees } }
         : { run: "runPension", input: { ...plan.input, fees } };
@@ -94,10 +155,10 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
     case "runSecurities": {
       // F-101: a tariff line is changed in every tariff of a price for a time; a tariff without the line stays as it is
       const { until, ...head } = plan.input.tariff;
-      if (until && (line === "trade" || line === "custody" || line === "fx" || line === "fixed")) {
+      if (until && (line === "trade" || line === "custody" || line === "fx" || line === "fixed" || line === "account")) {
         const part = (tariff: typeof head): typeof head | null => {
           try {
-            const changed = changeLine({ run: "runSecurities", input: { ...plan.input, tariff } }, line, rate);
+            const changed = changeLine({ run: "runSecurities", input: { ...plan.input, tariff } }, line, rate, keepDiscount);
             return changed.run === "runSecurities" ? changed.input.tariff : null;
           } catch (e) {
             if (e instanceof RecordInputError) return null;
@@ -133,12 +194,22 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "custody":
-          if (!tariff.custody) return noLine(plan, line);
-          if (rate === 0) delete tariff.custody;
-          else tariff.custody = { ...tariff.custody, rate };
+          if (!tariff.custody && !tariff.perDividend) return noLine(plan, line);
+          // F-103: the custodian's charge per dividend is part of custody; removing custody removes it too, and a custody line at another rate
+          // moves it in proportion, as a standing-order price moves with its line (F-12); a custody line at nothing gives no proportion, and the
+          // charge stays as printed
+          if (rate === 0) {
+            delete tariff.custody;
+            delete tariff.perDividend;
+          } else if (tariff.custody) {
+            if (tariff.perDividend && tariff.custody.rate > 0) tariff.perDividend = (tariff.perDividend * rate) / tariff.custody.rate;
+            tariff.custody = { ...tariff.custody, rate };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fx":
           if (tariff.fx === undefined) return noLine(plan, line);
+          // F-13 (D65): the spread is part of the conversion line; a rate set here is the whole conversion's, so the spread goes with the old price
+          delete tariff.fxSpread;
           if (rate === 0) delete tariff.fx;
           else if (typeof tariff.fx === "number") tariff.fx = rate;
           else {
@@ -158,6 +229,13 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           if (tariff.monthlyFee === undefined) return noLine(plan, line);
           if (rate === 0) delete tariff.monthlyFee;
           else tariff.monthlyFee = rate;
+          return { run: "runSecurities", input: { ...input, tariff } };
+        case "account":
+          // a sequence (F-101) is changed stretch by stretch above; a stretch that charges nothing (a group exempt for a time) stays at nothing,
+          // as a recurring plan's free conversion does (F-13)
+          if (tariff.currentAccount === undefined) return noLine(plan, line);
+          if (rate === 0) delete tariff.currentAccount;
+          else if (tariff.currentAccount > 0) tariff.currentAccount = rate;
           return { run: "runSecurities", input: { ...input, tariff } };
         case "spread": {
           if (input.fund.halfSpread === undefined) return noLine(plan, line);
@@ -236,16 +314,19 @@ export interface FeeCap {
  * Also PF-06's 2% a year on the manager's fee of an IRA hishtalmut (the `manager` line of a securities run).
  */
 export function feeCap(plan: RunPlan, line: FeeLine, ctx: RunContext): FeeCap | undefined {
-  let where: { rule: string; also: readonly string[]; balance: string; deposit?: string } | undefined;
-  let figure: string | undefined;
-  if (plan.run === "runProvident" || plan.run === "runPension") {
-    where = capFigure[plan.input.wrapper];
-    figure = line === "balance" ? where?.balance : line === "deposit" ? where?.deposit : undefined;
-  } else if (plan.run === "runSecurities" && plan.input.wrapper && line === "manager") {
-    where = { rule: "PF-06", also: [], balance: "balance_cap" };
-    figure = where.balance;
-  }
-  if (!where || !figure) return undefined;
+  if (plan.run === "runProvident" || plan.run === "runPension") return wrapperFeeCap(plan.input.wrapper, line, ctx);
+  if (plan.run === "runSecurities" && plan.input.wrapper && line === "manager") return capOf({ rule: "PF-06", also: [] }, "balance_cap", ctx);
+  return undefined;
+}
+
+/** The regulated maximum of a provident or pension wrapper's deposit or balance fee (the same as `feeCap` on its plan), without a plan. */
+export function wrapperFeeCap(wrapper: string, line: FeeLine, ctx: RunContext): FeeCap | undefined {
+  const where = capFigure[wrapper];
+  const figure = line === "balance" ? where?.balance : line === "deposit" ? where?.deposit : undefined;
+  return where && figure ? capOf(where, figure, ctx) : undefined;
+}
+
+function capOf(where: { rule: string; also: readonly string[] }, figure: string, ctx: RunContext): FeeCap | undefined {
   try {
     const book = ruleBook(ctx);
     const ruleIds = [...new Set([...where.also, where.rule])];
@@ -330,12 +411,20 @@ export interface ReductionValue {
   newRate: number;
   /** `V_T^real(F[f → f']) − V_T^real(F)`, real NIS: positive when the stated rate is better. */
   value: ValueObject;
+  /** The changed run's flags: a held rate can give a plan a discount it did not have, and with it the open reading of PF OQ18 (D87). */
+  flags: RunResult["flags"];
+  /** The changed run's labels (a reading the figure rests on), beside its flags. */
+  labels: RunResult["labels"];
 }
 
-/** F-61 Value of a stated reduction `f → f'`: the run with the fee line at the new rate, less the run as it is, real NIS at the horizon. */
-export function valueOfReduction(plan: RunPlan, line: FeeLine, newRate: number, ctx: RunContext): ReductionValue {
+/**
+ * F-61 Value of a stated reduction `f → f'`: the run with the fee line at the new rate, less the run as it is, real NIS at the horizon. A
+ * reduction a company agrees to holds for PF-13's period (D86); `held: false` is for a move to another fund at that fund's own rate, which
+ * is not an offer on this line and runs for the whole horizon.
+ */
+export function valueOfReduction(plan: RunPlan, line: FeeLine, newRate: number, ctx: RunContext, opts: { held?: boolean } = {}): ReductionValue {
   const run = runPlanned(plan, ctx);
-  const changed = runPlanned(withFeeRate(plan, line, newRate), ctx);
+  const changed = runPlanned(withFeeRate(plan, line, newRate, opts.held === false ? undefined : ctx), ctx);
   return {
     formula: "F-61",
     line,
@@ -347,6 +436,8 @@ export function valueOfReduction(plan: RunPlan, line: FeeLine, newRate: number, 
       { real_value_at_new_rate: changed.real, real_value_with_fees: run.real, fee_line: line, new_rate: newRate },
       { checked: ctx.runDate, ...sourcesOf(run), notes: `real NIS over ${run.exitMonth} months, "${line}" at the stated rate` },
     ),
+    flags: changed.flags,
+    labels: changed.labels,
   };
 }
 

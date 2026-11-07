@@ -70,15 +70,18 @@ describe("the 20-year case on the cheapest collected broker", () => {
     // once the person chose, the card's run is theirs and there is no site row
     expect(providerOutcomes(applyOwnProviders(bundle, { ownProviders: { [BRK]: "psagot" } }), goal, BRK).site).toBeNull();
   });
-  it("lands above the kupat gemel on the best broker and on the unpicked default (Leumi, its monthly purchases on the standing-order line, D41), and the figures are these", () => {
+  it("lands above the kupat gemel on the best broker, and so does the unpicked default (Leumi, its monthly purchases on the standing-order line, D41) once Harel's discount ends, and the figures are these", () => {
     const kgl = real(bundle, "kupat-gemel-lehashkaa");
     const dflt = real(bundle, BRK);
     const chosen = applyOwnProviders(bundle, { ownProviders: { [BRK]: best.id } });
     const cheapest = real(chosen, BRK, { ...goal, ownProviders: { [BRK]: best.id } });
     expect(cheapest).toBeCloseTo(best.real, 4);
+    // 2026-11-07 (F-80, A-19, D56): the gemel runs on Harel, the lowest of the managers' fees, at its printed 0.7% and 0% for PF-13's five years
+    // and then at the most its bylaws allow, 1.05% and 4% (KGL-16). On Meitav's 0.8% alone it ended at 1,032,222, at Harel's 0.7% for all
+    // twenty years at 1,041,892; the 4% on fifteen years of 3,000 deposits and the higher balance fee bring it below Leumi's default
     expect(dflt).toBeGreaterThan(kgl);
     expect(cheapest).toBeGreaterThan(kgl);
-    expect(Math.round(kgl)).toBe(1_032_222);
+    expect(Math.round(kgl)).toBe(985_597);
     expect(cheapest).toBeCloseTo(1_098_743, -2);
     // 240 purchases of 3,000: 0.225% (6.75) instead of the regular line's 26 saves 4,620 before growth and tax
     expect(Math.abs(dflt - 1_034_620)).toBeLessThan(100);
@@ -122,11 +125,16 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
       expect(Object.keys(wrapper.providers!)).toContain(id);
     }
   });
-  it("puts the securities account first for that goal, where Leumi's list tariff gave a tie with the gemel", () => {
+  it("puts the securities account first for that goal, where Leumi's list tariff left it behind the gemel", () => {
     const before = buildView(bundle, doron);
     const after = buildView(applyProviders(bundle, doron), doron);
     if (before.kind !== "ok" || after.kind !== "ok") throw new Error("not ok");
+    // the gemel ties Leumi's account: at Harel's 0.7% for five years and 1.05% for the last three (A-19, 2026-11-07) it ends at 85,697,
+    // between 85,870 at Meitav's 0.8% (a tie too) and 86,425 at 0.7% for all eight years (which led by more than the tie threshold)
     expect(before.headline).toBe("tie");
+    expect(before.ranked[0]!.id).toBe("kupat-gemel-lehashkaa");
+    expect(before.ranked[1]!.id).toBe(BRK);
+    expect(Math.round(before.ranked[0]!.real)).toBe(85_697);
     expect(after.headline).toBe("winner");
     expect(after.ranked[0]!.id).toBe(BRK);
     expect(after.ranked[1]!.id).toBe("kupat-gemel-lehashkaa");

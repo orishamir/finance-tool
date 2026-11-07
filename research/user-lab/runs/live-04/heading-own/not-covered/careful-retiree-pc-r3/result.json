@@ -1,0 +1,109 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:11:41.212Z",
+  "structured": {
+    "answer": "According to the red strip at the top, the site doesn't calculate anything on this list yet: bonds (אגרות בונדס, אג\"ח קונצרניות), ביטוח מנהלים, profit-sharing life insurance, savings policies, foreign-currency accounts and deposits, dollar-linked deposits, structured deposits (פיקדון מובנה) and gold. But the list, headed \"מוצרים\", also contains things that aren't products: a rating company (חברת דירוג), a fee (עמלת חליפין), הסדר חוב, היוון קצבה and the price of gold. So I don't fully trust it, and I'll ask my son or the bank before I decide anything.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Struck-through lines 'נסגר ב-24.10.2026' inside the 'מצב הכיסוי' boxes",
+        "why": "Couldn't tell whether a line with a line through it means the question is closed or cancelled"
+      },
+      {
+        "where": "Screens 5-6",
+        "why": "White text on a black background, crowded, many small codes; I got tired and stopped after six screens"
+      },
+      {
+        "where": "'פיקדון במטבע זר' card",
+        "why": "It says 'חסום: שאלה פתוחה אחת' about tax on the interest, and I wasn't sure whether that means I shouldn't open one"
+      }
+    ],
+    "used": [
+      "Title 'מה האתר עוד לא מכסה' and subtitle 'מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף'",
+      "Red strip 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם'",
+      "Card titles and the first line under 'מה ידוע'",
+      "'לא מחושב' tags",
+      "'מצב הכיסוי' boxes for foreign-currency deposit and savings policy"
+    ],
+    "skimmed": [
+      "'מה ידוע' text on most cards",
+      "'כשייסגר: יופיע במדריך...' sentence repeated on every card",
+      "'נקרא גם' lines"
+    ],
+    "skipped": [
+      "ETC card (English letters)",
+      "Small grey/green source links with law names and dates",
+      "'חוקים וכללים · N' chips",
+      "Screens 7-10 (never reached)",
+      "Top menu and search"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "קרן סל / קרן מחקה",
+      "נע\"מ",
+      "MF-28, TX2-01, TXA-28",
+      "'לפי החברה' orange tag",
+      "'מקור ראשי (עותק)'",
+      "'חוקים וכללים · 3'",
+      "Struck-through 'נסגר ב-...' dates",
+      "'מצב הכיסוי' / 'שורת הכיסוי'"
+    ],
+    "not_found": [
+      "A plain statement of whether there is something as safe as a deposit that pays more",
+      "Anything about how much the bank charges me",
+      "A short summary list of the uncovered items without opening every card"
+    ],
+    "findings": [
+      {
+        "what": "The heading promises 'מוצרים' (products), yet the list includes items that are not products: 'חברת דירוג' (a rating company), 'עמלת חליפין' (a fee), 'הסדר חוב' (a debt arrangement), 'היוון קצבה' (an action on a pension), 'LBMA Gold Price' (a price) and a company the issuer must appoint. It makes me doubt the whole list.",
+        "where": "Cards on screens 1, 3, 4 and 5"
+      },
+      {
+        "what": "Every card has a red 'לא מחושב' tag and there's a red strip at the top; all that red is alarming and makes everything look dangerous",
+        "where": "Whole page, starting screen 1"
+      },
+      {
+        "what": "Dark background with white and green small text is hard to read with reading glasses; the source lines are tiny and cut off with '...'",
+        "where": "All screens"
+      },
+      {
+        "what": "The page opens with an English-letter product (ETC) and 'LBMA Gold Price', which made me feel it isn't for me",
+        "where": "Screen 1, first two cards"
+      },
+      {
+        "what": "Unexplained codes like MF-28, TX2-01, TXA-28 and crossed-out dates",
+        "where": "'מצב הכיסוי' boxes, screens 3, 5, 6"
+      },
+      {
+        "what": "The same long sentence 'כשייסגר: יופיע במדריך...' repeats on every card and makes the page long and tiring",
+        "where": "Every expanded card"
+      },
+      {
+        "what": "Ten screens of cards with no short summary at the top; I stopped after six",
+        "where": "Overall length"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 44241,
+    "turns": 8,
+    "usd": 0.17324140000000002,
+    "input": 10,
+    "cacheWrite": 11607,
+    "cacheRead": 37827,
+    "output": 3639,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,17 @@
+{
+ "task": "You are reading a Hebrew website that explains saving products in Israel. The screenshots show one visit to one page, in order: the page as it first opens, the panel that opens from its button, the same panel after filling it in, and then the whole page after that, top to bottom. Read all of them. Then answer briefly, in Hebrew or English, without guessing beyond what the page says: (1) When the page first opened, what did it need from you before it could answer, and was it clear where to give it? (2) After filling it in, how much do the fees cost you, by the page, and over what period? (3) Some fields are marked as required and some as not required. Was it clear which you had to fill and why? (4) Is there a field you would not know how to fill? What would you need to fill it? (5) Quote every word or sentence you did not understand, that confused you, or that you read twice, and say why. (6) Is anything you needed missing? (7) Did any link, number or label look like it should lead somewhere or explain something but did not?",
+ "readers": [
+  {
+   "key": "pension-pc",
+   "who": "You are 41, an employee, and your employer deposits to a comprehensive pension fund (קרן פנסיה מקיפה) for you every month. You want to know what its fees cost you. You read Hebrew natively and do not work in finance. You are reading on a computer.",
+   "shots": [
+    "research/audit/2026-11-07-fee-dead-ends/readers/shots-1440/01-first.png",
+    "research/audit/2026-11-07-fee-dead-ends/readers/shots-1440/02-panel.png",
+    "research/audit/2026-11-07-fee-dead-ends/readers/shots-1440/03-panel-filled.png",
+    "research/audit/2026-11-07-fee-dead-ends/readers/shots-1440/04-result-1.png",
+    "research/audit/2026-11-07-fee-dead-ends/readers/shots-1440/05-result-2.png",
+    "research/audit/2026-11-07-fee-dead-ends/readers/shots-1440/06-result-3.png"
+   ]
+  }
+ ]
+}

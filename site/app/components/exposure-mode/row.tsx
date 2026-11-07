@@ -8,7 +8,7 @@ import { decidingFormulaOf } from "../../lib/compare";
 import type { ExposureRowView } from "../../lib/exposure-mode";
 import { IconDrillIn, IconLock } from "../icons";
 import { IconDash, IconDashed, IconEdit, IconEqual } from "../compare/icons";
-import { Num } from "../provenance";
+import { Num, ReadingTag } from "../provenance";
 import { Card, cx, HeadlineFigure, RankBadge, Sentence, Tag } from "../kit";
 import type { ExpCtx } from "./ctx";
 import { AcceptedFallChip, CashRateLine, EnteredReturnField, ExclusionTag, HoldingWrapperChips, LossNote, ReturnLabel, WorstFallField } from "./fields";
@@ -51,9 +51,10 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
   const hasValue = row.real !== undefined;
   // a listed row shows no headline figure, only "לא מדורג" and its reason (scenario fix 2026-10-24)
   const showFigure = hasValue && ranked;
-  const value = hasValue ? mk.nis(mode === "real" ? row.real! : row.nominal!, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, row.run ? { usedRules: row.run.rules, flags: row.run.flags } : undefined) : null;
+  const value = hasValue ? mk.nis(mode === "real" ? row.real! : row.nominal!, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, row.run ? { usedRules: row.run.rules, flags: row.run.flags, labels: row.run.labels } : undefined) : null;
   const tied = row.tiedWith.length > 0;
   const f = row.deciding;
+  const reading = !!row.run?.labels.some((l) => l.code === "reading");
   return (
     <Card data-flip={row.id} className={cx("flex flex-col gap-3", tied && "border-s-[3px] border-s-chart-marker", !ranked && "bg-card/70")}>
       <div className="flex items-start gap-3">
@@ -97,6 +98,8 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
               {row.tiedWith.length === 1 ? `${r2.tieOne}${names[row.tiedWith[0]!] ?? row.tiedWith[0]}` : `${r2.tieMany} ${row.tiedWith.map((x) => names[x] ?? x).join(", ")}`}
             </Tag>
           )}
+          {/* the goal comparison's piece, held the same way and last on the line, so its empty place is no gap between tags (fourth check, 2026-11-07) */}
+          {(row.mayRead || reading) && <ReadingTag held={row.mayRead} shown={reading} />}
         </div>
       )}
 

@@ -1,0 +1,186 @@
+{
+  "id": "1185164",
+  "names": {
+    "en": [
+      "Invesco MSCI World UCITS ETF Acc",
+      "INVESCO MSCI WORLD UCITS ETF ACC"
+    ],
+    "he": [],
+    "tase": [
+      "אנ.סז7"
+    ]
+  },
+  "identifiers": {
+    "isin": "IE00B60SX394",
+    "tase_number": "1185164",
+    "cusip": null,
+    "ticker": {
+      "TASE": "אנ.סז7"
+    }
+  },
+  "manager": "Invesco Investment Management Limited (fund: Invesco Markets plc)",
+  "domicile": "IE",
+  "legal_form": "UCITS ETF, sub-fund (share class Acc, ISIN IE00B60SX394) of Invesco Markets plc, Ireland; 'This Fund is authorised in Ireland and regulated by the Central Bank of Ireland' (KIID p. 2). Synthetic: 'To achieve the objective the Fund will use unfunded swaps (\"Swaps\")' on a basket of equities it holds, which 'will purchase securities that are not contained in the Index' (KIID p. 1). Objective: 'the net total return performance of the MSCI World Index' (KIID p. 1). The Fund launched in 2009. The Share Class launched in 2009. Its Tel Aviv line: number 1185164, in shekels; TASE names the reference asset 'MSCI WORLD INDEX - NTR' and the share class ISIN IE00B60SX394 (TASE security page, read 2026-11-07); the Israeli prospectus annex (library 5362c2ba9da42b6d, 2022, p. 2) offers 'יחידות מסוג Acc של הקרן' with the same ISIN and describes the unfunded swaps ('Unfunded Swaps').",
+  "exposure_id": "index-msci-world",
+  "currency": "USD",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.invesco.com/content/dam/invesco/uk/en/product-documents/etf/share-class/kiid/IE00B60SX394_kiid_en-uk.pdf#page=2",
+        "title": "Invesco MSCI World UCITS ETF, Acc share class (ISIN IE00B60SX394), Key Investor Information, 'accurate as at 26 June 2026', Invesco Markets plc, p. 2 'Charges': 'Ongoing charge 0.05%'; read in a browser 2026-11-07 (invesco.com refuses scripts, so the file is not in the library)",
+        "publisher": "Invesco (Invesco Markets plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "ETF-27",
+        "TXF-16"
+      ],
+      "state": "sourced",
+      "notes": "Ongoing charge of the share class as its KIID prints it, 'based on the fee paid to the Manager. The Manager is responsible for discharging from its fee, costs attributable to the Investment Manager, Administrator, Depositary as well as the Operational Expenses incurred by the Fund' (KIID p. 2), so the Israeli fee layers (variable fee, trustee fee) do not exist here (ETF-27). Entry and exit charge 'None*' (KIID p. 2). The swap fee and any counterparty contribution are not in this figure; the KIID does not print them."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.invesco.com/content/dam/invesco/uk/en/product-documents/etf/share-class/kiid/IE00B60SX394_kiid_en-uk.pdf#page=2",
+        "title": "Invesco MSCI World UCITS ETF, Acc share class (ISIN IE00B60SX394), Key Investor Information, 'accurate as at 26 June 2026', Invesco Markets plc, p. 2 'Past Performance'; read in a browser 2026-11-07 (invesco.com refuses scripts, so the file is not in the library)",
+        "publisher": "Invesco (Invesco Markets plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The KIID prints the share class's return and the index's for each calendar year on p. 2 ('Past Performance', '% growth', rows 'Share Class' and 'Index', one decimal); they are in tracking_record. Basis: 'Past performance of the Share Class is calculated in USD'; 'Performance is calculated after deduction of ongoing charges'. Index as the KIID names it: 'MSCI World Index', whose net total return is the objective (p. 1); the chart's index row is not itself labelled net or gross; the fund's own Israeli prospectus annex says it seeks the index's net total return, so the benchmark is recorded as net (tracking_record.benchmark). The figures are the share class's returns in US dollars, not a return in shekels on the Tel Aviv line. The difference is not computed here (data-update rule)."
+    },
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-16",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28",
+    "fee-trade": "covered:ETF-29"
+  },
+  "prospectus": {
+    "url": "https://www.invesco.com/content/dam/invesco/emea/en/product-documents/etf/umbrella/prospectus/invesco-markets-plc_prospectus_en.pdf",
+    "date": null
+  },
+  "replication": {
+    "method": "swap",
+    "source": {
+      "url": "https://www.invesco.com/content/dam/invesco/uk/en/product-documents/etf/share-class/kiid/IE00B60SX394_kiid_en-uk.pdf",
+      "page": 1,
+      "checked": "2026-11-07"
+    }
+  },
+  "snapshot": "2026-11-07",
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2016,
+        "fund_pct": 7.5,
+        "tracking_pct": 7.5
+      },
+      {
+        "year": 2017,
+        "fund_pct": 22.4,
+        "tracking_pct": 22.4
+      },
+      {
+        "year": 2018,
+        "fund_pct": -8.6,
+        "tracking_pct": -8.7
+      },
+      {
+        "year": 2019,
+        "fund_pct": 27.9,
+        "tracking_pct": 27.7
+      },
+      {
+        "year": 2020,
+        "fund_pct": 16,
+        "tracking_pct": 15.9
+      },
+      {
+        "year": 2021,
+        "fund_pct": 21.9,
+        "tracking_pct": 21.8
+      },
+      {
+        "year": 2022,
+        "fund_pct": -18,
+        "tracking_pct": -18.1
+      },
+      {
+        "year": 2023,
+        "fund_pct": 24,
+        "tracking_pct": 23.8
+      },
+      {
+        "year": 2024,
+        "fund_pct": 18.8,
+        "tracking_pct": 18.7
+      },
+      {
+        "year": 2025,
+        "fund_pct": 21.2,
+        "tracking_pct": 21.1
+      }
+    ],
+    "years_printed": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "source": {
+      "url": "https://www.invesco.com/content/dam/invesco/uk/en/product-documents/etf/share-class/kiid/IE00B60SX394_kiid_en-uk.pdf#page=2",
+      "title": "Invesco MSCI World UCITS ETF, Acc share class (ISIN IE00B60SX394), Key Investor Information, 'accurate as at 26 June 2026', Invesco Markets plc, p. 2 'Past Performance'; read in a browser 2026-11-07 (invesco.com refuses scripts, so the file is not in the library)",
+      "publisher": "Invesco (Invesco Markets plc)",
+      "strength": "institution"
+    },
+    "page": 2,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "MSCI World Index",
+      "dividends": "net",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1436001-1437000/P1436366-01.pdf",
+        "title": "נספח לתשקיף קרן חוץ נסחרת: Invesco MSCI World UCITS ETF Acc, Tel Aviv line 1185164 (Invesco Markets plc) (Maya filing 1436366), p. 9: 'להשיג את התשואה הכוללת נטו של' MSCI World Index",
+        "publisher": "Invesco (Invesco Markets plc)",
+        "strength": "institution"
+      },
+      "page": 9
+    }
+  }
+}

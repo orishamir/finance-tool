@@ -1,0 +1,73 @@
+{
+  "id": "MF-68",
+  "title": "Fridays since 5 January 2026: creations and redemptions only in funds limited in foreign securities, executed on the Sunday",
+  "title_he": "יום שישי: קנייה ופדיון רק בקרן מוגבלת בניירות ערך זרים, והביצוע ביום ראשון",
+  "text_he": "מאז שהבורסה עברה למסחר בימים שני עד שישי, ב־5.1.2026, אפשר לקנות ולפדות יחידות של קרן נאמנות בכל יום מסחר, גם ביום שישי, חוץ מקרן שאינה מוגבלת בניירות ערך זרים, כלומר קרן שמותר לה להיות חשופה לניירות ערך זרים ביותר מעשירית מנכסיה: בה קונים ופודים רק בימים שני עד חמישי. הוראה שמגיעה למסלקה ביום שישי עד השעה היעודה מתבצעת ביום ראשון לפי מחירי הסגירה של יום שישי, והיחידות או כסף הפדיון מופיעים בחשבון בדרך כלל ביום שני. בקרנות סל על מדדים זרים ובקרנות חוץ נסחרות אפשר לקנות ולמכור בבורסה ביום שישי, אבל לא ליצור או לפדות יחידות מול מנהל הקרן.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=12",
+      "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
+      "title_he": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.12, s.5.2",
+      "locator_he": "עמוד 12, סעיף 5.2",
+      "page": 12,
+      "quote": "קרנות נאמנות שאינן מוגבלות בניירות ערך זרים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=9",
+      "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
+      "title_he": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.9, ss.4.3, 4.4",
+      "locator_he": "עמוד 9, סעיפים 4.3, 4.4",
+      "page": 9,
+      "quote": "יבוצעו ביום ראשון על פי מחיר הסגירה ביום שישי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-637b90c7be39b/NEW050825.pdf#page=8",
+      "title": "החלטת הרשות בדבר מעבר למסחר בימים שני עד שישי (רשות ניירות ערך, 4 באוגוסט 2025)",
+      "title_he": "החלטת הרשות בדבר מעבר למסחר בימים שני עד שישי (רשות ניירות ערך, 4 באוגוסט 2025)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.8, s.ב",
+      "locator_he": "עמוד 8, סעיף ב",
+      "page": 8,
+      "quote": "לא תתאפשר יצירה ופדיון של יחידות קרנות אלה ביום שישי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-637b90c7be39b/NEW050825.pdf#page=11",
+      "title": "החלטת הרשות בדבר מעבר למסחר בימים שני עד שישי (רשות ניירות ערך, 4 באוגוסט 2025)",
+      "title_he": "החלטת הרשות בדבר מעבר למסחר בימים שני עד שישי (רשות ניירות ערך, 4 באוגוסט 2025)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.11, ss.2(ג), 3(ב)",
+      "locator_he": "עמוד 11, סעיפים 2(ג), 3(ב)",
+      "page": 11,
+      "quote": "יבוצעו ביום ראשון",
+      "checked": "2026-11-07"
+    }
+  ]
+}

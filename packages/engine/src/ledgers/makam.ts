@@ -40,6 +40,8 @@ const DAYS = 365;
  * series still open at the horizon is sold at the price implied by the unchanged yield, its gain taxed as a
  * capital gain on an unlinked asset (TXI-12). A redemption pays the tariff's redemption line, once a month on the face value redeemed that
  * month: amounts with one maturity are one series, so one redemption. It comes out of the proceeds and does not reduce the taxed discount (G-20).
+ * Custody and the account's monthly fee are paid by selling a slice of each series held: each slice is a sale before redemption, so its
+ * own gain is a capital gain of its tax year (TXI-12), and that year's custody and account fees come off that year's capital gains (TXS-06).
  */
 export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx);
@@ -74,6 +76,12 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   let interestThisYear = 0;
   let exitYearInterest = 0;
   let exitYearFees = 0;
+  let taxedGain = 0;
+  let taxedDiscount = 0;
+  // capital gains realised on the slices sold to pay custody and the account's fee, and those fees, by tax year (TXI-12, TXS-06)
+  const sliceGainByYear = new Map<number, number>();
+  const feesByYear = new Map<number, number>();
+  const add = (m: Map<number, number>, year: number, v: number) => m.set(year, (m.get(year) ?? 0) + v);
   let blocked: string | undefined;
   tally.point(0, 1, 0);
 
@@ -88,6 +96,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
     for (const s of redeemed) {
       const tax = discountRate * (s.face - s.cost);
       interestThisYear += s.face - s.cost;
+      taxedDiscount += s.face - s.cost;
       tally.taxDuring += tax;
       proceeds += s.face - tax;
     }
@@ -103,17 +112,22 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
       held.push(buy(proceeds, m + term));
       proceeds = 0;
     }
-    // F-14 and F-17: a custody fee and the account's monthly fee on the series held at the month's price, paid by selling a slice of each (the slice's gain is not taxed
-    // apart, as the bond and fund ledgers pay theirs by removing units); the exit year's fees come off the sale gain once (TXS-06)
+    // F-14 and F-17: a custody fee and the account's monthly fee on the series held at the month's price, paid by selling a slice of each.
+    // A slice is a sale before redemption: its own gain is a capital gain of the month's tax year (TXI-12), and the year's custody and
+    // account fees come off that year's capital gains (TXS-06), the exit year's off the sale gain with it, once.
     const heldValue = held.reduce((v, s) => v + (s.face * price(Math.max(0, s.maturity - m))) / 100, 0);
     const fee = custodyFee(custodyLine, m, heldValue);
     const fixed = fixedFee(tariff.monthlyFee, heldValue - fee);
     if (fee + fixed > 0 && heldValue > 0) {
-      const keep = 1 - (fee + fixed) / heldValue;
-      held = held.map((s) => ({ ...s, face: s.face * keep, cost: s.cost * keep }));
+      const sold = (fee + fixed) / heldValue;
+      const heldCost = held.reduce((c, s) => c + s.cost, 0);
+      held = held.map((s) => ({ ...s, face: s.face * (1 - sold), cost: s.cost * (1 - sold) }));
       tally.fee("custody", fee);
       tally.fee("fixed", fixed);
-      if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += fee + fixed;
+      const year = taxYearOf(m, first);
+      add(sliceGainByYear, year, sold * (heldValue - heldCost));
+      add(feesByYear, year, fee + fixed);
+      if (year === taxYearOf(T, first)) exitYearFees += fee + fixed;
     }
     if (closesTaxYear(m, T, first)) {
       tally.taxDuring += yearlySurtax(book, profile, interestThisYear);
@@ -131,7 +145,8 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
       }
       if (held.length > 0) {
         if (exitYearFees > 0) book.cite("TXS-06");
-        const exit = unlessBlocked(() => exitTax(book, profile, T, saleGain - exitYearFees, book.rate("TXI-12", "rate"), true, exitYearInterest, first));
+        taxedGain = saleGain + (sliceGainByYear.get(taxYearOf(T, first)) ?? 0) - exitYearFees;
+        const exit = unlessBlocked(() => exitTax(book, profile, T, taxedGain, book.rate("TXI-12", "rate"), true, exitYearInterest, first));
         taxAtExit = exit.value?.tax ?? 0;
         blocked = exit.blocked;
       }
@@ -140,13 +155,30 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
     tally.point(m, I[m]!, m < T ? value : cashAtExit);
   }
 
+  // A year with no sale owes nothing on its slices: a slice's gain is less than its value, which is the fee it pays, so the year's fees
+  // always cover its slices' gains. `deductedFees` is what the fees took off capital gains, year by year, at most each year's gains: with
+  // the taxed base it adds up to every capital gain of the run (the sale's and the slices').
+  const exitYear = taxYearOf(T, first);
+  let deductedFees = 0;
+  let sliceGain = 0;
+  for (const [year, g] of sliceGainByYear) {
+    sliceGain += g;
+    const gains = g + (year === exitYear && held.length > 0 ? saleGain : 0);
+    deductedFees += Math.min(feesByYear.get(year) ?? 0, Math.max(0, gains));
+  }
+  // the figures rest on these rules whenever a slice was sold, a sale or not (finance review, 2026-11-07)
+  if (sliceGain > 0) book.cite("TXI-12");
+  if (deductedFees > 0) book.cite("TXS-06");
+
   return tally.result(book, {
     exitMonth: T,
     nominal: cashAtExit - taxAtExit,
     index: I,
     taxAtExit,
     outcome: blocked ? { code: "listed-not-ranked", reason: blocked } : undefined,
-    detail: { saleGain },
+    // what a reader needs to redo the tax: the sale's gain and the exit year's slice gains less that year's custody and account fees (TXS-06),
+    // and every discount taxed at a redemption (TXI-11); commissions reduce neither (G-20)
+    detail: { saleGain, sliceGain, exitYearSliceGain: sliceGainByYear.get(exitYear) ?? 0, exitYearFees: held.length > 0 ? exitYearFees : 0, deductedFees, taxedGain, taxedDiscount },
     formulas: ["F-24", "F-12", ...(custodyLine ? ["F-14"] : []), ...(tariff.monthlyFee ? ["F-17"] : []), "F-40"],
   });
 }

@@ -4,8 +4,9 @@ import { Link } from "react-router";
 import { r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn } from "../../icons";
-import { LeadTail, Num, RuleRef, RulesLine } from "../../provenance";
-import { Card, Disclosure, Tag } from "../../kit";
+import { Num, RuleRef, RulesLine } from "../../provenance";
+import { Card, Disclosure, DoubtNote, LabelRow, PrintedText, Tag, When } from "../../kit";
+import { depositLabels, exitWords } from "../../../lib/deposit-kind";
 import type { ProductRowData } from "./types";
 
 function Chips({ ids, known }: { ids: readonly string[]; known: ReadonlySet<string> }) {
@@ -38,7 +39,9 @@ function SpreadWords({ spread }: { spread: NonNullable<ProductRowData["spread"]>
 
 export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; known: ReadonlySet<string>; wrapperName: string }) {
   const l = copy.labels;
-  const taxWord = String(p.taxBucket.value).startsWith("unlinked") ? copy.tax.unlinked : String(p.taxBucket.value).startsWith("linked") ? copy.tax.linked : String(p.taxBucket.value);
+  // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (2026-11-06, WIN WIN)
+  const bucket = p.taxBucket.value;
+  const taxWord = bucket === "unlinked_15" ? copy.tax.unlinked : bucket === "linked_25" ? copy.tax.linked : undefined;
   const months = typeof p.term.value === "number" ? p.term.value : null;
   return (
     <Card as="article" id={`product-${p.id}`} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px] target:outline-2 target:outline-ring target:outline-offset-2">
@@ -49,6 +52,14 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
         {p.model && (
           <p className="text-sm text-muted-foreground">
             {copy.modelLine} <bdi dir="ltr" className="num-id">{p.model}</bdi>
+          </p>
+        )}
+        {/* what sets the deposit apart (2026-11-07): its kind as labels, then the conditions the bank prints; a current account's
+            conditions are long and stay folded below */}
+        <LabelRow labels={depositLabels(p.variant, known, p.table)} />
+        {!p.currentAccount && p.conditions && (
+          <p className="text-sm max-w-measure">
+            <span className="text-muted-foreground">{copy.conditionsLead}</span> <PrintedText text={p.conditions} />
           </p>
         )}
         {p.alsoCalled.length > 0 && (
@@ -66,9 +77,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
         <p className="flex items-start gap-1.5 text-sm text-caution-foreground">
           <IconAlert size={18} className="text-caution shrink-0 mt-0.5" />
           <span>
-            <LeadTail lead={copy.card.stale.before}>
-              <bdi dir="ltr">{fmt.date(p.snapshot)}</bdi>
-            </LeadTail>
+            <When iso={p.snapshot} lead={copy.card.stale.before} />
             {copy.card.stale.after}
           </span>
         </p>
@@ -90,7 +99,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
               copy.rateType.fixed
             )}
           </Item>
-          <Item id="rate" label={l.rate} known={known} rules={p.rate.rule_ids ?? []}>
+          <Item id="rate" label={l.rate} known={known} rules={p.rate.rule_ids ?? []} after={p.doubt ? <DoubtNote text={p.doubt} className="text-sm" /> : undefined}>
             <Num value={p.rate} size="cell" />
           </Item>
           <Item id="asOf" label={l.asOf} known={known}>
@@ -129,25 +138,24 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
             known={known}
             rules={p.breakTerms.rules}
             after={
-              p.breakTerms.text && (
+              p.breakTerms.quotes.length > 0 && (
                 <Disclosure label={<span className="text-sm text-link">{copy.breakDisclosure}</span>} summaryClassName="min-h-11 justify-start gap-1">
-                  <p className="text-sm bg-muted rounded-md p-3 max-w-measure" dir="auto">
-                    {p.breakTerms.text}
-                  </p>
+                  <span className="flex flex-col gap-1.5 text-sm bg-muted rounded-md p-3 max-w-measure">
+                    {p.breakTerms.quotes.map((q) => (
+                      <span key={q}>
+                        ״<PrintedText text={q} />״
+                      </span>
+                    ))}
+                  </span>
                 </Disclosure>
               )
             }
           >
-            {copy.breakWord[p.breakTerms.penalty]}
+            {p.breakTerms.penalty === "not_allowed" && p.exitPoints.exists ? copy.breakAtExits : copy.breakWord[p.breakTerms.penalty]}
           </Item>
           <Item id="exits" label={l.exits} known={known}>
-            {p.exitPoints.exists && p.exitPoints.everyMonths !== null ? (
-              <>
-                {copy.exits.every} <bdi dir="ltr">{fmt.number(p.exitPoints.everyMonths)}</bdi> {copy.exits.months}
-              </>
-            ) : (
-              copy.exits.none
-            )}
+            {/* exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing, fresh readers 2026-11-07) */}
+            {p.exitPoints.exists && !p.exitPoints.everyMonths && p.conditions ? copy.exits.someCard : exitWords(p.exitPoints.exists, p.exitPoints.everyMonths)}
           </Item>
           <Item id="renew" label={l.autoRenew} known={known}>
             {p.autoRenew.value ? (
@@ -163,10 +171,10 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
             )}
           </Item>
       </dl>
-      {p.currentAccount && p.rateNote && (
+      {p.currentAccount && p.conditions && (
         <Disclosure label={<span className="text-sm text-link">{copy.currentConditions}</span>} summaryClassName="min-h-11 justify-start gap-1">
-          <p className="text-sm bg-muted rounded-md p-3 max-w-measure whitespace-pre-wrap" dir="auto">
-            {p.rateNote}
+          <p className="text-sm bg-muted rounded-md p-3 max-w-measure">
+            <PrintedText text={p.conditions} />
           </p>
         </Disclosure>
       )}

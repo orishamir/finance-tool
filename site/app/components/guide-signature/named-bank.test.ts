@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { GoalsProvider } from "../../lib/goal";
 import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
+import { heldSignatures } from "../../lib/review";
 import { ProvenanceProvider } from "../provenance";
 import { BankDepositVisual } from "./bank-deposit";
 import { MakamVisual } from "./makam";
@@ -29,13 +30,15 @@ describe("one bank's rate is named where it is quoted", () => {
     const row = text(raw!);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(row).not.toContain(bank);
     expect(row).toMatch(/1\.55%\s*–\s*2\.25%/);
-    expect(row).toMatch(/טווח ב־\s*4\s*פיקדונות שנאספו/);
+    expect(row).toMatch(/טווח ב־\s*4\s*פיקדונות רגילים שנאספו/);
     expect(raw).toContain('href="/guide/bank-deposit"');
     // the note under the table: how many of the collected deposits cannot be left early, naming none, and the link to each bank's rate
     const notes = [...html.matchAll(/<ul[\s\S]*?<\/ul>/g)].map((m) => text(m[0])).find((t) => t.includes("פיקדון לשנה:"))!;
-    expect(notes).toMatch(/ב־\s*3\s*מתוך\s*4\s*הפיקדונות שנאספו אי אפשר למשוך/);
+    expect(notes).toMatch(/ב־\s*3\s*מתוך\s*4\s*הפיקדונות הרגילים שנאספו אי אפשר למשוך/);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(notes).not.toContain(bank);
-    expect(html).toContain('href="/guide/bank-deposit#deposit-banks"');
+    // the link to each bank's rate leads into the bank-deposit visual: shown only while that visual is not held (lib/review.ts, 2026-11-07)
+    if (heldSignatures.includes("bank-deposit")) expect(html).not.toContain("#deposit-banks");
+    else expect(html).toContain('href="/guide/bank-deposit#deposit-banks"');
   });
   it("the bank-deposit page lists each bank's one-year deposit at the anchor the ladder links to", () => {
     const sig = buildGuidePage("bank-deposit")!.signature!;
@@ -52,7 +55,7 @@ describe("one bank's rate is named where it is quoted", () => {
     expect(t).toContain("פיקדון של הפועלים");
     expect(t).toContain("מזרחי");
     expect(t).toContain("דיסקונט");
-    expect(t).toMatch(/מבין\s*4\s*הפיקדונות לשנה שנאספו/);
+    expect(t).toMatch(/מבין\s*4\s*הפיקדונות הרגילים לשנה שנאספו/);
     expect(t).toMatch(/ב־\s*3\s*מתוך\s*4\s*הפיקדונות/);
     expect(t).not.toContain("הבחירה של האתר");
     expect(t).not.toContain("הגבוהה בבנקים");

@@ -182,23 +182,49 @@
       {
         "year": 2025,
         "fund_pct": 1.85,
-        "tracking_pct": 2.61
+        "tracking_pct": 2.61,
+        "fees_charged": {
+          "fixed": 0.8,
+          "variable": 0.3,
+          "trustee": 0.0085
+        }
       },
       {
         "year": 2024,
         "fund_pct": 24.06,
-        "tracking_pct": 24.96
+        "tracking_pct": 24.96,
+        "fees_charged": {
+          "fixed": 0.8,
+          "variable": 0.3,
+          "trustee": 0.0085
+        }
       },
       {
         "year": 2023,
         "fund_pct": 29.56,
-        "tracking_pct": 29.43
+        "tracking_pct": 29.43,
+        "fees_charged": {
+          "fixed": 0.8,
+          "variable": 0.3,
+          "trustee": 0.0085
+        }
       },
       {
         "year": 2022,
         "fund_pct": -8.15,
-        "tracking_pct": -7.55
+        "tracking_pct": -7.55,
+        "fees_charged": {
+          "fixed": 0.8,
+          "variable": 0.3,
+          "trustee": 0.0085
+        }
       }
+    ],
+    "years_printed": [
+      2022,
+      2023,
+      2024,
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
@@ -206,8 +232,16 @@
       "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
       "strength": "institution"
     },
-    "page": null,
-    "checked": "2026-10-23"
+    "page": 7,
+    "fees_page": 9,
+    "changes_page": 8,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 (SPTR500N)",
+      "dividends": "net",
+      "page": 2
+    }
   },
   "snapshot": "2026-10-25"
 }

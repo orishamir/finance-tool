@@ -1,0 +1,55 @@
+{
+ "task": "Read all the screenshots, top to bottom: together they are one page of a free Hebrew website about investing in a stock index through a securities account and a fund. Then answer briefly, in English, quoting the exact Hebrew you react to, without guessing beyond what the page says:\n(1) Which account and which fund would you choose, and how sure are you? Which parts of the page decided it?\n(2) In the list of funds, each fund has a short entry about how it did against its index (it starts or sits under \"מול המדד\"). Say in your own words what it tells you about the funds, what \"לא מושווה\" means where it appears, and what the words \"מול מדד נטו\" or \"מול מדד ברוטו\" mean where they appear. Did it change which fund you would pick? Would you trust it?\n(3) The paragraph right under the list of funds that starts \"מול המדד:\": say in your own words what each of its sentences tells you. Is any of it unclear, or does it seem to say something the list does not show?\n(4) Under some banks' rows there is a line that starts \"מחיר אחר ל...\". Given your own age and situation, which of these lines would apply to you, and how do you know?\n(5) Quote every word or sentence you did not understand, that confused you, or that seemed to contradict another part of the page, and say why.\n(6) Is anything you needed to decide missing?\n(7) Did any link or label look like it should lead somewhere or explain something, and you could not tell what?\nThe last screenshot is the panel that opened after tapping the first fund's figure \"+0.37%\" in the list of funds: say what it tells you and whether it is clear.",
+ "readers": [
+  {
+   "key": "sp500-pc",
+   "who": "You are 31 and live in Israel. You have 6,000 shekels to start and can add 400 shekels a month for about 20 years, and you have decided to invest it in the S&P 500. You read Hebrew natively and know the basics of investing but not the fine print. You are reading on a computer.",
+   "shots": [
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-01.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-02.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-03.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-04.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-05.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-06.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-07.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-08.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-09.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-10.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-11.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440/page-12.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-1440-sheet.png"
+   ]
+  },
+  {
+   "key": "sp500-phone",
+   "who": "You are 27 and live in Israel. You want to put 10,000 shekels into an S&P 500 fund now and add a little each month for many years. You read Hebrew natively and have never bought a fund before. You are reading on your phone.",
+   "shots": [
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-01.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-02.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-03.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-04.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-05.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-06.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-07.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-08.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-09.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-10.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-11.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-12.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-13.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-14.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-15.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-16.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-17.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-18.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-19.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-20.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-21.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-22.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-23.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390/page-24.png",
+    "research/audit/2026-11-07-indices-data/pass3/indices_sp500-390-sheet.png"
+   ]
+  }
+ ]
+}

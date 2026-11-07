@@ -67,6 +67,13 @@ export interface Problem {
   message: string;
 }
 
+/** Every object key anywhere in a parsed JSON value. */
+function collectKeys(v: unknown, out = new Set<string>()): Set<string> {
+  if (Array.isArray(v)) for (const x of v) collectKeys(x, out);
+  else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) out.add(k), collectKeys(x, out);
+  return out;
+}
+
 export function validateData(ctx: ValidationContext): Problem[] {
   const problems: Problem[] = [];
   const report = (file: string, message: string) => problems.push({ file: relative(ctx.dataDir, file), message });
@@ -76,6 +83,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   const cmaFundIds = readLatestCmaFundIds(files, ctx.dataDir);
   const fundIds = readFundIds(files, ctx.dataDir);
   const ruleRecords = readRuleRecords(files, ctx.dataDir);
+  const feeCaps = readFeeCaps(files, ctx.dataDir);
   const warnings = new Map<string, string[]>();
   const warn = (category: string, id: string) => warnings.set(category, [...(warnings.get(category) ?? []), id]);
 
@@ -101,6 +109,9 @@ export function validateData(ctx: ValidationContext): Problem[] {
     }
     const result = schema.safeParse(parsed.value);
     if (!result.success) report(file, formatIssues(result.error));
+    // the words a cited page opens at live in data/sources/fragments.json only; the site attaches them to the record when it reads it
+    if (rel !== join("sources", "fragments.json") && collectKeys(parsed.value).has("fragment"))
+      report(file, "fragment: written only in data/sources/fragments.json (by research/audit/tools/quote-fragments.mjs), never in a record");
 
     for (const id of collectStrings(parsed.value, "rule_ids")) {
       if (!ctx.ruleBase.rules.has(id)) report(file, `rule_ids: ${id} is not a rule in il-finance (data-schema §4 item 2)`);
@@ -126,6 +137,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "funds" && result.success) {
       for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
       for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
+      for (const message of checkFundNames(parsed.value as Pick<FundRecord, "names">)) report(file, message);
+      for (const message of checkTrackingRecord(parsed.value as Pick<FundRecord, "exposure_id" | "tracking_record" | "domicile" | "fees">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
@@ -152,11 +165,15 @@ export function validateData(ctx: ValidationContext): Problem[] {
       const name = rel.split(/[\\/]/).pop()!;
       const isLatest = !files.some((f) => { const n = f.split(/[\\/]/).pop()!; return n.startsWith(`${name.split("@")[0]}@`) && n > name; });
       if (isLatest) for (const message of checkPricePremises(parsed.value as PremiseSnapshot)) report(file, message);
+      if (isLatest) for (const message of checkLinesUnderCap(parsed.value as DiscountSnapshot, feeCaps)) report(file, message);
       // a house that is part of another (D43 amended 2026-11-04) names one that has a record, and not itself
       const partOf = (parsed.value as { provider: { part_of?: string } }).provider.part_of;
       if (partOf && (partOf === name.split("@")[0] || !files.some((f) => f.split(/[\\/]/).pop()!.startsWith(`${partOf}@`))))
         report(file, `provider.part_of: ${partOf} is no other house with a record under data/fees/`);
       for (const message of checkTariffTitle((parsed.value as { tariff: { title: string } }).tariff.title)) report(file, message);
+      for (const message of checkDiscountLines(parsed.value as DiscountSnapshot)) report(file, message);
+      if (isLatest) for (const message of checkTariffDate(parsed.value as TariffDateSnapshot)) report(file, message);
+      if (isLatest) for (const message of checkCutSourceTitles(parsed.value)) report(file, message);
     }
     if (collection === "instruments/exposures" && result.success && fundIds) {
       for (const v of (parsed.value as { variants: string[] }).variants) {
@@ -168,6 +185,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase)) report(file, message);
     }
   }
+  checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
+  checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
@@ -204,6 +223,101 @@ export function checkFundDistribution(record: Pick<FundRecord, "distribution_pol
   return out;
 }
 
+/** The rule that records how each Tel Aviv index counts dividends (gross, GTR), by the exposure the fund follows (F-92 (d)); the same three
+ * indices as the engine's GROSS_COMPARED_INDICES (fund-gap.ts), which a pipeline test holds together. */
+export const GROSS_INDEX_RULE: Record<string, string> = { "index-ta125": "ETF-42", "index-ta35": "ETF-44", "index-ta90": "ETF-45" };
+
+/**
+ * data-schema §3.5 and §4 item 17 (recheck 3 of the indices data, 2026-11-07). A tracking record holds every full calendar year its
+ * report prints, no fewer and no more: `years` against `years_printed`, each year once. A `gross` benchmark is admitted only on an index
+ * the method names (TA-125, TA-35, TA-90), with the document that says so (its own source, or the report's page) and that index's own
+ * rule; another rule id fails. An Israeli record carries the fees charged in each of its years and the page that prints them (F-92 (b),
+ * pass 5, 2026-11-07: every Israeli annual report prints them in "הוצאות שנפרעו מנכסי הקרן"); fees charged without their page fail anywhere.
+ */
+export function checkTrackingRecord(record: Pick<FundRecord, "exposure_id" | "tracking_record"> & { domicile?: string; fees?: Pick<FundRecord["fees"], "variable_management"> }): string[] {
+  const t = record.tracking_record;
+  if (!t) return [];
+  const out: string[] = [];
+  const held = t.years.map((y) => y.year);
+  if (new Set(held).size !== held.length) out.push("tracking_record.years: a year appears twice");
+  if (new Set(t.years_printed).size !== t.years_printed.length) out.push("tracking_record.years_printed: a year appears twice");
+  const printed = [...t.years_printed].sort((a, b) => a - b);
+  const missing = printed.filter((y) => !held.includes(y));
+  const extra = held.filter((y) => !printed.includes(y));
+  if (missing.length) out.push(`tracking_record.years: the report prints ${missing.join(", ")} and the record leaves ${missing.length > 1 ? "them" : "it"} out; copy every full year the report prints (F-92 (a))`);
+  if (extra.length) out.push(`tracking_record.years: ${extra.join(", ")} ${extra.length > 1 ? "are" : "is"} not in years_printed; a part year is left out, and a year the report does not print has no source`);
+  const charged = t.years.filter((y) => y.fees_charged);
+  if (charged.length && !t.fees_page) out.push("tracking_record.fees_page: the fees charged in each year name the page of the report that prints them");
+  if (record.domicile === "IL") {
+    const bare = t.years.filter((y) => !y.fees_charged).map((y) => y.year);
+    if (bare.length) out.push(`tracking_record.years: ${bare.join(", ")} ${bare.length > 1 ? "have" : "has"} no fees_charged; an Israeli annual report prints them in "הוצאות שנפרעו מנכסי הקרן" (F-92 (b))`);
+    // F-92 (b), pass 6: the variable fee counted forward rests on the years charged at today's rate, which the report's table of changes dates
+    if (t.fees_page && (t.variable_rate_since === undefined || !t.changes_page)) out.push('tracking_record: an Israeli record with fees_page names changes_page and variable_rate_since (null when its table "שינויים במאפייני הקרן" prints no change of the variable fee) (F-92 (b))');
+  }
+  if ((t.variable_rate_since !== undefined || t.variable_positive_only) && !charged.length) out.push("tracking_record: variable_rate_since and variable_positive_only speak of the fees charged, which the record does not hold");
+  // the variable fee is paid back at the published rate (ETF-14) and, by each prospectus's own mechanism, charged at most at it (ETF-14 open
+  // question 8): a year at today's rate charged beyond it either way is a misread cell, not a fact. The site's check, not a rule.
+  const listed = record.fees?.variable_management?.value;
+  if (typeof listed === "number" && t.variable_rate_since !== undefined) {
+    const from = t.variable_rate_since;
+    const over = charged.filter((y) => (from === null || y.year >= firstFullYear(from)) && Math.abs(y.fees_charged!.variable) > listed + 1e-9).map((y) => y.year);
+    if (over.length) out.push(`tracking_record.years: ${over.join(", ")} charged a variable fee beyond today's rate of ${listed}% in a year at that rate; read the cell again`);
+  }
+  if (t.benchmark.dividends === "gross") {
+    const rule = GROSS_INDEX_RULE[record.exposure_id];
+    if (!rule) out.push(`tracking_record.benchmark: a gross benchmark on ${record.exposure_id}, which is not a Tel Aviv index the method compares gross (F-92 (d))`);
+    // the document that says the index is gross: its own `source`, or the record's report at `page`
+    if (!t.benchmark.source && !t.benchmark.page) out.push("tracking_record.benchmark: a gross benchmark names the document that says so, in its own source or by the page of the record's report");
+    if (rule && !(t.benchmark.rule_ids ?? []).includes(rule)) out.push(`tracking_record.benchmark.rule_ids: ${record.exposure_id} is recorded by ${rule}, not ${(t.benchmark.rule_ids ?? []).join(", ") || "nothing"}`);
+    const wrong = (t.benchmark.rule_ids ?? []).filter((id) => Object.values(GROSS_INDEX_RULE).includes(id) && id !== rule);
+    if (rule && wrong.length) out.push(`tracking_record.benchmark.rule_ids: ${wrong.join(", ")} records another index`);
+  }
+  return out;
+}
+
+/** The first calendar year wholly at a rate in force from `since` (YYYY-MM-DD): its own year when it starts on 1 January, else the next (F-92 (b)). */
+export const firstFullYear = (since: string): number => Number(since.slice(0, 4)) + (since.slice(5) === "01-01" ? 0 : 1);
+
+/** A name's brackets close in order, and no Hebrew letter is glued to the outside of one: names read off a report's PDF came out as
+ * "MTF סל (S&P 500 (4D" and "מור סל (4D)י S&P 500", and the page showed them so (2026-11-05). */
+export function checkFundNames(record: Pick<FundRecord, "names">): string[] {
+  const out: string[] = [];
+  for (const name of [...record.names.he, ...record.names.en]) {
+    let depth = 0;
+    for (const ch of name) {
+      if (ch === "(") depth++;
+      else if (ch === ")" && --depth < 0) break;
+    }
+    if (depth !== 0) out.push(`names: "${name}" has a bracket that does not close in order; copy the name from the fund's report`);
+    if (/[\u05d0-\u05ea]\(|\)[\u05d0-\u05ea]/.test(name)) out.push(`names: "${name}" has a Hebrew letter glued to the outside of a bracket; copy the name from the fund's report`);
+  }
+  return out;
+}
+
+/**
+ * A document's title that quotes a fund's name broken by the right-to-left copy: a bracket that does not close in order ("MTF מחקה (Nasdaq
+ * 100 (4D" for "MTF מחקה (4D) Nasdaq 100"), or a class mark glued to a Hebrew letter ("(4D)י"). Rule records' titles, their figures' too,
+ * and the rule base's source lines (lens review S3: the fund records were checked, the titles that quote them were not).
+ */
+export function checkTitleBrackets(title: string): string[] {
+  let depth = 0;
+  for (const ch of title) {
+    if (ch === "(") depth++;
+    else if (ch === ")" && --depth < 0) break;
+  }
+  const out: string[] = [];
+  if (depth !== 0) out.push(`"${title.slice(0, 80)}" has a bracket that does not close in order; copy the name from the document`);
+  if (/\(\d[A-Z]\)[\u05d0-\u05ea]|[\u05d0-\u05ea]\(\d[A-Z]\)/.test(title)) out.push(`"${title.slice(0, 80)}" has a class mark glued to a Hebrew letter; copy the name from the document`);
+  return out;
+}
+
+/** Every `title` and `title_he` in a record, with where it is. */
+function titlesOf(o: unknown, at = ""): [string, string][] {
+  if (Array.isArray(o)) return o.flatMap((x, i) => titlesOf(x, `${at}[${i}]`));
+  if (!o || typeof o !== "object") return [];
+  return Object.entries(o).flatMap(([k, v]) => ((k === "title" || k === "title_he") && typeof v === "string" ? [[`${at}.${k}`, v] as [string, string]] : titlesOf(v, `${at}.${k}`)));
+}
+
 /** The words of a reading note, not of a document's name (2026-11-03: a 1,321-character note stood as a bank's tariff name on its page). */
 const READING_NOTE = /https?:\/\/|Chrome|curl|founder|pdf\.js|script|סקריפט|מטא-נתוני|אינו נושא תאריך|אינו מודפס/;
 /** A tariff's title is the document's name, which the site shows as the source; the notes on how it was read go in `tariff.notes`. */
@@ -211,6 +325,51 @@ export function checkTariffTitle(title: string): string[] {
   const out: string[] = [];
   if (title.length > 100) out.push(`tariff.title: ${title.length} characters; the document's name only, notes in tariff.notes`);
   if (READING_NOTE.test(title)) out.push("tariff.title: holds a link or a note on how the document was read; move it to tariff.notes");
+  return out;
+}
+
+interface TariffDateSnapshot {
+  missing: boolean;
+  tariff: { published: string | null; printed?: { kind: string; date?: string | null; as_printed?: string } };
+}
+/**
+ * A collected price list's date line says what the document prints (2026-11-07, founder: a bare "ללא תאריך פרסום" taught nothing): a
+ * latest record with no `published` says in `tariff.printed` whether the document dates each part, prints a version, or prints nothing,
+ * and one with `published` carries no `printed`. A part's date is the date it prints: a misprint is `null`, never a guess.
+ */
+export function checkTariffDate(snap: TariffDateSnapshot): string[] {
+  const { published, printed } = snap.tariff;
+  if (published && printed) return ["tariff.printed: only where the document prints no date for the whole (tariff.published is null)"];
+  if (!published && !printed && !snap.missing)
+    return ["tariff.printed: a collected price list with no published date says what it prints instead (part, version or none), so the page can say it"];
+  if (printed?.kind === "part" && printed.as_printed !== undefined) {
+    // a print reads day, month, year (Israeli order); a year of other than four digits, or a day or month out of range, is no date
+    const m = /^\s*(\d{1,2})[./-](\d{1,2})[./-](\d+)\s*$/.exec(printed.as_printed);
+    const read = m && m[3]!.length === 4 && +m[2]! >= 1 && +m[2]! <= 12 && +m[1]! >= 1 && +m[1]! <= 31 ? `${m[3]}-${m[2]!.padStart(2, "0")}-${m[1]!.padStart(2, "0")}` : null;
+    if ((printed.date ?? null) !== read)
+      return [read ? `tariff.printed.date: ${printed.date ?? "null"} is not the date printed on the part (${printed.as_printed})` : `tariff.printed.date: the part prints no real date (${printed.as_printed}), so it is null, never a guess`];
+  }
+  return [];
+}
+
+/**
+ * A figure's source title is the document's name and its section, shown on the page; one cut off inside a bracket is a copy of the
+ * reading notes trimmed to a length (2026-11-07, independent check: seven latest records showed "... כפי שמודפס, כנראה" and "אין תאריך
+ * כולל, כל חלק נושא 'מעודכ" under "מה אפשר לקנות כאן").
+ */
+export function checkCutSourceTitles(snap: unknown): string[] {
+  const out: string[] = [];
+  const walk = (o: unknown, path: string) => {
+    if (!o || typeof o !== "object") return;
+    const title = (o as { source?: { title?: unknown } }).source?.title;
+    if (typeof title === "string") {
+      let depth = 0;
+      for (const ch of title) if ((depth += ch === "(" ? 1 : ch === ")" ? -1 : 0) < 0) break;
+      if (depth !== 0) out.push(`${path}.source.title: a bracket is left open, so the title was cut off ("…${title.slice(-30)}"); write the document's name and section`);
+    }
+    for (const [k, v] of Object.entries(o)) walk(v, path ? `${path}.${k}` : k);
+  };
+  walk(snap, "");
   return out;
 }
 
@@ -223,7 +382,8 @@ const NAMES_CLASS: Record<string, RegExp> = {
   foreign_securities: /קרנות|קרן|ETF|תעודו?ת סל|ניירות ערך בחוץ לארץ(?!\s*-)/,
 };
 interface PremiseSnapshot {
-  provider: { class: string };
+  provider: { class: string; part_of?: string };
+  current_account?: { monthly_minimum: { value: unknown; unit: string; source?: { quote?: string } } };
   missing?: boolean;
   price_for_he?: string;
   left_out?: unknown[];
@@ -245,6 +405,7 @@ interface GroupEntryLike {
   cheaper_he?: string;
   ends_short_he?: string;
   prices: { fee?: string; price_he: string; holdings_he: string; names_fund: boolean; value?: GroupValueLike; source?: { quote?: string } }[];
+  current_account?: { price_he: string; for_months: number; source: { quote: string } };
 }
 /** The structured numbers of a group price (schema `groupPriceValue`); the check below reads them against the price's words. */
 interface GroupValueLike {
@@ -322,16 +483,22 @@ const feeBefore = (text: string): "custody" | "trade" => {
  * The sub-row's short words (D43 amended 2026-11-04): each restates its entry's long words with no new fact. Every number in the who
  * and until-when words stands in the long ones; every number in what is cheaper stands in the entry's prices, except an ordinary price
  * after "במקום", which must be a rate on a line of the same fee in this record and above the group's. Entries with the same prices
- * share their words (they are one sub-row), and entries that share words name the same fees.
+ * share their words (they are one sub-row), unless one is priced (a price carries a value) and the other not priced, and entries that
+ * share words name the same fees and are all priced or all not priced, since the words are what joins them into one sub-row (re-check F3:
+ * the key kept the two apart by prices only, and two entries of the same words were still joined). An entry that is not priced is the
+ * bank's advertising (D56) or a binding document whose price is not modelled (altshuler-trade, excellence, hapoalim's students,
+ * meitav-trade, pepper, yahav).
  */
 export function checkGroupWords(snap: PremiseSnapshot): string[] {
   const g = snap.groups;
   if (!g || g.state !== "prices") return [];
   const out: string[] = [];
-  const priceKey = (e: GroupEntryLike) => JSON.stringify(e.prices.map((x) => [x.fee, x.price_he.replace(/\s+/g, " ").trim()]).sort());
+  // a priced entry and one not priced are never one sub-row, whatever their prices' words
+  const valued = (e: GroupEntryLike) => e.prices.some((x) => x.value != null);
+  const priceKey = (e: GroupEntryLike) => JSON.stringify([valued(e), ...e.prices.map((x) => [x.fee, x.price_he.replace(/\s+/g, " ").trim()]).sort()]);
   const feeKey = (e: GroupEntryLike) => [...new Set(e.prices.map((x) => x.fee))].sort().join();
   const byPrice = new Map<string, string | undefined>();
-  const byWords = new Map<string, string>();
+  const byWords = new Map<string, { fees: string; valued: boolean }>();
   for (const e of g.entries) {
     const at = `groups: ${e.name_he}`;
     if (!e.who_short_he || !e.cheaper_he || !e.ends_short_he) {
@@ -362,8 +529,9 @@ export function checkGroupWords(snap: PremiseSnapshot): string[] {
     if (byPrice.has(k) && byPrice.get(k) !== e.cheaper_he) out.push(`${at}: the same prices as another entry and other words, so the two are not one sub-row`);
     byPrice.set(k, e.cheaper_he);
     const w = byWords.get(e.cheaper_he);
-    if (w !== undefined && w !== feeKey(e)) out.push(`${at}: shares cheaper_he with an entry that names other fees`);
-    byWords.set(e.cheaper_he, feeKey(e));
+    if (w !== undefined && w.fees !== feeKey(e)) out.push(`${at}: shares cheaper_he with an entry that names other fees`);
+    if (w !== undefined && w.valued !== valued(e)) out.push(`${at}: shares cheaper_he with an entry that is ${w.valued ? "priced" : "not priced"} and this one is ${valued(e) ? "priced" : "not priced"}, so the two would be one sub-row`);
+    if (w === undefined) byWords.set(e.cheaper_he, { fees: feeKey(e), valued: valued(e) });
   }
   return out;
 }
@@ -426,12 +594,91 @@ export function checkGroupValues(snap: PremiseSnapshot): string[] {
   }
   return out;
 }
+interface DiscountSnapshot {
+  lines: { id: string; rate: { value?: number | null }; reverts_to?: { value?: number | null }; discount_months?: unknown; offer_he?: string; level?: string; base?: string; applies_to?: string[] }[];
+}
+/**
+ * A-19 and D56 (2026-11-07): a discounted line reverts to a rate no lower than its own and says how long it lasts (`value: null` when
+ * nothing is printed); an offer names the rate it is priced at, so `offer_he` needs `reverts_to`.
+ */
+export function checkDiscountLines(snap: DiscountSnapshot): string[] {
+  const out: string[] = [];
+  for (const l of snap.lines) {
+    if (l.offer_he !== undefined && !l.reverts_to) out.push(`${l.id}: offer_he without reverts_to; an offer is priced at the rate its binding documents allow (D56)`);
+    if (!l.reverts_to) continue;
+    const r = l.rate.value;
+    const to = l.reverts_to.value;
+    if (typeof r === "number" && typeof to === "number" && to < r) out.push(`${l.id}: reverts_to ${to} is below the discounted rate ${r}`);
+    if (l.discount_months === undefined) out.push(`${l.id}: reverts_to without discount_months; a period not printed is value null (A-19)`);
+  }
+  // the page states one discount period for a wrapper's balance and deposit lines (the terms block, the fee page's rows): two discounted
+  // list lines of the same wrapper print the same period, or the page would state one line's period for the other (2026-11-07)
+  const months = (l: DiscountSnapshot["lines"][number]) => { const v = (l.discount_months as { value?: unknown } | undefined)?.value; return typeof v === "number" ? v : null; };
+  const discounted = snap.lines.filter((l) => l.level === "list" && (l.base === "balance" || l.base === "deposit") && l.reverts_to && !l.offer_he && typeof l.rate.value === "number" && typeof l.reverts_to.value === "number" && l.reverts_to.value > l.rate.value);
+  for (const a of discounted) for (const b of discounted) {
+    if (a.base !== "balance" || b.base !== "deposit") continue;
+    const shared = (a.applies_to ?? []).filter((w) => (b.applies_to ?? []).includes(w));
+    if (shared.length && months(a) !== months(b)) out.push(`${a.id}, ${b.id}: the balance and deposit discounts of ${shared.join(", ")} print different periods (${months(a) ?? "none"} and ${months(b) ?? "none"} months); the page states one period for both`);
+  }
+  return out;
+}
+
+/** The legal caps on each provident wrapper's balance and deposit fee, from the wrappers' `fee_caps` (PF-02 to PF-06). */
+export type FeeCaps = Record<string, { balance?: number; deposit?: number }>;
+
+/** The pension wrappers are left out of the check below until D83's reach over a pension's list price is settled (separate change). */
+const PENSION = new Set(["pension-comprehensive", "pension-general"]);
+
+function readFeeCaps(files: string[], dataDir: string): FeeCaps {
+  const out: FeeCaps = {};
+  for (const f of files) {
+    const r = relative(dataDir, f).split(/[\\/]/).join("/");
+    if (!r.startsWith("instruments/wrappers/") || !r.endsWith(".json")) continue;
+    const rec = parseJson(readFileSync(f, "utf8")).value as { id?: string; fee_caps?: Record<string, { value?: unknown }> } | undefined;
+    if (!rec?.id || !rec.fee_caps) continue;
+    const num = (k: string) => (typeof rec.fee_caps![k]?.value === "number" ? (rec.fee_caps![k]!.value as number) : undefined);
+    const caps = { ...(num("balance") !== undefined ? { balance: num("balance") } : {}), ...(num("deposit") !== undefined ? { deposit: num("deposit") } : {}) };
+    if (Object.keys(caps).length) out[rec.id] = caps;
+  }
+  return out;
+}
+
+/**
+ * A-19, D83 (re-check 2, 2026-11-07): a provident list line printed below its wrapper's legal cap is a discount the company may end, so it
+ * carries `reverts_to` (or is an offer, which carries it too); without it the line would run flat for the whole run and could win the
+ * site's pick (`providentPick`). Read on a provider's latest record only.
+ */
+export function checkLinesUnderCap(snap: DiscountSnapshot, caps: FeeCaps): string[] {
+  const out: string[] = [];
+  for (const l of snap.lines) {
+    if (l.level !== "list" || (l.base !== "balance" && l.base !== "deposit")) continue;
+    // the rate a discount reverts to is what the binding documents allow, never above the regulations' cap (2026-11-07)
+    const to = l.reverts_to?.value;
+    const over = typeof to === "number" ? (l.applies_to ?? []).filter((w) => caps[w]?.[l.base as "balance" | "deposit"] !== undefined && to > caps[w]![l.base as "balance" | "deposit"]! + 1e-9) : [];
+    if (over.length) out.push(`${l.id}: reverts_to ${to}% is above the cap of ${over.join(", ")} (${caps[over[0]!]![l.base as "balance" | "deposit"]}%); the run never charges above the cap (PF-02 to PF-06)`);
+    if (l.reverts_to) continue;
+    const r = l.rate.value;
+    if (typeof r !== "number") continue;
+    const under = (l.applies_to ?? []).filter((w) => !PENSION.has(w) && caps[w]?.[l.base as "balance" | "deposit"] !== undefined && r < caps[w]![l.base as "balance" | "deposit"]!);
+    if (under.length) out.push(`${l.id}: ${r}% is below the cap of ${under.join(", ")} (${caps[under[0]!]![l.base as "balance" | "deposit"]}%) with no reverts_to; a rate under the cap is a discount that may end (A-19, D83)`);
+  }
+  return out;
+}
+
 /** Before a price ranks: who pays it, on what named holding, and whether a person can do it there. */
 export function checkPricePremises(snap: PremiseSnapshot): string[] {
   if (!["bank", "broker", "foreign_broker"].includes(snap.provider.class) || snap.missing) return [];
   const out: string[] = [];
   if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
   if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
+  // D64: a bank's row counts the monthly minimum of a current account there (F-102); an investment house has none, and a house that is
+  // part of another is priced on that house's row
+  const ca = snap.current_account;
+  if (snap.provider.class === "bank" && !snap.provider.part_of && !ca) out.push("current_account: a bank's record says what its current account costs a month, from its price list (D64)");
+  if ((snap.provider.class !== "bank" || snap.provider.part_of) && ca) out.push("current_account: only a bank's own record carries a current account (D64)");
+  if (ca && (ca.monthly_minimum.unit !== "nis_per_month" || typeof ca.monthly_minimum.value !== "number")) out.push("current_account.monthly_minimum: a number in nis_per_month (F-102)");
+  // a minimum a row counts carries the price list's own words (data-schema "current_account"); a free account read only in a browser may not
+  if (ca && typeof ca.monthly_minimum.value === "number" && ca.monthly_minimum.value > 0 && !ca.monthly_minimum.source?.quote) out.push("current_account.monthly_minimum: a minimum the row counts quotes its price list (source.quote)");
   const g = snap.groups;
   if (!g) out.push("groups: a bank's or broker's record says its group prices, or that it has none, or that they could not be read");
   else {
@@ -440,6 +687,15 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
       if (e.ends_printed && !e.ends_source) out.push(`groups: ${e.name_he} says its end is printed and does not say where`);
       // a price reaches a fund only where the row's own words name funds (D42): the same stretch as a ranked line; words after "למעט" take funds out
       for (const x of e.prices) if (x.names_fund !== /קרן|קרנות/.test(x.holdings_he.replace(/למעט[^)]*/g, ""))) out.push(`groups: ${e.name_he}: names_fund does not fit the words "${x.holdings_he}"`);
+      // F-102: a group's own current-account price is a bank's, held for the entry's printed end, and its quote says it is free
+      const gca = e.current_account;
+      if (gca) {
+        if (!ca) out.push(`groups: ${e.name_he}: current_account on a record that prices no current account (D64)`);
+        if (!e.ends_printed || !monthsIn(e.ends_he ?? "").includes(gca.for_months)) out.push(`groups: ${e.name_he}: current_account.for_months ${gca.for_months} is not the entry's printed end`);
+        if (!/פטור/.test(gca.source.quote) || !/פטור/.test(gca.price_he)) out.push(`groups: ${e.name_he}: current_account is exempt, and its words and quote say "פטור"`);
+        // the quote names the minimum itself: a free teller action is not a free minimum (lens review M2, D56)
+        if (!/מינימום/.test(gca.source.quote)) out.push(`groups: ${e.name_he}: current_account's quote does not name the minimum ("מינימום"); an exemption read from other rows is not recorded (D56)`);
+      }
     }
     out.push(...checkGroupWords(snap));
     out.push(...checkGroupValues(snap));
@@ -493,6 +749,79 @@ export interface RuleLike {
 
 const STRENGTH_RANK: Record<string, number> = { primary: 3, "primary-mirror": 2, institution: 1, secondary: 0 };
 const MIRROR_HOSTS = ["he.wikisource.org", "nevo.co.il"];
+/**
+ * Copies kept on an official host, named by path because the rest of the host is official (issue #262, 2026-11-07):
+ * National Insurance's Laws1 folder holds its own consolidated copies of laws and regulations it does not publish
+ * (the Income Tax Ordinance, the 2002 and 2005 withholding regulations, its own law), while its other pages are the
+ * regulator's. A copy is a lead; the official text is the Tax Authority's (gov.il) or Reshumot and the Knesset.
+ */
+const COPY_PATHS = ["btl.gov.il/Laws1/"];
+
+export function isCopyPath(url: string): boolean {
+  try {
+    const u = new URL(url);
+    const at = u.host.replace(/^www\./, "") + u.pathname;
+    return COPY_PATHS.some((p) => at.toLowerCase().startsWith(p.toLowerCase()));
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Hosts that only copy official texts (glossary sweep, 2026-11-07): Wikisource and Nevo (MIRROR_HOSTS), Olaw, Capitax and
+ * Funder's file host. A source on one of them is a copy whatever strength it was given, so it fails like a mirror.
+ */
+const COPY_HOSTS = [...MIRROR_HOSTS, "olaw.org.il", "olaw.co.il", "capitax.co.il", "funder.co.il"];
+
+/** A copy's address: a copy-only host (or a subdomain of one) or a copy folder on an official host (COPY_PATHS). */
+export function isCopySource(url: string): boolean {
+  const host = hostOf(url).toLowerCase();
+  return COPY_HOSTS.some((h) => host === h || host.endsWith(`.${h}`)) || isCopyPath(url);
+}
+
+/**
+ * The publishers a `primary` source may sit on (independent check of the glossary sweep, 2026-11-07): the State's own sites (every
+ * gov.il host: gov.il, the Knesset, Reshumot and the Ministry of Justice's services, the Tax Authority, the Capital Market Authority,
+ * the Securities Authority, National Insurance outside its Laws1 copies), the Bank of Israel, the Tel Aviv Stock Exchange (its own
+ * rules, guidelines and lists; an issuer's filing on Maya is the issuer's, isIssuerFiling), the SEC (for an issuer's own filings there), and foreign regulators and statutory
+ * bodies. A source elsewhere marked `primary` is a copy or a company's paper given a strength it does not have, and fails.
+ */
+const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org"];
+/**
+ * A company's own document is marked `institution` (data-schema 3.1), never `primary`, so it is not caught here. The one kind kept
+ * `primary` off those hosts is the defining text of a publisher's own index or numbering standard, cited for that index or standard:
+ * the index providers' methodologies and ANNA's ISIN pages.
+ */
+const OWN_STANDARD_HOSTS = ["spglobal.com", "msci.com", "indexes.nasdaqomx.com", "anna-web.org"];
+const onHost = (host: string, list: readonly string[]) => list.some((h) => host === h || host.endsWith(`.${h}`));
+
+/**
+ * An issuer's filing on Maya, the exchange's disclosure system (glossary round 2, 2026-11-07): a report, prospectus or notice that a
+ * company files about itself, served from mayafiles.tase.co.il or under maya.tase.co.il's reports. The host is the exchange's, the
+ * paper is the company's, so it is `institution` (data-schema 3.1), never `primary`; the exchange's own lists on Maya (its fund list)
+ * and its rules and guidelines on content.tase.co.il stay primary.
+ */
+export function isIssuerFiling(url: string): boolean {
+  try {
+    const u = new URL(url);
+    const host = u.host.toLowerCase().replace(/^www\./, "");
+    if (host === "mayafiles.tase.co.il") return true;
+    return host === "maya.tase.co.il" && /^\/(?:(?:he|en)\/)?(?:reports|rpdf)(?:\/|$)/i.test(u.pathname);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * A `primary` source whose address is on no official publisher's host (OFFICIAL_HOSTS, OWN_STANDARD_HOSTS), or an issuer's filing on
+ * the exchange's host (isIssuerFiling); a copy is caught apart.
+ */
+export function isUnlistedPrimary(url: string, strength: string): boolean {
+  if (strength !== "primary" || !/^https?:\/\//.test(url) || isCopySource(url)) return false;
+  if (isIssuerFiling(url)) return true;
+  const host = hostOf(url).toLowerCase();
+  return !onHost(host, OFFICIAL_HOSTS) && !onHost(host, OWN_STANDARD_HOSTS);
+}
 
 function hostOf(url: string): string {
   try {
@@ -513,6 +842,85 @@ function isPdfUrl(url: string): boolean {
 }
 
 /** Every record of data/rules/ by id (those that parse). */
+/**
+ * A product value left unknown (`value: null`) whose rules were checked again after it was: the research may have
+ * answered it since (2026-11-07: child savings' switch tax stayed "unknown" two weeks after TXK-23 settled it).
+ * A warning, listed by file and field, so each is re-read against today's rule base.
+ */
+export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): string[] {
+  const out: string[] = [];
+  const latest = (r: RuleLike) => [r.checked, ...(r.sources ?? []).map((s) => (s as { checked?: string }).checked ?? "")].reduce((a, b) => (b > a ? b : a), "");
+  const walk = (node: unknown, path: string) => {
+    if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${path}[${i}]`));
+    if (!node || typeof node !== "object") return;
+    const v = node as { value?: unknown; checked?: string; rule_ids?: string[] };
+    if ("value" in v && v.value === null && typeof v.checked === "string" && Array.isArray(v.rule_ids)) {
+      const newer = v.rule_ids.filter((id) => { const r = rules.get(id); return r !== undefined && latest(r) > v.checked!; });
+      if (newer.length) out.push(`${path.slice(1)} (${newer.join(", ")})`);
+    }
+    // a fee cap of null means "no cap" (the guide prints it so), not unknown
+    for (const [k, child] of Object.entries(node)) if (k !== "fee_caps") walk(child, `${path}.${k}`);
+  };
+  walk(record, "");
+  return out;
+}
+
+/**
+ * CLAUDE.md "General sources first" (founder, 2026-11-07): cite only official publications. A source whose strength
+ * is `secondary` or `primary-mirror`, whose host data/sources/publishers.json calls an `article`, or whose address is a
+ * copy (COPY_HOSTS such as Wikisource, Nevo and Olaw, or COPY_PATHS: National Insurance's Laws1 folder), or that is marked
+ * `primary` on a host no official publisher uses (isUnlistedPrimary), fails, unless it is
+ * a leftover named in unofficial-leftovers.json (`<file> <url>`). The list only shrinks: a leftover that is gone fails
+ * too, so it is struck when its source is replaced. A blog, forum, press article or copy is a lead, recorded in notes.
+ */
+export function unofficialSources(record: unknown, articleHosts: Set<string>): string[] {
+  const out: string[] = [];
+  const walk = (node: unknown) => {
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (!node || typeof node !== "object") return;
+    const v = node as { url?: unknown; strength?: unknown };
+    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || v.strength === "primary-mirror" || articleHosts.has(hostOf(v.url)) || isCopySource(v.url) || isUnlistedPrimary(v.url, v.strength))) out.push(v.url);
+    Object.values(node).forEach(walk);
+  };
+  walk(record);
+  return [...new Set(out)];
+}
+
+function checkUnofficialSources(files: string[], dataDir: string, report: (file: string, message: string) => void): void {
+  const pubPath = join(dataDir, "sources", "publishers.json");
+  const pubs = existsSync(pubPath) ? (parseJson(readFileSync(pubPath, "utf8")).value as Record<string, { kind?: string }>) : {};
+  const articleHosts = new Set(Object.entries(pubs).filter(([, p]) => p.kind === "article").map(([h]) => h));
+  const leftovers = new Set<string>(JSON.parse(readFileSync(new URL("./unofficial-leftovers.json", import.meta.url), "utf8")) as string[]);
+  const seen = new Set<string>();
+  for (const f of files) {
+    if (!f.endsWith(".json")) continue;
+    const rel = relative(dataDir, f).split(/[\\/]/).join("/");
+    if (rel.startsWith("sources/")) continue;
+    for (const url of unofficialSources(parseJson(readFileSync(f, "utf8")).value, articleHosts)) {
+      const key = `${rel} ${url}`;
+      seen.add(key);
+      if (leftovers.has(key)) continue;
+      if (isIssuerFiling(url)) report(f, `cites ${url} as primary, but it is an issuer's filing on Maya, the company's own paper: mark it institution, or cite the law, regulation or exchange rule`);
+      else report(f, `cites ${url}, which is not an official publication: cite the official text, and keep this one as a lead in notes`);
+    }
+  }
+  // a leftover whose file is scanned here and no longer cites it is struck; a fixture directory without the file is left alone
+  const scanned = new Set(files.map((f) => relative(dataDir, f).split(/[\\/]/).join("/")));
+  for (const key of leftovers) {
+    const file = key.slice(0, key.indexOf(" "));
+    if (scanned.has(file) && !seen.has(key)) report(join(dataDir, file), `unofficial-leftovers.json still lists "${key}", which is gone: strike it (the list only shrinks)`);
+  }
+}
+
+function checkStaleUnknowns(files: string[], dataDir: string, rules: Map<string, RuleLike>, warn: (category: string, id: string) => void): void {
+  for (const file of files) {
+    const rel = relative(dataDir, file);
+    if (!rel.startsWith("instruments") || !file.endsWith(".json")) continue;
+    const name = rel.split(/[\\/]/).pop()!.replace(/\.json$/, "");
+    for (const at of staleUnknowns(parseJson(readFileSync(file, "utf8")).value, rules)) warn("value left unknown, its rules checked since", `${name}:${at}`);
+  }
+}
+
 function readRuleRecords(files: string[], dataDir: string): Map<string, RuleLike> {
   const out = new Map<string, RuleLike>();
   for (const file of files) {
@@ -549,10 +957,14 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
     else warn("rules with neither sources nor sources_missing_reason (extraction not run)", rule.id);
   }
   const block = ctx.ruleBase.blocks?.get(rule.id);
+  for (const [at, title] of titlesOf({ sources: rule.sources, figures: rule.figures })) for (const m of checkTitleBrackets(title)) out.push(`${at.slice(1)}: ${m}`);
+  // the rule base is its owners' to fix: a broken name in its source line is said, and the record's title is held to the document
+  if (block) for (const m of block.body.matchAll(/^- Source: (.*)$/gm)) for (const link of m[1]!.matchAll(/\[([^\]]+)\]\(/g)) if (checkTitleBrackets(link[1]!).length) warn("rule base source line quotes a broken fund name", rule.id);
   sources.forEach((s, i) => {
     const at = `sources[${i}]`;
     const host = hostOf(s.url);
     if (MIRROR_HOSTS.includes(host) && s.strength === "primary") out.push(`${at}: a ${host} copy is primary-mirror, never primary`);
+    if (isCopyPath(s.url) && s.strength === "primary") out.push(`${at}: a copy kept on an official host (${s.url}) is primary-mirror, never primary`);
     if ((s.strength === "primary-mirror") !== (s.mirror_host !== undefined)) out.push(`${at}: mirror_host is set exactly when strength is primary-mirror`);
     if (s.page !== undefined && !isPdfUrl(s.url)) out.push(`${at}: page is only for a PDF URL`);
     if (s.anchor !== undefined && isPdfUrl(s.url)) out.push(`${at}: anchor is only for an HTML URL`);
@@ -678,7 +1090,8 @@ function checkTermNames(files: string[], dataDir: string, report: (file: string,
 /**
  * data-schema §3.15 (2026-10-26): `data/open-questions.json` against the rule base and the guide records.
  * Warns when the file is behind the markdown (an id missing or extra, or a closure the file does not have, or the other way);
- * fails when a guide record lists a question the file has as closed (`open_questions`, `blocked_by`, a `blocked:` mark).
+ * fails when a guide record lists a question the file has as closed (`open_questions`, `blocked_by`, a `blocked:` mark), marks a
+ * dimension a bare `blocked`, or blocks one on a question its `open_questions` does not list.
  */
 function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (file: string, message: string) => void, warn: (category: string, id: string) => void) {
   const file = files.find((f) => relative(ctx.dataDir, f) === "open-questions.json");
@@ -705,10 +1118,22 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
       for (const id of collectStrings(rec, key)) if (closed(id)) report(f, `${key}: ${id} is closed in data/open-questions.json; state the answer with its rule instead`);
     }
     const marks = ((rec as { dimensions?: unknown } | undefined)?.dimensions ?? {}) as Record<string, unknown>;
+    const oq = (rec as { open_questions?: unknown } | undefined)?.open_questions;
+    const listed = new Set(Array.isArray(oq) ? oq.filter((x): x is string => typeof x === "string") : []);
     for (const [dim, mark] of Object.entries(marks)) {
       if (typeof mark === "string" && mark.startsWith("blocked:") && closed(mark.slice("blocked:".length)))
         report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} is closed in data/open-questions.json; unblock it`);
+      // a blocked mark names the question that blocks it, and the record lists that question (third check, 2026-11-07: two
+      // records marked loss offset a bare "blocked" with no question opened, and a page showed "חסום" with nothing to open)
+      if (mark === "blocked" || mark === "blocked:") report(f, `dimensions.${dim}: a bare "blocked" names no open question; open one in il-finance and mark blocked:<id>`);
+      else if (typeof mark === "string" && mark.startsWith("blocked:") && !listed.has(mark.slice("blocked:".length)))
+        report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} blocks it but is not in the record's open_questions`);
     }
+    // a dimension still marked open while the record's own value for it is known (child savings, 2026-11-07)
+    const known = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
+    const sw = marks["switching-tax-event"];
+    if (known !== undefined && known !== null && typeof sw === "string" && sw.startsWith("blocked:"))
+      report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${String(known)}); mark it covered`);
   }
 }
 

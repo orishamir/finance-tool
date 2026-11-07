@@ -1,0 +1,83 @@
+{
+  "case": "makam-under-products",
+  "sessions": 4,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 4,
+      "caughtIn10": 4,
+      "of": 4,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 2,
+          "of": 2,
+          "ranks": [
+            1,
+            1
+          ]
+        },
+        "first-job-phone": {
+          "caught": 2,
+          "of": 2,
+          "ranks": [
+            1,
+            1
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.1658752,
+  "rows": [
+    {
+      "task": "s06",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.0404308
+    },
+    {
+      "task": "s06",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.038654799999999996
+    },
+    {
+      "task": "s06",
+      "session": "first-job-phone-r1",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.03845079999999999
+    },
+    {
+      "task": "s06",
+      "session": "first-job-phone-r2",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.0483388
+    }
+  ]
+}

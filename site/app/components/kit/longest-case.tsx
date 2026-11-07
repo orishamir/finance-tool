@@ -8,6 +8,11 @@ const UnseenCtx = createContext(false);
 /** Inside a case laid out unseen: a figure there is not on the page (the legend counts only what is shown). */
 export const useUnseen = () => useContext(UnseenCtx);
 
+/** What is laid out unseen to hold a height (a row's other states, PickList `cases`): a figure inside is not on the page. */
+export function Unseen({ children }: { children: ReactNode }) {
+  return <UnseenCtx.Provider value={true}>{children}</UnseenCtx.Provider>;
+}
+
 export function LongestCase({ cases, children, className }: { /** What the block can hold, laid out unseen: a sample figure may stand in for a figure that changes. */ cases: ReactNode[]; children: ReactNode; className?: string }) {
   return (
     <div className={cx("grid *:[grid-area:1/1] *:min-w-0", className)}>

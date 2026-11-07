@@ -1,0 +1,32 @@
+{
+  "id": "FXD-22",
+  "title": "Leaving a foreign-currency deposit early: the general rule",
+  "title_he": "יציאה מפיקדון במטבע חוץ לפני מועדו: הכלל הכללי",
+  "text_he": "כללי הגילוי הנאות של בנק ישראל חלים על פיקדונות במטבע חוץ כמו על פיקדונות בשקלים. הסכם הפיקדון צריך לפרט את תקופתו ואת תנאי הפירעון, ובפיקדון ליותר משנה גם את התנאים לפירעון לפני המועד הסופי. בקשה לפרוע פיקדון לפני מועדו מוגשת בטופס שמפרט מה משתנה בתנאים. אף כלל שנקרא לא קובע אם מותר לצאת מפיקדון במט\"ח לפני מועדו או כמה זה עולה; כל בנק קובע זאת בהסכם שלו.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-exit",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf#page=5",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, Bank of Israel's consolidated copy",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.7(א)(2) and s.7(ב)(5) p.5",
+      "page": 5,
+      "quote": "בפקדון שניתן לפרעון גם לפני מועד הפרעון הסופי",
+      "checked": "2026-11-07",
+      "qualifier": "(state body's consolidated copy)"
+    }
+  ]
+}

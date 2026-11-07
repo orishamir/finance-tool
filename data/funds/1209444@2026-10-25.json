@@ -186,8 +186,16 @@
       {
         "year": 2025,
         "fund_pct": 46.4,
-        "tracking_pct": 46.56
+        "tracking_pct": 46.56,
+        "fees_charged": {
+          "fixed": 0.1,
+          "variable": 0.04,
+          "trustee": 0.01
+        }
       }
+    ],
+    "years_printed": [
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
@@ -196,7 +204,18 @@
       "strength": "institution"
     },
     "page": 5,
-    "checked": "2026-10-25"
+    "fees_page": 7,
+    "changes_page": 6,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "ת\"א 90",
+      "dividends": "gross",
+      "page": 2,
+      "rule_ids": [
+        "ETF-45"
+      ]
+    }
   },
   "snapshot": "2026-10-25"
 }

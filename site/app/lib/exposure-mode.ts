@@ -18,7 +18,7 @@ import {
   type RunResult,
 } from "@finance-tool/engine";
 import { isSecurity, type ParameterRecord, type ValueObject, type ProductId } from "@finance-tool/schema";
-import { applyProviders, comparisonGoal, equityFit, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
+import { applyProviders, comparisonGoal, equityFit, openConstraintOf, parameterOf, readingMayAppear, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
 import type { ExposureInputs, FieldKey, Goal } from "./goal";
 import { entered as enteredValue, type SiteValue } from "./value";
 import { r5 } from "../copy";
@@ -84,6 +84,8 @@ export interface ExposureRowView {
   reasons: RowReason[];
   deciding?: { formula: "deposit-side-relief" | "fee-drag" | "tax-at-exit" | "lock-up"; mine: number; above: number };
   wrapperEntry?: WrapperEntry;
+  /** Any wrapper the row may be held in can come to carry a reading label as the person types (`readingMayAppear`): the row holds ReadingTag's place. */
+  mayRead: boolean;
 }
 
 export type HeadlineKind = "winner" | "single" | "tie" | "all-tied" | "none" | "all-excluded" | "no-return";
@@ -220,22 +222,29 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
   // F-83 (2026-10-24): an equity exposure is listed, not ranked, when the fall the person accepts is below P-04's equity fall,
   // unless they entered a forecast fall for it that passes F-71 (it is then already ranked or excluded by the filter).
   const cap = equityFit(bundle)?.maxFall;
-  const demoted = new Set<string>();
+  const demoted = new Map<string, Reason>();
+  // F-83 (2026-10-24), as the product comparison applies it: a holding whose wrapper's minimum-amount or eligibility rule is open is
+  // listed, not ranked (third check, 2026-11-07: exposure mode ranked makam while its checklist said the open minimum kept it from rank)
+  for (const c of raw.candidates) {
+    const p = plans.find((x) => x.entry.record.id === c.id);
+    const open = c.kind === "ranked" && p?.wrapper ? openConstraintOf(p.wrapper.record) : null;
+    if (open) demoted.set(c.id, open);
+  }
   if (cap) {
     for (const c of raw.candidates) {
       const p = plans.find((x) => x.entry.record.id === c.id);
-      if (c.kind !== "ranked" || !p || p.entry.record.kind !== "equity_index") continue;
+      if (c.kind !== "ranked" || demoted.has(c.id) || !p || p.entry.record.kind !== "equity_index") continue;
       const mine = inputsOf(c.id);
       const accepted = (mine.acceptedFall ?? (lf.acceptedFall as ValueObject | undefined))?.value;
       if (typeof accepted !== "number" || accepted >= (cap.value as number)) continue;
       const worst = mine.worstFall?.value;
       if (typeof worst === "number" && worst <= accepted) continue;
-      demoted.add(c.id);
+      demoted.set(c.id, { code: "rule-open", ruleIds: [], gapIds: [], detail: `fit-drop:${cap.value}` });
     }
   }
   let comparison = raw;
   if (demoted.size > 0) {
-    const candidates = raw.candidates.map((c) => (demoted.has(c.id) ? { ...c, kind: "listed-not-ranked" as const, reasons: [...c.reasons, { code: "rule-open" as const, ruleIds: [], gapIds: [], detail: `fit-drop:${cap!.value}` }] } : c));
+    const candidates = raw.candidates.map((c) => (demoted.has(c.id) ? { ...c, kind: "listed-not-ranked" as const, reasons: [...c.reasons, demoted.get(c.id)!] } : c));
     comparison = { ...raw, candidates, ranking: rankCandidates(candidates, { theta, ctx }), coverage: coverageLine(candidates, outcomeOrder, ["ranked"]) };
   }
 
@@ -293,6 +302,7 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
       reasons,
       ...(deciding ? { deciding } : {}),
       ...(p.wrapper ? { wrapperEntry: p.wrapper } : {}),
+      mayRead: readingMayAppear([p.wrapperId, ...(p.entry.record.wrapper_ids ?? [])].map((w) => bundle.wrappers.find((x) => x.id === w)?.family)),
     };
   };
   const all = plans.map(rowOf);

@@ -34,7 +34,7 @@
         "TX2-17"
       ],
       "state": "sourced",
-      "notes": "Rate on a transaction in Israel; the Minister changes it by order. The amendment's start date was not read on the mirror."
+      "notes": "Rate on a transaction in Israel; the Minister changes it by order. The amendment's start date was not read in an official text."
     },
     "financial_institution_turnover_test": {
       "value": 75,
@@ -68,7 +68,8 @@
       "publisher": "National Insurance Institute",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
       "locator": "s.4(ב)",
       "locator_he": "סעיף 4(ב)",
       "checked": "2026-10-31",
@@ -182,16 +183,6 @@
       "locator_he": "עמוד 58, סעיף 11(1)(ב), (2)",
       "page": 58,
       "quote": "ולמעט בנק חברתי",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/חוק_מס_ערך_מוסף",
-      "title": "Wikisource, unofficial",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
       "checked": "2026-10-25"
     }
   ]

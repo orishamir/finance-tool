@@ -1,0 +1,98 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:03:36.590Z",
+  "structured": {
+    "answer": "By its own banner, nothing on this page is calculated yet: gold (ETC, gold ETFs), corporate and Bonds-Israel bonds, structured products and deposits, foreign-currency deposits and accounts, the FX fee, hedged funds, digital wallets, investment-linked and managers' insurance, insurance funds, annuity commutation and 190, REITs and robo-advisors. It also says it will never cover stock picking, trading, derivatives, loans or physical real estate. So my plain index ETFs are probably fine to check there, but my single stocks and what I pay on FX are not.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Struck-out 'נסגר ב־...' lines inside the מצב הכיסוי folds",
+        "why": "The strikethrough could mean resolved or cancelled; I took it as resolved"
+      },
+      {
+        "where": "Codes MF-28, TX2-01, TXA-28",
+        "why": "Not explained anywhere I could see"
+      },
+      {
+        "where": "Whole page",
+        "why": "It lists only what's missing, so I had to infer from absence that index ETFs are covered"
+      }
+    ],
+    "used": [
+      "Page title and subtitle 'מה האתר עוד לא מכסה'",
+      "Red banner 'עד שייסגרו, האתר לא מחשב אותם'",
+      "Card titles with 'לא מחושב' tags",
+      "מצב הכיסוי folds (חסום / שאלה פתוחה / כשייסגר)",
+      "Bottom list 'מה האתר לא משווה ולא עושה'",
+      "Footer 'אישי, לא מסחרי, בלי קישורי שיווק'"
+    ],
+    "skimmed": [
+      "'מה ידוע' definitions on each card",
+      "Card list in the middle screens (5-8)"
+    ],
+    "skipped": [
+      "Law and regulation citation links",
+      "Source dates and 'מקור ראשי' tags",
+      "'חוקים וכללים · N' chips"
+    ],
+    "unsure_meaning": [
+      "Strikethrough on 'נסגר ב־' dates",
+      "MF-28 / TX2-01 / TXA-28 codes",
+      "Orange 'לפי החברה' tag",
+      "'צומצם ב־' line"
+    ],
+    "not_found": [
+      "An explicit list of what IS covered",
+      "Any figure I could compare to my broker fees",
+      "Account holding fees or FX spread comparison",
+      "A table or filter view of coverage status"
+    ],
+    "findings": [
+      {
+        "what": "FX conversion fee is only defined, not calculated; that's probably where my real costs are",
+        "where": "עמלת חליפין card"
+      },
+      {
+        "what": "Every item carries the same 'לא מחושב' tag, so you can't tell which are close to done",
+        "where": "All cards"
+      },
+      {
+        "what": "Long wall of cards with no table or filter to see coverage at a glance",
+        "where": "Screens 1-9"
+      },
+      {
+        "what": "Strikethrough on resolved questions reads like cancelled",
+        "where": "מצב הכיסוי folds"
+      },
+      {
+        "what": "Internal codes (MF-28, TX2-01) shown to users without explanation",
+        "where": "Folds on screens 5-6"
+      },
+      {
+        "what": "Single stocks and trading are permanently excluded, which rules out part of my portfolio",
+        "where": "מה האתר לא משווה ולא עושה"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 45877,
+    "turns": 12,
+    "usd": 0.26094,
+    "input": 12,
+    "cacheWrite": 22450,
+    "cacheRead": 57160,
+    "output": 3493,
+    "model": "claude-opus-5-5"
+  }
+}

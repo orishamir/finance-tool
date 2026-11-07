@@ -9,7 +9,7 @@
   "likely_to_change": "no",
   "text_he": "כל דוח שנתי משווה את תשואת הקרן לשינוי בנכס הייחוס שלה, וכל מנהל מפרסם את הפרש העקיבה של שנים עשר החודשים האחרונים. רשות ניירות ערך ודפי הבורסה שנקראו לא מפרסמים השוואה של הפרש העקיבה לפי שיטת השכפול, ולכן אין מקור כללי שקובע ששיטה אחת מניבה יותר.",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -26,34 +26,17 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(דוח_שנתי_של_קרן)",
-      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (ויקיטקסט, מראה), unofficial; the state's own copy was not read",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=15",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 18(ה)",
-      "locator_he": "תקנה 18(ה)",
-      "anchor": "סעיף_18.ה",
+      "strength": "primary",
+      "locator": "file p.15 (gazette p.1015), reg. 18(ה)",
+      "locator_he": "עמוד הקובץ 15 (עמוד הרשומות 1015), תקנה 18(ה)",
       "quote": "תחת הכותרת",
-      "checked": "2026-10-26",
-      "qualifier": "(mirror; the gazette page's text layer is interleaved)"
-    },
-    {
-      "url": "https://olaw.org.il/takanot/takanot-7646.pdf",
-      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (קובץ התקנות 7646, צילום הרשומות)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (קובץ התקנות 7646, צילום הרשומות)",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.15, reg. 18(ה)",
-      "locator_he": "עמוד 15, תקנה 18(ה)",
-      "page": 15,
-      "checked": "2026-10-25",
-      "qualifier": "(mirror of Reshumot)"
+      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

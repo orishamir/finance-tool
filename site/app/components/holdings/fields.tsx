@@ -2,10 +2,9 @@
 // and a native select in the same box. Both left to right inside, as every field.
 import { useId, type ReactNode } from "react";
 import { r3holdings as copy } from "../../copy";
-import { fmt } from "../../lib/format";
 import { transferBars, type TransferBar } from "../../lib/state";
 import { RuleRef } from "../provenance";
-import { cx, Disclosure } from "../kit";
+import { cx, Disclosure, When } from "../kit";
 
 /** A native date picker in the field box; the text form of the value is `22.10.2026` (design-spec 1.5). */
 export function DateField({ label, value, onChange, max, hint, error }: { label: ReactNode; value: string; onChange: (v: string) => void; max?: string; hint?: ReactNode; error?: ReactNode | null }) {
@@ -19,9 +18,9 @@ export function DateField({ label, value, onChange, max, hint, error }: { label:
         <div className={cx("field-box", error ? "field-box-error" : false)}>
           <input id={id} type="date" dir="ltr" max={max} value={value} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-end" />
           {/^\d{4}-\d{2}-\d{2}$/.test(value) && (
-            <bdi dir="ltr" className="field-unit">
-              {fmt.date(value)}
-            </bdi>
+            <span className="field-unit">
+              <When iso={value} />
+            </span>
           )}
         </div>
         {error ? (
@@ -109,7 +108,7 @@ export function BarsDisclosure({ bars, onChange, text }: { bars: Partial<Record<
   const shown = transferBars.filter((b) => text.includes(barWords[b]));
   if (shown.length === 0) return null;
   return (
-    <Disclosure label={<span className="text-sm text-link">{copy.bars.label}</span>} summaryClassName="min-h-9">
+    <Disclosure label={<span className="text-sm text-link">{copy.bars.label}</span>} summaryClassName="min-h-target">
       <div className="flex flex-col gap-1 pb-2">
         <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
           {copy.bars.lead} <RuleRef id="PF-17" />

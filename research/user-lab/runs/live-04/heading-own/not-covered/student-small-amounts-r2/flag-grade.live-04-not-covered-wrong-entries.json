@@ -1,0 +1,84 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "stamp": "{\"keys\":[{\"id\":\"list-holds-what-it-is-not\",\"problem\":\"The page says it lists the products the site knows but cannot yet explain, yet many of its entries are not products at all: a fee, a fund's label, a gold price benchmark, a role, an event, a grant. A reader cannot trust that the list says what is really missing, and a fee the site does handle elsewhere shows up as unknown, so the whole list reads as unchecked.\",\"where\":\"the cards of the list under the title and subtitle at the top (for example the cards of an exchange fee, a gold price, a rating company, a debt settlement)\",\"kind\":\"general\"},{\"id\":\"bare-code\",\"problem\":\"Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.\",\"where\":\"the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'\",\"kind\":\"general\"},{\"id\":\"fragment-no-noun\",\"problem\":\"Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.\",\"where\":\"the 'what was closed' lines of the open cards\",\"kind\":\"general\"},{\"id\":\"source-names-not-for-reader\",\"problem\":\"Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.\",\"where\":\"the source line under 'what is known' on a few cards\",\"kind\":\"general\"},{\"id\":\"same-promise-every-card\",\"problem\":\"Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.\",\"where\":\"the line starting 'when it is closed' at the bottom of each open card\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 1,
+        "why": "Finding 1 says the gold price benchmark is not a product even though the subtitle promises products, and that this made the reader doubt the whole list, which is the person's point."
+      },
+      {
+        "id": "bare-code",
+        "rank": 7,
+        "why": "Finding 7 complains that the coverage lines show codes like MF-28 next to 'open question', which is the bare internal code in the 'what blocks it' line."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 0,
+        "why": "No finding mentions the 'what was closed' lines, where a struck-out date and a bare number appear with no noun saying what they count."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "No finding mentions sources named in English or as copies while still being labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 5 says the cards look alike and the page is too much, but it never names the long promise repeated at the bottom of each open card."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0268554
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 1,
+        "why": "Finding 1 says the gold price benchmark is not a product even though the subtitle promises products, and that this made the reader doubt the whole list, which is the person's problem."
+      },
+      {
+        "id": "bare-code",
+        "rank": 7,
+        "why": "Finding 7 complains about codes like MF-28 next to 'open question' in the coverage parts, which matches the person's complaint that a bare internal code stands where the question should be written in words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 0,
+        "why": "No finding mentions the 'what was closed' lines, where a struck-out date and a number appear with no noun saying what was closed."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "No finding mentions source lines that use English names or copies while calling them primary sources; finding 5's 'legal citations' is about too much on the screen, not about who the source is."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 5 says the cards look alike as a layout, but no finding mentions the same long 'when it is closed' promise repeated on every card."
+      }
+    ],
+    "liked": [],
+    "usd": 0.028995399999999998
+  },
+  "third": null,
+  "ranks": {
+    "list-holds-what-it-is-not": 1,
+    "bare-code": 7,
+    "fragment-no-noun": 0,
+    "source-names-not-for-reader": 0,
+    "same-promise-every-card": 0
+  },
+  "agreed": {
+    "list-holds-what-it-is-not": true,
+    "bare-code": true,
+    "fragment-no-noun": true,
+    "source-names-not-for-reader": true,
+    "same-promise-every-card": true
+  },
+  "against": {},
+  "usd": 0.0558508
+}

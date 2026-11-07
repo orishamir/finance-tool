@@ -1,0 +1,19 @@
+{
+  "id": "mnpyk",
+  "he": "מנפיק",
+  "en": null,
+  "meaning": "מי שמוציא ניירות ערך ומציע אותם לציבור, למשל חברה, או המדינה כשהיא מנפיקה איגרות חוב",
+  "where": [],
+  "wrapper_ids": [
+    "makam"
+  ],
+  "variants": [],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=9",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, סעיף 1, עמוד 9",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

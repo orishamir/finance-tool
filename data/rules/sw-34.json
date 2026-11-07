@@ -2,8 +2,8 @@
   "id": "SW-34",
   "title": "Non-bank brokers: no cap found on fees for moving securities out",
   "title_he": "העברת ניירות ערך מבית השקעות: לא נמצאה תקרה",
-  "text_he": "לא נמצא כלל שמגביל מה חבר בורסה שאינו בנק גובה על העברת ניירות ערך החוצה. כללי העמלות של בנק ישראל, עם המחיר המפוקח והתקרה בסגירת חשבון, חלים על בנקים בלבד, וכללי הבורסה מחייבים כל חבר לדווח על העמלות שלו אבל לא מגבילים אותן. כתבה מדווחת שיציאה מברוקר יכולה לעלות מאות ואף אלפי שקלים. עד שיימצא כלל של הבורסה או של רשות ניירות ערך, זו שאלה פתוחה.",
-  "strength": "secondary",
+  "text_he": "לא נמצא כלל שמגביל מה חבר בורסה שאינו בנק גובה על העברת ניירות ערך החוצה. כללי העמלות של בנק ישראל, עם המחיר המפוקח והתקרה בסגירת חשבון, חלים על בנקים בלבד, וכללי הבורסה מחייבים כל חבר לדווח על העמלות שלו אבל לא מגבילים אותן. עד שיימצא כלל של הבורסה או של רשות ניירות ערך, זו שאלה פתוחה.",
+  "strength": "primary",
   "dimensions": [
     "fee-exit",
     "fee-custody"
@@ -16,15 +16,31 @@
   "scope_settle": "the TASE rules and directives on what members may charge to move securities out, or an Israel Securities Authority statement",
   "sources": [
     {
-      "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
-      "title": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
-      "title_he": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
-      "publisher": "Calcalist",
-      "publisher_he": "כלכליסט",
-      "kind": "article",
-      "strength": "secondary",
-      "quote": "למאות ואף לאלפי שקלים",
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.17-19",
+      "locator_he": "עמודים 17 עד 19",
+      "page": 17,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://content.tase.co.il/media/g2ekpw4d/274691.pdf",
+      "title": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.40 to 41, s.17(א)-(ד)",
+      "locator_he": "עמודים 40 עד 41, סעיף 17(א)-(ד)",
+      "page": 40,
+      "checked": "2026-10-25",
+      "qualifier": "(exchange rules, ISA-approved)"
     }
   ],
   "derived_from": [

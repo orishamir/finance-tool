@@ -1,4 +1,5 @@
 // The panel's own logic (own-account-panel.ts): the draft it starts from, the starting point a draft stands on, the stretches of the year strip.
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { brokerFromDraft } from "./custom-entries";
 import { startingPointsOf, withAdopted } from "./own-account";
@@ -10,7 +11,8 @@ import { entered } from "./value";
 
 const bundle = buildWorkbenchBundle();
 const t = bundle.today;
-const leumi = bundle.snapshots.find((s) => s.id === "leumi")!;
+// the worked example of a price for a time is Leumi's opening offer as the 2026-11-04 record held it (see own-account.test.ts)
+const leumi = JSON.parse(readFileSync(new URL("../../../data/fees/leumi@2026-11-04.json", import.meta.url), "utf8")) as (typeof bundle.snapshots)[number];
 const points = startingPointsOf(leumi);
 const OFFER = points.find((p) => p.nameHe === "לאומי סטודנט, בפתיחת חשבון")!;
 const plan: WorkbenchInputs = {

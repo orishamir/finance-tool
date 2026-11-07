@@ -1,0 +1,28 @@
+{
+  "id": "brvkr",
+  "he": "ברוקר",
+  "en": null,
+  "meaning": "מי שנותן ללקוחות שירות של קנייה ומכירה של ניירות ערך; בישראל אלה בנקים, בתי השקעות וגופים שאינם חברי בורסה",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "makam"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "ברוקראז'"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/reports/marketresearch-brokeragefinal/he/marketresearch_%D7%AA%D7%97%D7%A8%D7%95%D7%AA%20%D7%91%D7%A9%D7%95%D7%A7%20%D7%94%D7%91%D7%A8%D7%95%D7%A7%D7%A8%D7%90%D7%96'%20%D7%94%D7%A7%D7%9E%D7%A2%D7%95%D7%A0%D7%90%D7%99%200819.pdf#page=10",
+    "title": "רשות התחרות ורשות ניירות ערך, תחרות בשוק הברוקראז' הקמעונאי, דוח סופי, אוגוסט 2019, עמוד 10",
+    "publisher": "Competition Authority (gov.il)",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

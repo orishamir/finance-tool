@@ -7,12 +7,11 @@ import { brands as brandsCopy, companies as copy, r4catalogue as r4, site } from
 import { IconSearch } from "../components/icons";
 import { PageShell, useOpenSearch } from "../components/shell";
 import { normalize } from "../lib/search";
-import { fmt } from "../lib/format";
 import type { InstitutionRow } from "../components/decoder/institutions/types";
 import { NoPageCompanyTerms } from "../components/decoder/company-terms";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { withoutLtd } from "../lib/company-name";
-import { RowArrow } from "../components/kit";
+import { RowArrow, TariffDate, gershayim } from "../components/kit";
 
 export async function loader() {
   const { loadCma, loadProducts, classificationToWrapper, today } = await import("../lib/data.server");
@@ -132,16 +131,7 @@ function Body({ brands, companies, institutions }: { brands: CompanyRow[]; compa
                   <span className="text-sm text-muted-foreground">
                     {r4.classWord[c.kind]}
                     {" · "}
-                    {c.missing ? (
-                      <span className="text-caution-foreground">{r4.rowLine.missing}</span>
-                    ) : c.published ? (
-                      <>
-                        {r4.rowLine.tariffFrom}
-                        <bdi dir="ltr">{fmt.date(c.published)}</bdi>
-                      </>
-                    ) : (
-                      <span className="text-caution-foreground">{r4.rowLine.noDate}</span>
-                    )}
+                    {c.missing || !c.dated ? <span className="text-caution-foreground">{r4.rowLine.missing}</span> : <TariffDate dated={c.dated} />}
                   </span>
                 </Row>
               ))}
@@ -169,7 +159,7 @@ function Row({ id, name, children }: { id: string; name: string; children: React
     <li className="flex">
       <Link to={`/companies/${id}`} className="flex-1 flex items-center justify-between gap-3 min-h-14 py-2 border-b border-border hover:bg-accent/40 transition-colors duration-[var(--duration-fast)] -mx-2 px-2">
         <span className="flex flex-col min-w-0">
-          <bdi className="font-medium">{name}</bdi>
+          <bdi className="font-medium">{gershayim(name)}</bdi>
           {children}
         </span>
         <RowArrow />

@@ -1,0 +1,20 @@
+{
+  "id": "htzmdh",
+  "he": "הצמדה",
+  "en": null,
+  "meaning": "קשירת סכום או ריבית למדד, בדרך כלל מדד המחירים לצרכן, כך שהם עולים ויורדים איתו",
+  "where": [],
+  "wrapper_ids": [
+    "government-bond",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.cbs.gov.il/he/Statistical/price_ind153h.pdf#page=2",
+    "title": "הלשכה המרכזית לסטטיסטיקה, סטטיסטיקל 153: מדד המחירים לצרכן, עמוד 2",
+    "publisher": "Central Bureau of Statistics",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

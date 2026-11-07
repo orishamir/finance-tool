@@ -377,7 +377,17 @@ export interface MakamModel {
   /** The gain before fees and tax, from the engine run (sale gain, or the discount at redemption). */
   gain: number;
   tax: number;
+  /**
+   * What the tax is the rate of, from the run (so a reader can redo it): on a sale, the capital gain (the sale's and the slices sold to pay
+   * custody) less the year's custody and account fees (TXS-06); at redemption, the discount (TXI-11). `taxedFees` is what those fees took
+   * off the capital gains (at redemption, the slices' own gain, which they cover), so `taxedBase + taxedFees` is `gain`. Commissions reduce
+   * neither (G-20).
+   */
+  taxedBase: number;
+  taxedFees: number;
   fees: number;
+  /** Of `fees`: the custody fee (F-14), paid where the tariff's house may charge it on makam (a non-bank member, BRK-52). */
+  custody: number;
   net: number;
   /** True when the sale month is the redemption (the discount is taxed as interest, TXI-11) rather than a capital gain (TXI-12). */
   atRedemption: boolean;
@@ -396,7 +406,14 @@ export function makamModel(d: SignatureData, c: { amount: number; month: number 
   if (!run) return null;
   const fees = totalFees(run);
   const tax = run.taxDuring + run.taxAtExit;
-  return { term, yieldPct: y * 100, prices, price: prices[month]!, gain: run.nominal + tax + fees - run.paidIn, tax, fees, net: run.nominal, atRedemption: month >= term, blocked: run.outcome.code === "listed-not-ranked" ? run.outcome.reason : null };
+  const atRedemption = month >= term;
+  // a year's fees above the gain leave nothing to tax (the tax is on max(0, gain), ledgers/common.ts)
+  const taxedBase = Math.max(0, (atRedemption ? run.detail.taxedDiscount : run.detail.taxedGain) ?? 0);
+  const gain = run.nominal + tax + fees - run.paidIn;
+  // the line's base and fees add up to the gain figure as all three are printed, to the agora: the fees take the rounding (under one agora)
+  const agorot = (v: number) => Math.round(v * 100);
+  const taxedFees = (run.detail.deductedFees ?? 0) > 0 ? (agorot(gain) - agorot(taxedBase)) / 100 : 0;
+  return { term, yieldPct: y * 100, prices, price: prices[month]!, gain, tax, taxedBase, taxedFees, fees, custody: run.fees.custody ?? 0, net: run.nominal, atRedemption, blocked: run.outcome.code === "listed-not-ranked" ? run.outcome.reason : null };
 }
 
 // ---------------------------------------------------------------- government bond
@@ -442,4 +459,14 @@ export function bondModel(d: SignatureData, c: { amount: number; years: number; 
     redemption: c.amount,
     coupons: c.amount * coupon * c.years,
   };
+}
+
+/** F-104's counts over the banks as computed values, and each bank whose deposits can be broken, named (its penalty is its own term). */
+export interface BreakTerms {
+  deposits: SiteValue;
+  banks: SiteValue;
+  lockedBanks: SiteValue;
+  lockedBanksWithExits: SiteValue;
+  /** `rules`: the break rules of the bank's counted records, so a bank whose break terms the prose does not word links its own (code review, 2026-11-07). */
+  breakable: { id: string; name: string; deposits: SiteValue; withPenalty: SiteValue; free: SiteValue; rules: string[] }[];
 }

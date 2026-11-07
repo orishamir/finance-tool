@@ -1,0 +1,108 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:55:35.245Z",
+  "structured": {
+    "answer": "Pretty much everything beyond plain index funds is \"לא מחושב\" for now. That covers bonds of every kind (corporate, Israel bonds, commercial paper, debt settlements), gold and ETCs, FX deposits, accounts and currency hedging plus the FX conversion fee itself, structured products, insurance savings (savings policies, manager's insurance, IRA tracks, קרן י'), pension payouts and Amendment 190, digital and managed portfolios, and REITs. Stock picking, trading, derivatives, ranking by past returns, loans and physical real estate are permanently out of scope, so it can't judge my single stocks or my FX costs.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "\"מצב הכיסוי\" folds",
+        "why": "Struck-through \"נסגר ב־24.10.2026\" lines appear next to \"עוד לא נרשמו סגירות\", so I couldn't tell what is closed and what isn't"
+      },
+      {
+        "where": "Card grid",
+        "why": "Some card titles were cut off between screenshots, so a few items I only know from their description"
+      },
+      {
+        "where": "Card grid order",
+        "why": "Cards seem to be alphabetical, with no filter or total count, so it's hard to see what applies to me"
+      }
+    ],
+    "used": [
+      "Red banner at the top: \"עד שייסגרו, האתר לא מחשב אותם\"",
+      "Card titles with the \"לא מחושב\" badge",
+      "Open questions inside the \"מצב הכיסוי\" folds (gold tax, FX deposit tax, savings policy)",
+      "\"מה האתר לא משווה ולא עושה\" list",
+      "Footer: \"אישי, לא מסחרי, בלי קישורי שיווק\"",
+      "Brokerage guide cost table (screenshot 11)"
+    ],
+    "skimmed": [
+      "\"מה ידוע\" description paragraphs on each card",
+      "Law/source citation links and dates",
+      "Brokerage guide glossary (screenshot 12)"
+    ],
+    "skipped": [
+      "The repeated \"כשייסגר: יופיע במדריך...\" sentences",
+      "\"חוקים וכללים · N\" chips"
+    ],
+    "unsure_meaning": [
+      "MF-28, TX2-01, TXA-28 codes",
+      "\"לפי החברה\" yellow tag",
+      "\"מקור ראשי (עותק)\"",
+      "Strike-through \"נסגר ב־\" dates",
+      "\"צומצם ב־\""
+    ],
+    "not_found": [
+      "A number I can compare with what I pay now",
+      "A cost comparison for FX conversion or custody fees",
+      "Any coverage of single stocks or trading",
+      "A total count or filter of uncovered items",
+      "A timeline for when items get calculated"
+    ],
+    "findings": [
+      {
+        "what": "The FX conversion fee (עמלת חליפין) and FX products aren't calculated, though this is a real cost of holding US ETFs",
+        "where": "Cards עמלת חליפין, חשבון מטבע חוץ, מנוטרלת מט\"ח"
+      },
+      {
+        "what": "Stock picking and trading are permanently out of scope, so the site can't assess half of my account",
+        "where": "\"מה האתר לא משווה ולא עושה\" list"
+      },
+      {
+        "what": "Every card carries the same red \"לא מחושב\" badge, so there's no way to tell nearly done from blocked",
+        "where": "All cards"
+      },
+      {
+        "what": "Internal codes (MF-28, TX2-01, TXA-28) shown to users with no explanation",
+        "where": "\"מצב הכיסוי\" folds"
+      },
+      {
+        "what": "Struck-through closure dates next to \"עוד לא נרשמו סגירות\" are contradictory or confusing",
+        "where": "\"מצב הכיסוי\" folds"
+      },
+      {
+        "what": "Long alphabetical list with no grouping or filter; index-investing items are mixed in with insurance and pension products",
+        "where": "Card grid"
+      },
+      {
+        "what": "The brokerage guide names specific brokers as examples, which sits oddly with the \"no marketing links\" claim",
+        "where": "Brokerage guide, \"מי מציע ומי מפקח\" and \"כמה זה עולה\""
+      },
+      {
+        "what": "Every cost row in the brokerage guide says \"אין תקרה בחוק\" but gives no actual figures to compare",
+        "where": "Brokerage guide cost table"
+      }
+    ]
+  },
+  "steps": 12,
+  "reads": 12,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 61031,
+    "turns": 14,
+    "usd": 0.2898542,
+    "input": 10,
+    "cacheWrite": 22334,
+    "cacheRead": 55311,
+    "output": 5004,
+    "model": "claude-opus-5-5"
+  }
+}

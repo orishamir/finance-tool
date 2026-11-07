@@ -1,0 +1,119 @@
+{
+  "id": "ayalon",
+  "provider": {
+    "name_he": "איילון קופות גמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.ayalon-ins.co.il/mediastorage/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf",
+    "title": "תקנון תקני לקופת גמל להשקעה",
+    "notes": "Ayalon Kupot Gemel's standard bylaws of איילון קופת גמל להשקעה (fund 15969), 14 pages, \"מהדורה 07.2026\" on p.1; fees in s.35.1 on p.9. The edition prints a month only (07.2026), recorded as its first day. Also read: the joining form 102, edition 06.2026 (https://www.ayalon-ins.co.il/mediastorage/media/sn4mjoiz/%D7%98%D7%95%D7%A4%D7%A1-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-102-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-062026-1.pdf), whose p.2 leaves both rates blank and whose p.3 says the company began operating in 2026. Linked from https://www.ayalon-ins.co.il/providents/provident-fund-invest. Read 2026-11-07 in a browser. Ayalon Kupot Gemel (517085874) is a provident manager in gemelnet; only its provident fund for investing is recorded here.",
+    "published": "2026-07-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-07",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "ayalon-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.ayalon-ins.co.il/mediastorage/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf#page=9",
+          "title": "תקנון תקני לקופת גמל להשקעה, איילון קופת גמל להשקעה (15969), מהדורה 07.2026, סעיף 35.1.1",
+          "publisher": "Ayalon Kupot Gemel",
+          "strength": "institution",
+          "page": 9,
+          "quote": "בשיעור שלא יעלה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Ayalon's joining form for איילון קופת גמל להשקעה (form 102, edition 06.2026, fund code 15969; the product page links two files of this edition, …062026-1.pdf and …062026-2.pdf, both read) leaves both rates blank on p.2 (\"שיעור דמי ניהול מצבירה (שנתי) __%\", \"שיעור דמי ניהול מהפקדה שוטפת (חודשי) __%\"); the fund's standard bylaws (edition 07.2026, s.35.1, p.9) let the company charge up to the maximum the law sets on the balance (s.35.1.1) and on each payment (s.35.1.2). Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. The form's p.3 prints no average fee: \"החברה החלה לפעול בשנת 2026 - טרם נבחנו דמי ניהול ממוצעים בקופה\". The bylaws let a lower fee be offered only if it holds for \"תקופת חמש שנים או יותר\" (s.36.1, p.9), as the CMA circular sets (KGL-16). On top of the fees the company may charge direct expenses for transactions from the fund's assets (bylaws s.27.1.2, p.8; no rate printed, not recorded). Both documents read in a browser 2026-11-07 (ayalon-ins.co.il refuses scripts, so they are not in the library). The product page's own fee wording, if any, was not read: advertising (D56). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול מן היתרה הצבורה, עד המרבי"
+        ]
+      }
+    },
+    {
+      "id": "ayalon-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.ayalon-ins.co.il/mediastorage/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf#page=9",
+          "title": "תקנון תקני לקופת גמל להשקעה, איילון קופת גמל להשקעה (15969), מהדורה 07.2026, סעיף 35.1.2",
+          "publisher": "Ayalon Kupot Gemel",
+          "strength": "institution",
+          "page": 9,
+          "quote": "בשיעור שלא יעלה על שיעור דמי הניהול המרבי הקבוע בהסדר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Ayalon's joining form for איילון קופת גמל להשקעה (form 102, edition 06.2026, fund code 15969; the product page links two files of this edition, …062026-1.pdf and …062026-2.pdf, both read) leaves both rates blank on p.2 (\"שיעור דמי ניהול מצבירה (שנתי) __%\", \"שיעור דמי ניהול מהפקדה שוטפת (חודשי) __%\"); the fund's standard bylaws (edition 07.2026, s.35.1, p.9) let the company charge up to the maximum the law sets on the balance (s.35.1.1) and on each payment (s.35.1.2). Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. The form's p.3 prints no average fee: \"החברה החלה לפעול בשנת 2026 - טרם נבחנו דמי ניהול ממוצעים בקופה\". The bylaws let a lower fee be offered only if it holds for \"תקופת חמש שנים או יותר\" (s.36.1, p.9), as the CMA circular sets (KGL-16). On top of the fees the company may charge direct expenses for transactions from the fund's assets (bylaws s.27.1.2, p.8; no rate printed, not recorded). Both documents read in a browser 2026-11-07 (ayalon-ins.co.il refuses scripts, so they are not in the library). The product page's own fee wording, if any, was not read: advertising (D56). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול מתוך התשלומים, עד המרבי"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

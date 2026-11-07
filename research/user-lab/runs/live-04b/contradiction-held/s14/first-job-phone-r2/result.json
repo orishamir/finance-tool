@@ -1,0 +1,94 @@
+{
+  "task": "s14",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T17:09:30.807Z",
+  "structured": {
+    "answer": "Joining is clearly worth it: at 30,000 I'd put in 750 ₪ a month and the employer 2,250 ₪. Taken out after 5 years that leaves about 136,457 ₪ after 64,761 ₪ tax, and the page says to wait the full 6 years so it's tax-free.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator, 'מושכים את הכסף אחרי 5 שנים'",
+        "why": "The calculator starts at 5 years, so the first big result I saw (136,457 ₪ after a 64,761 ₪ tax cut) is the early-withdrawal case. I didn't tap year 6+ to get the tax-free amount, and the page doesn't show that number in shekels."
+      },
+      {
+        "where": "The 15,712 ₪ ceiling against my 30,000 salary",
+        "why": "It looks like part of the deposits on my salary goes over the ceiling and gets taxed, but that explanation is in small grey text I didn't read, so I'm not sure how much it affects me."
+      }
+    ],
+    "used": [
+      "Salary field showing 30,000",
+      "Line '750 ₪ בחודש מכם, 2,250 ₪ מהמעסיק'",
+      "Waterfall bars: 45,000 / +135,000 / +21,218 / −64,761 / 136,457",
+      "Small bar chart labels 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור עד תקרה'",
+      "Fee range line 0.7% vs 0.19%",
+      "Card 'כשעוברות 6 שנים'",
+      "Fees table 'עד 2% בשנה'",
+      "Orange box 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "מה זה intro text",
+      "למה משתמשים בזה",
+      "מי מציע ומי מפקח",
+      "כסף נכנס ויוצא cards",
+      "מיסוי cards"
+    ],
+    "skipped": [
+      "Grey notes under the calculator",
+      "שווה לדעת list",
+      "סיכונים ומה לא מוגן",
+      "מונחים glossary",
+      "Screen 5",
+      "חוקים וכללים chips"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "ותק",
+      "תקרה",
+      "47% (whether that's my tax rate)",
+      "Hatched pink parts of the bars"
+    ],
+    "not_found": [
+      "The amount I'd have if I wait 6+ years, shown in shekels",
+      "Which company or track to choose, and the first step to take"
+    ],
+    "findings": [
+      {
+        "what": "The calculator starts on 5 years, the early-withdrawal case, so the first big figure you see is reduced by a large tax cut instead of showing the normal tax-free result",
+        "where": "Calculator 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "A big red −64,761 ₪ tax bar makes the whole thing look scary before you understand it only applies to early withdrawal",
+        "where": "Waterfall chart"
+      },
+      {
+        "what": "How the 15,712 ₪ ceiling affects a 30,000 salary is only explained in small grey notes",
+        "where": "Notes under the calculator"
+      },
+      {
+        "what": "No clear next step (which fund, how to join)",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 46075,
+    "turns": 6,
+    "usd": 0.206243,
+    "input": 10,
+    "cacheWrite": 15347,
+    "cacheRead": 44035,
+    "output": 3731,
+    "model": "claude-opus-5-5"
+  }
+}

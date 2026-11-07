@@ -3,12 +3,14 @@
 // page that ranked the houses on one fund was removed (issue 172); the index page ranks them. No fee, rate or rule figure
 // is written here: tariffs come from the snapshots in the bundle, and every number leaves as a value object with its
 // state. Pure: no storage; the bundle is fetched once.
-import { fundOf, lineClasses, recordDistribution, type RunContext } from "@finance-tool/engine";
+import { fundOf, lineClasses, recordDistribution, type GapList, type RunContext } from "@finance-tool/engine";
+import { datedDay, tariffDated, type TariffDated } from "./tariff-date";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
-import { flags as flagCopy, formulaNames, guideBlocks } from "../copy";
+import { flags as flagCopy, formulaNames, guideBlocks, kit as kitCopy } from "../copy";
 import { nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import type { EnteredInBundle } from "./custom-entries";
-import { computed, ownBy, type SiteValue, type Staleness } from "./value";
+import { computed, ownBy, ruleFigure, type SiteValue, type Staleness } from "./value";
+import { sourceHref } from "./sources";
 
 // Names the number sheet shows for the formulas and gaps of this release (copy.md 3.8 style: the code stays beside the words).
 Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות", "F-65": "השוואת קרנות לאותה חשיפה", "F-83": "ספירת כל מה שנבדק" });
@@ -210,6 +212,8 @@ export function fundRun(
   grossReturn: number,
   assumptions: FundAssumptions,
   fx?: FxSnapshot,
+  /** F-92 (d): the list the fund is ranked on (`gapListFor`); without it a gross benchmark gives no A-07 from its years. */
+  list?: GapList,
 ): { fund: NonNullable<ReturnType<typeof fundOf>>["fund"]; market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number }; currency?: { code: string; startRate: number } } | RunSpecError {
   const rec = s.record;
   if (!exposure || exposure.cash_like) return { kind: "fund-type" };
@@ -222,7 +226,7 @@ export function fundRun(
   const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
   if (rec.distribution_policy === "distributing" && !dist) return { kind: "need-yield" };
   if (rec.distribution_policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") return { kind: "fund-type" };
-  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben);
+  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben, list);
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;
   const market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number } = { grossReturn };
@@ -261,6 +265,11 @@ export interface WorkbenchInputs {
   values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue };
   fromGoal: boolean;
   returnFromParameter: boolean;
+  /**
+   * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102), except at `own`, the bank the
+   * person marked as theirs (null: none marked, every bank counts it). Absent on every other page, where no row counts it.
+   */
+  currentAccounts?: { own: string | null };
 }
 
 // ---------------------------------------------------------------- the view
@@ -268,6 +277,8 @@ export interface WorkbenchInputs {
 export interface RowTariff {
   title: string;
   href: string;
+  /** What the price list prints as its date (kit TariffDate); `published` is that date as a figure where it prints one. */
+  dated: TariffDated;
   published: SiteValue | null;
   snapshot: SiteValue;
   format: "pdf" | "html" | "xlsx";
@@ -289,6 +300,8 @@ const FORMATS = ["pdf", "html", "xlsx"] as const;
 
 function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; stale: Staleness | null } {
   const stale = staleTariff(s.snapshot, today);
+  const dated = tariffDated(s.tariff, s.snapshot);
+  const day = datedDay(dated);
   const staleness: Staleness | null = stale ? { since: s.snapshot, cadence: "quarterly" } : null;
   const source = { url: s.tariff.url, title: s.tariff.title, publisher: s.provider.name_he, strength: "institution" as const };
   const date = (value: string, about: string, from: string | null): SiteValue => ownBy({
@@ -308,8 +321,9 @@ function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; st
     stale: staleness,
     tariff: {
       title: s.tariff.title,
-      href: s.tariff.url,
-      published: s.tariff.published ? date(s.tariff.published, "תאריך הפרסום של התעריפון", s.tariff.published) : null,
+      href: sourceHref(s.tariff),
+      dated,
+      published: day ? date(day, dated.kind === "part" ? kitCopy.tariffDate.aboutPart.replace("{part}", dated.part) : kitCopy.tariffDate.aboutWhole, day) : null,
       snapshot: date(s.snapshot, "התאריך שבו האתר שמר עותק של התעריפון", null),
       format: (FORMATS as readonly string[]).includes(s.tariff.format) ? s.tariff.format : "pdf",
       stale,
@@ -335,6 +349,10 @@ interface ListingLine {
   line: string;
   base: string;
   rate: SiteValue;
+  /** A-19: the most the bylaws allow, when the printed rate is a discount under it. */
+  revertsTo?: SiteValue;
+  /** D56: the document's own words that make the printed rate an offer. */
+  offer?: string;
 }
 
 /** One company's card: its lines of the tariff (one fee base each), the company id its page is addressed by. */
@@ -345,6 +363,11 @@ interface ListingCard {
   companyId: string | null;
   lines: ListingLine[];
   tariff: RowTariff;
+  /**
+   * A-19, F-16: when a line is a discount, how long it lasts, said once a card: the company's own printed period when it is longer than
+   * PF-13's minimum (`own`), else PF-13's years. Absent when no line is a discount.
+   */
+  discount?: { period: SiteValue; own: boolean };
 }
 
 export interface Listing {
@@ -362,15 +385,34 @@ export function companyHref(card: Pick<ListingCard, "companyId">): string | null
 /** For a provident wrapper the providers are managers whose list fees the snapshots hold; nothing is ranked (flows 15.5). One card per company. */
 export function buildProvidentListing(bundle: WorkbenchBundle, wrapperId: string): Listing {
   const cards: ListingCard[] = [];
+  const pf13 = bundle.rules.find((r) => r.id === "PF-13");
+  const minYears = pf13 ? ruleFigure(pf13, "min_discount_years", bundle.today) : null;
   for (const s of bundle.snapshots) {
     if (s.missing || s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") continue;
     const { tariff, stale } = snapshotValues(s, bundle.today);
     const lines: ListingLine[] = [];
     for (const l of s.lines) {
       if (l.level !== "list" || !l.applies_to.includes(wrapperId) || (l.base !== "balance" && l.base !== "deposit" && l.base !== "direct_expenses")) continue;
-      lines.push({ id: l.id, base: l.base, rate: withStale(l.rate, stale, s.provider.name_he), line: l.names.tariff[0] ?? (guideBlocks.fees as Record<string, { name: string }>)[l.base]?.name ?? l.base });
+      const discounted = typeof l.reverts_to?.value === "number" && typeof l.rate.value === "number" && l.reverts_to.value > l.rate.value;
+      lines.push({
+        id: l.id,
+        base: l.base,
+        rate: withStale(l.rate, stale, s.provider.name_he),
+        line: l.names.tariff[0] ?? (guideBlocks.fees as Record<string, { name: string }>)[l.base]?.name ?? l.base,
+        ...(discounted ? { revertsTo: withStale(l.reverts_to as SiteValue, stale, s.provider.name_he) } : {}),
+        ...(l.offer_he ? { offer: l.offer_he } : {}),
+      });
     }
-    if (lines.length) cards.push({ provider: s.id, providerName: s.provider.name_he, companyId: bundle.providerCompany?.[s.id] ?? null, lines, tariff });
+    if (!lines.length) continue;
+    // the period is said once a card: the company's own printed months when longer than PF-13's minimum, else PF-13's years
+    let discount: ListingCard["discount"];
+    if (lines.some((l) => l.revertsTo && !l.offer)) {
+      // one period for both lines: the data check fails a balance and a deposit discount of one wrapper that print different periods (validate.ts, checkDiscountLines)
+      const own = s.lines.find((l) => l.applies_to.includes(wrapperId) && typeof l.discount_months?.value === "number" && minYears !== null && (l.discount_months.value as number) > 12 * (minYears.value as number));
+      if (own) discount = { period: withStale(own.discount_months as SiteValue, stale, s.provider.name_he), own: true };
+      else if (minYears) discount = { period: minYears, own: false };
+    }
+    cards.push({ provider: s.id, providerName: s.provider.name_he, companyId: bundle.providerCompany?.[s.id] ?? null, lines, tariff, ...(discount ? { discount } : {}) });
   }
   return { cards, companies: bundle.wrapperCompanies?.[wrapperId] ?? 0, ruleIds: [] };
 }

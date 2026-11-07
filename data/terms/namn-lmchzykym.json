@@ -5,9 +5,7 @@
   "meaning": "חברה שהמנפיק חייב למנות, שמשגיחה עליו ופועלת לטובת כלל המחזיקים באג\"ח, למשל כשאינו משלם.",
   "where": [],
   "wrapper_ids": [],
-  "variants": [
-    "נאמן"
-  ],
+  "variants": [],
   "rule_ids": [
     "CORP-04",
     "CORP-05",
@@ -15,10 +13,10 @@
     "CORP-08"
   ],
   "source": {
-    "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-    "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-    "publisher": "see title",
-    "strength": "primary-mirror",
-    "checked": "2026-10-22"
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 35ב, עמוד 38",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

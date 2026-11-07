@@ -205,23 +205,49 @@
       {
         "year": 2025,
         "fund_pct": 5.85,
-        "tracking_pct": 5.52
+        "tracking_pct": 5.52,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.1,
+          "trustee": 0.025
+        }
       },
       {
         "year": 2024,
         "fund_pct": 25.86,
-        "tracking_pct": 25.86
+        "tracking_pct": 25.86,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.1,
+          "trustee": 0.025
+        }
       },
       {
         "year": 2023,
         "fund_pct": 60.12,
-        "tracking_pct": 59.81
+        "tracking_pct": 59.81,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.1,
+          "trustee": 0.025
+        }
       },
       {
         "year": 2022,
         "fund_pct": -23.93,
-        "tracking_pct": -23.91
+        "tracking_pct": -23.91,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.098,
+          "trustee": 0.025
+        }
       }
+    ],
+    "years_printed": [
+      2022,
+      2023,
+      2024,
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726329-00.pdf",
@@ -230,7 +256,15 @@
       "strength": "institution"
     },
     "page": 7,
-    "checked": "2026-10-25"
+    "fees_page": 9,
+    "changes_page": 8,
+    "variable_rate_since": "2026-01-01",
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "NASDAQ 100 - NTR",
+      "dividends": "net",
+      "page": 2
+    }
   },
   "snapshot": "2026-10-25"
 }

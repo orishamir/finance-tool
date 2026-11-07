@@ -4,11 +4,11 @@ import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { ownTermsCopy, r2, r3fees, scnCompare } from "../../copy";
 import { addMonths, decidingFormulaOf, depositRangeFlag, feeShieldPair, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
-import { fmt } from "../../lib/format";
-import { Button, Card, cx, HeadlineFigure, PercentField, RankBadge, Sentence, Tag } from "../kit";
+
+import { Button, Card, cx, HeadlineFigure, PercentField, RankBadge, Sentence, Tag, When } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
 import { IconAlert, IconDrillIn, IconLock } from "../icons";
-import { Num } from "../provenance";
+import { Num, ReadingTag } from "../provenance";
 import type { ResultCtx } from "./ctx";
 import { IconBan, IconDash, IconDashed, IconEdit, IconEqual, IconOk } from "./icons";
 import { ReasonLines } from "./reasons";
@@ -41,7 +41,7 @@ export function OutcomeTag({ kind, blocked, fixableByPerson }: { kind: CoverageR
 export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { o: RankedOption; above?: RankedOption; ctx: ResultCtx; onDetail: (el: HTMLElement) => void; /** A tag after the row's own (release 5: "לא מחזיק {חשיפה}"). */ extra?: ReactNode; /** The "בחרתי בזה" button (release 5). */ choose?: ReactNode; /** This is the option the person chose: the next steps open under it (A14). */ chosen?: boolean }) {
   const { mk, view, mode } = ctx;
   const value = mode === "real" ? o.real : o.nominal;
-  const figure = mk.nis(value, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, o, o.enteredFee ? { [ownTermsCopy.feeAbout]: o.enteredFee } : undefined);
+  const figure = mk.nis(value, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, { usedRules: o.usedRules, flags: o.run.flags, labels: o.run.labels }, o.enteredFee ? { [ownTermsCopy.feeAbout]: o.enteredFee } : undefined);
   const names = view.names;
   const tied = o.tiedWith.length > 0;
   const stale = o.staleRules[0];
@@ -88,7 +88,7 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
         <p className="text-sm text-caution-foreground flex items-start gap-2">
           <IconAlert size={16} className="text-caution shrink-0 mt-1" />
           <span>
-            {r2.result.staleRow} <bdi dir="ltr">{fmt.date(stale.since)}</bdi>.
+            <When iso={stale.since} lead={`${r2.result.staleRow} `} />.
           </span>
         </p>
       )}
@@ -119,7 +119,7 @@ function ChosenNext({ id }: { id: string }) {
       <ul className="flex flex-col gap-0.5 text-sm">
         {links.map((l) => (
           <li key={l.href}>
-            <Link to={l.href} className="text-link hover:underline min-h-9 inline-flex items-center">
+            <Link to={l.href} className="text-link hover:underline min-h-target inline-flex items-center">
               {l.label}
             </Link>
           </li>
@@ -160,13 +160,13 @@ function DepositRange({ o, ctx }: { o: RankedOption; ctx: ResultCtx }) {
             optional
           />
           {own !== undefined && (
-            <Button variant="quiet" className="self-start -ms-2 text-sm min-h-9" onClick={() => (ctx.setOwnRate?.(o.id, undefined), setOpen(false))}>
+            <Button variant="quiet" className="self-start -ms-2 text-sm min-h-target" onClick={() => (ctx.setOwnRate?.(o.id, undefined), setOpen(false))}>
               {t.reset}
             </Button>
           )}
         </div>
       ) : (
-        <Button variant="quiet" className="self-start -ms-2 text-sm min-h-9" onClick={() => setOpen(true)}>
+        <Button variant="quiet" className="self-start -ms-2 text-sm min-h-target" onClick={() => setOpen(true)}>
           {t.own}
         </Button>
       )}
@@ -190,6 +190,12 @@ function AssumptionRow({ o, ctx }: { o: RankedOption; ctx: ResultCtx }) {
           <Num value={c.value} size="cell" display={c.display} />
         </li>
       ))}
+      {/* on the line that prints the inflation it depends on, held on a card that may come to rest on a reading (fourth check, 2026-11-07) */}
+      {(o.mayRead || o.readingRules.length > 0) && (
+        <li className="inline-flex items-center">
+          <ReadingTag held={o.mayRead} shown={o.readingRules.length > 0} />
+        </li>
+      )}
     </ul>
   );
 }
@@ -245,7 +251,7 @@ export function AvailableCard({ ctx }: { ctx: ResultCtx }) {
       <Num value={kept} /> {r2.result.availableMid} {r2.result.availableIn[k.where]}{" "}
       {k.real !== null ? (
         <>
-          {r2.result.availableWorth} <Num value={mk.nis(k.real, "F-06", r2.result.availableIn[k.where]!, k.run ? { usedRules: k.run.rules, flags: k.run.flags } : undefined)} /> {r2.result.availableAt}
+          {r2.result.availableWorth} <Num value={mk.nis(k.real, "F-06", r2.result.availableIn[k.where]!, k.run ? { usedRules: k.run.rules, flags: k.run.flags, labels: k.run.labels } : undefined)} /> {r2.result.availableAt}
         </>
       ) : (
         r2.result.availableNoRun

@@ -1,0 +1,26 @@
+{
+  "id": "aynpltzyh",
+  "he": "אינפלציה",
+  "en": null,
+  "meaning": "עלייה כללית ומתמשכת של רמת המחירים במשק; כסף שלא גדל לפחות בקצב הזה מאבד מערכו",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account",
+    "government-bond",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.cbs.gov.il/he/Statistical/price_ind153h.pdf#page=2",
+    "title": "הלשכה המרכזית לסטטיסטיקה, סטטיסטיקל 153: מדד המחירים לצרכן, עמוד 2",
+    "publisher": "Central Bureau of Statistics",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

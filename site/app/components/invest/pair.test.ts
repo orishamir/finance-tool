@@ -4,7 +4,8 @@ import { buildInvest, knownIndices } from "../../lib/invest";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { buildWorkbenchBundle } from "../../lib/providers.server";
 import { entered } from "../../lib/value";
-import { allFunds, pickOfHeadline, repick, wholeParts } from "./pair";
+import { allFunds, pickOfHeadline, repick } from "./pair";
+import { wholeParts } from "../kit";
 
 describe("wholeParts", () => {
   it("rounds each part so they add up to the rounded sum", () => {
@@ -33,6 +34,34 @@ describe("wholeParts with a set total", () => {
     expect(wholeParts(xs, -42).reduce((a, x) => a + x, 0)).toBe(-42);
     expect(wholeParts(xs, -44).reduce((a, x) => a + x, 0)).toBe(-44);
     wholeParts(xs, -44).forEach((x, i) => expect(Math.abs(x - xs[i]!)).toBeLessThan(2));
+  });
+  it("never hands the rounding to a part whose amount is not written (pass 6: the hidden remainder took the missing shekels)", () => {
+    const xs = [693.4, 354.3, 2.9, 719.3, 5553.4]; // 7,323.3; the remainder's .9 would take a shekel first
+    const all = wholeParts(xs, 7323);
+    expect(all[2]).toBe(3);
+    const out = wholeParts(xs, 7323, [true, true, false, true, true]);
+    expect(out[2]).toBe(3); // only rounded
+    expect(out.reduce((a, x) => a + x, 0)).toBe(7323);
+    expect(out.filter((_, i) => i !== 2).reduce((a, x) => a + x, 0)).toBe(7320);
+  });
+});
+
+describe("wholeParts refuses a target a part away (independent check of pass 6: a dropped part's shekels went to the others)", () => {
+  it("accepts a target within a shekel a part, and a shekel and a half for its own rounding, of the parts' sum, and refuses one further off", () => {
+    const xs = [693.4, 354.3, 2.9, 719.3, 5553.4]; // 7,323.3
+    expect(() => wholeParts(xs, 7325)).not.toThrow();
+    expect(() => wholeParts(xs, 7329.7)).not.toThrow(); // 6.4 off: a shekel a part and the target's own rounding
+    expect(() => wholeParts(xs, 7331)).toThrow(/more than a shekel a part/);
+    // the pair bar with its remainder dropped: four parts, 2,000 ₪ short of the total written beside it
+    expect(() => wholeParts([693.4, 354.3, 719.3, 5553.4].map((x) => x - 500), 7323)).toThrow();
+    // only the parts that take the rounding give room: one written part of three
+    expect(() => wholeParts([10.2, 3, 4], 18, [true, false, false])).not.toThrow();
+    // the MSCI ACWI hedged pair of pass 7: 1.46 off with one written part, the target made of three rounded figures
+    expect(() => wholeParts([10.2, 3, 4], 18.66, [true, false, false])).not.toThrow();
+    expect(() => wholeParts([10.2, 3, 4], 20, [true, false, false])).toThrow();
+    // a figure near 10^18 is held to the double's precision, not to a shekel (independent check of pass 7: 512 ₪ off at 2.66e18)
+    expect(() => wholeParts([2.66e18, 3e15], 2.66e18 + 3e15 + 512)).not.toThrow();
+    expect(() => wholeParts([2.66e18, 3e15], 2.66e18 + 3e15 + 1e8)).toThrow();
   });
 });
 

@@ -1,0 +1,84 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "stamp": "{\"keys\":[{\"id\":\"list-holds-what-it-is-not\",\"problem\":\"The page says it lists the products the site knows but cannot yet explain, yet many of its entries are not products at all: a fee, a fund's label, a gold price benchmark, a role, an event, a grant. A reader cannot trust that the list says what is really missing, and a fee the site does handle elsewhere shows up as unknown, so the whole list reads as unchecked.\",\"where\":\"the cards of the list under the title and subtitle at the top (for example the cards of an exchange fee, a gold price, a rating company, a debt settlement)\",\"kind\":\"general\"},{\"id\":\"bare-code\",\"problem\":\"Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.\",\"where\":\"the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'\",\"kind\":\"general\"},{\"id\":\"fragment-no-noun\",\"problem\":\"Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.\",\"where\":\"the 'what was closed' lines of the open cards\",\"kind\":\"general\"},{\"id\":\"source-names-not-for-reader\",\"problem\":\"Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.\",\"where\":\"the source line under 'what is known' on a few cards\",\"kind\":\"general\"},{\"id\":\"same-promise-every-card\",\"problem\":\"Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.\",\"where\":\"the line starting 'when it is closed' at the bottom of each open card\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 0,
+        "why": "Finding 2 is about entries written in English letters, not about entries that aren't products, and no finding says the list holds things it shouldn't."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 says the codes in the coverage-status sections mean nothing to the reader, which is the bare internal code problem."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 4,
+        "why": "Finding 4 says the crossed-out dates mean nothing, which matches the 'what was closed' lines that are just a struck-out date and a bare number."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 1 only says the source lines are hard to read, and finding 2 is about product names, so neither covers sources named in English or as copies but labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 mentions the 'when it is closed' notes only because they are hard to read, and finding 3's point about cards looking alike is about the red tag, not the repeated promise."
+      }
+    ],
+    "liked": [],
+    "usd": 0.035132
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 0,
+        "why": "Finding 2 mentions the ETC and LBMA Gold cards, but it objects to English lettering, not to items that aren't products or a list that wasn't checked."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 says the codes in the coverage-status sections mean nothing to the reader, which is the bare-code complaint."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 4,
+        "why": "Finding 4 says the crossed-out dates mean nothing, which is a clear part of the complaint that the struck-date fragments are meaningless."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 1 touches the source lines only for their small grey text, and no finding mentions English or copied sources being labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 mentions the 'כשייסגר' notes only for readability, and finding 3's sameness is about the red tag, not the repeated promise."
+      }
+    ],
+    "liked": [],
+    "usd": 0.034292
+  },
+  "third": null,
+  "ranks": {
+    "list-holds-what-it-is-not": 0,
+    "bare-code": 4,
+    "fragment-no-noun": 4,
+    "source-names-not-for-reader": 0,
+    "same-promise-every-card": 0
+  },
+  "agreed": {
+    "list-holds-what-it-is-not": true,
+    "bare-code": true,
+    "fragment-no-noun": true,
+    "source-names-not-for-reader": true,
+    "same-promise-every-card": true
+  },
+  "against": {},
+  "usd": 0.069424
+}

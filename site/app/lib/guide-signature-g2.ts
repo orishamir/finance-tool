@@ -5,6 +5,7 @@ import {
   beneficiaryRelief,
   employeeCredit,
   employerLinePension,
+  withFee,
   insuranceCost,
   limitStanding,
   moneyStory,
@@ -94,9 +95,9 @@ export function hishtalmutTerms(bundle: Bundle, c: { employment: Employment; inc
   return { ...bundle.terms, hishtalmut: h };
 }
 
-/** The bundle's terms with the balance fee of another track (percent a year), the rest as it was. */
+/** The bundle's terms with the balance fee of another track (percent a year) for the whole run, its discount gone (A-19); the rest as it was. */
 export function withBalanceFee(terms: InstrumentTerms, feePct: number): InstrumentTerms {
-  return terms.fees ? { ...terms, fees: { ...terms.fees, balance: feePct / 100 } } : terms;
+  return terms.fees ? { ...terms, fees: withFee(terms.fees, "balance", feePct / 100) } : terms;
 }
 
 const rangeOf = (diffs: (number | null)[]): DiffRange | null => {
@@ -230,8 +231,6 @@ export interface ProvidentModel {
   diff: number | null;
   /** Rule 3: how far the difference moves with the bank or broker and with the fund manager. */
   range: { broker: DiffRange | null; manager: DiffRange | null };
-  /** The 15%-of-nominal sensitivity of the same lump sum (TXK-06 second limb, G-02): the tax and the amount left. */
-  alt: { tax: number; net: number } | null;
   /** The balance that would move to an annuity fund at the marker, in today's money, before any tax (F-45). */
   transfer: number | null;
   /** The lump sum's real gain, in today's money. */
@@ -247,9 +246,9 @@ export function providentModel(d: SignatureData, c: ProvidentCase): ProvidentMod
   const entered = { amount_now: c.amount, monthly_deposit: c.monthly };
   const months = c.years * 12;
   const profile = c.age === null ? {} : { ageAtStart: c.age };
-  const lumpRun = (feePct?: number) => {
-    if (!kgl) return null;
-    const run = runWith(kgl, entered, months, { profile, ...(feePct === undefined ? {} : { terms: withBalanceFee(kgl.terms, feePct) }) });
+  const lumpRun = (bundle: Bundle | undefined = kgl) => {
+    if (!bundle) return null;
+    const run = runWith(bundle, entered, months, { profile });
     return run && settled(run) ? run : null;
   };
   // The same profile on both sides (2026-10-26): from 60 the reduced brackets apply to the fund's lump sum (F-44 with F-42) and to the
@@ -264,13 +263,15 @@ export function providentModel(d: SignatureData, c: ProvidentCase): ProvidentMod
   const broker = brokerSide("brokerage-account");
   const diff = lump && broker ? lump.gain - broker.gain : null;
   const diffWith = (s: Side | null, b: Side | null) => (s && b ? s.gain - b.gain : null);
-  const sideOfFee = (fee: unknown) => {
-    const run = typeof fee === "number" ? lumpRun(fee) : null;
+  // D89: each end of the managers' range is that manager's binding documents, run on this plan, as the ranking prices them
+  const managerSide = (key: string) => {
+    const b = d.bundles[key];
+    const run = b ? lumpRun(b) : null;
     return run ? sideOf(run, c.amount) : null;
   };
   const range = {
     broker: lump ? rangeOf([diff, diffWith(lump, brokerSide("brokerage-best")), diffWith(lump, brokerSide("brokerage-worst"))]) : null,
-    manager: broker ? rangeOf([diff, diffWith(sideOfFee(d.facts.rangeMin?.value), broker), diffWith(sideOfFee(d.facts.rangeMax?.value), broker)]) : null,
+    manager: broker && d.bundles["kgl-manager-best"] && d.bundles["kgl-manager-worst"] ? rangeOf([diff, diffWith(managerSide("kgl-manager-best"), broker), diffWith(managerSide("kgl-manager-worst"), broker)]) : null,
   };
   const index = main ? main.series[main.series.length - 1]!.index : 1;
   const ageAtExit = c.age === null ? null : c.age + c.years;
@@ -282,7 +283,6 @@ export function providentModel(d: SignatureData, c: ProvidentCase): ProvidentMod
     broker,
     diff,
     range,
-    alt: main && main.detail.altNominal !== undefined ? { tax: (main.detail.altTaxAtExit ?? 0) / index, net: main.detail.altReal! } : null,
     transfer: main && main.detail.grossBalance !== undefined ? main.detail.grossBalance / index : null,
     realGain: main && main.detail.realGain !== undefined ? main.detail.realGain / index : null,
     overCeiling: ceiling !== null && c.amount + 12 * c.monthly > ceiling,

@@ -1,7 +1,7 @@
 // Formula registry: method.md F-ID → implementation (docs/architecture.md 3.4).
 // Wrapper records name their formulas; the engine dispatches through this map. A test checks every key
 // against docs/method.md, and that every F-ID in the method is either here or in `pending`.
-import { balanceFee, custodyFee, depositFee, feeForMonth, fixedFee, navBought, tradeCommission } from "./formulas/fees.ts";
+import { balanceFee, corporateEventFee, currentAccountFee, custodyFee, depositFee, feeForMonth, fixedFee, navBought, tradeCommission } from "./formulas/fees.ts";
 import { earlySettlement, limitStanding, moneyStory } from "./formulas/study-story.ts";
 import { kindRecord, stretchRange, trackingBeyondFees } from "./formulas/fund-gap.ts";
 import {
@@ -20,7 +20,7 @@ import {
   makamPrice,
   socialContributions,
 } from "./formulas/holding-tax.ts";
-import { mostCommonRate, rateRange } from "./formulas/account-interest.ts";
+import { breakCount, listFeeRange, mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { currencyExposureShare, stockExposureShare } from "./formulas/track-exposure.ts";
 import { companyAssets, groupFeeRange } from "./formulas/track-groups.ts";
 import { changeEffect, sweep } from "./formulas/step-effect.ts";
@@ -119,6 +119,7 @@ export const formulas = {
   "F-84": crossRate,
   "F-85": mostCommonRate,
   "F-86": rateRange,
+  "F-104": breakCount,
   "F-87": stockExposureShare,
   "F-88": currencyExposureShare,
   "F-89": changeEffect,
@@ -134,6 +135,9 @@ export const formulas = {
   "F-99": companyAssets,
   "F-100": groupFeeRange,
   "F-101": runSecurities,
+  "F-102": currentAccountFee,
+  "F-103": corporateEventFee,
+  "F-105": listFeeRange,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

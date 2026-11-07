@@ -6,11 +6,11 @@
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/rules";
-import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
+import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName } from "../copy";
 import { NumberLegend, RuleCard, SlottedText, type RuleUses } from "../components/provenance";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
-import { AskField, Button, Card, cx, DidYouKnow, Disclosure, FilterChip, FoldGroup, TableCols, Tag, useSoftSwap, type FactItem } from "../components/kit";
+import { AskField, Button, Card, cx, gershayim, DidYouKnow, Disclosure, FilterChip, FoldGroup, PHONE_GONE, TableCols, useSoftSwap, type FactItem } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, facetCounts, filtersToSearch, isFiltering, isNarrowing, matchRules, parseFilters, passesFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
@@ -447,7 +447,7 @@ export default function Rules() {
           {data.productChips.map((c) => (
             <li key={c.id} className="shrink-0">
               <FilterChip on={filters.product === c.id} count={counts.product.get(c.id) ?? 0} onClick={() => setFilters({ product: filters.product === c.id ? null : c.id, ids: [] })}>
-                {c.name}
+                {gershayim(c.name)}
               </FilterChip>
             </li>
           ))}
@@ -655,8 +655,8 @@ function ClaimResults({ law, shown, onAll, company, names, docs, pd, failed, lig
               <thead>
                 <tr>
                   <th scope="col">{words.cols.company}</th>
-                  <th scope="col" className="max-md:hidden">{words.cols.document}</th>
-                  <th scope="col" className="max-md:hidden">{words.cols.edition}</th>
+                  <th scope="col" className={PHONE_GONE}>{words.cols.document}</th>
+                  <th scope="col" className={PHONE_GONE}>{words.cols.edition}</th>
                   <th scope="col">{words.cols.where}</th>
                 </tr>
               </thead>
@@ -667,12 +667,12 @@ function ClaimResults({ law, shown, onAll, company, names, docs, pd, failed, lig
                       <bdi>{d.company}</bdi>
                       <span className="md:hidden block font-normal text-[13px] text-muted-foreground">{d.title}</span>
                     </th>
-                    <td className="max-md:hidden align-top">{d.title}</td>
-                    <td className="max-md:hidden align-top tabular-nums">{editionText(d.version) ?? words.noEdition}</td>
+                    <td className={cx(PHONE_GONE, "align-top")}>{d.title}</td>
+                    <td className={cx(PHONE_GONE, "align-top tabular-nums")}>{editionText(d.version) ?? words.noEdition}</td>
                     <td className="align-top">
                       <span className="flex flex-col lg:flex-row lg:flex-wrap lg:gap-x-2">
                         {d.pages.map((p) => (
-                          <a key={p} href={pageHref(d.url, p)} target="_blank" rel="noreferrer" className="text-link hover:underline whitespace-nowrap min-h-target lg:min-h-0 inline-flex items-center gap-1">
+                          <a key={p} href={pageHref(d.url, p)} target="_blank" rel="noreferrer" className="text-link hover:underline whitespace-nowrap min-h-target lg:min-h-0 lg:tap-area inline-flex items-center gap-1">
                             <WithNumber text={words.page} n={p} />
                             <span className="text-[13px]" aria-hidden="true">↗</span>
                           </a>
@@ -703,7 +703,7 @@ function ClaimResults({ law, shown, onAll, company, names, docs, pd, failed, lig
 }
 
 function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; open: boolean; onToggle: (open: boolean) => void; pd: PageData; failed: Set<BundleId>; lightById: Map<string, LightRule> }) {
-  const title = g.kind === "experience" ? copy.experience.title : g.kind === "month" ? `${copy.changing.month.replace("{month}", monthName(g.month!))} ${g.month!.slice(0, 4)}` : (copy.subgroups[g.file!] ?? topicName(g.file!));
+  const title = g.kind === "month" ? `${copy.changing.month.replace("{month}", monthName(g.month!))} ${g.month!.slice(0, 4)}` : (copy.subgroups[g.file!] ?? topicName(g.file!));
   const missing = open && g.ids.some((id) => !pd.rules[id]);
   const broken = missing && g.ids.some((id) => !pd.rules[id] && failed.has(lightById.get(id)!.shelf));
   // once opened, the cards stay in the page, so the fold can close by height
@@ -713,12 +713,6 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
     <FoldGroup variant="section" id={g.id} className={scrollMargin} title={title} count={g.ids.length} open={open} onOpenChange={onToggle}>
       {wasOpen.current && (
         <>
-          {g.kind === "experience" && (
-            <p className="text-sm text-muted-foreground max-w-measure flex flex-wrap items-center gap-2 pb-1">
-              <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
-              {copy.experience.line}
-            </p>
-          )}
           <ul className="grid gap-4 @3xl:grid-cols-2 pt-2">
             {g.ids.filter((id) => pd.rules[id]).map((id) => (
               <Card as="li" key={id} id={id} className={cx("min-w-0 [overflow-wrap:anywhere] flex flex-col", scrollMargin)}>

@@ -2,7 +2,7 @@
   "id": "mslvly-hayrvch",
   "he": "מסלולי האירוח",
   "en": null,
-  "meaning": "מסלול בפוליסת חיסכון שבית השקעות חיצוני מנהל את כספיו, והפוליסה עצמה נשארת אצל חברת הביטוח.",
+  "meaning": "מסלול השקעה שהגוף המוסדי מנהל באמצעות מנהל השקעות חיצוני, והחשבון עצמו נשאר אצל הגוף המוסדי",
   "where": [],
   "wrapper_ids": [],
   "variants": [
@@ -15,10 +15,10 @@
     "MGD-13"
   ],
   "source": {
-    "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf",
-    "title": "ISA, פעילות חברות בעלות רישיון השקעות 2025 (Funder-hosted copy)",
-    "publisher": "see title",
-    "strength": "primary-mirror",
-    "checked": "2026-10-22"
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2",
+    "title": "רשות שוק ההון: חוזר גופים מוסדיים 2022-9-30, ניהול מסלולי השקעה בקופת גמל, עמ' 2",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

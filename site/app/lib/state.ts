@@ -85,6 +85,7 @@ export interface StateV2 {
   version: 2;
   goals: Goal[];
   currentId?: string;
+  /** The bank where the person already has a current account (a fee snapshot id): the indices page leaves that bank's current account out of its row (D64). */
   bank?: string;
   /** The guide inputs (A-01, A-02, the P-05 amounts, age, employment), each a value object. */
   inputs: Record<string, ValueObject>;
@@ -162,6 +163,8 @@ export interface InputsLike {
   entered: Record<string, number>;
   age: number | null;
   employment: Employment | null;
+  /** A-17, entered on the fee page of a pension fund: the insurance cost as a percent of each deposit (G-12). Absent: not entered. */
+  insurance?: number | null;
 }
 
 const inputUnits: Record<string, ValueObject["unit"]> = {
@@ -180,15 +183,17 @@ export function inputsToRecord(i: InputsLike, today = isoToday()): Record<string
   for (const [k, v] of Object.entries(i.entered)) if (Number.isFinite(v)) out[k] = enteredValue(v, inputUnits[k] ?? "count", today);
   if (i.age !== null) out.age = enteredValue(i.age, "years", today);
   if (i.employment !== null) out.employment = { ...enteredValue(0, "text", today), value: i.employment };
+  if (typeof i.insurance === "number" && Number.isFinite(i.insurance)) out.insurance = enteredValue(i.insurance, "pct", today);
   return out;
 }
 
 export function inputsFromRecord(rec: Record<string, ValueObject>): InputsLike {
   const entered: Record<string, number> = {};
-  for (const [k, v] of Object.entries(rec)) if (k !== "age" && k !== "employment" && typeof v.value === "number") entered[k] = v.value;
+  for (const [k, v] of Object.entries(rec)) if (k !== "age" && k !== "employment" && k !== "insurance" && typeof v.value === "number") entered[k] = v.value;
   const age = typeof rec.age?.value === "number" ? rec.age.value : null;
   const e = rec.employment?.value;
-  return { entered, age, employment: e === "employee" || e === "self-employed" ? e : null };
+  const insurance = typeof rec.insurance?.value === "number" ? rec.insurance.value : null;
+  return { entered, age, employment: e === "employee" || e === "self-employed" ? e : null, insurance };
 }
 
 // ---------------------------------------------------------------- reading and checking a document
@@ -744,6 +749,15 @@ export function setCurrentBroker(id: string | null): void {
   });
 }
 
+/** The bank where the person already has a current account (D64); null clears it. */
+export function setOwnBank(id: string | null): void {
+  updateState((s) => {
+    const { bank: _drop, ...rest } = s;
+    void _drop;
+    return id ? { ...rest, bank: id } : rest;
+  });
+}
+
 /** One empty list for every render: a new `[]` each time made the index page price every account and fund again on any change (2026-10-28). */
 const NO_CUSTOM: CustomIndex[] = [];
 const NO_BROKERS: CustomBroker[] = [];
@@ -751,7 +765,7 @@ const NO_FUNDS: CustomFund[] = [];
 
 export function useInvestState() {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, customBrokers: snapshot.state.customBrokers ?? NO_BROKERS, customFunds: snapshot.state.customFunds ?? NO_FUNDS, broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker, saveBroker: saveCustomBroker, removeBroker: removeCustomBroker, saveFund: saveCustomFund, removeFund: removeCustomFund };
+  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, customBrokers: snapshot.state.customBrokers ?? NO_BROKERS, customFunds: snapshot.state.customFunds ?? NO_FUNDS, broker: snapshot.state.broker ?? null, bank: snapshot.state.bank ?? null, setBank: setOwnBank, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker, saveBroker: saveCustomBroker, removeBroker: removeCustomBroker, saveFund: saveCustomFund, removeFund: removeCustomFund };
 }
 
 // ---------------------------------------------------------------- saved comparisons

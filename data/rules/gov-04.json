@@ -34,7 +34,7 @@
         "GOV-04"
       ],
       "state": "sourced",
-      "notes": "Face value per order unit in the auction: quantities in multiples of NIS 100 face value (s.3.1.2.3). This is the auction's unit for clearing-house members; the trading unit and minimum trade for an individual on TASE were not readable (GOV open question 7)."
+      "notes": "Face value per order unit in the auction: quantities in multiples of NIS 100 face value (s.3.1.2.3). This is the auction's unit for clearing-house members; the TASE trading unit and minimum order for an individual are GOV-24."
     },
     "non_competitive_cap": {
       "value": 10000000,

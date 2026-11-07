@@ -496,8 +496,9 @@ describe("S38 switching cost, F-66", () => {
     expect(r.cost.rule_ids).toEqual(expect.arrayContaining(["TXK-04", "PF-23"]));
   });
 
-  it("a hishtalmut moves whole: a part is not allowed (PF-18, KH-17); the whole costs nothing (TXH-17)", () => {
-    const whole = { kind: "provident", wrapper: "keren-hishtalmut", ruleIds: ["TXH-17", "TXH-19"], wholeOnlyRuleIds: ["PF-18", "KH-17"] } as const;
+  it("a hishtalmut moves to another fund whole: a part is not allowed (PF-18, KH-17); the whole costs nothing (TXH-19)", () => {
+    // a track switch inside the fund may move part (KH-18, PF-23; finance review, 2026-11-07): review-r34.test.ts
+    const whole = { kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["TXH-17", "TXH-19"], wholeOnlyRuleIds: ["PF-18", "KH-17"] } as const;
     const part = { ...whole, share: 0.5 };
     const no = switchingCost(part, part, 36, ctx);
     expect(no).toEqual({ formula: "F-66", kind: "not-allowed", code: "hishtalmut-whole-only", ruleIds: ["PF-18", "KH-17"] });
@@ -642,11 +643,11 @@ describe("F-65 fund variants on a five-row fixture list", () => {
     expect(r.run).toBeUndefined();
   });
 
-  it("an accumulating foreign-domiciled fund is computed, labelled secondary, listed and not ranked (G-18)", () => {
+  it("an accumulating foreign-domiciled fund is computed, labelled a reading, listed and not ranked (G-18)", () => {
     const r = get("tase:9000004");
     expect(r.kind).toBe("listed-not-ranked");
     expect(r.reasons[0]).toMatchObject({ code: "gap", gapIds: ["G-18"] });
-    expect(r.labels).toContainEqual({ code: "secondary-source", ruleId: "TXF-11" });
+    expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
     expect(r.run!.real).toBeGreaterThan(0);
     expect(r.rank).toBeUndefined();
     // Bought in shekels on TASE: no FX conversion line.

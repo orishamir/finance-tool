@@ -15,9 +15,8 @@ import { Tpl } from "../exposure-mode/tpl";
 import { FlipSentence } from "./sensitivity";
 import { Button, Callout, cx, PercentField, Sentence, Tag } from "../kit";
 import { relativeGap } from "@finance-tool/engine";
-import { IconAlert, IconCheck, IconExternal } from "../icons";
-import { Num, RuleRef, RulesLine, StrengthLabel } from "../provenance";
-import { strengthOf } from "../../lib/value";
+import { IconAlert, IconCheck } from "../icons";
+import { Num, RuleRef, RulesLine } from "../provenance";
 import type { ResultCtx } from "./ctx";
 import { shown } from "../../lib/review";
 
@@ -138,10 +137,10 @@ function LimitationLine({ ctx, onField }: { ctx: ResultCtx; onField: (f: FieldKe
         <Tpl t={t.text} vars={{ years: <Num value={goalValueObjects(ctx.bundle, ctx.g).horizon} display={fmt.number(ctx.g.horizonYears)} /> }} />
       </p>
       <p className="text-sm flex flex-wrap items-center gap-x-4">
-        <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => onField("return")}>
+        <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={() => onField("return")}>
           {t.enterReturn}
         </button>
-        <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => onField("horizonYears")}>
+        <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={() => onField("horizonYears")}>
           {t.orYears}
         </button>
       </p>
@@ -161,7 +160,7 @@ function ParameterRateLine({ ctx }: { ctx: ResultCtx }) {
       <p className="flex flex-wrap items-center gap-x-1.5">
         <Tpl t={t.text} vars={{ rate: <Num value={lead.rate} />, name: <bdi>{lead.name}</bdi> }} />
         {!open && (
-          <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => setOpen(true)}>
+          <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={() => setOpen(true)}>
             {t.enter}
           </button>
         )}
@@ -237,7 +236,7 @@ function NextStepLine({ ctx }: { ctx: ResultCtx }) {
       <Tpl t={t.text} vars={{ x: <Num value={row.cost} /> }} />
       {!top.cashLike && <span>{t.stocks}</span>}
       {shown("/idle-cash") && (
-        <Link to={`/idle-cash?balance=${g.amountNow}&keep=${g.available}`} className="text-link min-h-9 inline-flex items-center hover:underline">
+        <Link to={`/idle-cash?balance=${g.amountNow}&keep=${g.available}`} className="text-link min-h-target inline-flex items-center hover:underline">
           {t.link}
         </Link>
       )}
@@ -516,7 +515,7 @@ export function DetailSheetBody({ ctx, option, headId }: { ctx: ResultCtx; optio
             <div key={r.key} className="readout-row">
               <dt>{r.label}</dt>
               <dd>
-                <Num value={mk.nis(breakdown[r.key], r.formula, r.label, { usedRules: ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules, flags: run.flags })} />
+                <Num value={mk.nis(breakdown[r.key], r.formula, r.label, { usedRules: ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules, flags: run.flags, labels: run.labels })} />
               </dd>
             </div>
           ))}
@@ -559,7 +558,7 @@ export function HorizonDefaultedNote({ bundle, g, presetName, onChange, figures 
           <Tpl t={scnCompare.horizonFigures.first} vars={{ a: figures.a }} />; <Tpl t={scnCompare.horizonFigures.rest} vars={{ n: fmt.number(g.horizonYears), b: figures.b }} />.
         </span>
       )}
-      <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={onChange}>
+      <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={onChange}>
         {h.change}
       </button>
     </div>
@@ -599,37 +598,6 @@ export function HorizonHonestLine({ ctx, fit }: { ctx: ResultCtx; fit: FitTableD
         {t.link}
       </Link>
       .
-    </p>
-  );
-}
-
-/**
- * MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500 by holding length, under the P-04 line and whenever equity options
- * are unranked for want of a return. A past record, not a forecast; nothing from it feeds a run or fills a field (D9, D11).
- */
-export function PastRecordLine({ ctx, fit }: { ctx: ResultCtx; fit: FitTableData | undefined }) {
-  const rec = ctx.bundle.pastRecord;
-  if (!rec) return null;
-  const f = rec.figures;
-  const keys = ["rolling_5y_min", "rolling_5y_max", "rolling_10y_min", "rolling_10y_max", "rolling_20y_min", "rolling_20y_max"] as const;
-  if (keys.some((k) => !f[k])) return null;
-  const row = fit?.rows.find((r) => r.classification === "מניות");
-  const min = row && typeof row.minYears.value === "number" ? row.minYears.value : null;
-  const honest = min !== null && showsHorizonHonestLine(ctx.g.horizonYears, min);
-  const noReturn = headlineState(ctx.view).fields.includes("return");
-  if (!honest && !noReturn) return null;
-  // one strength mark for the whole sentence (below), so the six figures carry none of their own
-  const n = (k: (typeof keys)[number]) => <Num value={f[k]!} mark={false} />;
-  const strength = strengthOf(f.rolling_5y_min!);
-  const weak = strength === "secondary" || strength === "institution";
-  return (
-    <p className="text-sm max-w-measure text-muted-foreground" data-past-record>
-      <Tpl t={scnCompare.pastRecord.text} vars={{ src: <bdi dir="ltr">J.P. Morgan Asset Management, 1950–2025</bdi>, min5: n("rolling_5y_min"), max5: n("rolling_5y_max"), min10: n("rolling_10y_min"), max10: n("rolling_10y_max"), min20: n("rolling_20y_min"), max20: n("rolling_20y_max") }} />{" "}
-      {weak && <StrengthLabel strength={strength} />}{" "}
-      <a href={rec.source.url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline">
-        {scnCompare.pastRecord.link}
-        <IconExternal size={14} />
-      </a>
     </p>
   );
 }

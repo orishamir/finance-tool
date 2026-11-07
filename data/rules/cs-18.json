@@ -2,7 +2,7 @@
   "id": "CS-18",
   "title": "Management fees: who pays, until when, and the legal cap after 21",
   "title_he": "דמי הניהול: מי משלם, עד מתי, ומה התקרה אחר כך",
-  "text_he": "לפי החוק הביטוח הלאומי נושא בעלויות ניהול החשבונות, ולפי הביטוח הלאומי זה עד גיל המענק האחרון; אחרי כן דמי הניהול יורדים מהחיסכון. עד אז הביטוח הלאומי משלם לקופות הגמל שיעור שנתי מהנכסים הצבורים, ולבנקים עמלת תפעול לפי שורת דיווח. אחרי הגיל הזה חלה התקרה הכללית של קופות הגמל, כי קופת החיסכון לילד היא קופת גמל להשקעה: יש תקרה לדמי ניהול מהיתרה ותקרה לדמי ניהול מהפקדה, וכל חברה קובעת את השיעור שלה בתוכן. לעמית בוגר החברה רשאית להעלות את דמי הניהול רק בהודעה נפרדת ובמועד שהחוזר קובע, והנחה נשארת לפחות לתקופת המינימום.",
+  "text_he": "לפי החוק הביטוח הלאומי נושא בעלויות ניהול החשבונות, ולפי הביטוח הלאומי זה עד גיל המענק האחרון; אחרי כן דמי הניהול יורדים מהחיסכון. עד אז הביטוח הלאומי משלם לקופות הגמל שיעור שנתי מהנכסים הצבורים, ולבנקים עמלת תפעול לפי שורת דיווח. אחרי הגיל הזה חלה התקרה הכללית של קופות הגמל, כי קופת החיסכון לילד היא קופת גמל להשקעה: יש תקרה לדמי ניהול מהיתרה ותקרה לדמי ניהול מהפקדה, וכל חברה קובעת את השיעור שלה בתוכן. לעמית בוגר החברה רשאית להעלות את דמי הניהול רק בהודעה נפרדת ובמועד שהחוזר קובע, והנחה נשארת לפחות לתקופת המינימום. חברות שנבחרו במכרז החשב הכללי משנת 2016 אינן רשאיות להעלות אחרי גיל 21 את דמי הניהול מעל השיעור שהתחייבו אליו במכרז והיה בתוקף לפני גיל 21.",
   "figure_names_he": {
     "nii_fee_to_funds": "דמי הניהול שהביטוח הלאומי משלם לקופות",
     "balance_cap_after_21": "תקרת דמי הניהול מהיתרה אחרי גיל המענק האחרון",
@@ -36,7 +36,7 @@
         "PF-02"
       ],
       "state": "sourced",
-      "notes": "The cap on the yearly fee from the balance once NII stops paying (age 21): the child-savings fund is a kupat gemel lehashkaa to which every kupat gemel lehashkaa provision applies (circular 2022-9-29 s.1), reg. 2(ב)'s exclusion list does not name it (Nevo consolidated text), and the CMA standard child bylaw caps the rate at the legislative maximum (s.31.1)."
+      "notes": "The cap on the yearly fee from the balance once NII stops paying (age 21): the child-savings fund is a kupat gemel lehashkaa to which every kupat gemel lehashkaa provision applies (circular 2022-9-29 s.1), reg. 2(ב)'s exclusion list does not name it (ק\"ת 7131 as made, file pp.4-5; the Nevo consolidated text, a lead, agrees), and the CMA standard child bylaw caps the rate at the legislative maximum (s.31.1)."
     },
     "deposit_cap_after_21": {
       "value": 4,
@@ -81,21 +81,22 @@
     }
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_316719.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע\"ו-2015, ספר החוקים 2511 (30.11.2015), סעיף 28: חוק הביטוח הלאומי (תיקון מס' 164)",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע\"ו-2015, ספר החוקים 2511 (30.11.2015), סעיף 28: חוק הביטוח הלאומי (תיקון מס' 164)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.51, s.74ב(ה)",
-      "locator_he": "עמוד 51, סעיף 74ב(ה)",
-      "page": 51,
-      "checked": "2026-10-25"
+      "locator": "file p.29 (gazette p.245), s.28(3), s.74ב(ה) (NII bears the cost of managing the accounts)",
+      "locator_he": "עמוד הקובץ 29 (עמוד ספר החוקים 245), סעיף 28(3), סעיף 74ב(ה)",
+      "page": 29,
+      "quote": "המוסד יישא בעלויות הנובעות מניהולם של החשבונות לפי סימן זה",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
@@ -159,23 +160,10 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.9, s.31.1",
-      "locator_he": "עמוד 9, סעיף 31.1",
+      "locator": "p.9, s.31.1; p.10, ss.32.1, 33.1-33.2",
+      "locator_he": "עמוד 9, סעיף 31.1; עמוד 10, סעיפים 32.1, 33.1-33.2",
       "page": 9,
       "quote": "בשיעור ____ שאינו עולה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע בהסדר התחיקתי",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
-      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
-      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.10, ss.32.1, 33.1-33.2",
-      "locator_he": "עמוד 10, סעיפים 32.1, 33.1-33.2",
-      "page": 10,
       "checked": "2026-10-25"
     },
     {
@@ -200,16 +188,17 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), נוסח משולב (Nevo mirror, to ק\"ת 9942)",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 2(ב)",
-      "locator_he": "תקנה 2(ב)",
-      "checked": "2026-10-25"
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=22",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.22, answers 230 to 232",
+      "locator_he": "עמוד 22, תשובות 230 עד 232",
+      "quote": "לא יכולה להעלות את דמי",
+      "checked": "2026-11-07"
     }
   ]
 }

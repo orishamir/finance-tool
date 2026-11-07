@@ -1,8 +1,8 @@
 {
   "id": "BANK-38",
-  "title": "Five banks' savings plans: monthly standing orders, app saving and stepped rates",
-  "title_he": "חמישה בנקים: תוכניות חיסכון בהוראת קבע, חיסכון באפליקציה וריבית מדורגת",
-  "text_he": "המבנים שנמצאו: הפקדה חודשית בהוראת קבע (ביהב לשנתיים, בריבית משתנה על הפריים; גם בדיסקונט, בבינלאומי ובמסד); חיסכון גמיש באפליקציה (בלאומי: כמה הפקדות ביום בתוך טווח יומי, לשנה, בריבית הפריים פחות מרווח, עם תחנות יציאה אחרי חצי שנה ואחר כך כל חודש, וביטול באותו יום עסקים); וחיסכון רב־שנתי בריבית שעולה משנה לשנה (ביהב). לאומי כותב שבסוף התקופה הכסף חוזר אוטומטית לעו״ש ושאין עמלה על ניהול פיקדון. בנקים אחרים לא נבדקו; החוזים של בנק הפועלים נקראו בנפרד.",
+  "title": "Eight banks' savings plans: 47 monthly standing-order plans, and how their deposits, rates and withdrawals work",
+  "title_he": "שמונה בנקים: 47 תוכניות חיסכון בהוראת קבע חודשית, ואיך עובדות בהן ההפקדות, הריבית והמשיכה",
+  "text_he": "בשמונה בנקים נמצאו 47 תוכניות חיסכון שמפקידים אליהן בהוראת קבע חודשית: בבינלאומי 14, במרכנתיל 7, בדיסקונט 6, בבנק הפועלים 5, במזרחי טפחות 5, בלאומי 4, במסד 4 ובבנק יהב 2, ועוד אחת בלוח הריביות של יהב. כל בנק קובע בעצמו איך התוכנית עובדת: בבנק יהב הריבית בחיסכון חרמון נקבעת לפי מועד כל הפקדה, במזרחי טפחות אפשר למשוך חלק בתחנת יציאה ולהשאיר בתוכנית את ההפקדות האחרונות, ובמרכנתיל הריבית יורדת כשההפקדות לא רצופות. במסמכים שנקראו אין תנאי גיל או השתייכות לתוכניות האלה; בבינלאומי צריך לפתוח חשבון בבנק. לאומי מציע גם חיסכון באפליקציה, עם כמה הפקדות ביום.",
   "figure_names_he": {
     "yahav_flexible_min_monthly": "הפקדה חודשית מינימלית בחיסכון הגמיש (יהב)",
     "leumi_touch_daily_min": "סכום מינימלי ליום בחיסכון בנגיעה (לאומי)",
@@ -12,10 +12,11 @@
   "dimensions": [
     "liquidity-lockup",
     "minimum",
-    "deposit-ceiling"
+    "deposit-ceiling",
+    "eligibility"
   ],
   "likely_to_change": "yes",
-  "recheck_date": "2027-04-26",
+  "recheck_date": "2027-05-07",
   "figures": {
     "yahav_flexible_min_monthly": {
       "value": 200,
@@ -26,7 +27,7 @@
         "publisher": "Bank Yahav",
         "strength": "institution"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -35,7 +36,7 @@
         "BANK-38"
       ],
       "state": "sourced",
-      "notes": "Bank Yahav \"חסכון גמיש חדש\": monthly standing order, from NIS 200 (BANK-38)."
+      "notes": "Bank Yahav \"חסכון גמיש חדש\": \"פיקדון בהוראת קבע חודשית לתקופה של שנתיים בריבית משתנה על בסיס הפריים\", from NIS 200 (board 13_26, p.2, in force from 06/10/2026, re-read 2026-11-07; BANK-38)."
     },
     "leumi_touch_daily_min": {
       "value": 10,
@@ -79,7 +80,7 @@
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -118,53 +119,71 @@
   "sources": [
     {
       "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
-      "title": "לאומי: לוח ריביות",
-      "title_he": "לאומי: לוח ריביות",
+      "title": "לאומי: שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון (נכון ליום 08.11.2026)",
+      "title_he": "לאומי: שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון (נכון ליום 08.11.2026)",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.33",
-      "locator_he": "עמוד 33",
-      "checked": "2026-10-31"
+      "locator": "pp.33 to 35",
+      "locator_he": "עמודים 33 עד 35",
+      "quote": "דגם :503/3",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
-      "title": "לאומי: לוח ריביות",
-      "title_he": "לאומי: לוח ריביות",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
+      "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_430_284.pdf",
+      "title": "מזרחי-טפחות: תנאי פיקדון 284",
+      "title_he": "מזרחי-טפחות: תנאי פיקדון 284",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.34",
-      "locator_he": "עמוד 34",
-      "checked": "2026-10-31"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "12 הפקדות אחרונות והרווחים עליהם",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
-      "title": "לאומי: לוח ריביות",
-      "title_he": "לאומי: לוח ריביות",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
+      "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_310_286.pdf",
+      "title": "מזרחי-טפחות: תנאי פיקדון 286",
+      "title_he": "מזרחי-טפחות: תנאי פיקדון 286",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.35",
-      "locator_he": "עמוד 35",
-      "checked": "2026-10-31"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "סכום מזערי להשארה במשיכה חלקית",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/General/chozim%20achidim/310-93%20-%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F%20%D7%94%D7%9C%D7%95%D7%95%D7%90%D7%95%D7%AA%20%D7%90%D7%95%D7%9F%20%D7%A7%D7%95%D7%9C%20(002)%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9-PDFUA.pdf",
-      "title": "לאומי: תנאים כלליים 310-93",
-      "title_he": "לאומי: תנאים כלליים 310-93",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.10, s.2.5.2",
-      "locator_he": "עמוד 10, סעיף 2.5.2",
-      "page": 10,
-      "quote": "פיקדון בתשלומים",
-      "checked": "2026-10-31"
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "פיקדון בהוראת קבע חודשית לתקופה של שנתיים בריבית משתנה על בסיס הפריים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/פקדונות/gamish.pdf",
@@ -177,54 +196,29 @@
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "quote": "פיקדון שקלי המשלב הפקדה בהוראת קבע חודשית יחד עם אפשרות להפקדות מזדמנות",
+      "quote": "ניתן לבצע משיכה חלקית של הסכום בפיקדון, בכל תחנת יציאה",
       "checked": "2026-10-31"
     },
     {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
+      "title_he": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "pp.2, 4",
-      "locator_he": "עמודים 2, 4",
-      "page": 2,
-      "checked": "2026-10-25"
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221",
-      "title": "דיסקונט: רשימת חסכונות",
-      "title_he": "דיסקונט: רשימת חסכונות",
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "דיסקונט: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
+      "title_he": "דיסקונט: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
       "publisher": "Discount Bank",
       "publisher_he": "בנק דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "quote": "חיסכון ליעד קצר",
-      "checked": "2026-10-31"
-    },
-    {
-      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/standingorders/",
-      "title": "הבינלאומי: הוראות קבע",
-      "title_he": "הבינלאומי: הוראות קבע",
-      "publisher": "First International Bank",
-      "publisher_he": "הבנק הבינלאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "סכומי הפקדה להוראה - 100 ₪ ועד 2,000 ₪",
-      "checked": "2026-10-31"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/advanced/",
-      "title": "מסד: אופק להשתלמות",
-      "title_he": "מסד: אופק להשתלמות",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "בניכוי 2%",
-      "checked": "2026-10-31"
+      "quote": "פיקדון בהוראת קבע",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
@@ -234,19 +228,84 @@
       "publisher_he": "בנק מרכנתיל דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "quote": "ריבית אי רצף תרד ב-0.1%",
-      "checked": "2026-10-31"
+      "quote": "ריבית אי רצף תרד ב-0.04%",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-for-kids/",
-      "title": "מזרחי-טפחות: פיקדונות לטווח ארוך",
-      "title_he": "מזרחי-טפחות: פיקדונות לטווח ארוך",
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "מרכנתיל: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
+      "title_he": "מרכנתיל: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פיקדון בהוראת קבע",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+      "title": "מזרחי-טפחות: מוצרי שוק הכסף, פיקדונות נוספים",
+      "title_he": "מזרחי-טפחות: מוצרי שוק הכסף, פיקדונות נוספים",
       "publisher": "Mizrahi Tefahot Bank",
       "publisher_he": "בנק מזרחי טפחות",
       "kind": "institution_doc",
       "strength": "institution",
-      "quote": "פיקדונות ענבים",
-      "checked": "2026-10-31"
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבינלאומי: ריביות על פיקדונות",
+      "title_he": "הבינלאומי: ריביות על פיקדונות",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פיקדונות בהוראת קבע",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/standingorders/",
+      "title": "הבינלאומי: הוראות קבע",
+      "title_he": "הבינלאומי: הוראות קבע",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "ההפקדה בפיקדון מותנת בפתיחת חשבון בבנק",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+      "title": "מסד: ריביות על פיקדונות",
+      "title_he": "מסד: ריביות על פיקדונות",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פיקדונות בהוראת קבע",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/all-savings/hermon-monthly-deposit/",
+      "title": "בנק יהב: חיסכון חרמון חודשי",
+      "title_he": "בנק יהב: חיסכון חרמון חודשי",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "הפקדות בשנתיים הראשונות - P-3.5%",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/all-savings/adir-monthly-deposit/",
+      "title": "בנק יהב: חיסכון מונדיאל",
+      "title_he": "בנק יהב: חיסכון מונדיאל",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "מסלול - הפקדה חודשית בהוראת קבע",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
@@ -264,36 +323,6 @@
       "title_he": "לאומי: חסכונות",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/",
-      "title": "הבינלאומי: סוגי חסכונות",
-      "title_he": "הבינלאומי: סוגי חסכונות",
-      "publisher": "First International Bank",
-      "publisher_he": "הבנק הבינלאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
-      "title": "מסד: סוגי חסכונות",
-      "title_he": "מסד: סוגי חסכונות",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
-      "title": "דיסקונט: חיסכון וריבית",
-      "title_he": "דיסקונט: חיסכון וריבית",
-      "publisher": "Discount Bank",
-      "publisher_he": "בנק דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25"

@@ -2,13 +2,15 @@
   {
     "term_he": "קרן חדשה מקיפה",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=3"
     },
     "variants_he": [
       "קרן פנסיה מקיפה חדשה",
       "קרן פנסיה חדשה מקיפה",
-      "קרנות חדשות"
+      "קרנות חדשות",
+      "קרן פנסיה מקיפה",
+      "פנסיה מקיפה"
     ],
     "explain_he": "קרן פנסיה שחוסכת לקצבה חודשית בפרישה, וכוללת גם ביטוח למקרה נכות ולמשפחה במקרה מוות",
     "rule_ids": [
@@ -22,7 +24,7 @@
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=3",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -37,14 +39,14 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Provident Funds Law s.1 and the Management Fees Regulations write 'קרן חדשה מקיפה' (REG-21 quotes 'קרן ותיקה או קרן חדשה מקיפה'; read via Wikisource mirror). The 2011 extension order (gov.il scan, primary) writes 'קרן פנסיה מקיפה חדשה' (PEN-08); PEN summary and Terms table also give 'קרן פנסיה חדשה מקיפה' as used in ads and statements. Pension-Net classifies these funds as 'קרנות חדשות'. The starting-list order 'קרן פנסיה מקיפה (חדשה)' is not used by any source. Disability and survivors detail rests on Mor's bylaws only (institution; PEN OQ13).",
+    "notes": "Provident Funds Law s.1 and the Management Fees Regulations write 'קרן חדשה מקיפה' (REG-21 quotes 'קרן ותיקה או קרן חדשה מקיפה'; read via Wikisource mirror). The 2011 extension order (gov.il scan, primary) writes 'קרן פנסיה מקיפה חדשה' (PEN-08); PEN summary and Terms table also give 'קרן פנסיה חדשה מקיפה' as used in ads and statements. Pension-Net classifies these funds as 'קרנות חדשות'. The starting-list order 'קרן פנסיה מקיפה (חדשה)' is not used by any source. Disability and survivors detail rests on Mor's bylaws only (institution; PEN OQ13). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-chdshh-mkyph"
   },
   {
     "term_he": "קרן חדשה כללית",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf"
     },
     "variants_he": [
       "קרן פנסיה כללית",
@@ -73,14 +75,14 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Law and Fees Regulations write 'קרן חדשה כללית'; the extension order writes 'קרן פנסיה כללית' and defines it only as a new pension fund not entitled to designated bonds. That excess deposits above the comprehensive ceiling move to the same manager's general fund comes from Mor's bylaws (institution). Not an eligible fund for the state return top-up (PEN-10, REG-21). Pension-Net label: 'קרנות כלליות'.",
+    "notes": "Law and Fees Regulations write 'קרן חדשה כללית'; the extension order writes 'קרן פנסיה כללית' and defines it only as a new pension fund not entitled to designated bonds. That excess deposits above the comprehensive ceiling move to the same manager's general fund comes from Mor's bylaws (institution). Not an eligible fund for the state return top-up (PEN-10, REG-21). Pension-Net label: 'קרנות כלליות'. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-chdshh-kllyt"
   },
   {
     "term_he": "קרן ותיקה",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2"
     },
     "variants_he": [
       "קרן פנסיה ותיקה"
@@ -94,7 +96,7 @@
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -117,14 +119,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Meaning (approved before 1.1.1995) is from the PEN Terms table citing extension order s.2(ה), not from a numbered rule. PEN 'Left out' says old funds are closed to new members, but that line carries no source. Differences found: no commutation (TXP-24), no recognized annuity (TXP-12); covered by the return top-up (REG-21).",
+    "notes": "Meaning (approved before 1.1.1995) is from the PEN Terms table citing extension order s.2(ה), not from a numbered rule. PEN 'Left out' says old funds are closed to new members, but that line carries no source. Differences found: no commutation (TXP-24), no recognized annuity (TXP-12); covered by the return top-up (REG-21). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-vtykh"
   },
   {
     "term_he": "קופת גמל לקצבה",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 3",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=3"
     },
     "variants_he": [
       "קופת גמל לקיצבה",
@@ -139,10 +141,11 @@
       "TXP-24"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 3",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=3",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "law",
@@ -152,7 +155,7 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Official spellings disagree: Provident Funds Law 'לקצבה'; Income Tax Ordinance s.45A 'לקיצבה' (TXP-01); Form 106 uses both ('לקופ\"ג לקצבה' and 'לקופ\"ג לקיצבה', TXP-26). In law the term includes pension funds (REG-17, TXP-24); the non-insurance product that apps call a retirement 'קופת גמל' is the separate entry 'תגמולים ואישית לפיצויים'.",
+    "notes": "Official spellings disagree: Provident Funds Law 'לקצבה'; Income Tax Ordinance s.45A 'לקיצבה' (TXP-01); Form 106 uses both ('לקופ\"ג לקצבה' and 'לקופ\"ג לקיצבה', TXP-26). In law the term includes pension funds (REG-17, TXP-24); the non-insurance product that apps call a retirement 'קופת גמל' is the separate entry 'תגמולים ואישית לפיצויים'. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "kvpt-gml-lktzbh-d"
   },
   {
@@ -173,10 +176,11 @@
       "PEN-35"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 2",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "app",
@@ -188,14 +192,14 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Label is the Gemel-Net FUND_CLASSIFICATION value (primary). The law text read (s.13(א)(4)) covers only that tagmulim and personal-severance approvals apply to pre-2008 money; 'no pooled insurance' and 'pays an annuity only by transfer' rest on Mor's standard bylaws and product page (institution). Current bylaws title: 'קופת גמל לחיסכון, קופת גמל לתגמולים וקופת גמל אישית לפיצויים'. The default track of this product was not read (PEN OQ18).",
+    "notes": "Label is the Gemel-Net FUND_CLASSIFICATION value (primary). The law text read (s.13(א)(4)) covers only that tagmulim and personal-severance approvals apply to pre-2008 money; 'no pooled insurance' and 'pays an annuity only by transfer' rest on Mor's standard bylaws and product page (institution). Current bylaws title: 'קופת גמל לחיסכון, קופת גמל לתגמולים וקופת גמל אישית לפיצויים'. The default track of this product was not read (PEN OQ18). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "tgmvlym-vayshyt-lpytzvyym"
   },
   {
     "term_he": "קרן נבחרת",
     "term_source": {
       "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf#page=4"
     },
     "variants_he": [
       "קרן פנסיה נבחרת"
@@ -207,7 +211,7 @@
     ],
     "source": {
       "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf#page=4",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -225,7 +229,7 @@
     "term_he": "קופת ברירת מחדל",
     "term_source": {
       "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf#page=4"
     },
     "variants_he": [],
     "explain_he": "הקופה שאליה המעסיק מפקיד את כספי הפנסיה כשלא בוחרים קופה בעצמכם",
@@ -235,7 +239,7 @@
     ],
     "source": {
       "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf#page=4",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -284,7 +288,7 @@
     "term_he": "פנסיית חובה לעצמאים",
     "term_source": {
       "title": "תקרות וסכומים לשנת 2026 (Harel)",
-      "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf"
+      "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf#page=1"
     },
     "variants_he": [],
     "explain_he": "חובה בחוק על עצמאים להפקיד כל שנה אחוז מההכנסה לקופה לקצבה, עד גובה השכר הממוצע",
@@ -310,7 +314,7 @@
     "term_he": "תקופת המתנה",
     "term_source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf"
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=4"
     },
     "variants_he": [],
     "explain_he": "התקופה מתחילת עבודה חדשה ועד שהמעסיק חייב להתחיל להפריש לפנסיה, אם לא הייתה לכם פנסיה קודם",
@@ -319,7 +323,7 @@
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=4",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -336,7 +340,7 @@
     "term_he": "תגמולי עובד",
     "term_source": {
       "title": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016 (Harel)",
-      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf"
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf#page=1"
     },
     "variants_he": [],
     "explain_he": "הסכום שמנוכה מהשכר שלכם ומופקד לחיסכון בפנסיה, כחלק שלכם בהפקדה",
@@ -346,7 +350,7 @@
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=3",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -395,8 +399,8 @@
   {
     "term_he": "מרכיב הפיצויים",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=5"
     },
     "variants_he": [
       "פיצויים"
@@ -411,7 +415,7 @@
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=5",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -422,7 +426,7 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Unlike the benefits component, it can be withdrawn on leaving a job, subject to the law and the employer relationship (PEN-30, PEN-31). Tax on it: TXP-11, TXP-19 to TXP-21.",
+    "notes": "Unlike the benefits component, it can be withdrawn on leaving a job, subject to the law and the employer relationship (PEN-30, PEN-31). Tax on it: TXP-11, TXP-19 to TXP-21. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "mrkyb-hpytzvyym"
   },
   {
@@ -439,10 +443,11 @@
       "TXP-17"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ס' 23(ה) (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-26",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, ס' 20(א)(2) ו־21, עמוד 898",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "statement",
@@ -450,14 +455,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "The Tax Authority booklet uses the term (row 'מרכיב התגמולים - סכום קצבה מזערי', TXP-17); the definition as an account part is from Mor's bylaws s.1 (institution). Withdrawal from it before retirement is only in narrow cases (PEN-30).",
+    "notes": "The Tax Authority booklet uses the term (row 'מרכיב התגמולים - סכום קצבה מזערי', TXP-17); the definition as an account part is from Mor's bylaws s.1 (institution). Withdrawal from it before retirement is only in narrow cases (PEN-30). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text. Fix pass 2026-11-07: re-pointed from p. 4, where the term does not appear, to p. 10 (gazette p. 898): s. 20(א)(2) names מרכיב התגמולים beside מרכיב הפיצויים, and s. 21 divides the account into employer's, employee's and severance payments.",
     "id": "mrkyb-htgmvlym"
   },
   {
     "term_he": "השכר הממוצע במשק",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=20"
     },
     "variants_he": [
       "שכר ממוצע במשק"
@@ -471,7 +476,7 @@
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -480,14 +485,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Ordinance s.3(ה3)(2) writes 'השכר הממוצע במשק'; the Tax Authority booklet and Harel write 'שכר ממוצע במשק'. NII's own publication of the yearly figure was not reached (PEN OQ5); TXP OQ4 notes two different 2025 values in Tax Authority sources.",
+    "notes": "Ordinance s.3(ה3)(2) writes 'השכר הממוצע במשק'; the Tax Authority booklet and Harel write 'שכר ממוצע במשק'. NII's own publication of the yearly figure was not reached (PEN OQ5); TXP OQ4 notes two different 2025 values in Tax Authority sources. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "hshkr-hmmvtza-bmshk"
   },
   {
     "term_he": "תקרת הפקדה חודשית",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 10 ו-17 עד 18, ס' 1, 16 ו-18(א)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=10"
     },
     "variants_he": [
       "תקרת הפקדה חודשית לקרן פנסיה מקיפה"
@@ -499,7 +504,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 10 ו-17 עד 18, ס' 1, 16 ו-18(א)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=10",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -516,7 +521,7 @@
     "term_he": "שכר מבוטח",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 9 עד 10, ס' 1",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=9"
     },
     "variants_he": [],
     "explain_he": "השכר שקרן הפנסיה מחשבת מההפקדות לחיסכון בחודש ומשיעור ההפקדה; ממנו נגזר השכר הקובע, שלפיו נקבע הביטוח לנכות ולמוות",
@@ -526,7 +531,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 9 עד 10, ס' 1",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=9",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -543,7 +548,7 @@
     "term_he": "שכר קובע",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 9 עד 10, 45 ו-57, ס' 1, 69 ו-94",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=9"
     },
     "variants_he": [],
     "explain_he": "השכר שלפיו קרן הפנסיה מחשבת קצבת נכות או קצבת שאירים: הגבוה מבין כמה ממוצעים של השכר המבוטח, עד תקרה",
@@ -554,7 +559,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 9 עד 10, 45 ו-57, ס' 1, 69 ו-94",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=9",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -571,7 +576,7 @@
     "term_he": "מסלול ביטוח",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 22, ס' 24",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=22"
     },
     "variants_he": [
       "מסלולי ביטוח"
@@ -582,7 +587,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 22, ס' 24",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=22",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -600,7 +605,7 @@
     "term_he": "דמי ביטוח",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 6 ו-30 עד 31, ס' 1, 38 ו-40",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=6"
     },
     "variants_he": [],
     "explain_he": "העלות של הביטוח לנכות ולמקרה מוות בקרן הפנסיה; היא יורדת כל חודש מההפקדות לחיסכון, כל עוד אתם מבוטחים",
@@ -609,7 +614,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 6 ו-30 עד 31, ס' 1, 38 ו-40",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=6",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -626,7 +631,7 @@
     "term_he": "ארכת ביטוח",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018, p.28, s.36(א)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=28"
     },
     "variants_he": [],
     "explain_he": "תקופה קצרה שבה הביטוח בקרן הפנסיה נמשך אוטומטית אחרי שההפקדות נפסקות, על חשבון החיסכון",
@@ -635,7 +640,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018, p.28, s.36(א)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=28",
       "checked": "2026-10-25",
       "strength": "primary"
     },
@@ -652,7 +657,7 @@
     "term_he": "הסדר ביטוח",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 29 עד 30, ס' 37",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=29"
     },
     "variants_he": [],
     "explain_he": "הוראה לקרן הפנסיה להמשיך את הביטוח לתקופה מוגבלת אחרי שההפקדות נפסקו, בתשלום מהחיסכון או בהפקדה",
@@ -661,7 +666,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 29 עד 30, ס' 37",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=29",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -677,7 +682,7 @@
     "term_he": "תקופת אכשרה",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 10 ו-26 עד 27, ס' 1 ו-34",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=10"
     },
     "variants_he": [],
     "explain_he": "תקופה מההצטרפות לקרן או מחידוש הביטוח שבה אין כיסוי לנכות או למוות שנגרמו ממצב רפואי שהתחיל לפני כן",
@@ -686,7 +691,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 10 ו-26 עד 27, ס' 1 ו-34",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=10",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -702,7 +707,7 @@
     "term_he": "חיתום רפואי",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 7 ו-27 עד 28, ס' 1 ו-35",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=7"
     },
     "variants_he": [],
     "explain_he": "הליך שבו מבקשים מכם בדיקות רפואיות, הצהרת בריאות או מסמכים רפואיים; קרן הפנסיה רשאית לדרוש אותו רק במקרים מסוימים, כמו הצטרפות או הגדלת הביטוח",
@@ -712,7 +717,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 7 ו-27 עד 28, ס' 1 ו-35",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=7",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -727,8 +732,8 @@
   {
     "term_he": "עמית",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 2",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "השם הרשמי לחוסכים שיש להם חשבון בקופת גמל, בקרן פנסיה או בקרן השתלמות",
@@ -737,10 +742,11 @@
       "REG-17"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 2",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "law",
@@ -749,14 +755,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "",
+    "notes": " Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "amyt-d"
   },
   {
     "term_he": "עמית פעיל",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 8, ס' 1",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=8"
     },
     "variants_he": [],
     "explain_he": "מעמד בקרן כשמשולמות לה הפקדות בשבילכם; כשהן לא משולמות, המעמד הוא עמית לא פעיל",
@@ -766,7 +772,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 8, ס' 1",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=8",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -783,7 +789,7 @@
     "term_he": "עמית לא מבוטח",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 6, 8 ו-28 עד 30, ס' 1, 36 ו-37",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=6"
     },
     "variants_he": [],
     "explain_he": "מעמד בקרן הפנסיה כשהחיסכון נשאר אבל אין ביטוח לנכות או למוות, למשל כשההפקדות נפסקו לתקופה ממושכת, או מגיל תום תקופת הביטוח",
@@ -793,7 +799,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 6, 8 ו-28 עד 30, ס' 1, 36 ו-37",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=6",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -810,7 +816,7 @@
     "term_he": "עמית שכיר",
     "term_source": {
       "title": "Tax Authority, Form 106 (accessible version, updated 1.2026)",
-      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf"
+      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf#page=7"
     },
     "variants_he": [],
     "explain_he": "הפקדה לקופה בתור שכירים, דרך המעסיק; ההבחנה משפיעה על הטבות המס ועל חישוב הביטוח",
@@ -821,7 +827,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=64",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -839,7 +845,7 @@
     "term_he": "עמית עצמאי",
     "term_source": {
       "title": "Tax Authority, Form 106 (accessible version, updated 1.2026)",
-      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf"
+      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf#page=7"
     },
     "variants_he": [],
     "explain_he": "הפקדה לקופה בתור עצמאים, ישירות ולא דרך מעסיק; ההבחנה משפיעה על הטבות המס ועל חישוב הביטוח",
@@ -851,7 +857,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=72",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -869,7 +875,7 @@
     "term_he": "קצבת זקנה",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 32 עד 33, ס' 42, 45 ו-46",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=32"
     },
     "variants_he": [],
     "explain_he": "התשלום החודשי שקרן הפנסיה משלמת מהכסף שנצבר בחשבון, מהגיל שבו מותר להתחיל לקבל אותו או מאוחר יותר, לפי בחירתכם",
@@ -879,7 +885,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 32 עד 33, ס' 42, 45 ו-46",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=32",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -895,8 +901,8 @@
   {
     "term_he": "גיל פרישה",
     "term_source": {
-      "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה"
+      "title": "חוק גיל פרישה, התשס\"ד-2004, ספר החוקים 1950",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf#page=8"
     },
     "variants_he": [],
     "explain_he": "הגיל הרגיל לפרישה מעבודה לפי החוק, שונה לגברים ולנשים; ממנו חלה למשל הקלה במס על הקצבה",
@@ -915,14 +921,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Retirement Age Law read via Wikisource (PEN-26). The Tax Authority booklet gives the women's table by birth date (TXP-14), which matches PEN's inference for women born from 1970 (PEN OQ20). Sibling glossary c writes the definite form 'גיל הפרישה'.",
+    "notes": "Retirement Age Law read via Wikisource (PEN-26). The Tax Authority booklet gives the women's table by birth date (TXP-14), which matches PEN's inference for women born from 1970 (PEN OQ20). Sibling glossary c writes the definite form 'גיל הפרישה'. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "gyl-pryshh"
   },
   {
     "term_he": "גיל פרישה מוקדמת",
     "term_source": {
-      "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה"
+      "title": "חוק גיל פרישה, התשס\"ד-2004, ספר החוקים 1950, עמוד 1",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf#page=1"
     },
     "variants_he": [
       "גיל הפרישה המוקדמת"
@@ -935,17 +941,18 @@
       "PF-17"
     ],
     "source": {
-      "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק גיל פרישה, התשס\"ד-2004, ספר החוקים 1950, עמוד 1",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf#page=1",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "guide:pension-comprehensive",
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Retirement Age Law writes 'גיל פרישה מוקדמת' (PEN-26); the Transfer Regulations write 'גיל הפרישה המוקדמת' (PF-17, the age from which investment-provident money may move to an annuity fund). In Mor's bylaws it equals the minimum old-age eligibility age.",
+    "notes": "Retirement Age Law writes 'גיל פרישה מוקדמת' (PEN-26); the Transfer Regulations write 'גיל הפרישה המוקדמת' (PF-17, the age from which investment-provident money may move to an annuity fund). In Mor's bylaws it equals the minimum old-age eligibility age. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_גיל_פרישה) to the official text.",
     "id": "gyl-pryshh-mvkdmt"
   },
   {
@@ -976,8 +983,8 @@
   {
     "term_he": "קצבת שאירים",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=38"
     },
     "variants_he": [
       "קצבת שארים",
@@ -991,7 +998,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 7, 9 ו-53 עד 57, ס' 1, 87 ו-94",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=7",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -1002,14 +1009,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Spelling differs: Income Tax Ordinance s.9(6ו) 'קצבת שאירים' (TXP-23); Form 106 'קיצבת שאירים'; PEN Terms (Mor bylaws) 'קצבת שארים'. Dependent parents may also receive part (PEN-13).",
+    "notes": "Spelling differs: Income Tax Ordinance s.9(6ו) 'קצבת שאירים' (TXP-23); Form 106 'קיצבת שאירים'; PEN Terms (Mor bylaws) 'קצבת שארים'. Dependent parents may also receive part (PEN-13). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "ktzbt-shayrym"
   },
   {
     "term_he": "מוטב",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 7, ס' 1",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=7"
     },
     "variants_he": [],
     "explain_he": "מי שקבעתם בהודעה בכתב לקרן הפנסיה שיקבל את הכסף בה אחרי מותכם, אם אין בני משפחה שזכאים לקצבת שאירים",
@@ -1018,7 +1025,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 7, ס' 1",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=7",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -1063,7 +1070,7 @@
     "term_he": "תקופת תשלומים מובטחים",
     "term_source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 10 ו-34 עד 35, ס' 1 ו-50",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=10"
     },
     "variants_he": [],
     "explain_he": "תקופה שאפשר לבחור כשמבקשים קצבת זקנה: אם נפטרים לפני סופה, השאירים מקבלים עד סופה סכום בגובה קצבת הזקנה, ואם אין שאירים, המוטבים מקבלים את הקצבאות שנותרו בתשלום אחד",
@@ -1073,7 +1080,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 10 ו-34 עד 35, ס' 1 ו-50",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=10",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -1102,7 +1109,7 @@
     ],
     "source": {
       "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
-      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf#page=13",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1118,8 +1125,8 @@
   {
     "term_he": "סכום קצבה מזערי",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "ספר החוקים 2130 (28.1.2008): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), ס' 23(ה), \"סכום קצבה מזערי\", עמ' 4",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf#page=4"
     },
     "variants_he": [],
     "explain_he": "הקצבה החודשית המינימלית שצריכה להישאר אחרי היוון; בדרך כלל רק מה שמעליה אפשר להמיר לסכום חד פעמי",
@@ -1128,24 +1135,25 @@
       "TXP-17"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "ספר החוקים 2130 (28.1.2008): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), ס' 23(ה), \"סכום קצבה מזערי\", עמ' 4",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "הכנסת (רשומות)"
     },
     "where": [
       "guide:pension-comprehensive",
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Exception: up to a quarter of the pension for up to five years (PEN-28). Not the same as 'קצבת מינימום' (a pension below 5% of the average wage, PEN-29). CPI-linked yearly.",
+    "notes": "Exception: up to a quarter of the pension for up to five years (PEN-28). Not the same as 'קצבת מינימום' (a pension below 5% of the average wage, PEN-29). CPI-linked yearly. Copy struck Round 2 (2026-11-07): from Wikisource to the amendment that added the term (library 8ce8ba80618daac3, p.4); a later amendment is at 18_lsr_301133.pdf p.3 (library 6f81ed5f72d94f7a). The line states no amount.",
     "id": "skvm-ktzbh-mzary"
   },
   {
     "term_he": "איגרות חוב מיועדות",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "ספר החוקים 2932 (15.11.2021): חוק ההתייעלות הכלכלית, תיקון חוק הפיקוח על שירותים פיננסיים (קופות גמל), ס' 34ב, עמ' 33",
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf#page=33"
     },
     "variants_he": [
       "ערד",
@@ -1157,10 +1165,11 @@
       "REG-21"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "ספר החוקים 2932 (15.11.2021): חוק ההתייעלות הכלכלית, תיקון חוק הפיקוח על שירותים פיננסיים (קופות גמל), ס' 34ב, עמ' 33",
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf#page=33",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "הכנסת (רשומות)"
     },
     "where": [
       "guide:bank-deposit",
@@ -1181,14 +1190,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Replaced from 1.10.2022 by the return top-up; bonds already issued remain until redeemed (PEN-18). Whether new 'ערד' bonds are still issued is open (PEN OQ9).",
+    "notes": "Replaced from 1.10.2022 by the return top-up; bonds already issued remain until redeemed (PEN-18). Whether new 'ערד' bonds are still issued is open (PEN OQ9). Copy struck Round 2 (2026-11-07): from Wikisource to the gazette (library 063900783f7a23ce, p.33): \"איגרות חוב מיועדות - איגרות חוב מסוג ערד ואיגרות חוב מסוג מירון\".",
     "id": "aygrvt-chvb-myvadvt"
   },
   {
     "term_he": "השלמת תשואה",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "ספר החוקים 2932 (15.11.2021): תיקון חוק הפיקוח על שירותים פיננסיים (קופות גמל), ס' 34א, \"הבטחת השלמת תשואה לקרנות הפנסיה\", עמ' 33",
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf#page=33"
     },
     "variants_he": [
       "הבטחת תשואה",
@@ -1200,10 +1209,11 @@
       "REG-21"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "ספר החוקים 2932 (15.11.2021): תיקון חוק הפיקוח על שירותים פיננסיים (קופות גמל), ס' 34א, \"הבטחת השלמת תשואה לקרנות הפנסיה\", עמ' 33",
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf#page=33",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "הכנסת (רשומות)"
     },
     "where": [
       "guide:bank-deposit",
@@ -1224,7 +1234,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Covers comprehensive and old funds only, not general funds or provident funds. A return above the target goes to a dedicated fund. Conflict between files: REG-21 states the 5.15% target is 'plus the CPI change' (real), while PEN-18 says CPI-linkage is not stated in the text read (PEN OQ8). Determining date: law text says 1 July 2022, annotated as postponed to 1.10.2022 (REG OQ18).",
+    "notes": "Covers comprehensive and old funds only, not general funds or provident funds. A return above the target goes to a dedicated fund. Conflict between files: REG-21 states the 5.15% target is 'plus the CPI change' (real), while PEN-18 says CPI-linkage is not stated in the text read (PEN OQ8). Determining date: law text says 1 July 2022, annotated as postponed to 1.10.2022 (REG OQ18). Copy struck Round 2 (2026-11-07): from Wikisource to the gazette (library 063900783f7a23ce, pp.33-34; the target return is on p.34).",
     "id": "hshlmt-tshvah"
   },
   {
@@ -1245,7 +1255,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמ' 65, ס' 109",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=65",
       "checked": "2026-10-26",
       "strength": "primary"
     },
@@ -1264,8 +1274,8 @@
   {
     "term_he": "דמי ניהול",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4"
     },
     "variants_he": [],
     "explain_he": "התשלום שהחברה המנהלת גובה על ניהול הכסף, כאחוז מההפקדות או מהחיסכון; החוק קובע לו תקרה",
@@ -1279,10 +1289,11 @@
       "PF-06"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "app",
@@ -1293,7 +1304,7 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Caps per track (PF-07). Direct investment expenses are charged on top (PF-10).",
+    "notes": "Caps per track (PF-07). Direct investment expenses are charged on top (PF-10). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) to the official text.",
     "id": "dmy-nyhvl-d"
   },
   {
@@ -1315,10 +1326,11 @@
       "PF-16"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "app",
@@ -1328,7 +1340,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "Label 'מהפקדה' is the CMA fee-notice template wording (PF-16, PF-26); the regulation says 'מתוך התשלומים המועברים'. Keren hishtalmut and IRA have no deposit-fee item (PF-06). The CMA data field with average deposit fees is a separate entry.",
+    "notes": "Label 'מהפקדה' is the CMA fee-notice template wording (PF-16, PF-26); the regulation says 'מתוך התשלומים המועברים'. Keren hishtalmut and IRA have no deposit-fee item (PF-06). The CMA data field with average deposit fees is a separate entry. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) to the official text.",
     "id": "dmy-nyhvl-mhpkdh"
   },
   {
@@ -1353,10 +1365,11 @@
       "PF-16"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "app",
@@ -1366,14 +1379,14 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "CMA notice template writes 'מחיסכון'; institutions and apps write 'מצבירה' / 'מהצבירה' (PF-26, Phoenix, Meitav); the regulation says 'מן היתרה הצבורה'. Sibling glossary e uses 'דמי ניהול מצבירה' as headword. Collected monthly or daily and prorated (PF-09).",
+    "notes": "CMA notice template writes 'מחיסכון'; institutions and apps write 'מצבירה' / 'מהצבירה' (PF-26, Phoenix, Meitav); the regulation says 'מן היתרה הצבורה'. Sibling glossary e uses 'דמי ניהול מצבירה' as headword. Collected monthly or daily and prorated (PF-09). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) to the official text.",
     "id": "dmy-nyhvl-mchyskvn"
   },
   {
     "term_he": "הוצאות ישירות בשל ביצוע עסקאות",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008, קובץ התקנות 6652, תקנות 1 ו־2, עמוד 584",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI=#page=2"
     },
     "variants_he": [
       "הוצאות ניהול השקעות",
@@ -1387,10 +1400,11 @@
       "PF-12"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008, קובץ התקנות 6652, תקנות 1 ו־2, עמוד 584",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI=#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "statement",
@@ -1399,14 +1413,14 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "The starting term 'הוצאות ניהול השקעות ישירות' does not appear in il-finance. The legal name is the regulation's; managers write 'הוצאות ניהול השקעות' / 'הוצאות לניהול השקעות'. Closed list; no overall percentage cap found (PF-10). Not a line deducted from the member's account (Phoenix, institution). Sibling glossary c uses 'הוצאות ישירות'.",
+    "notes": "The starting term 'הוצאות ניהול השקעות ישירות' does not appear in il-finance. The legal name is the regulation's; managers write 'הוצאות ניהול השקעות' / 'הוצאות לניהול השקעות'. Closed list; no overall percentage cap found (PF-10). Not a line deducted from the member's account (Phoenix, institution). Sibling glossary c uses 'הוצאות ישירות'. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות) to the official text. Fix pass 2026-11-07: re-pointed from the booklet's p. 1 (its table of contents) to p. 2 (gazette p. 584): reg. 2 lists the direct expenses, reg. 1 defines the external management fee.",
     "id": "hvtzavt-yshyrvt-bshl-bytzva-askavt"
   },
   {
     "term_he": "עמלת ניהול חיצוני",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008, קובץ התקנות, עמוד 2",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI=#page=2"
     },
     "variants_he": [],
     "explain_he": "סוג של הוצאה ישירה: תשלום מכספי הקופה למנהלים או לקרנות חיצוניים שמשקיעים חלק מהכסף",
@@ -1415,23 +1429,24 @@
       "PF-11"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008, קובץ התקנות, עמוד 2",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI=#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "statement",
       "decoder:track"
     ],
-    "notes": "Each manager sets and publishes a yearly cap per track, 'מגבלת עמלת ניהול חיצוני' (PF-11); per-manager figures not collected (PF OQ3).",
+    "notes": "Each manager sets and publishes a yearly cap per track, 'מגבלת עמלת ניהול חיצוני' (PF-11); per-manager figures not collected (PF OQ3). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות) to the official text.",
     "id": "amlt-nyhvl-chytzvny"
   },
   {
     "term_he": "עלות שנתית צפויה",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)"
+      "title": "קובץ התקנות 10377: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות) (תיקון), 2022, תקנה 3ב, עמ' 7",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=7"
     },
     "variants_he": [],
     "explain_he": "הערכה של העלות השנתית הכוללת, דמי ניהול והוצאות יחד, שהקופה חייבת להציג לצד דמי הניהול",
@@ -1440,10 +1455,11 @@
       "PF-31"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "קובץ התקנות 10377: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות) (תיקון), 2022, תקנה 3ב, עמ' 7",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשומות"
     },
     "where": [
       "statement",
@@ -1451,17 +1467,17 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Regulation 3ב read in summary only. How it is presented is due to change under a 2026 CMA plan item (PF-31).",
+    "notes": "Regulation 3ב read in summary only. How it is presented is due to change under a 2026 CMA plan item (PF-31). Copy struck Round 2 (2026-11-07): from Wikisource to the regulation in the gazette (library fad3618f00af75a4, p.7): \"תוצג ... גם העלות השנתית הצפויה\".",
     "id": "alvt-shntyt-tzpvyh"
   },
   {
     "term_he": "הנחה בדמי ניהול",
     "term_source": {
       "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=2"
     },
     "variants_he": [],
-    "explain_he": "דמי ניהול נמוכים מהתקרה שבחוק, שהחברה המנהלת מתחייבת להם לתקופה מינימלית ויכולה לבטל רק במקרים מסוימים",
+    "explain_he": "דמי ניהול נמוכים מהתקרה שבתקנות, שהחברה המנהלת מתחייבת להם לתקופה מינימלית ויכולה לבטל רק במקרים מסוימים",
     "rule_ids": [
       "PEN-25",
       "PF-13",
@@ -1470,7 +1486,7 @@
     ],
     "source": {
       "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1483,6 +1499,31 @@
     ],
     "notes": "The minimum discount period ('תקופת ההנחה') conflicts: CMA circular 2017-9-15 says five years; Altshuler gemel-lehashkaa bylaws and Mor gemel bylaws (PEN-25) say two years. PF-13 browser pass resolved it to five years (primary) for computation. Cases for raising early: six months after deposits stop, withdrawal or transfer, graded mechanisms (PF-14).",
     "id": "hnchh-bdmy-nyhvl"
+  },
+  {
+    "term_he": "תקופת ההנחה",
+    "term_source": {
+      "title": "חוזר גופים מוסדיים 2017-9-15, דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, סעיף 3(א)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=1"
+    },
+    "variants_he": [],
+    "explain_he": "הזמן שבו החברה המנהלת מתחייבת לגבות דמי ניהול מוזלים: לפי חוזר רשות שוק ההון, לפחות חמש שנים מהיום שבו התחילה לגבות אותם",
+    "rule_ids": [
+      "PF-13",
+      "PF-14"
+    ],
+    "source": {
+      "title": "חוזר גופים מוסדיים 2017-9-15, דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, סעיף 3(א)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=1",
+      "checked": "2026-11-07",
+      "strength": "primary"
+    },
+    "where": [
+      "app",
+      "statement",
+      "notice"
+    ],
+    "notes": "The circular's own defined term: \"ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של חמש שנים או יותר מהיום שבו החלו להיגבות דמי ניהול בשיעור המוצע (להלן: \"תקופת ההנחה\")\" (library 14baa35e291f58c5, p. 1). Added 2026-11-07 when the fee page named it."
   },
   {
     "term_he": "הסדר דמי ניהול מיטיב",
@@ -1513,7 +1554,7 @@
     "term_he": "הרכב דמי ניהול מיטיב",
     "term_source": {
       "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf#page=5"
     },
     "variants_he": [],
     "explain_he": "אפשרות בקרן פנסיה נבחרת להחליף חלק מדמי הניהול מהחיסכון בדמי ניהול גבוהים יותר מההפקדה, לפי נוסחה",
@@ -1522,7 +1563,7 @@
     ],
     "source": {
       "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf#page=5",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1538,8 +1579,8 @@
   {
     "term_he": "יתרה צבורה",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4"
     },
     "variants_he": [
       "היתרה הצבורה",
@@ -1551,10 +1592,11 @@
       "PF-06"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "app",
@@ -1563,14 +1605,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Variants are the regulation's wording (reg. 2 and reg. 4). Not the same as the CMA data field 'צבירה נטו', which is a monthly net flow of a whole track.",
+    "notes": "Variants are the regulation's wording (reg. 2 and reg. 4). Not the same as the CMA data field 'צבירה נטו', which is a monthly net flow of a whole track. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) to the official text.",
     "id": "ytrh-tzbvrh-d"
   },
   {
     "term_he": "חברה מנהלת",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 1",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1"
     },
     "variants_he": [
       "שם חברה מנהלת"
@@ -1584,10 +1626,11 @@
       "REG-18"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 1",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "statement",
@@ -1604,14 +1647,14 @@
       "guide:savings-plan",
       "decoder:company"
     ],
-    "notes": "'שם חברה מנהלת' is the CMA data display name (CAT Terms). One brand can have several legal entities, for example Meitav (REG-28).",
+    "notes": "'שם חברה מנהלת' is the CMA data display name (CAT Terms). One brand can have several legal entities, for example Meitav (REG-28). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "chbrh-mnhlt-d"
   },
   {
     "term_he": "גוף מוסדי",
     "term_source": {
       "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "שם כללי לחברה מנהלת של קופות גמל או לחברת ביטוח",
@@ -1621,7 +1664,7 @@
     ],
     "source": {
       "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1651,8 +1694,8 @@
   {
     "term_he": "העברת כספים בין קופות גמל",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, קובץ התקנות 6657, תקנה 2(ב), עמוד 628",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4"
     },
     "variants_he": [
       "ניוד"
@@ -1665,10 +1708,11 @@
       "PF-20"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, קובץ התקנות 6657, תקנה 2(ב), עמוד 628",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "ad",
@@ -1677,14 +1721,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Only listed routes are allowed (PF-17). No transfer fee is a permitted charge (PF-01, PF-19), but a transfer can end a fee discount (PF-14). 'ניוד' is colloquial (Phoenix, institution).",
+    "notes": "Only listed routes are allowed (PF-17). No transfer fee is a permitted charge (PF-01, PF-19), but a transfer can end a fee discount (PF-14). 'ניוד' is colloquial (Phoenix, institution). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_ב) to the official text. Fix pass 2026-11-07: re-pointed from the booklet's p. 1 (its table of contents) to p. 4 (gazette p. 628), reg. 2(ב): the money moves to an account in the receiving fund in the member's name.",
     "id": "habrt-kspym-byn-kvpvt-gml-d"
   },
   {
     "term_he": "העברת כספים בין מסלולי השקעה",
     "term_source": {
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, ס' 23(א), עמוד 11 בקובץ",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=11"
     },
     "variants_he": [
       "שינוי מסלולי השקעה"
@@ -1696,10 +1740,11 @@
       "PF-23"
     ],
     "source": {
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, ס' 23(א), עמוד 11 בקובץ",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=11",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "הכנסת (רשומות)"
     },
     "where": [
       "app",
@@ -1708,14 +1753,14 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "'שינוי מסלולי השקעה' is Meitav's app wording (CAT-27, institution). Within three business days; no fee or frequency limit in the regulation; may allow the manager to end a discount (PF-14). Severance money may need employer consent in pension (PEN-17).",
+    "notes": "'שינוי מסלולי השקעה' is Meitav's app wording (CAT-27, institution). Within three business days; no fee or frequency limit in the regulation; may allow the manager to end a discount (PF-14). Severance money may need employer consent in pension (PEN-17). Copy struck Round 2 (2026-11-07): from Wikisource to the Provident Funds Law in the gazette (library 4ddf9eb6d8ab3b5f, p.11): a transfer \"ממסלול השקעה אחד בקופת גמל מסלולית למסלול השקעה אחר באותה קופה\".",
     "id": "habrt-kspym-byn-mslvly-hshkah-d"
   },
   {
     "term_he": "איחוד חשבונות",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "ספר החוקים 2507: חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13), ס' 24ב, \"איחוד חשבונות בעת הצטרפות לקרן פנסיה\", עמ' 10",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=10"
     },
     "variants_he": [],
     "explain_he": "העברה של כסף מחשבונות ישנים ולא פעילים לחשבון אחד, למשל כשמצטרפים לקרן פנסיה חדשה",
@@ -1724,24 +1769,25 @@
       "PF-28"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "ספר החוקים 2507: חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13), ס' 24ב, \"איחוד חשבונות בעת הצטרפות לקרן פנסיה\", עמ' 10",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "הכנסת (רשומות)"
     },
     "where": [
       "guide:pension-comprehensive",
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "In pension, the joining fund may move inactive accounts unless the member objects within 45 days (PF-28). No automatic equivalent was found for provident, study or investment-provident funds (PF OQ8).",
+    "notes": "In pension, the joining fund may move inactive accounts unless the member objects within 45 days (PF-28). No automatic equivalent was found for provident, study or investment-provident funds (PF OQ8). Copy struck Round 2 (2026-11-07): from Wikisource to the amendment in the gazette (library 2e1ee93cea876711, p.10).",
     "id": "aychvd-chshbvnvt"
   },
   {
     "term_he": "חשבון רדום",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(איתור_עמיתים_ומוטבים)"
+      "title": "קובץ התקנות 7083: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), 2012, עמ' 2",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7083%2Fheb#page=2"
     },
     "variants_he": [],
     "explain_he": "חשבון בקופה שלא ניתנה לגביו שום הוראה במשך שנים רבות",
@@ -1750,17 +1796,18 @@
       "PF-27"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע\"ב-2012 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(איתור_עמיתים_ומוטבים)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "קובץ התקנות 7083: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), 2012, עמ' 2",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7083%2Fheb#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשומות"
     },
     "where": [
       "guide:pension-comprehensive",
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Lost-contact and dormant accounts get a lower fee cap if the manager did not complete its search duties (PF-08).",
+    "notes": "Lost-contact and dormant accounts get a lower fee cap if the manager did not complete its search duties (PF-08). Copy struck Round 2 (2026-11-07): from Wikisource to the regulation in the gazette (library 8196144d5a356137, p.2).",
     "id": "chshbvn-rdvm"
   },
   {
@@ -1793,8 +1840,8 @@
   {
     "term_he": "מערכת סליקה פנסיונית מרכזית",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)"
+      "title": "ספר החוקים: חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיונית) (תיקון מס' 3), התשע\"א-2011, ס' 1, עמ' 1",
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf#page=1"
     },
     "variants_he": [
       "המסלקה הפנסיונית"
@@ -1805,24 +1852,25 @@
       "PF-28"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "ספר החוקים: חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיונית) (תיקון מס' 3), התשע\"א-2011, ס' 1, עמ' 1",
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf#page=1",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "הכנסת (רשומות)"
     },
     "where": [
       "guide:pension-comprehensive",
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Whether the information service is free in practice and how a saver reaches it were not found (PF OQ6).",
+    "notes": "Whether the information service is free in practice and how a saver reaches it were not found (PF OQ6). Copy struck Round 2 (2026-11-07): from Wikisource to the amendment in the gazette (library 4ab9542b496e8f19, p.1): \"מערכת מרכזית שמיועדת להעברה של מידע על לקוחות או של כספים מכלל הגופים המוסדיים\"; s.31ט is on p.5.",
     "id": "markt-slykh-pnsyvnyt-mrkzyt"
   },
   {
     "term_he": "דין וחשבון שנתי לעמית",
     "term_source": {
       "title": "תקנון תקני לקופת גמל להשקעה אלטשולר שחם חיסכון פלוס, March 2025 (Altshuler Shaham)",
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf"
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf#page=9"
     },
     "variants_he": [],
     "explain_he": "דוח שהחברה המנהלת שולחת פעם בשנה על החשבון, ובו בין השאר התשואה, שיעור ההוצאות והעלות הצפויה",
@@ -1831,10 +1879,11 @@
       "PF-26"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "קובץ התקנות 10377: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות) (תיקון), 2022, תקנה 3ב(ב), עמ' 7",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשומות"
     },
     "where": [
       "statement",
@@ -1842,7 +1891,7 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Starting term 'דוח שנתי' is not used in these five files (it appears in other files for the tax return). The name is from Altshuler bylaws (institution); the law (s.35) delegates content to the Commissioner and the uniform statement format was not reached (PF OQ5). Contents listed here are from the direct-expenses regulation (PF-12).",
+    "notes": "Starting term 'דוח שנתי' is not used in these five files (it appears in other files for the tax return). The name is from Altshuler bylaws (institution); the law (s.35) delegates content to the Commissioner and the uniform statement format was not reached (PF OQ5). Contents listed here are from the direct-expenses regulation (PF-12). Copy struck Round 2 (2026-11-07): from Wikisource to the regulation in the gazette (library fad3618f00af75a4, p.7, reg. 3ב(ב)): the yearly report to a member shows the direct-expense rate, the net return and the expected annual cost. The exact name \"דין וחשבון שנתי לעמית\" is in no official text found; the CMA's circular 2018-9-26 (p.32) names the yearly report to members.",
     "id": "dyn-vchshbvn-shnty-lamyt"
   },
   {
@@ -1875,8 +1924,8 @@
   {
     "term_he": "מיזוג קופות גמל",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 14",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=14"
     },
     "variants_he": [
       "מיזוג מסלולי השקעה"
@@ -1887,10 +1936,11 @@
       "PF-30"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 14",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=14",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "guide:bank-deposit",
@@ -1913,14 +1963,14 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Law s.37 covers fund mergers; track mergers are from the CMA tracks circular s.14 and Meitav notices ('מסלול המתמזג' / 'מסלול הקולט'). In the CMA data a merged track's assets drop to zero and it disappears with no successor field (CAT-13).",
+    "notes": "Law s.37 covers fund mergers; track mergers are from the CMA tracks circular s.14 and Meitav notices ('מסלול המתמזג' / 'מסלול הקולט'). In the CMA data a merged track's assets drop to zero and it disappears with no successor field (CAT-13). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "myzvg-kvpvt-gml"
   },
   {
     "term_he": "העברת ניהול",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 15",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15"
     },
     "variants_he": [],
     "explain_he": "מעבר של קופה שלמה לניהול של חברה מנהלת אחרת, למשל כשהחברה הקודמת נקלעת לקשיים",
@@ -1929,10 +1979,11 @@
       "REG-19"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 15",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "guide:bank-deposit",
@@ -1953,14 +2004,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "A voluntary transfer also needs the Commissioner's prior approval (PF-30, REG-19).",
+    "notes": "A voluntary transfer also needs the Commissioner's prior approval (PF-30, REG-19). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "habrt-nyhvl"
   },
   {
     "term_he": "זיכוי ממס",
     "term_source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=74"
     },
     "variants_he": [],
     "explain_he": "סכום שיורד ישירות מהמס שלכם, בגובה אחוז קבוע מההפקדה לפנסיה, בלי קשר לשיעור המס שלכם",
@@ -1971,7 +2022,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=74",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1988,7 +2039,7 @@
     "term_he": "ניכוי",
     "term_source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=63"
     },
     "variants_he": [],
     "explain_he": "סכום שמפחיתים מההכנסה שחייבת במס, ולכן החיסכון במס תלוי בשיעור המס שלכם",
@@ -1999,7 +2050,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=63",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2014,8 +2065,8 @@
   {
     "term_he": "הכנסה מזכה",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=85"
     },
     "variants_he": [],
     "explain_he": "ההכנסה שלפיה מחשבים את הטבת המס על הפקדה לפנסיה, עד תקרה שנקבעה בחוק",
@@ -2025,7 +2076,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=63",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2034,14 +2085,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Cap frozen at the 2024 value for 2025 to 2027 (TXP-27).",
+    "notes": "Cap frozen at the 2024 value for 2025 to 2027 (TXP-27). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "hknsh-mzkh"
   },
   {
     "term_he": "הכנסה מבוטחת",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=82"
     },
     "variants_he": [],
     "explain_he": "הכנסה מעבודה שהמעסיק הפקיד בשבילה לקופה לקצבה; היא משפיעה על חישוב הטבות המס",
@@ -2051,7 +2102,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=62",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2061,14 +2112,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Form 106 field 244/245. Not the same as the pension fund's 'שכר מבוטח' (PEN-09).",
+    "notes": "Form 106 field 244/245. Not the same as the pension fund's 'שכר מבוטח' (PEN-09). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "hknsh-mbvtcht"
   },
   {
     "term_he": "עמית מוטב",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=82"
     },
     "variants_he": [],
     "explain_he": "מעמד במס כשהפקדות הפנסיה בשנה, כולל של המעסיק, מגיעות לרף שנקבע לפי השכר הממוצע; משנה את תקרות ההטבה",
@@ -2079,7 +2130,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=93",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2088,14 +2139,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Not the same as 'מוטב' (beneficiary). The guide says a beneficiary member may still be better off computed as an ordinary individual (TXP-03).",
+    "notes": "Not the same as 'מוטב' (beneficiary). The guide says a beneficiary member may still be better off computed as an ordinary individual (TXP-03). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "amyt-mvtb"
   },
   {
     "term_he": "ניכוי לקופת גמל",
     "term_source": {
-      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר"
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162, ס' 24 והתוספת, עמוד 6",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=6"
     },
     "variants_he": [],
     "explain_he": "שורה בתלוש השכר שמראה כמה נוכה מהשכר שלכם והופקד לכל קופה",
@@ -2104,10 +2155,11 @@
       "TXP-25"
     ],
     "source": {
-      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162, ס' 24 והתוספת, עמוד 6",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=6",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "payslip",
@@ -2115,14 +2167,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "The law fixes the content, not the label; payroll software labels were not sourced (PEN OQ11, TXP OQ16).",
+    "notes": "The law fixes the content, not the label; payroll software labels were not sourced (PEN OQ11, TXP OQ16). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הגנת_השכר) to the official text.",
     "id": "nykvy-lkvpt-gml"
   },
   {
     "term_he": "הפרשות המעסיק לקופת גמל",
     "term_source": {
-      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר"
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162, ס' 24 והתוספת, עמוד 6",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=6"
     },
     "variants_he": [],
     "explain_he": "ההפקדות שהמעסיק מעביר לקופה בשבילכם מעבר לשכר, כולל לפיצויים; התלוש חייב להציג אותן",
@@ -2131,10 +2183,11 @@
       "TXP-25"
     ],
     "source": {
-      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162, ס' 24 והתוספת, עמוד 6",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=6",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "payslip",
@@ -2142,14 +2195,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "The law does not require the payslip to show rates or to separate severance (PEN-36). Sibling glossary c has 'הפקדות המעסיק'.",
+    "notes": "The law does not require the payslip to show rates or to separate severance (PEN-36). Sibling glossary c has 'הפקדות המעסיק'. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הגנת_השכר) to the official text.",
     "id": "hprshvt-hmasyk-lkvpt-gml"
   },
   {
     "term_he": "קצבה מזכה",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=49"
     },
     "variants_he": [
       "קיצבה מזכה"
@@ -2160,7 +2213,7 @@
     ],
     "source": {
       "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
-      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf#page=5",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2170,7 +2223,7 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "The booklet writes 'קיצבה מזכה'; the form 161ד service title writes 'הקצבה המזכה'. Excludes the recognized annuity and survivors' annuities (TXP-14, TXP-23).",
+    "notes": "The booklet writes 'קיצבה מזכה'; the form 161ד service title writes 'הקצבה המזכה'. Excludes the recognized annuity and survivors' annuities (TXP-14, TXP-23). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "ktzbh-mzkh"
   },
   {
@@ -2235,8 +2288,8 @@
   {
     "term_he": "קצבה מוכרת",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=49"
     },
     "variants_he": [],
     "explain_he": "קצבה מכספים שכבר שולם עליהם מס או שלא קיבלו הטבת מס; היא פטורה ממס מגיל מסוים",
@@ -2245,7 +2298,7 @@
     ],
     "source": {
       "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
-      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf#page=21",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2254,14 +2307,14 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Not in an old fund (TXP-12). Fuller treatment is in tax-insurance-and-amendment-190.md; sibling glossaries c and f also define it.",
+    "notes": "Not in an old fund (TXP-12). Fuller treatment is in tax-insurance-and-amendment-190.md; sibling glossaries c and f also define it. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "ktzbh-mvkrt-d"
   },
   {
     "term_he": "נוסחת הקיזוז",
     "term_source": {
       "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
-      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf"
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf#page=6"
     },
     "variants_he": [],
     "explain_he": "החישוב שבו מענקי פרישה שקיבלתם בעבר בלי מס מקטינים את הפטור ממס על הקצבה",
@@ -2270,7 +2323,7 @@
     ],
     "source": {
       "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
-      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf#page=6",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2285,8 +2338,8 @@
   {
     "term_he": "מענק הון עקב פרישה",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=39"
     },
     "variants_he": [
       "מענקי פרישה"
@@ -2298,7 +2351,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=91",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2308,7 +2361,7 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Severance money left in an annuity fund counts as received unless continuity is chosen (TXP-19). Taking it tax-free reduces the later annuity exemption (TXP-15). 'מענקי פרישה' is the guide's wording (TXP-15).",
+    "notes": "Severance money left in an annuity fund counts as received unless continuity is chosen (TXP-19). Taking it tax-free reduces the later annuity exemption (TXP-15). 'מענקי פרישה' is the guide's wording (TXP-15). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "mank-hvn-akb-pryshh"
   },
   {
@@ -2395,7 +2448,7 @@
     "term_he": "משיכה שלא כדין",
     "term_source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=45"
     },
     "variants_he": [
       "תשלום שלא כדין מקופת גמל לקצבה"
@@ -2406,7 +2459,7 @@
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=45",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2421,8 +2474,8 @@
   {
     "term_he": "מסלול השקעה",
     "term_source": {
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)"
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6"
     },
     "variants_he": [
       "מסלולי השקעה"
@@ -2436,7 +2489,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2448,14 +2501,14 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "Each track has its own income-tax number (CAT-09); fee caps apply per track (PF-07).",
+    "notes": "Each track has its own income-tax number (CAT-09); fee caps apply per track (PF-07). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "mslvl-hshkah-d"
   },
   {
     "term_he": "מסלול השקעה ברירת מחדל",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6"
     },
     "variants_he": [
       "מסלול ברירת מחדל",
@@ -2470,7 +2523,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2488,7 +2541,7 @@
     "term_he": "מסלול כללי",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=3"
     },
     "variants_he": [
       "כללי"
@@ -2502,7 +2555,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=3",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2520,7 +2573,7 @@
     "term_he": "מסלול השקעה מתמחה",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "מסלול שמשקיע לפי התמחות מוגדרת מתוך רשימת המסלולים של רשות שוק ההון, למשל מניות או מדדים",
@@ -2530,7 +2583,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2544,7 +2597,7 @@
     "term_he": "רשימת מסלולי השקעה",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "רשימה שרשות שוק ההון מפרסמת ובה השמות המותרים למסלולים ומדיניות ההשקעה שכל שם מחייב",
@@ -2554,7 +2607,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2568,7 +2621,7 @@
     "term_he": "מדיניות השקעה תקנונית",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=8"
     },
     "variants_he": [],
     "explain_he": "הכללים המחייבים בתקנון הקופה לגבי מה מותר למסלול להחזיק; שם המסלול קשור אליהם",
@@ -2578,7 +2631,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=8",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2592,7 +2645,7 @@
     "term_he": "מדיניות השקעה צפויה",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2"
     },
     "variants_he": [
       "מדיניות השקעה מוצהרת"
@@ -2603,7 +2656,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2617,7 +2670,7 @@
     "term_he": "מודל השקעות תלוי גיל",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=4"
     },
     "variants_he": [
       "מסלול השקעות תלוי גיל",
@@ -2635,7 +2688,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=4",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2708,7 +2761,7 @@
     "term_he": "מסלול השקעה עוקב מדדים",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=1"
     },
     "variants_he": [
       "עוקבי מדדים",
@@ -2722,7 +2775,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=1",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2740,7 +2793,7 @@
     "term_he": "אמונה וקיימות",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=3"
     },
     "variants_he": [
       "אשכול 5 – מסלולי אמונה וקיימות"
@@ -2752,7 +2805,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=3",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -2771,21 +2824,21 @@
     "variants_he": [
       "הלכתי",
       "הלכה יהודית",
-      "הלכה איסלאמית",
       "מסלול הלכה"
     ],
-    "explain_he": "מסלול שמנהל את ההשקעות לפי כללי דת, יהודית או מוסלמית, לפי סוג המסלול",
+    "explain_he": "מסלול שמשקיע בסוגי נכסים שונים רק לפי כללי ההלכה היהודית; ועדת ההשקעות קובעת את התמהיל",
     "rule_ids": [
+      "CAT-50",
       "CAT-10",
-      "CAT-17",
       "CAT-18",
       "PEN-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול הלכה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
@@ -2794,7 +2847,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "Data: SPECIALIZATION 'הלכתי', SUB_SPECIALIZATION 'הלכה יהודית' / 'הלכה איסלאמית'; track names use 'הלכה'. The regulatory policy text for this name was not obtained (CAT-23). Mor added a halacha track to its pension fund from 01.04.2026 (PEN-17).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "hlkh"
   },
   {
@@ -2804,21 +2857,23 @@
       "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמנהל את ההשקעות לפי שיקולי קיימות ושמירה על הסביבה",
+    "explain_he": "מסלול שמשקיע בנכסים שעיקר מטרתם לקדם את יעדי הפיתוח בר־הקיימא של עצרת האו״ם",
     "rule_ids": [
+      "CAT-50",
       "CAT-10",
       "CAT-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול קיימות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "decoder:track"
     ],
-    "notes": "Regulatory policy text for this name not obtained (CAT-23).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "kyymvt"
   },
   {
@@ -2830,18 +2885,18 @@
     "variants_he": [
       "מסלול מניות"
     ],
-    "explain_he": "מסלול השקעה שמתמחה במניות ומנוהל באופן פעיל, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול בניהול פעיל שרוב הכסף בו חשוף למניות בישראל ובחוץ לארץ; ייתכן בו סיכון מטבע",
     "rule_ids": [
+      "CAT-47",
       "CAT-10",
-      "CAT-15",
-      "CAT-17",
-      "CAT-23"
+      "CAT-17"
     ],
     "source": {
-      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 5, \"מסלול מניות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=5",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
@@ -2850,7 +2905,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "Meaning rests on the CMA classification only (category active management, specialization equities). The CMA list's regulatory policy for this name (for example how much must be in equities) was not obtained (CAT-23, CAT OQ9). 'מסלול מניות' is a pre-2024 Meitav name.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "mnyvt"
   },
   {
@@ -2864,23 +2919,24 @@
       "מסלול השקעה כספי",
       "שקלי טווח קצר"
     ],
-    "explain_he": "מסלול שחשוף בעיקר לנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ, כמו פיקדונות, הלוואות ואיגרות חוב בשקלים",
+    "explain_he": "מסלול שרוב הכסף בו בנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ: פיקדונות, מלוות ממשלה, הלוואות ואיגרות חוב בשקלים",
     "rule_ids": [
-      "CAT-11",
+      "CAT-23",
       "CAT-20",
-      "CAT-23"
+      "CAT-11"
     ],
     "source": {
-      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 4, \"מסלול כספי (שקלי)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Policy text from one Meitav notice (institution). Spelling differs: CMA data 'כספי (שקלי)', Meitav flyer 'כספי (שיקלי)'. 'שקלי טווח קצר' is the pre-2024 name of the same Meitav track. In some funds choosing a money-market track requires choosing a holding period; whether this applies to investment-provident funds is open (CAT-20, CAT OQ11).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "kspy-shkly"
   },
   {
@@ -2890,21 +2946,23 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ",
+    "explain_he": "מסלול שרוב הכסף בו בחוב, בישראל ובחוץ לארץ: פיקדונות, איגרות חוב של חברות ושל ממשלות, ניירות ערך מסחריים, הלוואות לא סחירות לחברות ולאנשים פרטיים וקרנות חוב; הרשימה לא קובעת בו חלק למניות",
     "rule_ids": [
-      "CAT-23"
+      "CAT-23",
+      "CAT-47"
     ],
     "source": {
-      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 4, \"מסלול אשראי ואג\"ח\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Policy text from Meitav's bylaw notices (institution); no equity allowance stated. Another manager's track of this name should follow the same CMA list policy, not verified (CAT-23).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "ashray-vagch"
   },
   {
@@ -2916,23 +2974,24 @@
     "variants_he": [
       "אשראי ואג\"ח עם מניות (עד 25% מניות)"
     ],
-    "explain_he": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ, ובחלק מוגבל גם למניות",
+    "explain_he": "כמו מסלול אשראי ואג״ח, ועוד חלק מוגבל, שהשם נוקב בו, במניות; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
     "rule_ids": [
-      "CAT-17",
       "CAT-23",
+      "CAT-17",
       "CAT-25"
     ],
     "source": {
-      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 4, \"מסלול אשראי ואג\"ח עם מניות (עד 25% מניות)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Headword is the standard-name part of the Gemel-Net track name (Meitav 7980, CAT-25); the CAT-17 list (Harel reform page, institution) and CAT Terms write '(עד 25% מניות)'. Policy text from Meitav notice 7980 (institution); CMA list policy not obtained (CAT OQ9).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "ashray-vagch-am-mnyvt-ad-25-bmnyvt"
   },
   {
@@ -2942,21 +3001,22 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול בניהול פעיל שמתמחה באיגרות חוב של ממשלות, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול בניהול פעיל שרוב הכסף בו חשוף לאיגרות חוב של ממשלות שהדירוג שלהן עומד בתנאי שהתקנות קובעות; ייתכן בו סיכון מטבע",
     "rule_ids": [
-      "CAT-10",
-      "CAT-17"
+      "CAT-47",
+      "CAT-10"
     ],
     "source": {
-      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 5, \"מסלול אג\"ח ממשלות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=5",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "decoder:track"
     ],
-    "notes": "Meaning from the CMA classification only; regulatory policy not obtained (CAT-23). Missing from Harel's grouping (CAT-17).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "agch-mmshlvt"
   },
   {
@@ -2966,23 +3026,24 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמשקיע ישירות במניות שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול שרוב הכסף בו חשוף למניות בישראל ובחוץ לארץ, רק דרך נכסים שנסחרים בבורסה; את השאר מחזיקים במזומן ובפיקדונות קצרים",
     "rule_ids": [
+      "CAT-48",
       "CAT-10",
-      "CAT-17",
-      "CAT-23"
+      "CAT-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 8, \"מסלול מניות סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=8",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Meaning from the cluster definition and data classification; regulatory policy not obtained (CAT-23).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "mnyvt-schyr"
   },
   {
@@ -2992,22 +3053,24 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמשקיע ישירות באיגרות חוב שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול שרוב הכסף בו באיגרות חוב של חברות ושל ממשלות, בישראל ובחוץ לארץ, רק דרך נכסים סחירים; את השאר מחזיקים במזומן ובפיקדונות קצרים",
     "rule_ids": [
+      "CAT-48",
       "CAT-10",
       "CAT-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול אג\"ח סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). A related standard name 'סחיר - אג\"ח עם מניות (עד 25% מניות)' shares this sub-specialization in the data (CAT-25) and has no entry here.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "agch-schyr-d"
   },
   {
@@ -3017,24 +3080,25 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמשקיע ישירות בנכסים שנסחרים בבורסה; התמהיל בפועל יכול להיות שונה מאוד בין חברות",
+    "explain_he": "מסלול שמשקיע במניות ובאיגרות חוב של חברות ושל ממשלות, בישראל ובחוץ לארץ, רק דרך נכסים סחירים; הרשימה לא קובעת כמה מכל סוג, והתמהיל שונה מאוד בין חברות",
     "rule_ids": [
+      "CAT-48",
+      "CAT-24",
       "CAT-10",
-      "CAT-17",
-      "CAT-18",
-      "CAT-24"
+      "CAT-18"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול משולב סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). Same name, very different content: Meitav's track was about 99% equities and 1% abroad in 202609 (computed), Harel describes its own as about 100% abroad (CAT-24). Provident funds other than study and investment-provident must offer it (CAT-18).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "mshvlb-schyr"
   },
   {
@@ -3046,23 +3110,24 @@
     "variants_he": [
       "פאסיבי - מדדי מניות"
     ],
-    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי מניות",
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדי מניות שונים זה מזה, ולא אחרי מדד אחד; ייתכן בו סיכון מטבע",
     "rule_ids": [
+      "CAT-49",
       "CAT-10",
-      "CAT-17",
       "CAT-26"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 13, \"מסלול עוקב מדדי מניות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). 'פאסיבי - מדדי מניות' is a pre-2024 Meitav name.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "avkb-mddy-mnyvt"
   },
   {
@@ -3071,27 +3136,24 @@
       "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
       "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
     },
-    "variants_he": [
-      "עוקב מדדי אג\"ח עם מניות (עד 25% מניות)",
-      "עוקב מדדים - אג\"ח עם מניות (עד 25%)"
-    ],
-    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי איגרות חוב",
+    "variants_he": [],
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים שונים של איגרות חוב של חברות ושל ממשלות; ייתכן בו סיכון מטבע",
     "rule_ids": [
-      "CAT-10",
-      "CAT-17",
-      "CAT-25"
+      "CAT-49",
+      "CAT-10"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10, \"מסלול עוקב מדדי אג\"ח\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). Variant names are Meitav's track name (CAT-25) and Harel's grouping (CAT-17); they include an equity share, so the plain name may hide some equities.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "avkb-mddy-agch"
   },
   {
@@ -3156,10 +3218,283 @@
     "id": "avkb-mddym-gmysh"
   },
   {
+    "term_he": "אג\"ח ממשלתי סחיר",
+    "variants_he": [],
+    "explain_he": "מסלול שרוב הכסף בו באיגרות חוב של ממשלות, בישראל ובחוץ לארץ, רק דרך נכסים סחירים; את השאר מחזיקים במזומן ובפיקדונות קצרים",
+    "rule_ids": [
+      "CAT-48",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול אג\"ח ממשלתי סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "סחיר - אג\"ח עם מניות (עד 25% מניות)",
+    "variants_he": [],
+    "explain_he": "מסלול שרוב הכסף בו באיגרות חוב וחלק מוגבל במניות, הכול דרך נכסים סחירים; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
+    "rule_ids": [
+      "CAT-48",
+      "CAT-25"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול סחיר - אג\"ח עם מניות (עד 25% מניות)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "עוקב מדדי אג\"ח ממשלות",
+    "variants_he": [],
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים של איגרות חוב ממשלתיות; ייתכן בו סיכון מטבע",
+    "rule_ids": [
+      "CAT-49"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10, \"מסלול עוקב מדדי אג\"ח ממשלות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "עוקב מדדים - אג\"ח עם מניות (עד 25% מניות)",
+    "variants_he": [
+      "עוקב מדדי אג\"ח עם מניות (עד 25% מניות)",
+      "עוקב מדדים - אג\"ח עם מניות (עד 25%)"
+    ],
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, בעיקר אחרי מדדים של איגרות חוב, ועוד חלק מוגבל במניות; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
+    "rule_ids": [
+      "CAT-49",
+      "CAT-25"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 12, \"מסלול עוקב מדדים - אג\"ח עם מניות (עד 25% מניות)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=12",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מדדים דומים",
+    "variants_he": [
+      "מדדים שאינם דומים"
+    ],
+    "explain_he": "מדדים שחלק גדול מהנכסים שבהם משותף, בשיעור שרשות שוק ההון קבעה; מסלול עוקב מדדים צריך לעקוב אחרי מדדים שאינם דומים",
+    "rule_ids": [
+      "CAT-49"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 18, דברי הסבר, \"מסלולים עוקבי מדדים\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=18",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "שריעה",
+    "variants_he": [
+      "הלכה איסלאמית",
+      "מסלול שריעה"
+    ],
+    "explain_he": "מסלול שמשקיע בסוגי נכסים שונים רק לפי כללי השריעה האסלאמית; ועדת ההשקעות קובעת את התמהיל",
+    "rule_ids": [
+      "CAT-50",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול שריעה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "סביבתי",
+    "variants_he": [
+      "מסלול סביבתי"
+    ],
+    "explain_he": "מסלול שמשקיע בהשקעות סביבתיות לפי סטנדרטים בינלאומיים או ביעדים הסביבתיים של הפיתוח בר־הקיימא; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
+    "rule_ids": [
+      "CAT-50"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול סביבתי\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול בסיסי למקבלי קצבה",
+    "variants_he": [
+      "בסיסי למקבלי קצבה"
+    ],
+    "explain_he": "מסלול בקרן פנסיה או בקופת ביטוח שמיועד למי שכבר מקבלים קצבה; הכסף בו חשוף לסוגי נכסים שונים במסגרת החוק",
+    "rule_ids": [
+      "CAT-51",
+      "PEN-17"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 2, \"מסלולים למקבלי קצבה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "pensia-net",
+      "statement"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול עוקב מדדים למקבלי קצבה",
+    "variants_he": [
+      "עוקב מדדים למקבלי קצבה",
+      "עוקב מדדים - למקבלי קצבה"
+    ],
+    "explain_he": "מסלול למי שכבר מקבלים קצבה, שעוקב באמצעות מוצרים עוקבי מדד אחרי כמה מדדים שונים של מניות או של איגרות חוב",
+    "rule_ids": [
+      "CAT-51"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 3, \"מסלולים מתמחים למקבלי קצבה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=3",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "pensia-net"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול הלכה למקבלי קצבה",
+    "variants_he": [
+      "הלכה למקבלי קצבה",
+      "מסלול שריעה למקבלי קצבה"
+    ],
+    "explain_he": "מסלול למי שכבר מקבלים קצבה, שמשקיע רק לפי כללי ההלכה היהודית; יש גם מסלול כזה לפי כללי השריעה",
+    "rule_ids": [
+      "CAT-51",
+      "CAT-50"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 3, \"מסלול הלכה למקבלי קצבה\", \"מסלול שריעה למקבלי קצבה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=3",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "pensia-net"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול מקבלי קצבה קיימים",
+    "variants_he": [
+      "מסלול הלכה למקבלי קצבה קיימים"
+    ],
+    "explain_he": "מסלול סגור בקרן פנסיה, למי שהיו זכאים לקצבה מהקרן לפני מועד שקבעה רשות שוק ההון; יש גם גרסה שלו לפי כללי ההלכה",
+    "rule_ids": [
+      "CAT-51"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 2, \"מסלול מקבלי קצבה קיימים\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול קצבה לזכאים קיימים",
+    "variants_he": [],
+    "explain_he": "מסלול סגור בקרן פנסיה, למי שהיו זכאים לקצבה מהקרן לפני מועד מוקדם יותר שקבעה רשות שוק ההון",
+    "rule_ids": [
+      "CAT-51"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 2, \"מסלול קצבה לזכאים קיימים\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "אשראי",
+    "variants_he": [],
+    "explain_he": null,
+    "rule_ids": [
+      "CAT-23"
+    ],
+    "source": null,
+    "where": [
+      "app"
+    ],
+    "notes": "Researched 2026-11-07: no official text read defines 'אשראי' on its own (CAT OQ33); the list of tracks names the debt assets of 'אשראי ואג\"ח' (CAT-23), which that row explains. Keep in section 4 until a definition is found."
+  },
+  {
     "term_he": "מסלול אירוח",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "מסלול שבו מנהל השקעות חיצוני מנהל את הכסף של החוסכים, בתוך קופה של חברה מנהלת",
@@ -3168,7 +3503,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -3182,7 +3517,7 @@
     "term_he": "שינוי התמחות",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=8"
     },
     "variants_he": [],
     "explain_he": "שינוי של ההתמחות של מסלול מתמחה, שמחייב הודעה מראש לחוסכים עם השוואה בין המדיניות הישנה לחדשה",
@@ -3191,7 +3526,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=8",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -3206,7 +3541,7 @@
     "term_he": "איסור הטעיה בשם",
     "term_source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=7"
     },
     "variants_he": [],
     "explain_he": "כלל שאוסר לתת לקופה או למסלול שם מטעה, למשל שם שרומז על ביטחון או על רווח",
@@ -3215,7 +3550,7 @@
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=7",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -4031,12 +4366,13 @@
   {
     "term_he": "רשות שוק ההון ביטוח וחיסכון",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (ביטוח) (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016, עמוד 2 (הקמת רשות שוק ההון, ביטוח וחיסכון; REG-17)",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf#page=2"
     },
     "variants_he": [
       "רשות שוק ההון, ביטוח וחיסכון",
-      "הממונה"
+      "הממונה",
+      "רשות שוק ההון"
     ],
     "explain_he": "הרשות שמפקחת על קרנות הפנסיה, קופות הגמל, קרנות ההשתלמות וחברות הביטוח, ועל החברות שמנהלות אותן",
     "rule_ids": [
@@ -4045,10 +4381,11 @@
       "REG-20"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (ביטוח) (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016, עמוד 2 (הקמת רשות שוק ההון, ביטוח וחיסכון; REG-17)",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "guide:bank-deposit",
@@ -4070,14 +4407,14 @@
       "guide:savings-plan",
       "decoder:company"
     ],
-    "notes": "REG-17 rule text writes it without a comma; the REG Terms table and regulator summary write 'רשות שוק ההון, ביטוח וחיסכון'. The exact statutory text was read via mirror only. 'הממונה' is the Commissioner who heads it.",
+    "notes": "REG-17 rule text writes it without a comma; the REG Terms table and regulator summary write 'רשות שוק ההון, ביטוח וחיסכון'. The exact statutory text was read via mirror only. 'הממונה' is the Commissioner who heads it. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)) to the official text.",
     "id": "rshvt-shvk-hhvn-bytvch-vchyskvn"
   },
   {
     "term_he": "רשות ניירות ערך",
     "term_source": {
-      "title": "חוק ניירות ערך (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 2, עמוד 11",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=11"
     },
     "variants_he": [],
     "explain_he": "הרשות שמפקחת על קרנות נאמנות וקרנות סל, מנהלי תיקים, יועצי השקעות והבורסה, כדי לשמור על ענייני המשקיעים",
@@ -4088,10 +4425,11 @@
       "REG-13"
     ],
     "source": {
-      "title": "חוק ניירות ערך (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 2, עמוד 11",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=11",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "guide:bank-deposit",
@@ -4112,14 +4450,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "",
+    "notes": "Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_ניירות_ערך) to the official text. Fix pass 2026-11-07: page added: s. 2 (p. 11) establishes the authority to protect the interests of the investing public.",
     "id": "rshvt-nyyrvt-ark"
   },
   {
     "term_he": "המפקח על הבנקים",
     "term_source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+      "title": "פקודת הבנקאות, 1941, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 103), עמוד 4",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=4"
     },
     "variants_he": [
       "הפיקוח על הבנקים"
@@ -4130,10 +4468,11 @@
       "REG-02"
     ],
     "source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת הבנקאות, 1941, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 103), עמוד 4",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "guide:bank-deposit",
@@ -4154,26 +4493,27 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Starting term 'בנק ישראל / הפיקוח על הבנקים': the rule base does not define the Bank of Israel itself; it appears only through the Supervisor and the Governor's powers (REG-01, REG-06).",
+    "notes": "Starting term 'בנק ישראל / הפיקוח על הבנקים': the rule base does not define the Bank of Israel itself; it appears only through the Supervisor and the Governor's powers (REG-01, REG-06). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_הבנקאות) to the official text.",
     "id": "hmpkch-al-hbnkym"
   },
   {
     "term_he": "תאגיד בנקאי",
     "term_source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+      "title": "חוק הבנקאות (רישוי), התשמ\"א-1981, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 124), ס' 1, עמוד 4",
+      "url": "https://boi.org.il/media/1l3izmkj/124.pdf#page=4"
     },
     "variants_he": [],
-    "explain_he": "השם בחוק לבנק או לגוף בנקאי אחר שקיבל רישיון ונמצא בפיקוח המפקח על הבנקים",
+    "explain_he": "השם בחוק הבנקאות לבנק, לבנק חוץ או לחברת שירותים משותפת",
     "rule_ids": [
       "REG-01",
       "REG-03"
     ],
     "source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הבנקאות (רישוי), התשמ\"א-1981, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 124), ס' 1, עמוד 4",
+      "url": "https://boi.org.il/media/1l3izmkj/124.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "guide:bank-deposit",
@@ -4194,14 +4534,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "The BoI list on data.gov.il had 17 entries on 2026-10-22; whether it equals the full licensing register is not stated (REG-03).",
+    "notes": "The BoI list on data.gov.il had 17 entries on 2026-10-22; whether it equals the full licensing register is not stated (REG-03). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_הבנקאות) to the official text. Fix pass 2026-11-07: re-pointed from the Banking Ordinance, which defines no תאגיד בנקאי and refers every other term to the Banking (Licensing) Law (s. 2(2)), to that law's s. 1 (p. 4): a bank, a foreign bank or a joint services company. Round 2 (2026-11-07): the supervision clause left the line: s.1 of the Banking (Licensing) Law (p.4) defines \"תאגיד בנקאי\" as \"בנק, בנק חוץ או חברת שירותים משותפת\" and says nothing of supervision there.",
     "id": "tagyd-bnkay"
   },
   {
     "term_he": "נאמנות והפרדת נכסים",
     "term_source": {
-      "title": "not an official term: descriptive label for Provident Funds Law ss.3(א), 27(א), 30(א) (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 4",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=4"
     },
     "variants_he": [],
     "explain_he": "הכסף בקופה מוחזק לטובת החוסכים: החברה מנהלת אותו כנאמן, בנפרד מהרכוש שלה, ואי אפשר לעקל אותו",
@@ -4211,10 +4551,11 @@
       "REG-19"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 4",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "guide:bank-deposit",
@@ -4235,14 +4576,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (PF-29, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן').",
+    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (PF-29, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן'). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "namnvt-vhprdt-nksym"
   },
   {
     "term_he": "נאמן",
     "term_source": {
-      "title": "חוק השקעות משותפות בנאמנות (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 76(א) ו־78, עמוד 56",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=56"
     },
     "variants_he": [],
     "explain_he": "גוף שמחזיק את נכסי קרן הנאמנות לטובת המשקיעים, בנפרד מהרכוש שלו, ומפקח על מנהל הקרן",
@@ -4252,10 +4593,11 @@
       "REG-12"
     ],
     "source": {
-      "title": "חוק השקעות משותפות בנאמנות (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 76(א) ו־78, עמוד 56",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=56",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "guide:bank-deposit",
@@ -4275,14 +4617,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "In a provident fund the managing company itself is the trustee (REG-18); in a mutual fund it is a separate trust company (REG-10). Fund assets cannot be attached in either case.",
+    "notes": "In a provident fund the managing company itself is the trustee (REG-18); in a mutual fund it is a separate trust company (REG-10). Fund assets cannot be attached in either case. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text. Fix pass 2026-11-07: page added: s. 76(א) (p. 56) vests the fund's assets in the trustee for the unit holders, separate from its own property; s. 78 (p. 57) has it supervise the manager.",
     "id": "namn-d"
   },
   {
     "term_he": "ביטוח פיקדונות",
     "term_source": {
       "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026 (BoI-hosted PDF)",
-      "url": "https://boi.org.il/media/5folwk5o/119.pdf"
+      "url": "https://boi.org.il/media/5folwk5o/119.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "הגנה בחוק על כספים בבנק אם הבנק נכשל; בישראל אין כזו כיום, והנושא בבדיקה",
@@ -4292,7 +4634,7 @@
     ],
     "source": {
       "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026 (BoI-hosted PDF)",
-      "url": "https://boi.org.il/media/5folwk5o/119.pdf",
+      "url": "https://boi.org.il/media/5folwk5o/119.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Bank of Israel"
@@ -4321,8 +4663,8 @@
   {
     "term_he": "סמכות לערוב",
     "term_source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+      "title": "פקודת הבנקאות, 1941, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 103), עמוד 10",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=10"
     },
     "variants_he": [],
     "explain_he": "סמכות של נגיד בנק ישראל, באישור הממשלה, להבטיח פיקדונות בבנק שנקלע לקשיים; זו אינה זכות מובטחת",
@@ -4330,10 +4672,11 @@
       "REG-06"
     ],
     "source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת הבנקאות, 1941, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 103), עמוד 10",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "guide:bank-deposit",
@@ -4354,14 +4697,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Headword is the s.8יא heading as recorded in REG Terms. Sections amended in תשפ\"ו (REG-06).",
+    "notes": "Headword is the s.8יא heading as recorded in REG Terms. Sections amended in תשפ\"ו (REG-06). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_הבנקאות) to the official text.",
     "id": "smkvt-larvb"
   },
   {
     "term_he": "ערבות המדינה",
     "term_source": {
       "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026, P/6522/25 (Knesset)",
-      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf"
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf#page=3"
     },
     "variants_he": [],
     "explain_he": "ערבות של המדינה לחיסכון בבנקים קטנים, שהוצעה בהצעת חוק פרטית; היא עדיין לא חוק",
@@ -4370,7 +4713,7 @@
     ],
     "source": {
       "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026, P/6522/25 (Knesset)",
-      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf#page=3",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Knesset"
@@ -4400,8 +4743,8 @@
   {
     "term_he": "מנהל מורשה",
     "term_source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+      "title": "פקודת הבנקאות, 1941, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 103), עמוד 7",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=7"
     },
     "variants_he": [],
     "explain_he": "מי שמתמנה לנהל בנק, חברת ביטוח או חברה מנהלת שלא עומדים בהתחייבויות שלהם",
@@ -4411,10 +4754,11 @@
       "REG-22"
     ],
     "source": {
-      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת הבנקאות, 1941, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 103), עמוד 7",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "guide:bank-deposit",
@@ -4435,14 +4779,14 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "",
+    "notes": " Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_הבנקאות) to the official text.",
     "id": "mnhl-mvrshh"
   },
   {
     "term_he": "פניות הציבור",
     "term_source": {
-      "title": "חוק הבנקאות (שירות ללקוח) (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הבנקאות_(שירות_ללקוח)"
+      "title": "חוק הבנקאות (שירות ללקוח), התשמ\"א-1981, נוסח משולב (בנק ישראל), עמוד 37",
+      "url": "https://www.boi.org.il/media/nvadftgk/150.pdf#page=37"
     },
     "variants_he": [],
     "explain_he": "היחידה אצל גוף מפקח שמבררת תלונות של הציבור על הגופים שבפיקוחו; היא לא תמיד יכולה לחייב פיצוי",
@@ -4451,10 +4795,11 @@
       "REG-20"
     ],
     "source": {
-      "title": "חוק הבנקאות (שירות ללקוח) (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הבנקאות_(שירות_ללקוח)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הבנקאות (שירות ללקוח), התשמ\"א-1981, נוסח משולב (בנק ישראל), עמוד 37",
+      "url": "https://www.boi.org.il/media/nvadftgk/150.pdf#page=37",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "guide:bank-deposit",
@@ -4475,7 +4820,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Neither the Supervisor of Banks (REG-02) nor the CMA Commissioner (REG-20) was found to have a power to order compensation; a bank complaint does not extend a statutory deadline. The ISA channel was not read (REG OQ5).",
+    "notes": "Neither the Supervisor of Banks (REG-02) nor the CMA Commissioner (REG-20) was found to have a power to order compensation; a bank complaint does not extend a statutory deadline. The ISA channel was not read (REG OQ5). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הבנקאות_(שירות_ללקוח)) to the official text.",
     "id": "pnyvt-htzybvr"
   },
   {
@@ -4544,5 +4889,141 @@
     ],
     "notes": "The column of the track browser and the company page's track list (2026-11-03). Definition: 'חשיפה כוללת הינה סך החשיפה לאפיק על ידי אחזקה ישירה (שווי נכס המוחזק), בצירוף החשיפה בגין הפעילות בנגזרים על אותו נכס' (p. 10).",
     "id": "chshyph-lmnyvt-vlmtch"
+  },
+  {
+    "term_he": "קרן פנסיה",
+    "term_source": {
+      "title": "משרד העבודה, צו הרחבה לביטוח פנסיוני מקיף במשק, סעיף 2 (הגדרות)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2"
+    },
+    "variants_he": [],
+    "explain_he": "קופת גמל לקצבה שמשלמת קצבה חודשית מגיל הפרישה; קרן פנסיה חדשה מקיפה משלמת גם קצבת נכות וקצבה לשאירים.",
+    "rule_ids": [
+      "PEN-01",
+      "PEN-06"
+    ],
+    "source": {
+      "title": "משרד העבודה, צו הרחבה לביטוח פנסיוני מקיף במשק, סעיף 2 (הגדרות)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "gov.il"
+    },
+    "where": [
+      "law",
+      "statement",
+      "app",
+      "guide:pension-general",
+      "guide:pension-comprehensive",
+      "guide:provident-for-annuity",
+      "guide:keren-hishtalmut"
+    ],
+    "notes": "Glossary sweep 2026-11-07: clause 2(ד) to (ו): a new comprehensive fund grants old-age, survivors' and disability pensions; an old fund is a provident fund for annuity approved before 1.1.1995; \"קרן פנסיה\" means either. Fix pass 2026-11-07: the Hebrew editor's wording.",
+    "id": "krn-pnsyh"
+  },
+  {
+    "term_he": "תלוש שכר",
+    "term_source": {
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162, ס' 24 ופרט 6 בתוספת",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=2"
+    },
+    "variants_he": [
+      "תלוש משכורת"
+    ],
+    "explain_he": "פירוט בכתב שהמעסיק חייב לתת לעובד על השכר ששולם לו, ובו גם הניכויים, כמו מס הכנסה והפקדות לקופת גמל.",
+    "rule_ids": [
+      "PEN-36"
+    ],
+    "source": {
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162, ס' 24 ופרט 6 בתוספת",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
+    },
+    "where": [
+      "law",
+      "statement",
+      "guide:pension-general",
+      "guide:pension-comprehensive",
+      "guide:keren-hishtalmut"
+    ],
+    "notes": "Glossary sweep 2026-11-07: s. 24 (an employer gives every employee a written payslip, \"רישום נתונים מתוך פנקס השכר\"); the schedule, item 6, lists the deductions, among them income tax and the deduction to a provident fund by fund and amount (p. 6).",
+    "id": "tlvsh-shkr"
+  },
+  {
+    "term_he": "שאירים",
+    "variants_he": [
+      "קצבת שאירים"
+    ],
+    "explain_he": "בני המשפחה שמקבלים קצבה אחרי מות החוסך: בן או בת הזוג, ילדים, ולפעמים הורה שהנפטר פרנס",
+    "rule_ids": [],
+    "source": {
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 38",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=38",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
+    },
+    "where": [
+      "guide:pension-comprehensive",
+      "guide:provident-for-annuity"
+    ],
+    "notes": "Round 2 (2026-11-07): the Income Tax Ordinance's consolidated text uses \"קצבת שאירים\" (p.38, fork B); who is a survivor is set by each fund's bylaw, which the line describes in general."
+  },
+  {
+    "term_he": "צו הרחבה",
+    "variants_he": [],
+    "explain_he": "צו של השר שמחיל הוראות של הסכם קיבוצי כללי גם על עובדים ומעסיקים שלא היו צד לו",
+    "rule_ids": [],
+    "source": {
+      "title": "צו הרחבה בדבר תשלום דמי הבראה לפי חוק הסכמים קיבוציים, התשי\"ז-1957 (2008)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/extention-order-recovery-2008/he/extention-order-recovery-2008.pdf#page=1",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Ministry of Economy (gov.il)"
+    },
+    "where": [
+      "guide:keren-hishtalmut"
+    ],
+    "notes": "Round 2 (2026-11-07): an order itself, library 22f6ad5d50c68915 (\"בתוקף סמכות ... אני מצווה כי תורחב תחולתן\"), and the Knesset research centre's summary of the procedure, library f90263171689313f. The text of s.25 of the Collective Agreements Law itself was not found in an official copy; the line follows the order and the summary."
+  },
+  {
+    "term_he": "הביטוח הלאומי",
+    "variants_he": [
+      "המוסד לביטוח לאומי",
+      "ביטוח לאומי"
+    ],
+    "explain_he": "המוסד הממלכתי לביטוח סוציאלי, שמשלם קצבאות לפי חוק הביטוח הלאומי, ובהן קצבת ילדים",
+    "rule_ids": [],
+    "source": {
+      "title": "המוסד לביטוח לאומי, אודות",
+      "url": "https://www.btl.gov.il/About/Pages/default.aspx",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
+    },
+    "where": [
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
+    ],
+    "notes": "Round 2 (2026-11-07): the institute's own page, library 69c97ff1799308a5."
+  },
+  {
+    "term_he": "תשואה שנתית ממוצעת",
+    "variants_he": [],
+    "explain_he": "התשואה לשנה בממוצע לאורך שלוש או חמש שנים רצופות, כפי שרשות שוק ההון מפרסמת לכל מסלול",
+    "rule_ids": [
+      "CAT-05"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: גמל־נט, מילון הנתונים (data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Capital Market Authority (data.gov.il)"
+    },
+    "where": [],
+    "notes": "Round 2 (2026-11-07): the Gemel-Net data dictionary, library 1ff5009e0e72864a (fields of the three- and five-year average yearly return). Named in copy (the track browser), on no guide page today."
   }
 ]

@@ -18,12 +18,12 @@
     "value": "BoI",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "title": "Banking Ordinance 1941, consolidated text (Hebrew Wikisource mirror), s.5(א)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=4",
+      "title": "פקודת הבנקאות, 1941, Bank of Israel's consolidated banking legislation (item 103), p.4, s.5(א): \"ובידיו יהיו הפיקוח הכללי והביקורת על כל תאגיד בנקאי\"",
+      "publisher": "Bank of Israel",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -33,7 +33,7 @@
       "REG-03"
     ],
     "state": "sourced",
-    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והבקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
+    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והביקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
   },
   "fee_bases_allowed": [
     "fixed_period"
@@ -71,12 +71,13 @@
     "value": false,
     "unit": "boolean",
     "source": {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017, reg. 4 (the bank withholds when it pays the interest); directive 448 v2 s.29",
-      "publisher": "Finance Ministry (copy on the National Insurance site)",
-      "strength": "primary"
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6449%2Fheb#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005), סריקת רשומות, file p.7 (gazette p.289), reg. 4 as enacted (a banking corporation paying interest to an individual withholds tax from it; the rates were later amended, among others by קובץ התקנות 7076); directive 448 v2 s.29",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "strength": "primary",
+      "quote": "תאגיד בנקאי המשלם ליחיד ריבית ינכה ממנה מס"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,

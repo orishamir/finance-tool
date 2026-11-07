@@ -1,0 +1,30 @@
+{
+ "personas": [
+  "self-directed-investor",
+  "careful-retiree-pc",
+  "student-small-amounts"
+ ],
+ "tasks": [
+  {
+   "key": "not-covered",
+   "text": "You want to know which savings and investment options this site cannot yet compare or explain fully, before you rely on it for a decision.",
+   "shots": [
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-1.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-2.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-3.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-4.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-5.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-6.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-7.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-8.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-9.png",
+    "live/2026-11-07-04-not-covered-wrong-entries/pc/pc-10.png"
+   ],
+   "device": "pc",
+   "findings": true
+  }
+ ],
+ "parallel": 3,
+ "repeat": 3,
+ "behaviour": "research/user-lab/versions/candidates/heading.md"
+}

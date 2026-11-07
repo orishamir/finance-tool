@@ -2,7 +2,7 @@
   "id": "tagyd-bnkay",
   "he": "תאגיד בנקאי",
   "en": null,
-  "meaning": "השם בחוק לבנק או לגוף בנקאי אחר שקיבל רישיון ונמצא בפיקוח המפקח על הבנקים",
+  "meaning": "השם בחוק הבנקאות לבנק, לבנק חוץ או לחברת שירותים משותפת",
   "where": [],
   "wrapper_ids": [
     "bank-deposit",
@@ -29,10 +29,10 @@
     "REG-03"
   ],
   "source": {
-    "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-    "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
-    "publisher": "see title",
-    "strength": "primary-mirror",
-    "checked": "2026-10-22"
+    "url": "https://boi.org.il/media/1l3izmkj/124.pdf#page=4",
+    "title": "חוק הבנקאות (רישוי), התשמ\"א-1981, נוסח בנק ישראל (קובץ החקיקה הבנקאית, פריט 124), ס' 1, עמוד 4",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

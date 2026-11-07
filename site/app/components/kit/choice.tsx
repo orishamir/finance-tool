@@ -3,6 +3,7 @@ import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { Plus } from "lucide-react";
 import { IconCheck } from "../icons";
 import { cx } from "./cx";
+import { gershayim } from "./name";
 
 export interface SegmentOption<T extends string> {
   value: T;
@@ -32,12 +33,12 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
           disabled={o.disabled}
           onClick={() => onChange(o.value)}
           className={cx(
-            "flex-1 inline-flex items-center justify-center gap-1.5 min-h-target lg:min-h-10 px-3 rounded-[5px] text-sm transition-colors duration-[var(--duration-fast)] disabled:text-muted-foreground disabled:cursor-not-allowed",
+            "flex-1 inline-flex items-center justify-center gap-1.5 min-h-target lg:min-h-10 lg:tap-area px-3 rounded-[5px] text-sm transition-colors duration-[var(--duration-fast)] disabled:text-muted-foreground disabled:cursor-not-allowed",
             value === o.value ? "bg-primary font-medium text-primary-foreground shadow-sm" : "text-foreground hover:bg-accent/60", // audit 2026-10-24 (A41): a clear pressed state
           )}
         >
           {value === o.value && <IconCheck size={16} />}
-          {o.label}
+          {typeof o.label === "string" ? gershayim(o.label) : o.label}
         </button>
       ))}
     </div>

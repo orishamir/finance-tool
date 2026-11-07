@@ -12,7 +12,7 @@ import {
   ruleBook,
   type SecuritiesInput,
 } from "../src/index.ts";
-import { context, loadRules, runDate } from "./golden/harness.ts";
+import { context, loadRules, runDate, withTxf04AsTheLetterCopy } from "./golden/harness.ts";
 
 const rules = loadRules();
 const ctx = context(rules);
@@ -120,16 +120,19 @@ describe("figure resolver (D10, method §13)", () => {
     // Altshuler Shaham's own fee after 21, split from CS-18)
     book.rate("CS-30", "fee_after_21");
     book.rate("TXK-23", "provident_rate");
+    book.rate("TXK-29", "bank_linked_rate");
     book.rate("TXS-09", "rate");
-    book.rate("TXF-04", "threshold_pct");
-    expect(book.used().map((u) => u.id)).toEqual(["CS-30", "TXK-23", "TXS-09", "TXF-04"]);
-    // TXS-09 reads the Tax Authority's consolidated ordinance since the source check of 2026-10-25, so it carries no label;
-    // TXF-04 rests only on a re-hosted copy of a Tax Authority letter, so its figure carries the mirror label
-    expect(book.labels()).toEqual([
-      { code: "institution-source", ruleId: "CS-30" },
-      { code: "secondary-source", ruleId: "TXK-23" },
-      { code: "mirror-source", ruleId: "TXF-04" },
-    ]);
+    // TXF-04 is open since 2026-11-07 (its only source, a copy of a Tax Authority letter, is no longer cited): the data blocks it
+    expect(() => book.rate("TXF-04", "threshold_pct")).toThrow(BlockedError);
+    // the mirror label is checked on the letter's copy as it stood (a test fixture, harness)
+    const mirrorBook = ruleBook({ rules: withTxf04AsTheLetterCopy(rules), runDate });
+    mirrorBook.rate("TXF-04", "threshold_pct");
+    expect(mirrorBook.labels()).toEqual([{ code: "mirror-source", ruleId: "TXF-04" }]);
+    expect(book.used().map((u) => u.id)).toEqual(["CS-30", "TXK-23", "TXK-29", "TXS-09"]);
+    // TXK-23's and TXK-29's rates read the Ordinance since 2026-11-07, so their sources imply no label (the bank route's reading
+    // label is the ledger's own, not the source's). TXS-09 reads the Tax Authority's consolidated ordinance since the source
+    // check of 2026-10-25, so it carries no label
+    expect(book.labels()).toEqual([{ code: "institution-source", ruleId: "CS-30" }]);
   });
 
   it("reads percentages as fractions and money as stored", () => {

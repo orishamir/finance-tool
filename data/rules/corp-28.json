@@ -1,0 +1,43 @@
+{
+  "id": "CORP-28",
+  "title": "Structured bonds: getting the money out, and moving them",
+  "title_he": "איגרות חוב מובנות: איך מוציאים את הכסף ואיך מעבירים אותן",
+  "text_he": "איגרות חוב מובנות רשומות למסחר בבורסה, ולכן יוצאים מהן במכירה בבורסה דרך בנק או חבר בורסה, או מחכים למועדי התשלום שבתנאי הסדרה. תעודת פיקדון על מטבעות נפדית אצל המנפיק רק במועדים שבהם מתחלפים הפיקדונות שמגבים אותה. הן מוחזקות בחשבון ניירות הערך ועוברות יחד איתו.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process",
+    "market-price-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "reg. 2(2)-(3)",
+      "locator_he": "תקנה 2(2)-(3)",
+      "quote": "פדיון התעודות יהיה רק במועדי תחלופת הנכסים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=7",
+      "title": "TASE, periodic report for 2025",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "checked": "2026-11-07"
+    }
+  ]
+}

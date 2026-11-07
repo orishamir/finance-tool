@@ -20,6 +20,13 @@ adopted as the judge; whether it becomes a first pass on every site change is CL
   founder's flag of a key repeated under every row: on his held-out flags of the same reason 5 of 8 against 0 of 8,
   the held-out headline 17 against 13 of 72; but a quarter of all findings become about repetition, so it waits for
   his noise sample; `once.json` has the numbers.
+- Set aside: `candidates/heading.md` ("you take a title or a heading as a promise about what is under it"), built from a
+  misreading of the founder's not-covered flag; kept because its negative check found heading problems on the companies
+  page worth a look; `heading.json` says why.
+- Not kept: `candidates/contradiction.md` ("you notice when a site says two different things about the same item"), from
+  the same flag as he meant it (the page says the site lacks what another page gives): 3 of 3 on its own case against 0
+  of 9, but nothing gained on the held-out cases of its reason (0 of 4 against 0 of 8; 3 of 4 against 5 of 8);
+  `contradiction.json` has the numbers and what to try next.
 - `candidates/`: an instruction under test, each with a JSON file of what it was built from, its status and its test results or plan. It enters a version only
   after it catches cases it was not built from, stays silent where its reason does not apply, and adds no noise on the
   held-out benchmark.

@@ -28,12 +28,12 @@
     "value": "BoI",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "title": "Banking Ordinance 1941, consolidated text (Hebrew Wikisource mirror), s.5(א)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=4",
+      "title": "פקודת הבנקאות, 1941, Bank of Israel's consolidated banking legislation (item 103), p.4, s.5(א): \"ובידיו יהיו הפיקוח הכללי והביקורת על כל תאגיד בנקאי\"",
+      "publisher": "Bank of Israel",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -43,7 +43,7 @@
       "REG-03"
     ],
     "state": "sourced",
-    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והבקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
+    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והביקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
   },
   "fee_bases_allowed": [
     "exit"

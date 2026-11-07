@@ -5,7 +5,7 @@
     "term_he": "שנת המס",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.6 s.1",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=6"
     },
     "variants_he": [
       "שנת מס"
@@ -16,7 +16,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=70",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -47,8 +47,8 @@
     "id": "tvshb-yshral",
     "term_he": "תושב ישראל",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1, definition 'תושב ישראל' ('מרכז חייו')",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 14",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=14"
     },
     "variants_he": [],
     "explain_he": "מעמד במס שנקבע לפי מרכז החיים; כשהוא בישראל, חלים כללי המס הישראליים",
@@ -56,10 +56,11 @@
       "TXG-01"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 14",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=14",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "guide:bank-deposit",
@@ -80,15 +81,15 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Residence is decided by the centre-of-life test, with rebuttable presumptions based on days in Israel (TXG-01). Non-residents, olim and returning residents are not covered by the rule base. TXG-01 says the mirror was paraphrased by the fetch tool, so the exact wording must be re-read before encoding."
+    "notes": "Residence is decided by the centre-of-life test, with rebuttable presumptions based on days in Israel (TXG-01). Non-residents, olim and returning residents are not covered by the rule base. TXG-01 says the mirror was paraphrased by the fetch tool, so the exact wording must be re-read before encoding. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
     "id": "hknsh-chyybt",
     "term_he": "הכנסה חייבת",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1 (per the TXG Terms table)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 12",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=12"
     },
     "variants_he": [],
     "explain_he": "ההכנסה שעליה מחשבים את המס, אחרי שמורידים ממנה ניכויים, קיזוזים ופטורים",
@@ -97,10 +98,11 @@
       "TXG-09"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 12",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=12",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "tax-form",
@@ -122,7 +124,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "The meaning comes from the TXG Terms table (Ordinance s.1); no rule states the definition itself. For the surtax, taxable income excludes the inflationary amount and includes betterment (TXG-09)."
+    "notes": "The meaning comes from the TXG Terms table (Ordinance s.1); no rule states the definition itself. For the surtax, taxable income excludes the inflationary amount and includes betterment (TXG-09). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
@@ -261,7 +263,7 @@
     "term_he": "שיעור המס השולי",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.60, as quoted in TXP-01 ('לפי שיעור המס השולי של הכנסתך')",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=60"
     },
     "variants_he": [],
     "explain_he": "שיעור המס של המדרגה הגבוהה ביותר שההכנסה מגיעה אליה; בו ממוסה כל שקל נוסף",
@@ -272,7 +274,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=44",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -304,7 +306,7 @@
     "term_he": "שיעור מס מרבי",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.38",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=38"
     },
     "variants_he": [
       "בשיעור שלא יעלה על"
@@ -316,7 +318,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=40",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -387,8 +389,8 @@
     "id": "kshlb-hgbvh-byvtr-bsvlm-hknstv-hchyybt",
     "term_he": "כשלב הגבוה ביותר בסולם הכנסתו החייבת",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.91(b)(1), s.125C(b)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 151",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=151"
     },
     "variants_he": [],
     "explain_he": "רווח הון וריבית נספרים מעל שאר ההכנסה, ולכן ממוסים במדרגות שמעליה",
@@ -397,10 +399,11 @@
       "TXG-07"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 151",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=151",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "guide:bank-deposit",
@@ -421,7 +424,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Law wording, met mainly on the age-60 explanation: the lower bands reach capital income only as far as other income has not used them (TXG-04). Source is the statute because the guide quote in TXG-07 does not carry this phrase."
+    "notes": "Law wording, met mainly on the age-60 explanation: the lower bands reach capital income only as far as other income has not used them (TXG-04). Source is the statute because the guide quote in TXG-07 does not carry this phrase. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
@@ -471,8 +474,8 @@
     "id": "ychyd-shmlav-lv-60-shnym",
     "term_he": "יחיד שמלאו לו 60 שנים",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.121(b)(1) ('הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים')",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), s.121(b)(1) ('הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים')",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf"
     },
     "variants_he": [
       "בן 60 ומעלה",
@@ -487,7 +490,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=98",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -511,7 +514,7 @@
       "guide:savings-plan",
       "comparison"
     ],
-    "notes": "Starting term 'הקלות לבני שישים ומעלה' is not an official name: no source in the rule base names the relief; the law describes the person (s.121(b)(1)) and the guide says 'אם הינך בן 60 ומעלה' (p.46). The law writes the age in digits, TXG-04 quotes 'שישים' in words (source not stated). Kol Zchut's page 'הטבת מס מגיל 60' returned 403 and is not a source. 'Part of investment income': the relief reaches real capital gains and CPI-linked interest (maximum rates) but not unlinked interest at the fixed rate (TXG-07, TXG-08), and only as far as other income has not used the lower bands. Banks withhold at the standard rate; the difference comes back through a return or form 0135 (TXG-25); how banks treat 60+ at source is open (TXG open question 7). Dividends and unlinked-bond gains for 60+ are open (TXG open question 10)."
+    "notes": "Starting term 'הקלות לבני שישים ומעלה' is not an official name: no source in the rule base names the relief; the law describes the person (s.121(b)(1)) and the guide says 'אם הינך בן 60 ומעלה' (p.46). The law writes the age in digits, TXG-04 quotes 'שישים' in words (source not stated). Kol Zchut's page 'הטבת מס מגיל 60' returned 403 and is not a source. 'Part of investment income': the relief reaches real capital gains and CPI-linked interest (maximum rates) but not unlinked interest at the fixed rate (TXG-07, TXG-08), and only as far as other income has not used the lower bands. Banks withhold at the standard rate; the difference comes back through a return or form 0135 (TXG-25); how banks treat 60+ at source is open (TXG open question 7). Dividends and unlinked-bond gains for 60+ are open (TXG open question 10). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text."
   },
   {
     "kind": "term",
@@ -532,7 +535,7 @@
     ],
     "source": {
       "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
-      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Knesset"
@@ -576,7 +579,7 @@
     ],
     "source": {
       "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
-      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Knesset"
@@ -608,7 +611,7 @@
     "term_he": "רווח הון",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.46 s.2",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=46"
     },
     "variants_he": [
       "ריווח הון"
@@ -619,7 +622,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=49",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -650,8 +653,8 @@
     "id": "rvvch-hvn-ryaly-e",
     "term_he": "רווח הון ריאלי",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.91(b)(1) ('יחיד יהיה חייב במס על רווח הון ריאלי')",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), s.91(b)(1) ('יחיד יהיה חייב במס על רווח הון ריאלי')",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=100"
     },
     "variants_he": [
       "ריווח הון ריאלי",
@@ -666,7 +669,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=49",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -689,15 +692,15 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "The Ordinance spells it two ways: 'ריווח הון ריאלי' in the s.88 definition and 'רווח הון ריאלי' in s.91(b)(1). 'רווח ההון הריאלי' is the guide's wording (p.46); 'הרווח הריאלי' is managers' ad wording (TXK Terms, Harel flyer). For unlinked bonds and loans the whole gain counts as real (TXS-03). For a foreign-currency security the exchange rate is the index (TXG-12)."
+    "notes": "The Ordinance spells it two ways: 'ריווח הון ריאלי' in the s.88 definition and 'רווח הון ריאלי' in s.91(b)(1). 'רווח ההון הריאלי' is the guide's wording (p.46); 'הרווח הריאלי' is managers' ad wording (TXK Terms, Harel flyer). For unlinked bonds and loans the whole gain counts as real (TXS-03). For a foreign-currency security the exchange rate is the index (TXG-12). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text."
   },
   {
     "kind": "term",
     "id": "hpsd-hvn",
     "term_he": "הפסד הון",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150"
     },
     "variants_he": [],
     "explain_he": "הפסד במכירת נכס: כשמה שקיבלתם במכירה נמוך ממה שעלה לכם לקנות אותו",
@@ -705,10 +708,11 @@
       "TXG-12"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "statement",
@@ -731,15 +735,15 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Offsetting losses is in TXS and TXF. How a nominal gain smaller than the inflationary amount (a real loss) is treated is open (TXG open question 13)."
+    "notes": "Offsetting losses is in TXS and TXF. How a nominal gain smaller than the inflationary amount (a real loss) is treated is open (TXG open question 13). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
     "id": "skvm-aynpltzyvny-e",
     "term_he": "סכום אינפלציוני",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), s.88",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=149"
     },
     "variants_he": [],
     "explain_he": "החלק מהרווח שרק משלים את האינפלציה מיום הקנייה; על נכס שנקנה היום הוא פטור ממס",
@@ -749,7 +753,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=48",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -772,15 +776,15 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Only the part built up before 1994 is taxed (TXG-13), which matters only for old assets. For a foreign-currency security the exchange rate is the index (TXG-12)."
+    "notes": "Only the part built up before 1994 is taxed (TXG-13), which matters only for old assets. For a foreign-currency security the exchange rate is the index (TXG-12). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text."
   },
   {
     "kind": "term",
     "id": "mdd-e",
     "term_he": "מדד",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 and s.125C(a), definition 'מדד'",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 15",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15"
     },
     "variants_he": [],
     "explain_he": "המדד שלפיו מתאימים את העלות לאינפלציה: מדד המחירים לצרכן, ובנייר ערך במטבע חוץ שער המטבע",
@@ -789,10 +793,11 @@
       "TXG-14"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 15",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "statement",
@@ -811,15 +816,15 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "The value that counts is the one last published before the day in question (TXG-12, TXG-14). The exchange-rate rule is for a security held by an individual that is denominated in or linked to a foreign currency (s.88); for interest the same applies to FX-linked assets (TX2, TXI)."
+    "notes": "The value that counts is the one last published before the day in question (TXG-12, TXG-14). The exchange-rate rule is for a security held by an individual that is denominated in or linked to a foreign currency (s.88); for interest the same applies to FX-linked assets (TX2, TXI). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
     "id": "mdd-hmchyrym-ltzrkn",
     "term_he": "מדד המחירים לצרכן",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 ('מדד המחירים לצרכן כפי שפורסם לאחרונה לפני היום שבו מדובר')",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), s.88 ('מדד המחירים לצרכן כפי שפורסם לאחרונה לפני היום שבו מדובר')",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=12"
     },
     "variants_he": [],
     "explain_he": "מדד רשמי שמפרסמת הלשכה המרכזית לסטטיסטיקה; לפיו מחשבים הצמדה ואת החלק האינפלציוני ברווח",
@@ -856,7 +861,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "The rule base says who publishes it (TXG-14, Ordinance mirror) and what it is used for (linkage, BANK-26; inflationary amount, TXG-12), but not what the index measures, so the explanation stops there. Source is BoI Directive 447 as the strongest source among the rules; the publisher fact rests on TXG-14 (primary-mirror). The same spelling is used in the law and in BoI Directive 447 ('צמוד למדד המחירים לצרכן')."
+    "notes": "The rule base says who publishes it (TXG-14, Ordinance mirror) and what it is used for (linkage, BANK-26; inflationary amount, TXG-12), but not what the index measures, so the explanation stops there. Source is BoI Directive 447 as the strongest source among the rules; the publisher fact rests on TXG-14 (primary-mirror). The same spelling is used in the law and in BoI Directive 447 ('צמוד למדד המחירים לצרכן'). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text."
   },
   {
     "kind": "term",
@@ -875,7 +880,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=48",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -907,7 +912,7 @@
     "term_he": "נומינלי",
     "term_source": {
       "title": "Bank of Israel, Directive 447 (concentrated publication of deposit rates), Annex A, Annex A ('שיעור הריבית המוצעת (נומינלי שנתי)')",
-      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf"
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf#page=3"
     },
     "variants_he": [
       "נומינלית",
@@ -920,10 +925,11 @@
       "TXS-03"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 149",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=149",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "statement",
@@ -946,15 +952,15 @@
       "guide:savings-plan",
       "comparison"
     ],
-    "notes": "No rule defines the word; the meaning rests on TXI-03 (15% on 'the whole nominal interest; there is no inflation deduction') and TXS-03 ('the whole nominal gain is taxed and there is no inflation relief'), both from the Ordinance via Wikisource. Variants: 'נומינליות' in the CMA dictionaries ('תשואות נומינליות ברוטו', CAT-04) and 'נומינלית' in a bank product page ('קרן מובטחת (נומינלית)', TX2 Terms). CAT-04: CMA yields are nominal and before management fees."
+    "notes": "No rule defines the word; the meaning rests on TXI-03 (15% on 'the whole nominal interest; there is no inflation deduction') and TXS-03 ('the whole nominal gain is taxed and there is no inflation relief'), both from the Ordinance via Wikisource. Variants: 'נומינליות' in the CMA dictionaries ('תשואות נומינליות ברוטו', CAT-04) and 'נומינלית' in a bank product page ('קרן מובטחת (נומינלית)', TX2 Terms). CAT-04: CMA yields are nominal and before management fees. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
     "id": "hprshy-htzmdh-e",
     "term_he": "הפרשי הצמדה",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1 and s.2(4)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 12",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=12"
     },
     "variants_he": [],
     "explain_he": "סכום שנוסף לחוב או לפיקדון בגלל הצמדה למדד או לשער מטבע",
@@ -963,10 +969,11 @@
       "TXI-05"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 12",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=12",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "statement",
@@ -985,15 +992,15 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "On a fully linked asset an individual's linkage differentials are exempt, so only real interest is taxed; partial linkage is not exempt (TXI-05). Detail belongs to TXI."
+    "notes": "On a fully linked asset an individual's linkage differentials are exempt, so only real interest is taxed; partial linkage is not exempt (TXI-05). Detail belongs to TXI. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
     "id": "dmy-nykyvn-e",
     "term_he": "דמי ניכיון",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.125C(a), as written in TXG-14",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 204",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=204"
     },
     "variants_he": [
       "דמי נכיון"
@@ -1004,10 +1011,11 @@
       "TXI-01"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 204",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=204",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "statement",
@@ -1031,7 +1039,7 @@
       "exposure:government-bond-unlinked",
       "exposure:makam"
     ],
-    "notes": "The rule base quotes the Ordinance with two spellings: 'דמי ניכיון' (TXG-14, s.125C(a)) and 'דמי נכיון' (TXG-28, s.2(4)). The mirror was paraphrased by the fetch tool, so the exact spelling should be re-read. Detail belongs to TXI."
+    "notes": "The rule base quotes the Ordinance with two spellings: 'דמי ניכיון' (TXG-14, s.125C(a)) and 'דמי נכיון' (TXG-28, s.2(4)). The mirror was paraphrased by the fetch tool, so the exact spelling should be re-read. Detail belongs to TXI. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "term",
@@ -1039,7 +1047,7 @@
     "term_he": "ניכוי מס במקור",
     "term_source": {
       "title": "רשות המסים, הנחיות למתן פטור מניכוי מס במקור במשיכת סכומים מקרן השתלמות – הוראת שעה, 05.08.2020, title",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/employers-050820/he/IncomeTax_IncomeTaxEmployersInfo_employer_info_050820-1.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/employers-050820/he/IncomeTax_IncomeTaxEmployersInfo_employer_info_050820-1.pdf#page=1"
     },
     "variants_he": [
       "ניכוי במקור"
@@ -1050,7 +1058,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=29",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1076,7 +1084,7 @@
     "term_he": "טופס 867",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.40 ('לפי הסכומים המופיעים בטופסי 867')",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=40"
     },
     "variants_he": [
       "אישור שנתי",
@@ -1088,7 +1096,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=14",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1135,7 +1143,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=8",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1181,7 +1189,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=6",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1225,7 +1233,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=7",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1314,7 +1322,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=5",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1356,7 +1364,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=5",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1382,7 +1390,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=6",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1406,7 +1414,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=121",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1582,8 +1590,8 @@
     "id": "bal-mnyvt-mhvty",
     "term_he": "בעל מניות מהותי",
     "term_source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 (per the TXG Terms table)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 146",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=146"
     },
     "variants_he": [],
     "explain_he": "מי שמחזיק חלק גדול מאמצעי השליטה בחברה; חלים עליו שיעורי מס אחרים",
@@ -1592,10 +1600,11 @@
       "TXG-15"
     ],
     "source": {
-      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
-      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 146",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=146",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "guide:bank-deposit",
@@ -1616,7 +1625,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Outside the site's scope: the rule base covers individuals who are not substantial shareholders (TXG scope). Met only in exceptions, for example a higher withholding rate on dividends (TXG-15)."
+    "notes": "Outside the site's scope: the rule base covers individuals who are not substantial shareholders (TXG scope). Met only in exceptions, for example a higher withholding rate on dividends (TXG-15). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D) to the official text."
   },
   {
     "kind": "dimension",
@@ -3403,5 +3412,54 @@
       "checklist"
     ],
     "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CAT-15, CAT-23, CAT-24."
+  },
+  {
+    "term_he": "תיאום מס",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025, עמודים 43 ו־74",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=43"
+    },
+    "variants_he": [],
+    "explain_he": "בקשה לפקיד השומה במהלך השנה, כדי שפטור או זיכוי ייכנסו כבר לניכוי המס במקור, בלי לחכות לדוח השנתי.",
+    "rule_ids": [
+      "TXI-20",
+      "TXI-07"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025, עמודים 43 ו־74",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=43",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
+    },
+    "where": [
+      "tax-form",
+      "guide:savings-plan",
+      "guide:bank-deposit"
+    ],
+    "notes": "Glossary sweep 2026-11-07: the guide's low-income interest exemption is given during the year only to someone who went to the assessing officer and asked for \"תיאום מס\" (p. 43); the settlement credit, likewise \"באמצעות תיאום מס אצל פקיד השומה\" (p. 74). The rule base's Terms row (tax-interest-deposits-bonds.md) points to regulation 11, not read here.",
+    "id": "tyavm-ms"
+  },
+  {
+    "term_he": "רשות המסים",
+    "variants_he": [
+      "רשות המסים בישראל"
+    ],
+    "explain_he": "הרשות הממשלתית שבה מאוחדים אגפי המס: מס הכנסה, מיסוי מקרקעין, מס ערך מוסף, מכס ועוד",
+    "rule_ids": [],
+    "source": {
+      "title": "רשות המסים בישראל, דף המשרד ב־gov.il",
+      "url": "https://www.gov.il/he/departments/israel_tax_authority/govil-landing-page",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
+    },
+    "where": [
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:makam"
+    ],
+    "notes": "Round 2 (2026-11-07): the authority's own page, library 7f0b1e32c5b1b56e. The limited-time bond fund page lists it in its termIds."
   }
 ]

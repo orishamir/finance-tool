@@ -8,13 +8,14 @@ import { useId } from "react";
 import { Link } from "react-router";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, guideBlocks } from "../../../copy";
-import { fmt } from "../../../lib/format";
+
 import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
 import { LeadTail, Num, NumAfter, RuleRef, RulesChip, RulesLine } from "../../provenance";
-import { Card, ClaimList, Disclosure, DocLink, GroupPriceRows, KeyValueList, LinkButton, ProductPhoneRow, ProductTable, ProductFigures, Section, Sentence, Tag, atPdfPage, cx, type KeyValueItem, type ProductColumn } from "../../kit";
+import { Card, ClaimList, Disclosure, DocLink, GroupPriceRows, TariffDate, KeyValueList, LinkButton, ProductPhoneRow, ProductTable, ProductFigures, Section, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
+import { isPdfUrl, sourceHref, type CitedPlace } from "../../../lib/sources";
 
 const baseName = (b: string) => (guideBlocks.fees as Record<string, { name: string }>)[b]?.name ?? b;
 /** What a kind of fee is charged on, in the guides' words ("מכל המרה של שקלים למטבע זר או חזרה"). */
@@ -28,14 +29,14 @@ const boundWord = (l: TariffLineRow, v: SiteValue) => (v.value === null ? null :
 const priceWord = (l: TariffLineRow) => (l.period ? copy.card.period[l.period] : /per_transfer$/.test(l.rate.unit) ? copy.card.perTransfer : /per_share$/.test(l.rate.unit) ? copy.card.perShare : null);
 
 /** The page of a PDF the line stands on; a web page has none. */
-const pdfPage = (w: NonNullable<TariffLineRow["where"]>) => (/\.pdf/i.test(w.url) && !w.url.includes("#") ? w.page : undefined);
+const pdfPage = (w: NonNullable<TariffLineRow["where"]>) => (isPdfUrl(w.url) && !w.url.includes("#") ? w.page : undefined);
 
 /** Where a fact stands, in full: the price list and its page, or another document by its name (D57 amended 2026-11-04). */
 function WhereLink({ w }: { w: NonNullable<TariffLineRow["where"]> }) {
   const page = pdfPage(w);
   return (
-    <DocLink href={atPdfPage(w.url, page)} className="text-xs">
-      {w.tariff ? copy.card.whereTariff(page) : copy.card.whereOther(w.title, page)}
+    <DocLink href={sourceHref(w)} className="text-xs">
+      {w.tariff ? copy.card.whereTariff(page) : copy.card.whereOther(gershayim(w.title), page)}
     </DocLink>
   );
 }
@@ -48,7 +49,7 @@ function WhereCell({ w }: { w: TariffLineRow["where"] }) {
   if (!w) return <span className="text-sm text-muted-foreground">—</span>;
   const page = pdfPage(w);
   const link = (
-    <DocLink href={atPdfPage(w.url, page)} className="text-sm -my-2.5">
+    <DocLink href={sourceHref(w)} className="text-sm -my-2.5">
       {page ? copy.card.page(page) : w.tariff ? copy.card.inTariff : copy.card.otherDoc}
     </DocLink>
   );
@@ -208,7 +209,7 @@ function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
               <bdi className="font-medium">{classWords(a.classes)}</bdi>
             </span>
             {a.reason && <span className="text-sm text-muted-foreground max-w-measure">{a.reason}</span>}
-            <WhereLink w={{ url: a.source.url, title: a.source.title, ...(a.source.page ? { page: a.source.page } : {}), tariff: false }} />
+            <WhereLink w={{ url: a.source.url, title: a.source.title, ...(a.source.page ? { page: a.source.page } : {}), ...((a.source as CitedPlace).fragment ? { fragment: (a.source as CitedPlace).fragment } : {}), tariff: false }} />
           </li>
         ))}
       </Card>
@@ -263,7 +264,7 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
               <ul className="flex flex-col gap-2 pt-1">
                 {tariff.protection.map((r) => (
                   <li key={r.id} className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <bdi className="max-w-measure">{r.title}</bdi>
+                    <bdi className="max-w-measure">{gershayim(r.title)}</bdi>
                     <RuleRef id={r.id} />
                   </li>
                 ))}
@@ -300,10 +301,10 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
             </Disclosure>
           )}
           {tariff && (
-            <a href={tariff.url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target text-sm">
+            <a href={sourceHref(tariff)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target text-sm">
               <span>
                 {copy.missingLinks.tariffPageBefore}
-                <bdi>{tariff.providerName}</bdi>
+                <bdi>{gershayim(tariff.providerName)}</bdi>
               </span>
               <IconExternal size={16} />
             </a>
@@ -320,20 +321,18 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
       {/* the account's price list first, as a product's name and its quiet line: the document (its title is the link), its dates, who pays these prices */}
       <div className="flex flex-col gap-1.5">
         {/* a document's title may hold an address with no space in it: it breaks anywhere rather than widen the page */}
-        <DocLink href={tariff.url} className="self-start font-medium max-w-measure">
-          {tariff.title} <span dir="ltr" className="uppercase text-muted-foreground font-normal">({tariff.format})</span>
+        <DocLink href={sourceHref(tariff)} className="self-start font-medium max-w-measure">
+          {gershayim(tariff.title)} <span dir="ltr" className="uppercase text-muted-foreground font-normal">({tariff.format})</span>
         </DocLink>
         <Sentence size="sm" tone="muted">
-          {tariff.published ? <NumAfter lead={copy.card.tariffFrom} value={tariff.published} /> : <span className="text-caution-foreground">{copy.card.noPublishedDate}</span>}
+          <TariffDate dated={tariff.dated} checked={false} date={(lead) => <NumAfter lead={lead} value={tariff.published!} />} />
           <NumAfter lead={copy.card.collectedAt} value={tariff.snapshot} />
         </Sentence>
         {tariff.stale && (
           <p className="flex items-start gap-1.5 text-sm text-caution-foreground">
             <IconAlert size={18} className="text-caution shrink-0 mt-0.5" />
             <span>
-              <LeadTail lead={copy.card.stale.before}>
-                <bdi dir="ltr">{fmt.date(String(tariff.snapshot.value))}</bdi>
-              </LeadTail>
+              <When iso={String(tariff.snapshot.value)} lead={copy.card.stale.before} />
               {copy.card.stale.after}
             </span>
           </p>
@@ -359,7 +358,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         </LinkButton>
         {/* the index page opens with the panel on this house's price list (2026-11-04) */}
         <LinkButton to={ownAccountPath(id)} variant="secondary" className="self-start">
-          {investCopy.ownAccount.open(tariff.providerName)}
+          {investCopy.ownAccount.open(gershayim(tariff.providerName))}
         </LinkButton>
       </div>
     </div>

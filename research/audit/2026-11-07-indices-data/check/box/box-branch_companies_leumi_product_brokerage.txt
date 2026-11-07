@@ -1,0 +1,6 @@
+
+== /companies/leumi?product=brokerage at 390 px: 0 sliders, 0 selects; page wider than the screen: false
+
+== /companies/leumi?product=brokerage at 1440 px: 0 sliders, 0 selects; page wider than the screen: false
+
+total boxes that changed on the screen: 0

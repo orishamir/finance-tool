@@ -1,0 +1,102 @@
+{
+  "task": "companies-list",
+  "persona": "self-directed-investor",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T14:54:12.526Z",
+  "structured": {
+    "answer": "No answer from this page: it's a directory of companies with product tags and fee-schedule dates, no commission, custody or FX number to compare. I'd click into one or two brokers (IBI, Interactive) or try \"לפי מוצר\", and if no fee table shows up fast, I'm out.",
+    "confidence": "fairly sure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Arrows ‹ next to each company",
+        "why": "Can't tell whether they lead to an actual fee table or just more tags"
+      },
+      {
+        "where": "Investment houses list (IBI, Interactive, IB)",
+        "why": "No 'תעריפון' date shown for them, unlike the banks, so unclear whether fees are covered at all for the brokers I actually care about"
+      },
+      {
+        "where": "Between screen 2 and 3",
+        "why": "Seems a section is skipped; jumped from banks to an issuers list"
+      }
+    ],
+    "used": [
+      "בתי השקעות list with product tags",
+      "בנקים ובתי השקעות נוספים with 'תעריפון מ־' dates",
+      "'ללא תאריך פרסום' marks",
+      "'לא נכלל' note about tariffs not found",
+      "Footer 'אישי, לא מסחרי, בלי קישורי שיווק'"
+    ],
+    "skimmed": [
+      "Product tags on each company row",
+      "Issuers/index providers list (BlackRock, iShares, MSCI, S&P DJI)",
+      "'לא נכלל' paragraph"
+    ],
+    "skipped": [
+      "Insurance/pension houses (כלל, מנורה, איילון, מגדל...)",
+      "'כל הרשומות' fold",
+      "Top nav: מדריך, השקעה במדד, חוקים וכללים"
+    ],
+    "unsure_meaning": [
+      "Orange 'ללא תאריך פרסום' – no tariff at all, or just undated?",
+      "Numbers next to BlackRock/iShares/MSCI (1, 4, 2) – count of what?",
+      "'מטרה אחרת' tag"
+    ],
+    "not_found": [
+      "Any per-trade commission",
+      "Monthly custody fee (דמי משמרת)",
+      "FX conversion rate/spread",
+      "A comparison table or sort by cost",
+      "A one-number total cost for a given portfolio"
+    ],
+    "findings": [
+      {
+        "what": "No fee figures anywhere on a page meant for choosing a broker; nothing comparable to what I pay",
+        "where": "Whole company list, screens 1–2"
+      },
+      {
+        "what": "Investment houses / brokers show no fee-schedule date while banks do, so coverage of the relevant brokers is unclear",
+        "where": "בתי השקעות section, screen 1"
+      },
+      {
+        "what": "Three providers marked 'ללא תאריך פרסום' in orange with no explanation",
+        "where": "בנק ירושלים, מזרחי טפחות, פסגות, screen 2"
+      },
+      {
+        "what": "No sort/filter by cost, only text search by company name",
+        "where": "חיפוש חברה, screen 1"
+      },
+      {
+        "what": "Page admits some company tariffs weren't found",
+        "where": "'לא נכלל' section, screens 3–4"
+      },
+      {
+        "what": "Issuers/index providers list is irrelevant to picking a broker and pads the page",
+        "where": "Screens 3–4"
+      },
+      {
+        "what": "Positive: clear non-commercial statement, no broker pushed",
+        "where": "Footer"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37176,
+    "turns": 6,
+    "usd": 0.1571378,
+    "input": 8,
+    "cacheWrite": 11681,
+    "cacheRead": 19489,
+    "output": 2988,
+    "model": "claude-opus-5-5"
+  }
+}

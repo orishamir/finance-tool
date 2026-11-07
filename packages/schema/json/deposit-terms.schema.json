@@ -97,6 +97,7 @@
             "usd_per_share",
             "usd_per_trade",
             "gbp_per_trade",
+            "usd_per_event",
             "nis_per_usd",
             "fx_per_eur",
             "months",
@@ -306,6 +307,7 @@
                 "usd_per_share",
                 "usd_per_trade",
                 "gbp_per_trade",
+                "usd_per_event",
                 "nis_per_usd",
                 "fx_per_eur",
                 "months",
@@ -500,6 +502,7 @@
             "usd_per_share",
             "usd_per_trade",
             "gbp_per_trade",
+            "usd_per_event",
             "nis_per_usd",
             "fx_per_eur",
             "months",
@@ -672,11 +675,29 @@
       "type": "object",
       "properties": {
         "value": {
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "null"
+          "allOf": [
+            {
+              "type": [
+                "number",
+                "string",
+                "boolean",
+                "null"
+              ]
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "unlinked_15",
+                    "linked_25"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
           ]
         },
         "unit": {
@@ -697,6 +718,7 @@
             "usd_per_share",
             "usd_per_trade",
             "gbp_per_trade",
+            "usd_per_event",
             "nis_per_usd",
             "fx_per_eur",
             "months",
@@ -889,6 +911,7 @@
                 "usd_per_share",
                 "usd_per_trade",
                 "gbp_per_trade",
+                "usd_per_event",
                 "nis_per_usd",
                 "fx_per_eur",
                 "months",
@@ -1080,6 +1103,7 @@
                     "usd_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
                     "months",
@@ -1332,6 +1356,19 @@
     "conditions_he": {
       "type": "string",
       "minLength": 1
+    },
+    "variant": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "campaign",
+          "closed_system",
+          "interest_during_term",
+          "best_of"
+        ]
+      }
     },
     "doubt_he": {
       "type": "string",

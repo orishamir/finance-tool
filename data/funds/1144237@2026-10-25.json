@@ -187,23 +187,49 @@
       {
         "year": 2025,
         "fund_pct": 5.18,
-        "tracking_pct": 6.01
+        "tracking_pct": 6.01,
+        "fees_charged": {
+          "fixed": 1.0,
+          "variable": 0.3,
+          "trustee": 0.03
+        }
       },
       {
         "year": 2024,
         "fund_pct": 18.91,
-        "tracking_pct": 20.09
+        "tracking_pct": 20.09,
+        "fees_charged": {
+          "fixed": 1.0,
+          "variable": 0.3,
+          "trustee": 0.03
+        }
       },
       {
         "year": 2023,
         "fund_pct": 25.29,
-        "tracking_pct": 25.83
+        "tracking_pct": 25.83,
+        "fees_charged": {
+          "fixed": 1.0,
+          "variable": 0.3,
+          "trustee": 0.03
+        }
       },
       {
         "year": 2022,
         "fund_pct": -8.89,
-        "tracking_pct": -7.98
+        "tracking_pct": -7.98,
+        "fees_charged": {
+          "fixed": 1.0,
+          "variable": 0.3,
+          "trustee": 0.03
+        }
       }
+    ],
+    "years_printed": [
+      2022,
+      2023,
+      2024,
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730857-00.pdf",
@@ -212,7 +238,15 @@
       "strength": "institution"
     },
     "page": 6,
-    "checked": "2026-10-25"
+    "fees_page": 8,
+    "changes_page": 7,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "MSCI AC WORLD INDEX - NTR",
+      "dividends": "net",
+      "page": 2
+    }
   },
   "snapshot": "2026-10-25"
 }

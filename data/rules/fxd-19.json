@@ -1,0 +1,43 @@
+{
+  "id": "FXD-19",
+  "title": "Israel Bonds: what they cost the buyer",
+  "title_he": "אגרות בונדס: כמה הן עולות לקונה",
+  "text_he": "הקונה משלם את ערכה הנקוב של האגרת, והמדינה משלמת את עלויות המכירה, כולל עמלה של עד 6% ממחיר הקנייה לחברה שמוכרת אותן בארצות הברית. לכן העלות לקונה גלומה בריבית: המדינה עצמה כותבת שיש לה חוב אחר שעשוי להניב יותר. על המחזיק נופלים רק מסים והיטלים בפדיון או בהעברה במוות, וכל ההוצאות בהעברה מותרת אחרת. התשלומים בדולרים, והמרתם לשקלים עולה את עמלות המט\"ח של הבנק.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-deposit",
+    "fee-exit",
+    "fee-fx",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-08-01",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm",
+      "title": "State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)",
+      "publisher": "U.S. SEC EDGAR (the issuer's own filing)",
+      "publisher_he": "מאגר EDGAR של רשות ניירות הערך האמריקאית (מסמך שהמנפיק הגיש)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-11-07",
+      "qualifier": "(the State's own prospectus, filed by the State)"
+    },
+    {
+      "url": "https://israelbondsintl.com/pdf/2026OfferingMemorandum.pdf#page=17",
+      "title": "State of Israel Bond Issuance Programme, Offering Memorandum of 1 September 2026",
+      "publisher": "Development Company for Israel (International)",
+      "publisher_he": "Development Company for Israel (International) (בונדס)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.17",
+      "locator_he": "עמוד 17",
+      "page": 17,
+      "checked": "2026-11-07",
+      "qualifier": "(the State's memorandum, published by its promoter)"
+    }
+  ]
+}

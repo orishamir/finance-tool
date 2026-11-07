@@ -7,8 +7,10 @@ import {
   consolidation as runConsolidation,
   feeCap,
   feeMateriality,
+  minDiscountMonthsOf,
   runInputs,
   valueOfReduction,
+  withFeeRate,
   MissingRuleError,
   type CmaTrack,
   type ConsolidationPair,
@@ -17,7 +19,7 @@ import {
   type RunPlan,
 } from "@finance-tool/engine";
 import type { RuleRecord, ValueObject, WrapperId } from "@finance-tool/schema";
-import { formulaNames } from "../copy";
+import { formulaNames, holdingsValues as hv } from "../copy";
 import { goalValueObjects, runGoalOf, type CompareBundle, type RunGoal } from "./compare";
 import { p05Units } from "./engine";
 import { referenceOfClass, tracksBehind } from "./class-reference";
@@ -29,11 +31,7 @@ import { normalize } from "./search";
 import { sortedHoldings, useStateStore, type Holding, type TransferBar } from "./state";
 import { computed, entered as enteredValue, expandFee, ruleFigure, type CompactFee, type SiteValue, type Staleness } from "./value";
 
-Object.assign(formulaNames, {
-  "F-61": "עלות דמי הניהול",
-  "F-68": "ממוצע הרשות למסלולי הסיווג",
-  "F-72": "איחוד חשבונות",
-});
+Object.assign(formulaNames, hv.formulas);
 
 // ---------------------------------------------------------------- the bundle (holdings.server.ts)
 
@@ -231,15 +229,19 @@ export interface ClassReference {
   count: SiteValue;
   countDeposit: SiteValue;
   meanBalance: SiteValue;
-  medianBalance: SiteValue;
   meanDeposit: SiteValue;
-  medianDeposit: SiteValue;
 }
 
 export interface FeeCost {
   total: SiteValue;
   /** F-61's value of the balance fee falling to the class mean (the fee page's what-if, same function); absent when the fee is not above it. */
   atAverage?: SiteValue;
+  /**
+   * D90, extended the same day: the cut behind `atAverage` holds for PF-13's period and then today's fee returns (D86): the years, from the
+   * rule, and whether that period ends within the run. The card says so beside the figure where it does, and keeps the line's room where it
+   * does not, so the years slider moves nothing.
+   */
+  atAverageHeld?: { years: SiteValue; ends: boolean };
   horizonYears: SiteValue;
   /** Exit tax is blocked (G-03): the figure is before it. */
   preTax?: { blockedBy: string };
@@ -298,19 +300,17 @@ const sameClass = (a: string, b: string) => a.trim() === b.trim();
 function referenceFor(hb: HoldingsBundle, track: HTrack, today: string): ClassReference {
   const classification = hb.classifications[track.k]!;
   const ref = referenceOfClass(cmaTracks(hb), classification, track.s);
-  const countOf = (fee: "management" | "deposit") => computed(tracksBehind(ref, fee), "count", "F-68", {}, { today, about: "מספר המסלולים בסיווג שמדווחים על העמלה הזו" });
+  const countOf = (fee: "management" | "deposit") => computed(tracksBehind(ref, fee), "count", "F-68", {}, { today, about: hv.about.count });
   const count = countOf("management");
-  const inputs = { "המסלולים בסיווג": count, "נכון לחודש": hb.period };
+  const inputs = { [hv.inputs.tracks]: count, [hv.inputs.asOf]: hb.period };
   const mk = (value: number | null, unit: ValueObject["unit"], about: string): SiteValue => computed(value, unit, "F-68", inputs, { today, about });
   const m = (v: ValueObject) => (typeof v.value === "number" ? v.value : null);
   return {
     classification: track.s || track.ss || classification,
     count,
     countDeposit: countOf("deposit"),
-    meanBalance: mk(m(ref.management.mean), "pct_per_year", "הממוצע של מסלולי הסיווג, מדמי הניהול מחיסכון שהרשות מפרסמת"),
-    medianBalance: mk(m(ref.management.median), "pct_per_year", "החציון של מסלולי הסיווג, מדמי הניהול מחיסכון שהרשות מפרסמת"),
-    meanDeposit: mk(m(ref.deposit.mean), "pct_of_deposit", "הממוצע של מסלולי הסיווג, מדמי הניהול מהפקדה שהרשות מפרסמת"),
-    medianDeposit: mk(m(ref.deposit.median), "pct_of_deposit", "החציון של מסלולי הסיווג, מדמי הניהול מהפקדה שהרשות מפרסמת"),
+    meanBalance: mk(m(ref.management.mean), "pct_per_year", hv.about.meanBalance),
+    meanDeposit: mk(m(ref.deposit.mean), "pct_of_deposit", hv.about.meanDeposit),
   };
 }
 
@@ -411,32 +411,39 @@ function feeCostOf(h: Holding, ctx: HoldingsCtx, meanBalance: SiteValue | null):
   try {
     const fm = feeMateriality(p.plan, p.ctx);
     const gv = goalValueObjects(ctx.cb!, ctx.goal!.run);
-    const inputs: Record<string, SiteValue> = { "יתרה": h.balance as SiteValue, "שנים": gv.horizon, "אינפלציה בשנה": gv.inflation };
-    if (gv.returnV) inputs["תשואה בשנה"] = gv.returnV;
-    if (h.feeBalance) inputs["דמי ניהול מחיסכון"] = h.feeBalance as SiteValue;
-    if (h.feeDeposit) inputs["דמי ניהול מהפקדה"] = h.feeDeposit as SiteValue;
+    const inputs: Record<string, SiteValue> = { [hv.inputs.balance]: h.balance as SiteValue, [hv.inputs.years]: gv.horizon, [hv.inputs.inflation]: gv.inflation };
+    if (gv.returnV) inputs[hv.inputs.ret] = gv.returnV;
+    if (h.feeBalance) inputs[hv.inputs.feeBalance] = h.feeBalance as SiteValue;
+    if (h.feeDeposit) inputs[hv.inputs.feeDeposit] = h.feeDeposit as SiteValue;
     const usedRules = fm.run.rules.map((r) => ({ id: r.id, strength: r.strength as SiteValue["source"]["strength"] }));
     const total = computed(fm.total.value as number, "nis", "F-61", inputs, {
       today: p.ctx.runDate,
       rules: usedRules,
       flags: fm.run.flags.map((f) => f.code),
       labels: fm.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })),
-      about: "מה דמי הניהול לוקחים מהחשבון הזה עד סוף התקופה, בכסף של היום: השווי בלי דמי ניהול פחות השווי איתם",
+      about: hv.about.total,
     });
     const blocked = fm.run.outcome.code === "listed-not-ranked" && (fm.run.outcome as { reason?: string }).reason === "G-03" ? "G-03" : fm.run.flags.some((f) => f.code === "PF-36") ? "PF-36" : undefined;
     // the fee page's what-if (F-61 value of a stated reduction) with the class mean as the stated rate; nothing new is computed
     let atAverage: SiteValue | undefined;
+    let atAverageHeld: FeeCost["atAverageHeld"];
     const feeNow = typeof h.feeBalance?.value === "number" ? h.feeBalance.value : null;
     const meanNow = meanBalance && typeof meanBalance.value === "number" ? fmt.pctShown(meanBalance.value) : null;
     if (feeNow !== null && meanNow !== null && meanNow < feeNow) {
       const r = valueOfReduction(p.plan, "balance", meanNow / 100, p.ctx);
       if ((r.value.value as number) > 0) {
-        atAverage = computed(r.value.value as number, "nis", "F-61", { "דמי ניהול מחיסכון": h.feeBalance as SiteValue, "ממוצע הסיווג": meanBalance as SiteValue, "שנים": gv.horizon }, { today: p.ctx.runDate, rules: usedRules, about: "מה שווה להוריד את דמי הניהול מחיסכון לממוצע של הסיווג, בכסף של היום: השווי עם הדמי ניהול החדשים פחות השווי עכשיו" });
+        atAverage = computed(r.value.value as number, "nis", "F-61", { [hv.inputs.feeBalance]: h.feeBalance as SiteValue, [hv.inputs.classMean]: meanBalance as SiteValue, [hv.inputs.years]: gv.horizon }, { today: p.ctx.runDate, rules: usedRules, flags: r.flags.map((f) => f.code), labels: r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: hv.about.atAverage });
+        // a statement's rate has no discount of its own, so the cut holds for PF-13's period alone (withHeldRate); said where it ends within the run
+        const changed = withFeeRate(p.plan, "balance", meanNow / 100, p.ctx);
+        const d = changed.run === "runPension" || changed.run === "runProvident" ? changed.input.fees.discount : undefined;
+        const pf13 = ctx.rules["PF-13"];
+        const years = pf13 ? ruleFigure(pf13, "min_discount_years", p.ctx.runDate) : null;
+        if (d && d.months === minDiscountMonthsOf(p.ctx) && years) atAverageHeld = { years, ends: d.months < fm.run.exitMonth };
       }
     }
     return {
       kind: "ok",
-      cost: { total, ...(atAverage ? { atAverage } : {}), horizonYears: gv.horizon, ...(blocked ? { preTax: { blockedBy: blocked } } : {}), ...(p.depositsLeftOut ? { depositsLeftOut: true } : {}), returnFromParameter: p.returnFromParameter },
+      cost: { total, ...(atAverage ? { atAverage } : {}), ...(atAverage && atAverageHeld ? { atAverageHeld } : {}), horizonYears: gv.horizon, ...(blocked ? { preTax: { blockedBy: blocked } } : {}), ...(p.depositsLeftOut ? { depositsLeftOut: true } : {}), returnFromParameter: p.returnFromParameter },
     };
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
@@ -624,10 +631,10 @@ export function consolidationGroups(views: HoldingView[], ctx: HoldingsCtx): Con
         if (!latest || from > latest.from) latest = { holdingId: v.holding.id, from, first, months: n.monthsNeeded, rule: n.lockRule };
       }
       if (latest) {
-        const years = computed(latest.months / 12, "years", "F-72", {}, { today: ctx.today, about: "שנים עד שהכסף בקרן נזיל ופטור ממס", rules: [{ id: latest.rule, strength: "primary" }] });
+        const years = computed(latest.months / 12, "years", "F-72", {}, { today: ctx.today, about: hv.about.lockYears, rules: [{ id: latest.rule, strength: "primary" }] });
         group.notYet = {
           holdingId: latest.holdingId,
-          liquidFrom: { ...computed(null, "text", "F-72", { "תאריך ההפקדה הראשונה": latest.first as SiteValue, "שנים עד שהכסף נזיל": years }, { today: ctx.today, about: "מתי החשבון נזיל: ההפקדה הראשונה ועוד התקופה שהחוק קובע", rules: [{ id: latest.rule, strength: "primary" }] }), value: latest.from },
+          liquidFrom: { ...computed(null, "text", "F-72", { [hv.inputs.firstDeposit]: latest.first as SiteValue, [hv.inputs.yearsToLiquid]: years }, { today: ctx.today, about: hv.about.liquidAccount, rules: [{ id: latest.rule, strength: "primary" }] }), value: latest.from },
           ruleIds: ["PF-18", latest.rule],
         };
       }
@@ -678,19 +685,20 @@ function worthOf(group: ConsolidationGroup, list: HoldingView[], ctx: HoldingsCt
       return;
     }
     try {
-      const r = valueOfReduction(p.plan, "balance", targetFee / 100, p.ctx);
+      // a move to another fund at its own rate, not an offer on this line: the rate holds for the whole horizon (D86)
+      const r = valueOfReduction(p.plan, "balance", targetFee / 100, p.ctx, { held: false });
       sum += r.value.value as number;
-      inputs[`יתרה ב${v.companyName}`] = v.holding.balance as SiteValue;
+      inputs[hv.inputs.balanceAt + v.companyName] = v.holding.balance as SiteValue;
     } catch {
       group.worthUnavailable = "failed";
       return;
     }
   }
-  inputs["דמי ניהול מחיסכון ב" + target.companyName] = target.holding.feeBalance as SiteValue;
-  inputs["שנים"] = goalValueObjects(ctx.cb!, ctx.goal.run).horizon;
+  inputs[hv.inputs.feeBalanceAt + target.companyName] = target.holding.feeBalance as SiteValue;
+  inputs[hv.inputs.years] = goalValueObjects(ctx.cb!, ctx.goal.run).horizon;
   group.worth = computed(sum, "nis", "F-61", inputs, {
     today: ctx.today,
-    about: "מה שווה להעביר את היתרות לדמי הניהול של המסלול הזול יותר: השווי בכסף של היום עם דמי הניהול החדשים פחות השווי עכשיו",
+    about: hv.about.consolidation,
     rules: [{ id: "PF-17", strength: "primary" }],
   });
 }
@@ -745,9 +753,9 @@ export function liquidityOf(h: Holding, rules: Record<string, RuleRecord>, today
   if (!hasDate) return { kind: "liquid", from: null, lock };
   const months = (lock.value as number) * 12;
   const from = monthEndAfter(first as string, months);
-  const years = computed(lock.value as number, "years", "F-72", {}, { today, about: "שנים עד שהכסף בקרן נזיל ופטור ממס", rules: [{ id: "TXH-09", strength: "primary" }] });
+  const years = computed(lock.value as number, "years", "F-72", {}, { today, about: hv.about.lockYears, rules: [{ id: "TXH-09", strength: "primary" }] });
   const date: SiteValue = {
-    ...computed(null, "text", "F-72", { "תאריך ההפקדה הראשונה": h.firstDeposit as SiteValue, "שנים עד שהכסף נזיל": years }, { today, about: "מתי הקרן נזילה: ההפקדה הראשונה ועוד התקופה שהחוק קובע", rules: [{ id: "TXH-09", strength: "primary" }] }),
+    ...computed(null, "text", "F-72", { [hv.inputs.firstDeposit]: h.firstDeposit as SiteValue, [hv.inputs.yearsToLiquid]: years }, { today, about: hv.about.liquidFund, rules: [{ id: "TXH-09", strength: "primary" }] }),
     value: from,
   };
   return from <= today ? { kind: "liquid", from: date, lock } : { kind: "not-yet", from: date, lock };

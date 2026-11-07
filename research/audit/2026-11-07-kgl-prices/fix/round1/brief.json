@@ -1,0 +1,40 @@
+{
+  "task": "A friend sent you screenshots of a Hebrew web page about a kind of savings account called \"קופת גמל להשקעה\" (a provident fund for investing). You have 50,000 ₪ and are choosing which company to open one with.\nThe screenshots are the whole page, top to bottom, each overlapping the one before a little. If there is a last screenshot whose name has \"sheet\" or \"terms\" in it, it is the box of numbers behind the example on the page, opened by your friend.\n\nAnswer in plain English, as yourself, quoting the Hebrew you react to:\n1. Your decision: which company would you open it with, or what would you still need to find out, and how sure are you? Which parts of the page did you use?\n2. In the table under \"כמה זה עולה\" (what it costs), there is a small grey sentence under each fee. Say in your own words what those sentences tell you, and whether anything there is unclear, could be read two ways, or reads oddly (for example a number or a full stop in the wrong place).\n3. The page's example (a chart of how the money grows) rests on one company's fees. Which company is it, why that one, and what happens to its fees over time? If you cannot tell, say so.\n4. Anything on the page you distrust, find contradictory, or would want explained, quoting the Hebrew.\nBe honest and specific; short answers are fine.",
+  "readers": [
+    {
+      "key": "saver-pc",
+      "who": "You are 38, on a computer. You have money in a bank deposit and a pension through work, and you know words like \"דמי ניהול\" from your pension statements, but you have never opened a provident fund for investing.",
+      "shots": [
+        "research/audit/2026-11-07-kgl-prices/fix/pc-01.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-02.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-03.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-04.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-05.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-06.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-07.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-08.png",
+        "research/audit/2026-11-07-kgl-prices/fix/pc-09.png",
+        "research/audit/2026-11-07-kgl-prices/fix/terms-1440.png"
+      ]
+    },
+    {
+      "key": "young-phone",
+      "who": "You are 26, on your phone. You saved 50,000 ₪ from your first jobs and read quickly. You know no finance words beyond the basics.",
+      "shots": [
+        "research/audit/2026-11-07-kgl-prices/fix/phone-01.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-02.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-03.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-04.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-05.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-06.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-07.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-08.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-09.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-10.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-11.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-sheet-terms-1.png",
+        "research/audit/2026-11-07-kgl-prices/fix/phone-sheet-terms-2.png"
+      ]
+    }
+  ]
+}

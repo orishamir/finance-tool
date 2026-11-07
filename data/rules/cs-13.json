@@ -25,7 +25,7 @@
       "unit": "nis",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1) (BTL text p.50), 74ג(ב)-(ג) (BTL text pp.51-52)",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג) (Sefer HaChukim 2511 pp.244-246, 2592 p.318)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -45,7 +45,7 @@
       "unit": "nis",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1) (BTL text p.50), 74ג(ב)-(ג) (BTL text pp.51-52)",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג) (Sefer HaChukim 2511 pp.244-246, 2592 p.318)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -65,7 +65,7 @@
       "unit": "nis",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1) (BTL text p.50), 74ג(ב)-(ג) (BTL text pp.51-52)",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג) (Sefer HaChukim 2511 pp.244-246, 2592 p.318)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -85,7 +85,7 @@
       "unit": "years",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1) (BTL text p.50), 74ג(ב)-(ג) (BTL text pp.51-52)",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג) (Sefer HaChukim 2511 pp.244-246, 2592 p.318)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -105,7 +105,7 @@
       "unit": "years",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1) (BTL text p.50), 74ג(ב)-(ג) (BTL text pp.51-52)",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג) (Sefer HaChukim 2511 pp.244-246, 2592 p.318)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -125,7 +125,7 @@
       "unit": "years",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1) (BTL text p.50), 74ג(ב)-(ג) (BTL text pp.51-52)",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג) (Sefer HaChukim 2511 pp.244-246, 2592 p.318)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -145,7 +145,7 @@
       "unit": "years",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1) (BTL text p.50), 74ג(ב)-(ג) (BTL text pp.51-52)",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג) (Sefer HaChukim 2511 pp.244-246, 2592 p.318)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -162,60 +162,36 @@
     }
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_316719.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע\"ו-2015, ספר החוקים 2511 (30.11.2015), סעיף 28: חוק הביטוח הלאומי (תיקון מס' 164)",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע\"ו-2015, ספר החוקים 2511 (30.11.2015), סעיף 28: חוק הביטוח הלאומי (תיקון מס' 164)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.51, footnote 35",
-      "page": 51,
-      "quote": "בהגיע הילד הזכאי לגיל 18 (בסימן זה - מענק המשיכה הראשון)",
-      "checked": "2026-10-26"
+      "locator": "file p.30 (gazette p.246), s.28(3), s.74ג(א) as enacted (NIS 500 at 18, 'מענק המשיכה הראשון', and NIS 500 at 21), which still applies to a child born before 1.1.2017; file p.28 (gazette p.244), s.28(3), s.74ב(א)(1) as enacted (NIS 50 a month for every child for whom child allowance is paid); file p.30 (gazette p.246), s.28(3), s.74ג(ב) as enacted (withdrawal from 18 with a parent's signature); s.28(3), s.74ג(ג) as enacted (CPI update each 1 January from 2017)",
+      "locator_he": "עמוד הקובץ 30 (עמוד ספר החוקים 246), סעיף 28(3), סעיף 74ג(א) בנוסחו המקורי; עמוד הקובץ 28 (עמוד ספר החוקים 244), סעיף 28(3), סעיף 74ב(א)(1) בנוסחו המקורי; עמוד הקובץ 30 (עמוד ספר החוקים 246), סעיף 28(3), סעיף 74ג(ב) בנוסחו המקורי; סעיף 28(3), סעיף 74ג(ג) בנוסחו המקורי",
+      "page": 30,
+      "quote": "סכום נוסף של 500 שקלים חדשים בהגיע הילד הזכאי לגיל 18",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע\"ז-2016, ספר החוקים 2592 (29.12.2016), סעיפים 162-164: חוק הביטוח הלאומי (תיקון מס' 189)",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע\"ז-2016, ספר החוקים 2592 (29.12.2016), סעיפים 162-164: חוק הביטוח הלאומי (תיקון מס' 189)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.50, s.74ב(א)(1)(א)-(ב)",
-      "locator_he": "עמוד 50, סעיף 74ב(א)(1)(א)-(ב)",
-      "page": 50,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "locator": "p.51, s.74ג(ב)",
-      "locator_he": "עמוד 51, סעיף 74ג(ב)",
-      "page": 51,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "locator": "p.52, s.74ג(ג)",
-      "locator_he": "עמוד 52, סעיף 74ג(ג)",
-      "page": 52,
-      "checked": "2026-10-25"
+      "locator": "file p.104 (gazette p.318), s.162(2)(א) (74ג(א) repealed); s.163 (the new wording applies only to a child born from 1.1.2017); s.162(1)(א) (grants at 3 and at 13, 12 for a girl, added to 74ב(א)(1)); s.163 (for a child born from 1.1.2017); s.162(2)(ב) (the seifa of 74ג(ב): NIS 500 at 21 if nothing was withdrawn); s.163; s.162(2)(ג) (74ג(ג) now updates the age-21 sum and the age-3 and age-13 sums)",
+      "locator_he": "עמוד הקובץ 104 (עמוד ספר החוקים 318), סעיף 162(2)(א); סעיף 163; סעיף 162(1)(א); סעיף 163; סעיף 162(2)(ב); סעיף 163; סעיף 162(2)(ג)",
+      "page": 104,
+      "quote": "יחולו על ילד זכאי, כמשמעותו בסעיף 74ב לחוק האמור, שנולד ביום תחילתו של חוק זה ואילך",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
@@ -249,20 +225,6 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf",
-      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע\"ז-2016, ספר החוקים 2592",
-      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע\"ז-2016, ספר החוקים 2592",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.318, ss.162-164, s.163",
-      "locator_he": "עמוד 318, סעיפים 162-164, סעיף 163",
-      "page": 318,
-      "quote": "יחולו על ילד זכאי, כמשמעותו בסעיף 74ב לחוק האמור, שנולד ביום תחילתו של חוק זה ואילך",
-      "checked": "2026-10-26"
     }
   ]
 }

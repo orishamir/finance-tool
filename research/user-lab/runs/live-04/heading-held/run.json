@@ -1,0 +1,32 @@
+{
+ "personas": [
+  "first-job-phone",
+  "careful-retiree-pc"
+ ],
+ "parallel": 3,
+ "repeat": 2,
+ "behaviour": "research/user-lab/versions/candidates/heading.md",
+ "tasks": [
+  {
+   "key": "s06",
+   "text": "You want to understand the different kinds of saving and investing available in Israel, so you can work out which ones are worth looking into for your own money.",
+   "shots": [
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s06/screen-01.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s06/screen-02.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s06/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s08",
+   "text": "You want to understand the different kinds of saving and investing available in Israel, so you can work out which ones are worth looking into for your own money.",
+   "shots": [
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s08/screen-01.png",
+    "/home/ori/dev/finance-tool/research/user-lab/runs/baseline-1/screens/s08/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true
+  }
+ ]
+}

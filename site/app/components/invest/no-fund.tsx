@@ -3,17 +3,18 @@
 // the cheapest kind of fund at it; the fund column says there is no fund yet. Once a fund is added the page is the pair page.
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import type { HouseRow, InvestView, OptionId } from "../../lib/invest";
+import { firstCount, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, GroupLine, HouseLine, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis } from "./pair";
+import { barScale, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { sourceHref } from "../../lib/sources";
 
 const n = c.noFund;
 
@@ -49,13 +50,14 @@ function SubLine({ kind, cheapest, standing }: { kind: OptionId | null; cheapest
   );
 }
 
-export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; chosen: string | null; onPick: (id: string) => void }) {
+export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick, ownBank }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void; /** The bank where the person already has a current account, and its setter (D64). */ ownBank?: { value: string | null; onChange: (id: string | null) => void } }) {
   const legendPick = useChartPick();
   const { rows, ok, missing } = ordered(view);
   const heldKey = `${view.index.id}:${rows.length}`;
   const [openGroups, setOpenGroups] = useState<string[]>([]);
   const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
-  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}`);
+  const [abroadOpen, setAbroadOpen] = useState(false);
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${abroadOpen}`);
   // every house the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
   const longest = useMemo(
     () => ({
@@ -71,14 +73,19 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
   const scale = barScale(ok.map((h) => h.generic.costN!));
   const lines = legendLines(!!view.index.israeli, ok.flatMap((h) => (h.generic.lines ?? []).map((l) => lineOf(l.line))));
   const local = rows.filter((h) => !h.provider.foreign && !h.provider.custom);
+  const saved = bundle.snapshots.filter((s) => rows.some((h) => h.provider.id === s.id && !h.provider.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((h) => h.standing).length;
   const kinds = view.options.filter((o) => o.exists).map((o) => o.id);
+  // equal costs share a place, and a first place shared by two crowns neither (2026-11-05); the tie threshold is for what is left, not for costs
+  const places = placesOf(ok.map((h) => h.generic.costN!), 0);
+  const crown = firstCount(places) === 1;
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
+    // the account's fees on each other first, as on every bar of the page (pass 7)
     const parts: CostPart[] = [
-      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
       { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
+      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
     ];
     return {
       key: h.provider.id,
@@ -86,16 +93,16 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
       onSelect: () => onPick(h.provider.id),
       cells: (
         <>
-          <span className="text-sm text-muted-foreground tabular-nums text-center">{i + 1}</span>
+          <span className="text-sm text-muted-foreground tabular-nums text-center">{places[i]}</span>
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}>
             {h.provider.short}
             {/* the kind of fund and the cheapest mark change with the plan: the line holds its longest case, so a row keeps its height */}
             <LongestCase cases={kinds.map((k) => <SubLine key={k} kind={k} cheapest standing={h.standing} />)}>
-              <SubLine kind={g.option ?? null} cheapest={i === 0} standing={h.standing} />
+              <SubLine kind={g.option ?? null} cheapest={crown && i === 0} standing={h.standing && monthly > 0} />
             </LongestCase>
           </span>
           <span className="flex items-center min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
-            <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
+            <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
           </span>
           <span className="col-end-[-1] text-end font-semibold">{g.cost && <Num animate value={g.cost} />}</span>
           <GroupLine id={h.provider.id} house={h.provider.short} snapshots={bundle.snapshots} open={openGroups.includes(h.provider.id)} onOpen={onGroup} />
@@ -122,14 +129,14 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
           <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
             {na && !h.provider.custom && (
-              <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
+              <a href={sourceHref(na.source)} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
                 {c.pair.notPossibleSource} ↗
               </a>
             )}
           </span>
           <span className="col-end-[-1] text-end font-semibold">—</span>
           <span className="col-start-2 col-end-[-1] text-xs leading-snug">
-            {na && h.provider.custom ? c.customEntries.notSold : !na && (snap?.missing_reason_he ?? (h.reason ? reasonText(h.reason, optionClass["il-etf"]) : c.funds.cannot))}
+            {na && h.provider.custom ? c.customEntries.notSold : na ? c.pair.notPossibleAny : (snap?.missing_reason_he ?? (h.reason ? reasonText(h.reason, optionClass["il-etf"]) : c.funds.cannot))}
           </span>
           {h.provider.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={h.provider.id} /></span>}
         </>
@@ -163,8 +170,15 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
         <h3 className="font-semibold">{c.pair.accounts}</h3>
         <span className="text-sm text-muted-foreground">{n.accountsCond}</span>
         <span className="text-sm text-muted-foreground">{n.accountsHint}</span>
-        <span className="text-xs text-muted-foreground">{standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
-        <span className="text-xs text-muted-foreground">{c.pair.whichPrice}</span>
+        <LongestCase className="text-xs text-muted-foreground" cases={[<span key="s">{c.pair.standingNote(Math.max(standingCount, 1), local.length)}</span>, <span key="n">{c.pair.noMonthly}</span>]}>
+          <span>{monthly === 0 ? c.pair.noMonthly : standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
+        </LongestCase>
+        <span className="text-xs text-muted-foreground">
+          {c.pair.whichPrice}
+          {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
+        </span>
+        <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
+        {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">
         <PickList
@@ -187,8 +201,8 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
         <ChartLegend
           pick={legendPick}
           items={[
-            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
             { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
+            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines ?? []))) })),
             ...(ok.some((h) => h.generic.costN! > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}
         />

@@ -41,7 +41,7 @@ export interface Bundle {
    * that leaves the plan the most (F-80), a deposit on the middle of those that cannot be broken (F-86).
    * `tied` (F-80, P-01): the houses within the tie threshold of the top, the run's own first; the page says they tie and crowns none.
    */
-  pick?: { kind: "account" | "deposit"; id: string; count: SiteValue; tied?: { names: string[]; theta: SiteValue } };
+  pick?: { kind: "account" | "deposit" | "manager"; id: string; count: SiteValue; tied?: { names: string[]; theta?: SiteValue } };
 }
 
 export interface YearPoint {
@@ -56,7 +56,7 @@ export interface YearPoint {
   taxAtExit: number;
   index: number;
   grossBalance: number;
-  /** Named intermediate figures of that year's run (real gain, alternative tax). */
+  /** Named intermediate figures of that year's run (the real gain, the tax at the full rate). */
   detail: Record<string, number>;
 }
 

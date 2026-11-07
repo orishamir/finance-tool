@@ -5,10 +5,10 @@ import { documents as copy, site } from "../copy";
 import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure, Sentence } from "../components/kit";
+import { Card, cx, Disclosure, Sentence, TariffDate, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, SectionId } from "../lib/documents.server";
-import { isPdfUrl } from "../lib/sources";
+import { isPdfUrl, sourceHref } from "../lib/sources";
 
 /** The five sections in order (duplicated from the server module, which the client bundle must not import). */
 const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"] as const;
@@ -51,7 +51,7 @@ function DocCard({ doc }: { doc: DocumentCard }) {
         <bdi>{doc.publisher}</bdi> · {copy.kinds[doc.kind] ?? copy.kinds.other}
       </p>
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href={doc.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary underline underline-offset-4 min-h-target">
+        <a href={sourceHref(doc)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary underline underline-offset-4 min-h-target">
           {copy.open}
           {isPdfUrl(doc.url) && <span className="text-xs font-medium rounded-sm bg-muted text-foreground px-1.5">PDF</span>}
           <IconExternal size={16} className="shrink-0" />
@@ -60,7 +60,7 @@ function DocCard({ doc }: { doc: DocumentCard }) {
       </p>
       {doc.checked && (
         <p className="text-sm text-muted-foreground">
-          {copy.checked} <bdi dir="ltr" className="tabular-nums">{fmt.date(doc.checked)}</bdi>
+          <When iso={doc.checked} lead={`${copy.checked} `} />
         </p>
       )}
       {doc.rules.length > 0 && (
@@ -127,7 +127,7 @@ export default function Documents() {
                     <ul className="flex flex-col">
                       {rows.map((doc) => (
                         <li key={doc.key} id={doc.key} className="scroll-mt-[112px] flex flex-wrap items-center gap-x-2 gap-y-0.5 py-2 border-b border-border text-sm min-w-0 [overflow-wrap:anywhere]">
-                          <a href={doc.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary underline underline-offset-4 min-h-target">
+                          <a href={sourceHref(doc)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary underline underline-offset-4 min-h-target">
                             <Latin text={doc.title} english={doc.titleEnglish} />
                             <IconExternal size={14} className="shrink-0" />
                           </a>
@@ -166,7 +166,7 @@ export default function Documents() {
                 <Card as="li" key={t.key} id={`tariff-${t.key}`} className="scroll-mt-[112px] flex flex-col gap-1 min-w-0">
                   <h3 className="text-lg font-semibold">{d.tariffLine.replace("{provider}", t.title)}</h3>
                   <p className="text-sm text-muted-foreground">
-                    {t.missing ? d.missing : t.date ? <bdi dir="ltr" className="tabular-nums">{fmt.date(t.date)}</bdi> : d.noPrintedDate}
+                    {t.missing ? d.missing : <TariffDate dated={t.dated} titled />}
                     {!t.missing && !!t.lines && <> · <bdi dir="ltr" className="tabular-nums">{fmt.number(t.lines ?? 0)}</bdi>{d.linesAfter}</>}
                   </p>
                   <DataLink href={t.href} />
@@ -205,7 +205,7 @@ export default function Documents() {
                   {s.valueDate && (
                     <Sentence size="sm" tone="muted">
                       {s.value ? <>{d.latest}: <Num value={s.value} /> </> : <>{copy.checked} </>}
-                      <bdi dir="ltr" className="tabular-nums">{s.value ? `(${fmt.date(s.valueDate)})` : fmt.date(s.valueDate)}</bdi>
+                      {s.value ? <>(<When iso={s.valueDate} />)</> : <When iso={s.valueDate} />}
                     </Sentence>
                   )}
                   {s.attribution && <p className={cx("text-xs text-muted-foreground")}><bdi>{s.attribution}</bdi></p>}

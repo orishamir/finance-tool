@@ -187,8 +187,49 @@
       {
         "year": 2025,
         "fund_pct": 2.18,
-        "tracking_pct": 2.61
+        "tracking_pct": 2.61,
+        "fees_charged": {
+          "fixed": 0.6,
+          "variable": 0.3,
+          "trustee": 0.03
+        }
+      },
+      {
+        "year": 2024,
+        "fund_pct": 24.29,
+        "tracking_pct": 24.96,
+        "fees_charged": {
+          "fixed": 0.6,
+          "variable": 0.3,
+          "trustee": 0.03
+        }
+      },
+      {
+        "year": 2023,
+        "fund_pct": 29.12,
+        "tracking_pct": 29.43,
+        "fees_charged": {
+          "fixed": 0.5,
+          "variable": 0.3,
+          "trustee": 0.03
+        }
+      },
+      {
+        "year": 2022,
+        "fund_pct": -8.05,
+        "tracking_pct": -7.55,
+        "fees_charged": {
+          "fixed": 0.5,
+          "variable": 0.055,
+          "trustee": 0.03
+        }
       }
+    ],
+    "years_printed": [
+      2022,
+      2023,
+      2024,
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727369-00.pdf",
@@ -197,7 +238,15 @@
       "strength": "institution"
     },
     "page": 8,
-    "checked": "2026-10-25"
+    "fees_page": 10,
+    "changes_page": 9,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 - NTR",
+      "dividends": "net",
+      "page": 3
+    }
   },
   "snapshot": "2026-10-25"
 }

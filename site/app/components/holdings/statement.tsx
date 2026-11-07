@@ -83,11 +83,11 @@ export function StatementDisclosure({ field, wrapperId, rules, spellings }: { fi
     </div>
   );
   return (
-    <Disclosure label={<span className="text-sm text-link">{d.label}</span>} className="-mt-1" summaryClassName="min-h-9">
+    <Disclosure label={<span className="text-sm text-link">{d.label}</span>} className="-mt-1" summaryClassName="min-h-target">
       <div className="flex flex-col gap-2.5 pb-2 ps-0.5">
         {first}
         {first ? (
-          <Disclosure label={<span className="text-sm text-link">{d.more}</span>} summaryClassName="min-h-9">
+          <Disclosure label={<span className="text-sm text-link">{d.more}</span>} summaryClassName="min-h-target">
             {rest}
           </Disclosure>
         ) : (
@@ -102,7 +102,7 @@ export function StatementDisclosure({ field, wrapperId, rules, spellings }: { fi
 export function ClearingHouseDisclosure({ rules }: { rules: RuleMap }) {
   const c = copy.clearingHouse;
   return (
-    <Disclosure label={<span className="text-sm text-link">{c.label}</span>} summaryClassName="min-h-9">
+    <Disclosure label={<span className="text-sm text-link">{c.label}</span>} summaryClassName="min-h-target">
       <div className="flex flex-col gap-2.5 pb-2 ps-0.5">
         {rules["PF-22"] ? (
           <RuleText id="PF-22" rules={rules} />

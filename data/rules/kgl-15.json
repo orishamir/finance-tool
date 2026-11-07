@@ -1,41 +1,17 @@
 {
   "id": "KGL-15",
-  "title": "Meitav: a published list price (example, not a cap)",
-  "title_he": "מיטב: מחיר מחירון שפורסם, דוגמה ולא תקרה",
-  "text_he": "מיטב מפרסמת דמי ניהול מהצבירה למצטרפים חדשים באופן דיגיטלי, ומציינת שהיא רשאית להעלות אותם כפי שהחוק מאפשר. זה המחיר של מיטב בעמוד המוצר שלה, לא תקרה. דמי הניהול שעמית משלם בפועל נקבעים בהסכם שלו. התקרה שבחוק נמצאת בכלל על דמי הניהול בקופות גמל, והממוצע שנגבה בפועל מתפרסם בגמל נט ובדוח השנתי של רשות שוק ההון.",
-  "figure_names_he": {
-    "list_balance_fee": "דמי ניהול מהצבירה במחירון (מיטב)"
-  },
+  "title": "Meitav: its binding documents print no fee rate, so they allow up to the legal maximum; the 0.8% on its product page is advertising",
+  "title_he": "מיטב: במסמכים המחייבים אין שיעור דמי ניהול, ולכן הם מתירים עד התקרה שבתקנות; השיעור בעמוד המוצר הוא פרסום",
+  "text_he": "בבקשת ההצטרפות של מיטב לקופת גמל להשקעה השדות של שיעור דמי הניהול מהצבירה ומההפקדה ריקים, והתקנון של הקופה מתיר לגבות מהצבירה ומכל הפקדה עד דמי הניהול המרביים שבתקנות. לכן המסמכים המחייבים של מיטב מתירים לה לגבות עד התקרה, והשיעור שמצטרף מקבל נכתב בטופס ואינו מתפרסם. עמוד המוצר של מיטב מפרסם דמי ניהול נמוכים יותר מהצבירה למצטרפים חדשים באופן דיגיטלי; עמוד מוצר הוא פרסום ולא מסמך מחייב. בקשת ההצטרפות מציגה גם את דמי הניהול הממוצעים שנגבו בקופה בשנה הקודמת, ממוצע שנגבה בפועל ולא מחיר. דמי הניהול שעמית משלם בפועל נקבעים בהסכם שלו. התקרה שבתקנות נמצאת בכלל על דמי הניהול בקופות גמל, והממוצע שנגבה בפועל מתפרסם בגמל נט ובדוח השנתי של רשות שוק ההון.",
   "strength": "institution",
   "dimensions": [
-    "fee-management-balance"
+    "fee-management-balance",
+    "fee-deposit"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "figures": {
-    "list_balance_fee": {
-      "value": 0.8,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-        "title": "Meitav, קופת גמל להשקעה product page: \"עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי\"",
-        "publisher": "Meitav Gemel and Pension",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "KGL-15"
-      ],
-      "state": "sourced",
-      "notes": "A list price for new members who join digitally, not a cap; the company may raise it as the law allows (page read 2026-10-22 and again 2026-10-23). The fee a member actually pays is set by the member's own agreement (D4)."
-    }
-  },
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-07",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -45,25 +21,42 @@
   ],
   "sources": [
     {
+      "url": "https://www.meitav.co.il/media/iejme0rs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-172024.pdf",
+      "title": "Meitav, תקנון קופת גמל להשקעה 7857 (July 2024)",
+      "title_he": "תקנון קופת גמל להשקעה, מספר 7857 (מיטב, יולי 2024)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.9, s.35.1",
+      "locator_he": "עמוד 9, סעיף 35.1",
+      "page": 9,
+      "quote": "שיעור או סכום דמי הניהול השנתי המרבי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/32iphnvm/111813226-%D7%91%D7%A7%D7%A9%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94.pdf",
+      "title": "Meitav, בקשת הצטרפות לקופת גמל להשקעה (form 1118, 1.118.13.2.26)",
+      "title_he": "בקשת הצטרפות לקופת גמל להשקעה, טופס 1118 (מיטב)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, section 5; p.10",
+      "locator_he": "עמוד 2, סעיף 5; עמוד 10",
+      "page": 2,
+      "quote": "שיעור דמי ניהול מצבירה (שנתי)",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-      "title": "Meitav gemel lehashkaa page",
-      "title_he": "קופת גמל להשקעה: עמוד המוצר של מיטב",
+      "title": "Meitav gemel lehashkaa page (advertising)",
+      "title_he": "קופת גמל להשקעה: עמוד המוצר של מיטב (פרסום)",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
       "quote": "עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
-      "title": "Meitav Kids page",
-      "title_he": "חיסכון לכל ילד: עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "0.8% בלבד מהצבירה השנתית",
       "checked": "2026-10-25"
     }
   ],

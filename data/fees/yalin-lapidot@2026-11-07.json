@@ -1,0 +1,222 @@
+{
+  "id": "yalin-lapidot",
+  "provider": {
+    "name_he": "ילין לפידות ניהול קופות גמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.yl-invest.co.il/uploads/n/1776587589.2159.pdf",
+    "title": "בקשת הצטרפות לקופת גמל להשקעה",
+    "notes": "Yalin Lapidot's joining request, 10 pages, file created 2026-03-24; fees on p.1, section ג. Linked from yl-invest.co.il/forms. Read in Chrome 2026-11-07 (the site answers scripts with an Imperva block). Also read in Chrome 2026-11-07: the fund's bylaws (ילין לפידות קופת גמל להשקעה, fund 11389, in force from 16 October 2025 as printed on p.1, listed as the current bylaws on the fund's bylaws page), s.35.1 and s.36.1 on p.10; no copy in the store for the same reason.",
+    "published": null,
+    "printed": {
+      "kind": "none"
+    },
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-07",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "yalin-lapidot-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.9,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.yl-invest.co.il/uploads/n/1776587589.2159.pdf",
+          "title": "בקשת הצטרפות לקופת גמל להשקעה, ג. דמי ניהול",
+          "publisher": "Yalin Lapidot Provident Funds",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בשיעור שנתי של 0.9% מהצבירה"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14",
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Printed by the company on Yalin Lapidot's joining request for its provident fund for investing (file created 24.3.2026), section ג: \"דמי הניהול שייגבו מחשבונו של העמית יסתכמו בשיעור שנתי של 0.9% מהצבירה ובשיעור של 0% מההפקדות\". The site refuses scripts, so the request was read in a browser with pdf.js and has no copy in the library store; its June 2024 version (uploads/n/1719740821.1057.pdf) prints the same. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4). Below the most the fund's bylaws allow (in force from 16.10.2025, s.35.1, p.10: up to the legal maximum), so it is a discount the company offers under s.36.1; see `reverts_to` and `discount_months`."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "discount_months": {
+        "value": null,
+        "unit": "months",
+        "source": {
+          "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
+          "title": "תקנון ילין לפידות קופת גמל להשקעה (בתוקף מיום 16 באוקטובר 2025), סעיף 36.1",
+          "publisher": "Yalin Lapidot Provident Funds",
+          "strength": "institution",
+          "page": 10,
+          "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים או יותר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2025-10-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-13",
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Not printed: the joining request prints the rate with no period. The bylaws (s.36.1) say at least two years from the day the lower fee starts; the CMA circular 2017-9-15 sets at least five, raised earlier only on a withdrawal or transfer, six months after deposits stop, or a balance mechanism in the agreement (PF-13, KGL-16; the bylaws' two years are the older wording, KGL-30). The run uses five years (A-19)."
+      },
+      "reverts_to": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
+          "title": "תקנון ילין לפידות קופת גמל להשקעה (בתוקף מיום 16 באוקטובר 2025), סעיף 35.1",
+          "publisher": "Yalin Lapidot Provident Funds",
+          "strength": "institution",
+          "page": 10,
+          "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2025-10-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The bylaws bind the fee only up to the maximum the law sets (s.35.1.1 on the balance, s.35.1.2 on payments), recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee."
+      },
+      "names": {
+        "tariff": [
+          "דמי ניהול מהצבירה"
+        ]
+      }
+    },
+    {
+      "id": "yalin-lapidot-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.yl-invest.co.il/uploads/n/1776587589.2159.pdf",
+          "title": "בקשת הצטרפות לקופת גמל להשקעה, ג. דמי ניהול",
+          "publisher": "Yalin Lapidot Provident Funds",
+          "strength": "institution",
+          "page": 1,
+          "quote": "ובשיעור של 0% מההפקדות"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14",
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Printed by the company on Yalin Lapidot's joining request for its provident fund for investing (file created 24.3.2026), section ג: \"דמי הניהול שייגבו מחשבונו של העמית יסתכמו בשיעור שנתי של 0.9% מהצבירה ובשיעור של 0% מההפקדות\". The site refuses scripts, so the request was read in a browser with pdf.js and has no copy in the library store; its June 2024 version (uploads/n/1719740821.1057.pdf) prints the same. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4). Below the most the fund's bylaws allow (in force from 16.10.2025, s.35.1, p.10: up to the legal maximum), so it is a discount the company offers under s.36.1; see `reverts_to` and `discount_months`."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "discount_months": {
+        "value": null,
+        "unit": "months",
+        "source": {
+          "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
+          "title": "תקנון ילין לפידות קופת גמל להשקעה (בתוקף מיום 16 באוקטובר 2025), סעיף 36.1",
+          "publisher": "Yalin Lapidot Provident Funds",
+          "strength": "institution",
+          "page": 10,
+          "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים או יותר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2025-10-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-13",
+          "KGL-16",
+          "KGL-30"
+        ],
+        "state": "sourced",
+        "notes": "Not printed: the joining request prints the rate with no period. The bylaws (s.36.1) say at least two years from the day the lower fee starts; the CMA circular 2017-9-15 sets at least five, raised earlier only on a withdrawal or transfer, six months after deposits stop, or a balance mechanism in the agreement (PF-13, KGL-16; the bylaws' two years are the older wording, KGL-30). The run uses five years (A-19)."
+      },
+      "reverts_to": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
+          "title": "תקנון ילין לפידות קופת גמל להשקעה (בתוקף מיום 16 באוקטובר 2025), סעיף 35.1",
+          "publisher": "Yalin Lapidot Provident Funds",
+          "strength": "institution",
+          "page": 10,
+          "quote": "מתוך התשלומים המועברים אליה בשל כל עמית בשיעור שלא יעלה על שיעור דמי הניהול המרבי הקבוע בהסדר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2025-10-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The bylaws bind the fee only up to the maximum the law sets (s.35.1.1 on the balance, s.35.1.2 on payments), recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee."
+      },
+      "names": {
+        "tariff": [
+          "דמי ניהול מההפקדות"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

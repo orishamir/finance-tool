@@ -1,0 +1,56 @@
+{
+ "id": "heading",
+ "written": "2026-11-07",
+ "built_from": [
+  "live-04-not-covered-wrong-entries (the founder, 2026-11-07: 'is everything here correct? we dont know עמלת חליפין?', a page that says it lists products and holds fees, labels, a price benchmark, roles and events) — a misreading of that flag, corrected by the coordinator on 2026-11-07"
+ ],
+ "reason": "A person reads a title or heading as a promise about what is under it. An item of another kind than the one it names makes them doubt the whole list, since if the list is wrong about one item they cannot tell what else in it to believe; and a reader who does not notice takes the wrong item at its word.",
+ "for": "every session (behaviour), still screens and browser alike",
+ "tested_on_not_built_from": [
+  "held-out benchmark cases of the same reason: makam-under-products (s06 of runs/baseline-1) and general-track-exposure (s08), both flagged by the founder on the guide list in October, both marked as needing outside knowledge",
+  "negative check: the companies list of live-03 (runs/live-03 screens), assumed clean of the reason"
+ ],
+ "result": {
+  "date": "2026-11-07",
+  "own_case": {
+   "run": "runs/live-04 (without, v1) and runs/live-04/heading-own (with); three personas, three runs each",
+   "list_holds_what_it_is_not": {
+    "without": "0 of 9",
+    "with": "9 of 9, all at rank 1"
+   },
+   "other_keys_with": {
+    "bare-code": "6 of 9 (7 without)",
+    "fragment-no-noun": "3 of 9 (5 without)",
+    "source-names-not-for-reader": "0 of 9 (1 without)",
+    "same-promise-every-card": "2 of 9 (2 without)"
+   },
+   "note": "built from this case, so not evidence that it generalises; the rank-1 finding pushed two other real problems down"
+  },
+  "same_reason_held_out": {
+   "run": "runs/live-04/heading-held (with: run-reviewer.json's s06 and s08 tasks, same goal and screens, first-job-phone and careful-retiree-pc, repeat 2); without: runs/baseline-1/reviewer and runs/baseline-2/reviewer",
+   "caught_in_first_10": {
+    "makam-under-products": {
+     "without": "0 of 2 (baseline-1), 0 of 6 (baseline-2)",
+     "with": "4 of 4, all at rank 1"
+    },
+    "general-track-exposure": {
+     "without": "0 of 2 (baseline-1), 0 of 6 (baseline-2)",
+     "with": "3 of 4, all at rank 1"
+    }
+   },
+   "graders": "agreed on 8 of 8"
+  },
+  "negative_check": {
+   "run": "runs/live-04/heading-neg (live-03's run file with the behaviour, repeat 1)",
+   "result": "not clean: all three sessions put a heading mismatch first or second (insurers and a foreign broker under 'investment houses', index providers among companies). Each quotes items that are on the screen, so they may be true problems of that page rather than noise; whether they are is the founder's call. The page's own key fell from 9 of 9 (ranks 3 to 5) to 2 of 3 (ranks 5 and 6): the instruction displaced it in one session.",
+   "verdict": "the instruction did not stay silent, and no screen known to be free of the reason was tried"
+  },
+  "not_done": [
+   "the whole held-out benchmark with against without (noise and catch rate), about $20 to $25",
+   "a negative check on a screen known to be free of the reason"
+  ]
+ },
+ "independence": "names no page, element, term, figure or decision of the site",
+ "status": "set aside 2026-11-07: not built from the founder's flag. His flag meant that the page says the site has not researched what it has researched (the exchange fee, which the securities account guide explains); the reason \"a heading is a promise about what is under it\" was the lab's first misreading of it. Kept as a candidate because its negative check on the companies page drew heading findings worth a look there (insurers and a foreign broker under \"investment houses\", index providers among companies); it enters a version only through a flag of its own reason and the held-out test.",
+ "cost": "readers $5.09 in all on 2026-11-07 ($1.81 for the nine sessions without, $3.28 for the twenty with), plus the blind graders (not metered by the tool)"
+}

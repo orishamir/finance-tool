@@ -1,0 +1,90 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:10:50.427Z",
+  "structured": {
+    "answer": "The site can't yet calculate about 35 things, all marked \"לא מחושב\". For me the ones that matter are gold ETCs and gold funds, everything to do with FX (dollar-hedged funds, dollar deposits, FX accounts, the exchange-rate fee), REITs, structured products, savings policies and ביטוח מנהלים, corporate bonds, robo-advisors and portfolio management. On top of that it will never cover loans, other insurance, stock picking or derivatives, physical real estate, ranking by past returns, or executing anything. Plain index ETFs seem to be covered.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Card titles at the screenshot boundaries (screens 4-5, 5-6)",
+        "why": "Titles were cut off. I worked out נאמן and ניהול תיקים from their descriptions"
+      },
+      {
+        "where": "The 'לא משווה ולא עושה' list compared with the cards",
+        "why": "Insurance and real estate show up in both lists in different forms, so I had to stop and work out which is temporary and which is permanent"
+      }
+    ],
+    "used": [
+      "Heading 'מה האתר עוד לא מכסה' and its subtitle",
+      "Red banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה'",
+      "Card titles and 'לא מחושב' tags",
+      "The 'מצב הכיסוי' folds with 'חסום: שאלה פתוחה'",
+      "The 'מה האתר לא משווה ולא עושה' list",
+      "Footer 'אישי, לא מסחרי, בלי קישורי שיווק'"
+    ],
+    "skimmed": [
+      "'מה ידוע' definitions on the cards",
+      "Closed-question lines marked 'נסגר ב-'",
+      "'כשייסגר' boilerplate"
+    ],
+    "skipped": [
+      "Legal source citations and dates",
+      "'חוקים וכללים · N' chips",
+      "Top navigation pages"
+    ],
+    "unsure_meaning": [
+      "'מקור ראשי (עותק)' vs 'מקור ראשי'",
+      "Orange 'לפי החברה' badge",
+      "Codes such as MF-28, TX2-01, TXA-28",
+      "'מסלולי האירוח'"
+    ],
+    "not_found": [
+      "A summary table or filter for the items",
+      "Any cost figure I could compare with what I pay now",
+      "Any mention of how plain ETFs or index funds are covered, which I could only assume"
+    ],
+    "findings": [
+      {
+        "what": "The heading promises 'מוצרים', but many items aren't products: LBMA Gold Price (a benchmark), עמלת חליפין (a fee), נאמן and חברת דירוג (roles or companies), הסדר חוב (an event), מענק (a feature), היוון קצבה מוכרת, תיקון 190 and תשלומים פטורים (tax mechanics)",
+        "where": "Cards under 'מה האתר עוד לא מכסה'"
+      },
+      {
+        "what": "The FX conversion fee isn't calculated, and that's exactly the hidden cost on US-listed ETFs",
+        "where": "Card 'עמלת חליפין'"
+      },
+      {
+        "what": "Overlap between the temporary and permanent lists (insurance, real estate) is confusing",
+        "where": "'מה האתר לא משווה ולא עושה' compared with the insurance and REIT cards"
+      },
+      {
+        "what": "A long wall of two-column cards with no filter or summary",
+        "where": "Whole page"
+      },
+      {
+        "what": "Almost every blocker is an open tax question, so even after a card closes, the tax part may still be shaky",
+        "where": "'מצב הכיסוי' folds"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 49436,
+    "turns": 12,
+    "usd": 0.2605938,
+    "input": 12,
+    "cacheWrite": 21157,
+    "cacheRead": 60149,
+    "output": 3963,
+    "model": "claude-opus-5-5"
+  }
+}

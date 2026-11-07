@@ -7,7 +7,7 @@ import { DimensionChecklist, type ChecklistRowView } from "../components/guide/s
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, FeeNum, GemelNetLink, Sentence, ShareNum, Tag } from "../components/kit";
+import { Callout, Card, FeeNum, GemelNetLink, Sentence, ShareNum, Tag, gershayim } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { trackLabels } from "../lib/track-labels";
@@ -37,7 +37,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     ? loadChecklistRows().map((row) => {
         const mark = wrapper.dimensions[row.id];
         const carrying = Object.values(rules).filter((r) => r.dimensions.includes(row.id) && ours(r) && JSON.stringify(wrapper).includes(`"${r.id}"`)).map((r) => r.id);
-        return { id: row.id, name: row.name, explanation: row.explanation, mark: mark === "covered" ? "covered" : mark?.startsWith("blocked:") ? "blocked" : "na", code: mark?.startsWith("blocked:") ? mark.slice(8) : undefined, rules: carrying } as ChecklistRowView;
+        return { id: row.id, name: row.name, explanation: row.explanation, mark: mark === "covered" ? "covered" : mark === "blocked" || mark?.startsWith("blocked:") ? "blocked" : "na", code: mark?.startsWith("blocked:") ? mark.slice(8) : undefined, rules: carrying } as ChecklistRowView;
       })
     : [];
   const fees = loadCmaFees().get(track.fundId)!;
@@ -62,12 +62,17 @@ export async function loader({ params }: Route.LoaderArgs) {
   const names = catalog
     .filter((c) => c.maps_to.track_ids.length === 1 && c.maps_to.track_ids[0] === track.fundId && owner.get(c.institution) === track.companyId)
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
+  // the fee page is linked only where it can answer for the track's wrapper (2026-11-07: a child savings track ended in "no terms")
+  const { compareBundle } = await import("../lib/compare.server");
+  const { feePageAnswers } = await import("../lib/fees");
+  const feePage = !!track.wrapperId && feePageAnswers(compareBundle(), track.wrapperId);
   const isDefault = catalog.some((c) => c.default_at_joining && c.maps_to.track_ids.includes(track.fundId) && owner.get(c.institution) === track.companyId);
   return {
     track,
     companyIds,
     names,
     isDefault,
+    feePage,
     others: others.map((o) => ({ fundId: o.fundId, href: `/companies/${o.companyId}/${o.fundId}` })),
     wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]! } : null,
     checklist,
@@ -87,7 +92,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.track.name ?? companiesCopy.title} · ${site.name}` }];
+  return [{ title: `${data ? gershayim(data.track.name) : companiesCopy.title} · ${site.name}` }];
 }
 
 export default function TrackPage() {
@@ -105,9 +110,9 @@ export default function TrackPage() {
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
       <div className="flex flex-col gap-8 pt-2 lg:pt-8">
         <header className="flex flex-col gap-3">
-          <Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: track.companyName }} current={track.name} />
+          <Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: gershayim(track.companyName) }} current={gershayim(track.name)} />
           <h1 className="text-2xl lg:text-3xl font-semibold flex flex-wrap items-center gap-3">
-            <bdi>{track.name}</bdi>
+            <bdi>{gershayim(track.name)}</bdi>
             {data.isDefault && <Tag tone="parameter">{companyCopy.default}</Tag>}
             {trackLabels(track).map((l) => (
               <Tag key={l}>{companyCopy.labels[l]}</Tag>
@@ -129,11 +134,11 @@ export default function TrackPage() {
         </header>
         <Card>
           <dl className="flex flex-col">
-            {row(copy.labels.manager, <Link to={`/companies/${track.companyId}`} className="text-link hover:underline"><bdi>{track.companyName}</bdi></Link>)}
+            {row(copy.labels.manager, <Link to={`/companies/${track.companyId}`} className="text-link hover:underline"><bdi>{gershayim(track.companyName)}</bdi></Link>)}
             {row(
               copy.labels.product,
               <span className="flex flex-wrap items-center gap-3">
-                <bdi>{track.classification}</bdi>
+                <bdi>{gershayim(track.classification)}</bdi>
                 {data.wrapper && (
                   <Link to={`/guide/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
                     {copy.toGuide} {data.wrapper.name}
@@ -150,8 +155,8 @@ export default function TrackPage() {
                 )}
               </span>,
             )}
-            {track.specialization && row(copy.labels.classification, <bdi>{track.specialization}</bdi>)}
-            {track.subSpecialization && row(copy.labels.holds, <bdi>{track.subSpecialization}</bdi>)}
+            {track.specialization && row(copy.labels.classification, <bdi>{gershayim(track.specialization)}</bdi>)}
+            {track.subSpecialization && row(copy.labels.holds, <bdi>{gershayim(track.subSpecialization)}</bdi>)}
             {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
             {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
             {data.values.exposure?.stock && row(companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.stock} />)}
@@ -159,12 +164,12 @@ export default function TrackPage() {
             {data.values.inception && row(copy.labels.inception, <Num value={data.values.inception} />)}
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>
-          <div className="pt-1 border-t border-border">
+          {data.feePage && <div className="pt-1 border-t border-border">
             <Link to={`/fees?track=${track.fundId}`} className="inline-flex items-center gap-0.5 text-link hover:underline min-h-target">
               {r3workbench.links.fees}
               <IconDrillIn size={16} />
             </Link>
-          </div>
+          </div>}
         </Card>
         {data.names.length > 0 && (
           <section aria-labelledby="also-h" className="flex flex-col gap-3">

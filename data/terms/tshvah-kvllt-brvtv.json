@@ -1,0 +1,26 @@
+{
+  "id": "tshvah-kvllt-brvtv",
+  "he": "תשואה כוללת ברוטו",
+  "en": null,
+  "meaning": "שיטת חישוב של מדד שבה הדיבידנדים נספרים במלואם, לפני מס, כאילו הושקעו בו מחדש",
+  "where": [],
+  "wrapper_ids": [],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [
+    "מדד תשואה כוללת ברוטו"
+  ],
+  "rule_ids": [
+    "ETF-40",
+    "ETF-42"
+  ],
+  "source": {
+    "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf#page=14",
+    "title": "הבורסה לניירות ערך בתל אביב, הנחיות החלק השני לתקנון, פרק המדדים, נוסחאות החישוב, עמוד 14",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

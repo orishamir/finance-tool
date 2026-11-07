@@ -1,0 +1,6267 @@
+{
+ "s20": {
+  "exitMonth": 60,
+  "nominal": 167469.89031742176,
+  "real": 148018.98060254968,
+  "paidIn": 147853.74665117208,
+  "fees": {
+   "deposit": 0,
+   "balance": 3686.784525481013,
+   "direct": 460.84806568512664,
+   "trade": 0,
+   "spread": 0,
+   "custody": 0,
+   "fixed": 0,
+   "account": 0,
+   "fund": 0,
+   "fx": 0,
+   "manager": 0
+  },
+  "taxDuring": 0,
+  "taxAtExit": 3024.2468375784592,
+  "series": [
+   {
+    "month": 0,
+    "index": 1,
+    "paidIn": 0,
+    "balance": 0,
+    "fees": 0,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 1,
+    "index": 1.0020598362698427,
+    "paidIn": 22004.119672539684,
+    "balance": 22094.64241831336,
+    "fees": 16.583419378268722,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 2,
+    "index": 1.004123915465144,
+    "paidIn": 24012.367503469974,
+    "balance": 24202.04712708803,
+    "fees": 34.74857859299579,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 3,
+    "index": 1.0061922463256356,
+    "paidIn": 26024.751996121246,
+    "balance": 26322.275167421718,
+    "fees": 54.505102361388374,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 4,
+    "index": 1.0082648376090517,
+    "paidIn": 28041.281671339348,
+    "balance": 28455.38784911663,
+    "fees": 75.86266141751796,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 5,
+    "index": 1.010341698091166,
+    "paidIn": 30061.96506752168,
+    "balance": 30601.44675182111,
+    "fees": 98.83097271485678,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 6,
+    "index": 1.0124228365658285,
+    "paidIn": 32086.810740653338,
+    "balance": 32760.513726176076,
+    "fees": 123.41979962967494,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 7,
+    "index": 1.0145082618450039,
+    "paidIn": 34115.827264343345,
+    "balance": 34932.65089496621,
+    "fees": 149.63895216530133,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 8,
+    "index": 1.0165979827588074,
+    "paidIn": 36149.02322986096,
+    "balance": 37117.92065427601,
+    "fees": 177.4982871572523,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 9,
+    "index": 1.018692008155543,
+    "paidIn": 38186.40724617205,
+    "balance": 39316.38567465061,
+    "fees": 207.00770847923172,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 10,
+    "index": 1.0207903469017408,
+    "paidIn": 40227.98793997553,
+    "balance": 41528.10890226153,
+    "fees": 238.17716725000594,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 11,
+    "index": 1.0228930078821943,
+    "paidIn": 42273.77395573992,
+    "balance": 43753.1535600772,
+    "fees": 271.0166620411572,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 12,
+    "index": 1.0249999999999986,
+    "paidIn": 44323.77395573992,
+    "balance": 45991.58314903848,
+    "fees": 305.5362390857195,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 13,
+    "index": 1.0271113321765875,
+    "paidIn": 46377.996620093094,
+    "balance": 48243.46144923902,
+    "fees": 341.7459924877003,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 14,
+    "index": 1.0292270133517714,
+    "paidIn": 48436.450646796635,
+    "balance": 50508.85252111053,
+    "fees": 379.65606443249175,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 15,
+    "index": 1.0313470524837753,
+    "paidIn": 50499.14475176419,
+    "balance": 52787.82070661312,
+    "fees": 419.2766453981759,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 16,
+    "index": 1.0334714585492768,
+    "paidIn": 52566.08766886274,
+    "balance": 55080.43063043048,
+    "fees": 460.61797436772594,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 17,
+    "index": 1.035600240543444,
+    "paidIn": 54637.28814994963,
+    "balance": 57386.747201170125,
+    "fees": 503.6903390421093,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 18,
+    "index": 1.0377334074799731,
+    "paidIn": 56712.754964909574,
+    "balance": 59706.83561256865,
+    "fees": 548.504076054295,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 19,
+    "index": 1.0398709683911278,
+    "paidIn": 58792.49690169183,
+    "balance": 62040.76134470199,
+    "fees": 595.0695711841689,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 20,
+    "index": 1.0420129323277763,
+    "paidIn": 60876.522766347385,
+    "balance": 64388.59016520076,
+    "fees": 643.3972595743621,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 21,
+    "index": 1.0441593083594303,
+    "paidIn": 62964.84138306625,
+    "balance": 66750.38813047067,
+    "fees": 693.4976259469945,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 22,
+    "index": 1.046310105574283,
+    "paidIn": 65057.461594214816,
+    "balance": 69126.22158691805,
+    "fees": 745.3812048213388,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 23,
+    "index": 1.048465333079248,
+    "paidIn": 67154.39226037331,
+    "balance": 71516.15717218046,
+    "fees": 799.0585807324074,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 24,
+    "index": 1.0506249999999973,
+    "paidIn": 69255.64226037331,
+    "balance": 73920.26181636244,
+    "fees": 854.5403884504678,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 25,
+    "index": 1.0527891154810007,
+    "paidIn": 71361.2204913353,
+    "balance": 76338.60274327645,
+    "fees": 911.8373132014884,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 26,
+    "index": 1.054957688685564,
+    "paidIn": 73471.13586870643,
+    "balance": 78771.24747168903,
+    "fees": 970.9600908885204,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 27,
+    "index": 1.057130728795868,
+    "paidIn": 75585.39732629817,
+    "balance": 81218.26381657204,
+    "fees": 1031.9195083140187,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 28,
+    "index": 1.059308245013007,
+    "paidIn": 77704.0138163242,
+    "balance": 83679.71989035928,
+    "fees": 1094.726403403105,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 29,
+    "index": 1.0614902465570282,
+    "paidIn": 79826.99430943825,
+    "balance": 86155.6841042082,
+    "fees": 1159.3916654277796,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 30,
+    "index": 1.0636767426669707,
+    "paidIn": 81954.34779477218,
+    "balance": 88646.225169267,
+    "fees": 1225.9262352320832,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 31,
+    "index": 1.0658677426009042,
+    "paidIn": 84086.08327997399,
+    "balance": 91151.41209794702,
+    "fees": 1294.3411054582132,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 32,
+    "index": 1.068063255635969,
+    "paidIn": 86222.20979124593,
+    "balance": 93671.31420520034,
+    "fees": 1364.6473207735999,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 33,
+    "index": 1.0702632910684142,
+    "paidIn": 88362.73637338275,
+    "balance": 96206.00110980278,
+    "fees": 1436.855978098946,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 34,
+    "index": 1.0724678582136382,
+    "paidIn": 90507.67208981003,
+    "balance": 98755.5427356423,
+    "fees": 1510.9782268372314,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 35,
+    "index": 1.0746769664062272,
+    "paidIn": 92657.0260226225,
+    "balance": 101320.00931301272,
+    "fees": 1587.025269103691,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 36,
+    "index": 1.0768906249999954,
+    "paidIn": 94810.80727262248,
+    "balance": 103899.47137991282,
+    "fees": 1665.0083599567656,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 37,
+    "index": 1.079108843368024,
+    "paidIn": 96969.02495935853,
+    "balance": 106493.99978335096,
+    "fees": 1744.9388076300336,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 38,
+    "index": 1.0813316309027015,
+    "paidIn": 99131.68822116393,
+    "balance": 109103.665680655,
+    "fees": 1826.827973765126,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 39,
+    "index": 1.083558997015763,
+    "paidIn": 101298.80621519545,
+    "balance": 111728.54054078792,
+    "fees": 1910.6872736456276,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 40,
+    "index": 1.0857909511383306,
+    "paidIn": 103470.38811747212,
+    "balance": 114368.69614566863,
+    "fees": 1996.5281764319686,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 41,
+    "index": 1.0880275027209523,
+    "paidIn": 105646.44312291402,
+    "balance": 117024.20459149854,
+    "fees": 2084.3622053973168,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 42,
+    "index": 1.0902686612336434,
+    "paidIn": 107826.9804453813,
+    "balance": 119695.13829009356,
+    "fees": 2174.200938164462,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 43,
+    "index": 1.0925144361659254,
+    "paidIn": 110012.00931771315,
+    "balance": 122381.56997022174,
+    "fees": 2266.056006943713,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 44,
+    "index": 1.0947648370268668,
+    "paidIn": 112201.53899176688,
+    "balance": 125083.57267894628,
+    "fees": 2359.939098771794,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 45,
+    "index": 1.0970198733451233,
+    "paidIn": 114395.57873845713,
+    "balance": 127801.21978297448,
+    "fees": 2455.8619557517595,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 46,
+    "index": 1.099279554668978,
+    "paidIn": 116594.1378477951,
+    "balance": 130534.58497001203,
+    "fees": 2553.8363752939254,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 47,
+    "index": 1.1015438905663817,
+    "paidIn": 118797.22562892786,
+    "balance": 133283.74225012306,
+    "fees": 2653.874210357815,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 48,
+    "index": 1.103812890624994,
+    "paidIn": 121004.85141017784,
+    "balance": 136048.76595709595,
+    "fees": 2755.9873696951404,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 49,
+    "index": 1.1060865644522233,
+    "paidIn": 123217.02453908228,
+    "balance": 138829.73074981468,
+    "fees": 2860.1878180938,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 50,
+    "index": 1.1083649216752678,
+    "paidIn": 125433.75438243282,
+    "balance": 141626.711613636,
+    "fees": 2966.487576622924,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 51,
+    "index": 1.110647971941156,
+    "paidIn": 127655.05032631513,
+    "balance": 144439.78386177236,
+    "fees": 3074.8987228789447,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 52,
+    "index": 1.1129357249167877,
+    "paidIn": 129880.92177614871,
+    "balance": 147269.02313668057,
+    "fees": 3185.4333912327206,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 53,
+    "index": 1.1152281902889751,
+    "paidIn": 132111.37815672666,
+    "balance": 150114.50541145628,
+    "fees": 3298.103773077696,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 54,
+    "index": 1.1175253777644834,
+    "paidIn": 134346.42891225562,
+    "balance": 152976.3069912342,
+    "fees": 3412.922117079123,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 55,
+    "index": 1.1198272970700724,
+    "paidIn": 136586.08350639578,
+    "balance": 155854.5045145943,
+    "fees": 3529.9007294243274,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 56,
+    "index": 1.1221339579525373,
+    "paidIn": 138830.35142230085,
+    "balance": 158749.17495497377,
+    "fees": 3649.051974074045,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 57,
+    "index": 1.1244453701787502,
+    "paidIn": 141079.24216265837,
+    "balance": 161660.39562208496,
+    "fees": 3770.388273014815,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 58,
+    "index": 1.1267615435357012,
+    "paidIn": 143332.76524972977,
+    "balance": 164588.24416333908,
+    "fees": 3893.922106512442,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 59,
+    "index": 1.12908248783054,
+    "paidIn": 145590.93022539085,
+    "balance": 167532.79856527608,
+    "fees": 4019.6660133665396,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 60,
+    "index": 1.1314082128906178,
+    "paidIn": 147853.74665117208,
+    "balance": 170494.1371550002,
+    "fees": 4147.63259116614,
+    "providerFees": 0,
+    "taxDuring": 0
+   }
+  ],
+  "detail": {
+   "grossBalance": 170494.1371550002,
+   "realGain": 12096.987350313837
+  },
+  "flags": [
+   {
+    "code": "G-02"
+   },
+   {
+    "code": "G-23"
+   }
+  ],
+  "labels": [],
+  "outcome": {
+   "code": "eligible"
+  },
+  "formulas": [
+   "F-08",
+   "F-27",
+   "F-11",
+   "F-15",
+   "F-16",
+   "F-05",
+   "F-44"
+  ],
+  "rules": [
+   {
+    "id": "PF-02",
+    "strength": "primary",
+    "dimensions": [
+     "fee-management-balance",
+     "fee-deposit"
+    ],
+    "figures": [
+     {
+      "name": "balance_cap",
+      "strength": "primary"
+     },
+     {
+      "name": "deposit_cap",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "PF-10",
+    "strength": "primary",
+    "dimensions": [
+     "fee-direct-expenses",
+     "fee-trade",
+     "fee-custody"
+    ],
+    "figures": []
+   },
+   {
+    "id": "PF-13",
+    "strength": "primary",
+    "dimensions": [
+     "fee-change-over-time"
+    ],
+    "figures": [
+     {
+      "name": "min_discount_years",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-03",
+    "strength": "primary",
+    "dimensions": [
+     "tax-during",
+     "distribution-policy"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-02",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "real-vs-nominal"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-04",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "transfer-switch-process"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-03",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling"
+    ],
+    "figures": [
+     {
+      "name": "ceiling",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-05",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "liquidity-lockup"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXK-07",
+    "strength": "primary",
+    "dimensions": [
+     "real-vs-nominal",
+     "tax-at-exit",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-06",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "real-vs-nominal",
+     "age-or-use-exemption"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXG-04",
+    "strength": "primary",
+    "dimensions": [
+     "age-or-use-exemption",
+     "tax-at-exit",
+     "eligibility"
+    ],
+    "figures": [
+     {
+      "name": "age",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-09",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-10",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "surtax"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-27",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit"
+    ],
+    "figures": []
+   }
+  ],
+  "routed": []
+ },
+ "fallingCpi": {
+  "exitMonth": 60,
+  "nominal": 153233.69975096005,
+  "real": 161130.70769465299,
+  "paidIn": 136985.77259864166,
+  "fees": {
+   "deposit": 0,
+   "balance": 3527.7722726665115,
+   "direct": 440.97153408331394,
+   "trade": 0,
+   "spread": 0,
+   "custody": 0,
+   "fixed": 0,
+   "account": 0,
+   "fund": 0,
+   "fx": 0,
+   "manager": 0
+  },
+  "taxDuring": 0,
+  "taxAtExit": 5415.975717439462,
+  "series": [
+   {
+    "month": 0,
+    "index": 1,
+    "paidIn": 0,
+    "balance": 0,
+    "fees": 0,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 1,
+    "index": 0.9991628226408794,
+    "paidIn": 21998.32564528176,
+    "balance": 22088.824555007268,
+    "fees": 16.57905270578479,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 2,
+    "index": 0.9983263461476894,
+    "paidIn": 23994.978337577137,
+    "balance": 24184.562489800042,
+    "fees": 34.73108860005552,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 3,
+    "index": 0.997490569933681,
+    "paidIn": 25989.9594774445,
+    "balance": 26287.243651650868,
+    "fees": 54.461319011602335,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 4,
+    "index": 0.9966554934125963,
+    "paidIn": 27983.27046426969,
+    "balance": 28396.89800944364,
+    "fees": 75.77497776274842,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 5,
+    "index": 0.9958211159986681,
+    "paidIn": 29974.912696267027,
+    "balance": 30513.555654174896,
+    "fees": 98.67732126100329,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 6,
+    "index": 0.9949874371066197,
+    "paidIn": 31964.887570480267,
+    "balance": 32637.246799457145,
+    "fees": 123.17362859109372,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 7,
+    "index": 0.9941544561516646,
+    "paidIn": 33953.1964827836,
+    "balance": 34768.001782024294,
+    "fees": 149.26920160737416,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 8,
+    "index": 0.9933221725495056,
+    "paidIn": 35939.84082788261,
+    "balance": 36905.851062239126,
+    "fees": 176.96936502661794,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 9,
+    "index": 0.9924905857163346,
+    "paidIn": 37924.82199931528,
+    "balance": 39050.82522460289,
+    "fees": 206.27946652119104,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 10,
+    "index": 0.9916596950688326,
+    "paidIn": 39908.14138945295,
+    "balance": 41202.954978266986,
+    "fees": 237.20487681260985,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 11,
+    "index": 0.9908295000241685,
+    "paidIn": 41889.80038950128,
+    "balance": 43362.27115754671,
+    "fees": 269.7509897654845,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 12,
+    "index": 0.9899999999999994,
+    "paidIn": 43869.80038950128,
+    "balance": 45528.8047224372,
+    "fees": 303.92322248184973,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 13,
+    "index": 0.9891711944144701,
+    "paidIn": 45848.14277833022,
+    "balance": 47702.58675913138,
+    "fees": 339.7270153958838,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 14,
+    "index": 0.9883430826862121,
+    "paidIn": 47824.82894370265,
+    "balance": 49883.64848054017,
+    "fees": 377.1678323690188,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 15,
+    "index": 0.9875156642343437,
+    "paidIn": 49799.86027217133,
+    "balance": 52072.021226814715,
+    "fees": 416.25116078544215,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 16,
+    "index": 0.9866889384784697,
+    "paidIn": 51773.23814912827,
+    "balance": 54267.736465870854,
+    "fees": 456.9825116479922,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 17,
+    "index": 0.9858629048386808,
+    "paidIn": 53744.96395880563,
+    "balance": 56470.82579391569,
+    "fees": 499.36741967444885,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 18,
+    "index": 0.985037562735553,
+    "paidIn": 55715.03908427674,
+    "balance": 58681.32093597635,
+    "fees": 543.4114433942209,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 19,
+    "index": 0.9842129115901475,
+    "paidIn": 57683.46490745703,
+    "balance": 60899.253746430884,
+    "fees": 589.1201652454324,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 20,
+    "index": 0.98338895082401,
+    "paidIn": 59650.24280910505,
+    "balance": 63124.656209541405,
+    "fees": 636.4991916724086,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 21,
+    "index": 0.9825656798591708,
+    "paidIn": 61615.37416882339,
+    "balance": 65357.5604399894,
+    "fees": 685.5541532235641,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 22,
+    "index": 0.9817430981181438,
+    "paidIn": 63578.86036505968,
+    "balance": 67597.9986834132,
+    "fees": 736.2907046496935,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 23,
+    "index": 0.9809212050239263,
+    "paidIn": 65540.70277510754,
+    "balance": 69846.00331694772,
+    "fees": 788.714525002669,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 24,
+    "index": 0.980099999999999,
+    "paidIn": 67500.90277510753,
+    "balance": 72101.6068497664,
+    "fees": 842.8313177345426,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 25,
+    "index": 0.9792794824703249,
+    "paidIn": 69459.46174004818,
+    "balance": 74364.8419236253,
+    "fees": 898.6468107970585,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 26,
+    "index": 0.9784596518593495,
+    "paidIn": 71416.38104376687,
+    "balance": 76635.74131340961,
+    "fees": 956.1667567415741,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 27,
+    "index": 0.9776405075919998,
+    "paidIn": 73371.66205895087,
+    "balance": 78914.33792768222,
+    "fees": 1015.3969328193941,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 28,
+    "index": 0.9768220490936846,
+    "paidIn": 75325.30615713824,
+    "balance": 81200.66480923464,
+    "fees": 1076.3431410825174,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 29,
+    "index": 0.9760042757902936,
+    "paidIn": 77277.31470871883,
+    "balance": 83494.75513564017,
+    "fees": 1139.0112084847992,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 30,
+    "index": 0.9751871871081971,
+    "paidIn": 79227.68908293522,
+    "balance": 85796.64221980935,
+    "fees": 1203.4069869835303,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 31,
+    "index": 0.9743707824742456,
+    "paidIn": 81176.43064788371,
+    "balance": 88106.35951054769,
+    "fees": 1269.5363536414343,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 32,
+    "index": 0.9735550613157695,
+    "paidIn": 83123.54077051525,
+    "balance": 90423.94059311565,
+    "fees": 1337.405210729087,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 33,
+    "index": 0.9727400230605787,
+    "paidIn": 85069.0208166364,
+    "balance": 92749.41918979108,
+    "fees": 1407.0194858277541,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 34,
+    "index": 0.9719256671369619,
+    "paidIn": 87012.87215091032,
+    "balance": 95082.82916043368,
+    "fees": 1478.3851319326582,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 35,
+    "index": 0.9711119929736867,
+    "paidIn": 88955.0961368577,
+    "balance": 97424.20450305215,
+    "fees": 1551.5081275566652,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 36,
+    "index": 0.9702989999999986,
+    "paidIn": 90895.6941368577,
+    "balance": 99773.57935437335,
+    "fees": 1626.3944768344036,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 37,
+    "index": 0.9694866876456212,
+    "paidIn": 92834.66751214894,
+    "balance": 102130.98799041394,
+    "fees": 1703.0502096268085,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 38,
+    "index": 0.9686750553407555,
+    "paidIn": 94772.01762283045,
+    "balance": 104496.46482705446,
+    "fees": 1781.481381626099,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 39,
+    "index": 0.9678641025160793,
+    "paidIn": 96707.7458278626,
+    "balance": 106870.04442061555,
+    "fees": 1861.6940744611868,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 40,
+    "index": 0.9670538286027474,
+    "paidIn": 98641.85348506809,
+    "balance": 109251.76146843677,
+    "fees": 1943.694395803521,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 41,
+    "index": 0.9662442330323903,
+    "paidIn": 100574.34195113287,
+    "balance": 111641.65080945764,
+    "fees": 2027.4884794733669,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 42,
+    "index": 0.9654353152371147,
+    "paidIn": 102505.21258160709,
+    "balance": 114039.74742480108,
+    "fees": 2113.0824855465225,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 43,
+    "index": 0.9646270746495027,
+    "paidIn": 104434.46673090609,
+    "balance": 116446.0864383594,
+    "fees": 2200.482600461478,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 44,
+    "index": 0.9638195107026114,
+    "paidIn": 106362.10575231131,
+    "balance": 118860.70311738254,
+    "fees": 2289.695037127014,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 45,
+    "index": 0.9630126228299725,
+    "paidIn": 108288.13099797125,
+    "balance": 121283.63287306871,
+    "fees": 2380.726035030243,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 46,
+    "index": 0.9622064104655919,
+    "paidIn": 110212.54381890244,
+    "balance": 123714.91126115769,
+    "fees": 2473.581860345097,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 47,
+    "index": 0.9614008730439494,
+    "paidIn": 112135.34556499035,
+    "balance": 126154.57398252624,
+    "fees": 2568.268806041264,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 48,
+    "index": 0.9605960099999983,
+    "paidIn": 114056.53758499035,
+    "balance": 128602.65688378629,
+    "fees": 2664.7931919935677,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 49,
+    "index": 0.9597918207691647,
+    "paidIn": 115976.12122652867,
+    "balance": 131059.19595788525,
+    "fees": 2763.1613650918057,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 50,
+    "index": 0.9589883047873476,
+    "paidIn": 117894.09783610336,
+    "balance": 133524.2273447092,
+    "fees": 2863.379699351032,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 51,
+    "index": 0.9581854614909182,
+    "paidIn": 119810.4687590852,
+    "balance": 135997.78733168807,
+    "fees": 2965.4545960223013,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 52,
+    "index": 0.9573832903167195,
+    "paidIn": 121725.23533971864,
+    "balance": 138479.9123544038,
+    "fees": 3069.3924837038653,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 53,
+    "index": 0.9565817907020661,
+    "paidIn": 123638.39892112277,
+    "balance": 140970.63899720056,
+    "fees": 3175.1998184528275,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 54,
+    "index": 0.9557809620847433,
+    "paidIn": 125549.96084529225,
+    "balance": 143470.00399379787,
+    "fees": 3282.883083897259,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 55,
+    "index": 0.9549808039030074,
+    "paidIn": 127459.92245309828,
+    "balance": 145978.044227906,
+    "fees": 3392.4487913487774,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 56,
+    "index": 0.9541813155955851,
+    "paidIn": 129368.28508428944,
+    "balance": 148494.79673384395,
+    "fees": 3503.903479915585,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 57,
+    "index": 0.9533824966016725,
+    "paidIn": 131275.05007749278,
+    "balance": 151020.29869715986,
+    "fees": 3617.2537166159805,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 58,
+    "index": 0.9525843463609357,
+    "paidIn": 133180.21877021465,
+    "balance": 153554.58745525434,
+    "fees": 3732.506096492328,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 59,
+    "index": 0.9517868643135097,
+    "paidIn": 135083.79249884168,
+    "balance": 156097.700498006,
+    "fees": 3849.6672427255075,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 60,
+    "index": 0.950990049899998,
+    "paidIn": 136985.77259864166,
+    "balance": 158649.6754683995,
+    "fees": 3968.7438067498256,
+    "providerFees": 0,
+    "taxDuring": 0
+   }
+  ],
+  "detail": {
+   "grossBalance": 158649.6754683995,
+   "realGain": 21663.902869757847
+  },
+  "flags": [
+   {
+    "code": "G-02"
+   },
+   {
+    "code": "G-23"
+   }
+  ],
+  "labels": [
+   {
+    "code": "reading",
+    "ruleId": "TXK-07"
+   }
+  ],
+  "outcome": {
+   "code": "eligible"
+  },
+  "formulas": [
+   "F-08",
+   "F-27",
+   "F-11",
+   "F-15",
+   "F-16",
+   "F-05",
+   "F-44"
+  ],
+  "rules": [
+   {
+    "id": "PF-02",
+    "strength": "primary",
+    "dimensions": [
+     "fee-management-balance",
+     "fee-deposit"
+    ],
+    "figures": [
+     {
+      "name": "balance_cap",
+      "strength": "primary"
+     },
+     {
+      "name": "deposit_cap",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "PF-10",
+    "strength": "primary",
+    "dimensions": [
+     "fee-direct-expenses",
+     "fee-trade",
+     "fee-custody"
+    ],
+    "figures": []
+   },
+   {
+    "id": "PF-13",
+    "strength": "primary",
+    "dimensions": [
+     "fee-change-over-time"
+    ],
+    "figures": [
+     {
+      "name": "min_discount_years",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-03",
+    "strength": "primary",
+    "dimensions": [
+     "tax-during",
+     "distribution-policy"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-02",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "real-vs-nominal"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-04",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "transfer-switch-process"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-03",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling"
+    ],
+    "figures": [
+     {
+      "name": "ceiling",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-05",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "liquidity-lockup"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXK-07",
+    "strength": "primary",
+    "dimensions": [
+     "real-vs-nominal",
+     "tax-at-exit",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-06",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "real-vs-nominal",
+     "age-or-use-exemption"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXG-04",
+    "strength": "primary",
+    "dimensions": [
+     "age-or-use-exemption",
+     "tax-at-exit",
+     "eligibility"
+    ],
+    "figures": [
+     {
+      "name": "age",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-09",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-10",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "surtax"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-27",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit"
+    ],
+    "figures": []
+   }
+  ],
+  "routed": []
+ },
+ "years25": {
+  "exitMonth": 300,
+  "nominal": 934520.3318286501,
+  "real": 504071.4726374086,
+  "paidIn": 486901.9773906477,
+  "fees": {
+   "deposit": 0,
+   "balance": 86217.47322405005,
+   "direct": 10777.184153006256,
+   "trade": 0,
+   "spread": 0,
+   "custody": 0,
+   "fixed": 0,
+   "account": 0,
+   "fund": 0,
+   "fx": 0,
+   "manager": 0
+  },
+  "taxDuring": 0,
+  "taxAtExit": 81839.56439471134,
+  "series": [
+   {
+    "month": 0,
+    "index": 1,
+    "paidIn": 0,
+    "balance": 0,
+    "fees": 0,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 1,
+    "index": 1.0020598362698427,
+    "paidIn": 83641,
+    "balance": 83985.09070173823,
+    "fees": 63.03609509762689,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 2,
+    "index": 1.004123915465144,
+    "paidIn": 83641,
+    "balance": 84330.59695818076,
+    "fees": 126.33151438072477,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 3,
+    "index": 1.0061922463256356,
+    "paidIn": 83641,
+    "balance": 84677.52459277796,
+    "fees": 189.88732468303496,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 4,
+    "index": 1.0082648376090517,
+    "paidIn": 83641,
+    "balance": 85025.87945293728,
+    "fees": 253.70459722714602,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 5,
+    "index": 1.010341698091166,
+    "paidIn": 83641,
+    "balance": 85375.66741012181,
+    "fees": 317.7844076425489,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 6,
+    "index": 1.0124228365658285,
+    "paidIn": 83641,
+    "balance": 85726.89435994926,
+    "fees": 382.1278359837668,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 7,
+    "index": 1.0145082618450039,
+    "paidIn": 83641,
+    "balance": 86079.56622229134,
+    "fees": 446.73596674855884,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 8,
+    "index": 1.0165979827588074,
+    "paidIn": 83641,
+    "balance": 86433.68894137349,
+    "fees": 511.60988889619966,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 9,
+    "index": 1.018692008155543,
+    "paidIn": 83641,
+    "balance": 86789.26848587513,
+    "fees": 576.7506958658332,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 10,
+    "index": 1.0207903469017408,
+    "paidIn": 83641,
+    "balance": 87146.31084903018,
+    "fees": 642.1594855949027,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 11,
+    "index": 1.0228930078821943,
+    "paidIn": 83641,
+    "balance": 87504.8220487282,
+    "fees": 707.8373605376559,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 12,
+    "index": 1.0249999999999986,
+    "paidIn": 83641,
+    "balance": 87864.80812761564,
+    "fees": 773.7854276837271,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 13,
+    "index": 1.0271113321765875,
+    "paidIn": 84668.11133217659,
+    "balance": 89257.61191858372,
+    "fees": 840.7788817131869,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 14,
+    "index": 1.0292270133517714,
+    "paidIn": 85697.33834552836,
+    "balance": 90658.26994980729,
+    "fees": 908.8236177275533,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 15,
+    "index": 1.0313470524837753,
+    "paidIn": 86728.68539801214,
+    "balance": 92066.81890872963,
+    "fees": 977.9255583645783,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 16,
+    "index": 1.0334714585492768,
+    "paidIn": 87762.15685656141,
+    "balance": 93483.29564273605,
+    "fees": 1048.0906539182956,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 17,
+    "index": 1.035600240543444,
+    "paidIn": 88797.75709710486,
+    "balance": 94907.73715983047,
+    "fees": 1119.3248824595744,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 18,
+    "index": 1.0377334074799731,
+    "paidIn": 89835.49050458483,
+    "balance": 96340.18062931485,
+    "fees": 1191.6342499571836,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 19,
+    "index": 1.0398709683911278,
+    "paidIn": 90875.36147297596,
+    "balance": 97780.66338247135,
+    "fees": 1265.0247903993688,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 20,
+    "index": 1.0420129323277763,
+    "paidIn": 91917.37440530374,
+    "balance": 99229.22291324737,
+    "fees": 1339.5025659159417,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 21,
+    "index": 1.0441593083594303,
+    "paidIn": 92961.53371366317,
+    "balance": 100685.8968789435,
+    "fees": 1415.073666900888,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 22,
+    "index": 1.046310105574283,
+    "paidIn": 94007.84381923746,
+    "balance": 102150.72310090427,
+    "fees": 1491.7442121354923,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 23,
+    "index": 1.048465333079248,
+    "paidIn": 95056.30915231671,
+    "balance": 103623.73956521181,
+    "fees": 1569.5203489119833,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 24,
+    "index": 1.0506249999999973,
+    "paidIn": 96106.93415231671,
+    "balance": 105104.98442338241,
+    "fees": 1648.4082531577044,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 25,
+    "index": 1.0527891154810007,
+    "paidIn": 97159.72326779772,
+    "balance": 106594.49599306598,
+    "fees": 1728.4141295598056,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 26,
+    "index": 1.054957688685564,
+    "paidIn": 98214.68095648328,
+    "balance": 108092.31275874836,
+    "fees": 1809.5442116904646,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 27,
+    "index": 1.057130728795868,
+    "paidIn": 99271.81168527914,
+    "balance": 109598.47337245672,
+    "fees": 1891.8047621326389,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 28,
+    "index": 1.059308245013007,
+    "paidIn": 100331.11993029214,
+    "balance": 111113.01665446773,
+    "fees": 1975.202072606345,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 29,
+    "index": 1.0614902465570282,
+    "paidIn": 101392.61017684918,
+    "balance": 112635.9815940188,
+    "fees": 2059.742464095476,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 30,
+    "index": 1.0636767426669707,
+    "paidIn": 102456.28691951615,
+    "balance": 114167.40735002214,
+    "fees": 2145.4322869751522,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 31,
+    "index": 1.0658677426009042,
+    "paidIn": 103522.15466211706,
+    "balance": 115707.33325178201,
+    "fees": 2232.277921139612,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 32,
+    "index": 1.068063255635969,
+    "paidIn": 104590.21791775302,
+    "balance": 117255.79879971479,
+    "fees": 2320.2857761306414,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 33,
+    "index": 1.0702632910684142,
+    "paidIn": 105660.48120882144,
+    "balance": 118812.84366607212,
+    "fees": 2409.4622912665473,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 34,
+    "index": 1.0724678582136382,
+    "paidIn": 106732.94906703508,
+    "balance": 120378.507695667,
+    "fees": 2499.8139357716764,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 35,
+    "index": 1.0746769664062272,
+    "paidIn": 107807.62603344131,
+    "balance": 121952.830906603,
+    "fees": 2591.3472089064794,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 36,
+    "index": 1.0768906249999954,
+    "paidIn": 108884.51665844131,
+    "balance": 123535.8534910065,
+    "fees": 2684.068640098128,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 37,
+    "index": 1.079108843368024,
+    "paidIn": 109963.62550180934,
+    "balance": 125127.61581576186,
+    "fees": 2777.984789071679,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 38,
+    "index": 1.0813316309027015,
+    "paidIn": 111044.95713271204,
+    "balance": 126728.15842324981,
+    "fees": 2873.1022459817996,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 39,
+    "index": 1.083558997015763,
+    "paidIn": 112128.5161297278,
+    "balance": 128337.52203208882,
+    "fees": 2969.4276315450384,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 40,
+    "index": 1.0857909511383306,
+    "paidIn": 113214.30708086613,
+    "balance": 129955.74753787961,
+    "fees": 3066.9675971726683,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 41,
+    "index": 1.0880275027209523,
+    "paidIn": 114302.33458358709,
+    "balance": 131582.87601395271,
+    "fees": 3165.7288251040814,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 42,
+    "index": 1.0902686612336434,
+    "paidIn": 115392.60324482073,
+    "balance": 133218.94871211922,
+    "fees": 3265.718028540748,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 43,
+    "index": 1.0925144361659254,
+    "paidIn": 116485.11768098664,
+    "balance": 134864.00706342462,
+    "fees": 3366.941951780747,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 44,
+    "index": 1.0947648370268668,
+    "paidIn": 117579.88251801352,
+    "balance": 136518.09267890576,
+    "fees": 3469.407370353856,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 45,
+    "index": 1.0970198733451233,
+    "paidIn": 118676.90239135864,
+    "balance": 138181.24735035098,
+    "fees": 3573.121091157222,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 46,
+    "index": 1.099279554668978,
+    "paidIn": 119776.18194602762,
+    "balance": 139853.5130510634,
+    "fees": 3678.089952591595,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 47,
+    "index": 1.1015438905663817,
+    "paidIn": 120877.72583659399,
+    "balance": 141534.93193662743,
+    "fees": 3784.3208246981458,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 48,
+    "index": 1.103812890624994,
+    "paidIn": 121981.53872721898,
+    "balance": 143225.54634567842,
+    "fees": 3891.8206092958526,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 49,
+    "index": 1.1060865644522233,
+    "paidIn": 123087.62529167121,
+    "balance": 144925.39880067558,
+    "fees": 4000.596240119477,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 50,
+    "index": 1.1083649216752678,
+    "paidIn": 124195.99021334648,
+    "balance": 146634.53200867813,
+    "fees": 4110.654682958115,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 51,
+    "index": 1.110647971941156,
+    "paidIn": 125306.63818528764,
+    "balance": 148352.98886212445,
+    "fees": 4222.002935794335,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 52,
+    "index": 1.1129357249167877,
+    "paidIn": 126419.57391020442,
+    "balance": 150080.81243961485,
+    "fees": 4334.648028943908,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 53,
+    "index": 1.1152281902889751,
+    "paidIn": 127534.8021004934,
+    "balance": 151818.04600669732,
+    "fees": 4448.59702519612,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 54,
+    "index": 1.1175253777644834,
+    "paidIn": 128652.32747825788,
+    "balance": 153564.73301665674,
+    "fees": 4563.857019954681,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 55,
+    "index": 1.1198272970700724,
+    "paidIn": 129772.15477532796,
+    "balance": 155320.91711130718,
+    "fees": 4680.43514137923,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 56,
+    "index": 1.1221339579525373,
+    "paidIn": 130894.2887332805,
+    "balance": 157086.64212178768,
+    "fees": 4798.338550527432,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 57,
+    "index": 1.1244453701787502,
+    "paidIn": 132018.73410345925,
+    "balance": 158861.95206936126,
+    "fees": 4917.574441497681,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 58,
+    "index": 1.1267615435357012,
+    "paidIn": 133145.49564699497,
+    "balance": 160646.89116621722,
+    "fees": 5038.1500415723995,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 59,
+    "index": 1.12908248783054,
+    "paidIn": 134274.5781348255,
+    "balance": 162441.5038162769,
+    "fees": 5160.072611361949,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 60,
+    "index": 1.1314082128906178,
+    "paidIn": 135405.98634771613,
+    "balance": 164245.8346160027,
+    "fees": 5283.349444949142,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 61,
+    "index": 1.1337387285635279,
+    "paidIn": 136539.72507627966,
+    "balance": 166059.92835521055,
+    "fees": 5407.987870034364,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 62,
+    "index": 1.1360740447171485,
+    "paidIn": 137675.79912099682,
+    "balance": 167883.83001788563,
+    "fees": 5533.9952480813145,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 63,
+    "index": 1.1384141712396838,
+    "paidIn": 138814.2132922365,
+    "balance": 169717.5847830016,
+    "fees": 5661.378974463352,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 64,
+    "index": 1.1407591180397063,
+    "paidIn": 139954.9724102762,
+    "balance": 171561.2380253433,
+    "fees": 5790.14647861047,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 65,
+    "index": 1.1431088950461983,
+    "paidIn": 141098.0813053224,
+    "balance": 173414.83531633264,
+    "fees": 5920.3052241568785,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 66,
+    "index": 1.1454635122085943,
+    "paidIn": 142243.54481753102,
+    "balance": 175278.42242485823,
+    "fees": 6051.862709089221,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 67,
+    "index": 1.147822979496823,
+    "paidIn": 143391.36779702784,
+    "balance": 177152.0453181082,
+    "fees": 6184.826465895408,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 68,
+    "index": 1.1501873069013495,
+    "paidIn": 144541.5551039292,
+    "balance": 179035.75016240668,
+    "fees": 6319.204061714076,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 69,
+    "index": 1.1525565044332176,
+    "paidIn": 145694.1116083624,
+    "balance": 180929.58332405364,
+    "fees": 6455.003098484694,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 70,
+    "index": 1.1549305821240923,
+    "paidIn": 146849.0421904865,
+    "balance": 182833.59137016837,
+    "fees": 6592.23121309828,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 71,
+    "index": 1.157309550026302,
+    "paidIn": 148006.35174051282,
+    "balance": 184747.82106953626,
+    "fees": 6730.89607754877,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 72,
+    "index": 1.1596934182128815,
+    "paidIn": 149166.0451587257,
+    "balance": 186672.31939345927,
+    "fees": 6871.005399085017,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 73,
+    "index": 1.1620821967776143,
+    "paidIn": 150328.12735550333,
+    "balance": 188607.13351660993,
+    "fees": 7012.566920363434,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 74,
+    "index": 1.1644758958350754,
+    "paidIn": 151492.6032513384,
+    "balance": 190552.3108178888,
+    "fees": 7155.588419601279,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 75,
+    "index": 1.166874525520674,
+    "paidIn": 152659.47777685907,
+    "balance": 192507.8988812856,
+    "fees": 7300.077710730591,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 76,
+    "index": 1.169278095990697,
+    "paidIn": 153828.75587284978,
+    "balance": 194473.9454967439,
+    "fees": 7446.042643552765,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 77,
+    "index": 1.1716866174223513,
+    "paidIn": 155000.44249027214,
+    "balance": 196450.49866102944,
+    "fees": 7593.491103893793,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 78,
+    "index": 1.1741001000138072,
+    "paidIn": 156174.54259028594,
+    "balance": 198437.6065786019,
+    "fees": 7742.431013760144,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 79,
+    "index": 1.1765185539842415,
+    "paidIn": 157351.06114427018,
+    "balance": 200435.31766249053,
+    "fees": 7892.870331495313,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 80,
+    "index": 1.1789419895738813,
+    "paidIn": 158530.00313384406,
+    "balance": 202443.68053517333,
+    "fees": 8044.817051937024,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 81,
+    "index": 1.1813704170440462,
+    "paidIn": 159711.3735508881,
+    "balance": 204462.74402945975,
+    "fees": 8198.279206575098,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 82,
+    "index": 1.1838038466771927,
+    "paidIn": 160895.17739756528,
+    "balance": 206492.55718937737,
+    "fees": 8353.264863709981,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 83,
+    "index": 1.1862422887769577,
+    "paidIn": 162081.41968634224,
+    "balance": 208533.169271062,
+    "fees": 8509.782128611954,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 84,
+    "index": 1.1886857536682018,
+    "paidIn": 163270.10544001043,
+    "balance": 210584.6297436516,
+    "fees": 8667.839143680994,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 85,
+    "index": 1.191134251697053,
+    "paidIn": 164461.23969170748,
+    "balance": 212646.98829018383,
+    "fees": 8827.444088607326,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 86,
+    "index": 1.1935877932309504,
+    "paidIn": 165654.82748493843,
+    "balance": 214720.29480849757,
+    "fees": 8988.605180532644,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 87,
+    "index": 1.1960463886586892,
+    "paidIn": 166850.87387359713,
+    "balance": 216804.5994121379,
+    "fees": 9151.330674212006,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 88,
+    "index": 1.1985100483904627,
+    "paidIn": 168049.38392198758,
+    "balance": 218899.95243126506,
+    "fees": 9315.628862176429,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 89,
+    "index": 1.2009787828579084,
+    "paidIn": 169250.3627048455,
+    "balance": 221006.4044135671,
+    "fees": 9481.508074896143,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 90,
+    "index": 1.2034526025141508,
+    "paidIn": 170453.81530735965,
+    "balance": 223124.00612517627,
+    "fees": 9648.976680944561,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 91,
+    "index": 1.2059315178338461,
+    "paidIn": 171659.7468251935,
+    "balance": 225252.80855158935,
+    "fees": 9818.043087162916,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 92,
+    "index": 1.2084155393132268,
+    "paidIn": 172868.16236450672,
+    "balance": 227392.86289859182,
+    "fees": 9988.715738825607,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 93,
+    "index": 1.2109046774701457,
+    "paidIn": 174079.06704197687,
+    "balance": 229544.22059318578,
+    "fees": 10161.003119806232,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 94,
+    "index": 1.213398942844121,
+    "paidIn": 175292.465984821,
+    "balance": 231706.93328452163,
+    "fees": 10334.913752744327,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 95,
+    "index": 1.2158983459963801,
+    "paidIn": 176508.3643308174,
+    "balance": 233881.05284483396,
+    "fees": 10510.456199212802,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 96,
+    "index": 1.2184028975099053,
+    "paidIn": 177726.76722832728,
+    "balance": 236066.63137038104,
+    "fees": 10687.639059886093,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 97,
+    "index": 1.2209126079894776,
+    "paidIn": 178947.67983631676,
+    "balance": 238263.72118238837,
+    "fees": 10866.470974709002,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 98,
+    "index": 1.2234274880617226,
+    "paidIn": 180171.10732437848,
+    "balance": 240472.37482799607,
+    "fees": 11046.960623066267,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 99,
+    "index": 1.2259475483751547,
+    "paidIn": 181397.05487275362,
+    "balance": 242692.6450812102,
+    "fees": 11229.116723952839,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 100,
+    "index": 1.2284727996002227,
+    "paidIn": 182625.52767235384,
+    "balance": 244924.58494385824,
+    "fees": 11412.948036144875,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 101,
+    "index": 1.2310032524293546,
+    "paidIn": 183856.5309247832,
+    "balance": 247168.2476465482,
+    "fees": 11598.463358371457,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 102,
+    "index": 1.233538917577003,
+    "paidIn": 185090.06984236022,
+    "balance": 249423.6866496321,
+    "fees": 11785.671529487017,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 103,
+    "index": 1.2360798057796907,
+    "paidIn": 186326.1496481399,
+    "balance": 251690.95564417305,
+    "fees": 11974.581428644515,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 104,
+    "index": 1.2386259277960558,
+    "paidIn": 187564.77557593596,
+    "balance": 253970.10855291694,
+    "fees": 12165.201975469321,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 105,
+    "index": 1.2411772944068977,
+    "paidIn": 188805.95287034285,
+    "balance": 256261.19953126737,
+    "fees": 12357.542130233844,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 106,
+    "index": 1.2437339164152224,
+    "paidIn": 190049.68678675807,
+    "balance": 258564.28296826544,
+    "fees": 12551.610894032892,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 107,
+    "index": 1.246295804646288,
+    "paidIn": 191295.98259140435,
+    "balance": 260879.41348757304,
+    "fees": 12747.417308959768,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 108,
+    "index": 1.2488629699476512,
+    "paidIn": 192544.845561352,
+    "balance": 263206.64594846056,
+    "fees": 12944.970458283105,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 109,
+    "index": 1.2514354231892129,
+    "paidIn": 193796.28098454123,
+    "balance": 265546.03544679855,
+    "fees": 13144.27946662446,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 110,
+    "index": 1.254013175263264,
+    "paidIn": 195050.2941598045,
+    "balance": 267897.6373160535,
+    "fees": 13345.353500136634,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 111,
+    "index": 1.2565962370845318,
+    "paidIn": 196306.89039688904,
+    "balance": 270261.5071282879,
+    "fees": 13548.201766682761,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 112,
+    "index": 1.2591846195902265,
+    "paidIn": 197566.07501647927,
+    "balance": 272637.7006951645,
+    "fees": 13752.833516016135,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 113,
+    "index": 1.2617783337400865,
+    "paidIn": 198827.85335021935,
+    "balance": 275026.2740689542,
+    "fees": 13959.258039960809,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 114,
+    "index": 1.2643773905164262,
+    "paidIn": 200092.23074073577,
+    "balance": 277427.283543549,
+    "fees": 14167.484672592946,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 115,
+    "index": 1.2669818009241811,
+    "paidIn": 201359.21254165994,
+    "balance": 279840.78565547854,
+    "fees": 14377.522790422927,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 116,
+    "index": 1.2695915759909555,
+    "paidIn": 202628.8041176509,
+    "balance": 282266.83718493104,
+    "fees": 14589.381812578242,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 117,
+    "index": 1.2722067267670685,
+    "paidIn": 203901.01084441796,
+    "balance": 284705.49515677843,
+    "fees": 14803.071200987131,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 118,
+    "index": 1.2748272643256011,
+    "paidIn": 205175.83810874357,
+    "balance": 287156.81684160593,
+    "fees": 15018.600460563017,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 119,
+    "index": 1.2774531997624434,
+    "paidIn": 206453.291308506,
+    "balance": 289620.85975674586,
+    "fees": 15235.979139389696,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 120,
+    "index": 1.2800845441963409,
+    "paidIn": 207733.37585270236,
+    "balance": 292097.6816673154,
+    "fees": 15455.21682890732,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 121,
+    "index": 1.2827213087689415,
+    "paidIn": 209016.0971614713,
+    "balance": 294587.3405872594,
+    "fees": 15676.323164099156,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 122,
+    "index": 1.285363504644844,
+    "paidIn": 210301.46066611612,
+    "balance": 297089.89478039637,
+    "fees": 15899.30782367914,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 123,
+    "index": 1.2880111430116437,
+    "paidIn": 211589.47180912778,
+    "balance": 299605.4027614703,
+    "fees": 16124.180530280195,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 124,
+    "index": 1.2906642350799806,
+    "paidIn": 212880.13604420776,
+    "balance": 302133.92329720565,
+    "fees": 16350.95105064337,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 125,
+    "index": 1.2933227920835872,
+    "paidIn": 214173.45883629133,
+    "balance": 304675.51540736726,
+    "fees": 16579.62919580777,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 126,
+    "index": 1.2959868252793354,
+    "paidIn": 215469.44566157067,
+    "balance": 307230.23836582445,
+    "fees": 16810.22482130126,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 127,
+    "index": 1.2986563459472842,
+    "paidIn": 216768.10200751797,
+    "balance": 309798.1517016199,
+    "fees": 17042.747827331998,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 128,
+    "index": 1.301331365390728,
+    "paidIn": 218069.4333729087,
+    "balance": 312379.3152000426,
+    "fees": 17277.208158980764,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 129,
+    "index": 1.3040118949362438,
+    "paidIn": 219373.44526784495,
+    "balance": 314973.7889037054,
+    "fees": 17513.615806394104,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 130,
+    "index": 1.3066979459337398,
+    "paidIn": 220680.14321377868,
+    "balance": 317581.633113627,
+    "fees": 17751.980804978262,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 131,
+    "index": 1.309389529756503,
+    "paidIn": 221989.53274353518,
+    "balance": 320202.90839031845,
+    "fees": 17992.313235593963,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 132,
+    "index": 1.3120866578012478,
+    "paidIn": 223301.61940133641,
+    "balance": 322837.6755548744,
+    "fees": 18234.623224751987,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 133,
+    "index": 1.3147893414881635,
+    "paidIn": 224616.40874282457,
+    "balance": 325485.9956900686,
+    "fees": 18478.920944809586,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 134,
+    "index": 1.3174975922609635,
+    "paidIn": 225933.90633508554,
+    "balance": 328147.9301414539,
+    "fees": 18725.216614167693,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 135,
+    "index": 1.3202114215869332,
+    "paidIn": 227254.11775667247,
+    "balance": 330823.5405184672,
+    "fees": 18973.520497469024,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 136,
+    "index": 1.3229308409569787,
+    "paidIn": 228577.04859762944,
+    "balance": 333512.88869553857,
+    "fees": 19223.842905796922,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 137,
+    "index": 1.3256558618856753,
+    "paidIn": 229902.7044595151,
+    "balance": 336216.03681320517,
+    "fees": 19476.194196875134,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 138,
+    "index": 1.328386495911317,
+    "paidIn": 231231.09095542642,
+    "balance": 338933.04727922997,
+    "fees": 19730.584775268355,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 139,
+    "index": 1.3311227545959643,
+    "paidIn": 232562.2137100224,
+    "balance": 341663.98276972474,
+    "fees": 19987.025092583634,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 140,
+    "index": 1.333864649525494,
+    "paidIn": 233896.0783595479,
+    "balance": 344408.9062302782,
+    "fees": 20245.525647672657,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 141,
+    "index": 1.3366121923096477,
+    "paidIn": 235232.69055185752,
+    "balance": 347167.88087708835,
+    "fees": 20506.096986834847,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 142,
+    "index": 1.3393653945820811,
+    "paidIn": 236572.0559464396,
+    "balance": 349940.9701980998,
+    "fees": 20768.749704021313,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 143,
+    "index": 1.3421242680004135,
+    "paidIn": 237914.18021444,
+    "balance": 352728.23795414576,
+    "fees": 21033.494441039686,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 144,
+    "index": 1.3448888242462769,
+    "paidIn": 239259.06903868628,
+    "balance": 355529.7481800949,
+    "fees": 21300.341887759794,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 145,
+    "index": 1.3476590750253654,
+    "paidIn": 240606.72811371164,
+    "balance": 358345.5651860026,
+    "fees": 21569.302782320217,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 146,
+    "index": 1.3504350320674854,
+    "paidIn": 241957.1631457791,
+    "balance": 361175.7535582677,
+    "fees": 21840.387911335678,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 147,
+    "index": 1.3532167071266041,
+    "paidIn": 243310.37985290572,
+    "balance": 364020.3781607932,
+    "fees": 22113.60811010535,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 148,
+    "index": 1.3560041119809008,
+    "paidIn": 244666.38396488663,
+    "balance": 366879.50413615233,
+    "fees": 22388.974262822,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 149,
+    "index": 1.358797258432815,
+    "paidIn": 246025.18122331944,
+    "balance": 369753.19690675935,
+    "fees": 22666.49730278204,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 150,
+    "index": 1.3615961583090979,
+    "paidIn": 247386.77738162855,
+    "balance": 372641.5221760451,
+    "fees": 22946.188212596433,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 151,
+    "index": 1.3644008234608616,
+    "paidIn": 248751.1782050894,
+    "balance": 375544.54592963774,
+    "fees": 23228.058024402515,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 152,
+    "index": 1.3672112657636295,
+    "paidIn": 250118.38947085303,
+    "balance": 378462.3344365481,
+    "fees": 23512.117820076684,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 153,
+    "index": 1.3700274971173871,
+    "paidIn": 251488.4169679704,
+    "balance": 381394.95425036,
+    "fees": 23798.37873144798,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 154,
+    "index": 1.3728495294466314,
+    "paidIn": 252861.26649741703,
+    "balance": 384342.47221042553,
+    "fees": 24086.8519405126,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 155,
+    "index": 1.375677374700422,
+    "paidIn": 254236.94387211747,
+    "balance": 387304.9554430655,
+    "fees": 24377.548679649248,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 156,
+    "index": 1.378511044852432,
+    "paidIn": 255615.4549169699,
+    "balance": 390282.4713627745,
+    "fees": 24670.48023183547,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 157,
+    "index": 1.3813505519009979,
+    "paidIn": 256996.8054688709,
+    "balance": 393275.0876734313,
+    "fees": 24965.657930864814,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 158,
+    "index": 1.3841959078691708,
+    "paidIn": 258381.00137674008,
+    "balance": 396282.8723695143,
+    "fees": 25263.093161564975,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 159,
+    "index": 1.3870471248047676,
+    "paidIn": 259768.04850154484,
+    "balance": 399305.8937373217,
+    "fees": 25562.797360016808,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 160,
+    "index": 1.3899042147804215,
+    "paidIn": 261157.95271632526,
+    "balance": 402344.220356197,
+    "fees": 25864.78201377427,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 161,
+    "index": 1.3927671898936336,
+    "paidIn": 262550.7199062189,
+    "balance": 405397.9210997594,
+    "fees": 26169.058662085325,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 162,
+    "index": 1.3956360622668234,
+    "paidIn": 263946.3559684857,
+    "balance": 408467.06513713975,
+    "fees": 26475.638896113698,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 163,
+    "index": 1.398510844047381,
+    "paidIn": 265344.86681253306,
+    "balance": 411551.72193422104,
+    "fees": 26784.53435916165,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 164,
+    "index": 1.401391547407718,
+    "paidIn": 266746.2583599408,
+    "balance": 414651.9612548845,
+    "fees": 27095.75674689361,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 165,
+    "index": 1.4042781845453196,
+    "paidIn": 268150.5365444861,
+    "balance": 417767.8531622605,
+    "fees": 27409.31780756081,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 166,
+    "index": 1.407170767682795,
+    "paidIn": 269557.7073121689,
+    "balance": 420899.4680199852,
+    "fees": 27725.229342226798,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 167,
+    "index": 1.4100693090679304,
+    "paidIn": 270967.7766212368,
+    "balance": 424046.8764934617,
+    "fees": 28043.503204993965,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 168,
+    "index": 1.4129738209737406,
+    "paidIn": 272380.7504422106,
+    "balance": 427210.1495511272,
+    "fees": 28364.151303230992,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 169,
+    "index": 1.4158843156985206,
+    "paidIn": 273796.6347579091,
+    "balance": 430389.35846572474,
+    "fees": 28687.18559780121,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 170,
+    "index": 1.4188008055658978,
+    "paidIn": 275215.435563475,
+    "balance": 433584.57481558056,
+    "fees": 29012.618103292014,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 171,
+    "index": 1.4217233029248846,
+    "paidIn": 276637.1588663999,
+    "balance": 436795.8704858868,
+    "fees": 29340.460888245143,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 172,
+    "index": 1.4246518201499299,
+    "paidIn": 278061.8106865498,
+    "balance": 440023.3176699896,
+    "fees": 29670.72607538799,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 173,
+    "index": 1.427586369640972,
+    "paidIn": 279489.39705619076,
+    "balance": 443266.988870682,
+    "fees": 30003.42584186586,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 174,
+    "index": 1.4305269638234916,
+    "paidIn": 280919.92402001424,
+    "balance": 446526.956901503,
+    "fees": 30338.572419475193,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 175,
+    "index": 1.4334736151485632,
+    "paidIn": 282353.3976351628,
+    "balance": 449803.2948880417,
+    "fees": 30676.178094897794,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 176,
+    "index": 1.4364263360929088,
+    "paidIn": 283789.82397125574,
+    "balance": 453096.0762692462,
+    "fees": 31016.255209936007,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 177,
+    "index": 1.4393851391589503,
+    "paidIn": 285229.20911041467,
+    "balance": 456405.37479873915,
+    "fees": 31358.81616174892,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 178,
+    "index": 1.4423500368748625,
+    "paidIn": 286671.55914728955,
+    "balance": 459731.264546138,
+    "fees": 31703.87340308953,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 179,
+    "index": 1.4453210417946263,
+    "paidIn": 288116.88018908416,
+    "balance": 463073.8198983808,
+    "fees": 32051.439442542905,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 180,
+    "index": 1.4482981664980819,
+    "paidIn": 289565.17835558223,
+    "balance": 466433.11556105746,
+    "fees": 32401.526844765365,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 181,
+    "index": 1.4512814235909814,
+    "paidIn": 291016.4597791732,
+    "balance": 469809.22655974695,
+    "fees": 32754.148230724644,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 182,
+    "index": 1.4542708257050432,
+    "paidIn": 292470.7306048782,
+    "balance": 473202.22824135964,
+    "fees": 33109.31627794108,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 183,
+    "index": 1.4572663854980046,
+    "paidIn": 293927.9969903762,
+    "balance": 476612.19627548533,
+    "fees": 33467.04372072978,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 184,
+    "index": 1.460268115653676,
+    "paidIn": 295388.26510602987,
+    "balance": 480039.2066557469,
+    "fees": 33827.34335044387,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 185,
+    "index": 1.4632760288819944,
+    "paidIn": 296851.5411349119,
+    "balance": 483483.3357011597,
+    "fees": 34190.228015718705,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 186,
+    "index": 1.466290137919077,
+    "paidIn": 298317.83127283095,
+    "balance": 486944.66005749634,
+    "fees": 34555.71062271707,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 187,
+    "index": 1.4693104555272753,
+    "paidIn": 299787.1417283582,
+    "balance": 490423.25669865723,
+    "fees": 34923.80413537556,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 188,
+    "index": 1.4723369944952296,
+    "paidIn": 301259.47872285347,
+    "balance": 493919.2029280471,
+    "fees": 35294.5215756518,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 189,
+    "index": 1.475369767637922,
+    "paidIn": 302734.8484904914,
+    "balance": 497432.57637995674,
+    "fees": 35667.87602377286,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 190,
+    "index": 1.478408787796732,
+    "paidIn": 304213.25727828813,
+    "balance": 500963.4550209509,
+    "fees": 36043.8806184846,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 191,
+    "index": 1.48145406783949,
+    "paidIn": 305694.7113461276,
+    "balance": 504511.91715126164,
+    "fees": 36422.548557302165,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 192,
+    "index": 1.4845056206605318,
+    "paidIn": 307179.21696678817,
+    "balance": 508078.041406188,
+    "fees": 36803.8930967614,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 193,
+    "index": 1.4875634591807538,
+    "paidIn": 308666.78042596893,
+    "balance": 511661.9067575005,
+    "fees": 37187.927552671455,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 194,
+    "index": 1.4906275963476672,
+    "paidIn": 310157.4080223166,
+    "balance": 515263.5925148525,
+    "fees": 37574.665300368375,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 195,
+    "index": 1.4936980451354527,
+    "paidIn": 311651.10606745206,
+    "balance": 518883.17832719703,
+    "fees": 37964.119774969724,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 196,
+    "index": 1.4967748185450158,
+    "paidIn": 313147.8808859971,
+    "balance": 522520.74418420915,
+    "fees": 38356.30447163038,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 197,
+    "index": 1.4998579296040422,
+    "paidIn": 314647.73881560116,
+    "balance": 526176.3704177148,
+    "fees": 38751.23294579929,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 198,
+    "index": 1.502947391367052,
+    "paidIn": 316150.6862069682,
+    "balance": 529850.1377031251,
+    "fees": 39148.918813477394,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 199,
+    "index": 1.5060432169154554,
+    "paidIn": 317656.72942388366,
+    "balance": 533542.1270608774,
+    "fees": 39549.375751476546,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 200,
+    "index": 1.5091454193576086,
+    "paidIn": 319165.8748432413,
+    "balance": 537252.4198578806,
+    "fees": 39952.61749767961,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 201,
+    "index": 1.5122540118288685,
+    "paidIn": 320678.12885507016,
+    "balance": 540981.0978089689,
+    "fees": 40358.657851301556,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 202,
+    "index": 1.5153690074916488,
+    "paidIn": 322193.4978625618,
+    "balance": 544728.2429783595,
+    "fees": 40767.51067315171,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 203,
+    "index": 1.5184904195354758,
+    "paidIn": 323711.98828209727,
+    "balance": 548493.9377811172,
+    "fees": 41179.1898858971,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 204,
+    "index": 1.5216182611770437,
+    "paidIn": 325233.6065432743,
+    "balance": 552278.2649846255,
+    "fees": 41593.7094743269,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 205,
+    "index": 1.5247525456602713,
+    "paidIn": 326758.35908893455,
+    "balance": 556081.3077100631,
+    "fees": 42011.08348561791,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 206,
+    "index": 1.5278932862563575,
+    "paidIn": 328286.2523751909,
+    "balance": 559903.1494338862,
+    "fees": 42431.32602960132,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 207,
+    "index": 1.5310404962638375,
+    "paidIn": 329817.29287145473,
+    "balance": 563743.8739893185,
+    "fees": 42854.45127903038,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 208,
+    "index": 1.53419418900864,
+    "paidIn": 331351.48706046335,
+    "balance": 567603.5655678456,
+    "fees": 43280.47346984938,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 209,
+    "index": 1.5373543778441419,
+    "paidIn": 332888.8414383075,
+    "balance": 571482.3087207171,
+    "fees": 43709.40690146362,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 210,
+    "index": 1.5405210761512267,
+    "paidIn": 334429.3625144587,
+    "balance": 575380.1883604535,
+    "fees": 44141.26593701063,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 211,
+    "index": 1.54369429733834,
+    "paidIn": 335973.056811797,
+    "balance": 579297.289762361,
+    "fees": 44576.065003632364,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 212,
+    "index": 1.546874054841547,
+    "paidIn": 337519.93086663855,
+    "balance": 583233.6985660509,
+    "fees": 45013.818592748736,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 213,
+    "index": 1.5500603621245883,
+    "paidIn": 339069.99122876313,
+    "balance": 587189.5007769663,
+    "fees": 45454.541260332146,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 214,
+    "index": 1.5532532326789381,
+    "paidIn": 340623.24446144205,
+    "balance": 591164.7827679155,
+    "fees": 45898.24762718322,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 215,
+    "index": 1.5564526800238607,
+    "paidIn": 342179.6971414659,
+    "balance": 595159.6312806103,
+    "fees": 46344.9523792077,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 216,
+    "index": 1.5596587177064678,
+    "paidIn": 343739.35585917236,
+    "balance": 599174.1334272124,
+    "fees": 46794.67026769448,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 217,
+    "index": 1.562871359301776,
+    "paidIn": 345302.22721847415,
+    "balance": 603208.3766918848,
+    "fees": 47247.41610959481,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 218,
+    "index": 1.5660906184127643,
+    "paidIn": 346868.3178368869,
+    "balance": 607262.448932351,
+    "fees": 47703.20478780274,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 219,
+    "index": 1.5693165086704313,
+    "paidIn": 348437.63434555737,
+    "balance": 611336.4383814589,
+    "fees": 48162.05125143655,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 220,
+    "index": 1.5725490437338536,
+    "paidIn": 350010.1833892912,
+    "balance": 615430.433648753,
+    "fees": 48623.970516121626,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 221,
+    "index": 1.5757882372902432,
+    "paidIn": 351585.97162658145,
+    "balance": 619544.5237220521,
+    "fees": 49088.97766427428,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 222,
+    "index": 1.5790341030550052,
+    "paidIn": 353165.00572963647,
+    "balance": 623678.7979690339,
+    "fees": 49557.087845386886,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 223,
+    "index": 1.5822866547717966,
+    "paidIn": 354747.29238440824,
+    "balance": 627833.3461388261,
+    "fees": 50028.316276314195,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 224,
+    "index": 1.5855459062125836,
+    "paidIn": 356332.8382906208,
+    "balance": 632008.2583636035,
+    "fees": 50502.67824156084,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 225,
+    "index": 1.588811871177701,
+    "paidIn": 357921.6501617985,
+    "balance": 636203.6251601931,
+    "fees": 50980.18909356999,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 226,
+    "index": 1.5920845634959095,
+    "paidIn": 359513.7347252944,
+    "balance": 640419.5374316846,
+    "fees": 51460.86425301334,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 227,
+    "index": 1.595363997024455,
+    "paidIn": 361109.0987223189,
+    "balance": 644656.0864690482,
+    "fees": 51944.71920908218,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 228,
+    "index": 1.5986501856491273,
+    "paidIn": 362707.748907968,
+    "balance": 648913.3639527588,
+    "fees": 52431.769519779766,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 229,
+    "index": 1.6019431432843183,
+    "paidIn": 364309.6920512523,
+    "balance": 653191.4619544277,
+    "fees": 52922.030812214914,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 230,
+    "index": 1.6052428838730812,
+    "paidIn": 365914.93493512535,
+    "balance": 657490.4729384392,
+    "fees": 53415.518782896754,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 231,
+    "index": 1.60854942138719,
+    "paidIn": 367523.48435651255,
+    "balance": 661810.489763597,
+    "fees": 53912.24919803081,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 232,
+    "index": 1.611862769827198,
+    "paidIn": 369135.34712633974,
+    "balance": 666151.6056847741,
+    "fees": 54412.23789381623,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 233,
+    "index": 1.6151829432224971,
+    "paidIn": 370750.53006956226,
+    "balance": 670513.914354572,
+    "fees": 54915.50077674436,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 234,
+    "index": 1.6185099556313782,
+    "paidIn": 372369.04002519365,
+    "balance": 674897.5098249858,
+    "fees": 55422.05382389846,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 235,
+    "index": 1.6218438211410893,
+    "paidIn": 373990.88384633476,
+    "balance": 679302.4865490763,
+    "fees": 55931.91308325478,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 236,
+    "index": 1.625184553867896,
+    "paidIn": 375616.06840020267,
+    "balance": 683728.9393826489,
+    "fees": 56445.09467398482,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 237,
+    "index": 1.6285321679571412,
+    "paidIn": 377244.60056815983,
+    "balance": 688176.9635859403,
+    "fees": 56961.61478675886,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 238,
+    "index": 1.631886677583305,
+    "paidIn": 378876.48724574316,
+    "balance": 692646.6548253105,
+    "fees": 57481.489684050815,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 239,
+    "index": 1.6352480969500642,
+    "paidIn": 380511.7353426932,
+    "balance": 697138.1091749438,
+    "fees": 58004.73570044432,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 240,
+    "index": 1.6386164402903534,
+    "paidIn": 382150.3517829836,
+    "balance": 701651.4231185553,
+    "fees": 58531.3692429401,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 241,
+    "index": 1.641991721866424,
+    "paidIn": 383792.34350485,
+    "balance": 706186.6935511057,
+    "fees": 59061.40679126467,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 242,
+    "index": 1.6453739559699059,
+    "paidIn": 385437.7174608199,
+    "balance": 710744.017780522,
+    "fees": 59594.86489818025,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 243,
+    "index": 1.6487631569218673,
+    "paidIn": 387086.4806177418,
+    "balance": 715323.4935294264,
+    "fees": 60131.760189796034,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 244,
+    "index": 1.6521593390728753,
+    "paidIn": 388738.6399568147,
+    "balance": 719925.2189368719,
+    "fees": 60672.109365880744,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 245,
+    "index": 1.655562516803057,
+    "paidIn": 390394.20247361774,
+    "balance": 724549.2925600846,
+    "fees": 61215.92920017653,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 246,
+    "index": 1.65897270452216,
+    "paidIn": 392053.1751781399,
+    "balance": 729195.8133762148,
+    "fees": 61763.2365407141,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 247,
+    "index": 1.6623899166696139,
+    "paidIn": 393715.5650948095,
+    "balance": 733864.8807840932,
+    "fees": 62314.04831012923,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 248,
+    "index": 1.6658141677145908,
+    "paidIn": 395381.37926252413,
+    "balance": 738556.5946059962,
+    "fees": 62868.381505980615,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 249,
+    "index": 1.6692454721560672,
+    "paidIn": 397050.6247346802,
+    "balance": 743271.0550894178,
+    "fees": 63426.253201069,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 250,
+    "index": 1.672683844522885,
+    "paidIn": 398723.3085792031,
+    "balance": 748008.3629088488,
+    "fees": 63987.680543757655,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 251,
+    "index": 1.6761292993738133,
+    "paidIn": 400399.4378785769,
+    "balance": 752768.6191675632,
+    "fees": 64552.680758294235,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 252,
+    "index": 1.6795818512976095,
+    "paidIn": 402079.0197298745,
+    "balance": 757551.9253994125,
+    "fees": 65121.27114513393,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 253,
+    "index": 1.683041514913082,
+    "paidIn": 403762.0612447876,
+    "balance": 762358.3835706275,
+    "fees": 65693.46908126399,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 254,
+    "index": 1.686508304869151,
+    "paidIn": 405448.56954965676,
+    "balance": 767188.0960816271,
+    "fees": 66269.29202052967,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 255,
+    "index": 1.6899822358449115,
+    "paidIn": 407138.55178550165,
+    "balance": 772041.1657688344,
+    "fees": 66848.75749396137,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 256,
+    "index": 1.6934633225496947,
+    "paidIn": 408832.01510805136,
+    "balance": 776917.6959065015,
+    "fees": 67431.88311010334,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 257,
+    "index": 1.696951579723131,
+    "paidIn": 410528.9666877745,
+    "balance": 781817.7902085403,
+    "fees": 68018.68655534368,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 258,
+    "index": 1.7004470221352115,
+    "paidIn": 412229.4137099097,
+    "balance": 786741.5528303623,
+    "fees": 68609.18559424563,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 259,
+    "index": 1.7039496645863517,
+    "paidIn": 413933.36337449605,
+    "balance": 791689.0883707254,
+    "fees": 69203.39806988041,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 260,
+    "index": 1.707459521907453,
+    "paidIn": 415640.8228964035,
+    "balance": 796660.501873588,
+    "fees": 69801.3419041613,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 261,
+    "index": 1.7109766089599665,
+    "paidIn": 417351.79950536345,
+    "balance": 801655.8988299714,
+    "fees": 70403.03509817929,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 262,
+    "index": 1.7145009406359548,
+    "paidIn": 419066.3004459994,
+    "balance": 806675.38517983,
+    "fees": 71008.49573253994,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 263,
+    "index": 1.7180325318581562,
+    "paidIn": 420784.33297785756,
+    "balance": 811719.0673139285,
+    "fees": 71617.74196770176,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 264,
+    "index": 1.7215713975800473,
+    "paidIn": 422505.9043754376,
+    "balance": 816787.0520757276,
+    "fees": 72230.79204431601,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 265,
+    "index": 1.7251175527859066,
+    "paidIn": 424231.0219282235,
+    "balance": 821879.446763277,
+    "fees": 72847.66428356791,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 266,
+    "index": 1.7286710124908773,
+    "paidIn": 425959.69294071436,
+    "balance": 826996.3591311171,
+    "fees": 73468.37708751921,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 267,
+    "index": 1.7322317917410317,
+    "paidIn": 427691.9247324554,
+    "balance": 832137.8973921875,
+    "fees": 74092.94893945231,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 268,
+    "index": 1.7357999056134346,
+    "paidIn": 429427.7246380688,
+    "balance": 837304.1702197441,
+    "fees": 74721.39840421568,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 269,
+    "index": 1.7393753692162066,
+    "paidIn": 431167.100007285,
+    "balance": 842495.286749284,
+    "fees": 75353.7441285709,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 270,
+    "index": 1.7429581976885893,
+    "paidIn": 432910.0582049736,
+    "balance": 847711.3565804784,
+    "fees": 75990.004841541,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 271,
+    "index": 1.746548406201008,
+    "paidIn": 434656.6066111746,
+    "balance": 852952.4897791132,
+    "fees": 76630.19935476025,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 272,
+    "index": 1.7501460099551367,
+    "paidIn": 436406.75262112974,
+    "balance": 858218.7968790382,
+    "fees": 77274.34656282558,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 273,
+    "index": 1.753751024183963,
+    "paidIn": 438160.5036453137,
+    "balance": 863510.3888841242,
+    "fees": 77922.46544364929,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 274,
+    "index": 1.757363464151851,
+    "paidIn": 439917.8671094656,
+    "balance": 868827.377270228,
+    "fees": 78574.57505881332,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 275,
+    "index": 1.7609833451546075,
+    "paidIn": 441678.8504546202,
+    "balance": 874169.8739871653,
+    "fees": 79230.69455392504,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 276,
+    "index": 1.764610682519546,
+    "paidIn": 443443.46113713976,
+    "balance": 879537.9914606928,
+    "fees": 79890.84315897434,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 277,
+    "index": 1.7682454916055517,
+    "paidIn": 445211.7066287453,
+    "balance": 884931.8425944977,
+    "fees": 80555.0401886925,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 278,
+    "index": 1.7718877878031467,
+    "paidIn": 446983.59441654844,
+    "balance": 890351.5407721952,
+    "fees": 81223.30504291231,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 279,
+    "index": 1.775537586534555,
+    "paidIn": 448759.132003083,
+    "balance": 895797.1998593351,
+    "fees": 81895.65720692983,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 280,
+    "index": 1.779194903253768,
+    "paidIn": 450538.32690633676,
+    "balance": 901268.9342054164,
+    "fees": 82572.1162518676,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 281,
+    "index": 1.7828597534466093,
+    "paidIn": 452321.18665978336,
+    "balance": 906766.8586459097,
+    "fees": 83252.70183503942,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 282,
+    "index": 1.7865321526308016,
+    "paidIn": 454107.71881241415,
+    "balance": 912291.0885042892,
+    "fees": 83937.4337003166,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 283,
+    "index": 1.7902121163560307,
+    "paidIn": 455897.93092877016,
+    "balance": 917841.7395940715,
+    "fees": 84626.33167849579,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 284,
+    "index": 1.7938996602040127,
+    "paidIn": 457691.8305889742,
+    "balance": 923418.9282208647,
+    "fees": 85319.41568766831,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 285,
+    "index": 1.7975947997885595,
+    "paidIn": 459489.4253887627,
+    "balance": 929022.7711844244,
+    "fees": 86016.70573359108,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 286,
+    "index": 1.8012975507556448,
+    "paidIn": 461290.7229395184,
+    "balance": 934653.385780719,
+    "fees": 86718.22191005897,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 287,
+    "index": 1.8050079287834702,
+    "paidIn": 463095.7308683019,
+    "balance": 940310.8898040034,
+    "fees": 87423.9843992789,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 288,
+    "index": 1.808725949582532,
+    "paidIn": 464904.4568178844,
+    "balance": 945995.4015489017,
+    "fees": 88134.01347224531,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 289,
+    "index": 1.812451628895688,
+    "paidIn": 466716.9084467801,
+    "balance": 951707.0398124974,
+    "fees": 88848.32948911734,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 290,
+    "index": 1.8161849824982228,
+    "paidIn": 468533.09342927835,
+    "balance": 957445.923896434,
+    "fees": 89566.95289959753,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 291,
+    "index": 1.8199260261979164,
+    "paidIn": 470353.01945547626,
+    "balance": 963212.1736090225,
+    "fees": 90289.90424331208,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 292,
+    "index": 1.8236747758351097,
+    "paidIn": 472176.6942313114,
+    "balance": 969005.909267359,
+    "fees": 91017.20415019276,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 293,
+    "index": 1.8274312472827723,
+    "paidIn": 474004.12547859416,
+    "balance": 974827.2516994501,
+    "fees": 91748.87334086034,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 294,
+    "index": 1.8311954564465693,
+    "paidIn": 475835.3209350407,
+    "balance": 980676.3222463481,
+    "fees": 92484.93262700972,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 295,
+    "index": 1.8349674192649292,
+    "paidIn": 477670.28835430567,
+    "balance": 986553.2427642941,
+    "fees": 93225.40291179653,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 296,
+    "index": 1.838747151709111,
+    "paidIn": 479509.03550601477,
+    "balance": 992458.1356268704,
+    "fees": 93970.3051902255,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 297,
+    "index": 1.8425346697832714,
+    "paidIn": 481351.570175798,
+    "balance": 998391.1237271624,
+    "fees": 94719.66054954035,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 298,
+    "index": 1.8463299895245338,
+    "paidIn": 483197.9001653226,
+    "balance": 1004352.330479928,
+    "fees": 95473.49016961535,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 299,
+    "index": 1.8501331270030548,
+    "paidIn": 485048.0332923256,
+    "balance": 1010341.8798237774,
+    "fees": 96231.81532334849,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 300,
+    "index": 1.8539440983220932,
+    "paidIn": 486901.9773906477,
+    "balance": 1016359.8962233615,
+    "fees": 96994.6573770563,
+    "providerFees": 0,
+    "taxDuring": 0
+   }
+  ],
+  "detail": {
+   "grossBalance": 1016359.8962233615,
+   "realGain": 327358.25757884537
+  },
+  "flags": [
+   {
+    "code": "G-02"
+   },
+   {
+    "code": "G-23"
+   }
+  ],
+  "labels": [],
+  "outcome": {
+   "code": "eligible"
+  },
+  "formulas": [
+   "F-08",
+   "F-27",
+   "F-11",
+   "F-15",
+   "F-16",
+   "F-05",
+   "F-44"
+  ],
+  "rules": [
+   {
+    "id": "PF-02",
+    "strength": "primary",
+    "dimensions": [
+     "fee-management-balance",
+     "fee-deposit"
+    ],
+    "figures": [
+     {
+      "name": "balance_cap",
+      "strength": "primary"
+     },
+     {
+      "name": "deposit_cap",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "PF-10",
+    "strength": "primary",
+    "dimensions": [
+     "fee-direct-expenses",
+     "fee-trade",
+     "fee-custody"
+    ],
+    "figures": []
+   },
+   {
+    "id": "PF-13",
+    "strength": "primary",
+    "dimensions": [
+     "fee-change-over-time"
+    ],
+    "figures": [
+     {
+      "name": "min_discount_years",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-03",
+    "strength": "primary",
+    "dimensions": [
+     "tax-during",
+     "distribution-policy"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-02",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "real-vs-nominal"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-04",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "transfer-switch-process"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-03",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling"
+    ],
+    "figures": [
+     {
+      "name": "ceiling",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-05",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "liquidity-lockup"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXK-07",
+    "strength": "primary",
+    "dimensions": [
+     "real-vs-nominal",
+     "tax-at-exit",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-06",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "real-vs-nominal",
+     "age-or-use-exemption"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXG-04",
+    "strength": "primary",
+    "dimensions": [
+     "age-or-use-exemption",
+     "tax-at-exit",
+     "eligibility"
+    ],
+    "figures": [
+     {
+      "name": "age",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-09",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-10",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "surtax"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-27",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit"
+    ],
+    "figures": []
+   }
+  ],
+  "routed": [
+   {
+    "month": 0,
+    "amount": 16359
+   },
+   {
+    "month": 1,
+    "amount": 1002.0598362698428
+   },
+   {
+    "month": 2,
+    "amount": 1004.123915465144
+   },
+   {
+    "month": 3,
+    "amount": 1006.1922463256357
+   },
+   {
+    "month": 4,
+    "amount": 1008.2648376090517
+   },
+   {
+    "month": 5,
+    "amount": 1010.3416980911659
+   },
+   {
+    "month": 6,
+    "amount": 1012.4228365658286
+   },
+   {
+    "month": 7,
+    "amount": 1014.5082618450039
+   },
+   {
+    "month": 8,
+    "amount": 1016.5979827588075
+   },
+   {
+    "month": 9,
+    "amount": 1018.692008155543
+   },
+   {
+    "month": 10,
+    "amount": 1020.7903469017408
+   },
+   {
+    "month": 11,
+    "amount": 1022.8930078821943
+   },
+   {
+    "month": 12,
+    "amount": 1024.9999999999986
+   }
+  ]
+ },
+ "from60": {
+  "exitMonth": 60,
+  "nominal": 169284.43841996882,
+  "real": 149622.77672305962,
+  "paidIn": 147853.74665117208,
+  "fees": {
+   "deposit": 0,
+   "balance": 3686.784525481013,
+   "direct": 460.84806568512664,
+   "trade": 0,
+   "spread": 0,
+   "custody": 0,
+   "fixed": 0,
+   "account": 0,
+   "fund": 0,
+   "fx": 0,
+   "manager": 0
+  },
+  "taxDuring": 0,
+  "taxAtExit": 1209.6987350313836,
+  "series": [
+   {
+    "month": 0,
+    "index": 1,
+    "paidIn": 0,
+    "balance": 0,
+    "fees": 0,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 1,
+    "index": 1.0020598362698427,
+    "paidIn": 22004.119672539684,
+    "balance": 22094.64241831336,
+    "fees": 16.583419378268722,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 2,
+    "index": 1.004123915465144,
+    "paidIn": 24012.367503469974,
+    "balance": 24202.04712708803,
+    "fees": 34.74857859299579,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 3,
+    "index": 1.0061922463256356,
+    "paidIn": 26024.751996121246,
+    "balance": 26322.275167421718,
+    "fees": 54.505102361388374,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 4,
+    "index": 1.0082648376090517,
+    "paidIn": 28041.281671339348,
+    "balance": 28455.38784911663,
+    "fees": 75.86266141751796,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 5,
+    "index": 1.010341698091166,
+    "paidIn": 30061.96506752168,
+    "balance": 30601.44675182111,
+    "fees": 98.83097271485678,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 6,
+    "index": 1.0124228365658285,
+    "paidIn": 32086.810740653338,
+    "balance": 32760.513726176076,
+    "fees": 123.41979962967494,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 7,
+    "index": 1.0145082618450039,
+    "paidIn": 34115.827264343345,
+    "balance": 34932.65089496621,
+    "fees": 149.63895216530133,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 8,
+    "index": 1.0165979827588074,
+    "paidIn": 36149.02322986096,
+    "balance": 37117.92065427601,
+    "fees": 177.4982871572523,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 9,
+    "index": 1.018692008155543,
+    "paidIn": 38186.40724617205,
+    "balance": 39316.38567465061,
+    "fees": 207.00770847923172,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 10,
+    "index": 1.0207903469017408,
+    "paidIn": 40227.98793997553,
+    "balance": 41528.10890226153,
+    "fees": 238.17716725000594,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 11,
+    "index": 1.0228930078821943,
+    "paidIn": 42273.77395573992,
+    "balance": 43753.1535600772,
+    "fees": 271.0166620411572,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 12,
+    "index": 1.0249999999999986,
+    "paidIn": 44323.77395573992,
+    "balance": 45991.58314903848,
+    "fees": 305.5362390857195,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 13,
+    "index": 1.0271113321765875,
+    "paidIn": 46377.996620093094,
+    "balance": 48243.46144923902,
+    "fees": 341.7459924877003,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 14,
+    "index": 1.0292270133517714,
+    "paidIn": 48436.450646796635,
+    "balance": 50508.85252111053,
+    "fees": 379.65606443249175,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 15,
+    "index": 1.0313470524837753,
+    "paidIn": 50499.14475176419,
+    "balance": 52787.82070661312,
+    "fees": 419.2766453981759,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 16,
+    "index": 1.0334714585492768,
+    "paidIn": 52566.08766886274,
+    "balance": 55080.43063043048,
+    "fees": 460.61797436772594,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 17,
+    "index": 1.035600240543444,
+    "paidIn": 54637.28814994963,
+    "balance": 57386.747201170125,
+    "fees": 503.6903390421093,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 18,
+    "index": 1.0377334074799731,
+    "paidIn": 56712.754964909574,
+    "balance": 59706.83561256865,
+    "fees": 548.504076054295,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 19,
+    "index": 1.0398709683911278,
+    "paidIn": 58792.49690169183,
+    "balance": 62040.76134470199,
+    "fees": 595.0695711841689,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 20,
+    "index": 1.0420129323277763,
+    "paidIn": 60876.522766347385,
+    "balance": 64388.59016520076,
+    "fees": 643.3972595743621,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 21,
+    "index": 1.0441593083594303,
+    "paidIn": 62964.84138306625,
+    "balance": 66750.38813047067,
+    "fees": 693.4976259469945,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 22,
+    "index": 1.046310105574283,
+    "paidIn": 65057.461594214816,
+    "balance": 69126.22158691805,
+    "fees": 745.3812048213388,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 23,
+    "index": 1.048465333079248,
+    "paidIn": 67154.39226037331,
+    "balance": 71516.15717218046,
+    "fees": 799.0585807324074,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 24,
+    "index": 1.0506249999999973,
+    "paidIn": 69255.64226037331,
+    "balance": 73920.26181636244,
+    "fees": 854.5403884504678,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 25,
+    "index": 1.0527891154810007,
+    "paidIn": 71361.2204913353,
+    "balance": 76338.60274327645,
+    "fees": 911.8373132014884,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 26,
+    "index": 1.054957688685564,
+    "paidIn": 73471.13586870643,
+    "balance": 78771.24747168903,
+    "fees": 970.9600908885204,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 27,
+    "index": 1.057130728795868,
+    "paidIn": 75585.39732629817,
+    "balance": 81218.26381657204,
+    "fees": 1031.9195083140187,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 28,
+    "index": 1.059308245013007,
+    "paidIn": 77704.0138163242,
+    "balance": 83679.71989035928,
+    "fees": 1094.726403403105,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 29,
+    "index": 1.0614902465570282,
+    "paidIn": 79826.99430943825,
+    "balance": 86155.6841042082,
+    "fees": 1159.3916654277796,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 30,
+    "index": 1.0636767426669707,
+    "paidIn": 81954.34779477218,
+    "balance": 88646.225169267,
+    "fees": 1225.9262352320832,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 31,
+    "index": 1.0658677426009042,
+    "paidIn": 84086.08327997399,
+    "balance": 91151.41209794702,
+    "fees": 1294.3411054582132,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 32,
+    "index": 1.068063255635969,
+    "paidIn": 86222.20979124593,
+    "balance": 93671.31420520034,
+    "fees": 1364.6473207735999,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 33,
+    "index": 1.0702632910684142,
+    "paidIn": 88362.73637338275,
+    "balance": 96206.00110980278,
+    "fees": 1436.855978098946,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 34,
+    "index": 1.0724678582136382,
+    "paidIn": 90507.67208981003,
+    "balance": 98755.5427356423,
+    "fees": 1510.9782268372314,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 35,
+    "index": 1.0746769664062272,
+    "paidIn": 92657.0260226225,
+    "balance": 101320.00931301272,
+    "fees": 1587.025269103691,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 36,
+    "index": 1.0768906249999954,
+    "paidIn": 94810.80727262248,
+    "balance": 103899.47137991282,
+    "fees": 1665.0083599567656,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 37,
+    "index": 1.079108843368024,
+    "paidIn": 96969.02495935853,
+    "balance": 106493.99978335096,
+    "fees": 1744.9388076300336,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 38,
+    "index": 1.0813316309027015,
+    "paidIn": 99131.68822116393,
+    "balance": 109103.665680655,
+    "fees": 1826.827973765126,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 39,
+    "index": 1.083558997015763,
+    "paidIn": 101298.80621519545,
+    "balance": 111728.54054078792,
+    "fees": 1910.6872736456276,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 40,
+    "index": 1.0857909511383306,
+    "paidIn": 103470.38811747212,
+    "balance": 114368.69614566863,
+    "fees": 1996.5281764319686,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 41,
+    "index": 1.0880275027209523,
+    "paidIn": 105646.44312291402,
+    "balance": 117024.20459149854,
+    "fees": 2084.3622053973168,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 42,
+    "index": 1.0902686612336434,
+    "paidIn": 107826.9804453813,
+    "balance": 119695.13829009356,
+    "fees": 2174.200938164462,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 43,
+    "index": 1.0925144361659254,
+    "paidIn": 110012.00931771315,
+    "balance": 122381.56997022174,
+    "fees": 2266.056006943713,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 44,
+    "index": 1.0947648370268668,
+    "paidIn": 112201.53899176688,
+    "balance": 125083.57267894628,
+    "fees": 2359.939098771794,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 45,
+    "index": 1.0970198733451233,
+    "paidIn": 114395.57873845713,
+    "balance": 127801.21978297448,
+    "fees": 2455.8619557517595,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 46,
+    "index": 1.099279554668978,
+    "paidIn": 116594.1378477951,
+    "balance": 130534.58497001203,
+    "fees": 2553.8363752939254,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 47,
+    "index": 1.1015438905663817,
+    "paidIn": 118797.22562892786,
+    "balance": 133283.74225012306,
+    "fees": 2653.874210357815,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 48,
+    "index": 1.103812890624994,
+    "paidIn": 121004.85141017784,
+    "balance": 136048.76595709595,
+    "fees": 2755.9873696951404,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 49,
+    "index": 1.1060865644522233,
+    "paidIn": 123217.02453908228,
+    "balance": 138829.73074981468,
+    "fees": 2860.1878180938,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 50,
+    "index": 1.1083649216752678,
+    "paidIn": 125433.75438243282,
+    "balance": 141626.711613636,
+    "fees": 2966.487576622924,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 51,
+    "index": 1.110647971941156,
+    "paidIn": 127655.05032631513,
+    "balance": 144439.78386177236,
+    "fees": 3074.8987228789447,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 52,
+    "index": 1.1129357249167877,
+    "paidIn": 129880.92177614871,
+    "balance": 147269.02313668057,
+    "fees": 3185.4333912327206,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 53,
+    "index": 1.1152281902889751,
+    "paidIn": 132111.37815672666,
+    "balance": 150114.50541145628,
+    "fees": 3298.103773077696,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 54,
+    "index": 1.1175253777644834,
+    "paidIn": 134346.42891225562,
+    "balance": 152976.3069912342,
+    "fees": 3412.922117079123,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 55,
+    "index": 1.1198272970700724,
+    "paidIn": 136586.08350639578,
+    "balance": 155854.5045145943,
+    "fees": 3529.9007294243274,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 56,
+    "index": 1.1221339579525373,
+    "paidIn": 138830.35142230085,
+    "balance": 158749.17495497377,
+    "fees": 3649.051974074045,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 57,
+    "index": 1.1244453701787502,
+    "paidIn": 141079.24216265837,
+    "balance": 161660.39562208496,
+    "fees": 3770.388273014815,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 58,
+    "index": 1.1267615435357012,
+    "paidIn": 143332.76524972977,
+    "balance": 164588.24416333908,
+    "fees": 3893.922106512442,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 59,
+    "index": 1.12908248783054,
+    "paidIn": 145590.93022539085,
+    "balance": 167532.79856527608,
+    "fees": 4019.6660133665396,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 60,
+    "index": 1.1314082128906178,
+    "paidIn": 147853.74665117208,
+    "balance": 170494.1371550002,
+    "fees": 4147.63259116614,
+    "providerFees": 0,
+    "taxDuring": 0
+   }
+  ],
+  "detail": {
+   "grossBalance": 170494.1371550002,
+   "fullRateTax": 3024.2468375784592,
+   "realGain": 12096.987350313837
+  },
+  "flags": [
+   {
+    "code": "TXK-26"
+   },
+   {
+    "code": "G-02"
+   },
+   {
+    "code": "G-23"
+   }
+  ],
+  "labels": [],
+  "outcome": {
+   "code": "eligible"
+  },
+  "formulas": [
+   "F-08",
+   "F-27",
+   "F-11",
+   "F-15",
+   "F-16",
+   "F-05",
+   "F-44",
+   "F-42"
+  ],
+  "rules": [
+   {
+    "id": "PF-02",
+    "strength": "primary",
+    "dimensions": [
+     "fee-management-balance",
+     "fee-deposit"
+    ],
+    "figures": [
+     {
+      "name": "balance_cap",
+      "strength": "primary"
+     },
+     {
+      "name": "deposit_cap",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "PF-10",
+    "strength": "primary",
+    "dimensions": [
+     "fee-direct-expenses",
+     "fee-trade",
+     "fee-custody"
+    ],
+    "figures": []
+   },
+   {
+    "id": "PF-13",
+    "strength": "primary",
+    "dimensions": [
+     "fee-change-over-time"
+    ],
+    "figures": [
+     {
+      "name": "min_discount_years",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-03",
+    "strength": "primary",
+    "dimensions": [
+     "tax-during",
+     "distribution-policy"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-02",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "real-vs-nominal"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-04",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "transfer-switch-process"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-03",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling"
+    ],
+    "figures": [
+     {
+      "name": "ceiling",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-05",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "liquidity-lockup"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXK-07",
+    "strength": "primary",
+    "dimensions": [
+     "real-vs-nominal",
+     "tax-at-exit",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-06",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "real-vs-nominal",
+     "age-or-use-exemption"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXG-04",
+    "strength": "primary",
+    "dimensions": [
+     "age-or-use-exemption",
+     "tax-at-exit",
+     "eligibility"
+    ],
+    "figures": [
+     {
+      "name": "age",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     },
+     {
+      "name": "brackets",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-07",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "age-or-use-exemption"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXK-26",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "reporting-obligation"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXG-09",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-10",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "surtax"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-27",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit"
+    ],
+    "figures": []
+   }
+  ],
+  "routed": []
+ },
+ "from60noRefund": {
+  "exitMonth": 60,
+  "nominal": 167469.89031742176,
+  "real": 148018.98060254968,
+  "paidIn": 147853.74665117208,
+  "fees": {
+   "deposit": 0,
+   "balance": 3686.784525481013,
+   "direct": 460.84806568512664,
+   "trade": 0,
+   "spread": 0,
+   "custody": 0,
+   "fixed": 0,
+   "account": 0,
+   "fund": 0,
+   "fx": 0,
+   "manager": 0
+  },
+  "taxDuring": 0,
+  "taxAtExit": 3024.2468375784592,
+  "series": [
+   {
+    "month": 0,
+    "index": 1,
+    "paidIn": 0,
+    "balance": 0,
+    "fees": 0,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 1,
+    "index": 1.0020598362698427,
+    "paidIn": 22004.119672539684,
+    "balance": 22094.64241831336,
+    "fees": 16.583419378268722,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 2,
+    "index": 1.004123915465144,
+    "paidIn": 24012.367503469974,
+    "balance": 24202.04712708803,
+    "fees": 34.74857859299579,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 3,
+    "index": 1.0061922463256356,
+    "paidIn": 26024.751996121246,
+    "balance": 26322.275167421718,
+    "fees": 54.505102361388374,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 4,
+    "index": 1.0082648376090517,
+    "paidIn": 28041.281671339348,
+    "balance": 28455.38784911663,
+    "fees": 75.86266141751796,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 5,
+    "index": 1.010341698091166,
+    "paidIn": 30061.96506752168,
+    "balance": 30601.44675182111,
+    "fees": 98.83097271485678,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 6,
+    "index": 1.0124228365658285,
+    "paidIn": 32086.810740653338,
+    "balance": 32760.513726176076,
+    "fees": 123.41979962967494,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 7,
+    "index": 1.0145082618450039,
+    "paidIn": 34115.827264343345,
+    "balance": 34932.65089496621,
+    "fees": 149.63895216530133,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 8,
+    "index": 1.0165979827588074,
+    "paidIn": 36149.02322986096,
+    "balance": 37117.92065427601,
+    "fees": 177.4982871572523,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 9,
+    "index": 1.018692008155543,
+    "paidIn": 38186.40724617205,
+    "balance": 39316.38567465061,
+    "fees": 207.00770847923172,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 10,
+    "index": 1.0207903469017408,
+    "paidIn": 40227.98793997553,
+    "balance": 41528.10890226153,
+    "fees": 238.17716725000594,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 11,
+    "index": 1.0228930078821943,
+    "paidIn": 42273.77395573992,
+    "balance": 43753.1535600772,
+    "fees": 271.0166620411572,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 12,
+    "index": 1.0249999999999986,
+    "paidIn": 44323.77395573992,
+    "balance": 45991.58314903848,
+    "fees": 305.5362390857195,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 13,
+    "index": 1.0271113321765875,
+    "paidIn": 46377.996620093094,
+    "balance": 48243.46144923902,
+    "fees": 341.7459924877003,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 14,
+    "index": 1.0292270133517714,
+    "paidIn": 48436.450646796635,
+    "balance": 50508.85252111053,
+    "fees": 379.65606443249175,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 15,
+    "index": 1.0313470524837753,
+    "paidIn": 50499.14475176419,
+    "balance": 52787.82070661312,
+    "fees": 419.2766453981759,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 16,
+    "index": 1.0334714585492768,
+    "paidIn": 52566.08766886274,
+    "balance": 55080.43063043048,
+    "fees": 460.61797436772594,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 17,
+    "index": 1.035600240543444,
+    "paidIn": 54637.28814994963,
+    "balance": 57386.747201170125,
+    "fees": 503.6903390421093,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 18,
+    "index": 1.0377334074799731,
+    "paidIn": 56712.754964909574,
+    "balance": 59706.83561256865,
+    "fees": 548.504076054295,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 19,
+    "index": 1.0398709683911278,
+    "paidIn": 58792.49690169183,
+    "balance": 62040.76134470199,
+    "fees": 595.0695711841689,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 20,
+    "index": 1.0420129323277763,
+    "paidIn": 60876.522766347385,
+    "balance": 64388.59016520076,
+    "fees": 643.3972595743621,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 21,
+    "index": 1.0441593083594303,
+    "paidIn": 62964.84138306625,
+    "balance": 66750.38813047067,
+    "fees": 693.4976259469945,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 22,
+    "index": 1.046310105574283,
+    "paidIn": 65057.461594214816,
+    "balance": 69126.22158691805,
+    "fees": 745.3812048213388,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 23,
+    "index": 1.048465333079248,
+    "paidIn": 67154.39226037331,
+    "balance": 71516.15717218046,
+    "fees": 799.0585807324074,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 24,
+    "index": 1.0506249999999973,
+    "paidIn": 69255.64226037331,
+    "balance": 73920.26181636244,
+    "fees": 854.5403884504678,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 25,
+    "index": 1.0527891154810007,
+    "paidIn": 71361.2204913353,
+    "balance": 76338.60274327645,
+    "fees": 911.8373132014884,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 26,
+    "index": 1.054957688685564,
+    "paidIn": 73471.13586870643,
+    "balance": 78771.24747168903,
+    "fees": 970.9600908885204,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 27,
+    "index": 1.057130728795868,
+    "paidIn": 75585.39732629817,
+    "balance": 81218.26381657204,
+    "fees": 1031.9195083140187,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 28,
+    "index": 1.059308245013007,
+    "paidIn": 77704.0138163242,
+    "balance": 83679.71989035928,
+    "fees": 1094.726403403105,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 29,
+    "index": 1.0614902465570282,
+    "paidIn": 79826.99430943825,
+    "balance": 86155.6841042082,
+    "fees": 1159.3916654277796,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 30,
+    "index": 1.0636767426669707,
+    "paidIn": 81954.34779477218,
+    "balance": 88646.225169267,
+    "fees": 1225.9262352320832,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 31,
+    "index": 1.0658677426009042,
+    "paidIn": 84086.08327997399,
+    "balance": 91151.41209794702,
+    "fees": 1294.3411054582132,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 32,
+    "index": 1.068063255635969,
+    "paidIn": 86222.20979124593,
+    "balance": 93671.31420520034,
+    "fees": 1364.6473207735999,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 33,
+    "index": 1.0702632910684142,
+    "paidIn": 88362.73637338275,
+    "balance": 96206.00110980278,
+    "fees": 1436.855978098946,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 34,
+    "index": 1.0724678582136382,
+    "paidIn": 90507.67208981003,
+    "balance": 98755.5427356423,
+    "fees": 1510.9782268372314,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 35,
+    "index": 1.0746769664062272,
+    "paidIn": 92657.0260226225,
+    "balance": 101320.00931301272,
+    "fees": 1587.025269103691,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 36,
+    "index": 1.0768906249999954,
+    "paidIn": 94810.80727262248,
+    "balance": 103899.47137991282,
+    "fees": 1665.0083599567656,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 37,
+    "index": 1.079108843368024,
+    "paidIn": 96969.02495935853,
+    "balance": 106493.99978335096,
+    "fees": 1744.9388076300336,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 38,
+    "index": 1.0813316309027015,
+    "paidIn": 99131.68822116393,
+    "balance": 109103.665680655,
+    "fees": 1826.827973765126,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 39,
+    "index": 1.083558997015763,
+    "paidIn": 101298.80621519545,
+    "balance": 111728.54054078792,
+    "fees": 1910.6872736456276,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 40,
+    "index": 1.0857909511383306,
+    "paidIn": 103470.38811747212,
+    "balance": 114368.69614566863,
+    "fees": 1996.5281764319686,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 41,
+    "index": 1.0880275027209523,
+    "paidIn": 105646.44312291402,
+    "balance": 117024.20459149854,
+    "fees": 2084.3622053973168,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 42,
+    "index": 1.0902686612336434,
+    "paidIn": 107826.9804453813,
+    "balance": 119695.13829009356,
+    "fees": 2174.200938164462,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 43,
+    "index": 1.0925144361659254,
+    "paidIn": 110012.00931771315,
+    "balance": 122381.56997022174,
+    "fees": 2266.056006943713,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 44,
+    "index": 1.0947648370268668,
+    "paidIn": 112201.53899176688,
+    "balance": 125083.57267894628,
+    "fees": 2359.939098771794,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 45,
+    "index": 1.0970198733451233,
+    "paidIn": 114395.57873845713,
+    "balance": 127801.21978297448,
+    "fees": 2455.8619557517595,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 46,
+    "index": 1.099279554668978,
+    "paidIn": 116594.1378477951,
+    "balance": 130534.58497001203,
+    "fees": 2553.8363752939254,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 47,
+    "index": 1.1015438905663817,
+    "paidIn": 118797.22562892786,
+    "balance": 133283.74225012306,
+    "fees": 2653.874210357815,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 48,
+    "index": 1.103812890624994,
+    "paidIn": 121004.85141017784,
+    "balance": 136048.76595709595,
+    "fees": 2755.9873696951404,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 49,
+    "index": 1.1060865644522233,
+    "paidIn": 123217.02453908228,
+    "balance": 138829.73074981468,
+    "fees": 2860.1878180938,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 50,
+    "index": 1.1083649216752678,
+    "paidIn": 125433.75438243282,
+    "balance": 141626.711613636,
+    "fees": 2966.487576622924,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 51,
+    "index": 1.110647971941156,
+    "paidIn": 127655.05032631513,
+    "balance": 144439.78386177236,
+    "fees": 3074.8987228789447,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 52,
+    "index": 1.1129357249167877,
+    "paidIn": 129880.92177614871,
+    "balance": 147269.02313668057,
+    "fees": 3185.4333912327206,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 53,
+    "index": 1.1152281902889751,
+    "paidIn": 132111.37815672666,
+    "balance": 150114.50541145628,
+    "fees": 3298.103773077696,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 54,
+    "index": 1.1175253777644834,
+    "paidIn": 134346.42891225562,
+    "balance": 152976.3069912342,
+    "fees": 3412.922117079123,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 55,
+    "index": 1.1198272970700724,
+    "paidIn": 136586.08350639578,
+    "balance": 155854.5045145943,
+    "fees": 3529.9007294243274,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 56,
+    "index": 1.1221339579525373,
+    "paidIn": 138830.35142230085,
+    "balance": 158749.17495497377,
+    "fees": 3649.051974074045,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 57,
+    "index": 1.1244453701787502,
+    "paidIn": 141079.24216265837,
+    "balance": 161660.39562208496,
+    "fees": 3770.388273014815,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 58,
+    "index": 1.1267615435357012,
+    "paidIn": 143332.76524972977,
+    "balance": 164588.24416333908,
+    "fees": 3893.922106512442,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 59,
+    "index": 1.12908248783054,
+    "paidIn": 145590.93022539085,
+    "balance": 167532.79856527608,
+    "fees": 4019.6660133665396,
+    "providerFees": 0,
+    "taxDuring": 0
+   },
+   {
+    "month": 60,
+    "index": 1.1314082128906178,
+    "paidIn": 147853.74665117208,
+    "balance": 170494.1371550002,
+    "fees": 4147.63259116614,
+    "providerFees": 0,
+    "taxDuring": 0
+   }
+  ],
+  "detail": {
+   "grossBalance": 170494.1371550002,
+   "fullRateTax": 3024.2468375784592,
+   "realGain": 12096.987350313837
+  },
+  "flags": [
+   {
+    "code": "TXK-06"
+   },
+   {
+    "code": "G-02"
+   },
+   {
+    "code": "G-23"
+   }
+  ],
+  "labels": [],
+  "outcome": {
+   "code": "eligible"
+  },
+  "formulas": [
+   "F-08",
+   "F-27",
+   "F-11",
+   "F-15",
+   "F-16",
+   "F-05",
+   "F-44",
+   "F-42"
+  ],
+  "rules": [
+   {
+    "id": "PF-02",
+    "strength": "primary",
+    "dimensions": [
+     "fee-management-balance",
+     "fee-deposit"
+    ],
+    "figures": [
+     {
+      "name": "balance_cap",
+      "strength": "primary"
+     },
+     {
+      "name": "deposit_cap",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "PF-10",
+    "strength": "primary",
+    "dimensions": [
+     "fee-direct-expenses",
+     "fee-trade",
+     "fee-custody"
+    ],
+    "figures": []
+   },
+   {
+    "id": "PF-13",
+    "strength": "primary",
+    "dimensions": [
+     "fee-change-over-time"
+    ],
+    "figures": [
+     {
+      "name": "min_discount_years",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-03",
+    "strength": "primary",
+    "dimensions": [
+     "tax-during",
+     "distribution-policy"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-02",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "real-vs-nominal"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-04",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling",
+     "transfer-switch-process"
+    ],
+    "figures": []
+   },
+   {
+    "id": "KGL-03",
+    "strength": "primary",
+    "dimensions": [
+     "deposit-ceiling"
+    ],
+    "figures": [
+     {
+      "name": "ceiling",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-05",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "liquidity-lockup"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXK-07",
+    "strength": "primary",
+    "dimensions": [
+     "real-vs-nominal",
+     "tax-at-exit",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-06",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "real-vs-nominal",
+     "age-or-use-exemption"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXG-04",
+    "strength": "primary",
+    "dimensions": [
+     "age-or-use-exemption",
+     "tax-at-exit",
+     "eligibility"
+    ],
+    "figures": [
+     {
+      "name": "age",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-07",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "age-or-use-exemption"
+    ],
+    "figures": []
+   },
+   {
+    "id": "TXG-09",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "reporting-obligation"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXG-10",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit",
+     "tax-during",
+     "surtax"
+    ],
+    "figures": [
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     },
+     {
+      "name": "rate",
+      "strength": "primary"
+     },
+     {
+      "name": "threshold",
+      "strength": "primary"
+     }
+    ]
+   },
+   {
+    "id": "TXK-27",
+    "strength": "primary",
+    "dimensions": [
+     "tax-at-exit"
+    ],
+    "figures": []
+   }
+  ],
+  "routed": []
+ }
+}

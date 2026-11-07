@@ -1,7 +1,8 @@
 // D29 visuals: every figure equals an engine run, and the timeline fixes of the 2026-10-25 sweep hold.
 import { describe, expect, it } from "vitest";
 import { bondPrice, makamPrice } from "@finance-tool/engine";
-import { buildGuidePage } from "./guide.server";
+import { buildGuidePage, depositSheetNames } from "./guide.server";
+import type { DepositTerms } from "@finance-tool/schema";
 import { runTimeline } from "./engine";
 import { accountAxis, accountFact, bankYearlyMax, bondModel, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, depositEndBanks, depositModel, fact, fixedDateModel, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, addMonthsIso, silentBanks, topPayer } from "./guide-signature";
 
@@ -10,8 +11,9 @@ const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: 
 
 describe("timeline fixes on the cash-like pages", () => {
   it("runs the deposit family on the record's published rate, not on P-05's cash rate", () => {
-    // 2026-10-31: the deposit's example is the middle of the collected deposits that cannot be broken (F-86, Hapoalim's 1.74% of 1.55, 1.74 and 1.8);
-    // Discount's 2.25% can be broken with a penalty and opens only at a branch or by telebank, and the banks print other one-year rows not collected
+    // 2026-10-31: the deposit's example is the middle of the plain one-year deposits collected that cannot be broken (F-86, Hapoalim's 1.74% of
+    // 1.55, 1.74 and 1.8); Discount's 2.25% can be broken with a penalty and opens only at a branch or by telebank, and the one-year rows collected
+    // on 2026-11-06 are not plain (a variable rate, CPI linkage, exit points or a variant), so none of them is read
     expect(cashRate("bank-deposit")).toBe(1.74);
     expect(cashRate("savings-plan")).toBe(1.5);
     // 2026-10-25: the current account starts from the rate most of the collected banks publish (F-85), 0%, not Leumi's 1%
@@ -212,6 +214,31 @@ describe("bank deposit", () => {
     expect(breakKindOf(d.depositBanks!.find((b) => b.bank === "hapoalim")!.exit)).toBe("not-allowed");
     expect(breakKindOf(d.depositBanks!.find((b) => b.bank === "discount")!.exit)).toBe("other");
   });
+  it("reads each bank's plain deposit, not a campaign, a variant or one with exit points (F-86, 2026-11-06)", () => {
+    expect(d.depositBanks!.map((b) => b.id).sort()).toEqual(["discount-pikadon-leshana-0122", "hapoalim-pikadon-leshana-kavua", "leumi-pakam-kavua-365", "mizrahi-tefahot-pomelit-kvua-shana-131"]);
+  });
+  it("counts breaking over the banks, and its sheet has one line for each deposit counted (F-104)", () => {
+    const b = page("bank-deposit").breakTerms!;
+    // 2026-11-06: 24 one-year deposits; Mizrahi-Tefahot's four foreign-currency-linked rows are tier 2 (D2) and not collected
+    expect([b.deposits.value, b.banks.value, b.lockedBanks.value, b.lockedBanksWithExits.value]).toEqual([24, 4, 3, 2]);
+    expect(b.breakable.map((x) => [x.id, x.deposits.value, x.withPenalty.value, x.free.value])).toEqual([["discount", 10, 10, 0]]);
+    const lines = (v: { computed_from?: { inputs?: Record<string, unknown> } }) => Object.keys(v.computed_from?.inputs ?? {}).length;
+    expect(lines(b.deposits as never)).toBe(24);
+    expect(lines(b.lockedBanksWithExits as never)).toBe(24);
+    expect(lines(b.breakable[0]!.deposits as never)).toBe(10);
+    // a sheet name still taken gets a number that replaces the last one, never a stack of them (code review, 2026-11-07)
+    const twin = { bank: "x", names: { "447": ["פיקדון"] }, type_447: "t", rate_type: "fixed", linkage: "none", exit_points: { exists: false, every_months: null } };
+    const names = depositSheetNames(["a", "b", "c"].map((id) => ({ ...twin, id }) as unknown as DepositTerms));
+    expect([...names.values()].map((n) => n.replace(/^.* · /, ""))).toEqual(["ריבית קבועה", "ריבית קבועה (2)", "ריבית קבועה (3)"]);
+    // each bank links its own break rule, not one bank's for all (code review, 2026-11-07)
+    expect(b.breakable[0]!.rules).toContain("BANK-33");
+    // the exit column says only the exits: no break rule, no condition about opening the deposit (code review, 2026-11-07)
+    const exits = Object.values((b.lockedBanksWithExits as { computed_from?: { inputs?: Record<string, { value: unknown; rule_ids?: string[]; notes?: string }> } }).computed_from!.inputs!);
+    for (const e of exits) expect(e.rule_ids ?? []).toEqual([]);
+    // a note only on a deposit with exits, never on "אין"
+    expect(exits.filter((e) => e.notes).length).toBeGreaterThan(0);
+    for (const e of exits) if (e.value === "אין") expect(e.notes ?? "").toBe("");
+  });
   it("takes the term from the record and equals the engine", () => {
     const m = depositModel(d, { amount: 10000 })!;
     expect(m.term).toBe(12);
@@ -295,6 +322,37 @@ describe("makam", () => {
     expect(m.atRedemption).toBe(false);
     expect(makamModel(d, { amount: 10000, month: 12 })!.price).toBe(100);
     expect(makamModel(d, { amount: 10000, month: 12 })!.atRedemption).toBe(true);
+  });
+  it("states the tax's base so a reader can redo the tax: the sale's gain less the year's custody, or the discount at redemption", () => {
+    const sale = makamModel(d, { amount: 10000, month: 6 })!;
+    const run = runAtMonths(d.bundles["makam"]!, { amount_now: 10000, monthly_deposit: 0 }, 6)!;
+    expect(sale.taxedBase).toBeCloseTo(run.detail.taxedGain!, 9);
+    expect(sale.tax).toBeCloseTo(0.15 * sale.taxedBase, 9);
+    const redeem = makamModel(d, { amount: 10000, month: 12 })!;
+    expect(redeem.taxedBase).toBeCloseTo(runAtMonths(d.bundles["makam"]!, { amount_now: 10000, monthly_deposit: 0 }, 12)!.detail.taxedDiscount!, 9);
+    expect(redeem.tax).toBeCloseTo(0.15 * redeem.taxedBase, 9);
+  });
+  // 2026-11-07 (a fresh reader, then an independent check): "15% of 154.96 ₪, the gain less 6.07 ₪" did not add up to the gain of 161.10 ₪
+  // shown, because the gain on the slices sold for custody was in the gain and in no tax. The tax line's base and fees add up to the gain
+  // figure as all three are printed, to the agora, at every month and amount.
+  it("the tax line's base plus the fees deducted is the gain shown, to the agora", () => {
+    const agorot = (v: number) => Math.round(v * 100);
+    for (const amount of [1_000, 10_000, 123_456, 1_000_000]) {
+      for (let month = 1; month <= 12; month++) {
+        const m = makamModel(d, { amount, month })!;
+        expect(agorot(m.taxedBase) + agorot(m.taxedFees), `${amount} at ${month}`).toBe(agorot(m.gain));
+        expect(Math.abs(m.taxedFees - (m.gain - m.taxedBase)), `${amount} at ${month}`).toBeLessThan(0.01);
+        // the two lines above hold by construction (the fees are the gain less the base, rounded): the fees printed must also be what the
+        // run deducted, or a base that drops the slices' gain would hide in the fees figure (independent check, 2026-11-07)
+        const run = runAtMonths(d.bundles["makam"]!, { amount_now: amount, monthly_deposit: 0 }, month)!;
+        expect(Math.abs(m.taxedFees - run.detail.deductedFees!), `${amount} at ${month}`).toBeLessThan(0.01);
+      }
+    }
+  });
+  it("gives one answer for a month however the marker got there", () => {
+    const at = (month: number) => JSON.stringify(makamModel(d, { amount: 10000, month }));
+    const first = Array.from({ length: 12 }, (_, i) => at(i + 1));
+    for (const path of [[6, 7, 6], [1, 2, 3, 4, 5, 6], [12, 1, 6], [6, 6]]) for (const month of path) expect(at(month)).toBe(first[month - 1]);
   });
 });
 

@@ -12,6 +12,7 @@ import { compactFee } from "./value";
 import type { FeesData, LinkOut, TrackLite } from "./fees";
 import { classKey } from "./fees";
 import { readParsedCached, readTextCached } from "./read-cache.server";
+import { sourceHref } from "./sources";
 
 /** The rules the page quotes (negotiation, caps, references, link-outs) and the cap and run rules read. */
 const quoted = ["PF-02", "PF-04", "PF-05", "PF-06", "PF-11", "PF-13", "PF-16", "PF-39", "PEN-21", "PEN-22", "KH-22", "KH-23", "MF-55", "MF-18", "MF-19", "ETF-17", "BRK-26", "BRK-33", "BRK-37", "CAT-35", "CAT-36", "CAT-37", "CAT-40", "BANK-32"];
@@ -34,7 +35,7 @@ function linkFrom(file: string, heading: string, text: RegExp): LinkOut | null {
   if (start < 0) return null;
   const end = doc.indexOf("\n### ", start + 5);
   const section = doc.slice(start, end < 0 ? undefined : end);
-  for (const m of section.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g)) if (text.test(m[1]!) || text.test(m[2]!)) return { href: m[2]!, title: m[1]!, ruleId: heading.split(" ")[0]! };
+  for (const m of section.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g)) if (text.test(m[1]!) || text.test(m[2]!)) return { href: sourceHref({ url: m[2]! }), title: m[1]!, ruleId: heading.split(" ")[0]! };
   return null;
 }
 

@@ -1,0 +1,76 @@
+{
+  "case": "live-03-companies-no-date",
+  "sessions": 3,
+  "perKey": {
+    "missing-date-warning": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 2,
+      "of": 3,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            6
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            5
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.1064484,
+  "rows": [
+    {
+      "task": "companies-list",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "missing-date-warning": 6
+      },
+      "against": {},
+      "usd": 0.0323508
+    },
+    {
+      "task": "companies-list",
+      "session": "self-directed-investor",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "missing-date-warning": 5
+      },
+      "against": {},
+      "usd": 0.0381988
+    },
+    {
+      "task": "companies-list",
+      "session": "student-small-amounts",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "missing-date-warning": 0
+      },
+      "against": {},
+      "usd": 0.0358988
+    }
+  ]
+}

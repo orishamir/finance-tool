@@ -1,0 +1,118 @@
+== /guide/kupat-gemel-lehashkaa
+
+== /guide/kupat-gemel-lehashkaa at 390 px: 2 sliders, 0 selects; page wider than the screen: false
+
+== /guide/kupat-gemel-lehashkaa at 1280 px: 2 sliders, 0 selects; page wider than the screen: false
+
+total boxes that changed on the screen: 0
+== /guide/keren-hishtalmut
+
+== /guide/keren-hishtalmut at 390 px: 0 sliders, 0 selects; page wider than the screen: false
+  1 markers
+
+== /guide/keren-hishtalmut at 1280 px: 0 sliders, 0 selects; page wider than the screen: false
+  1 markers
+
+total boxes that changed on the screen: 0
+== /workbench/providers/kupat-gemel-lehashkaa
+
+== /workbench/providers/kupat-gemel-lehashkaa at 390 px: 0 sliders, 0 selects; page wider than the screen: false
+
+== /workbench/providers/kupat-gemel-lehashkaa at 1280 px: 0 sliders, 0 selects; page wider than the screen: false
+
+total boxes that changed on the screen: 0
+# /fees after commit 1fdbb4e6 (the deposit line's band, the remainder line and the cost column hold)
+
+== /fees?wrapper=kupat-gemel-lehashkaa at 390 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 1 max: page height -90, 3 moved (3 outside a list's rows) (first: y 29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 8 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x125 "העמלות בקופת גמל להשקעה יעלו לכם 12,117 ₪ ב־10 שנים, בכסף של היום מחוש"
+  slider 1 min: page height +180, 3 moved (3 outside a list's rows) (first: y -29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 22 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x96 "העמלות בקופת גמל להשקעה יעלו לכם 4,208 ₪ ב־10 שנים, בכסף של היום מחושב"
+  slider 1 middle: page height -180, 3 moved (3 outside a list's rows) (first: y 29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 18 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x125 "העמלות בקופת גמל להשקעה יעלו לכם 12,117 ₪ ב־10 שנים, בכסף של היום מחוש"
+  slider 2 min: page height -98, 3 moved (3 outside a list's rows) (first: y -29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 1 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x96 "העמלות בקופת גמל להשקעה יעלו לכם 8,484 ₪ ב־10 שנים, בכסף של היום מחושב"
+  slider 2 middle: page height +98, 3 moved (3 outside a list's rows) (first: y 29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 7 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x125 "העמלות בקופת גמל להשקעה יעלו לכם 44,810 ₪ ב־10 שנים, בכסף של היום מחוש"
+  slider 3 min: page height -173, 3 moved (3 outside a list's rows) (first: y -29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 7 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x96 "העמלות בקופת גמל להשקעה יעלו לכם 459.17 ₪ ב־שנה, בכסף של היום מחושב"
+  slider 3 middle: page height +173, 3 moved (3 outside a list's rows) (first: y 29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 13 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x125 "העמלות בקופת גמל להשקעה יעלו לכם 134,095 ₪ ב־21 שנים, בכסף של היום מחו"
+
+== /fees?wrapper=kupat-gemel-lehashkaa at 1280 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 1 max: page height +0, 8 moved (8 outside a list's rows) (first: y 9 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 15,756 ₪"), 8 blocks new
+  slider 1 min: page height +0, 8 moved (8 outside a list's rows) (first: y -22 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 5,211 ₪"), 22 blocks new
+  slider 1 middle: page height +0, 8 moved (8 outside a list's rows) (first: y 22 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 15,756 ₪"), 18 blocks new
+  slider 2 max: page height +53, 8 moved (8 outside a list's rows) (first: y -22 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 69,421 ₪"), 3 blocks new
+  slider 2 min: page height -53, 4 moved (4 outside a list's rows) (first: y -59 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מהפקדה 0 ₪"), 1 blocks new
+    h 0 w 0 y -39 <span line-clamp-1 font-medium> 94x16 "ניהול מחיסכון"
+  slider 2 middle: page height +53, 4 moved (4 outside a list's rows) (first: y 42 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מהפקדה 13,236 ₪"), 7 blocks new
+    h 0 w 0 y 33 <span line-clamp-1 font-medium> 94x16 "ניהול מחיסכון"
+  slider 2 quarter: page height +0, 8 moved (8 outside a list's rows) (first: y 25 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 33,530 ₪"), 0 blocks new
+  slider 3 max: page height +0, 8 moved (8 outside a list's rows) (first: y -12 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 1,057,316 ₪"), 0 blocks new
+  slider 3 min: page height -60, 4 moved (4 outside a list's rows) (first: y -6 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מהפקדה 0 ₪"), 7 blocks new
+  slider 3 quarter: page height +0, 8 moved (8 outside a list's rows) (first: y 21 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 41,401 ₪"), 0 blocks new
+  slider 4 max: page height +0, 8 moved (8 outside a list's rows) (first: y -42 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 58,801 ₪"), 0 blocks new
+  slider 4 min: page height +0, 8 moved (8 outside a list's rows) (first: y 34 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 25,688 ₪"), 0 blocks new
+  slider 4 middle: page height +0, 8 moved (8 outside a list's rows) (first: y -30 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 38,627 ₪"), 2 blocks new
+  slider 4 quarter: page height +0, 8 moved (8 outside a list's rows) (first: y 49 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 31,440 ₪"), 0 blocks new
+
+total boxes that changed on the screen: 30
+
+# /fees on main (8287aa7e or later, dev server), for comparison: the headline's wrap at 390, the verdict block (±53) and the chart's direct labels move there too
+
+== /fees?wrapper=kupat-gemel-lehashkaa at 390 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 2 max: page height +0, 3 moved (3 outside a list's rows) (first: y 29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 0 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x125 "העמלות בקופת גמל להשקעה יעלו לכם 33,901 ₪ ב־10 שנים, בכסף של היום מחוש"
+  slider 2 min: page height +0, 3 moved (3 outside a list's rows) (first: y -29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 0 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x96 "העמלות בקופת גמל להשקעה יעלו לכם 7,786 ₪ ב־10 שנים, בכסף של היום מחושב"
+  slider 2 middle: page height +0, 3 moved (3 outside a list's rows) (first: y 29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 0 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x125 "העמלות בקופת גמל להשקעה יעלו לכם 27,076 ₪ ב־10 שנים, בכסף של היום מחוש"
+  slider 3 min: page height -97, 3 moved (3 outside a list's rows) (first: y -29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 1 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x96 "העמלות בקופת גמל להשקעה יעלו לכם 524.52 ₪ ב־שנה, בכסף של היום מחושב"
+    h -22 w 0 y 0 <p text-sm text-muted-foreground> 309x22 "העלות נמוכה מ־1,000 ₪."
+    h 0 w 0 y -22 <span font-medium> 118x17 "אין ממוצע להשוואה"
+  slider 3 middle: page height +97, 3 moved (3 outside a list's rows) (first: y 29 <span mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:in> "מחושב"), 2 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x125 "העמלות בקופת גמל להשקעה יעלו לכם 87,701 ₪ ב־21 שנים, בכסף של היום מחוש"
+    h 22 w 0 y 0 <p text-sm text-muted-foreground> 309x45 "העלות 2,500 ₪ או יותר, ואפשרות אחרת בהשוואה לא גובה אותה."
+    h 0 w 0 y 22 <span font-medium> 118x17 "אין ממוצע להשוואה"
+
+== /fees?wrapper=kupat-gemel-lehashkaa at 1280 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 1 max: page height +0, 1 moved (1 outside a list's rows) (first: y 5 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 6 blocks new
+    h 0 w 8 y 5 <bdi whitespace-nowrap> 60x16 "12,953 ₪"
+  slider 1 min: page height +0, 1 moved (1 outside a list's rows) (first: y 6 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 20 blocks new
+    h -53 w 0 y 0 <div flex flex-col gap-2> 642x81 "אין ממוצע להשוואה: למוצר הזה לא נבחר מסלול מייצג, ולכן אין סיווג שממנו"
+    h 0 w -8 y 6 <bdi whitespace-nowrap> 52x16 "3,270 ₪"
+  slider 1 middle: page height +0, 1 moved (1 outside a list's rows) (first: y -6 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 19 blocks new
+    h 53 w 0 y 0 <div flex flex-col gap-2> 642x134 "אין ממוצע להשוואה: למוצר הזה לא נבחר מסלול מייצג, ולכן אין סיווג שממנו"
+    h 0 w 8 y -6 <bdi whitespace-nowrap> 60x16 "12,953 ₪"
+  slider 2 max: page height +0, 1 moved (1 outside a list's rows) (first: y -6 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w 0 y -6 <bdi whitespace-nowrap> 60x16 "45,202 ₪"
+  slider 2 min: page height +0, 1 moved (1 outside a list's rows) (first: y 5 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w 0 y 5 <bdi whitespace-nowrap> 60x16 "10,381 ₪"
+  slider 2 middle: page height +0, 1 moved (1 outside a list's rows) (first: y -5 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w 0 y -5 <bdi whitespace-nowrap> 60x16 "36,101 ₪"
+  slider 2 quarter: page height +0, 1 moved (1 outside a list's rows) (first: y -4 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w 0 y -4 <bdi whitespace-nowrap> 60x16 "23,241 ₪"
+  slider 3 max: page height +0, 1 moved (1 outside a list's rows) (first: y -5 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w 8 y -5 <bdi whitespace-nowrap> 69x16 "775,340 ₪"
+  slider 3 min: page height +0, 1 moved (1 outside a list's rows) (first: y 13 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 1 blocks new
+    h -53 w 0 y 0 <div flex flex-col gap-2> 642x81 "אין ממוצע להשוואה: למוצר הזה לא נבחר מסלול מייצג, ולכן אין סיווג שממנו"
+    h 0 w -8 y 13 <bdi whitespace-nowrap> 60x16 "699.36 ₪"
+  slider 3 middle: page height +0, 1 moved (1 outside a list's rows) (first: y 7 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 2 blocks new
+    h 53 w 0 y 0 <div flex flex-col gap-2> 642x134 "אין ממוצע להשוואה: למוצר הזה לא נבחר מסלול מייצג, ולכן אין סיווג שממנו"
+    h 0 w 8 y 7 <bdi whitespace-nowrap> 69x16 "123,976 ₪"
+  slider 3 quarter: page height +0, 1 moved (1 outside a list's rows) (first: y -16 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w -8 y -16 <bdi whitespace-nowrap> 60x16 "28,281 ₪"
+  slider 4 max: page height +0, 1 moved (1 outside a list's rows) (first: y 13 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w 0 y 13 <bdi whitespace-nowrap> 60x16 "42,278 ₪"
+  slider 4 min: page height +0, 0 moved (0 outside a list's rows), 0 blocks new
+    h 0 w 0 y 6 <span line-clamp-1 font-medium> 94x16 "ניהול מחיסכון"
+    h 0 w 0 y 6 <bdi whitespace-nowrap> 60x16 "16,025 ₪"
+  slider 4 middle: page height +0, 0 moved (0 outside a list's rows), 2 blocks new
+    h 0 w 0 y -9 <span line-clamp-1 font-medium> 94x16 "ניהול מחיסכון"
+    h 0 w 0 y -9 <bdi whitespace-nowrap> 60x16 "26,083 ₪"
+  slider 4 quarter: page height +0, 1 moved (1 outside a list's rows) (first: y 7 <span line-clamp-1 font-medium> "ניהול מחיסכון"), 0 blocks new
+    h 0 w 0 y 7 <bdi whitespace-nowrap> 60x16 "20,450 ₪"
+
+total boxes that changed on the screen: 48

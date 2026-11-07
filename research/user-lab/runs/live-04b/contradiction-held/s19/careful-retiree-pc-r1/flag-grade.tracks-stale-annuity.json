@@ -1,0 +1,46 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 7 is about the same staleness note, but what bothers the reader is the missing explanation of what it means for them, not that September figures are shown in November on a page that claims monthly updates."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0225234
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 points to the note at the top saying the data isn't up to date, which is the staleness the person flagged, even though the reader's main complaint is that the note doesn't explain what that means for them; this is a close call."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0241554
+  },
+  "third": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 flags the warning at the top that the data isn't up to date, which is the same staleness problem the person named, though the reader's main point is that nothing explains what it means."
+      }
+    ],
+    "liked": [],
+    "usd": 0.023563399999999998
+  },
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.0702422
+}

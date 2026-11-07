@@ -1,7 +1,7 @@
 // Scenario fixes of 2026-10-24 (sc-compare): the fit-table demotion, the limitation-first headline, the parameter-rate disclosure,
 // the flip target that never names the current leader, the pooled coverage mark and the real-terms figure.
 import { describe, expect, it } from "vitest";
-import { buildView, equityFit, evaluate, fitDropOf, fitDropReason, limitationFirst, parameterRateLead, realOfIdle, type RunGoal } from "./compare";
+import { blockedMarks, buildView, equityFit, evaluate, fitDropOf, fitDropReason, limitationFirst, parameterRateLead, realOfIdle, type RunGoal } from "./compare";
 import { compareBundle } from "./compare.server";
 import { flipTargets } from "../components/compare/sensitivity";
 
@@ -85,8 +85,17 @@ describe("pooled coverage", () => {
   it("shows the options blocked on a dimension even when another option covers it", () => {
     const out = buildView(bundle, { ...base, horizonYears: 20, monthly: 3_000, amountNow: 40_000, inflationPct: 2.5 });
     if (out.kind !== "ok") throw new Error("not ok");
-    const mixed = out.marks.filter((m) => m.mark === "covered" && m.blockedOptions);
-    for (const m of mixed) expect(m.blockedOptions!.options.length).toBeGreaterThan(0);
+    const mixed = out.marks.filter((m) => m.mark === "covered" && m.blockedGroups);
+    for (const m of mixed) for (const g of m.blockedGroups!) expect(g.options.length).toBeGreaterThan(0);
+  });
+  it("groups the blocked options by the question their own record names, never one option's question for another's", () => {
+    const marks = blockedMarks([
+      { id: "kgl", dimensions: { "loss-offset": "blocked:TXK-OQ10" } },
+      { id: "ira", dimensions: { "loss-offset": "blocked" } },
+      { id: "csp", dimensions: { "loss-offset": "blocked:TXK-OQ10", minimum: "blocked:GOV-OQ7" } },
+    ]);
+    expect(marks.get("loss-offset")).toEqual({ options: ["kgl", "csp", "ira"], groups: [{ code: "TXK-OQ10", options: ["kgl", "csp"] }, { code: "", options: ["ira"] }] });
+    expect(marks.get("minimum")).toEqual({ code: "GOV-OQ7", options: ["csp"], groups: [{ code: "GOV-OQ7", options: ["csp"] }] });
   });
 });
 
