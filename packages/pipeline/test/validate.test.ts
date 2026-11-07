@@ -441,7 +441,8 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // plus INS OQ17 (savings-policy withdrawal: partial floors, the two-year condition on one deposit, surrender charges, when the 30 days start), opened 2026-11-06
     // plus PEN OQ31 (where the bylaws' exception for money moved in only to start a pension came from), opened 2026-11-06
     // plus TXP OQ17 (how the annuity paragraph of personal-effort income reads), opened 2026-11-07; SW OQ8 closed 2026-11-07 (TXP-32), still counted
-    expect(items.length).toBe(555);
+    // plus TXF OQ27 (how Israel taxes a US fund's capital gain dividend), opened 2026-11-07
+    expect(items.length).toBe(556);
     expect(items.find((q) => q.id === "SW OQ8")?.closedOn).toBe("2026-11-07");
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
