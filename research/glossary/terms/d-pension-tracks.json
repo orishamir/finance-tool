@@ -2771,21 +2771,21 @@
     "variants_he": [
       "הלכתי",
       "הלכה יהודית",
-      "הלכה איסלאמית",
       "מסלול הלכה"
     ],
-    "explain_he": "מסלול שמנהל את ההשקעות לפי כללי דת, יהודית או מוסלמית, לפי סוג המסלול",
+    "explain_he": "מסלול שמשקיע בסוגי נכסים שונים רק לפי כללי ההלכה היהודית; ועדת ההשקעות קובעת את התמהיל",
     "rule_ids": [
+      "CAT-50",
       "CAT-10",
-      "CAT-17",
       "CAT-18",
       "PEN-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול הלכה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
@@ -2794,7 +2794,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "Data: SPECIALIZATION 'הלכתי', SUB_SPECIALIZATION 'הלכה יהודית' / 'הלכה איסלאמית'; track names use 'הלכה'. The regulatory policy text for this name was not obtained (CAT-23). Mor added a halacha track to its pension fund from 01.04.2026 (PEN-17).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "hlkh"
   },
   {
@@ -2804,21 +2804,23 @@
       "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמנהל את ההשקעות לפי שיקולי קיימות ושמירה על הסביבה",
+    "explain_he": "מסלול שמשקיע בנכסים שעיקר מטרתם לקדם את יעדי הפיתוח בר־הקיימא של עצרת האו״ם",
     "rule_ids": [
+      "CAT-50",
       "CAT-10",
       "CAT-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול קיימות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "decoder:track"
     ],
-    "notes": "Regulatory policy text for this name not obtained (CAT-23).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "kyymvt"
   },
   {
@@ -2830,18 +2832,18 @@
     "variants_he": [
       "מסלול מניות"
     ],
-    "explain_he": "מסלול השקעה שמתמחה במניות ומנוהל באופן פעיל, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול בניהול פעיל שרוב הכסף בו חשוף למניות בישראל ובחוץ לארץ; ייתכן בו סיכון מטבע",
     "rule_ids": [
+      "CAT-47",
       "CAT-10",
-      "CAT-15",
-      "CAT-17",
-      "CAT-23"
+      "CAT-17"
     ],
     "source": {
-      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 5, \"מסלול מניות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=5",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
@@ -2850,7 +2852,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "Meaning rests on the CMA classification only (category active management, specialization equities). The CMA list's regulatory policy for this name (for example how much must be in equities) was not obtained (CAT-23, CAT OQ9). 'מסלול מניות' is a pre-2024 Meitav name.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "mnyvt"
   },
   {
@@ -2864,23 +2866,24 @@
       "מסלול השקעה כספי",
       "שקלי טווח קצר"
     ],
-    "explain_he": "מסלול שחשוף בעיקר לנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ, כמו פיקדונות, הלוואות ואיגרות חוב בשקלים",
+    "explain_he": "מסלול שרוב הכסף בו בנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ: פיקדונות, מלוות ממשלה, הלוואות ואיגרות חוב בשקלים",
     "rule_ids": [
-      "CAT-11",
+      "CAT-23",
       "CAT-20",
-      "CAT-23"
+      "CAT-11"
     ],
     "source": {
-      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 4, \"מסלול כספי (שקלי)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Policy text from one Meitav notice (institution). Spelling differs: CMA data 'כספי (שקלי)', Meitav flyer 'כספי (שיקלי)'. 'שקלי טווח קצר' is the pre-2024 name of the same Meitav track. In some funds choosing a money-market track requires choosing a holding period; whether this applies to investment-provident funds is open (CAT-20, CAT OQ11).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "kspy-shkly"
   },
   {
@@ -2890,21 +2893,23 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ",
+    "explain_he": "מסלול שרוב הכסף בו בחוב, בישראל ובחוץ לארץ: פיקדונות, איגרות חוב של חברות ושל ממשלות, ניירות ערך מסחריים, הלוואות לא סחירות לחברות ולאנשים פרטיים וקרנות חוב; הרשימה לא קובעת בו חלק למניות",
     "rule_ids": [
-      "CAT-23"
+      "CAT-23",
+      "CAT-47"
     ],
     "source": {
-      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 4, \"מסלול אשראי ואג\"ח\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Policy text from Meitav's bylaw notices (institution); no equity allowance stated. Another manager's track of this name should follow the same CMA list policy, not verified (CAT-23).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "ashray-vagch"
   },
   {
@@ -2916,23 +2921,24 @@
     "variants_he": [
       "אשראי ואג\"ח עם מניות (עד 25% מניות)"
     ],
-    "explain_he": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ, ובחלק מוגבל גם למניות",
+    "explain_he": "כמו מסלול אשראי ואג״ח, ועוד חלק מוגבל, שהשם נוקב בו, במניות; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
     "rule_ids": [
-      "CAT-17",
       "CAT-23",
+      "CAT-17",
       "CAT-25"
     ],
     "source": {
-      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 4, \"מסלול אשראי ואג\"ח עם מניות (עד 25% מניות)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Headword is the standard-name part of the Gemel-Net track name (Meitav 7980, CAT-25); the CAT-17 list (Harel reform page, institution) and CAT Terms write '(עד 25% מניות)'. Policy text from Meitav notice 7980 (institution); CMA list policy not obtained (CAT OQ9).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "ashray-vagch-am-mnyvt-ad-25-bmnyvt"
   },
   {
@@ -2942,21 +2948,22 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול בניהול פעיל שמתמחה באיגרות חוב של ממשלות, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול בניהול פעיל שרוב הכסף בו חשוף לאיגרות חוב של ממשלות שהדירוג שלהן עומד בתנאי שהתקנות קובעות; ייתכן בו סיכון מטבע",
     "rule_ids": [
-      "CAT-10",
-      "CAT-17"
+      "CAT-47",
+      "CAT-10"
     ],
     "source": {
-      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 5, \"מסלול אג\"ח ממשלות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=5",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "decoder:track"
     ],
-    "notes": "Meaning from the CMA classification only; regulatory policy not obtained (CAT-23). Missing from Harel's grouping (CAT-17).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "agch-mmshlvt"
   },
   {
@@ -2966,23 +2973,24 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמשקיע ישירות במניות שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול שרוב הכסף בו חשוף למניות בישראל ובחוץ לארץ, רק דרך נכסים שנסחרים בבורסה; את השאר מחזיקים במזומן ובפיקדונות קצרים",
     "rule_ids": [
+      "CAT-48",
       "CAT-10",
-      "CAT-17",
-      "CAT-23"
+      "CAT-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 8, \"מסלול מניות סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=8",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Meaning from the cluster definition and data classification; regulatory policy not obtained (CAT-23).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "mnyvt-schyr"
   },
   {
@@ -2992,22 +3000,24 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמשקיע ישירות באיגרות חוב שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+    "explain_he": "מסלול שרוב הכסף בו באיגרות חוב של חברות ושל ממשלות, בישראל ובחוץ לארץ, רק דרך נכסים סחירים; את השאר מחזיקים במזומן ובפיקדונות קצרים",
     "rule_ids": [
+      "CAT-48",
       "CAT-10",
       "CAT-17"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול אג\"ח סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). A related standard name 'סחיר - אג\"ח עם מניות (עד 25% מניות)' shares this sub-specialization in the data (CAT-25) and has no entry here.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "agch-schyr-d"
   },
   {
@@ -3017,24 +3027,25 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמשקיע ישירות בנכסים שנסחרים בבורסה; התמהיל בפועל יכול להיות שונה מאוד בין חברות",
+    "explain_he": "מסלול שמשקיע במניות ובאיגרות חוב של חברות ושל ממשלות, בישראל ובחוץ לארץ, רק דרך נכסים סחירים; הרשימה לא קובעת כמה מכל סוג, והתמהיל שונה מאוד בין חברות",
     "rule_ids": [
+      "CAT-48",
+      "CAT-24",
       "CAT-10",
-      "CAT-17",
-      "CAT-18",
-      "CAT-24"
+      "CAT-18"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול משולב סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). Same name, very different content: Meitav's track was about 99% equities and 1% abroad in 202609 (computed), Harel describes its own as about 100% abroad (CAT-24). Provident funds other than study and investment-provident must offer it (CAT-18).",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "mshvlb-schyr"
   },
   {
@@ -3046,23 +3057,24 @@
     "variants_he": [
       "פאסיבי - מדדי מניות"
     ],
-    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי מניות",
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדי מניות שונים זה מזה, ולא אחרי מדד אחד; ייתכן בו סיכון מטבע",
     "rule_ids": [
+      "CAT-49",
       "CAT-10",
-      "CAT-17",
       "CAT-26"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 13, \"מסלול עוקב מדדי מניות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). 'פאסיבי - מדדי מניות' is a pre-2024 Meitav name.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "avkb-mddy-mnyvt"
   },
   {
@@ -3071,27 +3083,24 @@
       "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
       "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
     },
-    "variants_he": [
-      "עוקב מדדי אג\"ח עם מניות (עד 25% מניות)",
-      "עוקב מדדים - אג\"ח עם מניות (עד 25%)"
-    ],
-    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי איגרות חוב",
+    "variants_he": [],
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים שונים של איגרות חוב של חברות ושל ממשלות; ייתכן בו סיכון מטבע",
     "rule_ids": [
-      "CAT-10",
-      "CAT-17",
-      "CAT-25"
+      "CAT-49",
+      "CAT-10"
     ],
     "source": {
-      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10, \"מסלול עוקב מדדי אג\"ח\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "app",
       "decoder:track"
     ],
-    "notes": "Regulatory policy not obtained (CAT-23). Variant names are Meitav's track name (CAT-25) and Harel's grouping (CAT-17); they include an equity share, so the plain name may hide some equities.",
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
     "id": "avkb-mddy-agch"
   },
   {
@@ -3154,6 +3163,279 @@
     ],
     "notes": "Policy text from Meitav (institution). Meitav moves these tracks to an actively managed, more balanced mix from 1.7.2026 (CAT-24). Old name 'פאסיבי - כללי' looks like a general track but is this one (CAT-26). Mandatory offering in provident funds other than study and investment-provident funds; allowed default for study funds (CAT-18).",
     "id": "avkb-mddym-gmysh"
+  },
+  {
+    "term_he": "אג\"ח ממשלתי סחיר",
+    "variants_he": [],
+    "explain_he": "מסלול שרוב הכסף בו באיגרות חוב של ממשלות, בישראל ובחוץ לארץ, רק דרך נכסים סחירים; את השאר מחזיקים במזומן ובפיקדונות קצרים",
+    "rule_ids": [
+      "CAT-48",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול אג\"ח ממשלתי סחיר\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "סחיר - אג\"ח עם מניות (עד 25% מניות)",
+    "variants_he": [],
+    "explain_he": "מסלול שרוב הכסף בו באיגרות חוב וחלק מוגבל במניות, הכול דרך נכסים סחירים; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
+    "rule_ids": [
+      "CAT-48",
+      "CAT-25"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול סחיר - אג\"ח עם מניות (עד 25% מניות)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "עוקב מדדי אג\"ח ממשלות",
+    "variants_he": [],
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים של איגרות חוב ממשלתיות; ייתכן בו סיכון מטבע",
+    "rule_ids": [
+      "CAT-49"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10, \"מסלול עוקב מדדי אג\"ח ממשלות\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "עוקב מדדים - אג\"ח עם מניות (עד 25% מניות)",
+    "variants_he": [
+      "עוקב מדדי אג\"ח עם מניות (עד 25% מניות)",
+      "עוקב מדדים - אג\"ח עם מניות (עד 25%)"
+    ],
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, בעיקר אחרי מדדים של איגרות חוב, ועוד חלק מוגבל במניות; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
+    "rule_ids": [
+      "CAT-49",
+      "CAT-25"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 12, \"מסלול עוקב מדדים - אג\"ח עם מניות (עד 25% מניות)\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=12",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מדדים דומים",
+    "variants_he": [
+      "מדדים שאינם דומים"
+    ],
+    "explain_he": "מדדים שחלק גדול מהנכסים שבהם משותף, בשיעור שרשות שוק ההון קבעה; מסלול עוקב מדדים צריך לעקוב אחרי מדדים שאינם דומים",
+    "rule_ids": [
+      "CAT-49"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 18, דברי הסבר, \"מסלולים עוקבי מדדים\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=18",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "שריעה",
+    "variants_he": [
+      "הלכה איסלאמית",
+      "מסלול שריעה"
+    ],
+    "explain_he": "מסלול שמשקיע בסוגי נכסים שונים רק לפי כללי השריעה האסלאמית; ועדת ההשקעות קובעת את התמהיל",
+    "rule_ids": [
+      "CAT-50",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול שריעה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "gemel-net",
+      "app"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "סביבתי",
+    "variants_he": [
+      "מסלול סביבתי"
+    ],
+    "explain_he": "מסלול שמשקיע בהשקעות סביבתיות לפי סטנדרטים בינלאומיים או ביעדים הסביבתיים של הפיתוח בר־הקיימא; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
+    "rule_ids": [
+      "CAT-50"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול סביבתי\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול בסיסי למקבלי קצבה",
+    "variants_he": [
+      "בסיסי למקבלי קצבה"
+    ],
+    "explain_he": "מסלול בקרן פנסיה או בקופת ביטוח שמיועד למי שכבר מקבלים קצבה; הכסף בו חשוף לסוגי נכסים שונים במסגרת החוק",
+    "rule_ids": [
+      "CAT-51",
+      "PEN-17"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 2, \"מסלולים למקבלי קצבה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "pensia-net",
+      "statement"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול עוקב מדדים למקבלי קצבה",
+    "variants_he": [
+      "עוקב מדדים למקבלי קצבה",
+      "עוקב מדדים - למקבלי קצבה"
+    ],
+    "explain_he": "מסלול למי שכבר מקבלים קצבה, שעוקב באמצעות מוצרים עוקבי מדד אחרי כמה מדדים שונים של מניות או של איגרות חוב",
+    "rule_ids": [
+      "CAT-51"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 3, \"מסלולים מתמחים למקבלי קצבה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=3",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "pensia-net"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול הלכה למקבלי קצבה",
+    "variants_he": [
+      "הלכה למקבלי קצבה",
+      "מסלול שריעה למקבלי קצבה"
+    ],
+    "explain_he": "מסלול למי שכבר מקבלים קצבה, שמשקיע רק לפי כללי ההלכה היהודית; יש גם מסלול כזה לפי כללי השריעה",
+    "rule_ids": [
+      "CAT-51",
+      "CAT-50"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 3, \"מסלול הלכה למקבלי קצבה\", \"מסלול שריעה למקבלי קצבה\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=3",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "pensia-net"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול מקבלי קצבה קיימים",
+    "variants_he": [
+      "מסלול הלכה למקבלי קצבה קיימים"
+    ],
+    "explain_he": "מסלול סגור בקרן פנסיה, למי שהיו זכאים לקצבה מהקרן לפני מועד שקבעה רשות שוק ההון; יש גם גרסה שלו לפי כללי ההלכה",
+    "rule_ids": [
+      "CAT-51"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 2, \"מסלול מקבלי קצבה קיימים\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "מסלול קצבה לזכאים קיימים",
+    "variants_he": [],
+    "explain_he": "מסלול סגור בקרן פנסיה, למי שהיו זכאים לקצבה מהקרן לפני מועד מוקדם יותר שקבעה רשות שוק ההון",
+    "rule_ids": [
+      "CAT-51"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 2, \"מסלול קצבה לזכאים קיימים\"",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "law"
+    ],
+    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
+  },
+  {
+    "term_he": "אשראי",
+    "variants_he": [],
+    "explain_he": null,
+    "rule_ids": [
+      "CAT-23"
+    ],
+    "source": null,
+    "where": [
+      "app"
+    ],
+    "notes": "Researched 2026-11-07: no official text read defines 'אשראי' on its own (CAT OQ33); the list of tracks names the debt assets of 'אשראי ואג\"ח' (CAT-23), which that row explains. Keep in section 4 until a definition is found."
   },
   {
     "term_he": "מסלול אירוח",
