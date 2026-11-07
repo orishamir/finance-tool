@@ -1,0 +1,75 @@
+{
+  "id": "PEN-63",
+  "title": "Money moved into a pension fund for an annuity: it joins the balance, the fund may refuse a joining request, and money from a kupat gemel lehashkaa cannot come back out as a lump sum",
+  "title_he": "כסף שמועבר לקרן פנסיה לקבלת קצבה: מצטרף ליתרה, הקרן רשאית לסרב, וכסף מקופת גמל להשקעה לא חוזר כסכום חד־פעמי",
+  "text_he": "לפי התקנון התקני של קרן פנסיה, כסף שהועבר לקרן מקופת גמל אחרת מצטרף ליתרה הצבורה של העמית, ולכן הקצבה מחושבת עליו לפי מקדם ההמרה של הקרן כמו על שאר היתרה. לא נמצא כלל שמחייב קרן פנסיה או חברת ביטוח לקבל את הכסף: חוזר ההצטרפות של רשות שוק ההון קובע רק שקרן שדחתה בקשת הצטרפות מודיעה על כך בכתב תוך 14 ימי עסקים ומנמקת. כסף שהועבר מקופת גמל להשקעה נכנס לקבלת קצבה בלבד, ולפי טיוטת הבהרה של הממונה מ־2020 הקרן המקבלת לא תאפשר לחזור מהבחירה בקצבה, למשל במשיכה בסכום חד־פעמי.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=14",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.14, s.9(7)",
+      "locator_he": "עמוד 14, סעיף 9(7)",
+      "page": 14,
+      "quote": "כספים שהועברו אל הקרן או ממנה בעקבות בקשת עמית להעברת כספים בין קופות גמל",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1071/he/regulation_h_2016-9-19.pdf#page=7",
+      "title": "חוזר גופים מוסדיים 2016-9-19 – הצטרפות לקרן פנסיה או לקופת גמל (29.9.2016)",
+      "title_he": "חוזר גופים מוסדיים 2016-9-19 – הצטרפות לקרן פנסיה או לקופת גמל (29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.7, s.14",
+      "locator_he": "עמוד 7, סעיף 14",
+      "page": 7,
+      "quote": "דחתה חברה מנהלת של קרן פנסיה או קופת גמל בקשת הצטרפות",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/kupot_gemel_kitzva/he/kupot_gemel_niud.pdf#page=1",
+      "title": "הבהרה לעניין העברת כספים מקופת גמל להשקעה לקופת גמל לקצבה - טיוטה (הממונה על שוק ההון, 13.10.2020, שה 2020-7709)",
+      "title_he": "הבהרה לעניין העברת כספים מקופת גמל להשקעה לקופת גמל לקצבה - טיוטה (הממונה על שוק ההון, 13.10.2020, שה 2020-7709)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1, ss.1-2",
+      "locator_he": "עמוד 1, סעיפים 1-2",
+      "page": 1,
+      "quote": "החברה המנהלת של הקופה המקבלת לא תאפשר לעמית לחזור בו מבחירתו לקבלת קצבה",
+      "checked": "2026-11-07",
+      "qualifier": "(the regulator's draft)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, s.2 (reg. 2(ב)(2))",
+      "locator_he": "עמוד 2, סעיף 2 (תקנה 2(ב)(2))",
+      "page": 2,
+      "quote": "לשם קבלת קצבה בלבד",
+      "checked": "2026-10-25"
+    }
+  ]
+}

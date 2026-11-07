@@ -234,7 +234,7 @@
   },
   "lawful_exit": {
     "kind": "trading_day",
-    "text": "any trading day: an order that reaches the clearing house before the fund's designated hour is executed at that day's price, a later one at the next pricing day's price (MF-10); the redemption money reaches the holder's account on the day the distributor must pass the order to the clearing house in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, and on the next trading day in any other fund (MF-11, prices regulations reg. 15; MF open question 4 closed 2026-10-26); current designated hours, and whether units can be bought or redeemed on Fridays since TASE moved to Monday to Friday on 5.1.2026, are open (MF OQ3, BRK-29)"
+    "text": "any trading day: an order that reaches the clearing house before the fund's designated hour is executed at that day's price, a later one at the next pricing day's price (MF-10); the redemption money reaches the holder's account on the day the distributor must pass the order to the clearing house in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, and on the next trading day in any other fund (MF-11, prices regulations reg. 15; MF open question 4 closed 2026-10-26); since TASE moved to Monday to Friday on 5.1.2026 a fund limited in foreign securities also takes orders on a Friday, executed on the Sunday at Friday's closing prices with the units or cash usually in the account on the Monday, and a fund not limited in foreign securities takes them Monday to Thursday only (MF-68, BRK-29); each fund's hour is in its prospectus, 16:00 Monday to Thursday and 13:00 or 12:30 on a Friday in the shekel money-market funds of seven of the nine collected managers (MF-69)"
   },
   "switch_is_tax_event": {
     "value": true,
@@ -330,7 +330,6 @@
   "tier": 1,
   "open_questions": [
     "MF-OQ1",
-    "MF-OQ3",
     "MF-OQ5",
     "MF-OQ12"
   ],
