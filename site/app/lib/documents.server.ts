@@ -86,11 +86,17 @@ function slugOf(url: string): string {
   return `doc-${h.toString(16).padStart(8, "0")}`;
 }
 
-/** The url without fragment and query: the key of a document the table does not name. */
+/**
+ * The key of a document the table does not name: the url without its fragment, and without its query when the path names a
+ * file (a viewer's `?page=` does not make another document). A script's query is kept, because there it names the document:
+ * every booklet on Reshumot's resolver shares one path and differs only in `?path=` (2026-11-07: they had merged into one).
+ */
 export function stripUrl(url: string): string {
   try {
     const u = new URL(url);
-    return u.origin + u.pathname.replace(/\/$/, "");
+    const path = u.pathname.replace(/\/$/, "");
+    const isFile = /\.[a-z0-9]{2,5}$/i.test(path) && !/\.(aspx?|php|jsp|cgi|svc)$/i.test(path);
+    return u.origin + path + (isFile ? "" : u.search);
   } catch {
     return url.split(/[#?]/)[0]!;
   }

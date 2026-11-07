@@ -31,6 +31,9 @@ describe("groupDocuments", () => {
   });
   it("keys an unknown document by a slug of its url without fragment and query", () => {
     expect(stripUrl("https://example.org/doc.pdf?x=1#p")).toBe("https://example.org/doc.pdf");
+    // a script's query names the document: two Reshumot booklets stay two documents
+    expect(stripUrl("https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#p")).toBe("https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb");
+    expect(stripUrl("https://api.justice.gov.il/reshumot/resolver?path=a")).not.toBe(stripUrl("https://api.justice.gov.il/reshumot/resolver?path=b"));
     const c = cards.find((x) => x.url.startsWith("https://example.org/doc.pdf"))!;
     expect(c.key).toMatch(/^doc-[0-9a-f]{8}$/);
     expect(c.rules).toHaveLength(2);
