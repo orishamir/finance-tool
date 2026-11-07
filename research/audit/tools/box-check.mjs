@@ -11,8 +11,10 @@
 // text (a list's row that shows more once picked). `--tables` opens every closed fold first, so the tables behind them are measured too. `--goal` saves a goal on the device first.
 // `--whole` measures the whole page instead of the screen, as the check did before D63 (to find every block that changes, seen or not).
 // `--plans` types whole plans into the slider rows' boxes, past the sliders' ends too, then text that fails the
-// box's check ("abc", "-5") and the start plan again; after each it also lists every figure cut by the box that holds it ("CUT") and
-// every chart label drawn outside its chart. `--switch` then presses every index chip on the page in turn (another index, same page).
+// box's check ("abc", "-5") and the start plan again; after each it also lists every figure cut by the box that holds it ("CUT"), every
+// table cell whose text runs past its own cell into the next ("SPILL"), every two figures drawn over each other ("OVERLAP"), and every
+// chart label drawn outside its chart. A cell lets what overflows it show, so a figure too wide for it is never cut but drawn over its
+// neighbour: three figures printed over each other at 390 px passed the cut check (fresh readers, round 3, 2026-11-07). `--switch` then presses every index chip on the page in turn (another index, same page).
 // After each select it also says how far the select itself moved on the screen ("held: field HELD", or "FIELD MOVED"): the control the hand is
 // on holds, and a list it re-sorts may slide below it (design-system 2.5a): "moved" says how many of the boxes that moved lie outside a
 // list's rows, the ones that may not.
@@ -39,6 +41,8 @@ const PLANS = [
   ["500000", "10000", "40", "12"],
   ["1000000", "10000", "30", "7"],
   ["50000000", "100000", "40", "12"],
+  // a thousand billion: the boxes take any amount, and the figures must still keep to their own cells
+  ["1000000000000", "1000000", "40", "12"],
   ["abc", null, null, null],
   ["-5", null, null, null],
   ["10000", "500", "10", "7"],
@@ -49,13 +53,13 @@ const cuts = () => {
   const out = [];
   for (const e of document.querySelectorAll(".num, input")) {
     if (!e.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true })) continue;
-    if (e.tagName === "INPUT" && e.scrollWidth > e.clientWidth + 1) out.push(`box "${e.value}" (${e.scrollWidth} > ${e.clientWidth} px)`);
+    if (e.tagName === "INPUT" && e.scrollWidth > e.clientWidth + 1) out.push(`CUT box "${e.value}" (${e.scrollWidth} > ${e.clientWidth} px)`);
     const r = e.getBoundingClientRect();
     for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) {
       const cs = getComputedStyle(a);
       if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
       const b = a.getBoundingClientRect();
-      if (r.left < b.left - 1 || r.right > b.right + 1) out.push(`figure "${(e.textContent ?? "").trim()}" (${Math.round(r.left)}..${Math.round(r.right)} in ${Math.round(b.left)}..${Math.round(b.right)})`);
+      if (r.left < b.left - 1 || r.right > b.right + 1) out.push(`CUT figure "${(e.textContent ?? "").trim()}" (${Math.round(r.left)}..${Math.round(r.right)} in ${Math.round(b.left)}..${Math.round(b.right)})`);
       break;
     }
   }
@@ -69,8 +73,27 @@ const cuts = () => {
       const cs = getComputedStyle(a);
       if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
       const b = a.getBoundingClientRect();
-      if (r.left < b.left - 1 || r.right > b.right + 1) out.push(`cell text "${td.textContent.trim().slice(0, 40)}" (${Math.round(r.left)}..${Math.round(r.right)} in ${Math.round(b.left)}..${Math.round(b.right)})`);
+      if (r.left < b.left - 1 || r.right > b.right + 1) out.push(`CUT cell text "${td.textContent.trim().slice(0, 40)}" (${Math.round(r.left)}..${Math.round(r.right)} in ${Math.round(b.left)}..${Math.round(b.right)})`);
       break;
+    }
+  }
+  // a cell's text past its own cell: a cell shows what overflows it, so a figure too wide for it runs over its neighbour (SPILL)
+  for (const td of document.querySelectorAll("td, th")) {
+    if (!td.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true }) || !td.textContent.trim()) continue;
+    const range = document.createRange();
+    range.selectNodeContents(td);
+    const r = range.getBoundingClientRect();
+    const b = td.getBoundingClientRect();
+    if (r.width > 0 && (r.left < b.left - 1 || r.right > b.right + 1)) out.push(`SPILL cell text "${td.textContent.trim().slice(0, 40)}" (${Math.round(r.left)}..${Math.round(r.right)} in its cell ${Math.round(b.left)}..${Math.round(b.right)})`);
+  }
+  // two figures drawn over each other, wherever they stand (OVERLAP): each figure's own lines, so a figure that wraps is measured as drawn
+  const figs = [...document.querySelectorAll(".num")].filter((e) => e.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true }) && !e.closest("[aria-hidden=true], .invisible"));
+  const lines = figs.map((e) => [...e.getClientRects()].filter((q) => q.width > 0 && q.height > 0));
+  for (let i = 0; i < figs.length; i++) {
+    for (let j = i + 1; j < figs.length; j++) {
+      if (figs[i].contains(figs[j]) || figs[j].contains(figs[i])) continue;
+      const hit = lines[i].some((p) => lines[j].some((q) => Math.min(p.right, q.right) - Math.max(p.left, q.left) > 2 && Math.min(p.bottom, q.bottom) - Math.max(p.top, q.top) > 2));
+      if (hit) out.push(`OVERLAP figures "${(figs[i].textContent ?? "").trim()}" and "${(figs[j].textContent ?? "").trim()}"`);
     }
   }
   for (const svg of document.querySelectorAll("svg")) {
@@ -78,7 +101,7 @@ const cuts = () => {
     const w = svg.width.baseVal.value;
     for (const t of svg.querySelectorAll("text")) {
       const b = t.getBBox();
-      if (b.width > 0 && (b.x < -1 || b.x + b.width > w + 1)) out.push(`chart text "${t.textContent}" (${Math.round(b.x)}..${Math.round(b.x + b.width)} in 0..${Math.round(w)})`);
+      if (b.width > 0 && (b.x < -1 || b.x + b.width > w + 1)) out.push(`CUT chart text "${t.textContent}" (${Math.round(b.x)}..${Math.round(b.x + b.width)} in 0..${Math.round(w)})`);
     }
   }
   return [...new Set(out)];
@@ -157,6 +180,7 @@ function compare(a, b) {
 
 const browser = await chromium.launch({ executablePath: CHROME });
 let total = 0;
+let drawn = 0; // figures cut, spilling past their cell or drawn over each other, after a typed plan
 for (const path of paths.split(",")) {
   for (const w of widths.split(",")) {
     const ctx = await browser.newContext({ viewport: { width: VIEW[w].width, height: VIEW[w].height }, hasTouch: !!VIEW[w].hasTouch, locale: "he-IL" });
@@ -251,7 +275,10 @@ for (const path of paths.split(",")) {
           await boxes.nth(i).blur();
         }
         await after(`plan ${plan.filter((x) => x !== null).join(" / ")}`);
-        for (const cut of await page.evaluate(cuts)) console.log(`    CUT ${cut}`);
+        for (const cut of await page.evaluate(cuts)) {
+          drawn++;
+          console.log(`    ${cut}`);
+        }
       }
     }
     if (switchIndex) {
@@ -305,4 +332,5 @@ for (const path of paths.split(",")) {
   }
 }
 console.log(`\ntotal boxes that changed${WHOLE ? "" : " on the screen"}: ${total}`);
+if (typePlans) console.log(`figures cut, spilled or overlapping after a typed plan: ${drawn}`);
 await browser.close();
