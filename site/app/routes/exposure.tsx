@@ -94,7 +94,7 @@ export default function ExposurePage() {
                           </Tag>
                           <span className="flex flex-wrap gap-2">
                             {h.blockedBy.map((q) => (
-                              <RuleRef key={q} id={q} />
+                              <RuleRef key={q} id={q} titled />
                             ))}
                           </span>
                         </span>
@@ -104,7 +104,7 @@ export default function ExposurePage() {
                           <Tag tone="neutral">{copy.openDetails}</Tag>
                           <span className="flex flex-wrap gap-2">
                             {h.openQuestions.map((q) => (
-                              <RuleRef key={q} id={q} />
+                              <RuleRef key={q} id={q} titled />
                             ))}
                           </span>
                         </span>

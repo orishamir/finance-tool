@@ -1,0 +1,42 @@
+# Structure review: 97c990e2...HEAD
+
+521 files changed, 119 of them code or docs (more than 30: add an independent reviewer that sees the diff and the kit, not the builder's report).
+
+## New component outside the kit (one-off, or promote?) (15)
+- site/app/components/invest/chips.tsx:84 — PlanBlock
+- site/app/components/invest/custom-entries.tsx:135 — Terms
+- site/app/components/invest/custom-entries.tsx:179 — BrokerPanel
+- site/app/components/invest/no-fund.tsx:52 — NoFundAccountColumn
+- site/app/components/invest/pair.tsx:187 — CostLegend
+- site/app/components/invest/pair.tsx:208 — CostBar
+- site/app/components/invest/pair.tsx:300 — PairResult
+- site/app/components/invest/pair.tsx:618 — OwnBankField
+- site/app/components/invest/pair.tsx:637 — AbroadNotes
+- site/app/components/invest/pair.tsx:651 — AccountColumn
+- site/app/components/invest/pair.tsx:1039 — FundColumn
+- site/app/components/invest/stairs.tsx:40 — JumpLink
+- site/app/components/invest/stairs.tsx:48 — StairsSection
+- site/app/components/provenance.tsx:367 — IdRef
+- site/app/components/provenance.tsx:430 — RuleRef
+
+## Caution mark added (design-system 3.2: only where there is a doubt, once per list, never on an explanation) (1)
+- site/app/components/invest/chips.tsx:103 — <Tag tone="caution">{c.plan.dollarMissing}</Tag>
+
+## Chart legend added (design-system 12, rule 3: said once; a legend only for marks that carry no label of their own, one above a list and never one per row) (3)
+- site/app/components/invest/own-account.tsx:377 — <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l ==
+- site/app/components/invest/pair.tsx:961 — <LongestCase cases={[<ChartLegend key="l" pick={legendPick} items={legendItems(legendLines(!!view.index.israel
+- site/app/components/invest/pair.tsx:962 — <ChartLegend pick={legendPick} items={legendItems(lines, ok.some((r) => r.at.accountCost > scale), ok.some((r)
+
+## Hebrew outside copy.ts and content/ (move the string) (2)
+- site/app/components/invest/pair.tsx:1206 — columns, under the note a pick brings to the row's end (#190: 19 px over "החשבון עבר ל…" at 1440) */}
+- site/app/lib/source-label.ts:23 — export const mostlyHebrew = (text: string | null | undefined): boolean => !!text && /^[^A-Za-z֐-׿]*[֐-׿]/.test
+
+## New kit piece (6)
+- site/app/components/kit/index.ts — HoldTallest
+- site/app/components/kit/index.ts — PHONE_GONE
+- site/app/components/kit/index.ts — MixedName
+- site/app/components/kit/index.ts — NameLine
+- site/app/components/kit/index.ts — AlsoChanged
+- site/app/components/kit/index.ts — ClampedText
+
+Judge each item: kept (one-off, say why), sent back (the kit has it) or promoted (becomes a kit piece with a gallery entry and, if it can be named, a guard). Compare the builder's screenshots with /kit.

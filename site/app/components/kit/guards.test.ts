@@ -10,6 +10,8 @@
 //  8. a year chart's pointer is the kit's useYearZoom: a chart that clears its reading when the pointer lifts lost the year on a phone (issue 22);
 //  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider (2026-11-01);
 // 11. the arrow at the end of a row that opens a page is the kit's RowArrow, in the link's colour (founder, 2026-11-03), never a grey one.
+// 12. a rule chip in a list of rules says the rule's title beside its id (#190).
+// 13. Hebrew is never addressed to one gender (copy.md 1 and 10.2).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -253,7 +255,18 @@ describe("the page frame", () => {
   });
 });
 
-// 12. Hebrew addressed to one gender (copy.md 1 and 10.2; founder, 2026-10-31, on wording addressed to one reader): the site speaks in
+// 12. a rule id never stands alone (#190): a chip in a list of rules (a sheet's "חוק או כלל", "נגזר מ") has no words beside it, so it
+//     carries the rule's own title (`titled`). A chip after a sentence that states the rule is its citation and stays short.
+describe("a rule chip in a list of rules", () => {
+  it("says the rule's title beside its id", () => {
+    const bare = files
+      .filter((f) => /\.tsx$/.test(f))
+      .flatMap((f) => [...code(read(f)).matchAll(/\.map\(\(?\w+\)? => \(?\s*<RuleRef\b[^>]*\/>/g)].filter((m) => !/\btitled\b/.test(m[0])).map((m) => `${rel(f)}: ${m[0].replace(/\s+/g, " ")}`));
+    expect(bare).toEqual([]);
+  });
+});
+
+// 13. Hebrew addressed to one gender (copy.md 1 and 10.2; founder, 2026-10-31, on wording addressed to one reader): the site speaks in
 //     the plural or impersonally. A scan of the copy, the guide and exposure prose and the Hebrew fields of the records for the words
 //     that can only address one person ("אתה", "שלך", "לך", "עליך", "אליך", "ממך", "הזן"). Words that also have a third-person sense
 //     ("בחר": the site chose; "תוכל": she will be able) are left to the Hebrew editor.

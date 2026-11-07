@@ -157,3 +157,21 @@ export function feeForMonth(rate: number, discount: Discount | undefined, minMon
 export function fixedFee(monthlyFee: number | undefined, marketValue: number): number {
   return Math.min(monthlyFee ?? 0, Math.max(0, marketValue));
 }
+
+/**
+ * F-102 The current account at a bank (D64): the monthly minimum of a current account at the bank, from its price list. Paid out of what is
+ * held each month, as F-17 is, and never more than is held. It is not a fee for securities transactions, so it does not come off the sale
+ * gain (TXS-06).
+ */
+export function currentAccountFee(monthlyMinimum: number | undefined, marketValue: number): number {
+  return Math.min(monthlyMinimum ?? 0, Math.max(0, marketValue));
+}
+
+/**
+ * F-103 A charge for each corporate event of a fund bought abroad (D67): `perEvent` in the instrument's currency on each of the fund's
+ * dividends, at the month's rate `fxRate` (shekels per unit), paid out of what is held and never more than is held. An accumulating fund
+ * has no dividend and pays none.
+ */
+export function corporateEventFee(perEvent: number | undefined, fxRate: number, marketValue: number): number {
+  return Math.min((perEvent ?? 0) * fxRate, Math.max(0, marketValue));
+}

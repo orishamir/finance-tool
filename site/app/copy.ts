@@ -28,7 +28,8 @@ export const site = {
   menuBehind: "מאחורי הקלעים",
   homeCrumb: "ראשי",
   footerNote: "אתר אישי, לא מסחרי, בלי קישורי שיווק; הכול נשמר במכשיר שלכם",
-  footerAsOf: "נתונים נכון ל־",
+  /** The newest date any figure on the site was checked: not the date of the prices on a page, which say their own (#190). */
+  footerAsOf: "הנתון האחרון באתר נבדק ב־",
   toTop: "חזרה למעלה",
   footer: [
     { href: "/parameters", label: "פרמטרים" },
@@ -56,6 +57,8 @@ export const numbers = {
   unknown: "לא ידוע",
   /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
   nisMillions: "מיליון ₪",
+  /** A shekel figure of a billion or more, in its short form on a phone (lens review S2, 2026-11-07): `2.3 מיליארד ₪`. */
+  billion: "מיליארד",
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   parameter: "פרמטר של האתר",
   provisional: "ערך זמני שהאתר קבע",
@@ -304,6 +307,8 @@ export const values = {
 } as const;
 
 export const provenance = {
+  /** A Maya citation inside a Hebrew source title, said in Hebrew (#190): the data's "(Maya filing 1725200, PDF)" read backwards in a Hebrew line. */
+  maya: { filing: "דיווח במאיה", published: "פורסם", fundPage: "דף הקרן במאיה", maya: "מאיה" },
   sourced: {
     source: "מקור",
     publisher: "פורסם על ידי",
@@ -678,6 +683,8 @@ export const flags: Record<string, string> = {
   "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // 2026-10-26: the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
   "TXK-06": "מגיל שישים מדרגות המס המופחתות חלות קודם גם על הרווח במשיכה, וכסף שנוכה במקור ביותר חוזר רק דרך דוח שנתי או בקשת החזר מס. החישוב הזה הוא בלי בקשת החזר, והאתר השאיר בו את השיעור המלא, בלי ההקלה.", // 2026-10-26: F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off), finance review 2026-10-26. 2026-11-06: the manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld and the sentence calling it an upper bound (from reg. 3(א)'s 20%) is gone
   "TXK-26": "החברה המנהלת מנכה במקור מהרווח את השיעור המרבי, בלי להתחשב בגיל, והמס הסופי נקבע מול הניכוי בדוח השנתי: על חלק הרווח שהמדרגה שלו נמוכה מהשיעור הזה מקבלים החזר. המספר כאן הוא המס הסופי, אחרי ההתחשבנות בדוח.", // 2026-10-26 (finance review): the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). 2026-11-06: that withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it and the "pay more" clause is gone
+  "BANK-35": "מיולי 2027 הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש, ובחשבון עם עד שתי פעולות בחודש התקרה נמוכה מדמי הניהול שנספרו כאן. עוד לא ידוע איך הכללים החדשים סופרים פעולה, ולכן החישוב משאיר את דמי הניהול של היום לכל התקופה.", // 2026-11-06 (finance review of D64): F-102 keeps the price list's minimum; the engine flags the month the cap starts where a counted minimum is above the cap for 0 to 2 actions
+  "G-32": "הסכום שנגבה על כל דיבידנד בשביל הגוף ששומר את ניירות הערך בחו״ל לא הופחת מהרווח במכירה. החוק מפחית מהרווח את דמי המשמרת של שנת המכירה, ועוד לא ברור אם גם הסכום הזה נחשב דמי משמרת. אם כן, המס כאן מעט גבוה מדי.", // 2026-11-06 (finance review 2 of D67): F-103 stays out of the sale gain; the engine flags a charge in the exit tax year (method G-32)
   "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו.", // 2026-10-26: TXP OQ5 closed (circular 4/2019 s.2.1.1, TXP-11); the engine flag was "TXP-OQ5"
 };
 
@@ -3275,6 +3282,13 @@ Object.assign(parametersPage.names, { "P-09": "השאלות שכולם שואל�
  * "השקעה במדד" (D28, 2026-10-25; spec research/specs/2026-10-25-invest-page/spec.md). Figures never appear here: a number is a Num on the page.
  * The labels are defined in lib/labels.ts (id, icon, tone, rules); their words are here.
  */
+/** A span of years in a sentence (copy.md §1): "שנה", "שנתיים", "10 שנים"; never "1 שנים" (#190). */
+const yearsSpan = (n: number) => (n === 1 ? "שנה" : n === 2 ? "שנתיים" : `${n} שנים`);
+/** "ל" before a Hebrew name, "ל־" before a Latin one: "לפסגות", "ל־IBI". */
+const toName = (name: string) => `${/^[A-Za-z]/.test(name) ? "ל־" : "ל"}${name}`;
+/** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
+const inYears = (n: number) => (n === 1 ? "בשנה אחת" : n === 2 ? "בשנתיים" : `ב־${n} שנים`);
+
 export const invest = {
   nav: "השקעה במדד",
   metaTitle: "השקעה במדד",
@@ -3420,10 +3434,22 @@ export const invest = {
     edit: "עריכה",
     brokerTitle: "חשבון בתנאים שקיבלתם",
     brokerEdit: (name: string) => `התנאים של ״${name}״`,
-    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק נחשב אפס.",
+    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק הוא מחיר לא ידוע, והחשבון לא ידורג עד שתמלאו אותו. עמלה או מינימום שלא גובים מכם: כתבו 0.",
+    /** A new account starts from a house's price list, as the account card's does (2026-11-05). */
+    brokerStart: "בחרו את הבנק או בית ההשקעות. מתחילים מהתעריפון שלו ומשנים רק את המחירים שקיבלתם.",
+    basis: "על בסיס",
+    basisNone: "בחרו",
+    basisNotListed: "בנק או בית השקעות שלא ברשימה",
+    /** The row of an account typed with a line left empty: not ranked (the founder's rule that silence is not zero). */
+    incomplete: "חסרים מחירים, ולכן החשבון לא מדורג. השלימו אותם בעריכה.",
+    unknownLine: (list: string) => `לא הזנתם, ולכן לא ידוע: ${list}.`,
+    /** An account typed with the conversion left empty: only a fund bought abroad converts, so only it has no price there (#190). */
+    fxUnknown: "לא הזנתם את המחיר של המרת מטבע, ולכן לקרן שנקנית בחו״ל אין מחיר בחשבון הזה. השלימו אותו בעריכה.",
+    /** A fee of a typed fund left empty, where its figure would stand. */
+    notTyped: "לא הוזן",
     fundTitle: (index: string) => `קרן על ${index}`,
     fundEdit: (name: string) => `הפרטים של ״${name}״`,
-    fundSub: "הקרן נשמרת רק במכשיר הזה, ברשימה של המדד הזה, ומתומחרת כמו כל קרן מהסוג שלה. שדה ריק נחשב אפס.",
+    fundSub: "הקרן נשמרת רק במכשיר הזה, ברשימה של המדד הזה, ומתומחרת כמו כל קרן מהסוג שלה. שדה ריק הוא דמי ניהול לא ידועים, והקרן לא תתומחר עד שתמלאו אותו. דמי ניהול שהקרן לא גובה: כתבו 0.",
     fields: {
       brokerName: "שם הבנק או בית ההשקעות",
       fundName: "שם הקרן",
@@ -3431,6 +3457,8 @@ export const invest = {
       kind: "סוג הקרן",
       trade: "עמלת קנייה ומכירה",
       tradeMin: "מינימום לפעולה",
+      /** A minimum left empty, named with its line in the row's list of what is not known. */
+      minOf: (min: string, line: string) => `${min} ב${line}`,
       custody: "דמי ניהול פיקדון ניירות ערך",
       custodyMin: "מינימום לחודש",
       percent: "אחוז",
@@ -3478,8 +3506,6 @@ export const invest = {
     minWord: "מינימום",
     minWordAlone: "מינימום בלבד:",
     listWords: (xs: string[]) => (xs.length < 2 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} ו${xs[xs.length - 1]}`),
-    emptyLine: (list: string) => `לא הזנתם, ולכן נחשב אפס: ${list}.`,
-    allEmpty: "לא הזנתם אף עמלה, ולכן הכול נחשב אפס.",
     notSold: "לפי מה שהזנתם, אין בחשבון הזה קרנות מהסוג הזה.",
     notSoldSource: "מה שהזנתם",
     tariffTitle: "התנאים שהזנתם",
@@ -3522,6 +3548,14 @@ export const invest = {
       retStep: "תשואה",
       most: "הכי משפיע",
       others: "אינפלציה",
+      /** After the inflation's figure, which stands beside the button (#190: the 2% was never on the page). */
+      perYear: "בשנה",
+      /** The button beside it, which opens the assumptions. */
+      change: "שינוי",
+      /** What the yearly return is (A-01, a gross return: docs/method.md), on the line under the sliders (#190). */
+      retBefore: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס",
+      /** What the page's results are, beside it: "before inflation" stood one dot from "in today's money" (#190). */
+      leftAfter: "מה שנשאר מחושב אחריהם, בכסף של היום",
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",
@@ -3547,7 +3581,6 @@ export const invest = {
     dollar: "שער הדולר",
     dollarSource: "מחושב משערי הייחוס של הבנק המרכזי האירופי",
     dollarMissing: "אין שער דולר בשערי הייחוס; הדרך בחו״ל לא מחושבת.",
-    todayShekels: "בכסף של היום",
   },
 
   header: {
@@ -3613,8 +3646,12 @@ export const invest = {
   pair: {
     paidIn: "הפקדתם",
     paidInAbout: "סך ההפקדות",
+    /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102; lens review S5, 2026-11-07). */
+    accountMinimum: "דמי ניהול חשבון עו״ש בחודש",
     paidInNote: (months: number) => `הסכום ההתחלתי ועוד הפקדה חודשית, ${months} חודשים`,
-    left: (years: number) => `נשאר לכם בעוד ${years} שנים`,
+    /** The same line with no monthly deposit (2026-11-05). */
+    paidInOnce: "סכום חד־פעמי, בלי הפקדה חודשית",
+    left: (years: number) => `נשאר לכם בעוד ${yearsSpan(years)}`,
     steadyDollar: "אם הדולר לא זז מול השקל",
     steadyIndexCurrency: "אם שער המטבע של המדד לא זז מול השקל",
     leftNote: "אחרי דמי ניהול ומס, בכסף של היום",
@@ -3623,12 +3660,35 @@ export const invest = {
     yours: "הבחירה שלכם",
     next: "הזוג הבא בתור",
     vsYours: "לעומת הבחירה שלכם",
+    /** Before any pick, the next pair is set against the cheapest one, never against "your choice" (2026-11-05). */
+    vsCheapest: "לעומת הזוג הזול ביותר",
+    /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule, and says why it is not ranked (#190). */
+    openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג כי כלל המס פתוח",
+    /** Every pair within the site's tie threshold of the top (P-01, F-80): none is crowned, and the count is said (2026-11-05, #190). */
+    tieTop: (n: number) => (n === 2 ? "אחד משני הזוגות הזולים ביותר לתוכנית שלכם" : `אחד מ־${n} הזוגות הזולים ביותר לתוכנית שלכם`),
+    /** The next pair, itself within the threshold: no order is shown between them. */
+    tieOther: "עוד אחד מהזוגות הזולים ביותר",
+    /** On the person's pick, within the threshold of the top. */
+    tiedWith: "בין הזוגות הזולים ביותר",
+    /** A cost bar's role under a tie: neither pair is first. */
+    tieRole: "אחד מהזוגות הזולים ביותר",
+    /** Under a tie the two tiles are told apart by where they stand: the first tile is the right one, on a computer and on a phone. */
+    vsRight: "לעומת הזוג שמימין",
+    /** Under a tie the two cost bars are told apart by where they stand. */
+    gapLeadTie: "העלות בזוג העליון, לעומת הזוג שמתחתיו:",
+    /** The pairs of the tie that are in neither tile, named under them, so the count points at pairs the reader can find (#190). */
+    tieThird: "הזוג השלישי:",
+    tieRest: "הזוגות האחרים:",
+    tieWith: "עם",
+    tieMore: (n: number) => (n === 1 ? "ועוד זוג אחד" : `ועוד ${n} זוגות`),
+    tieWhy: (n: number) => (n === 2 ? "ההפרש קטן מכדי לקבוע איזה זוג זול יותר, ולכן שני הזוגות שקולים." : `ההפרשים בין ${n} הזוגות הזולים ביותר קטנים מכדי לקבוע איזה מהם זול יותר, ולכן הם שקולים.`),
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
     pickCheapest: "בחרו את הזוג הזה",
-    costTitleBoth: (years: number) => `כמה זה עולה לכם ב־${years} שנים, בכל אחד מהזוגות`,
+    costTitleBoth: (years: number) => `כמה זה עולה לכם ${inYears(years)}, בכל אחד מהזוגות`,
     gapLead: "העלות אצלכם, לעומת הזוג השני:",
+    gapLeadCheapest: "העלות בזוג הזול ביותר, לעומת הזוג הבא בתור:",
     gapPart: { account: "החשבון", fund: "הקרן", tax: "המס" },
     /** After a part of the gap: the person's pair pays this much more, or less, to that party. */
     gapMore: "יותר",
@@ -3639,7 +3699,11 @@ export const invest = {
     taxBecauseMore: "כי נשאר לכם יותר רווח",
     taxBecauseLess: "כי נשאר לכם פחות רווח",
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
-    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות" } as Record<string, string>,
+    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "דמי ניהול חשבון עו״ש" } as Record<string, string>,
+    /** The legend's item for the account's own fee and a bank's current account (D64), which share its colour (readers, 2026-11-06: "דמי ניהול חשבון" alone read as either). */
+    legendAccount: "דמי ניהול חשבון ניירות ערך ועו״ש",
+    /** The same item where no bar shown counts a current account (an investment house, a bank marked as the person's own): a legend names only what is drawn. */
+    legendSecurities: "דמי ניהול חשבון ניירות ערך",
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
     /** Where a part of a cost bar's price comes from, said in the box that opens on pointing at it or tapping it (2026-11-04). */
     sourceList: (house: string) => `מהתעריפון של ${house}`,
@@ -3663,9 +3727,13 @@ export const invest = {
     fundsCond: "בחשבון",
     fundsHint: "בחרו חשבון אחר, והרשימה תסתדר מחדש",
     colAccount: "חשבון",
-    colCharges: (years: number) => `מה החשבון גובה ב־${years} שנים`,
+    colCharges: (years: number) => `מה החשבון גובה ${inYears(years)}`,
     colChargesShort: "מה החשבון גובה",
     tariff: "התעריפון",
+    /** Beside the price list's link: when the site saved its copy (#190). */
+    collectedOn: (date: string) => `נאסף ב־${date}`,
+    /** Over the account list: the days the price lists were saved, oldest and newest (#190). */
+    collectedSpan: (from: string, to: string) => (from === to ? `התעריפונים נאספו ב־${from}.` : `התעריפונים נאספו בין ${from} ל־${to}.`),
     /** On the chosen account's card, beside its price list: opens the house's account on your own terms (founder, 2026-11-04: one link, not a line on every row). */
     ownPrice: "קיבלתם מחיר אחר? הזינו אותו",
     colLeft: "נשאר",
@@ -3675,17 +3743,60 @@ export const invest = {
     colYield: "תשואת חלוקה",
     colDiff: "לעומת הבחירה",
     chosen: "הבחירה",
+    /** Before any pick: the selected fund is the page's own, never "the choice"; said as the site's, so nobody asks who marked it (#190). */
+    colDiffMarked: "לעומת הקרן שהאתר בחר",
+    marked: "בחירת האתר",
     cheapestTag: "★ הזול",
+    /** A row within the site's tie threshold of the first (P-01): it shares the first place, and no row is starred (2026-11-05). */
+    tieTag: "תיקו",
     whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
+    /** D64 (2026-11-06): the bank where the person already has a current account; that bank's row leaves the current account out. */
+    ownBank: {
+      label: "הבנק שבו כבר יש לכם חשבון עו״ש",
+      none: "לא באחד מהבנקים האלה",
+      /** `free`: the banks whose price list charges nothing for a current account, which the box leaves out (One Zero, D64): readers asked
+       * whether it is a bank, and why its row counts no fee (fresh readers, round 3, 2026-11-07). */
+      counted: (free: string[]) =>
+        `השורה של כל בנק שגובה דמי ניהול חשבון עו״ש סופרת אותם, כי השקעה דרכו דורשת חשבון עו״ש אצלו. כבר יש לכם חשבון עו״ש באחד מהבנקים? בחרו אותו בתיבה, והשורה שלו לא תספור אותם.${free.length > 0 ? ` ${andList(free)} ${free.length > 1 ? "לא גובים" : "לא גובה"} דמי ניהול חשבון עו״ש,` : ""} ${free.length > 0 ? "ובית" : "בית"} השקעות לא דורש עו״ש אצלו.`,
+      left: (bank: string) => `השורה של ${bank} לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של שאר הבנקים סופרות אותו.`,
+    },
+    /** D65 and D66 (2026-11-06): said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread, which their figures count at the limit (F-13). */
+    abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",
+    abroadSpread: (capped: string[]) => `מעבר לעמלת המרת המטבע, הבנק או בית ההשקעות ממירים את השקלים לדולרים בשער שהם קובעים, שיכול להיות גרוע משער השוק. בתעריפון של רוב הבנקים ובתי ההשקעות אין תקרה לפער הזה, ולכן הוא לא נכנס לחישוב. תקרה לפער כתובה בתעריפון של ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}, ואצלם החישוב סופר את הפער בגובה התקרה.`,
+    /** D66: what others abroad charge a house is left out, with or without a printed ceiling; said against the spread above, which the house
+     * sets itself: readers took a written ceiling counted there and not here for a contradiction (fresh readers, round 3, 2026-11-07). */
+    abroadOthers:
+      "גם גופים בחו״ל גובים עמלות מהבנק או מבית ההשקעות: ברוקר, הגוף ששומר את ניירות הערך, הבורסה או רשויות. רוב הבנקים ובתי ההשקעות מעבירים אותן ללקוח. בשונה מהפער בשער ההמרה, שהבנק או בית ההשקעות קובעים בעצמם, את העמלות האלה קובע הגוף בחו״ל, ולכן הן לא נכנסות לחישוב, גם כשהתעריפון כותב להן תקרה. קרן שנקנית בחו״ל יכולה לעלות יותר ממה שמחושב כאן.",
+    /** D67, F-103: a house whose price list prints custody abroad at 0% and passes on the custodian's cost per corporate event, up to `{amount}`
+     * (One Zero): counted at that ceiling on each dividend of a fund that pays one, and never on a fund that keeps its profit. */
+    abroadPerDividend:
+      "יוצא מן הכלל: בתעריפון של {name} דמי ניהול פיקדון ניירות ערך בחו״ל הם 0%, והעלות של הגוף ששומר את ניירות הערך עוברת ללקוח, עד {amount} על כל דיבידנד. בלי העלות הזאת שמירת ניירות הערך שם הייתה נראית בחינם, ולכן החישוב סופר את המרב, {amount} על כל דיבידנד, בקרן בחו״ל שמחלקת דיבידנד (רווח שהקרן משלמת למחזיקים בה). קרן שצוברת את הרווח בתוכה (בשמה כתוב Accumulating) לא משלמת אותה.",
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,
     standingNote: ownTermsCopy.provider.standingNote,
+    /** In the standing-order note's place when the plan has no monthly deposit (2026-11-05). */
+    noMonthly: "בלי הפקדה חודשית אין קנייה בהוראת קבע, ולכן כל החשבונות מחושבים במחיר הרגיל.",
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
     notPossible: "לא אפשרי שם",
     noPriceHere: "אין מחיר כאן",
     noPriceWhy: (house: string) => `למה חלק מהקרנות בלי מחיר ב${house}:`,
     notPossibleSource: "המקור",
-    elsewhere: "בקרן אחרת,",
+    /** A grey row's long reason shows two lines; the rest opens at a tap (#190: on a phone the reasons kept about 450 px of blank under the list). */
+    reasonMore: "ההסבר המלא",
+    reasonLess: "הסבר מקוצר",
+    /** A house whose own documents say this kind of fund cannot be bought there (2026-11-05: said only in a link's title before). */
+    notPossibleAny: "לפי המסמכים של החברה, אי אפשר לקנות שם קרן על המדד הזה.",
+    notPossibleWhy: (kind: string) => `לפי המסמכים של החברה, אי אפשר לקנות שם ${kind}.`,
+    /** On an account row with no price for the fund: picking it picks another fund too, said before the tap (2026-11-05). */
+    elsewhere: "בחירה בחשבון הזה מעבירה גם לקרן",
+    elsewhereLeft: "ונשארים",
+    /** On a fund row with no price at the account: picking it moves the account, said before the tap. */
+    pickMoves: (house: string) => `בחירה בה מעבירה את החשבון ${toName(house)}`,
+    /** On the row tapped, after the tap changed the other half too, with the way back: it puts back both the account and the fund (#190:
+     * readers asked whether "חזרה לקודמת" brought back the fund alone). */
+    movedHouse: (house: string) => `החשבון עבר ${toName(house)}`,
+    moveBackTo: (house: string) => `חזרה ${toName(house)} ולקרן הקודמת`,
+    movedFund: "גם הקרן הוחלפה.",
     elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",
     noData: "אין נתון",
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),
@@ -3751,7 +3862,7 @@ export const invest = {
     /** 2026-10-25 (lead): the order check in one line; the places it changes are behind the toggle */
     flipsSummary: (n: number) => `בתשואה של 0% או של 10% הסדר משתנה ב־${n} ${n === 1 ? "מקום" : "מקומות"}. פירוט`,
     flipWhat: { options: "הסדר בין האפשרויות", brokers: (o: string) => `הסדר בין החשבונות ב${o}`, funds: (o: string) => `הסדר בין הקרנות ב${o}` },
-    engine: "המספרים מהמנוע, על הנתונים של היום.",
+    engine: "המספרים מחושבים מהנתונים של היום.",
     values: "הערכים הם בכסף של היום.",
     ibkr: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed; תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים.",
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
@@ -3786,6 +3897,8 @@ export const invest = {
     reset: "חזרה לנקודת ההתחלה",
     chartLabel: "מדרגות",
     now: "עכשיו",
+    /** Over the start before any pick: the page's example, not where the person is (2026-11-05). */
+    nowExample: "לדוגמה",
     ceiling: "הכי הרבה בכל המחירונים",
     ceilingLine: "הכי הרבה בכל המחירונים:",
     endsAt: "בסוף:",
@@ -3802,9 +3915,12 @@ export const invest = {
     table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עלות החשבון", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף" },
     stepStart: "נקודת ההתחלה:",
     here: "עכשיו:",
+    hereExample: "נקודת התחלה לדוגמה:",
+    startExample: "עוד לא בחרתם קרן וחשבון, ולכן המדרגות מתחילות מקרן ומחשבון מאמצע הרשימות. בחרו ברשימות למעלה, והמדרגות יתחילו ממה שבחרתם.",
+    startPicked: "המדרגות מתחילות מהקרן ומהחשבון שבחרתם ברשימות למעלה. בחירה אחרת שם מתחילה אותן מחדש.",
     hereLeft: "נשארים בסוף",
     rowsHint: "כל שורה משנה דבר אחד. לחיצה על שורה מוסיפה אותה למדרגות.",
-    rowHead: { left: "נשאר בסוף", versus: "לעומת עכשיו", less: "פחות", more: "יותר", money: "כסף" },
+    rowHead: { left: "נשאר בסוף", versus: "לעומת עכשיו", versusExample: "לעומת הדוגמה", less: "פחות", more: "יותר", money: "כסף" },
     more: "עוד",
     fewer: "פחות",
     same: "אותו סכום",
@@ -3825,8 +3941,8 @@ export const invest = {
     to: "עד",
     cancelsLabel: "מה הנטרול מבטל: שער הדולר",
     cancelsNote: (from: number, to: number) => `כך זז הדולר מול השקל בשנה אחת, ${from} עד ${to}.`,
-    cancelsStretch: (h: number, lo: string, hi: string) => `בממוצע של ${h} שנים רצופות: ${lo} עד ${hi} בשנה.`,
-    cancelsNoStretch: (h: number) => `עוד אין נתונים ל־${h} שנים רצופות.`,
+    cancelsStretch: (h: number, lo: string, hi: string) => (h === 1 ? `בשנה אחת: ${lo} עד ${hi}.` : `בממוצע של ${yearsSpan(h)} רצופות: ${lo} עד ${hi} בשנה.`),
+    cancelsNoStretch: (h: number) => (h === 1 ? "עוד אין נתונים לשנה אחת." : `עוד אין נתונים ל${h === 2 ? "" : "־"}${yearsSpan(h)} רצופות.`),
     costsLabel: "מה הנטרול עולה: פער מהמדד",
     pointsAYear: "נקודות בשנה",
     costsOne: (name: string, from: number, to: number, fee: string) => `בכמה \u2068${name}\u2069 השיגה פחות מהמדד שלה, ${from === to ? `ב־${to}` : `${from} עד ${to}`}, כולל דמי ניהול של ${fee}.`,
@@ -3862,7 +3978,8 @@ export const invest = {
     togetherFunds: (count: number, n: number) => `${count} הקרנות שיש להן ${n} שנים`,
     inputFund: (name: string, year: number) => `${name}, ${year}`,
     planLead: "בתוכנית שלכם:",
-    planPoint: (h: number) => `הפרש של נקודת אחוז אחת בכל שנה, בין שהוא בא מהדולר ובין שהוא בא מהפער, שווה בסוף ${h} השנים`,
+    /** "בסוף השנה", "בסוף השנתיים", "בסוף 10 השנים": never "1 השנים" (#190). */
+    planPoint: (h: number) => `הפרש של נקודת אחוז אחת בכל שנה, בין שהוא בא מהדולר ובין שהוא בא מהפער, שווה בסוף ${h === 1 ? "השנה" : h === 2 ? "השנתיים" : `${h} השנים`}`,
     planReal: ", בכסף של היום ואחרי מס.",
     planSteady: "אם שער הדולר לא ישתנה והפער יישאר כמו בדוחות,",
     pairName: (fund: string, house: string) => `${fund} ב${house}`,
@@ -3890,6 +4007,8 @@ export const invest = {
     noHedgeRecord: "אי אפשר לחשב: בדוח השנתי של הקרן עוד אין שנה מלאה, ובקרן מנוטרלת רוב העלות היא הפער מהמדד.",
     noHedgeEntered: "אי אפשר לחשב: בקרן מנוטרלת רוב העלות היא הפער מהמדד, והאתר לא יודע אותו לקרן שהזנתם.",
     payoutUnknown: "אי אפשר לחשב: לא צוין אם הקרן צוברת או מחלקת, והמס תלוי בזה.",
+    /** A fund the person typed with a fee left empty (D56, #190). */
+    feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
   },
 
@@ -3977,6 +4096,9 @@ export const kit = {
       AskField: "השדה הגדול שהעמוד נפתח בו: נכנס בו משפט שלם, ו־× מרוקן אותו.",
       DidYouKnow: "״הידעת?״: עובדות קצרות מהחוקים והכללים, כל אחת עם המקור שלה והדרך לפירוט המלא. כל הכרטיסים באותו גובה.",
       RulesLine: "החוקים והכללים שמאחורי עובדה: שבב אחד עם המספר שלהם, השורה האחרונה בבלוק, ולעולם לא עמודה בטבלה. שבב שפותח רשימה של השמות המלאים, וכלל אחד נפתח ישר בכרטיס. בלי חוקים וכללים אין שבב. גר ב־provenance.tsx, לא ב־kit.",
+      MixedName: "שם של קרן או חברה בתוך שורה בעברית. שם שיש בו עברית נפרש מימין לשמאל גם כשהוא מתחיל באותיות לטיניות; שם בלי עברית שומר על הכיוון שלו. שם בשורה משלו שעלולה להיחתך (NameLine) נחתך בסוף השם לפי סדר הקריאה, כך שתחילתו, שם המותג, תמיד נראית.",
+      ClampedText: "טקסט ארוך בשורה של רשימה ששורותיה שומרות על הגובה: שתי השורות הראשונות, והשאר נפתח בלחיצה ונסגר בלחיצה. הקישור מופיע רק כשהטקסט נחתך.",
+      AlsoChanged: "בחירה ששינתה גם משהו אחר: המשפט נאמר בשורה שנלחצה, ולידו הדרך חזרה למה שהיה לפני הלחיצה. הקישור בגודל מגע מלא ולא מגדיל את השורה.",
       IdRef: "שבב לכל מזהה שהאתר מציג: חוק, נוסחה, פרמטר או שאלה פתוחה. לא כותבים מזהה כטקסט חשוף. גר ב־provenance.tsx, לא ב־kit.",
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",
@@ -3988,7 +4110,7 @@ export const kit = {
       CoverageFold: "הכרטיס שמונה כל אפשרות פעם אחת: משפט של ספירות, שורת הצגה והסתרה, והרשימה מתחת לקו.",
       SegmentedControl: "שתיים עד ארבע אפשרויות קצרות ושוות, אחת תמיד נבחרת.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות, מדדים. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
-      KnobStrip: "מספרי התוכנית כמחוונים שנשארים על המסך, לעמוד שנועד לשחק בו: שני טורים במחשב, אחד בטלפון.",
+      KnobStrip: "מספרי התוכנית כמחוונים שנשארים על המסך, לעמוד שנועד לשחק בו: שני טורים במחשב, אחד בטלפון. מספר שלא עובר בדיקה מקבל את ההודעה שלו מתחת לשם השדה, במקום כפתור האיפוס, כך שהשורה לא גדלה.",
       ChangeChart: "כל מספר בתוכנית משתנה באותו אחוז, קו לכל מספר על גרף אחד, משמאל (פחות) לימין (יותר). סמן שגוררים או בוחרים קורא את כל הקווים, והטבלה אומרת לכל מספר: לפני, אחרי, מה נשאר וההפרש.",
       PileStory: "הסיפור של הכסף: רצועה של כל השנים, ומתחתיה השנה שנבחרה שלב אחרי שלב. כל עמודה מראה את כל הערימה עד לאותו רגע, ומה שנוסף באותו שלב בהיר; השמות והמספרים כתובים על הגרף. מס ששולם בשני מועדים מתחלק בעמודת המס לשני צבעים, עם המספר של כל חלק.",
       StairsChart: "מדרגות: מה שנשאר בסוף על הציר האנכי, סדר הצעדים משמאל לימין. הראשונה אפורה עם סימן שבר כי הציר לא מתחיל באפס; כל מדרגה צפה בגוון של מה ששונה, ואדומה כשהיא מפסידה. שנלקחה: מלאה; מוצעת: בהירה ומוקפת; על כלל פתוח: חלולה. מתחתיה טבלה באותן עמודות (מחשב) או רשימת צעדים (טלפון).",
@@ -3997,6 +4119,7 @@ export const kit = {
       TileChoice: "תשובות לשאלה אחת, כל אחת אריח שמראה מה היא מביאה (התוויות שהיא מוסיפה, או שורה קצרה). אפשר שלא תהיה בחירה עדיין. מה שבתוך אריח לא לחיץ בפני עצמו.",
       ChoiceChips: "ארבע אפשרויות ומעלה או תוויות ארוכות, אחת נבחרת. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
       LongestCase: "גוש שתוכנו משתנה לפי בחירה: תמיד בגובה המקרה הארוך ביותר, בכל רוחב מסך, כדי ששום דבר מתחתיו לא יזוז.",
+      HoldTallest: "כמו LongestCase, כשהמקרים רבים מכדי להישאר בעמוד: הם נפרשים פעם אחת בלי שייראו, נמדדים ויורדים, והגוש נשאר בגובה הארוך שבהם עד שמשתנים המדד או רוחב המסך.",
       InputSlot: "מספר שהקוראים קובעים, בתוך משפט: רווח ברוחב קבוע, עם קו כמו בטופס ועיפרון שפותח את השדה, כדי שהמשפט לא יקפוץ כשהמספר משתנה.",
       Sentence: "טקסט שיש בו מספרים או קישורים. רצוף בלבד: אין לו מאפיין פריסה, ולכן מספר לא יכול ליפול לשורה משלו. הקטעים כילדים, או מחרוזת עם מקומות {name}.",
       Stat: "מספר עם שמו מעליו והערה מתחתיו; שניים עד ארבעה זה לצד זה. tone מוסיף את הצבע של העמודה או הקו שהוא נקרא על שמם.",
@@ -4016,7 +4139,7 @@ export const kit = {
       Marker: "סמן שנגררים אותו על ציר של תרשים: לחיצה בכל מקום בשטח מזיזה אותו, וגם מקשי החצים. Marker הוא המחוון הבלתי נראה; MarkerMark הוא מה שהתרשים מצייר. LaneLabel הוא שם של פס על הנתיב: כשהסמן עומד עליו הוא זז לקצה השני של הפס או לצד הסמן.",
       StepTag: "תגית אפורה על סולם מסודר (1 עד 4), עם אייקון ומילה תמיד: כמה מהר הכסף חוזר, מ״בכל רגע״ עד ״בסוף השנה״. רק האייקון צבעוני, מטורקיז לאדום, כך שהתגית לא נקראת כדגל.",
       ShareRings: "טבעות קטנות זו בתוך זו, כל אחת חלק נפרד מ־0 עד 100% (חשיפה למניות ולמט״ח של מסלול). לא עוגה: המדדים חופפים. המספרים לידן נושאים את המשמעות, הציור מוסתר מקוראי מסך. חלק מעל 100% מצויר מלא.",
-      TableCols: "רוחב קבוע לכל עמודה בטבלה, במחשב ובטלפון, כדי שמספר שמשתנה לא יזיז עמודה. רוחב ב־rem לעמודה שהתוכן הארוך ביותר שלה ידוע, auto לעמודות שחולקות את השאר. כל טבלה באתר בנויה עליו.",
+      TableCols: "רוחב קבוע לכל עמודה בטבלה, במחשב ובטלפון, כדי שמספר שמשתנה לא יזיז עמודה. רוחב ב־rem לעמודה שהתוכן הארוך ביותר שלה ידוע, auto לעמודות שחולקות את השאר. עמודה שהטלפון משמיט מקבלת רוחב 0 בטלפון, והתאים שלה את PHONE_GONE, כך שהיא יוצאת מהטבלה כולה. כל טבלה באתר בנויה עליו.",
       CompareTable: "טבלה של כמה אפשרויות עם גרף קטן בתאים: עמודות עם כותרת אומרות מה משווים, ועמודה בתא (ValueBar) מאפשרת להשוות לפני שקוראים. בטלפון השם בשורה משלו והתאים מתחתיו. ValueBar: מספר ועמודה מתחתיו, באותו סולם בכל השורות; טווח הוא חלק מלא וחלק מפוספס.",
       ProseList: "נקודות בתוך טקסט של מדריך, בגודל הגוף, אחרי משפט שמוביל אליהן.",
       NoteList: "ההערות שמתחת לתרשים, נקודה לכל הערה: מה המספר לא כולל, מאיפה ריבית מגיעה. אף פעם לא משפט אחד ארוך.",
@@ -4047,6 +4170,8 @@ export const kit = {
       ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
     sample: {
+      /** keepTitleWhole: a document's title naming a fund, made up, with a Latin run and a quoted name ending in a number. */
+      docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
       cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", remainder: "העמלות זו על זו", remainderAbout: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       strip: { label: "השנים של התוכנית, לדוגמה", first: "מחירי הקבוצה", middle: "קנייה בלבד במחיר הקבוצה", after: "התעריפון", today: "היום", year: (y: number) => `שנה ${y}` },
       groups: {

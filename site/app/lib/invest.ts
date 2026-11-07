@@ -3,14 +3,14 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput } from "./fx";
 import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
-import { computed, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
 
@@ -137,7 +137,7 @@ export const customIdOf = (name: string): string => `custom-${norm(name).replace
 
 // ---------------------------------------------------------------- reasons and cells
 
-export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" } | { code: "payout-unknown" } | { code: "domicile-unknown" };
+export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" } | { code: "payout-unknown" } | { code: "fee-unknown" } | { code: "domicile-unknown" };
 
 export interface Availability {
   source: { url: string; title: string; checked: string };
@@ -176,6 +176,8 @@ export interface WayPrice {
   open: boolean;
   /** What the account itself charges over the horizon, before the tax it saves (F-91 on F-63), real shekels: the same figure as the account's part of the cost bar. */
   accountCost: number;
+  /** The account's cost as a figure (F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
+  cost: (about: string, whole?: boolean) => SiteValue;
   /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
   lines: { line: FeeLine; cost: number }[];
   interaction: number;
@@ -333,10 +335,11 @@ const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
  * The lines this page ranks. Interactive Brokers' Tiered prices leave out exchange and clearing fees the data does not hold, so they would
  * understate the cost: only its Fixed lines are read. A foreign-currency to foreign-currency conversion line is left out.
  */
-export function scoped(s: FeesSnapshot): FeesSnapshot {
+export function scoped(s: FeesSnapshot, houseId: string = s.id): FeesSnapshot {
   let out = scopedCache.get(s);
   if (!out) {
-    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l) && !(s.id === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
+    // `houseId`: the house whose price list it is, for an account built on a house (its own id is the person's)
+    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l) && !(houseId === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
     scopedCache.set(s, out);
   }
   return out;
@@ -422,6 +425,30 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad };
 }
 
+/** The house whose price list a snapshot reads: its own, or, for an account built on a house (F-101), that house's. */
+const houseOfSnap = (ctx: Ctx, s: FeesSnapshot): string => ctx.bundle.entered?.bases?.[s.id] ?? s.id;
+
+/**
+ * A bank whose current account costs something a month (F-102, D64): the banks the person can mark as theirs. A bank whose price list
+ * prints its current account free (One Zero) is left out, since marking it would change no figure.
+ */
+export const chargesCurrentAccount = (s: Pick<FeesSnapshot, "current_account">): boolean => {
+  const v = s.current_account?.monthly_minimum.value;
+  return typeof v === "number" && v > 0;
+};
+
+/**
+ * The row counts a current account (F-102, D64): only on the indices page, at a bank whose record prices one, unless it is the bank the
+ * person marked as theirs. An account built on a bank (F-101) is an account at that bank, so it reads the bank's record and mark.
+ */
+function currentAccountOf(ctx: Ctx, s: FeesSnapshot): FeesSnapshot["current_account"] | null {
+  const marks = ctx.plan.currentAccounts;
+  if (!marks) return null;
+  const house = houseOfSnap(ctx, s);
+  const record = house === s.id ? s : ctx.bundle.snapshots.find((x) => x.id === house);
+  return record && countsCurrentAccount({ id: house, current_account: record.current_account }, marks.own) ? record.current_account! : null;
+}
+
 function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[]): ProviderRow[] {
   const profile: { ageAtStart?: number; annualIncome?: number } = {};
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
@@ -442,8 +469,14 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
       const entered = ctx.bundle.entered?.tariffs[x.s.id];
       // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over it
       const layered = ctx.bundle.entered?.layered?.[x.s.id];
-      if (layered) return { snapshot: scoped(x.s), level: "entered" as const, layered, ...(x.cand.band ? { band: x.cand.band } : {}) };
-      return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...(x.cand.band ? { band: x.cand.band } : {}) };
+      const current = currentAccountOf(ctx, x.s);
+      const account = current ? { currentAccount: true } : {};
+      if (layered) {
+        // an account built on a bank keeps the bank's current account (its own record copies only the price lines)
+        const snap = scoped(x.s, houseOfSnap(ctx, x.s));
+        return { snapshot: current ? { ...snap, current_account: current } : snap, level: "entered" as const, layered, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
+      }
+      return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
     }),
   });
   try {
@@ -515,8 +548,19 @@ function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | n
  * Prices each snapshot for a fund spec: every reading of its tariff (an exchange each, for a fund bought abroad), and the
  * cheapest one that computes wins. `fundVenue` limits the readings to the exchange the fund trades on.
  */
+const sameCand = (a: Cand, b: Cand) => a.venue === b.venue && JSON.stringify(a.band ?? null) === JSON.stringify(b.band ?? null);
+
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
-  const per = snaps.map((s) => ({ s, cands: candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
+  // an account the person typed with a price left empty for this kind of fund (its conversion, for a fund bought abroad) has no price for
+  // it: never run, so the empty field is never charged as zero (D56, #190)
+  // (an account built on a house reads an empty field as the house's price: it follows the house, below)
+  const baseOf = (s: FeesSnapshot) => (houseOfSnap(ctx, s) === s.id ? null : houseOfSnap(ctx, s));
+  const typedOpen = (s: FeesSnapshot) => isCustomBrokerId(s.id) && !baseOf(s) && doubtOf(s, option) !== null;
+  // an account built on a house is priced where the house is, on the house's own reading of its price list, and nowhere else (F-101,
+  // #190: the layered run has no line of its own to say which exchange it trades on, and was priced where the house's list has no line)
+  const bases = [...new Set(snaps.flatMap((s) => { const b = baseOf(s); return b && !snaps.some((x) => x.id === b) ? [b] : []; }))].flatMap((b) => ctx.bundle.snapshots.filter((x) => x.id === b));
+  const all = [...snaps, ...bases];
+  const per = all.map((s) => ({ s, cands: typedOpen(s) ? [] : candidates(scoped(s, houseOfSnap(ctx, s)), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
   const results = new Map<string, { row: ProviderRow; cand: Cand }[]>();
   const slots = Math.max(0, ...per.map((p) => p.cands.length));
   for (let k = 0; k < slots; k++) {
@@ -525,9 +569,26 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     items.forEach((x, i) => results.set(x.s.id, [...(results.get(x.s.id) ?? []), { row: rows[i]!, cand: x.cand }]));
   }
   const out = new Map<string, Priced>();
-  for (const { s } of per) {
+  const won = new Map<string, Cand>();
+  // the houses first, so an account built on one can follow it
+  const order = [...per].sort((a, b) => Number(!!baseOf(a.s)) - Number(!!baseOf(b.s)));
+  for (const { s } of order) {
+    const base = baseOf(s);
+    if (base) {
+      const at = out.get(base);
+      const cand = won.get(base);
+      const mine = cand ? (results.get(s.id) ?? []).find((g) => sameCand(g.cand, cand)) : undefined;
+      if (!at || at.kind === "fail") out.set(s.id, at ?? { kind: "fail", reason: { code: "data-missing", recorded: null } });
+      else if (mine?.row.kind === "compared") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing });
+      else out.set(s.id, { kind: "fail", reason: mine?.row.kind === "not-comparable" ? reasonOf(mine.row, scoped(s, base)) : { code: "data-missing", recorded: null } });
+      continue;
+    }
+    if (typedOpen(s)) {
+      out.set(s.id, { kind: "fail", reason: { code: "data-missing", recorded: "entered-incomplete" } });
+      continue;
+    }
     const got = results.get(s.id) ?? [];
-    let best: { row: ComparedProvider; venue: Venue | null } | null = null;
+    let best: { row: ComparedProvider; venue: Venue | null; cand: Cand } | null = null;
     // the exchange of a reading set aside because the fund trades on another: the house's lines abroad name only that one
     let otherVenue: Venue | null = null;
     for (const g of got) {
@@ -539,10 +600,11 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
         otherVenue = venue;
         continue;
       }
-      if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue };
+      if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue, cand: g.cand };
     }
     if (best) {
-      out.set(s.id, { kind: "ok", ...best, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }) });
+      won.set(s.id, best.cand);
+      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }) });
       continue;
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));
@@ -561,6 +623,15 @@ function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
   return null;
 }
 
+/**
+ * A price the person left empty in an account they typed (its conversion): carried as an open entry, so that kind of fund has no price
+ * there, but it is a price not known, never a doubt about whether the account sells it (#190, fourth pass: the stairs listed it under
+ * "יש ספק אם נמכרת שם" while its own row said the conversion was not typed). Such an entry is the person's, with no document behind it.
+ */
+export function leftEmpty(s: FeesSnapshot | undefined, option: OptionId): boolean {
+  return (s?.availability ?? []).some((a) => a.available === "unknown" && a.source.url === "local" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c)));
+}
+
 /** Why the documents leave this kind of holding open at the house: said on its grey row (2026-10-31). */
 export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string | null {
   for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return a.reason_he ?? null;
@@ -571,17 +642,35 @@ export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string |
 
 export const inputMap = (plan: WorkbenchInputs): Record<string, SiteValue> => ({ סכום: plan.values.amount, "הפקדה חודשית": plan.values.monthly, שנים: plan.values.years, תשואה: plan.values.returnV, אינפלציה: plan.values.inflation });
 const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
-/** The plan's inputs and, on a run of something the person typed, what they typed: its sheet lists them (D7, D44). */
-const inputsOfRun = (ctx: Ctx, ...ids: string[]): Record<string, SiteValue> => Object.assign({}, inputMap(ctx.plan), ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
+/**
+ * The plan's inputs and, on a run of something the person typed, what they typed: its sheet lists them (D7, D44). A bank's row that counts a
+ * current account lists the bank's monthly minimum too, its current-account price list the source, so the figure that cost adds is one the
+ * sheet opens (F-102; lens review S5: the minimum was counted and shown nowhere). `ids[0]` is the row's house.
+ */
+const inputsOfRun = (ctx: Ctx, ...ids: string[]): Record<string, SiteValue> => {
+  const snap = ids[0] ? ctx.bundle.snapshots.find((s) => s.id === ids[0]) : undefined;
+  const current = snap ? currentAccountOf(ctx, snap) : null;
+  // D31: the bank's own figure, on the bank's own row (or an account built on it), weakens nothing
+  const bank = snap && current ? (ctx.bundle.snapshots.find((x) => x.id === houseOfSnap(ctx, snap)) ?? snap) : null;
+  const minimum = current && bank ? { [copy.pair.accountMinimum]: ownBy(current.monthly_minimum as SiteValue, bank.provider.name_he) } : {};
+  return Object.assign({}, inputMap(ctx.plan), minimum, ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
+};
+
+/**
+ * The run's flags that are about the account's cost, not about what is left: BANK-35 says the current account counted in the cost may be too high
+ * from the cap's start (F-102), so it sits on the cost, where a cost too high is a cost too high, and not on the value left, which it would lower.
+ */
+const COST_FLAGS: readonly string[] = ["BANK-35"];
 
 function costValue(ctx: Ctx, row: ComparedProvider, about: string): SiteValue {
-  return computed(row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, row.id), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.flags, about });
+  const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
+  return computed(row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, row.id), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string): WayPrice {
   const row = p.row;
   const open = row.run.outcome.code === "listed-not-ranked";
-  const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code), about });
+  const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), about });
   let split: Pick<WayPrice, "lines" | "interaction"> | undefined;
   // the lines of a way take a run each and the page shows the picked fund's only: read when shown
   const splitOf = () => {
@@ -596,6 +685,8 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     venue: p.venue,
     open,
     accountCost: row.horizonCostBeforeTax,
+    cost: (about: string, whole = true) =>
+      computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-63", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), about }),
     get lines() {
       return splitOf().lines;
     },
@@ -627,7 +718,9 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
 
 const nameOf = (rec: FundRecord) => rec.names.he[0] ?? rec.names.en[0] ?? rec.id;
 /** A fund the person typed with no number has none to show: its id is the site's own. */
-const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identifiers.isin ?? (isCustomFund(rec) ? "" : rec.id);
+// a fund with neither number is known by its ticker (a US fund: "VOO"), never by the site's own record id ("us-voo", #190)
+const tickerOf = (rec: FundRecord) => Object.values(rec.identifiers.ticker ?? {})[0] ?? null;
+const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identifiers.isin ?? tickerOf(rec) ?? (isCustomFund(rec) ? "" : rec.id);
 
 // ---------------------------------------------------------------- the option
 
@@ -962,7 +1055,8 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   return {
     providerId: s.id,
     fundId: rec.id,
-    paidIn: computed(paidInReal, "nis", "F-05", inputs, { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
+    // what was paid in rests on the plan alone: the account's minimum and what was typed for a house are not its inputs
+    paidIn: computed(paidInReal, "nis", "F-05", inputMap(ctx.plan), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
     interaction: row.horizonCostBeforeTax - row.byType.reduce((t, x) => t + x.costBeforeTax, 0),
@@ -1095,3 +1189,22 @@ export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; provider
   const taxShare = leftGap + taxGap > 0 ? taxGap / (leftGap + taxGap) : null;
   return { unhedged: u0, hedged: h0, worth: { low: Math.min(...steps), high: Math.max(...steps) }, taxShare };
 }
+
+/** P-01 as the page reads it: the share of the larger value below which two pairs are a tie (F-80). */
+export const tieShareOf = (bundle: Pick<WorkbenchBundle, "p01">): number => tieThreshold([bundle.p01]);
+
+/**
+ * The place of each value in a ranked list, best first (F-80, P-01; 2026-11-05): every value within the tie threshold of the first
+ * shares the first place, and equal figures (in whole shekels) share a place; any other value has its own place by its order. With a
+ * threshold of zero only equal figures share. A first place shared by two or more is a tie, and no row is crowned.
+ */
+export function placesOf(values: readonly number[], theta: number): number[] {
+  const top = values[0];
+  return values.map((v, i) => {
+    if (top === undefined || i === 0 || isTie(top, v, theta)) return 1;
+    const first = values.findIndex((x) => Math.round(x) === Math.round(v));
+    return first + 1;
+  });
+}
+/** How many share the first place. */
+export const firstCount = (places: readonly number[]) => places.filter((p) => p === 1).length;

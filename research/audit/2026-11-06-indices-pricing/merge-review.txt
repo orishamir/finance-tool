@@ -1,0 +1,11 @@
+# Structure review: bcd0b136...HEAD
+
+54 files changed, 48 of them code or docs (more than 30: add an independent reviewer that sees the diff and the kit, not the builder's report).
+
+## New component outside the kit (one-off, or promote?) (4)
+- site/app/components/invest/no-fund.tsx:52 — NoFundAccountColumn
+- site/app/components/invest/pair.tsx:613 — OwnBankField
+- site/app/components/invest/pair.tsx:632 — AbroadNotes
+- site/app/components/invest/pair.tsx:643 — AccountColumn
+
+Judge each item: kept (one-off, say why), sent back (the kit has it) or promoted (becomes a kit piece with a gallery entry and, if it can be named, a guard). Compare the builder's screenshots with /kit.

@@ -39,13 +39,17 @@ const FILL: Record<StairHue | "loss", string> = { start: "fill-chart-stairs-star
 const STROKE: Record<StairHue | "loss", string> = { start: "stroke-chart-stairs-start", account: "stroke-chart-stairs-account", kind: "stroke-chart-stairs-kind", fund: "stroke-chart-stairs-fund", loss: "stroke-loss" };
 export const STAIR_SWATCH: Record<StairHue | "loss", string> = { start: "bg-chart-stairs-start", account: "bg-chart-stairs-account", kind: "bg-chart-stairs-kind", fund: "bg-chart-stairs-fund", loss: "bg-loss" };
 
-/** Isolates every number in a text so it keeps its sign and order inside right-to-left words. */
-const iso = (s: string) => s.replace(/[−+]?\d[\d,.]*%?(?: ₪)?/g, (m) => `⁦${m}⁩`);
+/**
+ * Isolates every number that stands among Hebrew words, so it keeps its sign and order there ("+2,345 ₪"). A number inside a Latin
+ * name ("S&P 500", "(4D)", "NASDAQ 100") is left to the name: isolated alone, it stepped out of the name's order, and
+ * "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05).
+ */
+export const isoNumbers = (s: string) => s.replace(/(?<![A-Za-z&][ ]?)(?<![\d,.])[−+]?\d[\d,.]*%?(?: ₪)?(?![A-Za-z])/g, (m) => `\u2066${m}\u2069`);
 
 function Txt({ x, y, a = "right", size = 13, className = "fill-chart-text", weight = 400, children }: { x: number; y: number; a?: "right" | "left" | "mid"; size?: number; className?: string; weight?: number; children: string }) {
   return (
     <text x={x} y={y} direction="rtl" textAnchor={a === "right" ? "start" : a === "left" ? "end" : "middle"} fontSize={size} fontWeight={weight} className={cx("stroke-card", className)} strokeWidth={4} style={{ paintOrder: "stroke" }}>
-      {iso(children)}
+      {isoNumbers(children)}
     </text>
   );
 }
@@ -92,15 +96,18 @@ export function StairsChart({
   const [ref, W] = useWidth(1000);
   const compact = W < 860;
   const H = compact ? 300 : 340;
-  const m = compact ? { l: 44, r: 6, t: 40, b: 6 } : { l: W * STAIRS_MARGIN.left, r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
-  const cw = (W - m.l - m.r) / STAIRS_SLOTS;
   const { lo, hi, step } = axis;
+  const grid: number[] = [];
+  for (let g = lo; g <= hi + 1e-9; g += step) grid.push(g);
+  // the left margin holds the widest label on the axis (digits about 0.57 of the font each): a large plan's "1,000,000K" lost its
+  // leading digits past a fixed 44 px (#190)
+  const widest = Math.max(0, ...grid.map((g) => tick(g, compact).length)) * (compact ? 6 : 6.9) + 12;
+  const m = compact ? { l: Math.max(44, widest), r: 6, t: 40, b: 6 } : { l: Math.max(W * STAIRS_MARGIN.left, widest), r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
+  const cw = (W - m.l - m.r) / STAIRS_SLOTS;
   const y = (v: number) => m.t + (1 - (v - lo) / (hi - lo || 1)) * (H - m.t - m.b);
   const floor = y(lo);
   const bx = (i: number) => m.l + i * cw + cw * 0.1;
   const bw = cw * 0.8;
-  const grid: number[] = [];
-  for (let g = lo; g <= hi + 1e-9; g += step) grid.push(g);
   // the words beside the dashed line: a heading above, the figure on it, the names below, each broken to fit the margin
   const maxChars = Math.max(8, Math.floor((m.r - 12) / 6.6));
   const heading = wrapLines(ceiling.lines[0] ?? "", maxChars);

@@ -1,0 +1,32 @@
+// one-off evidence for the report (not committed): each index's account order for its headline fund and for its best fund at each house
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { buildInvest, knownIndices, indexById } from "./invest";
+import { buildWorkbenchBundle } from "./providers.server";
+import type { WorkbenchInputs } from "./providers";
+import { entered } from "./value";
+
+const bundle = buildWorkbenchBundle();
+const t = bundle.today;
+const plan = (amountNow: number, monthly: number): WorkbenchInputs => ({
+  amountNow, monthly, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
+  values: { amount: entered(amountNow, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
+  fromGoal: false, returnFromParameter: false, currentAccounts: { own: null },
+});
+it("evidence", () => {
+  const out: unknown[] = [];
+  for (const [amount, monthly] of [[6000, 400], [100000, 0]] as const) {
+    for (const k of knownIndices(bundle)) {
+      const v = buildInvest({ bundle, index: indexById(bundle, k.id)!, plan: plan(amount, monthly) });
+      const abroad = v.options.find((o) => o.id === "abroad");
+      const firstAbroad = abroad?.funds[0];
+      out.push({
+        index: k.id, plan: `${amount}+${monthly}/mo, 20y, 7%`,
+        headline: v.headline ? `${v.headline.providerId} ${v.headline.fund.rec.id} ${Math.round(v.headline.valueN)}` : null,
+        houses: v.houses.filter((h) => h.best).map((h) => `${h.provider.id}:${h.best!.fund.rec.id}:${Math.round(h.best!.price!.valueN)}`),
+        abroadFund: firstAbroad ? `${firstAbroad.rec.id}: ` + Object.entries(firstAbroad.byHouse).filter(([, p]) => p && "valueN" in (p as object)).map(([h, p]) => [h, Math.round((p as { valueN: number }).valueN)] as const).sort((a, b) => b[1] - a[1]).map(([h, n]) => `${h}:${n}`).join(" ") : null,
+      });
+    }
+  }
+  writeFileSync(process.env.OUT!, JSON.stringify(out, null, 1));
+});

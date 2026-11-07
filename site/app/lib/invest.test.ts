@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf } from "./invest";
+import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -273,3 +273,102 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
   });
 });
 
+
+describe("places in a ranked list (F-80, P-01, 2026-11-05)", () => {
+  it("a value within the threshold of the first shares the first place", () => {
+    // 86,449 is 0.05% under 86,492: a tie at 0.5%
+    expect(placesOf([86_492, 86_449, 84_148], 0.005)).toEqual([1, 1, 3]);
+    expect(firstCount(placesOf([86_492, 86_449, 84_148], 0.005))).toBe(2);
+  });
+  it("equal figures share a place, and the next keeps its own", () => {
+    expect(placesOf([86_492, 84_148, 81_471, 81_471, 80_000], 0.005)).toEqual([1, 2, 3, 3, 5]);
+  });
+  it("with nothing put in, every row is zero and every row ties", () => {
+    expect(placesOf([0, 0, 0], 0.005)).toEqual([1, 1, 1]);
+  });
+  it("with no threshold only equal figures share", () => {
+    expect(placesOf([100, 98, 50], 0)).toEqual([1, 2, 3]);
+    expect(placesOf([100, 99.9, 50], 0)).toEqual([1, 1, 3]);
+  });
+});
+
+describe("a bank's current account on the indices page (D64, F-102)", () => {
+  const before = buildInvest({ bundle, index: sp, plan: plan() });
+  const counted = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+  const ownLeumi = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
+  const best = (v: typeof before, id: string) => v.houses.find((h) => h.provider.id === id)!.best!.price!;
+  const banks = bundle.snapshots.filter((s) => s.current_account && (s.current_account.monthly_minimum.value as number) > 0).map((s) => s.id);
+
+  it("with no bank marked, every bank whose price list charges for a current account has it as a line of its own, and leaves less", () => {
+    expect(banks.sort()).toEqual(["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]);
+    for (const id of banks) {
+      const at = best(counted, id);
+      expect(at.lines.map((l) => l.line)).toContain("account");
+      // 240 monthly minimums of 4 to 9.50 shekels: more than a thousand shekels of today's money left behind, and less than three thousand
+      expect(best(before, id).valueN - at.valueN).toBeGreaterThan(900);
+      expect(best(before, id).valueN - at.valueN).toBeLessThan(3_000);
+    }
+  });
+
+  it("lists the bank's monthly minimum among the figure's inputs, with its price list as the source, wherever the row counts it (lens review S5)", () => {
+    const minimumOf = (v: typeof before, id: string) => (best(v, id).cost("x").computed_from!.inputs as Record<string, { value: unknown; source: { url: string }; state: string }>)["דמי ניהול חשבון עו״ש בחודש"];
+    for (const id of banks) {
+      const rec = bundle.snapshots.find((s) => s.id === id)!.current_account!.monthly_minimum;
+      const m = minimumOf(counted, id)!;
+      expect(m.value).toBe(rec.value);
+      expect(m.source.url).toBe(rec.source.url);
+      expect(m.state).toBe("sourced");
+      expect((best(counted, id).value.computed_from!.inputs as Record<string, unknown>)["דמי ניהול חשבון עו״ש בחודש"]).toBeDefined();
+    }
+    // not where nothing is counted: before the page counts it, at the bank marked as the person's own, at an investment house
+    expect(minimumOf(before, "leumi")).toBeUndefined();
+    expect(minimumOf(ownLeumi, "leumi")).toBeUndefined();
+    expect(minimumOf(counted, "psagot")).toBeUndefined();
+    // the bank's own figure on its own row weakens nothing (D31)
+    expect(best(counted, "leumi").value.weakest).toBe(best(before, "leumi").value.weakest);
+    // the pair's breakdown: its cost lines list the minimum, what was paid in (the plan alone) does not
+    const fundId = counted.houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
+    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }), fundId, providerId: "leumi" })!;
+    expect((pc.account[0]!.cost.computed_from!.inputs as Record<string, unknown>)["דמי ניהול חשבון עו״ש בחודש"]).toBeDefined();
+    expect((pc.paidIn.computed_from!.inputs as Record<string, unknown>)["דמי ניהול חשבון עו״ש בחודש"]).toBeUndefined();
+  });
+
+  it("an investment house, a foreign broker and a bank that charges nothing keep their figures", () => {
+    for (const id of ["psagot", "ibi", "altshuler-trade", "meitav-trade", "excellence", "interactive-brokers", "interactive-israel", "one-zero", "pepper"]) {
+      const h = before.houses.find((x) => x.provider.id === id);
+      if (!h?.best?.price) continue;
+      expect(best(counted, id).valueN).toBe(h.best.price.valueN);
+    }
+  });
+
+  it("the bank the person marks leaves it out, and only that bank", () => {
+    expect(best(ownLeumi, "leumi").valueN).toBe(best(before, "leumi").valueN);
+    expect(best(ownLeumi, "leumi").lines.map((l) => l.line)).not.toContain("account");
+    expect(best(ownLeumi, "hapoalim").valueN).toBe(best(counted, "hapoalim").valueN);
+  });
+
+  it("re-sorts the list where the gap is smaller than the account (evidence: research/audit/2026-11-06-indices-pricing)", () => {
+    const order = (v: typeof before) => v.houses.filter((h) => h.best?.price).sort((a, b) => b.best!.price!.valueN - a.best!.price!.valueN).map((h) => h.provider.id);
+    // Yahav's current account (4 shekels) is the cheapest of the banks': it passes Hapoalim, and IBI passes Discount and Mercantile
+    expect(order(before).indexOf("hapoalim")).toBeLessThan(order(before).indexOf("yahav"));
+    expect(order(counted).indexOf("yahav")).toBeLessThan(order(counted).indexOf("hapoalim"));
+    expect(order(counted).indexOf("ibi")).toBeLessThan(order(counted).indexOf("discount"));
+    expect(counted.headline!.providerId).toBe(before.headline!.providerId);
+  });
+});
+
+describe("BANK-35 sits on the account's cost, not on what is left (independent check 2, must-fix 1)", () => {
+  it("a bank's row whose counted current account is above the cap from July 2027 carries the note on its cost figure only", () => {
+    const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+    const ways = view.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
+    expect(ways.length).toBeGreaterThan(0);
+    for (const w of ways) {
+      expect(w.cost("עלות").flags).toContain("BANK-35");
+      expect(w.value.flags ?? []).not.toContain("BANK-35");
+    }
+    // the bank the person marks as their own counts no current account, and its cost has no such note
+    const own = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
+    const mine = own.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
+    for (const w of mine) expect(w.cost("עלות").flags ?? []).not.toContain("BANK-35");
+  });
+});

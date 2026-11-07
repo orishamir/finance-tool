@@ -10,7 +10,7 @@ import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName } 
 import { NumberLegend, RuleCard, SlottedText, type RuleUses } from "../components/provenance";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
-import { AskField, Button, Card, cx, DidYouKnow, Disclosure, FilterChip, FoldGroup, TableCols, useSoftSwap, type FactItem } from "../components/kit";
+import { AskField, Button, Card, cx, DidYouKnow, Disclosure, FilterChip, FoldGroup, PHONE_GONE, TableCols, useSoftSwap, type FactItem } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, facetCounts, filtersToSearch, isFiltering, isNarrowing, matchRules, parseFilters, passesFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
@@ -655,8 +655,8 @@ function ClaimResults({ law, shown, onAll, company, names, docs, pd, failed, lig
               <thead>
                 <tr>
                   <th scope="col">{words.cols.company}</th>
-                  <th scope="col" className="max-md:hidden">{words.cols.document}</th>
-                  <th scope="col" className="max-md:hidden">{words.cols.edition}</th>
+                  <th scope="col" className={PHONE_GONE}>{words.cols.document}</th>
+                  <th scope="col" className={PHONE_GONE}>{words.cols.edition}</th>
                   <th scope="col">{words.cols.where}</th>
                 </tr>
               </thead>
@@ -667,8 +667,8 @@ function ClaimResults({ law, shown, onAll, company, names, docs, pd, failed, lig
                       <bdi>{d.company}</bdi>
                       <span className="md:hidden block font-normal text-[13px] text-muted-foreground">{d.title}</span>
                     </th>
-                    <td className="max-md:hidden align-top">{d.title}</td>
-                    <td className="max-md:hidden align-top tabular-nums">{editionText(d.version) ?? words.noEdition}</td>
+                    <td className={cx(PHONE_GONE, "align-top")}>{d.title}</td>
+                    <td className={cx(PHONE_GONE, "align-top tabular-nums")}>{editionText(d.version) ?? words.noEdition}</td>
                     <td className="align-top">
                       <span className="flex flex-col lg:flex-row lg:flex-wrap lg:gap-x-2">
                         {d.pages.map((p) => (

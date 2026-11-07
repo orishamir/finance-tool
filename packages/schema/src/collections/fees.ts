@@ -125,6 +125,16 @@ export const groupEntry = z.strictObject({
   ends_he: z.string().min(1),
   ends_source: groupSource.optional(),
   prices: z.array(groupPrice).min(1),
+  /**
+   * F-102 (D64): the group's own price for the current account a bank's row counts, where the group's annex prints the minimum itself
+   * free: `exempt` from the monthly minimum for `for_months` from joining (the entry's printed end), then the bank's ordinary minimum.
+   * Absent: the annex was not read for it, prints nothing, or leaves it unclear, and the group pays the ordinary minimum, the most the
+   * documents allow (D56). An exemption inferred from other rows (a free teller action under a minimum bounded by its price) is never
+   * recorded: Mercantile's was, and was removed (lens review M2, 2026-11-07).
+   */
+  current_account: z
+    .strictObject({ price_he: z.string().min(1), exempt: z.literal(true), for_months: z.number().int().positive(), source: groupSource })
+    .optional(),
   /** What was inferred rather than read. */
   inferred: z.string().min(1).optional(),
   /**
@@ -221,6 +231,13 @@ export const feesSnapshot = z.strictObject({
     }),
   ),
   minimums: z.strictObject({ account_opening: feeValue.nullable() }),
+  /**
+   * D64: what a current account at the bank costs an ordinary customer a month, the price list's monthly minimum (unit `nis_per_month`).
+   * Required of a bank's latest record by the data check, and absent from an investment house. F-102 counts it on the bank's row unless the
+   * person marks the bank as their own. That a bank's securities account needs a current account there is D64's premise, not a rule of the
+   * rule base (F-102).
+   */
+  current_account: z.strictObject({ monthly_minimum: feeValue }).optional(),
   notice_rule_ids: ruleIds,
   availability: z.array(availabilityEntry).optional(),
   /** Who pays the prices on this record (2026-10-31): required of a bank's or broker's record by the data check. */

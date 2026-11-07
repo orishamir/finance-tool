@@ -5,7 +5,7 @@ import { buttons, kit as kitCopy } from "../../copy";
 import type { ChartPick } from "./chart-interact";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
-import { TableCols } from "./table-cols";
+import { PHONE_GONE, TableCols } from "./table-cols";
 
 /** A sideways-scrolling table wrapper's cue without script: a card-colour fade at each end that is still hidden content, and a soft edge shadow. */
 export const scrollCueStyle: CSSProperties = {
@@ -122,7 +122,7 @@ export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: React
         <tr>
           <th scope="col">{rowHead}</th>
           {columns.map((c) => (
-            <th key={c.id} scope="col" className={c.hideOnPhone ? "max-md:hidden" : undefined}>
+            <th key={c.id} scope="col" className={c.hideOnPhone ? PHONE_GONE : undefined}>
               {c.head}
             </th>
           ))}
@@ -133,7 +133,7 @@ export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: React
           <tr key={r.key} className={r.strong ? "border-t-2 border-border font-semibold" : undefined}>
             <th scope="row">{r.head}</th>
             {r.cells.map((cell, i) => (
-              <td key={columns[i]?.id ?? i} className={columns[i]?.hideOnPhone ? "max-md:hidden" : undefined}>
+              <td key={columns[i]?.id ?? i} className={columns[i]?.hideOnPhone ? PHONE_GONE : undefined}>
                 {cell}
               </td>
             ))}

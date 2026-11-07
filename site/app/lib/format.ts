@@ -39,6 +39,36 @@ function compactNisParts(v: number): { num: string; word: string | null } {
   return { num: compactFormat(v), word: null };
 }
 
+/**
+ * A billion or more in its short form, always with two decimals (`2.30 מיליארד ₪`, `1,250.00 מיליארד ₪`): a figure with one decimal beside
+ * one with two read as different precisions (fresh readers, round 3, 2026-11-07: "'1.6' has one decimal place while the rest have two").
+ */
+const billions = new Intl.NumberFormat(he, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const nisBillions = (v: number) => `${billions.format(Math.abs(v) / 1e9)} ${numbers.billion} ₪`;
+
+/**
+ * A row with a figure in the short form writes its other large figures in it too, from a hundred million up (`0.76 מיליארד ₪`): a smaller
+ * one keeps its digits, so costs of 9 and 14 million beside 1.86 billion did not both read "0.01 מיליארד ₪".
+ */
+export const SHORT_IN_ROW = 1e8;
+
+/**
+ * A figure's text with every shekel amount of `from` or more ("2,296,540,223 ₪", "+2,296,540,223 ₪") in its short form, or null when it
+ * has none. A phone shows it from a billion, so a typed plan's figure is never cut by its fixed column (lens review S2); a computer from a
+ * thousand billion. A row that writes one of its figures short passes `SHORT_IN_ROW`, so its figures read in one form: "758,833,521 ₪"
+ * beside "1.57 מיליארד ₪" read as the larger of the two (fresh readers, round 3).
+ */
+export function shortBillions(text: string, from = 1e9): string | null {
+  let hit = false;
+  const out = text.replace(/(\d{1,3}(?:,\d{3})+)(?:\.\d+)? ₪/g, (whole, digits: string) => {
+    const v = Number(digits.replace(/,/g, ""));
+    if (v < from) return whole;
+    hit = true;
+    return nisBillions(v);
+  });
+  return hit ? out : null;
+}
+
 export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
   nis: (v: number) => withMinus(plainMarks(currency.format(v))),
