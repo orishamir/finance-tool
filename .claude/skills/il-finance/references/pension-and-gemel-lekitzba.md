@@ -629,7 +629,7 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 | ויתור על כיסוי ביטוחי לשארים | Waiver of survivors cover | For members without survivors, up to 24 months | Forms | Mor bylaws s. 30 |
 | מוטב / הוראת מוטבים | Beneficiary / beneficiary instruction | Named recipient if no survivors | Forms | Mor bylaws s. 1 |
 | מסלול השקעות תלוי גיל | Age-dependent investment track | Default track by age band | App, statement | Mor bylaws s. 19 |
-| מסלול בסיסי למקבלי קצבה | Basic track for annuitants | Pensioners' default track | Statement | Mor bylaws s. 20 |
+| מסלול בסיסי למקבלי קצבה | Basic track for annuitants | Pensioners' default track; its policy (any asset types the law allows) is set in the CMA's list of tracks | Statement, CMA list | CAT-51; Mor bylaws s. 20 |
 | איגרות חוב מיועדות / "ערד" / "מירון" | Designated bonds | Non-tradable state bonds for pension funds | Law, reports | Provident Funds Law s. 1, 34ב |
 | הבטחת תשואה / תשואת היעד / אפיק השקעה מובטח תשואה | Guaranteed return / target return / guaranteed-return channel | State top-up to 5.15% on 30% of assets | Law, bylaws, press | Provident Funds Law s. 34א-34ז; Mor bylaws s. 19 |
 | עודף או גירעון אקטוארי / מאזן אקטוארי | Actuarial surplus or deficit / actuarial balance | Yearly adjustment of rights | Statement, Pension-Net | Mor bylaws s. 109 |

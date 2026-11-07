@@ -1,0 +1,24 @@
+{
+  "id": "mslvl-avkb-mddym-lmkbly-ktzbh",
+  "he": "מסלול עוקב מדדים למקבלי קצבה",
+  "en": null,
+  "meaning": "מסלול למי שכבר מקבלים קצבה, שעוקב באמצעות מוצרים עוקבי מדד אחרי כמה מדדים שונים של מניות או של איגרות חוב",
+  "where": [
+    "pensia-net"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "עוקב מדדים למקבלי קצבה",
+    "עוקב מדדים - למקבלי קצבה"
+  ],
+  "rule_ids": [
+    "CAT-51"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=3",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 3, \"מסלולים מתמחים למקבלי קצבה\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

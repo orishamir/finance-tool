@@ -1,0 +1,23 @@
+{
+  "id": "mslvl-mkbly-ktzbh-kyymym",
+  "he": "מסלול מקבלי קצבה קיימים",
+  "en": null,
+  "meaning": "מסלול סגור בקרן פנסיה, למי שהיו זכאים לקצבה מהקרן לפני מועד שקבעה רשות שוק ההון; יש גם גרסה שלו לפי כללי ההלכה",
+  "where": [
+    "law"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "מסלול הלכה למקבלי קצבה קיימים"
+  ],
+  "rule_ids": [
+    "CAT-51"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=2",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 2, \"מסלול מקבלי קצבה קיימים\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}
