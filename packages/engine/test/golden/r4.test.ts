@@ -642,11 +642,11 @@ describe("F-65 fund variants on a five-row fixture list", () => {
     expect(r.run).toBeUndefined();
   });
 
-  it("an accumulating foreign-domiciled fund is computed, labelled secondary, listed and not ranked (G-18)", () => {
+  it("an accumulating foreign-domiciled fund is computed, labelled a reading, listed and not ranked (G-18)", () => {
     const r = get("tase:9000004");
     expect(r.kind).toBe("listed-not-ranked");
     expect(r.reasons[0]).toMatchObject({ code: "gap", gapIds: ["G-18"] });
-    expect(r.labels).toContainEqual({ code: "secondary-source", ruleId: "TXF-11" });
+    expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
     expect(r.run!.real).toBeGreaterThan(0);
     expect(r.rank).toBeUndefined();
     // Bought in shekels on TASE: no FX conversion line.

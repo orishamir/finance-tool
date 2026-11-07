@@ -17,6 +17,10 @@ describe("groupDocuments", () => {
     "A-4": rule("A-4", [src("https://example.org/doc.pdf", "A guide", { kind: "article", strength: "secondary" })]),
   };
   const cards = groupDocuments(rules, table, {});
+  it("keeps a Hebrew title that opens with a host or a Latin name (#190)", () => {
+    const own = groupDocuments({ "B-1": rule("B-1", [src("https://data.gov.il/dataset/banks", "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים", { kind: "dataset" })]), "B-2": rule("B-2", [src("https://example.org/fee", "Trustee fee (שכר נאמן): p. 1 '0.02% מהשווי הנקי השנתי הממוצע של נכסי הקרן'", { kind: "article" })]) }, [], {});
+    expect(own.find((x) => x.url.includes("data.gov.il"))!.title).toBe("data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים");
+  });
   it("groups table matches under one key, across hosts", () => {
     const c = cards.find((x) => x.key === "income-tax-ordinance")!;
     expect(c.rules.map((r) => r.id)).toEqual(["A-1", "A-2"]);
@@ -27,6 +31,9 @@ describe("groupDocuments", () => {
   });
   it("keys an unknown document by a slug of its url without fragment and query", () => {
     expect(stripUrl("https://example.org/doc.pdf?x=1#p")).toBe("https://example.org/doc.pdf");
+    // a script's query names the document: two Reshumot booklets stay two documents
+    expect(stripUrl("https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#p")).toBe("https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb");
+    expect(stripUrl("https://api.justice.gov.il/reshumot/resolver?path=a")).not.toBe(stripUrl("https://api.justice.gov.il/reshumot/resolver?path=b"));
     const c = cards.find((x) => x.url.startsWith("https://example.org/doc.pdf"))!;
     expect(c.key).toMatch(/^doc-[0-9a-f]{8}$/);
     expect(c.rules).toHaveLength(2);

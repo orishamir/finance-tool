@@ -113,7 +113,7 @@
     ],
     "blocked_by": [],
     "labels": [
-      "secondary source: 25% of the real gain, withheld by the fund (TXK-23; the official texts give no rate for child savings, TXK OQ1; method G-17)",
+      "25% of the real gain, withheld by the fund: the Ordinance's rule for a lump sum from a kupat gemel lehashkaa, which the fund is by law, the regulator's circular and the Ministry of Finance's tender answers (TXK-23, TXK-07, s.125ג(ב)); no Tax Authority text names child savings (TXK OQ1); method G-17",
       "the annuity route NII describes has no clear statutory basis (TXK-25, TXK OQ1); not computed"
     ]
   },
@@ -165,25 +165,27 @@
     "text": "from 18 with a parent's signature, from 21 alone; a withdrawal before 21 forfeits the age-21 grant; before 18 only to fund the child's medical needs where a condition endangers the child's life, body or mind, with an NII-appointed doctor's approval (CS-15); no withdrawal for financial hardship; money not withdrawn keeps being managed in the fund, with no new deposits (CS-16)"
   },
   "switch_is_tax_event": {
-    "value": null,
+    "value": false,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/api/rest_v1/page/pdf/חוק_הביטוח_הלאומי",
-      "title": "National Insurance Law (Wikisource rendered PDF), ss.74B(a)(2a), (d)(1a); child-savings regulations regs. 7, 11: no statement on the tax treatment of a move",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "Income Tax Ordinance, s.3(ה4)(3) (Tax Authority's text, p.21): the charge applies to sums an individual \"משך\" from a kupat gemel lehashkaa",
+      "publisher": "Israel Tax Authority",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXK-22",
-      "CS-11"
+      "TXK-04",
+      "TXK-23",
+      "CS-11",
+      "CS-16"
     ],
     "state": "sourced",
-    "notes": "Unknown: the texts read do not say whether a track switch or a move to another listed fund is tax-free for child savings. By analogy with a kupat gemel lehashkaa (TXK-04) it is not a withdrawal, but il-finance marks this unconfirmed for child savings (TXK-22, TXK OQ1). The product side is clear: the track can be changed at any time and the savings can move to another listed provident fund, never to a bank (CS-11)."
+    "notes": "Not a withdrawal: the provident track is a kupat gemel lehashkaa to which every provision for that product applies (TXK-23, the regulator's circular), so a track switch or a move to another kupat gemel lehashkaa, a regular one too after 18 (CS-16), is not taxed (TXK-04). Replaces the 2026-10-22 'unknown', which predates TXK-23."
   },
   "transfer_routes": [
     {
@@ -243,7 +245,7 @@
     "real-vs-nominal": "covered",
     "regulator": "covered",
     "reporting-obligation": "covered",
-    "switching-tax-event": "blocked:TXK-OQ1",
+    "switching-tax-event": "covered",
     "tax-at-deposit": "covered",
     "tax-at-exit": "covered",
     "tax-during": "covered",

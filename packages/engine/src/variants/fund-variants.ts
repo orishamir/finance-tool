@@ -270,7 +270,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
   }
   const reasons: Reason[] = [];
   if (run.outcome.code === "listed-not-ranked") {
-    // G-18: an accumulating foreign fund, computed under the secondary reading of TXF-11, listed and not ranked.
+    // G-18: an accumulating foreign fund, computed under TXF-11's reading by implication, listed and not ranked.
     reasons.push(run.outcome.reason.startsWith("G-") ? { code: "gap", ruleIds: [], gapIds: [run.outcome.reason] } : { code: "exit-blocked", ruleIds: [run.outcome.reason], gapIds: [] });
   }
   return { ...base, notCollected: built.notCollected, kind: reasons.length > 0 ? "listed-not-ranked" : "ranked", reasons, plan, run, labels: run.labels, ...(currencyMismatch ? { currencyMismatch } : {}) };
@@ -282,7 +282,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
  * the exposure that no list row stands for (traded abroad); a record of an Israeli fund the list no longer prints is
  * kept as a candidate too. Each candidate with a record runs F-08 with its own drag (A-06 to A-11), currency (F-04),
  * distribution policy with the yield its record holds (F-20, A-10) and domicile rules (F-40, F-41); an accumulating foreign fund is computed under the
- * secondary reading of TXF-11 (labelled) and listed, not ranked (G-18), unless its record carries the ruling its own annex reports (`tax_ruling`). A candidate without a record is "not evaluated:
+ * reading of TXF-11 by implication (labelled a reading) and listed, not ranked (G-18), unless its record carries the ruling its own annex reports (`tax_ruling`). A candidate without a record is "not evaluated:
  * details not collected". Foreign-domiciled funds traded abroad that are not in `funds` are one group line (G-29).
  * The rest are ranked by real value with ties by F-80, and the coverage line (F-83) accounts for each candidate once.
  * F-94 Hedged or not, across the dollar: this same calculation at another A-03, which moves an unhedged fund and not a hedged one.

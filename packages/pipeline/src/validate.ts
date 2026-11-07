@@ -126,6 +126,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "funds" && result.success) {
       for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
       for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
+      for (const message of checkFundNames(parsed.value as Pick<FundRecord, "names">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
@@ -168,6 +169,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase)) report(file, message);
     }
   }
+  checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
+  checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
@@ -204,6 +207,46 @@ export function checkFundDistribution(record: Pick<FundRecord, "distribution_pol
   return out;
 }
 
+/** A name's brackets close in order, and no Hebrew letter is glued to the outside of one: names read off a report's PDF came out as
+ * "MTF סל (S&P 500 (4D" and "מור סל (4D)י S&P 500", and the page showed them so (2026-11-05). */
+export function checkFundNames(record: Pick<FundRecord, "names">): string[] {
+  const out: string[] = [];
+  for (const name of [...record.names.he, ...record.names.en]) {
+    let depth = 0;
+    for (const ch of name) {
+      if (ch === "(") depth++;
+      else if (ch === ")" && --depth < 0) break;
+    }
+    if (depth !== 0) out.push(`names: "${name}" has a bracket that does not close in order; copy the name from the fund's report`);
+    if (/[\u05d0-\u05ea]\(|\)[\u05d0-\u05ea]/.test(name)) out.push(`names: "${name}" has a Hebrew letter glued to the outside of a bracket; copy the name from the fund's report`);
+  }
+  return out;
+}
+
+/**
+ * A document's title that quotes a fund's name broken by the right-to-left copy: a bracket that does not close in order ("MTF מחקה (Nasdaq
+ * 100 (4D" for "MTF מחקה (4D) Nasdaq 100"), or a class mark glued to a Hebrew letter ("(4D)י"). Rule records' titles, their figures' too,
+ * and the rule base's source lines (lens review S3: the fund records were checked, the titles that quote them were not).
+ */
+export function checkTitleBrackets(title: string): string[] {
+  let depth = 0;
+  for (const ch of title) {
+    if (ch === "(") depth++;
+    else if (ch === ")" && --depth < 0) break;
+  }
+  const out: string[] = [];
+  if (depth !== 0) out.push(`"${title.slice(0, 80)}" has a bracket that does not close in order; copy the name from the document`);
+  if (/\(\d[A-Z]\)[\u05d0-\u05ea]|[\u05d0-\u05ea]\(\d[A-Z]\)/.test(title)) out.push(`"${title.slice(0, 80)}" has a class mark glued to a Hebrew letter; copy the name from the document`);
+  return out;
+}
+
+/** Every `title` and `title_he` in a record, with where it is. */
+function titlesOf(o: unknown, at = ""): [string, string][] {
+  if (Array.isArray(o)) return o.flatMap((x, i) => titlesOf(x, `${at}[${i}]`));
+  if (!o || typeof o !== "object") return [];
+  return Object.entries(o).flatMap(([k, v]) => ((k === "title" || k === "title_he") && typeof v === "string" ? [[`${at}.${k}`, v] as [string, string]] : titlesOf(v, `${at}.${k}`)));
+}
+
 /** The words of a reading note, not of a document's name (2026-11-03: a 1,321-character note stood as a bank's tariff name on its page). */
 const READING_NOTE = /https?:\/\/|Chrome|curl|founder|pdf\.js|script|סקריפט|מטא-נתוני|אינו נושא תאריך|אינו מודפס/;
 /** A tariff's title is the document's name, which the site shows as the source; the notes on how it was read go in `tariff.notes`. */
@@ -223,7 +266,8 @@ const NAMES_CLASS: Record<string, RegExp> = {
   foreign_securities: /קרנות|קרן|ETF|תעודו?ת סל|ניירות ערך בחוץ לארץ(?!\s*-)/,
 };
 interface PremiseSnapshot {
-  provider: { class: string };
+  provider: { class: string; part_of?: string };
+  current_account?: { monthly_minimum: { value: unknown; unit: string; source?: { quote?: string } } };
   missing?: boolean;
   price_for_he?: string;
   left_out?: unknown[];
@@ -245,6 +289,7 @@ interface GroupEntryLike {
   cheaper_he?: string;
   ends_short_he?: string;
   prices: { fee?: string; price_he: string; holdings_he: string; names_fund: boolean; value?: GroupValueLike; source?: { quote?: string } }[];
+  current_account?: { price_he: string; for_months: number; source: { quote: string } };
 }
 /** The structured numbers of a group price (schema `groupPriceValue`); the check below reads them against the price's words. */
 interface GroupValueLike {
@@ -432,6 +477,14 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   const out: string[] = [];
   if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
   if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
+  // D64: a bank's row counts the monthly minimum of a current account there (F-102); an investment house has none, and a house that is
+  // part of another is priced on that house's row
+  const ca = snap.current_account;
+  if (snap.provider.class === "bank" && !snap.provider.part_of && !ca) out.push("current_account: a bank's record says what its current account costs a month, from its price list (D64)");
+  if ((snap.provider.class !== "bank" || snap.provider.part_of) && ca) out.push("current_account: only a bank's own record carries a current account (D64)");
+  if (ca && (ca.monthly_minimum.unit !== "nis_per_month" || typeof ca.monthly_minimum.value !== "number")) out.push("current_account.monthly_minimum: a number in nis_per_month (F-102)");
+  // a minimum a row counts carries the price list's own words (data-schema "current_account"); a free account read only in a browser may not
+  if (ca && typeof ca.monthly_minimum.value === "number" && ca.monthly_minimum.value > 0 && !ca.monthly_minimum.source?.quote) out.push("current_account.monthly_minimum: a minimum the row counts quotes its price list (source.quote)");
   const g = snap.groups;
   if (!g) out.push("groups: a bank's or broker's record says its group prices, or that it has none, or that they could not be read");
   else {
@@ -440,6 +493,15 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
       if (e.ends_printed && !e.ends_source) out.push(`groups: ${e.name_he} says its end is printed and does not say where`);
       // a price reaches a fund only where the row's own words name funds (D42): the same stretch as a ranked line; words after "למעט" take funds out
       for (const x of e.prices) if (x.names_fund !== /קרן|קרנות/.test(x.holdings_he.replace(/למעט[^)]*/g, ""))) out.push(`groups: ${e.name_he}: names_fund does not fit the words "${x.holdings_he}"`);
+      // F-102: a group's own current-account price is a bank's, held for the entry's printed end, and its quote says it is free
+      const gca = e.current_account;
+      if (gca) {
+        if (!ca) out.push(`groups: ${e.name_he}: current_account on a record that prices no current account (D64)`);
+        if (!e.ends_printed || !monthsIn(e.ends_he ?? "").includes(gca.for_months)) out.push(`groups: ${e.name_he}: current_account.for_months ${gca.for_months} is not the entry's printed end`);
+        if (!/פטור/.test(gca.source.quote) || !/פטור/.test(gca.price_he)) out.push(`groups: ${e.name_he}: current_account is exempt, and its words and quote say "פטור"`);
+        // the quote names the minimum itself: a free teller action is not a free minimum (lens review M2, D56)
+        if (!/מינימום/.test(gca.source.quote)) out.push(`groups: ${e.name_he}: current_account's quote does not name the minimum ("מינימום"); an exemption read from other rows is not recorded (D56)`);
+      }
     }
     out.push(...checkGroupWords(snap));
     out.push(...checkGroupValues(snap));
@@ -513,6 +575,81 @@ function isPdfUrl(url: string): boolean {
 }
 
 /** Every record of data/rules/ by id (those that parse). */
+/**
+ * A product value left unknown (`value: null`) whose rules were checked again after it was: the research may have
+ * answered it since (2026-11-07: child savings' switch tax stayed "unknown" two weeks after TXK-23 settled it).
+ * A warning, listed by file and field, so each is re-read against today's rule base.
+ */
+export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): string[] {
+  const out: string[] = [];
+  const latest = (r: RuleLike) => [r.checked, ...(r.sources ?? []).map((s) => (s as { checked?: string }).checked ?? "")].reduce((a, b) => (b > a ? b : a), "");
+  const walk = (node: unknown, path: string) => {
+    if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${path}[${i}]`));
+    if (!node || typeof node !== "object") return;
+    const v = node as { value?: unknown; checked?: string; rule_ids?: string[] };
+    if ("value" in v && v.value === null && typeof v.checked === "string" && Array.isArray(v.rule_ids)) {
+      const newer = v.rule_ids.filter((id) => { const r = rules.get(id); return r !== undefined && latest(r) > v.checked!; });
+      if (newer.length) out.push(`${path.slice(1)} (${newer.join(", ")})`);
+    }
+    // a fee cap of null means "no cap" (the guide prints it so), not unknown
+    for (const [k, child] of Object.entries(node)) if (k !== "fee_caps") walk(child, `${path}.${k}`);
+  };
+  walk(record, "");
+  return out;
+}
+
+/**
+ * CLAUDE.md "General sources first" (founder, 2026-11-07): cite only official publications. A source whose strength
+ * is `secondary` or `primary-mirror`, or whose host data/sources/publishers.json calls an `article`, fails, unless it is
+ * a leftover named in unofficial-leftovers.json (`<file> <url>`). The list only shrinks: a leftover that is gone fails
+ * too, so it is struck when its source is replaced. A blog, forum, press article or copy is a lead, recorded in notes.
+ */
+export function unofficialSources(record: unknown, articleHosts: Set<string>): string[] {
+  const out: string[] = [];
+  const walk = (node: unknown) => {
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (!node || typeof node !== "object") return;
+    const v = node as { url?: unknown; strength?: unknown };
+    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || v.strength === "primary-mirror" || articleHosts.has(hostOf(v.url)))) out.push(v.url);
+    Object.values(node).forEach(walk);
+  };
+  walk(record);
+  return [...new Set(out)];
+}
+
+function checkUnofficialSources(files: string[], dataDir: string, report: (file: string, message: string) => void): void {
+  const pubPath = join(dataDir, "sources", "publishers.json");
+  const pubs = existsSync(pubPath) ? (parseJson(readFileSync(pubPath, "utf8")).value as Record<string, { kind?: string }>) : {};
+  const articleHosts = new Set(Object.entries(pubs).filter(([, p]) => p.kind === "article").map(([h]) => h));
+  const leftovers = new Set<string>(JSON.parse(readFileSync(new URL("./unofficial-leftovers.json", import.meta.url), "utf8")) as string[]);
+  const seen = new Set<string>();
+  for (const f of files) {
+    if (!f.endsWith(".json")) continue;
+    const rel = relative(dataDir, f).split(/[\\/]/).join("/");
+    if (rel.startsWith("sources/")) continue;
+    for (const url of unofficialSources(parseJson(readFileSync(f, "utf8")).value, articleHosts)) {
+      const key = `${rel} ${url}`;
+      seen.add(key);
+      if (!leftovers.has(key)) report(f, `cites ${url}, which is not an official publication: cite the official text, and keep this one as a lead in notes`);
+    }
+  }
+  // a leftover whose file is scanned here and no longer cites it is struck; a fixture directory without the file is left alone
+  const scanned = new Set(files.map((f) => relative(dataDir, f).split(/[\\/]/).join("/")));
+  for (const key of leftovers) {
+    const file = key.slice(0, key.indexOf(" "));
+    if (scanned.has(file) && !seen.has(key)) report(join(dataDir, file), `unofficial-leftovers.json still lists "${key}", which is gone: strike it (the list only shrinks)`);
+  }
+}
+
+function checkStaleUnknowns(files: string[], dataDir: string, rules: Map<string, RuleLike>, warn: (category: string, id: string) => void): void {
+  for (const file of files) {
+    const rel = relative(dataDir, file);
+    if (!rel.startsWith("instruments") || !file.endsWith(".json")) continue;
+    const name = rel.split(/[\\/]/).pop()!.replace(/\.json$/, "");
+    for (const at of staleUnknowns(parseJson(readFileSync(file, "utf8")).value, rules)) warn("value left unknown, its rules checked since", `${name}:${at}`);
+  }
+}
+
 function readRuleRecords(files: string[], dataDir: string): Map<string, RuleLike> {
   const out = new Map<string, RuleLike>();
   for (const file of files) {
@@ -549,6 +686,9 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
     else warn("rules with neither sources nor sources_missing_reason (extraction not run)", rule.id);
   }
   const block = ctx.ruleBase.blocks?.get(rule.id);
+  for (const [at, title] of titlesOf({ sources: rule.sources, figures: rule.figures })) for (const m of checkTitleBrackets(title)) out.push(`${at.slice(1)}: ${m}`);
+  // the rule base is its owners' to fix: a broken name in its source line is said, and the record's title is held to the document
+  if (block) for (const m of block.body.matchAll(/^- Source: (.*)$/gm)) for (const link of m[1]!.matchAll(/\[([^\]]+)\]\(/g)) if (checkTitleBrackets(link[1]!).length) warn("rule base source line quotes a broken fund name", rule.id);
   sources.forEach((s, i) => {
     const at = `sources[${i}]`;
     const host = hostOf(s.url);
@@ -709,6 +849,11 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
       if (typeof mark === "string" && mark.startsWith("blocked:") && closed(mark.slice("blocked:".length)))
         report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} is closed in data/open-questions.json; unblock it`);
     }
+    // a dimension still marked open while the record's own value for it is known (child savings, 2026-11-07)
+    const known = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
+    const sw = marks["switching-tax-event"];
+    if (known !== undefined && known !== null && typeof sw === "string" && sw.startsWith("blocked:"))
+      report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${String(known)}); mark it covered`);
   }
 }
 

@@ -2,19 +2,19 @@
   "id": "agch-mmshlvt",
   "he": "אג\"ח ממשלות",
   "en": null,
-  "meaning": "מסלול בניהול פעיל שמתמחה באיגרות חוב של ממשלות, לפי הסיווג של רשות שוק ההון",
+  "meaning": "מסלול בניהול פעיל שרוב הכסף בו חשוף לאיגרות חוב של ממשלות שהדירוג שלהן עומד בתנאי שהתקנות קובעות; ייתכן בו סיכון מטבע",
   "where": [],
   "wrapper_ids": [],
   "variants": [],
   "rule_ids": [
     "CAT-10",
-    "CAT-17"
+    "CAT-47"
   ],
   "source": {
-    "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-    "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
-    "publisher": "see title",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=5",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 5, \"מסלול אג\"ח ממשלות\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
     "strength": "primary",
-    "checked": "2026-10-22"
+    "checked": "2026-11-07"
   }
 }

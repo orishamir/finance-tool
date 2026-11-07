@@ -81,7 +81,7 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
 
 // ---------------------------------------------------------------- headline
 
-/** A value the engine read a rule into as an inference (the "reading" label, TXG-35): marked as a secondary source is (audit 2026-10-24, A2). */
+/** A value the engine read a rule into as an inference (the "reading" label, e.g. TXK-07 when the CPI fell): marked as a secondary source is (audit 2026-10-24, A2). */
 export const hasReading = (v: SiteValue) => !!v.labels?.some((l) => l.code === "reading");
 
 export function ReadingMark({ value }: { value: SiteValue }) {

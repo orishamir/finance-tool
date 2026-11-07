@@ -25,7 +25,7 @@ export interface SiteValue extends ValueObject {
   parameter?: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null; provisional: boolean };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
-  /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXG-35 in F-52). */
+  /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell). */
   labels?: { code: string; ruleId: string }[];
   /** Engine flags (G-IDs, open questions) that qualify the value. */
   flags?: string[];

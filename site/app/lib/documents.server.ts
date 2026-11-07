@@ -7,7 +7,7 @@ import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { wikisourcePageTitle } from "./sources";
 import { documents as documentsCopy } from "../copy";
-import { mostlyHebrew } from "./source-label";
+import { hebrewDocTitle } from "./source-label";
 import { ruleTitle } from "./rule-title";
 import type { Strength } from "./value";
 import * as dataServer from "./data.server";
@@ -86,11 +86,17 @@ function slugOf(url: string): string {
   return `doc-${h.toString(16).padStart(8, "0")}`;
 }
 
-/** The url without fragment and query: the key of a document the table does not name. */
+/**
+ * The key of a document the table does not name: the url without its fragment, and without its query when the path names a
+ * file (a viewer's `?page=` does not make another document). A script's query is kept, because there it names the document:
+ * every booklet on Reshumot's resolver shares one path and differs only in `?path=` (2026-11-07: they had merged into one).
+ */
 export function stripUrl(url: string): string {
   try {
     const u = new URL(url);
-    return u.origin + u.pathname.replace(/\/$/, "");
+    const path = u.pathname.replace(/\/$/, "");
+    const isFile = /\.[a-z0-9]{2,5}$/i.test(path) && !/\.(aspx?|php|jsp|cgi|svc)$/i.test(path);
+    return u.origin + path + (isFile ? "" : u.search);
   } catch {
     return url.split(/[#?]/)[0]!;
   }
@@ -185,7 +191,9 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
   for (const [key, { doc, entries }] of groups) {
     const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
-    const titleHe = doc?.title_he ?? mostCommon(entries.filter((e) => mostlyHebrew(e.title_he ?? e.title)).map((e) => e.title_he ?? e.title));
+    // a title written in Hebrew, a web host before it allowed: "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים" is a Hebrew title, and
+    // "Tax Authority, מדריך…" an English working title that quotes one (#190: a count of letters alone showed it)
+    const titleHe = doc?.title_he ?? mostCommon(entries.filter((e) => hebrewDocTitle(e.title_he ?? e.title)).map((e) => e.title_he ?? e.title));
     const url0 = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
     // never an English working title: the Wikisource page's own name, then the kind's word (QA 2026-10-24, F4)

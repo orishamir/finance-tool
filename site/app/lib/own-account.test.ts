@@ -221,6 +221,36 @@ describe("the tariff built in layers (F-101)", () => {
     expect(student.until!.months).toBe(48);
     expect(student.until!.then.custody).toEqual(list.custody);
   });
+  it("a group whose annex exempts its current account pays nothing for it until the group's end, then the bank's minimum (F-102)", () => {
+    // Discount's first-degree students (annex, "עמלת מינימום פעולות פטור"), for 4 years from joining
+    const discount = house("discount");
+    const dStudent = point("סטודנטים לתואר ראשון", startingPointsOf(discount));
+    const dReading = listReading(bundle, discount, "il-etf", plan)!;
+    const dList = dReading.built.tariff as SecuritiesInput["tariff"];
+    const dAccount = (over: Partial<ReturnType<typeof brokerDraftOf>> = {}) => accountAt(discount, dStudent, over, "custom-broker-discount");
+    expect(dStudent.group!.currentAccount?.exemptMonths).toBe(48);
+    const counted = { ...dList, currentAccount: 5.9 };
+    const got = unwrap(layeredTariff(dAccount(), counted, dReading.run));
+    expect(got.currentAccount).toBe(0);
+    expect(got.until!.months).toBe(48);
+    expect(got.until!.then.currentAccount).toBe(5.9);
+    // a stay in the group shorter than its end ends the exemption with it
+    const short = unwrap(layeredTariff(dAccount({ untilYears: 2 }), counted, dReading.run));
+    expect(short.until!.months).toBe(24);
+    expect(short.until!.then.currentAccount).toBe(5.9);
+    // where the row does not count the current account (the person's own bank), the group adds nothing
+    expect(unwrap(layeredTariff(dAccount(), dList, dReading.run)).currentAccount).toBeUndefined();
+  });
+  it("a group whose annex leaves the minimum unclear pays the ordinary minimum throughout (D56, D64; lens review M2)", () => {
+    // Mercantile's students (p.31): the teller action and the direct action "פטור", and no row for the minimum, which is "not above
+    // the price of one teller action": the most the documents allow is the price list's 6.40 shekels
+    const counted = { ...list, currentAccount: 6.4 };
+    expect(STUDENT.group!.currentAccount).toBeUndefined();
+    const got = unwrap(layeredTariff(accountOn(STUDENT), counted, run));
+    expect(got.currentAccount).toBe(6.4);
+    expect(got.until?.then.currentAccount ?? 6.4).toBe(6.4);
+    expect(unwrap(layeredTariff(accountOn(TOP), counted, run)).currentAccount).toBe(6.4);
+  });
   it("a rate without a minimum keeps the list's minimum and maximum: silence is not zero", () => {
     const got = unwrap(layeredTariff(accountOn(named(STUDENT.group!)), list, run));
     // Mercantile's student price states 0.25% a trade "subject to a minimum" and no number
@@ -349,6 +379,18 @@ describe("the tariff built in layers (F-101)", () => {
 });
 
 describe("a price for a time through the page's own run (F-101)", () => {
+  it("keeps both sources of a group's current account in the shape the site builds: the annex's exemption, then the price list (lens review S4)", () => {
+    const discount = house("discount");
+    const b = accountAt(discount, point("סטודנטים לתואר ראשון", startingPointsOf(discount)), {}, "custom-broker-discount");
+    const row = providerWorkbench(workbenchInput([{ snapshot: discount, level: "entered", layered: layeredOf(b), currentAccount: true }]), ruleContext(bundle)).rows[0] as ComparedProvider;
+    const sources = row.lineSources.filter((x) => x.lineId === "current-account").map((x) => [x.level, x.url]);
+    expect(sources).toEqual([
+      ["entered", b.base!.group!.currentAccount!.source!.url],
+      ["list", discount.current_account!.monthly_minimum.source.url],
+    ]);
+    // the plan runs past the exemption's 48 months: the ordinary minimum is paid for the rest
+    expect(row.run.fees.account).toBeCloseTo(5.9 * (12 * planRun.years - 48), 6);
+  });
   it("an account on the price list alone is the house's row, to the shekel, at a house with a standing-order price and at one without", () => {
     for (const [snap, expected] of [[mercantile, EXPECTED.merc_list_alone], [leumi, EXPECTED.leumi_list_alone]] as const) {
       const b = accountAt(snap, startingPointsOf(snap)[0]!);
@@ -463,12 +505,15 @@ describe("the entry (saved, followed, kept)", () => {
     const inputs = Object.values(withCustomEntries(bundle, [student], []).entered!.inputs[student.id]!);
     expect(inputs.some((v) => v.state === "sourced")).toBe(true);
   });
-  it("a house that is no longer on the site leaves the row with what the person typed, an empty fee counting as zero", () => {
+  it("a house that is no longer on the site leaves the row with what the person typed; an empty fee there is not known, so it is not ranked (D56, #190)", () => {
     const gone = { ...top, base: { ...top.base!, houseId: "nobody" } };
     const b = withCustomEntries(bundle, [gone], []);
     expect(b.snapshots.find((s) => s.id === gone.id)!.lines).toEqual([]);
     expect(b.entered!.layered[gone.id]).toBeUndefined();
-    expect(b.entered!.tariffs[gone.id]).toEqual(tariffOfBroker(gone));
+    expect(b.entered!.tariffs[gone.id]).toBeUndefined();
+    expect(b.snapshots.find((s) => s.id === gone.id)!.missing).toBe(true);
+    const whole = { ...gone, tradePct: entered(0.05, "pct_of_trade", t), tradeMin: entered(12, "nis_per_trade", t), custodyPct: entered(0, "pct_per_year", t), custodyMin: entered(0, "nis_per_month", t), fxPct: entered(0.2, "pct_of_trade", t), monthlyFee: entered(0, "nis_per_month", t) };
+    expect(withCustomEntries(bundle, [whole], []).entered!.tariffs[gone.id]).toEqual(tariffOfBroker(whole));
   });
   it("a bad base or years leave the entry out, not the file", () => {
     const bad = [
@@ -527,12 +572,16 @@ describe("an entry saved before this change", () => {
     monthlyFee: null,
     sells: { israeli: true, abroad: true },
   };
-  it("loads unchanged, with no base, and is read as it always was", () => {
+  it("loads unchanged, with no base; a line left empty is a price not known (2026-11-05), so it has no tariff until it is filled", () => {
     const loaded = validCustomBrokers([JSON.parse(JSON.stringify(old))]);
     expect(loaded).toEqual([old]);
     expect("base" in loaded[0]!).toBe(false);
     const b = withCustomEntries(bundle, loaded, []);
-    expect(b.entered!.tariffs[old.id]).toEqual({ buy: { rate: 0.0005, min: 1 }, sell: { rate: 0.0005, min: 1 }, custody: { rate: 0.0002 / 12, everyMonths: 1 }, fx: 0.002, monthlyFee: 0 });
+    expect(b.entered!.tariffs[old.id]).toBeUndefined();
+    expect(b.snapshots.find((s) => s.id === old.id)!.missing).toBe(true);
+    const filled = { ...old, custodyMin: entered(0, "nis_per_month", t, "מינימום לחודש"), monthlyFee: entered(0, "nis_per_month", t, "דמי ניהול חשבון") };
+    const b2 = withCustomEntries(bundle, validCustomBrokers([JSON.parse(JSON.stringify(filled))]), []);
+    expect(b2.entered!.tariffs[old.id]).toEqual({ buy: { rate: 0.0005, min: 1 }, sell: { rate: 0.0005, min: 1 }, custody: { rate: 0.0002 / 12, everyMonths: 1 }, fx: 0.002, monthlyFee: 0 });
     expect(b.entered!.layered).toEqual({});
     expect(b.snapshots.find((s) => s.id === old.id)!.lines).toEqual([]);
   });
@@ -555,6 +604,15 @@ describe("what the panel shows", () => {
   const top = accountOn(STUDENT);
   const withIt = withCustomEntries(bundle, [top], []);
   const result = ownAccountResult({ bundle: withIt, index, plan, broker: top })!;
+
+  it("an account built on a bank keeps the bank's current account, and leaves it out when the person marks that bank (D64)", () => {
+    const view = (own: string | null | undefined) => buildInvest({ bundle: withIt, index, plan: own === undefined ? plan : { ...plan, currentAccounts: { own } } });
+    const at = (v: ReturnType<typeof view>) => v.houses.find((h) => h.provider.id === top.id)!.best!.price!;
+    // Mercantile's price list: 6.40 shekels a month for the current account
+    expect(at(view(null)).lines.map((l) => l.line)).toContain("account");
+    expect(at(view(undefined)).valueN - at(view(null)).valueN).toBeGreaterThan(900);
+    expect(at(view("mercantile")).valueN).toBe(at(view(undefined)).valueN);
+  });
 
   it("gives the three numbers, each a value with its provenance", () => {
     expect(result).toBeTruthy();

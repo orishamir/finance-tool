@@ -1,15 +1,15 @@
 {
   "id": "IRA-28",
-  "title": "Failures at IRA managers (context for protection)",
-  "title_he": "כשלים אצל מנהלי קופות בניהול אישי",
-  "strength": "secondary",
+  "title": "A failure at an IRA manager (context for protection)",
+  "title_he": "כשל אצל מנהל של קופה בניהול אישי",
+  "strength": "primary",
   "dimensions": [
     "protection",
     "regulator"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "text_he": "לא כללים אלא אירועים אצל שני מנהלים: רשות שוק ההון הודיעה בדצמבר 2023 שמינתה מנהל מורשה לסלייס גמל, אחרי שבביקורת שלה התגלו כשלים בהתנהלות החברה; לפי העיתונות כספי חוסכים הושקעו שם בהשקעות אלטרנטיביות והוקפאו. נגד גלובלנט הוגשה בקשה לתובענה ייצוגית על הפניה לקרנות זרות לא נזילות (טענות בלבד, לפי העיתונות).",
+  "text_he": "לא כלל אלא אירוע אצל מנהל אחד: רשות שוק ההון הודיעה בדצמבר 2023 שמינתה מנהל מורשה לסלייס גמל, אחרי שבביקורת שלה התגלו כשלים בהתנהלות החברה.",
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-26",
   "scope": "institution",
@@ -17,10 +17,6 @@
     {
       "id": "slice",
       "name_he": "סלייס"
-    },
-    {
-      "id": "globalnet",
-      "name_he": "גלובלנט"
     }
   ],
   "sources": [
@@ -34,37 +30,6 @@
       "strength": "primary",
       "quote": "ההחלטה על מינוי המנהל המורשה התקבלה לאחר שבביקורת שערכה הרשות בחברה התגלו כשלים בהתנהלותה",
       "checked": "2026-10-26"
-    },
-    {
-      "url": "https://www.bizportal.co.il/general/news/article/20032690",
-      "title": "עוד מקור להשבת כספים לעמיתי סלייס: פשרה של כ-33 מיליון שקל עם הפניקס, ביזפורטל, 25.05.2026",
-      "title_he": "עוד מקור להשבת כספים לעמיתי סלייס: פשרה של כ-33 מיליון שקל עם הפניקס, ביזפורטל, 25.05.2026",
-      "publisher": "Bizportal",
-      "publisher_he": "ביזפורטל",
-      "kind": "article",
-      "strength": "secondary",
-      "quote": "פשרה של כ-33 מיליון שקל עם הפניקס",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bizportal.co.il/takdin/news/article/20034029",
-      "title": "בקשה לייצוגית נגד גלובלנט של דן דוברי בעקבות אובדן כספי השקעות, ביזפורטל, 16.06.2026",
-      "title_he": "בקשה לייצוגית נגד גלובלנט של דן דוברי בעקבות אובדן כספי השקעות, ביזפורטל, 16.06.2026",
-      "publisher": "Bizportal",
-      "publisher_he": "ביזפורטל",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.calcalist.co.il/market/article/bjnkrerfa",
-      "title": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
-      "title_he": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
-      "publisher": "Calcalist",
-      "publisher_he": "כלכליסט",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
     }
   ]
 }

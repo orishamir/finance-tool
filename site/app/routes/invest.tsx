@@ -1,14 +1,14 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { brands, invest as c, site } from "../copy";
 import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Pick } from "../components/invest/pair";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
 import { IndexHeader } from "../components/invest/sections";
@@ -16,7 +16,7 @@ import { Foot } from "../components/invest/foot";
 import { DollarSection } from "../components/invest/dollar";
 import { StairsSection } from "../components/invest/stairs";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
-import { Callout } from "../components/kit";
+import { Callout, useSwapGlide } from "../components/kit";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
@@ -26,7 +26,7 @@ import { feeInputs } from "../lib/fees";
 import { useSettled } from "../lib/settled";
 import { useInputs } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
-import { buildInvest, hasKinds, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { buildInvest, chargesCurrentAccount, hasKinds, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
@@ -123,6 +123,9 @@ function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compa
   return <Body wb={wb} compare={compare} data={data} search={search} />;
 }
 
+/** The bank the person marked as theirs (D64), while a bank whose current account costs something has that id; else none. */
+const ownBankOf = (wb: WorkbenchBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && chargesCurrentAccount(s)) ? id : null);
+
 function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
@@ -131,6 +134,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05); never the saved goal
   // (founder, 2026-10-28: only the goal page speaks of a goal).
   const fi = useMemo(() => feeInputs(compare, null, released.state), [compare, released.state]);
+  const ownBank = ownBankOf(wb, invest.bank);
+  const currentAccounts = useMemo(() => ({ own: ownBank }), [ownBank]);
   const livePlan: WorkbenchInputs = useMemo(
     () => ({
       // the whole amount today: what stays available is the comparison's question, not this page's (founder, 2026-10-28)
@@ -144,12 +149,26 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       values: fi.values,
       fromGoal: fi.fromGoal,
       returnFromParameter: fi.returnFromParameter,
+      // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
+      currentAccounts,
     }),
-    [fi],
+    [fi, currentAccounts],
   );
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider live; the two lists price every
-  // account and fund (about 200 ms) and wait until the slider rests (founder, 2026-10-28: "sliding the sliders is very laggy").
-  const plan = useSettled(livePlan, 250);
+  // account and fund (about 200 ms) and wait until the slider rests (founder, 2026-10-28: "sliding the sliders is very laggy"). A bank
+  // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
+  // re-sort right after the pick rather than a moment later, when the hand may be on the list (2026-11-06 check: 0.6 to 1 s).
+  const settledPlan = useSettled(livePlan, 250);
+  const merged = useRef<WorkbenchInputs | null>(null);
+  const plan = useMemo(() => {
+    const next = settledPlan.currentAccounts === currentAccounts ? settledPlan : { ...settledPlan, currentAccounts };
+    // the plan that settles after the pick is the one the lists already took: kept, so they are not priced twice
+    const prev = merged.current;
+    const same = prev && (Object.keys(next) as (keyof WorkbenchInputs)[]).every((k) => prev[k] === next[k]) && Object.keys(prev).length === Object.keys(next).length;
+    merged.current = same ? prev : next;
+    return merged.current!;
+  }, [settledPlan, currentAccounts]);
+  const ownBankControl = useMemo(() => ({ value: ownBankOf(wb, invest.bank), onChange: invest.setBank }), [wb, invest.bank, invest.setBank]);
 
   const customs: CustomIndex[] = invest.customIndices;
   // the broker and fund the person typed join the data here and nowhere else: this page alone compares them (D44)
@@ -228,7 +247,23 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const shownView = picked?.view ?? view;
   const shownBundle = picked?.bundle ?? bundle;
   const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
-  const onPick = (p: Pick) => {
+  // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick (2026-11-05)
+  const [moved, setMoved] = useState<Moved | null>(null);
+  const onPick = (p: Pick, m?: Moved) => {
+    // the way back puts back the address as it was before the tap: no pick (the page's own pair, never made the person's), or the pick
+    // with its group (#190: it wrote the pair back as a pick, and a group's held account in place of its house)
+    const before = search;
+    setMoved(
+      m
+        ? {
+            ...m,
+            back: () => {
+              setMoved(null);
+              navigate(`${pathname}${before}`, { replace: true, preventScrollReset: true });
+            },
+          }
+        : null,
+    );
     // a pick on the group's account (another fund, from the fund list) stays on that group of that house
     const next: Pick = picked && own?.group && p.house === picked.id ? { house: own.house, fund: p.fund, group: own.group } : p;
     const q = new URLSearchParams(search);
@@ -238,11 +273,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     else q.delete("group");
     navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
   };
+  const movedNow = moved && shown && moved.at.house === (own?.house ?? shown.house) && moved.at.fund === shown.fund ? moved : null;
   // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
+  // another index replaces what lies below the pills, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
+  const swap = useSwapGlide<HTMLDivElement>(index?.id ?? customId ?? "");
+  const go = (p: string) => swap.begin(() => navigate(p));
   const chips = (
     <IndexChips
       known={known}
@@ -251,11 +290,11 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
-        if (index?.id === id) navigate(INDICES_PATH);
+        if (index?.id === id) go(INDICES_PATH);
       }}
       onRename={invest.rename}
       onSave={(x) => invest.add(x)}
-      onGo={(p) => navigate(p)}
+      onGo={go}
     />
   );
 
@@ -267,6 +306,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       today={data.today}
       example={Object.keys(released.state.entered).length === 0}
       dollar={!index?.israeli}
+      inflation={fi.values.inflation}
     />
   );
 
@@ -279,6 +319,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           <Head />
           {chips}
         </div>
+        <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
         {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
           <p className="text-muted-foreground">{c.chips.none}</p>
@@ -290,13 +331,13 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {planBlock}
             {pick && shown && shownView ? (
               <>
-                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} onPick={onPick} />
+                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} chosen={picks} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} pick={shown} onPick={onPick} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
+                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} monthly={plan.monthly} pick={shown} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
-                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
+                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} filter={labelFilter} onFilter={setLabelFilter} />
                 </div>
               </>
             ) : (
@@ -304,7 +345,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
               <>
                 <NoFundCall view={view} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} chosen={genericHouse} onPick={setGenericHouse} />
+                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
@@ -319,11 +360,12 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
             {shown && shownView && hasKinds(view) && wb.dollarRange && <DollarSection view={shownView} bundle={shownBundle} plan={plan} pick={shown} />}
             {/* the stairs: which single change leaves more, one step at a time; appended last (founder, 2026-11-01) */}
-            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} />}
+            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} example={!picks} />}
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>
         )}
+        </div>
       </div>
       <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">

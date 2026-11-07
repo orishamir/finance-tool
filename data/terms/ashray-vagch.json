@@ -2,20 +2,21 @@
   "id": "ashray-vagch",
   "he": "אשראי ואג\"ח",
   "en": null,
-  "meaning": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ",
+  "meaning": "מסלול שרוב הכסף בו בחוב, בישראל ובחוץ לארץ: פיקדונות, איגרות חוב של חברות ושל ממשלות, ניירות ערך מסחריים, הלוואות לא סחירות לחברות ולאנשים פרטיים וקרנות חוב; הרשימה לא קובעת בו חלק למניות",
   "where": [
     "app"
   ],
   "wrapper_ids": [],
   "variants": [],
   "rule_ids": [
-    "CAT-23"
+    "CAT-23",
+    "CAT-47"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
-    "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
-    "publisher": "see title",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=4",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 4, \"מסלול אשראי ואג\"ח\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
     "strength": "primary",
-    "checked": "2026-10-26"
+    "checked": "2026-11-07"
   }
 }

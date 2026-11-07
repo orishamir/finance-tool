@@ -59,13 +59,13 @@
     "formula": "F-50",
     "rule_ids": [
       "TXK-20",
-      "TXK-23",
+      "TXK-29",
       "TXI-02",
       "TXI-03"
     ],
     "blocked_by": [],
     "labels": [
-      "secondary source: 25% of the real gain on a CPI-linked track, 15% of the nominal gain on an unlinked or prime track, withheld by the bank (TXK-23; the official texts give no rate for child savings, TXK OQ1; method G-17)"
+      "the site's reading: up to 25% of the real gain on a CPI-linked track (s.125ג(ב), the linkage exempt by s.9(13)), 15% of the nominal gain on an unlinked or prime track (s.125ג(ג)(1)), withheld by the bank (TXK-29, TXI-02, TXI-03, TXI-05: the general deposit-interest rules, which the Ministry of Finance says apply; no official text names child savings, TXK OQ1; whether the Ordinance's trust chapter, s.75ג, reaches the child's statutory trust account is open; method G-17)"
     ]
   },
   "lawful_exit": {
@@ -104,7 +104,7 @@
       "publisher": "National Insurance Institute (BTL)",
       "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -112,10 +112,11 @@
     "rule_ids": [
       "CS-12",
       "CS-10",
-      "TXK-22"
+      "TXK-22",
+      "TXK-29"
     ],
     "state": "sourced",
-    "notes": "Unknown: no source read states the tax treatment of a track change at a bank exit station, or of redirecting future deposits to a provident fund (TXK OQ1). The product side: the bank track can change only at an exit station, every 5 years, and only if that type was chosen; the plan can never move to another bank; since January 2025 future deposits may be redirected once to a provident fund while the balance stays at the bank (CS-12)."
+    "notes": "Unknown for a track change at a bank exit station: asked whether each maturity, renewal and track change is a tax event, the Ministry of Finance's tender committee answered only that the existing tax rules apply (questions 71, 72; TXK-29), and no text says whether the general rules make it one (TXK OQ1). Redirecting future deposits to a provident fund moves no balance: the money already saved stays at the bank (CS-12). The plan can never move to another bank, so the Minister of Finance's statement that a move between banks is a tax event (TXK-29) has no case here. The product side: the bank track can change only at an exit station, every 5 years, and only if that type was chosen; since January 2025 future deposits may be redirected once to a provident fund (CS-12)."
   },
   "transfer_routes": [
     {

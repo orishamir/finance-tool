@@ -1,0 +1,71 @@
+{
+  "id": "REG-35",
+  "title": "TASE securities held through a bank: the bank too holds them at the clearing house as trustee for its clients",
+  "title_he": "ניירות ערך בבורסה בתל אביב שמוחזקים דרך בנק: גם הבנק מחזיק אותם במסלקה כנאמן ללקוחותיו",
+  "text_he": "לפי חוקי העזר של מסלקת הבורסה, בנקים הם חברי מסלקה, ולכן גם עליהם חל הכלל שניירות הערך של לקוחות החבר נרשמים במסלקה על שמו, והוא משמש נאמן עבורם, בחשבון משנה ללקוחות שנפרד מחשבון הנוסטרו שלו. כל חבר בורסה, כולל בנק, מנהל גם חשבון נפרד לכל לקוח בספרים שלו. הכלל לא חל על ניירות ערך שמופקדים במסלקה בחו״ל, ולכן גם לא על ניירות ערך זרים שמוחזקים דרך בנק ישראלי. כסף בחשבון ניירות ערך בבנק הוא יתרה שהבנק חייב ללקוח, כלומר פיקדון בלי ביטוח פיקדונות. מי מעביר את חשבונות ניירות הערך של בנק שקרס לבנק אחר לא נמצא.",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/r1phfszz/274625.pdf#page=6",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק א' - כללי",
+      "title_he": "חוקי העזר של מסלקת הבורסה, חלק א' - כללי",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "quote": "חבר מוביל לסליקה כספית",
+      "checked": "2026-11-06",
+      "qualifier": "(clearing-house rules made under Securities Law s.50ב, ISA-supervised)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=14",
+      "title": "p.14",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "ch.ד ss.1, 3",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=6",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.6, ch.ב s.1",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=34",
+      "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון",
+      "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.34, s.25ו",
+      "locator_he": "עמוד 34, סעיף 25ו",
+      "page": 34,
+      "checked": "2026-10-25",
+      "qualifier": "(exchange rules, ISA-approved)"
+    }
+  ],
+  "derived_from": [
+    "BRK-10"
+  ]
+}

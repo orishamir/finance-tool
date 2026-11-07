@@ -13,7 +13,7 @@ import { useSettled } from "../../lib/settled";
 import { pairCosts, pairLeft, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
+import { Num, ShortRow, shortRow } from "../provenance";
 import { ChangeChart, KnobStrip, NumberField, ParameterLine, SegmentedControl, percentCheck, type Knob } from "../kit";
 
 type Range = { min: number; max: number; step: number };
@@ -149,18 +149,29 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
         yFormat={(v) => fmt.number(Math.round(v))}
         choicesLabel={ch.choices}
         head={[...ch.cols]}
+        // on a phone the plan's number and the changed one share a column, one under the other: four figures side by side left each 63 px,
+        // and a typed plan's "50,000,000 ₪" ran over its neighbours (fresh readers, round 3, 2026-11-07)
         widths={[
           { pc: "24%", phone: "27%" },
-          { pc: "18%", phone: "21%" },
-          { pc: "18%", phone: "21%" },
+          { pc: "18%", phone: "37%" },
+          { pc: "18%", phone: "0" },
           { pc: "20%", phone: "0" },
-          { pc: "20%", phone: "31%" },
+          { pc: "20%", phone: "36%" },
         ]}
-        rows={rows.map(({ l, n, to, after, diff }) => ({
-          id: l.id,
-          swatch: LINE[n]!.bg,
-          cells: [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? <span key="d" className="font-semibold whitespace-nowrap">{diffText(diff)}</span> : null],
-        }))}
+        stackOnPhone={[1, 2]}
+        rows={rows.map(({ l, n, to, after, diff }) => {
+          // a row with a figure of a billion or more writes its other shekel figures in the same short form; only the figures a phone shows
+          // count (what is left is not in a phone's table), or a typed "50,000,000 ₪" read "0.05 מיליארד ₪" beside it
+          const short = shortRow(...(l.id === "amount" || l.id === "monthly" ? [planValue[l.id].value as number, to.value as number] : []), diff?.value as number);
+          const cells = [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? (
+              // on a phone the word goes under the figure, on every row, so the column holds a nine-digit figure at the sliders' far ends with the
+              // largest share (independent check 2, should-fix 8: "7,369,509 ₪ יותר" was cut at 390 px)
+              <span key="d" className="font-semibold">
+                <Num value={diff} display={fmt.nisWhole(Math.abs(diff.value as number))} /> <span className="whitespace-nowrap max-md:block">{(diff.value as number) >= 0 ? ch.more : ch.less}</span>
+              </span>
+            ) : null];
+          return { id: l.id, swatch: LINE[n]!.bg, cells: cells.map((cell, i) => <ShortRow key={i} when={short}>{cell}</ShortRow>) };
+        })}
       />
       <p className="text-sm text-muted-foreground">{ch.foot}</p>
     </section>

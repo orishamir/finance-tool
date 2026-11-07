@@ -2,6 +2,7 @@
 // Inputs are the scenario's own; expected values are the approved independent check.
 import { describe, expect, it } from "vitest";
 import {
+  BlockedError,
   runBond,
   runChildSavings,
   runDeposit,
@@ -12,7 +13,7 @@ import {
   type RunResult,
   type SecuritiesInput,
 } from "../../src/index.ts";
-import { context, golden } from "./harness.ts";
+import { context, golden, loadRules, withTxf04AsTheLetterCopy } from "./harness.ts";
 
 const ctx = context();
 const flagCodes = (r: RunResult) => r.flags.map((f) => f.code);
@@ -356,16 +357,16 @@ describe("Part A: the ledger on single instruments", () => {
   });
 
   it("S16 TASE-registered foreign fund, FX index for tax", () => {
-    const r = runSecurities(
-      {
-        goal: { amountNow: 100_000, monthly: 0, months: 60 },
-        market: { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
-        fund: { kind: "tase-foreign-fund", ninetyPercentTest: true, drag: { management: 0.0007, foreignWithholding: 0.0023 } },
-        tariff: { ...s14Tariff, custody: { rate: 0.0015, everyMonths: 3 } },
-        profile: {},
-      },
-      ctx,
-    );
+    const s16: SecuritiesInput = {
+      goal: { amountNow: 100_000, monthly: 0, months: 60 },
+      market: { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
+      fund: { kind: "tase-foreign-fund", ninetyPercentTest: true, drag: { management: 0.0007, foreignWithholding: 0.0023 } },
+      tariff: { ...s14Tariff, custody: { rate: 0.0015, everyMonths: 3 } },
+      profile: {},
+    };
+    // TXF-04 is open since 2026-11-07, so the data blocks this run; the arithmetic is checked on the letter's copy (harness)
+    expect(() => runSecurities(s16, ctx)).toThrow(BlockedError);
+    const r = runSecurities(s16, context(withTxf04AsTheLetterCopy(loadRules())));
     const g = golden("S16");
     g.value("real", r.real, 106_853.98);
     g.value("nominal", r.nominal, 120_895.47);
@@ -376,7 +377,7 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("tax at exit", r.taxAtExit, 6_279.39);
     g.value("real gain vs the exchange rate", r.detail.realGain, 25_117.56);
     g.done();
-    expect(labelOf(r, "TXF-11")).toBe("secondary-source");
+    expect(labelOf(r, "TXF-11")).toBe("reading");
     expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-18" });
   });
 
@@ -594,7 +595,8 @@ describe("Part B: provident-family wrappers", () => {
       g.value("grant at 21", r.grants[2]!.amount, 882.12);
       g.done();
       expect(r.grants.map((x) => x.month)).toEqual([36, sex === "boy" ? 156 : 144, 252]);
-      expect(labelOf(r, "TXK-23")).toBe("secondary-source");
+      // workings S31: 25% of the real gain, no label (TXK-23 reads the Ordinance since 2026-11-07)
+      expect(labelOf(r, "TXK-23")).toBeUndefined();
     });
   }
 
@@ -616,6 +618,8 @@ describe("Part B: provident-family wrappers", () => {
     g.value("net at 21", r.nominal, 42_331.47);
     g.done();
     expect(flagCodes(r)).toContain("CS-23");
+    // workings S32: 15% of the nominal gain, label "reading", TXK-29 (the Ordinance's rate; applying it to child savings is the site's reading)
+    expect(labelOf(r, "TXK-29")).toBe("reading");
   });
 
   it("S33 IRA hishtalmut with brokerage inside", () => {

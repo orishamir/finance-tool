@@ -2,25 +2,21 @@
   "id": "avkb-mddy-agch",
   "he": "עוקב מדדי אג\"ח",
   "en": null,
-  "meaning": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי איגרות חוב",
+  "meaning": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים שונים של איגרות חוב של חברות ושל ממשלות; ייתכן בו סיכון מטבע",
   "where": [
     "app"
   ],
   "wrapper_ids": [],
-  "variants": [
-    "עוקב מדדי אג\"ח עם מניות (עד 25% מניות)",
-    "עוקב מדדים - אג\"ח עם מניות (עד 25%)"
-  ],
+  "variants": [],
   "rule_ids": [
     "CAT-10",
-    "CAT-17",
-    "CAT-25"
+    "CAT-49"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-    "publisher": "see title",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10, \"מסלול עוקב מדדי אג\"ח\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
     "strength": "primary",
-    "checked": "2026-10-22"
+    "checked": "2026-11-07"
   }
 }

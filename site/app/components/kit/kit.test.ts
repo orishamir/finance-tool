@@ -6,7 +6,11 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { Disclosure, Sentence, Stat, StatRow } from "./index";
+import { isoNumbers } from "./stairs-chart";
+import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
+import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
+import { keepTitleWhole } from "./name";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -49,5 +53,71 @@ describe("Sentence and Stat", () => {
     expect(out).toContain("<dl");
     expect(out).toContain("<dt");
     expect(out).toContain("sm:grid-cols-3");
+  });
+});
+
+describe("the stairs chart's text", () => {
+  it("isolates a number among Hebrew words, and leaves a number inside a Latin name to the name", () => {
+    expect(isoNumbers("נשארים 79,176 ₪")).toBe("נשארים ⁦79,176 ₪⁩");
+    expect(isoNumbers("+2,345 ₪ יותר")).toBe("⁦+2,345 ₪⁩ יותר");
+    // isolated alone, the 4 and the 500 stepped out of the name: "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05)
+    expect(isoNumbers("ילין לפידות מחקה (4D) S&P 500")).toBe("ילין לפידות מחקה (4D) S&P 500");
+    expect(isoNumbers("הראל מחקה (4D) NASDAQ 100")).toBe("הראל מחקה (4D) NASDAQ 100");
+  });
+});
+
+describe("figureFit", () => {
+  it("steps a list's figure down a size past nine digits and again past twelve, so its fixed column never cuts it (#190)", () => {
+    expect(figureFit(86_492)).toBe("");
+    expect(figureFit(99_999_999)).toBe("");
+    expect(figureFit(999_999_999)).toBe("max-md:text-sm");
+    expect(figureFit(1_860_753_604)).toBe("text-sm");
+    expect(figureFit(-1_000_000_000)).toBe("text-sm");
+    expect(figureFit(2_000_000_000_000)).toBe("text-xs");
+  });
+  it("writes a billion shekels or more in a short form for a phone, always with two decimals, the sign and the words around it kept (lens review S2; fresh readers, round 3)", () => {
+    expect(shortBillions("999,999,999 ₪")).toBeNull();
+    expect(shortBillions("2,296,540,223 ₪")).toBe("2.30 מיליארד ₪");
+    expect(shortBillions("1,600,000,000 ₪")).toBe("1.60 מיליארד ₪");
+    expect(shortBillions("\u2066+2,205,553,903 ₪\u2069")).toBe("\u2066+2.21 מיליארד ₪\u2069");
+    expect(shortBillions("\u200e\u221212,345,678,901 ₪")).toBe("\u200e\u221212.35 מיליארד ₪");
+    expect(shortBillions("1,250,000,000,000 ₪")).toBe("1,250.00 מיליארד ₪");
+    expect(shortBillions("2,296,540,223.40 ₪")).toBe("2.30 מיליארד ₪");
+  });
+  it("writes a row's other large figures in the same short form, from a hundred million (fresh readers, round 3: 758,833,521 ₪ beside 1.57 מיליארד ₪)", () => {
+    expect(shortBillions("758,833,521 ₪", SHORT_IN_ROW)).toBe("0.76 מיליארד ₪");
+    expect(shortBillions("99,999,999 ₪", SHORT_IN_ROW)).toBeNull();
+    expect(shortBillions("1,000,000,000,000 ₪", 1e12)).toBe("1,000.00 מיליארד ₪");
+    expect(shortBillions("999,999,999,999 ₪", 1e12)).toBeNull();
+  });
+  it("steps a phone tile's figure down past seven digits, nine and eleven", () => {
+    expect(figureFit(9_999_999, "tile")).toBe("");
+    expect(figureFit(45_073_491, "tile")).toBe("max-md:text-xl");
+    expect(figureFit(1_860_753_604, "tile")).toBe("max-md:text-lg");
+    expect(figureFit(100_000_000_000, "tile")).toBe("max-md:text-base");
+  });
+});
+
+describe("PickList holds its height (#190)", () => {
+  const row = (key: string, extra: Partial<PickRow> = {}): PickRow => ({ key, selected: false, onSelect: () => {}, cells: createElement("span", null, key), ...extra });
+  const folded = (out: string) => (out.match(/data-folded=""/g) ?? []).length;
+  it("the phone's fold shows the same number of rows whichever is chosen: a chosen row further down takes the last place", () => {
+    const keys = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    const outs = keys.map((sel) => renderToString(createElement(PickList, { label: "x", columns: "1fr", phoneLimit: 3, more: () => "more", rows: keys.map((k) => row(k, { selected: k === sel })) })));
+    expect(new Set(outs.map(folded))).toEqual(new Set([5]));
+  });
+  it("a row's other states are laid out unseen, out of the flow, never as a row to choose", () => {
+    const out = renderToString(createElement(PickList, { label: "x", columns: "1fr", states: [{ a: "one" }, { a: "two" }], rows: [row("a", { caseKey: "one", cases: [{ key: "two", cells: createElement("span", null, "LONG-STATE") }] })] }));
+    expect(out).toContain('data-case-of="a"');
+    expect(out).toMatch(/aria-hidden="true" data-case-of="a" data-case="two" class="[^"]*absolute[^"]*invisible/);
+    expect((out.match(/role="radio"/g) ?? []).length).toBe(1);
+  });
+});
+
+describe("keepTitleWhole (fresh readers, round 3, 2026-11-07)", () => {
+  it("keeps a Latin run of a Hebrew title on one line, writes a gershayim as one, and isolates a quoted Hebrew name", () => {
+    expect(keepTitleWhole('קסם, דוח שנתי "קסם MSCI AC World (4A) ETF מנוטרלת דולר" (1147362)')).toBe('קסם, דוח שנתי ⁧"קסם MSCI AC World (4A) ETF מנוטרלת דולר"⁩ (1147362)');
+    expect(keepTitleWhole('קסם, דוח שנתי "קסם (4A) KTF ת"א 35" (5124490), 30.6.2026')).toBe('קסם, דוח שנתי ⁧"קסם (4A) KTF ת״א 35"⁩ (5124490), 30.6.2026');
+    expect(keepTitleWhole("iShares Core S&P 500 UCITS ETF annual report")).toBe("iShares Core S&P 500 UCITS ETF annual report");
   });
 });

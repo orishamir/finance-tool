@@ -13,6 +13,7 @@ import { heldSignatures } from "../lib/review";
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence, Tag } from "../components/kit";
+import { IconAlert } from "../components/icons";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
 import { omitsSection, sectionTitle, splitTerms, withdrawalRules } from "../lib/guide-nav";
@@ -28,6 +29,8 @@ interface ExitRate {
   rule: string;
   figure: string;
   copyKey: string;
+  /** The rate is the law's own, but no official text says it reaches this product: the site's reading, tagged as one. */
+  reading?: true;
 }
 
 /**
@@ -35,7 +38,7 @@ interface ExitRate {
  * `tax_at_exit.rule_ids` cites is shown, and a candidate whose rule the page does not carry is skipped.
  */
 function exitRateLines(formula: string): ExitRate[][] {
-  const r = (rule: string, figure: string, copyKey: string): ExitRate => ({ rule, figure, copyKey });
+  const r = (rule: string, figure: string, copyKey: string, reading?: true): ExitRate => ({ rule, figure, copyKey, ...(reading ? { reading } : {}) });
   switch (formula) {
     case "F-41":
       return [
@@ -51,7 +54,8 @@ function exitRateLines(formula: string): ExitRate[][] {
     case "F-47":
       return [[r("TXH-11", "rate", "hishtalmutExcess")]];
     case "F-50":
-      return [[r("TXK-23", "provident_rate", "childProvident")], [r("TXK-23", "bank_linked_rate", "childBankLinked")], [r("TXK-23", "bank_unlinked_rate", "childBankUnlinked")]];
+      // the bank route's rates are the Ordinance's own (TXK-29), but no official text says they reach child savings: the site's reading
+      return [[r("TXK-23", "provident_rate", "childProvident")], [r("TXK-29", "bank_linked_rate", "childBankLinked", true)], [r("TXK-29", "bank_unlinked_rate", "childBankUnlinked", true)]];
     default:
       return [];
   }
@@ -265,7 +269,8 @@ export default function GuidePage() {
     id,
     when,
     headline: stepCopy(step.formula)?.headline ?? formulaHeadline(step.formula),
-    text: pendingLine(step.formula) ?? stepCopy(step.formula)?.text ?? "",
+    // a line that says moving is not taxed shows only where the record knows it (child savings' bank route does not, TXK OQ1)
+    text: pendingLine(step.formula) ?? (record.switch_is_tax_event?.value !== false ? stepCopy(step.formula)?.textSwitchOpen : undefined) ?? stepCopy(step.formula)?.text ?? "",
     rules: step.rule_ids,
   });
   // the exit formula's rates: only a rate the record itself cites, never another rule's number
@@ -278,7 +283,10 @@ export default function GuidePage() {
   const exitFormula = record.tax_at_exit.formula;
   const exitFigure = exitFormula === "F-44" ? figure("TXK-06", "rate") : exitFormula === "F-46" ? figure("TXH-09", "lock_years") : null;
   const altRate = exitFormula === "F-44" ? figure("TXK-06", "nominal_rate") : null;
-  const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids);
+  // the step's mark: a cited rule's own strength, or a rate the step shows whose source is weaker than its rule; else a rate that is
+  // the site's reading (the child-savings bank route's rates are the Ordinance's, but no official text says they reach it, TXK-29)
+  const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids) ?? (rateLines.some((c) => c.value.source.strength === "secondary") ? "secondary" : null);
+  const exitReading = rateLines.some((c) => c.reading);
   // audit A46: the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
   // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05)
   const hd = copy.hishtalmutDeposit;
@@ -325,7 +333,13 @@ export default function GuidePage() {
           exitStepCopy?.headline ?? formulaHeadline(exitFormula)
         ),
       text: pendingLine(exitFormula) ?? exitStepCopy?.text ?? "",
-      tag: exitWeak ? (exitStepCopy?.baseTag ? <Tag tone="caution">{exitStepCopy.baseTag}</Tag> : <StrengthLabel strength={exitWeak} />) : undefined,
+      tag: exitWeak ? (
+        exitStepCopy?.baseTag ? <Tag tone="caution">{exitStepCopy.baseTag}</Tag> : <StrengthLabel strength={exitWeak} />
+      ) : exitReading ? (
+        <Tag tone="caution" icon={<IconAlert size={14} />}>
+          {blocks.exitReadingTag}
+        </Tag>
+      ) : undefined,
       alt:
         exitStepCopy && altRate && "altBefore" in exitStepCopy ? (
           <>

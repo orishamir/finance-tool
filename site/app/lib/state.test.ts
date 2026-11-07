@@ -513,6 +513,19 @@ describe("the index page's saved state (D28)", () => {
     expect(getSnapshot().state.customIndices).toBeUndefined();
   });
 
+  it("keeps the bank marked as the person's own through the store and the export file, and clears it (D64)", async () => {
+    const { setOwnBank } = await import("./state");
+    ensureLoaded();
+    setOwnBank("hapoalim");
+    flush(true);
+    expect(JSON.parse(storage.data.get(STATE_KEY)!).bank).toBe("hapoalim");
+    const read = readImport(stateFileText(buildStateFile(getSnapshot().state, site, new Date("2026-11-06T10:00:00Z"))));
+    if (!read.ok) throw new Error("refused");
+    expect(read.preview.state.bank).toBe("hapoalim");
+    setOwnBank(null);
+    expect(getSnapshot().state.bank).toBeUndefined();
+  });
+
   it("loads a document saved before this release, and leaves out a custom index that fails its shape", () => {
     const old = { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
     storage.data.set(STATE_KEY, JSON.stringify(old));

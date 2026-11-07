@@ -22,7 +22,9 @@ export function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
     const v = feeOf(rec, key);
     const word = yearlyOnly ? c.customEntries.yearlyWord : [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
     const absent = feeAbsent(rec, key);
-    return { id: key, word: absent && key === "trustee" ? c.funds.noTrusteeWord : word, figure: <FeeFigure value={v} absent={absent} inline={inline} /> };
+    // a fee of a fund the person typed and left empty is not known, and says so: it was never collected (#190)
+    const figure = !v && !absent && isCustomFund(rec) ? <span className="text-sm text-muted-foreground">{c.customEntries.notTyped}</span> : <FeeFigure value={v} absent={absent} inline={inline} />;
+    return { id: key, word: absent && key === "trustee" ? c.funds.noTrusteeWord : word, figure };
   });
   return <ProductFigures items={items} inline={inline} />;
 }

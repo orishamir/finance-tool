@@ -25,14 +25,14 @@ describe("the source lines of a company's own term", () => {
     const html = render(createElement(SourceBlock, { source: sources, today: "2026-10-26", inline: true }));
     for (const s of ["institution", "secondary", "primary-mirror"]) expect(html).toContain(weak[s]);
   });
-  it("IRA-28's card (a regulator's announcement and press articles about two companies) keeps 'מקור משני' and names no company document", () => {
+  it("IRA-28's card (a regulator's announcement about a company) names no company document", () => {
     const root = new URL("../../../", import.meta.url);
     const ira28 = JSON.parse(readFileSync(new URL("data/rules/ira-28.json", root), "utf8")) as RuleRecord;
     const data = { rules: { "IRA-28": ira28 }, terms: {}, dimensions: {}, today: "2026-10-26", ownDocs: {} };
     const html = render(createElement(RuleCard, { id: "IRA-28", data, inline: true }), data);
-    expect(html).toContain(weak.secondary);
+    expect(html).not.toContain(weak.secondary);
     expect(html).not.toContain("נמצא במסמכים של");
-    expect(html).toContain("המקורות כאן אינם מסמכים של סלייס וגלובלנט");
+    expect(html).toContain("המקורות כאן אינם מסמכים של סלייס");
   });
   // review round 3, 2026-10-26: the card's own data (the root loader's company links and own documents), as every page has them
   const real = async () => {

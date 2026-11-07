@@ -22,54 +22,10 @@
       "publisher_he": "בית המשפט העליון",
       "kind": "other",
       "strength": "primary",
-      "checked": "2026-10-25",
-      "qualifier": "(court ruling; opened in Chrome 2026-10-25; by script the court's site resets the connection, 2026-10-26)"
-    },
-    {
-      "url": "https://www.capitax.co.il/Attachments/7486-14.pdf",
-      "title": "עע\"מ 7486/14 בראל נ' מדינת ישראל – רשות המיסים, פסק דין מיום 27.7.2016 (עותק באתר קפיטקס)",
-      "title_he": "עע״מ 7486/14 בראל נ׳ רשות המיסים (פסק דין, 27.7.2016)",
-      "publisher": "Capitax",
-      "publisher_he": "בית המשפט העליון",
-      "kind": "other",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.8",
-      "locator_he": "עמוד 8",
-      "page": 8,
+      "locator": "paragraphs 1, 4, 11-14, 22-24",
       "quote": "מדובר בחלופות הכנסה נפרדות ועצמאיות",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host)"
-    },
-    {
-      "url": "https://www.capitax.co.il/Attachments/7486-14.pdf",
-      "title": "עע\"מ 7486/14 בראל נ' מדינת ישראל – רשות המיסים, פסק דין מיום 27.7.2016 (עותק באתר קפיטקס)",
-      "title_he": "עע״מ 7486/14 בראל נ׳ רשות המיסים (פסק דין, 27.7.2016)",
-      "publisher": "Capitax",
-      "publisher_he": "בית המשפט העליון",
-      "kind": "other",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.15",
-      "locator_he": "עמוד 15",
-      "page": 15,
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host)"
-    },
-    {
-      "url": "https://www.capitax.co.il/Attachments/7486-14.pdf",
-      "title": "עע\"מ 7486/14 בראל נ' מדינת ישראל – רשות המיסים, פסק דין מיום 27.7.2016 (עותק באתר קפיטקס)",
-      "title_he": "עע״מ 7486/14 בראל נ׳ רשות המיסים (פסק דין, 27.7.2016)",
-      "publisher": "Capitax",
-      "publisher_he": "בית המשפט העליון",
-      "kind": "other",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.16",
-      "locator_he": "עמוד 16",
-      "page": 16,
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25",
+      "qualifier": "(court ruling, read in Chrome 2026-10-25; paragraphs 22-24 and the concurrence read in a copy, to confirm here)"
     }
   ]
 }

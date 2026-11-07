@@ -1,0 +1,39 @@
+// one-off evidence for the report (not committed): One Zero's figures for funds bought abroad, without and with its corporate-event line (D67)
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { buildInvest, knownIndices, indexById } from "./invest";
+import { buildWorkbenchBundle } from "./providers.server";
+import type { WorkbenchInputs } from "./providers";
+import { entered } from "./value";
+
+const after = buildWorkbenchBundle();
+const before = { ...after, snapshots: after.snapshots.map((s) => (s.id === "one-zero" ? { ...s, lines: s.lines.filter((l) => l.base !== "corporate_event") } : s)) };
+const t = after.today;
+const plan = (amountNow: number, monthly: number): WorkbenchInputs => ({
+  amountNow, monthly, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
+  values: { amount: entered(amountNow, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
+  fromGoal: false, returnFromParameter: false, currentAccounts: { own: null },
+});
+
+it("evidence", () => {
+  const out: unknown[] = [];
+  for (const [amount, monthly] of [[6000, 400], [100000, 0]] as const) {
+    for (const k of knownIndices(after)) {
+      const index = indexById(after, k.id)!;
+      const vb = buildInvest({ bundle: before, index, plan: plan(amount, monthly) });
+      const va = buildInvest({ bundle: after, index, plan: plan(amount, monthly) });
+      const rows: unknown[] = [];
+      for (const o of va.options) for (const f of o.funds) {
+        const a = f.byHouse["one-zero"]; const ob = vb.options.find((x) => x.id === o.id)!.funds.find((x) => x.rec.id === f.rec.id)!;
+        const b = ob.byHouse["one-zero"];
+        const va_ = a && "valueN" in a ? Math.round(a.valueN) : null; const vb_ = b && "valueN" in b ? Math.round(b.valueN) : null;
+        if (va_ !== vb_) {
+          const placeOf = (fw: typeof f, v: number | null) => v === null ? null : 1 + Object.values(fw.byHouse).filter((x) => x && "valueN" in x && !x.open && x.valueN > v).length;
+          rows.push({ option: o.id, fund: f.rec.id, distribution: f.rec.distribution_policy, before: vb_, after: va_, placeBefore: placeOf(ob, vb_), placeAfter: placeOf(f, va_) });
+        }
+      }
+      out.push({ index: k.id, plan: `${amount}+${monthly}/mo`, headlineBefore: vb.headline && `${vb.headline.providerId} ${vb.headline.fund.rec.id}`, headlineAfter: va.headline && `${va.headline.providerId} ${va.headline.fund.rec.id}`, changed: rows });
+    }
+  }
+  writeFileSync(process.env.OUT!, JSON.stringify(out, null, 1));
+});

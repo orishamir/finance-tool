@@ -65,14 +65,15 @@ describe("an open minimum-amount rule", () => {
     expect(openConstraintCode(r)).toBe("GOV OQ7");
     expect(openConstraintOf({ dimensions: { minimum: "covered" } } as never)).toBeNull();
   });
-  it("government bonds and makam are listed, not ranked, on the page and on the goal", () => {
+  it("makam is listed, not ranked, on the page and on the goal; government bonds no longer for their minimum (GOV-24, 2026-11-07)", () => {
     const ev = evaluate(bundle, goal);
-    for (const id of ["government-bond", "makam"]) {
-      const c = ev.candidates.find((x) => x.id === id)!;
-      expect(c.kind).toBe("listed-not-ranked");
-      expect(c.reasons.some((r) => openConstraintCode(r) === "GOV OQ7")).toBe(true);
-      expect(ev.ranking.entries.some((e) => e.id === id)).toBe(false);
-    }
+    const makam = ev.candidates.find((x) => x.id === "makam")!;
+    expect(makam.kind).toBe("listed-not-ranked");
+    expect(makam.reasons.some((r) => openConstraintCode(r) === "GOV OQ7")).toBe(true);
+    expect(ev.ranking.entries.some((e) => e.id === "makam")).toBe(false);
+    // the minimum of a government bond is known in every trading phase (GOV-24), so the open question is not its reason; it stays listed for its own gap (G-10)
+    const bond = ev.candidates.find((x) => x.id === "government-bond")!;
+    expect(bond.reasons.some((r) => openConstraintCode(r) !== null)).toBe(false);
     expect(ev.coverage.invariant.ok).toBe(true);
   });
 });

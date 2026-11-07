@@ -200,7 +200,7 @@ builders["savings-plan"] = (c) => {
     d.facts.lumpRate = ownBy(lump.rate, lumpBank);
     if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = ownBy({ ...lump.record.term_months } as SiteValue, lumpBank);
   } else d.gaps.push("deposit:bank-deposit");
-  // BANK-28 / BANK OQ12: whether each monthly instalment has its own lock-up is not said in any source read (the ladder is the F-22 reading)
+  // BANK-28 / BANK OQ12: no general rule says whether each monthly instalment has its own lock-up; each bank's plan agreement does (one bank's: BPN-10), so the ladder is the F-22 reading
   d.gaps.push("planLockPerDeposit");
   const brk = d.facts.break;
   if (brk && brk.value !== "not_allowed" && brk.value !== "none") d.gaps.push("depositBreak");

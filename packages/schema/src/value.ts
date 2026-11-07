@@ -20,6 +20,8 @@ export const unit = z.enum([
   "usd_per_share",
   "usd_per_trade",
   "gbp_per_trade",
+  /** A dollar amount for each corporate event, as One Zero prints its custodian's cost abroad (D67, F-103). */
+  "usd_per_event",
   "nis_per_usd",
   "fx_per_eur",
   "months",
@@ -119,6 +121,8 @@ export const feeBase = z.enum([
   "fx",
   "exit",
   "fixed_period",
+  /** A charge for each corporate event of a security held abroad, such as a fund's dividend (D67, F-103). */
+  "corporate_event",
   "distribution_handling",
   "spread",
   "creation_redemption",

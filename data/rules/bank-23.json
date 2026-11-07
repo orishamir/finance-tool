@@ -81,16 +81,6 @@
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.funder.co.il/article/203575",
-      "title": "פאנדר, 15.6.2026: זהירות, אין ביטוח פיקדונות",
-      "title_he": "פאנדר, 15.6.2026: זהירות, אין ביטוח פיקדונות",
-      "publisher": "Funder",
-      "publisher_he": "פאנדר",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
     }
   ]
 }

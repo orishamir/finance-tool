@@ -6,9 +6,8 @@ import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { fmt, formatValue } from "../lib/format";
+import { fmt, formatValue, SHORT_IN_ROW, shortBillions } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
-import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
 import { isParameter, isProvisional, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
@@ -17,7 +16,7 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, LongestCase, Tpl, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
+import { CompanyLinks, LongestCase, Tpl, countsByItself, keepTitleWhole, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
@@ -193,8 +192,6 @@ export interface NumProps {
   className?: string;
   /** Text that must stay on the line with the number ("ב־", "נכון ל־"): both sit in one non-breaking span. */
   prefix?: ReactNode;
-  /** `false` leaves out the inline caution icon of a weak source (secondary, institution) and of a date ahead; the caller then shows the strength mark once for the group of figures (the past-record line). The aria-label and the sheet still say it. */
-  mark?: boolean;
 }
 
 const stateWord = { sourced: numbers.legend.sourced, computed: numbers.legend.computed, entered: numbers.legend.entered };
@@ -211,8 +208,30 @@ export function startsAfter(value: SiteValue, today: string): string | null {
 /** A figure is isolated left to right ("1,234.50 ₪"), unless its text carries Hebrew words ("36 חודשים", "חודשיים"), which a forced LTR isolate would print backwards (2026-10-25). */
 const textDir = (text: string): "ltr" | "rtl" => (/[\u0590-\u05FF]/.test(text) ? "rtl" : "ltr");
 
+/** A row (of a list or a table) that writes one of its shekel figures in the short form writes its other large ones in it too. */
+const ShortRowCtx = createContext(false);
+/** Whether a row's figures read in the short form on a phone: one of them is a billion shekels or more. */
+export const shortRow = (...values: (number | null | undefined)[]) => values.some((v) => typeof v === "number" && Math.abs(v) >= 1e9);
+/** The figures inside read in one form: "758,833,521 ₪" beside "1.57 מיליארד ₪" read as the larger (fresh readers, round 3, 2026-11-07). */
+export function ShortRow({ when, children }: { when: boolean; children: ReactNode }) {
+  return <ShortRowCtx.Provider value={when}>{children}</ShortRowCtx.Provider>;
+}
+
+/**
+ * A short form's text: the digits and the words may part at a line's end as a last resort, so a figure past what its column holds takes
+ * a second line in it rather than running over its neighbour (fresh readers, round 3: three figures printed over each other at 390 px).
+ */
+function ShortText({ text, className }: { text: string; className: string }) {
+  const at = text.indexOf(` ${numbers.billion}`);
+  return (
+    <bdi dir={textDir(text)} className={cx("whitespace-normal", className)}>
+      <span className="whitespace-nowrap">{text.slice(0, at)}</span> <span className="whitespace-nowrap">{text.slice(at + 1)}</span>
+    </bdi>
+  );
+}
+
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
-export function Num({ value, size = "inline", display, animate, className, prefix, exact, mark: showMark = true }: NumProps) {
+export function Num({ value, size = "inline", display, animate, className, prefix, exact }: NumProps) {
   const open = useOpen();
   const today = useContext(TodayCtx);
   const staleSaid = useContext(StaleSaidCtx);
@@ -222,13 +241,24 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const unseen = useUnseen();
   // a copy that only holds a block's size (LongestCase) is not on the page
   useEffect(() => (!unseen && states ? states.add(value.state) : undefined), [value.state, unseen, states]);
-  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
+  // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (#190: a list's cases counted on every key)
+  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
   const roundState = keepDecimals ? undefined : value.state;
+  // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped (#190)
+  const target = typeof value.value === "number" ? value.value : null;
+  const landing = target === null || shown === target ? null : typeof display === "function" ? display(target) : formatValue(target, value.unit, roundState, param);
+  const frame = shown !== null && landing !== null && !/\d\.\d/.test(landing ?? "") ? Math.round(shown) : shown;
   // a formatter gets the moving value, so a signed figure counts like any other
-  const written = typeof display === "function" ? (shown !== null ? display(shown) : undefined) : display;
-  const text = written ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  const written = typeof display === "function" ? (frame !== null ? display(frame) : undefined) : display;
+  const text = written ?? (frame !== null && typeof value.value === "number" ? formatValue(frame, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  // a billion shekels or more reads in its short form on a phone, so no column cuts it (lens review S2), and a thousand billion on a
+  // computer; a row with one short figure writes its other large ones short too (fresh readers, round 3). The sheet and label keep the digits.
+  const inShortRow = useContext(ShortRowCtx);
+  const nisFigure = typeof value.value === "number" && !keepDecimals && /^nis/.test(value.unit);
+  const short = nisFigure ? shortBillions(text, inShortRow ? SHORT_IN_ROW : 1e9) : null;
+  const shortPc = nisFigure ? shortBillions(text, 1e12) : null;
   const strength = strengthOf(value);
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
@@ -238,7 +268,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence (audit A23). At figure size a date ahead
   // is also said in words, before the digits.
-  const markWeak = showMark && weak && (value.state !== "computed" || size === "figure");
+  const markWeak = weak && (value.state !== "computed" || size === "figure");
   const mark = "inline-block align-[-2px] select-none";
   // a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26); any other figure is
   // one unit with its icon, which stood alone on the line above its digits in a phone's table (2026-11-03)
@@ -251,9 +281,16 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
-      {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
+      {(fromDate || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
-      <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
+      {short ? (
+        <>
+          {shortPc ? <ShortText text={shortPc} className="max-md:hidden" /> : <bdi dir={textDir(text)} className="whitespace-nowrap max-md:hidden">{text}</bdi>}
+          <ShortText text={short} className="md:hidden" />
+        </>
+      ) : (
+        <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
+      )}
     </button>
   );
   return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
@@ -359,7 +396,7 @@ export function idKind(id: string): IdKind | null {
  * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
-export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean }) {
+export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own (#190). */ titled?: boolean }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
   const data = useContext(DataCtx);
@@ -370,7 +407,14 @@ export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
   // an open question's chip says a word, not its code (2026-11-02): the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
-  const chip = title ? <span className="text-start">{title}</span> : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
+  const ruleTitle = titled && kind === "rule" ? ruleOf(data, shown)?.title_he : undefined;
+  const chip = title ? (
+    <span className="text-start">{title}</span>
+  ) : ruleTitle ? (
+    <span className="text-start">
+      {ruleTitle} · <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{shown}</bdi>
+    </span>
+  ) : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
   if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}>{chip}</span>;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
@@ -388,7 +432,7 @@ export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string
   const closed = closedOn ?? (known?.status === "closed" ? known.closed_on : undefined);
   const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closed ? { closedOn: closed } : {}) } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", title && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
+    <button type="button" className={cx("rule-chip", (title || ruleTitle) && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
       {chip}
     </button>
   );
@@ -415,12 +459,12 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
  * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
  * "ועוד" and the count of the others. The code stays in the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className }: { id: string; className?: string }) {
+export function RuleRef({ id, className, titled }: { id: string; className?: string; /** A general rule's chip says its Hebrew title before its id (`IdRef`'s `titled`). */ titled?: boolean }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
   const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
-  if (!name) return <IdRef id={id} className={className} />;
+  if (!name) return <IdRef id={id} className={className} titled={titled} />;
   return (
     <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
       <bdi className="whitespace-nowrap">{name}</bdi>
@@ -663,7 +707,7 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
   const isOwn = typeof own === "function" ? own(source) : !!own;
   const weak = source.strength !== "primary" && !(isOwn && source.strength === "institution") ? sourceCopy.weak[source.strength] : null;
   const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
-  const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{title.text}</Iso>;
+  const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{keepTitleWhole(title.text)}</Iso>;
   return (
     <div className="flex flex-col gap-1">
       <a href={sourceHref(source)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
@@ -736,12 +780,29 @@ export function SourceBlock({ source, rule, today, inline, english, own }: { sou
 /** The rule's first source as one line, under a rule chip in a computed figure's sheet. */
 function FirstSourceLine({ rule }: { rule: RuleRecord }) {
   const s = pickSources(asSourced(rule))[0];
-  if (!s) return null;
-  const n = sourceLabel2(s);
-  const title = shownTitle(n.title, s.url, s.kind);
+  return s ? <DocSourceLine source={s} /> : null;
+}
+
+/**
+ * A source as one line, under a rule chip or a sourced input in a computed figure's sheet: who published it, its full name and its place
+ * in it, wrapping at both widths. Cut with "…", the name and the date of an order in Reshumot were lost (fresh readers, round 3,
+ * 2026-11-07); an input with no line of its own left "5.50 ₪" a month with no source in view but the rule's under it.
+ */
+function DocSourceLine({ source }: { source: RuleSource }) {
+  // a data file names its company in English: the publishers table gives the Hebrew name by the source's host, as in OneSource
+  const publishersHe = useContext(DataCtx)?.publishersHe;
+  const host = hostOf(source.url);
+  const he = source.publisher_he ?? (host ? publishersHe?.[host] : undefined);
+  const n = sourceLabel2(he ? { ...source, publisher_he: he } : source);
+  const title = shownTitle(n.title, source.url, source.kind);
   return (
-    <a href={sourceHref(s)} target="_blank" rel="noopener noreferrer" className="text-link text-xs block max-w-full truncate hover:underline">
-      <Iso ltr={!hasHebrew(n.publisher)}>{n.publisher}</Iso> · <Iso ltr={title.host}>{title.text}</Iso>
+    <a href={sourceHref(source)} target="_blank" rel="noopener noreferrer" className="text-link text-xs block max-w-full [overflow-wrap:anywhere] hover:underline">
+      {title.text.startsWith(n.publisher) ? null : (
+        <>
+          <Iso ltr={!hasHebrew(n.publisher)}>{n.publisher}</Iso> ·{" "}
+        </>
+      )}
+      <Iso ltr={title.host}>{keepTitleWhole(title.text)}</Iso>
       {n.locator && (
         <>
           , <Iso>{n.locator}</Iso>
@@ -1031,7 +1092,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           <Row label={copy.sourced.rule}>
             <span className="flex flex-wrap gap-2">
               {value.rule_ids.map((id) => (
-                <RuleRef key={id} id={id} />
+                <RuleRef key={id} id={id} titled />
               ))}
             </span>
           </Row>
@@ -1079,7 +1140,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             <Row label={copy.sourced.rule}>
               <span className="flex flex-wrap gap-2">
                 {value.rule_ids.map((id) => (
-                  <RuleRef key={id} id={id} />
+                  <RuleRef key={id} id={id} titled />
                 ))}
               </span>
             </Row>
@@ -1103,12 +1164,18 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             <span className="text-sm text-muted-foreground">{copy.computed.inputs}</span>
             <dl className="readout">
               {Object.entries(value.computed_from.inputs as Record<string, SiteValue>).map(([label, input]) => (
-                <div key={label} className="readout-row">
+                <div key={label} className="readout-row flex-wrap">
                   <dt>{inputName(label)}</dt>
                   <dd>
                     <Num value={input} display={inputDisplay(label, input)} />
                     {isParameter(input) && <Tag tone="parameter">{numbers.parameter}</Tag>}
                   </dd>
+                  {/* a figure read from a document says which, on its own row, as a parameter says it is the site's (fresh readers, round 3) */}
+                  {input.state === "sourced" && !isParameter(input) && input.source?.url && (
+                    <dd className="basis-full">
+                      <DocSourceLine source={input.source as RuleSource} />
+                    </dd>
+                  )}
                 </div>
               ))}
             </dl>
@@ -1120,7 +1187,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                 {value.rulesUsed.map((r) => (
                   <div key={r.id} className="flex flex-col gap-0.5 min-w-0">
                     <span className="inline-flex items-center gap-1.5">
-                      <RuleRef id={r.id} />
+                      <RuleRef id={r.id} titled />
                       <StrengthLabel strength={r.strength} />
                     </span>
                     {ruleOf(data, r.id) && <FirstSourceLine rule={ruleOf(data, r.id)!} />}
@@ -1273,12 +1340,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <div className="flex flex-wrap items-center gap-1.5">
           <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: data.company })}</Tag>
           {/* a record the rule base keeps that is not a rule says so: its foot leads to "לא נכלל ככלל" on /companies (review, 2026-10-26) */}
-          {isNotRule(id) && !isGeneral(rule) && !isExperience(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
-          {isExperience(id) ? (
-            <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
-          ) : (
-            (rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />
-          )}
+          {isNotRule(id) && !isGeneral(rule) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
+          {(rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
         </div>
       </header>
       {open ? (
@@ -1299,7 +1362,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>{ruleCardMore.derivedFrom}</span>
             {derived.map((d) => (
-              <RuleRef key={d} id={d} />
+              <RuleRef key={d} id={d} titled />
             ))}
           </p>
           <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
@@ -1310,7 +1373,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>{ruleCardMore.examples}</span>
           {examples.map((d) => (
-            <RuleRef key={d} id={d} />
+            <RuleRef key={d} id={d} titled />
           ))}
         </p>
       )}

@@ -7,8 +7,8 @@ import { inputMap, kindMoney, kindOf, sumFeesPct, type InvestView } from "../../
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
-import { Card, ChartLegend, FixedTable, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useChartPick, useHeldHeight } from "../kit";
-import { allFunds, kindPairs, type Pick } from "./pair";
+import { MixedName, Card, ChartLegend, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useChartPick, useHeldHeight } from "../kit";
+import { allFunds, kindPairs, LONGEST_AMOUNT, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
 
 const one = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -32,7 +32,8 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   );
   const h = Math.round(plan.years);
   const stretch = history ? stretchRange(history.points, h) : null;
-  const held = useHeldHeight<HTMLParagraphElement>(view.index.id);
+  // a ratchet behind the cases: a pair's real words can still wrap a line longer than every case
+  const held = useHeldHeight<HTMLDivElement>(view.index.id);
   const legendPick = useChartPick();
   if (!rec || !pairs || !history) return null;
 
@@ -97,6 +98,22 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const nisV = (n: number, about: string) => computed(Math.round(n), "nis", "F-95", moneyInputs, { today, about });
   const round100 = (n: number) => Math.round(n / 100) * 100;
   const uMore = money ? money.unhedged - money.hedged : 0;
+  // the cases: every fund of the index in each of the two places, beside the longest pair in the other, at the longest account name, with
+  // both kinds' words; a name's length in letters does not say how it wraps, so each name is laid out, not only the longest
+  const longestOf = (xs: string[]) => xs.reduce((a, b) => (b.length > a.length ? b : a), "");
+  const longestHouse = longestOf(view.providers.map((p) => houseOf(p.id)));
+  const longestPair = c.dollar.pairName(longestOf(funds.map((f) => f.name)), longestHouse);
+  const sampleNum = <Num value={nisV(LONGEST_AMOUNT, c.dollar.pointAbout)} />;
+  const planCase = (a: string, b: string, k1: string, k2: string, key: string) => (
+    <p key={key}>
+      <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(LONGEST_YEARS)} {sampleNum} {c.dollar.to} {sampleNum}
+      {c.dollar.planReal} {c.dollar.planSteady} <MixedName>{a}</MixedName> {k1} {c.dollar.leaves} {sampleNum} {c.dollar.moreThan}<MixedName>{b}</MixedName> {k2}.
+    </p>
+  );
+  const planCases = funds.flatMap((f, i) => {
+    const mine = c.dollar.pairName(f.name, longestHouse);
+    return [planCase(mine, longestPair, c.dollar.kindNoHedge, c.dollar.kindHedge, `a${i}`), planCase(longestPair, mine, c.dollar.kindHedge, c.dollar.kindNoHedge, `b${i}`)];
+  });
 
   return (
     <Card pad="roomy" className="flex flex-col gap-5" id="invest-dollar">
@@ -159,7 +176,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
             pick={legendPick}
             items={[
               { id: "u", swatch: <Swatch shape="box" className="bg-chart-kind-unhedged" />, label: c.dollar.legendUnhedged },
-              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <bdi>{hedgedName}</bdi> },
+              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <MixedName>{hedgedName}</MixedName> },
             ]}
           />
           <PairBars label={c.dollar.fundsLabel} tickStep={20} format={barLabel} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={c.dollar.legendUnhedged} nameB={hedgedName} highlight={legendPick.active === "u" ? "a" : legendPick.active === "h" ? "b" : null} items={rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }))} />
@@ -176,16 +193,25 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         ]}
         rows={rows}
       />
-      {money && (
-        <p ref={held} className="min-h-[3lh] max-md:min-h-[11lh]">
-          <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(h)} <Num value={nisV(round100(money.worth.low), c.dollar.pointAbout)} /> {c.dollar.to} <Num value={nisV(round100(money.worth.high), c.dollar.pointAbout)} />
-          {c.dollar.planReal} {c.dollar.planSteady} <bdi>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</bdi> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={nisV(Math.abs(uMore), c.dollar.moreAbout)} /> {c.dollar.moreThan}<bdi>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</bdi> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
+      {/* held at its longest case (#190: a ratchet held it only after the fact, and a longer pair's name grew it by a few pixels the first
+          time): the longest names of an account and a fund on this index in both places, the longest years and figures */}
+      <div ref={held}>
+      <LongestCase cases={planCases}>
+        {money && (
+          <p>
+            <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(h)} <Num value={nisV(round100(money.worth.low), c.dollar.pointAbout)} /> {c.dollar.to} <Num value={nisV(round100(money.worth.high), c.dollar.pointAbout)} />
+            {c.dollar.planReal} {c.dollar.planSteady} <MixedName>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</MixedName> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={nisV(Math.abs(uMore), c.dollar.moreAbout)} /> {c.dollar.moreThan}<MixedName>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</MixedName> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
+          </p>
+        )}
+      </LongestCase>
+      </div>
+      {/* held with the tax sentence: with nothing left to tax (amount and deposit 0) it goes, and what follows moved 45 px (#190) */}
+      <LongestCase className="text-sm text-muted-foreground" cases={[<p key="t">{c.dollar.small(rec.years.length, hedgedFunds.length)} {c.dollar.taxLead} {"⁦100%⁩"} {c.dollar.taxTail} {c.dollar.noSource}</p>]}>
+        <p>
+          {c.dollar.small(rec.years.length, hedgedFunds.length)} {money?.taxShare != null && <>{c.dollar.taxLead} {`⁦${Math.round(money.taxShare * 100)}%⁩`} {c.dollar.taxTail} </>}
+          {c.dollar.noSource}
         </p>
-      )}
-      <p className="text-sm text-muted-foreground">
-        {c.dollar.small(rec.years.length, hedgedFunds.length)} {money?.taxShare != null && <>{c.dollar.taxLead} {`⁦${Math.round(money.taxShare * 100)}%⁩`} {c.dollar.taxTail} </>}
-        {c.dollar.noSource}
-      </p>
+      </LongestCase>
       <SourceLine
         lead={
           <>
@@ -198,7 +224,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         items={[]}
       />
       <p>
-        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" />
+        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" titled />
       </p>
     </Card>
   );

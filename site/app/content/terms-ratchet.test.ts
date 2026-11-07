@@ -176,7 +176,6 @@ const NAMED_WITHOUT_ROW: Record<string, readonly string[]> = {
   "guide/money-market-fund-daily": ["בעלי היחידות"],
   "guide/money-market-fund-renewable": ["בעלי היחידות"],
   "guide/mutual-funds": ["בעלי היחידות", "מחיר קנייה", "קרן סגורה"],
-  "guide/open-tax": ["קרן פנסיה"],
   "guide/pension-comprehensive": ["קרן פנסיה"],
   "guide/pension-general": ["קרן פנסיה"],
   "guide/provident-for-annuity": ["קרן פנסיה"],

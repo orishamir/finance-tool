@@ -19,6 +19,8 @@ export type FeeType =
   | "spread"
   | "custody"
   | "fixed"
+  /** F-102: the current account at a bank (D64). */
+  | "account"
   | "fund"
   | "fx"
   | "manager";
@@ -81,5 +83,5 @@ export interface RunResult {
 }
 
 export function emptyFees(): Record<FeeType, number> {
-  return { deposit: 0, balance: 0, direct: 0, trade: 0, spread: 0, custody: 0, fixed: 0, fund: 0, fx: 0, manager: 0 };
+  return { deposit: 0, balance: 0, direct: 0, trade: 0, spread: 0, custody: 0, fixed: 0, account: 0, fund: 0, fx: 0, manager: 0 };
 }

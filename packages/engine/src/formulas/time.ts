@@ -36,6 +36,13 @@ export function lastMonthOfTaxYear(month: number, firstMonth = 1): number {
   return m;
 }
 
+/** The run's month in which a calendar date falls, month 1 starting on the run date (`YYYY-MM-DD` both); 0 or less for a date before it. */
+export function monthOfDate(runDate: string, date: string): number {
+  const ym = (d: string) => Number(d.slice(0, 4)) * 12 + Number(d.slice(5, 7)) - 1;
+  const whole = ym(date) - ym(runDate) - (Number(date.slice(8, 10)) < Number(runDate.slice(8, 10)) ? 1 : 0);
+  return whole + 1;
+}
+
 /**
  * F-02 Monthly inflation. `π_m = (1 + π)^(1/12) − 1`, with `π` the annual rate A-02 as a fraction.
  */
@@ -56,7 +63,7 @@ export function cpiPath(annualInflation: number, months: number): number[] {
 
 /**
  * F-04 Exchange-rate path. `X_0 = 1`; `X_m = X_{m−1} × (1 + f)^(1/12)` (A-03). For a foreign-currency
- * security it replaces `I` as the tax index (TXF-03, TXF-04).
+ * security held directly it replaces `I` as the tax index (TXF-03); for a TASE foreign fund the index is TXF-04's, open since 2026-11-07.
  */
 export function fxPath(annualChange: number, months: number): number[] {
   const step = Math.pow(1 + annualChange, 1 / 12);

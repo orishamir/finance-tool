@@ -261,6 +261,11 @@ export interface WorkbenchInputs {
   values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue };
   fromGoal: boolean;
   returnFromParameter: boolean;
+  /**
+   * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102), except at `own`, the bank the
+   * person marked as theirs (null: none marked, every bank counts it). Absent on every other page, where no row counts it.
+   */
+  currentAccounts?: { own: string | null };
 }
 
 // ---------------------------------------------------------------- the view

@@ -239,12 +239,12 @@ describe("F-61 existing balance in a study fund (review S42)", () => {
       expect(r.detail.grossBalance! - at.detail.grossBalance!).toBeCloseTo(over * growth, 4);
       // Salary 20,000: the 321.60 above is 3,859.20 a year on top of 240,000, in the 31% band (TXG-02): 1,196.352 a year, 11,963.52 over 10.
       expect(r.detail.employerDepositTax!).toBeCloseTo(11_963.52, 2);
-      // National Insurance and health at the full rate 12.17% (TXG-35, a reading): 0.1217 × 321.60 × 120 = 4,696.6464.
+      // National Insurance and health at the full rate 12.17% (TXG-35, sourced to National Insurance's circular 1473, TXH-26): 0.1217 × 321.60 × 120 = 4,696.6464.
       expect(r.detail.employerSocial!).toBeCloseTo(4_696.6464, 3);
       // The split of the monthly money: own 300 and employer 1,178.40 benefited, 321.60 above.
       expect(r.detail.benefitedMonthly).toBeCloseTo(1_478.4, 9);
       expect(r.detail.excessMonthly).toBeCloseTo(321.6, 9);
-      expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXG-35" });
+      expect(r.labels.some((l) => l.ruleId === "TXG-35")).toBe(false);
       // Its gains are taxed at exit (TXH-11); the benefited part is not.
       expect(r.taxAtExit).toBeGreaterThan(0);
       expect(r.formulas).toContain("F-52");

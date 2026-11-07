@@ -67,7 +67,8 @@ describe("F-52 employer line, keren hishtalmut (S23, S25)", () => {
     g.value("tax on the excess gains at exit", line.taxAtExit, 773.87);
     g.value("employer line nominal", line.nominal, 139_405.39);
     g.done();
-    expect(labelOf(line, "TXG-35")).toBe("reading");
+    // workings S25: National Insurance's circular 1473 puts the excess in the base (TXH-26), so no label since 2026-11-07
+    expect(labelOf(line, "TXG-35")).toBeUndefined();
     // 2026-10-25 scope pass: TXH-11's real base now rests on the Chief Economist paper (primary), so no institution label.
     expect(labelOf(line, "TXH-11")).toBeUndefined();
     expect(line.ranked).toBe(false);

@@ -1108,6 +1108,27 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 9.5,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7020/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F_%D7%97%D7%9C%D7%A7_1.pdf",
+        "title": "תעריפון יחיד ועסק קטן, חלק 1 - חשבון עובר ושב - בנק ירושלים (16/09/2026), פעולה על ידי פקיד",
+        "publisher": "Bank of Jerusalem Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-09-16",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "'פעולה על ידי פקיד' at 9.5 NIS (בפיקוח); 'הטבה ללקוחות הבנק (יחיד ועסק קטן): הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל': a flat 9.5 NIS a month, direct actions free. Read in the library copy (77f184a3692d1322), 2026-11-06; the same figure as research/2026-11-04-binding-prices/jerusalem.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
@@ -1161,7 +1182,7 @@
     },
     {
       "what": "חשבון עובר ושב: עמלה חודשית קבועה בגובה פעולה אחת על ידי פקיד, 9.5 ₪ (בפיקוח); פעולה בערוץ ישיר ללא עמלה",
-      "why": "The securities account rests on a current account. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year). No bank's record prices the current account yet; a decision for all banks at once."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year)."
     },
     {
       "what": "עמלות ממוצעות בפועל, ינואר-יוני 2026: דמי ניהול ני\"ע ישראליים וזרים 0.08%-0.15% לשנה; קנייה ומכירה של מניות ואג\"ח 0.07%-0.38%, ני\"ע זרים 0.04%-0.19%",

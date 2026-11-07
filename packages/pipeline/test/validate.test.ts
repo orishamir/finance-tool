@@ -440,7 +440,13 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // plus TXH OQ15 (how a study-fund withdrawal splits between deposits and gains), opened 2026-11-06
     // plus INS OQ17 (savings-policy withdrawal: partial floors, the two-year condition on one deposit, surrender charges, when the 30 days start), opened 2026-11-06
     // plus PEN OQ31 (where the bylaws' exception for money moved in only to start a pension came from), opened 2026-11-06
-    expect(items.length).toBe(554);
+    // plus TXP OQ17 (how the annuity paragraph of personal-effort income reads), opened 2026-11-07; SW OQ8 closed 2026-11-07 (TXP-32), still counted
+    // plus TXF OQ27 (how Israel taxes a US fund's capital gain dividend), opened 2026-11-07
+    // plus CAT OQ27 to OQ35 (the CMA list of tracks: a later amendment, variable-fee names, government bonds, index-tracking
+    // instruments, classification pairs off the list, the age model's blanks, a definition of credit, exposure measure,
+    // sustainability criteria), opened 2026-11-07
+    expect(items.length).toBe(565);
+    expect(items.find((q) => q.id === "SW OQ8")?.closedOn).toBe("2026-11-07");
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
@@ -472,6 +478,12 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
       expect.arrayContaining([expect.stringMatching(/^open_questions: TXP-OQ3 is closed/), expect.stringMatching(/^blocked_by: TXP-OQ3 is closed/), expect.stringMatching(/^dimensions.real-vs-nominal: PEN-OQ8 is closed/)]),
     );
     expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
+  });
+
+  it("fails a record whose moving-tax mark is open while its own value says whether a move is taxed (no leftovers since SW OQ8, 2026-11-07)", () => {
+    const wrapper = { id: "pension-comprehensive", open_questions: [], switch_is_tax_event: { value: false }, dimensions: { "switching-tax-event": "blocked:SW-OQ8" } };
+    const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/wrappers/pension-comprehensive.json": wrapper });
+    expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringMatching(/^dimensions.switching-tax-event is blocked:SW-OQ8 but switch_is_tax_event is known \(false\); mark it covered/)]));
   });
 });
 
@@ -566,7 +578,7 @@ describe("scope", () => {
     const all = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named }).map((p) => p.message).join("\n");
     expect(all).not.toMatch(/notRules|does not name/);
     const term = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named, "terms/x.json": cite }).map((p) => p.message).join("\n");
-    expect(term).toMatch(/IRA-28 is a not-rule \(press report \(events at Slice and Globalnet\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
+    expect(term).toMatch(/IRA-28 is a not-rule \(a regulator's announcement of an event at one company \(Slice\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
     const { "dimensions/regulator.json": _gone, ...withoutOne } = named;
     const gone = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...withoutOne }).map((p) => p.message).join("\n");
     expect(gone).toMatch(/notRules: IRA-28 names data\/dimensions\/regulator.json, which does not exist/);
