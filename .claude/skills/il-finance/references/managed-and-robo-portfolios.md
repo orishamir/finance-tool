@@ -210,6 +210,7 @@ Out, and where it lives:
   - IBI and Altshuler: the fee is set by portfolio size and nature and agreed in the agreement. Neither publishes rates.
 - Conditions / exceptions: A "no direct fee" portfolio of the group's own funds is paid through layer (c). The group's fund manager earns that fee, which is the affiliation case in MGD-12. The fee rates of the funds used by Meitav Manager are not given on its page (open question 4).
 - Figures: see MGD-11.
+- Source check (2026-11-07): the report's official copy was searched for and not found; what was tried is under MGD-11.
 - Source:
   - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.16, 17 · checked 2026-10-22 · primary (third-party host)
   - [Meitav private clients](https://www.meitav.co.il/portfolio_management/private_clients/); [Meitav portfolio management](https://www.meitav.co.il/portfolio_management/); [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/) · checked 2026-10-22 · institution
@@ -247,6 +248,7 @@ Out, and where it lives:
   - An all-in ratio (total manager income over portfolio value, per size band) can be computed from the p.21 table. That is a computation for `docs/method.md`, not a sourced figure.
   - The ISA notes a fall in the rate charged to small clients (up to NIS 0.5m) and a slight rise for the rest (p.16).
 - Updated: yearly, in the ISA's annual licensees report. The 2025 report was published 29 Jul 2026 (domain report S7).
+- Source check (2026-11-07): the report's copy on the Securities Authority's own site was searched for and not found. Tried: web searches for the report's title and for its file on new.isa.gov.il; the press items on it (Funder 206333, Calcalist, Bizportal), which link only Funder's copy; the Authority's sitemap (pages only, dated 2025-02, and the site is a script-built application whose pages carry no links to a plain fetch); the Wayback Machine's list of the Authority's archived PDFs (204 files, none of them this report); and about 120 likely file names in five of the Authority's folders. The figures stay on the press host's copy (Funder, cdn.funder.co.il), which is the report as published (24 pages, created 28.7.2026); a browser visit to the Authority's investment-licensees pages ("Data-on-consultants-marketers-netonim" in its sitemap) should find the official file.
 - Source: [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.2, 16, 17, 21 · checked 2026-10-22 · primary (third-party host)
 - Dimensions: `fee-management-balance`, `fee-change-over-time`
 - Likely to change: yes (annual)
