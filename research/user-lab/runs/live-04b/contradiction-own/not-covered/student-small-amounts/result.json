@@ -1,0 +1,112 @@
+{
+  "task": "not-covered",
+  "persona": "student-small-amounts",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T17:07:29.335Z",
+  "structured": {
+    "answer": "My answer: there's a long list of stuff the site can't calculate yet, all tagged \"לא מחושב\": gold funds (השקעה בזהב דרך קרנות סל, ETC), אג\"ח, foreign-currency stuff (פיקדון מט\"ח, צמוד דולר, מנוטרלת מט\"ח, עמלת חליפין), structured deposits, REITs, a digital investment portfolio, and a pile of insurance and pension things. Below that it says it never does loans, picking stocks, ranking funds by past returns (\"דירוג לפי תשואה בעבר\"), or buying for you. My plain index-fund thing isn't on the list, so I guess that part is covered. But it won't tell me which fund went up most, and that's how I'd usually pick.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Red banner at the top",
+        "why": "\"החוקים והכללים לכל המוצרים כאן עוד בבדיקה\": does that mean the info under each card is wrong, or just not done yet? It made me trust the cards less"
+      },
+      {
+        "where": "Cards with 'מצב הכיסוי' open (e.g. השקעה בזהב דרך קרנות סל)",
+        "why": "'חסום: שאלה פתוחה', crossed-out 'נסגר ב-' dates and codes like MF-28, TX2-01, TXA-28. No idea what that means for me"
+      },
+      {
+        "where": "Middle of the list (around screens 4–6)",
+        "why": "Endless cards about insurance, debt settlements and annuities. Got bored and just scrolled for headings"
+      },
+      {
+        "where": "עמלת חליפין card vs. the securities-account guide",
+        "why": "Here it's 'לא מחושב', but the guide had a whole 'המרת מטבע' fee row with company examples. Not exactly a contradiction, but I couldn't tell how much it actually covers"
+      }
+    ],
+    "used": [
+      "Title 'מה האתר עוד לא מכסה' and its subtitle",
+      "Red banner about rules still being checked",
+      "Card headings and the red 'לא מחושב' tags",
+      "Bottom section 'מה האתר לא משווה ולא עושה' and its bullet list",
+      "Memory of the securities-account guide (cost table, glossary)"
+    ],
+    "skimmed": [
+      "'מה ידוע' text inside the cards",
+      "Insurance and pension cards (ביטוח מנהלים, קופת ביטוח, קרן י', תיקון 190, היוון קצבה, קצבה מוכרת, תשלומים פטורים)",
+      "Cards about foreign currency and dollars"
+    ],
+    "skipped": [
+      "Green law citations and source links",
+      "Dates and 'מקור ראשי' tags",
+      "'חוקים וכללים · N' chips",
+      "'כשייסגר: יופיע במדריך...' grey text",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "לא מחושב: not calculated, or not covered at all?",
+      "חסום: שאלה פתוחה",
+      "MF-28, TX2-01, TXA-28",
+      "נסגר ב- with a crossed-out date",
+      "ETC",
+      "אג\"ח קונצרטנית",
+      "מק\"מ-like terms: נע\"מ / ניירות ערך מסחריים",
+      "מנוטרלת מט\"ח",
+      "מסלולי האירוע",
+      "קרן י'",
+      "היוון קצבה",
+      "מקור ראשי (עותק)",
+      "לפי החברה (orange tag)"
+    ],
+    "not_found": [
+      "A clear yes/no on whether regular index funds / קרן מחקה on S&P or Nasdaq are fully covered",
+      "Anything about whether small monthly amounts (300–500 ₪) are worth it",
+      "Anything about 'zero commission' apps"
+    ],
+    "findings": [
+      {
+        "what": "The banner says the rules for every product here are 'עוד בבדיקה', yet every card shows a 'מקור ראשי' and law citations. I can't tell whether the cards are reliable",
+        "where": "Top banner vs. the cards"
+      },
+      {
+        "what": "עמלת חליפין is tagged 'לא מחושב' here, but the securities-account guide has a 'המרת מטבע' fee row with example companies and defines עמלת חליפין in its glossary. Hard to know what's actually covered",
+        "where": "עמלת חליפין card (screen 5) vs. brokerage guide 'כמה זה עולה' / 'מונחים'"
+      },
+      {
+        "what": "A huge wall of nearly identical dark cards, mostly insurance and pension stuff. Way too long on a phone",
+        "where": "Screens 2–9"
+      },
+      {
+        "what": "Internal codes and crossed-out dates shown to users with no explanation",
+        "where": "'מצב הכיסוי' sections"
+      },
+      {
+        "what": "Some cards are clipped or have weird empty space next to them",
+        "where": "Left column, screens 2–3 and 9"
+      },
+      {
+        "what": "The really useful summary (what it never does) is buried at the very bottom",
+        "where": "'מה האתר לא משווה ולא עושה'"
+      }
+    ]
+  },
+  "steps": 12,
+  "reads": 12,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 46493,
+    "turns": 14,
+    "usd": 0.2849774,
+    "input": 12,
+    "cacheWrite": 24423,
+    "cacheRead": 71827,
+    "output": 3759,
+    "model": "claude-opus-5-5"
+  }
+}

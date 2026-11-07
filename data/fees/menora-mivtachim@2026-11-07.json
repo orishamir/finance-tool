@@ -1,0 +1,119 @@
+{
+  "id": "menora-mivtachim",
+  "provider": {
+    "name_he": "מנורה מבטחים פנסיה וגמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://cdn.menoramivt.co.il/public/docs/20250901/1756191422_1756134722_%D7%AA%D7%A7%D7%A0%D7%95%D7%9F_%D7%92%D7%9E%D7%9C%D7%A9_%D7%90%D7%95%D7%92%D7%95%D7%A1%D7%98_2025.pdf",
+    "title": "תקנון מנורה מבטחים גמל להשקעה",
+    "notes": "Bylaws of מנורה מבטחים גמל להשקעה (fund 8674), 15 pages, edition of 13/8/2025 printed on p.1, listed as the current bylaws on menoramivt.co.il/links/gemel-investment; fees in s.35.1 on p.10, a lower fee for at least two years in s.36.1. Read 2026-11-07. Also read: form 3318 (joining request for pensioners of Menora's pension fund, updated 4.9.2025, p.2, section ה), which prints the same maximum, \"0.0871% (בחישוב שנתי 1.05%) מהצבירה בחשבון ו-4% מתוך התשלומים המועברים לקופה\", with a blank for a discount; ordinary joining is online only and publishes no form.",
+    "published": "2025-08-13",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-07",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "menora-mivtachim-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://cdn.menoramivt.co.il/public/docs/20250901/1756191422_1756134722_%D7%AA%D7%A7%D7%A0%D7%95%D7%9F_%D7%92%D7%9E%D7%9C%D7%A9_%D7%90%D7%95%D7%92%D7%95%D7%A1%D7%98_2025.pdf",
+          "title": "תקנון מנורה מבטחים גמל להשקעה (מהדורה 13/8/2025), סעיף 35.1",
+          "publisher": "Menora Mivtachim Pension and Gemel",
+          "strength": "institution",
+          "page": 10,
+          "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2025-08-13",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The fund's bylaws (edition 13/8/2025, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment; recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. Form 3318, the joining request for pensioners of Menora's pension fund (updated 4.9.2025, p.2, section ה), prints the same maximum with a blank for a discount the company may stop on a withdrawal or transfer; ordinary joining is online only. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול מהצבירה"
+        ]
+      }
+    },
+    {
+      "id": "menora-mivtachim-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://cdn.menoramivt.co.il/public/docs/20250901/1756191422_1756134722_%D7%AA%D7%A7%D7%A0%D7%95%D7%9F_%D7%92%D7%9E%D7%9C%D7%A9_%D7%90%D7%95%D7%92%D7%95%D7%A1%D7%98_2025.pdf",
+          "title": "תקנון מנורה מבטחים גמל להשקעה (מהדורה 13/8/2025), סעיף 35.1",
+          "publisher": "Menora Mivtachim Pension and Gemel",
+          "strength": "institution",
+          "page": 10,
+          "quote": "מתוך התשלומים המועברים אליה בשל כל עמית בשיעור שלא יעלה על שיעור דמי הניהול המרבי הקבוע בהסדר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": "2025-08-13",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The fund's bylaws (edition 13/8/2025, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment; recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. Form 3318, the joining request for pensioners of Menora's pension fund (updated 4.9.2025, p.2, section ה), prints the same maximum with a blank for a discount the company may stop on a withdrawal or transfer; ordinary joining is online only. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול מתוך התשלומים"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

@@ -25,12 +25,18 @@ export interface SiteValue extends ValueObject {
   parameter?: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null; provisional: boolean };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
-  /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXG-35 in F-52). */
+  /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell). */
   labels?: { code: string; ruleId: string }[];
   /** Engine flags (G-IDs, open questions) that qualify the value. */
   flags?: string[];
   /** What the value is, in one line, for the sheet header. */
   about?: string;
+  /** What the figure means, said first in its sheet, under the header (fresh readers, 2026-11-07: a definition at the sheet's end sat below the popover's edge). */
+  lead?: string;
+  /** The figure was shown with its sign ("+0.37%"): the sheet's head shows it the same way. */
+  signed?: boolean;
+  /** The words after the figure in its sheet's head, where the row says them otherwise than the unit's word (a fund's gap over one year: "ב־2025", not "בשנה"). */
+  unitText?: string;
   /** For an entered value: the P-05 value it replaced, and the input key the reset button clears. */
   replaces?: SiteValue;
   resetKey?: string;
@@ -47,6 +53,11 @@ export function weaker(a: Strength | undefined, b: Strength | undefined): Streng
 /** The strength a number is labelled with: its own source, or the weakest thing a computation rests on. */
 export function strengthOf(v: SiteValue): Strength {
   return v.state === "computed" ? (v.weakest ?? "primary") : v.source.strength;
+}
+
+/** An empty value whose rule is open (D7 blocked, D10): no rule covers it, so the site shows the open question, never a figure or "unknown". */
+export function isOpenValue(v: SiteValue): boolean {
+  return v.value === null && v.state === "sourced" && v.source.strength === "open";
 }
 
 /** Whether a figure carries the caution flag (D7, D31): a secondary source, or a company's figure out of its own context. */
@@ -108,7 +119,7 @@ export function computed(
   unit: ValueObject["unit"],
   formula: string,
   inputs: Record<string, SiteValue>,
-  options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string } ,
+  options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string } ,
 ): SiteValue {
   let weakest: Strength | undefined;
   for (const input of Object.values(inputs)) {
@@ -134,6 +145,9 @@ export function computed(
     labels: options.labels,
     about: options.about,
     notes: options.notes,
+    ...(options.lead ? { lead: options.lead } : {}),
+    ...(options.signed ? { signed: true } : {}),
+    ...(options.unitText ? { unitText: options.unitText } : {}),
   };
 }
 

@@ -32,12 +32,12 @@
     "value": "BoI",
     "unit": "text",
     "source": {
-      "url": "https://www.nevo.co.il/law_html/law00/72417.htm",
-      "title": "חוק מילווה קצר מועד, תשמ\"ד-1984 (Nevo mirror)",
-      "publisher": "Knesset legislation (Nevo mirror)",
-      "strength": "primary-mirror"
+      "url": "https://fs.knesset.gov.il/10/law/10_lsr_210160.PDF#page=1",
+      "title": "חוק מילווה קצר מועד, התשמ\"ד-1984, ס\"ח 1106 (as enacted), p.1: ss.1, 4, 6 (Bank of Israel sells the bills to the public); p.2: s.10 (the loan is administered by the Bank of Israel); s.1 divided into subsections by amendment 6 and s.5 replaced in 2002",
+      "publisher": "The Knesset",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -117,18 +117,18 @@
   },
   "lawful_exit": {
     "kind": "trading_day",
-    "text": "Any trading day: makam is listed on TASE after each auction and can be sold at the market price of the day (GOV-04, GOV-17, GOV-22). Held to the redemption date, the Bank of Israel pays the face value (GOV-03). The settlement cycle for a secondary sale on TASE was not readable (GOV open question 7), so no payout-days figure is recorded."
+    "text": "Any trading day: makam is listed on TASE after each auction and can be sold at the market price of the day (GOV-04, GOV-17, GOV-22). Held to the redemption date, the Bank of Israel pays the face value (GOV-03). A sale on TASE settles on the next business day (GOV-24); no payout-days figure is recorded."
   },
   "switch_is_tax_event": {
     "value": true,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance (Hebrew Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "Income Tax Ordinance, s.88 definition \"מכירה\" (Tax Authority's text, p.148): \"לרבות חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון\"",
+      "publisher": "Israel Tax Authority",
       "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -149,7 +149,7 @@
       "GOV-24",
       "BANK-15"
     ],
-    "text": "whoever holds a securities account (held_in): a purchase on TASE on any trading day, with a minimum order of 10,000 face value in continuous trading (GOV-24), or a bid in the monthly issue auction through the account (GOV-22). Only TASE clearing-house members bid directly (GOV-05); the minimum and fee for an individual's auction order are open (GOV open question 2). A bank through which makam can be bought must show it next to deposits and money-market funds under \"מוצרי שוק הכסף\" and explain how to buy it (BANK-15)"
+    "text": "whoever holds a securities account (held_in): a purchase on TASE on any trading day, with a minimum order of 10,000 face value in continuous trading and of one trading unit in the pre-opening and pre-close phases, whose size for makam is not stated (GOV-24, GOV open question 7), or a bid in the monthly issue auction through the account (GOV-22). Only TASE clearing-house members bid directly (GOV-05); the minimum and fee for an individual's auction order are open (GOV open question 2). A bank through which makam can be bought must show it next to deposits and money-market funds under \"מוצרי שוק הכסף\" and explain how to buy it (BANK-15)"
   },
   "protection": {
     "rule_ids": [
@@ -187,5 +187,5 @@
     "TXI-OQ3",
     "TXI-OQ9"
   ],
-  "checked": "2026-10-26"
+  "checked": "2026-11-07"
 }

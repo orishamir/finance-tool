@@ -97,9 +97,15 @@ describe("S42 fee materiality on the founder's hishtalmut (F-61, F-62)", () => {
     expect(r.value).toMatchObject({ state: "computed", computed_from: { formula: "F-61" } });
   });
 
-  it("verdicts under P-03: the balance fee is worth negotiating (reference 0.34%), direct expenses are not (no reference)", () => {
-    const balance = feeVerdict({ nis: cost("balance"), currentRate: 0.0074, totalDrag: m.total.value as number }, { rate: 0.0034 }, p03);
+  it("verdicts under P-03: the balance fee is worth negotiating (the cut to the 0.34% reference is worth 3,991.56), direct expenses are not (no reference)", () => {
+    // D90 revised (2026-11-07): the negotiate test reads the worth of the cut to the reference, F-61's value of that reduction, not the cost
+    const worth = valueOfReduction(s42, "balance", 0.0034, ctx).value.value as number;
+    const balance = feeVerdict({ nis: cost("balance"), worthNis: worth, currentRate: 0.0074, totalDrag: m.total.value as number }, { rate: 0.0034 }, p03);
     expect(balance).toMatchObject({ verdict: "worth-negotiating", negotiate: true, avoid: false });
+    // the same fee with a cut worth under the threshold: its 17,901.59 cost alone no longer says "negotiate"
+    const small = feeVerdict({ nis: cost("balance"), worthNis: 999, currentRate: 0.0074 }, { rate: 0.0034 }, p03);
+    expect(small).toMatchObject({ verdict: "not-worth-the-effort", negotiate: false });
+    expect(small.reasons).toContain("worth-below-negotiate-threshold");
     // 17,901.59 of 20,664.79 is 87% of the drag: above negotiate_share (10%).
     expect(balance.share?.atLeastThreshold).toBe(true);
     const direct = feeVerdict({ nis: cost("direct"), currentRate: 0.0011, totalDrag: m.total.value as number }, null, p03);
@@ -180,19 +186,21 @@ describe("F-62 thresholds come from the P-03 record passed in", () => {
   });
   it("changes with the record, and refuses a record that is not P-03 or lacks a threshold", () => {
     const stricter = { ...p03, negotiate_nis: { ...(p03.negotiate_nis as object), value: 5000 } };
-    expect(feeVerdict({ nis: 2000, currentRate: 0.01 }, { rate: 0.005 }, p03).verdict).toBe("worth-negotiating");
-    expect(feeVerdict({ nis: 2000, currentRate: 0.01 }, { rate: 0.005 }, stricter).verdict).toBe("not-worth-the-effort");
+    expect(feeVerdict({ nis: 9000, worthNis: 2000, currentRate: 0.01 }, { rate: 0.005 }, p03).verdict).toBe("worth-negotiating");
+    expect(feeVerdict({ nis: 9000, worthNis: 2000, currentRate: 0.01 }, { rate: 0.005 }, stricter).verdict).toBe("not-worth-the-effort");
+    // no worth given is nothing to bring down: a cost alone never makes a negotiation (D90 revised)
+    expect(feeVerdict({ nis: 9000, currentRate: 0.01 }, { rate: 0.005 }, p03).verdict).toBe("not-worth-the-effort");
     expect(() => feeThresholds({ ...p03, method_id: "P-04" })).toThrow(/P-03/);
     const { avoid_nis: _omit, ...missing } = p03;
     expect(() => feeThresholds(missing)).toThrow(/avoid_nis/);
   });
   it("a reference that is not below the current rate does not make a negotiation", () => {
-    const v = feeVerdict({ nis: 3000, currentRate: 0.005 }, { rate: 0.005 }, p03);
+    const v = feeVerdict({ nis: 3000, worthNis: 3000, currentRate: 0.005 }, { rate: 0.005 }, p03);
     expect(v.verdict).toBe("not-worth-the-effort");
     expect(v.reasons).toContain("reference-not-below-current");
   });
   it("when both tests pass the verdict is negotiate (the method's order) and says the avoid test passed too", () => {
-    const v = feeVerdict({ nis: 3000, currentRate: 0.01, removedByAlternative: true }, { rate: 0.005 }, p03);
+    const v = feeVerdict({ nis: 3000, worthNis: 1500, currentRate: 0.01, removedByAlternative: true }, { rate: 0.005 }, p03);
     expect(v).toMatchObject({ verdict: "worth-negotiating", negotiate: true, avoid: true, alsoAvoid: true });
   });
 });
@@ -244,7 +252,8 @@ describe("S46 holdings review: parental kupot gemel (F-70, F-72, hand-off to F-6
   it("fee cost over 15 years and the value of moving the 80,000 into the 0.6% fund", () => {
     const a = feeMateriality(providentForAnnuity(80_000, 0.009), ctx);
     const b = feeMateriality(providentForAnnuity(40_000, 0.006), ctx);
-    const moved = valueOfReduction(providentForAnnuity(80_000, 0.009), "balance", 0.006, ctx);
+    // a move to another fund at its own rate, not an offer on this line: for the whole horizon (D86)
+    const moved = valueOfReduction(providentForAnnuity(80_000, 0.009), "balance", 0.006, ctx, { held: false });
     const g = golden("S46");
     g.value("0.9% on 80,000", a.total.value as number, x.s46.cost80);
     g.value("0.6% on 40,000", b.total.value as number, x.s46.cost40);

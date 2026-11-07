@@ -151,9 +151,94 @@ export function feeForMonth(rate: number, discount: Discount | undefined, minMon
   return { rate: month <= end ? rate : discount.listRate, extended: end > discount.months };
 }
 
+/** The provident family's fee lines with their discounts (F-11, F-15, A-18, A-19): the shape the provident and pension runs take. */
+export interface DiscountedFees {
+  deposit: number;
+  balance: number;
+  direct: number;
+  discount?: Discount;
+  depositDiscount?: Discount;
+}
+
+/** The discount that belongs to each line: the balance fee's is `discount`, the deposit fee's `depositDiscount`; direct expenses have none. */
+const discountKey = { balance: "discount", deposit: "depositDiscount", direct: null } as const;
+
+/**
+ * A-19 with F-16: a line is charged when its rate is above zero or a discount on it reverts to a rate above zero. A 0% deposit fee
+ * that becomes 4% after the discount is a fee the plan pays.
+ */
+export function feeCharged(fees: DiscountedFees, line: "deposit" | "balance" | "direct"): boolean {
+  const key = discountKey[line];
+  return fees[line] > 0 || (key !== null && (fees[key]?.listRate ?? 0) > 0);
+}
+
+/**
+ * A-19 with F-16: a line set to a new rate, as one rate for the whole run. Its own discount goes with it: a line removed (F-61) charges
+ * nothing in any month. The other lines keep theirs. A person's entered fee and a stated reduction are not this: below what the binding
+ * documents allow they hold only for PF-13's period (`withHeldRate`, D86).
+ */
+export function withFee<T extends DiscountedFees>(fees: T, line: "deposit" | "balance" | "direct", rate: number): T {
+  const next: DiscountedFees = { ...fees, [line]: rate };
+  const key = discountKey[line];
+  if (key !== null) delete next[key];
+  return next as T;
+}
+
+/**
+ * A-19 with F-16 and PF-13 (D86, 2026-11-07): a rate a person enters (D4) or states on F-61's page, below what the run would otherwise
+ * charge, is a discount like any other. It holds for `months` (PF-13's period) and then reverts to `revertsTo`: what the run charges on
+ * the line after the period, which on a collected list is the most its binding documents allow (the record's `reverts_to`, else the
+ * regulations' cap). Counting the low rate for every year would promise what no binding document promises (D83). A rate at or above
+ * `revertsTo`, a line with nothing to revert to (`revertsTo` undefined) and direct expenses are one rate for the whole run (`withFee`).
+ * The other lines keep theirs.
+ */
+export function withHeldRate<T extends DiscountedFees>(fees: T, line: "deposit" | "balance" | "direct", rate: number, months: number, revertsTo: number | undefined): T {
+  const key = discountKey[line];
+  if (key === null || revertsTo === undefined || !(rate < revertsTo)) return withFee(fees, line, rate);
+  // a discount the line already has, printed longer than PF-13's period, keeps its length when the rate entered is at or above its printed
+  // rate (the record's own fee entered by hand must not shorten it); a lower rate is promised by no document past PF-13's period (finance
+  // review, 2026-11-07), so it holds for that period alone
+  const own = fees[key];
+  const keep = own && rate >= fees[line] ? own.months : 0;
+  return { ...fees, [line]: rate, [key]: { months: Math.max(months, keep), listRate: revertsTo } } as T;
+}
+
+/** The rate a discounted line reverts to (A-19), if the line has a discount. */
+export function revertRate(fees: DiscountedFees, line: "deposit" | "balance" | "direct"): number | undefined {
+  const key = discountKey[line];
+  return key === null ? undefined : fees[key]?.listRate;
+}
+
+/** F-81 on a discounted line: the line scaled by `k` in both of its periods, the discounted rate and the rate it reverts to alike. */
+export function withFeeScaled<T extends DiscountedFees>(fees: T, line: "deposit" | "balance" | "direct", k: number): T {
+  const next: DiscountedFees = { ...fees, [line]: fees[line] * k };
+  const key = discountKey[line];
+  const d = key !== null ? fees[key] : undefined;
+  if (key !== null && d) next[key] = { ...d, listRate: d.listRate * k };
+  return next as T;
+}
+
 /**
  * F-17 Fixed fees. Monthly account or system fees at non-bank members (BRK-24), `fee_fixed_m`.
  */
 export function fixedFee(monthlyFee: number | undefined, marketValue: number): number {
   return Math.min(monthlyFee ?? 0, Math.max(0, marketValue));
+}
+
+/**
+ * F-102 The current account at a bank (D64): the monthly minimum of a current account at the bank, from its price list. Paid out of what is
+ * held each month, as F-17 is, and never more than is held. It is not a fee for securities transactions, so it does not come off the sale
+ * gain (TXS-06).
+ */
+export function currentAccountFee(monthlyMinimum: number | undefined, marketValue: number): number {
+  return Math.min(monthlyMinimum ?? 0, Math.max(0, marketValue));
+}
+
+/**
+ * F-103 A charge for each corporate event of a fund bought abroad (D67): `perEvent` in the instrument's currency on each of the fund's
+ * dividends, at the month's rate `fxRate` (shekels per unit), paid out of what is held and never more than is held. An accumulating fund
+ * has no dividend and pays none.
+ */
+export function corporateEventFee(perEvent: number | undefined, fxRate: number, marketValue: number): number {
+  return Math.min((perEvent ?? 0) * fxRate, Math.max(0, marketValue));
 }

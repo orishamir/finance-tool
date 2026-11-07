@@ -14,7 +14,7 @@ import { IdRef, Num, NumAfter, NumberLegend, StaleSaid } from "../components/pro
 import { Breadcrumb, PageShell } from "../components/shell";
 import { CompanyTracks, type CompanyExtra } from "../components/tracks/company-browser";
 import type { TbData } from "../lib/track-browser";
-import { Callout, Card, FeeWordsNote } from "../components/kit";
+import { Callout, Card, FeeWordsNote, When, gershayim } from "../components/kit";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 
@@ -115,7 +115,7 @@ export function shouldRevalidate({ currentUrl, nextUrl, defaultShouldRevalidate 
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
   const name = data?.kind === "institution" ? data.institution.name : data?.name;
-  return [{ title: `${name ?? companiesCopy.title} · ${site.name}` }];
+  return [{ title: `${name ? gershayim(name) : companiesCopy.title} · ${site.name}` }];
 }
 
 export default function Company() {
@@ -161,9 +161,9 @@ function ManagerCompany({ data }: { data: CompanyData }) {
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
-            <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={data.name} />
+            <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={gershayim(data.name)} />
             <h1 className="text-2xl lg:text-3xl font-semibold">
-              <bdi>{data.name}</bdi>
+              <bdi>{gershayim(data.name)}</bdi>
             </h1>
             {hasTracks && (
               // the tracks page's line: what the fee, the exposure, the yield and the assets are and when
@@ -185,7 +185,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                 {data.members.map((m, i) => (
                   <span key={m}>
                     {i > 0 && " · "}
-                    <bdi>{m}</bdi>
+                    <bdi>{gershayim(m)}</bdi>
                   </span>
                 ))}
               </p>
@@ -193,14 +193,14 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             <NumberLegend />
             {company && data.period.stale && (
               <Callout tone="caution">
-                {copy.oldData} <bdi dir="ltr">{fmt.period(String(data.period.value))}</bdi>.
+                <When iso={String(data.period.value)} lead={`${copy.oldData} `} />.
               </Callout>
             )}
           </header>
 
           <section aria-labelledby="tr-h" className="flex flex-col gap-3.5">
             <h2 id="tr-h" className="text-xl lg:text-2xl font-semibold">
-              {brandsCopy.listHeading} <bdi>{data.name}</bdi>
+              {brandsCopy.listHeading} <bdi>{gershayim(data.name)}</bdi>
             </h2>
             <StaleSaid on={!!data.period.stale}>
               <CompanyTracks data={browser} extras={extras} defaults={data.defaultIds} foot={(id) => <FeeFoot caps={data.caps[id] ?? null} />} />

@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,7 +12,7 @@ const formulas = readFormulaIds(`${root}docs/method.md`);
 const vo = {
   value: 25,
   unit: "pct",
-  source: { url: "https://example.org", title: "s.125C", publisher: "Knesset", strength: "primary" },
+  source: { url: "https://main.knesset.gov.il/x", title: "s.125C", publisher: "Knesset", strength: "primary" },
   checked: "2026-10-22",
   effective_from: null,
   effective_to: null,
@@ -59,16 +59,16 @@ describe("validateData", () => {
   });
 
   it("passes a valid rule file", () => {
-    expect(run({ "rules/txs-09.json": rule })).toEqual([]);
+    expect(run({ "rules/txs-fixture.json": rule })).toEqual([]);
   });
 
   it("rejects a rule ID that is not in il-finance", () => {
     const bad = { ...rule, figures: { x: { ...vo, rule_ids: ["TXS-999"] } } };
-    expect(run({ "rules/txs-09.json": bad })[0]?.message).toMatch(/TXS-999/);
+    expect(run({ "rules/txs-fixture.json": bad })[0]?.message).toMatch(/TXS-999/);
   });
 
   it("rejects a formula that is not in method.md", () => {
-    const problems = run({ "rules/txs-09.json": { ...rule, extra: { formula: "F-998" } } });
+    const problems = run({ "rules/txs-fixture.json": { ...rule, extra: { formula: "F-998" } } });
     expect(problems.some((p) => /F-998/.test(p.message))).toBe(true);
   });
 
@@ -188,6 +188,19 @@ describe("new collections", () => {
     const problems = run({ "terms/deposits/x.json": term });
     expect(problems.length).toBeGreaterThan(0);
     expect(problems[0]?.message).toMatch(/bank|rate_type|type_447/);
+  });
+
+  it("rejects a deposit whose break column contradicts itself, and a tax bucket outside its values", () => {
+    const deposit = JSON.parse(readFileSync(`${root}data/terms/deposits/hapoalim-pikadon-leshana-kavua.json`, "utf8"));
+    expect(run({ "terms/deposits/x.json": deposit })).toEqual([]);
+    const contradicts = run({ "terms/deposits/x.json": { ...deposit, break: { ...deposit.break, allowed: true, penalty: "not_allowed" } } });
+    expect(contradicts[0]?.message).toMatch(/break\.allowed is false exactly when break\.penalty is "not_allowed"/);
+    expect(run({ "terms/deposits/x.json": { ...deposit, break: { ...deposit.break, allowed: false, penalty: "none" } } })).not.toEqual([]);
+    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: "linked_15" } } })).not.toEqual([]);
+    // a null bucket comes only with an open source (code review, 2026-11-07)
+    const nullAtPrimary = run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null } } });
+    expect(nullAtPrimary[0]?.message).toMatch(/tax_bucket\.value is null only when its source strength is "open"/);
+    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null, source: { ...deposit.tax_bucket.source, strength: "open" } } } })).toEqual([]);
   });
 
   it("rejects a catalogue track that is not in the latest CMA period", () => {
@@ -440,7 +453,26 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // plus TXH OQ15 (how a study-fund withdrawal splits between deposits and gains), opened 2026-11-06
     // plus INS OQ17 (savings-policy withdrawal: partial floors, the two-year condition on one deposit, surrender charges, when the 30 days start), opened 2026-11-06
     // plus PEN OQ31 (where the bylaws' exception for money moved in only to start a pension came from), opened 2026-11-06
-    expect(items.length).toBe(554);
+    // plus TXP OQ17 (how the annuity paragraph of personal-effort income reads), opened 2026-11-07; SW OQ8 closed 2026-11-07 (TXP-32), still counted
+    // plus TXF OQ27 (how Israel taxes a US fund's capital gain dividend), opened 2026-11-07
+    // plus CAT OQ27 to OQ35 (the CMA list of tracks: a later amendment, variable-fee names, government bonds, index-tracking
+    // instruments, classification pairs off the list, the age model's blanks, a definition of credit, exposure measure,
+    // sustainability criteria), opened 2026-11-07
+    // plus TXI OQ19 (how a deposit paying the better of a fixed unlinked rate and full CPI linkage is taxed), opened 2026-11-07
+    // plus PF OQ18 (a discounted fee raised after a lump sum), opened 2026-11-07
+    // plus TXH OQ16 and TXP OQ18 (a withdrawal below the deposits from a study fund, a pension or provident fund), opened 2026-11-07
+    // plus RG OQ16 (whether all of a REIT holder's shares go dormant above a holding limit, or only the excess), opened 2026-11-07;
+    // RG OQ2 closed 2026-11-07 (s.64A7C, RG-03), still counted
+    // plus CORP OQ17 to OQ20 (structured bonds: which they are, trading, the issuer's margin, the pledge behind deposit certificates)
+    // and FXD OQ13 (the bank's margin inside a structured deposit), opened 2026-11-07; REG OQ25 closed 2026-11-07 (CORP-30), still counted
+    // plus SHR OQ1 (the current wording of the Companies Law sections behind SHR-01), opened 2026-11-07
+    // CS OQ8, MF OQ5, RG OQ9, INS OQ3 and SW OQ7 closed 2026-11-07 (the open questions that change a reader's result), still counted
+    // plus TXG OQ15, TXH OQ17, TXP OQ19, TX2 OQ18 and TXK OQ13 (what still rests on National Insurance's copies, issue #262), opened 2026-11-07
+    // plus TX2 OQ19 and OQ20 (Israel Bonds: withholding abroad and the Savings series' year; no Tax Authority text on structured bonds), opened 2026-11-07;
+    // TX2 OQ9 and OQ16 closed 2026-11-07 (TX2-24, TX2-23), still counted
+    expect(items.length).toBe(583);
+    expect(items.find((q) => q.id === "RG OQ9")?.closedOn).toBe("2026-11-07");
+    expect(items.find((q) => q.id === "SW OQ8")?.closedOn).toBe("2026-11-07");
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
@@ -473,6 +505,19 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     );
     expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
   });
+
+  it("fails a bare blocked mark and a blocked mark whose question the record does not list (no leftovers, 2026-11-07)", () => {
+    const wrapper = { id: "x", open_questions: ["PEN-OQ7"], dimensions: { "loss-offset": "blocked", currency: "blocked:TXP-OQ9", "real-vs-nominal": "blocked:PEN-OQ7" } };
+    const messages = run({ "open-questions.json": fromMarkdown, "instruments/wrappers/x.json": wrapper }).problems.map((p) => p.message);
+    expect(messages).toEqual(expect.arrayContaining([expect.stringMatching(/^dimensions.loss-offset: a bare "blocked" names no open question/), expect.stringMatching(/^dimensions.currency: TXP-OQ9 blocks it but is not in the record's open_questions/)]));
+    expect(messages.some((m) => m.startsWith("dimensions.real-vs-nominal"))).toBe(false);
+  });
+
+  it("fails a record whose moving-tax mark is open while its own value says whether a move is taxed (no leftovers since SW OQ8, 2026-11-07)", () => {
+    const wrapper = { id: "pension-comprehensive", open_questions: [], switch_is_tax_event: { value: false }, dimensions: { "switching-tax-event": "blocked:SW-OQ8" } };
+    const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/wrappers/pension-comprehensive.json": wrapper });
+    expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringMatching(/^dimensions.switching-tax-event is blocked:SW-OQ8 but switch_is_tax_event is known \(false\); mark it covered/)]));
+  });
 });
 
 // D30 (research/specs/2026-10-25-rules-scope/spec.md §3): who a rule applies to, and where it may appear
@@ -497,10 +542,10 @@ describe("scope", () => {
 
   it("fails a general rule whose first source is a company's document, and passes an official one", () => {
     const bad = { ...rule, sources: [src("institution_doc", "institution")] };
-    expect(run({ "rules/txs-09.json": bad }).map((p) => p.message).join("\n")).toMatch(/first source is a company's document/);
-    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("law", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
-    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("other", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
-    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("article", "secondary")] } }).map((p) => p.message).join("\n")).toMatch(/not a general source/);
+    expect(run({ "rules/txs-fixture.json": bad }).map((p) => p.message).join("\n")).toMatch(/first source is a company's document/);
+    expect(run({ "rules/txs-fixture.json": { ...rule, sources: [src("law", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
+    expect(run({ "rules/txs-fixture.json": { ...rule, sources: [src("other", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
+    expect(run({ "rules/txs-fixture.json": { ...rule, sources: [src("article", "secondary")] } }).map((p) => p.message).join("\n")).toMatch(/not a general source/);
   });
 
   it("fails a company's term in the questions page, the guide blocks, a wrapper's rule_ids and company_terms, and a company-sourced value", () => {
@@ -511,7 +556,7 @@ describe("scope", () => {
     expect(messages).toMatch(/"שווה לדעת" of child-savings-provident holds general rules only/);
     // a wrapper (partial on purpose: the schema reports the rest, the scope walk still reads it)
     const wrapper = { fee_caps: { balance: { value: 0.23, unit: "pct_per_year", source: { url: "https://example.org", title: "Harel bylaw", publisher: "Harel", strength: "institution" }, rule_ids: ["CS-30"] } }, company_terms: { "fee-management-balance": ["TXS-09"], "fee-deposit": ["CS-30"] } };
-    const w = run({ "rules/cs-30.json": cs30, "rules/txs-09.json": rule, "sources/institutions.json": [harel], "instruments/wrappers/child-savings-provident.json": wrapper }).map((p) => p.message).join("\n");
+    const w = run({ "rules/cs-30.json": cs30, "rules/txs-fixture.json": rule, "sources/institutions.json": [harel], "instruments/wrappers/child-savings-provident.json": wrapper }).map((p) => p.message).join("\n");
     expect(w).toMatch(/a wrapper is a product context and cites general rules only; CS-30/);
     expect(w).toMatch(/holds a value whose source is a company's document \("Harel bylaw"\)/);
     expect(w).toMatch(/company_terms.fee-management-balance: TXS-09 is general/);
@@ -538,12 +583,12 @@ describe("scope", () => {
 
   it("fails a general rule that derives from a company's term, and an example that is general", () => {
     const general = { ...rule, sources: [src("law", "primary")], derived_from: ["CS-30"] };
-    const files = { "rules/txs-09.json": general, "rules/cs-30.json": { ...cs30, sources: [harelDoc] }, "sources/institutions.json": [harel] };
+    const files = { "rules/txs-fixture.json": general, "rules/cs-30.json": { ...cs30, sources: [harelDoc] }, "sources/institutions.json": [harel] };
     expect(run(files).map((p) => p.message).join("\n")).toMatch(/a general rule derives from general rules only; CS-30 is institution/);
     const asExample = { ...rule, sources: [src("law", "primary")], examples: ["CS-30"] };
-    expect(run({ ...files, "rules/txs-09.json": asExample }).map((p) => p.message).join("\n")).not.toMatch(/derives from|examples:/);
+    expect(run({ ...files, "rules/txs-fixture.json": asExample }).map((p) => p.message).join("\n")).not.toMatch(/derives from|examples:/);
     const generalExample = { ...cs30, id: "CS-18", scope: "general", scope_institutions: undefined, sources: [src("law", "primary")], examples: ["TXS-09"] };
-    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("law", "primary")] }, "rules/cs-18.json": generalExample }).map((p) => p.message).join("\n")).toMatch(/examples: TXS-09 is general/);
+    expect(run({ "rules/txs-fixture.json": { ...rule, sources: [src("law", "primary")] }, "rules/cs-18.json": generalExample }).map((p) => p.message).join("\n")).toMatch(/examples: TXS-09 is general/);
   });
 
   it("allows a not-rule only in the files its entry names, and fails an entry whose file no longer cites it", () => {
@@ -554,7 +599,7 @@ describe("scope", () => {
     expect(ok).not.toMatch(/no longer stands/);
     const elsewhere = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], "instruments/wrappers/brokerage-account.json": wrapper("IRA-28") }).map((p) => p.message).join("\n");
     expect(elsewhere).toMatch(/cites general rules only; IRA-28 is institution: harel \(D30\); it is a not-rule allowed only in its own files/);
-    const stale = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], "instruments/wrappers/ira-provident.json": wrapper("IRA-28"), "instruments/wrappers/ira-hishtalmut.json": wrapper("TXS-09"), "rules/txs-09.json": rule }).map((p) => p.message).join("\n");
+    const stale = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], "instruments/wrappers/ira-provident.json": wrapper("IRA-28"), "instruments/wrappers/ira-hishtalmut.json": wrapper("TXS-09"), "rules/txs-fixture.json": rule }).map((p) => p.message).join("\n");
     expect(stale).toMatch(/notRules: IRA-28 no longer stands in data\/instruments\/wrappers\/ira-hishtalmut.json/);
   });
 
@@ -566,7 +611,7 @@ describe("scope", () => {
     const all = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named }).map((p) => p.message).join("\n");
     expect(all).not.toMatch(/notRules|does not name/);
     const term = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named, "terms/x.json": cite }).map((p) => p.message).join("\n");
-    expect(term).toMatch(/IRA-28 is a not-rule \(press report \(events at Slice and Globalnet\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
+    expect(term).toMatch(/IRA-28 is a not-rule \(a regulator's announcement of an event at one company \(Slice\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
     const { "dimensions/regulator.json": _gone, ...withoutOne } = named;
     const gone = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...withoutOne }).map((p) => p.message).join("\n");
     expect(gone).toMatch(/notRules: IRA-28 names data\/dimensions\/regulator.json, which does not exist/);

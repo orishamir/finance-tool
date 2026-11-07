@@ -1,0 +1,115 @@
+{
+  "task": "s14",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T17:11:14.390Z",
+  "structured": {
+    "answer": "It looks like the employer adds 2,250 ₪ a month to my 750 ₪. But the chart showed a red −64,761 ₪ tax after 5 years and only 136,457 ₪ left, so I won't decide alone. I'll ask the bank or my son, and only consider it if the money stays put for at least 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Big bar chart, screen 2",
+        "why": "Red −64,761 ₪ tax and 136,457 ₪ left over, less than the 45,000 + 135,000 that went in. Frightening, and the chart is set to 5 years, not the 6 years the text talks about"
+      },
+      {
+        "where": "Small top chart with the circle on 5",
+        "why": "Says to drag the marker. I don't use sliders, so I never saw a 6-year number"
+      },
+      {
+        "where": "Orange warning box, screen 4",
+        "why": "31% and 47% for the same early withdrawal. I couldn't follow the explanation"
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and the 'מה זה' section (tax-free after 6 years)",
+      "Calculator boxes: 30,000, 2.5%, 7.5%",
+      "Sentence '₪750 בחודש מכם, ₪2,250 מהמעסיק'",
+      "Waterfall chart numbers: 45,000, +135,000, +21,218, −64,761, 136,457",
+      "Labels above the small top chart: 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור עד התקרה'",
+      "Orange warning box about early withdrawal"
+    ],
+    "skimmed": [
+      "Notes under the chart (fund, return, 47%)",
+      "'מי מציע ומי מפקח'",
+      "'כסף נכנס ויוצא' cards",
+      "'כמה זה עולה' table",
+      "'מיסוי' cards",
+      "Opening lines of 'סיכונים ומה לא מוגן'"
+    ],
+    "skipped": [
+      "'מונחים' table",
+      "'שווה לדעת' items with codes like TXH-09",
+      "Links like 'חוקים וכללים', 'הצגת החברות' and 'כל החברות'",
+      "Link to the securities account page",
+      "Screen 5"
+    ],
+    "unsure_meaning": [
+      "S&P500 (13245)",
+      "מסלול מדד",
+      "מיטב השתלמות",
+      "דמי ניהול 0.54% vs 'עד 2%' vs '0.19% עד 0.7%'",
+      "הרווח הריאלי / ריאלי",
+      "ותק",
+      "Striped pink/turquoise parts of the bars",
+      "תשואה בשנה 7%",
+      "מס במקור 47%"
+    ],
+    "not_found": [
+      "A clear number for how much I'd have after 6 years, when there's no tax",
+      "A plain statement of whether the money is safe or in shares"
+    ],
+    "findings": [
+      {
+        "what": "The calculator offers a 'עצמאים' tab, but the warning box says 'לעצמאים האתר עוד לא מחשב אותו'. Two places disagree on whether it calculates for self-employed people",
+        "where": "Calculator tabs (screen 1) vs orange box (screen 4)"
+      },
+      {
+        "what": "The tax on early withdrawal is 'לפחות 31%' in one place and '47%' in another",
+        "where": "'מה זה' section (screen 1) vs notes under the chart (screen 2)"
+      },
+      {
+        "what": "The chart opens on 5 years and shows a big red minus and less money back than went in. A frightening first picture",
+        "where": "Waterfall chart, screen 2"
+      },
+      {
+        "what": "Management fee shows as 0.54%, '0.19% עד 0.7%' and 'עד 2% בשנה'. I can't tell what I'd actually pay",
+        "where": "Calculator / chart note / 'כמה זה עולה' table"
+      },
+      {
+        "what": "English letters S&P500 and the words 'מסלול מדד' make it sound like stock-exchange gambling",
+        "where": "Sentence under the small chart and the notes, screen 2"
+      },
+      {
+        "what": "Small grey notes too pale to read",
+        "where": "Under the chart and the chief economist line"
+      },
+      {
+        "what": "Pink and turquoise stripes are too similar to tell apart",
+        "where": "Bars in both charts"
+      },
+      {
+        "what": "Dark screen with many numbers made me anxious",
+        "where": "Screen 2"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 49970,
+    "turns": 6,
+    "usd": 0.20834840000000002,
+    "input": 8,
+    "cacheWrite": 14898,
+    "cacheRead": 34662,
+    "output": 4110,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -15,12 +15,12 @@
     "value": "CMA",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1, 13, 39 (Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2009 (ס\"ח תשס\"ה, 889): s.1 (p.2), s.13 (p.8: \"הממונה רשאי לאשר\"), s.39(א) (p.15: a managing company is under the Commissioner's supervision)",
+      "publisher": "The Knesset",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -42,12 +42,12 @@
       "value": 4,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(ב) (Hebrew Wikisource; Nevo mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, ק\"ת 7131, p.1261 (file p.5), reg. 3(ב)(1)-(2): 1.05% a year of the balance, 4% of payments",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -64,12 +64,12 @@
       "value": 1.05,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(ב) (Hebrew Wikisource; Nevo mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, ק\"ת 7131, p.1261 (file p.5), reg. 3(ב)(1)-(2): 1.05% a year of the balance, 4% of payments",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -133,12 +133,12 @@
       "value": 60,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law 2004, s.5 (early retirement age, 60 for men and women) (Wikisource mirror); Mor comprehensive pension fund bylaws 01.06.2025, s.1 \"גיל זכאות מינימלי לקצבת זקנה\" and s.41",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf#page=1",
+        "title": "חוק גיל פרישה, התשס\"ד-2004, p.1, s.5 (early retirement age \"גיל 60 לגבר ולאישה\"); Mor comprehensive pension fund bylaws 01.06.2025, s.1 \"גיל זכאות מינימלי לקצבת זקנה\" and s.41",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -155,12 +155,13 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
-        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
-        "strength": "primary"
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6380%2Fheb#page=3",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ה-2005, קובץ התקנות 6380 (10.4.2005), סריקת רשומות, file p.3 (gazette p.603), reg. 9 (in reg. 41יא '5 ימי עסקים' becomes '4 ימי עסקים', with the deferral to the fourth business day of the month); reg. 41יא itself as substituted by קובץ התקנות 6332, file p.19 (gazette p.873), reg. 44",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary",
+        "quote": "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -177,12 +178,12 @@
     "value": false,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-      "title": "Income Tax Regulations (Rules for Approval and Management of Provident Funds) 1964, reg. 33ב (Wikisource mirror); Mor general fund bylaws 01.04.2026; Income Tax Ordinance s.9(2)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=145",
+      "title": "Income Tax Ordinance, s.87(א)(2) (Tax Authority's text, p.145): the charge on provident money paid out against the rules reaches only sums a fund paid \"לחבריה\"; with the transfer regulations 2008, reg. 2(ב), which carry all payment dates over to the receiving fund (only \"לעניין דיני המס\" when it is an insurer's fund); except severance money moved to a \"new account\", taxed before it moves (Provident Funds Law s.23(א)(2א))",
+      "publisher": "Israel Tax Authority",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -190,10 +191,11 @@
     "rule_ids": [
       "PF-23",
       "PEN-17",
-      "TXP-13"
+      "TXP-13",
+      "TXP-32"
     ],
     "state": "sourced",
-    "notes": "Track switch inside the fund within 3 business days, not a withdrawal; the member is taxed only at exit. Transfer between pension funds: tax neutrality not stated in the tax rule base (SW OQ8)."
+    "notes": "Track switch inside the fund within 3 business days, not a withdrawal (PF-23, PEN-17). A member's move to another pension fund or provident fund for annuity under the transfer regulations is not a payment to the member, so it is not taxed and the money keeps its tax history (TXP-32); the member is taxed only when money is paid out (TXP-13). One exception (TXP-32): severance money moved to a \"new account\" in a provident fund for annuity that is not a pension fund or central fund, an account closed to further deposits, has income tax withheld on the part not exempt as severance before it moves (Provident Funds Law s.23(א)(2א), Amendment 13, ספר החוקים 2507 p.17, https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=5); severance money taxed that way but neither withdrawn nor moved counts as new-account money after three months (s.23(ב2)(1)). Transfer regulations, reg. 2(ב) (קובץ התקנות 6657 p.628): https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4. A move to another pension fund is never this case, since the new account is never in a pension fund; a pension fund's severance money moved to a new account in a provident fund for annuity is. Replaces the 2026-10-22 note, which left the move between funds open (SW OQ8)."
   },
   "transfer_routes": [
     {
@@ -246,7 +248,7 @@
   "tier": 1,
   "open_questions": [
     "PEN-OQ7",
-    "SW-OQ8"
+    "TXP-OQ18"
   ],
   "checked": "2026-10-23",
   "dimensions": {
@@ -259,11 +261,12 @@
     "fee-management-balance": "covered",
     "insurance-cover": "covered",
     "liquidity-lockup": "covered",
+    "loss-offset": "blocked:TXP-OQ18",
     "protection": "covered",
     "real-vs-nominal": "covered",
     "regulator": "covered",
     "reporting-obligation": "covered",
-    "switching-tax-event": "blocked:SW-OQ8",
+    "switching-tax-event": "covered",
     "tax-at-deposit": "covered",
     "tax-at-exit": "blocked:PEN-OQ7",
     "tax-during": "covered",

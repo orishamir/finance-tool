@@ -2,7 +2,7 @@
   "id": "pkm",
   "he": "פק\"מ",
   "en": null,
-  "meaning": "קיצור של פיקדון קצר מועד; בנק ירושלים מתאר אותו כפיקדון בנקאי לתקופה מוגדרת, בריבית קבועה או משתנה, שלא נסחר בבורסה",
+  "meaning": "שם מקוצר שבנקים נותנים לפיקדון קצר מועד: פיקדון בנקאי לתקופה קצרה, למשל יום או שבוע, בריבית קבועה או משתנה",
   "where": [
     "app",
     "provider-site"
@@ -18,10 +18,10 @@
     "BANK-31"
   ],
   "source": {
-    "url": "https://www.bankjerusalem.co.il/deposits-savings/deposit-types-and-differences/",
-    "title": "בנק ירושלים: פק\"מ או פיקדון מובנה, מה הפיתרון המתאים עבורך?",
-    "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-26"
+    "url": "https://boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/pikadon",
+    "title": "בנק ישראל: פיקדון בנקאי, דף מידע לציבור (עודכן 24.2.2025)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

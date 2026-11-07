@@ -1,0 +1,119 @@
+{
+  "id": "altshuler-shaham",
+  "provider": {
+    "name_he": "אלטשולר שחם גמל ופנסיה בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.as-invest.co.il/media/14961/%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%95%D7%94%D7%A2%D7%91%D7%A8%D7%94-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%9C%D7%95%D7%A1-%D7%91%D7%9E%D7%A2%D7%9E%D7%93-%D7%A2%D7%A6%D7%9E%D7%90%D7%99.pdf",
+    "title": "ערכת הצטרפות והעברה לקופת גמל להשקעה חיסכון פלוס",
+    "notes": "Joining and transfer kit for חיסכון פלוס, self-employed status, 15 pages, 'פברואר 2021' on its cover (file modified 2021-05-30); the fee declaration and blank fee fields on p.3. Read 2026-11-06. A newer kit was looked for and not found.",
+    "published": null,
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-06",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "altshuler-shaham-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/14961/%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%95%D7%94%D7%A2%D7%91%D7%A8%D7%94-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%9C%D7%95%D7%A1-%D7%91%D7%9E%D7%A2%D7%9E%D7%93-%D7%A2%D7%A6%D7%9E%D7%90%D7%99.pdf",
+          "title": "ערכת הצטרפות והעברה, קופת גמל להשקעה חיסכון פלוס, הצהרת העמית",
+          "publisher": "Altshuler Shaham Gemel and Pension",
+          "strength": "institution",
+          "page": 3,
+          "quote": "ידוע לי כי דמי הניהול שיגבו מחשבוני לא יעלו על שיעור של 1.05% מהצבירה ו-4% מההפקדות"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Altshuler Shaham's joining kit prints no agreed rate: the licensee's section leaves \"% דמי ניהול מצבירה\" and \"% דמי ניהול מהפקדה\" blank, and the member's declaration says \"דמי הניהול שיגבו מחשבוני לא יעלו על שיעור של 1.05% מהצבירה ו-4% מההפקדות\". Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The kit is dated February 2021 (form GHB1000_190121) and still states the 70,000 NIS ceiling of 2016; it is the only binding document with a fee found on the site on 2026-11-06 (the forms page loads by script and joining is digital, digitalforms.as-invest.co.il, not read). The product page's calculator assumes 0.99% of the balance (an illustration, not used). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "לא יעלו על שיעור של 1.05% מהצבירה"
+        ]
+      }
+    },
+    {
+      "id": "altshuler-shaham-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/14961/%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%95%D7%94%D7%A2%D7%91%D7%A8%D7%94-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%9C%D7%95%D7%A1-%D7%91%D7%9E%D7%A2%D7%9E%D7%93-%D7%A2%D7%A6%D7%9E%D7%90%D7%99.pdf",
+          "title": "ערכת הצטרפות והעברה, קופת גמל להשקעה חיסכון פלוס, הצהרת העמית",
+          "publisher": "Altshuler Shaham Gemel and Pension",
+          "strength": "institution",
+          "page": 3,
+          "quote": "ידוע לי כי דמי הניהול שיגבו מחשבוני לא יעלו על שיעור של 1.05% מהצבירה ו-4% מההפקדות"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Altshuler Shaham's joining kit prints no agreed rate: the licensee's section leaves \"% דמי ניהול מצבירה\" and \"% דמי ניהול מהפקדה\" blank, and the member's declaration says \"דמי הניהול שיגבו מחשבוני לא יעלו על שיעור של 1.05% מהצבירה ו-4% מההפקדות\". Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The kit is dated February 2021 (form GHB1000_190121) and still states the 70,000 NIS ceiling of 2016; it is the only binding document with a fee found on the site on 2026-11-06 (the forms page loads by script and joining is digital, digitalforms.as-invest.co.il, not read). The product page's calculator assumes 0.99% of the balance (an illustration, not used). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "4% מההפקדות"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

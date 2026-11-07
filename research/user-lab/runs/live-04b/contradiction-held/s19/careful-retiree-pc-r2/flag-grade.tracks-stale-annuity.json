@@ -1,0 +1,36 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "Finding 6 names the same problem: the data hasn't been updated since September even though it is already November."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0151354
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "Finding 6 makes the same complaint: the data is still from September even though it is already November."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159474
+  },
+  "third": null,
+  "ranks": {
+    "k": 6
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0310828
+}

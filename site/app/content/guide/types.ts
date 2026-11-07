@@ -1,17 +1,20 @@
 import type { ReactNode } from "react";
 import type { KeyValueItem } from "../../components/guide/sections";
 import type { SiteValue } from "../../lib/value";
+import type { BreakTerms } from "../../lib/guide-signature";
 
 export interface ContentProps {
   /** A figure of a rule record shipped with the page, or null when the page does not hold it. */
   figure: (ruleId: string, name: string) => SiteValue | null;
+  /** What the collected deposits say about breaking them (F-104), on the bank-deposit guide; null elsewhere. */
+  breakTerms?: BreakTerms | null;
 }
 
 export interface GuideContent {
   what: (p: ContentProps) => ReactNode;
   /** Left out where the guide has no such section (lib/guide-nav.ts). */
   who?: (p: ContentProps) => ReactNode;
-  /** The "מעבר בין מסלולים" line of the money-in-and-out list, and its rules; only a guide with that section has them. */
+  /** The "מעבר בין מסלולים וקופות" line of the money-in-and-out list, and its rules; only a guide with that section has them. */
   switchLine?: ReactNode | ((p: ContentProps) => ReactNode);
   switchRules?: string[];
   /** More rows of that list, after the shared ones. A rule named here ships with the page, as any rule its prose names. */

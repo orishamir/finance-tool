@@ -7,7 +7,7 @@ import { coverageLine } from "../compare/coverage.ts";
 import { reasonFromError } from "../compare/candidates.ts";
 import { rankCandidates, type Ranking } from "../compare/ranking.ts";
 import { outcomeOrder, type Candidate, type CoverageLine, type OutcomeKind, type Reason } from "../compare/types.ts";
-import { trackingBeyondFees } from "../formulas/fund-gap.ts";
+import { comparedYears, gapListOf, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
@@ -145,9 +145,11 @@ export function recordDistribution(rec: Pick<FundRecord, "id" | "distribution">)
   return y === undefined ? undefined : { yield: y, perYear: rec.distribution.per_year };
 }
 
-/** The fund the engine runs for a record, and the fee fields the record leaves empty (exported 2026-10-24 so the provider workbench builds its fund the same way). */
-
-export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined) {
+/**
+ * The fund the engine runs for a record, and the fee fields the record leaves empty (exported 2026-10-24 so the provider workbench builds
+ * its fund the same way). `list`: the list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years.
+ */
+export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined, list?: GapList) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {
@@ -157,10 +159,16 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   };
   const management = get("fixed_management", "pct_per_year");
   const trustee = get("trustee", "pct_per_year");
-  const variable = get("variable_management", "pct_per_year");
+  const listedVariable = get("variable_management", "pct_per_year");
   // A-07: the published 12-month figure when the record has one, else F-92 from the yearly returns the fund's report prints
   const published = fraction(f.tracking_difference_12m, "pct_per_year", `fund ${rec.id} fees.tracking_difference_12m`);
-  const fromReports = published === undefined && rec.tracking_record ? trackingBeyondFees(rec.tracking_record.years, sumFees(rec)) : null;
+  const years = comparedYears(rec.tracking_record, list);
+  const fromReports = published === undefined && years ? trackingBeyondFees(years, sumFees(rec)) : null;
+  // F-92 (b), 2026-11-07: where A-07 comes from the reports, measured against the fees charged, the variable fee counted forward is the mean
+  // charged in the record's years at today's rate; a record without such years (a foreign one, or a rate new this year) keeps the listed rate
+  const charged = fromReports !== null && rec.tracking_record ? variableForward(rec.tracking_record.years, rec.tracking_record.variable_rate_since) : null;
+  const variable = charged ?? listedVariable;
+  if (charged !== null && listedVariable === undefined) notCollected.splice(notCollected.indexOf("variable_management"), 1);
   const tracking = published ?? fromReports ?? get("tracking_difference_12m", "pct_per_year");
   const spread = get("median_spread", "pct_of_trade");
   const withholding = get("fund_level_withholding_drag", "pct_per_year");
@@ -199,7 +207,7 @@ interface Cand {
   notInLatestList?: boolean;
 }
 
-function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantRow {
+function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext, onList: readonly FundRecord[]): VariantRow {
   const base = { id: c.id, name: c.name, manager: c.manager, source: c.source, notCollected: [] as string[], labels: [] as Label[], ...(c.record ? { recordId: c.record.id } : {}), ...(c.notInLatestList ? { notInLatestList: true as const } : {}) };
   const notEvaluated = (...reasons: Reason[]): VariantRow => ({ ...base, kind: "not-evaluated", reasons });
   const rec = c.record;
@@ -227,7 +235,13 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
     return notEvaluated({ code: "no-run", ruleIds: [], gapIds: [], detail: `foreign withholding for domicile ${rec.domicile} is not set` });
   }
 
-  const built = fundOf(rec, kind, policy === "distributing" ? dist : undefined, x.w8ben);
+  const list = gapListOf(rec, exposure.record, onList);
+  // F-92 (c): a hedged fund's cost is mostly beyond its fees; with no year F-92 (d) compares and no published 12-month figure it is listed
+  // with its reason, never priced at A-07 = 0 (finance review: 5140165 was ranked here at A-07 = 0)
+  if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") {
+    return notEvaluated({ code: "missing-record", ruleIds: [], gapIds: [], detail: "a hedged fund with no compared year in its report and no published 12-month tracking figure (F-92 (c))" });
+  }
+  const built = fundOf(rec, kind, policy === "distributing" ? dist : undefined, x.w8ben, list);
   if (!built.hasManagement) return { ...base, notCollected: built.notCollected, kind: "not-evaluated", reasons: [{ code: "missing-record", ruleIds: [], gapIds: [], detail: "details not collected: fees.fixed_management" }] };
 
   // F-04: a fund in a foreign currency earns A-01 in that currency with A-03 on top; a shekel fund on a foreign exposure earns the same in
@@ -270,7 +284,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
   }
   const reasons: Reason[] = [];
   if (run.outcome.code === "listed-not-ranked") {
-    // G-18: an accumulating foreign fund, computed under the secondary reading of TXF-11, listed and not ranked.
+    // G-18: an accumulating foreign fund, computed under TXF-11's reading by implication, listed and not ranked.
     reasons.push(run.outcome.reason.startsWith("G-") ? { code: "gap", ruleIds: [], gapIds: [run.outcome.reason] } : { code: "exit-blocked", ruleIds: [run.outcome.reason], gapIds: [] });
   }
   return { ...base, notCollected: built.notCollected, kind: reasons.length > 0 ? "listed-not-ranked" : "ranked", reasons, plan, run, labels: run.labels, ...(currencyMismatch ? { currencyMismatch } : {}) };
@@ -282,7 +296,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
  * the exposure that no list row stands for (traded abroad); a record of an Israeli fund the list no longer prints is
  * kept as a candidate too. Each candidate with a record runs F-08 with its own drag (A-06 to A-11), currency (F-04),
  * distribution policy with the yield its record holds (F-20, A-10) and domicile rules (F-40, F-41); an accumulating foreign fund is computed under the
- * secondary reading of TXF-11 (labelled) and listed, not ranked (G-18), unless its record carries the ruling its own annex reports (`tax_ruling`). A candidate without a record is "not evaluated:
+ * reading of TXF-11 by implication (labelled a reading) and listed, not ranked (G-18), unless its record carries the ruling its own annex reports (`tax_ruling`). A candidate without a record is "not evaluated:
  * details not collected". Foreign-domiciled funds traded abroad that are not in `funds` are one group line (G-29).
  * The rest are ranked by real value with ties by F-80, and the coverage line (F-83) accounts for each candidate once.
  * F-94 Hedged or not, across the dollar: this same calculation at another A-03, which moves an unhedged fund and not a hedged one.
@@ -317,7 +331,9 @@ export function fundVariants(exposure: VariantExposure, lists: readonly FundList
     cands.push({ id: `fund:${r.id}`, name: r.names.he[0] ?? r.names.en[0] ?? r.id, manager: r.manager, source: "data-funds", record: r, ...(r.domicile === "IL" ? { notInLatestList: true } : {}) });
   }
 
-  const rows = cands.map((c) => evaluate(c, exposure, ctx));
+  // F-92 (d): the funds ranked beside each other, whose benchmarks decide whether a gross one is compared
+  const onList = [...new Set(cands.flatMap((c) => (c.record ? [c.record] : [])))];
+  const rows = cands.map((c) => evaluate(c, exposure, ctx, onList));
   const asCandidates: Candidate[] = rows.map((r) => ({ id: r.id, name: r.name, tier: 1, kind: r.kind, reasons: r.reasons, ...(r.plan ? { plan: r.plan } : {}), ...(r.run ? { run: r.run } : {}) }));
   const ranking = rankCandidates(asCandidates, { theta: exposure.theta, ctx });
   for (const e of ranking.entries) rows.find((r) => r.id === e.id)!.rank = e.rank;

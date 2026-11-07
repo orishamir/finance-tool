@@ -1,0 +1,36 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same point: 'מסלול כללי' is a managed mixed track, not an asset type, so it doesn't belong in the exposures list."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0133114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same point: 'מסלול כללי' (general track) is a managed mix, not one of the asset types the list's heading promises."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013183400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0264948
+}

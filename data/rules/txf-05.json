@@ -2,7 +2,7 @@
   "id": "TXF-05",
   "title": "A foreign fund traded on TASE (קרן חוץ): Israeli withholding as for any traded security, 25% of the real gain and 25% on distributions",
   "title_he": "קרן חוץ בבורסה: ניכוי במקור ישראלי כבכל נייר סחיר",
-  "text_he": "מאחר שקרן חוץ היא יחידה לפי חוק השקעות משותפות בנאמנות, חלות עליה הוראות הניכוי במקור שחלות על ניירות ערך נסחרים: במכירה הגוף המשלם מנכה מהרווח הריאלי לפי שיעור הניכוי במקור ומקזז הפסדים על ניירות שהוא מנהל באותה שנת מס; בחלוקה ליחיד מנכים לפי שיעור הניכוי מחלוקה, לחברה לפי שיעור מס החברות, ובעל יחידות תושב חוץ פטור מניכוי. המקור הוא מכתב של רשות המסים לבורסה ולאיגודי החברים יחד עם תקנות הניכוי במקור. מכתב מנהלי ותקנות יכולים להשתנות.",
+  "text_he": "במכירה של יחידה של קרן חוץ דרך בנק או חבר בורסה בישראל, הגוף המשלם מנכה מס במקור מהרווח הריאלי לפי שיעור הניכוי במקור, כמו בכל נייר ערך זר שנמכר דרכו, ומקזז הפסדים על ניירות שהוא מנהל באותה שנת מס. דיבידנד של קרן חוץ שמאורגנת כחברה, שמגיע דרך בנק או חבר בורסה לתושב ישראל יחיד, מנוכה במקור לפי שיעור הניכוי מחלוקה. לא ידוע מטקסט רשמי: אם קרן חוץ היא יחידה לפי חוק השקעות משותפות בנאמנות, באיזה שיעור מנכים מחלוקה לחברה, אם בעל יחידות תושב חוץ פטור מניכוי, ואיך מנוכה חלוקה של קרן שמאורגנת כהסדר ולא כחברה. מכתב של רשות המסים לבורסה ולאיגודי החברים על קרנות חוץ ידוע רק מעותק באתר לא רשמי, ולכן אינו מקור. תקנות יכולות להשתנות.",
   "figure_names_he": {
     "withholding_rate_real_gain": "שיעור הניכוי במקור מהרווח הריאלי",
     "distribution_withholding": "שיעור הניכוי במקור מחלוקה ליחיד"
@@ -21,13 +21,13 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
-        "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002, נוסח משולב, p.1, reg. 2(א)",
-        "publisher": "המוסד לביטוח לאומי",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~AS~aE2hUVRm3+mLSBTCnU=#page=3",
+        "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"ב-2012, קובץ התקנות 7071 (1.1.2012), gazette p.521, s.1, amending reg. 2(א)",
+        "publisher": "רשומות",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
-      "effective_from": null,
+      "checked": "2026-11-07",
+      "effective_from": "2012-01-01",
       "effective_to": null,
       "tax_year": 2026,
       "update_rule": "fixed in law",
@@ -35,7 +35,7 @@
         "TXF-05"
       ],
       "state": "sourced",
-      "notes": "Withholding regulations 2002 reg.2(a) applied to TASE foreign funds by the Tax Authority's letter of 4.7.2019 (sections 4, 4.1.1). An administrative letter, not law: whether it is still in force is TXF OQ10."
+      "notes": "Withholding regulations 2002 reg.2(a): a bank or TASE member through which a sale's proceeds pass withholds from an individual's real gain, also on a foreign security (TXF-29). That a TASE foreign fund's unit is a 'unit' of the Joint Investment Trust Law rested only on a copy of the Tax Authority's letter of 4.7.2019, not cited since 2026-11-07 (TXF OQ10)."
     },
     "distribution_withholding": {
       "value": 25,
@@ -55,41 +55,81 @@
         "TXF-05"
       ],
       "state": "sourced",
-      "notes": "Distribution to an individual: withheld at the s.125B(1) rate (letter section 4.1.2)."
+      "notes": "Distribution to an individual: the s.125B(1) rate, which reg.2(d) of the 2005 withholding regulations applies to a dividend a bank or TASE member receives from abroad on shares (TXF-30). For a fund organised as an arrangement rather than a company it is open (TXF OQ19); the letter of 4.7.2019 that covered it is known only from an unofficial copy, not cited since 2026-11-07."
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
-      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס״ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.1, reg. 1(א), 2(א); p.2, reg. 9(א)",
-      "locator_he": "עמוד 1, תקנה 1(א), 2(א); עמוד 2, תקנה 9(א)",
-      "page": 1,
-      "quote": "ינכה מס בשיעור של 25% מרווח ההון הריאלי",
-      "checked": "2026-10-25"
+      "locator": "file p.2 (gazette p.374), reg. 1(א), definition חייב",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 374), תקנה 1(א), ההגדרה חייב",
+      "page": 2,
+      "quote": "אדם המשלם למוכר תמורה או תשלום, בעד מכירת נייר ערך",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.capitax.co.il/Attachments/04072019.pdf",
-      "title": "רשות המסים, מחלקת מיסוי שוק ההון: ניכוי מס במקור – קרנות חוץ (Foreign Funds), 4.7.2019 (עותק באתר capitax)",
-      "title_he": "ניכוי מס במקור – קרנות חוץ (מכתב מחלקת מיסוי שוק ההון, 4.7.2019)",
-      "publisher": "Capitax",
-      "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.2, sections 4, 4.1.1, 4.1.2",
-      "locator_he": "עמוד 2, סעיפים 4, 4.1.1, 4.1.2",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס״ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.375), reg. 2(א) as enacted",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 375), תקנה 2(א) בנוסחה המקורי",
+      "page": 3,
+      "quote": "חייב המשלם למוכר תמורה במכירת ניירות ערך, ינכה מס בשיעור של 15% מרווח ההון הריאלי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.284), s.3(1), amending reg. 2(א)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 284), סעיף 3(1), תיקון תקנה 2(א)",
       "page": 2,
-      "checked": "2026-10-25",
-      "qualifier": "(copy: no gov.il copy found)"
+      "quote": "בתקנת משנה (א), אחרי \"למוכר\" יבוא \"שהוא יחיד\" ובמקום \"15%\" יבוא \"20%\"",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~AS~aE2hUVRm3+mLSBTCnU=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"ב-2012, קובץ התקנות 7071 (1.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע״ב-2012, קובץ התקנות 7071 (1.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.521), s.1, amending reg. 2(א)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 521), סעיף 1, תיקון תקנה 2(א)",
+      "page": 3,
+      "quote": "בתקנה 2(א) לתקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ2fYurUQ637QU6g8aQkbVy0=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע״א-2011, קובץ התקנות 7029 (31.8.2011)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.1351), s.2(1), replacing reg. 9(א)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1351), סעיף 2(1), החלפת תקנה 9(א)",
+      "page": 3,
+      "checked": "2026-11-07"
     }
   ]
 }

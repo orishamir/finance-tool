@@ -1,0 +1,111 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:04:22.470Z",
+  "structured": {
+    "answer": "The page \"מה האתר עוד לא מכסה\" lists many options, each marked in red \"לא מחושב\". In the six screens I read I saw corporate bonds, Israel Bonds, gold, savings and managers' insurance policies, foreign-currency, dollar-linked and structured deposits, a currency-hedged fund, a structured product, commercial paper, a managed account and a few others. So for anything except an ordinary deposit I can't rely on this site yet. I didn't get to the end of the list.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top of the page, the red band and the red 'לא מחושב' tags on every card",
+        "why": "Red everywhere made me nervous. I wasn't sure if it was a warning about the products or just meant the site hasn't done its sums yet"
+      },
+      {
+        "where": "Screens 3–6, the 'מצב הכיסוי' sections",
+        "why": "Crossed-out dates, codes like 'TX2-01', 'TXA-28', 'MF-28' and 'שאלה פתוחה'. It was too busy, so I skipped them"
+      },
+      {
+        "where": "After screen 6",
+        "why": "Tired. Dark, crowded screens full of law names and dates. I stopped there and didn't reach the end of the list"
+      }
+    ],
+    "used": [
+      "Heading 'מה האתר עוד לא מכסה' and the line under it 'מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף, ולמה'",
+      "Red band: 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "Card titles and their 'מה ידוע' sentences: אג\"ח קונצרניות, אגרת בונדס, LBMA Gold, ETC, ביטוח חיים משתתף ברווחים, ארנק מט\"ח דיגיטלי, היוון קצבה מוכרת, ביטוח מנהלים, הסדר חוב, השקעה בזהב דרך קרנות סל, חשבון מטבע חוץ, חברת דירוג, מנוטרלת מט\"ח, מוצר מובנה, מענק, מסלולי האירוע, ניירות ערך מסחריים, עמלת חליפין, פיקדון במטבע חוץ, פוליסת חיסכון, צמוד דולר, פיקדון מובנה",
+      "The red 'לא מחושב' tag on every card"
+    ],
+    "skimmed": [
+      "Law references and links in blue-green under each card",
+      "Dates and 'מקור ראשי' / 'לפי החברה' tags",
+      "'כשייסגר: יופיע במדריך...' sentences"
+    ],
+    "skipped": [
+      "'מצב הכיסוי' details with crossed-out dates and codes",
+      "'חוקים וכללים · 3' style links",
+      "Screens 7–10",
+      "Top menu (מדריך, חברות ומסלולים, השקעה במדד, חוקים וכללים)"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "ICE Benchmark Administration",
+      "לא מחושב (not calculated? or not worth it?)",
+      "מנוטרלת מט\"ח",
+      "היוון",
+      "מסלולי האירוע",
+      "TX2-01, TXA-28, MF-28",
+      "שאלה פתוחה",
+      "crossed-out 'נסגר ב־24.10.2026'",
+      "לפי החברה",
+      "מקור ראשי (עותק)",
+      "השקעה במדד in the menu – which מדד?"
+    ],
+    "not_found": [
+      "A short plain summary at the top of what is not covered",
+      "Whether ordinary bank deposits (פיקדון רגיל) and government bonds are covered — I didn't see them listed",
+      "Anything about how much the bank charges me",
+      "The end of the list"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with grey and thin blue-green text. Hard to read even with glasses and the page enlarged",
+        "where": "Whole page, especially the law-reference lines and small tags"
+      },
+      {
+        "what": "Every card has a red 'לא מחושב' tag and there's a red band at the top, so it looks like a warning about the products themselves",
+        "where": "Top band and every card"
+      },
+      {
+        "what": "Very long list, two columns, no count or summary. I got tired before the end",
+        "where": "Screens 1–6 onward"
+      },
+      {
+        "what": "Coverage details with crossed-out dates and codes mean nothing to me",
+        "where": "'מצב הכיסוי' sections, screens 3, 5, 6"
+      },
+      {
+        "what": "English names and letters at the very start (ETC, LBMA Gold Price) almost made me feel the page wasn't for me",
+        "where": "First two cards on screen 1"
+      },
+      {
+        "what": "Things close to deposits (פיקדון מובנה, צמוד דולר, פיקדון במטבע חוץ) are not calculated, and those are exactly the things a clerk might offer me",
+        "where": "Screen 6"
+      },
+      {
+        "what": "Two columns are hard to follow from the right; the long lines lose me in the middle",
+        "where": "Card text throughout"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34261,
+    "turns": 8,
+    "usd": 0.1689034,
+    "input": 10,
+    "cacheWrite": 13523,
+    "cacheRead": 34997,
+    "output": 2684,
+    "model": "claude-opus-5-5"
+  }
+}

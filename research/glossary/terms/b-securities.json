@@ -2,15 +2,16 @@
   {
     "term_he": "חשבון ניירות ערך",
     "term_source": {
-      "title": "חוק ניירות ערך, תשכ\"ח-1968 (Nevo mirror)",
-      "url": "https://www.nevo.co.il/law_html/law00/70349.htm"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 45יז, עמ' 100",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=100"
     },
     "variants_he": [
       "תיק ניירות ערך",
       "פיקדון ניירות ערך",
-      "פקדון ני\"ע"
+      "פקדון ני\"ע",
+      "חשבון מסחר"
     ],
-    "explain_he": "חשבון בבנק, בבית השקעות או אצל ברוקר בחו\"ל, שבו קונים, מוכרים ומחזיקים מניות, קרנות ואיגרות חוב.",
+    "explain_he": "חשבון בבנק, אצל חבר בורסה או אצל גוף בחו\"ל שמורשה לכך, שבו קונים, מוכרים ומחזיקים ניירות ערך",
     "rule_ids": [
       "BRK-01",
       "BRK-06",
@@ -19,11 +20,11 @@
       "BRK-28"
     ],
     "source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-      "checked": "2026-10-22",
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמ' 37",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=37",
+      "checked": "2026-11-07",
       "strength": "primary",
-      "publisher": "Tel Aviv Stock Exchange"
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "ad",
@@ -31,14 +32,14 @@
       "statement",
       "guide:brokerage-account"
     ],
-    "notes": "Securities Law s.45יז writes 'חשבון ניירות ערך'. Apps and product.md D6 use 'תיק ניירות ערך'; the BoI fee rules and Leumi write 'פיקדון ניירות ערך', while the BoI disclosure rules write 'פקדון ניירות ערך' (BRK-22).",
+    "notes": "Securities Law s.45יז writes 'חשבון ניירות ערך'. Apps and product.md D6 use 'תיק ניירות ערך'; the BoI fee rules and Leumi write 'פיקדון ניירות ערך', while the BoI disclosure rules write 'פקדון ניירות ערך' (BRK-22). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text. Round 2 (2026-11-07): re-cited from TASE's periodic report to the Investment Advice Law (library 568097f827d4c026, p.37): a portfolio manager keeps a client's \"חשבון ניירות ערך ונכסים פיננסיים בתאגיד בנקאי, בבנק מחוץ לישראל, אצל חבר בורסה, או אצל מי שרשאי לפי דין במדינה שבה הוא פועל\"; the line names those places. The name's source is the Securities Law s.45יז (p.100).",
     "id": "chshbvn-nyyrvt-ark"
   },
   {
     "term_he": "חבר בורסה",
     "term_source": {
-      "title": "חוק ניירות ערך, תשכ\"ח-1968 (Nevo mirror)",
-      "url": "https://www.nevo.co.il/law_html/law00/70349.htm"
+      "title": "תקנון הבורסה, החלק הראשון (חברי בורסה), ס' 1, הגדרות, עמ' 4",
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=4"
     },
     "variants_he": [],
     "explain_he": "בנק או בית השקעות שחבר בבורסה בתל אביב; רק דרכו אפשר לקנות ולמכור בה ניירות ערך.",
@@ -50,9 +51,9 @@
       "TXS-05"
     ],
     "source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-      "checked": "2026-10-22",
+      "title": "הבורסה לניירות ערך בתל אביב: דף מונחים, \"חברי בורסה\" (קטע שנקרא בכרום)",
+      "url": "https://www.tase.co.il/he/terms-page",
+      "checked": "2026-11-07",
       "strength": "primary",
       "publisher": "Tel Aviv Stock Exchange"
     },
@@ -62,20 +63,20 @@
       "statement",
       "guide:brokerage-account"
     ],
-    "notes": "Remote members (foreign firms) are members but may not serve Israeli clients (BRK-02), and some members are not retail brokers (BRK-32).",
+    "notes": "Remote members (foreign firms) are members but may not serve Israeli clients (BRK-02), and some members are not retail brokers (BRK-32). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text. Round 2 (2026-11-07): re-cited from TASE's periodic report (TASE Ltd's own filing) to the exchange's terms page (library 17421afb2b9b4e5a): securities \"ניתן לקנות או למכור באמצעות \"חברי הבורסה\" בלבד - בנקים וחברי בורסה שאינם בנקים\". The name is defined in the TASE rules, part 1, s.1 (p.4).",
     "id": "chbr-bvrsh"
   },
   {
     "term_he": "חש\"ב",
     "term_source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a"
+      "title": "תקנון הבורסה, החלק הראשון (חברי בורסה), ס' 1, הגדרות, עמ' 4 (דרישת ההון העצמי: עמ' 9)",
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=4"
     },
     "variants_he": [
       "חבר שאינו בנק",
       "חברים שאינם בנקים (חש\"בים)"
     ],
-    "explain_he": "חבר בורסה שאינו בנק, למשל זרוע המסחר של בית השקעות; הבורסה מפקחת גם על יציבותו הכספית.",
+    "explain_he": "חבר בורסה שאינו בנק, למשל בית השקעות; תקנון הבורסה דורש ממנו הון עצמי מזערי",
     "rule_ids": [
       "BRK-01",
       "BRK-03",
@@ -83,23 +84,26 @@
       "BRK-07"
     ],
     "source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-      "checked": "2026-10-22",
+      "title": "תקנון הבורסה, החלק הראשון (חברי בורסה), ס' 1, הגדרות, עמ' 4 (דרישת ההון העצמי: עמ' 9)",
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=4",
+      "checked": "2026-11-07",
       "strength": "primary",
       "publisher": "Tel Aviv Stock Exchange"
     },
     "where": [
       "guide:brokerage-account"
     ],
-    "notes": "Must hold client assets apart from its own, in trust, with a yearly independent audit (BRK-07). The broker-dealer licensing bill (BRK-05) may change supervision.",
+    "notes": "Must hold client assets apart from its own, in trust, with a yearly independent audit (BRK-07). The broker-dealer licensing bill (BRK-05) may change supervision. Round 2 (2026-11-07): re-cited from TASE's periodic report to the TASE rules, part 1 (library 79b044f3666211de): s.1 (p.4) \"חש\"ב\" - \"חבר שאינו תאגיד בנקאי\"; a member that is not a bank must hold \"הון עצמי שלא יפחת\" from the amounts the guidelines set (p.9). \"The exchange supervises its financial stability\" became the rule the text states. The example of an investment house rests on the joint report of June 2026, p.38 (\"גוף פיננסי שאינו בנק (כגון בית השקעות)\").",
     "id": "chshb"
   },
   {
     "term_he": "ברוקר זר",
-    "term_source": null,
+    "term_source": {
+      "title": "רשות ניירות ערך, שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025), שאלה 7, עמוד 4",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-626a5f3377ef9/QAA49a.pdf#page=4"
+    },
     "variants_he": [],
-    "explain_he": "חברת מסחר בניירות ערך בחו\"ל, שאינה חברה בבורסה בתל אביב ואינה בפיקוח רשות ניירות ערך בישראל.",
+    "explain_he": "חברת מסחר בניירות ערך בחו\"ל, שאינה חברה בבורסה בתל אביב.",
     "rule_ids": [
       "BRK-01",
       "BRK-06",
@@ -109,11 +113,11 @@
       "TXF-22"
     ],
     "source": {
-      "title": "חוק ניירות ערך, תשכ\"ח-1968 (Nevo mirror)",
-      "url": "https://www.nevo.co.il/law_html/law00/70349.htm",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror",
-      "publisher": "Nevo legal database"
+      "title": "רשות ניירות ערך, שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025), שאלה 7, עמוד 4",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-626a5f3377ef9/QAA49a.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "ad",
@@ -121,7 +125,7 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "Hebrew spelling not attested in il-finance: the files say 'foreign broker' in English only, so the starting-list spelling is kept as a placeholder and term_source is null. 'Not ISA-supervised' rests on the firms' own statements (Interactive Israel, Bank Yahav, BRK-06). Withholding differs by broker: none in Israel at a plain foreign broker (TXF-22), but Interactive Israel says it withholds Israeli tax (BRK-36). Direct accounts at IBKR or eToro without a 49A permit: open (BRK OQ9).",
+    "notes": "Hebrew spelling not attested in il-finance: the files say 'foreign broker' in English only, so the starting-list spelling is kept as a placeholder and term_source is null. 'Not ISA-supervised' rests on the firms' own statements (Interactive Israel, Bank Yahav, BRK-06). Withholding differs by broker: none in Israel at a plain foreign broker (TXF-22), but Interactive Israel says it withholds Israeli tax (BRK-36). Direct accounts at IBKR or eToro without a 49A permit: open (BRK OQ9). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law00/70349.htm) to the official text. Fix pass 2026-11-07: 'not supervised by the ISA' left the line: p. 105 (s. 49א) does not say it, and the firms' own statements are not a general source. Independent check 2026-11-07: s. 49א (p. 105) bars offering trading through a system not run by an exchange and never names a foreign broker, so the row cites the ISA's 49א Q&A, question 7 (p. 4), which uses the words \"ברוקר זר\" and sets it beside a banking corporation and a TASE member (חש\"ב); the spelling is now attested there.",
     "id": "brvkr-zr"
   },
   {
@@ -137,36 +141,38 @@
       "BRK-06"
     ],
     "source": {
-      "title": "חוק ניירות ערך, תשכ\"ח-1968 (Nevo mirror)",
-      "url": "https://www.nevo.co.il/law_html/law00/70349.htm",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror",
-      "publisher": "Nevo legal database"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, עמוד 105",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=105",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "ad",
       "guide:brokerage-account"
     ],
-    "notes": "Both permit holders read say the permit expresses no opinion on the quality or risk of the service (BRK-06).",
+    "notes": "Both permit holders read say the permit expresses no opinion on the quality or risk of the service (BRK-06). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law00/70349.htm) to the official text.",
     "id": "hytr-lpy-sayp-49a"
   },
   {
     "term_he": "מסלקת הבורסה",
     "term_source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a"
+      "title": "תקנון הבורסה, החלק הראשון (חברי בורסה), ס' 1, הגדרות, עמ' 4",
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=4"
     },
-    "variants_he": [],
-    "explain_he": "הגוף של הבורסה שמבטיח שכל עסקה בבורסה תושלם, ושבו מוחזקים ניירות הערך הנסחרים בה.",
+    "variants_he": [
+      "מסלקה"
+    ],
+    "explain_he": "חברה בת של הבורסה שמשלימה את העסקאות שנעשות בה, ושבה רשומים ניירות הערך הנסחרים בה",
     "rule_ids": [
       "BRK-07",
       "BRK-10",
       "BRK-12"
     ],
     "source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-      "checked": "2026-10-22",
+      "title": "הבורסה לניירות ערך בתל אביב: דף מונחים, \"מסלקת הבורסה\" (קטע שנקרא בכרום)",
+      "url": "https://www.tase.co.il/he/terms-page",
+      "checked": "2026-11-07",
       "strength": "primary",
       "publisher": "Tel Aviv Stock Exchange"
     },
@@ -174,25 +180,25 @@
       "statement",
       "guide:brokerage-account"
     ],
-    "notes": "It protects settlement between members; it is not a compensation scheme for a client whose own broker fails (BRK-12). No Israeli investor-compensation scheme was found (BRK summary).",
+    "notes": "It protects settlement between members; it is not a compensation scheme for a client whose own broker fails (BRK-12). No Israeli investor-compensation scheme was found (BRK summary). Round 2 (2026-11-07): re-cited from TASE's periodic report to the exchange's terms page (library 17421afb2b9b4e5a): \"חברה בת של הבורסה\", giving \"סליקת עסקאות בניירות ערך הנסחרים בבורסה\" and custody \"הכוללים רישום במסלקה של ניירות הערך הנסחרים בבורסה לזכות חברי המסלקה\". The Bank of Israel's glossary calls it the central counterparty of trades on the exchange (library 9bd7b297a72b89aa). The name is defined in the TASE rules, part 1, s.1 (p.4).",
     "id": "mslkt-hbvrsh"
   },
   {
     "term_he": "החברה לרישומים",
     "term_source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a"
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב', פרק ט', ס' 4, עמ' 66",
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=66"
     },
     "variants_he": [],
-    "explain_he": "חברה של הבורסה שרשומה כבעלים של ניירות הערך הנסחרים, ומעבירה את הדיבידנדים והריבית למחזיקים בפועל.",
+    "explain_he": "חברה בת של הבורסה שעל שמה רשומים ניירות הערך הנסחרים, ודרכה עוברים הדיבידנדים והריבית מהחברות למחזיקים",
     "rule_ids": [
       "BRK-10",
       "BRK-13"
     ],
     "source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-      "checked": "2026-10-22",
+      "title": "הבורסה לניירות ערך בתל אביב: דף מונחים, \"החברה לרישומים\" (קטע שנקרא בכרום)",
+      "url": "https://www.tase.co.il/he/terms-page",
+      "checked": "2026-11-07",
       "strength": "primary",
       "publisher": "Tel Aviv Stock Exchange"
     },
@@ -200,7 +206,7 @@
       "statement",
       "guide:brokerage-account"
     ],
-    "notes": "",
+    "notes": "Round 2 (2026-11-07): re-cited from TASE's periodic report to the exchange's terms page (library 17421afb2b9b4e5a): a wholly owned subsidiary of the exchange that holds securities \"שרשומה על שמה (ומוחזקת בידי הציבור)\" and passes dividends and interest \"מן החברות המנפיקות למחזיקים הסופיים\". The clearing house bylaws, part 2, ch.ט s.4 (p.66) debit and credit the nominee company's bank account on a dividend or interest day.",
     "id": "hchbrh-lryshvmym"
   },
   {
@@ -232,7 +238,7 @@
     "term_he": "התעריפון המלא",
     "term_source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
-      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf"
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=3"
     },
     "variants_he": [
       "תעריפון",
@@ -247,7 +253,7 @@
     ],
     "source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
-      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=3",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Bank of Israel"
@@ -297,18 +303,20 @@
     "term_he": "עמלת חליפין",
     "term_source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
-      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf"
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=18"
     },
     "variants_he": [],
-    "explain_he": "עמלה על המרת שקלים למטבע חוץ או להפך, למשל כדי לקנות נייר ערך בדולרים.",
+    "explain_he": "עמלה על המרת כסף בין שקלים למטבע חוץ, או בין שני מטבעות חוץ, למשל כדי לקנות נייר ערך בדולרים",
     "rule_ids": [
       "BRK-16",
       "BRK-23",
-      "BRK-24"
+      "BRK-24",
+      "FXD-05",
+      "FXD-06"
     ],
     "source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
-      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=18",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Bank of Israel"
@@ -319,82 +327,84 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "The starting-list 'עמלת המרה' is not attested in il-finance; the BoI fee rules (part 5) and non-bank tariffs write 'עמלת חליפין'. A conversion spread may come on top of it or instead of it (see 'מרווח המרה').",
+    "notes": "The starting-list 'עמלת המרה' is not attested in il-finance; the BoI fee rules (part 5) and non-bank tariffs write 'עמלת חליפין'. A conversion spread may come on top of it or instead of it (see 'מרווח המרה'). 2026-11-07: merged with the tier-2 row of the same name (FX deposits, FXD-05 and FXD-06); one fee, one row, covered on the brokerage guide.",
     "id": "amlt-chlypyn-b"
   },
   {
     "term_he": "מרווח המרה",
     "term_source": {
       "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf"
+      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf#page=6"
     },
     "variants_he": [],
-    "explain_he": "ההפרש בין השער שמקבלים בהמרת מטבע לבין מחיר הביצוע בשוק; ב־IBI, למשל, זו כל עלות ההמרה, בלי עמלה נפרדת.",
+    "explain_he": "הפער בין השער שבו ממירים לכם מטבע חוץ לבין השער היציג; יש גופים שגובים מעליו גם עמלה",
     "rule_ids": [
       "BRK-23",
       "BRK-24"
     ],
     "source": {
-      "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "checked": "2026-10-26",
-      "strength": "institution"
+      "title": "בנק ישראל, בנקיפדיה: כמה עולה דולר? ואירו? (עודכן 1.10.2023)",
+      "url": "https://www.boi.org.il/information/bankipedia/moneyandeconomy/%D7%9B%D7%9E%D7%94-%D7%A2%D7%95%D7%9C%D7%94-%D7%93%D7%95%D7%9C%D7%A8-%D7%95%D7%90%D7%99%D7%A8%D7%95/",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "tariff",
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "One of the two senses of the starting-list 'מרווח (spread)'; the other is 'מרווח ציטוט'. No regulator text names it; the BoI fee rules name only 'עמלת חליפין'. IBI says it charges the spread only, with no fee; Excellence says its conversion fee excludes a spread set in the client agreement (BRK-24).",
+    "notes": "One of the two senses of the starting-list 'מרווח (spread)'; the other is 'מרווח ציטוט'. No regulator text names it; the BoI fee rules name only 'עמלת חליפין'. IBI says it charges the spread only, with no fee; Excellence says its conversion fee excludes a spread set in the client agreement (BRK-24). Round 2 (2026-11-07): re-cited from IBI's tariff to the Bank of Israel's page (library a7bccfe2bafd9a59): a bank or money changer \"בדרך כלל מוכרים וקונים את המטבעות הזרים במרווח מסוים מעל או מתחת לשער היציג, וחלקם גם גובים עמלה על השירות\". The name itself is the companies' (IBI, BRK-23), kept as the name's source; no regulator text read names \"מרווח המרה\".",
     "id": "mrvvch-hmrh"
   },
   {
     "term_he": "דמי טיפול",
     "term_source": {
-      "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf"
+      "title": "בנק ישראל, משרד האוצר ורשות ניירות ערך: מודלי תגמול בפעילות הציבור בניירות ערך, דוח סופי, יוני 2026, עמ' 10",
+      "url": "https://boi.org.il/media/uo4k5b20/מודלי-תגמול-בפעילות-הציבור-בניירות-ערך-דוח-סופי.pdf#page=10"
     },
     "variants_he": [
       "דמי שימוש",
       "דמי שימוש / דמי טיפול",
       "דמי ניהול תקופתיים"
     ],
-    "explain_he": "עמלה חודשית על החשבון עצמו; ב־IBI, למשל, היא נקראת ״דמי שימוש / דמי טיפול״ ונגבית פעם בחודש.",
+    "explain_he": "עמלה שבתי השקעות גובים על חשבון ניירות הערך עצמו, לרוב סכום קבוע בשקלים; לא פעם היא מוחזרת או לא נגבית כהטבה",
     "rule_ids": [
       "BRK-24"
     ],
     "source": {
-      "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "checked": "2026-10-26",
-      "strength": "institution"
+      "title": "בנק ישראל, משרד האוצר ורשות ניירות ערך: מודלי תגמול בפעילות הציבור בניירות ערך, דוח סופי, יוני 2026, עמ' 10",
+      "url": "https://boi.org.il/media/uo4k5b20/מודלי-תגמול-בפעילות-הציבור-בניירות-ערך-דוח-סופי.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "statement",
       "tariff",
       "guide:brokerage-account"
     ],
-    "notes": "Seen in non-bank tariffs only (IBI, Excellence, Psagot; Altshuler calls it 'דמי ניהול תקופתיים'). It is not one of the BoI part 4 fee types; whether a bank may charge it is open (BRK OQ10).",
+    "notes": "Seen in non-bank tariffs only (IBI, Excellence, Psagot; Altshuler calls it 'דמי ניהול תקופתיים'). It is not one of the BoI part 4 fee types; whether a bank may charge it is open (BRK OQ10). Round 2 (2026-11-07): re-cited from IBI's tariff to the joint report of the Banking Supervision, the Treasury and the ISA (library 421f4282b6dda3a8, p.10): at non-bank members \"נכללות לרוב עמלת דמי טיפול בפיקדון ני\"ע ... נגבית לרוב כסכום שקלי קבוע ולעיתים קרובות מוחזרת ללקוח או שאינה נגבית במסגרת ההטבות ללקוח\". \"Monthly\" left the line: the report does not say how often it is charged.",
     "id": "dmy-typvl"
   },
   {
     "term_he": "ריבית זכות",
     "term_source": {
       "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf"
+      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf#page=2"
     },
     "variants_he": [
       "ריבית בגין יתרת זכות"
     ],
-    "explain_he": "ריבית על כסף שיושב בחשבון ולא מושקע; תלויה בתנאי בית ההשקעות, ולא תמיד משולמת.",
+    "explain_he": "ריבית שבית ההשקעות מזכה בה את הלקוח על כסף שיושב בחשבון ולא מושקע.",
     "rule_ids": [
       "BRK-08",
       "BRK-25"
     ],
     "source": {
-      "title": "TASE, אישור הרשויות לתיקון תקנון והנחיות הבורסה: החזקת נכסים פיננסיים של לקוחות חש\"ב, 4.3.2018",
-      "url": "https://mayafiles.tase.co.il/reports/1149001-1150000/E1149190.pdf",
-      "checked": "2026-10-22",
+      "title": "הנחיות לחלק הראשון של תקנון הבורסה, ס' 26ה(1)(ו), עמ' 98",
+      "url": "https://content.tase.co.il/media/g2ekpw4d/274691.pdf#page=98",
+      "checked": "2026-11-07",
       "strength": "primary",
       "publisher": "Tel Aviv Stock Exchange"
     },
@@ -403,14 +413,14 @@
       "tariff",
       "guide:brokerage-account"
     ],
-    "notes": "Non-bank tariffs set conditions (client type, minimum) and IBI and Excellence pay none on foreign-currency balances (BRK-25). At a bank, idle cash sits in the current account.",
+    "notes": "Non-bank tariffs set conditions (client type, minimum) and IBI and Excellence pay none on foreign-currency balances (BRK-25). At a bank, idle cash sits in the current account. Round 2 (2026-11-07): re-cited from a Maya filing (E1149190, TASE Ltd's notice of a rule change, now graded an issuer's filing by the data check) to the TASE guidelines, s.26ה(1)(ו) (library e11b273c45f15a3c, p.98): \"חש\"ב ידווח ללקוחו על הריבית בה זוכו הכספים של הלקוח\". The conditions in the line come from the companies' tariffs (BRK-25).",
     "id": "rybyt-zkvt"
   },
   {
     "term_he": "העברת ניירות ערך",
     "term_source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
-      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf"
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=17"
     },
     "variants_he": [
       "העברה החוצה"
@@ -422,7 +432,7 @@
     ],
     "source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
-      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=17",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Bank of Israel"
@@ -437,8 +447,8 @@
   {
     "term_he": "קרן סל",
     "term_source": {
-      "title": "חוק השקעות משותפות בנאמנות, תשנ\"ד-1994 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf"
     },
     "variants_he": [
       "ETF"
@@ -465,7 +475,7 @@
       "exposure:index-sp500",
       "exposure:index-ta125"
     ],
-    "notes": "In law: a closed tracking fund whose fund agreement makes it an ETF (ETF-01). Fund names mark it with 'סל'. Before October 2018 these were 'תעודות סל' (ETF-02). Foreign ETFs on TASE are 'קרן חוץ', a different legal type.",
+    "notes": "In law: a closed tracking fund whose fund agreement makes it an ETF (ETF-01). Fund names mark it with 'סל'. Before October 2018 these were 'תעודות סל' (ETF-02). Foreign ETFs on TASE are 'קרן חוץ', a different legal type. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-sl"
   },
   {
@@ -497,8 +507,8 @@
   {
     "term_he": "קרן מחקה פתוחה",
     "term_source": {
-      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025 (hosted by Funder)",
-      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf"
     },
     "variants_he": [
       "מחקה"
@@ -523,14 +533,14 @@
       "exposure:index-sp500",
       "exposure:index-ta125"
     ],
-    "notes": "How its units are bought and redeemed (order cut-off, daily price) is in mutual-funds-and-money-market-funds.md, not in these four files.",
+    "notes": "How its units are bought and redeemed (order cut-off, daily price) is in mutual-funds-and-money-market-funds.md, not in these four files. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-mchkh-ptvchh"
   },
   {
     "term_he": "עושה שוק",
     "term_source": {
-      "title": "חוק השקעות משותפות בנאמנות, תשנ\"ד-1994 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, עמוד 60",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=60"
     },
     "variants_he": [],
     "explain_he": "גוף שמתחייב להציע בכל יום מסחר מחיר קנייה ומחיר מכירה ליחידות של קרן סל.",
@@ -540,16 +550,17 @@
       "ETF-26"
     ],
     "source": {
-      "title": "חוק השקעות משותפות בנאמנות, תשנ\"ד-1994 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, עמוד 60",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=60",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "prospectus",
       "guide:brokerage-account"
     ],
-    "notes": "Every Israeli ETF must have one, independent of the manager (ETF-03). Its spread and size duties are in TASE rules not read (ETF OQ2).",
+    "notes": "Every Israeli ETF must have one, independent of the manager (ETF-03). Its spread and size duties are in TASE rules not read (ETF OQ2). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text.",
     "id": "avshh-shvk"
   },
   {
@@ -614,8 +625,8 @@
   {
     "term_he": "נכס מעקב",
     "term_source": {
-      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)"
+      "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf"
     },
     "variants_he": [],
     "explain_he": "מה שקרן מחקה מנסה לחקות לפי מסמכי הקרן: מדד, ולפעמים גם שער מטבע, כמו דולר.",
@@ -635,14 +646,14 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "Example: 'S&P 500 100%, דולר ארה\"ב 100%' for an unhedged S&P 500 fund (ETF-10).",
+    "notes": "Example: 'S&P 500 100%, דולר ארה\"ב 100%' for an unhedged S&P 500 fund (ETF-10). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "nks-makb"
   },
   {
     "term_he": "הפרש עקיבה",
     "term_source": {
       "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "ההפרש בין התשואה של קרן מחקה לתשואה של המדד שהיא עוקבת אחריו, בתקופה מסוימת.",
@@ -653,7 +664,7 @@
     ],
     "source": {
       "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Israel Securities Authority"
@@ -671,7 +682,7 @@
     "term_he": "טעות עקיבה",
     "term_source": {
       "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf#page=2"
     },
     "variants_he": [],
     "explain_he": "כמה ההפרש בין תשואת הקרן לתשואת המדד משתנה לאורך הזמן; ככל שהיא קטנה, המעקב יציב יותר.",
@@ -681,7 +692,7 @@
     ],
     "source": {
       "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf#page=2",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Israel Securities Authority"
@@ -725,8 +736,8 @@
   {
     "term_he": "דמי ניהול משתנים",
     "term_source": {
-      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)"
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038, עמוד 2",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2"
     },
     "variants_he": [],
     "explain_he": "חלק משכר מנהל קרן מחקה שתלוי בהפרש בין הקרן למדד; כשהקרן מפגרת אחרי המדד, המנהל משלם לה.",
@@ -737,10 +748,11 @@
       "ETF-27"
     ],
     "source": {
-      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038, עמוד 2",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "app",
@@ -749,14 +761,14 @@
       "exposure:index-sp500",
       "exposure:index-ta125"
     ],
-    "notes": "Only tracking funds that are not leveraged or inverse may charge it; capped at the fund category's creation/redemption fee rate; the rate may change each 1 January (ETF-14). How the positive fee is computed is per prospectus (ETF OQ8). BlackRock says its TASE-listed iShares have none (ETF-27).",
+    "notes": "Only tracking funds that are not leveraged or inverse may charge it; capped at the fund category's creation/redemption fee rate; the rate may change each 1 January (ETF-14). How the positive fee is computed is per prospectus (ETF OQ8). BlackRock says its TASE-listed iShares have none (ETF-27). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)) to the official text.",
     "id": "dmy-nyhvl-mshtnym"
   },
   {
     "term_he": "עסקת החלף שאינה במימון",
     "term_source": {
-      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf"
     },
     "variants_he": [
       "עסקאות סוואפ לא ממומנות"
@@ -777,29 +789,33 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "The ISA says Israeli funds on foreign indices usually use unfunded swaps, which reduce counterparty risk, while foreign funds usually hold the shares (for example iShares CSPX, physical replication). The Hebrew for 'physical replication' is not in il-finance.",
+    "notes": "The ISA says Israeli funds on foreign indices usually use unfunded swaps, which reduce counterparty risk, while foreign funds usually hold the shares (for example iShares CSPX, physical replication). The Hebrew for 'physical replication' is not in il-finance. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "askt-hchlp-shaynh-bmymvn"
   },
   {
     "term_he": "מגודרות מט\"ח",
     "term_source": {
-      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025 (hosted by Funder)",
-      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025, עמוד 20",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf"
     },
     "variants_he": [
       "מנוטרלת מט\"ח",
-      "Currency-Hedged"
+      "Currency-Hedged",
+      "מנוטרלת דולר"
     ],
     "explain_he": "קרן על נכסים בחו\"ל שמנטרלת, באופן מלא או חלקי, את השפעת שינויי שער המטבע על התשואה.",
     "rule_ids": [
       "ETF-10",
-      "ETF-12"
+      "ETF-12",
+      "MF-43",
+      "RG-19"
     ],
     "source": {
-      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025 (hosted by Funder)",
-      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025, עמוד 20",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "app",
@@ -814,7 +830,7 @@
     "term_he": "מספר בורסה",
     "term_source": {
       "title": "IBI, דוח שנתי \"אי.בי.אי. סל (4D) S&P 500\" (1148162), 31.12.2025",
-      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf"
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf#page=1"
     },
     "variants_he": [
       "מספר קרן"
@@ -844,8 +860,8 @@
   {
     "term_he": "קרן חוץ",
     "term_source": {
-      "title": "חוק השקעות משותפות בנאמנות, תשנ\"ד-1994 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf"
     },
     "variants_he": [
       "קרנות \"מגוירות\"",
@@ -875,7 +891,7 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "The starting-list 'קרן זרה הרשומה למסחר בתל אביב' is not attested; the law, the ISA 2025 report and the Tax Authority write 'קרן חוץ'; the ISA 2024 report wrote 'קרנות \"מגוירות\"'; Leumi 'קרן חוץ (ETF)'; TASE 'קרנות חוץ נסחרות'. End-2025: 46 funds, 40 traded ETFs; how the 6 open ones are bought is open (ETF OQ10). The public cannot create or redeem units (ETF-26). Its tax rules (TXF-04 to TXF-07) differ from both Israeli funds and funds bought abroad. The law's definition widens on 2.2.2027.",
+    "notes": "The starting-list 'קרן זרה הרשומה למסחר בתל אביב' is not attested; the law, the ISA 2025 report and the Tax Authority write 'קרן חוץ'; the ISA 2024 report wrote 'קרנות \"מגוירות\"'; Leumi 'קרן חוץ (ETF)'; TASE 'קרנות חוץ נסחרות'. End-2025: 46 funds, 40 traded ETFs; how the 6 open ones are bought is open (ETF OQ10). The public cannot create or redeem units (ETF-26). Its tax rules (TXF-04 to TXF-07) differ from both Israeli funds and funds bought abroad. The law's definition widens on 2.2.2027. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-chvtz"
   },
   {
@@ -893,23 +909,24 @@
       "TXF-27"
     ],
     "source": {
-      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ס' 113א, \"קרן חוץ\" (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "checked": "2026-10-26",
-      "strength": "primary-mirror"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, עמוד 75",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=75",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "Hebrew spelling not attested: il-finance describes foreign-domiciled ETFs bought abroad only in English, so the starting-list spelling is kept as a placeholder and term_source is null. The nearest Hebrew in law is 'נייר ערך שהונפק מחוץ לישראל' (s.88, TXF-01). A share class can be both: CSPX lists TASE among its listings (ETF-27). Taxation of accumulating foreign funds rests on a reading of the law plus a secondary source (TXF-11, Q1). US-domiciled funds carry US estate-tax exposure (TXF-27); il-finance has no Hebrew term for that.",
+    "notes": "Hebrew spelling not attested: il-finance describes foreign-domiciled ETFs bought abroad only in English, so the starting-list spelling is kept as a placeholder and term_source is null. The nearest Hebrew in law is 'נייר ערך שהונפק מחוץ לישראל' (s.88, TXF-01). A share class can be both: CSPX lists TASE among its listings (ETF-27). Taxation of accumulating foreign funds rests on a reading of the law plus a secondary source (TXF-11, Q1). US-domiciled funds carry US estate-tax exposure (TXF-27); il-finance has no Hebrew term for that. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text.",
     "id": "krn-zrh"
   },
   {
     "term_he": "מדינת המוצא",
     "term_source": {
-      "title": "חוק השקעות משותפות בנאמנות, תשנ\"ד-1994 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, עמוד 75",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=75"
     },
     "variants_he": [
       "מדינת המוצא של קרן החוץ"
@@ -922,23 +939,24 @@
       "TXF-16"
     ],
     "source": {
-      "title": "חוק השקעות משותפות בנאמנות, תשנ\"ד-1994 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, עמוד 75",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=75",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "For a TASE-registered foreign fund, only tax withheld on the fund's own distributions in its state of origin is creditable (TXF-06). Domicile also decides US withholding inside the fund (TXF-16) and US estate-tax exposure (TXF-27).",
+    "notes": "For a TASE-registered foreign fund, only tax withheld on the fund's own distributions in its state of origin is creditable (TXF-06). Domicile also decides US withholding inside the fund (TXF-16) and US estate-tax exposure (TXF-27). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text.",
     "id": "mdynt-hmvtza"
   },
   {
     "term_he": "UCITS",
     "term_source": {
-      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016",
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ)"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf"
     },
     "variants_he": [],
     "explain_he": "מסגרת חוק אירופית לקרנות השקעה; קרן זרה נרשמת בישראל רק אם היא לפיה או לפי חוק הקרנות האמריקאי.",
@@ -958,14 +976,14 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "Proper name, no Hebrew term in il-finance. The regulation names EU Directive 2009/65/EC and the US Investment Company Act 1940 (ETF-23).",
+    "notes": "Proper name, no Hebrew term in il-finance. The regulation names EU Directive 2009/65/EC and the US Investment Company Act 1940 (ETF-23). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "ucits"
   },
   {
     "term_he": "TER",
     "term_source": {
-      "title": "CESR/05-302b (July 2005), Annex I: Commission Recommendation 2004/384/EC, Total expense ratio (TER)",
-      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/05_302b.pdf"
+      "title": "Commission Recommendation 2004/384/EC (27.4.2004), OJ L 144, 30.4.2004, Annex I: Total expense ratio (TER)",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32004H0384"
     },
     "variants_he": [],
     "explain_he": "כל ההוצאות שיורדות בשנה מנכסי קרן אירופית מסוג UCITS, כאחוז מהשווי הנקי הממוצע שלה; עלויות המסחר של הקרן ועמלות שהמשקיע משלם ישירות לא נכללות.",
@@ -974,10 +992,11 @@
       "ETF-30"
     ],
     "source": {
-      "title": "CESR/05-302b (July 2005), Annex I: Commission Recommendation 2004/384/EC, Total expense ratio (TER)",
-      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/05_302b.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary-mirror"
+      "title": "Commission Recommendation 2004/384/EC (27.4.2004), OJ L 144, 30.4.2004, Annex I: Total expense ratio (TER)",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32004H0384",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "EUR-Lex (Publications Office of the EU)"
     },
     "where": [
       "app",
@@ -1043,7 +1062,7 @@
     "term_he": "קרן שאינה מחלקת",
     "term_source": {
       "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=9"
     },
     "variants_he": [
       "קרן צבירה",
@@ -1061,7 +1080,7 @@
     ],
     "source": {
       "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=9",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Israel Securities Authority"
@@ -1079,7 +1098,7 @@
     "term_he": "קרן מחלקת",
     "term_source": {
       "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=9"
     },
     "variants_he": [
       "מחלקת"
@@ -1094,7 +1113,7 @@
     ],
     "source": {
       "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=9",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Israel Securities Authority"
@@ -1111,8 +1130,8 @@
   {
     "term_he": "רווח הון",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=69"
     },
     "variants_he": [
       "ריווח הון",
@@ -1127,7 +1146,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=49",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1136,14 +1155,14 @@
       "tax-form",
       "guide:brokerage-account"
     ],
-    "notes": "The Ordinance spells the defined term 'ריווח הון' (s.88) but writes 'רווח הון' in s.91(b)(1); the Tax Authority guide writes 'רווח הון' / 'רווחי הון'. Definition in TXG-12 (tax-general.md).",
+    "notes": "The Ordinance spells the defined term 'ריווח הון' (s.88) but writes 'רווח הון' in s.91(b)(1); the Tax Authority guide writes 'רווח הון' / 'רווחי הון'. Definition in TXG-12 (tax-general.md). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "rvvch-hvn-b"
   },
   {
     "term_he": "רווח הון ריאלי",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=100"
     },
     "variants_he": [
       "ריווח הון ריאלי",
@@ -1159,7 +1178,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=49",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1169,7 +1188,7 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "s.88 spells 'ריווח הון ריאלי', s.91(b)(1) 'רווח הון ריאלי'; the Migdal prospectus writes 'הרווח הריאלי'. For a security in or linked to foreign currency the exchange rate replaces the CPI (TXS-04, TXF-03); for a TASE foreign fund it depends on the 90% test (TXF-04). What happens when the currency weakened is open (TXF Q5).",
+    "notes": "s.88 spells 'ריווח הון ריאלי', s.91(b)(1) 'רווח הון ריאלי'; the Migdal prospectus writes 'הרווח הריאלי'. For a security in or linked to foreign currency the exchange rate replaces the CPI (TXS-04, TXF-03); for a TASE foreign fund it depends on the 90% test (TXF-04). What happens when the currency weakened is open (TXF Q5). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "rvvch-hvn-ryaly-b"
   },
   {
@@ -1185,23 +1204,24 @@
       "TXS-12"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 149",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=149",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "ad",
       "guide:brokerage-account"
     ],
-    "notes": "The law has no 'nominal gain' term: for unlinked bonds it says 'ויראו את כל רווח ההון כרווח הון ריאלי' (TXS-03). The exact phrase 'רווח נומינלי' is not attested; bizportal (secondary) writes '15% נומינלי' and fund forms 'מרכיב הרווח הנומינלי' (TXA Terms). It does not apply to a saver in an exempt money-market fund (TXS-12).",
+    "notes": "The law has no 'nominal gain' term: for unlinked bonds it says 'ויראו את כל רווח ההון כרווח הון ריאלי' (TXS-03). The exact phrase 'רווח נומינלי' is not attested; bizportal (secondary) writes '15% נומינלי' and fund forms 'מרכיב הרווח הנומינלי' (TXA Terms). It does not apply to a saver in an exempt money-market fund (TXS-12). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "rvvch-nvmynly"
   },
   {
     "term_he": "סכום אינפלציוני",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=149"
     },
     "variants_he": [],
     "explain_he": "החלק ברווח שרק מפצה על עליית המחירים במשק מאז הקנייה; בדרך כלל לא משלמים עליו מס.",
@@ -1213,7 +1233,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=48",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1222,14 +1242,14 @@
       "tax-form",
       "guide:brokerage-account"
     ],
-    "notes": "Only the part built up before 1994 is taxed, at 10% (TXS-02, TXG-13). For a foreign-currency security it is measured by the exchange rate, not the CPI (TXS-04, TXF-03).",
+    "notes": "Only the part built up before 1994 is taxed, at 10% (TXS-02, TXG-13). For a foreign-currency security it is measured by the exchange rate, not the CPI (TXS-04, TXF-03). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "skvm-aynpltzyvny-b"
   },
   {
     "term_he": "מדד",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 15",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15"
     },
     "variants_he": [],
     "explain_he": "בחישוב מס על רווח: מדד המחירים לצרכן, שמודד את עליית המחירים, ובנייר ערך במטבע חוץ – שער המטבע.",
@@ -1240,24 +1260,25 @@
       "TXS-04"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 15",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "law",
       "statement",
       "guide:brokerage-account"
     ],
-    "notes": "Tax sense only. The site also uses 'מדד' for a market index, which il-finance does not define (separate entry). s.88: 'מדד המחירים לצרכן כפי שפורסם לאחרונה לפני היום שבו מדובר' (quoted in TXG-12). For a TASE foreign fund the exchange rate is the index only if the fund commits to the 90% test, otherwise CPI (TXF-04).",
+    "notes": "Tax sense only. The site also uses 'מדד' for a market index, which il-finance does not define (separate entry). s.88: 'מדד המחירים לצרכן כפי שפורסם לאחרונה לפני היום שבו מדובר' (quoted in TXG-12). For a TASE foreign fund the exchange rate is the index only if the fund commits to the 90% test, otherwise CPI (TXF-04). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "mdd-b"
   },
   {
     "term_he": "מס רווחי הון",
     "term_source": {
       "title": "משרד האוצר, הכלכלן הראשי, סקירה אוקטובר 2025",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf#page=5"
     },
     "variants_he": [],
     "explain_he": "המס על הרווח ממכירת מניות, קרנות וניירות ערך אחרים; בבנק או בבית השקעות בישראל הוא מנוכה במכירה.",
@@ -1271,7 +1292,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=49",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1289,7 +1310,7 @@
     "term_he": "קיזוז הפסדים",
     "term_source": {
       "title": "מגדל קרנות נאמנות, תשקיף עיקרי, 30.1.2025",
-      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf"
+      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf#page=77"
     },
     "variants_he": [],
     "explain_he": "הפסד ממכירת נייר ערך מקטין את הרווח החייב במס, ולכן גם את המס שמשלמים.",
@@ -1301,7 +1322,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=9",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1317,7 +1338,7 @@
     "term_he": "הפסד מועבר",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=46"
     },
     "variants_he": [],
     "explain_he": "הפסד שלא נוצל באותה שנה ומקטין רווחי הון בשנים הבאות, בתנאי שהוגש דוח שנתי למס הכנסה.",
@@ -1327,7 +1348,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=46",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1341,8 +1362,8 @@
   {
     "term_he": "קרן נאמנות פטורה",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150"
     },
     "variants_he": [
       "קרן פטורה",
@@ -1358,10 +1379,11 @@
       "TXS-24"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "app",
@@ -1370,14 +1392,14 @@
       "exposure:index-sp500",
       "exposure:index-ta125"
     ],
-    "notes": "Foreign tax may still be paid inside the fund, on top of the saver's Israeli tax (TXS-15). Most Israeli funds are exempt (Maya, TXS-24).",
+    "notes": "Foreign tax may still be paid inside the fund, on top of the saver's Israeli tax (TXS-15). Most Israeli funds are exempt (Maya, TXS-24). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "krn-namnvt-ptvrh"
   },
   {
     "term_he": "קרן נאמנות חייבת",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150"
     },
     "variants_he": [
       "קרן חייבת",
@@ -1392,10 +1414,11 @@
       "TXS-24"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "app",
@@ -1403,7 +1426,7 @@
       "prospectus",
       "guide:brokerage-account"
     ],
-    "notes": "'חיבת' is the spelling in the Maya fund name 'הראל כספית דולר נזיל חיבת' (TXS-24). A fund can switch only from taxable to exempt (TXS-07).",
+    "notes": "'חיבת' is the spelling in the Maya fund name 'הראל כספית דולר נזיל חיבת' (TXS-24). A fund can switch only from taxable to exempt (TXS-07). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "krn-namnvt-chyybt"
   },
   {
@@ -1439,8 +1462,8 @@
   {
     "term_he": "מכירה",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 148",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148"
     },
     "variants_he": [],
     "explain_he": "לעניין מס: כל יציאה של נכס מהבעלות, כולל פדיון והחלפה לקרן אחרת; הרווח בה חייב במס.",
@@ -1448,23 +1471,24 @@
       "TXS-21"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 148",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "law",
       "guide:brokerage-account"
     ],
-    "notes": "Except inheritance. Unlike the provident wrappers, switching funds in a brokerage account is a tax event (TXS-21).",
+    "notes": "Except inheritance. Unlike the provident wrappers, switching funds in a brokerage account is a tax event (TXS-21). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "mkyrh"
   },
   {
     "term_he": "ניכוי מס במקור",
     "term_source": {
-      "title": "רשות המסים, ניכוי מס במקור – קרנות חוץ (Foreign Funds), 4.7.2019 (capitax mirror)",
-      "url": "http://www.capitax.co.il/Attachments/04072019.pdf"
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=29"
     },
     "variants_he": [
       "ניכוי במקור"
@@ -1480,7 +1504,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=29",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1488,7 +1512,7 @@
       "statement",
       "guide:brokerage-account"
     ],
-    "notes": "Banks and TASE members withhold; at a plain foreign broker nothing is withheld in Israel (TXF-22), though Interactive Israel says it withholds (BRK-36). The TASE clearing house pays income gross (BRK-27).",
+    "notes": "Banks and TASE members withhold; at a plain foreign broker nothing is withheld in Israel (TXF-22), though Interactive Israel says it withholds (BRK-36). The TASE clearing house pays income gross (BRK-27). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "nykvy-ms-bmkvr-b"
   },
   {
@@ -1522,7 +1546,7 @@
     "term_he": "טופס 1322",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=47"
     },
     "variants_he": [
       "נספח ג'"
@@ -1534,7 +1558,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=47",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1548,11 +1572,11 @@
   {
     "term_he": "דיבידנד",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=159"
     },
     "variants_he": [],
-    "explain_he": "תשלום שחברה מעבירה לבעלי המניות שלה; מגיע לחשבון ניירות הערך וחייב במס.",
+    "explain_he": "חלק מרווחי חברה שהיא מחלקת לבעלי המניות שלה; מגיע לחשבון ניירות הערך וחייב במס",
     "rule_ids": [
       "BRK-13",
       "BRK-27",
@@ -1560,9 +1584,9 @@
       "TXS-16"
     ],
     "source": {
-      "title": "TASE, דוח תקופתי לשנת 2025",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-      "checked": "2026-10-22",
+      "title": "הבורסה לניירות ערך בתל אביב: דף מונחים, \"דיבידנד\" (קטע שנקרא בכרום)",
+      "url": "https://www.tase.co.il/he/terms-page",
+      "checked": "2026-11-07",
       "strength": "primary",
       "publisher": "Tel Aviv Stock Exchange"
     },
@@ -1572,14 +1596,14 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "No rule in il-finance defines a dividend in words; the meaning is drawn from BRK-13 and BRK-27 (the nominee company and clearing house pass dividends to holders) and the tax rules. The Tax Authority rate table also writes 'דיבידנד מחברות זרות' for foreign dividends (TXF-08). Inside a fund, dividends go to the fund (see 'קרן שאינה מחלקת').",
+    "notes": "No rule in il-finance defines a dividend in words; the meaning is drawn from BRK-13 and BRK-27 (the nominee company and clearing house pass dividends to holders) and the tax rules. The Tax Authority rate table also writes 'דיבידנד מחברות זרות' for foreign dividends (TXF-08). Inside a fund, dividends go to the fund (see 'קרן שאינה מחלקת'). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text. Round 2 (2026-11-07): re-cited from TASE's periodic report to the exchange's terms page (library 17421afb2b9b4e5a): \"דיבידנד הוא חלק מרווחי החברה, המחולק למחזיקים במניותיה\". The tax rests on the Ordinance, the name's source.",
     "id": "dybydnd"
   },
   {
     "term_he": "חלוקת רווחים",
     "term_source": {
-      "title": "רשות המסים, ניכוי מס במקור – קרנות חוץ (Foreign Funds), 4.7.2019 (capitax mirror)",
-      "url": "http://www.capitax.co.il/Attachments/04072019.pdf"
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב', עמ' 88 (\"מדיניות חלוקת הרווחים של הקרן\")",
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=88"
     },
     "variants_he": [
       "רווחים שחילק מנהל קרן",
@@ -1595,10 +1619,11 @@
       "TXS-11"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), ס' 125ב1, עמ' 203",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=203",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "statement",
@@ -1606,14 +1631,14 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "Tax law calls it profits a fund distributed ('רווחים שחילק מנהל קרן', s.125B1), but the ISA guide says Israeli distributions are at the manager's discretion and not linked to profits actually made (MF-49). Exempt fund: 25% (TXS-10); taxable fund: exempt for the holder (TXS-11); TASE foreign fund: withheld as a dividend, credit only for origin-state tax on it (TXF-05, TXF-06).",
+    "notes": "Tax law calls it profits a fund distributed ('רווחים שחילק מנהל קרן', s.125B1), but the ISA guide says Israeli distributions are at the manager's discretion and not linked to profits actually made (MF-49). Exempt fund: 25% (TXS-10); taxable fund: exempt for the holder (TXS-11); TASE foreign fund: withheld as a dividend, credit only for origin-state tax on it (TXF-05, TXF-06). Copy struck Round 2 (2026-11-07): from Wikisource to the Tax Authority's text (library 4d9d397e88b5931d, p.203: \"רווחים שחילק מנהל קרן נאמנות\"); the name's source, a capitax copy of a Tax Authority letter of 4.7.2019 that has no official copy, is now the clearing house bylaws, part 2, p.88.",
     "id": "chlvkt-rvvchym"
   },
   {
     "term_he": "מסי חוץ",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 15",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15"
     },
     "variants_he": [
       "מסי־חוץ"
@@ -1625,10 +1650,11 @@
       "TXF-17"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 15",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "statement",
@@ -1636,14 +1662,14 @@
       "guide:brokerage-account",
       "exposure:index-sp500"
     ],
-    "notes": "The starting-list 'מס שנוכה בחו\"ל' is not attested; the law's defined term is 'מסי־חוץ' (s.199). Tax a foreign fund pays inside itself (for example US tax on an Irish fund) is not the holder's foreign tax and is not creditable (TXF-16).",
+    "notes": "The starting-list 'מס שנוכה בחו\"ל' is not attested; the law's defined term is 'מסי־חוץ' (s.199). Tax a foreign fund pays inside itself (for example US tax on an Irish fund) is not the holder's foreign tax and is not creditable (TXF-16). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "msy-chvtz"
   },
   {
     "term_he": "זיכוי ממסי חוץ",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=85"
     },
     "variants_he": [
       "זיכוי מס זר",
@@ -1659,7 +1685,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=85",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1752,7 +1778,7 @@
     "term_he": "מקדמת מס",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=5"
     },
     "variants_he": [
       "מקדמה"
@@ -1765,7 +1791,7 @@
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=5",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -1781,7 +1807,7 @@
     "term_he": "ת\"א-125",
     "term_source": {
       "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=17"
     },
     "variants_he": [
       "ת\"א 125",
@@ -1794,7 +1820,7 @@
     ],
     "source": {
       "title": "הבורסה לניירות ערך בתל אביב, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026), נספח 3",
-      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf#page=31",
       "checked": "2026-10-26",
       "strength": "primary",
       "publisher": "הבורסה לניירות ערך בתל אביב"
@@ -1810,7 +1836,7 @@
     "term_he": "S&P 500",
     "term_source": {
       "title": "IBI, דוח שנתי \"אי.בי.אי. סל (4D) S&P 500\" (1148162), 31.12.2025",
-      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf"
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf#page=2"
     },
     "variants_he": [
       "מדד S&P 500"
@@ -1848,7 +1874,7 @@
     ],
     "source": {
       "title": "הבורסה לניירות ערך בתל אביב, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026), נספח 1",
-      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf#page=29",
       "checked": "2026-10-26",
       "strength": "primary",
       "publisher": "הבורסה לניירות ערך בתל אביב"
@@ -1872,7 +1898,7 @@
     ],
     "source": {
       "title": "הבורסה לניירות ערך בתל אביב, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026), נספח 4",
-      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf#page=33",
       "checked": "2026-10-26",
       "strength": "primary",
       "publisher": "הבורסה לניירות ערך בתל אביב"
@@ -2043,7 +2069,7 @@
     ],
     "source": {
       "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך), עמ' 2",
-      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf#page=2",
       "checked": "2026-10-31",
       "strength": "institution",
       "publisher": "אלטשולר שחם טרייד"
@@ -2052,7 +2078,7 @@
       "guide:brokerage-account",
       "tariff"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-48: Altshuler Shaham Trade, Psagot); no general rule defines it, so the row names the company. 2026-11-06 fix pass (check item 6): the explanation now opens with the company, so no clause reads as a fact about the market (library 500b2b74e04bd53e, p.2, line 5); the variant 'דמי טיפול ריבית ופדיון' was dropped, because it is Psagot's line for foreign bonds' interest and redemption, a different fee."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-48: Altshuler Shaham Trade, Psagot); no general rule defines it, so the row names the company. 2026-11-06 fix pass (check item 6): the explanation now opens with the company, so no clause reads as a fact about the market (library 500b2b74e04bd53e, p.2, line 5); the variant 'דמי טיפול ריבית ופדיון' was dropped, because it is Psagot's line for foreign bonds' interest and redemption, a different fee. Round 2 (2026-11-07): no general source names this fee. The joint report of June 2026 (library 421f4282b6dda3a8, p.10, note 18) counts \"תפעול חלוקת דיבידנד וריבית\" among the custody services the securities-custody fee pays for, and the TASE rules (part 1, p.34) oblige a member to secure clients' dividends and interest; neither names a separate fee. The row stays the company's, named in the line, graded institution."
   },
   {
     "term_he": "מדד מניות",
@@ -2103,5 +2129,353 @@
       "app"
     ],
     "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The general definition of an index (the ISA guide) applied to the bond indices the CMA list names (ETF-83). 2026-11-06 fix pass (check items 7 and 8): the source is now the ISA guide (pp.11, 30; library f4aa19056ef4fd8f), and its title says the definition is applied to bonds, an inference ETF-83 records ('that it measures the change in the prices of those bonds is the general definition applied to them'); 'state or companies' and 'a track can follow it' rest on the CMA list of tracks, pp.10 to 12 (ETF-83, CAT-45; library 3c4c0c0ea5b784c3). 'במחירים' became 'בשווי', as on the stock-index row; 'של המדינה' became 'של ממשלות', as the list writes 'מדדי אג\"ח ממשלות' (p.9), not only Israel's."
+  },
+  {
+    "term_he": "נייר ערך",
+    "term_source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 1, עמוד 10",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=10"
+    },
+    "variants_he": [
+      "ני\"ע"
+    ],
+    "explain_he": "בחוק: תעודה שמנפיקה חברה או תאגיד אחר, בסדרה, ושנותנת חלק בתאגיד או זכות לקבל ממנו כסף, כמו מניה או איגרת חוב.",
+    "rule_ids": [
+      "CORP-01",
+      "BRK-01"
+    ],
+    "source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 1, עמוד 10",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "law",
+      "statement",
+      "guide:brokerage-account",
+      "guide:mutual-funds"
+    ],
+    "notes": "Glossary sweep 2026-11-07: the law's definition of \"ניירות־ערך\" (s. 1, ISA consolidated text p. 10); the law excludes some state-issued securities, which the line does not go into. Fix pass 2026-11-07: the Hebrew editor's plainer word order.",
+    "id": "nyyr-ark"
+  },
+  {
+    "term_he": "בורסה",
+    "term_source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 44לא, עמוד 93",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=93"
+    },
+    "variants_he": [
+      "הבורסה לניירות ערך",
+      "הבורסה לניירות ערך בתל אביב",
+      "בורסת תל אביב"
+    ],
+    "explain_he": "חברה בעלת רישיון שמנהלת מערכת שבה קונים ומוכרים ניירות ערך, לפי כללים שנקבעו מראש.",
+    "rule_ids": [
+      "BRK-01",
+      "BRK-12"
+    ],
+    "source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 44לא, עמוד 93",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=93",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "law",
+      "statement",
+      "guide:brokerage-account",
+      "guide:government-bond",
+      "guide:makam"
+    ],
+    "notes": "Glossary sweep 2026-11-07: s. 44לא defines \"בורסה\" and \"מערכת למסחר בניירות ערך\" (a multilateral system matching buy and sell orders by preset rules, without discretion).",
+    "id": "bvrsh"
+  },
+  {
+    "term_he": "צד נגדי מרכזי",
+    "term_source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 44לא, עמוד 93",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=93"
+    },
+    "variants_he": [],
+    "explain_he": "גורם שמבטיח לכל צד בעסקה בניירות ערך שהעסקה תושלם, למשל באמצעות ערבות.",
+    "rule_ids": [
+      "BRK-12"
+    ],
+    "source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 44לא, עמוד 93",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=93",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "law",
+      "statement",
+      "guide:brokerage-account"
+    ],
+    "notes": "Glossary sweep 2026-11-07: s. 44לא, within the definition of \"מערכת סליקה\". BRK-12 records that the TASE clearing house acts as central counterparty. Fix pass 2026-11-07: the Hebrew editor's wording.",
+    "id": "tzd-ngdy-mrkzy"
+  },
+  {
+    "term_he": "איגרת חוב",
+    "term_source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 35א, \"תעודות התחייבות\", עמוד 37",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37"
+    },
+    "variants_he": [
+      "אג\"ח"
+    ],
+    "explain_he": "תעודת התחייבות, בלשון החוק: מי שהנפיק אותה מתחייב לשלם למחזיקים בה כסף במועד שנקבע, בלי לתת להם חלק בבעלות",
+    "rule_ids": [
+      "CORP-01",
+      "GOV-02"
+    ],
+    "source": {
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 35א, \"תעודות התחייבות\", עמוד 37",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "law",
+      "statement",
+      "ad",
+      "guide:brokerage-account",
+      "guide:government-bond",
+      "guide:mutual-funds"
+    ],
+    "notes": "Glossary sweep 2026-11-07: the law's word is \"תעודות התחייבות\" (s. 35א, a claim to money on a set date or condition, no membership or share in the issuer); it leaves out state-issued bonds, which GOV-02 and the row \"איגרות חוב ממשלתיות\" cover. Fix pass 2026-11-07: the clause about the state left the line: s. 35א leaves out certificates the state issues, so the line says only what the section says; the state's bonds have their own row (איגרות חוב ממשלתיות, GOV-02). Round 2 (2026-11-07): the line now says the law's word, \"תעודת התחייבות\" (s.35א speaks of \"תעודות התחייבות\"; no official text read defines \"איגרת חוב\" itself).",
+    "id": "aygrt-chvb"
+  },
+  {
+    "term_he": "מטבע חוץ",
+    "term_source": {
+      "title": "חוק בנק ישראל, התש\"ע-2010, ספר החוקים 2231, ס' 1, \"מטבע חוץ\"",
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301176.pdf#page=2"
+    },
+    "variants_he": [
+      "מט\"ח",
+      "מטבע זר"
+    ],
+    "explain_he": "כסף של מדינה אחרת, כמו דולר או אירו.",
+    "rule_ids": [
+      "FXD-01",
+      "FXD-05"
+    ],
+    "source": {
+      "title": "חוק בנק ישראל, התש\"ע-2010, ספר החוקים 2231, ס' 1, \"מטבע חוץ\"",
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301176.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
+    },
+    "where": [
+      "law",
+      "statement",
+      "tariff",
+      "guide:brokerage-account"
+    ],
+    "notes": "Glossary sweep 2026-11-07: \"מטבע חוץ\" - banknotes or coins that are legal tender in a foreign state and not in Israel (Bank of Israel Law s. 1). Fix pass 2026-11-07: the Hebrew editor's wording.",
+    "id": "mtba-chvtz"
+  },
+  {
+    "term_he": "קרן סגורה",
+    "term_source": {
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 55, עמוד 42",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=42"
+    },
+    "variants_he": [],
+    "explain_he": "קרן נאמנות שהיחידות שלה רשומות למסחר בבורסה; קונים ומוכרים אותן שם, במחיר שנקבע במסחר.",
+    "rule_ids": [
+      "MF-05"
+    ],
+    "source": {
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 55, עמוד 42",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=42",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "law",
+      "prospectus",
+      "guide:mutual-funds"
+    ],
+    "notes": "Glossary sweep 2026-11-07: the law defines a closed fund only as one whose fund agreement says so (Joint Investment Trust Law s. 1); the meaning is the ISA investor guide's. Fix pass 2026-11-07: re-cited from the ISA's 2017 investor guide to the law: s. 1 defines a closed fund only as one whose fund agreement says so (p. 4), so the meaning comes from s. 53(א)(1) (p. 41, its units are listed for trading on the exchange) and s. 55 (p. 42, their price is set by the trading). 'A limited number of units' left the line: the law does not say it.",
+    "id": "krn-sgvrh"
+  },
+  {
+    "term_he": "בעלי היחידות",
+    "term_source": {
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 76(א) ו־78, עמוד 56",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=56"
+    },
+    "variants_he": [],
+    "explain_he": "המחזיקים ביחידות של קרן נאמנות; הנאמן מחזיק את נכסי הקרן בשבילם ומפקח על מנהל הקרן.",
+    "rule_ids": [
+      "MF-02",
+      "MF-03",
+      "REG-10"
+    ],
+    "source": {
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 76(א) ו־78, עמוד 56",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=56",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "law",
+      "prospectus",
+      "guide:mutual-funds",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
+    ],
+    "notes": "Glossary sweep 2026-11-07: the guide's \"נאמן הקרן\" paragraph (p. 7) and the fund agreement paragraph (p. 4). Fix pass 2026-11-07: re-cited from the ISA's 2017 investor guide to the law, which has no definition of its own: s. 3(ב) (p. 5) makes a fund of units, s. 76(א) (p. 56) vests its assets in the trustee for the unit holders, s. 78 (p. 57) has the trustee supervise the manager. The Hebrew editor's wording; a reader said the old card repeated its sentence.",
+    "id": "bal-hychydvt"
+  },
+  {
+    "term_he": "מחיר קנייה",
+    "term_source": {
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 42(א)(2) ו־43(א), עמוד 35",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=35"
+    },
+    "variants_he": [
+      "מחיר היחידה"
+    ],
+    "explain_he": "המחיר שבו קונים יחידה בקרן נאמנות פתוחה; מנהל הקרן מחשב אותו לפי השווי הנקי של נכסי הקרן, מחולק במספר היחידות.",
+    "rule_ids": [
+      "MF-09"
+    ],
+    "source": {
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 42(א)(2) ו־43(א), עמוד 35",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=35",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "statement",
+      "guide:mutual-funds",
+      "guide:brokerage-account"
+    ],
+    "notes": "Glossary sweep 2026-11-07: the guide calls it \"מחיר היחידה\" and the selling price \"מחיר פדיון\" (p. 6); the manager may add a one-off הוספה on the purchase. Fix pass 2026-11-07: re-cited from the ISA's 2017 investor guide to the law: s. 42(א)(2) sets a unit's price at the fund's purchase price under s. 43 divided by its units, and s. 43(א) has the manager compute it from net asset value (p. 35). 'At the end of every trading day' left the line: s. 43 does not say it.",
+    "id": "mchyr-knyyh"
+  },
+  {
+    "term_he": "ברוקר",
+    "variants_he": [
+      "ברוקראז'"
+    ],
+    "explain_he": "מי שנותן ללקוחות שירות של קנייה ומכירה של ניירות ערך; בישראל אלה בנקים, בתי השקעות וגופים שאינם חברי בורסה",
+    "rule_ids": [],
+    "source": {
+      "title": "רשות התחרות ורשות ניירות ערך, תחרות בשוק הברוקראז' הקמעונאי, דוח סופי, אוגוסט 2019, עמוד 10",
+      "url": "https://www.gov.il/BlobFolder/reports/marketresearch-brokeragefinal/he/marketresearch_%D7%AA%D7%97%D7%A8%D7%95%D7%AA%20%D7%91%D7%A9%D7%95%D7%A7%20%D7%94%D7%91%D7%A8%D7%95%D7%A7%D7%A8%D7%90%D7%96'%20%D7%94%D7%A7%D7%9E%D7%A2%D7%95%D7%A0%D7%90%D7%99%200819.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Competition Authority (gov.il)"
+    },
+    "where": [
+      "exposure:index-sp500",
+      "guide:brokerage-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:makam"
+    ],
+    "notes": "Round 2 (2026-11-07): a joint report of two regulators, library bac1ca2df2733bdb p.10 (fork B). No law uses the word; the regulators' report describes the retail brokerage market and who serves it."
+  },
+  {
+    "term_he": "בית השקעות",
+    "variants_he": [
+      "בתי השקעות"
+    ],
+    "explain_he": "גוף פיננסי שאינו בנק, שאפשר לפתוח אצלו חשבון ניירות ערך ולקנות ולמכור דרכו",
+    "rule_ids": [],
+    "source": {
+      "title": "בנק ישראל, משרד האוצר ורשות ניירות ערך, מודלי תגמול בפעילות הציבור בניירות ערך, דוח סופי, יוני 2026, עמוד 38",
+      "url": "https://boi.org.il/media/uo4k5b20/מודלי-תגמול-בפעילות-הציבור-בניירות-ערך-דוח-סופי.pdf#page=38",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
+    },
+    "where": [
+      "guide:brokerage-account",
+      "guide:government-bond",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
+    ],
+    "notes": "Round 2 (2026-11-07): library 421f4282b6dda3a8 p.38: \"אפשר לפתוח חשבון ניירות ערך בבנק, או בגוף פיננסי שאינו בנק (כגון בית השקעות)\". The mutual funds page lists it in its termIds."
+  },
+  {
+    "term_he": "עמלה",
+    "variants_he": [
+      "עמלות"
+    ],
+    "explain_he": "המחיר שבנק או בית השקעות גובים תמורת שירות, כמו ניהול החשבון או קנייה ומכירה של ניירות ערך",
+    "rule_ids": [],
+    "source": {
+      "title": "בנק ישראל, משרד האוצר ורשות ניירות ערך, מודלי תגמול בפעילות הציבור בניירות ערך, דוח סופי, יוני 2026, עמוד 10",
+      "url": "https://boi.org.il/media/uo4k5b20/מודלי-תגמול-בפעילות-הציבור-בניירות-ערך-דוח-סופי.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
+    },
+    "where": [
+      "exposure:general-track",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:keren-hishtalmut",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
+    ],
+    "notes": "Round 2 (2026-11-07): library 421f4282b6dda3a8 p.10 lists the fees a securities account carries (fork B). Each fee has its own row (עמלת קנייה ומכירה, דמי ניהול פיקדון ניירות ערך, עמלת חליפין); this one is the general word."
+  },
+  {
+    "term_he": "תשואה כוללת ברוטו",
+    "variants_he": [
+      "מדד תשואה כוללת ברוטו"
+    ],
+    "explain_he": "שיטת חישוב של מדד שבה הדיבידנדים נספרים במלואם, לפני מס, כאילו הושקעו בו מחדש",
+    "rule_ids": [
+      "ETF-40",
+      "ETF-42"
+    ],
+    "source": {
+      "title": "הבורסה לניירות ערך בתל אביב, הנחיות החלק השני לתקנון, פרק המדדים, נוסחאות החישוב, עמוד 14",
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf#page=14",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Tel Aviv Stock Exchange"
+    },
+    "where": [
+      "exposure:index-sp500",
+      "exposure:index-ta125"
+    ],
+    "notes": "Round 2 (2026-11-07): TASE index rules, library 98949e3cff3d5112 p.14 (\"נוסחת חישוב מדד תשואה כוללת ברוטו\") and p.15 (the gross dividend, \"דיבידנד ברוטו\"), against the net price index that subtracts it."
+  },
+  {
+    "term_he": "תקופת קיום הקרן",
+    "variants_he": [],
+    "explain_he": "התקופה שהקרן קיימת בה, אם הסכם הקרן מגביל אותה.",
+    "rule_ids": [
+      "MF-59"
+    ],
+    "source": {
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, סעיף 5(א)(10), עמוד 6",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=6",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [],
+    "notes": "Round 2 (2026-11-07): the fund agreement states \"תקופת קיומה של הקרן, אם הוגבלה התקופה\" (s.5(א)(10)); the end of the period is a ground for winding up (MF-59). The limited-time bond fund page lists it in its termIds."
   }
 ]

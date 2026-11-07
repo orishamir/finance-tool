@@ -2,17 +2,21 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, groupPrices as groupWordsDemo, kit as copy, trackBrowser } from "../../copy";
+import { brands, groupPrices as groupWordsDemo, invest as investWords, kit as copy, r2, scnCompare, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconAlert, IconExternal, IconLock } from "../icons";
-import { IdRef, LeadTail, MarkHead, Num, RulesLine, StaleSaid } from "../provenance";
+import { IdRef, LeadTail, MarkHead, Num, ReadingTag, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
+import { depositLabels } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
+import { sourceHref } from "../../lib/sources";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { MixedName, NameLine } from "./name";
+import { AlsoChanged } from "./also-changed";
+import { BlockedGroups, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -25,7 +29,9 @@ function samples(today: string) {
   const comp = computed(1500, "nis", "F-08", { [g.sampleAbout]: sourced }, { today, about: g.sampleAbout });
   const comp2 = computed(1100, "nis", "F-08", { [g.sampleAbout]: sourced }, { today, about: g.sampleAbout });
   const ent = entered(3000, "nis", today, g.sampleAbout);
-  return { sourced, stale, rate, comp, comp2, ent };
+  // an empty value no rule covers (source strength open): the figure says it is an open question, with the lock
+  const open: SiteValue = { ...sourced, value: null, unit: "text", source: { ...sourced.source, strength: "open" }, notes: "sample" };
+  return { sourced, stale, rate, comp, comp2, ent, open };
 }
 
 /** One component: its name (beside it, left to right), when to use it, and its states. */
@@ -372,6 +378,45 @@ function Words({ today }: { today: string }) {
           <State label="formula: opens the formula sheet"><div><IdRef id="F-80" /></div></State>
           <State label="parameter: goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
           <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
+          <State label="ends a sentence: the full stop is passed as end and stays on the chip's line, with no gap before it (guard 20)"><p className="w-56">{g.sample.chipSentence} <IdRef id="TXS-05" end="." /></p></State>
+        </Grid>
+      </Demo>
+      <Demo name="StrengthLabel, ReadingTag" use={g.uses.StrengthLabel}>
+        <Grid>
+          <State label="primary: plain"><div><StrengthLabel strength="primary" /></div></State>
+          <State label="primary-mirror: plain"><div><StrengthLabel strength="primary-mirror" /></div></State>
+          <State label="institution: caution"><div><StrengthLabel strength="institution" /></div></State>
+          <State label="secondary: caution, only a leftover still listed in unofficial-leftovers.json (nothing new unofficial is cited)"><div><StrengthLabel strength="secondary" /></div></State>
+          <State label="open: blocked, with a lock"><div><StrengthLabel strength="open" /></div></State>
+          <State label="entered: blue"><div><StrengthLabel strength="entered" /></div></State>
+          <State label="ReadingTag: the engine's reading label, never secondary"><div><ReadingTag /></div></State>
+          <State label="ReadingTag held, not shown: its place kept empty on a line that is always there (a card that may come to rest on a reading)"><div className="flex items-center gap-2 text-xs text-muted-foreground"><span>אינפלציה 2%</span><ReadingTag held shown={false} /></div></State>
+          <State label="ReadingTag held, shown: the same box, so nothing moves"><div className="flex items-center gap-2 text-xs text-muted-foreground"><span>אינפלציה −1%</span><ReadingTag held /></div></State>
+        </Grid>
+      </Demo>
+      <Demo name="BlockedGroups" use={g.uses.BlockedGroups}>
+        <Grid>
+          <State label="a blocked row, each group with its own record's question"><div><BlockedGroups lead={scnCompare.blockedFor} groups={[{ code: "TXK-OQ10", options: ["kgl"] }, { code: "TXH-OQ16", options: ["kh", "ira"] }]} names={g.sample.blocked.names} /></div></State>
+          <State label="an eligibility row: the one question is in the row's head, so no chip"><div><BlockedGroups lead={r2.result.checklistBlocks} groups={[{ code: "GOV-OQ7", options: ["makam"] }]} names={g.sample.blocked.names} chips={false} /></div></State>
+          <State label="under a covered row: blocked tone"><div><BlockedGroups lead={scnCompare.blockedFor} groups={[{ code: "TXH-OQ16", options: ["kh"] }]} names={g.sample.blocked.names} tone="blocked" /></div></State>
+        </Grid>
+      </Demo>
+      <Demo name="MixedName" use={g.uses.MixedName}>
+        <Grid>
+          <State label="a Hebrew name that starts with Latin letters"><div>הקרן <MixedName>MTF סל (4D) S&P 500</MixedName>, בחשבון</div></State>
+          <State label="a Latin name keeps its own direction"><div>הקרן <MixedName>iShares Core S&P 500 UCITS ETF</MixedName>, בחשבון</div></State>
+          <State label="NameLine: a name on a line of its own, cut at its end in reading order (the brand always shows)"><div className="w-48 text-sm"><NameLine className="truncate">iShares Core S&P 500 UCITS ETF USD (Accumulating)</NameLine><NameLine className="line-clamp-2">ילין לפידות מחקה (4D) S&P 500</NameLine></div></State>
+          <State label="keepTitleWhole: a document's title in a narrow line; the Latin run stays on one line and the quoted name keeps its order"><p className="w-56 text-xs text-link">{keepTitleWhole(g.sample.docTitle)}</p></State>
+          <State label='gershayim: an abbreviation stored with a plain double quote (אג"ח, מק"מ) is drawn with the Hebrew gershayim, as a glossary card, the search and the not-covered list show it (copy 10.4)'><p>{gershayim('אג"ח · מק"מ · חש"ב')}</p></State>
+        </Grid>
+      </Demo>
+      <Demo name="ClampedText" use={g.uses.ClampedText}>
+        <ClampedDemo />
+      </Demo>
+      <Demo name="AlsoChanged" use={g.uses.AlsoChanged}>
+        <Grid>
+          <State label="in a line of a row (the account list)"><div className="text-xs"><AlsoChanged what={investWords.pair.movedFund} back={investWords.pair.moveBackTo("פסגות")} onBack={() => undefined} /></div></State>
+          <State label="stacked at the end of a narrow cell (the fund list)"><div className="text-xs"><AlsoChanged stack what={investWords.pair.movedHouse("IBKR")} back={investWords.pair.moveBackTo("IBI")} onBack={() => undefined} /></div></State>
         </Grid>
       </Demo>
       <Demo name="RulesLine, RulesChip" use={g.uses.RulesLine}>
@@ -392,6 +437,9 @@ function Words({ today }: { today: string }) {
           <State label={`${g.states.stale}, tone=muted`}>
             <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
           </State>
+          <State label="An empty value whose rule is open (source strength open): the open question and its lock, never null or unknown">
+            <Sentence size="sm" t="{a} · {b}" vars={{ a: <Num value={s.open} />, b: <Num value={s.rate} /> }} />
+          </State>
           <State label="StaleSaid: under a notice that already says the source is old, the figure leaves out its clock (the sheet still says it)">
             <StaleSaid>
               <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
@@ -399,6 +447,9 @@ function Words({ today }: { today: string }) {
           </State>
           <State label="Tpl">
             <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
+          </State>
+          <State label="a shekel figure of a billion or more: its short form on a phone, so a fixed column never cuts it (figureFit)">
+            <Tpl t="{a} · {b}" vars={{ a: <Num value={{ ...s.comp, value: 2_345_678_901 }} />, b: <Num value={{ ...s.comp, value: 1_234_567_890_123 }} /> }} />
           </State>
         </Grid>
       </Demo>
@@ -408,6 +459,17 @@ function Words({ today }: { today: string }) {
             <LongestCase cases={[<Sentence key="long" size="sm">{g.uses.LongestCase}</Sentence>]}>
               <Sentence size="sm">{g.sample.sentenceBefore}</Sentence>
             </LongestCase>
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="HoldTallest" use={g.uses.HoldTallest}>
+        <Grid>
+          <State label="three cases measured once; the block holds the tallest">
+            <div className="w-64 border border-dashed border-border">
+              <HoldTallest id="demo" cases={() => [1, 2, 3].map((n) => <Sentence key={n} size="sm">{Array.from({ length: n }, () => g.sample.sentenceBefore).join(" ")}</Sentence>)}>
+                <Sentence size="sm">{g.sample.sentenceBefore}</Sentence>
+              </HoldTallest>
+            </div>
           </State>
         </Grid>
       </Demo>
@@ -516,7 +578,30 @@ function Words({ today }: { today: string }) {
           <GapNote reason={g.sample.reason} />
         </State>
       </Demo>
+      <Demo name="PrintedText, DoubtNote" use={g.uses.PrintedText}>
+        <State label="PrintedText: a record's own Hebrew with its figures isolated" wide>
+          <p className="text-sm max-w-measure">
+            <PrintedText text={g.sample.printed} />
+          </p>
+        </State>
+        <State label="DoubtNote: a record's doubt beside its figure" wide>
+          <DoubtNote text={g.sample.doubt} className="text-sm" />
+        </State>
+      </Demo>
     </>
+  );
+}
+
+function ClampedDemo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <State label="a long reason on a grey row: two lines, the rest at a tap">
+      <div className="w-64 text-xs">
+        <ClampedText open={open} onOpenChange={setOpen} more={investWords.pair.reasonMore} less={investWords.pair.reasonLess}>
+          {investWords.pair.notPossibleAny} {investWords.pair.notPossibleAny} {investWords.pair.notPossibleAny}
+        </ClampedText>
+      </div>
+    </State>
   );
 }
 
@@ -590,7 +675,7 @@ function Fields() {
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <KnobStrip
             knobs={[
-              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: () => null, onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
               { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
             ]}
           />
@@ -613,14 +698,17 @@ function Fields() {
             yTitle="₪"
             yFormat={(v) => fmt.number(Math.round(v))}
             choicesLabel={g.sample.range}
-            head={[g.sample.range, g.sample.percent]}
+            head={[g.sample.range, g.sample.percent, g.sample.range]}
             widths={[
-              { pc: "50%", phone: "50%" },
-              { pc: "50%", phone: "50%" },
+              { pc: "40%", phone: "50%" },
+              { pc: "30%", phone: "50%" },
+              { pc: "30%", phone: "0" },
             ]}
+            // on a phone the third column's figure sits under the second's (stackOnPhone)
+            stackOnPhone={[1, 2]}
             rows={[
-              { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200)] },
-              { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400)] },
+              { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200), fmt.nisWhole(1440)] },
+              { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400), fmt.nisWhole(480)] },
             ]}
           />
         </State>
@@ -796,6 +884,18 @@ function MarkerDemo({ today }: { today: string }) {
             </tbody>
           </table>
         </State>
+        <State label="PHONE_GONE: the middle column leaves the table on a phone, its <col> and its cells" wide>
+          <table className="tbl text-sm">
+            <TableCols widths={["4rem", { pc: "auto", phone: "0" }, "auto"]} />
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td className={PHONE_GONE}>1,500.00 ₪</td>
+                <td>1,100.00 ₪</td>
+              </tr>
+            </tbody>
+          </table>
+        </State>
       </Demo>
       <Demo name="CompareTable, ValueBar" use={g.uses.CompareTable}>
         <State label="three rows, the page's option tinted, a zero and a range" wide>
@@ -933,7 +1033,8 @@ function sampleGroups(): GroupEntry[] {
     who_source: source,
     ends_printed: false,
     ends_he: x.ends,
-    prices: [{ fee: fund ? "trade_israel" : "custody_israel", price_he: w.price, holdings_he: fund ? w.holdingsFunds : w.holdings, names_fund: fund, source }],
+    // a value, as a binding document's price carries (an entry with none is advertising, whose ages the closed line does not read)
+    prices: [{ fee: fund ? "trade_israel" : "custody_israel", price_he: w.price, value: { rate_pct: 0.05, per: fund ? "trade" : "quarter" }, holdings_he: fund ? w.holdingsFunds : w.holdings, names_fund: fund, source }],
     who_short_he: x.whoShort,
     cheaper_he: cheaper,
     ends_short_he: x.endsShort,
@@ -1024,11 +1125,51 @@ function Lists({ today }: { today: string }) {
           <GroupChoiceDemo />
         </State>
       </Demo>
-      <Demo name="DocLink, atPdfPage" use={g.uses.DocLink}>
-        <State label="a document's name, and a PDF opened at its page" wide>
-          <DocLink href={atPdfPage("https://example.com/tariff.pdf", 2)} className="text-sm">
+      <Demo name="DocLink" use={g.uses.DocLink}>
+        <State label="a document's name, and a PDF opened at its page (sourceHref)" wide>
+          <DocLink href={sourceHref({ url: "https://example.com/tariff.pdf", page: 2 })} className="text-sm">
             {g.sample.claim.doc}
           </DocLink>
+        </State>
+        <State label="a web page opened at the quoted words, by text fragment (sourceHref)" wide>
+          <DocLink href={sourceHref({ url: "https://example.com/tariff/", fragment: { start: "דמי משמרת", end: "גבייה רבעונית 0.03%" } })} className="text-sm">
+            {g.sample.claim.doc}
+          </DocLink>
+        </State>
+      </Demo>
+      <Demo name="TariffDate" use={g.uses.TariffDate}>
+        <State label="one date for the whole; a date per part, the part the site reads; a printed version" wide>
+          <p className="text-sm text-muted-foreground flex flex-col gap-1">
+            <span><TariffDate dated={{ kind: "published", date: "2026-10-01" }} /></span>
+            <span><TariffDate dated={{ kind: "part", part: g.sample.tariffPart, date: "2024-04-02" }} /></span>
+            <span><TariffDate dated={{ kind: "version", version: "04/2026" }} /></span>
+            <span><TariffDate dated={{ kind: "published", date: "2025-11" }} /></span>
+          </p>
+        </State>
+        <State label="a misprinted date, and nothing printed: the day the site checked follows, unless the line already says when it was collected" wide>
+          <p className="text-sm text-muted-foreground flex flex-col gap-1">
+            <span><TariffDate dated={{ kind: "misprinted", part: g.sample.tariffPart, printed: "06/02/20217", checked: today }} /></span>
+            <span><TariffDate dated={{ kind: "none", checked: today }} /></span>
+            <span><TariffDate dated={{ kind: "none", checked: today }} checked={false} /></span>
+          </p>
+        </State>
+        <State label="under a heading that already names the price list (titled): the word is not said twice" wide>
+          <p className="text-sm text-muted-foreground flex flex-col gap-1">
+            <span><TariffDate dated={{ kind: "published", date: "2026-10-01" }} titled /></span>
+            <span><TariffDate dated={{ kind: "version", version: "04/2026" }} titled /></span>
+          </p>
+        </State>
+      </Demo>
+      <Demo name="When" use={g.uses.When}>
+        <State label="a day, isolated left to right, after a maqaf lead that keeps its maqaf" wide>
+          <p className="text-sm text-muted-foreground">
+            <When iso="2026-10-22" lead={g.sample.whenLead} />
+          </p>
+        </State>
+        <State label="a month a document prints alone, said in words: the lead's letter is written on the month" wide>
+          <p className="text-sm text-muted-foreground">
+            <When iso="2025-11" lead={g.sample.whenLead} />
+          </p>
         </State>
       </Demo>
       <Demo name="ClaimCheck, ClaimList" use={g.uses.ClaimCheck}>
@@ -1110,6 +1251,27 @@ function Lists({ today }: { today: string }) {
             <CostStack label="3,050" scale={7200} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade", inside: "300" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }, { id: "u", value: 150, className: "bg-chart-cost-fund" }, { id: "x", value: 2400, className: "bg-chart-tax", inside: "2,400" }]} />
           </div>
         </State>
+        <State label="every part at once, in its order: the remainder, trade, custody, the account's fee, currency conversion, the fund's fees, tax; seven hues validated together, every pair, none blue, violet, red, amber or green" wide>
+          <CostStack label="7,000" scale={7200} parts={[{ id: "r", value: 1000, className: "bg-chart-cost-other", inside: "1,000" }, { id: "t", value: 1000, className: "bg-chart-cost-trade", inside: "1,000" }, { id: "c", value: 1000, className: "bg-chart-cost-custody", inside: "1,000" }, { id: "f", value: 1000, className: "bg-chart-cost-fixed", inside: "1,000" }, { id: "e", value: 1000, className: "bg-chart-cost-fx", inside: "1,000" }, { id: "u", value: 1000, className: "bg-chart-cost-fund", inside: "1,000" }, { id: "x", value: 1000, className: "bg-chart-tax", inside: "1,000" }]} />
+        </State>
+        <State label="a case like the TA-125 pair bar: the remainder, the account's fees on each other, comes first among the account's parts, away from the fund's, and holds 2 ₪ in a sliver too thin to see, so its amount is written under the bar in its colour, as is any amount too narrow for its part; pointing at a part opens the box of the whole bar; the amounts written add up to the total beside it, 7,323, the account's parts to the account's own figure written elsewhere on the page, 1,050 (groups), and the rounding goes only to parts whose amounts are written" wide>
+          <div className="grid grid-cols-[minmax(0,1fr)_5rem] items-start gap-x-3 pt-24">
+            <CostStack
+              label="7,323"
+              total={7323}
+              groups={{ account: 1050 }}
+              scale={8300}
+              parts={[
+                { id: "r", value: 2.4, className: "bg-chart-cost-other", inside: true, name: g.sample.cost.remainder, about: g.sample.cost.remainderAbout, source: g.sample.cost.fromComputed, group: "account" },
+                { id: "c", value: 693.4, className: "bg-chart-cost-custody", inside: true, name: g.sample.cost.custody, source: g.sample.cost.fromList, group: "account" },
+                { id: "t", value: 354.3, className: "bg-chart-cost-trade", inside: true, name: g.sample.cost.trade, source: g.sample.cost.fromList, group: "account" },
+                { id: "u", value: 719.3, className: "bg-chart-cost-fund", inside: true, name: g.sample.cost.fund, source: g.sample.cost.fromComputed },
+                { id: "x", value: 5553.9, className: "bg-chart-tax", inside: true, name: g.sample.cost.tax, source: g.sample.cost.fromComputed },
+              ]}
+            />
+            <span className="text-end font-semibold tabular-nums">{fmt.nisWhole(7323)}</span>
+          </div>
+        </State>
         <State label="pointing or tapping a part shows its name, amount, share and where its price comes from; changing the prices makes every part and figure glide, and a part that falls to zero shrinks to nothing in its place" wide>
           <CostStackDemo />
         </State>
@@ -1181,6 +1343,9 @@ function Lists({ today }: { today: string }) {
         <State label="useFlip: rows slide to their new places">
           <FlipDemo />
         </State>
+        <State label="useSwapGlide: a switch that replaces what lies below it dims on the tap and fades in where the new content lands (D62)">
+          <SwapGlideDemo />
+        </State>
       </Demo>
       <Demo name="useYearZoom, ZoomBar, ZoomBrush, ChartTip" use={g.uses.YearZoom}>
         <State label="a longer range: pointing at or tapping a year reads it; on a computer a drag zooms, ctrl with the wheel too, and a double click returns" wide>
@@ -1215,6 +1380,19 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
+      <Demo name="PickList (states)" use={g.uses.PickList}>
+        <State label="states and cases: the second row turns long in the other state, and the list holds that state's height, so nothing below it moves when it comes; every state is measured from its cases, the one shown included, and a mark (a tag on one row at a time) counts on one row only" wide>
+          <PickList
+            label={p.name}
+            columns="minmax(0,1fr) auto"
+            states={[{ a: "short", b: "short" }, { a: "short", b: "long" }]}
+            rows={[
+              { key: "a", selected: true, onSelect: () => {}, caseKey: "short", cells: <><span>{p.a}</span><span className="tabular-nums">78,943</span></>, cases: [{ key: "short", cells: <><span>{p.a}</span><span>—</span></> }, { key: "short", marks: ["star"], cells: <><span className="flex flex-col"><span>{p.a}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }] },
+              { key: "b", selected: false, onSelect: () => {}, caseKey: "short", cells: <><span>{p.b}</span><span className="tabular-nums">76,322</span></>, cases: [{ key: "short", cells: <><span>{p.b}</span><span>—</span></> }, { key: "short", marks: ["star"], cells: <><span className="flex flex-col"><span>{p.b}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }, { key: "long", cells: <><span className="flex flex-col"><span>{p.b}</span><span className="text-xs">{p.c}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }] },
+            ]}
+          />
+        </State>
+      </Demo>
       <Demo name="LabelFilter" use={g.uses.LabelFilter}>
         <State label="three labels with counts, the first on" wide>
           <LabelFilter lead={p.figure} allLabel={p.link} value={labels[0]!.id} onChange={() => {}} options={labels.map((l, i) => ({ label: l, count: 5 - i }))} />
@@ -1226,6 +1404,9 @@ function Lists({ today }: { today: string }) {
         </State>
         <State label="still: drawn only, inside a control of its own (a TileChoice tile)" wide>
           <LabelRow labels={labels} still />
+        </State>
+        <State label="a bank deposit's kinds (lib/deposit-kind.ts): grey, with no family colour; a tap opens the meaning and the bank's table" wide>
+          <LabelRow labels={depositLabels(["campaign", "closed_system", "interest_during_term", "best_of"], new Set(["BANK-21"]), { url: "https://www.discountbank.co.il/", title: g.sample.depositTable })} />
         </State>
         <State label="every label, in its family's colour (allLabels): each icon says what its label is about, and labels about different things never share one" wide>
           <span data-testid="all-labels">
@@ -1288,6 +1469,25 @@ function LegendPickDemo() {
   );
 }
 
+function SwapGlideDemo() {
+  const [n, setN] = useState(2);
+  const swap = useSwapGlide<HTMLDivElement>(String(n));
+  return (
+    <div className="flex flex-col gap-2 items-start">
+      <Button variant="quiet" onClick={() => swap.begin(() => setN((x) => (x === 2 ? 5 : 2)))}>
+        switch
+      </Button>
+      <div ref={swap.ref} className="flex flex-col gap-1 w-40">
+        {Array.from({ length: n }, (_, i) => (
+          <span key={i} className="bg-card border border-border rounded-sm px-2 tabular-nums">
+            {i + 1}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function FlipDemo() {
   const [rows, setRows] = useState([1, 2, 3, 4, 5]);
   const ref = useFlip(rows.join());
@@ -1315,10 +1515,10 @@ function CostStackDemo() {
   const from: Record<string, string> = { list: c.fromList, group: c.fromGroup, yours: c.fromYours };
   const [trade, custody, fixed, both] = by[state]!;
   const parts: CostPart[] = [
+    { id: "r", value: both, className: "bg-chart-cost-other", inside: true, name: c.remainder, about: c.remainderAbout, source: c.fromComputed },
     { id: "t", value: trade, className: "bg-chart-cost-trade", inside: true, name: c.trade, source: from[state]! },
     { id: "c", value: custody, className: "bg-chart-cost-custody", inside: true, name: c.custody, source: from[state]! },
     { id: "f", value: fixed, className: "bg-chart-cost-fixed", inside: true, name: c.fixed, source: from[state]! },
-    { id: "r", value: both, className: "bg-chart-cost-other", inside: true, name: c.remainder, about: c.remainderAbout, source: c.fromComputed },
   ];
   return (
     <div className="flex flex-col gap-3">

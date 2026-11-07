@@ -2,7 +2,7 @@
   "id": "mnyvt-schyr",
   "he": "מניות סחיר",
   "en": null,
-  "meaning": "מסלול שמשקיע ישירות במניות שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+  "meaning": "מסלול שרוב הכסף בו חשוף למניות בישראל ובחוץ לארץ, רק דרך נכסים שנסחרים בבורסה; את השאר מחזיקים במזומן ובפיקדונות קצרים",
   "where": [
     "app"
   ],
@@ -11,13 +11,13 @@
   "rule_ids": [
     "CAT-10",
     "CAT-17",
-    "CAT-23"
+    "CAT-48"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-    "publisher": "see title",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=8",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 8, \"מסלול מניות סחיר\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
     "strength": "primary",
-    "checked": "2026-10-22"
+    "checked": "2026-11-07"
   }
 }

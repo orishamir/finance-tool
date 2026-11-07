@@ -1,0 +1,87 @@
+{
+  "id": "CORP-27",
+  "title": "Structured bonds and deposit certificates: what they are in law",
+  "title_he": "איגרות חוב מובנות ותעודות פיקדון: מה הן לפי החוק",
+  "text_he": "הבורסה בתל אביב מונה איגרות חוב מובנות כסוג נפרד של ניירות ערך, ובשנת 2025 גויסו בהן כ-27 מיליארד ש\"ח. לפי חוק ניירות ערך, תעודה שמקנה זכות לתבוע כסף מהמנפיק בהתקיים תנאי מסוים היא תעודת התחייבות, כלומר איגרת חוב. תעודה שעוקבת אחרי מדד ניירות ערך היא היום קרן, ותעודה על מטבעות נשארת איגרת חוב רק אם מגבים אותה פיקדונות בנקאיים בלבד ופודים אותה רק במועדים קבועים.",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "protection",
+    "conditional-return"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37",
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, Securities Authority's consolidated copy",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "s.35א p.37",
+      "locator_he": "סעיף 35א עמוד 37",
+      "page": 37,
+      "quote": "בתאריך קבוע או בהתקיים תנאי מסויים",
+      "checked": "2026-11-07",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=3",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "reg. 2",
+      "locator_he": "תקנה 2",
+      "quote": "פדיון התעודות יהיה רק במועדי תחלופת הנכסים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Structure.pdf#page=6",
+      "title": "עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, רשות ניירות ערך, 4.5.2026",
+      "title_he": "עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, רשות ניירות ערך, 4.5.2026",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "quote": "תעודות פיקדון מסוימות",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/staf_opinion_1811242.pdf#page=10",
+      "title": "עמדות סגל, רשות ניירות ערך, 18.11.2024",
+      "title_he": "עמדות סגל, רשות ניירות ערך, 18.11.2024",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.10",
+      "locator_he": "עמוד 10",
+      "page": 10,
+      "quote": "להימנע מפעולה העשויה להוות הצעה של הסדר השקעה משותפת",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=7",
+      "title": "TASE, periodic report for 2025",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "quote": "איגרות חוב מובנות",
+      "checked": "2026-11-07"
+    }
+  ]
+}

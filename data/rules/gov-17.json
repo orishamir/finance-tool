@@ -30,7 +30,7 @@
         "GOV-17"
       ],
       "state": "sourced",
-      "notes": "Share of 2025 government-bond trading turnover on TASE (p. 27); MTS 4.4% (primary market makers only), OTC 12.6%. The trading unit, hours and settlement cycle on TASE were not readable (GOV open question 7)."
+      "notes": "Share of 2025 government-bond trading turnover on TASE (p. 27); MTS 4.4% (primary market makers only), OTC 12.6%. The trading unit, minimum order and next-business-day settlement on TASE are GOV-24."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",

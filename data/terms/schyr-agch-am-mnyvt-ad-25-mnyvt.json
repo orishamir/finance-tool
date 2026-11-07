@@ -1,0 +1,23 @@
+{
+  "id": "schyr-agch-am-mnyvt-ad-25-mnyvt",
+  "he": "סחיר - אג\"ח עם מניות (עד 25% מניות)",
+  "en": null,
+  "meaning": "מסלול שרוב הכסף בו באיגרות חוב וחלק מוגבל במניות, הכול דרך נכסים סחירים; רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון",
+  "where": [
+    "app",
+    "gemel-net"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-25",
+    "CAT-48"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=7",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 7, \"מסלול סחיר - אג\"ח עם מניות (עד 25% מניות)\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

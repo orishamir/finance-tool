@@ -1,0 +1,18 @@
+# Structure review: main...HEAD
+
+130 files changed, 55 of them code or docs (more than 30: add an independent reviewer that sees the diff and the kit, not the builder's report).
+
+## A bare "מס" in new words (copy.md 1, the exact word: income tax or capital gains tax) (3)
+- site/app/content/guide/bank-deposit.tsx:86 — אף מקור לא אומר מה קורה במס כששבירה מוחקת גם חלק מהסכום שהופקד. ידוע רק שהבנק מנכה מס מהריבית שהוא משלם בפועל.
+- site/app/copy.ts:2946 — banks: { title: "הפיקדון הרגיל לשנה בכל בנק", plain: "רגיל: ריבית קבועה, בלי הצמדה ובלי תחנות יציאה. בלי מבצע,
+- site/app/copy.ts:2949 — about: { rangeLo: "הריבית הנמוכה ביותר מבין הפיקדונות הרגילים לשנה שנאספו, אחד מכל בנק", rangeHi: "הריבית הגבו
+
+## New component outside the kit (one-off, or promote?) (2)
+- site/app/content/guide/bank-deposit.tsx:148 — BankBreakLine
+- site/app/content/guide/bank-deposit.tsx:172 — BreakLine
+
+## New kit piece (2)
+- site/app/components/kit/index.ts — DoubtNote
+- site/app/components/kit/index.ts — PrintedText
+
+Judge each item: kept (one-off, say why), sent back (the kit has it) or promoted (becomes a kit piece with a gallery entry and, if it can be named, a guard). Compare the builder's screenshots with /kit.

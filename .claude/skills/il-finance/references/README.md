@@ -181,6 +181,7 @@ Releases 2 to 5:
 | `bank-product-names.md` | BPN | domain | Per-bank deposit and savings-plan product names (R4, 3.10) |
 | `savings-policies-and-executive-insurance.md` | INS | domain | Tier 2 |
 | `corporate-bonds.md` | CORP | domain | Tier 2 |
+| `single-shares.md` | SHR | domain | What a single share is and what holding one means for an individual (2026-11-07) |
 | `managed-and-robo-portfolios.md` | MGD | domain | Tier 2 |
 | `fx-and-structured-deposits.md` | FXD | domain | Tier 2 |
 | `reits-and-gold-funds.md` | RG | domain | Tier 2 |

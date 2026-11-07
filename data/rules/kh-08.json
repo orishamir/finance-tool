@@ -11,22 +11,33 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5768%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשנ\"ו-1996, קובץ התקנות 5768 (27.6.1996), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשנ\"ו-1996, קובץ התקנות 5768 (27.6.1996), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.8, reg. 19א(א)",
-      "locator_he": "עמוד 8, תקנה 19א(א)",
-      "page": 8,
+      "locator": "file p.3 (gazette p.1349), reg. 4 (adding reg. 19א)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1349), תקנה 4 (הוספת תקנה 19א)",
       "quote": "אלא אם כן הוא יחיד שיש לו הכנסות מעסק או ממשלח יד",
-      "checked": "2026-10-25"
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5953%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשנ\"ט-1999, קובץ התקנות 5953 (22.2.1999), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשנ\"ט-1999, קובץ התקנות 5953 (22.2.1999), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.367), reg. 6(2) (reg. 19א marked (א))",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 367), תקנה 6(2) (האמור בתקנה 19א מסומן (א))",
+      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

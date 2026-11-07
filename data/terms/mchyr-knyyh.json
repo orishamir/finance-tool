@@ -1,0 +1,25 @@
+{
+  "id": "mchyr-knyyh",
+  "he": "מחיר קנייה",
+  "en": null,
+  "meaning": "המחיר שבו קונים יחידה בקרן נאמנות פתוחה; מנהל הקרן מחשב אותו לפי השווי הנקי של נכסי הקרן, מחולק במספר היחידות.",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "מחיר היחידה"
+  ],
+  "rule_ids": [
+    "MF-09"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=35",
+    "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 42(א)(2) ו־43(א), עמוד 35",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

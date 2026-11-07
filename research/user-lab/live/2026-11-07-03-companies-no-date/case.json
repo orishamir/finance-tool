@@ -1,0 +1,70 @@
+{
+  "id": "live-03-companies-no-date",
+  "date": "2026-11-07",
+  "page": "/companies (by company; the list of banks and other investment houses)",
+  "device": "pc",
+  "viewport_px": [
+    1440,
+    900
+  ],
+  "live_commit": "e0bddd79",
+  "shots": [
+    "pc/pc-1.png",
+    "pc/pc-2.png",
+    "pc/pc-3.png",
+    "pc/pc-4.png"
+  ],
+  "phone_shots": [
+    "phone/phone-1.png",
+    "phone/phone-2.png",
+    "phone/phone-3.png",
+    "phone/phone-4.png",
+    "phone/phone-5.png",
+    "phone/phone-6.png"
+  ],
+  "shots_note": "Captured with tools/shots.mjs from the live site at 1440x900 and 390x844 the moment he flagged it, before any change; he sent no screenshot. The rows he named are on pc-2.png and phone-4.png.",
+  "his_words": [
+    "btw mizrahi tfahot, psagot, bank jerusalem says ללא תאריך פרסום in https://orishamir.github.io/finance-tool/companies"
+  ],
+  "keys": [
+    {
+      "id": "missing-date-warning",
+      "problem": "A few rows of the list say, in a warning colour, only that something is missing (no date), where the other rows give a date; the line does not say what is known instead, so the reader cannot tell whether to distrust that row's figures, or how old they are.",
+      "where": "the small line under the name of three rows in the list of banks and other investment houses, where the other rows give a date",
+      "kind": "general"
+    }
+  ],
+  "goal_given_to_reviewer": "You want to open an account to buy funds on the stock exchange, and you are looking at which bank or investment house to use.",
+  "split": "live (held out, never tuned on before scoring)",
+  "key_note": "His words name the rows and quote the label, without a reason. The key gives the reason the brief of 2026-11-07 gives (the label is true, but reads as a fault and teaches nothing); the documents behind it do print something: a date on each part, or nothing at all.",
+  "reviewer_before_asking": {
+    "how": "panel shots mode, the default reviewer instructions (versions/README.md), goal only, personas self-directed-investor, careful-retiree-pc and student-small-amounts, 3 runs each, on the four PC screens; graded by tools/grade-flag.mjs (two blind graders, a third on disagreement)",
+    "public_run": "runs/live-03",
+    "by_key": {
+      "missing-date-warning": {
+        "caught": "9 of 9 sessions",
+        "in_first_10": 9,
+        "ranks": {
+          "careful-retiree-pc": [
+            3,
+            3,
+            4
+          ],
+          "self-directed-investor": [
+            3,
+            4,
+            4
+          ],
+          "student-small-amounts": [
+            5,
+            5,
+            4
+          ]
+        },
+        "grader_agreement": "9 of 9"
+      }
+    },
+    "caught": "9 of 9 sessions, ranks 3 to 5: a catch",
+    "what_they_said": "the orange label beside the three names 'looks like a warning with no explanation'; 'didn't know whether it's a warning against those banks'; 'some banks have no published tariff date, with no explanation of what that means'. Ahead of it the sessions mostly put that the list gives no fee to compare, only a price list's date."
+  }
+}

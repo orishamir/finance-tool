@@ -1,0 +1,104 @@
+{
+  "task": "not-covered",
+  "persona": "student-small-amounts",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T17:00:57.614Z",
+  "structured": {
+    "answer": "The site says it doesn't calculate a long list of things yet: gold (ETC, gold ETFs), corporate and Israel bonds, insurance-savings products (ביטוח מנהלים, קופת ביטוח, קרן י', ביטוח משתתף ברווחים), foreign-currency and dollar-linked deposits, structured deposits and products, REITs, pension annuity things and a digital currency wallet. I didn't see plain S&P/Nasdaq index funds on the list, but I stopped scrolling partway through.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Cards after the first few screens",
+        "why": "Endless grid of cards with the same layout. I couldn't tell how many were left, so I stopped around screen 7"
+      },
+      {
+        "where": "'מצב הכיסוי' blocks with crossed-out 'נסגר ב' lines",
+        "why": "Couldn't tell whether crossed out means it's fixed or still missing"
+      },
+      {
+        "where": "Red banner at the top",
+        "why": "Unclear whether 'עד שייסגרו' means soon or never"
+      }
+    ],
+    "used": [
+      "Page title 'מה האתר עוד לא מכסה' and its subtitle",
+      "Red banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה... האתר לא מחשב אותם'",
+      "Card titles plus the red 'לא מחושב' tags, screens 1–7"
+    ],
+    "skimmed": [
+      "'מה ידוע' explanation sentences",
+      "'נקרא גם' lines",
+      "'כשייסגר: יופיע במדריך...' lines"
+    ],
+    "skipped": [
+      "Green law/source links and dates",
+      "'מקור ראשי' and 'חוקים וכללים · N' chips",
+      "'מצב הכיסוי' details",
+      "Screenshots 8–10 (stopped scrolling)",
+      "The brokerage guide screenshots"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "נע\"מ / ניירות ערך מסחריים",
+      "היוון קצבה",
+      "מנוטרלת מט\"ח",
+      "צמוד דולר",
+      "קרן י'",
+      "MF-28, TX2-01, TXA-28",
+      "חסום: שאלה פתוחה",
+      "לפי החברה (orange tag)",
+      "מקור ראשי (עותק)"
+    ],
+    "not_found": [
+      "A short summary list of what's not covered",
+      "Any mention of S&P 500 / Nasdaq index funds or ETFs on this page",
+      "A way to tell if this matters for someone with small monthly amounts",
+      "A count of how many items there are in total"
+    ],
+    "findings": [
+      {
+        "what": "Very long grid of near-identical cards, so you can't get the answer at a glance on a phone",
+        "where": "Whole page, screens 1–7+"
+      },
+      {
+        "what": "No summary or count at the top of what's missing",
+        "where": "Under the page title"
+      },
+      {
+        "what": "Dense legal citations and law names in every card",
+        "where": "Green links in each card"
+      },
+      {
+        "what": "Crossed-out 'נסגר ב' lines and codes like TXA-28 are confusing",
+        "where": "'מצב הכיסוי' blocks"
+      },
+      {
+        "what": "Doesn't say whether the common products (index funds/ETFs) ARE covered, so I have to guess",
+        "where": "Page overall"
+      },
+      {
+        "what": "Lots of jargon with no plain explanation for beginners",
+        "where": "Card titles like ETC, נע\"מ, היוון קצבה"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39621,
+    "turns": 9,
+    "usd": 0.1754904,
+    "input": 8,
+    "cacheWrite": 13404,
+    "cacheRead": 32332,
+    "output": 3088,
+    "model": "claude-opus-5-5"
+  }
+}

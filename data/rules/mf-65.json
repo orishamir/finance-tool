@@ -77,16 +77,6 @@
       "locator_he": "עמוד 27",
       "page": 27,
       "checked": "2026-11-01"
-    },
-    {
-      "url": "https://www.funder.co.il/article/185866",
-      "title": "Article on the index editor's indices, Funder, 14.8.2025",
-      "publisher": "Funder",
-      "publisher_he": "פאנדר",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-11-01",
-      "qualifier": "(the company's text)"
     }
   ]
 }

@@ -1,0 +1,177 @@
+{
+  "id": "one-zero-hisachon-hodshi-12m",
+  "bank": "one-zero",
+  "names": {
+    "447": [
+      "חיסכון חודשי (לתקופה של שנה)",
+      "חיסכון חודשי"
+    ],
+    "app": [],
+    "ad": [
+      "פיקדון חודשי",
+      "פיקדון עם הפקדות חודשיות לתקופה של 12 חודשים עם נק' יציאה חודשית"
+    ],
+    "abbrev": []
+  },
+  "type_447": "חיסכון חודשי (לתקופה של שנה)",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf",
+      "title": "ONE ZERO, 'פיקדון עם הפקדות חודשיות לתקופה של 12 חודשים עם נק' יציאה חודשית', 'תנאי הפיקדון', כותרת (עמ' 1)",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The terms' title: 'פיקדון עם הפקדות חודשיות לתקופה של 12 חודשים עם נק' יציאה חודשית'; recorded as 12 months. The table prints 'חיסכון חודשי (לתקופה של שנה)'; the deposits page (https://www.onezerobank.com/special/5612, extract library 04dc49f603cd5b82) 'פיקדון חודשי ... לתקופה של שנה'. s.4.1: 'פיקדון זה מיועד להפקדות חודשיות (חודש גרגוריאני) שירדו מחשבון העובר ושב באמצעות הוראת קבע'. Both read 2026-11-07 in the founder's Chrome with pdf.js (the host answers scripts with 403, so no copy of either file was kept): the table (one page, file created 28.10.2026, undated in its text; extract library 28d76b01099bce80; its earlier version 'ONE ZERO - Savings Feb2026.pdf', created 12.02.2026, printed 3.5% at 'Prime - 2%') and the plan's terms, linked as 'חיסכון חודשי' from the uniform-contracts page https://www.onezerobank.com/company/information/114 (3 pages, file created 19.09.2023, footer 'v11', extract library 185c8c9fec162424)."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -2.25,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון חודשי (לתקופה של שנה)', 'סוג הריבית'",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'ריבית משתנה' with '(Prime - 2.25%)'; the deposits page: 'P-2.25%, מתואמת 2.50%'. The terms s.3.1-3.2: the rate is prime less a fixed spread given in the deposit's details, and changes whenever prime changes; s.3.4: simple interest ('בשיטת קו ישר ... ללא ריבית דה ריבית'), paid at maturity. Prime is 'כהגדרתה בתנאים הכלליים'."
+  },
+  "rate_offered": {
+    "value": 2.5,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון חודשי (לתקופה של שנה)', 'שיעור הריבית הממוצעת (נומינלי שנתי)'",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed '2.50%' in both 'שיעור הריבית הממוצעת (נומינלי שנתי)' and 'שיעור ריבית מתואמת'; the deposits page: 'פיקדון חודשי 2.5% בריבית משתנה', 'ריבית משתנה של 2.5% עם תחנת יציאה חודשית'. The table prints an average rate, not an offered rate, under its rate column. Both read 2026-11-07 in the founder's Chrome with pdf.js (the host answers scripts with 403, so no copy of either file was kept): the table (one page, file created 28.10.2026, undated in its text; extract library 28d76b01099bce80; its earlier version 'ONE ZERO - Savings Feb2026.pdf', created 12.02.2026, printed 3.5% at 'Prime - 2%') and the plan's terms, linked as 'חיסכון חודשי' from the uniform-contracts page https://www.onezerobank.com/company/information/114 (3 pages, file created 19.09.2023, footer 'v11', extract library 185c8c9fec162424)."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the product page's 'מגזר – שקלי'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf",
+        "title": "ONE ZERO, 'פיקדון עם הפקדות חודשיות לתקופה של 12 חודשים עם נק' יציאה חודשית', 'תנאי הפיקדון', סעיף 4.4 (עמ' 1)",
+        "publisher": "One Zero Digital Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The terms s.4.4: 'סכום ההפקדה לא יפחת מ-100 ש\"ח ולא יעלה על 30,000 ש\"ח'. The table prints 'מינימום - 100 ₪' and 'מקסימום - 1 מיליון ₪' under 'טווח סכום להפקדה'."
+    },
+    "max": {
+      "value": 30000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf",
+        "title": "ONE ZERO, 'פיקדון עם הפקדות חודשיות לתקופה של 12 חודשים עם נק' יציאה חודשית', 'תנאי הפיקדון', סעיף 4.4 (עמ' 1)",
+        "publisher": "One Zero Digital Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The terms s.4.4: 'ולא יעלה על 30,000 ש\"ח' for each deposit ('סכום ההפקדה'). The table prints 'מקסימום - 1 מיליון ₪' for the same plan; the table does not say whether that bounds each deposit or the balance. Recorded is the terms' figure, the binding document for the plan (s.1.2: on a conflict with the general terms, these terms prevail); the terms are dated 2023 (v11) and the table 2026, so the conflict is in doubt_he."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת החיסכון: קיימת עם קנס שבירה (הלקוח מקבל 10% מהריבית הצבורה עד למועד השבירה בפועל)' (table column). The terms s.8.1: 'בכפוף לשיקול דעתו הבלעדי והמוחלט של הבנק, המפקיד יהיה רשאי לבקש לבצע שבירה חלקית או מלאה, ביום עסקים שבו לא נקבעה או לא קיימת תחנת יציאה ... הריבית החלקית שיקבל המפקיד בקשר עם השבירה, תעמוד על 10% מסך הריבית שנצברה עד לאותו מועד על סכום הכסף שנמשך ... ללא תלות במועד ביצוע השבירה'; s.8.3: a break closes the deposit.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 1
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "תחנת יציאה כל חודש לפי מועד הפתיחה, למשיכת חלק מהכסף או כולו, בהוראה עד סוף יום העסקים שלפני התחנה. ההפקדות בהוראת קבע מחשבון העובר ושב בוואן זירו, ולכן התוכנית ללקוחות הבנק. אפשר להקפיא את ההפקדות בכל עת.",
+  "doubt_he": "תנאי התוכנית (2023) מגבילים כל הפקדה ל-30,000 ₪, וטבלת התנאים של הבנק (2026) מציינת עד מיליון ₪; נרשם הסכום שבתנאים.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+    "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות')",
+    "publisher": "One Zero Digital Bank Ltd.",
+    "strength": "institution"
+  }
+}

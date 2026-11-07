@@ -194,7 +194,7 @@ export function BoiLine({ bundle }: { bundle: CompareBundle }) {
     <p className="text-sm text-muted-foreground max-w-measure flex flex-wrap items-center gap-x-1.5">
       <span>{copy.boiBefore}</span>
       {bundle.cashLink && (
-        <a href={bundle.cashLink.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-9">
+        <a href={bundle.cashLink.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target">
           {copy.boiLink}
           <IconExternal size={16} />
         </a>
@@ -213,7 +213,7 @@ function Judged({ worth, below, yes, threshold, label }: { worth: boolean; below
       {!worth && (
         <>
           {" "}
-          (<IdRef id="P-03" />)
+          <IdRef id="P-03" />
         </>
       )}
       <span className="text-sm text-muted-foreground whitespace-nowrap">

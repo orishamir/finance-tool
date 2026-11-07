@@ -1,0 +1,141 @@
+
+== /goal/compare/ at 390 px: 0 sliders, 0 selects; page wider than the screen: false
+    CUT chart text "1" (-4..4 in 0..309)
+    CUT chart text "2" (-4..4 in 0..309)
+    CUT chart text "3" (-4..4 in 0..309)
+    CUT chart text "6" (-4..4 in 0..309)
+    CUT chart text "1" (-4..4 in 0..309)
+    CUT chart text "2" (-4..4 in 0..309)
+    CUT chart text "3" (-4..4 in 0..309)
+    CUT chart text "6" (-4..4 in 0..309)
+    CUT chart text "1" (-4..4 in 0..309)
+    CUT chart text "2" (-4..4 in 0..309)
+    CUT chart text "3" (-4..4 in 0..309)
+    CUT chart text "6" (-4..4 in 0..309)
+    CUT chart text "1" (-4..4 in 0..309)
+    CUT chart text "2" (-4..4 in 0..309)
+    CUT chart text "3" (-4..4 in 0..309)
+    CUT chart text "6" (-4..4 in 0..309)
+    CUT chart text "1" (-4..4 in 0..309)
+    CUT chart text "2" (-4..4 in 0..309)
+    CUT chart text "3" (-4..4 in 0..309)
+    CUT chart text "6" (-4..4 in 0..309)
+    CUT chart text "1" (-4..4 in 0..309)
+    CUT chart text "2" (-4..4 in 0..309)
+    CUT chart text "3" (-4..4 in 0..309)
+    CUT chart text "6" (-4..4 in 0..309)
+    CUT chart text "1" (-4..4 in 0..309)
+    CUT chart text "2" (-4..4 in 0..309)
+    CUT chart text "3" (-4..4 in 0..309)
+    CUT chart text "6" (-4..4 in 0..309)
+
+== /goal/compare/ at 1280 px: 2 sliders, 0 selects; page wider than the screen: false
+  slider 1 max: page height -48, 3 moved (3 outside a list's rows) (first: y 48 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 4 blocks new
+  slider 1 min: page height -30, 57 moved (57 outside a list's rows) (first: y 528 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 41 blocks new
+    h 0 w -2 y 0 <p text-xs text-muted-foreground flex flex-wrap items-center ga> 640x44 "להחליף לבחירת מוצר אחר"
+    h 0 w 0 y 890 <span size-7 shrink-0 rounded-full inline-flex items-center justif> 28x28 "1"
+    h 0 w 0 y 890 <a text-link hover:underline> 132x21 "חשבון ניירות ערך"
+    h 0 w 0 y 890 <svg lucide lucide-chevron-left> 20x20 ""
+    h 0 w 0 y 890 <svg lucide lucide-calculator> 14x14 ""
+    h 0 w -2 y 890 <span text-sm text-muted-foreground> 640x22 "נשאר לכם במועד המטרה, בכסף של היום"
+    h 0 w 0 y 958 <button text-muted-foreground hover:underline> 72x20 "תשואה בשנה"
+    h 0 w 0 y 958 <bdi whitespace-nowrap> 21x16 "5%"
+    h 0 w 0 y 958 <button text-muted-foreground hover:underline> 84x20 "אינפלציה בשנה"
+    h 0 w 0 y 958 <bdi whitespace-nowrap> 30x16 "‎−1%"
+    h 0 w 0 y 958 <span text-muted-foreground> 94x20 "העלות בתוך הקרן"
+    h 0 w 0 y 958 <bdi whitespace-nowrap> 42x16 "0.57%"
+  slider 1 middle: page height +30, 88 moved (88 outside a list's rows) (first: y 430 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 30 blocks new
+    h 0 w 2 y 0 <p text-xs text-muted-foreground flex flex-wrap items-center ga> 642x44 "להחליף לבחירת מוצר אחר"
+    h 0 w 0 y 924 <span size-7 shrink-0 rounded-full inline-flex items-center justif> 28x28 "2"
+    h 0 w 0 y 924 <a text-link hover:underline> 150x21 "קופת גמל להשקעה"
+    h 0 w 0 y 924 <svg lucide lucide-chevron-left> 20x20 ""
+    h 0 w 0 y 924 <svg lucide lucide-calculator> 14x14 ""
+    h 0 w 2 y 924 <span text-sm text-muted-foreground> 642x22 "נשאר לכם במועד המטרה, בכסף של היום"
+    h 0 w 0 y 924 <svg lucide lucide-circle-alert lucide-alert-circle> 14x14 ""
+    h 0 w 0 y 958 <button text-muted-foreground hover:underline> 72x20 "תשואה בשנה"
+    h 0 w 0 y 958 <bdi whitespace-nowrap> 21x16 "5%"
+    h 0 w 0 y 958 <button text-muted-foreground hover:underline> 84x20 "אינפלציה בשנה"
+    h 0 w 0 y 958 <bdi whitespace-nowrap> 30x16 "‎−1%"
+    h 0 w 0 y 958 <span text-muted-foreground> 98x20 "דמי ניהול מחיסכון"
+  slider 1 quarter: page height +49, 136 moved (136 outside a list's rows) (first: y -3 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 29 blocks new
+    h 0 w -2 y 0 <p text-xs text-muted-foreground flex flex-wrap items-center ga> 640x44 "להחליף לבחירת מוצר אחר"
+    h 0 w -2 y 0 <h3 text-lg font-semibold flex-1 min-w-0> 552x29 "קופת גמל להשקעה"
+    h 46 w -2 y 0 <p text-sm text-muted-foreground> 640x68 "ההבדל הגדול ביותר מול האפשרות שמעליה: מס (בהחזקה וביציאה), 12,603 ₪ לע"
+    h 0 w -2 y 46 <ul flex flex-wrap gap-x-4 gap-y-1 text-xs> 640x20 "תשואה בשנה 5% אינפלציה בשנה ‎−1% דמי ניהול מחיסכון 0.8%"
+    h 0 w -2 y 46 <p text-xs text-muted-foreground flex flex-wrap items-center ga> 640x44 "להחליף לבחירת מוצר אחר"
+    h 0 w 0 y 46 <a text-sm text-link hover:underline self-start min-h-target in> 158x44 "מה העמלות כאן עולות לכם"
+    h 0 w 0 y 46 <button inline-flex items-center justify-center gap-2 transition-col> 76x44 "בחרתי בזה"
+    h 0 w 0 y -33 <svg block select-none touch-pan-y> 411x320 "⁦₪ אלף 100⁩⁦₪ אלף 200⁩⁦₪ אלף 50⁩⁦₪ אלף 150⁩1136היום102468"
+    h 0 w 0 y -33 <svg lucide lucide-pencil> 14x14 ""
+    h 0 w 0 y -33 <svg lucide lucide-rotate-ccw> 16x16 ""
+  slider 2 max: page height -429, 125 moved (125 outside a list's rows) (first: y 443 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 33 blocks new
+    h 0 w 0 y -22 <svg lucide lucide-calculator> 14x14 ""
+    h -109 w 0 y -22 <li bg-card border border-border rounded-lg p-4 md:p-6 flex flex> 692x341 "3 פיקדון 1,587,715 ₪ מחושב נשאר לכם במועד המטרה, בכסף של היום ההבדל הג"
+    h 0 w 0 y -131 <span text-muted-foreground> 194x20 "ריבית הבנק, בתוקף מ־25.10.2026"
+    h 0 w 0 y -131 <bdi whitespace-nowrap> 33x16 "1.5%"
+    h 0 w 0 y -131 <button text-muted-foreground hover:underline> 84x20 "אינפלציה בשנה"
+    h 0 w 0 y -131 <bdi whitespace-nowrap> 30x16 "‎−1%"
+    h 0 w 0 y -131 <a text-sm text-link hover:underline self-start min-h-target in> 158x44 "מה העמלות כאן עולות לכם"
+    h 0 w 0 y -131 <button inline-flex items-center justify-center gap-2 transition-col> 76x44 "בחרתי בזה"
+    h 0 w 0 y -131 <li bg-card border border-border rounded-lg p-4 md:p-6 flex flex> 692x285 "5 חשבון עובר ושב 1,450,991 ₪ מחושב נשאר לכם במועד המטרה, בכסף של היום "
+    h 0 w 0 y 450 <bdi > 100x24 "חשבון ניירות ערך"
+    h 0 w 0 y 407 <span w-3.5 h-[3px] rounded-sm bg-chart-option-2> 14x3 ""
+    h 0 w 0 y 407 <bdi > 63x24 "קרן כספית"
+  slider 2 min: page height +967, 20 moved (20 outside a list's rows) (first: y -721 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 111 blocks new
+    h 0 w 0 y 414 <span size-7 shrink-0 rounded-full inline-flex items-center justif> 28x28 "7"
+    h 0 w 0 y 414 <a text-link hover:underline> 101x21 "תכנית חיסכון"
+    h 0 w 0 y 414 <svg lucide lucide-chevron-left> 20x20 ""
+    h 0 w 0 y 414 <svg lucide lucide-calculator> 14x14 ""
+    h 0 w 0 y 414 <span text-sm text-muted-foreground> 642x22 "נשאר לכם במועד המטרה, בכסף של היום"
+    h 0 w -9 y 414 <bdi whitespace-nowrap> 56x17 "1,477 ₪"
+    h 0 w -9 y 414 <bdi whitespace-nowrap> 56x17 "5,274 ₪"
+    h 0 w 0 y 414 <span text-muted-foreground> 194x20 "ריבית הבנק, בתוקף מ־25.10.2026"
+    h 0 w 0 y 414 <bdi whitespace-nowrap> 33x16 "1.5%"
+    h 0 w 0 y 414 <button text-muted-foreground hover:underline> 84x20 "אינפלציה בשנה"
+    h 0 w 0 y 414 <bdi whitespace-nowrap> 30x16 "‎−1%"
+    h 0 w 0 y 414 <a text-sm text-link hover:underline self-start min-h-target in> 158x44 "מה העמלות כאן עולות לכם"
+  slider 2 middle: page height -888, 20 moved (20 outside a list's rows) (first: y 697 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 29 blocks new
+    h 0 w 0 y -414 <span size-7 shrink-0 rounded-full inline-flex items-center justif> 28x28 "4"
+    h 0 w 0 y -414 <a text-link hover:underline> 101x21 "תכנית חיסכון"
+    h 0 w 0 y -414 <svg lucide lucide-chevron-left> 20x20 ""
+    h 0 w 0 y -414 <svg lucide lucide-calculator> 14x14 ""
+    h 0 w 0 y -414 <span text-sm text-muted-foreground> 642x22 "נשאר לכם במועד המטרה, בכסף של היום"
+    h 0 w 9 y -414 <bdi whitespace-nowrap> 65x17 "10,725 ₪"
+    h 0 w 9 y -414 <bdi whitespace-nowrap> 65x17 "12,960 ₪"
+    h 0 w 0 y -414 <span text-muted-foreground> 194x20 "ריבית הבנק, בתוקף מ־25.10.2026"
+    h 0 w 0 y -414 <bdi whitespace-nowrap> 33x16 "1.5%"
+    h 0 w 0 y -414 <button text-muted-foreground hover:underline> 84x20 "אינפלציה בשנה"
+    h 0 w 0 y -414 <bdi whitespace-nowrap> 30x16 "‎−1%"
+    h 0 w 0 y -414 <a text-sm text-link hover:underline self-start min-h-target in> 158x44 "מה העמלות כאן עולות לכם"
+  slider 2 quarter: page height +195, 139 moved (139 outside a list's rows) (first: y -373 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש בבדיקה העמוד ה"), 72 blocks new
+    h 0 w 0 y 22 <span text-sm text-muted-foreground> 642x22 "נשאר לכם במועד המטרה, בכסף של היום"
+    h 0 w 0 y 22 <span size-7 shrink-0 rounded-full inline-flex items-center justif> 28x28 "6"
+    h 0 w 0 y 22 <a text-link hover:underline> 124x21 "חשבון עובר ושב"
+    h 0 w 0 y 22 <svg lucide lucide-chevron-left> 20x20 ""
+    h 0 w 0 y -337 <bdi > 63x24 "קרן כספית"
+    h 0 w 0 y -380 <svg > 14x4 ""
+    h 0 w 0 y -380 <bdi > 94x24 "חשבון עובר ושב"
+    h 0 w 0 y -380 <bdi whitespace-nowrap> 84x20 "404,631 ₪"
+    h 0 w 0 y -380 <span > 74x22 "הצגה כטבלה"
+    h 0 w 0 y -380 <svg lucide lucide-chevron-down text-muted-foreground shrink-0 tr> 20x20 ""
+    h 0 w 0 y -380 <span text-muted-foreground> 39x24 "תקופה"
+    h 0 w 0 y -380 <bdi font-medium text-entered> 52x24 "11 שנים"
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.blur: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.field-box-compact input:visible').first()[22m
+[2m    - locator resolved to <input dir="ltr" id="_r_3_" type="text" value="500000" inputmode="numeric" class="field-input text-entered"/>[22m
+
+    at /home/ori/dev/finance-tool/.claude/worktrees/agent-aadc4bdfe7cee092e/research/audit/tools/box-check.mjs:288:30 {
+  log: [
+    "  - waiting for locator('.field-box-compact input:visible').first()",
+    '    - locator resolved to <input dir="ltr" id="_r_3_" type="text" value="500000" inputmode="numeric" class="field-input text-entered"/>'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.1
+exit 1

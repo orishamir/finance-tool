@@ -1,0 +1,134 @@
+{
+  "id": "hapoalim-hoshvim-kadima-tzamud",
+  "bank": "hapoalim",
+  "names": {
+    "447": [
+      "חושבים קדימה צמוד"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "חושבים קדימה צמוד",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 180,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'חושבים קדימה צמוד'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-07",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The 447 row prints rates by withdrawal date from 120 to 180 months; the plan's own term is not printed. Recorded at the last date in the ladder, 180 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 0.6,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'חושבים קדימה צמוד', שיעור הריבית",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-07",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'לאחר 120 חודשים - 0.2% / לאחר 132 חודשים - 0.28% / לאחר 144 חודשים - 0.36% / לאחר 156 חודשים - 0.44% / לאחר 168 חודשים - 0.52% / לאחר 180 חודשים - 0.6%' (rate type 'קבועה', linkage 'צמוד למדד המחירים לצרכן'), a rate above the linkage; the rate at the recorded 180 months is 0.6%. The plan's form (library c2ed00e08fb09882, s.1.4-1.6) sets the rates by withdrawal date (BPN-10). Exit points 'לאחר 120 חודשים וכל 12 חודשים בהמשך'; break 'אין אפשרות לשבירת הפיקדון'; deposit method 'הוראת קבע'. Read 2026-11-07 from the table the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data, library 53e44c295b233803); the page states 'המידע נכון למועד הצגתו ולפני חישוב מס רווחי הון', so the date read is the date of the figures."
+  },
+  "linkage": "cpi",
+  "tax_bucket": {
+    "value": "linked_25",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ב); עמ' 41, סעיף 9(13)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-02",
+      "TXI-04",
+      "TXI-05",
+      "TXI-19"
+    ],
+    "state": "sourced",
+    "notes": "Read as fully linked to the consumer price index on the 447 table's linkage column 'צמוד למדד המחירים לצרכן'; whether the linkage is full, which the bucket needs (TXI-04: a deposit counts as linked only when fully linked to the index), rests on that wording. Fully linked: the linkage differentials are exempt (TXI-05) and the interest above the linkage is taxed at up to 25% (TXI-02), at a lower bracket from age 60 (TXI-19). Copied from the rule base (sources read there 2026-10-25), not re-read today. The engine reads no tax_bucket today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+        "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'חושבים קדימה צמוד', טווח סכום להפקדה",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-11-07",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-50 ₪'. No maximum is printed in the 447 table."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירת הפיקדון' (447 table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 12
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "doubt_he": "הבנק מפרסם ריבית לפי מועד המשיכה ולא מפרסם את משך התוכנית; נרשמו מועד המשיכה האחרון בטבלה והריבית שלו.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+    "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים'",
+    "publisher": "Bank Hapoalim B.M.",
+    "strength": "institution"
+  }
+}

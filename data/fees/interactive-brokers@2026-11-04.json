@@ -24,6 +24,9 @@
     "title": "Interactive Brokers - Commissions",
     "notes": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactivebrokers.com, ללא תאריך; אותן טבלאות ב-interactivebrokers.ie). Binding through the client agreement: Interactive Brokers LLC form 3203 (10 January 2025, library b866cea6e6d76d50, same bytes on 2026-11-04), s.33A 'Client shall pay to IBKR commissions, fees and interest at the rates and terms specified on the IBKR website', changes 'effective immediately ... upon posting' (s.33B); Interactive Brokers Ireland form 4750: 'Costs and Charges are as specified on the Pricing section'. The pages say 'IBKR may change these rates at any time in its sole discretion'. Re-read 2026-11-04: every figure in the lines unchanged; the FINRA trading activity fee is 'USD 0.00' with a fee holiday from 1 October to 31 December 2026. התעריף ללקוח ישיר; לקוח שהופנה דרך ברוקר מציג משלם את תעריף הברוקר המציג.",
     "published": null,
+    "printed": {
+      "kind": "none"
+    },
     "format": "html"
   },
   "snapshot": "2026-11-04",
@@ -608,7 +611,7 @@
           "BRK-43"
         ],
         "state": "sourced",
-        "notes": "Printed '0.20 basis point * Trade Value' for monthly trade value up to USD 1,000,000,000 (then 0.15, 0.10, 0.08 basis point), with '1 basis point=0.0001': 0.00002 of the value, recorded as 0.002% (pct_of_trade, as at Interactive Israel). The USD 2.00 minimum is in min. 'Commissions for currency trades are calculated off the trade value and then converted and charged to the base currency of the account.' 'All exchange and regulatory fees included.' On the rate: 'IBKR passes through the prices that it receives and charges a separate low commission ... instead of marking up our quotes' and 'no mark-ups on quotes'; the market's own bid and ask remain. Until 2026-11-04 this rate was left empty for want of a basis-point unit."
+        "notes": "Printed '0.20 basis point * Trade Value' for monthly trade value up to USD 1,000,000,000 (then 0.15, 0.10, 0.08 basis point), with '1 basis point=0.0001': 0.00002 of the value, recorded as 0.002% (pct_of_trade, as at Interactive Israel). The USD 2.00 minimum is in min. 'Commissions for currency trades are calculated off the trade value and then converted and charged to the base currency of the account.' 'All exchange and regulatory fees included.' On the rate: 'IBKR passes through the prices that it receives and charges a separate low commission. We do this in the interest of providing a transparent pricing structure instead of marking up our quotes' and, in the page's heading, 'Transparent low commissions with no mark-ups on quotes' (both re-read on the live page 2026-11-06); the market's own bid and ask remain. No `spread` is recorded: the page prints no ceiling on a spread of the kind the Israeli price lists print ('עד 0.7% משער ההמרה'), it says the quotes are passed on unmarked, so no spread beyond the market's is priced (F-13). Until 2026-11-04 this rate was left empty for want of a basis-point unit."
       },
       "min": {
         "value": 2,
@@ -745,7 +748,7 @@
       "available": "unknown",
       "source": {
         "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-        "title": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactive",
+        "title": "Interactive Brokers - Commissions",
         "checked": "2026-11-04",
         "quote": "0.1% of Trade Value"
       },

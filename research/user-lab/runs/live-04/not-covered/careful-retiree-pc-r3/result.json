@@ -1,0 +1,108 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:04:22.575Z",
+  "structured": {
+    "answer": "Everything I read on this page is marked 'לא מחושב'. Structured deposits, foreign-currency and dollar-linked deposits, savings policies, ביטוח מנהלים, corporate bonds, gold and more are not calculated yet because the rules are 'עוד בבדיקה'. So I can't use the site to compare them with my deposits yet, and I'll ask my son or the bank. I didn't read to the end.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Cards with 'נסגר ב־' and a crossed-out date",
+        "why": "Couldn't tell if the question is closed or not, and why the date is crossed out"
+      },
+      {
+        "where": "Codes MF-28, TX2-01, TXA-28",
+        "why": "No idea what they mean"
+      },
+      {
+        "where": "Screen 6",
+        "why": "Tired. Dark page full of repeating red cards, so I stopped without reaching the end"
+      }
+    ],
+    "used": [
+      "Heading 'מה האתר עוד לא מכסה' and its subline",
+      "Red box 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "Card titles with the 'לא מחושב' tags",
+      "'מה ידוע' sentences on the deposit-related cards (פיקדון מובנה, פיקדון במטבע זר, צמוד דולר, מענק, פוליסה לחיסכון)",
+      "'שאלה פתוחה' lines on corporate bonds, foreign-currency deposit and savings policy"
+    ],
+    "skimmed": [
+      "Gold, ETC, digital currency wallet, הסדר חוב, חברת דירוג, ניירות ערך מסחריים cards",
+      "Grey 'כשייסגר: יופיע במדריך...' notes"
+    ],
+    "skipped": [
+      "Screens 7-10",
+      "Top menu",
+      "Blue law/source references and 'חוקים וכללים' buttons",
+      "Search button"
+    ],
+    "unsure_meaning": [
+      "לא מחושב (does that mean bad, or only not done yet?)",
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "LAYA",
+      "MF-28, TX2-01, TXA-28",
+      "לפי החברה (orange tag)",
+      "מקור ראשי",
+      "Crossed-out 'נסגר ב־' dates",
+      "השקעה במדד",
+      "קרן סל / קרן מחקה",
+      "מנוטרלת מט\"ח"
+    ],
+    "not_found": [
+      "My ordinary bank deposit / savings plan, whether the site covers it or not",
+      "A plain sentence saying what the site CAN already compare",
+      "Anything about bank fees on my deposits"
+    ],
+    "findings": [
+      {
+        "what": "Black background with small grey labels and notes, hard to read even enlarged",
+        "where": "All cards: 'מה ידוע', 'מה חוסם', 'כשייסגר' lines"
+      },
+      {
+        "what": "Red everywhere ('לא מחושב' tags, red box) feels alarming, as if all these products are dangerous",
+        "where": "Top red box and every card"
+      },
+      {
+        "what": "No short list of what is not covered. You have to scroll through many similar cards and I couldn't reach the end",
+        "where": "Whole page, two-column card grid"
+      },
+      {
+        "what": "English names and codes with no explanation",
+        "where": "ETC, LBMA, ICE, LAYA cards; MF-28, TX2-01, TXA-28"
+      },
+      {
+        "what": "Doesn't say whether a regular bank deposit is covered",
+        "where": "Page top"
+      },
+      {
+        "what": "Crossed-out dates are confusing",
+        "where": "'נסגר ב־' lines on screens 5-6"
+      },
+      {
+        "what": "Long law references in blue clutter the cards",
+        "where": "Under each 'מה ידוע'"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38649,
+    "turns": 8,
+    "usd": 0.180307,
+    "input": 8,
+    "cacheWrite": 13518,
+    "cacheRead": 25255,
+    "output": 3354,
+    "model": "claude-opus-5-5"
+  }
+}

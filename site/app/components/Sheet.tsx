@@ -2,7 +2,7 @@
 // beside its anchor (provenance, rule and term cards) or a centred dialog (design-system 3.9, spec 3).
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { site } from "../copy";
-import { IconArrowBack, IconClose } from "./icons";
+import { IconArrowBack, IconChevronDown, IconClose } from "./icons";
 import { Button, cx } from "./ui";
 import { cssMs } from "./kit/chart-glide-math";
 
@@ -17,8 +17,51 @@ export interface SheetProps {
   labelledBy?: string;
   describedBy?: string;
   onBack?: () => void;
+  /**
+   * What the sheet shows, where one open sheet shows one thing after another (the provenance sheet's drill-in and back): a new value starts
+   * at the top too (independent check of pass 7: a figure opened from inside a sheet opened at the scroll of the one before, its head hidden).
+   */
+  view?: string | number;
   children: ReactNode;
   className?: string;
+}
+
+/**
+ * More of the body lies below what the sheet shows (independent check of pass 5: a gap sheet's third year sat under the edge with nothing
+ * saying more followed). A pixel's slack for a fractional scroll position.
+ */
+export const moreBelow = (el: { scrollHeight: number; scrollTop: number; clientHeight: number }) => el.scrollHeight - el.scrollTop - el.clientHeight > 1;
+
+/** The few parts of an element and of the window the sign reads; a test hands in its own. */
+export interface MoreEnv {
+  ResizeObserver?: { new (cb: () => void): { observe(el: Element): void; disconnect(): void } };
+  MutationObserver?: { new (cb: () => void): { observe(el: Node, o: { childList: boolean; subtree: boolean }): void; disconnect(): void } };
+}
+type Body = { scrollHeight: number; scrollTop: number; clientHeight: number; children: ArrayLike<Element>; addEventListener(t: "scroll", f: () => void, o?: { passive: boolean }): void; removeEventListener(t: "scroll", f: () => void): void };
+
+/**
+ * Keeps the sign that more lies below up to date for as long as the sheet is open: on its scroll, on a change of its size or of any block
+ * in it (a fold opening inside the sheet; pass 7: the sign was measured after renders only), and on blocks added or removed. Returns the
+ * cleanup.
+ */
+export function watchMoreBelow(body: Body, set: (more: boolean) => void, env: MoreEnv = globalThis as MoreEnv): () => void {
+  const check = () => set(moreBelow(body));
+  body.addEventListener("scroll", check, { passive: true });
+  const sizes = env.ResizeObserver ? new env.ResizeObserver(check) : null;
+  const observe = () => {
+    if (!sizes) return;
+    sizes.observe(body as unknown as Element);
+    for (const c of Array.from(body.children)) sizes.observe(c);
+  };
+  observe();
+  const blocks = env.MutationObserver ? new env.MutationObserver(() => (observe(), check())) : null;
+  blocks?.observe(body as unknown as Node, { childList: true, subtree: true });
+  check();
+  return () => {
+    body.removeEventListener("scroll", check);
+    sizes?.disconnect();
+    blocks?.disconnect();
+  };
 }
 
 let locks = 0;
@@ -31,18 +74,23 @@ function unlockScroll() {
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, children, className }: SheetProps) {
+export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, view, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const closing = useRef<number | null>(null);
   // Many sheets drop their content when they close: what was in it stays until the sheet has finished leaving.
   const kept = useRef(children);
   if (open) kept.current = children;
   const [, leftSheet] = useState(0);
+  const body = useRef<HTMLDivElement>(null);
+  const wasOpen = useRef(false);
+  const lastView = useRef(view);
 
   useIsoLayoutEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
     if (open) {
+      // every opening starts at the top: the body kept the last sheet's scroll, and a second sheet opened at the first one's end (pass 7)
+      if ((!wasOpen.current || lastView.current !== view) && body.current) body.current.scrollTop = 0;
       if (closing.current) {
         window.clearTimeout(closing.current);
         closing.current = null;
@@ -60,7 +108,9 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         leftSheet((n) => n + 1);
       }, ms);
     }
-  }, [open, anchor, pc]);
+    wasOpen.current = open;
+    lastView.current = view;
+  }, [open, anchor, pc, view]);
 
   useEffect(() => {
     if (!open) return;
@@ -75,6 +125,17 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
     lockScroll();
     return unlockScroll;
   }, [open]);
+
+  // the sign at the bottom edge while more of the body is below it: on scroll, on any change of the body's size or of a block in it, and
+  // after every render (the content may have changed)
+  const [more, setMore] = useState(false);
+  useEffect(() => {
+    if (!open || !body.current) return;
+    return watchMoreBelow(body.current, setMore);
+  }, [open]);
+  useEffect(() => {
+    if (open && body.current) setMore(moreBelow(body.current));
+  });
 
   // Swipe down on the handle closes the sheet.
   const startY = useRef<number | null>(null);
@@ -105,22 +166,30 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
       >
         <span />
       </div>
-      <div className="sheet-body">
+      <div className="sheet-body" ref={body}>
         {/* floats in the top corner beside the first line, and stays there while the body scrolls (2026-10-25: it had a row
             of its own above the content) */}
         <div className="sheet-head" data-back={onBack ? "" : undefined}>
           {onBack ? (
-            <Button variant="icon" onClick={onBack} aria-label={site.back} className="!size-9 !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
+            <Button variant="icon" onClick={onBack} aria-label={site.back} className="!size-9 tap-area !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
               <IconArrowBack size={20} />
             </Button>
           ) : (
             <span />
           )}
-          <Button variant="icon" onClick={onClose} aria-label={site.close} className="!size-9 !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
+          <Button variant="icon" onClick={onClose} aria-label={site.close} className="!size-9 tap-area !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
             <IconClose size={20} />
           </Button>
         </div>
         {open || !ref.current?.open ? children : kept.current}
+      </div>
+      {/* a strip of its own under the scrolling body, always there at one height: never covers a line, never moves one, empty at the end */}
+      <div className="sheet-more" data-more={more ? "" : undefined} aria-hidden="true">
+        {/* words with the arrow: a fade alone read as the sheet cut off in a still shot (pass 7) */}
+        <span className="sheet-more-cue">
+          {site.moreBelow}
+          <IconChevronDown size={16} />
+        </span>
       </div>
     </dialog>
   );

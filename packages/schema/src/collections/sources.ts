@@ -1,6 +1,7 @@
 // data/sources/: the two hand tables the source extraction reads (research/knowledge/2026-10-24-synthesis.md §3.2).
 // `publishers.json` names every host a rule source points at; `documents.json` names the recurring documents.
 import { z } from "zod";
+import { textFragment } from "../value.ts";
 
 export const sourceKind = z.enum(["law", "regulation", "circular", "regulator_page", "official_pdf", "exchange_rules", "institution_doc", "article", "dataset", "form", "other"]);
 
@@ -99,10 +100,27 @@ export const brandRow = z.strictObject({
 
 export const brandsTable = z.array(brandRow);
 
-/** A file under data/sources/ is one of the four tables. */
-export const sourcesFile = z.union([publishersTable, documentsTable, institutionsTable, brandsTable]);
+/**
+ * One row of `fragments.json` (founder, 2026-11-07): the words a link to a cited web page opens at, by text fragment (`#:~:text=`).
+ * `url` and `words` are exactly a record's link and its quoted words (`quote`, or an advertising entry's `claim_he` or `binding_he`);
+ * `text` holds the fragment's terms as the page prints them, kept only where they were found there and land on the quoted words first;
+ * `seen` is the day the page was read. Written by research/audit/tools/quote-fragments.mjs, never by hand; a PDF has no row (its link
+ * opens at its page).
+ */
+export const fragmentRow = z.strictObject({
+  url: z.string().regex(/^https?:\/\//),
+  words: z.string().min(1),
+  text: textFragment,
+  seen: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
+export const fragmentsTable = z.array(fragmentRow);
+
+/** A file under data/sources/ is one of the five tables. */
+export const sourcesFile = z.union([publishersTable, documentsTable, institutionsTable, brandsTable, fragmentsTable]);
 
 export type PublisherRow = z.infer<typeof publisherRow>;
 export type DocumentRow = z.infer<typeof documentRow>;
 export type InstitutionRegistryRow = z.infer<typeof institutionRow>;
 export type BrandRow = z.infer<typeof brandRow>;
+export type FragmentRow = z.infer<typeof fragmentRow>;

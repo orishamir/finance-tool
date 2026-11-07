@@ -1,0 +1,84 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "stamp": "{\"keys\":[{\"id\":\"says-uncovered-what-site-covers\",\"problem\":\"The page says the site has not yet researched or covered something that the site does cover on another of its pages: the currency exchange fee is listed here as something the site does not know yet, while the guide to a securities account explains the same fee and shows which houses charge it. A site that contradicts itself about what it knows makes the reader doubt both pages.\",\"where\":\"the card for the currency exchange fee on the not-covered list, against the fee table row and the terms row about converting currency on the securities account guide (the last two screenshots)\",\"kind\":\"general\"},{\"id\":\"bare-code\",\"problem\":\"Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.\",\"where\":\"the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'\",\"kind\":\"general\"},{\"id\":\"fragment-no-noun\",\"problem\":\"Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.\",\"where\":\"the 'what was closed' lines of the open cards\",\"kind\":\"general\"},{\"id\":\"source-names-not-for-reader\",\"problem\":\"Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.\",\"where\":\"the source line under 'what is known' on a few cards\",\"kind\":\"general\"},{\"id\":\"same-promise-every-card\",\"problem\":\"Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.\",\"where\":\"the line starting 'when it is closed' at the bottom of each open card\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "says-uncovered-what-site-covers",
+        "rank": 0,
+        "why": "None of the reader's findings mention the page contradicting the securities account guide about the currency exchange fee."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 says codes like TXA-28 are confusing, which is the problem of bare internal codes shown instead of the question in words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 4,
+        "why": "Finding 4 calls the crossed-out 'נסגר ב' (closed on) lines confusing, which is the person's complaint about the 'what was closed' fragments with a struck-out date."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 3 complains about too many legal citations, not about sources named in English or as copies while still labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 says the grid of near-identical cards is too long to scan, but it doesn't name the same long promise repeated at the bottom of every card as something hard to believe."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0276754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "says-uncovered-what-site-covers",
+        "rank": 0,
+        "why": "None of the reader's findings says the page lists the currency exchange fee as not covered when another page of the site does cover it."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 says codes like TXA-28 in the coverage blocks are confusing, which is the bare internal code problem."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 4,
+        "why": "Finding 4 says the crossed-out 'נסגר ב' ('closed on') lines are confusing, which is the same fragmentary 'what was closed' lines."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 3 is about too many legal citations, not about sources named in English or as copies but still labeled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 says the cards look nearly identical overall but never names the repeated 'when it is closed' promise line."
+      }
+    ],
+    "liked": [],
+    "usd": 0.025803399999999997
+  },
+  "third": null,
+  "ranks": {
+    "says-uncovered-what-site-covers": 0,
+    "bare-code": 4,
+    "fragment-no-noun": 4,
+    "source-names-not-for-reader": 0,
+    "same-promise-every-card": 0
+  },
+  "agreed": {
+    "says-uncovered-what-site-covers": true,
+    "bare-code": true,
+    "fragment-no-noun": true,
+    "source-names-not-for-reader": true,
+    "same-promise-every-card": true
+  },
+  "against": {},
+  "usd": 0.05347879999999999
+}

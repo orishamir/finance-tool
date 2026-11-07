@@ -1,0 +1,118 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T17:06:32.401Z",
+  "structured": {
+    "answer": "The site says it doesn't calculate a long list of things yet. Close to me that means structured deposits, foreign-currency and dollar-linked deposits, savings policies, managers' insurance, corporate bonds and gold funds. I stopped after six screens without seeing a plain shekel deposit, so I'll ask my son or the bank before I rely on it.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "First screen, cards ETC and LBMA Gold Price",
+        "why": "English letters right at the top; it nearly felt like the page was not for me"
+      },
+      {
+        "where": "Screen 5, two cards whose titles were above the screen",
+        "why": "Could not tell what product they were (a manager buying at its discretion; a company supervising for bond holders)"
+      },
+      {
+        "where": "Screens 5-6, 'מצב הכיסוי' sections",
+        "why": "Crossed-out dates, 'צומצם ב' and codes like MF-28, TX2-01, TXA-28 meant nothing to me"
+      },
+      {
+        "where": "After screen 6",
+        "why": "Tired; the same red 'לא מחושב' over and over; I stopped before the end of the list"
+      }
+    ],
+    "used": [
+      "Heading 'מה האתר עוד לא מכסה'",
+      "Red banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "Card titles with the red 'לא מחושב' tag",
+      "'מה ידוע' lines on פיקדון במטבע חוץ, פיקדון מובנה, צמוד דולר, פוליסת חיסכון, ביטוח מנהלים",
+      "'שאלה פתוחה' lines on the deposit and policy cards"
+    ],
+    "skimmed": [
+      "ETC, LBMA, ארנק מט\"ח דיגיטלי, הסדר חוב, חברת דירוג, מנוטרלת מט\"ח, מסלולי האירוע cards",
+      "Securities-account guide cost table and glossary (read earlier)"
+    ],
+    "skipped": [
+      "Grey 'נקרא גם' lines",
+      "Small blue source/law links and dates",
+      "Grey 'כשייסגר: יופיע במדריך…' lines",
+      "'חוקים וכללים · N' chips",
+      "Screens 7-10 of the page"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "ISA",
+      "LAYA",
+      "קרן סל / קרן מחקה",
+      "מנוטרלת מט\"ח",
+      "מדד (in 'נקבעים לפי מדד')",
+      "MF-28, TX2-01, TXA-28",
+      "crossed-out 'נסגר ב-24.10.2026'",
+      "'צומצם ב'",
+      "orange 'לפי החברה'",
+      "'מקור ראשי (עותק)'"
+    ],
+    "not_found": [
+      "An ordinary shekel bank deposit or bank savings plan (תוכנית חיסכון): I didn't see whether it's covered",
+      "Any plain sentence saying which products the site does fully compare",
+      "The end of the list (I stopped after screen 6)"
+    ],
+    "findings": [
+      {
+        "what": "Every product carries a red 'לא מחושב' tag under a red banner. It's frightening, and none of the cards tells me what the site does calculate",
+        "where": "Top banner and all cards"
+      },
+      {
+        "what": "Light text on a black background is hard to read even enlarged; the grey small text ('נקרא גם', 'כשייסגר', dates) is too pale",
+        "where": "Whole page"
+      },
+      {
+        "what": "The page opens with English-letter products (ETC, LBMA Gold Price) instead of anything about deposits",
+        "where": "First screen"
+      },
+      {
+        "what": "Deposits close to mine (foreign-currency, structured, dollar-linked) and savings policies only appear on the sixth screen, where I was already tired",
+        "where": "Screen 6"
+      },
+      {
+        "what": "Internal codes and crossed-out dates (MF-28, TX2-01, TXA-28, 'נסגר ב-…', 'צומצם ב') mean nothing to a reader",
+        "where": "'מצב הכיסוי' sections, screens 5-6"
+      },
+      {
+        "what": "This page says the site doesn't calculate 'עמלת חליפין'. The securities-account guide's cost table calls a similar fee 'המרת מטבע', names banks that charge it, and explains 'עמלת חליפין' in its glossary. Maybe not a real contradiction, but I can't tell what is covered",
+        "where": "'עמלת חליפין' card (screen 5) vs guide's 'כמה זה עולה' table and glossary"
+      },
+      {
+        "what": "Some card titles were cut off at the top of the screen, so I couldn't tell which product the text belonged to",
+        "where": "Screen 5, top cards"
+      },
+      {
+        "what": "Small companies' names (laya.as-invest, Interactive Brokers) sit next to official sources; I wouldn't trust names I've never heard of",
+        "where": "ארנק מט\"ח דיגיטלי card; guide"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 56931,
+    "turns": 10,
+    "usd": 0.254054,
+    "input": 10,
+    "cacheWrite": 17547,
+    "cacheRead": 41290,
+    "output": 5269,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "bal-hychydvt",
+  "he": "בעלי היחידות",
+  "en": null,
+  "meaning": "המחזיקים ביחידות של קרן נאמנות; הנאמן מחזיק את נכסי הקרן בשבילם ומפקח על מנהל הקרן.",
+  "where": [
+    "law",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-02",
+    "MF-03",
+    "REG-10"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=56",
+    "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 76(א) ו־78, עמוד 56",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

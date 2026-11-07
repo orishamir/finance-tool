@@ -1,0 +1,205 @@
+{
+  "id": "us-voo",
+  "names": {
+    "en": [
+      "Vanguard S&P 500 ETF"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": null,
+    "cusip": "922908363",
+    "ticker": {
+      "NYSE Arca": "VOO"
+    }
+  },
+  "manager": "Vanguard",
+  "domicile": "US",
+  "legal_form": "US-listed ETF; 'passively managed, full-replication strategy'; inception 2010-09-07; dividend schedule quarterly; benchmark 'S&P 500 Index'. The ISIN is not printed on this fact sheet.",
+  "exposure_id": "index-sp500",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "distributing",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.03,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://fund-docs.vanguard.com/F0968.pdf#page=1",
+        "title": "Vanguard S&P 500 ETF (VOO), fact sheet as of September 30, 2026, p. 1: 'Expense ratio 0.03%' (library e96f5ad4c4aee46c)",
+        "publisher": "Vanguard",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXF-12",
+        "TXF-27",
+        "TXF-29"
+      ],
+      "state": "sourced",
+      "notes": "Expense ratio 'as reported in the most recent prospectus'. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Its legal form is not printed on this fact sheet, so whether Israeli tax treats it as a company or a trust stays open (tax open question 19, job 1). The prospectus was not opened."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo#performance-fees",
+        "title": "Vanguard S&P 500 ETF (VOO), fund profile, 'Performance & Fees', 'Total returns', 'Annually' (as of 10/31/2026)",
+        "publisher": "Vanguard",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. Vanguard's profile page prints the fund's total return by NAV, by market price and its benchmark's for each calendar year 2011 to 2025; they are in tracking_record. Fund basis: 'Total return by NAV' (the market-price column is not copied), in US dollars. Benchmark as the page names it: 'S&P 500 Index'. A total return on the S&P 500 with no word on withholding, like IVV. The page is a web page drawn by script, not a binding document; it was read from the rendered page by the lead, not from a file. The difference is not computed here (data-update rule)."
+    },
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-12",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28"
+  },
+  "prospectus": {
+    "url": "https://fund-docs.vanguard.com/F0968.pdf",
+    "date": null
+  },
+  "snapshot": "2026-11-07",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://fund-docs.vanguard.com/F0968.pdf",
+      "page": 1,
+      "checked": "2026-10-31"
+    }
+  },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2011,
+        "fund_pct": 2.09,
+        "tracking_pct": 2.11
+      },
+      {
+        "year": 2012,
+        "fund_pct": 15.98,
+        "tracking_pct": 16
+      },
+      {
+        "year": 2013,
+        "fund_pct": 32.33,
+        "tracking_pct": 32.39
+      },
+      {
+        "year": 2014,
+        "fund_pct": 13.63,
+        "tracking_pct": 13.69
+      },
+      {
+        "year": 2015,
+        "fund_pct": 1.35,
+        "tracking_pct": 1.38
+      },
+      {
+        "year": 2016,
+        "fund_pct": 11.93,
+        "tracking_pct": 11.96
+      },
+      {
+        "year": 2017,
+        "fund_pct": 21.78,
+        "tracking_pct": 21.83
+      },
+      {
+        "year": 2018,
+        "fund_pct": -4.42,
+        "tracking_pct": -4.38
+      },
+      {
+        "year": 2019,
+        "fund_pct": 31.46,
+        "tracking_pct": 31.49
+      },
+      {
+        "year": 2020,
+        "fund_pct": 18.35,
+        "tracking_pct": 18.4
+      },
+      {
+        "year": 2021,
+        "fund_pct": 28.66,
+        "tracking_pct": 28.71
+      },
+      {
+        "year": 2022,
+        "fund_pct": -18.15,
+        "tracking_pct": -18.11
+      },
+      {
+        "year": 2023,
+        "fund_pct": 26.25,
+        "tracking_pct": 26.29
+      },
+      {
+        "year": 2024,
+        "fund_pct": 24.98,
+        "tracking_pct": 25.02
+      },
+      {
+        "year": 2025,
+        "fund_pct": 17.84,
+        "tracking_pct": 17.88
+      }
+    ],
+    "years_printed": [
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "source": {
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo#performance-fees",
+      "title": "Vanguard S&P 500 ETF (VOO), fund profile, 'Performance & Fees', 'Total returns', 'Annually' (as of 10/31/2026)",
+      "publisher": "Vanguard",
+      "strength": "institution"
+    },
+    "page": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 Index",
+      "dividends": "unstated"
+    }
+  }
+}

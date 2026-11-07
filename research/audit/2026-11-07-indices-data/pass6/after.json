@@ -1,0 +1,3758 @@
+{
+ "6000+400x20y@7%": {
+  "index-msci-acwi": {
+   "headline": "psagot 1159235 152289",
+   "funds": [
+    {
+     "id": "1201003",
+     "best": 149162,
+     "bestHouse": "psagot",
+     "psagot": 149162,
+     "byHouse": {
+      "altshuler-trade": 104583,
+      "excellence": 92241,
+      "discount": 131508,
+      "hapoalim": 135836,
+      "yahav": 135836,
+      "jerusalem": 135675,
+      "leumi": 139949,
+      "mizrahi-tefahot": 127341,
+      "massad": 136625,
+      "mercantile": 131508,
+      "fibi": 136769,
+      "meitav-trade": 98676,
+      "psagot": 149162,
+      "ibi": 130823
+     }
+    },
+    {
+     "id": "1149772",
+     "best": 141018,
+     "bestHouse": "psagot",
+     "psagot": 141018,
+     "byHouse": {
+      "altshuler-trade": 98666,
+      "excellence": 87459,
+      "discount": 124464,
+      "hapoalim": 128521,
+      "yahav": 128521,
+      "jerusalem": 128370,
+      "leumi": 132413,
+      "mizrahi-tefahot": 120503,
+      "massad": 129304,
+      "mercantile": 124464,
+      "fibi": 129439,
+      "meitav-trade": 93100,
+      "psagot": 141018,
+      "ibi": 123693
+     }
+    },
+    {
+     "id": "1144237",
+     "best": 136173,
+     "bestHouse": "psagot",
+     "psagot": 136173,
+     "byHouse": {
+      "altshuler-trade": 95134,
+      "excellence": 84595,
+      "discount": 120267,
+      "hapoalim": 124164,
+      "yahav": 124164,
+      "jerusalem": 124020,
+      "leumi": 127926,
+      "mizrahi-tefahot": 116430,
+      "massad": 124943,
+      "mercantile": 120267,
+      "fibi": 125073,
+      "meitav-trade": 89770,
+      "psagot": 136173,
+      "ibi": 119443
+     }
+    },
+    {
+     "id": "1147362",
+     "best": 118014,
+     "bestHouse": "psagot",
+     "psagot": 118014,
+     "byHouse": {
+      "altshuler-trade": 81796,
+      "excellence": 73715,
+      "discount": 104495,
+      "hapoalim": 107805,
+      "yahav": 107805,
+      "jerusalem": 107685,
+      "leumi": 111071,
+      "mizrahi-tefahot": 101134,
+      "massad": 108551,
+      "mercantile": 104495,
+      "fibi": 108661,
+      "meitav-trade": 77178,
+      "psagot": 118014,
+      "ibi": 103451
+     }
+    },
+    {
+     "id": "1144336",
+     "best": 117703,
+     "bestHouse": "psagot",
+     "psagot": 117703,
+     "byHouse": {
+      "altshuler-trade": 81566,
+      "excellence": 73526,
+      "discount": 104225,
+      "hapoalim": 107525,
+      "yahav": 107525,
+      "jerusalem": 107405,
+      "leumi": 110782,
+      "mizrahi-tefahot": 100871,
+      "massad": 108270,
+      "mercantile": 104225,
+      "fibi": 108379,
+      "meitav-trade": 76960,
+      "psagot": 117703,
+      "ibi": 103176
+     }
+    },
+    {
+     "id": "1159235",
+     "best": 152289,
+     "bestHouse": "psagot",
+     "psagot": 152289,
+     "byHouse": {
+      "altshuler-trade": 106851,
+      "excellence": 94068,
+      "discount": 134211,
+      "hapoalim": 138644,
+      "yahav": 138644,
+      "jerusalem": 138479,
+      "leumi": 136960,
+      "mizrahi-tefahot": 129965,
+      "massad": 131746,
+      "mercantile": 134211,
+      "fibi": 130786,
+      "meitav-trade": 100812,
+      "psagot": 152289,
+      "ibi": 133558
+     }
+    },
+    {
+     "id": "ie00b6r52259",
+     "best": 147829,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 147829,
+      "excellence": 93325,
+      "discount": 108850,
+      "hapoalim": 109850,
+      "yahav": 110919,
+      "jerusalem": 90005,
+      "leumi": 116133,
+      "mizrahi-tefahot": 111156,
+      "massad": 127923,
+      "mercantile": 108600,
+      "fibi": 128800,
+      "meitav-trade": 72739,
+      "interactive-brokers": 144736
+     }
+    },
+    {
+     "id": "us-acwi",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-msci-world": {
+   "headline": "psagot 5122569 147227",
+   "funds": [
+    {
+     "id": "5122569",
+     "best": 147227,
+     "bestHouse": "psagot",
+     "psagot": 147227,
+     "byHouse": {
+      "altshuler-trade": 103179,
+      "excellence": 91108,
+      "discount": 129836,
+      "hapoalim": 134099,
+      "yahav": 134099,
+      "jerusalem": 133940,
+      "leumi": 138160,
+      "mizrahi-tefahot": 125717,
+      "massad": 134887,
+      "mercantile": 129836,
+      "fibi": 135029,
+      "one-zero": 140688,
+      "meitav-trade": 97354,
+      "psagot": 147227,
+      "ibi": 128820
+     }
+    },
+    {
+     "id": "5124573",
+     "best": 145691,
+     "bestHouse": "psagot",
+     "psagot": 145691,
+     "byHouse": {
+      "altshuler-trade": 102064,
+      "excellence": 90207,
+      "discount": 128508,
+      "hapoalim": 132720,
+      "yahav": 132720,
+      "jerusalem": 132563,
+      "leumi": 136739,
+      "mizrahi-tefahot": 124428,
+      "massad": 133507,
+      "mercantile": 128508,
+      "fibi": 133647,
+      "one-zero": 139216,
+      "meitav-trade": 96303,
+      "psagot": 145691,
+      "ibi": 127479
+     }
+    },
+    {
+     "id": "5139696",
+     "best": 126395,
+     "bestHouse": "psagot",
+     "psagot": 126395,
+     "byHouse": {
+      "altshuler-trade": 87976,
+      "excellence": 78769,
+      "discount": 111785,
+      "hapoalim": 115363,
+      "yahav": 115363,
+      "jerusalem": 115231,
+      "leumi": 118858,
+      "mizrahi-tefahot": 108201,
+      "massad": 116127,
+      "mercantile": 111785,
+      "fibi": 116246,
+      "one-zero": 120732,
+      "meitav-trade": 83015,
+      "psagot": 126395,
+      "ibi": 110577
+     }
+    },
+    {
+     "id": "5140165",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "1145804",
+     "best": 139096,
+     "bestHouse": "psagot",
+     "psagot": 139096,
+     "byHouse": {
+      "altshuler-trade": 97267,
+      "excellence": 86325,
+      "discount": 122800,
+      "hapoalim": 126793,
+      "yahav": 126793,
+      "jerusalem": 126645,
+      "leumi": 130634,
+      "mizrahi-tefahot": 118888,
+      "massad": 127575,
+      "mercantile": 122800,
+      "fibi": 127708,
+      "meitav-trade": 91781,
+      "psagot": 139096,
+      "ibi": 122008
+     }
+    },
+    {
+     "id": "1185164",
+     "best": 154639,
+     "bestHouse": "psagot",
+     "psagot": 154639,
+     "byHouse": {}
+    },
+    {
+     "id": "ie00b4l5y983",
+     "best": 147829,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-nasdaq100": {
+   "headline": "psagot 5129283 153458",
+   "funds": [
+    {
+     "id": "5129283",
+     "best": 153458,
+     "bestHouse": "psagot",
+     "psagot": 153458,
+     "byHouse": {
+      "altshuler-trade": 107697,
+      "excellence": 94750,
+      "discount": 135220,
+      "hapoalim": 139693,
+      "yahav": 139693,
+      "jerusalem": 139526,
+      "leumi": 143922,
+      "mizrahi-tefahot": 130945,
+      "massad": 140483,
+      "mercantile": 135220,
+      "fibi": 140632,
+      "one-zero": 146660,
+      "meitav-trade": 101609,
+      "psagot": 153458,
+      "ibi": 134257
+     }
+    },
+    {
+     "id": "5128905",
+     "best": 151903,
+     "bestHouse": "psagot",
+     "psagot": 151903,
+     "byHouse": {
+      "altshuler-trade": 106571,
+      "excellence": 93842,
+      "discount": 133877,
+      "hapoalim": 138297,
+      "yahav": 138297,
+      "jerusalem": 138132,
+      "leumi": 142484,
+      "mizrahi-tefahot": 129641,
+      "massad": 139087,
+      "mercantile": 133877,
+      "fibi": 139234,
+      "one-zero": 145170,
+      "meitav-trade": 100548,
+      "psagot": 151903,
+      "ibi": 132901
+     }
+    },
+    {
+     "id": "1146505",
+     "best": 142798,
+     "bestHouse": "psagot",
+     "psagot": 142798,
+     "byHouse": {
+      "altshuler-trade": 99961,
+      "excellence": 88507,
+      "discount": 126004,
+      "hapoalim": 130120,
+      "yahav": 130120,
+      "jerusalem": 129968,
+      "leumi": 134061,
+      "mizrahi-tefahot": 121998,
+      "massad": 130906,
+      "mercantile": 126004,
+      "fibi": 131043,
+      "meitav-trade": 94321,
+      "psagot": 142798,
+      "ibi": 125253
+     }
+    },
+    {
+     "id": "1165844",
+     "best": 116925,
+     "bestHouse": "psagot",
+     "psagot": 116925,
+     "byHouse": {
+      "altshuler-trade": 80990,
+      "excellence": 73054,
+      "discount": 103547,
+      "hapoalim": 106823,
+      "yahav": 106823,
+      "jerusalem": 106704,
+      "leumi": 110059,
+      "mizrahi-tefahot": 100215,
+      "massad": 107566,
+      "mercantile": 103547,
+      "fibi": 107674,
+      "meitav-trade": 76416,
+      "psagot": 116925,
+      "ibi": 102488
+     }
+    },
+    {
+     "id": "1143734",
+     "best": 108900,
+     "bestHouse": "psagot",
+     "psagot": 108900,
+     "byHouse": {
+      "altshuler-trade": 75013,
+      "excellence": 68139,
+      "discount": 96544,
+      "hapoalim": 99569,
+      "yahav": 99569,
+      "jerusalem": 99461,
+      "leumi": 102585,
+      "mizrahi-tefahot": 93429,
+      "massad": 100288,
+      "mercantile": 96544,
+      "fibi": 100387,
+      "meitav-trade": 70764,
+      "psagot": 108900,
+      "ibi": 95368
+     }
+    },
+    {
+     "id": "1186063",
+     "best": 152289,
+     "bestHouse": "psagot",
+     "psagot": 152289,
+     "byHouse": {}
+    },
+    {
+     "id": "1159243",
+     "best": 150752,
+     "bestHouse": "psagot",
+     "psagot": 150752,
+     "byHouse": {
+      "altshuler-trade": 105736,
+      "excellence": 93170,
+      "discount": 132882,
+      "hapoalim": 137264,
+      "yahav": 137264,
+      "jerusalem": 137101,
+      "leumi": 135596,
+      "mizrahi-tefahot": 128675,
+      "massad": 130441,
+      "mercantile": 132882,
+      "fibi": 129490,
+      "meitav-trade": 99762,
+      "psagot": 150752,
+      "ibi": 132214
+     }
+    },
+    {
+     "id": "ie00b53szb19",
+     "best": 146285,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 146285,
+      "excellence": 92421,
+      "discount": 107750,
+      "hapoalim": 108733,
+      "yahav": 109789,
+      "jerusalem": 89083,
+      "leumi": 114951,
+      "mizrahi-tefahot": 110024,
+      "massad": 126623,
+      "mercantile": 107503,
+      "fibi": 127490,
+      "meitav-trade": 71966,
+      "interactive-brokers": 143223
+     }
+    }
+   ]
+  },
+  "index-sp500": {
+   "headline": "psagot 5139282 155116",
+   "funds": [
+    {
+     "id": "5139282",
+     "best": 155116,
+     "bestHouse": "psagot",
+     "psagot": 155116,
+     "byHouse": {
+      "altshuler-trade": 108898,
+      "excellence": 95716,
+      "discount": 136652,
+      "hapoalim": 141181,
+      "yahav": 141181,
+      "jerusalem": 141012,
+      "leumi": 145454,
+      "mizrahi-tefahot": 132336,
+      "massad": 141971,
+      "mercantile": 136652,
+      "fibi": 142122,
+      "one-zero": 148250,
+      "meitav-trade": 102739,
+      "psagot": 155116,
+      "ibi": 135703
+     }
+    },
+    {
+     "id": "5139100",
+     "best": 154957,
+     "bestHouse": "psagot",
+     "psagot": 154957,
+     "byHouse": {
+      "altshuler-trade": 108783,
+      "excellence": 95623,
+      "discount": 136515,
+      "hapoalim": 141038,
+      "yahav": 141038,
+      "jerusalem": 140869,
+      "leumi": 145307,
+      "mizrahi-tefahot": 132202,
+      "massad": 141828,
+      "mercantile": 136515,
+      "fibi": 141979,
+      "one-zero": 148097,
+      "meitav-trade": 102631,
+      "psagot": 154957,
+      "ibi": 135564
+     }
+    },
+    {
+     "id": "5124482",
+     "best": 153458,
+     "bestHouse": "psagot",
+     "psagot": 153458,
+     "byHouse": {
+      "altshuler-trade": 107697,
+      "excellence": 94750,
+      "discount": 135220,
+      "hapoalim": 139693,
+      "yahav": 139693,
+      "jerusalem": 139526,
+      "leumi": 143922,
+      "mizrahi-tefahot": 130945,
+      "massad": 140483,
+      "mercantile": 135220,
+      "fibi": 140632,
+      "one-zero": 146660,
+      "meitav-trade": 101609,
+      "psagot": 153458,
+      "ibi": 134257
+     }
+    },
+    {
+     "id": "5129275",
+     "best": 153458,
+     "bestHouse": "psagot",
+     "psagot": 153458,
+     "byHouse": {
+      "altshuler-trade": 107697,
+      "excellence": 94750,
+      "discount": 135220,
+      "hapoalim": 139693,
+      "yahav": 139693,
+      "jerusalem": 139526,
+      "leumi": 143922,
+      "mizrahi-tefahot": 130945,
+      "massad": 140483,
+      "mercantile": 135220,
+      "fibi": 140632,
+      "one-zero": 146660,
+      "meitav-trade": 101609,
+      "psagot": 153458,
+      "ibi": 134257
+     }
+    },
+    {
+     "id": "5127527",
+     "best": 122715,
+     "bestHouse": "psagot",
+     "psagot": 122715,
+     "byHouse": {
+      "altshuler-trade": 85269,
+      "excellence": 76558,
+      "discount": 108587,
+      "hapoalim": 112047,
+      "yahav": 112047,
+      "jerusalem": 111920,
+      "leumi": 115441,
+      "mizrahi-tefahot": 105100,
+      "massad": 112804,
+      "mercantile": 108587,
+      "fibi": 112918,
+      "one-zero": 117209,
+      "meitav-trade": 80459,
+      "psagot": 122715,
+      "ibi": 107340
+     }
+    },
+    {
+     "id": "1218916",
+     "best": 152165,
+     "bestHouse": "psagot",
+     "psagot": 152165,
+     "byHouse": {
+      "altshuler-trade": 106761,
+      "excellence": 93996,
+      "discount": 134104,
+      "hapoalim": 138533,
+      "yahav": 138533,
+      "jerusalem": 138368,
+      "leumi": 142727,
+      "mizrahi-tefahot": 129861,
+      "massad": 139323,
+      "mercantile": 134104,
+      "fibi": 139470,
+      "meitav-trade": 100727,
+      "psagot": 152165,
+      "ibi": 133450
+     }
+    },
+    {
+     "id": "1201656",
+     "best": 150447,
+     "bestHouse": "psagot",
+     "psagot": 150447,
+     "byHouse": {
+      "altshuler-trade": 105515,
+      "excellence": 92992,
+      "discount": 132619,
+      "hapoalim": 136990,
+      "yahav": 136990,
+      "jerusalem": 136827,
+      "leumi": 141138,
+      "mizrahi-tefahot": 128419,
+      "massad": 137779,
+      "mercantile": 132619,
+      "fibi": 137925,
+      "meitav-trade": 99554,
+      "psagot": 150447,
+      "ibi": 131947
+     }
+    },
+    {
+     "id": "1165810",
+     "best": 148936,
+     "bestHouse": "psagot",
+     "psagot": 148936,
+     "byHouse": {
+      "altshuler-trade": 104420,
+      "excellence": 92109,
+      "discount": 131313,
+      "hapoalim": 135634,
+      "yahav": 135634,
+      "jerusalem": 135473,
+      "leumi": 139741,
+      "mizrahi-tefahot": 127152,
+      "massad": 136423,
+      "mercantile": 131313,
+      "fibi": 136567,
+      "meitav-trade": 98522,
+      "psagot": 148936,
+      "ibi": 130626
+     }
+    },
+    {
+     "id": "1150333",
+     "best": 146566,
+     "bestHouse": "psagot",
+     "psagot": 146566,
+     "byHouse": {
+      "altshuler-trade": 102700,
+      "excellence": 90720,
+      "discount": 129264,
+      "hapoalim": 133505,
+      "yahav": 133505,
+      "jerusalem": 133348,
+      "leumi": 137548,
+      "mizrahi-tefahot": 125162,
+      "massad": 134293,
+      "mercantile": 129264,
+      "fibi": 134434,
+      "meitav-trade": 96901,
+      "psagot": 146566,
+      "ibi": 128552
+     }
+    },
+    {
+     "id": "1146471",
+     "best": 142428,
+     "bestHouse": "psagot",
+     "psagot": 142428,
+     "byHouse": {
+      "altshuler-trade": 99692,
+      "excellence": 88289,
+      "discount": 125684,
+      "hapoalim": 129788,
+      "yahav": 129788,
+      "jerusalem": 129635,
+      "leumi": 133719,
+      "mizrahi-tefahot": 121687,
+      "massad": 130572,
+      "mercantile": 125684,
+      "fibi": 130709,
+      "meitav-trade": 94067,
+      "psagot": 142428,
+      "ibi": 124928
+     }
+    },
+    {
+     "id": "1149020",
+     "best": 142340,
+     "bestHouse": "psagot",
+     "psagot": 142340,
+     "byHouse": {
+      "altshuler-trade": 99628,
+      "excellence": 88238,
+      "discount": 125608,
+      "hapoalim": 129709,
+      "yahav": 129709,
+      "jerusalem": 129557,
+      "leumi": 133637,
+      "mizrahi-tefahot": 121613,
+      "massad": 130494,
+      "mercantile": 125608,
+      "fibi": 130630,
+      "meitav-trade": 94007,
+      "psagot": 142340,
+      "ibi": 124851
+     }
+    },
+    {
+     "id": "1144385",
+     "best": 140192,
+     "bestHouse": "psagot",
+     "psagot": 140192,
+     "byHouse": {
+      "altshuler-trade": 98065,
+      "excellence": 86972,
+      "discount": 123749,
+      "hapoalim": 127779,
+      "yahav": 127779,
+      "jerusalem": 127629,
+      "leumi": 131649,
+      "mizrahi-tefahot": 119809,
+      "massad": 128562,
+      "mercantile": 123749,
+      "fibi": 128696,
+      "meitav-trade": 92534,
+      "psagot": 140192,
+      "ibi": 122969
+     }
+    },
+    {
+     "id": "1148162",
+     "best": 139035,
+     "bestHouse": "psagot",
+     "psagot": 139035,
+     "byHouse": {
+      "altshuler-trade": 97222,
+      "excellence": 86289,
+      "discount": 122747,
+      "hapoalim": 126739,
+      "yahav": 126739,
+      "jerusalem": 126591,
+      "leumi": 130578,
+      "mizrahi-tefahot": 118837,
+      "massad": 127520,
+      "mercantile": 122747,
+      "fibi": 127653,
+      "meitav-trade": 91739,
+      "psagot": 139035,
+      "ibi": 121955
+     }
+    },
+    {
+     "id": "1183441",
+     "best": 154639,
+     "bestHouse": "psagot",
+     "psagot": 154639,
+     "byHouse": {}
+    },
+    {
+     "id": "1159250",
+     "best": 154323,
+     "bestHouse": "psagot",
+     "psagot": 154323,
+     "byHouse": {
+      "altshuler-trade": 108324,
+      "excellence": 95254,
+      "discount": 135968,
+      "hapoalim": 140469,
+      "yahav": 140469,
+      "jerusalem": 140301,
+      "leumi": 138763,
+      "mizrahi-tefahot": 131671,
+      "massad": 133472,
+      "mercantile": 135968,
+      "fibi": 132499,
+      "meitav-trade": 102199,
+      "psagot": 154323,
+      "ibi": 135335
+     }
+    },
+    {
+     "id": "ie00b5bmr087",
+     "best": 149871,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 149871,
+      "excellence": 94519,
+      "discount": 110305,
+      "hapoalim": 111327,
+      "yahav": 112412,
+      "jerusalem": 91225,
+      "leumi": 117696,
+      "mizrahi-tefahot": 112654,
+      "massad": 129642,
+      "mercantile": 110051,
+      "fibi": 130532,
+      "meitav-trade": 73760,
+      "interactive-brokers": 146735
+     }
+    },
+    {
+     "id": "ie00bfmxxd54",
+     "best": 149871,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "ie0031442068",
+     "best": 147877,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 147877,
+      "excellence": 93618,
+      "discount": 106126,
+      "hapoalim": 106991,
+      "yahav": 108059,
+      "jerusalem": 88382,
+      "leumi": 114785,
+      "mizrahi-tefahot": 108264,
+      "massad": 126580,
+      "mercantile": 105874,
+      "fibi": 127119,
+      "meitav-trade": 70721,
+      "interactive-brokers": 144323
+     }
+    },
+    {
+     "id": "ie00b3xxrp09",
+     "best": 147863,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 147863,
+      "excellence": 93607,
+      "discount": 106028,
+      "hapoalim": 106981,
+      "yahav": 108049,
+      "jerusalem": 88242,
+      "leumi": 114752,
+      "mizrahi-tefahot": 108254,
+      "massad": 126545,
+      "mercantile": 105777,
+      "fibi": 127080,
+      "meitav-trade": 70710,
+      "interactive-brokers": 144310
+     }
+    },
+    {
+     "id": "us-ivv",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "us-voo",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-ta125": {
+   "headline": "psagot 5112628 153458",
+   "funds": [
+    {
+     "id": "5112628",
+     "best": 153458,
+     "bestHouse": "psagot",
+     "psagot": 153458,
+     "byHouse": {
+      "altshuler-trade": 107697,
+      "excellence": 94750,
+      "discount": 135220,
+      "hapoalim": 139693,
+      "yahav": 139693,
+      "jerusalem": 139526,
+      "leumi": 143922,
+      "mizrahi-tefahot": 130945,
+      "massad": 140483,
+      "mercantile": 135220,
+      "fibi": 140632,
+      "one-zero": 146660,
+      "meitav-trade": 101609,
+      "psagot": 153458,
+      "ibi": 134257
+     }
+    },
+    {
+     "id": "1150283",
+     "best": 150472,
+     "bestHouse": "psagot",
+     "psagot": 150472,
+     "byHouse": {
+      "altshuler-trade": 105534,
+      "excellence": 93007,
+      "discount": 132641,
+      "hapoalim": 137013,
+      "yahav": 137013,
+      "jerusalem": 136850,
+      "leumi": 141162,
+      "mizrahi-tefahot": 128441,
+      "massad": 137802,
+      "mercantile": 132641,
+      "fibi": 137948,
+      "meitav-trade": 99571,
+      "psagot": 150472,
+      "ibi": 131969
+     }
+    },
+    {
+     "id": "1146356",
+     "best": 150194,
+     "bestHouse": "psagot",
+     "psagot": 150194,
+     "byHouse": {
+      "altshuler-trade": 105332,
+      "excellence": 92844,
+      "discount": 132400,
+      "hapoalim": 136763,
+      "yahav": 136763,
+      "jerusalem": 136600,
+      "leumi": 140904,
+      "mizrahi-tefahot": 128207,
+      "massad": 137552,
+      "mercantile": 132400,
+      "fibi": 137697,
+      "meitav-trade": 99381,
+      "psagot": 150194,
+      "ibi": 131726
+     }
+    },
+    {
+     "id": "1148899",
+     "best": 150115,
+     "bestHouse": "psagot",
+     "psagot": 150115,
+     "byHouse": {
+      "altshuler-trade": 105275,
+      "excellence": 92798,
+      "discount": 132332,
+      "hapoalim": 136693,
+      "yahav": 136693,
+      "jerusalem": 136530,
+      "leumi": 140831,
+      "mizrahi-tefahot": 128141,
+      "massad": 137482,
+      "mercantile": 132332,
+      "fibi": 137627,
+      "meitav-trade": 99327,
+      "psagot": 150115,
+      "ibi": 131657
+     }
+    },
+    {
+     "id": "1143718",
+     "best": 149991,
+     "bestHouse": "psagot",
+     "psagot": 149991,
+     "byHouse": {
+      "altshuler-trade": 105185,
+      "excellence": 92726,
+      "discount": 132225,
+      "hapoalim": 136581,
+      "yahav": 136581,
+      "jerusalem": 136419,
+      "leumi": 140717,
+      "mizrahi-tefahot": 128037,
+      "massad": 137370,
+      "mercantile": 132225,
+      "fibi": 137515,
+      "meitav-trade": 99243,
+      "psagot": 149991,
+      "ibi": 131549
+     }
+    },
+    {
+     "id": "1148808",
+     "best": 148517,
+     "bestHouse": "psagot",
+     "psagot": 148517,
+     "byHouse": {
+      "altshuler-trade": 104116,
+      "excellence": 91864,
+      "discount": 130951,
+      "hapoalim": 135258,
+      "yahav": 135258,
+      "jerusalem": 135098,
+      "leumi": 139354,
+      "mizrahi-tefahot": 126800,
+      "massad": 136046,
+      "mercantile": 130951,
+      "fibi": 136190,
+      "meitav-trade": 98236,
+      "psagot": 148517,
+      "ibi": 130260
+     }
+    }
+   ]
+  },
+  "index-ta35": {
+   "headline": "psagot 5130661 154323",
+   "funds": [
+    {
+     "id": "5130661",
+     "best": 154323,
+     "bestHouse": "psagot",
+     "psagot": 154323,
+     "byHouse": {
+      "altshuler-trade": 108324,
+      "excellence": 95254,
+      "discount": 135968,
+      "hapoalim": 140469,
+      "yahav": 140469,
+      "jerusalem": 140301,
+      "leumi": 144722,
+      "mizrahi-tefahot": 131671,
+      "massad": 141259,
+      "mercantile": 135968,
+      "fibi": 141409,
+      "one-zero": 147490,
+      "meitav-trade": 102199,
+      "psagot": 154323,
+      "ibi": 135012
+     }
+    },
+    {
+     "id": "1150184",
+     "best": 150574,
+     "bestHouse": "psagot",
+     "psagot": 150574,
+     "byHouse": {
+      "altshuler-trade": 105607,
+      "excellence": 93066,
+      "discount": 132729,
+      "hapoalim": 137104,
+      "yahav": 137104,
+      "jerusalem": 136941,
+      "leumi": 141255,
+      "mizrahi-tefahot": 128526,
+      "massad": 137893,
+      "mercantile": 132729,
+      "fibi": 138039,
+      "meitav-trade": 99641,
+      "psagot": 150574,
+      "ibi": 132058
+     }
+    },
+    {
+     "id": "1146570",
+     "best": 150345,
+     "bestHouse": "psagot",
+     "psagot": 150345,
+     "byHouse": {
+      "altshuler-trade": 105442,
+      "excellence": 92933,
+      "discount": 132531,
+      "hapoalim": 136899,
+      "yahav": 136899,
+      "jerusalem": 136736,
+      "leumi": 141044,
+      "mizrahi-tefahot": 128334,
+      "massad": 137688,
+      "mercantile": 132531,
+      "fibi": 137834,
+      "meitav-trade": 99485,
+      "psagot": 150345,
+      "ibi": 131858
+     }
+    },
+    {
+     "id": "1143700",
+     "best": 150092,
+     "bestHouse": "psagot",
+     "psagot": 150092,
+     "byHouse": {
+      "altshuler-trade": 105258,
+      "excellence": 92785,
+      "discount": 132313,
+      "hapoalim": 136672,
+      "yahav": 136672,
+      "jerusalem": 136510,
+      "leumi": 140810,
+      "mizrahi-tefahot": 128122,
+      "massad": 137461,
+      "mercantile": 132313,
+      "fibi": 137606,
+      "meitav-trade": 99312,
+      "psagot": 150092,
+      "ibi": 131637
+     }
+    },
+    {
+     "id": "1148907",
+     "best": 150072,
+     "bestHouse": "psagot",
+     "psagot": 150072,
+     "byHouse": {
+      "altshuler-trade": 105244,
+      "excellence": 92773,
+      "discount": 132295,
+      "hapoalim": 136654,
+      "yahav": 136654,
+      "jerusalem": 136492,
+      "leumi": 140792,
+      "mizrahi-tefahot": 128105,
+      "massad": 137443,
+      "mercantile": 132295,
+      "fibi": 137588,
+      "meitav-trade": 99298,
+      "psagot": 150072,
+      "ibi": 131619
+     }
+    }
+   ]
+  },
+  "index-ta90": {
+   "headline": "psagot 5130638 153641",
+   "funds": [
+    {
+     "id": "5130638",
+     "best": 153641,
+     "bestHouse": "psagot",
+     "psagot": 153641,
+     "byHouse": {
+      "altshuler-trade": 107830,
+      "excellence": 94856,
+      "discount": 135378,
+      "hapoalim": 139857,
+      "yahav": 139857,
+      "jerusalem": 139690,
+      "leumi": 144091,
+      "mizrahi-tefahot": 131099,
+      "massad": 140647,
+      "mercantile": 135378,
+      "fibi": 140796,
+      "one-zero": 146836,
+      "meitav-trade": 101733,
+      "psagot": 153641,
+      "ibi": 134417
+     }
+    },
+    {
+     "id": "1209444",
+     "best": 152911,
+     "bestHouse": "psagot",
+     "psagot": 152911,
+     "byHouse": {
+      "altshuler-trade": 107301,
+      "excellence": 94431,
+      "discount": 134748,
+      "hapoalim": 139202,
+      "yahav": 139202,
+      "jerusalem": 139036,
+      "leumi": 143416,
+      "mizrahi-tefahot": 130486,
+      "massad": 139992,
+      "mercantile": 134748,
+      "fibi": 140140,
+      "meitav-trade": 101236,
+      "psagot": 152911,
+      "ibi": 134101
+     }
+    },
+    {
+     "id": "1148931",
+     "best": 145086,
+     "bestHouse": "psagot",
+     "psagot": 145086,
+     "byHouse": {
+      "altshuler-trade": 101625,
+      "excellence": 89852,
+      "discount": 127984,
+      "hapoalim": 132176,
+      "yahav": 132176,
+      "jerusalem": 132020,
+      "leumi": 136179,
+      "mizrahi-tefahot": 123920,
+      "massad": 132963,
+      "mercantile": 127984,
+      "fibi": 133103,
+      "meitav-trade": 95889,
+      "psagot": 145086,
+      "ibi": 127257
+     }
+    },
+    {
+     "id": "1143783",
+     "best": 144729,
+     "bestHouse": "psagot",
+     "psagot": 144729,
+     "byHouse": {
+      "altshuler-trade": 101365,
+      "excellence": 89642,
+      "discount": 127675,
+      "hapoalim": 131855,
+      "yahav": 131855,
+      "jerusalem": 131700,
+      "leumi": 135848,
+      "mizrahi-tefahot": 123620,
+      "massad": 132642,
+      "mercantile": 127675,
+      "fibi": 132781,
+      "meitav-trade": 95644,
+      "psagot": 144729,
+      "ibi": 126944
+     }
+    },
+    {
+     "id": "1146331",
+     "best": 144714,
+     "bestHouse": "psagot",
+     "psagot": 144714,
+     "byHouse": {
+      "altshuler-trade": 101355,
+      "excellence": 89634,
+      "discount": 127662,
+      "hapoalim": 131842,
+      "yahav": 131842,
+      "jerusalem": 131687,
+      "leumi": 135835,
+      "mizrahi-tefahot": 123607,
+      "massad": 132629,
+      "mercantile": 127662,
+      "fibi": 132768,
+      "meitav-trade": 95634,
+      "psagot": 144714,
+      "ibi": 126931
+     }
+    },
+    {
+     "id": "1150259",
+     "best": 144587,
+     "bestHouse": "psagot",
+     "psagot": 144587,
+     "byHouse": {
+      "altshuler-trade": 101262,
+      "excellence": 89559,
+      "discount": 127552,
+      "hapoalim": 131728,
+      "yahav": 131728,
+      "jerusalem": 131573,
+      "leumi": 135717,
+      "mizrahi-tefahot": 123501,
+      "massad": 132514,
+      "mercantile": 127552,
+      "fibi": 132653,
+      "meitav-trade": 95547,
+      "psagot": 144587,
+      "ibi": 126820
+     }
+    }
+   ]
+  }
+ },
+ "6000+400x20y@5%": {
+  "index-msci-acwi": {
+   "headline": "psagot 1159235 126675",
+   "funds": [
+    {
+     "id": "1201003",
+     "best": 124308,
+     "bestHouse": "psagot",
+     "psagot": 124308,
+     "byHouse": {
+      "altshuler-trade": 86442,
+      "excellence": 77516,
+      "discount": 109972,
+      "hapoalim": 113483,
+      "yahav": 113483,
+      "jerusalem": 113354,
+      "leumi": 116921,
+      "mizrahi-tefahot": 106443,
+      "massad": 114243,
+      "mercantile": 109972,
+      "fibi": 114359,
+      "meitav-trade": 81567,
+      "psagot": 124308,
+      "ibi": 109009
+     }
+    },
+    {
+     "id": "1149772",
+     "best": 118136,
+     "bestHouse": "psagot",
+     "psagot": 118136,
+     "byHouse": {
+      "altshuler-trade": 81887,
+      "excellence": 73789,
+      "discount": 104602,
+      "hapoalim": 107916,
+      "yahav": 107916,
+      "jerusalem": 107796,
+      "leumi": 111186,
+      "mizrahi-tefahot": 101237,
+      "massad": 108663,
+      "mercantile": 104602,
+      "fibi": 108772,
+      "meitav-trade": 77264,
+      "psagot": 118136,
+      "ibi": 103560
+     }
+    },
+    {
+     "id": "1144237",
+     "best": 114457,
+     "bestHouse": "psagot",
+     "psagot": 114457,
+     "byHouse": {
+      "altshuler-trade": 79158,
+      "excellence": 71550,
+      "discount": 101396,
+      "hapoalim": 104594,
+      "yahav": 104594,
+      "jerusalem": 104478,
+      "leumi": 107763,
+      "mizrahi-tefahot": 98130,
+      "massad": 105330,
+      "mercantile": 101396,
+      "fibi": 105436,
+      "meitav-trade": 74684,
+      "psagot": 114457,
+      "ibi": 100303
+     }
+    },
+    {
+     "id": "1147362",
+     "best": 100615,
+     "bestHouse": "psagot",
+     "psagot": 100615,
+     "byHouse": {
+      "altshuler-trade": 68524,
+      "excellence": 62468,
+      "discount": 89214,
+      "hapoalim": 92032,
+      "yahav": 92032,
+      "jerusalem": 91934,
+      "leumi": 94818,
+      "mizrahi-tefahot": 86352,
+      "massad": 92674,
+      "mercantile": 89214,
+      "fibi": 92764,
+      "meitav-trade": 64552,
+      "psagot": 100615,
+      "ibi": 87879
+     }
+    },
+    {
+     "id": "1144336",
+     "best": 100377,
+     "bestHouse": "psagot",
+     "psagot": 100377,
+     "byHouse": {
+      "altshuler-trade": 68306,
+      "excellence": 62288,
+      "discount": 88941,
+      "hapoalim": 91748,
+      "yahav": 91748,
+      "jerusalem": 91651,
+      "leumi": 94525,
+      "mizrahi-tefahot": 86087,
+      "massad": 92390,
+      "mercantile": 88941,
+      "fibi": 92479,
+      "meitav-trade": 64348,
+      "psagot": 100377,
+      "ibi": 87606
+     }
+    },
+    {
+     "id": "1159235",
+     "best": 126675,
+     "bestHouse": "psagot",
+     "psagot": 126675,
+     "byHouse": {
+      "altshuler-trade": 88182,
+      "excellence": 78937,
+      "discount": 112028,
+      "hapoalim": 115615,
+      "yahav": 115615,
+      "jerusalem": 115484,
+      "leumi": 114210,
+      "mizrahi-tefahot": 108438,
+      "massad": 109961,
+      "mercantile": 112028,
+      "fibi": 109155,
+      "meitav-trade": 83210,
+      "psagot": 126675,
+      "ibi": 111094
+     }
+    },
+    {
+     "id": "ie00b6r52259",
+     "best": 122125,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 122125,
+      "excellence": 78124,
+      "discount": 90487,
+      "hapoalim": 91220,
+      "yahav": 92085,
+      "jerusalem": 74649,
+      "leumi": 96412,
+      "mizrahi-tefahot": 92271,
+      "massad": 106229,
+      "mercantile": 90280,
+      "fibi": 106938,
+      "meitav-trade": 59805,
+      "interactive-brokers": 119562
+     }
+    },
+    {
+     "id": "us-acwi",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-msci-world": {
+   "headline": "psagot 5122569 122843",
+   "funds": [
+    {
+     "id": "5122569",
+     "best": 122843,
+     "bestHouse": "psagot",
+     "psagot": 122843,
+     "byHouse": {
+      "altshuler-trade": 85363,
+      "excellence": 76635,
+      "discount": 108698,
+      "hapoalim": 112162,
+      "yahav": 112162,
+      "jerusalem": 112035,
+      "leumi": 115560,
+      "mizrahi-tefahot": 105208,
+      "massad": 112919,
+      "mercantile": 108698,
+      "fibi": 113034,
+      "one-zero": 117332,
+      "meitav-trade": 80548,
+      "psagot": 122843,
+      "ibi": 107453
+     }
+    },
+    {
+     "id": "5124573",
+     "best": 121680,
+     "bestHouse": "psagot",
+     "psagot": 121680,
+     "byHouse": {
+      "altshuler-trade": 84505,
+      "excellence": 75933,
+      "discount": 107686,
+      "hapoalim": 111113,
+      "yahav": 111113,
+      "jerusalem": 110988,
+      "leumi": 114480,
+      "mizrahi-tefahot": 104227,
+      "massad": 111868,
+      "mercantile": 107686,
+      "fibi": 111981,
+      "one-zero": 116219,
+      "meitav-trade": 79738,
+      "psagot": 121680,
+      "ibi": 106429
+     }
+    },
+    {
+     "id": "5139696",
+     "best": 107015,
+     "bestHouse": "psagot",
+     "psagot": 107015,
+     "byHouse": {
+      "altshuler-trade": 73601,
+      "excellence": 66974,
+      "discount": 94897,
+      "hapoalim": 97864,
+      "yahav": 97864,
+      "jerusalem": 97758,
+      "leumi": 100827,
+      "mizrahi-tefahot": 91833,
+      "massad": 98575,
+      "mercantile": 94897,
+      "fibi": 98672,
+      "one-zero": 102192,
+      "meitav-trade": 69428,
+      "psagot": 107015,
+      "ibi": 93458
+     }
+    },
+    {
+     "id": "5140165",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "1145804",
+     "best": 116678,
+     "bestHouse": "psagot",
+     "psagot": 116678,
+     "byHouse": {
+      "altshuler-trade": 80807,
+      "excellence": 72903,
+      "discount": 103332,
+      "hapoalim": 106599,
+      "yahav": 106599,
+      "jerusalem": 106481,
+      "leumi": 109829,
+      "mizrahi-tefahot": 100006,
+      "massad": 107342,
+      "mercantile": 103332,
+      "fibi": 107450,
+      "meitav-trade": 76243,
+      "psagot": 116678,
+      "ibi": 102269
+     }
+    },
+    {
+     "id": "1185164",
+     "best": 128452,
+     "bestHouse": "psagot",
+     "psagot": 128452,
+     "byHouse": {}
+    },
+    {
+     "id": "ie00b4l5y983",
+     "best": 122125,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-nasdaq100": {
+   "headline": "psagot 5129283 127559",
+   "funds": [
+    {
+     "id": "5129283",
+     "best": 127559,
+     "bestHouse": "psagot",
+     "psagot": 127559,
+     "byHouse": {
+      "altshuler-trade": 88831,
+      "excellence": 79466,
+      "discount": 112796,
+      "hapoalim": 116412,
+      "yahav": 116412,
+      "jerusalem": 116279,
+      "leumi": 119939,
+      "mizrahi-tefahot": 109182,
+      "massad": 117178,
+      "mercantile": 112796,
+      "fibi": 117298,
+      "one-zero": 121846,
+      "meitav-trade": 83822,
+      "psagot": 127559,
+      "ibi": 111600
+     }
+    },
+    {
+     "id": "5128905",
+     "best": 126383,
+     "bestHouse": "psagot",
+     "psagot": 126383,
+     "byHouse": {
+      "altshuler-trade": 87967,
+      "excellence": 78762,
+      "discount": 111774,
+      "hapoalim": 115352,
+      "yahav": 115352,
+      "jerusalem": 115221,
+      "leumi": 118847,
+      "mizrahi-tefahot": 108191,
+      "massad": 116117,
+      "mercantile": 111774,
+      "fibi": 116235,
+      "one-zero": 120720,
+      "meitav-trade": 83007,
+      "psagot": 126383,
+      "ibi": 110566
+     }
+    },
+    {
+     "id": "1146505",
+     "best": 119487,
+     "bestHouse": "psagot",
+     "psagot": 119487,
+     "byHouse": {
+      "altshuler-trade": 82886,
+      "excellence": 74608,
+      "discount": 105778,
+      "hapoalim": 109135,
+      "yahav": 109135,
+      "jerusalem": 109012,
+      "leumi": 112441,
+      "mizrahi-tefahot": 102377,
+      "massad": 109884,
+      "mercantile": 105778,
+      "fibi": 109995,
+      "meitav-trade": 78208,
+      "psagot": 119487,
+      "ibi": 104753
+     }
+    },
+    {
+     "id": "1165844",
+     "best": 99595,
+     "bestHouse": "psagot",
+     "psagot": 99595,
+     "byHouse": {
+      "altshuler-trade": 67761,
+      "excellence": 61839,
+      "discount": 88257,
+      "hapoalim": 91037,
+      "yahav": 91037,
+      "jerusalem": 90941,
+      "leumi": 93793,
+      "mizrahi-tefahot": 85423,
+      "massad": 91679,
+      "mercantile": 88257,
+      "fibi": 91767,
+      "meitav-trade": 63838,
+      "psagot": 99595,
+      "ibi": 86922
+     }
+    },
+    {
+     "id": "1143734",
+     "best": 91414,
+     "bestHouse": "psagot",
+     "psagot": 91414,
+     "byHouse": {
+      "altshuler-trade": 62126,
+      "excellence": 57182,
+      "discount": 81180,
+      "hapoalim": 83685,
+      "yahav": 83685,
+      "jerusalem": 83597,
+      "leumi": 86216,
+      "mizrahi-tefahot": 78554,
+      "massad": 84320,
+      "mercantile": 81180,
+      "fibi": 84401,
+      "meitav-trade": 58566,
+      "psagot": 91414,
+      "ibi": 79853
+     }
+    },
+    {
+     "id": "1186063",
+     "best": 126675,
+     "bestHouse": "psagot",
+     "psagot": 126675,
+     "byHouse": {}
+    },
+    {
+     "id": "1159243",
+     "best": 125512,
+     "bestHouse": "psagot",
+     "psagot": 125512,
+     "byHouse": {
+      "altshuler-trade": 87327,
+      "excellence": 78239,
+      "discount": 111017,
+      "hapoalim": 114567,
+      "yahav": 114567,
+      "jerusalem": 114437,
+      "leumi": 113175,
+      "mizrahi-tefahot": 107457,
+      "massad": 108969,
+      "mercantile": 111017,
+      "fibi": 108170,
+      "meitav-trade": 82403,
+      "psagot": 125512,
+      "ibi": 110069
+     }
+    },
+    {
+     "id": "ie00b53szb19",
+     "best": 120958,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 120958,
+      "excellence": 77425,
+      "discount": 89651,
+      "hapoalim": 90372,
+      "yahav": 91229,
+      "jerusalem": 73952,
+      "leumi": 95515,
+      "mizrahi-tefahot": 91412,
+      "massad": 105241,
+      "mercantile": 89445,
+      "fibi": 105943,
+      "meitav-trade": 59213,
+      "interactive-brokers": 118419
+     }
+    }
+   ]
+  },
+  "index-sp500": {
+   "headline": "psagot 5139282 128813",
+   "funds": [
+    {
+     "id": "5139282",
+     "best": 128813,
+     "bestHouse": "psagot",
+     "psagot": 128813,
+     "byHouse": {
+      "altshuler-trade": 89750,
+      "excellence": 80216,
+      "discount": 113884,
+      "hapoalim": 117540,
+      "yahav": 117540,
+      "jerusalem": 117406,
+      "leumi": 121102,
+      "mizrahi-tefahot": 110238,
+      "massad": 118309,
+      "mercantile": 113884,
+      "fibi": 118431,
+      "one-zero": 123046,
+      "meitav-trade": 84691,
+      "psagot": 128813,
+      "ibi": 112700
+     }
+    },
+    {
+     "id": "5139100",
+     "best": 128692,
+     "bestHouse": "psagot",
+     "psagot": 128692,
+     "byHouse": {
+      "altshuler-trade": 89662,
+      "excellence": 80144,
+      "discount": 113780,
+      "hapoalim": 117432,
+      "yahav": 117432,
+      "jerusalem": 117298,
+      "leumi": 120990,
+      "mizrahi-tefahot": 110136,
+      "massad": 118201,
+      "mercantile": 113780,
+      "fibi": 118322,
+      "one-zero": 122931,
+      "meitav-trade": 84607,
+      "psagot": 128692,
+      "ibi": 112595
+     }
+    },
+    {
+     "id": "5124482",
+     "best": 127559,
+     "bestHouse": "psagot",
+     "psagot": 127559,
+     "byHouse": {
+      "altshuler-trade": 88831,
+      "excellence": 79466,
+      "discount": 112796,
+      "hapoalim": 116412,
+      "yahav": 116412,
+      "jerusalem": 116279,
+      "leumi": 119939,
+      "mizrahi-tefahot": 109182,
+      "massad": 117178,
+      "mercantile": 112796,
+      "fibi": 117298,
+      "one-zero": 121846,
+      "meitav-trade": 83822,
+      "psagot": 127559,
+      "ibi": 111600
+     }
+    },
+    {
+     "id": "5129275",
+     "best": 127559,
+     "bestHouse": "psagot",
+     "psagot": 127559,
+     "byHouse": {
+      "altshuler-trade": 88831,
+      "excellence": 79466,
+      "discount": 112796,
+      "hapoalim": 116412,
+      "yahav": 116412,
+      "jerusalem": 116279,
+      "leumi": 119939,
+      "mizrahi-tefahot": 109182,
+      "massad": 117178,
+      "mercantile": 112796,
+      "fibi": 117298,
+      "one-zero": 121846,
+      "meitav-trade": 83822,
+      "psagot": 127559,
+      "ibi": 111600
+     }
+    },
+    {
+     "id": "5127527",
+     "best": 104208,
+     "bestHouse": "psagot",
+     "psagot": 104208,
+     "byHouse": {
+      "altshuler-trade": 71489,
+      "excellence": 65177,
+      "discount": 92439,
+      "hapoalim": 95321,
+      "yahav": 95321,
+      "jerusalem": 95218,
+      "leumi": 98207,
+      "mizrahi-tefahot": 89453,
+      "massad": 96021,
+      "mercantile": 92439,
+      "fibi": 96115,
+      "one-zero": 99509,
+      "meitav-trade": 67429,
+      "psagot": 104208,
+      "ibi": 90959
+     }
+    },
+    {
+     "id": "1218916",
+     "best": 126582,
+     "bestHouse": "psagot",
+     "psagot": 126582,
+     "byHouse": {
+      "altshuler-trade": 88113,
+      "excellence": 78881,
+      "discount": 111947,
+      "hapoalim": 115531,
+      "yahav": 115531,
+      "jerusalem": 115399,
+      "leumi": 119031,
+      "mizrahi-tefahot": 108359,
+      "massad": 116296,
+      "mercantile": 111947,
+      "fibi": 116415,
+      "meitav-trade": 83145,
+      "psagot": 126582,
+      "ibi": 111012
+     }
+    },
+    {
+     "id": "1201656",
+     "best": 125281,
+     "bestHouse": "psagot",
+     "psagot": 125281,
+     "byHouse": {
+      "altshuler-trade": 87157,
+      "excellence": 78101,
+      "discount": 110817,
+      "hapoalim": 114359,
+      "yahav": 114359,
+      "jerusalem": 114230,
+      "leumi": 117824,
+      "mizrahi-tefahot": 107263,
+      "massad": 115122,
+      "mercantile": 110817,
+      "fibi": 115239,
+      "meitav-trade": 82243,
+      "psagot": 125281,
+      "ibi": 109866
+     }
+    },
+    {
+     "id": "1165810",
+     "best": 124138,
+     "bestHouse": "psagot",
+     "psagot": 124138,
+     "byHouse": {
+      "altshuler-trade": 86316,
+      "excellence": 77414,
+      "discount": 109823,
+      "hapoalim": 113329,
+      "yahav": 113329,
+      "jerusalem": 113201,
+      "leumi": 116763,
+      "mizrahi-tefahot": 106300,
+      "massad": 114089,
+      "mercantile": 109823,
+      "fibi": 114205,
+      "meitav-trade": 81448,
+      "psagot": 124138,
+      "ibi": 108858
+     }
+    },
+    {
+     "id": "1150333",
+     "best": 122343,
+     "bestHouse": "psagot",
+     "psagot": 122343,
+     "byHouse": {
+      "altshuler-trade": 84994,
+      "excellence": 76333,
+      "discount": 108263,
+      "hapoalim": 111711,
+      "yahav": 111711,
+      "jerusalem": 111584,
+      "leumi": 115095,
+      "mizrahi-tefahot": 104786,
+      "massad": 112467,
+      "mercantile": 108263,
+      "fibi": 112581,
+      "meitav-trade": 80199,
+      "psagot": 122343,
+      "ibi": 107275
+     }
+    },
+    {
+     "id": "1146471",
+     "best": 119206,
+     "bestHouse": "psagot",
+     "psagot": 119206,
+     "byHouse": {
+      "altshuler-trade": 82678,
+      "excellence": 74438,
+      "discount": 105533,
+      "hapoalim": 108881,
+      "yahav": 108881,
+      "jerusalem": 108759,
+      "leumi": 112180,
+      "mizrahi-tefahot": 102140,
+      "massad": 109630,
+      "mercantile": 105533,
+      "fibi": 109741,
+      "meitav-trade": 78011,
+      "psagot": 119206,
+      "ibi": 104505
+     }
+    },
+    {
+     "id": "1149020",
+     "best": 119139,
+     "bestHouse": "psagot",
+     "psagot": 119139,
+     "byHouse": {
+      "altshuler-trade": 82629,
+      "excellence": 74397,
+      "discount": 105475,
+      "hapoalim": 108821,
+      "yahav": 108821,
+      "jerusalem": 108699,
+      "leumi": 112118,
+      "mizrahi-tefahot": 102084,
+      "massad": 109570,
+      "mercantile": 105475,
+      "fibi": 109681,
+      "meitav-trade": 77965,
+      "psagot": 119139,
+      "ibi": 104446
+     }
+    },
+    {
+     "id": "1144385",
+     "best": 117510,
+     "bestHouse": "psagot",
+     "psagot": 117510,
+     "byHouse": {
+      "altshuler-trade": 81423,
+      "excellence": 73409,
+      "discount": 104057,
+      "hapoalim": 107351,
+      "yahav": 107351,
+      "jerusalem": 107231,
+      "leumi": 110603,
+      "mizrahi-tefahot": 100708,
+      "massad": 108096,
+      "mercantile": 104057,
+      "fibi": 108204,
+      "meitav-trade": 76825,
+      "psagot": 117510,
+      "ibi": 103006
+     }
+    },
+    {
+     "id": "1148162",
+     "best": 116632,
+     "bestHouse": "psagot",
+     "psagot": 116632,
+     "byHouse": {
+      "altshuler-trade": 80772,
+      "excellence": 72875,
+      "discount": 103291,
+      "hapoalim": 106558,
+      "yahav": 106558,
+      "jerusalem": 106439,
+      "leumi": 109786,
+      "mizrahi-tefahot": 99967,
+      "massad": 107300,
+      "mercantile": 103291,
+      "fibi": 107408,
+      "meitav-trade": 76210,
+      "psagot": 116632,
+      "ibi": 102228
+     }
+    },
+    {
+     "id": "1183441",
+     "best": 128452,
+     "bestHouse": "psagot",
+     "psagot": 128452,
+     "byHouse": {}
+    },
+    {
+     "id": "1159250",
+     "best": 128213,
+     "bestHouse": "psagot",
+     "psagot": 128213,
+     "byHouse": {
+      "altshuler-trade": 89311,
+      "excellence": 79858,
+      "discount": 113364,
+      "hapoalim": 117001,
+      "yahav": 117001,
+      "jerusalem": 116867,
+      "leumi": 115579,
+      "mizrahi-tefahot": 109733,
+      "massad": 111272,
+      "mercantile": 113364,
+      "fibi": 110457,
+      "meitav-trade": 84276,
+      "psagot": 128213,
+      "ibi": 112448
+     }
+    },
+    {
+     "id": "ie00b5bmr087",
+     "best": 123667,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 123667,
+      "excellence": 79048,
+      "discount": 91593,
+      "hapoalim": 92340,
+      "yahav": 93218,
+      "jerusalem": 75571,
+      "leumi": 97599,
+      "mizrahi-tefahot": 93407,
+      "massad": 107534,
+      "mercantile": 91382,
+      "fibi": 108254,
+      "meitav-trade": 60586,
+      "interactive-brokers": 121072
+     }
+    },
+    {
+     "id": "ie00bfmxxd54",
+     "best": 123667,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "ie0031442068",
+     "best": 122321,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 122321,
+      "excellence": 78386,
+      "discount": 88219,
+      "hapoalim": 88915,
+      "yahav": 89782,
+      "jerusalem": 73926,
+      "leumi": 95505,
+      "mizrahi-tefahot": 89941,
+      "massad": 105338,
+      "mercantile": 88010,
+      "fibi": 105786,
+      "meitav-trade": 58341,
+      "interactive-brokers": 119370
+     }
+    },
+    {
+     "id": "ie00b3xxrp09",
+     "best": 122313,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 122313,
+      "excellence": 78378,
+      "discount": 88213,
+      "hapoalim": 88909,
+      "yahav": 89701,
+      "jerusalem": 73921,
+      "leumi": 95481,
+      "mizrahi-tefahot": 89935,
+      "massad": 105312,
+      "mercantile": 88004,
+      "fibi": 105758,
+      "meitav-trade": 58334,
+      "interactive-brokers": 119362
+     }
+    },
+    {
+     "id": "us-ivv",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "us-voo",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-ta125": {
+   "headline": "psagot 5112628 127559",
+   "funds": [
+    {
+     "id": "5112628",
+     "best": 127559,
+     "bestHouse": "psagot",
+     "psagot": 127559,
+     "byHouse": {
+      "altshuler-trade": 88831,
+      "excellence": 79466,
+      "discount": 112796,
+      "hapoalim": 116412,
+      "yahav": 116412,
+      "jerusalem": 116279,
+      "leumi": 119939,
+      "mizrahi-tefahot": 109182,
+      "massad": 117178,
+      "mercantile": 112796,
+      "fibi": 117298,
+      "one-zero": 121846,
+      "meitav-trade": 83822,
+      "psagot": 127559,
+      "ibi": 111600
+     }
+    },
+    {
+     "id": "1150283",
+     "best": 125300,
+     "bestHouse": "psagot",
+     "psagot": 125300,
+     "byHouse": {
+      "altshuler-trade": 87172,
+      "excellence": 78112,
+      "discount": 110834,
+      "hapoalim": 114377,
+      "yahav": 114377,
+      "jerusalem": 114247,
+      "leumi": 117842,
+      "mizrahi-tefahot": 107279,
+      "massad": 115139,
+      "mercantile": 110834,
+      "fibi": 115257,
+      "meitav-trade": 82256,
+      "psagot": 125300,
+      "ibi": 109883
+     }
+    },
+    {
+     "id": "1146356",
+     "best": 125090,
+     "bestHouse": "psagot",
+     "psagot": 125090,
+     "byHouse": {
+      "altshuler-trade": 87016,
+      "excellence": 77986,
+      "discount": 110651,
+      "hapoalim": 114187,
+      "yahav": 114187,
+      "jerusalem": 114057,
+      "leumi": 117646,
+      "mizrahi-tefahot": 107102,
+      "massad": 114949,
+      "mercantile": 110651,
+      "fibi": 115066,
+      "meitav-trade": 82109,
+      "psagot": 125090,
+      "ibi": 109697
+     }
+    },
+    {
+     "id": "1148899",
+     "best": 125030,
+     "bestHouse": "psagot",
+     "psagot": 125030,
+     "byHouse": {
+      "altshuler-trade": 86973,
+      "excellence": 77950,
+      "discount": 110599,
+      "hapoalim": 114133,
+      "yahav": 114133,
+      "jerusalem": 114004,
+      "leumi": 117591,
+      "mizrahi-tefahot": 107052,
+      "massad": 114895,
+      "mercantile": 110599,
+      "fibi": 115012,
+      "meitav-trade": 82068,
+      "psagot": 125030,
+      "ibi": 109645
+     }
+    },
+    {
+     "id": "1143718",
+     "best": 124937,
+     "bestHouse": "psagot",
+     "psagot": 124937,
+     "byHouse": {
+      "altshuler-trade": 86904,
+      "excellence": 77894,
+      "discount": 110518,
+      "hapoalim": 114049,
+      "yahav": 114049,
+      "jerusalem": 113919,
+      "leumi": 117504,
+      "mizrahi-tefahot": 106973,
+      "massad": 114810,
+      "mercantile": 110518,
+      "fibi": 114928,
+      "meitav-trade": 82003,
+      "psagot": 124937,
+      "ibi": 109562
+     }
+    },
+    {
+     "id": "1148808",
+     "best": 123821,
+     "bestHouse": "psagot",
+     "psagot": 123821,
+     "byHouse": {
+      "altshuler-trade": 86083,
+      "excellence": 77223,
+      "discount": 109548,
+      "hapoalim": 113043,
+      "yahav": 113043,
+      "jerusalem": 112915,
+      "leumi": 116468,
+      "mizrahi-tefahot": 106032,
+      "massad": 113803,
+      "mercantile": 109548,
+      "fibi": 113918,
+      "meitav-trade": 81228,
+      "psagot": 123821,
+      "ibi": 108579
+     }
+    }
+   ]
+  },
+  "index-ta35": {
+   "headline": "psagot 5130661 128213",
+   "funds": [
+    {
+     "id": "5130661",
+     "best": 128213,
+     "bestHouse": "psagot",
+     "psagot": 128213,
+     "byHouse": {
+      "altshuler-trade": 89311,
+      "excellence": 79858,
+      "discount": 113364,
+      "hapoalim": 117001,
+      "yahav": 117001,
+      "jerusalem": 116867,
+      "leumi": 120546,
+      "mizrahi-tefahot": 109733,
+      "massad": 117768,
+      "mercantile": 113364,
+      "fibi": 117889,
+      "one-zero": 122473,
+      "meitav-trade": 84276,
+      "psagot": 128213,
+      "ibi": 112174
+     }
+    },
+    {
+     "id": "1150184",
+     "best": 125377,
+     "bestHouse": "psagot",
+     "psagot": 125377,
+     "byHouse": {
+      "altshuler-trade": 87228,
+      "excellence": 78158,
+      "discount": 110901,
+      "hapoalim": 114446,
+      "yahav": 114446,
+      "jerusalem": 114316,
+      "leumi": 117913,
+      "mizrahi-tefahot": 107344,
+      "massad": 115209,
+      "mercantile": 110901,
+      "fibi": 115326,
+      "meitav-trade": 82309,
+      "psagot": 125377,
+      "ibi": 109951
+     }
+    },
+    {
+     "id": "1146570",
+     "best": 125205,
+     "bestHouse": "psagot",
+     "psagot": 125205,
+     "byHouse": {
+      "altshuler-trade": 87101,
+      "excellence": 78055,
+      "discount": 110750,
+      "hapoalim": 114290,
+      "yahav": 114290,
+      "jerusalem": 114160,
+      "leumi": 117753,
+      "mizrahi-tefahot": 107198,
+      "massad": 115053,
+      "mercantile": 110750,
+      "fibi": 115170,
+      "meitav-trade": 82189,
+      "psagot": 125205,
+      "ibi": 109799
+     }
+    },
+    {
+     "id": "1143700",
+     "best": 125013,
+     "bestHouse": "psagot",
+     "psagot": 125013,
+     "byHouse": {
+      "altshuler-trade": 86960,
+      "excellence": 77940,
+      "discount": 110584,
+      "hapoalim": 114118,
+      "yahav": 114118,
+      "jerusalem": 113988,
+      "leumi": 117575,
+      "mizrahi-tefahot": 107037,
+      "massad": 114880,
+      "mercantile": 110584,
+      "fibi": 114997,
+      "meitav-trade": 82056,
+      "psagot": 125013,
+      "ibi": 109630
+     }
+    },
+    {
+     "id": "1148907",
+     "best": 124998,
+     "bestHouse": "psagot",
+     "psagot": 124998,
+     "byHouse": {
+      "altshuler-trade": 86949,
+      "excellence": 77930,
+      "discount": 110571,
+      "hapoalim": 114104,
+      "yahav": 114104,
+      "jerusalem": 113974,
+      "leumi": 117561,
+      "mizrahi-tefahot": 107024,
+      "massad": 114866,
+      "mercantile": 110571,
+      "fibi": 114983,
+      "meitav-trade": 82046,
+      "psagot": 124998,
+      "ibi": 109616
+     }
+    }
+   ]
+  },
+  "index-ta90": {
+   "headline": "psagot 5130638 127697",
+   "funds": [
+    {
+     "id": "5130638",
+     "best": 127697,
+     "bestHouse": "psagot",
+     "psagot": 127697,
+     "byHouse": {
+      "altshuler-trade": 88932,
+      "excellence": 79549,
+      "discount": 112916,
+      "hapoalim": 116536,
+      "yahav": 116536,
+      "jerusalem": 116403,
+      "leumi": 120067,
+      "mizrahi-tefahot": 109298,
+      "massad": 117303,
+      "mercantile": 112916,
+      "fibi": 117423,
+      "one-zero": 121979,
+      "meitav-trade": 83918,
+      "psagot": 127697,
+      "ibi": 111721
+     }
+    },
+    {
+     "id": "1209444",
+     "best": 127145,
+     "bestHouse": "psagot",
+     "psagot": 127145,
+     "byHouse": {
+      "altshuler-trade": 88527,
+      "excellence": 79219,
+      "discount": 112436,
+      "hapoalim": 116039,
+      "yahav": 116039,
+      "jerusalem": 115907,
+      "leumi": 119555,
+      "mizrahi-tefahot": 108834,
+      "massad": 116805,
+      "mercantile": 112436,
+      "fibi": 116924,
+      "meitav-trade": 83536,
+      "psagot": 127145,
+      "ibi": 111508
+     }
+    },
+    {
+     "id": "1148931",
+     "best": 121221,
+     "bestHouse": "psagot",
+     "psagot": 121221,
+     "byHouse": {
+      "altshuler-trade": 84167,
+      "excellence": 75656,
+      "discount": 107287,
+      "hapoalim": 110699,
+      "yahav": 110699,
+      "jerusalem": 110575,
+      "leumi": 114053,
+      "mizrahi-tefahot": 103840,
+      "massad": 111453,
+      "mercantile": 107287,
+      "fibi": 111566,
+      "meitav-trade": 79418,
+      "psagot": 121221,
+      "ibi": 106285
+     }
+    },
+    {
+     "id": "1143783",
+     "best": 120951,
+     "bestHouse": "psagot",
+     "psagot": 120951,
+     "byHouse": {
+      "altshuler-trade": 83967,
+      "excellence": 75493,
+      "discount": 107052,
+      "hapoalim": 110455,
+      "yahav": 110455,
+      "jerusalem": 110331,
+      "leumi": 113802,
+      "mizrahi-tefahot": 103612,
+      "massad": 111208,
+      "mercantile": 107052,
+      "fibi": 111321,
+      "meitav-trade": 79229,
+      "psagot": 120951,
+      "ibi": 106046
+     }
+    },
+    {
+     "id": "1146331",
+     "best": 120940,
+     "bestHouse": "psagot",
+     "psagot": 120940,
+     "byHouse": {
+      "altshuler-trade": 83959,
+      "excellence": 75486,
+      "discount": 107042,
+      "hapoalim": 110445,
+      "yahav": 110445,
+      "jerusalem": 110321,
+      "leumi": 113792,
+      "mizrahi-tefahot": 103603,
+      "massad": 111199,
+      "mercantile": 107042,
+      "fibi": 111311,
+      "meitav-trade": 79222,
+      "psagot": 120940,
+      "ibi": 106037
+     }
+    },
+    {
+     "id": "1150259",
+     "best": 120843,
+     "bestHouse": "psagot",
+     "psagot": 120843,
+     "byHouse": {
+      "altshuler-trade": 83888,
+      "excellence": 75428,
+      "discount": 106958,
+      "hapoalim": 110358,
+      "yahav": 110358,
+      "jerusalem": 110234,
+      "leumi": 113702,
+      "mizrahi-tefahot": 103521,
+      "massad": 111111,
+      "mercantile": 106958,
+      "fibi": 111224,
+      "meitav-trade": 79154,
+      "psagot": 120843,
+      "ibi": 105951
+     }
+    }
+   ]
+  }
+ },
+ "10000+500x10y@7% (page default)": {
+  "index-msci-acwi": {
+   "headline": "psagot 1159235 85728",
+   "funds": [
+    {
+     "id": "1201003",
+     "best": 84870,
+     "bestHouse": "psagot",
+     "psagot": 84870,
+     "byHouse": {
+      "altshuler-trade": 64839,
+      "excellence": 62470,
+      "discount": 78412,
+      "hapoalim": 79950,
+      "yahav": 79950,
+      "jerusalem": 79852,
+      "leumi": 81842,
+      "mizrahi-tefahot": 76240,
+      "massad": 80752,
+      "mercantile": 78412,
+      "fibi": 80839,
+      "meitav-trade": 62214,
+      "psagot": 84870,
+      "ibi": 77246
+     }
+    },
+    {
+     "id": "1149772",
+     "best": 82574,
+     "bestHouse": "psagot",
+     "psagot": 82574,
+     "byHouse": {
+      "altshuler-trade": 62934,
+      "excellence": 60755,
+      "discount": 76302,
+      "hapoalim": 77796,
+      "yahav": 77796,
+      "jerusalem": 77701,
+      "leumi": 79642,
+      "mizrahi-tefahot": 74181,
+      "massad": 78585,
+      "mercantile": 76302,
+      "fibi": 78669,
+      "meitav-trade": 60381,
+      "psagot": 82574,
+      "ibi": 75124
+     }
+    },
+    {
+     "id": "1144237",
+     "best": 81161,
+     "bestHouse": "psagot",
+     "psagot": 81161,
+     "byHouse": {
+      "altshuler-trade": 61761,
+      "excellence": 59698,
+      "discount": 75005,
+      "hapoalim": 76471,
+      "yahav": 76471,
+      "jerusalem": 76378,
+      "leumi": 78289,
+      "mizrahi-tefahot": 72914,
+      "massad": 77252,
+      "mercantile": 75005,
+      "fibi": 77334,
+      "meitav-trade": 59251,
+      "psagot": 81161,
+      "ibi": 73819
+     }
+    },
+    {
+     "id": "1147362",
+     "best": 75509,
+     "bestHouse": "psagot",
+     "psagot": 75509,
+     "byHouse": {
+      "altshuler-trade": 57042,
+      "excellence": 55442,
+      "discount": 69808,
+      "hapoalim": 71165,
+      "yahav": 71165,
+      "jerusalem": 71081,
+      "leumi": 72869,
+      "mizrahi-tefahot": 67842,
+      "massad": 71913,
+      "mercantile": 69808,
+      "fibi": 71988,
+      "meitav-trade": 54708,
+      "psagot": 75509,
+      "ibi": 68583
+     }
+    },
+    {
+     "id": "1144336",
+     "best": 75407,
+     "bestHouse": "psagot",
+     "psagot": 75407,
+     "byHouse": {
+      "altshuler-trade": 56956,
+      "excellence": 55364,
+      "discount": 69714,
+      "hapoalim": 71069,
+      "yahav": 71069,
+      "jerusalem": 70985,
+      "leumi": 72771,
+      "mizrahi-tefahot": 67751,
+      "massad": 71817,
+      "mercantile": 69714,
+      "fibi": 71891,
+      "meitav-trade": 54625,
+      "psagot": 75407,
+      "ibi": 68488
+     }
+    },
+    {
+     "id": "1159235",
+     "best": 85728,
+     "bestHouse": "psagot",
+     "psagot": 85728,
+     "byHouse": {
+      "altshuler-trade": 65550,
+      "excellence": 63109,
+      "discount": 79199,
+      "hapoalim": 80755,
+      "yahav": 80755,
+      "jerusalem": 80655,
+      "leumi": 79991,
+      "mizrahi-tefahot": 77010,
+      "massad": 78030,
+      "mercantile": 79199,
+      "fibi": 77609,
+      "meitav-trade": 62898,
+      "psagot": 85728,
+      "ibi": 78038
+     }
+    },
+    {
+     "id": "ie00b6r52259",
+     "best": 83622,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 83622,
+      "excellence": 62757,
+      "discount": 67863,
+      "hapoalim": 67928,
+      "yahav": 68349,
+      "jerusalem": 58484,
+      "leumi": 70938,
+      "mizrahi-tefahot": 68612,
+      "massad": 76363,
+      "mercantile": 67744,
+      "fibi": 76833,
+      "meitav-trade": 50225,
+      "interactive-brokers": 82277
+     }
+    },
+    {
+     "id": "us-acwi",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-msci-world": {
+   "headline": "psagot 5122569 84333",
+   "funds": [
+    {
+     "id": "5122569",
+     "best": 84333,
+     "bestHouse": "psagot",
+     "psagot": 84333,
+     "byHouse": {
+      "altshuler-trade": 64394,
+      "excellence": 62069,
+      "discount": 77918,
+      "hapoalim": 79446,
+      "yahav": 79446,
+      "jerusalem": 79349,
+      "leumi": 81328,
+      "mizrahi-tefahot": 75759,
+      "massad": 80245,
+      "mercantile": 77918,
+      "fibi": 80331,
+      "one-zero": 81054,
+      "meitav-trade": 61786,
+      "psagot": 84333,
+      "ibi": 76625
+     }
+    },
+    {
+     "id": "5124573",
+     "best": 83903,
+     "bestHouse": "psagot",
+     "psagot": 83903,
+     "byHouse": {
+      "altshuler-trade": 64037,
+      "excellence": 61748,
+      "discount": 77523,
+      "hapoalim": 79043,
+      "yahav": 79043,
+      "jerusalem": 78946,
+      "leumi": 80916,
+      "mizrahi-tefahot": 75373,
+      "massad": 79839,
+      "mercantile": 77523,
+      "fibi": 79925,
+      "one-zero": 80639,
+      "meitav-trade": 61443,
+      "psagot": 83903,
+      "ibi": 76228
+     }
+    },
+    {
+     "id": "5139696",
+     "best": 78194,
+     "bestHouse": "psagot",
+     "psagot": 78194,
+     "byHouse": {
+      "altshuler-trade": 59288,
+      "excellence": 57468,
+      "discount": 72277,
+      "hapoalim": 73685,
+      "yahav": 73685,
+      "jerusalem": 73597,
+      "leumi": 75444,
+      "mizrahi-tefahot": 70252,
+      "massad": 74450,
+      "mercantile": 72277,
+      "fibi": 74528,
+      "one-zero": 75125,
+      "meitav-trade": 56871,
+      "psagot": 78194,
+      "ibi": 70954
+     }
+    },
+    {
+     "id": "5140165",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "1145804",
+     "best": 82018,
+     "bestHouse": "psagot",
+     "psagot": 82018,
+     "byHouse": {
+      "altshuler-trade": 62473,
+      "excellence": 60339,
+      "discount": 75792,
+      "hapoalim": 77274,
+      "yahav": 77274,
+      "jerusalem": 77180,
+      "leumi": 79110,
+      "mizrahi-tefahot": 73682,
+      "massad": 78061,
+      "mercantile": 75792,
+      "fibi": 78144,
+      "meitav-trade": 59937,
+      "psagot": 82018,
+      "ibi": 74611
+     }
+    },
+    {
+     "id": "1185164",
+     "best": 86364,
+     "bestHouse": "psagot",
+     "psagot": 86364,
+     "byHouse": {}
+    },
+    {
+     "id": "ie00b4l5y983",
+     "best": 83622,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-nasdaq100": {
+   "headline": "psagot 5129283 86045",
+   "funds": [
+    {
+     "id": "5129283",
+     "best": 86045,
+     "bestHouse": "psagot",
+     "psagot": 86045,
+     "byHouse": {
+      "altshuler-trade": 65812,
+      "excellence": 63345,
+      "discount": 79491,
+      "hapoalim": 81052,
+      "yahav": 81052,
+      "jerusalem": 80952,
+      "leumi": 82968,
+      "mizrahi-tefahot": 77294,
+      "massad": 81860,
+      "mercantile": 79491,
+      "fibi": 81948,
+      "one-zero": 82709,
+      "meitav-trade": 63151,
+      "psagot": 86045,
+      "ibi": 78204
+     }
+    },
+    {
+     "id": "5128905",
+     "best": 85622,
+     "bestHouse": "psagot",
+     "psagot": 85622,
+     "byHouse": {
+      "altshuler-trade": 65463,
+      "excellence": 63031,
+      "discount": 79103,
+      "hapoalim": 80656,
+      "yahav": 80656,
+      "jerusalem": 80556,
+      "leumi": 82563,
+      "mizrahi-tefahot": 76915,
+      "massad": 81461,
+      "mercantile": 79103,
+      "fibi": 81549,
+      "one-zero": 82301,
+      "meitav-trade": 62814,
+      "psagot": 85622,
+      "ibi": 77814
+     }
+    },
+    {
+     "id": "1146505",
+     "best": 83084,
+     "bestHouse": "psagot",
+     "psagot": 83084,
+     "byHouse": {
+      "altshuler-trade": 63358,
+      "excellence": 61136,
+      "discount": 76771,
+      "hapoalim": 78274,
+      "yahav": 78274,
+      "jerusalem": 78179,
+      "leumi": 80131,
+      "mizrahi-tefahot": 74638,
+      "massad": 79066,
+      "mercantile": 76771,
+      "fibi": 79151,
+      "meitav-trade": 60789,
+      "psagot": 83084,
+      "ibi": 75596
+     }
+    },
+    {
+     "id": "1165844",
+     "best": 75150,
+     "bestHouse": "psagot",
+     "psagot": 75150,
+     "byHouse": {
+      "altshuler-trade": 56741,
+      "excellence": 55170,
+      "discount": 69477,
+      "hapoalim": 70827,
+      "yahav": 70827,
+      "jerusalem": 70744,
+      "leumi": 72525,
+      "mizrahi-tefahot": 67520,
+      "massad": 71574,
+      "mercantile": 69477,
+      "fibi": 71648,
+      "meitav-trade": 54417,
+      "psagot": 75150,
+      "ibi": 68250
+     }
+    },
+    {
+     "id": "1143734",
+     "best": 72417,
+     "bestHouse": "psagot",
+     "psagot": 72417,
+     "byHouse": {
+      "altshuler-trade": 54443,
+      "excellence": 53093,
+      "discount": 66962,
+      "hapoalim": 68260,
+      "yahav": 68260,
+      "jerusalem": 68181,
+      "leumi": 69902,
+      "mizrahi-tefahot": 65066,
+      "massad": 68989,
+      "mercantile": 66962,
+      "fibi": 69060,
+      "meitav-trade": 52203,
+      "psagot": 72417,
+      "ibi": 65711
+     }
+    },
+    {
+     "id": "1186063",
+     "best": 85728,
+     "bestHouse": "psagot",
+     "psagot": 85728,
+     "byHouse": {}
+    },
+    {
+     "id": "1159243",
+     "best": 85308,
+     "bestHouse": "psagot",
+     "psagot": 85308,
+     "byHouse": {
+      "altshuler-trade": 65202,
+      "excellence": 62796,
+      "discount": 78814,
+      "hapoalim": 80360,
+      "yahav": 80360,
+      "jerusalem": 80262,
+      "leumi": 79600,
+      "mizrahi-tefahot": 76633,
+      "massad": 77649,
+      "mercantile": 78814,
+      "fibi": 77229,
+      "meitav-trade": 62563,
+      "psagot": 85308,
+      "ibi": 77650
+     }
+    },
+    {
+     "id": "ie00b53szb19",
+     "best": 83202,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 83202,
+      "excellence": 62443,
+      "discount": 67522,
+      "hapoalim": 67586,
+      "yahav": 68005,
+      "jerusalem": 58183,
+      "leumi": 70582,
+      "mizrahi-tefahot": 68266,
+      "massad": 75984,
+      "mercantile": 67405,
+      "fibi": 76452,
+      "meitav-trade": 49946,
+      "interactive-brokers": 81864
+     }
+    }
+   ]
+  },
+  "index-sp500": {
+   "headline": "psagot 5139282 86492",
+   "funds": [
+    {
+     "id": "5139282",
+     "best": 86492,
+     "bestHouse": "psagot",
+     "psagot": 86492,
+     "byHouse": {
+      "altshuler-trade": 66183,
+      "excellence": 63678,
+      "discount": 79901,
+      "hapoalim": 81471,
+      "yahav": 81471,
+      "jerusalem": 81371,
+      "leumi": 83396,
+      "mizrahi-tefahot": 77695,
+      "massad": 82282,
+      "mercantile": 79901,
+      "fibi": 82371,
+      "one-zero": 83141,
+      "meitav-trade": 63507,
+      "psagot": 86492,
+      "ibi": 78616
+     }
+    },
+    {
+     "id": "5139100",
+     "best": 86449,
+     "bestHouse": "psagot",
+     "psagot": 86449,
+     "byHouse": {
+      "altshuler-trade": 66147,
+      "excellence": 63646,
+      "discount": 79862,
+      "hapoalim": 81431,
+      "yahav": 81431,
+      "jerusalem": 81331,
+      "leumi": 83355,
+      "mizrahi-tefahot": 77657,
+      "massad": 82241,
+      "mercantile": 79862,
+      "fibi": 82330,
+      "one-zero": 83100,
+      "meitav-trade": 63473,
+      "psagot": 86449,
+      "ibi": 78577
+     }
+    },
+    {
+     "id": "5124482",
+     "best": 86045,
+     "bestHouse": "psagot",
+     "psagot": 86045,
+     "byHouse": {
+      "altshuler-trade": 65812,
+      "excellence": 63345,
+      "discount": 79491,
+      "hapoalim": 81052,
+      "yahav": 81052,
+      "jerusalem": 80952,
+      "leumi": 82968,
+      "mizrahi-tefahot": 77294,
+      "massad": 81860,
+      "mercantile": 79491,
+      "fibi": 81948,
+      "one-zero": 82709,
+      "meitav-trade": 63151,
+      "psagot": 86045,
+      "ibi": 78204
+     }
+    },
+    {
+     "id": "5129275",
+     "best": 86045,
+     "bestHouse": "psagot",
+     "psagot": 86045,
+     "byHouse": {
+      "altshuler-trade": 65812,
+      "excellence": 63345,
+      "discount": 79491,
+      "hapoalim": 81052,
+      "yahav": 81052,
+      "jerusalem": 80952,
+      "leumi": 82968,
+      "mizrahi-tefahot": 77294,
+      "massad": 81860,
+      "mercantile": 79491,
+      "fibi": 81948,
+      "one-zero": 82709,
+      "meitav-trade": 63151,
+      "psagot": 86045,
+      "ibi": 78204
+     }
+    },
+    {
+     "id": "5127527",
+     "best": 77032,
+     "bestHouse": "psagot",
+     "psagot": 77032,
+     "byHouse": {
+      "altshuler-trade": 58318,
+      "excellence": 56593,
+      "discount": 71209,
+      "hapoalim": 72595,
+      "yahav": 72595,
+      "jerusalem": 72509,
+      "leumi": 74331,
+      "mizrahi-tefahot": 69210,
+      "massad": 73353,
+      "mercantile": 71209,
+      "fibi": 73430,
+      "one-zero": 74004,
+      "meitav-trade": 55936,
+      "psagot": 77032,
+      "ibi": 69879
+     }
+    },
+    {
+     "id": "1218916",
+     "best": 85694,
+     "bestHouse": "psagot",
+     "psagot": 85694,
+     "byHouse": {
+      "altshuler-trade": 65522,
+      "excellence": 63084,
+      "discount": 79168,
+      "hapoalim": 80723,
+      "yahav": 80723,
+      "jerusalem": 80623,
+      "leumi": 82632,
+      "mizrahi-tefahot": 76980,
+      "massad": 81529,
+      "mercantile": 79168,
+      "fibi": 81617,
+      "meitav-trade": 62871,
+      "psagot": 85694,
+      "ibi": 78006
+     }
+    },
+    {
+     "id": "1201656",
+     "best": 85224,
+     "bestHouse": "psagot",
+     "psagot": 85224,
+     "byHouse": {
+      "altshuler-trade": 65132,
+      "excellence": 62734,
+      "discount": 78737,
+      "hapoalim": 80282,
+      "yahav": 80282,
+      "jerusalem": 80183,
+      "leumi": 82181,
+      "mizrahi-tefahot": 76558,
+      "massad": 81086,
+      "mercantile": 78737,
+      "fibi": 81173,
+      "meitav-trade": 62496,
+      "psagot": 85224,
+      "ibi": 77572
+     }
+    },
+    {
+     "id": "1165810",
+     "best": 84808,
+     "bestHouse": "psagot",
+     "psagot": 84808,
+     "byHouse": {
+      "altshuler-trade": 64788,
+      "excellence": 62423,
+      "discount": 78354,
+      "hapoalim": 79891,
+      "yahav": 79891,
+      "jerusalem": 79793,
+      "leumi": 81783,
+      "mizrahi-tefahot": 76185,
+      "massad": 80693,
+      "mercantile": 78354,
+      "fibi": 80780,
+      "meitav-trade": 62165,
+      "psagot": 84808,
+      "ibi": 77188
+     }
+    },
+    {
+     "id": "1150333",
+     "best": 84148,
+     "bestHouse": "psagot",
+     "psagot": 84148,
+     "byHouse": {
+      "altshuler-trade": 64241,
+      "excellence": 61931,
+      "discount": 77749,
+      "hapoalim": 79273,
+      "yahav": 79273,
+      "jerusalem": 79176,
+      "leumi": 81151,
+      "mizrahi-tefahot": 75593,
+      "massad": 80071,
+      "mercantile": 77749,
+      "fibi": 80157,
+      "meitav-trade": 61638,
+      "psagot": 84148,
+      "ibi": 76579
+     }
+    },
+    {
+     "id": "1146471",
+     "best": 82978,
+     "bestHouse": "psagot",
+     "psagot": 82978,
+     "byHouse": {
+      "altshuler-trade": 63270,
+      "excellence": 61057,
+      "discount": 76674,
+      "hapoalim": 78175,
+      "yahav": 78175,
+      "jerusalem": 78080,
+      "leumi": 80030,
+      "mizrahi-tefahot": 74544,
+      "massad": 78967,
+      "mercantile": 76674,
+      "fibi": 79051,
+      "meitav-trade": 60704,
+      "psagot": 82978,
+      "ibi": 75498
+     }
+    },
+    {
+     "id": "1149020",
+     "best": 82953,
+     "bestHouse": "psagot",
+     "psagot": 82953,
+     "byHouse": {
+      "altshuler-trade": 63249,
+      "excellence": 61038,
+      "discount": 76651,
+      "hapoalim": 78152,
+      "yahav": 78152,
+      "jerusalem": 78056,
+      "leumi": 80006,
+      "mizrahi-tefahot": 74521,
+      "massad": 78943,
+      "mercantile": 76651,
+      "fibi": 79027,
+      "meitav-trade": 60684,
+      "psagot": 82953,
+      "ibi": 75475
+     }
+    },
+    {
+     "id": "1144385",
+     "best": 82335,
+     "bestHouse": "psagot",
+     "psagot": 82335,
+     "byHouse": {
+      "altshuler-trade": 62737,
+      "excellence": 60577,
+      "discount": 76084,
+      "hapoalim": 77572,
+      "yahav": 77572,
+      "jerusalem": 77478,
+      "leumi": 79414,
+      "mizrahi-tefahot": 73967,
+      "massad": 78361,
+      "mercantile": 76084,
+      "fibi": 78444,
+      "meitav-trade": 60191,
+      "psagot": 82335,
+      "ibi": 74904
+     }
+    },
+    {
+     "id": "1148162",
+     "best": 82000,
+     "bestHouse": "psagot",
+     "psagot": 82000,
+     "byHouse": {
+      "altshuler-trade": 62458,
+      "excellence": 60326,
+      "discount": 75775,
+      "hapoalim": 77258,
+      "yahav": 77258,
+      "jerusalem": 77164,
+      "leumi": 79093,
+      "mizrahi-tefahot": 73667,
+      "massad": 78044,
+      "mercantile": 75775,
+      "fibi": 78127,
+      "meitav-trade": 59923,
+      "psagot": 82000,
+      "ibi": 74594
+     }
+    },
+    {
+     "id": "1183441",
+     "best": 86364,
+     "bestHouse": "psagot",
+     "psagot": 86364,
+     "byHouse": {}
+    },
+    {
+     "id": "1159250",
+     "best": 86279,
+     "bestHouse": "psagot",
+     "psagot": 86279,
+     "byHouse": {
+      "altshuler-trade": 66006,
+      "excellence": 63519,
+      "discount": 79705,
+      "hapoalim": 81271,
+      "yahav": 81271,
+      "jerusalem": 81171,
+      "leumi": 80503,
+      "mizrahi-tefahot": 77504,
+      "massad": 78529,
+      "mercantile": 79705,
+      "fibi": 78106,
+      "meitav-trade": 63337,
+      "psagot": 86279,
+      "ibi": 78546
+     }
+    },
+    {
+     "id": "ie00b5bmr087",
+     "best": 84172,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 84172,
+      "excellence": 63168,
+      "discount": 68309,
+      "hapoalim": 68376,
+      "yahav": 68799,
+      "jerusalem": 58879,
+      "leumi": 71405,
+      "mizrahi-tefahot": 69065,
+      "massad": 76861,
+      "mercantile": 68190,
+      "fibi": 77334,
+      "meitav-trade": 50590,
+      "interactive-brokers": 82820
+     }
+    },
+    {
+     "id": "ie00bfmxxd54",
+     "best": 84172,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "ie0031442068",
+     "best": 83635,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 83635,
+      "excellence": 62928,
+      "discount": 66867,
+      "hapoalim": 67012,
+      "yahav": 67434,
+      "jerusalem": 58738,
+      "leumi": 70610,
+      "mizrahi-tefahot": 67686,
+      "massad": 76057,
+      "mercantile": 66749,
+      "fibi": 76424,
+      "meitav-trade": 49888,
+      "interactive-brokers": 82078
+     }
+    },
+    {
+     "id": "ie00b3xxrp09",
+     "best": 83633,
+     "bestHouse": "interactive-israel",
+     "psagot": null,
+     "byHouse": {
+      "interactive-israel": 83633,
+      "excellence": 62925,
+      "discount": 66866,
+      "hapoalim": 67010,
+      "yahav": 67354,
+      "jerusalem": 58736,
+      "leumi": 70601,
+      "mizrahi-tefahot": 67605,
+      "massad": 76048,
+      "mercantile": 66747,
+      "fibi": 76414,
+      "meitav-trade": 49885,
+      "interactive-brokers": 82076
+     }
+    },
+    {
+     "id": "us-ivv",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    },
+    {
+     "id": "us-voo",
+     "best": null,
+     "bestHouse": null,
+     "psagot": null,
+     "byHouse": {}
+    }
+   ]
+  },
+  "index-ta125": {
+   "headline": "psagot 5112628 86045",
+   "funds": [
+    {
+     "id": "5112628",
+     "best": 86045,
+     "bestHouse": "psagot",
+     "psagot": 86045,
+     "byHouse": {
+      "altshuler-trade": 65812,
+      "excellence": 63345,
+      "discount": 79491,
+      "hapoalim": 81052,
+      "yahav": 81052,
+      "jerusalem": 80952,
+      "leumi": 82968,
+      "mizrahi-tefahot": 77294,
+      "massad": 81860,
+      "mercantile": 79491,
+      "fibi": 81948,
+      "one-zero": 82709,
+      "meitav-trade": 63151,
+      "psagot": 86045,
+      "ibi": 78204
+     }
+    },
+    {
+     "id": "1150283",
+     "best": 85231,
+     "bestHouse": "psagot",
+     "psagot": 85231,
+     "byHouse": {
+      "altshuler-trade": 65138,
+      "excellence": 62739,
+      "discount": 78743,
+      "hapoalim": 80288,
+      "yahav": 80288,
+      "jerusalem": 80190,
+      "leumi": 82188,
+      "mizrahi-tefahot": 76564,
+      "massad": 81092,
+      "mercantile": 78743,
+      "fibi": 81180,
+      "meitav-trade": 62502,
+      "psagot": 85231,
+      "ibi": 77579
+     }
+    },
+    {
+     "id": "1146356",
+     "best": 85154,
+     "bestHouse": "psagot",
+     "psagot": 85154,
+     "byHouse": {
+      "altshuler-trade": 65075,
+      "excellence": 62682,
+      "discount": 78673,
+      "hapoalim": 80217,
+      "yahav": 80217,
+      "jerusalem": 80118,
+      "leumi": 82115,
+      "mizrahi-tefahot": 76496,
+      "massad": 81020,
+      "mercantile": 78673,
+      "fibi": 81107,
+      "meitav-trade": 62441,
+      "psagot": 85154,
+      "ibi": 77508
+     }
+    },
+    {
+     "id": "1148899",
+     "best": 85133,
+     "bestHouse": "psagot",
+     "psagot": 85133,
+     "byHouse": {
+      "altshuler-trade": 65057,
+      "excellence": 62666,
+      "discount": 78653,
+      "hapoalim": 80196,
+      "yahav": 80196,
+      "jerusalem": 80098,
+      "leumi": 82094,
+      "mizrahi-tefahot": 76476,
+      "massad": 81000,
+      "mercantile": 78653,
+      "fibi": 81087,
+      "meitav-trade": 62424,
+      "psagot": 85133,
+      "ibi": 77488
+     }
+    },
+    {
+     "id": "1143718",
+     "best": 85099,
+     "bestHouse": "psagot",
+     "psagot": 85099,
+     "byHouse": {
+      "altshuler-trade": 65029,
+      "excellence": 62640,
+      "discount": 78622,
+      "hapoalim": 80164,
+      "yahav": 80164,
+      "jerusalem": 80066,
+      "leumi": 82061,
+      "mizrahi-tefahot": 76446,
+      "massad": 80968,
+      "mercantile": 78622,
+      "fibi": 81055,
+      "meitav-trade": 62397,
+      "psagot": 85099,
+      "ibi": 77457
+     }
+    },
+    {
+     "id": "1148808",
+     "best": 84692,
+     "bestHouse": "psagot",
+     "psagot": 84692,
+     "byHouse": {
+      "altshuler-trade": 64691,
+      "excellence": 62337,
+      "discount": 78248,
+      "hapoalim": 79783,
+      "yahav": 79783,
+      "jerusalem": 79685,
+      "leumi": 81671,
+      "mizrahi-tefahot": 76081,
+      "massad": 80583,
+      "mercantile": 78248,
+      "fibi": 80670,
+      "meitav-trade": 62072,
+      "psagot": 84692,
+      "ibi": 77081
+     }
+    }
+   ]
+  },
+  "index-ta35": {
+   "headline": "psagot 5130661 86279",
+   "funds": [
+    {
+     "id": "5130661",
+     "best": 86279,
+     "bestHouse": "psagot",
+     "psagot": 86279,
+     "byHouse": {
+      "altshuler-trade": 66006,
+      "excellence": 63519,
+      "discount": 79705,
+      "hapoalim": 81271,
+      "yahav": 81271,
+      "jerusalem": 81171,
+      "leumi": 83192,
+      "mizrahi-tefahot": 77504,
+      "massad": 82081,
+      "mercantile": 79705,
+      "fibi": 82169,
+      "one-zero": 82935,
+      "meitav-trade": 63337,
+      "psagot": 86279,
+      "ibi": 78420
+     }
+    },
+    {
+     "id": "1150184",
+     "best": 85259,
+     "bestHouse": "psagot",
+     "psagot": 85259,
+     "byHouse": {
+      "altshuler-trade": 65161,
+      "excellence": 62760,
+      "discount": 78769,
+      "hapoalim": 80315,
+      "yahav": 80315,
+      "jerusalem": 80216,
+      "leumi": 82215,
+      "mizrahi-tefahot": 76589,
+      "massad": 81118,
+      "mercantile": 78769,
+      "fibi": 81206,
+      "meitav-trade": 62524,
+      "psagot": 85259,
+      "ibi": 77605
+     }
+    },
+    {
+     "id": "1146570",
+     "best": 85196,
+     "bestHouse": "psagot",
+     "psagot": 85196,
+     "byHouse": {
+      "altshuler-trade": 65109,
+      "excellence": 62713,
+      "discount": 78711,
+      "hapoalim": 80256,
+      "yahav": 80256,
+      "jerusalem": 80157,
+      "leumi": 82155,
+      "mizrahi-tefahot": 76533,
+      "massad": 81059,
+      "mercantile": 78711,
+      "fibi": 81147,
+      "meitav-trade": 62474,
+      "psagot": 85196,
+      "ibi": 77547
+     }
+    },
+    {
+     "id": "1143700",
+     "best": 85126,
+     "bestHouse": "psagot",
+     "psagot": 85126,
+     "byHouse": {
+      "altshuler-trade": 65052,
+      "excellence": 62661,
+      "discount": 78647,
+      "hapoalim": 80191,
+      "yahav": 80191,
+      "jerusalem": 80092,
+      "leumi": 82088,
+      "mizrahi-tefahot": 76471,
+      "massad": 80994,
+      "mercantile": 78647,
+      "fibi": 81081,
+      "meitav-trade": 62419,
+      "psagot": 85126,
+      "ibi": 77482
+     }
+    },
+    {
+     "id": "1148907",
+     "best": 85121,
+     "bestHouse": "psagot",
+     "psagot": 85121,
+     "byHouse": {
+      "altshuler-trade": 65047,
+      "excellence": 62657,
+      "discount": 78642,
+      "hapoalim": 80185,
+      "yahav": 80185,
+      "jerusalem": 80087,
+      "leumi": 82083,
+      "mizrahi-tefahot": 76466,
+      "massad": 80988,
+      "mercantile": 78642,
+      "fibi": 81076,
+      "meitav-trade": 62414,
+      "psagot": 85121,
+      "ibi": 77477
+     }
+    }
+   ]
+  },
+  "index-ta90": {
+   "headline": "psagot 5130638 86094",
+   "funds": [
+    {
+     "id": "5130638",
+     "best": 86094,
+     "bestHouse": "psagot",
+     "psagot": 86094,
+     "byHouse": {
+      "altshuler-trade": 65853,
+      "excellence": 63382,
+      "discount": 79536,
+      "hapoalim": 81098,
+      "yahav": 81098,
+      "jerusalem": 80999,
+      "leumi": 83015,
+      "mizrahi-tefahot": 77339,
+      "massad": 81907,
+      "mercantile": 79536,
+      "fibi": 81995,
+      "one-zero": 82757,
+      "meitav-trade": 63190,
+      "psagot": 86094,
+      "ibi": 78250
+     }
+    },
+    {
+     "id": "1209444",
+     "best": 85897,
+     "bestHouse": "psagot",
+     "psagot": 85897,
+     "byHouse": {
+      "altshuler-trade": 65690,
+      "excellence": 63235,
+      "discount": 79355,
+      "hapoalim": 80913,
+      "yahav": 80913,
+      "jerusalem": 80813,
+      "leumi": 82826,
+      "mizrahi-tefahot": 77161,
+      "massad": 81720,
+      "mercantile": 79355,
+      "fibi": 81808,
+      "meitav-trade": 63032,
+      "psagot": 85897,
+      "ibi": 78194
+     }
+    },
+    {
+     "id": "1148931",
+     "best": 83732,
+     "bestHouse": "psagot",
+     "psagot": 83732,
+     "byHouse": {
+      "altshuler-trade": 63896,
+      "excellence": 61621,
+      "discount": 77367,
+      "hapoalim": 78883,
+      "yahav": 78883,
+      "jerusalem": 78786,
+      "leumi": 80753,
+      "mizrahi-tefahot": 75220,
+      "massad": 79679,
+      "mercantile": 77367,
+      "fibi": 79764,
+      "meitav-trade": 61307,
+      "psagot": 83732,
+      "ibi": 76195
+     }
+    },
+    {
+     "id": "1143783",
+     "best": 83631,
+     "bestHouse": "psagot",
+     "psagot": 83631,
+     "byHouse": {
+      "altshuler-trade": 63813,
+      "excellence": 61546,
+      "discount": 77274,
+      "hapoalim": 78788,
+      "yahav": 78788,
+      "jerusalem": 78692,
+      "leumi": 80656,
+      "mizrahi-tefahot": 75130,
+      "massad": 79583,
+      "mercantile": 77274,
+      "fibi": 79669,
+      "meitav-trade": 61226,
+      "psagot": 83631,
+      "ibi": 76102
+     }
+    },
+    {
+     "id": "1146331",
+     "best": 83627,
+     "bestHouse": "psagot",
+     "psagot": 83627,
+     "byHouse": {
+      "altshuler-trade": 63809,
+      "excellence": 61543,
+      "discount": 77270,
+      "hapoalim": 78784,
+      "yahav": 78784,
+      "jerusalem": 78688,
+      "leumi": 80652,
+      "mizrahi-tefahot": 75126,
+      "massad": 79580,
+      "mercantile": 77270,
+      "fibi": 79665,
+      "meitav-trade": 61223,
+      "psagot": 83627,
+      "ibi": 76098
+     }
+    },
+    {
+     "id": "1150259",
+     "best": 83591,
+     "bestHouse": "psagot",
+     "psagot": 83591,
+     "byHouse": {
+      "altshuler-trade": 63779,
+      "excellence": 61516,
+      "discount": 77237,
+      "hapoalim": 78751,
+      "yahav": 78751,
+      "jerusalem": 78654,
+      "leumi": 80618,
+      "mizrahi-tefahot": 75094,
+      "massad": 79546,
+      "mercantile": 77237,
+      "fibi": 79631,
+      "meitav-trade": 61194,
+      "psagot": 83591,
+      "ibi": 76065
+     }
+    }
+   ]
+  }
+ }
+}

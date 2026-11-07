@@ -18,10 +18,10 @@
     "ETF-30"
   ],
   "source": {
-    "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/05_302b.pdf",
-    "title": "CESR/05-302b (July 2005), Annex I: Commission Recommendation 2004/384/EC, Total expense ratio (TER)",
-    "publisher": "see title",
-    "strength": "primary-mirror",
-    "checked": "2026-10-26"
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32004H0384",
+    "title": "Commission Recommendation 2004/384/EC (27.4.2004), OJ L 144, 30.4.2004, Annex I: Total expense ratio (TER)",
+    "publisher": "EUR-Lex (Publications Office of the EU)",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

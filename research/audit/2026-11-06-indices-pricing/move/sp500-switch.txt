@@ -1,0 +1,42 @@
+
+== /indices/sp500 at 1280 px: 4 sliders, 1 selects; page wider than the screen: false
+  slider 1 max: page height +0, 0 moved, 8 blocks new
+    h -22 w 0 y 0 <p text-sm text-muted-foreground> 1201x22 "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס · מה שנשאר מחושב א"
+  index msci-acwi: page height -409, 0 moved, 480 blocks new
+    h 0 w 79 y 0 <h2 text-xl lg:text-2xl font-semibold> 229x34 "מדד MSCI AC World"
+  index msci-world: page height -208, 1 moved (first: y 27 <p text-sm text-muted-foreground max-w-measure> "אפשר להחזיק אותו גם דרך קרן חוץ."), 395 blocks new
+    h 0 w -41 y 0 <h2 text-xl lg:text-2xl font-semibold> 188x34 "מדד MSCI World"
+    h 27 w 0 y 0 <p text-muted-foreground max-w-measure> 608x82 "מדד של מניות חברות בעשרים ושלוש מדינות המוגדרות כשווקים מפותחים, במשקל"
+  index nasdaq100: page height +246, 0 moved, 504 blocks new
+    h 0 w -3 y 0 <h2 text-xl lg:text-2xl font-semibold> 185x34 "מדד נאסד"ק 100"
+  index sp500: page height +371, 1 moved (first: y -27 <p text-sm text-muted-foreground max-w-measure> "אפשר להחזיק אותו גם דרך קרן חוץ."), 786 blocks new
+    h 0 w -35 y 0 <h2 text-xl lg:text-2xl font-semibold> 150x34 "מדד S&P 500"
+    h -27 w 0 y 0 <p text-muted-foreground max-w-measure> 608x54 "מדד של חמש מאות החברות הגדולות בארצות הברית, במשקל לפי שווי השוק הסחיר"
+  index ta125: page height -2542, 1 moved (first: y 27 <p text-sm text-muted-foreground max-w-measure> "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתמחה בישראל."), 382 blocks new
+    h 0 w 5 y 0 <h2 text-xl lg:text-2xl font-semibold> 155x34 "מדד ת"א-125"
+    h 27 w 0 y 0 <p text-muted-foreground max-w-measure> 608x82 "מדד של מאה עשרים וחמש החברות בעלות השווי הגבוה ביותר בבורסה בתל אביב, "
+  index ta35: page height +0, 1 moved (first: y -27 <p text-sm text-muted-foreground max-w-measure> "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתמחה בישראל."), 352 blocks new
+    h 0 w -16 y 0 <h2 text-xl lg:text-2xl font-semibold> 140x34 "מדד ת"א-35"
+    h -27 w 0 y 0 <p text-muted-foreground max-w-measure> 608x54 "מדד של שלושים וחמש המניות בעלות שווי השוק הגבוה ביותר בבורסה בתל אביב;"
+  index msci-acwi: page height +2133, 0 moved, 627 blocks new
+    h 0 w 90 y 0 <h2 text-xl lg:text-2xl font-semibold> 229x34 "מדד MSCI AC World"
+  select 1 = hapoalim: page height +0, 0 moved, 1 blocks new
+    h 0 w 0 y -131 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y -131 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "4"
+    h 0 w 0 y -131 <span flex flex-col min-w-0 leading-tight font-semibold [overflow-> 152x40 "הפועלים"
+    h 0 w 0 y -131 <bdi whitespace-nowrap> 85x20 "450,846 ₪"
+    h 0 w 0 y 156 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 156 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "5"
+    h 0 w 0 y 156 <span flex flex-col min-w-0 leading-tight font-semibold [overflow-> 152x40 "יהב"
+    h 0 w 0 y 156 <bdi whitespace-nowrap> 85x20 "450,388 ₪"
+  select 1 = one-zero: page height +0, 0 moved, 1 blocks new
+    h 0 w 0 y -156 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y -156 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "4"
+    h 0 w 0 y -156 <span flex flex-col min-w-0 leading-tight font-semibold [overflow-> 152x40 "יהב"
+    h 0 w 0 y -156 <bdi whitespace-nowrap> 85x20 "450,388 ₪"
+    h 0 w 0 y 131 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 131 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "5"
+    h 0 w 0 y 131 <span flex flex-col min-w-0 leading-tight font-semibold [overflow-> 152x40 "הפועלים"
+    h 0 w 0 y 131 <bdi whitespace-nowrap> 85x20 "450,246 ₪"
+
+total boxes that changed on the screen: 32

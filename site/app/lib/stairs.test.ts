@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { buildInvest, indexById } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
-import { chainOf, ceilingOf, climbFrom, gridOf, middleStart, rowsAt, unitOf, type Grid } from "./stairs";
+import { chainOf, ceilingOf, climbFrom, gridOf, laneCases, LANES, middleStart, rowsAt, unitOf, type Grid } from "./stairs";
 import { entered } from "./value";
 
 /** accounts A..C, funds: t1, t2 (tracking), h1 (hedged tracking), e1 (etf), o1 (abroad, open). */
@@ -70,6 +70,23 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
     expect(c.chain).toHaveLength(1);
     expect(Math.round(c.ceiling.v) - Math.round(c.chain[0]!.v)).toBe(2294);
+  });
+  // the lanes' held heights are measured from these cases (#190): every lane any start shows has a case with each of its rows, in the
+  // same state, so no start draws a lane taller than its hold
+  it("every lane from every priced start is covered by one of the lane's cases", () => {
+    const cases = laneCases(grid);
+    const sig = (r: { key: string; d: number | null; why: string | null; open: boolean; hedged: boolean; to: { f: string }; lane: string }) => `${r.key}:${r.d == null ? r.why : "p"}:${r.open}:${r.hedged}:${r.lane === "kind" ? r.to.f : ""}`;
+    for (const a of grid.accounts)
+      for (const f of grid.funds) {
+        if (!grid.cell(a, f.id)) continue;
+        const rows = rowsAt(grid, { a, f: f.id });
+        for (const lane of LANES) {
+          const mine = rows.filter((r) => r.lane === lane).map(sig);
+          if (!mine.length) continue;
+          expect(cases[lane].some((c) => { const have = new Set(c.map(sig)); return mine.every((x) => have.has(x)); }), `${lane} at ${a} with ${f.id}`).toBe(true);
+        }
+      }
+    expect(cases.account.length).toBeLessThan(grid.funds.length + 1);
   });
   it("opens with no pick on a priced pair that ranks, of an exchange-traded fund", () => {
     const s = middleStart(grid)!;

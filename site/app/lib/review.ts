@@ -9,11 +9,29 @@ export const heldPages: readonly string[] = ["/idle-cash", "/holdings", "/goal"]
 /** Guide pages whose "what makes it different" visual is hidden. */
 export const heldSignatures: readonly string[] = ["money-market-fund-renewable", "bank-deposit", "kupat-gemel-lehashkaa"];
 
+/**
+ * Anchors that stand inside a "what makes it different" visual, by the guide page whose visual holds them (2026-11-07, independent check 2
+ * of the deposit branch: the break sentence's "(הרשימה)" and the money-market ladder linked to the bank-deposit list while it was held).
+ * review.test.ts reads the rendered guide pages: it fails when a held visual renders an anchor missing here, when a guide page links to one
+ * of these without `?review`, or when a file outside the guides names one.
+ */
+export const heldAnchors: Readonly<Record<string, string>> = { "deposit-banks": "bank-deposit" };
+
 /** The query parameter that shows the held visuals on a guide page. */
 export const reviewParam = "review";
 
 /** True for a held page's address, with or without a query, hash or trailing slash. */
 export const isHeld = (href: string): boolean => heldPages.some((p) => href === p || href.startsWith(`${p}?`) || href.startsWith(`${p}#`) || href.startsWith(`${p}/`));
 
-/** Whether a link to `href` may show: false for a held page. */
-export const shown = (href: string): boolean => !isHeld(href);
+/** True for a link to an anchor inside a held visual (`#deposit-banks`, `/guide/bank-deposit#deposit-banks`). */
+export const isHeldAnchor = (href: string): boolean => {
+  const hash = href.split("#")[1];
+  const page = hash ? heldAnchors[hash] : undefined;
+  return !!page && heldSignatures.includes(page);
+};
+
+/**
+ * Whether a link to `href` may show: false for a held page, and for an anchor inside a held visual. `review`: the page itself shows its
+ * held visuals (`?review`), so a link to an anchor on the same page (`#…`) leads somewhere and shows.
+ */
+export const shown = (href: string, review = false): boolean => !isHeld(href) && (!isHeldAnchor(href) || (review && href.startsWith("#")));

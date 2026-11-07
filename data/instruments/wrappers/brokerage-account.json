@@ -238,7 +238,7 @@
     "blocked_by": [],
     "labels": [
       "secondary source: an accumulating foreign-domiciled fund is taxed only at sale (TXF-11; TXF OQ1)",
-      "institution source: tax when securities move between accounts without a sale (SW-36; SW OQ11)"
+      "institution source: tax when securities move between one's own accounts without a sale (SW-55, TXS-40; TXS OQ17)"
     ]
   },
   "lawful_exit": {
@@ -249,12 +249,12 @@
     "value": true,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance, s.88 definition of \"מכירה\" (includes exchange and redemption); s.101A(a)(12)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "Income Tax Ordinance, s.88 definition \"מכירה\" (Tax Authority's text, p.148: includes exchange and redemption); s.101א(א) (p.166)",
+      "publisher": "Israel Tax Authority",
       "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -265,7 +265,7 @@
       "SW-36"
     ],
     "state": "sourced",
-    "notes": "Selling one fund or security to buy another is a sale: tax on any real gain is withheld even if the money never leaves the account (TXS-21). Moving securities in kind to your own account at another member is described by institutions as not a tax event, with the cost basis carried over; no Tax Authority source was read (SW-36, SW OQ11)."
+    "notes": "Selling one fund or security to buy another is a sale: tax on any real gain is withheld even if the money never leaves the account (TXS-21). Moving securities in kind to one's own account at another member: no official text says whether it is a sale, and the cost and purchase day are the holder's (TXS-38); at the later sale the institution that pays the proceeds withholds from the cost it holds, and a missing cost is declared on form 747 or 746 or recovered through the return (TXS-39); banks and brokers describe the move as no tax event (TXS-40, SW-55; TXS OQ17). A move to another owner is a sale (SW-36)."
   },
   "transfer_routes": [],
   "eligibility": {
@@ -291,9 +291,12 @@
       "REG-06",
       "BRK-06",
       "BRK-35",
-      "REG-27"
+      "REG-27",
+      "BRK-58",
+      "REG-34",
+      "REG-35"
     ],
-    "text": "at a non-bank member, TASE rules require client securities and cash to be held apart from the member's own, in trust, at the clearing house and at banks, with a yearly independent audit; no statute segregating them was found, and what happens if the member fails is open (REG OQ9). At a bank, securities are registered through the nominee company and kept apart from the bank's own in its books (one bank's terms); what happens to them if the bank fails is not sourced (REG OQ10, BRK OQ5), and deposits are not insured. The clearing house guarantees settlement between members, not a client's balance. No Israeli investor-compensation scheme was found. Abroad: SIPC for a US broker-dealer and the Irish scheme for IB Ireland, as stated by those bodies"
+    "text": "TASE securities, at a bank or a non-bank member alike, are registered at the clearing house in the member's name as trustee for its clients, in a client sub-account kept apart from the member's own (BRK-58, REG-35), and every member keeps a separate account for each client (BRK-07, BRK-10); a non-bank member must also hold client cash in trust at banks, with a yearly independent audit (REG-16, BRK-08). The Trust Law lets trust assets be reached only for debts on them or arising from the trust (REG-34); that this keeps clients' securities out of a failing member's estate is a reading of these texts, which no law states in words and no court decision read confirms, and a client's claim for a shortfall would be a general debt (a reading of REG-34). Cash in a bank securities account is a deposit, and deposits are not insured (REG-35, REG-04). The clearing house guarantees settlement between members, not a client's balance (REG-15, BRK-58), and no Israeli investor-compensation scheme was found (BRK-58). Still open: who moves a failed member's accounts (REG OQ9, REG OQ10), whether the clearing house's lien reaches the client sub-account (BRK OQ23), whether a non-bank member's client cash is exposed to the bank holding it (REG OQ21), and what happens to foreign securities held through a failing bank (REG OQ23). Abroad: SIPC for a US broker-dealer and the Irish scheme for IB Ireland, as stated by those bodies"
   },
   "dimensions": {
     "age-or-use-exemption": "covered",
@@ -311,7 +314,7 @@
     "liquidity-lockup": "covered",
     "loss-offset": "covered",
     "minimum": "covered",
-    "protection": "blocked:REG-OQ9",
+    "protection": "covered",
     "real-vs-nominal": "covered",
     "regulator": "covered",
     "reporting-obligation": "covered",
@@ -368,7 +371,11 @@
     "TXF-OQ3",
     "SW-OQ11",
     "GOV-OQ7",
-    "TXS-OQ12"
+    "TXS-OQ12",
+    "REG-OQ21",
+    "REG-OQ23",
+    "BRK-OQ23",
+    "TXS-OQ17"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-11-07"
 }

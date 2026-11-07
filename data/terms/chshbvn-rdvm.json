@@ -15,10 +15,10 @@
     "PF-27"
   ],
   "source": {
-    "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(איתור_עמיתים_ומוטבים)",
-    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע\"ב-2012 (Wikisource mirror)",
-    "publisher": "see title",
-    "strength": "primary-mirror",
-    "checked": "2026-10-22"
+    "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7083%2Fheb#page=2",
+    "title": "קובץ התקנות 7083: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), 2012, עמ' 2",
+    "publisher": "רשומות",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

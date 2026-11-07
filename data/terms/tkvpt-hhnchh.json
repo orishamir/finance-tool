@@ -1,0 +1,23 @@
+{
+  "id": "tkvpt-hhnchh",
+  "he": "תקופת ההנחה",
+  "en": null,
+  "meaning": "הזמן שבו החברה המנהלת מתחייבת לגבות דמי ניהול מוזלים: לפי חוזר רשות שוק ההון, לפחות חמש שנים מהיום שבו התחילה לגבות אותם",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "PF-13",
+    "PF-14"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=1",
+    "title": "חוזר גופים מוסדיים 2017-9-15, דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, סעיף 3(א)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

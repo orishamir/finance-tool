@@ -1041,6 +1041,26 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 5.3,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: חשבון עובר ושב, פעולה על ידי פקיד והערה (03)",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution",
+        "quote": "5.30 בפיקוח"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-05",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Sheet row 671, 'פעולה על ידי פקיד', price '5.30 בפיקוח', charged 'בתחילת כל חודש עבור חודש קודם'; note (03), rows 705-706: 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י פקיד'. So an ordinary customer pays at most 5.30 NIS a month as the minimum; the site counts the ceiling (D56). Read in the library copy of the sheet (e939af51e5b97376, the file of 2026-10-07), 2026-11-06; the same figure as research/2026-11-04-binding-prices/hapoalim.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
@@ -1054,7 +1074,7 @@
       "available": true,
       "source": {
         "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים, 'נכון ליום: 05/10/2026' (קובץ XLS, גיליון אחד; פרק: ניירות ערך,",
+        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים, פרק ניירות ערך",
         "checked": "2026-11-04",
         "quote": "אך לרבות \"קרן מחקה\""
       }
@@ -1066,7 +1086,7 @@
       "available": true,
       "source": {
         "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים, 'נכון ליום: 05/10/2026' (קובץ XLS, גיליון אחד; פרק: ניירות ערך,",
+        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים, פרק ניירות ערך",
         "checked": "2026-11-04",
         "quote": "מניות,אג\"ח ,קרנות נאמנות"
       }
@@ -1096,7 +1116,7 @@
     },
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 5.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 1.75 ₪, מסלול בסיסי 10 ₪ ומורחב 22 ₪ לחודש",
-      "why": "The securities account rests on a current account. Sheet row 705, note (03): the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י פקיד'; tracks rows 752-753. A standing-order debit is itself a direct action (row 697). No bank's record prices the current account yet; a decision for all banks at once."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Sheet row 705, note (03): the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י פקיד'; tracks rows 752-753. A standing-order debit is itself a direct action (row 697)."
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.08%-0.40% לשנה, זרים 0.07%-0.39%; קנייה ומכירה של מניות ואג\"ח 0.15%-0.30%",

@@ -1,0 +1,83 @@
+{
+  "case": "general-track-exposure",
+  "sessions": 4,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 3,
+      "caughtIn10": 3,
+      "of": 4,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 2,
+          "ranks": [
+            0,
+            1
+          ]
+        },
+        "first-job-phone": {
+          "caught": 2,
+          "of": 2,
+          "ranks": [
+            1,
+            1
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.1167632,
+  "rows": [
+    {
+      "task": "s08",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0340748
+    },
+    {
+      "task": "s08",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.027850800000000002
+    },
+    {
+      "task": "s08",
+      "session": "first-job-phone-r1",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.0283428
+    },
+    {
+      "task": "s08",
+      "session": "first-job-phone-r2",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.0264948
+    }
+  ]
+}

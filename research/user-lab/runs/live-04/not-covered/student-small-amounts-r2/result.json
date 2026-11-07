@@ -1,0 +1,100 @@
+{
+  "task": "not-covered",
+  "persona": "student-small-amounts",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:04:56.732Z",
+  "structured": {
+    "answer": "The site says it doesn't calculate a long list yet, and every card is tagged 'לא מחושב': ETC, gold (LBMA price, gold through קרנות סל), אג\"ח קונצרניות, אגרות בונדס, ביטוח מנהלים, ביטוח חיים משתתף ברווחים, היוון קצבה, foreign currency stuff (ארנק מט\"ח דיגיטלי, חשבון מטבע חוץ, מנוטרלת מט\"ח, עמלת חליפין), מוצר מובנה, מסלולי האירוע, ניירות ערך מסחריים and more. I only got through about half the page, so I can't say for sure what else is missing.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "'מצב הכיסוי' open sections",
+        "why": "'חסום: שאלה פתוחה אחת', 'MF-28' and a crossed-out 'נסגר ב-24.10.2026' made no sense to me. Is it covered now or not?"
+      },
+      {
+        "where": "Screens 3-5, endless cards",
+        "why": "Every card looks the same, with a red tag and law citations. I got bored and stopped about halfway."
+      }
+    ],
+    "used": [
+      "Title 'מה האתר עוד לא מכסה'",
+      "Red banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה... האתר לא מחשב אותם'",
+      "Card headings",
+      "Red 'לא מחושב' tags"
+    ],
+    "skimmed": [
+      "'מה ידוע' descriptions",
+      "'כשייסגר: יופיע במדריך...' lines",
+      "'נקרא גם' lines"
+    ],
+    "skipped": [
+      "Green law/source links and page numbers",
+      "Dates and 'מקור ראשי' badges",
+      "'חוקים וכללים · N' chips",
+      "Screens 6-10"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "אג\"ח קונצרניות",
+      "נע\"מ",
+      "ניירות ערך מסחריים",
+      "היוון קצבה",
+      "מנוטרלת מט\"ח",
+      "מסלולי האירוע",
+      "MF-28",
+      "שאלה פתוחה",
+      "'לפי החברה' orange badge",
+      "crossed-out 'נסגר ב-24.10.2026'"
+    ],
+    "not_found": [
+      "Any mention of S&P 500 / Nasdaq index funds or ETFs, so I can't tell whether they're covered",
+      "A short summary of what the site DOES cover",
+      "Anything about small monthly amounts"
+    ],
+    "findings": [
+      {
+        "what": "A wall of near-identical cards, all with the same red 'לא מחושב' tag. No grouping and no summary, so I gave up halfway",
+        "where": "Whole list, screens 1-5"
+      },
+      {
+        "what": "Every card is full of legal citations (law names, years, page numbers) that mean nothing to me",
+        "where": "Green links on every card"
+      },
+      {
+        "what": "It doesn't say whether the stuff I care about (index funds/ETFs) is covered or not",
+        "where": "Top of page"
+      },
+      {
+        "what": "Cryptic codes like 'MF-28' and 'שאלה פתוחה', plus a crossed-out date",
+        "where": "'מצב הכיסוי' sections"
+      },
+      {
+        "what": "Lots of jargon in the card titles with no plain explanation I would actually read",
+        "where": "Card headings"
+      },
+      {
+        "what": "Two-column dense layout that would be heavy on a phone",
+        "where": "Overall layout"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35279,
+    "turns": 7,
+    "usd": 0.1440158,
+    "input": 8,
+    "cacheWrite": 9662,
+    "cacheRead": 26539,
+    "output": 3069,
+    "model": "claude-opus-5-5"
+  }
+}

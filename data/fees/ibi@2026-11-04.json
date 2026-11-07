@@ -406,7 +406,7 @@
       ],
       "level": "list",
       "rate": {
-        "value": 0.7,
+        "value": 0,
         "unit": "pct_of_trade",
         "source": {
           "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
@@ -414,7 +414,7 @@
           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
           "strength": "institution",
           "page": 6,
-          "quote": "מרווח המרה עד 0.7% ממחיר הביצוע בשוק"
+          "quote": "מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-07-01",
@@ -427,7 +427,7 @@
           "BRK-25"
         ],
         "state": "sourced",
-        "notes": "The tariff prints a conversion spread of up to 0.7% and no fee ('מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה'). The spread is limited by the document (unlike most houses): 0.7% of the market execution price at most. The run prices the printed ceiling, so an actual conversion may cost less (2026-10-31). The new-customers page says the same ('אנו לא גובים כל עמלה אלא רק מרווח המרה'); conversions run once a day, 12:30-13:30, 'לפי הציטוט אותו אנו מקבלים מספקי המט\"ח'. A distributor's page (tradingil, not a document) says 0.5% above USD 15,000; no binding document says it."
+        "notes": "No conversion fee: the tariff prints 'מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה' (part 5, item 1, p.6). The cost is the spread of up to 0.7% of the market execution price, recorded under spread and priced at its ceiling (D56, F-13). Until 2026-11-06 the record put the 0.7% in this field and the engine read only this field; the spread is now its own field, as at Altshuler Trade and Meitav Trade, so the price is the same 0.7%. The new-customers page says the same ('אנו לא גובים כל עמלה אלא רק מרווח המרה'); conversions run once a day, 12:30-13:30, 'לפי הציטוט אותו אנו מקבלים מספקי המט\"ח'. A distributor's page (tradingil, not a document) says 0.5% above USD 15,000; no binding document says it."
       },
       "min": null,
       "max": null,
@@ -452,7 +452,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "Printed 'עד 0.7%' (a ceiling) on the market execution price, charged on execution."
+        "notes": "Printed 'עד 0.7%' (a ceiling) on the market execution price, charged on execution; priced at 0.7% (D56). The spread is limited by the document (unlike most houses)."
       },
       "period": null,
       "channel": null,

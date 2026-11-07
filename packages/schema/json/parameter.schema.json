@@ -39,6 +39,7 @@
             "usd_per_share",
             "usd_per_trade",
             "gbp_per_trade",
+            "usd_per_event",
             "nis_per_usd",
             "fx_per_eur",
             "months",
@@ -252,6 +253,13 @@
             "type": "integer",
             "exclusiveMinimum": 0,
             "maximum": 9007199254740991
+          },
+          "chosen_by": {
+            "type": "string",
+            "minLength": 1
+          },
+          "signed_off": {
+            "type": "boolean"
           },
           "employment": {
             "type": "string",

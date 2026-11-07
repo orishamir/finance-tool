@@ -15,17 +15,20 @@
   ],
   "variants": [
     "מנוטרלת מט\"ח",
-    "Currency-Hedged"
+    "Currency-Hedged",
+    "מנוטרלת דולר"
   ],
   "rule_ids": [
     "ETF-10",
-    "ETF-12"
+    "ETF-12",
+    "MF-43",
+    "RG-19"
   ],
   "source": {
-    "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025 (hosted by Funder)",
-    "publisher": "see title",
-    "strength": "primary-mirror",
-    "checked": "2026-10-22"
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025, עמוד 20",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

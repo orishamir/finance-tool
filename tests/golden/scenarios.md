@@ -131,7 +131,7 @@ Exercises F-04, F-40 with X as the index (TXF-04 90% test), F-20 foreign distrib
 - Fund: Irish UCITS on S&P 500, accumulating (ETF-27), fixed fee 0.07%, 90% test met; fund-level withholding drag 0.23% (A-11 computed from a 1.5% dividend yield × 15%).
 - Tariff: TASE foreign-fund units traded in shekels; buy/sell 0.3% min 25; custody 0.15%/quarter.
 - Expected: _(founder)_ with the dimension "tax-during: blocked (TXF OQ1, F4)" and the row "listed, not ranked".
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S16): Real V_T/I_T = 106,853.98; nominal V_T = 120,895.47; fees: trade 681.78, spread 0.00, custody 3,417.80, fund (δ) 1,693.24; tax at exit 6,279.39 (25% of real gain vs the exchange rate, 25,117.56); label "secondary source: tax only at sale, not confirmed by the Tax Authority" (TXF-11); row "listed, not ranked". Subject to Q21.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S16): Real V_T/I_T = 106,853.98; nominal V_T = 120,895.47; fees: trade 681.78, spread 0.00, custody 3,417.80, fund (δ) 1,693.24; tax at exit 6,279.39 (25% of real gain vs the exchange rate, 25,117.56); label "reading: tax only at sale, by implication from the law, not confirmed by the Tax Authority" (TXF-11; "secondary source" until 2026-11-07, when its secondary source stopped being cited); row "listed, not ranked". Subject to Q21.
 
 ### S17 US-domiciled distributing ETF at a foreign broker, with W-8BEN
 Exercises F-13 FX fee on contributions and exit, F-20 foreign branch (TXF-08, TXF-12, TXF-18 credit), F-22 timing note (TXF-21, TXF-22), F-40 with X index (TXF-03), F-17 fixed fees, TXF-27 estate note.
@@ -159,12 +159,12 @@ Exercises F-20 with unknown Irish withholding (G-05).
 ## Part B: provident-family wrappers
 
 ### S20 Kupat gemel lehashkaa, list fees
-Exercises F-11 deposit fee, F-15 balance fee, A-18 direct expenses, F-27, F-44 (25% real, labelled), G-02 sensitivity line, ceiling check (F-05, KGL-03).
+Exercises F-11 deposit fee, F-15 balance fee, A-18 direct expenses, F-27, F-44 (25% real), ceiling check (F-05, KGL-03).
 - Goal: 20,000 now; 2,000/month; horizon 5 years.
 - Market: r_g 6%; π = 2.5%.
-- Fees: deposit 0%, balance 0.8% (KGL-15 example), direct expenses 0.10%.
-- Expected: _(founder)_: value with 25% real, the alternative with 15% nominal, the label "base: secondary source".
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S20): Real V_T/I_T = 148,018.98 with 25% of the real gain (label "base: secondary source"); nominal V_T = 167,469.89; alternative 15% of nominal gain: real 147,690.35, nominal 167,098.08; gross balance 170,494.14; fees: balance 3,686.78, direct expenses 460.85, deposit 0; tax during 0; tax at exit 3,024.25 (alt. 3,396.06); ceiling not reached in any year; flag G-11 (NII on deemed interest). Subject to D15, Q1.
+- Fees: deposit 0%, balance 0.8% (an entered example rate, as a member would type the fee of an own agreement; not a collected price: KGL-15, rewritten 2026-11-07, records Meitav's 0.8% as its product page's advertising and its binding documents as allowing up to the legal maximum, D56), direct expenses 0.10%. The figures do not change.
+- Expected: _(founder)_: value with 25% real (the 15%-of-nominal alternative was removed 2026-11-06, D73; the base is the law's, so no label since 2026-10-25).
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S20): Real V_T/I_T = 148,018.98 with 25% of the real gain (no label); nominal V_T = 167,469.89; gross balance 170,494.14; fees: balance 3,686.78, direct expenses 460.85, deposit 0; tax during 0; tax at exit 3,024.25; ceiling not reached in any year; no National Insurance on the gains (TXK-27). Subject to D15, Q1.
 
 ### S21 Kupat gemel lehashkaa, ceiling breached
 Exercises F-05 ceiling routing (KGL-02, KGL-04).
@@ -176,7 +176,7 @@ Exercises F-05 ceiling routing (KGL-02, KGL-04).
 Exercises F-16 (A-19) with a 2-year discount reverting to 1.05% (KGL-16, PF-13 conflict flagged, G-15).
 - As S20 with balance fee 0.5% for 24 months then 1.05%.
 - Expected: _(founder)_
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S22): Real V_T/I_T = 149,026.95 (25% real), nominal 168,610.32; 15%-nominal alternative real 148,832.72; balance fees 2,317.48; tax at exit 3,404.39. The discount cannot revert inside 5 years (PF-13 covers kupat gemel lehashkaa), so the fee stays 0.5% for the whole 60 months; the scenario's 24-month reversion is not allowed by the rule (it would give real 147,601.56). Subject to D15.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S22): Real V_T/I_T = 149,026.95 (25% real), nominal 168,610.32; balance fees 2,317.48; tax at exit 3,404.39. The discount cannot revert inside 5 years (PF-13 covers kupat gemel lehashkaa), so the fee stays 0.5% for the whole 60 months; the scenario's 24-month reversion is not allowed by the rule (it would give real 147,601.56). Subject to D15.
 
 ### S23 Keren hishtalmut, employee, horizon past 6 years
 Exercises F-33, F-46 (TXH-09, TXH-08 cap), F-52 employer line (TXH-01, KH-04), F-15 within the 2% cap (KH-22), B2.
@@ -198,7 +198,7 @@ Exercises TXH-02 cap (15,712), TXH-03 employer excess taxed at τ_m (TXG-02), G-
 - Profile: salary 20,000; employer 7.5%, employee 2.5%.
 - Goal: horizon 7 years; other inputs as S23.
 - Expected: _(founder)_: employer line net of tax on the excess; own deposit capped at the benefited amount, excess flagged.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S25): Own money (500/month): real V_T/I_T = 42,362.61, nominal 50,355.83; benefited 392.80/month exempt, excess 107.20/month taxed 25% of its real gain at exit (257.96, institution source). Employer line: gross 151,841.38; less tax on the excess at deposit 8,374.46 (31%) and NI and health 3,287.65 (12.17%, inference), and 25% real on the excess gains at exit 773.87: net 139,405.39 nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S25): Own money (500/month): real V_T/I_T = 42,362.61, nominal 50,355.83; benefited 392.80/month exempt, excess 107.20/month taxed 25% of its real gain at exit (257.96, institution source). Employer line: gross 151,841.38; less tax on the excess at deposit 8,374.46 (31%) and NI and health 3,287.65 (12.17%), and 25% real on the excess gains at exit 773.87: net 139,405.39 nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.
 
 ### S26 Self-employed keren hishtalmut
 Exercises F-46 self-employed limb (TXH-05 deduction at τ_m, TXH-08 20,566 benefited), F-30 equal net outlay with a deduction.
@@ -236,16 +236,16 @@ Exercises PEN-22 vs PEN-21 caps, F-53 zero insurance (PEN-35), F-49 blocked for 
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S30): Gross deposit as S27 (300 × I_m + 27.65). Gross balance at 60: 307,835.20 nominal, 169,946.85 real; balance fees 17,195.57; no deposit fee, no insurance. Employer line: 933,375.45 nominal, 515,289.41 real. Exit blocked (G-03), listed. Subject to Q1, Q18.
 
 ### S31 Child savings, provident route, doubled
-Exercises F-54 (CS-03, CS-04, CS-13 cohort, CS-18 fees), F-50 blocked.
+Exercises F-54 (CS-03, CS-04, CS-13 cohort, CS-18 fees) and F-50 (up to 25% of the real gain, TXK-23).
 - Child born 2026-01-01; doubling on from birth; increased-risk track r_g 6%; π = 2%; horizon to age 21.
-- Expected: _(founder)_: gross balance at 18 and 21, grants, fees from 21, the flag "exit tax blocked (G-17)".
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S31): Gross balance at 18 = 52,470.43 (boy) / 52,490.19 (girl), real 36,737.67 / 36,751.50; at 21 = 63,375.24 / 63,398.77, real 41,813.45 / 41,828.98. Tax if withdrawn at 21: 6,009.76 / 6,015.64 (25% of the real gain, label "secondary source", TXK-23); at 18: 4,058.57 / 4,063.51. Grants: 308.81 at 3, 376.44 at 13 (boy) or 369.06 at 12 (girl), 882.12 at 21. Fees 0 until 21, then up to 1.05% of the balance (CS-18; see S54). Subject to Q10 (sex).
+- Expected: _(founder)_: gross balance at 18 and 21, grants, fees from 21, the tax if withdrawn (F-50).
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S31): Gross balance at 18 = 52,470.43 (boy) / 52,490.19 (girl), real 36,737.67 / 36,751.50; at 21 = 63,375.24 / 63,398.77, real 41,813.45 / 41,828.98. Tax if withdrawn at 21: 6,009.76 / 6,015.64 (25% of the real gain, no label, TXK-23); at 18: 4,058.57 / 4,063.51. Grants: 308.81 at 3, 376.44 at 13 (boy) or 369.06 at 12 (girl), 882.12 at 21. Fees 0 until 21, then up to 1.05% of the balance (CS-18; see S54). Subject to Q10 (sex).
 
 ### S32 Child savings, bank route
 Exercises CS-10 tracks, F-21 as a savings plan (derived label), CS-23 stale data flag.
 - As S31 at a bank: fixed unlinked 3% to 18, entered (A-26); no exit stations.
 - Expected: _(founder)_ with "derived" and "rates data stale" flags.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S32): At 18 (boy): 39,701.73 nominal, 27,797.54 real; interest 9,210.54; tax if withdrawn 1,381.58. At 21: 44,265.27 nominal, 29,205.15 real; interest 12,891.96; tax if withdrawn 1,933.79 (15% of the nominal gain, label "secondary source"); net 42,331.47. Flag "rates data stale". Filled in: 3% after 18.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S32): At 18 (boy): 39,701.73 nominal, 27,797.54 real; interest 9,210.54; tax if withdrawn 1,381.58. At 21: 44,265.27 nominal, 29,205.15 real; interest 12,891.96; tax if withdrawn 1,933.79 (15% of the nominal gain, label "reading", TXK-29); net 42,331.47. Flag "rates data stale". Filled in: 3% after 18.
 
 ### S33 IRA hishtalmut with brokerage inside
 Exercises F-51, two fee layers (PF-06 manager fee + IRA-21 bank tariff), F-46.
@@ -254,6 +254,15 @@ Exercises F-51, two fee layers (PF-06 manager fee + IRA-21 bank tariff), F-46.
 - Fees: manager 0.3% balance; bank annex buy/sell 0.1% min 15, custody 0.05%/quarter.
 - Expected: _(founder)_
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S33): Real V_T/I_T = 272,096.32; nominal V_T = 307,852.01; fees: trade 557.91, spread 278.97, custody 2,795.48, fund (δ) 15,380.19, IRA manager 4,178.85; tax 0 (exempt). Subject to Q19, Q21.
+
+### S56 Kupat gemel lehashkaa on the fee page, a discount that ends
+Exercises F-11 and F-15 with F-16 on both lines (A-19, PF-13, D83), F-44, F-61 (the fee page, /fees, from the guide: `buildFees` on `kupat-gemel-lehashkaa`). Added 2026-11-07; the site's own path is pinned in `site/app/lib/fees-golden-harel.test.ts`.
+- Profile: other income 144,000 a year (P-05); age not given (under 60).
+- Goal: P-05's example (`data/parameters/illustrative-scenario.json`): 10,000 now; 500/month, constant real; horizon 10 years.
+- Market: r_g 7%; π = 2% (P-05).
+- Fees: Harel's binding documents (`data/fees/harel@2026-11-07.json`): balance 0.7% and deposit 0% for 60 months (PF-13; Harel prints no period), then the caps of PF-02, 1.05% and 4%; no direct expenses in the record.
+- Expected: _(founder)_: the real values after exit tax with every fee, with none and with each line removed in both its periods; F-61's deposit-fee cost, balance-fee cost, total and combined effect; the headline under the page's title.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S56): Real values after exit tax: with every fee 82,303.22, with none 87,525.89, with no deposit fee 83,595.93, with no balance fee 86,205.37. F-61: the deposit fee costs 1,292.70, the balance fee 3,902.15, total 5,222.66 (the headline under the title, after exit tax), combined effect 27.81; the chart ends at 6,563.55 before exit tax, 1,340.89 above the headline. Fees paid with every fee: balance 5,069.96, deposit 1,393.86; tax at exit 5,486.79 on a real gain of 21,947.14; ceiling not reached. With each deposit at the previous month's index the no-fee value would be 87,430.38; the method uses the deposit month's (F-03, F-05; Q1). The tax basis is each deposit after its fee (C14, Q25).
 
 ---
 
@@ -305,7 +314,7 @@ Exercises F-80 ranking and ties (P-01), F-81 sensitivity (P-02), B1 to B3, dimen
 - Market: r_g 6% entered; π 2.5% entered.
 - Wrappers: brokerage with S14's ETF; kupat gemel lehashkaa as S20; hishtalmut own-money as S23 (clock from month 0; exit after 6 years is lawful); pension extra deposit as S27 (listed, not ranked: locked and G-03).
 - Expected: _(founder)_: ranking, the deciding formula per F-80, tie status, the sensitivity flips for r_g, π and the balance fee within the bounds the founder sets in P-02.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S39): Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real (label "secondary source"), 629,850.66 with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): no change flips the result within the bounds.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S39): Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): no change flips the result within the bounds.
 
 ### S40 Wrapper mode: the founder's apartment case
 Exercises eligibility filters (section 8, D13 constraints), B3, and the coverage line (F-83, product D17).
@@ -327,7 +336,7 @@ Exercises F-61, F-62 (P-03), regulator reference (KH-23 averages), caps (KH-22).
 - Holding: balance 120,000; own 300/month; employer 900/month; balance fee 0.74%; direct expenses 0.11%; horizon 10 years; r_g 6%; π 2.5%.
 - Reduction tested: fee to 0.34%.
 - Expected: _(founder)_: cost of each fee line, interaction remainder, value of the reduction, verdict under the founder's thresholds.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S42): Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% = 9,530.01 (all real NIS over 10 years). Verdicts (P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S42): Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = 3,991.56 (all real NIS over 10 years; for all ten years it would be 9,530.01). Verdicts (P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
   - Note, 2026-10-24 (engine): the test in `packages/engine/test/golden/r3.test.ts` runs the scenario's balance and deposits through the run inputs (`existingBalance: 120_000`; `goal.monthly: 1_200`, of which `hishtalmut.employerMonthly: 900` is the employer's line, leaving the 300 own), so the deposits are inputs of the case and no rule figure is lifted for them; the ceilings and the reference come from the rule records and the thresholds from the P-03 record passed in.
 
 ### S43 Fee materiality on a brokerage plan
@@ -428,12 +437,12 @@ Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
 |---|---|
 | F-01 to F-09 | all |
 | F-10 | S11, S13, S14, S15, S16, S17 |
-| F-11 | S20, S27 |
+| F-11 | S20, S27, S56 |
 | F-12 | S06, S07, S08, S14, S15, S16, S17, S33, S44 |
 | F-13 | S14, S16, S17, S43 |
 | F-14 | S08, S14, S33, S44, S55 |
-| F-15 | S20, S22, S23, S27, S33, S42 |
-| F-16 | S22 |
+| F-15 | S20, S22, S23, S27, S33, S42, S56 |
+| F-16 | S22, S56 |
 | F-17 | S17, S44 |
 | F-20 | S13, S16, S17, S18, S19 |
 | F-21 | S01, S02, S03, S04, S32 |
@@ -442,7 +451,7 @@ Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
 | F-24 | S06, S07, S41 |
 | F-25 | S08, S09, S10, S35 |
 | F-26 | S05, S41 |
-| F-27 | S20, S23, S27, S33 |
+| F-27 | S20, S23, S27, S33, S56 |
 | F-28 | all (zero), flag in S20 |
 | F-30 to F-32 | S26, S27, S28, S29 |
 | F-33 | S20, S23 |
@@ -450,7 +459,7 @@ Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
 | F-41 | S01 to S05 |
 | F-42 | S34, S35, S51 |
 | F-43 | S36 |
-| F-44 | S11, S20, S37, S51, S53 |
+| F-44 | S11, S20, S37, S51, S53, S56 |
 | F-45 | guide text only (blocked) |
 | F-46 | S23, S25, S26, S33 |
 | F-47 | S24 |
@@ -461,7 +470,7 @@ Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
 | F-53 | S27, S30 |
 | F-54 | S31, S54 |
 | F-60 | S41 |
-| F-61, F-62 | S42, S43 |
+| F-61, F-62 | S42, S43; F-61 on a discount that ends, S56 |
 | F-63 | S44, S45 |
 | F-64 | needs CMA field confirmation first (product.md dependency 4) |
 | F-65 | S16, S17, S19 |

@@ -1,0 +1,4 @@
+
+== /guide/bank-deposit at 390 px: 0 sliders, 0 selects; page wider than the screen: false
+
+total boxes that changed on the screen: 0

@@ -2,7 +2,7 @@
   "id": "avkb-mddy-mnyvt",
   "he": "עוקב מדדי מניות",
   "en": null,
-  "meaning": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי מניות",
+  "meaning": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדי מניות שונים זה מזה, ולא אחרי מדד אחד; ייתכן בו סיכון מטבע",
   "where": [
     "app"
   ],
@@ -12,14 +12,14 @@
   ],
   "rule_ids": [
     "CAT-10",
-    "CAT-17",
-    "CAT-26"
+    "CAT-26",
+    "CAT-49"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
-    "publisher": "see title",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 13, \"מסלול עוקב מדדי מניות\"",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
     "strength": "primary",
-    "checked": "2026-10-22"
+    "checked": "2026-11-07"
   }
 }

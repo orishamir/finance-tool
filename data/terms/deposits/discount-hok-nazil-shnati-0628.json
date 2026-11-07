@@ -1,0 +1,156 @@
+{
+  "id": "discount-hok-nazil-shnati-0628",
+  "bank": "discount",
+  "names": {
+    "447": [
+      "הו\"ק נזיל שנתי"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": [
+      "הו\"ק"
+    ]
+  },
+  "type_447": "הו\"ק נזיל שנתי",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 60,
+    "unit": "months",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק נזיל שנתי' קוד 0628, '5 שנים'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed period '5 שנים'; recorded as 60 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.25,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק נזיל שנתי' קוד 0628, '5 שנים', 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed '1.25' as 'שיעור הריבית המוצעת (נומינלי שנתי)'; rate type 'קבועה עולה גורפת בתחנה', 'לא צמוד'; exit points 'There are exit stations', 'שנתית'; break 'קיימת עם קנס שבירה'; renewal 'No renewal option'; remarks 'תוספת ריבית  חלה על כל תקופת הפיקדון, מיום הקמת הפיקדון'; channels 'סניף,טלבנק'. The table's data also carries 'InterestIncrementInEveryPeriod' 0.2 ('עולה גורפת-תוספת בכל תחנה'), which is not a column of the page, so the rate after the increase is not printed and is not computed here. Read 2026-11-07 from the table the page loads (https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-11-06T18:00, prime 4.75%; library 6d57eb20a16c23da). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the 447 table's linkage column 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+        "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק נזיל שנתי' קוד 0628, '5 שנים', 'טווח סכום להפקדה'",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-11-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed ' החל מ 50 עד 30000' in the deposit-amount column; read as the amount of each monthly deposit, which the column does not say in words."
+    },
+    "max": {
+      "value": 30000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+        "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק נזיל שנתי' קוד 0628, '5 שנים', 'טווח סכום להפקדה'",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-11-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound as printed; see min."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column); the page: 'שבירת הפיקדון (ככל והיא מאושרת על ידי הבנק) גורמת להקדמת התשלום ללקוח' and 'קנס השבירה ייקבע ביום השבירה על בסיס \"טבלת ריבית לווים\" המתעדכנת בבנק ברמה יומית'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-33",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 12
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "doubt_he": "הטבלה מציגה את הריבית בתחילת התוכנית; הבנק מוסיף ריבית בכל תחנת יציאה, ושיעור התוספת אינו מוצג בטבלה.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+    "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע'",
+    "publisher": "Israel Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

@@ -28,9 +28,8 @@ def esc(s):
 def src_cell(r):
     s = r.get("source") or {}
     ids = ", ".join(r.get("rule_ids") or [])
+    # the whole title (2026-11-07): /not-covered shows this cell's title, and a title cut with "…" read as a broken citation
     title = esc(s.get("title"))
-    if len(title) > 90:
-        title = title[:87].rstrip() + "…"
     link = f"[{title}]({s['url']})" if s.get("url", "").startswith("http") else title or "—"
     parts = [p for p in [ids, link, s.get("checked"), STRENGTH_HE.get(s.get("strength"))] if p]
     return " · ".join(parts)

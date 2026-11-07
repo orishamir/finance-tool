@@ -14,10 +14,10 @@ import { ChildSavingsCard, ConsolidationCard, DifferentTypesLine } from "../comp
 import { Breadcrumb, PageShell } from "../components/shell";
 import { RuleRef, RulesLine } from "../components/provenance";
 import { TransferSheet } from "../components/transfer/sheet";
-import { Button, Callout, Card, cx } from "../components/kit";
+import { Button, Callout, Card, cx, When } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import type { CompareBundle } from "../lib/compare";
-import { fmt } from "../lib/format";
+
 import { feeInputs, type FeeInputs } from "../lib/fees";
 import { useInputs } from "../lib/inputs";
 import { buildCtx, consolidationGroups, isChild, loadHoldingsBundle, viewOf, type HoldingsBundle } from "../lib/holdings";
@@ -89,7 +89,7 @@ function Screen({ hb, cb, failed, form }: { hb: HoldingsBundle | null; cb: Compa
       </header>
       {hb?.period.stale && (
         <Callout tone="caution">
-          {system.staleBanner.before} <bdi dir="ltr">{fmt.date(`${hb.period.stale.since}-01`.slice(0, 10))}</bdi>. {system.staleBanner.after}
+          <When iso={hb.period.stale.since} lead={`${system.staleBanner.before} `} />. {system.staleBanner.after}
         </Callout>
       )}
       {failed && !hb && <Callout tone="caution">{copy.loadFailed}</Callout>}

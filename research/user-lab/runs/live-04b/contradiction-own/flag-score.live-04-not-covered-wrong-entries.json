@@ -1,0 +1,208 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "sessions": 3,
+  "perKey": {
+    "says-uncovered-what-site-covers": {
+      "kind": "general",
+      "caught": 3,
+      "caughtIn10": 3,
+      "of": 3,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            6
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            1
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            2
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "bare-code": {
+      "kind": "general",
+      "caught": 3,
+      "caughtIn10": 3,
+      "of": 3,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            5
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            5
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            4
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "fragment-no-noun": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 2,
+      "of": 3,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            5
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            4
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "source-names-not-for-reader": {
+      "kind": "general",
+      "caught": 1,
+      "caughtIn10": 1,
+      "of": 3,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            8
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "same-promise-every-card": {
+      "kind": "general",
+      "caught": 0,
+      "caughtIn10": 0,
+      "of": 3,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.19810840000000002,
+  "rows": [
+    {
+      "task": "not-covered",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "says-uncovered-what-site-covers": 6,
+        "bare-code": 5,
+        "fragment-no-noun": 5,
+        "source-names-not-for-reader": 8,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.0804228
+    },
+    {
+      "task": "not-covered",
+      "session": "self-directed-investor",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "says-uncovered-what-site-covers": 1,
+        "bare-code": 5,
+        "fragment-no-noun": 0,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.058442799999999996
+    },
+    {
+      "task": "not-covered",
+      "session": "student-small-amounts",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "says-uncovered-what-site-covers": 2,
+        "bare-code": 4,
+        "fragment-no-noun": 4,
+        "source-names-not-for-reader": 0,
+        "same-promise-every-card": 0
+      },
+      "against": {},
+      "usd": 0.0592428
+    }
+  ]
+}

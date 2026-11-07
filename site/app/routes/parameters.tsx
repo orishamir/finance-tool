@@ -4,8 +4,8 @@ import type { Route } from "./+types/parameters";
 import { parametersPage as copy, provenance as provCopy, site } from "../copy";
 import { IdRef, IdText, Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, Tag } from "../components/kit";
-import { fmt } from "../lib/format";
+import { Card, Tag, When } from "../components/kit";
+
 import { mostlyHebrew } from "../lib/source-label";
 import { fieldLabel, unitText } from "../lib/parameter-labels";
 import type { SiteValue } from "../lib/value";
@@ -87,7 +87,7 @@ export default function Parameters() {
                   <IdText text={p.rationaleHe ?? (mostlyHebrew(p.rationale) ? p.rationale : provCopy.parameter.noRationale)} />
                 </dd>
                 <dt className="text-sm text-muted-foreground">{copy.rows.approved}</dt>
-                <dd>{p.signedOffOn ? <bdi dir="ltr">{fmt.date(p.signedOffOn)}</bdi> : provCopy.parameter.notApproved}</dd>
+                <dd>{p.signedOffOn ? <When iso={p.signedOffOn} /> : provCopy.parameter.notApproved}</dd>
                 {p.usedIn.length > 0 && (
                   <>
                     <dt className="text-sm text-muted-foreground">{copy.rows.usedIn}</dt>

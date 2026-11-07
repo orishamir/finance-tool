@@ -1,7 +1,9 @@
 // A lead and the companies it is about, each a link to its page (D30, 2026-10-26): "תלוי בחברה: הראל, אלטשולר שחם" where a property
 // is each company's own, "לכל מה שמצאנו אצל: …" under a company's term. Inline, so it can close a sentence or stand as its own line.
+import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { cx } from "./cx";
+import { gershayim } from "./name";
 
 export interface CompanyLinkItem {
   /** The company's Hebrew name. */
@@ -14,7 +16,7 @@ export interface CompanyLinkItem {
  * The lead, a colon, then the companies as links separated by commas. `size` picks the text size of the surrounding line (`sm` under
  * a paragraph, `xs` in a checklist row or a card's foot). Nothing renders without companies.
  */
-export function CompanyLinks({ lead, items, size = "sm", className }: { lead: string; items: readonly CompanyLinkItem[]; size?: "sm" | "xs"; className?: string }) {
+export function CompanyLinks({ lead, items, size = "sm", className }: { lead: ReactNode; items: readonly CompanyLinkItem[]; size?: "sm" | "xs"; className?: string }) {
   if (items.length === 0) return null;
   return (
     <span className={cx(size === "xs" ? "text-xs" : "text-sm", "text-muted-foreground", className)}>
@@ -24,7 +26,7 @@ export function CompanyLinks({ lead, items, size = "sm", className }: { lead: st
           {i > 0 && ", "}
           {/* a two-word name ("מיטב טרייד") never breaks between its words; the line breaks between names */}
           <Link to={c.href} className="text-link hover:underline whitespace-nowrap">
-            <bdi>{c.name}</bdi>
+            <bdi>{gershayim(c.name)}</bdi>
           </Link>
         </span>
       ))}

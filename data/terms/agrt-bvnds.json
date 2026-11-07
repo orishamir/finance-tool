@@ -8,13 +8,17 @@
   "variants": [],
   "rule_ids": [
     "FXD-15",
-    "FXD-16"
+    "FXD-16",
+    "FXD-18",
+    "FXD-19",
+    "FXD-20",
+    "FXD-21"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf#page=42",
     "title": "החשב הכללי, היחידה לניהול החוב הממשלתי, הדו\"ח השנתי 2024, \"הנפקות באמצעות ארגון הבונדס\", עמ' 42",
     "publisher": "see title",
     "strength": "primary",
-    "checked": "2026-10-26"
+    "checked": "2026-11-07"
   }
 }

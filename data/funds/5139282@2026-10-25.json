@@ -204,8 +204,16 @@
       {
         "year": 2025,
         "fund_pct": 2.98,
-        "tracking_pct": 2.61
+        "tracking_pct": 2.61,
+        "fees_charged": {
+          "fixed": 0,
+          "variable": 0,
+          "trustee": 0.02
+        }
       }
+    ],
+    "years_printed": [
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
@@ -213,8 +221,16 @@
       "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
       "strength": "institution"
     },
-    "page": null,
-    "checked": "2026-10-24"
+    "page": 6,
+    "fees_page": 8,
+    "changes_page": 7,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 (SPTR500N)",
+      "dividends": "net",
+      "page": 2
+    }
   },
   "snapshot": "2026-10-25"
 }

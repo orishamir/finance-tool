@@ -39,6 +39,36 @@ function compactNisParts(v: number): { num: string; word: string | null } {
   return { num: compactFormat(v), word: null };
 }
 
+/**
+ * A billion or more in its short form, always with two decimals (`2.30 מיליארד ₪`, `1,250.00 מיליארד ₪`): a figure with one decimal beside
+ * one with two read as different precisions (fresh readers, round 3, 2026-11-07: "'1.6' has one decimal place while the rest have two").
+ */
+const billions = new Intl.NumberFormat(he, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const nisBillions = (v: number) => `${billions.format(Math.abs(v) / 1e9)} ${numbers.billion} ₪`;
+
+/**
+ * A row with a figure in the short form writes its other large figures in it too, from a hundred million up (`0.76 מיליארד ₪`): a smaller
+ * one keeps its digits, so costs of 9 and 14 million beside 1.86 billion did not both read "0.01 מיליארד ₪".
+ */
+export const SHORT_IN_ROW = 1e8;
+
+/**
+ * A figure's text with every shekel amount of `from` or more ("2,296,540,223 ₪", "+2,296,540,223 ₪") in its short form, or null when it
+ * has none. A phone shows it from a billion, so a typed plan's figure is never cut by its fixed column (lens review S2); a computer from a
+ * thousand billion. A row that writes one of its figures short passes `SHORT_IN_ROW`, so its figures read in one form: "758,833,521 ₪"
+ * beside "1.57 מיליארד ₪" read as the larger of the two (fresh readers, round 3).
+ */
+export function shortBillions(text: string, from = 1e9): string | null {
+  let hit = false;
+  const out = text.replace(/(\d{1,3}(?:,\d{3})+)(?:\.\d+)? ₪/g, (whole, digits: string) => {
+    const v = Number(digits.replace(/,/g, ""));
+    if (v < from) return whole;
+    hit = true;
+    return nisBillions(v);
+  });
+  return hit ? out : null;
+}
+
 export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
   nis: (v: number) => withMinus(plainMarks(currency.format(v))),
@@ -62,8 +92,11 @@ export const fmt = {
     return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? Math.round(thousandths) / 1000 : Math.round(v * 100) / 100;
   },
   number: (v: number) => withMinus(plain.format(v)),
-  /** `22.10.2026` from `2026-10-22`. */
-  date: (iso: string) => date.format(new Date(iso + "T00:00:00")),
+  /**
+   * `22.10.2026` from `2026-10-22`. A document that prints only a month is dated `2025-11` (fees schema, 2026-11-07); it is said as the
+   * month, `נובמבר 2025`, never with an invented first day.
+   */
+  date: (iso: string) => (/^\d{4}-\d{2}$/.test(iso) ? period.format(new Date(iso + "-01T00:00:00")) : date.format(new Date(iso + "T00:00:00"))),
   /** `ספטמבר 2026` from `2026-09`. */
   period: (ym: string) => period.format(new Date(ym + "-01T00:00:00")),
   /** Chart ticks, as running text: `200 אלף ₪`, `1.5 מיליון ₪`. A scale mark, not a figure (design-system Q4). */
@@ -110,6 +143,13 @@ export function nearThreshold(v: number, thresholds: readonly number[], within =
   return thresholds.some((t) => Math.abs(v - t) <= within);
 }
 
+/**
+ * A lead that ends in a maqaf ("ב־", "מ־", "תעריפון מ־") before what follows it: the maqaf joins a one-letter prefix to digits
+ * ("ב־2025", "מ־1,000 ₪"), and before a Hebrew word the letter is simply written on the word ("מנובמבר 2025", "בשנה", "בשנתיים";
+ * copy.md 10). Returns the lead as it is written before `next`.
+ */
+export const joinLead = (lead: string, next: string): string => (lead.endsWith("\u05be") && /^[\u05d0-\u05ea]/.test(next.trimStart()) ? lead.slice(0, -1) : lead);
+
 /** A figure's text by its unit. Dates and periods arrive as `text` values in ISO form. `state` applies the display rounding to shekel amounts (`nisShown`). */
 export function formatValue(value: number | string | boolean | null, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): string {
   if (value === null) return numbers.unknown;
@@ -150,6 +190,27 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     default:
       return fmt.number(value);
   }
+}
+
+/**
+ * What a reader means by a point where the conclusion changes (fresh readers, 2026-11-07: "8.17 שנים" read as oddly precise): years whole,
+ * or halves under 3; a return or inflation in percent whole from 3, halves from 1, tenths below; a fee's rate in tenths of a percent, hundredths
+ * under 0.1% (fees run 0.1% to 4%, where halves would carry a 1.17% point to 1.5%). It rounds away from the value now, toward
+ * the side the conclusion has already changed on, so the value shown still changes it; the sheet that opens on it keeps the exact point.
+ */
+export function readerRound(x: number, side: "lo" | "hi", unit: "years" | "pct" | "fee"): number {
+  const a = Math.abs(x);
+  const step = unit === "years" ? (a >= 3 ? 1 : 0.5) : unit === "fee" ? (a >= 0.1 ? 0.1 : 0.01) : a >= 3 ? 1 : a >= 1 ? 0.5 : a >= 0.1 ? 0.1 : 0.01;
+  const r = side === "lo" ? Math.floor(x / step + 1e-9) * step : Math.ceil(x / step - 1e-9) * step;
+  // never rounded down to nothing, nor up across the point (finance review, 2026-11-07): a point under one step rounds down in a finer step
+  if (side === "lo" && r <= 0 && x > 0) {
+    for (let fine = step / 10; fine >= 1e-4; fine /= 10) {
+      const f = Math.floor(x / fine + 1e-9) * fine;
+      if (f > 0) return Number(f.toFixed(4));
+    }
+    return Number(x.toFixed(4));
+  }
+  return Number(r.toFixed(2));
 }
 
 /** Unit word beside an input field (values sheet). */

@@ -16,6 +16,12 @@
     "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות",
     "notes": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכן לתאריך' משלו, המאוחר שבהם 14/10/2026): חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'; זהה לקובץ חלק 4 הנפרד smallbusiness4.pdf), חלק 5 - מטבע חוץ ('11.7.2025'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'). מקושר מעמוד https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/ Re-read 2026-11-04. The price-list page (https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/) still links smallbusinessMeugad.pdf; it is byte for byte the 31 October copy (md5 5facf477…, library 8dedbb45235cd662; HTTP Last-Modified 2026-10-20, PDF ModDate 2026-10-20), and it is the newest binding document. The parts carry their own dates: part 1 '01/10/2026', part 4 '02/04/2024' (the separate smallbusiness4.pdf was created 2024-04-01 and modified 2025-02-24), part 5 '11.7.2025', part 11 '18/08/2026' (smallbusiness11.pdf created 2026-09-24), annex A '13.01.2026', annex E '12/08/2025'. The exchange's sheet (market.tase.co.il trading_fees, list 'עדכון אחרון: 30/06/26') prints the same direct rates and custody. No account agreement with a securities fee annex is published: the agreements page links only the general securities terms of 7.2025 (library 97e568f32eb2e075), which print no price. No promotion terms with a securities price were found.",
     "published": null,
+    "printed": {
+      "kind": "part",
+      "part_he": "חלק ניירות הערך",
+      "date": "2024-04-02",
+      "as_printed": "02/04/2024"
+    },
     "format": "pdf"
   },
   "snapshot": "2026-11-04",
@@ -1239,6 +1245,27 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 6.8,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד), חלק 1 - חשבון עובר ושב ('מעודכן לתאריך: 01/10/2026'), סעיף 1.2.1 פעולה ע\"י פקיד והערה 3",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "עמלת מינימום במחיר של פעולה אחת על ידי פקיד"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Section 1.2.1 'פעולה ע\"י פקיד' at 6.80 NIS (בפיקוח), charged at the start of each month; note (3): 'הבנק יגבה בכל חודש את הגבוה מבין שני אלה ... עמלת מינימום במחיר של פעולה אחת על ידי פקיד'. The minimum is the price of one clerk action, not a ceiling. Read in the library copy (8dedbb45235cd662), 2026-11-06; the same figure as research/2026-11-04-binding-prices/mizrahi-tefahot.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
@@ -1252,7 +1279,7 @@
       "available": true,
       "source": {
         "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכ",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, חלק 4 - ניירות ערך",
         "checked": "2026-11-04",
         "page": 13,
         "quote": "אך לרבות \"קרן מחקה\""
@@ -1265,7 +1292,7 @@
       "available": true,
       "source": {
         "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכ",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, חלק 4 - ניירות ערך",
         "checked": "2026-11-04",
         "page": 11,
         "quote": "מניות ,איגרות חוב וקרנות"
@@ -1292,7 +1319,7 @@
     },
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית במחיר פעולה אחת על ידי פקיד (6.80 ₪), פעולה בערוץ ישיר 1.76 ₪, מסלול היברידי בסיסי 10 ₪, מורחב 29 ₪, מושלם 35 ₪",
-      "why": "The securities account rests on a current account. Part 1 ('01/10/2026'), 1.2.1 note (3): the bank charges the higher of the actions done or 'עמלת מינימום במחיר של פעולה אחת על ידי פקיד'; tracks 1.18.1-1.18.3. A standing-order debit is itself a direct action (1.3.1.10). No bank's record prices the current account yet; a decision for all banks at once."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 ('01/10/2026'), 1.2.1 note (3): the bank charges the higher of the actions done or 'עמלת מינימום במחיר של פעולה אחת על ידי פקיד'; tracks 1.18.1-1.18.3. A standing-order debit is itself a direct action (1.3.1.10)."
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.08%-0.44% לשנה, זרים 0.11%-0.43%; קנייה ומכירה של מניות ואג\"ח 0.13%-0.32%, ני\"ע זרים 0.12%-0.34%",

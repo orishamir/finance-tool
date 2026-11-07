@@ -130,6 +130,10 @@
      four dots. Validated with the dataviz validator on the card, all pairs: ΔE 16.1 colour-blind, 20.6 normal; ≥ 3:1. */
   --palette-gold-200: oklch(0.84 0.17 85);
   --palette-magenta-400: oklch(0.66 0.17 335);
+  /* the account's own fee in the cost bars (2026-11-07, the check of pass 7): an olive. The orchid before it sat 5.3 ΔE from the computed
+     violet (ground rule 6 keeps blue and violet for entered and computed numbers); no step of the allowed ramps (teal, orange, gold, rose,
+     neutral) let seven parts pass together, so this one step was added */
+  --palette-olive-600: oklch(0.55 0.12 115);
 
   /* Rose: tax, in charts only */
   --palette-rose-50: oklch(0.975 0.013 358);
@@ -265,13 +269,19 @@
   --chart-kind-hedged: var(--palette-gold-200);
   /* the index page's cost bar (founder, 2026-10-27, research/specs/2026-10-27-invest-improvements 3.10): one hue per part, by who
      takes it. The account's tariff lines (trade, custody, the fixed account fee, FX), then the fund's own fees, then tax (`--chart-tax`).
-     The founder asked for "more color variation" than the orange steps; blue and violet stay out (entered and computed inks) */
-  --chart-cost-trade: var(--palette-orange-500);
+     The founder asked for "more color variation" than the orange steps; blue and violet stay out (entered and computed inks).
+     Re-picked twice on 2026-11-07 through the dataviz validator on the card (`--mode dark`), the seven together, every pair, since a part
+     that is zero brings any two others side by side: first because two readers could not tell the conversion's magenta from the tax's rose;
+     then because the account's fee (orchid) sat 5.3 ΔE from the computed violet and the fund's part was green, a status colour (ground rule
+     6). Now worst ΔE 8.5 colour-blind (the tax against the conversion), 15.2 normal (trade against custody), every part at least 16 from the
+     violet and the blue inks. The fund's part is the near-white neutral; the remainder's grey is dark, below 3:1 on the card, so its amount
+     is always written beside it (under the bar, in its box) and inside it in light ink. */
+  --chart-cost-trade: var(--palette-orange-400);
   --chart-cost-custody: var(--palette-gold-200);
-  --chart-cost-fixed: var(--palette-red-500);
-  --chart-cost-fx: var(--palette-magenta-400);
-  --chart-cost-other: var(--palette-neutral-500);
-  --chart-cost-fund: var(--palette-green-300);
+  --chart-cost-fixed: var(--palette-olive-600);
+  --chart-cost-fx: var(--palette-teal-500);
+  --chart-cost-other: var(--palette-neutral-700);
+  --chart-cost-fund: var(--palette-neutral-100);
   /* a fund label's family (founder, 2026-10-27: "i want all labels to have a nice icon with nice distinct color"): the icon and the
      words take the colour, the chip a faint fill of it. A caution label keeps the caution role and an open-rule label the blocked role */
   --label-held: var(--palette-neutral-200);

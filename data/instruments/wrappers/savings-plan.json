@@ -18,12 +18,12 @@
     "value": "BoI",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "title": "Banking Ordinance 1941, consolidated text (Hebrew Wikisource mirror), s.5(א)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf#page=4",
+      "title": "פקודת הבנקאות, 1941, Bank of Israel's consolidated banking legislation (item 103), p.4, s.5(א): \"ובידיו יהיו הפיקוח הכללי והביקורת על כל תאגיד בנקאי\"",
+      "publisher": "Bank of Israel",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -33,7 +33,7 @@
       "REG-03"
     ],
     "state": "sourced",
-    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והבקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
+    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והביקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
   },
   "fee_bases_allowed": [
     "exit"
@@ -73,7 +73,7 @@
   },
   "lawful_exit": {
     "kind": "at_maturity",
-    "text": "at the end of the plan's term, or at an exit point the plan sets; in the plans read at contract level (one bank, institution source) the exit points count from the plan's start and only the whole balance can be withdrawn at one; earlier only by breaking on the bank's terms; whether each monthly instalment has its own lock-up, and how a break is priced, is open (BANK OQ12) (BANK-02, BANK-06, BANK-28, BPN-10)"
+    "text": "at the end of the plan's term, or at an exit point the plan sets; earlier only by breaking on the bank's terms. No general rule makes each monthly instalment a separate deposit with its own lock-up, or sets a break price: the agreement must state the deposit schedule and the early-repayment terms (BANK-02, BANK-28), and a withdrawal outside the agreed dates goes on a form showing the nearest date without a break and the changed terms (BANK-06); the rest is each bank's plan terms (in the plans read at one bank, exit points count from the plan's start and only the whole balance can be withdrawn at one, BPN-10; other banks' plans, BANK-38; each bank's break price, BANK OQ12)"
   },
   "switch_is_tax_event": {
     "value": true,
@@ -125,7 +125,7 @@
     "fee-change-over-time": "covered",
     "fee-exit": "covered",
     "fee-fx": "covered",
-    "liquidity-lockup": "blocked:BANK-OQ12",
+    "liquidity-lockup": "covered",
     "loss-offset": "covered",
     "minimum": "covered",
     "protection": "covered",
@@ -166,5 +166,5 @@
     "BANK-OQ8",
     "BANK-OQ17"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-11-07"
 }

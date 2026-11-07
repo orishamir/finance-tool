@@ -1,0 +1,119 @@
+{
+  "id": "infinity",
+  "provider": {
+    "name_he": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://infinity.co.il/wp-content/uploads/2025/07/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%91%D7%AA%D7%95%D7%A7%D7%A3-%D7%9E%D7%99%D7%95%D7%9D-1.7.2024.pdf",
+    "title": "תקנון תקני לקופת גמל להשקעה, אינפיניטי גמל להשקעה",
+    "notes": "Bylaws of fund 9637, 13 pages, edition of 1.7.2024; fees in section 35 on p.10. Linked from infinity.co.il/regulations/. Read 2026-11-07.",
+    "published": "2024-07-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-07",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "infinity-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://infinity.co.il/wp-content/uploads/2025/07/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%91%D7%AA%D7%95%D7%A7%D7%A3-%D7%9E%D7%99%D7%95%D7%9D-1.7.2024.pdf",
+          "title": "תקנון תקני לקופת גמל להשקעה, אינפיניטי גמל להשקעה (מהדורה מיום 1.7.2024), סעיף 35.1",
+          "publisher": "Infinity Hishtalmut, Gemel and Pension",
+          "strength": "institution",
+          "page": 10,
+          "quote": "בשיעור שלא יעלה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Infinity publishes no joining form for its provident fund for investing (joining is online only); the bylaws of אינפיניטי גמל להשקעה (edition of 1.7.2024, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment. Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול מן היתרה הצבורה, עד המרבי"
+        ]
+      }
+    },
+    {
+      "id": "infinity-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://infinity.co.il/wp-content/uploads/2025/07/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%91%D7%AA%D7%95%D7%A7%D7%A3-%D7%9E%D7%99%D7%95%D7%9D-1.7.2024.pdf",
+          "title": "תקנון תקני לקופת גמל להשקעה, אינפיניטי גמל להשקעה (מהדורה מיום 1.7.2024), סעיף 35.1",
+          "publisher": "Infinity Hishtalmut, Gemel and Pension",
+          "strength": "institution",
+          "page": 10,
+          "quote": "בשיעור שלא יעלה על שיעור דמי הניהול המרבי הקבוע בהסדר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Infinity publishes no joining form for its provident fund for investing (joining is online only); the bylaws of אינפיניטי גמל להשקעה (edition of 1.7.2024, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment. Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול מתוך התשלומים, עד המרבי"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

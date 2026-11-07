@@ -37,7 +37,7 @@
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-31",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -66,13 +66,59 @@
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
-      "title": "Private bill פ/3539/25",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "official_pdf",
-      "strength": "secondary",
-      "checked": "2026-10-22",
-      "qualifier": "(bill)"
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "חשבון השקעה",
+      "checked": "2026-11-07",
+      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "פטור ממס על רווח הון",
+      "checked": "2026-11-07",
+      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-11-07",
+      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill%282204087%29",
+      "title": "הכנסת: רשומת הצעת החוק 2204087 (KNS_Bill)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "StatusID 104, LastUpdatedDate 2023-06-19",
+      "quote": "הונחה על שולחן הכנסת לדיון מוקדם",
+      "checked": "2026-11-07",
+      "qualifier": "(library 8146ed6666f72861)"
     }
   ]
 }

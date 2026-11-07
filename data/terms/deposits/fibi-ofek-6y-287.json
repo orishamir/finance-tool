@@ -1,0 +1,176 @@
+{
+  "id": "fibi-ofek-6y-287",
+  "bank": "fibi",
+  "names": {
+    "447": [
+      "חסכון אופק-פיקדון שקלי בהו\"ק בריבית משתנה ל- 6 שנים",
+      "חסכון אופק",
+      "פיקדון ל-6 שנים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון ל-6 שנים",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 72,
+    "unit": "months",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות בהוראת קבע', שורת 'חסכון אופק-פיקדון שקלי בהו\"ק בריבית משתנה ל- 6 שנים'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-08",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed product type 'פיקדון ל-6 שנים'; recorded as 72 months."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -1.75,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות בהוראת קבע', שורת 'חסכון אופק-פיקדון שקלי בהו\"ק בריבית משתנה ל- 6 שנים', 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-08",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '(3.00%)P-1.75%': spread from prime -1.75 percentage points."
+  },
+  "rate_offered": {
+    "value": 3.0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות בהוראת קבע', שורת 'חסכון אופק-פיקדון שקלי בהו\"ק בריבית משתנה ל- 6 שנים', 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-08",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '(3.00%)P-1.75%' in the offered nominal rate; rate type 'משתנה', linkage 'לא צמוד'; adjusted '3.0000%', common 'P-1.75%'; exit points 'בתום שנתיים וכל שנה לאחר מכן'; break 'אין אפשרות שבירה'; renewal 'לא מתחדש'. Read 2026-11-07 from the data the page loads (https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31, 'effectiveDate' 2026-11-08, 'prime' 4.75; library 397b99ed11ff5be7); the 447 row is in the family 'פיקדונות בהוראת קבע' (standing-order deposits). Account type 287, product 841."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the 447 table's linkage column 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+        "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות בהוראת קבע', שורת 'חסכון אופק-פיקדון שקלי בהו\"ק בריבית משתנה ל- 6 שנים', 'טווח סכום להפקדה'",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-11-08",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed minimum 100 ('minSum'); the 447 data prints no upper bound ('maxSum' -1). Read as the amount of each monthly deposit, which the table does not say in words."
+    },
+    "max": {
+      "value": 2000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/standingorders/",
+        "title": "הבנק הבינלאומי, 'הוראות קבע', 'פיקדון אופק': 'סכומי הפקדה להוראה - 100 ₪ ועד 2,000 ₪'",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Per standing order; the page adds 'אפשר גם להגדיל או להקטין סכום ההוראה וכן ניתן להקפיא הוראה' and 'סוג חשבון - 287'. The 447 data prints no upper bound ('maxSum' -1). Page read 2026-11-07 (library 2fb9bb166bf86a0b); it also prints 'פיקדון אופק - הריבית האפקטיבית הינה 3.00% לשנה, נכון ליום 06.09.26'."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות שבירה' (447 table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 12
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "תחנות יציאה בתום שנתיים ואחר כך כל שנה. אפשר להגדיל, להקטין או להקפיא את ההוראה. ההפקדה מותנית בפתיחת חשבון בבנק.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+    "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות בהוראת קבע'",
+    "publisher": "First International Bank of Israel Ltd.",
+    "strength": "institution"
+  }
+}

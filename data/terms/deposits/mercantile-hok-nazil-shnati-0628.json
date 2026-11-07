@@ -1,0 +1,157 @@
+{
+  "id": "mercantile-hok-nazil-shnati-0628",
+  "bank": "mercantile",
+  "names": {
+    "447": [
+      "הו\"ק נזיל שנתי",
+      "פיקדון נזיל שנתי ל- 5 שנים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": [
+      "הו\"ק"
+    ]
+  },
+  "type_447": "הו\"ק נזיל שנתי",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 60,
+    "unit": "months",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק נזיל שנתי' קוד 0628, 'חמש שנים'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed period 'חמש שנים'; the product page names it 'פיקדון נזיל שנתי ל- 5 שנים'. Recorded as 60 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 2.2,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+      "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון נזיל שנתי ל- 5 שנים', 'פירוט הריבית'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The product page prints 'ריבית התחלתית 1.00%', 'תוספת ריבית לכל תקופה נוספת 0.30%', 'ריבית לסיום 2.20%'; recorded is the rate at the end of the 5 years. The 447 table carries rows with code 0628 at 1.0, 1.3, 1.6, 1.9 and 2.2, rate type 'קבועה', 'עולה גורפת', none saying which station (one of them, 1.6, prints 'No exit stations'). Rate type on the page 'ריבית קבועה לא צמודה'; break in the 447 table 'קיימת עם קנס שבירה'. Product page: 'ריבית אי רצף תרד ב-0.1% כפוף לקבלת ריבית מינימלית של 0.02%'; 'ניתן להקפיא (לא לבטל) את סכום הוראת הקבע עד 10 הפקדות'. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002)."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the 447 table's linkage column 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+        "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון נזיל שנתי ל- 5 שנים', 'מידע נוסף'",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The product page prints 'מינימום הפקדה חודשית 50 ש\"ח,מקסימום הפקדה חודשית 30,000 ש\"ח'; the 447 table prints ' החל מ 50 עד 30000'."
+    },
+    "max": {
+      "value": 30000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+        "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון נזיל שנתי ל- 5 שנים', 'מידע נוסף'",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound as printed; see min."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column); the page: 'שבירת הפיקדון (ככל והיא מאושרת על ידי הבנק) גורמת להקדמת התשלום ללקוח' and 'קנס השבירה ייקבע ביום השבירה על בסיס \"טבלת ריבית לווים\" המתעדכנת בבנק ברמה יומית'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 12
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "בחודש שבו לא מפקידים, הריבית יורדת ב-0.1%. אפשר להקפיא עד 10 הפקדות.",
+  "doubt_he": "דף המוצר מציג ריבית שעולה בכל תחנה; נרשמה הריבית בסוף התקופה. בטבלת הריביות של הבנק מופיעות כמה שורות לתוכנית בלי ציון התחנה.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+    "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע'",
+    "publisher": "Mercantile Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

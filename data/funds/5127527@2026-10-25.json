@@ -207,23 +207,49 @@
       {
         "year": 2025,
         "fund_pct": 15.32,
-        "tracking_pct": 17.43
+        "tracking_pct": 17.43,
+        "fees_charged": {
+          "fixed": 0,
+          "variable": 0.3,
+          "trustee": 0.02
+        }
       },
       {
         "year": 2024,
         "fund_pct": 21.86,
-        "tracking_pct": 24.16
+        "tracking_pct": 24.16,
+        "fees_charged": {
+          "fixed": 0,
+          "variable": 0.3,
+          "trustee": 0.02
+        }
       },
       {
         "year": 2023,
         "fund_pct": 23.6,
-        "tracking_pct": 25.7
+        "tracking_pct": 25.7,
+        "fees_charged": {
+          "fixed": 0,
+          "variable": 0.3,
+          "trustee": 0.02
+        }
       },
       {
         "year": 2022,
         "fund_pct": -21.78,
-        "tracking_pct": -18.52
+        "tracking_pct": -18.52,
+        "fees_charged": {
+          "fixed": 0,
+          "variable": 0.3,
+          "trustee": 0.02
+        }
       }
+    ],
+    "years_printed": [
+      2022,
+      2023,
+      2024,
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
@@ -231,8 +257,16 @@
       "publisher": "הראל קרנות נאמנות בע\"מ",
       "strength": "institution"
     },
-    "page": null,
-    "checked": "2026-10-24"
+    "page": 8,
+    "fees_page": 10,
+    "changes_page": 9,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 (SPTR500N)",
+      "dividends": "net",
+      "page": 3
+    }
   },
   "snapshot": "2026-10-25"
 }

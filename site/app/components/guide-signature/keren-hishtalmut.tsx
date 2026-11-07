@@ -11,8 +11,8 @@ import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment,
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
-import { InputSlot, LongestCase, NumberField, PercentField, PileStory, PileYears, SegmentedControl, Sentence, clamp, percentCheck, pileFirstRow, type PileStep } from "../kit";
-import { Num, RulesLine } from "../provenance";
+import { gershayim, InputSlot, LongestCase, NumberField, PercentField, PileStory, PileYears, SegmentedControl, Sentence, clamp, percentCheck, pileFirstRow, type PileStep } from "../kit";
+import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, text } from "./g2-parts";
 import { figure, inputSite, notFeeFlag, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
@@ -148,14 +148,17 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const accountRange = (low: SiteValue, high: SiteValue) =>
     brokerCount && (
       <>
-        {story.range.inAccount} <Num value={brokerCount} /> {story.range.tariffs} <Num value={high} /> {story.range.to} <Num value={low} />.
+        <Term prefix={story.range.inAccount.prefix} id="חשבון ניירות ערך">{story.range.inAccount.term}</Term>
+        {story.range.inAccount.after} <Num value={brokerCount} /> {story.range.tariffs} <Num value={high} /> {story.range.to} <Num value={low} />.
       </>
     );
   const trackNote = (typed: boolean, fund: { low: SiteValue; high: SiteValue; gap: SiteValue } | null, account: { low: SiteValue; high: SiteValue } | null) => (
     <Sentence size="sm">
       {trackName && (
         <>
-          {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {story.held.trackFee} {trackFee && <Num value={trackFee} />} {story.held.trackAvg}
+          {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {story.held.trackFee.before} <Term id="דמי ניהול">{story.held.trackFee.term}</Term> {story.held.trackFee.after} {trackFee && <Num value={trackFee} />} {story.held.trackAvg.before}{" "}
+          <Term id="רשות שוק ההון ביטוח וחיסכון">{story.held.trackAvg.term}</Term>
+          {story.held.trackAvg.after}
           {typed && ` ${story.held.feeEntered}`}{" "}
         </>
       )}
@@ -172,7 +175,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const capWords = cap && <Num value={cap} display={fmt.nisWhole} />;
   const inflationWords = inflationPct && <Num value={inflationPct} />;
   const standingLine = (st: StudyStanding, taxed: boolean, employee: boolean) => {
-    const words = story.standing;
+    const words = copy.hishtalmut.story.standing;
     const whole = (value: number, about: string) => <Num value={standingNum(value, about)} display={fmt.nisWhole(value)} />;
     const [own = 0, employer = 0] = st.over.map(Math.round);
     const over = own + employer;
@@ -197,7 +200,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
             </>
           ) : (
             <>
-              {words.over.noTax} {lockWords}
+              <Term prefix={words.over.noTax.prefix} id="תשואה">{words.over.noTax.term}</Term> {words.over.noTax.after} {lockWords}
               {words.over.noTaxWhy}
             </>
           )}
@@ -288,11 +291,13 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         {/* a return the person typed is theirs, not the site's assumption */}
         {n.retTyped ? (
           <p>
-            {story.held.retEntered.before} <Num value={returnIn} /> {story.held.retEntered.middle} {inflationPct && <Num value={inflationPct} />} {story.held.retEntered.after}
+            {story.held.retEntered.before} <Num value={returnIn} /> {story.held.retEntered.middle}{" "}
+            <Term prefix={story.held.retEntered.prefix} id="אינפלציה">{story.held.retEntered.inflation}</Term> {inflationPct && <Num value={inflationPct} />} {story.held.retEntered.after}
           </p>
         ) : (
           <p>
-            {story.held.ret} <Num value={returnIn} /> {story.held.inflation} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after}
+            <Term prefix={story.held.ret.prefix} id="תשואה">{story.held.ret.term}</Term> <Num value={returnIn} /> {story.held.inflation.before}{" "}
+            <Term prefix={story.held.inflation.prefix} id="אינפלציה">{story.held.inflation.term}</Term> {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after}
           </p>
         )}
         <p>{story.held.today}</p>
@@ -309,7 +314,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         </p>
         {!n.employee && fundName && brokerCount && (
           <p>
-            {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{brokerName}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
+            {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{gershayim(brokerName)}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
           </p>
         )}
         {trackNote(n.feeTyped, n.fund, n.account)}

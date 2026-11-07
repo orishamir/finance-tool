@@ -1,0 +1,25 @@
+{
+  "id": "tyavm-ms",
+  "he": "תיאום מס",
+  "en": null,
+  "meaning": "בקשה לפקיד השומה במהלך השנה, כדי שפטור או זיכוי ייכנסו כבר לניכוי המס במקור, בלי לחכות לדוח השנתי.",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXI-07",
+    "TXI-20"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=43",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025, עמודים 43 ו־74",
+    "publisher": "Israel Tax Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

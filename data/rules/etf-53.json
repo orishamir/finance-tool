@@ -29,19 +29,17 @@
       "checked": "2026-10-26"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(נכסים_שמותר_לקנות_ולהחזיק_בקרן_ושיעוריהם_המרביים)",
-      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ\"ה-1994, unofficial consolidated text, the only copy found of the current wording",
-      "title_he": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ״ה-1994",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=9",
+      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים) (תיקון), התשע\"ח-2018 (קובץ התקנות 8038, עמ' 2400)",
+      "publisher": "Reshumot (Ministry of Justice)",
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 1",
-      "locator_he": "תקנה 1",
-      "anchor": "סעיף_1",
+      "strength": "primary",
+      "locator": "file p.9, reg. 1 (definition added)",
+      "locator_he": "עמוד 9, תקנה 1",
+      "page": 9,
       "quote": "עסקת החלף שאינה במימון",
-      "checked": "2026-10-26"
+      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

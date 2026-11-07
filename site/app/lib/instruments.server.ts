@@ -4,7 +4,8 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { invest as investCopy } from "../copy";
+import { fundOf, gapListOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
 import {
   catalogEntry,
@@ -24,7 +25,7 @@ import {
 import type { z } from "zod";
 import { loadSecurities, root } from "./data.server";
 import { exposureFoldedInto } from "./guide-nav";
-import { cmaFeeValue, depositFeeNoneByRule, ruleFigure, type SiteValue } from "./value";
+import { cmaFeeValue, computed, depositFeeNoneByRule, ownBy, ruleFigure, type SiteValue } from "./value";
 import { readParsedCached } from "./read-cache.server";
 
 // The two helpers of data.server.ts are private there; copied, not imported (both read through the one cache).
@@ -379,6 +380,24 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     take("trustee", "trustee", "fundTrustee");
     take("tracking_difference_12m", "tracking", "fundTracking");
     take("fund_level_withholding_drag", "foreignWithholding", "fundWithholding");
+    // F-92 (b), pass 6: the variable fee counted forward as the invest page's engine counts it (fundOf), the mean charged in the years at
+    // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it
+    const exposure = (rec as { exposure_id?: string }).exposure_id;
+    if (kind === "israeli-fund" && exposure && rec.tracking_record) {
+      const forward = fundOf(rec, kind, undefined, undefined, gapListOf(rec, { id: exposure }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposure))).fund.drag?.variable;
+      const listed = rec.fees.variable_management;
+      if (forward !== undefined && forward !== drag.variable && listed) {
+        drag.variable = forward;
+        const t = rec.tracking_record;
+        const inputs: Record<string, SiteValue> = {};
+        // only the years the mean is taken over (F-92 (b); pass 7: the sheet listed every year of the record), each written as the index
+        // page writes it (pricedVariable): a percent of that year from the report's table at its page, the fund manager's own figure
+        const years = (variableForwardYears(t.years, t.variable_rate_since) ?? []).filter((y) => y.fees_charged);
+        const source = { ...t.source, ...(t.fees_page ? { page: t.fees_page, locator_he: investCopy.kinds.gapPage(t.fees_page) } : {}) };
+        for (const y of years) inputs[investCopy.pair.fundInputs.chargedVariable(y.year)] = ownBy({ ...(listed as SiteValue), value: y.fees_charged!.variable, unit: "pct", source, checked: t.checked, notes: undefined, state: "sourced" } as SiteValue, rec.manager);
+        feeValues.fundVariable = computed(forward * 100, "pct_per_year", "F-92", inputs, { today: src.today, about: investCopy.kinds.variablePricedAbout(years.map((y) => y.year)) });
+      }
+    }
     if (Object.keys(drag).length > 0) fund.drag = drag;
     if (notCollected.length > 0) console.log(`[guide] ${wrapperId}: fund "${rec.id}" fees not collected (run uses 0): ${notCollected.join(", ")}`);
   }

@@ -1,15 +1,16 @@
 // "Hedged or not: what happened" (F-95; founder 2026-10-31, option A of research/specs/2026-10-31-hedged): what the dollar did each year
 // and what each kind of fund did in the same years, from the funds' own reports, and one sentence on the plan. No forecast, no ranking.
 import { useMemo } from "react";
-import { kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread } from "@finance-tool/engine";
+import { comparedYears, kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread } from "@finance-tool/engine";
 import { invest as c } from "../../copy";
-import { inputMap, kindMoney, kindOf, sumFeesPct, type InvestView } from "../../lib/invest";
+import { gapListFor, inputMap, kindMoney, kindOf, reportsInShekels, sumFeesPct, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
-import { Card, ChartLegend, FixedTable, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useChartPick, useHeldHeight } from "../kit";
-import { allFunds, kindPairs, type Pick } from "./pair";
+import { MixedName, Card, ChartLegend, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useChartPick, useHeldHeight } from "../kit";
+import { allFunds, kindPairs, LONGEST_AMOUNT, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
+import { sourceHref } from "../../lib/sources";
 
 const one = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 /** Isolated for a Hebrew sentence: "−18.5%" with its sign, or "18.5%" for a word that already says up or down. */
@@ -23,8 +24,13 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const funds = allFunds(view);
   const history = bundle.fxHistory;
   const years = useMemo(() => yearlyChanges(history?.points ?? []), [history]);
-  const reporting = useMemo(() => funds.filter((f) => f.rec.tracking_record && f.rec.tracking_record.years.length > 0), [funds]);
-  const rec = useMemo(() => kindRecord(reporting.map((f) => ({ hedged: kindOf(f.rec) === "hedged", years: f.rec.tracking_record!.years as readonly GapYear[] })), years), [reporting, years]);
+  // F-95 compares shekel returns: a foreign fund's yearly figures are in its own currency and stay out (reportsInShekels)
+  const reporting = useMemo(() => funds.filter((f) => reportsInShekels(f.rec)), [funds]);
+  // the gaps (a return less its index) only over the years F-92 (d) compares; the returns over every year of the reports
+  const rec = useMemo(
+    () => kindRecord(reporting.map((f) => ({ hedged: kindOf(f.rec) === "hedged", years: f.rec.tracking_record!.years as readonly GapYear[], compared: comparedYears(f.rec.tracking_record, gapListFor(bundle, f.rec)) !== null })), years),
+    [reporting, years, bundle],
+  );
   const pairs = kindPairs(view, pick);
   const money = useMemo(
     () => (pairs ? kindMoney({ bundle, index: view.index, plan, unhedged: { fundId: pairs.unhedged.fund, providerId: pairs.unhedged.house }, hedged: { fundId: pairs.hedged.fund, providerId: pairs.hedged.house } }) : null),
@@ -32,13 +38,19 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   );
   const h = Math.round(plan.years);
   const stretch = history ? stretchRange(history.points, h) : null;
-  const held = useHeldHeight<HTMLParagraphElement>(view.index.id);
+  // a ratchet behind the cases: a pair's real words can still wrap a line longer than every case
+  const held = useHeldHeight<HTMLDivElement>(view.index.id);
   const legendPick = useChartPick();
-  if (!rec || !pairs || !history) return null;
+  // with no compared year of a kind there is no gap to say, and the section's second tile would have no figure
+  if (!rec || !pairs || !history || !rec.gaps.unhedged || !rec.gaps.hedged) return null;
+  const gaps = { unhedged: rec.gaps.unhedged, hedged: rec.gaps.hedged };
 
   const hedgedFunds = reporting.filter((f) => kindOf(f.rec) === "hedged" && f.rec.tracking_record!.years.some((y) => rec.years.some((r) => r.year === y.year)));
-  const single = hedgedFunds.length === 1 ? hedgedFunds[0]! : null;
-  const first = rec.years[0]!.year, last = rec.years[rec.years.length - 1]!.year;
+  // the sentence beside the gap range counts only the reports the range rests on, those F-92 (d) compares, and names their years (recheck 3 S5)
+  const gapFunds = hedgedFunds.filter((f) => comparedYears(f.rec.tracking_record, gapListFor(bundle, f.rec)) !== null);
+  const gapYears = [...new Set(gapFunds.flatMap((f) => f.rec.tracking_record!.years.map((y) => y.year)).filter((y) => rec.years.some((r) => r.year === y)))].sort((a, b) => a - b);
+  const single = gapFunds.length === 1 ? gapFunds[0]! : null;
+  const first = gapYears[0] ?? rec.years[0]!.year, last = gapYears[gapYears.length - 1] ?? rec.years[rec.years.length - 1]!.year;
   const lo = Math.min(...years.map((y) => y.pct)), hi = Math.max(...years.map((y) => y.pct));
   const from = years[0]?.year ?? 0, to = years[years.length - 1]?.year ?? 0;
   const many = view.index.exposure?.other_currencies === true;
@@ -82,7 +94,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
     };
   };
   const allYears = rec.years.map((y) => y.year);
-  const hedgedName = single ? c.dollar.legendHedgedOne(single.name) : c.dollar.legendHedgedMany(hedgedFunds.length);
+  const hedgedName = hedgedFunds.length === 1 ? c.dollar.legendHedgedOne(hedgedFunds[0]!.name) : c.dollar.legendHedgedMany(hedgedFunds.length);
   const rows = rec.years.map((y) => rowOf(String(y.year), String(y.year), [y.year], y.dollar, y.index, y.unhedged, y.hedged, c.kinds.groupCount(y.unhedged.count)));
   if (rec.together) rows.push(rowOf("together", c.dollar.together(rec.years.length), allYears, rec.together.dollar, rec.together.index, rec.together.unhedged, rec.together.hedged, c.dollar.togetherFunds(rec.together.unhedged.count, rec.years.length), true));
 
@@ -97,6 +109,22 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const nisV = (n: number, about: string) => computed(Math.round(n), "nis", "F-95", moneyInputs, { today, about });
   const round100 = (n: number) => Math.round(n / 100) * 100;
   const uMore = money ? money.unhedged - money.hedged : 0;
+  // the cases: every fund of the index in each of the two places, beside the longest pair in the other, at the longest account name, with
+  // both kinds' words; a name's length in letters does not say how it wraps, so each name is laid out, not only the longest
+  const longestOf = (xs: string[]) => xs.reduce((a, b) => (b.length > a.length ? b : a), "");
+  const longestHouse = longestOf(view.providers.map((p) => houseOf(p.id)));
+  const longestPair = c.dollar.pairName(longestOf(funds.map((f) => f.name)), longestHouse);
+  const sampleNum = <Num value={nisV(LONGEST_AMOUNT, c.dollar.pointAbout)} />;
+  const planCase = (a: string, b: string, k1: string, k2: string, key: string) => (
+    <p key={key}>
+      <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(LONGEST_YEARS)} {sampleNum} {c.dollar.to} {sampleNum}
+      {c.dollar.planReal} {c.dollar.planSteady} <MixedName>{a}</MixedName> {k1} {c.dollar.leaves} {sampleNum} {c.dollar.moreThan}<MixedName>{b}</MixedName> {k2}.
+    </p>
+  );
+  const planCases = funds.flatMap((f, i) => {
+    const mine = c.dollar.pairName(f.name, longestHouse);
+    return [planCase(mine, longestPair, c.dollar.kindNoHedge, c.dollar.kindHedge, `a${i}`), planCase(longestPair, mine, c.dollar.kindHedge, c.dollar.kindNoHedge, `b${i}`)];
+  });
 
   return (
     <Card pad="roomy" className="flex flex-col gap-5" id="invest-dollar">
@@ -122,11 +150,11 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
           label={c.dollar.costsLabel}
           note={
             <span>
-              {single ? c.dollar.costsOne(single.name, first, last, `\u2066${sumFeesPct(single.rec).toFixed(2)}%\u2069`) : c.dollar.costsMany(hedgedFunds.length, first, last)} {c.dollar.costsUnhedged(points(rec.gaps.unhedged.low), points(rec.gaps.unhedged.high))}
+              {single ? c.dollar.costsOne(single.name, first, last, `\u2066${sumFeesPct(single.rec).toFixed(2)}%\u2069`) : c.dollar.costsMany(gapFunds.length, first, last)} {c.dollar.costsUnhedged(points(gaps.unhedged.low), points(gaps.unhedged.high))}
             </span>
           }
         >
-          {`⁦${one.format(-rec.gaps.hedged.high)}⁩`} <span className="text-base font-medium">{c.dollar.to}</span> {`⁦${one.format(-rec.gaps.hedged.low)}⁩`} {c.dollar.pointsAYear}
+          {`⁦${one.format(-gaps.hedged.high)}⁩`} <span className="text-base font-medium">{c.dollar.to}</span> {`⁦${one.format(-gaps.hedged.low)}⁩`} {c.dollar.pointsAYear}
         </StatTile>
         <StatTile
           label={c.dollar.notCancelsLabel}
@@ -159,7 +187,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
             pick={legendPick}
             items={[
               { id: "u", swatch: <Swatch shape="box" className="bg-chart-kind-unhedged" />, label: c.dollar.legendUnhedged },
-              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <bdi>{hedgedName}</bdi> },
+              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <MixedName>{hedgedName}</MixedName> },
             ]}
           />
           <PairBars label={c.dollar.fundsLabel} tickStep={20} format={barLabel} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={c.dollar.legendUnhedged} nameB={hedgedName} highlight={legendPick.active === "u" ? "a" : legendPick.active === "h" ? "b" : null} items={rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }))} />
@@ -176,21 +204,30 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         ]}
         rows={rows}
       />
-      {money && (
-        <p ref={held} className="min-h-[3lh] max-md:min-h-[11lh]">
-          <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(h)} <Num value={nisV(round100(money.worth.low), c.dollar.pointAbout)} /> {c.dollar.to} <Num value={nisV(round100(money.worth.high), c.dollar.pointAbout)} />
-          {c.dollar.planReal} {c.dollar.planSteady} <bdi>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</bdi> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={nisV(Math.abs(uMore), c.dollar.moreAbout)} /> {c.dollar.moreThan}<bdi>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</bdi> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
+      {/* held at its longest case (#190: a ratchet held it only after the fact, and a longer pair's name grew it by a few pixels the first
+          time): the longest names of an account and a fund on this index in both places, the longest years and figures */}
+      <div ref={held}>
+      <LongestCase cases={planCases}>
+        {money && (
+          <p>
+            <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(h)} <Num value={nisV(round100(money.worth.low), c.dollar.pointAbout)} /> {c.dollar.to} <Num value={nisV(round100(money.worth.high), c.dollar.pointAbout)} />
+            {c.dollar.planReal} {c.dollar.planSteady} <MixedName>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</MixedName> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={nisV(Math.abs(uMore), c.dollar.moreAbout)} /> {c.dollar.moreThan}<MixedName>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</MixedName> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
+          </p>
+        )}
+      </LongestCase>
+      </div>
+      {/* held with the tax sentence: with nothing left to tax (amount and deposit 0) it goes, and what follows moved 45 px (#190) */}
+      <LongestCase className="text-sm text-muted-foreground" cases={[<p key="t">{c.dollar.small(rec.years.length, hedgedFunds.length)} {c.dollar.taxLead} {"⁦100%⁩"} {c.dollar.taxTail} {c.dollar.noSource}</p>]}>
+        <p>
+          {c.dollar.small(rec.years.length, hedgedFunds.length)} {money?.taxShare != null && <>{c.dollar.taxLead} {`⁦${Math.round(money.taxShare * 100)}%⁩`} {c.dollar.taxTail} </>}
+          {c.dollar.noSource}
         </p>
-      )}
-      <p className="text-sm text-muted-foreground">
-        {c.dollar.small(rec.years.length, hedgedFunds.length)} {money?.taxShare != null && <>{c.dollar.taxLead} {`⁦${Math.round(money.taxShare * 100)}%⁩`} {c.dollar.taxTail} </>}
-        {c.dollar.noSource}
-      </p>
+      </LongestCase>
       <SourceLine
         lead={
           <>
             {c.dollar.sources}{" "}
-            <a href={history.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-link hover:underline">
+            <a href={sourceHref({ url: history.sourceUrl })} target="_blank" rel="noopener noreferrer" className="text-link hover:underline">
               {history.attribution} ↗
             </a>
           </>
@@ -198,7 +235,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         items={[]}
       />
       <p>
-        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" />
+        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" titled />
       </p>
     </Card>
   );

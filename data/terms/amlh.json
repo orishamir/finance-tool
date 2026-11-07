@@ -1,0 +1,29 @@
+{
+  "id": "amlh",
+  "he": "עמלה",
+  "en": null,
+  "meaning": "המחיר שבנק או בית השקעות גובים תמורת שירות, כמו ניהול החשבון או קנייה ומכירה של ניירות ערך",
+  "where": [],
+  "wrapper_ids": [
+    "current-account",
+    "government-bond",
+    "keren-hishtalmut",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "exposure_ids": [
+    "general-track"
+  ],
+  "variants": [
+    "עמלות"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://boi.org.il/media/uo4k5b20/מודלי-תגמול-בפעילות-הציבור-בניירות-ערך-דוח-סופי.pdf#page=10",
+    "title": "בנק ישראל, משרד האוצר ורשות ניירות ערך, מודלי תגמול בפעילות הציבור בניירות ערך, דוח סופי, יוני 2026, עמוד 10",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

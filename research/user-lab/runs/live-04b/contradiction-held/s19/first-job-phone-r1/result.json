@@ -1,0 +1,108 @@
+{
+  "task": "s19",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T17:12:04.372Z",
+  "structured": {
+    "answer": "Didn't choose today. If forced, I'd take an S&P 500 track at a big name like מיטב (גמל עוקב מדד S&P500, 0.53%, ~13.89% over 3y) or הפניקס, but 182 lookalike rows and no recommendation made me stop.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Main table, screens 2–4",
+        "why": "182 rows that look alike, with no recommendation, so I couldn't tell which one is 'the good one'"
+      },
+      {
+        "where": "Fee column",
+        "why": "Two fees per row (החיסכון / ההפקדה) and no idea which one I'd actually pay or what it means in shekels"
+      },
+      {
+        "where": "Filter chips under 'במה הכסף מושקע'",
+        "why": "Too many buttons; I didn't know which one to press, so I didn't"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות'",
+      "Tab 'תגמולים ואישית לפיצויים 182'",
+      "Company group headers מיטב / מור / הפניקס / אלטשולר שחם / כלל",
+      "3-year and 5-year return %",
+      "Fee % 'ההחיסכון'",
+      "S&P 500 rows",
+      "Bottom note 'אין מיון לפיה'"
+    ],
+    "skimmed": [
+      "Filter chips",
+      "Exposure donuts and %s",
+      "Money-managed column (כסף מנוהל)",
+      "Group summary lines"
+    ],
+    "skipped": [
+      "Orange notice at the top",
+      "Small explanation text under the heading",
+      "ⓘ marks",
+      "Screens 5–9",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "ההפקדה vs החיסכון fee",
+      "חשיפה למניות ולמט\"ח",
+      "מט\"ח",
+      "101% / 103% exposure",
+      "עוד לא דווח",
+      "פחות מ־3 שנים",
+      "הלכה יהודי",
+      "מבטיח תשואה 4.5%",
+      "Numbers in the קופה column (1486, 13246…)"
+    ],
+    "not_found": [
+      "A recommendation or 'best for a young person' pick",
+      "Fees in shekels",
+      "What to do first or how to switch",
+      "How to find out which fund I'm already in"
+    ],
+    "findings": [
+      {
+        "what": "182 tracks that all look alike and no guidance, so I'd rather do nothing",
+        "where": "Main table"
+      },
+      {
+        "what": "Data date disagrees: the top says correct as of end of September 2026, the footer says 'נתונים נכון ל־03.11.2026'",
+        "where": "Text under the heading vs the footer"
+      },
+      {
+        "what": "Exposure over 100% (101%, 103%) looks like a mistake",
+        "where": "Exposure column, e.g. מיטב גמל מניות, גמל עוקב מדד אג\"ח"
+      },
+      {
+        "what": "Two fees per row with no explanation of which one I pay; only percents, never shekels",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "The highest returns (28.61%, 22%) pull me toward them even though I wanted the S&P",
+        "where": "מיטב משולב סחר / גמל מניות rows"
+      },
+      {
+        "what": "Many rows say 'פחות מ־3 שנים' or 'לא דווח' instead of a number",
+        "where": "Return column"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 42404,
+    "turns": 7,
+    "usd": 0.2032736,
+    "input": 8,
+    "cacheWrite": 15990,
+    "cacheRead": 38508,
+    "output": 3381,
+    "model": "claude-opus-5-5"
+  }
+}

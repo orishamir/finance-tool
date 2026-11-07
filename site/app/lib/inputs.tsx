@@ -11,6 +11,8 @@ export interface InputsState {
   entered: Partial<Record<P05Input, number>>;
   age: number | null;
   employment: Employment | null;
+  /** A-17: the insurance cost inside a pension fund, % of each deposit, entered on its fee page (G-12). Absent or null: not entered. */
+  insurance?: number | null;
 }
 
 interface InputsApi {
@@ -20,16 +22,17 @@ interface InputsApi {
   setEntered: (key: P05Input, value: number | null) => void;
   setAge: (age: number | null) => void;
   setEmployment: (e: Employment | null) => void;
+  setInsurance: (pct: number | null) => void;
   resetAll: () => void;
 }
 
 const empty: InputsState = { entered: {}, age: null, employment: null };
 
-const Ctx = createContext<InputsApi>({ state: empty, ready: false, setEntered: () => {}, setAge: () => {}, setEmployment: () => {}, resetAll: () => {} });
+const Ctx = createContext<InputsApi>({ state: empty, ready: false, setEntered: () => {}, setAge: () => {}, setEmployment: () => {}, setInsurance: () => {}, resetAll: () => {} });
 
 function load(): InputsState {
   const i = inputsFromRecord(ensureLoaded().state.inputs);
-  return { entered: i.entered as InputsState["entered"], age: i.age, employment: i.employment };
+  return { entered: i.entered as InputsState["entered"], age: i.age, employment: i.employment, insurance: i.insurance ?? null };
 }
 
 export function InputsProvider({ children }: { children: ReactNode }) {
@@ -69,13 +72,14 @@ export function InputsProvider({ children }: { children: ReactNode }) {
   }, []);
   const setAge = useCallback((age: number | null) => setState((s) => ({ ...s, age })), []);
   const setEmployment = useCallback((employment: Employment | null) => setState((s) => ({ ...s, employment })), []);
+  const setInsurance = useCallback((insurance: number | null) => setState((s) => ({ ...s, insurance })), []);
   const resetAll = useCallback(() => setState(empty), []);
 
-  const api = useMemo(() => ({ state, ready, setEntered, setAge, setEmployment, resetAll }), [state, ready, setEntered, setAge, setEmployment, resetAll]);
+  const api = useMemo(() => ({ state, ready, setEntered, setAge, setEmployment, setInsurance, resetAll }), [state, ready, setEntered, setAge, setEmployment, setInsurance, resetAll]);
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }
 
-const sameInputs = (a: ReturnType<typeof inputsFromRecord>, b: InputsState) => JSON.stringify([a.entered, a.age, a.employment]) === JSON.stringify([b.entered, b.age, b.employment]);
+const sameInputs = (a: ReturnType<typeof inputsFromRecord>, b: InputsState) => JSON.stringify([a.entered, a.age, a.employment, a.insurance ?? null]) === JSON.stringify([b.entered, b.age, b.employment, b.insurance ?? null]);
 
 /** A value that did not change keeps its saved object (and its date). */
 function keepDates(old: ReturnType<typeof getSnapshot>["state"]["inputs"], next: ReturnType<typeof getSnapshot>["state"]["inputs"]) {

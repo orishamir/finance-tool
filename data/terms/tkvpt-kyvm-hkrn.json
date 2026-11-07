@@ -1,0 +1,19 @@
+{
+  "id": "tkvpt-kyvm-hkrn",
+  "he": "תקופת קיום הקרן",
+  "en": null,
+  "meaning": "התקופה שהקרן קיימת בה, אם הסכם הקרן מגביל אותה.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "MF-59"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=6",
+    "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, סעיף 5(א)(10), עמוד 6",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

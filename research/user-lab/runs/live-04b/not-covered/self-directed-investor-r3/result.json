@@ -1,0 +1,100 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:56:36.278Z",
+  "structured": {
+    "answer": "The site can't yet calculate gold and commodities (ETC, gold ETFs), most bonds and debt (corporate bonds, Israel Bonds, commercial paper, commitment notes, debt settlements), foreign-currency accounts and deposits including the FX conversion fee itself, structured products, insurance-based savings (savings policies, managers' insurance, Fund Y), pension commutation and other retirement tax items, REITs, digital portfolios and portfolio management. Every one is marked \"לא מחושב\" because their rules are \"עוד בבדיקה\", and it says outright it will never cover single stocks, trading, derivatives, loans or past-performance rankings.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Card edges between screenshots (top of pc-4, pc-5, pc-6)",
+        "why": "Card titles were cut off, so I can't be sure I caught every item, and the page gives no total count"
+      },
+      {
+        "where": "'מצב הכיסוי' folds",
+        "why": "Struck-through 'נסגר ב-' lines and codes like MF-28 / TX2-01 / TXA-28 were confusing; strikethrough reads like 'cancelled', not 'resolved'"
+      }
+    ],
+    "used": [
+      "Title 'מה האתר עוד לא מכסה' and subtitle",
+      "Red banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "Card titles and 'לא מחושב' badges",
+      "'מה חוסם' / 'שאלה פתוחה' lines in a few folds",
+      "Bottom section 'מה האתר לא משווה ולא עושה'",
+      "Footer 'אישי, לא מסחרי, בלי קישורי שיווק'"
+    ],
+    "skimmed": [
+      "'מה ידוע' definitions on each card",
+      "'נקרא גם' alias lines",
+      "Boilerplate 'כשייסגר: יופיע במדריך...' lines",
+      "Brokerage guide screenshots (cost table, glossary)"
+    ],
+    "skipped": [
+      "Law/source citation links and dates on each card",
+      "'חוקים וכללים · N' chips"
+    ],
+    "unsure_meaning": [
+      "Codes MF-28, TX2-01, TXA-28",
+      "Struck-through 'נסגר ב-' dates: resolved or cancelled?",
+      "Amber 'לפי החברה' badge (I took it to mean the source is the company itself)",
+      "Card titled 'מסלולי האירוע' (possibly a typo)",
+      "'מקור ראשי (עותק)'"
+    ],
+    "not_found": [
+      "A total count of uncovered items",
+      "Filters or grouping by category",
+      "Any timeline for when items will be covered",
+      "Any figure to compare with what I pay today"
+    ],
+    "findings": [
+      {
+        "what": "The FX conversion fee (עמלת חליפין) and FX accounts are uncovered, which is exactly the cost relevant to someone buying US ETFs",
+        "where": "עמלת חליפין card, pc-5; FX deposit cards, pc-4/pc-6"
+      },
+      {
+        "what": "A long flat wall of cards with no filter, grouping or count; hard to scan for what affects me",
+        "where": "Whole page"
+      },
+      {
+        "what": "Internal ticket codes (MF-28, TX2-01, TXA-28) shown to users with no explanation",
+        "where": "מצב הכיסוי folds, pc-5/pc-6"
+      },
+      {
+        "what": "Strikethrough on resolved questions looks like they were cancelled",
+        "where": "מה נסגר lines, pc-5/pc-6/pc-8/pc-9"
+      },
+      {
+        "what": "The same boilerplate 'כשייסגר: יופיע במדריך...' repeated on every card",
+        "where": "Every expanded card"
+      },
+      {
+        "what": "Some cards rely on the company's own materials ('לפי החברה')",
+        "where": "LBMA, LAYA, מענק cards"
+      },
+      {
+        "what": "Odd card title 'מסלולי האירוע', possibly a typo",
+        "where": "pc-4"
+      }
+    ]
+  },
+  "steps": 12,
+  "reads": 12,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 57787,
+    "turns": 14,
+    "usd": 0.28434339999999997,
+    "input": 14,
+    "cacheWrite": 22375,
+    "cacheRead": 83837,
+    "output": 4426,
+    "model": "claude-opus-5-5"
+  }
+}

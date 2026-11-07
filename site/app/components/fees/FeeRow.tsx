@@ -4,13 +4,13 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r3fees } from "../../copy";
-import { reducible, reductionWorth, type Analysis, type LineView, type SubjectView } from "../../lib/fees";
+import { reducible, reductionWorth, type Analysis, type FeeReach, type LineView, type SubjectView } from "../../lib/fees";
 import { formatValue, fmt, nearThreshold } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { entered as enteredValue } from "../../lib/value";
 import { IconCopy } from "../icons";
 import { LeadTail, Num, RuleRef, StateTag } from "../provenance";
-import { Button, Callout, Card, cx, Disclosure, NumberField, Sentence, Tag } from "../kit";
+import { Button, Callout, Card, cx, Disclosure, gershayim, LongestCase, NumberField, Sentence, Tag } from "../kit";
 import { CapLine, ReadingMark, ReferenceLine, VerdictTag } from "./parts";
 
 function periodWord(months: number): string {
@@ -73,6 +73,17 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
           </Button>
         )}
       </div>
+      {/* D86: a lower rate holds only for the discount period; said where it is typed, always there so nothing moves when it is */}
+      {line.held && (
+        <Sentence size="sm" tone="muted">
+          {r3fees.reduction.held.before}
+          <Num value={line.held.period} display={fmt.number(Number(line.held.period.value))} />
+          <LeadTail lead={r3fees.reduction.held[line.held.unit]}>
+            <Num value={line.held.rate} />
+            {r3fees.reduction.held.end}
+          </LeadTail>
+        </Sentence>
+      )}
       {shown !== null && (
         <p className={cx("text-base font-medium flex flex-col gap-0.5", invalid && "opacity-40")} aria-live="polite">
           {notReduction || !worth ? (
@@ -81,7 +92,7 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
             // one inline sentence: as direct children of the flex column, each piece took its own line (founder's screenshot, 2026-10-25)
             <span>
               {r3fees.reduction.worthBefore}
-              <Num value={worth} animate /> <LeadTail lead="ב־">{fmt.years(years)}</LeadTail>
+              <Num value={worth} animate /> <LeadTail lead={r3fees.reduction.worthIn} text={fmt.years(years)}>{fmt.years(years)}</LeadTail>
               {r3fees.reduction.worthAfter}
             </span>
           )}
@@ -115,17 +126,15 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
   const cls = cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification;
   const dataset = n.datasets[cma.dataset] ?? cma.dataset;
   const segs: Seg[] = [
-    { t: `${n.p1[0]}${n.from[line.line] ?? n.from.balance}${(hasAccount ? n.p1 : n.p1Offer)[1]}${subject.productName}${n.p1[2]}` },
+    { t: `${n.p1[0]}${n.from[line.line] ?? n.from.balance}${(hasAccount ? n.p1 : n.p1Offer)[1]}${gershayim(subject.productName)}${n.p1[2]}` },
     ...(line.rate ? ([{ n: line.rate }] as Seg[]) : []),
     { t: `${n.p1[3]}${dataset} של ${n.authority}${n.p2[0]}${cma.year?.value ?? ""}${n.p2[1]}${cls}${n.p2[2]}` },
     { n: cma.mean },
     { t: n.p2[3] },
-    { n: cma.median },
-    { t: n.p2[4] },
     { n: cma.count },
-    { t: hasAccount ? n.p2[5] : n.p2Offer },
+    { t: hasAccount ? n.p2[4] : n.p2Offer },
     { n: toV },
-    { t: hasAccount ? n.p2[6] : n.offerEnd },
+    { t: hasAccount ? n.p2[5] : n.offerEnd },
   ];
   const own: Seg[] | null = line.reference.ownAverage ? [{ t: n.own[0] }, { n: line.reference.ownAverage }, { t: n.own[1] }] : null;
   const source = `${n.source[0]}${dataset}${n.source[1]}${n.authority}${n.source[2]}${fmt.period(cma.period)}${n.source[3]}`;
@@ -177,7 +186,7 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
 
 // ---------------------------------------------------------------- the row
 
-export function FeeRow({ line, an, subject, years, thresholds, reduction, onReduce, rules, notReported, soften }: { line: LineView; an: Analysis; subject: SubjectView; years: number; thresholds: Analysis["thresholds"]; reduction: number | null; onReduce: (n: number | null) => void; rules: Map<string, RuleRecord>; notReported?: boolean; soften?: boolean }) {
+export function FeeRow({ line, an, subject, years, thresholds, reduction, onReduce, rules, notReported, reach }: { line: LineView; an: Analysis; subject: SubjectView; years: number; thresholds: Analysis["thresholds"]; reduction: number | null; onReduce: (n: number | null) => void; rules: Map<string, RuleRecord>; notReported?: boolean; /** What would make the cut worth negotiating, once the sensitivity has searched */ reach?: FeeReach }) {
   void notReported;
   const toPct = reduction ?? line.suggestion;
   return (
@@ -187,39 +196,70 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
           <h3 className="text-lg font-semibold">{r3fees.names[line.line]}</h3>
           <Sentence size="sm" tone="muted">
             {line.rate && <Num value={line.rate} />} {baseWords(line, an)}
+            {line.after && (
+              <>
+                {/* two years is one word, "בשנתיים", not "ב־2 השנים" */}
+                {line.after.unit === "years" && Number(line.after.period.value) === 2 ? (
+                  <>
+                    {r3fees.twoPeriods.comma}
+                    <Num value={line.after.period} display={r3fees.twoPeriods.twoYears} />
+                    {r3fees.twoPeriods.twoYearsTail}
+                  </>
+                ) : (
+                  <>
+                    {r3fees.twoPeriods.lead}
+                    <Num value={line.after.period} display={fmt.number(Number(line.after.period.value))} />
+                    {r3fees.twoPeriods[line.after.unit]}
+                  </>
+                )}
+                <Num value={line.after.rate} />
+                {r3fees.twoPeriods.end}
+              </>
+            )}
           </Sentence>
         </div>
-        <div className="flex flex-col items-end shrink-0">
-          <span className="text-xl font-semibold">
-            <Num value={line.cost} animate exact={typeof line.cost.value === "number" && nearThreshold(line.cost.value, [thresholds.negotiate, thresholds.avoid].map((t) => Number(t.value)))} />
-          </span>
-          <ReadingMark value={line.cost} />
-          <span className="text-xs text-muted-foreground">
-            <LeadTail lead={r3fees.costIn}>{fmt.years(years)}</LeadTail>
-          </span>
-        </div>
-      </div>
-      <VerdictTag line={line} thresholds={thresholds} soften={soften} />
-      <div className="flex flex-col gap-2">
-        <ReferenceLine reference={line.reference} />
-        <CapLine cap={line.cap} />
-        {line.verdict === "avoid" && line.removedBy.length > 0 && (
-          <p className="text-sm">
-            {r3fees.removedBy}
-            {line.removedBy.map((o, i) => (
-              <span key={o.id}>
-                {i > 0 && ", "}
-                <Link to={`/guide/${o.id}`} className="text-link hover:underline">
-                  <bdi>{o.name}</bdi>
-                </Link>
+        {/* the cost column keeps the width of its widest figure: as the sliders moved it, the name and the rate beside it took the
+            rest of the row and re-wrapped (box check, 2026-11-07) */}
+        <LongestCase
+          className="shrink-0"
+          cases={[
+            <div key="widest" className="flex flex-col items-end">
+              <span className="text-xl font-semibold">
+                <Num value={{ ...line.cost, value: 9_999_999 }} />
               </span>
-            ))}
-            .
-          </p>
+              <span className="text-xs">
+                <LeadTail lead={r3fees.costIn}>{fmt.years(40)}</LeadTail>
+                {r3fees.costAfterTax}
+              </span>
+            </div>,
+          ]}
+        >
+          <div className="flex flex-col items-end">
+            <span className="text-xl font-semibold">
+              <Num value={line.cost} animate exact={typeof line.cost.value === "number" && nearThreshold(line.cost.value, [thresholds.negotiate, thresholds.avoid].map((t) => Number(t.value)))} />
+            </span>
+            <ReadingMark value={line.cost} />
+            <span className="text-xs text-muted-foreground">
+              <LeadTail lead={r3fees.costIn} text={fmt.years(years)}>{fmt.years(years)}</LeadTail>
+              {r3fees.costAfterTax}
+            </span>
+          </div>
+        </LongestCase>
+      </div>
+      <VerdictTag line={line} thresholds={thresholds} reach={reach} mk={an.mk} />
+      <div className="flex flex-col gap-2">
+        <ReferenceLine reference={line.reference} noAverageSaid={line.reason === "no-reference"} />
+        <CapLine cap={line.cap} />
+        {/* the options above the product without this fee, or with a lower one, show only under "avoid", which a slider can bring and take
+            and the ranking can change: the room of every alternative stays, or the card and everything below it moved by 53 px at 1280
+            and 75 px at 390 (box check, 2026-11-07) */}
+        {line.alternatives.length > 0 && (
+          <LongestCase cases={[<RemovedBy key="all" removedBy={line.alternatives} />]}>{line.verdict === "avoid" && <RemovedBy removedBy={line.removedBy} />}</LongestCase>
         )}
       </div>
-      {reducible(line.line) && line.rateFraction !== undefined && <ReductionField line={line} an={an} years={years} value={reduction} onChange={onReduce} />}
-      {line.reference.cma && (line.line === "balance" || line.line === "deposit") && toPct !== null && (
+      {/* a fee at 0% now has nothing to bring down: the verdict says when the discount ends, and no field says "זו לא הורדה" (D90) */}
+      {reducible(line.line) && line.rateFraction !== undefined && line.rateFraction > 0 && <ReductionField line={line} an={an} years={years} value={reduction} onChange={onReduce} />}
+      {line.reference.cma && (line.line === "balance" || line.line === "deposit") && toPct !== null && line.rateFraction !== 0 && (
         <Disclosure label={r3fees.negotiation.disclosure} summaryClassName="text-base font-medium">
           <div className="pt-2">
             <NegotiationCard line={line} an={an} subject={subject} toPct={reduction} rules={rules} />
@@ -227,6 +267,32 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
         </Disclosure>
       )}
     </Card>
+  );
+}
+
+/** D90 revised the same day: the options that rank above the product, without the fee or with a lower one, said in two groups. */
+function RemovedBy({ removedBy }: { removedBy: LineView["removedBy"] }) {
+  const groups = [
+    { lead: r3fees.removedBy.without, list: removedBy.filter((o) => !o.lower) },
+    { lead: r3fees.removedBy.lower, list: removedBy.filter((o) => o.lower) },
+  ].filter((g) => g.list.length > 0);
+  return (
+    <>
+      {groups.map((g) => (
+        <p key={g.lead} className="text-sm">
+          {g.lead}
+          {g.list.map((o, i) => (
+            <span key={o.id}>
+              {i > 0 && ", "}
+              <Link to={`/guide/${o.id}`} className="text-link hover:underline">
+                <bdi>{gershayim(o.name)}</bdi>
+              </Link>
+            </span>
+          ))}
+          .
+        </p>
+      ))}
+    </>
   );
 }
 

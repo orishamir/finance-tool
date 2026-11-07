@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkAdvertising, checkGroupValues, checkPricePremises } from "../src/validate.ts";
+import { checkAdvertising, checkDiscountLines, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
 
 const dir = fileURLToPath(new URL("../../../data/fees", import.meta.url));
 type Line = { id: string; base: string; applies_to: string[]; [k: string]: unknown };
@@ -41,8 +41,27 @@ describe("what a ranked price rests on", () => {
     expect(found.sort()).toEqual([...LEFTOVERS].sort());
   });
   const groups = { state: "no_mention", entries: [] };
-  const base = { provider: { class: "bank" }, price_for_he: "לקוח רגיל", left_out: [], groups, lines: [{ base: "trade", applies_to: ["etf_units"] }] };
+  const base = { provider: { class: "bank" }, current_account: { monthly_minimum: { value: 5.3, unit: "nis_per_month", source: { quote: "5.30 בפיקוח" } } }, price_for_he: "לקוח רגיל", left_out: [], groups, lines: [{ base: "trade", applies_to: ["etf_units"] }] };
   const entry = (quote: string, available: boolean | "unknown" = true) => ({ applies_to: ["etf_units"], available, source: { quote } });
+  it("asks a bank for its current account's monthly cost, and no other house (D64)", () => {
+    const named = { ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] };
+    const { current_account: _, ...noAccount } = named;
+    expect(checkPricePremises(noAccount)[0]).toMatch(/^current_account: a bank's record/);
+    expect(checkPricePremises({ ...named, provider: { class: "broker" } })[0]).toMatch(/^current_account: only a bank's own record/);
+    expect(checkPricePremises({ ...noAccount, provider: { class: "bank", part_of: "leumi" } })).toEqual([]);
+    expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 5.3, unit: "nis" } } })[0]).toMatch(/nis_per_month/);
+    // a counted minimum quotes its price list; a free account may not
+    expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 5.3, unit: "nis_per_month", source: {} } } })[0]).toMatch(/source\.quote/);
+    expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 0, unit: "nis_per_month", source: {} } } })).toEqual([]);
+  });
+  it("records a group's free current account only where its quote names the minimum (lens review M2, D56)", () => {
+    const named = { ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] };
+    const group = (quote: string) => ({ ...named, groups: { state: "found", entries: [{ name_he: "סטודנטים", ends_printed: true, ends_he: "למשך 48 חודשים", prices: [], current_account: { price_he: "פטור", exempt: true, for_months: 48, source: { quote } } }] } });
+    const minimum = (quote: string) => checkPricePremises(group(quote)).filter((m) => m.includes("current_account"));
+    expect(minimum("עמלת מינימום פעולות פטור")).toEqual([]);
+    // Mercantile's annex: the teller action is free, the minimum is not printed for the group
+    expect(minimum("פעולה על ידי פקיד ... פטור")[0]).toMatch(/does not name the minimum/);
+  });
   it("passes a price whose document names the holding", () => {
     expect(checkPricePremises({ ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] })).toEqual([]);
   });
@@ -230,5 +249,63 @@ describe("a group price's numbers (F-101)", () => {
     const g = entry("0.12%", { rate_pct: 0.12, per: "trade", for_months: 36 });
     g.entries[0]!.ends_printed = false;
     expect(check(g)[0]).toMatch(/for_months 36/);
+  });
+});
+
+describe("discounted lines (A-19, D56)", () => {
+  const line = { id: "x-kgl-balance-list", rate: { value: 0.7 } };
+  it("passes a discount that reverts up and says its period", () => {
+    expect(checkDiscountLines({ lines: [{ ...line, reverts_to: { value: 1.05 }, discount_months: { value: null } }] })).toEqual([]);
+  });
+  it("fails an offer with no rate to price it at", () => {
+    expect(checkDiscountLines({ lines: [{ ...line, offer_he: "בכפוף למכתב" }] })[0]).toMatch(/offer_he without reverts_to/);
+  });
+  it("fails a discount that reverts down, or has no period", () => {
+    expect(checkDiscountLines({ lines: [{ ...line, reverts_to: { value: 0.5 }, discount_months: { value: null } }] })[0]).toMatch(/below the discounted rate/);
+    expect(checkDiscountLines({ lines: [{ ...line, reverts_to: { value: 1.05 } }] })[0]).toMatch(/without discount_months/);
+  });
+});
+
+describe("a provident list line under the cap (A-19, D83, re-check 2)", () => {
+  const caps = { "kupat-gemel-lehashkaa": { balance: 1.05, deposit: 4 }, "keren-hishtalmut": { balance: 2, deposit: 0 }, "pension-comprehensive": { balance: 0.5, deposit: 6 } };
+  const line = (rate: number, extra: object = {}) => ({ id: "x-kgl-balance-list", level: "list", base: "balance", applies_to: ["kupat-gemel-lehashkaa"], rate: { value: rate }, ...extra });
+  it("fails a rate under the cap with no rate it reverts to", () => {
+    expect(checkLinesUnderCap({ lines: [line(0.7)] }, caps)[0]).toMatch(/below the cap of kupat-gemel-lehashkaa \(1.05%\) with no reverts_to/);
+    expect(checkLinesUnderCap({ lines: [{ ...line(0), base: "deposit" }] }, caps)[0]).toMatch(/\(4%\)/);
+  });
+  it("passes a line at the cap, one that reverts, a line that is not a list price, and a pension line (a separate change)", () => {
+    expect(checkLinesUnderCap({ lines: [line(1.05), line(0.7, { reverts_to: { value: 1.05 } }), line(0.7, { level: "offer" }), { ...line(0), base: "deposit", applies_to: ["keren-hishtalmut"] }, { ...line(0.22), applies_to: ["pension-comprehensive"] }] }, caps)).toEqual([]);
+  });  it("fails a rate it reverts to above the cap (2026-11-07)", () => {
+    expect(checkLinesUnderCap({ lines: [line(0.7, { reverts_to: { value: 1.2 } })] }, caps)[0]).toMatch(/reverts_to 1.2% is above the cap of kupat-gemel-lehashkaa \(1.05%\)/);
+    expect(checkLinesUnderCap({ lines: [line(0.7, { reverts_to: { value: 1.05 } })] }, caps)).toEqual([]);
+  });
+});
+
+describe("one discount period for a wrapper's two lines (2026-11-07)", () => {
+  const l = (base: string, months: number | null, applies = ["kupat-gemel-lehashkaa"]) => ({ id: `x-${base}`, level: "list", base, applies_to: applies, rate: { value: 0 }, reverts_to: { value: base === "balance" ? 1.05 : 4 }, discount_months: { value: months } });
+  it("passes two lines with the same period, printed or not", () => {
+    expect(checkDiscountLines({ lines: [l("balance", 60), l("deposit", 60)] })).toEqual([]);
+    expect(checkDiscountLines({ lines: [l("balance", null), l("deposit", null)] })).toEqual([]);
+    expect(checkDiscountLines({ lines: [l("balance", 60), l("deposit", 84, ["keren-hishtalmut"])] })).toEqual([]);
+  });
+  it("fails two lines of one wrapper with different periods", () => {
+    expect(checkDiscountLines({ lines: [l("balance", 60), l("deposit", 84)] })[0]).toMatch(/print different periods \(60 and 84 months\)/);
+    expect(checkDiscountLines({ lines: [l("balance", null), l("deposit", 84)] })[0]).toMatch(/none and 84/);
+  });
+});
+
+describe("a group's sub-rows (D43, D56)", () => {
+  it("a binding entry and the bank's advertising of the same prices are two sub-rows, so the offer never reads as the annex's price", () => {
+    const price = (value?: object) => ({ fee: "trade_israel", price_he: "פטור", holdings_he: "מניות", names_fund: false, ...(value ? { value } : {}) });
+    const entry = (cheaper: string, value?: object) => ({ kind: "young", name_he: cheaper, who_he: "מגיל 14", who_short_he: "מגיל 14", ends_he: "לא כתוב", ends_short_he: "לא כתוב", ends_printed: false, cheaper_he: cheaper, prices: [price(value)] });
+    const snap = (a: object, b: object) => ({ id: "x", snapshot: "2026-11-07", provider: { class: "bank" }, lines: [], groups: { state: "prices", entries: [a, b] } }) as never;
+    expect(checkGroupWords(snap(entry("פטור מעמלת קנייה", { exempt: true }), entry("הצעה באתר הבנק: פטור מעמלת קנייה")))).toEqual([]);
+    expect(checkGroupWords(snap(entry("פטור מעמלת קנייה", { exempt: true }), entry("פטור ממכירה", { exempt: true })))).toHaveLength(1);
+    // re-check F3 (recheck/merge-probe.ts): a priced entry and one not priced with the SAME words were let through, and the page joins
+    // sub-rows on the words: now the data check fails them, in either order
+    expect(checkGroupWords(snap(entry("פטור מעמלת קנייה", { exempt: true }), entry("פטור מעמלת קנייה")))).toEqual([expect.stringMatching(/is priced and this one is not priced/)]);
+    expect(checkGroupWords(snap(entry("פטור מעמלת קנייה"), entry("פטור מעמלת קנייה", { exempt: true })))).toEqual([expect.stringMatching(/is not priced and this one is priced/)]);
+    // two entries not priced may share words: one sub-row
+    expect(checkGroupWords(snap(entry("פטור מעמלת קנייה"), entry("פטור מעמלת קנייה")))).toEqual([]);
   });
 });

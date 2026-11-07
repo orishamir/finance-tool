@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, scopeWords, site } from "../copy";
 import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
-import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
+import { IdRef, Num, NumberLegend, ReadingTag, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
@@ -12,50 +12,18 @@ import { hasSignatureVisual, SignatureFrame, signatureTitle, useReviewMode } fro
 import { heldSignatures } from "../lib/review";
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
-import { Disclosure, Sentence, Tag } from "../components/kit";
+import { Disclosure, Sentence } from "../components/kit";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
 import { omitsSection, sectionTitle, splitTerms, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
+import { exitRateLines, exitStepMark, type ExitRate } from "../lib/exit-step";
 import { guideContent } from "../content/guide";
 import { anyWeak, type SiteValue } from "../lib/value";
 import { generalOnly, isGeneral } from "../lib/scope";
 
 const providentIds = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
 const isProvidentFamily = (id: string) => providentIds.includes(id);
-
-interface ExitRate {
-  rule: string;
-  figure: string;
-  copyKey: string;
-}
-
-/**
- * The rate each exit formula shows, as groups of candidates: from each group the first one the record's
- * `tax_at_exit.rule_ids` cites is shown, and a candidate whose rule the page does not carry is skipped.
- */
-function exitRateLines(formula: string): ExitRate[][] {
-  const r = (rule: string, figure: string, copyKey: string): ExitRate => ({ rule, figure, copyKey });
-  switch (formula) {
-    case "F-41":
-      return [
-        [r("TXI-03", "rate", "unlinkedInterest"), r("TXI-08", "withholding_rate_unlinked", "unlinkedInterest")],
-        [r("TXI-02", "rate", "linkedInterestCeiling"), r("TXI-08", "withholding_rate_linked", "linkedInterest")],
-      ];
-    case "F-40":
-      return [
-        [r("TXS-09", "rate", "realBasis"), r("TXS-13", "rate", "realBasis"), r("TXS-01", "rate", "realBasis"), r("TXI-14", "rate", "realLinkedBond")],
-        [r("TXI-12", "rate", "nominalBasis"), r("TXS-03", "rate", "nominalBasis"), r("TXI-11", "rate", "nominalBasis")],
-      ];
-    case "F-46":
-    case "F-47":
-      return [[r("TXH-11", "rate", "hishtalmutExcess")]];
-    case "F-50":
-      return [[r("TXK-23", "provident_rate", "childProvident")], [r("TXK-23", "bank_linked_rate", "childBankLinked")], [r("TXK-23", "bank_unlinked_rate", "childBankUnlinked")]];
-    default:
-      return [];
-  }
-}
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { buildGuidePage } = await import("../lib/guide.server");
@@ -69,7 +37,10 @@ export async function loader({ params }: Route.LoaderArgs) {
   const rules = { ...data.rules };
   for (const id of [...worthIds, ...withdrawalRules(params.id)]) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
   // the records the cards point at, the pinned facts' too, travel beside the page's own rules (only chips and cards read them)
-  return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds };
+  // the fee page is linked only where it can answer: a product with no fee terms ends there in "no record" (2026-11-07)
+  const { compareBundle } = await import("../lib/compare.server");
+  const { feePageAnswers } = await import("../lib/fees");
+  return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds, feePage: feePageAnswers(compareBundle(), params.id) };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -101,7 +72,7 @@ export default function GuidePage() {
     return s ? <StrengthLabel strength={s} /> : undefined;
   };
 
-  const cp = { figure };
+  const cp = { figure, breakTerms: data.breakTerms };
 
   // ---- money in and out
   const exit = record.lawful_exit;
@@ -207,6 +178,65 @@ export default function GuidePage() {
       .filter(([dim, ids]) => ids.length > 0 && !content?.omitCompanyTerms?.includes(dim) && !(!omitted("cost") && fees.some((f) => feeDimension[f.id] === dim)))
       .map(([dim, ids]) => ({ id: dim, label: copy.companyTermTitles[record.id]?.[dim] ?? data.dimensionNames[dim] ?? feeCopy[Object.keys(feeDimension).find((b) => feeDimension[b] === dim) ?? ""]?.name ?? dim, value: <VariesByCompany ids={ids} lead={scopeWords.variesExamples} size="xs" />, rules: Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(dim)).map((r) => r.id) }));
 
+  // F-105: on a provident guide with several managers' lists collected, each fee says how many write only the cap (under the cap), and the
+  // note under the table says once, for both fees, the lowest rates the others write, what kind they are and how long a discount lasts
+  // (independent check, 2026-11-07: the same paragraph under each fee read as copy-pasted; D83)
+  // the same count on both fees is said once, in the note (fresh readers, round 4: the line under each fee read as repeated)
+  const sameCount = !!data.listRange?.balance && !!data.listRange?.deposit && data.listRange.balance.atCap.value === data.listRange.deposit.atCap.value && data.listRange.balance.managers.value === data.listRange.deposit.managers.value;
+  const listRangeLine = (base: string): ReactNode => {
+    const r = data.listRange?.[base as "balance" | "deposit"];
+    if (!r || sameCount) return undefined;
+    return (
+      <>
+        {copy.listRange.before} <Num value={r.atCap} /> {copy.listRange.of} <Num value={r.managers} /> {copy.listRange.managers}
+      </>
+    );
+  };
+  const listRangeNote = (): ReactNode => {
+    const n = copy.listRange.note;
+    const both = data.listRange?.balance;
+    const lows = (["balance", "deposit"] as const).flatMap((base) => {
+      const r = data.listRange?.[base];
+      return r && r.atCap.value !== r.managers.value ? [{ base, r }] : [];
+    });
+    const discount = lows.find((l) => l.r.lowKind === "discount")?.r.discountYears;
+    // one kind for every low is said once, at the end; different kinds each after its own rate
+    const oneKind = lows.every((l) => l.r.lowKind === lows[0]?.r.lowKind) ? n.kind[lows[0]?.r.lowKind ?? "plain"] : null;
+    return (
+      <>
+        {copy.feeNoteParts.caps}{" "}
+        {sameCount && both && (
+          <>
+            {n.atCapBoth.before} <Num value={both.atCap} /> {n.atCapBoth.of} <Num value={both.managers} /> {n.atCapBoth.after}{" "}
+          </>
+        )}
+        {n.agreement}
+        {lows.length > 0 && (
+          <>
+            {" "}
+            {n.others}{" "}
+            {lows.map(({ base, r }, i) => (
+              <span key={base}>
+                {i > 0 && " "}
+                <Num value={r.low} prefix={i > 0 ? n.and : undefined} /> {n[base]}
+                {oneKind === null && n.kind[r.lowKind] ? ` ${n.kind[r.lowKind]}` : ""}
+              </span>
+            ))}
+            {oneKind ? `, ${oneKind}.` : "."}
+            {discount && (
+              <>
+                {" "}
+                {n.discountFor} <Num value={discount} display={typeof discount.value === "number" ? fmt.years(discount.value) : undefined} /> {n.discountFrom}{" "}
+                {n.lumpSum.before} <IdRef id="PF OQ18" end={n.lumpSum.after} /> {n.discountEnd}
+              </>
+            )}
+          </>
+        )}{" "}
+        {copy.feeNoteParts.companyPage}
+      </>
+    );
+  };
+
   // ---- fees: every base the record allows, in a fixed order; the cap is the record's figure, else the provider's own tariff
   const provident = isProvidentFamily(record.id);
   const feeCopy = blocks.fees as Record<string, any>;
@@ -232,8 +262,10 @@ export default function GuidePage() {
       ) : (
         feeCopy.tariffSet
       ),
-      rules: gen(cap?.rule_ids ?? []),
+      // the note under the table says how long a discount lasts and when it can end earlier (D83): its rules sit on the fee's row
+      rules: gen([...(cap?.rule_ids ?? []), ...(data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
       varies: feeVaries(base),
+      range: listRangeLine(base),
     });
   }
   if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
@@ -265,7 +297,8 @@ export default function GuidePage() {
     id,
     when,
     headline: stepCopy(step.formula)?.headline ?? formulaHeadline(step.formula),
-    text: pendingLine(step.formula) ?? stepCopy(step.formula)?.text ?? "",
+    // a line that says moving is not taxed shows only where the record knows it (child savings' bank route does not, TXK OQ1)
+    text: pendingLine(step.formula) ?? (record.switch_is_tax_event?.value !== false ? stepCopy(step.formula)?.textSwitchOpen : undefined) ?? stepCopy(step.formula)?.text ?? "",
     rules: step.rule_ids,
   });
   // the exit formula's rates: only a rate the record itself cites, never another rule's number
@@ -277,8 +310,9 @@ export default function GuidePage() {
   const exitStepCopy = stepCopy(record.tax_at_exit.formula);
   const exitFormula = record.tax_at_exit.formula;
   const exitFigure = exitFormula === "F-44" ? figure("TXK-06", "rate") : exitFormula === "F-46" ? figure("TXH-09", "lock_years") : null;
-  const altRate = exitFormula === "F-44" ? figure("TXK-06", "nominal_rate") : null;
-  const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids);
+  // the step's mark: a cited rule's own strength, or a rate the step shows whose source is weaker than its rule; else a rate that is
+  // the site's reading (the child-savings bank route's rates are the Ordinance's, but no official text says they reach it, TXK-29)
+  const exitMark = exitStepMark(strengthOfRules(record.tax_at_exit.rule_ids), rateLines);
   // audit A46: the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
   // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05)
   const hd = copy.hishtalmutDeposit;
@@ -325,13 +359,9 @@ export default function GuidePage() {
           exitStepCopy?.headline ?? formulaHeadline(exitFormula)
         ),
       text: pendingLine(exitFormula) ?? exitStepCopy?.text ?? "",
-      tag: exitWeak ? (exitStepCopy?.baseTag ? <Tag tone="caution">{exitStepCopy.baseTag}</Tag> : <StrengthLabel strength={exitWeak} />) : undefined,
+      tag: exitMark === "reading" ? <ReadingTag /> : exitMark ? <StrengthLabel strength={exitMark} /> : undefined,
       alt:
-        exitStepCopy && altRate && "altBefore" in exitStepCopy ? (
-          <>
-            {exitStepCopy.altBefore} <Num value={altRate} /> {exitStepCopy.altAfter}
-          </>
-        ) : rateLines.length > 0 ? (
+        rateLines.length > 0 ? (
           <span className="flex flex-col gap-0.5">
             {rateLines.map((r) => {
               const c = (blocks.exitRates as Record<string, { before: string; after: string }>)[r.copyKey]!;
@@ -450,11 +480,14 @@ export default function GuidePage() {
             <GuideSection id="cost" title={title("cost")}>
               <FeeTable
                 fees={fees}
+                feePage={data.feePage}
                 note={
                   data.feeRange ? (
                     <>
                       {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
                     </>
+                  ) : data.listRange ? (
+                    listRangeNote()
                   ) : provident ? (
                     copy.feeNote
                   ) : (

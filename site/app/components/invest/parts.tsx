@@ -68,6 +68,8 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.noHedgeEntered;
     case "payout-unknown":
       return c.reasons.payoutUnknown;
+    case "fee-unknown":
+      return c.reasons.feeUnknown;
     case "domicile-unknown":
       return c.reasons.domicileUnknown;
     default:

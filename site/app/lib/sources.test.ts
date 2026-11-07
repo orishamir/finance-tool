@@ -31,6 +31,18 @@ describe("sourceHref", () => {
     expect(isPdfUrl("https://x/page")).toBe(false);
     expect(isPdfUrl("https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77Q=#page=6")).toBe(true);
   });
+  // 2026-11-07, the founder: a web page opens at the quoted words, by text fragment
+  const psagot = "https://www.psagot.co.il/tariff-2/";
+  it("opens a web page at the quoted words, start and end", () =>
+    expect(sourceHref({ url: psagot, fragment: { start: "דמי משמרת", end: "גבייה רבעונית 0.03%" } })).toBe(
+      `${psagot}#:~:text=%D7%93%D7%9E%D7%99%20%D7%9E%D7%A9%D7%9E%D7%A8%D7%AA,%D7%92%D7%91%D7%99%D7%99%D7%94%20%D7%A8%D7%91%D7%A2%D7%95%D7%A0%D7%99%D7%AA%200.03%25`,
+    ));
+  it("escapes the directive's own signs inside a term, and writes prefix and suffix", () =>
+    expect(sourceHref({ url: "https://x/a", fragment: { prefix: "a-b", start: "1,5 & 2", suffix: "c" } })).toBe("https://x/a#:~:text=a%2Db-,1%2C5%20%26%202,-c"));
+  it("keeps the anchor before the words", () => expect(sourceHref({ url: "https://x/a", anchor: "s3", fragment: { start: "w" } })).toBe("https://x/a#s3:~:text=w"));
+  it("adds the words to an address that has a # already", () => expect(sourceHref({ url: "https://x/a#b", fragment: { start: "w" } })).toBe("https://x/a#b:~:text=w"));
+  it("adds the words as a second directive to an address that has one", () => expect(sourceHref({ url: "https://x/a#:~:text=v", fragment: { start: "w" } })).toBe("https://x/a#:~:text=v&text=w"));
+  it("opens a PDF at its page, never at words", () => expect(sourceHref({ url: "https://x/a.pdf", page: 4, fragment: { start: "w" } })).toBe("https://x/a.pdf#page=4"));
 });
 
 describe("sourceLabel2", () => {

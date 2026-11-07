@@ -1,0 +1,36 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 does mention the end-of-September date at the top, but its complaint is that it contradicts the footer date, not that September figures are stale in November on a page that claims monthly updates."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0200474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 points at the same September date, but its complaint is that the top and footer dates contradict each other, not that the data is stale and breaks the promise of monthly updates."
+      }
+    ],
+    "liked": [],
+    "usd": 0.021167399999999996
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.041214799999999996
+}

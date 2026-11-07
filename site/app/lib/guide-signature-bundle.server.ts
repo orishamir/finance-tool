@@ -9,7 +9,7 @@
 //
 // 2026-10-26 (founder: a general page names no single bank's rate): the one-year deposit on the money-market ladder is the range
 // across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
-import { isTie, middleIndex, mostCommonRate, rateRange, tieThreshold } from "@finance-tool/engine";
+import { isTie, middleIndex, mostCommonRate, plainOneYearDeposits, rateRange, tieThreshold } from "@finance-tool/engine";
 import { guideBlocks, guideSignature } from "../copy";
 import type { Bundle } from "./engine";
 import { p05Number, p05Range, runTimeline } from "./engine";
@@ -69,15 +69,9 @@ export function currentAccountRecords(deposits: DepositTerms[]): DepositTerms[] 
   return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
 }
 
-/** One record per bank of a one-year deposit at a fixed rate with no linkage (F-86): the latest by snapshot. */
+/** One record per bank of its plain one-year deposit at a fixed rate with no linkage (F-86), the engine's pick (`plainOneYearDeposits`). */
 export function oneYearDepositRecords(deposits: DepositTerms[]): DepositTerms[] {
-  const latest = new Map<string, DepositTerms>();
-  for (const d of deposits) {
-    if (d.wrapper_id !== "bank-deposit" || d.rate_type !== "fixed" || d.linkage !== "none" || d.term_months.value !== 12) continue;
-    const prev = latest.get(d.bank);
-    if (!prev || d.snapshot > prev.snapshot) latest.set(d.bank, d);
-  }
-  return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
+  return plainOneYearDeposits(deposits);
 }
 
 /** The records as the page reads them: the printed rate and ceiling as sourced figures, with the record's own Hebrew text. A record whose rate is not a number is left out. */

@@ -1,16 +1,21 @@
 // Builds the data of one guide page at build time (design-spec 2): the wrapper record, its rule figures,
 // the engine bundle and its first run on P-05, the terms and the companies that offer it.
-import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
+import { breakCount, listFeeRange, oneYearDeposits, pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { join } from "node:path";
-import { companyTermRule, isSecurity, productIds, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
+import { companyTermRule, isSecurity, productIds, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
-import { providentTerms } from "./compare.server";
+import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
+import { shortName } from "./providers";
+import { guideBlocks, guideSignature, r4catalogue } from "../copy";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
-import { buildSignatureData } from "./guide-signature.server";
-import type { SignatureData } from "./guide-signature";
-import { cmaFeeValue, computed, ruleFigure, weaker, type SiteValue, type Strength } from "./value";
+import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
+import { loadDepositTerms } from "./instruments.server";
+import { loadInstitutionRegistry } from "./institutions.server";
+import { exitWords } from "./deposit-kind";
+import type { BreakTerms, SignatureData } from "./guide-signature";
+import { cmaFeeValue, computed, ownBy, ruleFigure, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
 
 export interface GuidePageData {
@@ -40,6 +45,13 @@ export interface GuidePageData {
   related: { href: string; label: string }[];
   /** What the regulator reports is charged on the tracks (F-64), on a guide whose cap alone would read as the price. Null elsewhere. */
   feeRange: { low: SiteValue; high: SiteValue; tracks: SiteValue } | null;
+  /** What the collected deposits say about breaking them (F-104), on the bank-deposit guide. Null elsewhere. */
+  breakTerms: BreakTerms | null;
+  /**
+   * The managers' list fees for each base, over every collected manager (F-105), on a provident wrapper with more than one list collected:
+   * the lowest and the highest, how many managers, and how many of them print the legal cap. Null elsewhere.
+   */
+  listRange: Partial<Record<"balance" | "deposit", ListRange>> | null;
   /**
    * A security's wrapper (D6, amended 2026-10-26): the first of its record's `held_in`, the account its run and its page sit in, with
    * the rules that say it is held there. Null for a wrapper.
@@ -50,6 +62,123 @@ export interface GuidePageData {
   today: string;
 }
 
+export interface ListRange {
+  low: SiteValue;
+  managers: SiteValue;
+  /** How many of them print the legal cap of the record's `fee_caps` for this base. */
+  atCap: SiteValue;
+  /**
+   * What the lowest printed rate is, as the run prices it (A-19, D83, D56): a discount for PF-13's period at one manager at least, an offer
+   * (conditional on a document not published) at every manager that prints it, or a plain rate that holds for the whole run at one at
+   * least. The page says "during the discount" only for a discount (independent check, 2026-11-07).
+   */
+  lowKind: "discount" | "offer" | "plain";
+  /** The shortest a discount may last (PF-13), said under the table when a lowest rate is a discount. */
+  discountYears?: SiteValue;
+}
+
+/**
+ * F-105: a provident wrapper's list fees over every collected manager, for each base, so the page never shows one company's list as the
+ * product's price (ground rule 2). Each figure is computed over the managers' own figures, which its sheet lists.
+ */
+function managersFeeRange(record: ProductRecord, t: string): GuidePageData["listRange"] {
+  const lists = providentLists(record.id, loadFees());
+  if (lists.length < 2) return null;
+  const out: NonNullable<GuidePageData["listRange"]> = {};
+  const allRules = loadRules();
+  const pf13 = allRules["PF-13"];
+  const discountYears = pf13 ? ruleFigure(pf13, "min_discount_years", t) : null;
+  const minMonths = minDiscountMonths(allRules);
+  const about = guideBlocks.listRange.about;
+  for (const base of ["balance", "deposit"] as const) {
+    const cap = record.fee_caps[base] as SiteValue | undefined;
+    const inputs = Object.fromEntries(lists.map((l) => [shortName(l.snap.id, l.snap.provider.name_he), ownBy({ ...l[base] } as SiteValue, shortName(l.snap.id, l.snap.provider.name_he))]));
+    const range = listFeeRange(lists.map((l) => l[base].value as number), typeof cap?.value === "number" ? cap.value : null);
+    if (!range) continue;
+    const unit = lists[0]![base].unit;
+    // the lowest rate's kind among the managers that print it: a plain rate at any of them is plain; else a discount at any is a discount
+    const kinds = lists.filter((l) => l[base].value === range.lo).map((l) => pricedLine(l.lines[base], minMonths));
+    const lowKind = kinds.some((k) => !k.discounted && !k.offer) ? "plain" : kinds.some((k) => k.discounted) ? "discount" : "offer";
+    out[base] = {
+      lowKind,
+      low: computed(range.lo, unit, "F-105", inputs, { today: t, about: about.low }),
+      managers: computed(range.count, "count", "F-105", inputs, { today: t, about: about.managers }),
+      atCap: computed(range.atCap, "count", "F-105", { ...inputs, ...(cap ? { [about.capInput]: cap } : {}) }, { today: t, about: about.atCap }),
+      ...(discountYears ? { discountYears } : {}),
+    };
+  }
+  return out;
+}
+
+/** A deposit's exit-point column as an input of F-104's count: the bank's own term about its own product (D31), in words. */
+function exitInput(r: DepositTerms, name: string): SiteValue {
+  const value = exitWords(r.exit_points.exists, r.exit_points.every_months);
+  // the record's source and date, but not the break column's rules, and its conditions only on a deposit with exits, where they say how the
+  // money comes out at them (Hapoalim Sprint, Mizrahi-Tefahot 287); on one with none they are about something else, such as where it is
+  // opened (code review, 2026-11-07: Discount 0122's "אין" carried "פותחים רק בסניף או בטלבנק")
+  const when = r.exit_points.exists ? r.conditions_he ?? "" : "";
+  return ownBy({ ...breakFact(r), value, rule_ids: [], notes: when }, name);
+}
+
+/**
+ * The sheet's name of each deposit: the bank, the deposit's name in its table, and, where the name repeats at the bank, its code or else
+ * its kind (rate, linkage, exit points), so that every deposit counted stands on its own line (2026-11-06: six of Discount's one-year rows
+ * share "פקדון לשנה", three of Hapoalim's "פיקדון לשנה").
+ */
+export function depositSheetNames(records: DepositTerms[]): Map<string, string> {
+  const words = r4catalogue.depositKind;
+  const base = (r: DepositTerms) => `${shortName(r.bank, r.bank)} · ${r.names["447"]?.[0] ?? r.type_447}`;
+  const count = new Map<string, number>();
+  for (const r of records) count.set(base(r), (count.get(base(r)) ?? 0) + 1);
+  const out = new Map<string, string>();
+  const used = new Set<string>();
+  for (const r of records) {
+    let key = base(r);
+    if ((count.get(key) ?? 0) > 1) {
+      const code = /-(\d{3,4})$/.exec(r.id)?.[1];
+      const exits = r.exit_points.exists ? exitWords(true, r.exit_points.every_months) : null;
+      const kind = [words[r.rate_type], r.linkage === "none" ? null : words[r.linkage], exits ? `${words.exits} ${exits}` : null].filter(Boolean).join(", ");
+      key = `${key} · ${code ?? kind}`;
+    }
+    // a name still taken gets a number, replacing the last one tried ("x (3)", never "x (2) (3)")
+    const stem = key;
+    for (let n = 2; used.has(key); n++) key = `${stem} (${n})`;
+    used.add(key);
+    out.set(r.id, key);
+  }
+  return out;
+}
+
+/** F-104 over every collected one-year deposit record, counted over the banks; null when none was collected. */
+export function depositBreakTerms(t: string): BreakTerms | null {
+  const all = loadDepositTerms();
+  const result = breakCount(all);
+  if (!result) return null;
+  // the records F-104 counted, each on a sheet line
+  const records = oneYearDeposits(all);
+  // each deposit's own column, on a line of its own named by its bank, its name in the bank's table and, where that repeats, its code
+  const sheet = depositSheetNames(records);
+  const inputsOf = (list: typeof records, input: (r: DepositTerms, name: string) => SiteValue) =>
+    Object.fromEntries(list.map((r) => [sheet.get(r.id)!, input(r, shortName(r.bank, r.bank))]));
+  const breaks = inputsOf(records, breakInput);
+  const about = guideSignature.deposit.breakAbout;
+  const make = (value: number, words: string, inputs = breaks) => computed(value, "count", "F-104", inputs, { today: t, about: words });
+  // the bank's full name ("בנק דיסקונט", not "דיסקונט", which a reader took for Mercantile Discount too: fresh readers, 2026-11-06)
+  const registry = new Map(loadInstitutionRegistry().map((i) => [i.id, i.name_he]));
+  const nameOf = (id: string) => registry.get(id) ?? shortName(id, id);
+  return {
+    deposits: make(result.deposits, about.deposits),
+    banks: make(result.banks, about.banks),
+    lockedBanks: make(result.lockedBanks, about.lockedBanks),
+    lockedBanksWithExits: make(result.lockedBanksWithExits, about.lockedBanksWithExits, inputsOf(records, exitInput)),
+    breakable: result.breakable.map((b) => {
+      const mine = records.filter((r) => r.bank === b.bank);
+      const own = inputsOf(mine, breakInput);
+      const rules = [...new Set(mine.flatMap((r) => r.break.rule_ids))];
+      return { id: b.bank, name: nameOf(b.bank), deposits: make(b.deposits, about.bankDeposits, own), withPenalty: make(b.withPenalty, about.withPenalty, own), free: make(b.free, about.free, own), rules };
+    }),
+  };
+}
 
 /** Every rule id a prose module names, found in its source (a name is kept only when a rule record has that id). */
 function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): string[] {
@@ -131,7 +260,13 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
           console.log(`[guide] ${id}: no timeline: the run stops (${probe.message})`);
         } else {
           const touched = rulesTouched(draft);
-          bundle = { ...draft, rules: Object.values(allRules).filter((r) => touched.has(r.id)) };
+          // F-80 (2026-11-07): with several managers' lists collected the terms block names the pick and how many were compared
+          const lists = r.pick ? providentLists(id, loadFees()) : [];
+          const inputs = Object.fromEntries(lists.map((l) => [shortName(l.snap.id, l.snap.provider.name_he), ownBy({ ...l.balance } as SiteValue, shortName(l.snap.id, l.snap.provider.name_he))]));
+          const nameOf = (pid: string) => { const l = lists.find((x) => x.snap.id === pid); return l ? shortName(l.snap.id, l.snap.provider.name_he) : pid; };
+          const tied = r.pick?.tied ? { names: r.pick.tied.map(nameOf) } : undefined;
+          const pick = r.pick ? { kind: "manager" as const, id: r.pick.id, count: computed(r.pick.count, "count", "F-80", inputs, { today: t, about: guideBlocks.terms.pick.managerCount }), ...(tied ? { tied } : {}) } : undefined;
+          bundle = { ...draft, rules: Object.values(allRules).filter((r) => touched.has(r.id)), ...(pick ? { pick } : {}) };
         }
       }
     }
@@ -158,6 +293,9 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // the rules the visual cites and the ones the other wrappers' runs it shows read (their number sheets list them)
   signature?.ruleIds.forEach((r) => cited.add(r));
   for (const b of Object.values(signature?.bundles ?? {})) b.rules.forEach((r) => cited.add(r.id));
+  // the managers' range under the fee table (F-105): a lowest rate that is a discount says its period and when it can end earlier (D83)
+  const listRange = family === "provident" ? managersFeeRange(record, t) : null;
+  if (Object.values(listRange ?? {}).some((r) => r.lowKind === "discount")) ["PF-13", "PF-14"].forEach((r) => cited.add(r));
   const rules: Record<string, RuleRecord> = {};
   for (const rid of cited) if (allRules[rid]) rules[rid] = allRules[rid]!;
 
@@ -194,8 +332,11 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const exposures = exposuresHeld.filter((e) => e.href !== `/guide/${record.id}` && !securities.some((x) => x.href === e.href));
 
   const feeRange = id === "keren-hishtalmut" ? reportedFeeRange(id, t) : null;
+  const breakTerms = id === "bank-deposit" ? depositBreakTerms(t) : null;
+  // the break rules of each bank the prose links to (its records' own), so each link opens
+  for (const r of breakTerms?.breakable.flatMap((b) => b.rules) ?? []) if (allRules[r]) rules[r] = allRules[r]!;
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, today: t };
 }
 
 export { familyOf };
@@ -237,7 +378,7 @@ export interface ExposurePageData {
    * Wrappers that can hold this exposure. `blockedBy` are the wrapper's own exit-tax blockers (its record's
    * `tax_at_exit.blocked_by`): only these make the card say the tax is unclear (audit A85). `openQuestions` are the open
    * questions the wrapper and the exposure both carry and the wrapper does not list as exit-tax blockers: some are tax questions that
-   * do not block the run (TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8, MF-OQ3), so the card shows them in a neutral tag.
+   * do not block the run (TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8), so the card shows them in a neutral tag.
    */
   holders: { id: string; name: string; blockedBy: string[]; openQuestions: string[] }[];
   dimensionNames: Record<string, string>;

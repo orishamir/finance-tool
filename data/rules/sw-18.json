@@ -80,15 +80,16 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://olaw.org.il/takanot/takanot-7157.pdf",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים) (אבטחת מידע במערכת סליקה פנסיונית מרכזית), התשע\"ב-2012, קובץ התקנות 7157 (עותק הסריקה באתר olaw)",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7157%2Fheb#page=7",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים) (אבטחת מידע במערכת סליקה פנסיונית מרכזית), התשע\"ב-2012, קובץ התקנות 7157",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party scan of the gazette)"
+      "strength": "primary",
+      "locator": "file p.7 (connecting to the system: an electronic certificate or another personal means the Commissioner sets)",
+      "locator_he": "עמוד 7",
+      "quote": "תעודה אלקטרונית לאימות",
+      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

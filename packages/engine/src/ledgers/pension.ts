@@ -31,8 +31,8 @@ export interface PensionInput {
   /** `goal.monthly` and `goal.amountNow` are the person's net outlay (B1, F-30). */
   goal: Goal;
   market: { grossReturn: number; inflation: number };
-  /** Fee rates as fractions: deposit fee (F-11), balance fee (F-15), direct expenses (A-18), discount (A-19). */
-  fees: { deposit: number; balance: number; direct: number; discount?: Discount };
+  /** Fee rates as fractions: deposit fee (F-11), balance fee (F-15), direct expenses (A-18), the balance fee's discount and the deposit fee's (A-19, F-16). */
+  fees: { deposit: number; balance: number; direct: number; discount?: Discount; depositDiscount?: Discount };
   /** A-17: the insurance cost as a share of each deposit, entered by the person (G-12). Zero for a provident fund for annuity (PEN-35). */
   insurance: { rate: number };
   pension: PensionProfile;
@@ -123,19 +123,24 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
   let insurance = 0;
   const series: number[] = [];
   let discountExtended = false;
+  let laterDeposit = false;
   tally.point(0, 1, balance);
-  const deposit = (amount: number, paid: number) => {
+  const deposit = (amount: number, paid: number, month: number) => {
     if (amount <= 0) return;
+    if (month > 0) laterDeposit = true;
     tally.paidIn += paid;
-    const fee = depositFee(fees.deposit, depositCap, amount);
+    // F-16: a discounted deposit fee reverts to its rate after the period, no earlier than PF-13's minimum, as on a provident fund
+    const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, month);
+    discountExtended ||= dep.extended;
+    const fee = depositFee(dep.rate, depositCap, amount);
     const ins = insuranceCost(input.insurance.rate, amount);
     tally.fee("deposit", fee);
     insurance += ins;
     balance += amount - fee - ins;
   };
   for (let m = 1; m <= months; m++) {
-    if (m === 1) deposit(gross[0]!, outlay[0] ?? 0);
-    if (m <= input.goal.months) deposit(gross[m] ?? 0, outlay[m] ?? 0);
+    if (m === 1) deposit(gross[0]!, outlay[0] ?? 0, 0);
+    if (m <= input.goal.months) deposit(gross[m] ?? 0, outlay[m] ?? 0, m);
     const { rate, extended } = feeForMonth(fees.balance, fees.discount, minDiscountMonths, m);
     discountExtended ||= extended;
     balance *= 1 + g;
@@ -148,6 +153,8 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
     tally.point(m, I[m]!, balance);
   }
   if (discountExtended) tally.flag("PF-13");
+  // PF OQ18 (D87): a discount on a fund that receives one deposit and no more may end early; open, the run keeps it (favourable reading)
+  if ((fees.discount || fees.depositDiscount) && !laterDeposit && months > 6) tally.flag("PF-OQ18");
   return { balance, insurance, series };
 }
 

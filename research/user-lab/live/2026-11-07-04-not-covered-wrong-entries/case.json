@@ -1,0 +1,208 @@
+{
+  "id": "live-04-not-covered-wrong-entries",
+  "date": "2026-11-07",
+  "page": "/not-covered (what the site does not cover yet: a card per entry, each with what is known, what blocks it and what happens when it is closed)",
+  "device": "pc",
+  "viewport_px": [
+    1440,
+    900
+  ],
+  "live_commit": "d958d462",
+  "live_commit_note": "origin/main when the screens were captured; the deployed build was not read from the page",
+  "shots": [
+    "pc/pc-1.png",
+    "pc/pc-2.png",
+    "pc/pc-3.png",
+    "pc/pc-4.png",
+    "pc/pc-5.png",
+    "pc/pc-6.png",
+    "pc/pc-7.png",
+    "pc/pc-8.png",
+    "pc/pc-9.png",
+    "pc/pc-10.png"
+  ],
+  "phone_shots": [
+    "phone/phone-1.png",
+    "phone/phone-2.png",
+    "phone/phone-3.png",
+    "phone/phone-4.png",
+    "phone/phone-5.png",
+    "phone/phone-6.png",
+    "phone/phone-7.png",
+    "phone/phone-8.png",
+    "phone/phone-9.png",
+    "phone/phone-10.png",
+    "phone/phone-11.png",
+    "phone/phone-12.png",
+    "phone/phone-13.png",
+    "phone/phone-14.png",
+    "phone/phone-15.png",
+    "phone/phone-16.png",
+    "phone/phone-17.png",
+    "phone/phone-18.png"
+  ],
+  "shots_note": "Captured with tools/shots.mjs from the live site at 1440x900 and 390x844 after he flagged it, before any change; he sent no screenshot. עמלת חליפין is on pc-5.png (left column, lower card), with ניהול תיקי השקעות above it showing the bare 'MF-28' and the line 'נסגר ב־24.10.2026: 2 · חוקים וכללים'; the Wikisource and Funder copies (חברת דירוג, מסלולי האירוח) and other non-product entries (מנוטרלת מט\"ח, מענק) on pc-4.png; 'State Comptroller' under פוליסת חיסכון on pc-6.png; LBMA Gold Price on pc-1.png; הסדר חוב on pc-3.png; היוון קצבה on pc-2.png and pc-9.png. The same 'כשייסגר: ...' line closes every open card (pc-2 to pc-9).",
+  "his_words": [
+    "https://orishamir.github.io/finance-tool/not-covered is everything here correct? we dont know עמלת חליפין?"
+  ],
+  "keys": [
+    {
+      "id": "says-uncovered-what-site-covers",
+      "problem": "The page says the site has not yet researched or covered something that the site does cover on another of its pages: the currency exchange fee is listed here as something the site does not know yet, while the guide to a securities account explains the same fee and shows which houses charge it. A site that contradicts itself about what it knows makes the reader doubt both pages.",
+      "where": "the card for the currency exchange fee on the not-covered list, against the fee table row and the terms row about converting currency on the securities account guide (the last two screenshots)",
+      "kind": "general"
+    },
+    {
+      "id": "bare-code",
+      "problem": "Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.",
+      "where": "the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'",
+      "kind": "general"
+    },
+    {
+      "id": "fragment-no-noun",
+      "problem": "Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.",
+      "where": "the 'what was closed' lines of the open cards",
+      "kind": "general"
+    },
+    {
+      "id": "source-names-not-for-reader",
+      "problem": "Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.",
+      "where": "the source line under 'what is known' on a few cards",
+      "kind": "general"
+    },
+    {
+      "id": "same-promise-every-card",
+      "problem": "Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.",
+      "where": "the line starting 'when it is closed' at the bottom of each open card",
+      "kind": "general"
+    }
+  ],
+  "not_keyed": "One problem the coordinator listed is not on the screens and is left out of the keys, since no reader without the project could see it: a blocker the rule base has since answered. The mix of kinds on the list (fees, labels, a price benchmark, roles, events listed as products) was the first reading of his key; it is no longer a key, and the page fix removes it anyway.",
+  "goal_given_to_reviewer": "You want to know which savings and investment options this site cannot yet compare or explain fully, before you rely on it for a decision.",
+  "split": "live (held out, never tuned on before scoring)",
+  "key_note": "His words ask whether the list is right and name one wrong entry: the exchange fee, which the site covers on the securities account guide and the companies' pages. His key, as he meant it (coordinator, 2026-11-07): the page says the site has not researched things it has researched. It replaces a first reading of his key as 'the list mixes things that are not products', which was not his reason. The other four keys come from the coordinator's reading of the page on 2026-11-07; they are in his flag's spirit (is everything here correct?) but not in his words, so only the first key is his.",
+  "reviewer_before_asking": {
+    "how": "panel shots mode, the default reviewer instructions (v1; still screens get no instruction), goal only, personas self-directed-investor, careful-retiree-pc and student-small-amounts, 3 runs each, on the ten PC screens; graded by tools/grade-flag.mjs (two blind graders, a third on disagreement)",
+    "public_run": "runs/live-04",
+    "by_key": {
+      "list-holds-what-it-is-not": {
+        "caught": "0 of 9 sessions",
+        "in_first_10": 0,
+        "ranks": {
+          "careful-retiree-pc": [
+            0,
+            0,
+            0
+          ],
+          "self-directed-investor": [
+            0,
+            0,
+            0
+          ],
+          "student-small-amounts": [
+            0,
+            0,
+            0
+          ]
+        },
+        "grader_agreement": "9 of 9"
+      },
+      "bare-code": {
+        "caught": "7 of 9 sessions",
+        "in_first_10": 7,
+        "ranks": {
+          "careful-retiree-pc": [
+            4,
+            4,
+            4
+          ],
+          "self-directed-investor": [
+            5,
+            5,
+            0
+          ],
+          "student-small-amounts": [
+            0,
+            4,
+            3
+          ]
+        },
+        "grader_agreement": "9 of 9"
+      },
+      "fragment-no-noun": {
+        "caught": "5 of 9 sessions",
+        "in_first_10": 5,
+        "ranks": {
+          "careful-retiree-pc": [
+            4,
+            4,
+            6
+          ],
+          "self-directed-investor": [
+            0,
+            0,
+            0
+          ],
+          "student-small-amounts": [
+            0,
+            4,
+            3
+          ]
+        },
+        "grader_agreement": "9 of 9"
+      },
+      "source-names-not-for-reader": {
+        "caught": "1 of 9 sessions",
+        "in_first_10": 1,
+        "ranks": {
+          "careful-retiree-pc": [
+            0,
+            0,
+            0
+          ],
+          "self-directed-investor": [
+            0,
+            0,
+            5
+          ],
+          "student-small-amounts": [
+            0,
+            0,
+            0
+          ]
+        },
+        "grader_agreement": "8 of 9"
+      },
+      "same-promise-every-card": {
+        "caught": "2 of 9 sessions",
+        "in_first_10": 2,
+        "ranks": {
+          "careful-retiree-pc": [
+            0,
+            0,
+            0
+          ],
+          "self-directed-investor": [
+            0,
+            4,
+            3
+          ],
+          "student-small-amounts": [
+            0,
+            0,
+            0
+          ]
+        },
+        "grader_agreement": "8 of 9"
+      }
+    },
+    "caught": "his key (list-holds-what-it-is-not) 0 of 9: a miss. The bare codes 7 of 9 and the meaningless struck-out lines 5 of 9 were catches; the same promise on every card 2 of 9; the copies and the English source name 1 of 9.",
+    "what_they_said": "Every session took the list at its word. The investor put first, in all three runs, that the site does not compute the exchange fee, so it 'can't show the cost of buying US ETFs' (the very entry he says is wrong, believed); the others asked for a summary of what is covered, a grouping, and complained of grey text, red tags on every card, law citations and English names. None said that a fee, a label, a price benchmark or an event is not a product, though the subtitle says the page lists products.",
+    "note_2026_11_07": "These numbers were graded against the first reading of his key (the list mixes things that are not products) on the ten not-covered screens alone. The corrected key is scored in runs/live-04b, where the sessions also see the two screens of the page that shows the fee."
+  },
+  "covered_elsewhere_shots": [
+    "covered-elsewhere/brokerage-5.png",
+    "covered-elsewhere/brokerage-10.png"
+  ],
+  "covered_elsewhere_note": "Captured with tools/shots.mjs from the live guide to a securities account (/guide/brokerage-account, 1440x900) on 2026-11-07, before any change: screen 5 has the fee table's row 'המרת מטבע' with the houses that charge it, screen 10 the terms list's row 'עמלת חליפין' with its explanation. These are the page that shows X: without them no reader can see that the not-covered page contradicts the site."
+}

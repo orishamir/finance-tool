@@ -1,0 +1,14 @@
+{
+ "task": "You are reading a Hebrew page of a free website that explains saving products in Israel. Read all the screenshots, top to bottom: together they are one page. Then answer briefly, in Hebrew or English, without guessing beyond what the page says: (1) Based on this page, would you call your fund and ask for a lower management fee? Why, and what on the page decided it? (2) How much would asking for a lower fee be worth to you, by the page, and over what period? (3) Does the page say when or why that amount could change? Say it in your own words. (4) Is there anything on the page that seemed to say two different things about whether asking is worth it, or about how much it is worth? Quote it. (5) Quote every word or sentence you did not understand, that confused you, or that you read twice, and say why. (6) Is anything you needed to decide missing? (7) Did any link, number or label look like it should lead somewhere or explain something but did not?",
+ "readers": [
+  {
+   "key": "kgl-pc",
+   "who": "You are 41 and have about 60,000 shekels in a kupat gemel lehashkaa (a provident fund for investing) that you opened a couple of years ago. You want to know whether it is worth asking the fund for a lower fee. You read Hebrew natively and do not work in finance. You are reading on a computer.",
+   "shots": [
+    "research/audit/2026-11-07-kgl-prices-check/readers-p7/shots-kgl-1440/page-1.png",
+    "research/audit/2026-11-07-kgl-prices-check/readers-p7/shots-kgl-1440/page-2.png",
+    "research/audit/2026-11-07-kgl-prices-check/readers-p7/shots-kgl-1440/page-3.png"
+   ]
+  }
+ ]
+}

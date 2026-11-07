@@ -8,13 +8,14 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, makamModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { Callout, InputSlot, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
-import { Num, RuleRef, RulesLine } from "../provenance";
+import { Callout, InputSlot, LongestCase, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, fill, useWidth } from "../kit";
+import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 230;
 const TOP = 24;
 const BOTTOM = 28;
+
 
 export function MakamVisual({ data, today }: VisualProps) {
   const bundle = data.bundles["makam"]!;
@@ -28,6 +29,11 @@ export function MakamVisual({ data, today }: VisualProps) {
   const noExit = fact(data, "depositNoExitCount");
   // the tariff the run reads is the site's pick (F-80), named beside the commission (D31)
   const house = bundle.feeValues.tradeRate?.own;
+  // a house that may charge custody on makam (not a bank, BRK-52) and whose tariff does: the fees line says how much of it is custody and
+  // why the banks' ban does not reach it (a fresh reader, 2026-11-07, read the fees as trading only and the ban as broken)
+  const custodyHouse = bundle.terms.memberKind === "non-bank" && !!bundle.terms.tariff?.custody;
+  // custody falls at the end of each charging period (F-14), so the line says how often: 6.07 at six months and 9.14 at twelve read as unexplained
+  const custodyEvery = bundle.terms.tariff?.custody?.everyMonths ?? 1;
   const [month, setMonth] = useState<number | null>(null);
   const [box, width] = useWidth();
   const model0 = useMemo(() => makamModel(data, { amount: inputs.amount, month: 6 }), [data, inputs.amount]);
@@ -46,7 +52,7 @@ export function MakamVisual({ data, today }: VisualProps) {
 
   const amountIn = inputSite(bundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
   const sale = enteredValue(m, "months", today, copy.makam.marker);
-  const runInputs = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale, ...(model?.atRedemption ? (discountRate ? { [copy.makam.taxRedeem]: discountRate } : {}) : gainRate ? { [copy.makam.taxSale]: gainRate } : {}) };
+  const runInputs = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale, ...(model?.atRedemption ? (discountRate ? { [copy.makam.taxRedeem]: discountRate } : {}) : gainRate ? { [`${copy.makam.taxSale.before} ${copy.makam.taxSale.term}`]: gainRate } : {}) };
   const rules = rulesOfBundle(bundle);
   const v = model
     ? {
@@ -56,8 +62,43 @@ export function MakamVisual({ data, today }: VisualProps) {
         tax: figure(model.tax, "nis", model.atRedemption ? "F-24" : "F-40", runInputs, today, copy.makam.about.tax, rules),
         fees: figure(model.fees, "nis", "F-12", runInputs, today, copy.makam.about.fees, rules),
         net: figure(model.net, "nis", "F-24", runInputs, today, copy.makam.about.net, rules),
+        base: figure(model.taxedBase, "nis", model.atRedemption ? "F-24" : "F-40", runInputs, today, copy.makam.taxBase.about.base, rules),
+        taxedFees: figure(model.taxedFees, "nis", "F-09", runInputs, today, copy.makam.taxBase.about.fees, rules),
+        custody: figure(model.custody, "nis", "F-14", runInputs, today, copy.makam.about.custody, rules),
       }
     : null;
+  // the tax's base under the figures, one height in all four cases (a sale or a redemption, with the year's fees deducted or without): the
+  // base and the fees add up to the gain figure as printed, so all three keep their agorot
+  const tb = copy.makam.taxBase;
+  const taxLine = (t: string, rate: NonNullable<typeof gainRate>) => v && <Sentence size="sm" tone="muted" t={t} vars={{ rate: <Num value={rate} />, base: <Num value={v.base} exact />, fees: <Num value={v.taxedFees} exact />, kind: bundle.terms.tariff?.monthlyFee ? tb.kind.withAccount : tb.kind.custody, year: <Term prefix="ב" id="שנת המס">{copy.makam.taxBase.year}</Term> }} />;
+  const taxText = model?.atRedemption ? (model.taxedFees > 0 ? tb.redeemFees : tb.redeem) : model && model.taxedFees > 0 ? tb.fees : tb.sale;
+  const feesLine = (withCustody: boolean) =>
+    v &&
+    model && (
+      <Sentence size="sm" tone="muted">
+        {copy.makam.figures.fees}: <Num value={v.fees} />
+        {withCustody && (
+          <>
+            , {copy.makam.feesCustody.before} <Num value={v.custody} /> {copy.makam.feesCustody.after}
+            {custodyEvery > 1 && <>, {fill(copy.makam.feesCustody.every, { n: custodyEvery })}</>}
+          </>
+        )}
+        {house && bundle.pick && (
+          <>
+            , {copy.makam.feesWhose.before} <bdi>{house}</bdi>
+            {bundle.pick.tied ? (
+              <>
+                . {copy.makam.feesWhose.tied} <bdi>{bundle.pick.tied.names.filter((n) => n !== house).join(" · ")}</bdi>: {copy.makam.feesWhose.tiedGap}{bundle.pick.tied.theta && <>, <Num value={bundle.pick.tied.theta} /></>}.
+              </>
+            ) : (
+              <>
+                {copy.makam.feesWhose.middle} <Num value={bundle.pick.count} /> {copy.makam.feesWhose.after}
+              </>
+            )}
+          </>
+        )}
+      </Sentence>
+    );
 
   return (
     <div className="flex flex-col gap-5">
@@ -119,12 +160,18 @@ export function MakamVisual({ data, today }: VisualProps) {
               <Num value={v.price} />
             </Stat>
             <Stat label={copy.makam.figures.gain} tone="net">
-              <Num value={v.gain} />
+              <Num value={v.gain} exact />
             </Stat>
             <Stat
               label={
                 <>
-                  {model.atRedemption ? copy.makam.taxRedeem : copy.makam.taxSale}
+                  {model.atRedemption ? (
+                    copy.makam.taxRedeem
+                  ) : (
+                    <>
+                      {copy.makam.taxSale.before} <Term id="רווח הון">{copy.makam.taxSale.term}</Term>
+                    </>
+                  )}
                   {(model.atRedemption ? discountRate : gainRate) && (
                     <>
                       {" "}
@@ -142,23 +189,20 @@ export function MakamVisual({ data, today }: VisualProps) {
               <Num value={v.net} />
             </Stat>
           </StatRow>
-          {model.fees > 0 && (
+          {gainRate && discountRate && (
+            <LongestCase cases={[taxLine(tb.fees, gainRate), taxLine(tb.sale, gainRate), taxLine(tb.redeemFees, discountRate), taxLine(tb.redeem, discountRate)]}>
+              {!model.blocked && taxLine(taxText, model.atRedemption ? discountRate : gainRate)}
+            </LongestCase>
+          )}
+          {/* the custody clause comes with the quarter's charge (none in the first two months): one height with it or without. The line
+              shows for every amount, 0 included, so nothing under it moves when the amount is typed (independent check, 2026-11-07) */}
+          <LongestCase cases={custodyHouse ? [feesLine(true), feesLine(false)] : [feesLine(false)]}>{feesLine(custodyHouse && model.custody > 0)}</LongestCase>
+          {/* its own line, outside the block that reflows with the custody clause: it holds for every month and every amount, since it
+              rests on the house charging custody, not on what this amount pays */}
+          {custodyHouse && (
             <Sentence size="sm" tone="muted">
-              {copy.makam.figures.fees}: <Num value={v.fees} />
-              {house && bundle.pick && (
-                <>
-                  , {copy.makam.feesWhose.before} <bdi>{house}</bdi>
-                  {bundle.pick.tied ? (
-                    <>
-                      . {copy.makam.feesWhose.tied} <bdi>{bundle.pick.tied.names.filter((n) => n !== house).join(" · ")}</bdi>: {copy.makam.feesWhose.tiedGap} <Num value={bundle.pick.tied.theta} />.
-                    </>
-                  ) : (
-                    <>
-                      {copy.makam.feesWhose.middle} <Num value={bundle.pick.count} /> {copy.makam.feesWhose.after}
-                    </>
-                  )}
-                </>
-              )}
+              {copy.makam.custodyBan.before} <Term id="בית השקעות">{copy.makam.custodyBan.term}</Term>
+              {copy.makam.custodyBan.after}
             </Sentence>
           )}
           {model.blocked && (

@@ -70,12 +70,6 @@ export const aliasRows: AliasRow[] = [
   { from: ["נזילות", "קרן נזילה", "נזיל"], to: ["קרן נזילה"], source: 'glossary; bank-product-names Terms ("נזיל")' },
   { from: ["תחנות יציאה", "נקודות יציאה"], to: ["תחנת יציאה"], source: "glossary" },
   { from: ["מח״מ"], to: ["משך חיים ממוצע"], source: "MF Terms" },
-  {
-    from: ["תשואה היסטורית", "תשואת העבר", "S&P 500 בעבר", "מה עשה המדד"],
-    to: ["טווחי תשואה היסטוריים של מדד S&P 500"],
-    confirm: true,
-    source: "MKT-01 title; the phrases are colloquial",
-  },
 ];
 
 /**

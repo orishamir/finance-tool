@@ -1,0 +1,36 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same point about the wrong grouping: מק\"מ sits in a list of places that hold money, yet it is something held inside such a place (a loan to the state), not one of those places itself."
+      }
+    ],
+    "liked": [],
+    "usd": 0.019391399999999996
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same point: מק\"מ is filed in a group of places that hold money, even though it's really a state loan you buy inside an account, so it's in the wrong category."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0190594
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.03845079999999999
+}

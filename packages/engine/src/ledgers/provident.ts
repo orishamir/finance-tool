@@ -14,8 +14,11 @@ export interface ProvidentInput {
   wrapper: "kupat-gemel-lehashkaa" | "keren-hishtalmut";
   goal: Goal;
   market: { grossReturn: number; inflation: number };
-  /** Fee rates as fractions: deposit fee (F-11), balance fee (F-15), direct expenses (A-18), discount (A-19). */
-  fees: { deposit: number; balance: number; direct: number; discount?: Discount };
+  /**
+   * Fee rates as fractions: deposit fee (F-11), balance fee (F-15), direct expenses (A-18), and a discount on either (A-19):
+   * `discount` holds the balance fee's period and the list rate it reverts to, `depositDiscount` the deposit fee's (F-16).
+   */
+  fees: { deposit: number; balance: number; direct: number; discount?: Discount; depositDiscount?: Discount };
   /**
    * A-12 for a study fund: employment, salary, and the month the 6-year clock started (KH-11).
    * `earlyWithdrawal` is the person's opt-in to withdraw at the horizon when the fund is still locked (B3,
@@ -165,10 +168,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
         employerLimit = book.rate("TXH-01", "employer_exempt_pct") * determining;
         // F-52: the part of the employer's deposit above this limit is salary when paid (TXH-03) and runs
         // separately below; the part up to the limit stays benefited (TXH-01).
-        if (h.employerMonthly > employerLimit) {
-          book.cite("TXH-03");
-          book.label("reading", "TXG-35");
-        }
+        if (h.employerMonthly > employerLimit) book.cite("TXH-03");
       }
     } else {
       benefitedYearly = book.amount("TXH-08", "self_employed_benefited");
@@ -194,6 +194,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   let yearTotal = 0;
   let benefitedLeft = benefitedYearly;
   let discountExtended = false;
+  let laterDeposit = false;
   tally.point(0, 1, existing);
 
   const hish = input.hishtalmut;
@@ -223,7 +224,10 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   }
 
   // F-52: what the employer pays above the benefited limit is the employee's salary when paid (TXH-03):
-  // income tax at the brackets (TXG-02) and National Insurance and health (TXG-35, labelled a reading).
+  // income tax at the brackets (TXG-02) and National Insurance and health (TXG-35: National Insurance's circular 1473 puts the
+  // excess in that base as imputed value, "זקיפת שווי", TXH-26), so it is added on top of the salary and charged at the rates
+  // of the sum. Only the month is the rule base's inference (TXH-26, from TXH-03's "when paid"); with the same salary every
+  // month it changes nothing, and the run does not show it.
   const employerExcessByYear = new Map<number, number>();
   const employerExcessTodayByYear = new Map<number, number>();
   let employerPaidToday = 0;
@@ -251,6 +255,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   };
 
   const deposit = (amount: number, eventMonth: number, outlay = amount) => {
+    if (eventMonth > 0 && amount > 0) laterDeposit = true;
     if (amount <= 0) return;
     let accepted = amount;
     if (kgl) {
@@ -262,7 +267,10 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     tally.paidIn += outlay * share;
     reliefTotal += (amount - outlay) * share;
     reliefToday += ((amount - outlay) * share) / I[eventMonth]!;
-    const fee = depositFee(fees.deposit, depositCap, accepted);
+    // F-16: a discounted deposit fee reverts to its list rate when the period ends, no earlier than PF-13's minimum
+    const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, eventMonth);
+    discountExtended ||= dep.extended;
+    const fee = depositFee(dep.rate, depositCap, accepted);
     tally.fee("deposit", fee);
     const net = accepted - fee;
     // S42: the employer part of the monthly deposit up to TXH-01's limit is all benefited; the part above the
@@ -320,6 +328,9 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     tally.point(m, I[m]!, benefited.balance + excess.balance);
   }
   if (discountExtended) tally.flag("PF-13");
+  // PF OQ18 (D87): whether a manager may end a discount early for a member who deposits once and never again (circular 2017-9-15
+  // s.3(ב)(1), six months after payments stop) is open; the run keeps the discount for its whole period, the favourable reading
+  if ((fees.discount || fees.depositDiscount) && !laterDeposit && T > 6) tally.flag("PF-OQ18");
 
   const gross = benefited.balance + excess.balance;
   // The real gain: each deposit indexed by I_T / I_deposit. When the CPI fell over a deposit's life its linkage is not a
@@ -332,14 +343,14 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   let taxAtExit: number;
 
   if (kgl) {
-    // F-44: 25% of the real gain (TXK-07, primary since 2026-10-25), with the 15%-of-nominal line (TXK-06) beside it.
+    // F-44: 25% of the real gain (TXK-07, primary since 2026-10-25); TXK-06 is the up-to-25% rate on the deemed interest.
     book.cite("TXK-05");
     if (exitTaxUnknown) tally.flag("PF-36");
     const realRate = book.rate("TXK-07", "rate");
-    const nominalRate = book.rate("TXK-06", "nominal_rate");
+    book.cite("TXK-06");
     const real = realGain(benefited);
     if (fellFor(benefited)) book.label("reading", "TXK-07");
-    const t = kglExitTax(real, nominalGain(benefited), realRate, nominalRate);
+    const flatTax = kglExitTax(real, realRate);
     // F-42 at this exit (2026-10-26): from 60 the reduced brackets apply first to this deemed interest, since s.125C(b) is a
     // maximum rate and s.121(ב)(1) gives the reduced brackets to all taxable income of an individual aged 60 or over; the
     // gains are the top slice above the other income Y, each part at min(bracket, 25%) (TXK-06, TXG-04, TXG-07). The manager
@@ -349,7 +360,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     // that settlement (TXK-26), not G-21, whose evidence is a bank's or TASE member's withholding. With the refund not claimed
     // (A-14 off) the run keeps the flat 25% and flags the relief it leaves out (TXK-06); with a 25% withholding that is the tax
     // withheld (until 2026-11-06 the record read 20% and this figure was called an upper bound; golden S51 is unchanged).
-    let incomeTax = t.tax;
+    let incomeTax = flatTax;
     if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) {
       book.cite("TXG-07");
       formulas.push("F-42");
@@ -361,18 +372,15 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
           tally.flag("TXK-26");
         }
       }
-      detail.fullRateTax = t.tax;
+      detail.fullRateTax = flatTax;
     }
     const s = surtaxOn(book, profile, real);
     taxAtExit = exitTaxUnknown ? 0 : incomeTax + s.general + s.onCapital;
     detail.realGain = real;
-    detail.altTaxAtExit = t.alternative;
-    detail.altNominal = gross - t.alternative;
-    detail.altReal = (gross - t.alternative) / I[T]!;
     // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum 2026-10-26).
     book.cite("TXK-27");
-    tally.flag("G-02");
-    if (exitTaxUnknown) for (const k of ["realGain", "altTaxAtExit", "altNominal", "altReal", "fullRateTax"]) delete detail[k];
+    // G-02 (the exit base) is answered by law, so no flag since 2026-11-07: the base is TXK-07's, cited above.
+    if (exitTaxUnknown) for (const k of ["realGain", "fullRateTax"]) delete detail[k];
   } else {
     // F-46: benefited money is exempt (TXH-09); gains on the excess are taxed at 25% of their real gain
     // (TXH-11; the real base is the Ministry of Finance Chief Economist paper's, primary).
@@ -447,7 +455,6 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       employerPaidToday += (paid * employerExcessTodayByYear.get(y)!) / x;
     }
     book.cite("TXH-03");
-    book.label("reading", "TXG-35");
     detail.employerDepositTax = employerDepositTax;
     detail.employerSocial = employerSocial;
     detail.employerPaidToday = employerPaidToday;

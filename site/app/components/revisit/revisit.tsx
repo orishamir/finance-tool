@@ -10,10 +10,10 @@ import { todayLocal } from "../../lib/today";
 import { Sheet } from "../Sheet";
 import { IconAlert, IconCheck, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Callout, cx, Disclosure, TableCols, Tag } from "../kit";
+import { Button, Callout, cx, Disclosure, TableCols, Tag, When } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
 
-const date = (iso: string) => <bdi dir="ltr">{fmt.date(iso)}</bdi>;
+const date = (iso: string) => <When iso={iso} />;
 
 // ---------------------------------------------------------------- choose and save
 

@@ -2,7 +2,7 @@
   {
     "term_he": "פוליסת חיסכון",
     "term_source": {
-      "title": "State Comptroller, הפיקוח של רשות שוק ההון על הגופים המוסדיים המנהלים חיסכון ארוך טווח, January 2024, summary p. 336",
+      "title": "מבקר המדינה, הפיקוח של רשות שוק ההון על הגופים המוסדיים המנהלים חיסכון ארוך טווח, ינואר 2024, תקציר, עמוד 336",
       "url": "https://library.mevaker.gov.il/sites/DigitalLibrary/Documents/2024/The-cost-of-living/2024-The-cost-of-living-104-Hon.pdf"
     },
     "variants_he": [
@@ -27,10 +27,11 @@
       "TXA-02"
     ],
     "source": {
-      "title": "State Comptroller, הפיקוח של רשות שוק ההון על הגופים המוסדיים המנהלים חיסכון ארוך טווח, January 2024, summary p. 336",
+      "title": "מבקר המדינה, הפיקוח של רשות שוק ההון על הגופים המוסדיים המנהלים חיסכון ארוך טווח, ינואר 2024, תקציר, עמוד 336",
       "url": "https://library.mevaker.gov.il/sites/DigitalLibrary/Documents/2024/The-cost-of-living/2024-The-cost-of-living-104-Hon.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "State Comptroller"
     },
     "where": [
       "tier2-page"
@@ -41,8 +42,8 @@
   {
     "term_he": "ביטוח חיים משתתף ברווחים",
     "term_source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, reg. 8 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 7",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=7"
     },
     "variants_he": [
       "פוליסה משתתפת ברווחים"
@@ -59,28 +60,29 @@
       "TXA-04"
     ],
     "source": {
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, reg. 8 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 7",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=7",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "The Fees Regulations define it 'כהגדרתו בתקנות חוזי ביטוח, למעט קופת ביטוח' (reg. 8); the referenced definition itself was not read (INS OQ1). The withholding regulations define 'פוליסה משתתפת ברווחים' separately, as a savings plan in a life policy approved by the insurance supervisor as profit-sharing (TXA-04). The INS Terms table calls this the legal category of savings policies and 'modern' executive policies; which executive-policy cohorts are profit-sharing is not set out, hence 'חלק'. 'תיק משתתף ברווחים' is the insurer's portfolio behind these policies (CMA reports), not the policy.",
+    "notes": "The Fees Regulations define it 'כהגדרתו בתקנות חוזי ביטוח, למעט קופת ביטוח' (reg. 8); the referenced definition itself was not read (INS OQ1). The withholding regulations define 'פוליסה משתתפת ברווחים' separately, as a savings plan in a life policy approved by the insurance supervisor as profit-sharing (TXA-04). The INS Terms table calls this the legal category of savings policies and 'modern' executive policies; which executive-policy cohorts are profit-sharing is not set out, hence 'חלק'. 'תיק משתתף ברווחים' is the insurer's portfolio behind these policies (CMA reports), not the policy. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) to the official text.",
     "id": "bytvch-chyym-mshttp-brvvchym"
   },
   {
     "term_he": "מסלולי האירוח",
     "term_source": {
       "title": "CMA, תכנית אסדרה לשנת 2026, p. 20",
-      "url": "https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf"
+      "url": "https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf#page=20"
     },
     "variants_he": [
       "הוסטינג",
       "מנוהל באמצעות"
     ],
-    "explain_he": "מסלול בפוליסת חיסכון שבית השקעות חיצוני מנהל את כספיו, והפוליסה עצמה נשארת אצל חברת הביטוח.",
+    "explain_he": "מסלול השקעה שהגוף המוסדי מנהל באמצעות מנהל השקעות חיצוני, והחשבון עצמו נשאר אצל הגוף המוסדי",
     "blocking_questions": [
       "INS OQ6: extra hosting fee, who bears the outside manager's fee, and what happens if the hosting agreement ends"
     ],
@@ -90,15 +92,16 @@
       "MGD-13"
     ],
     "source": {
-      "title": "ISA, פעילות חברות בעלות רישיון השקעות 2025 (Funder-hosted copy)",
-      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "רשות שוק ההון: חוזר גופים מוסדיים 2022-9-30, ניהול מסלולי השקעה בקופת גמל, עמ' 2",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Term as in the CMA 2026 plan ('בקשר למסלולי האירוח'); 'הוסטינג' is the ISA report's word; 'מנוהל באמצעות' appears in Bituach-Net track names (INS-09). Meaning source is the ISA report p. 19 (NIS 21.4 bn of savings policies managed through hosting by portfolio managers), a primary document on a third-party host. Brand names seen in track names: BlackRock, Apollo, אקסלנס אינווסט (Phoenix), fidelity (Harel), State Street (Clal), מגדל שוקי הון (INS-09). In mutual funds 'hosting' has a related meaning: a portfolio manager running a fund under a fund manager's licence (MGD-13).",
+    "notes": "Term as in the CMA 2026 plan ('בקשר למסלולי האירוח'); 'הוסטינג' is the ISA report's word; 'מנוהל באמצעות' appears in Bituach-Net track names (INS-09). Meaning source is the ISA report p. 19 (NIS 21.4 bn of savings policies managed through hosting by portfolio managers), a primary document on a third-party host. Brand names seen in track names: BlackRock, Apollo, אקסלנס אינווסט (Phoenix), fidelity (Harel), State Street (Clal), מגדל שוקי הון (INS-09). In mutual funds 'hosting' has a related meaning: a portfolio manager running a fund under a fund manager's licence (MGD-13). Copy struck Round 2 (2026-11-07): from a Funder copy to the CMA's circular 2022-9-30 (library 3b8851052230e52b, p.2): \"מסלול אירוח - מסלול השקעה שבו הגוף המוסדי מנהל את כספי העמיתים באמצעות מנהל השקעות חיצוני\". The line now follows that definition; The ISA's 2025 report on hosted tracks is not on isa.gov.il.",
     "id": "mslvly-hayrvch"
   },
   {
@@ -137,7 +140,7 @@
     "term_he": "ביטוח מנהלים",
     "term_source": {
       "title": "Harel, הראל מגוון למנהלים קצבה משלמת, plan 1286, edition 7/2009",
-      "url": "https://www.harel-group.co.il/Policies/2010.pdf"
+      "url": "https://www.harel-group.co.il/Policies/2010.pdf#page=2"
     },
     "variants_he": [
       "ביטוח חיים (מנהלים)"
@@ -161,22 +164,23 @@
       "TXA-12"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s. 1, 13(ב) (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 2",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Market name only: not defined in the law texts read (INS-13, TXA-12); the law calls it 'קופת ביטוח' (separate entry). Term spelling per INS Terms table (Harel 1286; Harel 2016 letter); Harel's terms are titled 'תנאים כלליים לביטוח חיים (מנהלים)', the source of the one variant. Older policy types seen in insurer letters and statements: 'פוליסה הפרשית', 'עדיף', 'מניב' (Phoenix legacy), 'פוליסות קלאסיות (מעורב, גמלא וחיסכון)' (INS-15, INS-16). Fee cap 4% of deposits and 1.05% of balance applies only to policies issued from 1.1.2013 (INS-15). Mandatory-pension fit needs death and disability cover in it or elsewhere (INS-18). Only a 2009 Harel plan and a 2016 Harel letter were read for current terms (INS graduation item 5).",
+    "notes": "Market name only: not defined in the law texts read (INS-13, TXA-12); the law calls it 'קופת ביטוח' (separate entry). Term spelling per INS Terms table (Harel 1286; Harel 2016 letter); Harel's terms are titled 'תנאים כלליים לביטוח חיים (מנהלים)', the source of the one variant. Older policy types seen in insurer letters and statements: 'פוליסה הפרשית', 'עדיף', 'מניב' (Phoenix legacy), 'פוליסות קלאסיות (מעורב, גמלא וחיסכון)' (INS-15, INS-16). Fee cap 4% of deposits and 1.05% of balance applies only to policies issued from 1.1.2013 (INS-15). Mandatory-pension fit needs death and disability cover in it or elsewhere (INS-18). Only a 2009 Harel plan and a 2016 Harel letter were read for current terms (INS graduation item 5). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "bytvch-mnhlym"
   },
   {
     "term_he": "קופת ביטוח",
     "term_source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s. 1, 13(ב) (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 2",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=2"
     },
     "variants_he": [
       "תכנית ביטוח"
@@ -194,21 +198,22 @@
       "TXA-14"
     ],
     "source": {
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s. 1, 13(ב) (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, עמוד 2",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Law text: 'תכנית ביטוח שאושרה לפי הוראות סעיף 13(ב) כקופת גמל לתגמולים, לפיצויים או לקצבה' (Provident Funds Law s.1). Only listed parts of the Provident Funds Law apply to it (INS-14). It is never an 'old fund', so the recognized annuity and commutation are open to it (TXA-13). The fund-level income exemption excludes insurance funds (TXA-14). Statement marker 'הפוליסה אינה מוכרת כקופת ביטוח' identifies a savings policy, not executive insurance (Clal 1418).",
+    "notes": "Law text: 'תכנית ביטוח שאושרה לפי הוראות סעיף 13(ב) כקופת גמל לתגמולים, לפיצויים או לקצבה' (Provident Funds Law s.1). Only listed parts of the Provident Funds Law apply to it (INS-14). It is never an 'old fund', so the recognized annuity and commutation are open to it (TXA-13). The fund-level income exemption excludes insurance funds (TXA-14). Statement marker 'הפוליסה אינה מוכרת כקופת ביטוח' identifies a savings policy, not executive insurance (Clal 1418). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "kvpt-bytvch"
   },
   {
     "term_he": "תיקון 190",
     "term_source": {
-      "title": "Israel Tax Authority, Income Tax circular 2/2013, \"תיקון 190 לפקודה\" (27.5.2013)",
+      "title": "רשות המסים, חוזר מס הכנסה 2/2013, תיקון 190 לפקודה (27.5.2013)",
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf"
     },
     "variants_he": [
@@ -232,10 +237,11 @@
       "TXA-25"
     ],
     "source": {
-      "title": "Israel Tax Authority, Income Tax circular 2/2013, \"תיקון 190 לפקודה\" (27.5.2013)",
+      "title": "רשות המסים, חוזר מס הכנסה 2/2013, תיקון 190 לפקודה (27.5.2013)",
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "tier2-page"
@@ -244,66 +250,10 @@
     "id": "tykvn-190"
   },
   {
-    "term_he": "תשלומים פטורים",
-    "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
-    },
-    "variants_he": [],
-    "explain_he": "כסף שהופקד לקופת גמל בלי זיכוי או ניכוי ממס, או שכבר שולם עליו מס.",
-    "blocking_questions": [
-      "TXA OQ9: legal source of the deposit ceilings and the benefited layer funds apply"
-    ],
-    "rule_ids": [
-      "TXA-17",
-      "TXA-23"
-    ],
-    "source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
-    },
-    "where": [
-      "tier2-page"
-    ],
-    "notes": "s.9A(a): employer amounts above the deposit rate, employee amounts above the maximum rate, severance taxed as work income, money moved to a new account, self-paid amounts with no matching employer payment and no s.45A credit or s.47 deduction, and self-paid amounts to a kupat gemel lehashkaa (TXA-17). Funds treat the first slice of each year's self-deposits (38,412 NIS, 2025-2026) as benefited, a fund practice (TXA-23).",
-    "id": "tshlvmym-ptvrym-f"
-  },
-  {
-    "term_he": "קצבה מוכרת",
-    "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
-    },
-    "variants_he": [],
-    "explain_he": "החלק בקצבה שנובע מתשלומים פטורים; הוא פטור ממס מגיל שישים, בנוסף לפטורים האחרים על קצבה.",
-    "blocking_questions": [
-      "TXA OQ12: the promised Tax Authority circular on the recognized annuity not found",
-      "TXA OQ13: tax on a recognized annuity received before 60",
-      "TXA OQ14: National Insurance and health contributions"
-    ],
-    "rule_ids": [
-      "TXA-13",
-      "TXA-18"
-    ],
-    "source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
-    },
-    "where": [
-      "tier2-page"
-    ],
-    "notes": "s.9A(b1): exempt from 60, or on early retirement for 75% disability. Circular 2/2013: the exemption is in addition to the qualifying-annuity exemption (TXA-18). Not available in an 'old fund'; an insurance fund is never one (TXA-13).",
-    "id": "ktzbh-mvkrt-f"
-  },
-  {
     "term_he": "היוון קצבה מוכרת",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 51",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=51"
     },
     "variants_he": [],
     "explain_he": "קבלת קצבה מוכרת כסכום חד־פעמי במקום תשלומים חודשיים; המס מוטל רק על חלק הרווח.",
@@ -319,22 +269,23 @@
       "TXA-22"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 51",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=51",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "s.9A(e)(3): 15% on the relative profit component, nominal. Lawful only if the remaining annuity, counting all annuities, is at least the minimum annuity (5,306 NIS/month in 2026) (TXA-20). Name also used as the title of fund forms ('היוון קצבה מוכרת – תיקון 190', Analyst, Altshuler Shaham).",
+    "notes": "s.9A(e)(3): 15% on the relative profit component, nominal. Lawful only if the remaining annuity, counting all annuities, is at least the minimum annuity (5,306 NIS/month in 2026) (TXA-20). Name also used as the title of fund forms ('היוון קצבה מוכרת – תיקון 190', Analyst, Altshuler Shaham). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "hyvvn-ktzbh-mvkrt"
   },
   {
     "term_he": "פיקדון במטבע חוץ",
     "term_source": {
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, reg. 1 (list of exemption orders) (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)"
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025, עמודים 40 ו־52 בדפוס",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=54"
     },
     "variants_he": [
       "פיקדון מט\"ח",
@@ -362,22 +313,23 @@
       "TX2-02"
     ],
     "source": {
-      "title": "Israel Tax Authority, \"דע זכויותיך וחובותיך 2025\", printed pp. 40, 52",
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025, עמודים 40 ו־52 בדפוס",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=54",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Spelling from the title of the exemption order quoted in the withholding regulations ('צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג–2002'). Banking (Customer Service) Law Amendment 38 writes 'פיקדון כספי במטבע חוץ' (FXD-04); the Ordinance s.1 writes 'פקדון במטבע חוץ' (TX2-01). 'פמ\"ח' is used by Hapoalim and Leumi; its expansion is not stated in any source read. 'פקדונות מטבע' is the name used by a non-bank provider (Altshuler Shaham Financial Services) whose regulator is open (FXD-13, FXD OQ8). No deposit insurance in Israel (FXD-16). Olim (20 years) and returning residents (5 years) have an interest exemption under conditions (TX2-03).",
+    "notes": "Spelling from the title of the exemption order quoted in the withholding regulations ('צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג–2002'). Banking (Customer Service) Law Amendment 38 writes 'פיקדון כספי במטבע חוץ' (FXD-04); the Ordinance s.1 writes 'פקדון במטבע חוץ' (TX2-01). 'פמ\"ח' is used by Hapoalim and Leumi; its expansion is not stated in any source read. 'פקדונות מטבע' is the name used by a non-bank provider (Altshuler Shaham Financial Services) whose regulator is open (FXD-13, FXD OQ8). No deposit insurance in Israel (FXD-16). Olim (20 years) and returning residents (5 years) have an interest exemption under conditions (TX2-03). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "pykdvn-bmtba-chvtz"
   },
   {
     "term_he": "חשבון מטבע חוץ",
     "term_source": {
       "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
-      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf"
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf#page=24"
     },
     "variants_he": [
       "חשבון מט\"ח",
@@ -396,7 +348,7 @@
     ],
     "source": {
       "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
-      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf#page=24",
       "checked": "2026-10-22",
       "strength": "primary",
       "publisher": "Bank of Israel"
@@ -406,35 +358,6 @@
     ],
     "notes": "BoI fee rules part 5 have no fee line for holding an FX account (FXD-05). Exemption of the exchange-rate gain on the balance is a derived reading, not a stated rule (TX2-04).",
     "id": "chshbvn-mtba-chvtz"
-  },
-  {
-    "term_he": "עמלת חליפין",
-    "term_source": {
-      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
-      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf"
-    },
-    "variants_he": [],
-    "explain_he": "עמלה שהבנק גובה על המרת כסף בין שקלים למטבע זר, או בין שני מטבעות זרים.",
-    "blocking_questions": [
-      "FXD OQ2: whether and how the bank's own buy and sell rates may differ from the representative rate",
-      "FXD OQ3: other banks' part-5 tariffs"
-    ],
-    "rule_ids": [
-      "FXD-05",
-      "FXD-06"
-    ],
-    "source": {
-      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
-      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary",
-      "publisher": "Bank of Israel"
-    },
-    "where": [
-      "tier2-page"
-    ],
-    "notes": "Fee rules part 5(1): a percentage with a minimum and maximum, per the bank's own schedule, at most two conversion fees. Leumi example (01/10/2026): shekel to FX 0.200%, FX to FX 0.300% (FXD-06); levels belong in data/ as dated snapshots. Also met when buying foreign securities (tier 1, brokerage).",
-    "id": "amlt-chlypyn-f"
   },
   {
     "term_he": "צמוד דולר",
@@ -473,8 +396,8 @@
   {
     "term_he": "פיקדון מובנה",
     "term_source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, ס' 1, \"מוצר מובנה\" (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמוד 3",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3"
     },
     "variants_he": [
       "פיקדונות מובנים"
@@ -493,22 +416,23 @@
       "TX2-05"
     ],
     "source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, ס' 1, \"מוצר מובנה\" (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות",
-      "checked": "2026-10-26",
-      "strength": "primary-mirror"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמוד 3",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "FIBI and Massad: principal 'ככלל מובטחת (במטבע הבסיס)', and joining requires investment advice (FXD-11). The guarantee is the issuing bank's own promise; no deposit insurance (FXD-16). Taxed as a deposit, so securities losses cannot be offset against it (TX2-05, Mizrahi page). Example product names: 'פיקדון פלוס' (Discount, 2024 issue, cannot be broken), 'פיקדון מובנה S&P500 לשנתיים' (Mizrahi). The return is conditional, so any projection would need person-entered scenarios (D9).",
+    "notes": "FIBI and Massad: principal 'ככלל מובטחת (במטבע הבסיס)', and joining requires investment advice (FXD-11). The guarantee is the issuing bank's own promise; no deposit insurance (FXD-16). Taxed as a deposit, so securities losses cannot be offset against it (TX2-05, Mizrahi page). Example product names: 'פיקדון פלוס' (Discount, 2024 issue, cannot be broken), 'פיקדון מובנה S&P500 לשנתיים' (Mizrahi). The return is conditional, so any projection would need person-entered scenarios (D9). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_) to the official text.",
     "id": "pykdvn-mvbnh"
   },
   {
     "term_he": "מוצר מובנה",
     "term_source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמוד 3",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3"
     },
     "variants_he": [],
     "explain_he": "בחוק: השקעה, בפיקדון או בדרך אחרת, שהתשואה או הסיכון בה נקבעים בנוסחה לפי מדד, מחיר או שער.",
@@ -519,26 +443,25 @@
       "FXD-10"
     ],
     "source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמוד 3",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Investment Advice Law s.1. Excluded: an investment that unconditionally guarantees principal (with CPI or FX linkage if set) and fixed or variable interest, or the higher of such options. Structured products count as 'נכסים פיננסיים'. Discount states its structured USD deposit 'אינו מהווה נכס פיננסי' under this law (FXD-12).",
+    "notes": "Investment Advice Law s.1. Excluded: an investment that unconditionally guarantees principal (with CPI or FX linkage if set) and fixed or variable interest, or the higher of such options. Structured products count as 'נכסים פיננסיים'. Discount states its structured USD deposit 'אינו מהווה נכס פיננסי' under this law (FXD-12). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_) to the official text.",
     "id": "mvtzr-mvbnh"
   },
   {
-    "term_he": "מענק",
+    "term_he": "מענק מותנה",
     "term_source": {
       "title": "הבינלאומי: פיקדונות מובנים",
       "url": "https://www.fibi.co.il/private/depositsandsavings/structured/"
     },
-    "variants_he": [
-      "מענק מותנה"
-    ],
+    "variants_he": [],
     "explain_he": "בפיקדון מובנה: תוספת שמשולמת רק אם מתקיים תנאי שוק שנקבע בתנאי המוצר; כך קורא לה הבינלאומי.",
     "blocking_questions": [
       "TX2 OQ5: how the grant is classified and taxed",
@@ -559,13 +482,13 @@
       "tier2-page"
     ],
     "notes": "'מענק מותנה' is Mizrahi's wording (TX2 Terms). In Discount's 2024 example the grant was all-or-nothing on one observation date (FXD-12). 'הבנק אינו מתחייב למתן תשואה מינימלית כלשהי' (FIBI, Massad).",
-    "id": "mank-f"
+    "id": "mank-mvtnh"
   },
   {
     "term_he": "אגרת בונדס",
     "term_source": {
       "title": "Bank Leumi, תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים, updated 01/10/2026, p. 38",
-      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf"
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf#page=38"
     },
     "variants_he": [],
     "explain_he": "איגרת חוב של מדינת ישראל במטבע חוץ שלא נסחרת, ונמכרת דרך ארגון הבונדס, בעיקר ללקוחות פרטיים.",
@@ -576,18 +499,22 @@
     ],
     "rule_ids": [
       "FXD-15",
-      "FXD-16"
+      "FXD-16",
+      "FXD-18",
+      "FXD-19",
+      "FXD-20",
+      "FXD-21"
     ],
     "source": {
       "title": "החשב הכללי, היחידה לניהול החוב הממשלתי, הדו\"ח השנתי 2024, \"הנפקות באמצעות ארגון הבונדס\", עמ' 42",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-      "checked": "2026-10-26",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf#page=42",
+      "checked": "2026-11-07",
       "strength": "primary"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Not on the D2 tier-2 list itself; fx-and-structured-deposits.md graduation status says to keep it as a note on the tier-2 page. Hebrew term only seen in Leumi's value-date table ('הפקדת פדיון סופי של אגרת בונדס'). English series names: Savings Bonds, Jubilee, Maccabee, Sabra, Mazel Tov. Direct obligations of the State (FXD-15). Tax for a resident is missing in il-finance.",
+    "notes": "Not on the D2 tier-2 list itself; fx-and-structured-deposits.md graduation status says to keep it as a note on the tier-2 page. Hebrew term only seen in Leumi's value-date table ('הפקדת פדיון סופי של אגרת בונדס'). English series names: Savings Bonds, Jubilee, Maccabee, Sabra, Mazel Tov. Direct obligations of the State (FXD-15). Tax for a resident is missing in il-finance. Fix pass 2026-11-07: FXD-18 to FXD-21 (what they are, cost, getting the money out, protection) added to the rule ids; the line still matches FXD-18 (the debt report's \"פלטפורמה לגיוס חוב לא סחיר במט\"ח\", mainly from retail customers, p. 42), and the source link now opens p. 42.",
     "id": "agrt-bvnds"
   },
   {
@@ -622,7 +549,7 @@
     "term_he": "אג\"ח קונצרניות",
     "term_source": {
       "title": "TASE, דוח תקופתי לשנת 2025, part A ss. 1.10.3 to 1.10.4",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a"
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=61"
     },
     "variants_he": [
       "אג\"ח חברות",
@@ -649,22 +576,23 @@
       "TX2-07"
     ],
     "source": {
-      "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, עמוד 37",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Spelling per CORP Terms table (TASE report 2025 pp. 31, 33, 34). The legal term is 'תעודות התחייבות' (separate entry). Unlinked, CPI-linked and FX-linked series exist (CORP-16). Bond funds and ETFs on Tel-Bond indices ('מדדי תל בונד') are tier 1 (CORP-22).",
+    "notes": "Spelling per CORP Terms table (TASE report 2025 pp. 31, 33, 34). The legal term is 'תעודות התחייבות' (separate entry). Unlinked, CPI-linked and FX-linked series exist (CORP-16). Bond funds and ETFs on Tel-Bond indices ('מדדי תל בונד') are tier 1 (CORP-22). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_ניירות_ערך) to the official text.",
     "id": "agch-kvntzrnyvt"
   },
   {
     "term_he": "תעודות התחייבות",
     "term_source": {
-      "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, עמוד 37",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37"
     },
     "variants_he": [
       "תעודות התחייבות ניתנות להמרה"
@@ -680,22 +608,23 @@
       "CORP-04"
     ],
     "source": {
-      "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, עמוד 37",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Securities Law s.35א. Excludes certificates issued by the State or under a special law, and commercial paper. Includes bonds convertible into shares; TASE lists those as 'תעודות התחייבות ניתנות להמרה' (CORP-16), the variant given, which is a sub-type rather than a synonym.",
+    "notes": "Securities Law s.35א. Excludes certificates issued by the State or under a special law, and commercial paper. Includes bonds convertible into shares; TASE lists those as 'תעודות התחייבות ניתנות להמרה' (CORP-16), the variant given, which is a sub-type rather than a synonym. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_ניירות_ערך) to the official text.",
     "id": "tavdvt-htchyybvt"
   },
   {
     "term_he": "ניירות ערך מסחריים",
     "term_source": {
-      "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, עמוד 10",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=10"
     },
     "variants_he": [
       "נע\"מ"
@@ -712,26 +641,25 @@
       "TX2-07"
     ],
     "source": {
-      "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, עמוד 10",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=10",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Securities Law s.1. The trustee duty does not apply to commercial paper (CORP-02). Not to be confused with makam (government short-term bills, tier 1).",
+    "notes": "Securities Law s.1. The trustee duty does not apply to commercial paper (CORP-02). Not to be confused with makam (government short-term bills, tier 1). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_ניירות_ערך) to the official text.",
     "id": "nyyrvt-ark-mschryym"
   },
   {
     "term_he": "נאמן למחזיקים",
     "term_source": {
-      "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 35ב, עמוד 38",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38"
     },
-    "variants_he": [
-      "נאמן"
-    ],
+    "variants_he": [],
     "explain_he": "חברה שהמנפיק חייב למנות, שמשגיחה עליו ופועלת לטובת כלל המחזיקים באג\"ח, למשל כשאינו משלם.",
     "blocking_questions": [
       "CORP OQ2: names in the ISA trustees register",
@@ -745,22 +673,23 @@
       "CORP-08"
     ],
     "source": {
-      "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 35ב, עמוד 38",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Securities Law s.35ב(א): 'נאמן למחזיקים בתעודות ההתחייבות'. Must apply to open insolvency proceedings 45 days after a missed payment unless holders of three-quarters of the unpaid amount object (CORP-08). The issuer pays the trustee (CORP-05).",
+    "notes": "Securities Law s.35ב(א): 'נאמן למחזיקים בתעודות ההתחייבות'. Must apply to open insolvency proceedings 45 days after a missed payment unless holders of three-quarters of the unpaid amount object (CORP-08). The issuer pays the trustee (CORP-05). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_ניירות_ערך) to the official text. Fix pass 2026-11-07: page added: s. 35ב (p. 38) requires the issuer to appoint a trustee for the holders; the trustee's duties continue on p. 41.",
     "id": "namn-lmchzykym"
   },
   {
     "term_he": "חברת דירוג",
     "term_source": {
-      "title": "חוק להסדרת פעילות חברות דירוג האשראי, התשע\"ד-2014 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9C%D7%94%D7%A1%D7%93%D7%A8%D7%AA_%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA_%D7%97%D7%91%D7%A8%D7%95%D7%AA_%D7%93%D7%99%D7%A8%D7%95%D7%92_%D7%94%D7%90%D7%A9%D7%A8%D7%90%D7%99"
+      "title": "ספר החוקים 2446: חוק הסדרת פעילותן של חברות דירוג אשראי, התשע\"ד-2014, ס' 1, עמ' 2",
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=2"
     },
     "variants_he": [
       "חברת דירוג אשראי"
@@ -776,22 +705,23 @@
       "CORP-14"
     ],
     "source": {
-      "title": "חוק להסדרת פעילות חברות דירוג האשראי, התשע\"ד-2014 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9C%D7%94%D7%A1%D7%93%D7%A8%D7%AA_%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA_%D7%97%D7%91%D7%A8%D7%95%D7%AA_%D7%93%D7%99%D7%A8%D7%95%D7%92_%D7%94%D7%90%D7%A9%D7%A8%D7%90%D7%99",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "ספר החוקים 2446: חוק הסדרת פעילותן של חברות דירוג אשראי, התשע\"ד-2014, ס' 1, עמ' 2",
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=2",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "הכנסת (רשומות)"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Registration is required by the 2014 law (CORP-13). The 'relative to other Israeli issuers' part is from Midroog's own scale document (institution, CORP-14). Agencies seen: Midroog (scale Aaa.il ... C.il) and S&P Maalot (ilAAA ...); registration of each not confirmed. Variant follows the law's title 'חברות דירוג האשראי'.",
+    "notes": "Registration is required by the 2014 law (CORP-13). The 'relative to other Israeli issuers' part is from Midroog's own scale document (institution, CORP-14). Agencies seen: Midroog (scale Aaa.il ... C.il) and S&P Maalot (ilAAA ...); registration of each not confirmed. Variant follows the law's title 'חברות דירוג האשראי'. Copy struck Round 2 (2026-11-07): from Wikisource to the law in the gazette (library fa9319b34e3d00fe, p.2): \"חברת דירוג - חברה העוסקת בדירוג שנרשמה לפי חוק זה\"; the same section defines דירוג \"על פי סולם השוואתי\".",
     "id": "chbrt-dyrvg"
   },
   {
     "term_he": "הסדר חוב",
     "term_source": {
-      "title": "חוק חדלות פירעון ושיקום כלכלי, התשע\"ח-2018, ס' 318 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_חדלות_פירעון_ושיקום_כלכלי"
+      "title": "חוק חדלות פירעון ושיקום כלכלי, התשע\"ח-2018, ספר החוקים 2708, עמוד 87",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_491934.pdf#page=87"
     },
     "variants_he": [
       "הסדר חוב מהותי"
@@ -809,22 +739,23 @@
       "TX2-08"
     ],
     "source": {
-      "title": "חוק חדלות פירעון ושיקום כלכלי, התשע\"ח-2018, ס' 318 (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_חדלות_פירעון_ושיקום_כלכלי",
-      "checked": "2026-10-26",
-      "strength": "primary-mirror"
+      "title": "חוק חדלות פירעון ושיקום כלכלי, התשע\"ח-2018, ספר החוקים 2708, עמוד 87",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_491934.pdf#page=87",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Spelling per CORP Terms table (Meitar, secondary; Midroog p. 13, institution); whether Midroog's text uses exactly this string was not shown verbatim. 'הסדר חוב מהותי' is defined in the Insolvency Law 2018, which il-finance has not read (CORP-10 via Meitar, CORP OQ12). A waiver or swap in a settlement is a 'sale' for tax, giving a capital loss (TX2-08, derived).",
+    "notes": "Spelling per CORP Terms table (Meitar, secondary; Midroog p. 13, institution); whether Midroog's text uses exactly this string was not shown verbatim. 'הסדר חוב מהותי' is defined in the Insolvency Law 2018, which il-finance has not read (CORP-10 via Meitar, CORP OQ12). A waiver or swap in a settlement is a 'sale' for tax, giving a capital loss (TX2-08, derived). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_חדלות_פירעון_ושיקום_כלכלי) to the official text.",
     "id": "hsdr-chvb"
   },
   {
     "term_he": "איגרות חוב מובנות",
     "term_source": {
       "title": "TASE, דוח תקופתי לשנת 2025, part A ss. 1.10.3 to 1.10.4",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a"
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=7"
     },
     "variants_he": [],
     "explain_he": null,
@@ -837,7 +768,7 @@
     ],
     "source": {
       "title": "TASE, דוח תקופתי לשנת 2025, part A ss. 1.10.3 to 1.10.4",
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=7",
       "checked": "2026-10-22",
       "strength": "primary"
     },
@@ -849,8 +780,8 @@
   {
     "term_he": "ניהול תיקי השקעות",
     "term_source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, ס' 1, עמוד 5",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=5"
     },
     "variants_he": [
       "ניהול תיקים"
@@ -873,15 +804,16 @@
       "TX2-15"
     ],
     "source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, ס' 1, עמוד 5",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=5",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Law s.1: 'ביצוע עסקאות, לפי שיקול דעת, לחשבונם של אחרים'; needs an ISA licence. Assets stay in the client's own account at a bank or TASE member (90% at banks, REG-09), so 'בבנק' simplifies. The manager's fee may not depend on profit or number of trades (MGD-08). ISA averages of direct fees by portfolio size exist (MGD-11). Minimums on own pages NIS 300,000 to 400,000 (MGD-16). Taxed as the securities held; each sale is a tax event (TX2-15). Licensed company names are in MGD-23.",
+    "notes": "Law s.1: 'ביצוע עסקאות, לפי שיקול דעת, לחשבונם של אחרים'; needs an ISA licence. Assets stay in the client's own account at a bank or TASE member (90% at banks, REG-09), so 'בבנק' simplifies. The manager's fee may not depend on profit or number of trades (MGD-08). ISA averages of direct fees by portfolio size exist (MGD-11). Minimums on own pages NIS 300,000 to 400,000 (MGD-16). Taxed as the securities held; each sale is a tax event (TX2-15). Licensed company names are in MGD-23. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_) to the official text. Fix pass 2026-11-07: page added: s. 1 (p. 5) defines ניהול תיקי השקעות as carrying out transactions at discretion for others' accounts.",
     "id": "nyhvl-tyky-hshkavt"
   },
   {
@@ -923,8 +855,8 @@
   {
     "term_he": "שיווק השקעות",
     "term_source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמוד 5",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=5"
     },
     "variants_he": [
       "שיווק השקעות (ולא ייעוץ)"
@@ -936,22 +868,23 @@
       "MGD-12"
     ],
     "source": {
-      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995 (Wikisource)",
-      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמוד 5",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=5",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "A licensed portfolio manager may also do investment advice or investment marketing, but only one (s.2(ג), MGD-01); every large group read chose marketing. s.16א lets a marketer prefer affiliated assets if it made the required disclosures, and affiliation is not treated as a conflict of interest (MGD-12). Related term, not itself a tier-2 product; no blocking question of its own.",
+    "notes": "A licensed portfolio manager may also do investment advice or investment marketing, but only one (s.2(ג), MGD-01); every large group read chose marketing. s.16א lets a marketer prefer affiliated assets if it made the required disclosures, and affiliation is not treated as a conflict of interest (MGD-12). Related term, not itself a tier-2 product; no blocking question of its own. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_) to the official text.",
     "id": "shyvvk-hshkavt"
   },
   {
     "term_he": "קרן להשקעות במקרקעין",
     "term_source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 103",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=103"
     },
     "variants_he": [
       "קרן ריט",
@@ -976,22 +909,23 @@
       "TX2-09"
     ],
     "source": {
-      "title": "פקודת מס הכנסה (Wikisource consolidated text)",
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 103",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=103",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Tax Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Income Tax Ordinance s.64A2 and s.64A3 conditions: TASE listing, at least 95% of assets in permitted classes, NIS 200 m minimum, borrowing limits, holder spread, at least 90% of taxable income distributed by 30 April (RG-01 to RG-07). Names per press (Calcalist, Jan 2025, secondary): ריט 1, סלע נדל\"ן, מניבים, מגוריט, ריט אזורים (shares); רנט איט, אבו פמילי ריט (bonds only). Variants: 'קרן REIT' is Megureit's wording. No Israeli REIT-only fund found (RG-13).",
+    "notes": "Income Tax Ordinance s.64A2 and s.64A3 conditions: TASE listing, at least 95% of assets in permitted classes, NIS 200 m minimum, borrowing limits, holder spread, at least 90% of taxable income distributed by 30 April (RG-01 to RG-07). Names per press (Calcalist, Jan 2025, secondary): ריט 1, סלע נדל\"ן, מניבים, מגוריט, ריט אזורים (shares); רנט איט, אבו פמילי ריט (bonds only). Variants: 'קרן REIT' is Megureit's wording. No Israeli REIT-only fund found (RG-13). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/פקודת_מס_הכנסה) to the official text.",
     "id": "krn-lhshkavt-bmkrkayn"
   },
   {
     "term_he": "השקעה בזהב דרך קרנות סל",
     "term_source": {
-      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ס' 1, \"קרן מחקה\" ו\"קרן סל\" (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, עמוד 4",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=4"
     },
     "variants_he": [
       "השקעה בזהב דרך שוק ההון"
@@ -1015,49 +949,23 @@
       "TX2-14"
     ],
     "source": {
-      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ס' 1, \"קרן מחקה\" ו\"קרן סל\" (Wikisource mirror)",
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "checked": "2026-10-26",
-      "strength": "primary-mirror"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, עמוד 4",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=4",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "No official Hebrew name for a gold fund in il-finance; term is from a Meitav marketing article (institution). Variant from a Tradingil article title (secondary). The ISA reports such funds under the category 'סחורות', which may also hold oil-futures funds (RG-14, RG-15). Fund names and fees come only from secondary pages (RG-16). Meitav says no Israeli ETF holds physical gold and Israeli products use futures; no fund document confirms this (RG-17). A fund named 'זהב וכרייה' holds mining shares and is not a gold-price fund (RG-23). Physical gold is out of scope (D2).",
+    "notes": "No official Hebrew name for a gold fund in il-finance; term is from a Meitav marketing article (institution). Variant from a Tradingil article title (secondary). The ISA reports such funds under the category 'סחורות', which may also hold oil-futures funds (RG-14, RG-15). Fund names and fees come only from secondary pages (RG-16). Meitav says no Israeli ETF holds physical gold and Israeli products use futures; no fund document confirms this (RG-17). A fund named 'זהב וכרייה' holds mining shares and is not a gold-price fund (RG-23). Physical gold is out of scope (D2). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text.",
     "id": "hshkah-bzhb-drk-krnvt-sl"
-  },
-  {
-    "term_he": "מנוטרלת מט\"ח",
-    "term_source": {
-      "title": "Funder, fund page 5142096 (קסם KTF LBMA GOLD PRICE PM USD מנוטרלת מט\"ח)",
-      "url": "https://funder.co.il/fund/5142096"
-    },
-    "variants_he": [],
-    "explain_he": "בשם של קרן: הקרן מנטרלת את החשיפה למטבע זר, כך ששער הדולר כמעט אינו משפיע עליה.",
-    "blocking_questions": [
-      "RG OQ10: cost of currency hedging inside hedged gold funds"
-    ],
-    "rule_ids": [
-      "MF-43",
-      "RG-19"
-    ],
-    "source": {
-      "title": "Funder, fund page 5142096 (קסם KTF LBMA GOLD PRICE PM USD מנוטרלת מט\"ח)",
-      "url": "https://funder.co.il/fund/5142096",
-      "checked": "2026-10-22",
-      "strength": "secondary"
-    },
-    "where": [
-      "tier2-page"
-    ],
-    "notes": "Quoted fund policy: full neutralisation, FX exposure never above 10% of assets (Funder pages, secondary). The exposure code in the fund name shows the same: letter A up to 10% FX, D up to 120% (MF-43). The same term appears in tier-1 ETF names.",
-    "id": "mnvtrlt-mtch"
   },
   {
     "term_he": "LBMA Gold Price AM / PM",
     "term_source": {
       "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology, paras 1, 3, 4",
-      "url": "https://www.ice.com/publicdocs/LBMA_Gold_Price_and_LBMA_Silver_Price_Calculation_Methodology.pdf"
+      "url": "https://www.ice.com/publicdocs/LBMA_Gold_Price_and_LBMA_Silver_Price_Calculation_Methodology.pdf#page=1"
     },
     "variants_he": [
       "LBMA Gold Price AM",
@@ -1070,7 +978,7 @@
     ],
     "source": {
       "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology, paras 1, 3, 4",
-      "url": "https://www.ice.com/publicdocs/LBMA_Gold_Price_and_LBMA_Silver_Price_Calculation_Methodology.pdf",
+      "url": "https://www.ice.com/publicdocs/LBMA_Gold_Price_and_LBMA_Silver_Price_Calculation_Methodology.pdf#page=1",
       "checked": "2026-10-26",
       "strength": "institution"
     },

@@ -7,6 +7,7 @@ import type { ValueObject } from "@finance-tool/schema";
 import { numbers, ownTermsCopy, r2, scnCompare, site } from "../../copy";
 import { asParameter, parameterOf, type SensitivityRowView, type SensitivityView } from "../../lib/compare";
 import type { FieldKey } from "../../lib/goal";
+import { fmt, readerRound } from "../../lib/format";
 import { Num } from "../provenance";
 import { Tpl } from "../exposure-mode/tpl";
 import { Card, cx, Tag } from "../kit";
@@ -17,12 +18,17 @@ function bounds(ctx: ResultCtx, key: string): { lo: ValueObject; hi: ValueObject
   return p02.bounds[key.startsWith("fee:") ? "fee_rates" : key] ?? null;
 }
 
-/** A value on the assumption's own scale, as a number with its state: a rate, a count of years or a multiple of a fee. */
-function show(ctx: ResultCtx, row: SensitivityRowView, v: number, about: string) {
+/**
+ * A value on the assumption's own scale, as a number with its state: a rate, a count of years or a multiple of a fee. A point where the
+ * answer changes (`side`) is shown as a reader means it, rounded away from the value now (`readerRound`); its sheet keeps the exact point.
+ */
+function show(ctx: ResultCtx, row: SensitivityRowView, v: number, about: string, side?: "lo" | "hi") {
   const { mk } = ctx;
-  if (row.unit === "fraction") return <Num value={mk.plain(v * 100, "pct_per_year", "F-81", about)} />;
-  if (row.unit === "years") return <Num value={mk.plain(v, "years", "F-81", about)} display={`${Number(v.toFixed(2))} ${"שנים"}`} />;
-  return <Num value={mk.plain(v, "count", "F-81", about)} display={`${r2.result.times} ${Number(v.toFixed(2))}`} />;
+  // held inside the range the search tested (finance review, 2026-11-07): rounding never names a value it never ran
+  const within = (r: number, s: "lo" | "hi") => (s === "lo" ? Math.max(r, row.lo) : Math.min(r, row.hi));
+  if (row.unit === "fraction") return <Num value={mk.plain(v * 100, "pct_per_year", "F-81", about)} {...(side ? { display: fmt.pct(Number((within(readerRound(v * 100, side, "pct") / 100, side) * 100).toFixed(4))) } : {})} />;
+  if (row.unit === "years") return <Num value={mk.plain(v, "years", "F-81", about)} display={`${side ? within(readerRound(v, side, "years"), side) : Number(v.toFixed(2))} ${"שנים"}`} />;
+  return <Num value={mk.plain(v, "count", "F-81", about)} display={`${r2.result.times} ${side ? within(readerRound(v, side, "fee"), side) : Number(v.toFixed(2))}`} />;
 }
 
 /** The options that lead before any move: the tie at the top, or the one leader. */
@@ -56,7 +62,7 @@ export function FlipSentence({ row, ctx }: { row: SensitivityRowView; ctx: Resul
   // 2026-10-24 (Doron's case): a move that only breaks a tie says so ("התיקו נשבר אם … ראשונה לבדה"), and a fee row names the option and its fee
   const lead = flip.breaksTie ? r2.result.sensBreaks : r2.result.sensFlip;
   if (row.fee && typeof row.fee.flipAtPct === "number") {
-    const x = <Num value={ctx.mk.plain(row.fee.flipAtPct, "pct_per_year", "F-81", row.label)} />;
+    const x = <Num value={ctx.mk.plain(row.fee.flipAtPct, "pct_per_year", "F-81", row.label)} display={fmt.pct(flip.side === "lo" ? Math.max(readerRound(row.fee.flipAtPct, "lo", "fee"), row.fee.loPct) : Math.min(readerRound(row.fee.flipAtPct, "hi", "fee"), row.fee.hiPct))} />;
     const name = <bdi>{ctx.view.names[row.fee.wrapperId] ?? row.fee.wrapperId}</bdi>;
     return (
       <>
@@ -67,10 +73,10 @@ export function FlipSentence({ row, ctx }: { row: SensitivityRowView; ctx: Resul
   }
   return (
     <>
-      {lead} {row.label} {r2.result.sensCross}
+      {lead} {row.label} {row.key === "horizon" || (row.fee && r2.result.sensFeePlural[row.fee.kind]) ? r2.result.sensCrossPlural : r2.result.sensCross}
       {show(ctx, row, flip.from, row.label)}
       {r2.result.sensTo}
-      {show(ctx, row, flip.to, row.label)}
+      {show(ctx, row, flip.to, row.label, flip.side)}
       {then}
     </>
   );
@@ -110,7 +116,7 @@ function SensitivityRowItem({ row, ctx, onOpen }: { row: SensitivityRowView; ctx
   );
   const cls = cx("min-h-14 px-4 py-3 flex items-center border-b border-border last:border-b-0", flip && "bg-computed-subtle");
   if (flip && row.field) {
-    const suggested = row.field === "horizonYears" ? (flip.side === "hi" ? Math.ceil(flip.to) : Math.floor(flip.to)) : flip.to * 100;
+    const suggested = row.field === "horizonYears" ? (flip.side === "hi" ? Math.ceil(flip.to) : Math.floor(flip.to)) : readerRound(flip.to * 100, flip.side, "pct");
     return (
       <li className={cls}>
         {/* a div, not a button: the row holds number buttons (provenance), and a button inside a button is invalid HTML (audit 2026-10-24 (sweep)) */}

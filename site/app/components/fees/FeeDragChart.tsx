@@ -36,9 +36,11 @@ const hues = [
 
 /** The three largest fees as bands, every further one in a single "rest" band (design-spec 11.4). A fee that costs nothing over
  *  the horizon (an FX line with no foreign trade, a fee reduced to zero) has no band, so no legend item, label or row either
- *  (design-system 3.4: a legend item only for an area that is drawn; 2026-10-24 evening). */
+ *  (design-system 3.4: a legend item only for an area that is drawn; 2026-10-24 evening). A line whose discount ends (A-19, F-16)
+ *  keeps its band while the horizon is still inside the discount and it costs nothing yet: it is charged later on the same plan,
+ *  and a legend item, a label and a table column that came and went with the years slider moved the page (D63, 2026-11-07). */
 export function bandsOf(an: Analysis): Band[] {
-  const order = [...an.lines].filter((l) => l.costNis >= 0.005).sort((a, b) => b.costNis - a.costNis).map((l) => l.line);
+  const order = [...an.lines].filter((l) => l.costNis >= 0.005 || l.after !== undefined).sort((a, b) => b.costNis - a.costNis).map((l) => l.line);
   if (order.length <= 4) return order.map((l, i) => ({ id: l, name: r3fees.names[l]!, ...hues[i]!, lines: [l] }));
   const head = order.slice(0, 3).map((l, i) => ({ id: l, name: r3fees.names[l]!, ...hues[i]!, lines: [l] }));
   return [...head, { id: "rest", name: r3fees.chart.rest, ...hues[3]!, lines: order.slice(3) }];
@@ -116,7 +118,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, dimmed, highlig
   if (top0 < 0) placed.forEach((p) => (p.y -= top0));
 
   const hovered = hover === null ? null : pts.find((p) => Math.abs(p.year - hover) < 1e-6) ?? null;
-  const run = { rules: an.fm.run.rules, flags: an.fm.run.flags };
+  const run = { rules: an.fm.run.rules, flags: an.fm.run.flags, labels: an.fm.run.labels };
   return (
     <div className="flex flex-col gap-1">
     <div ref={box} className={cx("relative w-full h-[240px] lg:h-[320px] transition-opacity duration-[var(--duration-base)]", dimmed && "opacity-60")}>
@@ -193,14 +195,14 @@ export function ChartLegend({ an, pick }: { an: Analysis; pick?: ChartPick<strin
 export function ChartReadout({ an, year }: { an: Analysis; year: number }) {
   const bands = bandsOf(an);
   const p = points(an, bands).find((q) => Math.abs(q.year - year) < 1e-6) ?? points(an, bands).at(-1)!;
-  const run = { rules: an.fm.run.rules, flags: an.fm.run.flags };
+  const run = { rules: an.fm.run.rules, flags: an.fm.run.flags, labels: an.fm.run.labels };
   const sum = p.parts.reduce((a, b) => a + b, 0);
   return (
     <Readout
-      title={p.year === 0 ? guideCopy.readout.today : `${r3fees.chart.year} ${p.year}`}
+      title={`${p.year === 0 ? guideCopy.readout.today : `${r3fees.chart.year} ${p.year}`}${r3fees.chart.preTax}`}
       rows={[
         ...bands.map((b, i) => ({ id: b.id, swatch: <Swatch shape="box" className={b.bg} />, label: <bdi>{b.name}</bdi>, value: <Num value={an.mk.nis(p.parts[i]!, "F-61", b.name, run)} animate /> })),
-        { id: "total", swatch: <Swatch className="bg-chart-fee-total" />, label: r3fees.chart.total, value: <Num value={an.mk.nis(p.total, "F-61", r3fees.chart.total, run)} animate /> },
+        { id: "total", swatch: <Swatch className="bg-chart-fee-total" />, label: r3fees.chart.totalPreTax, value: <Num value={an.mk.nis(p.total, "F-61", r3fees.chart.totalPreTax, run)} animate /> },
         { id: "remainder", label: r3fees.chart.remainderLegend.split(":")[0], value: <Num value={an.mk.nis(p.total - sum, "F-61", r3fees.chart.remainderLegend, run)} animate /> },
       ]}
     />
@@ -210,7 +212,7 @@ export function ChartReadout({ an, year }: { an: Analysis; year: number }) {
 export function ChartTable({ an }: { an: Analysis }) {
   const bands = bandsOf(an);
   const rows = points(an, bands);
-  const run = { rules: an.fm.run.rules, flags: an.fm.run.flags };
+  const run = { rules: an.fm.run.rules, flags: an.fm.run.flags, labels: an.fm.run.labels };
   return (
     <Table
       rowHead="שנה"

@@ -14,12 +14,14 @@
       "value": 1,
       "unit": "count",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-        "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי, p.50, s.74ב(א)(2א): \"בחירה כאמור תיעשה פעם אחת בלבד\"",
-        "publisher": "National Insurance Institute (BTL)",
-        "strength": "primary"
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
+        "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024), file p.2 (gazette p.1070), s.1(1), s.74ב(א)(2א) (in force 1.1.2025)",
+        "publisher": "The Knesset",
+        "strength": "primary",
+        "page": 2,
+        "quote": "בחירה כאמור תיעשה פעם אחת בלבד"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": "2025-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -36,21 +38,22 @@
     "bank_to_provident_moves": "מספר הפעמים שאפשר להפנות הפקדות מבנק לקופה"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
+      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.50, s.74ב(א)(2א)",
-      "locator_he": "עמוד 50, סעיף 74ב(א)(2א)",
-      "page": 50,
-      "checked": "2026-10-25"
+      "locator": "file p.2 (gazette p.1070), s.1(1), s.74ב(א)(2א) (in force 1.1.2025)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(1), סעיף 74ב(א)(2א)",
+      "page": 2,
+      "quote": "בחירה כאמור תיעשה פעם אחת בלבד",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",

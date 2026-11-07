@@ -106,6 +106,74 @@ patterns["a row of rule chips"] = {
   allowed: { "components/provenance.tsx": 4, "routes/exposure.tsx": 2 },
 };
 
+// 2026-11-05 (issue 190): a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
+// letters ("MTF סל (4D) S&P 500") was laid out left to right and read backwards. Names go through MixedName; the indices page is done.
+patterns["a name in a plain bdi"] = {
+  count: (s) => (s.match(/<bdi>\{[^}]*([nN]ame|manager)[^}]*\}<\/bdi>/g) ?? []).length,
+  kit: "MixedName (a name that may mix Hebrew and Latin)",
+  allowed: {
+    "components/compare/chart.tsx": 3,
+    "components/compare/coverage.tsx": 1,
+    "components/compare/fit.tsx": 1,
+    "components/compare/idle.tsx": 1,
+    "components/compare/index-card.tsx": 4,
+    "components/compare/reasons.tsx": 1,
+    "components/compare/representative.tsx": 2,
+    "components/compare/sensitivity.tsx": 2,
+    "components/compare/why.tsx": 11,
+    "components/decoder/brand-funds.tsx": 3,
+    "components/decoder/company-terms.tsx": 1,
+    "components/decoder/institutions/brokerage-card.tsx": 1,
+    "components/decoder/institutions/page.tsx": 1,
+    "components/decoder/institutions/product-row.tsx": 1,
+    "components/exposure-mode/chart.tsx": 1,
+    "components/exposure-mode/fields.tsx": 3,
+    "components/exposure-mode/reason.tsx": 2,
+    "components/exposure-mode/result.tsx": 4,
+    "components/exposure-mode/row.tsx": 1,
+    "components/fees/FeeDragChart.tsx": 3,
+    "components/fees/FeeRow.tsx": 1,
+    "components/fees/parts.tsx": 2,
+    "components/fees/sensitivity.tsx": 2,
+    "components/guide-signature/bank-deposit.tsx": 5,
+    "components/guide-signature/current-account.tsx": 8,
+    "components/guide-signature/keren-hishtalmut.tsx": 3,
+    "components/guide-signature/kupat-gemel-lehashkaa.tsx": 2,
+    "components/guide-signature/makam.tsx": 1,
+    "components/guide-signature/pension.tsx": 1,
+    "components/guide/sections.tsx": 1,
+    "components/holdings/add-sheet.tsx": 2,
+    "components/holdings/card.tsx": 2,
+    "components/holdings/consolidation.tsx": 2,
+    "components/revisit/revisit.tsx": 5,
+    "components/tracks/list.tsx": 2,
+    "routes/company.tsx": 2,
+    "routes/not-covered.tsx": 1,
+    "routes/track.tsx": 2,
+    "routes/workbench-providers.tsx": 1,
+  },
+};
+
+// 2026-11-05 (issue 190): a text action is the kit's Button `quiet`, and a choice that changed something else, with the way back, is the
+// kit's AlsoChanged; never a <button> styled by hand as an underlined link. Today's leftovers, other pages' (the stairs' link leaves the
+// indices page with #191).
+patterns["a button styled by hand as a link"] = {
+  count: (s) => (s.match(/<button\b[^>]*className="[^"]*\btext-link\b[^"]*\bunderline\b/g) ?? []).length,
+  kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
+  allowed: {
+    "components/compare/reasons.tsx": 1,
+    "components/compare/why.tsx": 5,
+    "components/holdings/add-sheet.tsx": 1,
+    "components/invest/stairs.tsx": 1,
+    "components/revisit/revisit.tsx": 2,
+    "components/search.tsx": 2,
+    "root.tsx": 1,
+    "routes/companies.tsx": 1,
+    "routes/goal-compare.tsx": 1,
+    "routes/not-found.tsx": 1,
+  },
+};
+
 for (const [name, p] of Object.entries(patterns)) {
   describe(`ratchet: ${name}`, () => {
     const now: Record<string, number> = {};
@@ -159,10 +227,6 @@ const CHART_ROLES: Record<string, string[]> = {
 const TOO_ALIKE = new Set([
   "the timeline (3.4): chart-value / chart-tax-2",
   "the timeline (3.4): chart-tax-1 / chart-contributions",
-  "CostStack: chart-cost-trade / chart-cost-fixed",
-  "CostStack: chart-cost-fixed / chart-tax",
-  "CostStack: chart-cost-fx / chart-tax",
-  "CostStack: chart-cost-other / chart-tax",
   "PileStory: chart-pile-own / chart-pile-gain",
   "PileStory: chart-pile-own / chart-pile-tax",
   "PileStory: chart-pile-gain / chart-pile-tax",
@@ -293,5 +357,59 @@ describe("ratchet: a word the terminology table replaced", () => {
   it("sees a planted word, and not the right one inside a longer word", () => {
     expect(countWord("בחרו את סוג העסקה", "סוג העסקה")).toBe(1);
     expect(countWord("בחרו את סוג ההעסקה", "סוג העסקה")).toBe(0);
+  });
+});
+
+// 2026-11-07 (independent check 3 of the deposit branch): WIN WIN's tax names TXI OQ19, whose sheet opened only the general lines,
+// because the question had no Hebrew title. Every open question a value in data/ names (in its source title or notes, which is
+// where the sheet finds it) has `title_he` in data/open-questions.json, unless it is closed. A value whose source is `open` names its
+// question on the page today, so it has no leftovers; the others are listed by name, and the list only shrinks.
+const QUESTION_NO_HEBREW = ["BANK OQ2", "BRK OQ13", "CAT OQ22", "CAT OQ4", "CS OQ7", "FXD OQ2", "INS OQ16", "REG OQ12", "TXF OQ10", "TXF OQ19", "TXS OQ17"];
+
+describe("an open question a value names has Hebrew lines", () => {
+  const dataRoot = fileURLToPath(new URL("../../../../data/", import.meta.url));
+  const questions = new Map((JSON.parse(readFileSync(join(dataRoot, "open-questions.json"), "utf8")) as { id: string; status: string; title_he?: string }[]).map((q) => [q.id, q]));
+  const named = new Map<string, boolean>(); // id → named by a value whose source is open
+  const scan = (o: unknown): void => {
+    if (Array.isArray(o)) return o.forEach(scan);
+    if (!o || typeof o !== "object") return;
+    const v = o as { value?: unknown; source?: { title?: string; strength?: string }; notes?: string };
+    if ("value" in v && v.source && typeof v.source === "object") {
+      for (const m of `${v.source.title ?? ""} ${v.notes ?? ""}`.matchAll(/\b([A-Z][A-Z0-9]*)[ -]OQ(\d+)\b/g)) {
+        const id = `${m[1]} OQ${m[2]}`;
+        named.set(id, (named.get(id) ?? false) || v.source.strength === "open");
+      }
+    }
+    Object.values(o).forEach(scan);
+  };
+  for (const f of walk(dataRoot).filter((x) => x.endsWith(".json") && !x.endsWith("open-questions.json"))) scan(JSON.parse(readFileSync(f, "utf8")));
+  const lacking = [...named.keys()].filter((id) => questions.get(id)?.status !== "closed" && !questions.get(id)?.title_he).sort();
+
+  it("every question an open value names has a Hebrew title", () => {
+    expect(lacking.filter((id) => named.get(id))).toEqual([]);
+  });
+  it("no new question without one, and the leftovers only shrink", () => {
+    expect(lacking.filter((id) => !QUESTION_NO_HEBREW.includes(id))).toEqual([]);
+    expect(QUESTION_NO_HEBREW.filter((id) => !lacking.includes(id)), "has its Hebrew title or is no longer named: remove it from QUESTION_NO_HEBREW").toEqual([]);
+  });
+});
+
+describe("ratchet: a formula the site shows has words beside its id", () => {
+  // pass 5 of the indices data (readers): a value sheet read "נוסחה: חישוב של האתר F-92", the id with no words. Every formula id the site's
+  // source passes has a Hebrew name in `formulaNames`, which the sheet shows beside the id's chip. Today's leftovers, by id; the list only shrinks.
+  const LEFTOVERS = ["F-12", "F-31", "F-32", "F-45", "F-48", "F-49", "F-52", "F-53", "F-54", "F-71", "F-86", "F-97", "F-98"];
+  const src = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\./.test(f));
+  const copySrc = readFileSync(join(root, "copy.ts"), "utf8");
+  const block = copySrc.slice(copySrc.indexOf("export const formulaNames"), copySrc.indexOf("_other:", copySrc.indexOf("export const formulaNames")));
+  const named = new Set([...block.matchAll(/^\s*"?(F-\d+)"?\s*:/gm)].map((m) => m[1]!));
+  const unnamed = [...new Set(src.flatMap((f) => [...code(readFileSync(f, "utf8")).matchAll(/"(F-\d+)"/g)].map((m) => m[1]!)))].filter((id) => !named.has(id));
+  it("none new: give the formula a name in formulaNames", () => {
+    expect(unnamed.filter((id) => !LEFTOVERS.includes(id)).sort()).toEqual([]);
+  });
+  it("the list only shrinks", () => {
+    expect(LEFTOVERS.filter((id) => !unnamed.includes(id))).toEqual([]);
+  });
+  it("the index pages' formulas are named", () => {
+    for (const id of ["F-65", "F-91", "F-92", "F-93", "F-94", "F-95"]) expect(named.has(id), id).toBe(true);
   });
 });

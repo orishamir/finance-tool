@@ -1,0 +1,20 @@
+{
+  "task": "A friend sent you screenshots of a Hebrew web page about a kind of savings account called \"קופת גמל להשקעה\" (a provident fund for investing). You are deciding whether to open one and with which company.\nThe screenshots are the whole page, top to bottom, each overlapping the one before a little. Screenshots whose names have \"terms\" or \"sheet\" in them show a folded box on the page that your friend opened.\n\nAnswer in plain English, as yourself, quoting the Hebrew you react to:\n1. Your decision: which company would you open it with, or what would you still need to find out, and how sure are you? Which parts of the page did you use?\n2. What will you pay this company in fees, now and in later years, as far as the page tells you? If you cannot tell, say what is missing.\n3. Anything on the page that is unclear, could be read two ways, repeats itself, or reads oddly (for example a number or a full stop in the wrong place), quoting the Hebrew.\n4. Anything you distrust, find contradictory, or would want explained.\nBe honest and specific; short answers are fine.",
+  "readers": [
+    {
+      "key": "lump-pc-r5",
+      "who": "You are 45, on a computer. You sold a car and have 60,000 ₪ you want to put in once, with nothing added later, and leave for about 10 years. You know what a bank deposit is and have heard of \"דמי ניהול\", but you have never opened a provident fund for investing.",
+      "shots": [
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-01.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-02.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-03.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-04.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-05.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-06.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-07.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/pc-08.png",
+        "research/audit/2026-11-07-kgl-prices/recheck2/readers/terms-open-1440.png"
+      ]
+    }
+  ]
+}

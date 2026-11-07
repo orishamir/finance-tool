@@ -54,7 +54,7 @@
         "TXK-06"
       ],
       "state": "sourced",
-      "notes": "s.125C(c) limb: 15% of the nominal interest where the interest is paid on an asset not CPI-linked or only partly linked. It does not reach kupat gemel lehashkaa gains (TXK-07: linkage carved out and exempt; the 2016 notes say 25% of the real gain); the method still shows it as F-44's sensitivity line (G-02) until that line is reviewed. The Minister may change the 15% by order (s.125C(c)(2))."
+      "notes": "s.125C(c) limb: 15% of the nominal interest where the interest is paid on an asset not CPI-linked or only partly linked. It does not reach kupat gemel lehashkaa gains (TXK-07: linkage carved out and exempt; the 2016 notes say 25% of the real gain); the method no longer shows it beside F-44 (D73, 2026-11-06). The Minister may change the 15% by order (s.125C(c)(2))."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",

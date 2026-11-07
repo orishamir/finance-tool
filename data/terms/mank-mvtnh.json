@@ -1,0 +1,21 @@
+{
+  "id": "mank-mvtnh",
+  "he": "מענק מותנה",
+  "en": null,
+  "meaning": "בפיקדון מובנה: תוספת שמשולמת רק אם מתקיים תנאי שוק שנקבע בתנאי המוצר; כך קורא לה הבינלאומי.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "FXD-11",
+    "FXD-12",
+    "TX2-05"
+  ],
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
+    "title": "הבינלאומי: פיקדונות מובנים",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-26"
+  }
+}

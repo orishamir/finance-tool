@@ -8,7 +8,7 @@ import { rememberUncatalogued } from "../lib/inputs";
 import { analyze, contentWords, groupHits, highlightRanges, isRuleKind, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
 import { IconClose, IconCopy, IconLock, IconSearch } from "./icons";
 import { Sheet } from "./Sheet";
-import { Button, RowArrow, cx } from "./kit";
+import { Button, RowArrow, cx, gershayim } from "./kit";
 
 let indexPromise: Promise<SearchEntry[]> | null = null;
 function loadIndex(): Promise<SearchEntry[]> {
@@ -172,7 +172,7 @@ function SearchBody({ text, setText, found }: { text: string; setText: (t: strin
                           </span>
                           {also.length > 0 && (
                             <span className="text-xs text-muted-foreground">
-                              {searchCopy.also} <bdi>{also.join(" · ")}</bdi>
+                              {searchCopy.also} <bdi>{also.map(gershayim).join(" · ")}</bdi>
                             </span>
                           )}
                         </span>

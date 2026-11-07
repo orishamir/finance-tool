@@ -2,7 +2,7 @@
   "id": "mrvvch-hmrh",
   "he": "מרווח המרה",
   "en": null,
-  "meaning": "ההפרש בין השער שמקבלים בהמרת מטבע לבין מחיר הביצוע בשוק; ב־IBI, למשל, זו כל עלות ההמרה, בלי עמלה נפרדת.",
+  "meaning": "הפער בין השער שבו ממירים לכם מטבע חוץ לבין השער היציג; יש גופים שגובים מעליו גם עמלה",
   "where": [
     "tariff"
   ],
@@ -18,10 +18,10 @@
     "BRK-24"
   ],
   "source": {
-    "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-    "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
-    "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-26"
+    "url": "https://www.boi.org.il/information/bankipedia/moneyandeconomy/%D7%9B%D7%9E%D7%94-%D7%A2%D7%95%D7%9C%D7%94-%D7%93%D7%95%D7%9C%D7%A8-%D7%95%D7%90%D7%99%D7%A8%D7%95/",
+    "title": "בנק ישראל, בנקיפדיה: כמה עולה דולר? ואירו? (עודכן 1.10.2023)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

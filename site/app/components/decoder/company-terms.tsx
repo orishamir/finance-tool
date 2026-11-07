@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { scopeWords } from "../../copy";
 import { companyTermsAnchor, noCompanyAnchor, noPageAnchor } from "../../lib/scope";
 import { RuleCard, useProvenanceData } from "../provenance";
-import { Card, FoldGroup, Section, cx } from "../kit";
+import { Card, FoldGroup, Section, cx, gershayim } from "../kit";
 
 export interface TermGroup {
   key: string;
@@ -113,7 +113,7 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
         <Section id={companyTermsAnchor} title={scopeWords.noPage.title}>
           <div className="flex flex-col gap-3">
             {companies.map((c) => (
-              <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{c.name}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
+              <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{gershayim(c.name)}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
                 <Cards ids={c.ids} company={c.id} />
               </FoldGroup>
             ))}

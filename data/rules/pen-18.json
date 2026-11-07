@@ -62,6 +62,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-3-3/he/regulations_regarding_the_managing__%20new_fund_amendment_(pdf).pdf",
+      "title": "חוזר פנסיה 2022-3-3 – הוראות לניהול קרן חדשה – תיקון, 27.7.2022",
+      "title_he": "חוזר פנסיה 2022-3-3 – הוראות לניהול קרן חדשה – תיקון, 27.7.2022",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1, s.1",
+      "locator_he": "עמוד 1, סעיף 1",
+      "page": 1,
+      "quote": "וייהנו מזכאות להבטחת תשואה שנתית של 5.15% (צמודה למדד)",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/pension-funds-guaranteed-return-completion-2022/he/pension-funds-guaranteed-return-completion_pension-funds-guaranteed-return-completion-2022-file2.pdf",
       "title": "משרד האוצר: דיווח לממשלה על יישום הוראות סעיף 34 לחוק הפיקוח על שירותים פיננסים (קופות גמל) ליום 31.12.2022 (28.5.2023)",
       "title_he": "משרד האוצר: דיווח לממשלה על יישום הוראות סעיף 34 לחוק הפיקוח על שירותים פיננסים (קופות גמל) ליום 31.12.2022 (28.5.2023)",
@@ -114,21 +128,6 @@
       "locator_he": "עמודים 33 עד 39, סעיפים 34א-34ז",
       "page": 33,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz27072022.pdf",
-      "title": "חוזר פנסיה 2022-3-3 – הוראות לניהול קרן חדשה – תיקון, 27.7.2022 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
-      "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.1, s.1",
-      "locator_he": "עמוד 1, סעיף 1",
-      "page": 1,
-      "quote": "וייהנו מזכאות להבטחת תשואה שנתית של 5.15% (צמודה למדד)",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host)"
     }
   ]
 }

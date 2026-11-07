@@ -1,0 +1,17 @@
+{
+  "task": "These screenshots show two pages of a Hebrew website, in order from the top of each page to the bottom: first a page about one kind of savings product, then a page about what its fees cost. Read them as you would if you had found the site yourself. Then answer in English: (1) In your own words, what do the two pages tell you about this product's fees, now and later? (2) Quote any sentence, number or label you had to read twice, found confusing, or think could mislead, and say why. (3) Is there anything you expected to find and did not, or anything that seemed to contradict something else on the pages? Be specific: quote the Hebrew and say where it is.",
+  "readers": [
+    {
+      "key": "saver-pc",
+      "who": "You are 38, live in Israel, read Hebrew natively, and have about 40,000 shekels you want to put aside for the next ten years. A friend mentioned this kind of savings product. You are on a computer and have about ten minutes.",
+      "shots": [
+        "research/audit/2026-11-07-kgl-prices/fix3/readers/guide-1440-p0.png",
+        "research/audit/2026-11-07-kgl-prices/fix3/readers/guide-1440-p1.png",
+        "research/audit/2026-11-07-kgl-prices/fix3/readers/guide-1440-p2.png",
+        "research/audit/2026-11-07-kgl-prices/fix3/readers/guide-1440-p3.png",
+        "research/audit/2026-11-07-kgl-prices/fix3/readers/fees-1440-p0.png",
+        "research/audit/2026-11-07-kgl-prices/fix3/readers/fees-1440-p1.png"
+      ]
+    }
+  ]
+}

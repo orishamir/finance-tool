@@ -2,11 +2,13 @@
 // the sourced figures it shows by name, and what the data does not hold yet. One builder per wrapper id; builder G2 adds its own
 // entries to `builders`. Server-only. Nothing here types a rate or a date: every figure is a record's value object, a rule's
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
+import { printedLine } from "./deposit-kind";
 import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
 import { loadParameters, loadRules, loadProducts, today } from "./data.server";
-import { guideSignature } from "../copy";
+import { guideSignature, r4catalogue } from "../copy";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
+import { breakTermOf } from "@finance-tool/engine";
 import { accountBanks, commonAccountRate, currentAccountRecords, depositBundleOf, depositEnds, depositExample, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
@@ -59,11 +61,11 @@ const figureOf = (c: Ctx, rule: string, name: string): SiteValue | undefined => 
   return r ? (ruleFigure(r, name, c.t) ?? undefined) : undefined;
 };
 
-/** The deposit record's break terms as one text value carrying the record's source (the bank's table, its page). */
-function breakFact(rec: DepositTerms): SiteValue {
+/** A deposit's 447 break column as a sourced value: `not_allowed`, `with_penalty` or `none`, with the bank's words in its notes. */
+export function breakFact(rec: DepositTerms): SiteValue {
   const b = rec.break;
   return {
-    value: b.allowed ? b.penalty : "not_allowed",
+    value: breakTermOf(b),
     unit: "text",
     source: rec.source,
     checked: rec.snapshot,
@@ -72,8 +74,18 @@ function breakFact(rec: DepositTerms): SiteValue {
     update_rule: "provider-set",
     state: "sourced",
     rule_ids: b.rule_ids,
-    notes: b.mechanism_text,
+    // the bank's own quoted words only: the rest is the collector's English note (2026-11-07)
+    notes: printedLine(b.mechanism_text),
   };
+}
+
+/**
+ * The same column as an input of a count over the banks (F-86's lock, F-104): the bank's words in Hebrew, never the record's code, and
+ * the bank's own term about its own product, so it carries no caution (D31). `name` is the bank's name as the sheet shows it.
+ */
+export function breakInput(rec: DepositTerms, name: string): SiteValue {
+  const f = breakFact(rec);
+  return ownBy({ ...f, value: r4catalogue.breakWord[f.value as keyof typeof r4catalogue.breakWord] ?? f.value }, name);
 }
 
 const withRules = (d: SignatureData, ...ids: string[]): SignatureData => ({ ...d, ruleIds: [...new Set([...d.ruleIds, ...ids])] });
@@ -125,8 +137,10 @@ function addDepositBanks(d: SignatureData, c: Ctx): ReturnType<typeof depositRan
     d.facts.depositCount = range.count;
     // F-86: of the same deposits, how many forbid taking the money out before the end of the term (each record's 447 column); a count
     // over the collected banks, naming none (D30)
-    const inputs = Object.fromEntries(records.map((r) => [shortName(r.bank, r.bank), breakFact(r)]));
-    d.facts.depositNoExitCount = computed(records.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: guideSignature.deposit.about.noExitCount });
+    // over the same records as the bank count: those whose rate is a number (accountBanks)
+    const counted = records.filter((r) => banks.some((b) => b.id === r.id));
+    const inputs = Object.fromEntries(counted.map((r) => [shortName(r.bank, r.bank), breakInput(r, shortName(r.bank, r.bank))]));
+    d.facts.depositNoExitCount = computed(counted.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: guideSignature.deposit.about.noExitCount });
   }
   return range;
 }
@@ -200,7 +214,7 @@ builders["savings-plan"] = (c) => {
     d.facts.lumpRate = ownBy(lump.rate, lumpBank);
     if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = ownBy({ ...lump.record.term_months } as SiteValue, lumpBank);
   } else d.gaps.push("deposit:bank-deposit");
-  // BANK-28 / BANK OQ12: whether each monthly instalment has its own lock-up is not said in any source read (the ladder is the F-22 reading)
+  // BANK-28 / BANK OQ12: no general rule says whether each monthly instalment has its own lock-up; each bank's plan agreement does (one bank's: BPN-10), so the ladder is the F-22 reading
   d.gaps.push("planLockPerDeposit");
   const brk = d.facts.break;
   if (brk && brk.value !== "not_allowed" && brk.value !== "none") d.gaps.push("depositBreak");

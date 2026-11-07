@@ -61,6 +61,62 @@ most one candidate instruction, which enters only through the held-out test.
   clean TA-125 phone page said the bars further down were "a guess" without it. A key placed once for the whole list
   can be screens away on a phone (planted kind p04), so the amounts on the bar are what carries the meaning there.
 
+### 3. The date that only said it was missing (2026-11-07, companies list, PC 1440 px and phone 390 px)
+
+- **His words:** "btw mizrahi tfahot, psagot, bank jerusalem says ללא תאריך פרסום in
+  https://orishamir.github.io/finance-tool/companies". One key (`live/2026-11-07-03-companies-no-date/case.json`): a few
+  rows say in a warning colour only that a date is missing, where the others give one, and do not say what is known
+  instead. The screens were captured from the live site before any change (he sent none).
+- **Reviewer, run before anything changed:** a catch. Named in 9 of 9 sessions (three personas, three runs each,
+  `runs/live-03`), always among the first 10, at ranks 3 to 5; the graders agreed on all 9. In their words: "looks like
+  a warning with no explanation", "didn't know whether it's a warning against those banks". Ahead of it they mostly put
+  that the list gives no fee to compare, only a date.
+- **Human reason:** a warning that says something is missing without saying what is known instead leaves the reader
+  unable to tell whether to distrust what stands behind it, or how old it is; it reads as a fault even when the source
+  simply never had the thing. Close to `tracks-warnings` (warnings that do not help the reader are ignored and hide the
+  one that matters) and to the noise sample's wish for a way to find what a thing means where it stands.
+- **Instruction change:** none (a catch).
+- **The site:** the date line now says what the document prints (the date of the part the site reads, a misprinted
+  date said as such, a version, or no printed date and the day the site checked it), in plain colour, from one kit
+  piece on every page that dates a price list; the rule went into `docs/copy.md` section 3, and two guards keep it.
+
+### 4. The page that says the site lacks what it has (2026-11-07, not-covered page, PC 1440 px and phone 390 px)
+
+- **His words:** "https://orishamir.github.io/finance-tool/not-covered is everything here correct? we dont know עמלת
+  חליפין?". His key, as he meant it (coordinator, 2026-11-07): the page says the site has not researched or covered
+  something it has: the exchange fee, which the securities account guide explains and prices by house. Four more keys
+  are the coordinator's reading of the same screens (bare codes where a question should be, struck lines with a number and
+  no noun, source names in English or as copies labelled primary, the same long promise closing every card)
+  (`live/2026-11-07-04-not-covered-wrong-entries/case.json`). A reader can see his problem only beside the page that shows
+  the fee, so the case now carries two screens of that guide (its fee table and its terms row), captured from the live
+  site before any change.
+- **Reviewer, run before anything changed:** a miss on his key, 0 of 9 (`runs/live-04b`: three personas, three runs, the
+  twelve screens; graders agreed on all). Several sessions named the exchange fee as something the site cannot handle,
+  "exactly the cost relevant to someone buying US ETFs", with the guide's fee row and term row in their folder. The
+  coordinator's keys: bare codes 8 of 9, meaningless lines 5 of 9, copies 3 of 9, repeated promise 3 of 9. The first
+  reading of his key (a list that mixes things that are not products) is no longer a key; its run is `runs/live-04`.
+- **Human reason:** a site that contradicts itself about what it knows loses the reader's trust in both pages. A reader
+  who sees both cannot tell which is right; one who does not notice believes the page in front of them and decides on a
+  gap that is not there.
+- **The same reason behind earlier flags:** `hg-not-entered` (text that says no figures were entered beside fields that
+  hold them) and `tracks-stale-annuity` (says monthly, shows September in November), both held out; `psagot-custody` and
+  `zero-cheaper-less-left` in training (two statements about one account that disagree). Planted kind p09 (two figures
+  for the same thing that disagree) is its within-page form.
+- **Candidate (`versions/candidates/contradiction.md`):** "You notice when a site says two different things about the
+  same item ...". Tested where it was not built from (`contradiction.json` has every number):
+  - its own case: 3 of 3, at ranks 1, 2 and 6 (built from it, so not proof);
+  - `hg-not-entered`: 0 of 4 with it, 0 of 8 without; `tracks-stale-annuity`: 3 of 4 with it, 5 of 8 without.
+  - **No project words:** it names nothing of the site.
+- **Why it is not kept:** it adds nothing on the held-out cases of its reason, so the gain on its own case looks like
+  memorising that case's form. **Next:** the planted p09 instances, a planted cross-page instance (a page that says the
+  site lacks what another screen of the session shows), and a negative check. The first candidate,
+  `candidates/heading.md`, was built from the misreading and is set aside (`heading.json` says why; its negative check
+  drew heading findings on the companies page worth a look).
+- **The site:** the page now lists only the kinds of holding of product D2, built from what the site lacks rather than a
+  glossary section; each blocker is its question in words, each closure says what closed, the per-card promise is gone;
+  the exchange fee is one row, the brokerage term; the rule is in `docs/copy.md` section 7 and a guard
+  (`site/app/lib/not-covered.test.ts`) fails when an entry listed there is covered elsewhere.
+
 ## Other sites
 
 Reactions to sites this project did not build (`elsewhere/`). Graded the same way; a reason seen here and on this

@@ -1,0 +1,36 @@
+{
+  "case": "live-03-companies-no-date",
+  "stamp": "{\"keys\":[{\"id\":\"missing-date-warning\",\"problem\":\"A few rows of the list say, in a warning colour, only that something is missing (no date), where the other rows give a date; the line does not say what is known instead, so the reader cannot tell whether to distrust that row's figures, or how old they are.\",\"where\":\"the small line under the name of three rows in the list of banks and other investment houses, where the other rows give a date\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "missing-date-warning",
+        "rank": 4,
+        "why": "Finding 4 says the orange 'ללא תאריך פרסום' label on three rows (Bank Jerusalem, Mizrahi, פסגות) isn't explained, which is the person's complaint that the warning doesn't say what is known instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014443400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "missing-date-warning",
+        "rank": 4,
+        "why": "Finding 4 says the orange 'no publication date' label on those three rows isn't explained, which is the person's complaint that the warning only says something is missing and gives no further context."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014703400000000002
+  },
+  "third": null,
+  "ranks": {
+    "missing-date-warning": 4
+  },
+  "agreed": {
+    "missing-date-warning": true
+  },
+  "against": {},
+  "usd": 0.029146800000000004
+}

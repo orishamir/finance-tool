@@ -8,9 +8,10 @@ import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
 import { fact, ladderRows, slowerPayNoMore, speedOrder, type LadderRow, type Speed } from "../../lib/guide-signature";
-import { Num, RulesLine } from "../provenance";
+import { Num, RulesLine, Term } from "../provenance";
 import { ChartLegend, CompareTable, NoteList, Sentence, StepTag, Swatch, Tag, ValueBar } from "../kit";
 import { CommonRateLine, type VisualProps } from "./kit";
+import { shown } from "../../lib/review";
 
 const icons: Record<Speed, React.ReactNode> = { "any-time": <Zap aria-hidden="true" />, "trading-day": <CalendarCheck aria-hidden="true" />, "fixed-dates": <CalendarDays aria-hidden="true" />, "at-maturity": <Lock aria-hidden="true" /> };
 
@@ -24,7 +25,10 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
   const current = rows.find((r) => r.banks);
   return (
     <div className="flex flex-col gap-4">
-      {slowerPayNoMore(rows, data.id) && <Sentence measure>{copy.ladder.take}</Sentence>}
+      {slowerPayNoMore(rows, data.id) && <Sentence measure>
+          {copy.ladder.take.before} <Term id="חשבון עובר ושב">{copy.ladder.take.term}</Term>
+          {copy.ladder.take.after}
+        </Sentence>}
 
       <CompareTable
         caption={copy.ladder.caption}
@@ -102,10 +106,16 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                       {copy.ladder.notes.exit.before}
                       <Num value={noExit} /> {copy.ladder.notes.exit.of} <Num value={deposit.range.count} /> {copy.ladder.notes.exit.after}
                     </>
-                  )}{" "}
-                  <Link to={`/guide/bank-deposit#${copy.ladder.range.anchorId}`} className="text-link hover:underline">
-                    {copy.ladder.notes.banksLink}
-                  </Link>
+                  )}
+                  {/* the list stands in the bank-deposit visual: no link while that is held (lib/review.ts) */}
+                  {shown(`/guide/bank-deposit#${copy.ladder.range.anchorId}`) && (
+                    <>
+                      {" "}
+                      <Link to={`/guide/bank-deposit#${copy.ladder.range.anchorId}`} className="text-link hover:underline">
+                        {copy.ladder.notes.banksLink}
+                      </Link>
+                    </>
+                  )}
                 </span>,
               ]
             : []),

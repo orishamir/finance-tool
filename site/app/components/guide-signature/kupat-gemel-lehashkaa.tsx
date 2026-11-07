@@ -50,16 +50,20 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const earlyAge = fact(data, "earlyAge");
   const exemptAge = fact(data, "exemptAge");
   const taxRate = fact(data, "taxRate");
-  const nominalRate = fact(data, "nominalRate");
   const ceiling = fact(data, "ceiling");
   const returnPct = fact(data, "returnPct");
   const inflationPct = fact(data, "inflationPct");
-  const trackFee = fact(data, "trackFee");
   const trustee = fact(data, "fundTrustee");
   const management = fact(data, "fundManagement");
-  const rangeMin = fact(data, "rangeMin");
-  const rangeMax = fact(data, "rangeMax");
-  const rangeCount = fact(data, "rangeCount");
+  // D89: the run's price is the manager's binding documents; the managers' range runs the collected lists at its ends
+  const listBalance = fact(data, "list_balance");
+  const listDeposit = fact(data, "list_deposit");
+  const afterBalance = fact(data, "list_afterBalance");
+  const afterDeposit = fact(data, "list_afterDeposit");
+  const discountYears = fact(data, "list_discountYears");
+  const discountMonths = fact(data, "list_discountMonths");
+  const discountPeriod = discountMonths ?? discountYears;
+  const managerCount = fact(data, "managerCount");
   const brokerCount = fact(data, "brokerCount");
   const trackName = text(data, "trackName");
   const trackNumber = text(data, "trackNumber");
@@ -80,7 +84,10 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     [copy.provident.marker]: yearsIn,
     ...(returnPct ? { [copy.hishtalmut.inputNames.ret]: returnPct } : {}),
     ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
-    ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
+    ...(listBalance ? { [copy.provident.inputNames.listBalance]: listBalance } : {}),
+    ...(listDeposit ? { [copy.provident.inputNames.listDeposit]: listDeposit } : {}),
+    ...(afterBalance ? { [copy.provident.inputNames.afterBalance]: afterBalance } : {}),
+    ...(afterDeposit ? { [copy.provident.inputNames.afterDeposit]: afterDeposit } : {}),
   };
   // 2026-10-26 (F-44 with F-42): once the exit year is at 60 or over, the reduced brackets apply first, so the tax and what is left
   // depend on the age and on the other income in that year (the site's scenario income, P-05); the sheets name both. The brokerage
@@ -102,7 +109,6 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const v = {
     net: model.lump ? runFigure(model.lump.net, "nis", "F-44", { ...common, ...ageInputs, ...(atSixty && taxFig ? { [copy.provident.taxLine]: taxFig } : {}) }, today, copy.provident.about.net, model.lump.run) : null,
     tax: taxFig,
-    alt: model.alt ? figure(model.alt.tax, "nis", "F-44", { ...common, ...(nominalRate ? { [copy.provident.nominalRate]: nominalRate } : {}) }, today, copy.provident.about.alt, kglRules) : null,
     transfer: model.transfer !== null ? figure(model.transfer, "nis", "F-45", common, today, copy.provident.about.transfer, kglRules) : null,
     gain: model.lump ? runFigure(model.lump.gain, "nis", "F-67", { ...common, ...ageInputs }, today, copy.provident.about.gain, model.lump.run) : null,
     brokerGain: model.broker && broker ? runFigure(model.broker.gain, "nis", "F-67", { ...common, ...ageInputs }, today, copy.provident.about.brokerGain, model.broker.run) : null,
@@ -116,7 +122,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     <div className="flex flex-col gap-5">
       {earlyAge && (
         <Sentence measure>
-          {copy.provident.lead.before} <Num value={earlyAge} display={String(earlyAge.value)} /> {copy.provident.lead.after}
+          {copy.provident.lead.before} <Num value={earlyAge} display={String(earlyAge.value)} /> {copy.provident.lead.after} <Term id="קצבה">{copy.provident.lead.annuity}</Term>
+          {copy.provident.lead.afterAnnuity} <Term prefix={copy.provident.lead.accountPrefix} id="חשבון ניירות ערך">{copy.provident.lead.account}</Term>
+          {copy.provident.lead.end}
         </Sentence>
       )}
       {indexName && trackName && fundName ? (
@@ -126,14 +134,45 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           </p>
           <ul className="flex flex-col gap-1.5">
             <HoldRow tone="value" name={copy.provident.container}>
-              {copy.hishtalmut.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>). {copy.hishtalmut.trackFee} {trackFee && <Num value={trackFee} />} {copy.hishtalmut.perYearAvg}
+              {copy.hishtalmut.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>).
+              {listBalance && listDeposit && (
+                <>
+                  {" "}
+                  {copy.provident.listFee.before} <Num value={listBalance} /> {copy.provident.listFee.balance}
+                  <Num value={listDeposit} /> {copy.provident.listFee.deposit}
+                  {discountPeriod && afterBalance && afterDeposit ? (
+                    <>
+                      {/* two years is one word, "בשנתיים", as on the fee page's discounted line */}
+                      {!discountMonths && Number(discountPeriod.value) === 2 ? (
+                        <>
+                          {copy.provident.listFee.comma}
+                          <Num value={discountPeriod} display={copy.provident.listFee.twoYears} />
+                          {copy.provident.listFee.twoYearsTail}
+                        </>
+                      ) : (
+                        <>
+                          {copy.provident.listFee.lead}
+                          <Num value={discountPeriod} display={String(discountPeriod.value)} />
+                          {discountMonths ? copy.provident.listFee.months : copy.provident.listFee.years}
+                        </>
+                      )}
+                      <Num value={afterBalance} />
+                      {copy.provident.listFee.and}
+                      <Num value={afterDeposit} />
+                      {copy.provident.listFee.end}
+                    </>
+                  ) : (
+                    copy.provident.listFee.end
+                  )}
+                </>
+              )}
             </HoldRow>
             <HoldRow tone="alt" name={copy.hishtalmut.broker}>
-              {copy.hishtalmut.fund} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>). {copy.hishtalmut.trusteeLead} {trustee && <Num value={trustee} />}
+              {copy.hishtalmut.fund} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>). <Term id="שכר נאמן">{copy.hishtalmut.trusteeLead}</Term> {trustee && <Num value={trustee} />}
               {management ? (
                 <>
                   {" "}
-                  {copy.hishtalmut.andMgmt} <Num value={management} />
+                  <Term prefix={copy.hishtalmut.andMgmt.prefix} id="דמי ניהול">{copy.hishtalmut.andMgmt.term}</Term> <Num value={management} />
                 </>
               ) : null}{" "}
               {brokerName ? `${copy.hishtalmut.perYearTariff} ${brokerName}.` : copy.hishtalmut.perYear}
@@ -257,12 +296,6 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
               <Sentence size="xs" tone="muted">
                 {copy.provident.taxNote.before} <Num value={taxRate} /> <Term prefix="מ" id="הרווח הריאלי">{copy.provident.taxNote.term}</Term>
                 {copy.provident.taxNote.after}
-                {v.alt && nominalRate ? (
-                  <>
-                    {" "}
-                    {copy.provident.altNote.before} <Num value={nominalRate} /> {copy.provident.altNote.middle} <Num value={v.alt} />.
-                  </>
-                ) : null}
               </Sentence>
             )}
           </section>
@@ -336,15 +369,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                 </Link>
               </li>
             )}
-            {managerRange && rangeMin && rangeMax && (
+            {managerRange && managerCount && (
               <li>
-                {copy.provident.rangeManager.before} <Num value={managerRange.low} /> {copy.hishtalmut.rangeManager.to} <Num value={managerRange.high} /> ({copy.hishtalmut.rangeManager.fees} <Num value={rangeMin} /> {copy.hishtalmut.rangeManager.toFee} <Num value={rangeMax} />
-                {rangeCount ? (
-                  <>
-                    {copy.hishtalmut.rangeManager.across} <Num value={rangeCount} /> {copy.hishtalmut.rangeManager.tracks}
-                  </>
-                ) : null}
-                ).
+                {copy.provident.rangeManager.before} <Num value={managerRange.low} /> {copy.hishtalmut.rangeManager.to} <Num value={managerRange.high} /> ({copy.provident.rangeManager.of} <Num value={managerCount} /> {copy.provident.rangeManager.collected}).
               </li>
             )}
           </ul>
@@ -353,7 +380,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
         <p>
-          {copy.hishtalmut.assumption.before} {returnPct && <Num value={returnPct} />} {copy.hishtalmut.assumption.middle} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after}
+          <Term prefix="ה" id="תשואה">{copy.hishtalmut.assumption.ret}</Term> {copy.hishtalmut.assumption.before} {returnPct && <Num value={returnPct} />} {copy.hishtalmut.assumption.middle} <Term prefix="וה" id="אינפלציה">{copy.hishtalmut.assumption.inflation}</Term> {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after}
         </p>
         <p>{copy.common.todayMoney}</p>
       </div>

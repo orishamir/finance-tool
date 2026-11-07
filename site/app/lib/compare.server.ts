@@ -9,7 +9,7 @@ import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, load
 import { buildInstrumentTerms, redemptionValues, exposureHref, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
-import { computed, ownBy, ownEach, type SiteValue } from "./value";
+import { computed, ownBy, ownEach, ruleFigure, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
 import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-signature-bundle.server";
 
@@ -18,6 +18,7 @@ import { BROKERAGE, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName
 import { latestSnapshots } from "./providers.server";
 import { indexPath } from "./invest";
 import { readJsonCached, readTextCached } from "./read-cache.server";
+import { sourceHref } from "./sources";
 
 const familyById: Partial<Record<ProductId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
@@ -42,7 +43,7 @@ export const tier2Table: { id: string; he: string; questions: string[]; display:
   { id: "executive-insurance", he: "ביטוח מנהלים", questions: ["TXA OQ6"], display: "TXA OQ6" },
   { id: "structured-deposits", he: "פיקדון מובנה", questions: ["TX2 OQ5"], display: "TX2 OQ5" },
   { id: "corporate-bonds", he: 'אג"ח קונצרניות', questions: ["TX2 OQ6"], display: "TX2 OQ6" },
-  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["MF-28"], display: "MF-28" },
+  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["MGD OQ2"], display: "MGD OQ2" },
   { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ2"], display: "TX2 OQ2" },
   { id: "reits", he: "קרן להשקעות במקרקעין", questions: ["TX2 OQ8"], display: "TX2 OQ8" },
   { id: "gold-via-funds", he: "השקעה בזהב דרך קרנות סל", questions: ["TX2 OQ10"], display: "TX2 OQ10" },
@@ -59,12 +60,100 @@ function tier2List(): Tier2Row[] {
   });
 }
 
+type FeeLine = FeesSnapshot["lines"][number];
+
+/** A provident wrapper's collected list fees (F-105): the latest snapshot of each manager whose list prints both a balance and a deposit fee for it. */
+export function providentLists(id: string, snapshots: FeesSnapshot[]): { snap: FeesSnapshot; balance: ValueObject; deposit: ValueObject; lines: { balance: FeeLine; deposit: FeeLine } }[] {
+  const latest = new Map<string, FeesSnapshot>();
+  for (const s of snapshots) {
+    if (!s.lines.some((l) => l.applies_to.includes(id) && l.level === "list")) continue;
+    const prev = latest.get(s.id);
+    if (!prev || s.snapshot >= prev.snapshot) latest.set(s.id, s);
+  }
+  const out: { snap: FeesSnapshot; balance: ValueObject; deposit: ValueObject; lines: { balance: FeeLine; deposit: FeeLine } }[] = [];
+  for (const snap of latest.values()) {
+    const line = (base: string) => snap.lines.find((l) => l.applies_to.includes(id) && l.level === "list" && l.base === base && typeof l.rate.value === "number");
+    const balance = line("balance");
+    const deposit = line("deposit");
+    if (balance && deposit) out.push({ snap, balance: balance.rate, deposit: deposit.rate, lines: { balance, deposit } });
+  }
+  return out.sort((a, b) => a.snap.id.localeCompare(b.snap.id));
+}
+
+/** PF-13's minimum discount period in months, from the rule record (A-19). */
+export function minDiscountMonths(allRules: Record<string, RuleRecord>): number {
+  const f = allRules["PF-13"]?.figures?.min_discount_years;
+  const years = f && "value" in f ? f.value : undefined;
+  if (typeof years !== "number") throw new Error("PF-13 has no min_discount_years figure");
+  return 12 * years;
+}
+
 /**
- * The provident-family fees the guide page builds (guide.server.ts), without throwing on a second snapshot: the
- * provider's list fee lines when they cover the wrapper; for a fee the list does not give (a study fund, a general
- * pension fund, a provident fund for annuity: no company publishes a list price) the regulator's average actually
- * charged on the `track` P-05's entry names (method 2.4), labelled as an average. The pension and study-fund terms
- * that come from the person (employment, salary, insurance) are added when a run is built (compare.ts).
+ * One list line as the run prices it (A-19, read with D56 and PF-13), rates in percent: the printed `rate` for `months` months, then `after`.
+ * A rate below `reverts_to` is a discount that lasts the printed period, no shorter than PF-13's minimum; an offer (`offer_he`, a rate
+ * conditional on a document that is not published) is priced at `reverts_to` from the start; a line with no `reverts_to` is one rate.
+ */
+export function pricedLine(l: FeeLine, minMonths: number): { rate: number; after: number; months: number; discounted: boolean; offer: boolean } {
+  const printed = l.rate.value as number;
+  const to = typeof l.reverts_to?.value === "number" ? l.reverts_to.value : null;
+  const offer = l.offer_he !== undefined && to !== null;
+  if (offer) return { rate: to, after: to, months: 0, discounted: false, offer };
+  if (to === null || to <= printed) return { rate: printed, after: printed, months: 0, discounted: false, offer };
+  const printedMonths = typeof l.discount_months?.value === "number" ? l.discount_months.value : 0;
+  return { rate: printed, after: to, months: Math.max(printedMonths, minMonths), discounted: true, offer };
+}
+
+/**
+ * D86: how a balance fee the person enters is held. Below what the run would otherwise charge it holds for PF-13's period and then returns
+ * to that rate: the rate the record's discount reverts to (`reverts_to`, else the regulations' cap), or the record's own rate where it has
+ * no discount (a list printed at the cap, or a regulator's average the run holds for every year). So an entered fee changes one thing.
+ */
+export function ownFeeHoldOf(id: string, terms: InstrumentTerms, feeValues: Record<string, SiteValue>, allRules: Record<string, RuleRecord>, today: string): WrapperEntry["ownFeeHold"] | null {
+  const years = allRules["PF-13"] ? ruleFigure(allRules["PF-13"], "min_discount_years", today) : null;
+  if (!years || !terms.fees) return null;
+  const months = minDiscountMonths(allRules);
+  const own = terms.fees.discount;
+  if (own && feeValues.afterBalance) return { months, years, revertsTo: own.listRate, rate: feeValues.afterBalance };
+  const rate = feeValues.balance;
+  return rate && typeof rate.value === "number" ? { months, years, revertsTo: terms.fees.balance, rate } : null;
+}
+
+/**
+ * The manager a provident wrapper's example runs on when more than one list is collected (F-80, 2026-11-07): the one P-05 names, else the
+ * one whose fees, as `pricedLine` prices them, are the lowest on both bases in every month, which leaves any plan the most (direct expenses
+ * are left out: no collected list prints a rate for them). Managers whose
+ * prices are the same in every month tie: the example runs on the first by id and `tied` names them all. When no list is the lowest on
+ * both, none is chosen: which leaves more then depends on the plan, and the page says it has no run rather than pick one manager as the
+ * general case.
+ */
+export function providentPick(
+  id: string,
+  snapshots: FeesSnapshot[],
+  spec: { tariff?: string } | undefined,
+  allRules: Record<string, RuleRecord>,
+): { id: string; count: number; tied?: string[] } | null {
+  const lists = providentLists(id, snapshots);
+  if (lists.length === 0) return null;
+  const named = spec?.tariff ? lists.find((l) => l.snap.id === spec.tariff) : undefined;
+  if (named) return { id: named.snap.id, count: lists.length };
+  const min = minDiscountMonths(allRules);
+  const priced = lists.map((l) => ({ id: l.snap.id, b: pricedLine(l.lines.balance, min), d: pricedLine(l.lines.deposit, min) }));
+  const at = (p: ReturnType<typeof pricedLine>, m: number) => (m <= p.months ? p.rate : p.after);
+  // the prices are steps: comparing at month 1 and the month after each discount ends compares them in every month
+  const months = [...new Set([1, ...priced.flatMap((p) => [p.b.months + 1, p.d.months + 1])])];
+  const noHigher = (a: (typeof priced)[number], b: (typeof priced)[number]) => months.every((m) => at(a.b, m) <= at(b.b, m) && at(a.d, m) <= at(b.d, m));
+  const best = priced.filter((a) => priced.every((b) => noHigher(a, b)));
+  if (best.length === 0) return null;
+  return { id: best[0]!.id, count: lists.length, ...(best.length > 1 ? { tied: best.map((b) => b.id) } : {}) };
+}
+
+/**
+ * The provident-family fees the guide page builds (guide.server.ts): the provider's list fee lines when they cover the wrapper (when several
+ * managers' lists do, the one `providentPick` chooses, named in `pick`); for a fee the list does not give (a study fund, a general pension
+ * fund, a provident fund for annuity: no company publishes a list price) the regulator's average actually charged on the `track` P-05's entry
+ * names (method 2.4), labelled as an average. The pension and study-fund terms that come from the person (employment, salary, insurance) are
+ * added when a run is built (compare.ts). A list rate below the most the bylaws allow runs as a discount that reverts to that most after
+ * PF-13's period (A-19, F-16); the terms block shows both rates and the period.
  */
 export function providentTerms(
   id: string,
@@ -72,10 +161,11 @@ export function providentTerms(
   spec: NonNullable<ParameterRecord["instruments"]>[string] | undefined,
   allRules: Record<string, RuleRecord>,
   today: string,
-): { terms?: InstrumentTerms; feeValues: Record<string, SiteValue>; missing: string[] } {
-  const covering = snapshots.filter((f) => f.lines.some((l) => l.applies_to.includes(id) && l.level === "list"));
-  if (covering.length > 1) return { feeValues: {}, missing: [`${id}: ${covering.length} fee snapshots cover it; one must be chosen in a site parameter`] };
-  const snap = covering[0];
+): { terms?: InstrumentTerms; feeValues: Record<string, SiteValue>; missing: string[]; pick?: { id: string; count: number; tied?: string[] } } {
+  const covering = [...new Set(snapshots.filter((f) => f.lines.some((l) => l.applies_to.includes(id) && l.level === "list")).map((f) => f.id))];
+  const pick = covering.length > 1 ? providentPick(id, snapshots, spec as { tariff?: string } | undefined, allRules) : null;
+  if (covering.length > 1 && !pick) return { feeValues: {}, missing: [`${id}: ${covering.length} managers' list fees cover it and none is the lowest on both bases; F-80 picks none`] };
+  const snap = snapshots.filter((f) => f.id === (pick?.id ?? covering[0]) && f.lines.some((l) => l.applies_to.includes(id) && l.level === "list")).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1);
   const line = (base: string) => snap?.lines.find((l) => l.applies_to.includes(id) && l.level === "list" && l.base === base);
   const balance = line("balance");
   const deposit = line("deposit");
@@ -84,9 +174,35 @@ export function providentTerms(
   // D31: a list fee is that company's own; the guide's terms block and the comparison name the company whose list the example reads
   const own = (v: ValueObject): SiteValue => (snap ? ownBy({ ...v } as SiteValue, shortName(snap.id, snap.provider.name_he)) : ({ ...v } as SiteValue));
   if (balance && deposit) {
-    const feeValues: Record<string, SiteValue> = { balance: own(balance.rate), deposit: own(deposit.rate) };
+    const min = minDiscountMonths(allRules);
+    const pb = pricedLine(balance, min);
+    const pd = pricedLine(deposit, min);
+    // an offer runs at the rate its binding documents allow (D56); a discount at its printed rate, then the most the bylaws allow
+    const shown = (l: FeeLine) => own(l.offer_he !== undefined && l.reverts_to ? l.reverts_to : l.rate);
+    const feeValues: Record<string, SiteValue> = { balance: shown(balance), deposit: shown(deposit) };
+    feeValues[pb.discounted ? "discountBalance" : "listBalance"] = feeValues.balance!;
+    feeValues[pd.discounted ? "discountDeposit" : "listDeposit"] = feeValues.deposit!;
+    if (pb.discounted) feeValues.afterBalance = own(balance.reverts_to!);
+    if (pd.discounted) feeValues.afterDeposit = own(deposit.reverts_to!);
+    // the period the terms block shows: a printed one longer than PF-13's minimum is the company's own; otherwise the minimum, from the rule
+    // one period for both lines: the data check fails a balance and a deposit discount of one wrapper that print different periods (validate.ts, checkDiscountLines)
+    const longer = ([[pb, balance], [pd, deposit]] as const).find(([p, l]) => p.discounted && p.months > min && l.discount_months);
+    if (longer) feeValues.discountMonths = own(longer[1].discount_months!);
+    else if (pb.discounted || pd.discounted) {
+      const years = ruleFigure(allRules["PF-13"]!, "min_discount_years", today);
+      if (years) feeValues.discountYears = years;
+    }
     if (direct) feeValues.direct = own(direct.rate);
-    return { terms: { fees: { deposit: pct(deposit.rate), balance: pct(balance.rate), direct: direct ? pct(direct.rate) : 0 } }, feeValues, missing: [] };
+    // an unprinted period is PF-13's minimum (A-19), not a shorter one extended, so the run gets the period itself
+    const discountOf = (p: ReturnType<typeof pricedLine>, l: FeeLine) => (p.discounted ? { months: typeof l.discount_months?.value === "number" ? l.discount_months.value : p.months, listRate: p.after / 100 } : undefined);
+    const discount = discountOf(pb, balance);
+    const depositDiscount = discountOf(pd, deposit);
+    return {
+      terms: { fees: { deposit: pd.rate / 100, balance: pb.rate / 100, direct: direct ? pct(direct.rate) : 0, ...(discount ? { discount } : {}), ...(depositDiscount ? { depositDiscount } : {}) } },
+      feeValues,
+      missing: [],
+      ...(pick ? { pick } : {}),
+    };
   }
   const reg = regulatorAverageFees(id, spec, loadCmaFees(), allRules, today, { balance: !!balance, deposit: !!deposit });
   if (!reg) return { feeValues: {}, missing: [snap ? `${id}: ${snap.id} has no list ${balance ? "deposit" : "balance"} line for it and P-05 names no track` : `${id}: no list-fee snapshot in data/fees/ covers it and P-05 names no track`] };
@@ -123,7 +239,7 @@ function cashLink(): CompareBundle["cashLink"] {
   const end = text.indexOf("\n### ", start + 5);
   const section = text.slice(start, end < 0 ? undefined : end);
   const m = /\[(EDGE dataflow INTEREST_DASH)\]\((https?:\/\/[^)\s]+)\)/.exec(section);
-  return m ? { href: m[2]!, title: "בנק ישראל, ריביות בפועל בפיקדונות (INTEREST_DASH)", ruleId: "BANK-22" } : null;
+  return m ? { href: sourceHref({ url: m[2]! }), title: "בנק ישראל, ריביות בפועל בפיקדונות (INTEREST_DASH)", ruleId: "BANK-22" } : null;
 }
 
 /** Profiles that change which rules a run reads: age (the 60 rules), employment, income, horizon, return, constraints. */
@@ -362,15 +478,6 @@ function dataFileVersions(): BundleDataFile[] {
   return out;
 }
 
-/** MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500 by holding length; its figures go to the page as they are and feed no run. */
-function pastRecord(allRules: Record<string, RuleRecord>): CompareBundle["pastRecord"] {
-  const r = allRules["MKT-01"];
-  if (!r) return null;
-  const figures = Object.fromEntries(Object.entries(r.figures ?? {}).map(([k, v]) => [k, v as unknown as SiteValue]));
-  const any = Object.values(figures)[0];
-  return { rule: { id: r.id }, figures, source: { url: any?.source.url ?? "", title: any?.source.publisher ?? "" } };
-}
-
 export function buildCompareBundle(): CompareBundle {
   const t = today();
   const allRules = loadRules();
@@ -388,8 +495,11 @@ export function buildCompareBundle(): CompareBundle {
     const base = { id: record.id, name: record.names.he[0]!, family, record, feeValues: {} as Record<string, SiteValue>, missing: [] as string[] };
     if (family === "provident" || family === "pension") {
       const r = providentTerms(record.id, fees, p05.instruments?.[record.id], allRules, t);
-      const rep = repOf(record.id);
-      return { ...base, ...(r.terms ? { terms: r.terms } : {}), ...(rep ? { representative: rep } : {}), feeValues: r.feeValues, missing: r.missing };
+      // a run on a manager's list is not the track P-05 names: that track only names the class the fee page compares with (D88)
+      const onList = "listBalance" in r.feeValues || "discountBalance" in r.feeValues;
+      const rep = onList ? null : repOf(record.id);
+      const hold = r.terms ? ownFeeHoldOf(record.id, r.terms, r.feeValues, allRules, t) : null;
+      return { ...base, ...(r.terms ? { terms: r.terms } : {}), ...(rep ? { representative: rep } : {}), ...(hold ? { ownFeeHold: hold } : {}), feeValues: r.feeValues, missing: r.missing };
     }
     if (family === null) return { ...base, missing: [`${record.id}: no instrument terms are built for it`] };
     const built = buildInstrumentTerms(record.id, family, p05.instruments?.[record.id], sources);
@@ -463,8 +573,8 @@ export function buildCompareBundle(): CompareBundle {
 
   // ---- the rules a run may read: found by running the comparison over the profiles above with every rule at hand,
   // plus every rule the wrapper records cite (reasons and chips link to them) and the two the screens quote.
-  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, indexFunds, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable(), pastRecord: pastRecord(allRules) };
-  const needed = new Set<string>(["PEN-36", "BANK-22", "MKT-01"]);
+  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, indexFunds, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable() };
+  const needed = new Set<string>(["PEN-36", "BANK-22"]);
   for (const w of wrappers) collectRuleIds(w.record).forEach((id) => needed.add(id));
   for (const w of wrappers) for (const f of Object.values(w.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   for (const e of exposures) (e.record.rule_ids ?? []).forEach((id) => needed.add(id));

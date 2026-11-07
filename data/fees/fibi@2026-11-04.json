@@ -1818,6 +1818,27 @@
   "minimums": {
     "account_opening": null
   },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 6.3,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.fibi.co.il/media/5m4p1uyr/חלק-1-חשבון-עובר-ושב-31.pdf",
+        "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026), חלק 1 חשבון עובר ושב, סעיף 1.2.1 פעולה על ידי פקיד והערה 4",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-09-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Section 1.2.1 'פעולה על ידי פקיד' at 6.3 NIS (בפיקוח); note 4: 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד'. The ceiling is counted (D56). Read in the library copy (1365ff4311a67457), 2026-11-06; the same figure as research/2026-11-04-binding-prices/fibi-massad.md."
+    }
+  },
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
@@ -1865,7 +1886,7 @@
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 6.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 1.80 ₪, מסלול בסיסי 9 ₪ ומורחב 26 ₪ לחודש",
       "page": 3,
-      "why": "The securities account rests on a current account. Part 1 s.1.2.1 note 4: the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3). No bank's record prices the current account yet; a decision for all banks at once."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 s.1.2.1 note 4: the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3)."
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.25%-0.43% לשנה, זרים 0.28%-0.37%; קנייה ומכירה של מניות ואג\"ח 0.02%-0.19%",

@@ -5,7 +5,7 @@ import { useState, type PointerEvent, type ReactNode } from "react";
 import { tickFade, ticksOn, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn } from "./chart-glide";
 import { pickDim, useChartPick } from "./chart-interact";
 import { cx } from "./cx";
-import { TableCols } from "./table-cols";
+import { PHONE_GONE, TableCols } from "./table-cols";
 import { ChoiceChips } from "./choice";
 import { useWidth } from "./marker";
 
@@ -31,8 +31,8 @@ const TOP = 12;
 const BOTTOM = 22;
 const LEFT = 64;
 const RIGHT = 104;
-/** A column left out on a phone stays in the table at width 0 (hiding the cell would move the next cell into its column). */
-const GONE = "max-md:invisible max-md:!p-0 overflow-hidden";
+/** A column left out on a phone leaves the grid with its <col> (TableCols), so its cells go too. */
+const GONE = PHONE_GONE;
 
 export function ChangeChart({
   lines,
@@ -49,6 +49,7 @@ export function ChangeChart({
   head,
   rows,
   widths,
+  stackOnPhone,
 }: {
   lines: ChangeLine[];
   /** The shares the lines are priced at, in percent, from the lowest to the highest; 0 is the plan. */
@@ -69,6 +70,12 @@ export function ChangeChart({
   /** Each column's width, on a computer and on a phone ("0" leaves the column out on a phone): fixed, so no value that changes
    * moves a column (founder, 2026-10-28). The widths add up to 100% on each. */
   widths: { pc: string; phone: string }[];
+  /**
+   * Two columns that share one on a phone, `[top, under]`: the under column's figure sits below the top one's, and its own column is left
+   * out (its phone width "0"). Four figures side by side left a phone's column 63 px for a typed plan's "50,000,000 ₪", and three
+   * figures were printed over each other (fresh readers, round 3, 2026-11-07).
+   */
+  stackOnPhone?: [number, number];
 }) {
   const [ref, w] = useWidth(600);
   const [drag, setDrag] = useState(false);
@@ -83,13 +90,22 @@ export function ChangeChart({
   // no price is NaN on the way: the line has a gap there, at once
   const drawn = useGlidingSeries(Object.fromEntries(lines.map((l) => [l.id, shares.map((year, i) => ({ year, v: l.ys[i] ?? NaN }))])));
   const [yMax, yMin] = useGlidingNumbers([maxGoal, minGoal]) as [number, number];
+  // round amounts on the axis: a step of 1, 2 or 5 times a power of ten
+  const raw = (maxGoal - minGoal) / 4;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const gstep = [1, 2, 5, 10].map((m) => m * mag).find((v) => v >= raw)!;
+  const gridAt = Array.from({ length: Math.floor((maxGoal - minGoal) / gstep) + 1 }, (_, i) => Math.ceil(minGoal / gstep) * gstep + i * gstep).filter((v) => v <= maxGoal);
+  // the gutter holds the widest label the axis draws, a fading one too (11 px tabular digits, about 6.8 px each): a large plan's "100,000,000"
+  // lost its leading digits past a fixed 64 px (#190)
+  const fading = useFadingTicks(gridAt);
+  const left = Math.max(LEFT, 12 + Math.ceil(Math.max(0, ...fading.map((t) => yFormat(t.value).length)) * 6.8));
   const plotR = w - RIGHT;
-  const x = (s: number) => LEFT + ((s - lo) / (hi - lo)) * (plotR - LEFT);
+  const x = (s: number) => left + ((s - lo) / (hi - lo)) * (plotR - left);
   const y = (v: number) => TOP + (1 - (v - yMin) / (yMax - yMin)) * (H - TOP - BOTTOM);
   const idx = (s: number) => Math.round((s - lo) / step);
   const set = (e: PointerEvent<SVGSVGElement>) => {
     const box = e.currentTarget.getBoundingClientRect();
-    const s = lo + ((e.clientX - box.left - LEFT) / (plotR - LEFT)) * (hi - lo);
+    const s = lo + ((e.clientX - box.left - left) / (plotR - left)) * (hi - lo);
     onAt(Math.max(lo, Math.min(hi, Math.round(s / step) * step)));
   };
   // direct labels at the right ends, pushed apart where they would overlap
@@ -101,11 +117,7 @@ export function ChangeChart({
   for (let i = 1; i < ends.length; i++) if (ends[i]!.y - ends[i - 1]!.y < 15) ends[i]!.y = ends[i - 1]!.y + 15;
   // a phone keeps the two ends and the plan; a computer also the halves
   const ticks = (w < 520 ? [lo, 0, hi] : [lo, lo / 2, 0, hi / 2, hi]).filter((s, i, a) => a.indexOf(s) === i);
-  // round amounts on the axis: a step of 1, 2 or 5 times a power of ten
-  const raw = (maxGoal - minGoal) / 4;
-  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
-  const gstep = [1, 2, 5, 10].map((m) => m * mag).find((v) => v >= raw)!;
-  const grid = ticksOn(useFadingTicks(Array.from({ length: Math.floor((maxGoal - minGoal) / gstep) + 1 }, (_, i) => Math.ceil(minGoal / gstep) * gstep + i * gstep).filter((v) => v <= maxGoal)), y, [TOP, H - BOTTOM]);
+  const grid = ticksOn(fading, y, [TOP, H - BOTTOM]);
   const path = (pts: { year: number; v: number }[]) => pts.reduce<string>((acc, p, i) => (!Number.isFinite(p.v) ? acc : `${acc}${acc && Number.isFinite(pts[i - 1]?.v) ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`), "");
   const ids = choices.map(String);
   const tableRows = useFlip<HTMLTableSectionElement>(rows.map((r) => r.id).join());
@@ -129,8 +141,8 @@ export function ChangeChart({
         >
           {grid.map((t) => (
             <g key={t.value} className={tickFade(t)}>
-              <line x1={LEFT} x2={plotR} y1={y(t.value)} y2={y(t.value)} className="stroke-chart-grid" strokeWidth={1} />
-              <text x={LEFT - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
+              <line x1={left} x2={plotR} y1={y(t.value)} y2={y(t.value)} className="stroke-chart-grid" strokeWidth={1} />
+              <text x={left - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
                 {yFormat(t.value)}
               </text>
             </g>
@@ -165,6 +177,7 @@ export function ChangeChart({
               {head.map((h, i) => (
                 <th key={i} scope="col" className={widths[i]?.phone === "0" ? GONE : undefined}>
                   {h}
+                  {stackOnPhone?.[0] === i && <span className="block md:hidden">{head[stackOnPhone[1]]}</span>}
                 </th>
               ))}
             </tr>
@@ -179,6 +192,11 @@ export function ChangeChart({
                         <span aria-hidden="true" className={`inline-block size-3 rounded-sm ${r.swatch}`} />
                         {c}
                       </span>
+                    ) : stackOnPhone?.[0] === i ? (
+                      <>
+                        {c}
+                        <span className="block md:hidden">{r.cells[stackOnPhone[1]]}</span>
+                      </>
                     ) : (
                       c
                     )}

@@ -1,0 +1,21 @@
+import { it } from "vitest";
+import { buildView, type RunGoal } from "/home/ori/dev/finance-tool/.claude/worktrees/agent-aadc4bdfe7cee092e/site/app/lib/compare";
+import { compareBundle } from "/home/ori/dev/finance-tool/.claude/worktrees/agent-aadc4bdfe7cee092e/site/app/lib/compare.server";
+const bundle = compareBundle();
+const goal: RunGoal = { horizonYears: 20, amountNow: 40_000, monthly: 3_000, available: 0, anytime: false, returnPct: 7, inflationPct: 2.5, age: 29, employment: "employee", salary: 22_000, pensionEmployee: 6, pensionEmployer: 6.5, insurancePct: 0.3, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
+const show = (label: string, g: RunGoal) => {
+  const v = buildView(bundle, g);
+  if (v.kind !== "ok") { console.log(label, v.kind); return; }
+  console.log(label, JSON.stringify(v.ranked.map((o) => [o.id, o.mayRead, o.readingRules, o.secondaryRules.length, o.tiedWith.length])));
+};
+it("mayRead across inputs", () => {
+  show("base age29", goal);
+  show("age60 h8", { ...goal, age: 60, horizonYears: 8 });
+  show("age64 h8", { ...goal, age: 64, horizonYears: 8 });
+  show("age29 h8", { ...goal, horizonYears: 8 });
+  show("infl-1 age29", { ...goal, inflationPct: -1 });
+  show("infl-1 monthly 9000", { ...goal, inflationPct: -1, monthly: 9000 });
+  show("infl-1 monthly 3000 h8", { ...goal, inflationPct: -1, horizonYears: 8 });
+  show("infl-1 monthly 9000 h8", { ...goal, inflationPct: -1, monthly: 9000, horizonYears: 8 });
+  show("short h3", { ...goal, horizonYears: 3 });
+});

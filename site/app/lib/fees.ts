@@ -9,6 +9,7 @@ import {
   feeMaterialitySeries,
   feeThresholds,
   feeVerdict,
+  rateAfterDiscount,
   sensitivity,
   sensitivityAxes,
   valueOfReduction,
@@ -16,6 +17,7 @@ import {
   MissingRuleError,
   RecordInputError,
   type Candidate,
+  type Discount,
   type FeeLine,
   type FeeMaterialitySeries,
   type FeeMateriality,
@@ -28,13 +30,14 @@ import {
 } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { computedInputs as ci, formulaNames, r3fees } from "../copy";
-import { asParameter, evaluate, goalValueObjects, nothingToCompare, parameterOf, placeGroups, type CompareBundle, type FeeKind, type RunGoal, type WrapperEntry } from "./compare";
+import { asParameter, evaluate, goalValueObjects, horizonFloorOf, nothingToCompare, parameterOf, placeGroups, type CompareBundle, type FeeKind, type RunGoal, type WrapperEntry } from "./compare";
 import { fmt } from "./format";
 import { holdingName, holdingPlan } from "./holdings";
 import { blockedHe, failureHe } from "./failure-he";
 import type { Holding } from "./state";
 import type { InputsState } from "./inputs";
-import { computed, depositFeeNoneByRule, entered as enteredValue, expandFee, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
+import type { FieldKey } from "./goal";
+import { computed, depositFeeNoneByRule, entered as enteredValue, expandFee, ruleFigure, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
 
 Object.assign(formulaNames, { "F-62": "פסק דין על עמלה", "F-68": "ממוצע הרשות למסלולי הסיווג", "F-61": "עלות דמי הניהול" });
 
@@ -107,7 +110,7 @@ export interface FeeInputs {
   goalG: RunGoal | null;
   /** Fields whose value comes from the subject and not the goal (a holding's balance and deposits): shown, not editable here. */
   fixed?: ("amountNow" | "monthly")[];
-  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; inflation: SiteValue; returnV: SiteValue };
+  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; inflation: SiteValue; returnV: SiteValue; insurance?: SiteValue };
 }
 
 const p05Inputs = (bundle: CompareBundle) => (parameterOf(bundle, "P-05") as unknown as { inputs: Record<string, ValueObject> }).inputs;
@@ -133,6 +136,8 @@ export function feeInputs(bundle: CompareBundle, goalG: RunGoal | null, released
   const returnV = val("A-01", "pct_per_year", ci.grossReturn);
   const inflation = val("A-02", "pct_per_year", ci.inflation);
   const income = e.annual_income !== undefined ? e.annual_income : num("annual_income");
+  // A-17 has no default (G-12): only what the person entered on a pension fund's fee page
+  const insurancePct = typeof released.insurance === "number" ? released.insurance : null;
   const g: RunGoal = {
     horizonYears: years.value as number,
     amountNow: amount.value as number,
@@ -146,18 +151,19 @@ export function feeInputs(bundle: CompareBundle, goalG: RunGoal | null, released
     salary: income / 12,
     pensionEmployee: null,
     pensionEmployer: null,
-    insurancePct: null,
+    insurancePct,
     preset: "none",
     fromPreset: { horizon: false, monthly: false, available: false },
   };
-  return { g, fromGoal: false, returnFromParameter: e["A-01"] === undefined, goalG, values: { amount, monthly, years, inflation, returnV } };
+  const insurance = insurancePct !== null ? enteredValue(insurancePct, "pct", bundle.runDate, ci.insurance) : undefined;
+  return { g, fromGoal: false, returnFromParameter: e["A-01"] === undefined, goalG, values: { amount, monthly, years, inflation, returnV, ...(insurance ? { insurance } : {}) } };
 }
 
 // ---------------------------------------------------------------- value factory
 
 function makeInputsMap(inputs: FeeInputs): Record<string, SiteValue> {
   const v = inputs.values;
-  return { [ci.amountNow]: v.amount, [ci.monthly]: v.monthly, [ci.years]: v.years, [ci.grossReturn]: v.returnV, [ci.inflation]: v.inflation };
+  return { [ci.amountNow]: v.amount, [ci.monthly]: v.monthly, [ci.years]: v.years, [ci.grossReturn]: v.returnV, [ci.inflation]: v.inflation, ...(v.insurance ? { [ci.insurance]: v.insurance } : {}) };
 }
 
 const rulesOf = (used: readonly UsedRule[]) => used.map((u) => ({ id: u.id, strength: u.figures.reduce<Strength>((w, f) => weaker(w, f.strength as Strength) ?? w, u.strength) }));
@@ -198,7 +204,9 @@ function lift(v: ValueObject, stale: SiteValue["stale"], today: string): SiteVal
 export type PlanError =
   | { kind: "no-wrapper" }
   | { kind: "no-terms" }
-  | { kind: "need-input"; detail: string }
+  | { kind: "need-input"; detail: string; field: NeedField | null }
+  /** G-30: monthly deposits into a renewable money-market fund have no run yet; with no monthly deposit the page has a result. */
+  | { kind: "monthly-not-run"; code: string }
   | { kind: "no-run"; code: string; messageHe?: string }
   | { kind: "needs-pf36" }
   | { kind: "needs-first-deposit" }
@@ -216,10 +224,73 @@ export interface SubjectRun {
   preTax: string[];
 }
 
-function candidateOf(bundle: CompareBundle, wrapperId: string, g: RunGoal, scale?: Record<string, number>): Candidate | null {
+function candidateOf(bundle: CompareBundle, wrapperId: string, g: RunGoal, scale?: Record<string, number>): { candidate: Candidate | null; field?: FieldKey } {
   const ev = evaluate(bundle, g, { only: new Set([wrapperId]), ...(scale ? { scale } : {}) });
-  return ev.candidates.find((c) => c.id === wrapperId) ?? null;
+  return { candidate: ev.candidates.find((c) => c.id === wrapperId) ?? null, field: ev.fields[wrapperId] };
 }
+
+// ---------------------------------------------------------------- the fields a run needs
+
+/** A number the page names when a run cannot go without it. */
+export type NeedField = "age" | "employment" | "insurance" | "salary" | "return";
+
+/**
+ * The field a missing input is, from the comparison's own reading (`evaluate`'s fields, which knows which pension or study-fund term
+ * was not built) and else from the engine's detail, so the page always names the field and never "one of the values" (2026-11-07:
+ * "instrument.pension is missing" matched none of the names).
+ */
+export function needFieldOf(detail: string, inferred?: FieldKey): NeedField | null {
+  if (inferred === "age" || inferred === "employment" || inferred === "insurance" || inferred === "salary" || inferred === "return") return inferred;
+  if (/\binsurance\b/.test(detail)) return "insurance";
+  if (/ageAtStart/.test(detail)) return "age";
+  if (/annualIncome|salary/i.test(detail)) return "salary";
+  if (/instrument\.(pension|hishtalmut)\b/.test(detail)) return "employment";
+  if (detail === "A-01") return "return";
+  return null;
+}
+
+export type FieldNeed = "required" | "optional" | null;
+
+/** The fields of the page's "more assumptions" for a wrapper, and which of them its run cannot go without. */
+export interface PageFields {
+  /** Required where the lawful exit is an age (the run must know whether it falls inside the years, B3); optional where an exit rule reads it. */
+  age: FieldNeed;
+  /** Required for the pension family (A-12: what is deposited and how it is relieved follow it); optional for a study fund, whose P-05 entry names one. */
+  employment: FieldNeed;
+  /** A-17, entered: the two pension funds; a provident fund for annuity has no pooled insurance (PEN-35). */
+  insurance: FieldNeed;
+}
+
+/** Wrappers where an exit or annuity rule reads the age, as the guide page asks it. */
+const AGE_WRAPPERS = new Set(["kupat-gemel-lehashkaa", "ira-provident"]);
+const STUDY_WRAPPERS = new Set(["keren-hishtalmut", "ira-hishtalmut"]);
+
+/**
+ * A holding's run (lib/holdings holdingPlan) does not stop for them: it reads the age when there is one, takes an employee when no
+ * employment is entered and no insurance when none is, so on a holding's page each is optional, the insurance hint saying so.
+ */
+export function pageFields(bundle: CompareBundle, wrapperId: string | null, holding = false): PageFields {
+  const w = wrapperId ? bundle.wrappers.find((x) => x.id === wrapperId) : undefined;
+  if (!w) return { age: null, employment: null, insurance: null };
+  const exitAge = w.record.lawful_exit?.kind === "at_age" && typeof w.record.lawful_exit.age?.value === "number";
+  const pension = w.family === "pension";
+  const need = (required: boolean, optional: boolean): FieldNeed => (required ? (holding ? "optional" : "required") : optional ? "optional" : null);
+  return {
+    age: need(exitAge, AGE_WRAPPERS.has(w.id)),
+    employment: need(pension, STUDY_WRAPPERS.has(w.id)),
+    insurance: need(pension && w.id !== "provident-for-annuity", false),
+  };
+}
+
+/** The wrapper whose fields the page offers: the subject's own, a track's from its record even when its run stops (2026-11-07, independent check: a pension track asked for fields its sheet did not have). */
+export function subjectWrapperId(subject: SubjectSpec, data: FeesData, holdingWrapper: string | null): string | null {
+  if (subject.kind === "wrapper") return subject.wrapperId;
+  if (subject.kind === "holding") return holdingWrapper;
+  return data.tracks.find((t) => t.id === subject.trackId)?.wrapperId ?? null;
+}
+
+/** Whether the fee page can answer for a wrapper at all: it has fee terms to run on. A guide links to it only then. */
+export const feePageAnswers = (bundle: CompareBundle, wrapperId: string): boolean => !!bundle.wrappers.find((w) => w.id === wrapperId)?.terms;
 
 /** The bundle with a track's two averages as the wrapper's fees. */
 export function withTrackFees(bundle: CompareBundle, wrapperId: string, track: TrackLite, data: FeesData): { bundle: CompareBundle; missing: string[] } | PlanError {
@@ -247,11 +318,14 @@ export function subjectRun(bundle: CompareBundle, wrapperId: string, g: RunGoal,
   const wrapper = bundle.wrappers.find((w) => w.id === wrapperId);
   if (!wrapper) return { kind: "no-wrapper" };
   if (!wrapper.terms) return { kind: "no-terms" };
-  const candidate = candidateOf(bundle, wrapperId, g, scale);
+  const { candidate, field } = candidateOf(bundle, wrapperId, g, scale);
   if (!candidate) return { kind: "no-wrapper" };
   if (!candidate.plan) {
     const r = candidate.reasons[0];
-    if (candidate.kind === "not-evaluated" && r?.code === "missing-input") return { kind: "need-input", detail: r.detail ?? "" };
+    if (candidate.kind === "not-evaluated" && r?.code === "missing-input") return { kind: "need-input", detail: r.detail ?? "", field: needFieldOf(r.detail ?? "", field) };
+    if (r?.code === "gap" && r.gapIds.includes("G-30") && g.monthly > 0) return { kind: "monthly-not-run", code: "G-30" };
+    // a gap is the method's, not the person's: its id, and a reason that does not send them to check what they entered
+    if (r?.code === "gap") return { kind: "no-run", code: r.gapIds[0] ?? "gap", messageHe: r3fees.review.gapFail };
     return { kind: "no-run", code: r?.code ?? candidate.kind };
   }
   const preTax = candidate.reasons.filter((r) => r.code === "exit-blocked").flatMap((r) => [...r.ruleIds, ...r.gapIds]);
@@ -272,9 +346,13 @@ const rateOf: Record<FeeLine, (p: RunPlan) => number | undefined> = {
   fx: (p) => {
     if (p.run !== "runSecurities") return undefined;
     const fx = p.input.tariff.fx as number | { rate: number } | undefined;
-    return typeof fx === "object" ? fx.rate : fx;
+    const rate = typeof fx === "object" ? fx.rate : fx;
+    // F-13 (D65): the spread is part of the conversion's price, and a rate set for the line replaces both (F-61)
+    return rate === undefined ? undefined : rate + (p.input.tariff.fxSpread ?? 0);
   },
   fixed: (p) => (p.run === "runSecurities" ? p.input.tariff.monthlyFee : undefined),
+  // F-102: the indices page alone counts a bank's current account; this page never runs it
+  account: (p) => (p.run === "runSecurities" ? p.input.tariff.currentAccount : undefined),
   spread: (p) => (p.run === "runSecurities" ? p.input.fund.halfSpread : undefined),
   fund: (p) => {
     if (p.run !== "runSecurities") return undefined;
@@ -290,12 +368,40 @@ export function lineRate(plan: RunPlan, line: FeeLine): number | undefined {
 }
 
 /** The lines a typed reduction applies to: a rate of a base, not a monthly sum. */
-export const reducible = (line: FeeLine) => line !== "fixed" && line !== "spread";
+export const reducible = (line: FeeLine) => line !== "fixed" && line !== "account" && line !== "spread";
 
 const feeKindOf: Partial<Record<FeeLine, FeeKind>> = { balance: "balance", deposit: "deposit", direct: "direct", fund: "fund", trade: "trade", custody: "custody" };
 
-const feeValueKey: Record<FeeLine, string | null> = { balance: "balance", deposit: "deposit", direct: "direct", trade: "tradeRate", custody: "custodyRate", fx: "fxRate", fixed: "monthlyFee", spread: "fundHalfSpread", fund: null, manager: "iraManagerFee" };
+const feeValueKey: Record<FeeLine, string | null> = { balance: "balance", deposit: "deposit", direct: "direct", trade: "tradeRate", custody: "custodyRate", fx: "fxRate", fixed: "monthlyFee", account: null, spread: "fundHalfSpread", fund: null, manager: "iraManagerFee" };
 const dragKeys = ["fundManagement", "fundVariable", "fundTrustee"] as const;
+
+/** A provident line's discount in the plan (A-19), if it has one. */
+function discountOf(plan: RunPlan, line: FeeLine): Discount | undefined {
+  if (plan.run !== "runProvident" && plan.run !== "runPension") return undefined;
+  const f = plan.input.fees;
+  return line === "balance" ? f.discount : line === "deposit" && "depositDiscount" in f ? f.depositDiscount : undefined;
+}
+
+/** The second period of a discounted line, from the plan's discount and the record's values behind it (A-19, F-16). One period serves both lines: the data check fails two that differ (`checkDiscountLines`). */
+function afterOf(wrapper: WrapperEntry, plan: RunPlan, line: FeeLine): LineView["after"] {
+  if (!discountOf(plan, line)) return undefined;
+  const rate = wrapper.feeValues[line === "balance" ? "afterBalance" : "afterDeposit"];
+  const months = wrapper.feeValues.discountMonths;
+  const years = wrapper.feeValues.discountYears;
+  if (!rate || (!months && !years)) return undefined;
+  return months ? { rate, period: months, unit: "months" } : { rate, period: years!, unit: "years" };
+}
+
+/** D86: how long a stated reduction on a provident or pension line holds, and what the line rises to after it (`LineView.held`). */
+function heldOf(plan: RunPlan, line: FeeLine, after: LineView["after"], rate: SiteValue | null, rules: Map<string, RuleRecord>, today: string): LineView["held"] {
+  if (plan.run !== "runProvident" && plan.run !== "runPension") return undefined;
+  if (line !== "balance" && line !== "deposit") return undefined;
+  if (after) return after;
+  if (!rate) return undefined;
+  const pf13 = rules.get("PF-13");
+  const years = pf13 ? ruleFigure(pf13, "min_discount_years", today) : null;
+  return years ? { rate, period: years, unit: "years" } : undefined;
+}
 
 function rateValue(wrapper: WrapperEntry, line: FeeLine, today: string): SiteValue | null {
   if (line === "fund") {
@@ -341,11 +447,17 @@ export type NoRefReason = "D20" | "isa-unconfirmed" | "tase-uncollected" | "G-14
 
 export interface ReferenceView {
   /** The mean, median, count and year, when F-68 gives them for this fee. */
-  cma?: { mean: SiteValue; median: SiteValue; count: SiteValue; year: SiteValue | null; classification: string; specialization: string; dataset: string; period: string };
+  cma?: { mean: SiteValue; count: SiteValue; year: SiteValue | null; classification: string; specialization: string; dataset: string; period: string };
   /** The track's own average, sourced, when it is not the rate itself. */
   ownAverage?: SiteValue;
   /** The authority's official class average (PF-39), beside the computed one. */
   official?: { value: SiteValue; year: string };
+  /**
+   * The class comes from a track the site chose (P-05) that is not the record the run prices (a company's list): the page says so plainly,
+   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude after the
+   * founder's sign-off of P-05, which does not cover it).
+   */
+  bySite?: { trackId: number; companyId: string; name: string; company: string };
   none?: { reason: NoRefReason; linkOut: LinkOut | null };
   stale: SiteValue["stale"];
 }
@@ -357,6 +469,8 @@ interface RefContext {
   today: string;
   rules: Map<string, RuleRecord>;
   mk: Factory;
+  /** The run prices the track P-05 names (its regulator averages), not another record such as a company's list or a holding's statement. */
+  recordIsTrack: boolean;
 }
 
 const officialFigure: Record<string, { balance: string; deposit?: string }> = {
@@ -410,7 +524,6 @@ function referenceBase(c: RefContext, line: FeeLine, rate: SiteValue | null): Re
     const view: ReferenceView = {
       cma: {
         mean: lift(stat.mean, stale, c.today),
-        median: lift(stat.median, stale, c.today),
         count: c.mk.count(stat.count, r3fees.referenceLine.tracksAfter),
         year: yearV,
         classification: t.classification,
@@ -420,6 +533,11 @@ function referenceBase(c: RefContext, line: FeeLine, rate: SiteValue | null): Re
       },
       stale,
     };
+    // a class from a track the run does not price: the site chose it, and that track's average is not the product's own
+    if (!c.track && !c.recordIsTrack) {
+      view.bySite = { trackId: t.id, companyId: t.companyId, name: t.name, company: t.company };
+      return view;
+    }
     const own = line === "balance" ? (tpl ? expandFee(t.b, { ...tpl.balance, stale }) : null) : tpl ? expandFee(t.d, { ...tpl.deposit, stale }) : null;
     if (own && own.value !== null && (rate === null || rate.value !== own.value)) view.ownAverage = own;
     return view;
@@ -430,7 +548,19 @@ function referenceBase(c: RefContext, line: FeeLine, rate: SiteValue | null): Re
 
 // ---------------------------------------------------------------- the analysis
 
-export type ReasonKind = "negotiate" | "avoid" | "below" | "no-reference" | "not-below" | "nothing-removes" | "avoid-and-below";
+/**
+ * Why a line has its verdict (D90 revised, 2026-11-07: the negotiate half judges what the cut to the average is worth). `negotiate-ends`: worth
+ * negotiating now, and the discount ends within the horizon; `check-after`: not worth it now, but the discount ends within the horizon and
+ * the fee can rise above the average then, so that is when to check again; `below`: the cut to the average is worth less than the threshold.
+ */
+export type ReasonKind = "negotiate" | "negotiate-ends" | "check-after" | "avoid" | "below" | "no-reference" | "not-below" | "nothing-removes";
+
+/** An option in the comparison that charges no fee of this type, or (`lower`) a lower rate of it. */
+export interface Alternative {
+  id: string;
+  name: string;
+  lower: boolean;
+}
 
 export interface LineView {
   line: FeeLine;
@@ -443,12 +573,31 @@ export interface LineView {
   verdict: "negotiate" | "avoid" | "not-worth";
   reason: ReasonKind;
   avoidEvaluated: boolean;
-  removedBy: { id: string; name: string }[];
+  /** The alternatives that rank above the subject (`outrankingOf`): the options the avoid test reads and the card names under "avoid". */
+  removedBy: Alternative[];
+  /** Every alternative, ranked above or not (`alternativesOf`): the card keeps the room of their line whatever the ranking (D63). */
+  alternatives: Alternative[];
   reference: ReferenceView;
   cap: CapView;
-  /** The suggestion for the reduction field, in percent. */
+  /** The suggestion for the reduction field, in percent: the class mean as shown, offered only where it is below the rate charged now. */
   suggestion: number | null;
+  /** F-61's value of bringing the fee to `suggestion`, real NIS: the figure the negotiate test reads (D90 revised); 0 with no suggestion. */
+  worthNis: number;
+  /** The discount ends within the horizon and the rate after it is above the average: the fee can rise above it then (D88, D90), whatever the verdict. */
+  risesAbove: boolean;
   detail: FeeVerdict;
+  /**
+   * A discounted line's second period (A-19, F-16): the rate it may rise to and how long the discount lasts, the printed months when the
+   * company gives longer than PF-13's minimum, else PF-13's years. Absent for a line that is one rate the whole run.
+   */
+  after?: { rate: SiteValue; period: SiteValue; unit: "years" | "months" };
+  /**
+   * D86: how long a stated reduction holds and the rate the line returns to after it: a discounted line's own period and rate after it, or on
+   * a provident or pension line with no discount PF-13's years and the line's own rate. Absent where a reduction is one rate for the whole run.
+   */
+  held?: { rate: SiteValue; period: SiteValue; unit: "years" | "months" };
+  /** The rate the verdict judges, as a fraction, when it is not `rateFraction`: the rate after a discount that ends within the horizon (D88). */
+  judgedFraction?: number;
 }
 
 export interface Analysis {
@@ -482,13 +631,6 @@ export function ranksOf(entries: { id: string }[], tieSet: readonly string[]): C
   return Object.fromEntries(entries.map((e, i) => [e.id, { rank: group[i]! + 1, tied: group.filter((g) => g === group[i]).length > 1 }]));
 }
 
-/**
- * Presentation rule over P-03 (A9, lead decision 4c): P-03 judges the fee's cost, the ranking judges the net result, and both
- * are right. When the saved goal ranks the product first, the "avoid" badge is worded as a relative statement; the verdict
- * itself, its threshold and its reason are unchanged.
- */
-export const softensAvoid = (verdict: LineView["verdict"], place: { rank: number } | null) => verdict === "avoid" && place?.rank === 1;
-
 /** What the fee page says about the subject's place in the saved goal's comparison (A9): null when it is not ranked there. */
 export function rankedFor(set: ComparisonSet | null, wrapperId: string): { rank: number; tied: boolean } | null {
   return set?.ranks[wrapperId] ?? null;
@@ -507,28 +649,59 @@ export function comparisonFor(bundle: CompareBundle, goalG: RunGoal | null, goal
 /**
  * The sentence above the chart (A18): the fee that is worth the most to bring down to the authority's average, and what
  * that is worth over the horizon (F-61's valueOfReduction, the same figure as the "אם יורידו ל־" field); or, when no fee is
- * above its average, the plain statement that none is. null when no fee has an average to compare with.
+ * above its average, the plain statement that none is, or that none is now but one is worth negotiating once its discount ends
+ * (`after`). null when no fee has an average to compare with.
  */
-export function headlineGap(an: Analysis): { kind: "more"; line: FeeLine; worth: SiteValue } | { kind: "less" } | null {
-  let best: { line: FeeLine; worth: SiteValue; nis: number } | null = null;
+export function headlineGap(an: Analysis): { kind: "more"; line: FeeLine; worth: SiteValue; held?: LineView["held"] } | { kind: "less" } | { kind: "after" } | null {
+  let best: { line: FeeLine; worth: SiteValue; nis: number; held?: LineView["held"] } | null = null;
   let anyReference = false;
+  let after = false;
   for (const l of an.lines) {
-    if (l.suggestion === null || l.rateFraction === undefined) continue;
+    if (!l.reference.cma || l.rateFraction === undefined || !reducible(l.line)) continue;
     anyReference = true;
+    // a fee whose discount ends within the period and can rise above the average then (D88, D90): "not above average" alone would contradict its card
+    // keyed on the line, not its reason: a line "worth avoiding" can rise above the average too (finance review, 2026-11-07)
+    if (l.risesAbove) after = true;
+    // the average is not below the rate charged now: nothing to bring down (D90)
+    if (l.suggestion === null) continue;
     const worth = reductionWorth(an, l.line, l.suggestion);
-    if (worth && typeof worth.value === "number" && (!best || worth.value > best.nis)) best = { line: l.line, worth, nis: worth.value };
+    if (worth && typeof worth.value === "number" && (!best || worth.value > best.nis)) best = { line: l.line, worth, nis: worth.value, ...(l.held ? { held: l.held } : {}) };
   }
-  if (best) return { kind: "more", line: best.line, worth: best.worth };
-  return anyReference ? { kind: "less" } : null;
+  // a reduction holds only through the discount period (D86): the sentence says so, as the field does, so its figure never reads as every year's (D90)
+  if (best) return { kind: "more", line: best.line, worth: best.worth, ...(best.held ? { held: best.held } : {}) };
+  return after ? { kind: "after" } : anyReference ? { kind: "less" } : null;
 }
 
-/** Whether another option in the comparison charges no fee of this type (F-62's "removes it"): ranked or listed with a run, not the subject itself. */
-export function removedByOf(set: ComparisonSet | null, subjectId: string, line: FeeLine, names: Record<string, string>): { id: string; name: string }[] {
+/**
+ * The options in the comparison that charge no fee of this type, or a lower rate of it (F-62's alternatives): ranked or listed with a run,
+ * not the subject itself. Every one of them, so the card can hold the room of the longest list whatever the ranking (D63).
+ */
+export function alternativesOf(set: ComparisonSet | null, subjectId: string, line: FeeLine, names: Record<string, string>, subjectRate: number | undefined, rateOf: (plan: RunPlan) => number | undefined = (p) => lineRate(p, line)): Alternative[] {
   if (!set) return [];
-  return set.candidates
-    .filter((c) => c.tier === 1 && c.id !== subjectId && c.plan && c.run && (c.kind === "ranked" || c.kind === "listed-not-ranked"))
-    .filter((c) => !feeLines(c.plan!).includes(line))
-    .map((c) => ({ id: c.id, name: names[c.id] ?? c.id }));
+  const out: Alternative[] = [];
+  for (const c of set.candidates) {
+    if (c.tier !== 1 || c.id === subjectId || !c.plan || !c.run || (c.kind !== "ranked" && c.kind !== "listed-not-ranked")) continue;
+    const without = !feeLines(c.plan).includes(line);
+    // on the same footing as the subject's (finance review, 2026-11-07): the rate after a discount that ends within the horizon, not the 0% during it
+    const theirs = without ? undefined : rateOf(c.plan);
+    const lower = !without && subjectRate !== undefined && theirs !== undefined && theirs < subjectRate - 1e-12;
+    if (without || lower) out.push({ id: c.id, name: names[c.id] ?? c.id, lower });
+  }
+  return out;
+}
+
+/**
+ * D90 revised the same day (lead, 2026-11-07): "worth avoiding" only when there is something better to pick. Of the alternatives, those
+ * that rank above the subject on the page's own comparison for the same plan: a better place, never a shared one. A subject the comparison
+ * lists without a place is below every ranked option. Readers saw "avoid" on the option ranked first and asked what to pick instead.
+ */
+export function outrankingOf(set: ComparisonSet | null, subjectId: string, alternatives: Alternative[]): Alternative[] {
+  if (!set) return [];
+  const own = set.ranks[subjectId];
+  return alternatives.filter((o) => {
+    const theirs = set.ranks[o.id];
+    return theirs !== undefined && (own === undefined || theirs.rank < own.rank);
+  });
 }
 
 export function ruleMap(bundle: CompareBundle, data: FeesData): Map<string, RuleRecord> {
@@ -542,16 +715,26 @@ export function contextFor(bundle: CompareBundle, rules: Map<string, RuleRecord>
   return { rules: [...rules.values()], runDate: bundle.runDate };
 }
 
-function verdictOf(args: { costNis: number; rate: number | undefined; ref: number | null; total: number; removed: boolean; thresholds: FeeThresholds }) {
-  return feeVerdict({ nis: args.costNis, ...(args.rate !== undefined ? { currentRate: args.rate } : {}), totalDrag: args.total, removedByAlternative: args.removed }, args.ref === null ? null : { rate: args.ref }, args.thresholds);
+function verdictOf(args: { costNis: number; worthNis: number; rate: number | undefined; ref: number | null; total: number; removed: boolean; thresholds: FeeThresholds }) {
+  return feeVerdict({ nis: args.costNis, worthNis: args.worthNis, ...(args.rate !== undefined ? { currentRate: args.rate } : {}), totalDrag: args.total, removedByAlternative: args.removed }, args.ref === null ? null : { rate: args.ref }, args.thresholds);
 }
 
+/**
+ * The reference the verdict, the reduction field and the words all use (one measure, 2026-11-07): the F-68 class mean as the page shows
+ * it, in percent. The card showed a median beside the mean, and a study fund's median equal to its fee read as "the fee is normal" while
+ * the verdict compared with the mean.
+ */
+const meanShown = (reference: ReferenceView): number | null => (reference.cma && typeof reference.cma.mean.value === "number" ? fmt.pctShown(reference.cma.mean.value) : null);
+
+/** The reduction field's suggestion: the mean as shown, only where it is below the rate charged now (D90). */
+const suggestionOf = (line: FeeLine, ref: number | null, frac: number | undefined): number | null => (ref !== null && frac !== undefined && reducible(line) && ref < frac * 100 - 1e-9 ? ref : null);
+
+/** What bringing the line to the suggestion is worth (F-61's value of a stated reduction), real NIS; 0 with nothing to bring down. */
+const worthOf = (plan: RunPlan, line: FeeLine, suggestion: number | null, ctx: RunContext): number => (suggestion === null ? 0 : (valueOfReduction(plan, line, suggestion / 100, ctx).value.value as number));
+
+/** A line that is not worth negotiating or avoiding: the negotiate half's reason first, since that is what the card's reader decides. */
 function reasonOf(v: FeeVerdict, hasComparison: boolean, removedAny: boolean, refExists: boolean): ReasonKind {
-  if (v.verdict === "worth-negotiating") return "negotiate";
-  if (v.verdict === "worth-avoiding") return "avoid";
-  if (v.reasons.includes("cost-below-negotiate-threshold") && v.reasons.includes("cost-below-avoid-threshold")) return "below";
-  if (!v.reasons.includes("cost-below-avoid-threshold") && hasComparison && !removedAny) return "nothing-removes";
-  if (!refExists) return "no-reference";
+  if (!refExists) return !v.reasons.includes("cost-below-avoid-threshold") && hasComparison && !removedAny ? "nothing-removes" : "no-reference";
   if (v.reasons.includes("reference-not-below-current")) return "not-below";
   return "below";
 }
@@ -583,15 +766,30 @@ export function analyse(a: AnalyseArgs): Analysis {
   const total = fm.total.value as number;
   const today = a.runBundle.runDate;
   const run = { rules: fm.run.rules, flags: fm.run.flags, labels: fm.run.labels };
-  const refCtx: RefContext = { data: a.data, wrapperId: a.wrapper.id, track: a.track, today, rules, mk };
+  const refW = a.runBundle.wrappers.find((x) => x.id === a.wrapper.id) ?? a.wrapper;
+  const refCtx: RefContext = { data: a.data, wrapperId: a.wrapper.id, track: a.track, today, rules, mk, recordIsTrack: a.rates === undefined && refW.feeValues.regBalance !== undefined };
   const lines: LineView[] = fm.lines.map((l): LineView => {
-    const rate = a.rates?.[l.line] ?? rateValue(a.runBundle.wrappers.find((w) => w.id === a.wrapper.id) ?? a.wrapper, l.line, today);
+    const w = a.runBundle.wrappers.find((x) => x.id === a.wrapper.id) ?? a.wrapper;
+    const rate = a.rates?.[l.line] ?? rateValue(w, l.line, today);
+    const afterW = afterOf(w, a.plan, l.line);
     const frac = lineRate(a.plan, l.line);
     const reference = referenceFor(refCtx, l.line, rate);
-    const refFraction = reference.cma ? (reference.cma.mean.value as number) / 100 : null;
-    const removedBy = removedByOf(a.comparison, a.wrapper.id, l.line, a.names);
+    const refShown = meanShown(reference);
+    const refFraction = refShown !== null ? refShown / 100 : null;
+    // the field's figure: the verdict judges what bringing the fee to the average is worth, not what the fee costs (D90 revised, 2026-11-07)
+    const suggestion = suggestionOf(l.line, refShown, frac);
+    const worthNis = worthOf(a.plan, l.line, suggestion, ctx);
     const costNis = l.cost.value as number;
-    const detail = verdictOf({ costNis, rate: frac, ref: refFraction, total, removed: removedBy.length > 0, thresholds });
+    // F-62 (D88): a discount that ends within the horizon is judged by the rate after it, not the 0% charged during it; the card then says
+    // when it ends and the fee can rise, since a reduction agreed now holds only through the discount (D86) and is worth only that (D90)
+    const judged = rateAfterDiscount(a.plan, l.line, fm.run.exitMonth, ctx);
+    const alternatives = alternativesOf(a.comparison, a.wrapper.id, l.line, a.names, judged ?? frac, (p) => rateAfterDiscount(p, l.line, fm.run.exitMonth, ctx) ?? lineRate(p, l.line));
+    const removedBy = outrankingOf(a.comparison, a.wrapper.id, alternatives);
+    const detail = verdictOf({ costNis, worthNis, rate: judged ?? frac, ref: refFraction, total, removed: removedBy.length > 0, thresholds });
+    // the fee can rise above the average when the discount ends: that is when to check again (D90 revised)
+    const risesAbove = judged !== null && afterW !== undefined && refFraction !== null && refFraction < judged;
+    const cap = capOf(a.plan, l.line, ctx, rules, today);
+    const held = heldOf(a.plan, l.line, afterW, rate, rules, today);
     const without = l.cost.computed_from?.inputs.real_value_without_fee as number;
     const cost = mk.nis(costNis, "F-61", `${r3fees.names[l.line]}: ${r3fees.costIn.trim()}`, run, {
       "השווי בלי העמלה הזו": mk.nis(without, "F-06", "השווי בכסף של היום, בלי העמלה הזו", run),
@@ -608,13 +806,29 @@ export function analyse(a: AnalyseArgs): Analysis {
       costNis,
       share: total > 0 ? costNis / total : null,
       verdict,
-      reason: reasonOf(detail, hasComparison, removedBy.length > 0, refFraction !== null),
+      reason:
+        detail.verdict === "worth-negotiating"
+          ? risesAbove
+            ? "negotiate-ends"
+            : "negotiate"
+          : detail.verdict === "worth-avoiding"
+            ? "avoid"
+            : risesAbove
+              ? "check-after"
+              : reasonOf(detail, hasComparison, alternatives.some((o) => !o.lower), refFraction !== null),
       avoidEvaluated: hasComparison || costNis < thresholds.avoidNis,
       removedBy,
+      alternatives,
       reference,
-      cap: capOf(a.plan, l.line, ctx, rules, today),
-      suggestion: reference.cma && frac !== undefined && reducible(l.line) ? fmt.pctShown(reference.cma.mean.value as number) : null,
+      cap,
+      // the average is offered only where it is a reduction of the rate charged now: a field filled with "זו לא הורדה" contradicts the verdict (D90)
+      suggestion,
+      worthNis,
+      risesAbove,
       detail,
+      ...(afterW ? { after: afterW } : {}),
+      ...(held ? { held } : {}),
+      ...(judged !== null ? { judgedFraction: judged } : {}),
     };
   });
   const th = (name: "negotiate_nis" | "avoid_nis") => asParameter(a.data.p03, thresholds.values[name]);
@@ -650,7 +864,10 @@ export function reductionWorth(an: Analysis, line: FeeLine, toPct: number): Site
   if (!l || l.rateFraction === undefined || !(toPct >= 0) || toPct / 100 >= l.rateFraction) return null;
   const r = valueOfReduction(an.plan, line, toPct / 100, an.ctx);
   const to = enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם");
-  return an.mk.nis(r.value.value as number, "F-61", `${r3fees.names[line]}: ${r3fees.reduction.label}`, { rules: an.fm.run.rules, flags: an.fm.run.flags, labels: an.fm.run.labels }, { [r3fees.reduction.label.trim()]: to, ...(l.rate ? { [r3fees.names[line]!]: l.rate } : {}) });
+  // the changed run's flags too: a held rate can give a plan a discount, and with it PF OQ18's open reading (D87; finance review, 2026-11-07)
+  const flags = [...an.fm.run.flags, ...r.flags.filter((f) => !an.fm.run.flags.some((g) => g.code === f.code))];
+  const labels = [...an.fm.run.labels, ...r.labels.filter((x) => !an.fm.run.labels.some((y) => y.code === x.code && y.ruleId === x.ruleId))];
+  return an.mk.nis(r.value.value as number, "F-61", `${r3fees.names[line]}: ${r3fees.reduction.label}`, { rules: an.fm.run.rules, flags, labels }, { [r3fees.reduction.label.trim()]: to, ...(l.rate ? { [r3fees.names[line]!]: l.rate } : {}) });
 }
 
 // ---------------------------------------------------------------- sensitivity (F-81 on the fee page)
@@ -664,6 +881,10 @@ export interface FeeSensRow {
   hi: number;
   /** For a fee axis: the current rate in percent, to show the multiplier as a rate. */
   ratePct?: number;
+  /** For a discounted fee axis: the rate it may rise to after the discount, in percent; the multiplier moves both (F-81, A-19). */
+  afterPct?: number;
+  /** For a fee axis with a legal cap (PF-02): the cap in percent; the run never charges above it, so the page never shows above it. */
+  capPct?: number;
   field: "return" | "inflation" | "horizonYears" | null;
   flip?: { from: number; to: number; side: "lo" | "hi"; kind: "verdict" | "largest"; line?: FeeLine; newVerdict?: LineView["verdict"]; newLargest?: FeeLine };
 }
@@ -671,7 +892,28 @@ export interface FeeSensRow {
 export interface FeeSensitivity {
   rows: FeeSensRow[];
   noFlip: boolean;
+  /** Per line not worth negotiating now: the amount today or the horizon at which the cut to the average reaches the threshold (`reachOf`). */
+  reach: Partial<Record<FeeLine, FeeReach>>;
 }
+
+/**
+ * What would make a cut worth negotiating (fresh readers, 2026-11-07: "the page never says what would push the 108 ₪ above 1,000 ₪"): the
+ * smallest amount today, in a round sum, and the fewest whole years, each with every other number as it is, at which F-61's value of
+ * bringing the fee to the average reaches the negotiate threshold. Absent where none is found within the bounds searched.
+ */
+export interface FeeReach {
+  amountNow?: number;
+  horizonYears?: number;
+}
+
+/** A round sum a reader means, up from `x`: to 500 ₪ under 10,000, 1,000 under 100,000, 10,000 under a million, then 100,000. */
+export const roundSumUp = (x: number) => {
+  const step = x < 10_000 ? 500 : x < 100_000 ? 1_000 : x < 1_000_000 ? 10_000 : 100_000;
+  return Math.ceil(x / step - 1e-9) * step;
+};
+
+/** The longest horizon and the largest amount the reach search tries: past them the line says nothing. */
+export const REACH_LIMITS = { years: 40, amountNow: 10_000_000 };
 
 function signature(lines: { line: FeeLine; costNis: number; verdict: string }[]): string {
   const largest = [...lines].sort((a, b) => b.costNis - a.costNis)[0]?.line ?? "";
@@ -692,15 +934,20 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
   const thresholds = base.thresholds.values;
   const g = a.inputs.g;
   const wrapperId = a.wrapper.id;
-  const scalable = a.noFeeAxes ? [] : base.lines.filter((l) => feeKindOf[l.line] && l.rateFraction !== undefined && l.rateFraction > 0);
+  // a line at 0% whose discount reverts to a positive rate moves too: the multiplier scales both of its periods (A-19)
+  const scalable = a.noFeeAxes ? [] : base.lines.filter((l) => feeKindOf[l.line] && l.rateFraction !== undefined && (l.rateFraction > 0 || l.after !== undefined));
   const p05 = parameterOf(runBundle, "P-05");
   const inflationNow = g.inflationPct ?? ((p05 as unknown as { inputs: Record<string, ValueObject> }).inputs["A-02"]!.value as number);
+  const floor = horizonFloorOf(runBundle);
   const axes = sensitivityAxes(runBundle.parameters, {
     current: { "A-01": (g.returnPct ?? 0) / 100, "A-02": inflationNow / 100 },
     horizonYears: g.horizonYears,
+    ...(floor !== undefined ? { horizonMinYears: floor } : {}),
     fees: scalable.map((l) => ({ key: l.line, label: r3fees.names[l.line]! })),
   });
-  for (const ax of axes) ax.label = ax.key === "A-01" ? r3fees.sens.axes.ret : ax.key === "A-02" ? r3fees.sens.axes.inflation : ax.key === "horizon" ? r3fees.sens.axes.years : `${ax.label}${r3fees.sens.feeAxis}`;
+  // a fee at 0% during its discount moves only after it (A-19): the row is named for the rate after the discount
+  const zeroUntilAfter = (key: string) => scalable.some((l) => `fee:${l.line}` === key && l.rateFraction === 0 && l.after !== undefined);
+  for (const ax of axes) ax.label = ax.key === "A-01" ? r3fees.sens.axes.ret : ax.key === "A-02" ? r3fees.sens.axes.inflation : ax.key === "horizon" ? r3fees.sens.axes.years : `${ax.label}${zeroUntilAfter(ax.key) ? r3fees.sens.afterAxis : ""}`;
   const totalFor = (fm: FeeMateriality) => fm.total.value as number;
   const topOf = (key: string, value: number): string => {
     const goal: RunGoal = { ...g };
@@ -728,19 +975,31 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
       const costNis = l.cost.value as number;
       const frac = lineRate(r.plan, l.line);
       const baseLine = base.lines.find((x) => x.line === l.line);
-      const ref = baseLine?.reference.cma ? (baseLine.reference.cma.mean.value as number) / 100 : null;
-      const v = verdictOf({ costNis, rate: frac, ref, total: totalFor(fm), removed: (baseLine?.removedBy.length ?? 0) > 0, thresholds });
+      const refShown = baseLine ? meanShown(baseLine.reference) : null;
+      const ref = refShown !== null ? refShown / 100 : null;
+      // the rate the card judges (D88, D90): a discount that ends within the moved horizon is judged by the rate after it, so a flip is one the card would show
+      // both are held at the line's regulated cap, the most the run charges, when the multiplier scales a rate past it (F-11, F-15)
+      const judged = rateAfterDiscount(r.plan, l.line, fm.run.exitMonth, base.ctx);
+      const cap = feeCap(r.plan, l.line, base.ctx)?.rate;
+      const now = frac !== undefined && cap !== undefined ? Math.min(frac, cap) : frac;
+      // the card's test: what bringing the fee charged now to the average is worth (D90 revised), on the moved plan
+      const worthNis = worthOf(r.plan, l.line, suggestionOf(l.line, refShown, now), base.ctx);
+      const v = verdictOf({ costNis, worthNis, rate: judged ?? now, ref, total: totalFor(fm), removed: (baseLine?.removedBy.length ?? 0) > 0, thresholds });
       return { line: l.line, costNis, verdict: v.verdict === "worth-negotiating" ? "negotiate" : v.verdict === "worth-avoiding" ? "avoid" : "not-worth" };
     });
     return signature(rows);
   };
   const s = sensitivity(axes, topOf);
+  const reach = reachOf(a, base, runBundle);
   const baseSig = parseSignature(s.baseTop ?? "");
   const rows: FeeSensRow[] = s.rows.map((r) => {
     const sides = (["lo", "hi"] as const).filter((x) => r[x].flips).map((side) => ({ side, to: r[side].flipsAt!, after: r[side].topAfter ?? "" }));
     const best = sides.sort((x, y) => Math.abs(x.to - r.current) - Math.abs(y.to - r.current))[0];
     const feeLine = r.key.startsWith("fee:") ? (r.key.slice(4) as FeeLine) : null;
     const feeRate = feeLine ? base.lines.find((l) => l.line === feeLine)?.rateFraction : undefined;
+    const afterRate = feeLine ? discountOf(base.plan, feeLine)?.listRate : undefined;
+    const cap = feeLine ? base.lines.find((l) => l.line === feeLine)?.cap : undefined;
+    const capPct = cap?.state === "sourced" && typeof cap.rate.value === "number" ? cap.rate.value : undefined;
     const row: FeeSensRow = {
       key: r.key,
       label: r.label,
@@ -750,6 +1009,8 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
       hi: r.hi.bound,
       field: r.key === "A-01" ? "return" : r.key === "A-02" ? "inflation" : r.key === "horizon" ? "horizonYears" : null,
       ...(feeRate !== undefined ? { ratePct: feeRate * 100 } : {}),
+      ...(afterRate !== undefined ? { afterPct: afterRate * 100 } : {}),
+      ...(capPct !== undefined ? { capPct } : {}),
     };
     if (best) {
       const after = parseSignature(best.after);
@@ -764,7 +1025,74 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
     if (x.flip && y.flip) return Math.abs(x.flip.to - x.flip.from) / Math.abs(x.flip.from || 1) - Math.abs(y.flip.to - y.flip.from) / Math.abs(y.flip.from || 1);
     return 0;
   });
-  return { rows, noFlip: s.noFlip };
+  return { rows, noFlip: s.noFlip, reach };
+}
+
+/**
+ * F-61 searched (`FeeReach`): for each line not worth negotiating now with a cut to ask for, the amount today at which the cut is worth
+ * the threshold, from two runs (the worth grows in a straight line with the amount; a holding's balance is its own, so it is not moved),
+ * then checked on the round sum; and the fewest whole years up to `REACH_LIMITS.years` by halving, the worth growing with the years.
+ */
+export function reachOf(a: AnalyseArgs, base: Analysis, runBundle: CompareBundle): Partial<Record<FeeLine, FeeReach>> {
+  const T = base.thresholds.values.negotiateNis;
+  const g = a.inputs.g;
+  const targets = base.lines.filter((l) => l.verdict === "not-worth" && (l.reason === "below" || l.reason === "check-after") && l.suggestion !== null && l.worthNis > 0 && l.worthNis < T);
+  if (targets.length === 0) return {};
+  const planFor = (goal: RunGoal): RunPlan | null => {
+    try {
+      if (a.replan) return a.replan(goal);
+      const r = subjectRun(runBundle, a.wrapper.id, goal);
+      return "kind" in r ? null : r.plan;
+    } catch {
+      return null;
+    }
+  };
+  const worth = (plan: RunPlan | null, l: LineView): number => {
+    if (!plan) return 0;
+    try {
+      return worthOf(plan, l.line, l.suggestion, base.ctx);
+    } catch {
+      return 0;
+    }
+  };
+  const out: Partial<Record<FeeLine, FeeReach>> = {};
+  for (const l of targets) out[l.line] = {};
+  // the amount today: a straight line through two runs, then the round sum checked, and raised a tenth at a time up to three times
+  if (!a.inputs.fixed?.includes("amountNow") && g.amountNow !== null) {
+    const a0 = g.amountNow;
+    const a1 = a0 > 0 ? a0 * 2 : 50_000;
+    const p1 = planFor({ ...g, amountNow: a1 });
+    for (const l of targets) {
+      const k = (worth(p1, l) - l.worthNis) / (a1 - a0);
+      if (!(k > 0)) continue;
+      let at = roundSumUp(a0 + (T - l.worthNis) / k);
+      for (let tries = 0; tries < 3 && at <= REACH_LIMITS.amountNow; tries++) {
+        if (worth(planFor({ ...g, amountNow: at }), l) >= T) {
+          out[l.line]!.amountNow = at;
+          break;
+        }
+        at = roundSumUp(at * 1.1);
+      }
+    }
+  }
+  // the horizon: the fewest whole years past the one entered, by halving, where the worth at the longest horizon searched reaches it
+  if (g.horizonYears !== null && g.horizonYears < REACH_LIMITS.years) {
+    const at = (years: number) => planFor({ ...g, horizonYears: years });
+    const cache = new Map<number, RunPlan | null>();
+    const planAt = (years: number) => (cache.has(years) ? cache.get(years)! : (cache.set(years, at(years)), cache.get(years)!));
+    for (const l of targets) {
+      if (worth(planAt(REACH_LIMITS.years), l) < T) continue;
+      let lo = g.horizonYears;
+      let hi = REACH_LIMITS.years;
+      while (hi - lo > 1) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (worth(planAt(mid), l) >= T) hi = mid;
+        else lo = mid;
+      }
+      out[l.line]!.horizonYears = hi;
+    }
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------- the whole page
@@ -885,7 +1213,9 @@ export function buildFees(bundle: CompareBundle, data: FeesData, subject: Subjec
     const spec = (parameterOf(bundle, "P-05") as unknown as { instruments?: Record<string, { employment?: "employee" | "self-employed" }> }).instruments?.[wrapperId];
     if (spec?.employment) inputs = { ...inputs, g: { ...inputs.g, employment: spec.employment } };
   }
-  const comparison = comparisonFor(bundle, inputs.goalG ?? inputs.g, goalName);
+  // a track runs at its own fees in the comparison too (finance review, 2026-11-07): its place, and so "is anything better above it", is its own,
+  // not the place of the site's sample track for the product
+  const comparison = comparisonFor(runBundle, inputs.goalG ?? inputs.g, goalName);
 
   const run = (() => {
     try {

@@ -3,8 +3,8 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import type { SiteValue } from "../lib/value";
-import { Num, NumberLegend, ProvenanceProvider, ValueSheet } from "./provenance";
+import { computed, type SiteValue } from "../lib/value";
+import { inputRuns, Num, NumberLegend, ProvenanceProvider, ValueSheet } from "./provenance";
 import { FeeFigure } from "./kit";
 
 const fee = (extra: Partial<SiteValue> = {}): SiteValue => ({
@@ -46,6 +46,24 @@ describe("the sheet", () => {
   });
   it("an out-of-context figure keeps the amber block", () => {
     expect(sheet(fee())).toContain("לפי החברה");
+  });
+  // fresh readers, 2026-11-07: a gap's sheet printed the same report under each year's two figures, put its definition last, and dropped the sign
+  it("names a document once under the inputs read from it in a row, and again only where the next input comes from elsewhere", () => {
+    const other = fee({ own: "הראל", source: { url: "https://example.org/other.pdf", title: "מסמך אחר", publisher: "הראל", strength: "institution" } });
+    const inputs = { a: fee({ own: "הראל" }), b: fee({ own: "הראל", value: 1 }), c: other, d: fee({ own: "הראל", value: 2 }) };
+    expect(inputRuns(inputs).map((x) => x.closes)).toEqual([0, 2, 1, 1]);
+    // the same document at another page is another place
+    const paged = fee({ own: "הראל", source: { ...fee().source, page: 2 } as SiteValue["source"] });
+    expect(inputRuns({ a: fee({ own: "הראל" }), b: paged }).map((x) => x.closes)).toEqual([1, 1]);
+    const html = sheet(computed(0.37, "pct_per_year", "F-92", inputs, { today: "2026-11-07", lead: "מה המספר אומר", signed: true }));
+    expect(html.split("הדוח של הראל על הקרן").length - 1).toBe(2);
+    expect(html.split("מסמך אחר").length - 1).toBe(1);
+  });
+  it("heads a signed figure with its sign and says what it means before the formula", () => {
+    const html = sheet(computed(0.37, "pct_per_year", "F-92", { a: fee({ own: "הראל" }) }, { today: "2026-11-07", lead: "מה המספר אומר", signed: true }));
+    expect(html).toContain("+0.37%");
+    expect(html.indexOf("מה המספר אומר")).toBeLessThan(html.indexOf("F-92"));
+    expect(sheet(computed(-0.37, "pct_per_year", "F-92", {}, { today: "2026-11-07", signed: true }))).toContain("−0.37%");
   });
 });
 

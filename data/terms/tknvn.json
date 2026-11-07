@@ -1,0 +1,22 @@
+{
+  "id": "tknvn",
+  "he": "תקנון",
+  "en": null,
+  "meaning": "המסמך המחייב של קופת גמל או קרן, שקובע את הכללים שלה; הממונה על שוק ההון מאשר אותו",
+  "where": [],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "pension-comprehensive"
+  ],
+  "variants": [
+    "תקנון הקופה"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+    "title": "קובץ התקנות 6657, תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, עמוד 4",
+    "publisher": "Reshumot (Ministry of Justice)",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

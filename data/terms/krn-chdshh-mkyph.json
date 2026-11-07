@@ -17,7 +17,9 @@
   "variants": [
     "קרן פנסיה מקיפה חדשה",
     "קרן פנסיה חדשה מקיפה",
-    "קרנות חדשות"
+    "קרנות חדשות",
+    "קרן פנסיה מקיפה",
+    "פנסיה מקיפה"
   ],
   "rule_ids": [
     "PEN-08",
@@ -29,7 +31,7 @@
     "REG-21"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+    "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=3",
     "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
     "publisher": "see title",
     "strength": "primary",

@@ -1,0 +1,36 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 makes a similar category complaint about the exposures list, but it is about the money market fund being called a product, not about the general track being a mix, so it is not the same problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166674
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 points out the same kind of category mistake in the exposures list, but it is about the money market fund being a product, not about the 'general track' being a mix rather than one kind of investment, so no finding names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0174074
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0340748
+}

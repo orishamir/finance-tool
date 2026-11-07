@@ -52,7 +52,6 @@ export const r2Expected = {
     brokerageReal: 572_640.51,
     brokerageNominal: 938_338.16,
     kglReal: 630_640.9,
-    kglAltReal: 629_850.66,
     /** Fee drag (real, V without fees minus V): brokerage and kupat gemel lehashkaa; tax at exit likewise. */
     feeDragBrokerage: 113_833.04,
     feeDragKgl: 55_832.65,
@@ -99,8 +98,8 @@ export const r3Expected = {
     balanceFee: 17_901.59,
     directExpenses: 2_587.05,
     interaction: 176.15,
-    /** Cutting the balance fee from 0.74% to 0.34%. */
-    reduction: 9_530.01,
+    /** Cutting the balance fee from 0.74% to 0.34% for PF-13's five years, then back to 0.74% (D86, 2026-11-07; was 9,530.01 for all ten years). */
+    reduction: 3_991.56,
   },
   s43: {
     custody: 5_032.56,

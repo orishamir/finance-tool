@@ -62,6 +62,9 @@ export function buildWorkbenchBundle(): WorkbenchBundle {
   const fundLists = loadFundLists();
   const allRules = loadRules();
   const needed = collectRuleIds({ snapshots, funds, exposures });
+  // A-19: the provident cards say how long a discount lasts, PF-13's minimum, and when it ends earlier (PF-14)
+  needed.add("PF-13");
+  needed.add("PF-14");
   const rules: RuleRecord[] = Object.values(allRules).filter((r) => needed.has(r.id) || families.some((f) => r.id.startsWith(f)));
   const { providerCompany, wrapperCompanies } = companyLinks(snapshots);
   const fx = loadFx();

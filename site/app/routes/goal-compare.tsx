@@ -17,21 +17,21 @@ import type { ResultCtx } from "../components/compare/ctx";
 import { CoverageLine } from "../components/compare/coverage";
 import { type FormData } from "../components/compare/goal-form";
 import { AvailableCard, ListedRow, RankedRow } from "../components/compare/rows";
-import { useFlip } from "../components/kit";
+import { useFlip, When } from "../components/kit";
 import { ReasonLines } from "../components/compare/reasons";
 import { SensitivityPanel } from "../components/compare/sensitivity";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, PastRecordLine, WhyHeadline, WhySheetBody, horizonFigures } from "../components/compare/why";
+import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, WhyHeadline, WhySheetBody, horizonFigures } from "../components/compare/why";
 import type { FitTableData } from "../lib/fit";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconExternal } from "../components/icons";
 import { IdRef, Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag, useChartPick } from "../components/kit";
-import { applyProviders, buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
+import { BlockedGroups, Callout, Card, Disclosure, SegmentedControl, Sentence, Tag, useChartPick } from "../components/kit";
+import { applyProviders, buildView, computeSensitivity, keepsFromRank, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
 import { loadBundle } from "../lib/bundle";
-import { fmt } from "../lib/format";
+
 import { GoalsProvider, hasMeaning, isBlank, useGoals, type FieldKey, type Presets } from "../lib/goal";
 import { goalTitle } from "../components/compare/goal-form";
 import { ExposureBody, ModeTabs } from "../components/exposure-mode/result";
@@ -223,17 +223,16 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
     rules: m.rules,
     applies: (
       <>
-        {m.options.length > 0 && (
-          <span className="text-xs text-muted-foreground">
-            {m.mark === "blocked" ? r2.result.checklistBlocks : r2.result.checklistAffected} {m.options.map((id) => view.names[id] ?? id).join(", ")}
-          </span>
-        )}
+        {m.options.length > 0 &&
+          (m.mark === "blocked" ? (
+            <BlockedGroups lead={keepsFromRank(m.id) ? r2.result.checklistBlocks : scnCompare.blockedFor} groups={m.blockedGroups ?? [{ code: m.code ?? "", options: m.options }]} names={view.names} chips={!m.code} />
+          ) : (
+            <span className="text-xs text-muted-foreground">
+              {r2.result.checklistAffected} {m.options.map((id) => view.names[id] ?? id).join(", ")}
+            </span>
+          ))}
         {/* a covered row still shows the options blocked on it in their own record (scenario fix 2026-10-24: coverage is pooled across options) */}
-        {m.blockedOptions && (
-          <span className="text-xs text-blocked-foreground">
-            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<IdRef id={m.blockedOptions.code} />)
-          </span>
-        )}
+        {m.mark === "covered" && m.blockedGroups && <BlockedGroups lead={scnCompare.blockedFor} groups={m.blockedGroups} names={view.names} tone="blocked" />}
       </>
     ),
   }));
@@ -289,17 +288,16 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
         {g.employmentInferred && (
           <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2" data-employment-inferred>
             <span>{r2.result.employmentInferred}</span>
-            <Link to="/goal" className="text-link min-h-9 inline-flex items-center hover:underline">
+            <Link to="/goal" className="text-link min-h-target inline-flex items-center hover:underline">
               {r2.result.employmentInferredChange}
             </Link>
           </p>
         )}
         <HorizonDefaultedNote bundle={bundle} g={g} presetName={r2.presets[current!.preset] ?? ""} onChange={() => openField("horizonYears")} figures={hideAll ? null : horizonFigures(ctx)} />
         {!hideAll && <HorizonHonestLine ctx={ctx} fit={fit} />}
-        {!hideAll && <PastRecordLine ctx={ctx} fit={fit} />}
         {view.stale && (
           <Callout tone="caution">
-            {system.staleBanner.before} <bdi dir="ltr">{fmt.date(view.stale.since)}</bdi>. {system.staleBanner.after}
+            <When iso={view.stale.since} lead={`${system.staleBanner.before} `} />. {system.staleBanner.after}
           </Callout>
         )}
         {needsReturnShown && hideAll && (

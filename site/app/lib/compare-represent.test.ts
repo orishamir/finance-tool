@@ -1,6 +1,6 @@
 // The representative instrument (2026-10-24): an entered fee replaces its fee in F-80 and F-81; an open minimum-amount rule keeps an option from being ranked.
 import { describe, expect, it } from "vitest";
-import { buildView, computeSensitivity, evaluate, feeFor, openConstraintCode, openConstraintOf, type RunGoal } from "./compare";
+import { applyProviders, buildView, computeSensitivity, evaluate, feeFor, keepsFromRank, openConstraintCode, openConstraintOf, type RunGoal } from "./compare";
 import { compareBundle } from "./compare.server";
 import { parseOwnRates, splitOwnTerms, termsOfGoal } from "./own-rate";
 
@@ -10,20 +10,27 @@ const goal: RunGoal = { horizonYears: 20, amountNow: 40_000, monthly: 3_000, ava
 const real = (g: RunGoal, id: string) => evaluate(bundle, g).candidates.find((c) => c.id === id)?.run?.real ?? NaN;
 
 describe("entered fee for the representative instrument", () => {
-  it("the record's 0.02 % tracker (5139282) ends within 0.5 % of the kupat gemel at 0.8 %; IBI's old 1.115 % trailed by about a tenth", () => {
-    // Leumi's whole tariff stays (custody, buy and sell commission, FX), so even a fund costing nothing only ties (theta 0.5 %), it does not overtake.
+  it("the record's 0.02 % tracker (5139282) ends 5 % above the kupat gemel once Harel's discount ends; IBI's old 1.115 % trails it by 5 %", () => {
+    // Leumi's whole tariff stays (custody, buy and sell commission, FX). 2026-11-07 (F-80, A-19, D56): the gemel runs on Harel's 0.7 % and 0 % for
+    // five years, then on the bylaws' most, 1.05 % and 4 % (at 0.7 % for all twenty years the tracker ended 0.7 % below it; at Meitav's 0.8 % a free fund tied it)
     const kgl = real(goal, "kupat-gemel-lehashkaa");
     const rec = real(goal, "brokerage-account");
     const cheap = real({ ...goal, ownFees: { "brokerage-account": 0.1 } }, "brokerage-account");
     const ibiOld = real({ ...goal, ownFees: { "brokerage-account": 1.115 } }, "brokerage-account");
     const free = real({ ...goal, ownFees: { "brokerage-account": 0 } }, "brokerage-account");
-    expect(kgl - ibiOld).toBeGreaterThan(0.08 * kgl);
+    expect(kgl - ibiOld).toBeGreaterThan(0.05 * kgl);
     expect(rec).toBeGreaterThan(ibiOld + 90_000);
-    expect(Math.abs(kgl - rec) / kgl).toBeLessThan(0.005);
-    expect(kgl - cheap).toBeLessThan(0.02 * kgl);
-    expect(Math.abs(kgl - free) / kgl).toBeLessThan(0.005);
-    // the entered fee reaches the ranking: with 0 % the brokerage account is in the top tie
-    expect(evaluate(bundle, { ...goal, ownFees: { "brokerage-account": 0 } }).ranking.tieSet).toContain("brokerage-account");
+    expect((rec - kgl) / kgl).toBeGreaterThan(0.045);
+    expect((rec - kgl) / kgl).toBeLessThan(0.055);
+    expect(cheap).toBeGreaterThan(kgl);
+    expect(free).toBeGreaterThan(rec);
+    expect((free - kgl) / kgl).toBeGreaterThan(0.05);
+    expect((free - kgl) / kgl).toBeLessThan(0.055);
+    // the entered fee reaches the ranking: on the site's pick of tariff the account leads at the fund's own fee and at IBI's old 1.115 %, and a 1.3 % fee puts the gemel first
+    const picked = (g: RunGoal) => evaluate(applyProviders(bundle, g), g).ranking.entries[0]!.id;
+    expect(picked(goal)).toBe("brokerage-account");
+    expect(picked({ ...goal, ownFees: { "brokerage-account": 1.115 } })).toBe("brokerage-account");
+    expect(picked({ ...goal, ownFees: { "brokerage-account": 1.3 } })).toBe("kupat-gemel-lehashkaa");
   });
   it("is an entered value that remembers the fee it replaced; the record's own fee is a sourced or computed one", () => {
     const w = bundle.wrappers.find((x) => x.id === "brokerage-account")!;
@@ -65,14 +72,26 @@ describe("an open minimum-amount rule", () => {
     expect(openConstraintCode(r)).toBe("GOV OQ7");
     expect(openConstraintOf({ dimensions: { minimum: "covered" } } as never)).toBeNull();
   });
-  it("government bonds and makam are listed, not ranked, on the page and on the goal", () => {
-    const ev = evaluate(bundle, goal);
-    for (const id of ["government-bond", "makam"]) {
-      const c = ev.candidates.find((x) => x.id === id)!;
-      expect(c.kind).toBe("listed-not-ranked");
-      expect(c.reasons.some((r) => openConstraintCode(r) === "GOV OQ7")).toBe(true);
-      expect(ev.ranking.entries.some((e) => e.id === id)).toBe(false);
+  it("only a minimum-amount or eligibility question keeps from rank; the checklist calls any other block \"blocked for\"", () => {
+    expect(keepsFromRank("minimum") && keepsFromRank("eligibility")).toBe(true);
+    expect(keepsFromRank("loss-offset") || keepsFromRank("tax-at-exit")).toBe(false);
+  });
+  it("a bare blocked mark keeps the option from being ranked too, with no question to name (third check, 2026-11-07)", () => {
+    for (const d of ["minimum", "eligibility"]) {
+      const r = openConstraintOf({ dimensions: { [d]: "blocked" } } as never)!;
+      expect(r).toMatchObject({ code: "rule-open", detail: `${d}:` });
+      expect(openConstraintCode(r)).toBeNull();
     }
+  });
+  it("makam is listed, not ranked, on the page and on the goal; government bonds no longer for their minimum (GOV-24, 2026-11-07)", () => {
+    const ev = evaluate(bundle, goal);
+    const makam = ev.candidates.find((x) => x.id === "makam")!;
+    expect(makam.kind).toBe("listed-not-ranked");
+    expect(makam.reasons.some((r) => openConstraintCode(r) === "GOV OQ7")).toBe(true);
+    expect(ev.ranking.entries.some((e) => e.id === "makam")).toBe(false);
+    // the minimum of a government bond is known in every trading phase (GOV-24), so the open question is not its reason; it stays listed for its own gap (G-10)
+    const bond = ev.candidates.find((x) => x.id === "government-bond")!;
+    expect(bond.reasons.some((r) => openConstraintCode(r) !== null)).toBe(false);
     expect(ev.coverage.invariant.ok).toBe(true);
   });
 });

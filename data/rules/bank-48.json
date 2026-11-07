@@ -1,0 +1,231 @@
+{
+  "id": "BANK-48",
+  "title": "Eight banks: whether a savings plan can be broken, and what a break costs",
+  "title_he": "שמונה בנקים: אם אפשר לשבור תוכנית חיסכון, ובכמה זה עולה",
+  "text_he": "בבנק הפועלים, בלאומי, בבינלאומי ובמסד טבלת הריביות כותבת שאין אפשרות לשבור את תוכניות החיסכון, ובמזרחי טפחות תנאי התוכנית אוסרים לשבור לפני מועד הפירעון. בדיסקונט ובמרכנתיל אפשר לשבור באישור הבנק ובקנס שנקבע ביום השבירה לפי טבלת ריביות שמתעדכנת מדי יום; הקנס לא קטן מריבית הפיקדון ועוד מרווח, ומקבלים את הנמוך מבין הקרן ושווי השבירה, כך שאפשר להפסיד את כל הריבית ואף חלק מהקרן. בבנק יהב ההסכם אוסר לשבור, ואם הבנק בכל זאת מסכים, הסכום ששוברים לא מקבל ריבית או הצמדה, והבנק רשאי לגבות גם את הנזק שנגרם לו. זו ספירה של שמונה בנקים, לא של כל השוק.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-07",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    },
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    },
+    {
+      "id": "mizrahi-tefahot",
+      "name_he": "בנק מזרחי טפחות"
+    },
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    },
+    {
+      "id": "mercantile",
+      "name_he": "בנק מרכנתיל דיסקונט"
+    },
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "לאומי: שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון (נכון ליום 08.11.2026)",
+      "title_he": "לאומי: שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון (נכון ליום 08.11.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.33 to 35",
+      "locator_he": "עמודים 33 עד 35",
+      "quote": "אפשרות לשבירת פיקדון",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_310_286.pdf",
+      "title": "מזרחי-טפחות: תנאי פיקדון 286",
+      "title_he": "מזרחי-טפחות: תנאי פיקדון 286",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "לא ניתן למשוך את הפיקדון לפני מועד פירעונו המוסכם",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_430_284.pdf",
+      "title": "מזרחי-טפחות: תנאי פיקדון 284",
+      "title_he": "מזרחי-טפחות: תנאי פיקדון 284",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_500_283.pdf",
+      "title": "מזרחי-טפחות: תנאי פיקדון 283",
+      "title_he": "מזרחי-טפחות: תנאי פיקדון 283",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/2_99_430_199.pdf",
+      "title": "מזרחי-טפחות: תנאי פיקדון 199",
+      "title_he": "מזרחי-טפחות: תנאי פיקדון 199",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/2_99_430_202.pdf",
+      "title": "מזרחי-טפחות: תנאי פיקדון 202",
+      "title_he": "מזרחי-טפחות: תנאי פיקדון 202",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+      "title": "בנק יהב: הסכם פתיחת חשבון",
+      "title_he": "בנק יהב: הסכם פתיחת חשבון",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.36, s.2.5",
+      "locator_he": "עמוד 36, סעיף 2.5",
+      "page": 36,
+      "quote": "איסור משיכה טרם המועד",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+      "title": "בנק יהב: הסכם פתיחת חשבון",
+      "title_he": "בנק יהב: הסכם פתיחת חשבון",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.37",
+      "locator_he": "עמוד 37",
+      "page": 37,
+      "quote": "עלולה להיות אף פגיעה בקרן",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+      "title": "בנק יהב: הסכם פתיחת חשבון",
+      "title_he": "בנק יהב: הסכם פתיחת חשבון",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.38, s.8.1",
+      "locator_he": "עמוד 38, סעיף 8.1",
+      "page": 38,
+      "quote": "הוראות סעיפים 1-7 לעיל יחולו גם על פיקדונות מסוג ״תוכנית חסכון״",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
+      "title_he": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "אין אפשרות לשבירת הפיקדון",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבינלאומי: ריביות על פיקדונות",
+      "title_he": "הבינלאומי: ריביות על פיקדונות",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "אין אפשרות שבירה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+      "title": "מסד: ריביות על פיקדונות",
+      "title_he": "מסד: ריביות על פיקדונות",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "אין אפשרות שבירה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "דיסקונט: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
+      "title_he": "דיסקונט: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "הבהרות: מנגנון קנס השבירה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "מרכנתיל: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
+      "title_he": "מרכנתיל: פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "הבהרות: מנגנון קנס השבירה",
+      "checked": "2026-11-07"
+    }
+  ],
+  "derived_from": [
+    "BANK-28"
+  ]
+}

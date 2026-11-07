@@ -3,7 +3,7 @@
   "title": "Fee layers in an Israeli tracking fund or ETF: the expense table every annual report carries",
   "title_he": "שכבות העלות בקרן מחקה או קרן סל ישראלית",
   "text_he": "הדוח השנתי של כל קרן מפרט את ההוצאות שנפרעו מנכסי הקרן כאחוז משווי הנכסים הנקי הממוצע: שכר מנהל הקרן, כלומר דמי ניהול קבועים ודמי ניהול משתנים אם יש, שכר נאמן, עמלות והוצאות עסקאות, הוצאות מס והסך הכולל. מתחת לטבלה הדוח מציין שלפי החוק המנהל רשאי לחייב את הקרן בעמלות ובהוצאות של עסקאות שהוא עושה בשבילה. אלה נוספות על העלויות בצד הבורסה, המרווח או הפרמיה במסחר ועמלות היצירה והפדיון בפקודות ישירות, ועל עמלות הברוקר. השיעורים נקבעים לכל קרן ויכולים להשתנות.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-management-balance",
     "fee-trade",
@@ -11,23 +11,20 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://olaw.org.il/takanot/takanot-7646.pdf",
-      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (קובץ התקנות 7646, צילום הרשומות)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (קובץ התקנות 7646, צילום הרשומות)",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.16, reg. 20",
-      "locator_he": "עמוד 16, תקנה 20",
-      "page": 16,
-      "checked": "2026-10-25",
-      "qualifier": "(mirror of Reshumot)"
+      "strength": "primary",
+      "locator": "file pp.16-17 (gazette pp.1016-1017), reg. 20",
+      "locator_he": "עמודי הקובץ 16-17 (עמודי הרשומות 1016-1017), תקנה 20",
+      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

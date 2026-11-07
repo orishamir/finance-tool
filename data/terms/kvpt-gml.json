@@ -1,0 +1,34 @@
+{
+  "id": "kvpt-gml",
+  "he": "קופת גמל",
+  "en": null,
+  "meaning": "השם בחוק לקרן או לתוכנית ביטוח לחיסכון שקיבלה אישור מהממונה על שוק ההון; קרן השתלמות, קרן פנסיה וביטוח מנהלים הם סוגים שלה.",
+  "where": [
+    "app",
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "קופה",
+    "קופ\"ג"
+  ],
+  "rule_ids": [
+    "KH-01",
+    "PEN-01",
+    "PF-01"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024, ס' 13(א) ו־(ב), עמוד 896",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

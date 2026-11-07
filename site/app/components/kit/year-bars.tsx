@@ -17,7 +17,8 @@ export function YearBars({ items: goal, format, tickStep, label, bright }: { ite
   const [ref, w] = useWidth(420);
   const [hover, setHover] = useState<number | null>(null);
   const items = useGlidingRows(goal, VALUE);
-  const plotW = w - LEFT - 4;
+  // room past the last bar for half its year's label ("2025" is about 28 px at 11 px): 4 px drew it past the chart's edge on a phone (#190)
+  const plotW = w - LEFT - 16;
   const zoom = useYearZoom({ first: goal[0]?.year ?? 0, last: goal[goal.length - 1]?.year ?? 0, plotLeft: LEFT, plotWidth: plotW, band: true, onHover: setHover });
   const clip = useId().replace(/:/g, "");
   const [from, to] = zoom.domain;

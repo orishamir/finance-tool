@@ -1,0 +1,105 @@
+{
+  "task": "not-covered",
+  "persona": "student-small-amounts",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:04:54.863Z",
+  "structured": {
+    "answer": "The site says up top that it doesn't calculate a long list of products yet (\"לא מחושב\"), things like gold ETC/gold funds, corporate bonds, structured deposits, foreign-currency deposits, ביטוח מנהלים and annuities, and at the bottom it says it will never do stock picking, trading, ranking by past returns or actually buying for you. Basic index stuff didn't show up as \"not covered\", so I'd use it for that, carefully.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screens 3–7, the card grid",
+        "why": "Every card looks the same, with the same red 'לא מחושב' tag and law links. I couldn't tell which ones matter to me, so I just scrolled"
+      },
+      {
+        "where": "Bottom, 'מה האתר לא משווה ולא עושה'",
+        "why": "Took me a second to see that this is a different list (permanent) from the top one (temporary, 'עוד בבדיקה')"
+      }
+    ],
+    "used": [
+      "Heading 'מה האתר עוד לא מכסה' and subtitle",
+      "Red banner 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "Card titles and the 'לא מחושב' tags",
+      "Bottom list 'מה האתר לא משווה ולא עושה', especially 'דירוג לפי תשואה בעבר' and 'ביצוע פעולות'"
+    ],
+    "skimmed": [
+      "Card 'מה ידוע' descriptions",
+      "Card titles on screens 3–7",
+      "'מצב הכיסוי' sections"
+    ],
+    "skipped": [
+      "Screens 8 and 9",
+      "Green law/source links and dates",
+      "'חוקים וכללים · N' chips",
+      "The repeated 'כשייסגר: יופיע במדריך…' lines",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "אג״ח קונצרניות",
+      "אגרת בונדס",
+      "ביטוח מנהלים",
+      "היוון קצבה",
+      "מנוטרלת מט״ח",
+      "מוצר מובנה",
+      "ני״ע",
+      "קרן י׳",
+      "קופת ביטוח",
+      "תשלומים פטורים",
+      "'חסום: שאלה פתוחה'",
+      "Codes like MF-28, TX2-01, TXA-28",
+      "'לפי החברה' orange tag",
+      "'מקור ראשי (עותק)'"
+    ],
+    "not_found": [
+      "A short yes/no on whether plain ETFs / S&P 500 / index funds are covered",
+      "A count or summary of how many products aren't covered",
+      "Anything about whether small monthly amounts are worth it"
+    ],
+    "findings": [
+      {
+        "what": "Very long wall of identical cards, way too much for a phone, I'd leave by screen 3",
+        "where": "Screens 2–9"
+      },
+      {
+        "what": "No summary at the top saying what IS covered, so I have to guess that index funds are fine",
+        "where": "Top of page"
+      },
+      {
+        "what": "Cards are full of law citations and page numbers, feels like a government document",
+        "where": "Every card, green links"
+      },
+      {
+        "what": "The temporary 'not yet' list and the permanent 'never' list are far apart. The permanent one is only at the very bottom",
+        "where": "Bottom section"
+      },
+      {
+        "what": "Jargon in the card titles with no plain explanation for beginners",
+        "where": "Card titles"
+      },
+      {
+        "what": "Order seems alphabetical, not by what's relevant to a regular small investor",
+        "where": "Card grid"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41782,
+    "turns": 10,
+    "usd": 0.21258780000000002,
+    "input": 10,
+    "cacheWrite": 17109,
+    "cacheRead": 39779,
+    "output": 3386,
+    "model": "claude-opus-5-5"
+  }
+}

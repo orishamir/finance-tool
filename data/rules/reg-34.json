@@ -1,0 +1,58 @@
+{
+  "id": "REG-34",
+  "title": "Assets held in trust: the trustee's creditors cannot reach them",
+  "title_he": "נכסים שמוחזקים בנאמנות: הנושים של הנאמן לא יכולים לגבות מהם",
+  "text_he": "לפי חוק הנאמנות, נאמנות נוצרת על פי חוק, על פי חוזה עם נאמן או על פי כתב הקדש. אין לרדת לנכסי הנאמנות אלא בשל חובות המוטלים עליהם או הנובעים מפעולות הנאמנות, והנאמן חייב להחזיק אותם בנפרד מנכסים אחרים או בדרך שמאפשרת להבחין ביניהם. כך מחזיקים חברה מנהלת של קופת גמל, קרן השתלמות או קרן פנסיה את נכסי הקופה, והנאמן של קרן נאמנות את נכסי הקרן, לפי חוק. גם חבר בורסה, כולל בנק, מחזיק את ניירות הערך של לקוחותיו במסלקת הבורסה כנאמן, אבל לפי כללי הבורסה וחוקי העזר של המסלקה; ששם חל הכלל של חוק הנאמנות, ושנכסי הלקוחות נשארים מחוץ להישג הנושים אם החבר קורס, לא כתוב במפורש בשום טקסט שנקרא, ולא נמצאה החלטת בית משפט. גם זו קריאה: אם חסרים נכסים בנאמנות, התביעה על החוסר היא חוב רגיל של החברה.",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "recheck_date": null,
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_210375.pdf#page=1",
+      "title": "חוק הנאמנות, התשל\"ט-1979 (ספר החוקים 941, 3.8.1979)",
+      "title_he": "חוק הנאמנות, התשל\"ט-1979 (ספר החוקים 941, 3.8.1979)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.128, ss.2, 3(ב), 3(ג)",
+      "locator_he": "עמוד 128, סעיפים 2, 3(ב), 3(ג)",
+      "page": 128,
+      "checked": "2026-11-06",
+      "qualifier": "(gazette, as enacted)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_ec_317342.pdf",
+      "title": "תיקון טעויות דפוס, ספר החוקים 946",
+      "title_he": "תיקון טעויות דפוס, ספר החוקים 946",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_210374.pdf",
+      "title": "חוק הנאמנות (תיקון), התש\"ם-1980, ספר החוקים 960",
+      "title_he": "חוק הנאמנות (תיקון), התש\"ם-1980, ספר החוקים 960",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.64",
+      "locator_he": "עמוד 64",
+      "page": 64,
+      "checked": "2026-11-06",
+      "qualifier": "(for what they change)"
+    }
+  ]
+}

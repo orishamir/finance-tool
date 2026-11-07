@@ -1,0 +1,158 @@
+{
+  "id": "yahav-hermon-hodshi-480",
+  "bank": "yahav",
+  "names": {
+    "447": [
+      "חיסכון- חרמון חודשי",
+      "חיסכון חרמון חודשי (480)",
+      "חיסכון חרמון חודשי"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "חיסכון- חרמון חודשי",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 120,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/all-savings/hermon-monthly-deposit/",
+      "title": "בנק יהב, 'חיסכון חרמון חודשי (480)', 'תקופה – 10 שנים'",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The product page prints 'מסלול - הפקדה חודשית בהוראת קבע', 'מגזר – שקלי', 'תקופה – 10 שנים'; recorded as 120 months. Page read 2026-11-07 (library 8fa6887c3d20faec); the page is undated."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -3.5,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית חסכונות', 'חיסכון- חרמון חודשי', 'מרווח מ\"פריים\"' (עמ' 4)",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '-3.50%' as 'מרווח מ\"פריים\"' for 'שנתיים ראשונות'."
+  },
+  "rate_offered": {
+    "value": 1.25,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית חסכונות', 'חיסכון- חרמון חודשי', 'ריבית שנתית' (עמ' 4)",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "The board prints for 'מ-100 ש\"ח עד 5 מ' ₪' four periods: 'שנתיים ראשונות' -3.50% / 1.25% / 1.25%, 'שנתיים עד חמש שנים' -3.25% / 1.50% / 1.50%, 'חמש עד שמונה שנים' -3.10% / 1.65% / 1.65%, 'שמונה עד עשר שנים' -2.90% / 1.85% / 1.85% (margin from prime / 'תעריפית' / 'מתואמת'). The product page ties each rate to when a deposit is made: 'הפקדות בשנתיים הראשונות - P-3.5%', 'הפקדות מתום שנתיים ועד השנה החמישית - P-3.25%', 'הפקדות מתום חמש שנים ועד השנה השמינית - P-3.1%', 'הפקדות מתום שמונה שנים ועד תום תקופה - P-2.9%'; recorded is the rate of the first two years' deposits, 1.25%. Page: 'ריבית - שקלית משתנה לפי ריבית הפריים'; 'תחנות יציאה –לאחר שנתיים ובכל חודש לאחר מכן'. Rate board read 2026-11-07 (8 pages, created 05.10.2026, 'מחליף לוח קודם מיום 03/09/2026'; the same file as filed on 2026-10-31, library 124adbb22147699a)."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the product page's 'מגזר – שקלי'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/all-savings/hermon-monthly-deposit/",
+        "title": "בנק יהב, 'חיסכון חרמון חודשי (480)', 'סכום מינימום להפקדה'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The page prints 'סכום מינימום להפקדה - 100 ש\"ח, ניתן להוסיף החל מ - 1,000 ש\"ח במועדי ההוראת קבע'. The rate board's amount column prints 'מ-100 ש\"ח עד 5 מ' ₪'; whether that bounds each deposit or the balance is not said, so no maximum per deposit is recorded."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "Account agreement, chapter 4 'פיקדונות בשקלים ותוכניות חיסכון' (applied to savings plans by s.8.1, p.38), s.2.5 'איסור משיכה טרם המועד': 'אנו לא נהיה רשאים למשוך את הפיקדון, כולו או חלקו, טרם הגיע יום הפירעון, או יום תחנת היציאה'; s.6.1.1 (p.36): 'אם התיר הבנק לפנים משורת הדין בהתאם לבקשתנו, משיכת הפיקדון או חלקו ... לפני תום תקופת הפיקדון, היינו, \"שבירת הפיקדון\", לא יישא הפיקדון, או חלק מהפיקדון שנמשך, ריבית כלשהי ו/או הפרשי הצמדה'. Re-fetched 2026-11-07, the same file as library 322ff632b328571c. The same s.6.1.1 also offsets interest already paid and lets the bank charge 'בסכום השווה לנזק שיגרם לבנק', and p.37 warns 'עלולה להיות אף פגיעה בקרן' (BANK-48).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-33",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 1
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "תחנות יציאה אחרי שנתיים ואחר כך כל חודש. אפשר להוסיף סכומים מ-1,000 ₪ במועדי הוראת הקבע.",
+  "doubt_he": "הריבית נקבעת לפי מועד ההפקדה, מ-P-3.5% להפקדות של השנתיים הראשונות ועד P-2.9% להפקדות מתום 8 שנים; נרשמה ריבית ההפקדות הראשונות.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+    "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית חסכונות'",
+    "publisher": "Bank Yahav for Government Employees Ltd.",
+    "strength": "institution"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "tlvsh-shkr",
+  "he": "תלוש שכר",
+  "en": null,
+  "meaning": "פירוט בכתב שהמעסיק חייב לתת לעובד על השכר ששולם לו, ובו גם הניכויים, כמו מס הכנסה והפקדות לקופת גמל.",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "pension-comprehensive",
+    "pension-general"
+  ],
+  "variants": [
+    "תלוש משכורת"
+  ],
+  "rule_ids": [
+    "PEN-36"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=2",
+    "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162, ס' 24 ופרט 6 בתוספת",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

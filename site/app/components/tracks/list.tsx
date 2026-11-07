@@ -9,7 +9,7 @@ import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { ExposureCell, FeeKey, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, gershayim, FeeKey, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
 
@@ -120,7 +120,7 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
     <span className="flex flex-col items-start gap-1">
       <span className="flex flex-col items-start gap-0.5">
         <Link to={`/companies/${company?.id ?? ""}`} className="font-semibold hover:underline">
-          <bdi>{x.companyName}</bdi>
+          <bdi>{gershayim(x.companyName)}</bdi>
         </Link>
         {company && (
           <span className={mutedWord}>
@@ -153,7 +153,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
           ) : (
             <>
               <span className="font-semibold">
-                <bdi>{x.companyName}</bdi>
+                <bdi>{gershayim(x.companyName)}</bdi>
               </span>
               {showsShortName(x) && (
                 <span>
@@ -291,7 +291,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       // a chosen kind is one list with no heading: the chip names it, and the count line holds its count and its fees
       heading: g.by === "kind" || fixed ? undefined : {
         title: g.companyId ? (
-          <Link to={`/companies/${g.companyId}`} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0">
+          <Link to={`/companies/${g.companyId}`} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0 md:tap-area">
             <bdi>{g.title}</bdi>
           </Link>
         ) : (
