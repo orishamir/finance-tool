@@ -39,7 +39,7 @@ export interface Fund {
   fixedDatesEveryMonths?: number;
   /**
    * An accumulating foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling naming a sale and a distribution as the
-   * only taxed events (TXF-11, 2026-11-04): taxed at sale on that ruling, not on the secondary reading, and ranked rather than listed (G-18).
+   * only taxed events (TXF-11, 2026-11-04): taxed at sale on that ruling, not on the reading by implication, and ranked rather than listed (G-18).
    */
   saleOnlyRuling?: boolean;
 }
@@ -229,8 +229,10 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
-  // The tax index: the exchange rate for a foreign-currency security (TXF-03; on TASE when the 90% test
-  // holds, TXF-04), the CPI otherwise.
+  // The tax index: the exchange rate for a foreign-currency security held directly (TXF-03), the CPI otherwise. A TASE foreign fund
+  // takes TXF-04's index, open since 2026-11-07 (its only source, a copy of the Tax Authority's 2019 letter, is no longer cited): with
+  // the 90% test the run stops on it (BlockedError); without it the run still takes the CPI, which no rule now supports (method F-04:
+  // blocking it waits on how the indices page shows a fund whose tax is open).
   const fxIndexed = fund.kind === "foreign-fund" || (fund.kind === "tase-foreign-fund" && fund.ninetyPercentTest === true);
   const J = fxIndexed ? X : I;
   if (fund.kind === "foreign-fund") book.cite("TXF-03");
@@ -320,10 +322,11 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       israeliDistRate = book.rate("TXS-10", "rate");
     }
   } else if (isForeign) {
-    // An accumulating foreign fund is taxed only at sale under the TXF-11 reading (secondary): computed,
-    // labelled, and listed, not ranked (F-65, G-18); unless its own annex reports a ruling that says so (2026-11-04).
+    // An accumulating foreign fund is taxed only at sale under TXF-11, which the law supports by implication (no deemed-distribution
+    // rule reaches a non-controlling holder; no sentence says it): computed, labelled a reading, and listed, not ranked (F-65, G-18);
+    // unless its own annex reports a ruling that says so (2026-11-04). No secondary source is cited since 2026-11-07.
     if (fund.saleOnlyRuling) book.cite("TXF-11");
-    else book.label("secondary-source", "TXF-11");
+    else book.label("reading", "TXF-11");
   }
   // The dollar value is known only when the tariff gives the currency's rate.
   const estateThreshold = fund.domicile === "us" && tariff.currency ? book.amount("TXF-27", "estate_threshold", "USD") : undefined;
@@ -453,7 +456,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
   // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09, 2026-10-26). With the exchange
   // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
-  // directly, TXF-04 for a TASE foreign fund (TXF-03 itself says such a fund follows TXF-04). The exit year's fees are
+  // directly, TXF-04 for a TASE foreign fund (TXF-03 says its own test does not answer for such a fund; TXF-04 is open since
+  // 2026-11-07). The exit year's fees are
   // deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
   const adjusted = indexedCost(lots, J[T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;

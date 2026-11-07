@@ -63,7 +63,7 @@ export function cpiPath(annualInflation: number, months: number): number[] {
 
 /**
  * F-04 Exchange-rate path. `X_0 = 1`; `X_m = X_{m−1} × (1 + f)^(1/12)` (A-03). For a foreign-currency
- * security it replaces `I` as the tax index (TXF-03, TXF-04).
+ * security held directly it replaces `I` as the tax index (TXF-03); for a TASE foreign fund the index is TXF-04's, open since 2026-11-07.
  */
 export function fxPath(annualChange: number, months: number): number[] {
   const step = Math.pow(1 + annualChange, 1 / 12);

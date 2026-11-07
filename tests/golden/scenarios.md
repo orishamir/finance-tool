@@ -131,7 +131,7 @@ Exercises F-04, F-40 with X as the index (TXF-04 90% test), F-20 foreign distrib
 - Fund: Irish UCITS on S&P 500, accumulating (ETF-27), fixed fee 0.07%, 90% test met; fund-level withholding drag 0.23% (A-11 computed from a 1.5% dividend yield × 15%).
 - Tariff: TASE foreign-fund units traded in shekels; buy/sell 0.3% min 25; custody 0.15%/quarter.
 - Expected: _(founder)_ with the dimension "tax-during: blocked (TXF OQ1, F4)" and the row "listed, not ranked".
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S16): Real V_T/I_T = 106,853.98; nominal V_T = 120,895.47; fees: trade 681.78, spread 0.00, custody 3,417.80, fund (δ) 1,693.24; tax at exit 6,279.39 (25% of real gain vs the exchange rate, 25,117.56); label "secondary source: tax only at sale, not confirmed by the Tax Authority" (TXF-11); row "listed, not ranked". Subject to Q21.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S16): Real V_T/I_T = 106,853.98; nominal V_T = 120,895.47; fees: trade 681.78, spread 0.00, custody 3,417.80, fund (δ) 1,693.24; tax at exit 6,279.39 (25% of real gain vs the exchange rate, 25,117.56); label "reading: tax only at sale, by implication from the law, not confirmed by the Tax Authority" (TXF-11; "secondary source" until 2026-11-07, when its secondary source stopped being cited); row "listed, not ranked". Subject to Q21.
 
 ### S17 US-domiciled distributing ETF at a foreign broker, with W-8BEN
 Exercises F-13 FX fee on contributions and exit, F-20 foreign branch (TXF-08, TXF-12, TXF-18 credit), F-22 timing note (TXF-21, TXF-22), F-40 with X index (TXF-03), F-17 fixed fees, TXF-27 estate note.
