@@ -8,7 +8,6 @@ import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, prov
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
-import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
 import { isParameter, isProvisional, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
@@ -1273,12 +1272,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <div className="flex flex-wrap items-center gap-1.5">
           <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: data.company })}</Tag>
           {/* a record the rule base keeps that is not a rule says so: its foot leads to "לא נכלל ככלל" on /companies (review, 2026-10-26) */}
-          {isNotRule(id) && !isGeneral(rule) && !isExperience(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
-          {isExperience(id) ? (
-            <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
-          ) : (
-            (rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />
-          )}
+          {isNotRule(id) && !isGeneral(rule) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
+          {(rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
         </div>
       </header>
       {open ? (

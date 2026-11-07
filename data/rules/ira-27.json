@@ -16,6 +16,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-30/he/letter_ira_pdf.pdf",
+      "title": "רשות שוק ההון: מכתב נלווה לטיוטת התקנות (10.6.2025)",
+      "title_he": "רשות שוק ההון: מכתב נלווה לטיוטת התקנות (10.6.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
       "title": "CMA draft 2025",
       "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
@@ -44,14 +57,15 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.shibolet.com/עדכוני-רגולציה-פיננסית-מאי-2025/",
-      "title": "עדכוני רגולציה פיננסית – מאי 2025, שבלת",
-      "title_he": "עדכוני רגולציה פיננסית – מאי 2025, שבלת",
-      "publisher": "Shibolet law firm",
-      "publisher_he": "שבלת עורכי דין",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice_2025_36/he/ira_extension_letter.docx",
+      "title": "רשות שוק ההון: הארכת מועד להעברת הערות לטיוטת התקנות (23.6.2025)",
+      "title_he": "רשות שוק ההון: הארכת מועד להעברת הערות לטיוטת התקנות (23.6.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "כך שהערות יתקבלו עד ליום 14.7.25",
+      "checked": "2026-11-07"
     }
   ]
 }

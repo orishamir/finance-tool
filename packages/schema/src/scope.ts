@@ -35,13 +35,9 @@ export const generalSourceKinds: ReadonlySet<string> = new Set(["law", "regulati
  * on /companies under "לא נכלל ככלל". The list only shrinks as each one moves to `data/` or the open questions.
  */
 export const notRules: Readonly<Record<string, { why: string; files: readonly string[] }>> = {
-  "SW-X01": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
-  "SW-X02": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
-  "SW-X03": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
-  "SW-X04": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
-  "IRA-28": { why: "press report (events at Slice and Globalnet)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
+  "IRA-28": { why: "a regulator's announcement of an event at one company (Slice)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
   "TXH-24": { why: "press report", files: [] },
-  "MF-61": { why: "reprint of the exchange's notice: its own copy could not be reached", files: ["site/app/content/guide/limited-bond-fund.tsx", "site/app/routes/guide-limited-bond-fund.tsx"] },
+  "MF-61": { why: "the exchange's press release about its own indices", files: ["site/app/content/guide/limited-bond-fund.tsx", "site/app/routes/guide-limited-bond-fund.tsx"] },
   "MKT-01": { why: "a series (J.P. Morgan's past-return slide)", files: ["site/app/lib/compare.server.ts", "site/app/lib/rule-shelves.ts"] },
   "PEN-46": { why: "a per-fund series", files: [] },
   "PF-41": { why: "a per-fund series", files: [] },

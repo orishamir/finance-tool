@@ -574,7 +574,7 @@ describe("scope", () => {
     const all = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named }).map((p) => p.message).join("\n");
     expect(all).not.toMatch(/notRules|does not name/);
     const term = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named, "terms/x.json": cite }).map((p) => p.message).join("\n");
-    expect(term).toMatch(/IRA-28 is a not-rule \(press report \(events at Slice and Globalnet\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
+    expect(term).toMatch(/IRA-28 is a not-rule \(a regulator's announcement of an event at one company \(Slice\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
     const { "dimensions/regulator.json": _gone, ...withoutOne } = named;
     const gone = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...withoutOne }).map((p) => p.message).join("\n");
     expect(gone).toMatch(/notRules: IRA-28 names data\/dimensions\/regulator.json, which does not exist/);
