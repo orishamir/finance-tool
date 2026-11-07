@@ -14,6 +14,37 @@ export function loadRules(): RuleRecord[] {
     .map((f) => JSON.parse(readFileSync(new URL(f, rulesDir), "utf8")) as RuleRecord);
 }
 
+/**
+ * TXF-04 as it stood until 2026-11-07: a 90% main-currency test from the Tax Authority's letter of 4.7.2019, read only in a copy on a
+ * third-party site. That day the copy stopped being cited (nothing unofficial is cited, CLAUDE.md) and the record became open, so a
+ * TASE foreign fund that commits to the test is blocked (D10). The tests that check the arithmetic of the exchange-rate index run on
+ * this stand-in: a test fixture, never data, and its figure carries the mirror strength the copy had.
+ */
+export function withTxf04AsTheLetterCopy(rules: RuleRecord[]): RuleRecord[] {
+  return rules.map((r) =>
+    r.id !== "TXF-04"
+      ? r
+      : ({
+          ...r,
+          strength: "primary-mirror",
+          figures: {
+            threshold_pct: {
+              value: 90,
+              unit: "pct",
+              source: { url: "https://example.invalid/txf-04-letter-copy", title: "test fixture: TXF-04 as the letter's copy stated it", publisher: "test fixture", strength: "primary-mirror" },
+              checked: "2026-10-25",
+              effective_from: "2019-07-04",
+              effective_to: null,
+              tax_year: null,
+              update_rule: "fixed in regulation",
+              rule_ids: ["TXF-04"],
+              state: "sourced",
+            },
+          },
+        } as RuleRecord),
+  );
+}
+
 /** Run date of the golden scenarios: tax year 2026 for every figure (scenarios.md header). */
 export const runDate = "2026-10-23";
 

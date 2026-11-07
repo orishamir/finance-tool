@@ -3,6 +3,7 @@
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import {
+  BlockedError,
   beneficiaryRelief,
   deductionValue,
   exitTax,
@@ -23,7 +24,7 @@ import {
   surtax,
   type SecuritiesInput,
 } from "../src/index.ts";
-import { context, loadRules, runDate } from "./golden/harness.ts";
+import { context, loadRules, runDate, withTxf04AsTheLetterCopy } from "./golden/harness.ts";
 
 const rules = loadRules();
 const ctx = context(rules);
@@ -123,8 +124,12 @@ describe("surtax on the year's total (F-43, TXG-09, TXG-10)", () => {
 });
 
 describe("foreign funds on TASE (TXF-04)", () => {
-  it("uses the exchange rate only when the fund commits to the 90% test", () => {
-    const withTest = runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: true } }), ctx);
+  it("blocks a fund on the 90% test while TXF-04 is open (2026-11-07: its only source was a copy of the letter)", () => {
+    expect(() => runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: true } }), ctx)).toThrow(BlockedError);
+  });
+
+  it("uses the exchange rate only when the fund commits to the 90% test (on the letter's copy, harness)", () => {
+    const withTest = runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: true } }), context(withTxf04AsTheLetterCopy(rules)));
     const without = runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: false } }), ctx);
     expect(ids(withTest)).toContain("TXF-04");
     expect(ids(without)).not.toContain("TXF-04");

@@ -2,7 +2,7 @@
   "id": "TXF-05",
   "title": "A foreign fund traded on TASE (קרן חוץ): Israeli withholding as for any traded security, 25% of the real gain and 25% on distributions",
   "title_he": "קרן חוץ בבורסה: ניכוי במקור ישראלי כבכל נייר סחיר",
-  "text_he": "מאחר שקרן חוץ היא יחידה לפי חוק השקעות משותפות בנאמנות, חלות עליה הוראות הניכוי במקור שחלות על ניירות ערך נסחרים: במכירה הגוף המשלם מנכה מהרווח הריאלי לפי שיעור הניכוי במקור ומקזז הפסדים על ניירות שהוא מנהל באותה שנת מס; בחלוקה ליחיד מנכים לפי שיעור הניכוי מחלוקה, לחברה לפי שיעור מס החברות, ובעל יחידות תושב חוץ פטור מניכוי. המקור הוא מכתב של רשות המסים לבורסה ולאיגודי החברים יחד עם תקנות הניכוי במקור. מכתב מנהלי ותקנות יכולים להשתנות.",
+  "text_he": "במכירה של יחידה של קרן חוץ דרך בנק או חבר בורסה בישראל, הגוף המשלם מנכה מס במקור מהרווח הריאלי לפי שיעור הניכוי במקור, כמו בכל נייר ערך זר שנמכר דרכו, ומקזז הפסדים על ניירות שהוא מנהל באותה שנת מס. דיבידנד של קרן חוץ שמאורגנת כחברה, שמגיע דרך בנק או חבר בורסה לתושב ישראל יחיד, מנוכה במקור לפי שיעור הניכוי מחלוקה. לא ידוע מטקסט רשמי: אם קרן חוץ היא יחידה לפי חוק השקעות משותפות בנאמנות, באיזה שיעור מנכים מחלוקה לחברה, אם בעל יחידות תושב חוץ פטור מניכוי, ואיך מנוכה חלוקה של קרן שמאורגנת כהסדר ולא כחברה. מכתב של רשות המסים לבורסה ולאיגודי החברים על קרנות חוץ ידוע רק מעותק באתר לא רשמי, ולכן אינו מקור. תקנות יכולות להשתנות.",
   "figure_names_he": {
     "withholding_rate_real_gain": "שיעור הניכוי במקור מהרווח הריאלי",
     "distribution_withholding": "שיעור הניכוי במקור מחלוקה ליחיד"
@@ -35,7 +35,7 @@
         "TXF-05"
       ],
       "state": "sourced",
-      "notes": "Withholding regulations 2002 reg.2(a) applied to TASE foreign funds by the Tax Authority's letter of 4.7.2019 (sections 4, 4.1.1). An administrative letter, not law: whether it is still in force is TXF OQ10."
+      "notes": "Withholding regulations 2002 reg.2(a): a bank or TASE member through which a sale's proceeds pass withholds from an individual's real gain, also on a foreign security (TXF-29). That a TASE foreign fund's unit is a 'unit' of the Joint Investment Trust Law rested only on a copy of the Tax Authority's letter of 4.7.2019, not cited since 2026-11-07 (TXF OQ10)."
     },
     "distribution_withholding": {
       "value": 25,
@@ -55,11 +55,11 @@
         "TXF-05"
       ],
       "state": "sourced",
-      "notes": "Distribution to an individual: withheld at the s.125B(1) rate (letter section 4.1.2)."
+      "notes": "Distribution to an individual: the s.125B(1) rate, which reg.2(d) of the 2005 withholding regulations applies to a dividend a bank or TASE member receives from abroad on shares (TXF-30). For a fund organised as an arrangement rather than a company it is open (TXF OQ19); the letter of 4.7.2019 that covered it is known only from an unofficial copy, not cited since 2026-11-07."
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -75,21 +75,6 @@
       "page": 1,
       "quote": "ינכה מס בשיעור של 25% מרווח ההון הריאלי",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.capitax.co.il/Attachments/04072019.pdf",
-      "title": "רשות המסים, מחלקת מיסוי שוק ההון: ניכוי מס במקור – קרנות חוץ (Foreign Funds), 4.7.2019 (עותק באתר capitax)",
-      "title_he": "ניכוי מס במקור – קרנות חוץ (מכתב מחלקת מיסוי שוק ההון, 4.7.2019)",
-      "publisher": "Capitax",
-      "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.2, sections 4, 4.1.1, 4.1.2",
-      "locator_he": "עמוד 2, סעיפים 4, 4.1.1, 4.1.2",
-      "page": 2,
-      "checked": "2026-10-25",
-      "qualifier": "(copy: no gov.il copy found)"
     }
   ]
 }

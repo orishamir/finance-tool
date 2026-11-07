@@ -3,8 +3,8 @@
 // cap (CS-18) or an entered rate, and money-market custody at a non-bank member (F-14). Expected values are the independent
 // check's (tests/golden/expected_calc.py), never the engine's; golden() confirms each one is printed in its scenario.
 import { describe, expect, it } from "vitest";
-import { memberKindOf, runChildSavings, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
-import { context, golden } from "./harness.ts";
+import { BlockedError, memberKindOf, runChildSavings, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
+import { context, golden, loadRules, withTxf04AsTheLetterCopy } from "./harness.ts";
 
 const ctx = context();
 const flagCodes = (r: RunResult) => r.flags.map((f) => f.code);
@@ -74,8 +74,12 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     profile: {},
   });
 
+  // TXF-04 is open since 2026-11-07, so the data blocks a TASE foreign fund on the 90% test; S52's arithmetic runs on the letter's copy (harness)
+  const letterCtx = context(withTxf04AsTheLetterCopy(loadRules()));
+
   it("S52 (a) TASE foreign fund when the shekel strengthens: the real gain is the nominal gain (TXS-02, TXF-04)", () => {
-    const r = runSecurities(s52(0.06), ctx);
+    expect(() => runSecurities(s52(0.06), ctx)).toThrow(BlockedError);
+    const r = runSecurities(s52(0.06), letterCtx);
     const g = golden("S52");
     g.value("real gain", r.detail.realGain, 30_052.89);
     g.value("tax at exit", r.taxAtExit, 7_513.22);
@@ -89,7 +93,7 @@ describe("Part E: follow-ups of 2026-10-26", () => {
   });
 
   it("S52 (b) a nominal loss smaller than the currency's fall: none of it is allowable, and no tax", () => {
-    const r = runSecurities(s52(-0.01), ctx);
+    const r = runSecurities(s52(-0.01), letterCtx);
     const g = golden("S52");
     g.value("real gain", r.detail.realGain, -548.57);
     g.value("tax at exit", r.taxAtExit, 0);
