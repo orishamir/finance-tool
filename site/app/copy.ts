@@ -1367,10 +1367,6 @@ export const scnCompare = {
   pick: { label: "בחרו שתי אפשרויות להשוואה", first: "האפשרות הראשונה", second: "האפשרות השנייה" }, // scenario fix 2026-10-24
   blockedFor: "חסום ל:", // scenario fix 2026-10-24: under a covered checklist row, the options blocked on that dimension
   headlineSome: "(לחלק מהן)", // scenario fix 2026-10-24
-  pastRecord: {
-    text: "ברשומה שפורסמה ({src}, בדולרים, לפני אינפלציה; חלונות של שנים קלנדריות, לפני עמלות ומס): התשואה השנתית של מדד S&P 500 לפי השקף נעה, בחלונות של 5 שנים, בין {min5} ל־{max5}; ב־10 שנים בין {min10} ל־{max10}; ב־20 שנים בין {min20} ל־{max20}. עבר, לא תחזית; המספרים האלה לא נכנסים לדירוג.", // scenario fix 2026-10-24
-    link: "למקור", // scenario fix 2026-10-24
-  },
 };
 
 // ---- release 2, idle cash (copy 6.3) and the fit mark (copy 6.5).

@@ -176,8 +176,6 @@ export interface CompareBundle {
   site?: { version: string; data: string };
   /** P-04, the site's fit table (scenario fix 2026-10-24): the equity row's minimum horizon and fall, for the limitation-first headline and for listing equity options the person's accepted drop does not fit. */
   fit?: FitTableData;
-  /** MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500, as sourced figures; shown, never fed into a run. */
-  pastRecord?: { rule: { id: string }; figures: Record<string, SiteValue>; source: { url: string; title: string } } | null;
 }
 
 // ---------------------------------------------------------------- the goal as numbers

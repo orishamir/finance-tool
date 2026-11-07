@@ -192,8 +192,6 @@ export interface NumProps {
   className?: string;
   /** Text that must stay on the line with the number ("ב־", "נכון ל־"): both sit in one non-breaking span. */
   prefix?: ReactNode;
-  /** `false` leaves out the inline caution icon of a weak source (secondary, institution) and of a date ahead; the caller then shows the strength mark once for the group of figures (the past-record line). The aria-label and the sheet still say it. */
-  mark?: boolean;
 }
 
 const stateWord = { sourced: numbers.legend.sourced, computed: numbers.legend.computed, entered: numbers.legend.entered };
@@ -233,7 +231,7 @@ function ShortText({ text, className }: { text: string; className: string }) {
 }
 
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
-export function Num({ value, size = "inline", display, animate, className, prefix, exact, mark: showMark = true }: NumProps) {
+export function Num({ value, size = "inline", display, animate, className, prefix, exact }: NumProps) {
   const open = useOpen();
   const today = useContext(TodayCtx);
   const staleSaid = useContext(StaleSaidCtx);
@@ -270,7 +268,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence (audit A23). At figure size a date ahead
   // is also said in words, before the digits.
-  const markWeak = showMark && weak && (value.state !== "computed" || size === "figure");
+  const markWeak = weak && (value.state !== "computed" || size === "figure");
   const mark = "inline-block align-[-2px] select-none";
   // a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26); any other figure is
   // one unit with its icon, which stood alone on the line above its digits in a phone's table (2026-11-03)
@@ -283,7 +281,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
-      {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
+      {(fromDate || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
       {short ? (
         <>

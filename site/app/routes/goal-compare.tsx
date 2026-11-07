@@ -21,7 +21,7 @@ import { useFlip } from "../components/kit";
 import { ReasonLines } from "../components/compare/reasons";
 import { SensitivityPanel } from "../components/compare/sensitivity";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, PastRecordLine, WhyHeadline, WhySheetBody, horizonFigures } from "../components/compare/why";
+import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, WhyHeadline, WhySheetBody, horizonFigures } from "../components/compare/why";
 import type { FitTableData } from "../lib/fit";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconExternal } from "../components/icons";
@@ -296,7 +296,6 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
         )}
         <HorizonDefaultedNote bundle={bundle} g={g} presetName={r2.presets[current!.preset] ?? ""} onChange={() => openField("horizonYears")} figures={hideAll ? null : horizonFigures(ctx)} />
         {!hideAll && <HorizonHonestLine ctx={ctx} fit={fit} />}
-        {!hideAll && <PastRecordLine ctx={ctx} fit={fit} />}
         {view.stale && (
           <Callout tone="caution">
             {system.staleBanner.before} <bdi dir="ltr">{fmt.date(view.stale.since)}</bdi>. {system.staleBanner.after}

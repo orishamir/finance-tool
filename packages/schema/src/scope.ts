@@ -38,7 +38,7 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "IRA-28": { why: "a regulator's announcement of an event at one company (Slice)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
   "TXH-24": { why: "press report", files: [] },
   "MF-61": { why: "the exchange's press release about its own indices", files: ["site/app/content/guide/limited-bond-fund.tsx", "site/app/routes/guide-limited-bond-fund.tsx"] },
-  "MKT-01": { why: "a series (J.P. Morgan's past-return slide)", files: ["site/app/lib/compare.server.ts", "site/app/lib/rule-shelves.ts"] },
+  "MKT-01": { why: "a series (J.P. Morgan's past-return slide; S&P's data, not shown on the site since 2026-11-07, D82)", files: [] },
   "PEN-46": { why: "a per-fund series", files: [] },
   "PF-41": { why: "a per-fund series", files: [] },
   "MF-18": { why: "a series (the Securities Authority's yearly averages)", files: [] },

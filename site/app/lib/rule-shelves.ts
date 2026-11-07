@@ -91,7 +91,6 @@ const overrides: Record<string, ShelfId> = {
   "GOV-02": "protection", "GOV-23": "access",
   "CS-05": "protection", "CS-18": "costs", "CS-30": "costs", "CS-20": "structure", "CS-26": "structure", "CS-27": "structure",
   "CAT-15": "protection", "CAT-16": "protection",
-  "MKT-01": "structure",
 };
 
 export function shelfOf(rule: Pick<RuleRecord, "id" | "dimensions" | "il_finance_file">): ShelfId {
