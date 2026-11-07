@@ -51,6 +51,6 @@ export { HelpMark } from "./help-mark";
 export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBlock, type GroupChoice, type GroupEntry, type GroupLink } from "./group-prices";
 export { ClaimCheck, ClaimList } from "./claim-check";
 export { DocLink, atPdfPage } from "./doc-link";
-export { MixedName, NameLine, keepIndexWhole } from "./name";
+export { MixedName, NameLine, keepIndexWhole, keepTitleWhole } from "./name";
 export { AlsoChanged } from "./also-changed";
 export { ClampedText } from "./clamped-text";

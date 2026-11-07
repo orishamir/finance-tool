@@ -49,6 +49,7 @@ export function ChangeChart({
   head,
   rows,
   widths,
+  stackOnPhone,
 }: {
   lines: ChangeLine[];
   /** The shares the lines are priced at, in percent, from the lowest to the highest; 0 is the plan. */
@@ -69,6 +70,12 @@ export function ChangeChart({
   /** Each column's width, on a computer and on a phone ("0" leaves the column out on a phone): fixed, so no value that changes
    * moves a column (founder, 2026-10-28). The widths add up to 100% on each. */
   widths: { pc: string; phone: string }[];
+  /**
+   * Two columns that share one on a phone, `[top, under]`: the under column's figure sits below the top one's, and its own column is left
+   * out (its phone width "0"). Four figures side by side left a phone's column 63 px for a typed plan's "50,000,000 ₪", and three
+   * figures were printed over each other (fresh readers, round 3, 2026-11-07).
+   */
+  stackOnPhone?: [number, number];
 }) {
   const [ref, w] = useWidth(600);
   const [drag, setDrag] = useState(false);
@@ -170,6 +177,7 @@ export function ChangeChart({
               {head.map((h, i) => (
                 <th key={i} scope="col" className={widths[i]?.phone === "0" ? GONE : undefined}>
                   {h}
+                  {stackOnPhone?.[0] === i && <span className="block md:hidden">{head[stackOnPhone[1]]}</span>}
                 </th>
               ))}
             </tr>
@@ -184,6 +192,11 @@ export function ChangeChart({
                         <span aria-hidden="true" className={`inline-block size-3 rounded-sm ${r.swatch}`} />
                         {c}
                       </span>
+                    ) : stackOnPhone?.[0] === i ? (
+                      <>
+                        {c}
+                        <span className="block md:hidden">{r.cells[stackOnPhone[1]]}</span>
+                      </>
                     ) : (
                       c
                     )}

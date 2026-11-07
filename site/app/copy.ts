@@ -3756,15 +3756,23 @@ export const invest = {
     ownBank: {
       label: "הבנק שבו כבר יש לכם חשבון עו״ש",
       none: "לא באחד מהבנקים האלה",
-      counted: "השורה של כל בנק סופרת גם את דמי ניהול העו״ש שלו, למי שיפתח שם חשבון עו״ש כדי להשקיע. בית השקעות לא דורש עו״ש אצלו.",
+      /** `free`: the banks whose price list charges nothing for a current account, which the box leaves out (One Zero, D64): readers asked
+       * whether it is a bank, and why its row counts no fee (fresh readers, round 3, 2026-11-07). */
+      counted: (free: string[]) =>
+        `השורה של כל בנק שגובה דמי ניהול חשבון עו״ש סופרת אותם, כי השקעה דרכו דורשת חשבון עו״ש אצלו. כבר יש לכם חשבון עו״ש באחד מהבנקים? בחרו אותו בתיבה, והשורה שלו לא תספור אותם.${free.length > 0 ? ` ${andList(free)} ${free.length > 1 ? "לא גובים" : "לא גובה"} דמי ניהול חשבון עו״ש,` : ""} ${free.length > 0 ? "ובית" : "בית"} השקעות לא דורש עו״ש אצלו.`,
       left: (bank: string) => `השורה של ${bank} לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של שאר הבנקים סופרות אותו.`,
     },
     /** D65 and D66 (2026-11-06): said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread, which their figures count at the limit (F-13). */
     abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",
     abroadSpread: (capped: string[]) => `מעבר לעמלת המרת המטבע, הבנק או בית ההשקעות ממירים את השקלים לדולרים בשער שהם קובעים, שיכול להיות גרוע משער השוק. בתעריפון של רוב הבנקים ובתי ההשקעות אין תקרה לפער הזה, ולכן הוא לא נכנס לחישוב. תקרה לפער כתובה בתעריפון של ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}, ואצלם החישוב סופר את הפער בגובה התקרה.`,
-    /** `perDividend`: the houses whose price lists print a charge for each dividend abroad, which their figures count at its ceiling (F-103, D67). */
-    abroadOthers: (perDividend: string[]) =>
-      `גם גופים בחו״ל גובים עמלות מהבנק או מבית ההשקעות: ברוקר, הגוף ששומר את ניירות הערך, הבורסה או רשויות. רוב הבנקים ובתי ההשקעות מעבירים אותן ללקוח, והן לא נכנסות לחישוב גם כשהתעריפון כותב להן תקרה, ולכן קרן שנקנית בחו״ל יכולה לעלות יותר ממה שמחושב כאן.${perDividend.length > 0 ? ` יוצא מן הכלל: ${andList(perDividend.map((x, i) => (i > 0 && i === perDividend.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))} ${perDividend.length > 1 ? "גובים" : "גובה"} על כל דיבידנד סכום בשביל הגוף ששומר את ניירות הערך, והחישוב סופר אותו בגובה התקרה שבתעריפון.` : ""}`,
+    /** D66: what others abroad charge a house is left out, with or without a printed ceiling; said against the spread above, which the house
+     * sets itself: readers took a written ceiling counted there and not here for a contradiction (fresh readers, round 3, 2026-11-07). */
+    abroadOthers:
+      "גם גופים בחו״ל גובים עמלות מהבנק או מבית ההשקעות: ברוקר, הגוף ששומר את ניירות הערך, הבורסה או רשויות. רוב הבנקים ובתי ההשקעות מעבירים אותן ללקוח. בשונה מהפער בשער ההמרה, שהבנק או בית ההשקעות קובעים בעצמם, את העמלות האלה קובע הגוף בחו״ל, ולכן הן לא נכנסות לחישוב, גם כשהתעריפון כותב להן תקרה. קרן שנקנית בחו״ל יכולה לעלות יותר ממה שמחושב כאן.",
+    /** D67, F-103: a house whose price list prints custody abroad at 0% and passes on the custodian's cost per corporate event, up to `{amount}`
+     * (One Zero): counted at that ceiling on each dividend of a fund that pays one, and never on a fund that keeps its profit. */
+    abroadPerDividend:
+      "יוצא מן הכלל: בתעריפון של {name} דמי ניהול פיקדון ניירות ערך בחו״ל הם 0%, והעלות של הגוף ששומר את ניירות הערך עוברת ללקוח, עד {amount} על כל דיבידנד. בלי העלות הזאת שמירת ניירות הערך שם הייתה נראית בחינם, ולכן החישוב סופר את המרב, {amount} על כל דיבידנד, בקרן בחו״ל שמחלקת דיבידנד (רווח שהקרן משלמת למחזיקים בה). קרן שצוברת את הרווח בתוכה (בשמה כתוב Accumulating) לא משלמת אותה.",
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,
     standingNote: ownTermsCopy.provider.standingNote,
@@ -4164,6 +4172,8 @@ export const kit = {
       ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
     sample: {
+      /** keepTitleWhole: a document's title naming a fund, made up, with a Latin run and a quoted name ending in a number. */
+      docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
       cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", remainder: "העמלות זו על זו", remainderAbout: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       strip: { label: "השנים של התוכנית, לדוגמה", first: "מחירי הקבוצה", middle: "קנייה בלבד במחיר הקבוצה", after: "התעריפון", today: "היום", year: (y: number) => `שנה ${y}` },
       groups: {

@@ -11,6 +11,23 @@ const LATIN_NUMBER = /([A-Za-z&]+) (\d)/g;
 /** The name as drawn: an index's name kept with its number. */
 export const keepIndexWhole = (name: string) => name.replace(LATIN_NUMBER, "$1\u00a0$2");
 
+// A Latin run inside a Hebrew line ("MSCI AC World (4A) ETF") broken at a line's end is drawn with its end at the start of the next line
+// and its start at the end of the one before: readers took "ETF" for a word of the next line (fresh readers, round 3, 2026-11-07).
+const LATIN_RUN = /[A-Za-z][\w&.'()-]*(?: [\w&.'()-]+)+/g;
+// a straight quote between two Hebrew letters is a gershayim ("ת"א"): drawn as one, a fund's name quoted in a title keeps its own quotes
+const GERSHAYIM = /(?<=[\u05d0-\u05ea])"(?=[\u05d0-\u05ea])/g;
+// a fund's name quoted in a Hebrew title is laid out right to left on its own: its closing quote after a number ("ת״א 35") was drawn before
+// the number, so the name read "35 KTF (4A) ת״א" with the "35" thrown to its far end (fresh readers, round 3, 2026-11-07)
+const QUOTED = /"([^"]+)"/g;
+/** A document's Hebrew title as drawn: each Latin run, up to 40 characters, on one line, a gershayim written as one, and a quoted name isolated. */
+export const keepTitleWhole = (title: string) =>
+  HEBREW.test(title)
+    ? title
+        .replace(GERSHAYIM, "\u05f4")
+        .replace(LATIN_RUN, (run) => (run.length <= 40 ? run.replace(/ /g, "\u00a0") : run))
+        .replace(QUOTED, (_, name: string) => (HEBREW.test(name) ? `\u2067"${name}"\u2069` : `"${name}"`))
+    : title;
+
 /** `children` is the name; `show` replaces what is drawn (the name with an icon held to it) while the name sets the direction. */
 export function MixedName({ children, show, className }: { children: string; show?: React.ReactNode; className?: string }) {
   return (

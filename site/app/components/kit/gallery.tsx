@@ -14,7 +14,7 @@ import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -381,6 +381,7 @@ function Words({ today }: { today: string }) {
           <State label="a Hebrew name that starts with Latin letters"><div>הקרן <MixedName>MTF סל (4D) S&P 500</MixedName>, בחשבון</div></State>
           <State label="a Latin name keeps its own direction"><div>הקרן <MixedName>iShares Core S&P 500 UCITS ETF</MixedName>, בחשבון</div></State>
           <State label="NameLine: a name on a line of its own, cut at its end in reading order (the brand always shows)"><div className="w-48 text-sm"><NameLine className="truncate">iShares Core S&P 500 UCITS ETF USD (Accumulating)</NameLine><NameLine className="line-clamp-2">ילין לפידות מחקה (4D) S&P 500</NameLine></div></State>
+          <State label="keepTitleWhole: a document's title in a narrow line; the Latin run stays on one line and the quoted name keeps its order"><p className="w-56 text-xs text-link">{keepTitleWhole(g.sample.docTitle)}</p></State>
         </Grid>
       </Demo>
       <Demo name="ClampedText" use={g.uses.ClampedText}>
@@ -658,14 +659,17 @@ function Fields() {
             yTitle="₪"
             yFormat={(v) => fmt.number(Math.round(v))}
             choicesLabel={g.sample.range}
-            head={[g.sample.range, g.sample.percent]}
+            head={[g.sample.range, g.sample.percent, g.sample.range]}
             widths={[
-              { pc: "50%", phone: "50%" },
-              { pc: "50%", phone: "50%" },
+              { pc: "40%", phone: "50%" },
+              { pc: "30%", phone: "50%" },
+              { pc: "30%", phone: "0" },
             ]}
+            // on a phone the third column's figure sits under the second's (stackOnPhone)
+            stackOnPhone={[1, 2]}
             rows={[
-              { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200)] },
-              { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400)] },
+              { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200), fmt.nisWhole(1440)] },
+              { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400), fmt.nisWhole(480)] },
             ]}
           />
         </State>

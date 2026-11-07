@@ -9,6 +9,7 @@ import { buildWorkbenchBundle } from "../../lib/providers.server";
 import { buildInvest, indexById, knownIndices, refOfCustom } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { entered } from "../../lib/value";
+import { fmt } from "../../lib/format";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { Fees } from "./funds";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
@@ -374,7 +375,13 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     const out = card(sp, null);
     expect(out).toContain(invest.pair.abroadSpread(["אי.בי.אי", "אלטשולר טרייד", "מיטב טרייד"]));
     // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so (independent check 2, should-fix 5)
-    expect(out).toContain(invest.pair.abroadOthers(["וואן זירו"]));
+    expect(out).toContain(invest.pair.abroadOthers);
+    // why One Zero's charge is counted while other written ceilings are not, and on which funds (fresh readers, round 3, 2026-11-07)
+    const [before, between, after] = invest.pair.abroadPerDividend.replace("{name}", "וואן זירו").split("{amount}");
+    expect(out).toContain(before);
+    expect(out).toContain(between);
+    expect(out).toContain(after);
+    expect(out).toContain(fmt.usd(50));
   });
 
   it("names the current account in the legend only where a bar shown counts one", () => {
@@ -403,7 +410,8 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
   });
 
   it("offers every bank whose current account costs something, and says which row leaves it out", () => {
-    expect(card(sp, null)).toContain(invest.pair.ownBank.counted);
+    // the bank whose current account is free is named, so its row reads as a bank's (fresh readers, round 3)
+    expect(card(sp, null)).toContain(invest.pair.ownBank.counted(["וואן זירו"]));
     expect(card(sp, "leumi")).toContain(invest.pair.ownBank.left("לאומי"));
     const raw = html(createElement(AccountColumn, { view: buildInvest({ bundle, index: sp, plan }), bundle, years: 20, pick: pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, onPick: () => undefined, ownBank: { value: null, onChange: () => undefined } }));
     for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]) expect(raw).toContain(`value="${id}"`);

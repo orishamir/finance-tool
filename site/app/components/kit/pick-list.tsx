@@ -44,8 +44,8 @@ export interface PickRow {
 /**
  * A figure that must fit a fixed width, a size down as its digits grow, so a plan typed past the sliders' ends never cuts its leading
  * digits (#190). `list`: a list's fixed last column (7.5rem on a computer holds "999,999,999 ₪", 6.5rem on a phone "99,999,999 ₪"), a
- * size down past eight digits on a phone, past nine digits on a computer, and again past twelve there; a phone shows a billion or more in
- * its short form ("2.3 מיליארד ₪").
+ * size down past eight digits on a phone, past nine digits on a computer, and again past twelve on both; a phone shows a billion or more
+ * in its short form ("2.30 מיליארד ₪").
  * `tile`: a 24 px figure in one of two tiles side by side on a phone, a size down past seven digits, nine and eleven; the tile holds the
  * 24 px line's height (`min-h-[1.875rem]` on a phone), so a smaller figure moves nothing.
  */
@@ -53,7 +53,9 @@ export const figureFit = (v: number, kind: "list" | "tile" = "list") => {
   const a = Math.abs(v);
   if (kind === "tile") return a >= 1e11 ? "max-md:text-base" : a >= 1e9 ? "max-md:text-lg" : a >= 1e7 ? "max-md:text-xl" : "";
   // on a phone a billion or more reads in its short form (`Num`, lens review S2), which a size down holds at any plan
-  return a >= 1e12 ? "text-xs max-md:text-sm" : a >= 1e9 ? "text-sm" : a >= 1e8 ? "max-md:text-sm" : "";
+  // a thousand billion and more is 12 px on a phone too: its short form has two decimals now ("2,542.21 מיליארד ₪"), and at 14 px it ran
+  // 4 px past the fund list's 8.5rem column (fresh readers, round 3, 2026-11-07)
+  return a >= 1e12 ? "text-xs" : a >= 1e9 ? "text-sm" : a >= 1e8 ? "max-md:text-sm" : "";
 };
 
 /** A click on a control inside a row (a figure's sheet, a link, a label) is that control's, not a pick (founder, 2026-10-27). */

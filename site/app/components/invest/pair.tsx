@@ -14,8 +14,8 @@ import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/la
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
-import { Num } from "../provenance";
-import { AlsoChanged, ClampedText, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
+import { Num, ShortRow, shortRow } from "../provenance";
+import { AlsoChanged, ClampedText, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, Tpl, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -448,6 +448,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         <span aria-hidden="true" className="hidden md:inline text-2xl text-muted-foreground self-center">
           ←
         </span>
+        {/* the two tiles side by side are one row: a billion in one writes the other's large figures short too (fresh readers, round 3) */}
+        <ShortRow when={shortRow(pc.left.value as number, pcOther?.left.value as number | undefined)}>
         <div className="grid grid-cols-2 gap-3 md:contents">
           {/* the person's colour only on the person's pick (blue is for what they entered or chose) */}
           <div className={cx("md:flex-1 md:min-w-64 min-w-0 rounded-lg border p-3 flex flex-col gap-0.5", chosen ? "border-entered bg-entered/10" : "border-primary")}>
@@ -514,6 +516,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
             </div>
           )}
         </div>
+        </ShortRow>
         {/* under a tie, why no pair is first: a line of the block's width under both tiles, held whether or not there is a tie (#190: held
             inside the narrow tile it left a 127 px hole on a phone when there was none) */}
         <LongestCase className="text-xs text-muted-foreground md:basis-full" cases={[<p key="t">{c.pair.tieWhy(TIE_MOST)}{restLine(longestPairNames, TIE_MOST - 3)}</p>]}>
@@ -620,11 +623,14 @@ export function OwnBankField({ view, bundle, value, onChange }: { view: InvestVi
   const banks = view.providers.filter((p) => bundle.snapshots.some((s) => s.id === p.id && chargesCurrentAccount(s))).sort((a, b) => a.short.localeCompare(b.short, "he"));
   if (banks.length === 0) return null;
   const marked = banks.find((b) => b.id === value) ?? null;
+  // a bank whose price list charges nothing for its current account is not in the box: the line names it, so its row is read as a bank's
+  const free = view.providers.filter((p) => !p.custom && bundle.snapshots.some((s) => s.id === p.id && s.current_account && !chargesCurrentAccount(s))).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
+  const counted = c.pair.ownBank.counted(free);
   return (
     <div className="flex flex-col gap-1 pt-2">
       <SelectField label={c.pair.ownBank.label} none={c.pair.ownBank.none} options={banks.map((b) => ({ id: b.id, name: b.short }))} value={marked?.id ?? null} onChange={onChange} />
-      <LongestCase className="text-xs text-muted-foreground max-w-measure" cases={[<span key="none">{c.pair.ownBank.counted}</span>, ...banks.map((b) => <span key={b.id}>{c.pair.ownBank.left(b.short)}</span>)]}>
-        <span>{marked ? c.pair.ownBank.left(marked.short) : c.pair.ownBank.counted}</span>
+      <LongestCase className="text-xs text-muted-foreground max-w-measure" cases={[<span key="none">{counted}</span>, ...banks.map((b) => <span key={b.id}>{c.pair.ownBank.left(b.short)}</span>)]}>
+        <span>{marked ? c.pair.ownBank.left(marked.short) : counted}</span>
       </LongestCase>
     </div>
   );
@@ -640,11 +646,25 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
   const limits = (id: string) => bundle.snapshots.some((s) => s.id === id && s.lines.some((l) => l.base === "fx" && typeof l.spread?.value === "number"));
   const capped = view.providers.filter((p) => !p.custom && limits(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
   // F-103 (D67): the houses whose price lists print a charge per corporate event abroad, which their figures count on each dividend
-  const charges = (id: string) => bundle.snapshots.some((s) => s.id === id && s.lines.some((l) => l.base === "corporate_event" && typeof l.rate.value === "number"));
-  const perDividend = view.providers.filter((p) => !p.custom && charges(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
+  const charge = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "corporate_event" && typeof l.rate.value === "number")?.rate;
+  const perDividend = view.providers.flatMap((p) => { const rate = p.custom ? undefined : charge(p.id); return rate ? [{ name: p.short, rate }] : []; }).sort((a, b) => a.name.localeCompare(b.name, "he"));
   return (
     <Disclosure label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} labelClassName="text-sm text-link">
-      <NoteList className="text-xs pb-1" items={[...(capped.length > 0 ? [c.pair.abroadSpread(capped)] : []), c.pair.abroadOthers(perDividend)]} />
+      <NoteList
+        className="text-xs pb-1"
+        items={[
+          ...(capped.length > 0 ? [c.pair.abroadSpread(capped)] : []),
+          <>
+            {c.pair.abroadOthers}
+            {perDividend.map((x) => (
+              <Fragment key={x.name}>
+                {" "}
+                <Tpl t={c.pair.abroadPerDividend} vars={{ name: x.name, amount: <Num value={ownBy(x.rate as SiteValue, x.name)} display={fmt.usd(x.rate.value as number)} /> }} />
+              </Fragment>
+            ))}
+          </>,
+        ]}
+      />
     </Disclosure>
   );
 }
@@ -750,7 +770,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
     const tiedTop = unseen ? unseen.tie && !unseen.crown : sharedTop && place === 1;
     const isBest = unseen ? unseen.crown : crownHere && crownHouse === p.id && !tiedTop;
     return (
-      <>
+      // a row whose figure what is left or what it costs is a billion or more writes both in the short form on a phone (fresh readers, round 3)
+      <ShortRow when={shortRow(wp.valueN, wp.accountCost)}>
         <span className="text-sm text-muted-foreground tabular-nums text-center">{wp.open ? "—" : place}</span>
         <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", (isYours || p.custom) && "text-entered")}>
           {p.short}
@@ -779,7 +800,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
         </span>
         <GroupLine id={p.id} house={p.short} snapshots={bundle.snapshots} open={openGroups.includes(p.id)} onOpen={onGroup} choice={choiceOf(p.id)} />
         {p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={p.id} /></span>}
-      </>
+      </ShortRow>
     );
   };
   /** A grey row's cells for a fund with no price at the house: the reason the house's record gives for it. */
@@ -1171,14 +1192,17 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
     ) : x && range ? (
       <span className="flex flex-col items-end gap-0.5 text-sm">
         {/* a line per figure, never wrapped: a plan typed past the sliders' ends gave an eight-digit figure a third line (#190) */}
-        <span className="block font-semibold">
-          <span className="block whitespace-nowrap">{c.kinds.between} <Num animate value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus} /></span>
-          <span className="block whitespace-nowrap">{c.kinds.and}<Num animate value={nis(x.atHi, "F-94", c.pair.colDiff, today)} display={plus} /></span>
+        <span className={cx("block font-semibold", figureFit(Math.max(Math.abs(x.atLo), Math.abs(x.atHi))))}>
+          <ShortRow when={shortRow(x.atLo, x.atHi)}>
+            <span className="block whitespace-nowrap">{c.kinds.between} <Num animate value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus} /></span>
+            <span className="block whitespace-nowrap">{c.kinds.and}<Num animate value={nis(x.atHi, "F-94", c.pair.colDiff, today)} display={plus} /></span>
+          </ShortRow>
         </span>
         <span className="text-xs text-muted-foreground text-end">{c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}</span>
       </span>
     ) : priced(at) && priced(selAt) ? (
-      <span className="font-semibold">
+      // a size down as the digits grow, as the account list's figure: a plan of a thousand billion ran 4 px past the list at 390 px
+      <span className={cx("font-semibold", figureFit(at.valueN - selAt.valueN))}>
         <Num animate value={diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value)} display={plus} />
       </span>
     ) : (
