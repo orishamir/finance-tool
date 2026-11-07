@@ -377,7 +377,7 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("tax at exit", r.taxAtExit, 6_279.39);
     g.value("real gain vs the exchange rate", r.detail.realGain, 25_117.56);
     g.done();
-    expect(labelOf(r, "TXF-11")).toBe("secondary-source");
+    expect(labelOf(r, "TXF-11")).toBe("reading");
     expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-18" });
   });
 

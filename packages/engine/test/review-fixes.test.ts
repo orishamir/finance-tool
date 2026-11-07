@@ -123,6 +123,19 @@ describe("surtax on the year's total (F-43, TXG-09, TXG-10)", () => {
   });
 });
 
+describe("an accumulating foreign fund bought abroad (TXF-11, G-18)", () => {
+  it("is taxed only at sale under TXF-11's reading by implication: labelled a reading, listed and not ranked; a ruling lifts both", () => {
+    const abroad = fund({ fund: { kind: "foreign-fund", domicile: "ireland", drag: { management: 0.0007 } } });
+    const r = runSecurities(abroad, ctx);
+    expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
+    expect(r.labels.some((l) => l.code === "secondary-source" && l.ruleId === "TXF-11")).toBe(false);
+    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-18" });
+    const ruled = runSecurities(fund({ fund: { kind: "foreign-fund", domicile: "ireland", drag: { management: 0.0007 }, saleOnlyRuling: true } }), ctx);
+    expect(ruled.labels.some((l) => l.ruleId === "TXF-11")).toBe(false);
+    expect(ruled.outcome.code).toBe("eligible");
+  });
+});
+
 describe("foreign funds on TASE (TXF-04)", () => {
   it("blocks a fund on the 90% test while TXF-04 is open (2026-11-07: its only source was a copy of the letter)", () => {
     expect(() => runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: true } }), ctx)).toThrow(BlockedError);

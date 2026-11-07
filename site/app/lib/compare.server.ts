@@ -362,15 +362,6 @@ function dataFileVersions(): BundleDataFile[] {
   return out;
 }
 
-/** MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500 by holding length; its figures go to the page as they are and feed no run. */
-function pastRecord(allRules: Record<string, RuleRecord>): CompareBundle["pastRecord"] {
-  const r = allRules["MKT-01"];
-  if (!r) return null;
-  const figures = Object.fromEntries(Object.entries(r.figures ?? {}).map(([k, v]) => [k, v as unknown as SiteValue]));
-  const any = Object.values(figures)[0];
-  return { rule: { id: r.id }, figures, source: { url: any?.source.url ?? "", title: any?.source.publisher ?? "" } };
-}
-
 export function buildCompareBundle(): CompareBundle {
   const t = today();
   const allRules = loadRules();
@@ -463,8 +454,8 @@ export function buildCompareBundle(): CompareBundle {
 
   // ---- the rules a run may read: found by running the comparison over the profiles above with every rule at hand,
   // plus every rule the wrapper records cite (reasons and chips link to them) and the two the screens quote.
-  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, indexFunds, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable(), pastRecord: pastRecord(allRules) };
-  const needed = new Set<string>(["PEN-36", "BANK-22", "MKT-01"]);
+  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, indexFunds, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable() };
+  const needed = new Set<string>(["PEN-36", "BANK-22"]);
   for (const w of wrappers) collectRuleIds(w.record).forEach((id) => needed.add(id));
   for (const w of wrappers) for (const f of Object.values(w.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   for (const e of exposures) (e.record.rule_ids ?? []).forEach((id) => needed.add(id));

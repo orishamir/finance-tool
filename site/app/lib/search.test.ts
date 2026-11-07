@@ -132,8 +132,8 @@ describe("normalisation", () => {
     expect(strips(normalize("מפיקדון"))).toContain(normalize("פיקדון"));
     expect(strips("הון")).toEqual([]);
   });
-  it("keeps the 52 alias rows and marks the colloquial ones", () => {
-    expect(aliasRows).toHaveLength(52);
+  it("keeps the 51 alias rows and marks the colloquial ones", () => {
+    expect(aliasRows).toHaveLength(51);
     expect(aliasRows.filter((r) => r.confirm).length).toBeGreaterThanOrEqual(2);
   });
 });
@@ -172,8 +172,6 @@ describe("the nineteen queries (top href)", () => {
     ["83,641", "/rules#KGL-03"],
     ["83641", "/rules#KGL-03"],
     ["15%", "/rules#TXI-03"],
-    // MKT-01, J.P. Morgan's past-return slide, is a not-rule: no company section lists it, so it leads to the not-rules' group (review, 2026-10-26)
-    ["תשואה היסטורית", "/companies#terms-none"],
   ];
   it.each(cases.map((c, i) => [i + 1, ...c] as const))("%i: %s", (_i, query, href) => {
     expect(top(query)[0]?.entry.href).toBe(href);

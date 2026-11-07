@@ -918,11 +918,11 @@ def s14_s15_s16():
     body = (etf_steps('fixed fee 0.07% + fund-level withholding drag 0.23% (A-11 = 1.5% × 15%, TXF-16)', 'max(25, 0.3% × V)',
                       '0.15% (no minimum given, Q21)', '0 (not given; A-08 default)', 'the exchange rate X_m = 1.01^(m/12): 90% test met (TXF-04)',
                       extra=f'| 9 | Fund-level foreign withholding is a cost inside the fund, not creditable | {L("TXF-16", "TXF-06")} | — |\n'
-                            f'| 10 | Accumulating foreign fund: no Israeli rule taxes undistributed income of a non-controlling holder, so tax falls only at sale. No Tax Authority statement was found (Chrome search, 2026-10-22); one secondary source agrees → computes, labelled "secondary source" | {L("TXF-11")} (TXF OQ1) | secondary |\n')
+                            f'| 10 | Accumulating foreign fund: no Israeli rule taxes undistributed income of a non-controlling holder, so tax falls only at sale. No Tax Authority statement was found (Chrome search, 2026-10-22); one secondary source agreed (no longer cited since 2026-11-07); the law implies it → computes, labelled "reading" | {L("TXF-11")} (TXF OQ1) | reading |\n')
             + '\n' + year_table(sn16) + '\n\n'
             + f'Under the TXF-11 reading: real gain vs X {f2(o16["real_gain"])}, tax {f2(o16["tax"])}, V_T {f2(o16["V"])}, real {f2(o16["real_V"])}.')
     section('S16', 'TASE-registered foreign fund (קרן חוץ), FX index for tax', 'computed', body,
-            f'Real V_T/I_T = {f2(o16["real_V"])}; nominal V_T = {f2(o16["V"])}; fees: {fees_line(s16, o16)}; tax at exit {f2(o16["tax"])} (25% of real gain vs the exchange rate, {f2(o16["real_gain"])}); label "secondary source: tax only at sale, not confirmed by the Tax Authority" (TXF-11); row "listed, not ranked". Subject to Q21.')
+            f'Real V_T/I_T = {f2(o16["real_V"])}; nominal V_T = {f2(o16["V"])}; fees: {fees_line(s16, o16)}; tax at exit {f2(o16["tax"])} (25% of real gain vs the exchange rate, {f2(o16["real_gain"])}); label "reading: tax only at sale, by implication from the law, not confirmed by the Tax Authority" (TXF-11; "secondary source" until 2026-11-07, when its secondary source stopped being cited); row "listed, not ranked". Subject to Q21.')
     return out
 
 
