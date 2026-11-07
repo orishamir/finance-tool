@@ -1,0 +1,129 @@
+{
+  "id": "MF-69",
+  "title": "The designated hours the collected managers print: 16:00 Monday to Thursday, 13:00 on a Friday, in money-market funds",
+  "title_he": "השעה היעודה בקרנות הכספיות, לפי התשקיפים של מנהלי הקרנות",
+  "text_he": "בתשקיפים העיקריים של שבעה מתוך תשעת מנהלי הקרנות שהאתר אוסף, הקרנות הכספיות השקליות שנבדקו מקבלות הוראות בימים שני עד שישי, והשעה היעודה בהן היא 16:00 בימים שני עד חמישי ו־13:00 ביום שישי (במגדל 12:30). הקרנות הכספיות במטבע חוץ שנבדקו מקבלות הוראות רק בימים שני עד חמישי, עד 16:00. אלה תנאים של כל מנהל לקרנות שלו, ומנהל רשאי לשנות אותם בדיווח. התשקיף של ילין לפידות נכתב לפני המעבר לשבוע המסחר החדש, ושל אי.בי.אי סרוק, ולכן שניהם לא נספרו.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=37",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.37, s.46(ג)(1)",
+      "locator_he": "עמוד 37, סעיף 46(ג)(1)",
+      "page": 37,
+      "quote": "השעה שצוינה בתשקיף ושנקבעה בהתאם לכללים שקבעה המסלקה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf#page=7",
+      "title": "Meitav main prospectus, 7.7.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.7, 16",
+      "locator_he": "עמודים 7, 16",
+      "page": 7,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1737001-1738000/P1737042-00.pdf#page=17",
+      "title": "Harel main prospectus, 2.5.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.13, 17",
+      "locator_he": "עמודים 13, 17",
+      "page": 13,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=11",
+      "title": "Migdal main prospectus, 30.1.2026",
+      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מגדל קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=15",
+      "title": "Kesem main prospectus, 9.8.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.15",
+      "locator_he": "עמוד 15",
+      "page": 15,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf#page=15",
+      "title": "Altshuler Shaham main prospectus, 31.7.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.14, 15",
+      "locator_he": "עמודים 14, 15",
+      "page": 14,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1773001-1774000/P1773628-00.pdf#page=7",
+      "title": "More main prospectus, 10.10.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.7, 13",
+      "locator_he": "עמודים 7, 13",
+      "page": 7,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1756001-1757000/P1756857-00.pdf#page=6",
+      "title": "Analyst main prospectus, 25.7.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.6, 11",
+      "locator_he": "עמודים 6, 11",
+      "page": 6,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=6",
+      "title": "Yalin Lapidot main prospectus, 20.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "checked": "2026-11-07",
+      "qualifier": "(each manager's own prospectus)"
+    }
+  ]
+}
