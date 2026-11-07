@@ -6,22 +6,22 @@ import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { fmt, formatValue, SHORT_IN_ROW, shortBillions } from "../lib/format";
+import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
-import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
+import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isParameter, isProvisional, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isOpenValue, isParameter, isProvisional, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, LongestCase, Tpl, countsByItself, keepTitleWhole, useCounting, useGlidingNumbers, useUnseen } from "./kit";
+import { CompanyLinks, LongestCase, Tpl, When, countsByItself, gershayim, keepTitleWhole, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms. */ lead?: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms. */ lead?: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -107,7 +107,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
       {children}
       <PushCtx.Provider value={push}>
        <CloseCtx.Provider value={close}>
-        <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back}>
+        <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
           {top && <SheetContent item={top} data={data} headId={headId} descId={descId} />}
         </Sheet>
        </CloseCtx.Provider>
@@ -230,6 +230,15 @@ function ShortText({ text, className }: { text: string; className: string }) {
   );
 }
 
+/**
+ * What a figure's sheet opens with. A value that is not a number (a word, yes or no, or empty) heads its sheet with the word the figure was
+ * shown as, so the sheet never prints the record's raw value: the linkage and tax sheets on every deposit card headed with "none" and
+ * "unlinked_15" (independent check 3, 2026-11-07). A number keeps its digits, exact or rounded as shown.
+ */
+export function valueItem(value: SiteValue, written: string | undefined, exact: boolean): Item {
+  return { kind: "value", value, ...(exact ? { exact: true } : {}), ...(typeof value.value !== "number" && written ? { display: written } : {}) };
+}
+
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
 export function Num({ value, size = "inline", display, animate, className, prefix, exact }: NumProps) {
   const open = useOpen();
@@ -252,7 +261,10 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const frame = shown !== null && landing !== null && !/\d\.\d/.test(landing ?? "") ? Math.round(shown) : shown;
   // a formatter gets the moving value, so a signed figure counts like any other
   const written = typeof display === "function" ? (frame !== null ? display(frame) : undefined) : display;
-  const text = written ?? (frame !== null && typeof value.value === "number" ? formatValue(frame, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  // an empty value whose rule is open (D7 blocked: no rule covers it) says so, with the lock, instead of "unknown" (2026-11-06: a deposit's
+  // tax bucket printed "null")
+  const blocked = isOpenValue(value);
+  const text = written ?? (blocked ? strengthCopy.open.label : frame !== null && typeof value.value === "number" ? formatValue(frame, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
   // a billion shekels or more reads in its short form on a phone, so no column cuts it (lens review S2), and a thousand billion on a
   // computer; a row with one short figure writes its other large ones short too (fresh readers, round 3). The sheet and label keep the digits.
   const inShortRow = useContext(ShortRowCtx);
@@ -263,7 +275,8 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
   const future = fromDate ? `${numbers.startsOn}${fmt.date(fromDate)}` : null;
-  const label = [text, stateWord[value.state], param ? numbers.parameter : null, weak, future, value.stale ? `${numbers.staleSince} ${fmt.date(staleDate(value))}` : null, numbers.details].filter(Boolean).join(", ");
+  // an open value is no sourced figure: its label says the open question and the lock, not "ממקור" (independent check 2, 2026-11-07)
+  const label = [text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
   // one caution icon, before the digits, for a weak source or a date still ahead (the sheet says which); a computed figure
   // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence (audit A23). At figure size a date ahead
@@ -278,11 +291,12 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       type="button"
       className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}
       aria-label={label}
-      onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
+      onClick={(e) => open(valueItem(value, written, keepDecimals), e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {(fromDate || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
-      {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
+      {blocked && <IconLock size={14} className={cx("text-blocked me-1", mark)} aria-hidden="true" />}
+      {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none"><When iso={fromDate} lead={numbers.startsOn} /></span>}
       {short ? (
         <>
           {shortPc ? <ShortText text={shortPc} className="max-md:hidden" /> : <bdi dir={textDir(text)} className="whitespace-nowrap max-md:hidden">{text}</bdi>}
@@ -293,12 +307,15 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       )}
     </button>
   );
-  return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
+  // a maqaf lead before a figure said in words ("תעריפון מ־" before "נובמבר 2025") writes its letter on the word: "מנובמבר 2025" (copy.md 10)
+  return prefix ? <span className="whitespace-nowrap">{typeof prefix === "string" ? joinLead(prefix, text) : prefix}{button}</span> : button;
 }
 
 /** A lead text that ends in a maqaf word ("נכון ל־", "ב־") or a word and a space ("ממוצע ") followed by a number: only its last word is
- * bound to the number (one non-breaking span, the space kept), so the rest of the sentence still wraps. */
-export function LeadTail({ lead, children }: { lead: string; children: ReactNode }) {
+ * bound to the number (one non-breaking span, the space kept), so the rest of the sentence still wraps. `text`, the words of what follows
+ * when it is not digits ("נובמבר 2025", "שנה"), drops a maqaf lead's "־": "מנובמבר 2025", "בשנה" (copy.md 10). */
+export function LeadTail({ lead: written, text, children }: { lead: string; text?: string; children: ReactNode }) {
+  const lead = text === undefined ? written : joinLead(written, text);
   const m = /^([\s\S]*?)(\S+)(\s*)$/.exec(lead);
   if (!m) return <>{children}</>;
   return (
@@ -341,11 +358,6 @@ export function NumAfter({ lead, ...rest }: NumProps & { lead: string }) {
   );
 }
 
-function staleDate(v: SiteValue): string {
-  const s = v.stale!.since;
-  return /^\d{4}-\d{2}$/.test(s) ? `${s}-01` : s;
-}
-
 /** Digits count to a new value over --duration-chart; zero when the device asks for reduced motion. */
 export function useAnimatedValue(target: number | null, enabled: boolean): number | null {
   // not a number to glide to: NaN takes its goal at once, either way
@@ -371,8 +383,26 @@ export function StrengthLabel({ strength }: { strength: Strength }) {
   return <Tag tone="neutral">{label}</Tag>;
 }
 
+/**
+ * A figure or rate that rests on the site's own reading of official texts (the engine's "reading" label): never "מקור משני".
+ * `held`: a row that may come to rest on a reading as the person types keeps the tag's place, empty while `shown` is false, on a
+ * line that is always there (a card's assumptions line, an exposure row's return line), so the tag appearing moves nothing
+ * and costs no line of its own (fourth check, 2026-11-07).
+ */
+export function ReadingTag({ held = false, shown = true }: { held?: boolean; shown?: boolean } = {}) {
+  const tag = <Tag tone="caution" icon={<IconAlert size={14} />}>{numbers.reading}</Tag>;
+  if (!held) return shown ? tag : null;
+  return <LongestCase cases={[tag]}>{shown ? tag : null}</LongestCase>;
+}
+
 export type IdKind = "rule" | "formula" | "parameter" | "assumption" | "question";
 const QUESTION_ID = /^([A-Z0-9]+)[ -]OQ(\d+)$/;
+/** The open question an open value cites (`TXI OQ19`), in its source's title or its notes; null when it names none. */
+export const openQuestionOf = (v: SiteValue): string | null => {
+  const src = v.state === "sourced" ? (v.source as { title?: string }).title ?? "" : "";
+  const m = /\b([A-Z][A-Z0-9]*)[ -]OQ(\d+)\b/.exec(`${src} ${v.notes ?? ""}`);
+  return m ? `${m[1]} OQ${m[2]}` : null;
+};
 /**
  * What an id is, from its shape: `TX2 OQ6` a question; `F-80`, and any id `formulaNames` names (`A-06`, which is a method
  * assumption that has a formula of its own), a formula; `P-01` a site parameter; any other `A-nn` an assumption of the
@@ -396,7 +426,26 @@ export function idKind(id: string): IdKind | null {
  * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
-export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own (#190). */ titled?: boolean }) {
+/**
+ * The punctuation that closes a sentence on a chip (".", ",", ";", ":"): held to the chip on one line and drawn close to its frame, so
+ * it never reads as a stray mark with a gap before it ("פרטים ." in reader round 5, 2026-11-07). A chip is its own frame and takes no
+ * brackets (`IdText` drops them too). Kit guard 20.
+ */
+function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
+  if (!end) return <>{chip}</>;
+  return (
+    <span className="whitespace-nowrap">
+      {chip}
+      <span className="chip-end">{end}</span>
+    </span>
+  );
+}
+
+export function IdRef(props: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own (#190). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+  return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
+}
+
+function IdChip({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; titled?: boolean }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
   const data = useContext(DataCtx);
@@ -444,14 +493,22 @@ export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string
  * (the parameters page, 2026-10-26). A string with no code comes back unchanged.
  */
 export function IdText({ text, assumptions }: { text: string; assumptions?: boolean }) {
-  // the chip is its own frame: "(A-03)" loses its brackets
-  const parts = assumptions ? text.replace(/\((A-\d+)\)/g, "$1").split(/\b([A-Z0-9]+[ -]OQ\d+|A-\d+)\b/) : text.split(/\b([A-Z0-9]+[ -]OQ\d+)\b/);
+  // the chip is its own frame: "(A-03)" and "(SW OQ4)" lose their brackets; the punctuation after a chip is held to it (ChipEnd)
+  const unbracketed = text.replace(assumptions ? /\(\s*([A-Z0-9]+[ -]OQ\d+|A-\d+)\s*\)/g : /\(\s*([A-Z0-9]+[ -]OQ\d+)\s*\)/g, "$1");
+  const parts = assumptions ? unbracketed.split(/\b([A-Z0-9]+[ -]OQ\d+|A-\d+)\b/) : unbracketed.split(/\b([A-Z0-9]+[ -]OQ\d+)\b/);
   if (parts.length === 1) return <>{text}</>;
-  return (
-    <>
-      {parts.map((part, i) => (i % 2 === 1 ? <IdRef key={i} id={part} /> : part))}
-    </>
-  );
+  const out: ReactNode[] = [];
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 0) {
+      // the punctuation right after a chip went to the chip
+      const rest = i > 0 && /^[.,;:]/.test(parts[i]!) ? parts[i]!.slice(1) : parts[i]!;
+      if (rest) out.push(rest);
+      continue;
+    }
+    const end = /^[.,;:]/.test(parts[i + 1] ?? "") ? parts[i + 1]![0] : undefined;
+    out.push(<IdRef key={i} id={parts[i]!} {...(end ? { end } : {})} />);
+  }
+  return <>{out}</>;
 }
 
 /**
@@ -459,16 +516,21 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
  * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
  * "ועוד" and the count of the others. The code stays in the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className, titled }: { id: string; className?: string; /** A general rule's chip says its Hebrew title before its id (`IdRef`'s `titled`). */ titled?: boolean }) {
+export function RuleRef({ id, className, titled, end }: { id: string; className?: string; /** A general rule's chip says its Hebrew title before its id (`IdRef`'s `titled`). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
   const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
-  if (!name) return <IdRef id={id} className={className} titled={titled} />;
+  if (!name) return <IdRef id={id} className={className} titled={titled} end={end} />;
   return (
-    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
-      <bdi className="whitespace-nowrap">{name}</bdi>
-    </button>
+    <ChipEnd
+      end={end}
+      chip={
+        <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
+          <bdi className="whitespace-nowrap">{name}</bdi>
+        </button>
+      }
+    />
   );
 }
 
@@ -495,7 +557,7 @@ function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined, short?: { comp
  * whose sections list them (their own documents say it), in order, once each. `lead` replaces "תלוי בחברה" ("תלוי בבנק"). Nothing
  * renders when none of the records is on the page.
  */
-export function VariesByCompany({ ids, lead = scopeWords.varies, size, className }: { ids: readonly CompanyTermRef[]; lead?: string; size?: "sm" | "xs"; className?: string }) {
+export function VariesByCompany({ ids, lead = scopeWords.varies, size, className }: { ids: readonly CompanyTermRef[]; /** A ReactNode, so a glossary term it names first on its page carries its mark. */ lead?: ReactNode; size?: "sm" | "xs"; className?: string }) {
   const data = useContext(DataCtx);
   const seen = new Set<string>();
   const items = ids
@@ -843,9 +905,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
           <span className="text-sm text-muted-foreground">{copy.formulaSheet.usesLabel}</span>
           {parameters.length > 0 ? (
             <span className="flex flex-wrap gap-2">
-              {parameters.map((p) => (
-                <IdRef key={p} id={p} />
-              ))}
+              {parameters.map((p) => <IdRef key={p} id={p} />)}
             </span>
           ) : (
             <span className="text-sm">{copy.formulaSheet.noParameters}</span>
@@ -887,7 +947,8 @@ function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: 
       )}
       {closedOn ? (
         <p className="text-sm">
-          <Tpl t={copy.questionSheet.closed} vars={{ date: <bdi dir="ltr">{fmt.date(closedOn)}</bdi> }} />
+          <When iso={closedOn} lead={copy.questionSheet.closed.before} />
+          {copy.questionSheet.closed.after}
         </p>
       ) : (
         <>
@@ -916,7 +977,7 @@ function SourceLink({ url, title }: { url: string; title: string }) {
   const link = !external ? (
     <span className="[overflow-wrap:anywhere]">{text}</span>
   ) : (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
+    <a href={sourceHref({ url })} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
       <span className="min-w-0 [overflow-wrap:anywhere]">{text}</span>
       <IconExternal size={16} className="shrink-0 mt-1" />
     </a>
@@ -948,6 +1009,25 @@ export function weakInputNames(value: SiteValue): string[] {
 /** The Hebrew name of a computed input: the copy's name for an English key, else the key as written (already Hebrew). */
 export function inputName(key: string): string {
   return computedInputs.names[key] ?? key;
+}
+
+/** An input read from a document: the place its source line points to (the same document at another page is another place). */
+const docKey = (input: SiteValue): string | null => (input.state === "sourced" && !isParameter(input) && input.source?.url ? `${sourceHref(input.source as RuleSource)}|${input.source.title}` : null);
+
+/**
+ * A computed value's inputs in order, each with how many inputs before it, itself included, its source line closes: the line is shown once,
+ * under the last of a row of inputs read from the same place (0: no line here).
+ */
+export function inputRuns(inputs: Record<string, SiteValue>): { label: string; input: SiteValue; closes: number }[] {
+  const list = Object.entries(inputs);
+  let run = 0;
+  return list.map(([label, input], i) => {
+    const key = docKey(input);
+    run = key && i > 0 && docKey(list[i - 1]![1]) === key ? run + 1 : key ? 1 : 0;
+    const next = list[i + 1];
+    const closes = key && !(next && docKey(next[1]) === key) ? run : 0;
+    return { label, input, closes };
+  });
 }
 
 /** An input that is a word the engine wrote in English ("mean"): its Hebrew word; a numeric or already-Hebrew input is shown as it is. */
@@ -987,9 +1067,13 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
     owner ??= asSourced(r);
     known ??= pickSources(asSourced(r)).find((x) => x.url === value.source.url);
   }
+  // the figure's own place in the document (its PDF page, the words its web page opens at) before the rule's
+  const at = value.source as CitedPlace;
   const source: RuleSource = {
     ...(known ?? { title: value.source.title, publisher: value.source.publisher }),
     url: value.source.url,
+    ...(at.page ? { page: at.page } : {}),
+    ...(at.fragment ? { fragment: at.fragment } : {}),
     strength: strengthOk(value.source.strength) ? value.source.strength : (known?.strength ?? "secondary"),
     checked: value.checked,
   };
@@ -1049,8 +1133,14 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   const param = isParameter(value);
   const provisional = isProvisional(value);
   const today = useContext(TodayCtx);
-  const text = (value.value === null ? display : undefined) ?? formatValue(value.value, value.unit, exact ? undefined : value.state, param);
-  const unitWord = typeof value.value === "number" ? unitWordOf(value.unit) : null;
+  const blocked = isOpenValue(value);
+  const bare = (typeof value.value !== "number" ? display : undefined) ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : value.state, param));
+  // a figure shown with its sign heads its sheet with it: "+0.37%" in the row read "0.37%" in the sheet (fresh readers, 2026-11-07)
+  const text = value.signed && typeof value.value === "number" && value.value !== 0 ? `${value.value > 0 ? "+" : "−"}${formatValue(Math.abs(value.value), value.unit, exact ? undefined : value.state, param)}` : bare;
+  // a long word (a deposit's tax: "ריבית לא צמודה; השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
+  const longHead = text.length > 24;
+  // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
+  const unitWord = typeof value.value === "number" ? (value.unitText ?? unitWordOf(value.unit)) : null;
   const { setEntered } = useInputs();
   const fromDate = startsAfter(value, today);
   const year = calendarYearOf(value);
@@ -1059,11 +1149,14 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
     <div className="flex flex-col gap-3.5">
       <header className="flex flex-col gap-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <span id={headId} className={cx("num num-static text-2xl font-semibold", `num-${value.state}`, value.value === null && "text-muted-foreground")}>
-            <bdi dir={textDir(text)} className="whitespace-nowrap">{text}</bdi>
+          <span id={headId} className={cx("num num-static font-semibold", longHead ? "text-xl" : "text-2xl", `num-${value.state}`, value.value === null && "text-muted-foreground")}>
+            <bdi dir={textDir(text)} className={longHead ? undefined : "whitespace-nowrap"}>{text}</bdi>
           </span>
           {unitWord && <span className="text-sm text-muted-foreground">{unitWord}</span>}
-          <StateTag state={param ? "parameter" : value.state} />
+          {!blocked && <StateTag state={param ? "parameter" : value.state} />}
+          {/* a figure that rests on the site's reading of official texts says so wherever it is opened (third check, 2026-11-07: the
+              guide visuals and the holdings page carried the engine's reading label and nothing showed it) */}
+          {value.labels?.some((l) => l.code === "reading") && <ReadingTag />}
           {param && provisional && <Tag tone="caution">{numbers.provisionalTag}</Tag>}
           {value.stale && <IconClock size={16} className="text-caution" />}
         </div>
@@ -1074,26 +1167,27 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         )}
       </header>
 
+      {/* what the figure means, before anything else in the sheet: at the end it sat below the popover's edge (fresh readers, 2026-11-07) */}
+      {value.lead && <p className="text-sm">{value.lead}</p>}
+
       {fromDate && (
         <p className="text-sm text-caution-foreground flex items-start gap-2">
           <IconAlert size={16} className="text-caution shrink-0 mt-1" />
           <span>
-            {numbers.startsOn}
-            <bdi dir="ltr">{fmt.date(fromDate)}</bdi>. {copy.sourced.notYetInForce}
+            <When iso={fromDate} lead={numbers.startsOn} />. {copy.sourced.notYetInForce}
           </span>
         </p>
       )}
 
       {/* the working notes are English; only a note written in Hebrew is shown (audit A21) */}
-      {value.value === null && <p className="text-sm">{mostlyHebrew(value.notes) ? value.notes : copy.sourced.noValue}</p>}
+      {/* an open value's reason is the blocked callout below; "not found in the source" would be untrue of it */}
+      {value.value === null && !(blocked && !mostlyHebrew(value.notes)) && <p className="text-sm">{mostlyHebrew(value.notes) ? value.notes : copy.sourced.noValue}</p>}
       {/* an empty value a rule explains ("אין", PF-06) names that rule as a chip, as a sourced figure does (2026-10-27) */}
       {value.value === null && display && value.rule_ids && value.rule_ids.length > 0 && (
         <dl className="sheet-dl">
           <Row label={copy.sourced.rule}>
             <span className="flex flex-wrap gap-2">
-              {value.rule_ids.map((id) => (
-                <RuleRef key={id} id={id} titled />
-              ))}
+              {value.rule_ids.map((id) => <RuleRef key={id} id={id} titled />)}
             </span>
           </Row>
         </dl>
@@ -1110,7 +1204,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           <Row label={copy.parameter.why}>
             <ParameterWhy value={value} />
           </Row>
-          <Row label={copy.parameter.approved}>{!provisional && value.parameter?.signedOffOn ? <bdi dir="ltr">{fmt.date(value.parameter.signedOffOn)}</bdi> : <span className="text-sm">{copy.parameter.notApproved}</span>}</Row>
+          <Row label={copy.parameter.approved}>{!provisional && value.parameter?.signedOffOn ? <When iso={value.parameter.signedOffOn} /> : <span className="text-sm">{copy.parameter.notApproved}</span>}</Row>
         </dl>
       )}
 
@@ -1126,12 +1220,12 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             <>
               {value.effective_from && (
                 <Row label={copy.sourced.from}>
-                  <bdi dir="ltr">{fmt.date(value.effective_from)}</bdi>
+                  <When iso={value.effective_from} />
                 </Row>
               )}
               {value.effective_to && (
                 <Row label={copy.sourced.to}>
-                  <bdi dir="ltr">{fmt.date(value.effective_to)}</bdi>
+                  <When iso={value.effective_to} />
                 </Row>
               )}
             </>
@@ -1139,9 +1233,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           {value.rule_ids && value.rule_ids.length > 0 && (
             <Row label={copy.sourced.rule}>
               <span className="flex flex-wrap gap-2">
-                {value.rule_ids.map((id) => (
-                  <RuleRef key={id} id={id} titled />
-                ))}
+                {value.rule_ids.map((id) => <RuleRef key={id} id={id} titled />)}
               </span>
             </Row>
           )}
@@ -1163,16 +1255,19 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           <div className="flex flex-col gap-1.5">
             <span className="text-sm text-muted-foreground">{copy.computed.inputs}</span>
             <dl className="readout">
-              {Object.entries(value.computed_from.inputs as Record<string, SiteValue>).map(([label, input]) => (
+              {inputRuns(value.computed_from.inputs as Record<string, SiteValue>).map(({ label, input, closes }) => (
                 <div key={label} className="readout-row flex-wrap">
                   <dt>{inputName(label)}</dt>
                   <dd>
                     <Num value={input} display={inputDisplay(label, input)} />
                     {isParameter(input) && <Tag tone="parameter">{numbers.parameter}</Tag>}
                   </dd>
-                  {/* a figure read from a document says which, on its own row, as a parameter says it is the site's (fresh readers, round 3) */}
-                  {input.state === "sourced" && !isParameter(input) && input.source?.url && (
-                    <dd className="basis-full">
+                  {/* a figure read from a document says which, on its own row, as a parameter says it is the site's (fresh readers, round 3);
+                      inputs in a row from one document say it once, under the last of them (fresh readers, 2026-11-07: a gap's sheet printed
+                      the same report under each year's two figures) */}
+                  {closes > 0 && (
+                    <dd className="basis-full flex-col items-start gap-0.5 text-start">
+                      {closes > 1 && <span className="text-xs text-muted-foreground">{copy.computed.sourceOfAbove(closes)}</span>}
                       <DocSourceLine source={input.source as RuleSource} />
                     </dd>
                   )}
@@ -1230,6 +1325,13 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
       {(isWeak(value) || strength === "primary-mirror" || strength === "open") && value.state !== "entered" && (
         <Callout tone={strength === "open" ? "blocked" : strength === "primary-mirror" ? "info" : "caution"} title={strengthCopy[strength].label}>
           {strengthCopy[strength].line}
+          {/* the question an open value waits on, named in its source or notes ("TXI OQ19"): its chip opens the question (2026-11-07) */}
+          {blocked && openQuestionOf(value) && (
+            <>
+              {" "}
+              <IdRef id={openQuestionOf(value)!} />
+            </>
+          )}
           {weakNames.length > 0 && (
             <span className="block">
               {copy.computed.weakInputs} {weakNames.join(" · ")}
@@ -1241,7 +1343,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         <p className="text-sm text-caution-foreground flex items-start gap-2">
           <IconClock size={16} className="text-caution shrink-0 mt-1" />
           <span>
-            {copy.stale.before} <bdi dir="ltr">{fmt.date(staleDate(value))}</bdi>. {copy.stale.middle} {copy.stale.cadence[value.stale.cadence]}.
+            <When iso={value.stale.since} lead={`${copy.stale.before} `} />. {copy.stale.middle} {copy.stale.cadence[value.stale.cadence]}.
           </span>
         </p>
       )}
@@ -1361,9 +1463,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <div className="flex flex-col gap-1">
           <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>{ruleCardMore.derivedFrom}</span>
-            {derived.map((d) => (
-              <RuleRef key={d} id={d} titled />
-            ))}
+            {derived.map((d) => <RuleRef key={d} id={d} titled />)}
           </p>
           <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
         </div>
@@ -1372,9 +1472,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       {examples.length > 0 && (
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>{ruleCardMore.examples}</span>
-          {examples.map((d) => (
-            <RuleRef key={d} id={d} titled />
-          ))}
+          {examples.map((d) => <RuleRef key={d} id={d} titled />)}
         </p>
       )}
       {sources.length > 0 ? (
@@ -1427,11 +1525,11 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       )}
       <dl className="sheet-dl">
         <Row label={ruleCopy.checked}>
-          <bdi dir="ltr">{fmt.date(rule.checked)}</bdi>
+          <When iso={rule.checked} />
         </Row>
         {rule.recheck_date && (
           <Row label={ruleCopy.recheck}>
-            <bdi dir="ltr">{fmt.date(rule.recheck_date)}</bdi>
+            <When iso={rule.recheck_date} />
           </Row>
         )}
         {/* only the dimensions the page can name: a page that passes none shows no empty row */}
@@ -1524,7 +1622,7 @@ function CitationBox({ text }: { text: string }) {
       type="button"
       onClick={() => void copy()}
       title={ruleCardMore.copyCitation}
-      className="group flex items-center gap-2 w-full min-h-10 px-3 rounded-md border border-border bg-background text-xs text-start hover:border-input transition-colors duration-[var(--duration-fast)]"
+      className="group flex items-center gap-2 w-full min-h-10 tap-area px-3 rounded-md border border-border bg-background text-xs text-start hover:border-input transition-colors duration-[var(--duration-fast)]"
     >
       <span className={cx("shrink-0 font-medium", copied ? "text-positive" : "text-foreground")}>
         {copied ? sourceCopy.citation.copied : ruleCardMore.citationLabel}
@@ -1544,12 +1642,12 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
   return (
     <div className="flex flex-col gap-3">
       <Heading id={headId} className={sub ? "text-base font-semibold" : "text-lg font-semibold"}>
-        {term.he}
+        {gershayim(term.he)}
       </Heading>
-      <p>{term.explanation}</p>
+      <p>{gershayim(term.explanation)}</p>
       {term.variants.length > 0 && (
         <p className="text-sm text-muted-foreground">
-          נקרא גם: {term.variants.join(" · ")}
+          {copy.termAlso} {term.variants.map(gershayim).join(" · ")}
         </p>
       )}
       {term.source && (
@@ -1558,7 +1656,7 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
             <SourceLink url={term.source.url} title={term.source.title} />
           </Row>
           <Row label={copy.sourced.checked}>
-            <bdi dir="ltr">{fmt.date(term.source.checked)}</bdi>
+            <When iso={term.source.checked} />
           </Row>
           <Row label="">
             <StrengthLabel strength={term.source.strength} />

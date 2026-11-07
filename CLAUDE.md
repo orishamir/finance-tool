@@ -292,7 +292,10 @@ catches about half or more with noise under 30%.
   after each job; mention it only for a big job or near a limit. Subagents
   may run several at once (founder, 2026-11-07), each in its own worktree
   and owning its own files; about four at most that run tests, browsers or
-  builds, because more slows my PC. Small work stays in the main
+  builds, because more slows my PC and has run the machine out of memory.
+  The lead alone schedules that work (founder, 2026-11-07): a subagent may
+  start a read-only reviewer or a research copy that runs no tests, builds
+  or browser, and asks the lead for anything that does. Small work stays in the main
   conversation. A job
   likely to use more than 5% of the week gets a one-line estimate and my yes
   first (a one-topic conversation costs about 1 to 2%, one subagent's job

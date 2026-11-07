@@ -1,0 +1,63 @@
+# Written amounts under the pair bars and the account list's figure, every index, two plans (10,000 + 500 a month for 10 years; 6,000 + 400 for 20).
+# Each line: index, plan | the account list's figure for the headline pair's house | bar 1 parts || bar 2 parts | the difference line (account, fund, tax).
+# before = the account parts rounded with the bar alone (no group); after = the account parts rounded to the list's own whole figure (accountWhole).
+
+## before
+index-msci-acwi 10y | list 1,043 ₪ | cost-other:3 cost-custody:689 cost-trade:352 cost-fund:1,147 tax:5,449 || cost-other:2 cost-custody:678 cost-trade:348 cost-fund:2,306 tax:5,164 | gap 16,-1159,285
+index-msci-world 10y | list 1,019 ₪ | cost-other:2 cost-custody:671 cost-trade:345 cost-fund:3,031 tax:4,986 || cost-other:2 cost-custody:666 cost-trade:343 cost-fund:3,611 tax:4,843 | gap 7,-580,143
+index-nasdaq100 10y | list 1,049 ₪ | cost-other:2 cost-custody:693 cost-trade:354 cost-fund:719 tax:5,555 || cost-other:2 cost-custody:688 cost-trade:352 cost-fund:1,290 tax:5,414 | gap 7,-571,141
+index-sp500 10y | list 1,057 ₪ | cost-other:2 cost-custody:699 cost-trade:356 cost-fund:116 tax:5,703 || cost-other:3 cost-custody:698 cost-trade:356 cost-fund:173 tax:5,689 | gap 0,-57,14
+index-ta125 10y | list 1,049 ₪ | cost-other:2 cost-custody:693 cost-trade:354 cost-fund:719 tax:5,555 || cost-other:2 cost-custody:683 cost-trade:350 cost-fund:1,818 tax:5,284 | gap 14,-1099,271
+index-ta35 10y | list 1,053 ₪ | cost-other:2 cost-custody:696 cost-trade:355 cost-fund:404 tax:5,632 || cost-other:2 cost-custody:683 cost-trade:350 cost-fund:1,781 tax:5,293 | gap 18,-1377,339
+index-ta90 10y | list 1,050 ₪ | cost-other:3 cost-custody:694 cost-trade:354 cost-fund:652 tax:5,571 || cost-other:3 cost-custody:691 cost-trade:353 cost-fund:919 tax:5,505 | gap 4,-267,66
+index-msci-acwi 20y | list 3,330 ₪ | cost-other:12 cost-custody:2,529 cost-trade:790 cost-fund:4,287 tax:17,207 || cost-other:12 cost-custody:2,452 cost-trade:770 cost-fund:8,549 tax:16,169 | gap 97,-4262,1038
+index-msci-world 20y | list 3,174 ₪ | cost-other:11 cost-custody:2,405 cost-trade:758 cost-fund:11,186 tax:15,527 || cost-other:11 cost-custody:2,368 cost-trade:749 cost-fund:13,278 tax:15,017 | gap 46,-2092,510
+index-nasdaq100 20y | list 3,366 ₪ | cost-other:12 cost-custody:2,557 cost-trade:797 cost-fund:2,694 tax:17,596 || cost-other:12 cost-custody:2,519 cost-trade:787 cost-fund:4,814 tax:17,079 | gap 48,-2120,517
+index-sp500 20y | list 3,417 ₪ | cost-other:12 cost-custody:2,598 cost-trade:807 cost-fund:435 tax:18,146 || cost-other:12 cost-custody:2,594 cost-trade:806 cost-fund:651 tax:18,094 | gap 5,-216,52
+index-ta125 20y | list 3,366 ₪ | cost-other:12 cost-custody:2,557 cost-trade:797 cost-fund:2,694 tax:17,596 || cost-other:12 cost-custody:2,484 cost-trade:779 cost-fund:6,763 tax:16,604 | gap 91,-4069,992
+index-ta35 20y | list 3,393 ₪ | cost-other:12 cost-custody:2,579 cost-trade:802 cost-fund:1,515 tax:17,883 || cost-other:11 cost-custody:2,487 cost-trade:779 cost-fund:6,625 tax:16,638 | gap 116,-5110,1245
+index-ta90 20y | list 3,372 ₪ | cost-other:12 cost-custody:2,562 cost-trade:798 cost-fund:2,445 tax:17,656 || cost-other:12 cost-custody:2,544 cost-trade:794 cost-fund:3,439 tax:17,414 | gap 22,-994,242
+
+## after
+index-msci-acwi 10y | list 1,043 ₪ | cost-other:2 cost-custody:689 cost-trade:352 cost-fund:1,148 tax:5,449 || cost-other:2 cost-custody:678 cost-trade:348 cost-fund:2,306 tax:5,164 | gap 15,-1158,285
+index-msci-world 10y | list 1,019 ₪ | cost-other:3 cost-custody:671 cost-trade:345 cost-fund:3,031 tax:4,985 || cost-other:3 cost-custody:666 cost-trade:343 cost-fund:3,611 tax:4,842 | gap 7,-580,143
+index-nasdaq100 10y | list 1,049 ₪ | cost-other:2 cost-custody:693 cost-trade:354 cost-fund:719 tax:5,555 || cost-other:2 cost-custody:688 cost-trade:352 cost-fund:1,290 tax:5,414 | gap 7,-571,141
+index-sp500 10y | list 1,057 ₪ | cost-other:2 cost-custody:699 cost-trade:356 cost-fund:116 tax:5,703 || cost-other:3 cost-custody:698 cost-trade:355 cost-fund:174 tax:5,689 | gap 1,-58,14
+index-ta125 10y | list 1,049 ₪ | cost-other:2 cost-custody:693 cost-trade:354 cost-fund:719 tax:5,555 || cost-other:2 cost-custody:683 cost-trade:350 cost-fund:1,818 tax:5,284 | gap 14,-1099,271
+index-ta35 10y | list 1,053 ₪ | cost-other:2 cost-custody:696 cost-trade:355 cost-fund:404 tax:5,632 || cost-other:2 cost-custody:683 cost-trade:350 cost-fund:1,781 tax:5,293 | gap 18,-1377,339
+index-ta90 10y | list 1,050 ₪ | cost-other:2 cost-custody:694 cost-trade:354 cost-fund:653 tax:5,571 || cost-other:2 cost-custody:691 cost-trade:353 cost-fund:920 tax:5,505 | gap 4,-267,66
+index-msci-acwi 20y | list 3,330 ₪ | cost-other:12 cost-custody:2,528 cost-trade:790 cost-fund:4,287 tax:17,208 || cost-other:12 cost-custody:2,452 cost-trade:770 cost-fund:8,549 tax:16,169 | gap 96,-4262,1039
+index-msci-world 20y | list 3,174 ₪ | cost-other:11 cost-custody:2,405 cost-trade:758 cost-fund:11,186 tax:15,527 || cost-other:11 cost-custody:2,367 cost-trade:749 cost-fund:13,279 tax:15,017 | gap 47,-2093,510
+index-nasdaq100 20y | list 3,366 ₪ | cost-other:12 cost-custody:2,557 cost-trade:797 cost-fund:2,694 tax:17,596 || cost-other:12 cost-custody:2,519 cost-trade:787 cost-fund:4,814 tax:17,079 | gap 48,-2120,517
+index-sp500 20y | list 3,417 ₪ | cost-other:12 cost-custody:2,598 cost-trade:807 cost-fund:435 tax:18,146 || cost-other:12 cost-custody:2,594 cost-trade:806 cost-fund:651 tax:18,094 | gap 5,-216,52
+index-ta125 20y | list 3,366 ₪ | cost-other:12 cost-custody:2,557 cost-trade:797 cost-fund:2,694 tax:17,596 || cost-other:12 cost-custody:2,484 cost-trade:778 cost-fund:6,763 tax:16,605 | gap 92,-4069,991
+index-ta35 20y | list 3,393 ₪ | cost-other:12 cost-custody:2,579 cost-trade:802 cost-fund:1,515 tax:17,883 || cost-other:11 cost-custody:2,487 cost-trade:779 cost-fund:6,625 tax:16,638 | gap 116,-5110,1245
+index-ta90 20y | list 3,372 ₪ | cost-other:12 cost-custody:2,562 cost-trade:798 cost-fund:2,445 tax:17,656 || cost-other:12 cost-custody:2,544 cost-trade:793 cost-fund:3,440 tax:17,414 | gap 23,-995,242
+
+## diff
+1,2c1,2
+< index-msci-acwi 10y | list 1,043 ₪ | cost-other:3 cost-custody:689 cost-trade:352 cost-fund:1,147 tax:5,449 || cost-other:2 cost-custody:678 cost-trade:348 cost-fund:2,306 tax:5,164 | gap 16,-1159,285
+< index-msci-world 10y | list 1,019 ₪ | cost-other:2 cost-custody:671 cost-trade:345 cost-fund:3,031 tax:4,986 || cost-other:2 cost-custody:666 cost-trade:343 cost-fund:3,611 tax:4,843 | gap 7,-580,143
+---
+> index-msci-acwi 10y | list 1,043 ₪ | cost-other:2 cost-custody:689 cost-trade:352 cost-fund:1,148 tax:5,449 || cost-other:2 cost-custody:678 cost-trade:348 cost-fund:2,306 tax:5,164 | gap 15,-1158,285
+> index-msci-world 10y | list 1,019 ₪ | cost-other:3 cost-custody:671 cost-trade:345 cost-fund:3,031 tax:4,985 || cost-other:3 cost-custody:666 cost-trade:343 cost-fund:3,611 tax:4,842 | gap 7,-580,143
+4c4
+< index-sp500 10y | list 1,057 ₪ | cost-other:2 cost-custody:699 cost-trade:356 cost-fund:116 tax:5,703 || cost-other:3 cost-custody:698 cost-trade:356 cost-fund:173 tax:5,689 | gap 0,-57,14
+---
+> index-sp500 10y | list 1,057 ₪ | cost-other:2 cost-custody:699 cost-trade:356 cost-fund:116 tax:5,703 || cost-other:3 cost-custody:698 cost-trade:355 cost-fund:174 tax:5,689 | gap 1,-58,14
+7,9c7,9
+< index-ta90 10y | list 1,050 ₪ | cost-other:3 cost-custody:694 cost-trade:354 cost-fund:652 tax:5,571 || cost-other:3 cost-custody:691 cost-trade:353 cost-fund:919 tax:5,505 | gap 4,-267,66
+< index-msci-acwi 20y | list 3,330 ₪ | cost-other:12 cost-custody:2,529 cost-trade:790 cost-fund:4,287 tax:17,207 || cost-other:12 cost-custody:2,452 cost-trade:770 cost-fund:8,549 tax:16,169 | gap 97,-4262,1038
+< index-msci-world 20y | list 3,174 ₪ | cost-other:11 cost-custody:2,405 cost-trade:758 cost-fund:11,186 tax:15,527 || cost-other:11 cost-custody:2,368 cost-trade:749 cost-fund:13,278 tax:15,017 | gap 46,-2092,510
+---
+> index-ta90 10y | list 1,050 ₪ | cost-other:2 cost-custody:694 cost-trade:354 cost-fund:653 tax:5,571 || cost-other:2 cost-custody:691 cost-trade:353 cost-fund:920 tax:5,505 | gap 4,-267,66
+> index-msci-acwi 20y | list 3,330 ₪ | cost-other:12 cost-custody:2,528 cost-trade:790 cost-fund:4,287 tax:17,208 || cost-other:12 cost-custody:2,452 cost-trade:770 cost-fund:8,549 tax:16,169 | gap 96,-4262,1039
+> index-msci-world 20y | list 3,174 ₪ | cost-other:11 cost-custody:2,405 cost-trade:758 cost-fund:11,186 tax:15,527 || cost-other:11 cost-custody:2,367 cost-trade:749 cost-fund:13,279 tax:15,017 | gap 47,-2093,510
+12c12
+< index-ta125 20y | list 3,366 ₪ | cost-other:12 cost-custody:2,557 cost-trade:797 cost-fund:2,694 tax:17,596 || cost-other:12 cost-custody:2,484 cost-trade:779 cost-fund:6,763 tax:16,604 | gap 91,-4069,992
+---
+> index-ta125 20y | list 3,366 ₪ | cost-other:12 cost-custody:2,557 cost-trade:797 cost-fund:2,694 tax:17,596 || cost-other:12 cost-custody:2,484 cost-trade:778 cost-fund:6,763 tax:16,605 | gap 92,-4069,991
+14c14
+< index-ta90 20y | list 3,372 ₪ | cost-other:12 cost-custody:2,562 cost-trade:798 cost-fund:2,445 tax:17,656 || cost-other:12 cost-custody:2,544 cost-trade:794 cost-fund:3,439 tax:17,414 | gap 22,-994,242
+---
+> index-ta90 20y | list 3,372 ₪ | cost-other:12 cost-custody:2,562 cost-trade:798 cost-fund:2,445 tax:17,656 || cost-other:12 cost-custody:2,544 cost-trade:793 cost-fund:3,440 tax:17,414 | gap 23,-995,242

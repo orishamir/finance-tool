@@ -14,7 +14,7 @@
       "unit": "months",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
-        "title": "National Insurance Institute, child savings: newborn page (\"בתוך 6 חודשים מיום הלידה\"); law 74ב(ד)(1א), BTL text p.51",
+        "title": "National Insurance Institute, child savings: newborn page (\"בתוך 6 חודשים מיום הלידה\"); law 74ב(ד)(1א) (Sefer HaChukim 3246, p.1070)",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
@@ -35,7 +35,7 @@
     "choice_months": "חודשים לבחירה מהלידה"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -53,17 +53,18 @@
       "checked": "2026-10-26"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
+      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.51, s.74ב(ד)(1א)",
-      "locator_he": "עמוד 51, סעיף 74ב(ד)(1א)",
-      "page": 51,
-      "checked": "2026-10-25"
+      "locator": "file p.2 (gazette p.1070), s.1(2), s.74ב(ד)(1א); s.2 (in force 1.1.2025, for a child born from that day)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(2), סעיף 74ב(ד)(1א); סעיף 2",
+      "page": 2,
+      "quote": "בתוך תקופה של שישה חודשים מיום לידתו של ילד זכאי",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=8",

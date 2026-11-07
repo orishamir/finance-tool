@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -653,8 +653,46 @@ const inputsOfRun = (ctx: Ctx, ...ids: string[]): Record<string, SiteValue> => {
   // D31: the bank's own figure, on the bank's own row (or an account built on it), weakens nothing
   const bank = snap && current ? (ctx.bundle.snapshots.find((x) => x.id === houseOfSnap(ctx, snap)) ?? snap) : null;
   const minimum = current && bank ? { [copy.pair.accountMinimum]: ownBy(current.monthly_minimum as SiteValue, bank.provider.name_he) } : {};
-  return Object.assign({}, inputMap(ctx.plan), minimum, ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
+  const fund = ids[1] ? ctx.bundle.funds.find((f) => f.id === ids[1]) : undefined;
+  return Object.assign({}, inputMap(ctx.plan), minimum, fund && !isCustomFund(fund) ? fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today) : {}, ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
 };
+
+/**
+ * The fund's yearly costs as the engine prices them (F-10, F-92 (b)): its listed fixed management and trustee fees, the variable fee priced
+ * (the mean charged in the years at today's rate where the reports give A-07, else the listed rate) and A-07 from the reports with the
+ * years it rests on. Among the inputs of a figure that runs the fund, so two funds' sheets show why one costs less (pass 7).
+ */
+function fundInputs(rec: FundRecord, list: GapList, today: string): Record<string, SiteValue> {
+  const w = copy.pair.fundInputs;
+  const out: Record<string, SiteValue> = {};
+  const own = (v: unknown) => (v && typeof (v as SiteValue).value === "number" ? ownBy(v as SiteValue, rec.manager) : null);
+  const fixed = own(rec.fees.fixed_management), trustee = own(rec.fees.trustee);
+  const variable = pricedVariable(rec, list, today)?.value ?? own(rec.fees.variable_management);
+  if (fixed) out[w.fixed] = fixed;
+  if (variable) out[w.variable] = variable;
+  if (trustee) out[w.trustee] = trustee;
+  const a07 = a07FromReports(rec, list);
+  const years = comparedYears(rec.tracking_record, list);
+  const t = rec.tracking_record;
+  if (a07 !== null && years && t) {
+    // the years' own figures, each from the report at its page: the fund's return, its index's, and the fees it charged that year
+    const at = (value: number, page: number | null | undefined) => ownBy({ ...(rec.fees.fixed_management as SiteValue), value, unit: "pct", source: { ...t.source, ...(page ? { page, locator_he: copy.kinds.gapPage(page) } : {}) }, checked: t.checked, notes: undefined, state: "sourced" } as SiteValue, rec.manager);
+    const inputs: Record<string, SiteValue> = {};
+    for (const y of years) {
+      inputs[copy.kinds.gapInputFund(y.year)] = at(y.fund_pct, t.page);
+      inputs[copy.kinds.gapInputBenchmark(t.benchmark.name, y.year)] = at(y.tracking_pct, t.page);
+      const c = y.fees_charged;
+      if (c) {
+        inputs[w.chargedFixed(y.year)] = at(c.fixed, t.fees_page);
+        inputs[w.chargedVariable(y.year)] = at(c.variable, t.fees_page);
+        inputs[w.chargedTrustee(y.year)] = at(c.trustee, t.fees_page);
+      }
+    }
+    const ys = years.map((y) => y.year);
+    out[w.beyond(ys)] = computed(Math.round(a07 * 100 * 1000) / 1000, ys.length === 1 ? "pct" : "pct_per_year", "F-92", inputs, { today, about: w.beyondAbout(ys) });
+  }
+  return out;
+}
 
 /**
  * The run's flags that are about the account's cost, not about what is left: BANK-35 says the current account counted in the cost may be too high
@@ -670,7 +708,7 @@ function costValue(ctx: Ctx, row: ComparedProvider, about: string): SiteValue {
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string): WayPrice {
   const row = p.row;
   const open = row.run.outcome.code === "listed-not-ranked";
-  const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), about });
+  const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
   let split: Pick<WayPrice, "lines" | "interaction"> | undefined;
   // the lines of a way take a run each and the page shows the picked fund's only: read when shown
   const splitOf = () => {
@@ -685,8 +723,9 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     venue: p.venue,
     open,
     accountCost: row.horizonCostBeforeTax,
+    // the cost before tax carries the run's labels on its sources; every reading the engine gives is a tax rule's (READING_RULE_IDS), which a cost before tax does not rest on
     cost: (about: string, whole = true) =>
-      computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-63", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), about }),
+      computed(whole ? accountWhole({ accountCost: row.horizonCostBeforeTax }) : row.horizonCostBeforeTax, "nis", "F-63", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
     get lines() {
       return splitOf().lines;
     },
@@ -707,9 +746,11 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   // a fund the person typed: what they left unsaid is named, never filled in (2026-11-05)
   const gap = isCustomFund(rec) ? customFundGap(rec) : null;
   if (gap) return { reason: { code: gap } };
-  // a hedged fund's cost is mostly beyond its fees (F-92): with no full year in its report and no published figure it is not priced
-  if (rec.hedged === true && !rec.tracking_record && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
-  const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx);
+  // a hedged fund's cost is mostly beyond its fees (F-92 (c)): with no compared year in its report (none, or none F-92 (d) compares) and
+  // no published figure it is not priced, never priced at A-07 = 0
+  const list = gapListFor(ctx.bundle, rec);
+  if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
+  const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx, list);
   if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
@@ -1000,6 +1041,10 @@ export interface PairCosts {
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
   interaction: number;
+  /** The account's whole cost before the tax it saves (F-91): its lines and `interaction` together, the figure the account list shows. */
+  accountCost: number;
+  /** The fund pays out (A-10): the state's part holds the tax on what it pays as well as the capital gains tax at the sale. */
+  distributes: boolean;
   /** The fund's own costs (management, variable, trustee, tracking, spread, withholding inside it) before the tax they save, with no account (F-91): the same at every account. */
   fund: SiteValue;
   /** The state's part (F-91): what remains, the tax paid during and at exit with the growth a tax paid along the way would have earned, at the horizon in today's shekels. */
@@ -1060,8 +1105,10 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
     interaction: row.horizonCostBeforeTax - row.byType.reduce((t, x) => t + x.costBeforeTax, 0),
+    accountCost: row.horizonCostBeforeTax,
+    distributes: !!distribution,
     fund: at(parts.fund, "F-91", copy.pair.fundAbout),
-    tax: at(parts.state, "F-91", copy.pair.taxAbout),
+    tax: at(parts.state, "F-91", distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout),
     base,
   };
 }
@@ -1120,12 +1167,31 @@ export function rangeOverKnownIndices(bundle: WorkbenchBundle, plan: WorkbenchIn
 export type Kind = "unhedged" | "hedged";
 export const kindOf = (rec: FundRecord): Kind => (rec.hedged === true ? "hedged" : "unhedged");
 
-/** F-92 (a): a fund's gap to its index in percent a year, with how many full years it rests on; null with none. */
-export function gapOf(rec: FundRecord): { pct: number; years: number } | null {
-  const years = rec.tracking_record?.years ?? [];
+/**
+ * F-92 (d): the list a fund is compared on, the funds on its index: whether its Israeli income is exempt on an index the method compares
+ * gross (an exempt Israeli fund on TA-35, TA-90 or TA-125, by name) and the other funds' benchmarks. A typed fund has no years and compares against nothing.
+ */
+export function gapListFor(bundle: Pick<WorkbenchBundle, "funds" | "exposures">, rec: FundRecord): GapList {
+  const index = bundle.exposures.find((e) => e.id === rec.exposure_id);
+  return gapListOf(rec, index, bundle.funds.filter((f) => f.exposure_id === rec.exposure_id));
+}
+
+/** F-92 (a): a fund's gap to its index in percent a year, with how many full years it rests on; null with none, and with years F-92 (d) does not compare. */
+export function gapOf(rec: FundRecord, list: GapList): { pct: number; years: number } | null {
+  const years = comparedYears(rec.tracking_record, list) ?? [];
   const pct = gapToIndex(years);
   return pct === null ? null : { pct, years: years.length };
 }
+
+/** F-92 (d): the record has years, but they are not compared (an index of unstated kind, or a gross one the fund is not measured fairly against). */
+export const gapUnstated = (rec: FundRecord, list: GapList): boolean => !!rec.tracking_record && comparedYears(rec.tracking_record, list) === null;
+
+/**
+ * F-95: the funds whose yearly figures are returns in shekels, which the dollar section compares: the Israeli funds, whose annual reports
+ * state their returns in shekels. A foreign fund's figures are its own currency's (its factsheet's), and a dollar return beside a shekel one
+ * would count the dollar's move as the fund's.
+ */
+export const reportsInShekels = (rec: FundRecord): boolean => rec.domicile === "IL" && !!rec.tracking_record && rec.tracking_record.years.length > 0;
 
 /** Whether the page shows the two kinds: an index on a foreign currency with a priced fund of each kind. */
 export function hasKinds(view: InvestView): boolean {
@@ -1153,6 +1219,60 @@ export function pairLeft(a: InvestArgs & { fundId: string; providerId: string })
   return pair ? (pair.price(pair.fs.spec)?.real ?? null) : null;
 }
 
+/**
+ * F-92 (b): A-07 comes from the fund's reports (no published 12-month figure, and years F-92 (d) compares), measured against the fees the
+ * fund charged each year: the engine then counts the variable fee forward as the mean charged in the years at today's rate.
+ */
+function a07FromReports(rec: FundRecord, list: GapList): number | null {
+  if (typeof rec.fees.tracking_difference_12m?.value === "number") return null;
+  const years = comparedYears(rec.tracking_record, list);
+  return years ? trackingBeyondFees(years, sumFees(rec)) : null;
+}
+
+/**
+ * F-92 (b) The variable management fee the site prices, where it is not the listed rate: the mean charged over the years at today's rate,
+ * percent a year, with those years (newest first, as the record holds them) and each year's figure from the report's table of fees
+ * charged, at its page. Null where the listed rate is what is priced (pass 7: the card showed 0.3% on Kesem 5139696, priced at −0.215%).
+ */
+export function pricedVariable(rec: FundRecord, list: GapList, today: string): { value: SiteValue; years: number[] } | null {
+  const t = rec.tracking_record;
+  const listed = rec.fees.variable_management;
+  // the engine prices the mean charged even where no listed rate was collected (fundOf), so the sheet does too
+  const like = (typeof listed?.value === "number" ? listed : rec.fees.fixed_management) as SiteValue | undefined;
+  if (!t || !like || a07FromReports(rec, list) === null) return null;
+  const at = variableForwardYears(t.years, t.variable_rate_since);
+  if (!at) return null;
+  const mean = at.reduce((a, y) => a + y.fees_charged!.variable, 0) / at.length;
+  if (typeof listed?.value === "number" && Math.abs(mean - listed.value) < 1e-9) return null;
+  const source = { ...t.source, ...(t.fees_page ? { page: t.fees_page, locator_he: copy.kinds.gapPage(t.fees_page) } : {}) };
+  const inputs: Record<string, SiteValue> = {};
+  // each year's figure as the fund part's sheet writes it (fundInputs): a percent of that year, read from the report
+  for (const y of at) inputs[copy.pair.fundInputs.chargedVariable(y.year)] = ownBy({ ...like, value: y.fees_charged!.variable, unit: "pct", source, checked: t.checked, notes: undefined, state: "sourced" } as SiteValue, rec.manager);
+  const years = at.map((y) => y.year);
+  return { value: computed(Math.round(mean * 1000) / 1000, "pct_per_year", "F-92", inputs, { today, about: copy.kinds.variablePricedAbout(years) }), years };
+}
+
+/**
+ * F-92 (b) The fund's cost of a report that prints only the positive variable fees may be lower than the site's where A-07 is floored at 0.
+ * Above the floor, with the variable fee averaged over the same years as A-07, the fee charged cancels out of the forward cost (A-07 is
+ * measured after it), so a fee paid back and not printed changes nothing (pass 7: the sentence stood on 1165844 too, whose A-07 is 2.62).
+ * Over other years (a rate changed, a year without its fees) it does not cancel, and the sentence stays (finance review, pass 7).
+ */
+export function paybackMayLower(rec: FundRecord, list: GapList): boolean {
+  const a07 = a07FromReports(rec, list);
+  if (a07 === null) return false;
+  if (a07 === 0) return true;
+  const t = rec.tracking_record;
+  const priced = t ? variableForwardYears(t.years, t.variable_rate_since) : null;
+  return priced?.length !== comparedYears(t, list)?.length;
+}
+
+/**
+ * The account's cost in whole shekels, as every block that shows it writes it: the account list's figure and the pair bar's account parts
+ * (pass 7: 1,043 in the list against 689 + 352 + 3 = 1,044 in the bar on the MSCI ACWI).
+ */
+export const accountWhole = (x: Pick<WayPrice, "accountCost"> | Pick<PairCosts, "accountCost">): number => Math.round(x.accountCost);
+
 /** A fund's listed fees together, percent a year. */
 export const sumFeesPct = (rec: FundRecord) => sumFees(rec) * 100;
 
@@ -1174,7 +1294,8 @@ export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; provider
   if (u0 === null || uDown === null || uUp === null || h0 === null) return null;
   const steps = [u0 - uDown, uUp - u0];
   const rec = a.bundle.funds.find((f) => f.id === a.hedged.fundId);
-  const used = rec?.tracking_record && typeof rec.fees.tracking_difference_12m?.value !== "number" ? trackingBeyondFees(rec.tracking_record.years, sumFees(rec)) : null;
+  const reported = rec ? comparedYears(rec.tracking_record, gapListFor(a.bundle, rec)) : null;
+  const used = rec && reported && typeof rec.fees.tracking_difference_12m?.value !== "number" ? trackingBeyondFees(reported, sumFees(rec)) : null;
   if (used !== null) {
     const more = pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: used + 0.01 });
     const less = used >= 0.01 ? pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: used - 0.01 }) : null;
@@ -1192,6 +1313,12 @@ export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; provider
 
 /** P-01 as the page reads it: the share of the larger value below which two pairs are a tie (F-80). */
 export const tieShareOf = (bundle: Pick<WorkbenchBundle, "p01">): number => tieThreshold([bundle.p01]);
+/** P-01 as a figure the page writes, with its card (pass 7 readers: the threshold that makes funds "שקולות" was nowhere on the page). */
+export const tieThresholdValue = (bundle: Pick<WorkbenchBundle, "p01">): SiteValue => {
+  const p = bundle.p01;
+  const v = p.value!;
+  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: (v.notes ?? "").startsWith("provisional") } };
+};
 
 /**
  * The place of each value in a ranked list, best first (F-80, P-01; 2026-11-05): every value within the tie threshold of the first

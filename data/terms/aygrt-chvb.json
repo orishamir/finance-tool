@@ -1,0 +1,29 @@
+{
+  "id": "aygrt-chvb",
+  "he": "איגרת חוב",
+  "en": null,
+  "meaning": "תעודת התחייבות, בלשון החוק: מי שהנפיק אותה מתחייב לשלם למחזיקים בה כסף במועד שנקבע, בלי לתת להם חלק בבעלות",
+  "where": [
+    "ad",
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "government-bond"
+  ],
+  "variants": [
+    "אג\"ח"
+  ],
+  "rule_ids": [
+    "CORP-01",
+    "GOV-02"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 35א, \"תעודות התחייבות\", עמוד 37",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

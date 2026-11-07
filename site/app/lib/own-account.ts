@@ -93,6 +93,9 @@ export type FigurePart = "rate" | "discount" | "floor" | "flat" | "flat_up_to" |
 
 /** One number of a group price as a sourced value: the group's own document is its source, a company's figure (institution strength)
  * shown only beside that house, so its own (D31: plain sourced, no caution). */
+/** A cited place's page and the words its web page opens at, when the record has them (`sourceHref` reads both). */
+const placeOf = (s: { page?: number | undefined; fragment?: unknown }) => ({ ...(s.page ? { page: s.page } : {}), ...(s.fragment ? { fragment: s.fragment } : {}) });
+
 export function groupFigure(g: GroupCopy, houseName: string, price: GroupPrice, part: FigurePart): SiteValue | null {
   const v = price.value;
   if (!v) return null;
@@ -116,7 +119,8 @@ export function groupFigure(g: GroupCopy, houseName: string, price: GroupPrice, 
   return {
     value,
     unit,
-    source: { url: price.source.url, title: price.source.title, publisher: houseName, strength: "institution" },
+    // the price's own place in the document (its PDF page, the words its web page opens at), for the figure's source link
+    source: { url: price.source.url, title: price.source.title, publisher: houseName, strength: "institution", ...placeOf(price.source) },
     own: houseName,
     checked: g.snapshot,
     effective_from: null,

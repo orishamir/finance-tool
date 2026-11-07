@@ -1,8 +1,8 @@
 # Corporate bonds and commercial paper
 
-Checked: 2026-10-22 · Owner: domain-specialist
+Checked: 2026-11-07 · Owner: domain-specialist
 Serves: product.md 3.1 (the tier-2 "not covered yet" page, roadmap R1) and D2 tier-2 graduation (roadmap R5, then ongoing); later 3.2, 3.3, 3.4 and 3.10 if corporate bonds graduate.
-Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / אג"ח קונצרניות) and commercial paper (ניירות ערך מסחריים) are in law; linkage and coupon types seen in the market; prospectus and reporting duties; the bondholders' trustee (נאמן) and what the law makes it do on breach and default; holders' meetings; covenants and rating step-ups (one issuer example); rating agencies and their scales; trading mechanics, units, last trading day and liquidity on TASE; how a saver gets exposure (secondary market, public offerings, funds and ETFs); TASE corporate-bond indices as exposures; regulators; 2025 market facts from TASE. Out, and where: tax on interest, linkage, gains and losses on corporate bonds (`tax-tier2-other.md`; the general capital-gains rule for unlinked bonds and commercial paper is TXS-03 in `tax-securities-israeli.md`); brokers, fee types and client-asset protection (`brokerage-account.md`, `regulators-and-protection.md`); mechanics shared with government bonds, such as what "tradable" means and the yield convention (`government-bonds-and-makam.md`); bond mutual funds, money-market funds and bond ETFs as products (`mutual-funds-and-money-market-funds.md`, `etfs-and-index-funds.md`); structured bonds (left out, see the end).
+Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / אג"ח קונצרניות) and commercial paper (ניירות ערך מסחריים) are in law; linkage and coupon types seen in the market; prospectus and reporting duties; the bondholders' trustee (נאמן) and what the law makes it do on breach and default; holders' meetings; covenants and rating step-ups (one issuer example); rating agencies and their scales; trading mechanics, units, last trading day and liquidity on TASE; how a saver gets exposure (secondary market, public offerings, funds and ETFs); TASE corporate-bond indices as exposures; regulators; 2025 market facts from TASE. Out, and where: tax on interest, linkage, gains and losses on corporate bonds (`tax-tier2-other.md`; the general capital-gains rule for unlinked bonds and commercial paper is TXS-03 in `tax-securities-israeli.md`); brokers, fee types and client-asset protection (`brokerage-account.md`, `regulators-and-protection.md`); mechanics shared with government bonds, such as what "tradable" means and the yield convention (`government-bonds-and-makam.md`); bond mutual funds, money-market funds and bond ETFs as products (`mutual-funds-and-money-market-funds.md`, `etfs-and-index-funds.md`); structured bonds and deposit certificates traded on TASE (CORP-27 to CORP-30, added 2026-11-07); structured deposits at banks are in `fx-and-structured-deposits.md`.
 
 ## Summary
 
@@ -13,6 +13,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Rating companies must register with the ISA under a 2014 law (CORP-13). Israeli ratings are on a local scale, relative to other Israeli issuers (CORP-14). Which agencies are registered today was not readable (open question 1).
 - In 2025 Israeli companies raised about NIS 160 bn in bonds, plus NIS 24.4 bn in commercial paper. About 60% of the bond amount was shekel, 39% CPI-linked and 1% dollar-linked, and 81% was rated in the A group or above. Average daily turnover in corporate bonds was about a third of that in government bonds (CORP-16, CORP-17, CORP-19).
 - A saver buys on TASE through a bank or broker (trading unit NIS 1 face value), in a public offering, or through bond funds and ETFs on TASE corporate-bond indices (Tel-Bond) (CORP-18, CORP-20 to CORP-22).
+- Structured bonds (איגרות חוב מובנות), about NIS 27 bn raised in 2025, are bonds in law whose payment depends on a condition. Certificates that track a securities index are funds now, and currency certificates stay bonds only if backed by bank deposits alone and redeemed only on set dates. They cost what any listed bond costs to trade and hold. The holder's claim is against the issuer alone, with a trustee but no State backing (CORP-27 to CORP-30).
 
 ## Rules
 
@@ -229,6 +230,50 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Dimensions: `product-marking`
 - Likely to change: no
 
+### CORP-27 Structured bonds and deposit certificates: what they are in law
+- Rule: TASE lists "איגרות חוב מובנות" among the securities traded on it (periodic report 2025, p.7). It counts them apart from corporate bonds: NIS 27,029 million raised in 2025 and NIS 26,828 million in 2024, left out of the corporate-bond figures (p.36).
+  - In law, a certificate issued in a series by a company or other body, giving a right to claim money from it "בתאריך קבוע או בהתקיים תנאי מסויים" without membership or participation, is a "תעודת התחייבות" (Securities Law s.35א; CORP-01). A note whose payment depends on an index, a price or a rate fits those words. So the prospectus, trustee and holders' rules of CORP-03 to CORP-09 apply to it when it is offered to the public (derived).
+  - Index tracking is the exception. A "תעודת התחייבות" whose purpose is joint investment, and which gives a return derived from the price of a securities index, commodities or futures, falls under the Joint Investment Trust Law and outside most of the Securities Law (s.35א1). Certificates that track an index are therefore funds now (`etfs-and-index-funds.md`).
+  - Currencies: the tracking-funds regulations put a certificate paying a return from currency prices under the Joint Investment Trust Law unless all three of these hold (reg. 2):
+    - the assets backing it are bank deposits only, in Israel or abroad (reg. 2(1));
+    - they are managed by rules set in the prospectus, without discretion (reg. 2(2));
+    - the certificates are redeemed only on the dates the backing assets turn over (reg. 2(3)).
+  - The Securities Authority says that certificates of this kind, which it calls "תעודות פיקדון מסוימות", stayed under the Securities Law (staff position 4.5.2026, p.6).
+  - Advice: the Authority's staff position of 18.11.2024 says notes and certificates "עשויים לעלות כדי 'נכס פיננסי'" under the Advice Law and may meet its definition of "מוצר מובנה" (FXD-10), because their return is often set by a formula. The position covers the Advice Law only. When they are financial assets, an intermediary must avoid any act that may be an offer to the public without a prospectus (p.10).
+- Conditions / exceptions: Which securities TASE classes as structured bonds, who issues them and what each series pays are in each issuer's prospectus and in TASE's lists. Neither was read (open question 17). A structured product a bank issues as a deposit is a deposit, not a security, within the Authority's conditions (`fx-and-structured-deposits.md` FXD-24).
+- Figures: NIS 27,029 million raised in 2025 and NIS 26,828 million in 2024 (TASE periodic report 2025, p.36).
+- Source: [TASE, periodic report for 2025](https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=7), p.7 "איגרות חוב מובנות", p.36 · checked 2026-11-07 · primary. [חוק ניירות ערך, התשכ"ח-1968, Securities Authority's consolidated copy](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37), s.35א p.37 "בתאריך קבוע או בהתקיים תנאי מסויים", s.35א1 pp.37-38 · checked 2026-11-07 · primary (state body's consolidated copy, not the binding gazette wording). [תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018, קובץ התקנות 8038](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=3), reg. 2, file pp.3-4 "פדיון התעודות יהיה רק במועדי תחלופת הנכסים" · checked 2026-11-07 · primary. [עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, רשות ניירות ערך, 4.5.2026](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Structure.pdf#page=6), p.6 "תעודות פיקדון מסוימות" · checked 2026-11-07 · primary. [עמדות סגל, רשות ניירות ערך, 18.11.2024](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/staf_opinion_1811242.pdf#page=10), p.10 "להימנע מפעולה העשויה להוות הצעה של הסדר השקעה משותפת" · checked 2026-11-07 · primary
+- Scope: general
+- Dimensions: `regulator`, `protection`, `conditional-return` (proposed in `fx-and-structured-deposits.md`)
+- Likely to change: possible (the Authority's positions on these products are recent)
+
+### CORP-28 Structured bonds: getting the money out, and moving them
+- Rule: Listed structured bonds are traded on TASE (CORP-27). A holder gets out by selling on the exchange through a bank or TASE member, or by holding to the payment dates in the series' terms (derived). A currency deposit certificate is redeemed by its issuer only on the dates its backing deposits turn over, as the prospectus sets them (reg. 2(2)-(3)). Between those dates the only way out is a sale on the exchange (derived). The bonds sit in the holder's securities account and move with it (`brokerage-account.md`, `switching-and-transfers.md`).
+- Conditions / exceptions: TASE's trading unit, hours and last trading day for bonds are in CORP-18. Whether they apply to this class unchanged, and how liquid it is, were not read (open question 18). The redemption dates of each certificate are in its prospectus.
+- Figures: none.
+- Source: [תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018, קובץ התקנות 8038](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4), reg. 2(2)-(3), file pp.3-4 "פדיון התעודות יהיה רק במועדי תחלופת הנכסים" · checked 2026-11-07 · primary. [TASE, periodic report for 2025](https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=7), p.7 · checked 2026-11-07 · primary
+- Scope: general
+- Dimensions: `liquidity-lockup`, `transfer-switch-process`, `market-price-exit` (proposed in `government-bonds-and-makam.md`)
+- Likely to change: no
+
+### CORP-29 Structured bonds: what they cost
+- Rule: Buying, holding and selling a listed structured bond costs what any listed bond costs in a securities account: the trade commission and custody fee of the bank or broker (CORP-23, BRK-16, BRK-17). A structured bond offered to the public needs a trustee (s.35ב), and the issuer pays the trustee's fee (CORP-05).
+- Conditions / exceptions: No rule read makes the issuer state what it keeps between the price paid and the value of what the formula pays (open question 19). The prospectus of each series is the place where any such statement would be.
+- Figures: none.
+- Source: [חוק ניירות ערך, התשכ"ח-1968, Securities Authority's consolidated copy](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38), s.35ב p.38 · checked 2026-11-07 · primary (state body's consolidated copy, not the binding gazette wording); CORP-05, CORP-23, BRK-16, BRK-17 by reference
+- Scope: general
+- Dimensions: `fee-trade`, `fee-custody`
+- Likely to change: no
+
+### CORP-30 Structured bonds: what happens if the issuer fails
+- Rule: The holder's claim is against the issuer alone (s.35א; CORP-24). The State does not stand behind it: the state-payment clauses of GOV-02 do not apply. A public offer needs a trustee for the holders (s.35ב; CORP-04), who monitors and enforces but does not pay (CORP-06 to CORP-08). A currency deposit certificate must be backed by bank deposits only (reg. 2(1)). In the issuer's insolvency, a holder without collateral is an ordinary creditor (REG-33, derived). Collateral exists only where the trust deed sets it (CORP-24).
+- Conditions / exceptions: Regulation 2 requires the backing to be bank deposits, but does not say they are pledged to the holders or held apart from the issuer's other assets. So whether holders come before the issuer's other creditors is open (open question 20). The deposits behind a certificate are themselves bank deposits, with no deposit insurance (REG-04). A lead, not cited: a press copy of an Authority position on deposit certificates of 12.3.2025 says the backing deposits must be pledged to the holders. The Authority's own text was not found.
+- Figures: none.
+- Source: [חוק ניירות ערך, התשכ"ח-1968, Securities Authority's consolidated copy](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37), s.35א p.37, s.35ב p.38 · checked 2026-11-07 · primary (state body's consolidated copy, not the binding gazette wording). [תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018, קובץ התקנות 8038](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=3), reg. 2(1), file p.3 "הנכסים המגבים את ההתחייבות לפי התעודה הם פיקדונות בבנק" · checked 2026-11-07 · primary; CORP-24, REG-33, REG-04 by reference
+- Scope: general
+- Dimensions: `protection`, `credit-risk` (proposed)
+- Likely to change: possible (an official text on pledging the backing would change it)
+
 ## Terms
 
 | Hebrew | English | Meaning | Where it appears | Source |
@@ -267,6 +312,8 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 | TASE-UP | TASE-UP | TASE platform shown separately in TASE statistics; access not read | TASE reports | TASE report 2025 pp. 29, 33 |
 | איגרות חוב מובנות | structured bonds | Separate category in TASE statistics; left out | TASE reports | TASE report 2025 p. 33 |
 | חברות אג"ח | bond companies | TASE count of companies listed through bonds | TASE reports | TASE report 2025 p. 34 |
+| איגרות חוב מובנות | structured bonds | TASE class of bonds whose payment follows a formula; counted apart from corporate bonds (CORP-27) | TASE reports | TASE report 2025 pp. 7, 36 |
+| תעודות פיקדון | deposit certificates | The Authority's name for certificates backed only by bank deposits and redeemed only on set dates, which stay under the Securities Law (CORP-27) | ISA staff position | ISA staff position 4.5.2026 p. 6; tracking-funds regulations reg. 2 |
 
 ## Institutions
 
@@ -294,11 +341,14 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 14. **Market value of corporate bonds outstanding at end-2025.** Not found in the TASE report pages read.
 15. **Unlisted commercial paper:** whether it is offered to the public, and on what terms. Not found.
 16. **An official word for a bond repaying its whole principal at the end (CORP-26).** No authority read has one. Not readable by script: the ISA's investor page on bonds (investors.isa.gov.il/nav-index/nav-bar/bonds) and TASE's knowledge pages. Would settle it: either page in Chrome.
+17. **Which securities TASE classes as structured bonds, who issues them, and the terms of each series** (CORP-27). TASE's report gives totals only. Not read: TASE's lists of structured bonds and the issuers' prospectuses on Magna. A lead, not cited: TASE's own year summary for 5786 (a local file with no public link) names two new issuers of structured bonds in the year, מיכל פקדונות and איביאי ריבית ופקדונות. Would settle it: TASE's securities list filtered by class, and a prospectus of each issuer. Opened 2026-11-07.
+18. **Trading and liquidity of structured bonds on TASE** (CORP-28): whether CORP-18's unit, hours and last trading day hold for this class unchanged, whether there is market making, and turnover. Would settle it: TASE's trading rules for the class and its statistics. Opened 2026-11-07.
+19. **What the issuer of a structured bond keeps inside the terms** (CORP-29): no rule read makes it state the value of the payout against the price. Would settle it: an ISA disclosure rule for structured bonds, or a prospectus that states it. Opened 2026-11-07.
+20. **Are the bank deposits behind a deposit certificate pledged to the holders?** (CORP-30). Regulation 2(1) of the tracking-funds regulations requires the backing to be bank deposits only, and says nothing of a pledge or of holding them apart from the issuer's own assets. A lead, not cited: a press copy (funder.co.il) of an ISA position of 12.3.2025 on deposit certificates says the backing must be pledged to the holders and fully disclosed. The Authority's own text was not found on its site. Would settle it: the Authority's position in its own publication, or a certificate's trust deed. Opened 2026-11-07.
 
 ## Left out and why
 
 - **Tax** (coupon withholding, linkage, gains, losses on default, accrued interest, convertibles): owned by `tax-tier2-other.md`. TXS-03 in `tax-securities-israeli.md` already covers the general rule for gains on unlinked bonds and commercial paper.
-- **Structured bonds (איגרות חוב מובנות)**: TASE counts them separately (NIS 27.0 bn raised in 2025). Not researched; whether they belong here or in `fx-and-structured-deposits.md` is a question for the knowledge-base owner.
 - **Foreign corporate bonds bought abroad, Eurobonds of Israeli issuers, US-listed bonds**: not part of the TASE corporate-bond market described by the sources; also need foreign-tax work.
 - **Private placements and qualified-investor-only issues**: not open to the general public.
 - **Bank contingent capital (CoCo) and other hybrid instruments in detail**: only the rating indicator was recorded (CORP-14). Product terms not researched.
@@ -331,6 +381,9 @@ Corporate bonds stay **tier 2**. Against the D2 test:
 | [דוח תקופתי לשנת 2025, part A ss. 1.10.3 to 1.10.4, 1.15, 1.17](https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a) | TASE | primary | 2026-10-22 |
 | [מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698), pages updated 2016 to 2026](https://content.tase.co.il/media/mwsduioc/274698.pdf) | TASE | primary | 2026-10-22 |
 | [סולמות והגדרות הדירוג של מידרוג, August 2026](https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf) | Midroog | institution | 2026-10-22 |
+| [תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018, קובץ התקנות 8038](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=) | Ministry of Justice (Reshumot) | primary | 2026-11-07 |
+| [עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, 4.5.2026](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Structure.pdf) | Israel Securities Authority | primary | 2026-11-07 |
+| [עמדות סגל, 18.11.2024](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/staf_opinion_1811242.pdf) | Israel Securities Authority | primary | 2026-11-07 |
 | [Midroog home page](https://www.midroog.co.il/) and [about page](https://www.midroog.co.il/he/about) | Midroog | institution | 2026-10-22 |
 | [שינוי בשיעור הריבית עקב ירידה בדירוג, סדרות י' ו-יא', 6.11.2023](https://www.dic.co.il/media/uohnqq1j/ירידה-בדירוג-ועליה-בשיעור-הריבית-סדרה-י-וסדרה-יא.pdf) | Discount Investment Corporation | institution | 2026-10-22 |
 | [עמדת רשות ניירות ערך - תפקידי נאמן למחזיקים בתעודות התחייבות, client update 29.10.2024](https://meitar.com/wp-content/uploads/2024/11/The-Position-of-Israels-Securities-Authority-–-Trustee-Roles-of-Bondholders.pdf) | Meitar Law Offices | secondary | 2026-10-22 |

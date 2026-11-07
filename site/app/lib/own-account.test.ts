@@ -2,6 +2,7 @@
 // (the house's list tariff, the group's values, the person's), a price for a time through the page's own run, the saved entry and the numbers
 // the panel shows. The expected figures are printed by tests/golden/expected_own_account.py from the data files and the fee formulas alone.
 import { buildTariff, providerWorkbench, type ComparedProvider, type SecuritiesInput } from "@finance-tool/engine";
+import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, it } from "vitest";
 import { brokerDraftOf, brokerFromDraft, tariffOfBroker, validCustomBrokers, withCustomEntries, type CustomBroker } from "./custom-entries";
 import { buildInvest, listReading, indexById } from "./invest";
@@ -21,7 +22,10 @@ const points = startingPointsOf(mercantile);
 const point = (name: string, of = points) => of.find((p) => p.nameHe === name)!;
 const TOP = point("מרכנתיל טופ");
 const STUDENT = point("סטודנטים");
-const leumiPoints = startingPointsOf(leumi);
+// The worked example of a price for a time (F-101) is Leumi's opening offer as the 2026-11-04 record held it, which the golden script reads too.
+// The 2026-11-07 record no longer prices it (D56: it stood only on the bank's advertising), so the example group is read from that record.
+const leumiAsRead = JSON.parse(readFileSync(new URL("../../../data/fees/leumi@2026-11-04.json", import.meta.url), "utf8")) as typeof leumi;
+const leumiPoints = startingPointsOf(leumiAsRead);
 const OFFER = point("לאומי סטודנט, בפתיחת חשבון", leumiPoints);
 const TOTAL = point("לאומי טוטאל דיגיטל", leumiPoints);
 
@@ -172,6 +176,13 @@ describe("the starting points a house offers", () => {
     expect(names).toEqual(expect.arrayContaining(["צעירים", "חיילים משוחררים", "סטודנטים", "מרכנתיל טופ", "מרכנתיל דלקס"]));
     // a group whose prices are all words is not one: Yahav's doctors have none to copy
     expect(startingPointsOf(house("yahav")).map((p) => p.key)).toEqual(["list"]);
+  });
+  it("offer no group priced only by a house's advertising (D56): Leumi's three entries from its account pages and Discount's young-investor page are words", () => {
+    const names = (id: string) => startingPointsOf(house(id)).map((p) => p.nameHe);
+    for (const n of ["לאומי חיילים ו־18+, בדף החשבונות", "לאומי חייל משוחרר, בדף החשבונות", "לאומי סטודנט, בפתיחת חשבון"]) expect(names("leumi")).not.toContain(n);
+    expect(names("leumi")).toEqual(expect.arrayContaining(["לאומי 18+", "לאומי סטודנט", "לאומי טוטאל דיגיטל"]));
+    expect(names("discount")).not.toContain("המשקיע הצעיר");
+    expect(names("discount")).toContain("חיילים משוחררים");
   });
   it("carry the group whole, with each price's words and source", () => {
     const g = TOP.group!;

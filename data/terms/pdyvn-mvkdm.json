@@ -12,10 +12,10 @@
     "GOV-16"
   ],
   "source": {
-    "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-    "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
-    "publisher": "Nevo legal database",
-    "strength": "primary-mirror",
-    "checked": "2026-10-22"
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=3",
+    "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006, קובץ התקנות 6457, עמוד 3",
+    "publisher": "Reshumot (Ministry of Justice)",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

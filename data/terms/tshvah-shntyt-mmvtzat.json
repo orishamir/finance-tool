@@ -1,0 +1,19 @@
+{
+  "id": "tshvah-shntyt-mmvtzat",
+  "he": "תשואה שנתית ממוצעת",
+  "en": null,
+  "meaning": "התשואה לשנה בממוצע לאורך שלוש או חמש שנים רצופות, כפי שרשות שוק ההון מפרסמת לכל מסלול",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-05"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: גמל־נט, מילון הנתונים (data.gov.il)",
+    "publisher": "Capital Market Authority (data.gov.il)",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

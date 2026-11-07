@@ -1,11 +1,13 @@
 // A claim of a house's advertising set against its binding documents (D56, D57; 2026-11-04): the fee it is about and the verdict in
 // words, then both sides in their own words, each with a link to where it stands. The advert's side is the page it was seen on; the
-// binding side is the price list, the account terms, the fee annex or the promotion's terms. Never a figure of a ranking.
+// binding side is the price list, the account terms, the fee annex or the promotion's terms. Never a figure of a ranking. Each link opens at
+// the quoted words (a web page, by text fragment) or at the page (a PDF): `sourceHref`.
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { claims as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { cx } from "./cx";
-import { DocLink, atPdfPage } from "./doc-link";
+import { isPdfUrl, sourceHref } from "../../lib/sources";
+import { DocLink } from "./doc-link";
 import { Tag } from "./tag";
 
 function Side({ lead, words, href, title, when }: { lead: string; words?: string; href: string; title: string; when: string }) {
@@ -35,12 +37,12 @@ export function ClaimCheck({ entry, className }: { entry: AdvertisingEntry; clas
         <Tag tone={entry.verdict === "contradicted" ? "caution" : "neutral"}>{copy.verdict[entry.verdict]}</Tag>
       </span>
       <div className="grid gap-3 md:grid-cols-2">
-        <Side lead={copy.ad} words={entry.claim_he} href={entry.claim_source.url} title={entry.claim_source.title} when={copy.seen(fmt.date(entry.claim_source.seen))} />
+        <Side lead={copy.ad} words={entry.claim_he} href={sourceHref(entry.claim_source)} title={entry.claim_source.title} when={copy.seen(fmt.date(entry.claim_source.seen))} />
         <Side
           lead={entry.verdict === "not_found" ? copy.notFound : copy.binding}
           words={entry.binding_he}
-          href={atPdfPage(b.url, b.page)}
-          title={b.page && /\.pdf/i.test(b.url) ? copy.atPage(b.title, b.page) : b.title}
+          href={sourceHref(b)}
+          title={b.page && isPdfUrl(b.url) ? copy.atPage(b.title, b.page) : b.title}
           when={copy.dated(fmt.date(b.dated))}
         />
       </div>

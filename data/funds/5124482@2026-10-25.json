@@ -204,23 +204,49 @@
       {
         "year": 2025,
         "fund_pct": 2.98,
-        "tracking_pct": 2.61
+        "tracking_pct": 2.61,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.1,
+          "trustee": 0.025
+        }
       },
       {
         "year": 2024,
         "fund_pct": 25.11,
-        "tracking_pct": 24.96
+        "tracking_pct": 24.96,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.1,
+          "trustee": 0.025
+        }
       },
       {
         "year": 2023,
         "fund_pct": 30.15,
-        "tracking_pct": 29.43
+        "tracking_pct": 29.43,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.1,
+          "trustee": 0.025
+        }
       },
       {
         "year": 2022,
         "fund_pct": -7.37,
-        "tracking_pct": -7.55
+        "tracking_pct": -7.55,
+        "fees_charged": {
+          "fixed": 0.0,
+          "variable": 0.1,
+          "trustee": 0.025
+        }
       }
+    ],
+    "years_printed": [
+      2022,
+      2023,
+      2024,
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
@@ -228,8 +254,16 @@
       "publisher": "קסם קרנות נאמנות בע\"מ",
       "strength": "institution"
     },
-    "page": null,
-    "checked": "2026-10-24"
+    "page": 7,
+    "fees_page": 9,
+    "changes_page": 8,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 - Net Total Return Index",
+      "dividends": "net",
+      "page": 2
+    }
   },
   "snapshot": "2026-10-25"
 }

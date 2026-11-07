@@ -1,0 +1,174 @@
+{
+  "id": "hapoalim-hisachon-gamish",
+  "bank": "hapoalim",
+  "names": {
+    "447": [
+      "חיסכון גמיש"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "חיסכון גמיש",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 24,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'חיסכון גמיש'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-07",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The 447 row's comment column prints 'פיקדון ל-24 חודשים'; deposit method 'הוראת קבע'. The product sheet says 'הפיקדון לתקופה כוללת של עד 24 חודשים עם תחנות יציאה מתום חודש וכל חודש לאחר מכן'."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -4.61,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'חיסכון גמיש', שיעור הריבית",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-07",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '0.14% = 4.61% - פריים': spread from prime -4.61 percentage points."
+  },
+  "rate_offered": {
+    "value": 0.14,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'חיסכון גמיש', שיעור הריבית",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-07",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "0.14% = 4.61% - פריים; nominal annual before tax, variable on the bank's prime (rate type 'משתנה', 'ללא הצמדה'); exit points 'קיימת', 'כל חודש'; break 'אין אפשרות לשבירת הפיקדון'; deposit method 'הוראת קבע'. The product sheet: 'ריבית שקלית משתנה הנגזרת מ\"ריבית הפריים\" בניכוי מרווח קבוע'. Read 2026-11-07 from the table the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data, library 53e44c295b233803); the page states 'המידע נכון למועד הצגתו ולפני חישוב מס רווחי הון', so the date read is the date of the figures."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the 447 table's linkage column 'ללא הצמדה'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+        "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'חיסכון גמיש', טווח סכום להפקדה",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-11-07",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-50 ₪' in the 447 table; the product sheet prints 'סכום בהוראת הקבע: מינימום 50 ₪ ומקסימום 7,500 ₪' and the same limits for an added one-off deposit."
+    },
+    "max": {
+      "value": 7500,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/%D7%A4%D7%A7%D7%93%D7%95%D7%A0%D7%95%D7%AA/gamish.pdf",
+        "title": "בנק הפועלים, 'חיסכון גמיש (הוראת קבע)', דף מוצר, 'הוראת הקבע': 'סכום בהוראת הקבע: מינימום 50 ₪ ומקסימום 7,500 ₪'",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The sheet says 'התנאים המופיעים בהסכם זה נכונים נובמבר 2020' and that the binding terms are the joining agreement's; re-fetched 2026-11-07, unchanged (library 7d20ea72363882fc). Per monthly standing order; an added one-off deposit has the same limits, one on a standing-order date."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירת הפיקדון' (447 table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 1
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "אפשר לשנות את סכום הוראת הקבע בכל חודש, להוסיף הפקדה חד-פעמית ביום ההפקדה ולמשוך חלק מהסכום בכל תחנת יציאה.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+    "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים'",
+    "publisher": "Bank Hapoalim B.M.",
+    "strength": "institution"
+  }
+}

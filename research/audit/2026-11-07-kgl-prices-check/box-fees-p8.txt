@@ -1,0 +1,239 @@
+
+== /fees/?wrapper=kupat-gemel-lehashkaa at 390 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 1: 3 in view, 0 at top; below, in view
+  slider 1 max: page height -45, 0 moved (0 outside a list's rows), 4 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x95 "העמלות בקופת גמל להשקעה יעלו לכם 12,117 ₪ ב־10 שנים, בכסף של היום"
+  slider 1 min: page height +90, 0 moved (0 outside a list's rows), 18 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x67 "העמלות בקופת גמל להשקעה יעלו לכם 4,208 ₪ ב־10 שנים, בכסף של היום"
+  slider 1 middle: page height -90, 0 moved (0 outside a list's rows), 14 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x95 "העמלות בקופת גמל להשקעה יעלו לכם 12,117 ₪ ב־10 שנים, בכסף של היום"
+  slider 2: 2 in view, 0 at top; below, in view
+  slider 2 min: page height -22, 0 moved (0 outside a list's rows), 15 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x67 "העמלות בקופת גמל להשקעה יעלו לכם 8,484 ₪ ב־10 שנים, בכסף של היום"
+  slider 2 middle: page height -45, 0 moved (0 outside a list's rows), 8 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x95 "העמלות בקופת גמל להשקעה יעלו לכם 44,810 ₪ ב־10 שנים, בכסף של היום"
+  slider 3: 2 in view, 3 at top; below, at top
+  slider 3 max: page height +45, 0 moved (0 outside a list's rows), 13 blocks new
+    h -45 w 0 y 0 <p text-sm text-muted-foreground> 309x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 3 min: page height -67, 0 moved (0 outside a list's rows), 13 blocks new
+    h 22 w 0 y 0 <p text-sm text-muted-foreground> 309x45 "הורדת העמלה לממוצע שווה פחות מ־1,000 ₪. שווה להתמקח כשהכסף נשאר 27 שני"
+  slider 3 middle: page height +67, 0 moved (0 outside a list's rows), 30 blocks new
+    h 22 w 0 y 0 <p text-sm text-muted-foreground> 309x67 "העלות 2,500 ₪ או יותר, ולפחות אפשרות אחת במקום גבוה יותר בהשוואה לא גו"
+
+== /fees/?wrapper=kupat-gemel-lehashkaa at 1280 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 1: 2 in view, 6 at top; below, at top
+  slider 1 max: page height +0, 12 moved (12 outside a list's rows) (first: y 9 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 15,756 ₪"), 4 blocks new
+    h 22 w 0 y 0 <p text-sm> 642x45 "במקום גבוה יותר בהשוואה, בלי עמלה כזו: פיקדון, חשבון ניירות ערך, חשבון"
+  slider 1 min: page height +0, 12 moved (12 outside a list's rows) (first: y -22 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 5,211 ₪"), 18 blocks new
+    h -22 w 0 y 0 <p text-sm> 642x22 "במקום גבוה יותר בהשוואה, בלי עמלה כזו: חשבון ניירות ערך."
+  slider 1 middle: page height +0, 12 moved (12 outside a list's rows) (first: y 22 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 15,756 ₪"), 14 blocks new
+    h 22 w 0 y 0 <p text-sm> 642x45 "במקום גבוה יותר בהשוואה, בלי עמלה כזו: פיקדון, חשבון ניירות ערך, חשבון"
+  slider 2: 7 in view, 4 at top; below, in view
+  slider 2 max: page height +0, 0 moved (0 outside a list's rows), 20 blocks new
+    h 0 w 0 y -22 <span line-clamp-1 font-medium> 94x16 "סך העמלות"
+  slider 2 min: page height +0, 0 moved (0 outside a list's rows), 15 blocks new
+    h 0 w 0 y -59 <span line-clamp-1 font-medium> 94x16 "ניהול מהפקדה"
+    h 0 w -37 y -59 <bdi whitespace-nowrap> 23x16 "0 ₪"
+  slider 2 middle: page height +0, 0 moved (0 outside a list's rows), 8 blocks new
+    h 0 w 0 y 42 <span line-clamp-1 font-medium> 94x16 "ניהול מהפקדה"
+    h 0 w 37 y 42 <bdi whitespace-nowrap> 60x16 "13,236 ₪"
+  slider 2 quarter: page height +0, 0 moved (0 outside a list's rows), 0 blocks new
+    h 0 w 0 y 25 <span line-clamp-1 font-medium> 94x16 "סך העמלות"
+    h 0 w 0 y 25 <bdi whitespace-nowrap> 60x16 "33,530 ₪"
+  slider 3: 2 in view, 3 at top; below, at top
+  slider 3 max: page height +0, 12 moved (12 outside a list's rows) (first: y -12 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 1,057,316 ₪"), 13 blocks new
+  slider 3 min: page height +0, 8 moved (8 outside a list's rows) (first: y -6 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מהפקדה 0 ₪"), 13 blocks new
+  slider 3 quarter: page height +0, 12 moved (12 outside a list's rows) (first: y 21 <div absolute text-xs leading-tight transition-opacity duration-[> "סך העמלות 41,401 ₪"), 10 blocks new
+  slider 4: 8 in view, 4 at top; below, in view
+  slider 4 max: page height +0, 0 moved (0 outside a list's rows), 11 blocks new
+    h 0 w 0 y -42 <span line-clamp-1 font-medium> 94x16 "סך העמלות"
+    h 0 w 0 y -42 <bdi whitespace-nowrap> 60x16 "58,801 ₪"
+  slider 4 min: page height +0, 0 moved (0 outside a list's rows), 9 blocks new
+    h 0 w 0 y 34 <span line-clamp-1 font-medium> 94x16 "סך העמלות"
+    h 0 w 0 y 34 <bdi whitespace-nowrap> 60x16 "25,688 ₪"
+  slider 4 middle: page height +0, 0 moved (0 outside a list's rows), 2 blocks new
+    h 0 w 0 y -30 <span line-clamp-1 font-medium> 94x16 "סך העמלות"
+    h 0 w 0 y -30 <bdi whitespace-nowrap> 60x16 "38,627 ₪"
+  slider 4 quarter: page height +0, 0 moved (0 outside a list's rows), 0 blocks new
+    h 0 w 0 y 49 <span line-clamp-1 font-medium> 94x16 "סך העמלות"
+    h 0 w 0 y 49 <bdi whitespace-nowrap> 60x16 "31,440 ₪"
+
+== /fees/?wrapper=keren-hishtalmut at 390 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 1: 3 in view, 4 at top; below, at top
+  slider 1 max: page height +0, 0 moved (0 outside a list's rows), 3 blocks new
+    h -22 w 0 y 0 <p text-sm text-muted-foreground> 309x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 1 min: page height -45, 0 moved (0 outside a list's rows), 2 blocks new
+    h 22 w 0 y 0 <p text-sm text-muted-foreground> 309x45 "הורדת העמלה לממוצע שווה פחות מ־1,000 ₪. שווה להתמקח כשסכום היום 180,00"
+  slider 1 middle: page height +67, 0 moved (0 outside a list's rows), 9 blocks new
+    h -22 w 0 y 0 <p text-sm text-muted-foreground> 309x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 1 quarter: page height +0, 0 moved (0 outside a list's rows), 3 blocks new
+    h 45 w 0 y 0 <p text-sm text-muted-foreground> 309x67 "הורדת העמלה לממוצע שווה פחות מ־1,000 ₪. שווה להתמקח כשסכום היום 170,00"
+  slider 2: 2 in view, 3 at top; below, at top
+  slider 2 max: page height -22, 0 moved (0 outside a list's rows), 6 blocks new
+    h -45 w 0 y 0 <p text-sm text-muted-foreground> 309x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 2 min: page height +22, 0 moved (0 outside a list's rows), 3 blocks new
+    h 45 w 0 y 0 <p text-sm text-muted-foreground> 309x67 "הורדת העמלה לממוצע שווה פחות מ־1,000 ₪. שווה להתמקח כשסכום היום 190,00"
+  slider 2 middle: page height -22, 0 moved (0 outside a list's rows), 1 blocks new
+    h -45 w 0 y 0 <p text-sm text-muted-foreground> 309x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 3: 2 in view, 2 at top; below, in view
+  slider 3 min: page height -44, 0 moved (0 outside a list's rows), 7 blocks new
+    h -29 w 0 y 0 <p text-lg> 343x67 "העמלות בקרן השתלמות יעלו לכם 5,664 ₪ בשנה, בכסף של היום"
+  slider 3 middle: page height +67, 0 moved (0 outside a list's rows), 13 blocks new
+    h 29 w 0 y 0 <p text-lg> 343x95 "העמלות בקרן השתלמות יעלו לכם 101,438 ₪ ב־21 שנים, בכסף של היום"
+  slider 4: 1 in view, 3 at top; below, at top
+  slider 4 min: page height -22, 0 moved (0 outside a list's rows), 2 blocks new
+    h 45 w 0 y 0 <p text-sm text-muted-foreground> 309x67 "העלות 2,500 ₪ או יותר, ולפחות אפשרות אחת במקום גבוה יותר בהשוואה לא גו"
+  slider 4 middle: page height +90, 0 moved (0 outside a list's rows), 14 blocks new
+    h -45 w 0 y 0 <p text-sm text-muted-foreground> 309x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 4 quarter: page height -68, 0 moved (0 outside a list's rows), 11 blocks new
+    h 22 w 0 y 0 <p text-sm text-muted-foreground> 309x45 "הורדת העמלה לממוצע שווה פחות מ־1,000 ₪. שווה להתמקח כשסכום היום 190,00"
+
+== /fees/?wrapper=keren-hishtalmut at 1280 px: 4 sliders, 0 selects; page wider than the screen: false
+  slider 1: 0 in view, 5 at top; below, at top
+  slider 1 max: page height +0, 4 moved (4 outside a list's rows) (first: y -3 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 49,972 ₪"), 3 blocks new
+  slider 1 min: page height +0, 4 moved (4 outside a list's rows) (first: y 1 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 2,971 ₪"), 2 blocks new
+  slider 1 middle: page height +0, 4 moved (4 outside a list's rows) (first: y 15 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 26,472 ₪"), 9 blocks new
+  slider 1 quarter: page height +0, 4 moved (4 outside a list's rows) (first: y -14 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 14,721 ₪"), 3 blocks new
+    h 22 w 0 y 0 <p text-sm text-muted-foreground> 642x45 "הורדת העמלה לממוצע שווה פחות מ־1,000 ₪. שווה להתמקח כשסכום היום 170,00"
+  slider 2: 0 in view, 7 at top; below, at top
+  slider 2 max: page height +0, 4 moved (4 outside a list's rows) (first: y 29 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 61,635 ₪"), 6 blocks new
+    h -22 w 0 y 0 <p text-sm text-muted-foreground> 642x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 2 min: page height +0, 4 moved (4 outside a list's rows) (first: y -30 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 11,872 ₪"), 3 blocks new
+    h 22 w 0 y 0 <p text-sm text-muted-foreground> 642x45 "הורדת העמלה לממוצע שווה פחות מ־1,000 ₪. שווה להתמקח כשסכום היום 190,00"
+  slider 2 middle: page height +0, 4 moved (4 outside a list's rows) (first: y 9 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 36,944 ₪"), 1 blocks new
+    h -22 w 0 y 0 <p text-sm text-muted-foreground> 642x22 "הורדת העמלה לממוצע שווה 1,000 ₪ או יותר."
+  slider 2 quarter: page height +0, 4 moved (4 outside a list's rows) (first: y -8 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 24,598 ₪"), 12 blocks new
+  slider 3: 0 in view, 3 at top; below, at top
+  slider 3 max: page height +0, 4 moved (4 outside a list's rows) (first: y 12 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 720,008 ₪"), 5 blocks new
+  slider 3 middle: page height +0, 4 moved (4 outside a list's rows) (first: y 14 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 120,114 ₪"), 13 blocks new
+  slider 3 quarter: page height +0, 4 moved (4 outside a list's rows) (first: y -25 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 29,539 ₪"), 0 blocks new
+  slider 4: 0 in view, 4 at top; below, at top
+  slider 4 max: page height +0, 4 moved (4 outside a list's rows) (first: y 11 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 45,218 ₪"), 5 blocks new
+  slider 4 min: page height +0, 4 moved (4 outside a list's rows) (first: y 14 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 16,108 ₪"), 2 blocks new
+  slider 4 middle: page height +0, 4 moved (4 outside a list's rows) (first: y -13 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 27,105 ₪"), 14 blocks new
+  slider 4 quarter: page height +0, 4 moved (4 outside a list's rows) (first: y 9 <div absolute text-xs leading-tight transition-opacity duration-[> "ניהול מחיסכון 20,912 ₪"), 11 blocks new
+
+total boxes that changed on the screen: 63
+
+/guide/bank-deposit at 390: 63 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/bank-deposit at 1280: 68 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/brokerage-account at 390: 85 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/brokerage-account at 1280: 90 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/child-savings-bank at 390: 33 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/child-savings-bank at 1280: 35 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/child-savings-provident at 390: 47 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/child-savings-provident at 1280: 49 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/current-account at 390: 41 controls, 2 with a hit span under 44 px, 2 of them listed
+  LISTED button "10 שנים, ממקור, פרמטר של האתר, פרטים": hit 41 px, drawn 29 px
+  LISTED span "קרן כספית יומית": hit 31 px, drawn 17 px
+
+/guide/current-account at 1280: 43 controls, 2 with a hit span under 44 px, 2 of them listed
+  LISTED button "10 שנים, ממקור, פרמטר של האתר, פרטים": hit 41 px, drawn 29 px
+  LISTED span "קרן כספית יומית": hit 31 px, drawn 17 px
+
+/guide/government-bond at 390: 53 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/government-bond at 1280: 55 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/ira-hishtalmut at 390: 61 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/ira-hishtalmut at 1280: 63 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/ira-provident at 390: 66 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/ira-provident at 1280: 68 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/keren-hishtalmut at 390: 68 controls, 2 with a hit span under 44 px, 2 of them listed
+  LISTED button "6 שנים, ממקור, פרטים": hit 32 px, drawn 20 px
+  LISTED button "6 שנים, ממקור, פרטים": hit 32 px, drawn 20 px
+
+/guide/keren-hishtalmut at 1280: 70 controls, 2 with a hit span under 44 px, 2 of them listed
+  LISTED button "6 שנים, ממקור, פרטים": hit 32 px, drawn 20 px
+  LISTED button "6 שנים, ממקור, פרטים": hit 32 px, drawn 20 px
+
+/guide/kupat-gemel-lehashkaa at 390: 84 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/kupat-gemel-lehashkaa at 1280: 89 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/limited-bond-fund at 390: 55 controls, 10 with a hit span under 44 px, 10 of them listed
+  LISTED button "2026, ממקור, פרטים": hit 32 px, drawn 21 px
+  LISTED button "2035, ממקור, פרטים": hit 30 px, drawn 21 px
+  LISTED button "0.2%, ממקור, פרטים": hit 32 px, drawn 21 px
+  LISTED button "0.45%, ממקור, פרטים": hit 30 px, drawn 21 px
+  LISTED button "2026, ממקור, פרטים": hit 32 px, drawn 21 px
+  LISTED button "2032, ממקור, פרטים": hit 30 px, drawn 21 px
+  LISTED button "2028, ממקור, פרטים": hit 32 px, drawn 21 px
+  LISTED button "2029, ממקור, פרטים": hit 30 px, drawn 21 px
+  LISTED button "0.15%, ממקור, פרטים": hit 32 px, drawn 21 px
+  LISTED button "0.2%, ממקור, פרטים": hit 30 px, drawn 21 px
+
+/guide/limited-bond-fund at 1280: 62 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/makam at 390: 46 controls, 2 with a hit span under 44 px, 2 of them listed
+  LISTED button "96.85, מחושב, פרטים": hit 20 px, drawn 20 px
+  LISTED span "רווח הון": hit 35 px, drawn 22 px
+
+/guide/makam at 1280: 48 controls, 2 with a hit span under 44 px, 2 of them listed
+  LISTED button "96.85, מחושב, פרטים": hit 20 px, drawn 20 px
+  LISTED span "רווח הון": hit 35 px, drawn 22 px
+
+/guide/money-market-fund-daily at 390: 66 controls, 3 with a hit span under 44 px, 3 of them listed
+  LISTED a "עו״ש": hit 21 px, drawn 20 px
+  LISTED a "קרן כספית מתחדשת": hit 21 px, drawn 20 px
+  LISTED a "פיקדון לשנה": hit 21 px, drawn 20 px
+
+/guide/money-market-fund-daily at 1280: 68 controls, 3 with a hit span under 44 px, 3 of them listed
+  LISTED a "עו״ש": hit 21 px, drawn 20 px
+  LISTED a "קרן כספית מתחדשת": hit 21 px, drawn 20 px
+  LISTED a "פיקדון לשנה": hit 21 px, drawn 20 px
+
+/guide/money-market-fund-renewable at 390: 55 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/money-market-fund-renewable at 1280: 57 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/mutual-funds at 390: 34 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/mutual-funds at 1280: 36 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED span "מפיץ": hit 43 px, drawn 17 px
+
+/guide/pension-comprehensive at 390: 67 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "720 ₪, מחושב, פרטים": hit 36 px, drawn 22 px
+
+/guide/pension-comprehensive at 1280: 69 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "720 ₪, מחושב, פרטים": hit 36 px, drawn 22 px
+
+/guide/pension-general at 390: 68 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "720 ₪, מחושב, פרטים": hit 36 px, drawn 22 px
+
+/guide/pension-general at 1280: 70 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "720 ₪, מחושב, פרטים": hit 36 px, drawn 22 px
+
+/guide/provident-for-annuity at 390: 68 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "720 ₪, מחושב, פרטים": hit 36 px, drawn 22 px
+
+/guide/provident-for-annuity at 1280: 70 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "720 ₪, מחושב, פרטים": hit 36 px, drawn 22 px
+
+/guide/savings-plan at 390: 48 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/guide/savings-plan at 1280: 50 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/fees/?wrapper=kupat-gemel-lehashkaa at 390: 43 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "6,564 ₪, מחושב, פרטים": hit 35 px, drawn 16 px
+
+/fees/?wrapper=kupat-gemel-lehashkaa at 1280: 45 controls, 1 with a hit span under 44 px, 1 of them listed
+  LISTED button "6,564 ₪, מחושב, פרטים": hit 35 px, drawn 16 px
+
+/fees/?wrapper=keren-hishtalmut at 390: 35 controls, 0 with a hit span under 44 px, 0 of them listed
+
+/fees/?wrapper=keren-hishtalmut at 1280: 37 controls, 0 with a hit span under 44 px, 0 of them listed
+
+hit check: every control at 44 px or listed

@@ -14,6 +14,7 @@ import { barScale, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lin
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { sourceHref } from "../../lib/sources";
 
 const n = c.noFund;
 
@@ -81,9 +82,10 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
+    // the account's fees on each other first, as on every bar of the page (pass 7)
     const parts: CostPart[] = [
-      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
       { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
+      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
     ];
     return {
       key: h.provider.id,
@@ -100,7 +102,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             </LongestCase>
           </span>
           <span className="flex items-center min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
-            <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
+            <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
           </span>
           <span className="col-end-[-1] text-end font-semibold">{g.cost && <Num animate value={g.cost} />}</span>
           <GroupLine id={h.provider.id} house={h.provider.short} snapshots={bundle.snapshots} open={openGroups.includes(h.provider.id)} onOpen={onGroup} />
@@ -127,7 +129,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
             {na && !h.provider.custom && (
-              <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
+              <a href={sourceHref(na.source)} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
                 {c.pair.notPossibleSource} ↗
               </a>
             )}
@@ -199,8 +201,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         <ChartLegend
           pick={legendPick}
           items={[
-            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines ?? []))) })),
             { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
+            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines ?? []))) })),
             ...(ok.some((h) => h.generic.costN! > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}
         />

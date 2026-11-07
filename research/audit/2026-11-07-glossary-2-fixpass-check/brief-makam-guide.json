@@ -1,0 +1,16 @@
+{
+ "task": "You have some savings you will need again in a few months, and you are deciding whether to park them in makam (short-term Israeli government bills) until then. A friend sent you this Hebrew website. You want to check what it can and cannot help you with before you rely on it. Look at the page in the screenshots and answer in plain English: (1) What does this page tell you, and what can and can't the site help you with? (2) Is anything on the page confusing, contradictory, or hard to follow? Quote the Hebrew words and say where on the page they are. If you try to redo any number shown, say whether it adds up. (3) Does anything make you trust the site less, or more? (4) After reading it, what would you do next? Be specific and honest; say if something did not bother you.",
+ "readers": [
+  {
+   "key": "makam-guide",
+   "who": "You are 38, you read Hebrew fluently, you keep most of your savings in a bank deposit, and you have heard of makam but never bought one.",
+   "shots": [
+    "research/audit/2026-11-07-glossary-2-fixpass-check/reader-shots/guide_makam-1440-part0.png",
+    "research/audit/2026-11-07-glossary-2-fixpass-check/reader-shots/guide_makam-1440-part1.png",
+    "research/audit/2026-11-07-glossary-2-fixpass-check/reader-shots/guide_makam-1440-part2.png",
+    "research/audit/2026-11-07-glossary-2-fixpass-check/reader-shots/guide_makam-1440-part3.png",
+    "research/audit/2026-11-07-glossary-2-fixpass-check/reader-shots/guide_makam-1440-part4.png"
+   ]
+  }
+ ]
+}

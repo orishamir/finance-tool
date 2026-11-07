@@ -185,7 +185,7 @@ export function PayslipDisclosure({ text }: { text: string | null }) {
   return (
     <div className="flex flex-col gap-1">
       <p className="text-sm text-muted-foreground">{r2.form.payslipOne}</p>
-      <Disclosure label={<span className="text-sm text-link">{r2.form.payslipFull}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
+      <Disclosure label={<span className="text-sm text-link">{r2.form.payslipFull}</span>} summaryClassName="min-h-target justify-start gap-1 [&>svg]:size-4">
         <div className="flex flex-col gap-2 pb-2 text-sm max-w-measure">
           <p>{text ?? r2.form.payslipNoRule}</p>
           <p>
@@ -227,7 +227,7 @@ export function ProfileFields({ data }: { data: FormData }) {
         {p.employmentDefault && p.employment === "employee" && (
           <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
             {r2.form.employmentDefault}
-            <Button variant="quiet" className="text-sm min-h-9 px-0" onClick={() => setEmployment("self-employed")}>
+            <Button variant="quiet" className="text-sm min-h-target px-0" onClick={() => setEmployment("self-employed")}>
               {r2.form.employmentFlip}
             </Button>
           </p>

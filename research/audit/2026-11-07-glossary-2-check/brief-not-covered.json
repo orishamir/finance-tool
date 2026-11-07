@@ -1,0 +1,14 @@
+{
+ "task": "You are deciding where to put about 60,000 shekels of savings you will not need for two or three years. A friend sent you this Hebrew website. Before you trust it with the decision, you want to know what it can and cannot help you with. Look at the page in the screenshots and answer in plain English: (1) What does this page tell you the site can help with, and what it cannot? (2) Is anything on the page confusing, contradictory, or hard to follow? Quote the Hebrew words and say where on the page they are. (3) Does anything make you trust the site less, or more? (4) After reading it, what would you do next? Be specific and honest; say if something did not bother you.",
+ "readers": [
+  {
+   "key": "not-covered",
+   "who": "You are 34, you read Hebrew fluently, you have a savings account and a pension through work, and you have never bought a security yourself.",
+   "shots": [
+    "research/audit/2026-11-07-glossary-2-check/reader-shots/not-covered-1440-part0.png",
+    "research/audit/2026-11-07-glossary-2-check/reader-shots/not-covered-1440-part1.png",
+    "research/audit/2026-11-07-glossary-2-check/reader-shots/not-covered-1440-part2.png"
+   ]
+  }
+ ]
+}

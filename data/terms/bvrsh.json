@@ -1,0 +1,31 @@
+{
+  "id": "bvrsh",
+  "he": "בורסה",
+  "en": null,
+  "meaning": "חברה בעלת רישיון שמנהלת מערכת שבה קונים ומוכרים ניירות ערך, לפי כללים שנקבעו מראש.",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "government-bond",
+    "makam"
+  ],
+  "variants": [
+    "הבורסה לניירות ערך",
+    "הבורסה לניירות ערך בתל אביב",
+    "בורסת תל אביב"
+  ],
+  "rule_ids": [
+    "BRK-01",
+    "BRK-12"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=93",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 44לא, עמוד 93",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

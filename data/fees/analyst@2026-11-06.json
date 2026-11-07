@@ -1,0 +1,119 @@
+{
+  "id": "analyst",
+  "provider": {
+    "name_he": "אנליסט קופות גמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.analyst.co.il/wp-content/uploads/2025/07/1017-1.pdf",
+    "title": "טופס 1017 טופס הצטרפות - קופת גמל להשקעה",
+    "notes": "Analyst form 1017, 9 pages, dated 3.7.25 in its header; fees on p.1, section ג. Linked from https://www.analyst.co.il/forms/. The minor's form 1015 (3.7.25) has the same wording. Digital joining (analyst.formally.co.il) not read: script-only. Read 2026-11-06.",
+    "published": "2025-07-03",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-06",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "analyst-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.analyst.co.il/wp-content/uploads/2025/07/1017-1.pdf",
+          "title": "טופס 1017, טופס הצטרפות - קופת גמל להשקעה, ג. דמי ניהול",
+          "publisher": "Analyst Provident Funds",
+          "strength": "institution",
+          "page": 1,
+          "quote": "יסתכמו בחישוב שנתי של עד 1.05% מהיתרה הצבורה על שמו בקופה"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Analyst's joining form prints no agreed rate: it leaves a blank (\"דמי ניהול:____\") and states that the fees \"יסתכמו בחישוב שנתי של עד 1.05% מהיתרה הצבורה על שמו בקופה ועד 4% מההפקדות השוטפות לקופה, למעט אם החברה המנהלת תקבע הסדרים כללים או פרטניים לגביית דמי ניהול שונים\", and that the rate depends on the investment track chosen. Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). What a joiner is actually offered is set in the blank or a separate arrangement, not published. On top of the fees the company may charge direct expenses for transactions, past-year rates at https://www.analyst.co.il/direct-expenses/ (not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עד 1.05% מהיתרה הצבורה"
+        ]
+      }
+    },
+    {
+      "id": "analyst-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.analyst.co.il/wp-content/uploads/2025/07/1017-1.pdf",
+          "title": "טופס 1017, טופס הצטרפות - קופת גמל להשקעה, ג. דמי ניהול",
+          "publisher": "Analyst Provident Funds",
+          "strength": "institution",
+          "page": 1,
+          "quote": "ועד 4% מההפקדות השוטפות לקופה"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "Analyst's joining form prints no agreed rate: it leaves a blank (\"דמי ניהול:____\") and states that the fees \"יסתכמו בחישוב שנתי של עד 1.05% מהיתרה הצבורה על שמו בקופה ועד 4% מההפקדות השוטפות לקופה, למעט אם החברה המנהלת תקבע הסדרים כללים או פרטניים לגביית דמי ניהול שונים\", and that the rate depends on the investment track chosen. Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). What a joiner is actually offered is set in the blank or a separate arrangement, not published. On top of the fees the company may charge direct expenses for transactions, past-year rates at https://www.analyst.co.il/direct-expenses/ (not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עד 4% מההפקדות השוטפות"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

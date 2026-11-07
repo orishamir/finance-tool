@@ -19,6 +19,8 @@ const GERSHAYIM = /(?<=[\u05d0-\u05ea])"(?=[\u05d0-\u05ea])/g;
 // a fund's name quoted in a Hebrew title is laid out right to left on its own: its closing quote after a number ("ת״א 35") was drawn before
 // the number, so the name read "35 KTF (4A) ת״א" with the "35" thrown to its far end (fresh readers, round 3, 2026-11-07)
 const QUOTED = /"([^"]+)"/g;
+/** An abbreviation's straight quote written as the gershayim (docs/copy.md 10.4): the data spells ני"ע, the page shows ני״ע. */
+export const gershayim = (text: string) => text.replace(GERSHAYIM, "\u05f4");
 /** A document's Hebrew title as drawn: each Latin run, up to 40 characters, on one line, a gershayim written as one, and a quoted name isolated. */
 export const keepTitleWhole = (title: string) =>
   HEBREW.test(title)
@@ -32,7 +34,7 @@ export const keepTitleWhole = (title: string) =>
 export function MixedName({ children, show, className }: { children: string; show?: React.ReactNode; className?: string }) {
   return (
     <bdi dir={HEBREW.test(children) ? "rtl" : undefined} className={className}>
-      {show ?? keepIndexWhole(children)}
+      {show ?? keepIndexWhole(gershayim(children))}
     </bdi>
   );
 }
@@ -46,7 +48,7 @@ export function NameLine({ children, className }: { children: string; className?
   const rtl = HEBREW.test(children);
   return (
     <span dir={rtl ? "rtl" : "ltr"} className={cx("block", rtl ? "text-start" : "text-end", className)}>
-      {keepIndexWhole(children)}
+      {keepIndexWhole(gershayim(children))}
     </span>
   );
 }

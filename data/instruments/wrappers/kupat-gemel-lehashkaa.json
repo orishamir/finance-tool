@@ -14,12 +14,12 @@
     "value": "CMA",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1, 13, 39 (Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2009 (ס\"ח תשס\"ה, 889): s.1 (p.2), s.13 (p.8: \"הממונה רשאי לאשר\"), s.39(א) (p.15: a managing company is under the Commissioner's supervision)",
+      "publisher": "The Knesset",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -40,12 +40,12 @@
       "value": 4,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(2) (Hebrew Wikisource; cross-read on Nevo)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": "2014-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -62,12 +62,12 @@
       "value": 1.05,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(1) (Hebrew Wikisource; cross-read on Nevo)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(1)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-11-07",
       "effective_from": "2014-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -136,12 +136,13 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
-        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
-        "strength": "primary"
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6380%2Fheb#page=3",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ה-2005, קובץ התקנות 6380 (10.4.2005), סריקת רשומות, file p.3 (gazette p.603), reg. 9 (in reg. 41יא '5 ימי עסקים' becomes '4 ימי עסקים', with the deferral to the fourth business day of the month); reg. 41יא itself as substituted by קובץ התקנות 6332, file p.19 (gazette p.873), reg. 44",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary",
+        "quote": "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -157,12 +158,12 @@
     "value": false,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance, s.3(ה4)(3) (Wikisource PDF p.8): the charge applies to sums an individual \"משך\"",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=21",
+      "title": "Income Tax Ordinance, s.3(ה4)(3) (Tax Authority's text, p.21): the charge applies to sums an individual \"משך\" from a kupat gemel lehashkaa",
+      "publisher": "Israel Tax Authority",
       "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,

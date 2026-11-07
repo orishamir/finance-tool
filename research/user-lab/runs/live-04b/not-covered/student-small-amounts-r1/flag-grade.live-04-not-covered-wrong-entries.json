@@ -1,0 +1,84 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "stamp": "{\"keys\":[{\"id\":\"says-uncovered-what-site-covers\",\"problem\":\"The page says the site has not yet researched or covered something that the site does cover on another of its pages: the currency exchange fee is listed here as something the site does not know yet, while the guide to a securities account explains the same fee and shows which houses charge it. A site that contradicts itself about what it knows makes the reader doubt both pages.\",\"where\":\"the card for the currency exchange fee on the not-covered list, against the fee table row and the terms row about converting currency on the securities account guide (the last two screenshots)\",\"kind\":\"general\"},{\"id\":\"bare-code\",\"problem\":\"Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.\",\"where\":\"the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'\",\"kind\":\"general\"},{\"id\":\"fragment-no-noun\",\"problem\":\"Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.\",\"where\":\"the 'what was closed' lines of the open cards\",\"kind\":\"general\"},{\"id\":\"source-names-not-for-reader\",\"problem\":\"Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.\",\"where\":\"the source line under 'what is known' on a few cards\",\"kind\":\"general\"},{\"id\":\"same-promise-every-card\",\"problem\":\"Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.\",\"where\":\"the line starting 'when it is closed' at the bottom of each open card\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "says-uncovered-what-site-covers",
+        "rank": 0,
+        "why": "Finding 6 looks at the guide's fee table, but it worries about uncapped fees and never says the not-covered list contradicts the guide about the currency exchange fee."
+      },
+      {
+        "id": "bare-code",
+        "rank": 3,
+        "why": "Finding 3 says internal codes like MF-28 and TXA-28 next to 'blocked: open question' mean nothing to the reader, which is this problem."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 0,
+        "why": "None of the findings mention the 'what was closed' lines, where a struck-out date is followed by a bare number with no noun."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 4 complains that the citations clutter the cards, not that the sources are named in English or as copies while still labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 says the cards look alike and make a long wall, but it never names the same 'when it is closed' promise repeated on every card."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0261914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "says-uncovered-what-site-covers",
+        "rank": 0,
+        "why": "No finding says the page contradicts the securities account guide; finding 6 looks at that guide's fee table but objects to the lack of a fee cap, which is a different problem."
+      },
+      {
+        "id": "bare-code",
+        "rank": 3,
+        "why": "Finding 3 says internal codes like MF-28 and TXA-28, shown next to 'blocked: open question', mean nothing to the reader, which is this problem."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 0,
+        "why": "No finding mentions the 'what was closed' lines or that they are fragments with a bare number and no noun."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 4 complains that the citations clutter the cards, not that the sources are named in English or as copies and still labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 says the cards all look alike and form a long wall, but no finding mentions the same long promise repeated at the bottom of every open card."
+      }
+    ],
+    "liked": [],
+    "usd": 0.027691399999999998
+  },
+  "third": null,
+  "ranks": {
+    "says-uncovered-what-site-covers": 0,
+    "bare-code": 3,
+    "fragment-no-noun": 0,
+    "source-names-not-for-reader": 0,
+    "same-promise-every-card": 0
+  },
+  "agreed": {
+    "says-uncovered-what-site-covers": true,
+    "bare-code": true,
+    "fragment-no-noun": true,
+    "source-names-not-for-reader": true,
+    "same-promise-every-card": true
+  },
+  "against": {},
+  "usd": 0.053882799999999995
+}

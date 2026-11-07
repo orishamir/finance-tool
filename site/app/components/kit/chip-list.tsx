@@ -269,12 +269,12 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
               {renaming !== i.id && (
                 <>
                   {hasRename(i) && (
-                    <Button variant="icon" className="size-9 rounded-full" aria-label={words?.rename} title={words?.rename} onClick={() => setRenaming(i.id)}>
+                    <Button variant="icon" className="size-9 tap-area rounded-full" aria-label={words?.rename} title={words?.rename} onClick={() => setRenaming(i.id)}>
                       <Pencil size={16} {...ic} />
                     </Button>
                   )}
                   {hasBin(i) && (
-                    <Button variant="icon" className="size-9 rounded-full me-0.5" aria-label={words?.remove} title={words?.remove} aria-expanded={confirm?.id === i.id} onClick={() => askDelete(i)}>
+                    <Button variant="icon" className="size-9 tap-area rounded-full me-0.5" aria-label={words?.remove} title={words?.remove} aria-expanded={confirm?.id === i.id} onClick={() => askDelete(i)}>
                       <Trash2 size={16} {...ic} />
                     </Button>
                   )}

@@ -12,8 +12,8 @@ import { LANES, byGain, chainOf, gridOf, laneCases, middleStart, openTopOf, rows
 import { computed, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { LeadTail, Num } from "../provenance";
-import { MixedName, Card, HoldTallest, LongestCase, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
-import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, wholeParts } from "./pair";
+import { wholeParts, MixedName, Card, HoldTallest, LongestCase, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
 /** A signed whole-shekel figure isolated for a Hebrew line: "+4,875 ₪", "−1,524 ₪", "0 ₪". */
@@ -227,6 +227,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     const fw = ways.get(f);
     return fw ? fundLabels(fw.rec, view.index, fw.option).filter((l) => l.id === "hedged" || l.id === "hedged-many") : [];
   };
+  // the account lane's grey lines name the fund; laid out unseen with the longest name, so the held height covers any start
+  const longestName = [...new Set(allFunds(view).map((f) => f.name))].sort((a, b) => b.length - a.length)[0] ?? "";
+  const whyWords = (lane: Lane, why: "u" | "n" | "d", unseen: boolean) => (lane === "account" ? t.whyFund[why](unseen ? longestName : here.fundName) : t.why[why]);
   const titleOf = (r: Row) => (r.lane === "account" ? house(r.to.a).short : r.lane === "kind" ? t.kinds[r.kind!] ?? r.kind! : nameOfFund(r.to.f));
   // `list`: the rows of a case laid out unseen (laneCases), with a turn on its second row, so the hold counts the turn's thicker line
   const laneBlock = (lane: Lane, list: readonly Row[] = rows, unseen = false) => {
@@ -275,7 +278,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         {(["u", "n", "d"] as const).map((why) => {
           const names = grey.filter((r) => r.why === why).map(titleOf);
           return names.length ? (
-            <GreyLine key={why} why={t.why[why]}>
+            <GreyLine key={why} why={whyWords(lane, why, unseen)}>
               {names.join(", ")}
             </GreyLine>
           ) : null;
@@ -292,7 +295,6 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
 
   // ---------------------------------------------------------------- what is true where the climb stopped
   const openTop = openTopOf(g);
-  const longestFundName = [...new Set(allFunds(view).map((f) => f.name))].sort((a, b) => b.length - a.length)[0] ?? "";
   const openNote =
     openTop && openTop.v > ceiling.v ? (
       <>
@@ -334,12 +336,12 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         <JumpLink>
           {t.jump} {n}, {longestHouse}
         </JumpLink>
-        {openTop && <> {t.openNote} {sampleLeft}: {longestFundName}, {longestHouse}.</>}
+        {openTop && <> {t.openNote} {sampleLeft}: {longestName}, {longestHouse}.</>}
       </span>
     )),
     <span key="top">
       {t.statusTop}
-      {openTop && <> {t.openNote} {sampleLeft}: {longestFundName}, {longestHouse}.</>}
+      {openTop && <> {t.openNote} {sampleLeft}: {longestName}, {longestHouse}.</>}
     </span>,
   ];
   const ceilingCases = fundNames.map((n) => (

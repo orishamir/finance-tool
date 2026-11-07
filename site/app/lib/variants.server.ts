@@ -8,6 +8,7 @@ import { fundListFile, type FundListFile } from "@finance-tool/schema";
 import { root } from "./data.server";
 import type { RefLink } from "./providers";
 import { readJsonCached, readTextCached } from "./read-cache.server";
+import { sourceHref } from "./sources";
 
 /** The latest file of each list whose terms are confirmed. `data/fund-lists/` does not exist yet. */
 export function loadFundLists(): FundListFile[] {
@@ -33,7 +34,7 @@ export function refLink(file: string, heading: string, match: RegExp): RefLink |
   if (start < 0) return null;
   const end = doc.indexOf("\n### ", start + 5);
   const section = doc.slice(start, end < 0 ? undefined : end);
-  for (const m of section.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g)) if (match.test(m[1]!) || match.test(m[2]!)) return { href: m[2]!, title: m[1]!, ruleId: heading.split(" ")[0]! };
+  for (const m of section.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g)) if (match.test(m[1]!) || match.test(m[2]!)) return { href: sourceHref({ url: m[2]! }), title: m[1]!, ruleId: heading.split(" ")[0]! };
   return null;
 }
 

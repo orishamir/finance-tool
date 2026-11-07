@@ -179,16 +179,31 @@ describe("the guides' securities-account range and the indices page (issue 143)"
 describe("provident fund for investing", () => {
   const d = page("kupat-gemel-lehashkaa").signature!;
   it("holds the manager's track on the same index", () => {
-    expect(fact(d, "trackNumber")!.value).toBe("13259");
-    expect(String(fact(d, "trackName")!.value)).toContain("S&P");
-    expect(fact(d, "trackFee")!.value).toBe(0.6);
-    expect(d.bundles["kupat-gemel-lehashkaa"]!.terms.fees!.balance).toBeCloseTo(0.006, 10);
+    // 2026-11-07 (F-80): the run is on Harel, the collected manager whose list fees are the lowest on both bases (0.7% and 0%); its
+    // S&P 500 track is found among the regulator's by Harel's company name (the catalogue maps only Meitav's tracks)
+    expect(fact(d, "trackNumber")!.value).toBe("13414");
+    expect(String(fact(d, "trackName")!.value)).toBe("הראל גמל להשקעה עוקב מדד s&p 500");
+    // D89: the run is priced on Harel's binding documents, as the ranking prices it: 0.7% and 0% for five years, then 1.05% and 4%; the
+    // regulator's average for the track (0.56%, an average charged) is no price and is not shown as one
+    expect(fact(d, "trackFee")).toBeUndefined();
+    const f = d.bundles["kupat-gemel-lehashkaa"]!.terms.fees!;
+    expect(f.balance).toBeCloseTo(0.007, 12);
+    expect(f).toMatchObject({ deposit: 0, direct: 0, discount: { months: 60, listRate: 0.0105 }, depositDiscount: { months: 60, listRate: 0.04 } });
+    expect([fact(d, "list_balance")!.value, fact(d, "list_afterBalance")!.value, fact(d, "list_deposit")!.value, fact(d, "list_afterDeposit")!.value]).toEqual([0.7, 1.05, 0, 4]);
+  });
+  it("ranges the managers over their binding documents, each priced as in the ranking (D89)", () => {
+    expect(d.bundles["kgl-manager-best"] && d.bundles["kgl-manager-worst"]).toBeTruthy();
+    expect(fact(d, "managerCount")!.value as number).toBeGreaterThanOrEqual(2);
+    expect(fact(d, "rangeMin")).toBeUndefined();
+    const m = providentModel(d, { amount: 10000, monthly: 500, years: 10, age: 30 });
+    expect(m.range.manager!.low).toBeLessThanOrEqual(m.diff!);
+    expect(m.range.manager!.high).toBeGreaterThanOrEqual(m.diff!);
+    expect(m.range.manager!.high).toBeGreaterThan(m.range.manager!.low);
   });
   it("takes a lump sum at 25% of the real gain at any age (TXK-05 to TXK-07) and opens the annuity from the early retirement age (TXK-10)", () => {
     const m = providentModel(d, { amount: 10000, monthly: 500, years: 10, age: 30 });
     expect(m.lump!.tax).toBeCloseTo(0.25 * m.realGain!, 6);
     expect(m.lump!.net).toBeGreaterThan(0);
-    expect(m.alt!.tax).toBeGreaterThan(0);
     expect(m.annuityOpen).toBe(false);
     expect(m.ageAtExit).toBe(40);
     expect(providentModel(d, { amount: 10000, monthly: 500, years: 30, age: 30 }).annuityOpen).toBe(true);

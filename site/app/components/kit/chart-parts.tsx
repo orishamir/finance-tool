@@ -51,7 +51,7 @@ export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: Chart
       {items.map((it) => (
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
           {pick && it.swatch ? (
-            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
+            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target md:tap-area cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
               {it.swatch}
               {it.label}
             </button>

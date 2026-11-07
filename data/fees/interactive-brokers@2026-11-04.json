@@ -24,6 +24,9 @@
     "title": "Interactive Brokers - Commissions",
     "notes": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactivebrokers.com, ללא תאריך; אותן טבלאות ב-interactivebrokers.ie). Binding through the client agreement: Interactive Brokers LLC form 3203 (10 January 2025, library b866cea6e6d76d50, same bytes on 2026-11-04), s.33A 'Client shall pay to IBKR commissions, fees and interest at the rates and terms specified on the IBKR website', changes 'effective immediately ... upon posting' (s.33B); Interactive Brokers Ireland form 4750: 'Costs and Charges are as specified on the Pricing section'. The pages say 'IBKR may change these rates at any time in its sole discretion'. Re-read 2026-11-04: every figure in the lines unchanged; the FINRA trading activity fee is 'USD 0.00' with a fee holiday from 1 October to 31 December 2026. התעריף ללקוח ישיר; לקוח שהופנה דרך ברוקר מציג משלם את תעריף הברוקר המציג.",
     "published": null,
+    "printed": {
+      "kind": "none"
+    },
     "format": "html"
   },
   "snapshot": "2026-11-04",
@@ -745,7 +748,7 @@
       "available": "unknown",
       "source": {
         "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-        "title": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactive",
+        "title": "Interactive Brokers - Commissions",
         "checked": "2026-11-04",
         "quote": "0.1% of Trade Value"
       },

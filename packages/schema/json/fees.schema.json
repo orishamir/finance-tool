@@ -102,11 +102,89 @@
         "published": {
           "anyOf": [
             {
-              "type": "string",
-              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                }
+              ]
             },
             {
               "type": "null"
+            }
+          ]
+        },
+        "printed": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "part"
+                },
+                "part_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "date": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "as_printed": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "kind",
+                "part_he",
+                "date",
+                "as_printed"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "version"
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "kind",
+                "version"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "none"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "additionalProperties": false
             }
           ]
         },
@@ -2078,6 +2156,11 @@
             ],
             "additionalProperties": false
           },
+          "offer_he": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
           "names": {
             "type": "object",
             "properties": {
@@ -3218,10 +3301,6 @@
                       "quote"
                     ],
                     "additionalProperties": false
-                  },
-                  "inferred": {
-                    "type": "string",
-                    "minLength": 1
                   }
                 },
                 "required": [

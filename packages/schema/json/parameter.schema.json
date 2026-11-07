@@ -254,6 +254,13 @@
             "exclusiveMinimum": 0,
             "maximum": 9007199254740991
           },
+          "chosen_by": {
+            "type": "string",
+            "minLength": 1
+          },
+          "signed_off": {
+            "type": "boolean"
+          },
           "employment": {
             "type": "string",
             "enum": [

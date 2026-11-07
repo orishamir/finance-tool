@@ -2,7 +2,7 @@
   "id": "TXK-26",
   "title": "Withholding on gains withdrawn from a kupat gemel lehashkaa: 25%, by the Tax Authority's withholder file; reg. 3(א)'s text reads 20%",
   "title_he": "הניכוי במקור ברווחים שמושכים מקופת גמל להשקעה",
-  "text_he": "החברה המנהלת מנכה במקור מהרווחים שקופת גמל להשקעה משלמת, ולא מנכה כלום מהקרן ומהפרשי ההצמדה עליה. כך קובע מבנה הקובץ שרשות המסים מפרסמת לגופים שמנכים במקור, לדוחות משנת 2018 ואילך: סוג ניכוי אחד לקרן עם ההצמדה, פטור, וסוג אחד לריבית ולרווחים האחרים, בשיעור קבוע. בנוסח המשולב של תקנות הניכוי במקור שנמצא, השיעור לריבית שקופת גמל משלמת ליחיד נמוך יותר, ולא נמצאה ההוראה שקובעת את השיעור שבקובץ. הניכוי הוא מקדמה: המס הסופי נקבע לפי הכלל על המשיכה, ומה שנוכה יותר מדי חוזר רק דרך דוח שנתי או בקשת החזר מס.",
+  "text_he": "החברה המנהלת מנכה במקור מהרווחים שקופת גמל להשקעה משלמת, ולא מנכה כלום מהקרן ומהפרשי ההצמדה עליה. כך קובע מבנה הקובץ שרשות המסים מפרסמת לגופים שמנכים במקור, לדוחות משנת 2018 ואילך: סוג ניכוי אחד לקרן עם ההצמדה, פטור, וסוג אחד לריבית ולרווחים האחרים, בשיעור קבוע. בתקנות הניכוי במקור, כפי שפורסמו ברשומות ולא תוקנו בעניין זה, השיעור לריבית שקופת גמל משלמת ליחיד נמוך יותר, ולא נמצאה ההוראה שקובעת את השיעור שבקובץ. הניכוי הוא מקדמה: המס הסופי נקבע לפי הכלל על המשיכה, ומה שנוכה יותר מדי חוזר רק דרך דוח שנתי או בקשת החזר מס.",
   "figure_names_he": {
     "withholding_on_gains": "שיעור הניכוי במקור מהרווחים",
     "withholding_on_principal": "שיעור הניכוי במקור מהקרן עם ההצמדה",
@@ -60,12 +60,12 @@
       "value": 20,
       "unit": "pct",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (המוסד לביטוח לאומי, to ק\"ת 7907, 27.12.2017), p.2, reg. 3(א) \"קופת גמל המשלמת ליחיד ריבית, תנכה ממנה מס בשיעור של 20%\"",
-        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005), gazette p.289, reg. 3(א)",
+        "publisher": "רשומות",
         "strength": "primary"
       },
-      "checked": "2026-10-26",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -74,7 +74,7 @@
         "TXK-26"
       ],
       "state": "sourced",
-      "notes": "The rate printed in reg. 3(א) of National Insurance's consolidated copy (to 27.12.2017), not the rate withheld (withholding_on_gains, since 2026-11-06); 15% on interest for sums deposited before the regulations' start. The 2012 amendment (ק\"ת 7076, read in an olaw.org.il copy) raised regs. 4 and 5 to 25% and did not amend reg. 3. Reading both in Reshumot is open (TXK OQ3). Harel's stated 25% moved to TXK-28 on 2026-10-26."
+      "notes": "The rate printed in reg. 3(א) as published (KT 6449, 29.12.2005; no amendment touches reg. 3), not the rate withheld (withholding_on_gains, since 2026-11-06); 15% on interest for sums deposited before the regulations' start. The 2012 amendment (KT 7076, read in Reshumot 2026-11-07) raised regs. 4 and 5 to 25% and did not amend reg. 3; KT 7907 touches regs. 13-14 only. Harel's stated 25% moved to TXK-28 on 2026-10-26."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
@@ -110,56 +110,42 @@
       "checked": "2026-11-06"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (המוסד לביטוח לאומי)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 3(א)",
-      "locator_he": "עמוד 2, תקנה 3(א)",
-      "page": 2,
+      "locator": "file p.7 (gazette p.289), reg. 3(א)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 3(א)",
+      "page": 7,
       "quote": "קופת גמל המשלמת ליחיד ריבית, תנכה ממנה מס בשיעור של 20%",
-      "checked": "2026-10-26",
-      "qualifier": "(National Insurance's consolidated copy to ק\"ת 7907, 27.12.2017, not the Reshumot publication; open question 3)"
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf#page=2",
-      "title": "Income Tax Regulations (Withholding from Interest, Dividend and Certain Gains), National Insurance Institute's consolidated copy, file of 3.1.2018",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "quote": "תשע״ב, 600",
-      "checked": "2026-10-31",
-      "qualifier": "(National Insurance's consolidated copy, not the Reshumot publication)"
+      "locator": "file p.2 (gazette p.600), ss.1-9, amending regs. 1, 2, 4, 5, 7, 8, 10, 14 and 20, not reg. 3",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 600), סעיפים 1-9, תיקון תקנות 1, 2, 4, 5, 7, 8, 10, 14 ו־20, לא תקנה 3",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)?action=raw",
-      "title": "Wikisource, unofficial",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-31"
-    },
-    {
-      "url": "https://olaw.org.il/takanot/takanot-7076.pdf",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, ק\"ת 7076",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, ק\"ת 7076",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7907%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ח-2017, קובץ התקנות 7907 (27.12.2017)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ח-2017, קובץ התקנות 7907 (27.12.2017)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.600, ss.1-9",
-      "locator_he": "עמוד 600, סעיפים 1-9",
-      "page": 600,
-      "checked": "2026-10-25",
-      "qualifier": "(copy of Reshumot at olaw.org.il, not the official publication; open question 3)"
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.444), ss.1-2, replacing reg. 13 and amending reg. 14 (payment and report days), the only amendment after 2012; the Reshumot search lists none later (2026-11-07)",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 444), סעיפים 1-2, החלפת תקנה 13 ותיקון תקנה 14",
+      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

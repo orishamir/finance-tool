@@ -1,0 +1,84 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "stamp": "{\"keys\":[{\"id\":\"list-holds-what-it-is-not\",\"problem\":\"The page says it lists the products the site knows but cannot yet explain, yet many of its entries are not products at all: a fee, a fund's label, a gold price benchmark, a role, an event, a grant. A reader cannot trust that the list says what is really missing, and a fee the site does handle elsewhere shows up as unknown, so the whole list reads as unchecked.\",\"where\":\"the cards of the list under the title and subtitle at the top (for example the cards of an exchange fee, a gold price, a rating company, a debt settlement)\",\"kind\":\"general\"},{\"id\":\"bare-code\",\"problem\":\"Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.\",\"where\":\"the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'\",\"kind\":\"general\"},{\"id\":\"fragment-no-noun\",\"problem\":\"Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.\",\"where\":\"the 'what was closed' lines of the open cards\",\"kind\":\"general\"},{\"id\":\"source-names-not-for-reader\",\"problem\":\"Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.\",\"where\":\"the source line under 'what is known' on a few cards\",\"kind\":\"general\"},{\"id\":\"same-promise-every-card\",\"problem\":\"Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.\",\"where\":\"the line starting 'when it is closed' at the bottom of each open card\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 0,
+        "why": "No finding says that many entries aren't products, or that the list includes things the site handles elsewhere; finding 4 only says some card names are unexplained English."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 says codes like MF-28, TX2-01 and TXA-28 appear with no explanation, which is the bare-code problem in other words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 6,
+        "why": "Finding 6 says the crossed-out dates on the 'closed on' lines are confusing, a clear part of the meaningless fragment lines the person described."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "No finding is about source lines that name English offices or copies and still call them primary sources; finding 7 is about long law references cluttering the cards, and finding 4 is about card names."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 mentions the 'when it is closed' lines only because they are hard to read, and no finding complains about the same long promise repeated on every card."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0303514
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 0,
+        "why": "None of the findings says the list holds things that aren't products (fees, benchmarks, roles, events); finding 4 complains only that some names are in English and not explained."
+      },
+      {
+        "id": "bare-code",
+        "rank": 4,
+        "why": "Finding 4 names the bare codes MF-28, TX2-01 and TXA-28 shown with no explanation, which is the same complaint as internal codes appearing where the question should be in words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 6,
+        "why": "Finding 6 says the crossed-out date lines under 'closed on' are confusing, which is a clear part of the person's complaint that those struck-date lines mean nothing to a reader."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "No finding says source lines name a copy or an English office and still call it a primary source; finding 4 is about English names on cards and finding 7 is about long law references."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "No finding says every card ends with the same long, hard-to-believe promise; finding 1 mentions the 'when it is closed' line only because the text is hard to see, and finding 3 is about how long the list is."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0347714
+  },
+  "third": null,
+  "ranks": {
+    "list-holds-what-it-is-not": 0,
+    "bare-code": 4,
+    "fragment-no-noun": 6,
+    "source-names-not-for-reader": 0,
+    "same-promise-every-card": 0
+  },
+  "agreed": {
+    "list-holds-what-it-is-not": true,
+    "bare-code": true,
+    "fragment-no-noun": true,
+    "source-names-not-for-reader": true,
+    "same-promise-every-card": true
+  },
+  "against": {},
+  "usd": 0.06512280000000001
+}

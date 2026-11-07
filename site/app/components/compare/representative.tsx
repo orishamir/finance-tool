@@ -11,7 +11,7 @@ import { feeFor, feeTargetOf, workbenchHref, type ProviderOutcome, type Provider
 import type { SiteValue } from "../../lib/value";
 import { Tpl } from "../exposure-mode/tpl";
 import { Num } from "../provenance";
-import { Button, cx, PercentField, Sentence, Tag } from "../kit";
+import { Button, cx, gershayim, PercentField, Sentence, Tag } from "../kit";
 import { IndexCard, type IndexCardProps } from "./index-card";
 
 const t = ownTermsCopy.line;
@@ -59,25 +59,25 @@ export function Representative({ w, g, today, onFee, onRate, onProvider, outcome
           <span>
             <Tpl t={t.named} vars={{ name: <bdi>{r.name}</bdi> }} />
             {fee && <Tpl t={t.fee} vars={{ fee: <Num value={fee} size="cell" /> }} />}
-            {r.provider && <Tpl t={r.pickedBy === "site" ? t.tariffCheapest : t.tariff} vars={{ provider: <bdi>{r.provider}</bdi> }} />}
+            {r.provider && <Tpl t={r.pickedBy === "site" ? t.tariffCheapest : t.tariff} vars={{ provider: <bdi>{gershayim(r.provider)}</bdi> }} />}
             {t.end}
           </span>
         )}
         {chosen && (
           <>
             <Tag tone="entered">{tp.chosen}</Tag>
-            <Button variant="quiet" className="text-sm min-h-9" onClick={() => onProvider?.(w.id, undefined)}>
+            <Button variant="quiet" className="text-sm min-h-target" onClick={() => onProvider?.(w.id, undefined)}>
               {tp.reset}
             </Button>
           </>
         )}
         {canEnter && !showFields && (
-          <Button variant="quiet" className="-ms-2 text-sm min-h-9" onClick={() => setOpen(true)}>
+          <Button variant="quiet" className="-ms-2 text-sm min-h-target" onClick={() => setOpen(true)}>
             {t.change}
           </Button>
         )}
         {href && (
-          <Link to={href} className="text-link hover:underline min-h-9 inline-flex items-center">
+          <Link to={href} className="text-link hover:underline min-h-target inline-flex items-center">
             {t.workbench}
           </Link>
         )}
@@ -87,6 +87,11 @@ export function Representative({ w, g, today, onFee, onRate, onProvider, outcome
           {target && onFee && (
             <>
               <PercentField label={t.feeLabel} value={ownFee ?? null} isEntered={ownFee !== undefined} range={{ min: 0, max: 50 }} onCommit={(n) => onFee(w.id, n)} onReset={() => onFee(w.id, undefined)} optional />
+              {target === "balance" && w.ownFeeHold && (
+                <Sentence size="xs" tone="muted">
+                  <Tpl t={t.held} vars={{ rate: <Num value={w.ownFeeHold.rate} size="cell" />, years: <Num value={w.ownFeeHold.years} size="cell" /> }} />
+                </Sentence>
+              )}
               {r?.classMinFee && (
                 <Sentence size="xs" tone="muted">
                   <Tpl t={t.classMin} vars={{ fee: <Num value={r.classMinFee} size="cell" /> }} />
@@ -100,7 +105,7 @@ export function Representative({ w, g, today, onFee, onRate, onProvider, outcome
           )}
           <Button
             variant="quiet"
-            className="self-start -ms-2 text-sm min-h-9"
+            className="self-start -ms-2 text-sm min-h-target"
             onClick={() => {
               if (ownFee !== undefined) onFee?.(w.id, undefined);
               if (ownRate !== undefined) onRate?.(w.id, undefined);

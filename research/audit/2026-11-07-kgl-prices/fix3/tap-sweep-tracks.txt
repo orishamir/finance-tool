@@ -1,0 +1,5 @@
+1440 /tracks/kupat-gemel-lehashkaa: 1039 figures, 0 taken by another figure
+1440 /companies: 0 figures, 0 taken by another figure
+390 /tracks/kupat-gemel-lehashkaa: 1042 figures, 0 taken by another figure
+390 /companies: 0 figures, 0 taken by another figure
+total: 2081 figure checks, 0 taken by another figure

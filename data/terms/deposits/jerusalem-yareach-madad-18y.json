@@ -1,0 +1,159 @@
+{
+  "id": "jerusalem-yareach-madad-18y",
+  "bank": "jerusalem",
+  "names": {
+    "447": [
+      "ירח צמוד מדד - פיקדון בהפקדה חודשית",
+      "פיקדון ל-18 שנים"
+    ],
+    "app": [],
+    "ad": [
+      "ירח 18 שנים עם תחנות",
+      "ירח, תוכנית חיסכון בהפקדה חודשית"
+    ],
+    "abbrev": []
+  },
+  "type_447": "פיקדון ל-18 שנים",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 216,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bankjerusalem.co.il/media/7047/pikdonot-20102026-nagish.pdf",
+      "title": "בנק ירושלים, 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים', 'בתוקף החל מה-20.10.2026', 'פיקדונות נוספים', שורת 'ירח צמוד מדד - פיקדון בהפקדה חודשית', 'סוג המוצר (לפי תקופה)' (עמ' 2)",
+      "publisher": "Bank of Jerusalem Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-10-20",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The row sits under the product type 'פיקדון ל-18 שנים'; recorded as 216 months. The product page lists 'ירח 18 שנים עם תחנות' ('1.5%', 'ריבית קבועה', 'צמוד מדד'). The forms page (/deposits-savings/forms) holds no joining form for a monthly CPI-linked 18-year plan (its 18-year form, 'ירושלים תשורה למתמיד', is a one-time deposit). Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a)."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.5,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankjerusalem.co.il/media/7047/pikdonot-20102026-nagish.pdf",
+      "title": "בנק ירושלים, 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים', 'בתוקף החל מה-20.10.2026', 'פיקדונות נוספים', שורת 'ירח צמוד מדד - פיקדון בהפקדה חודשית', 'שיעור הריבית המוצעת (נומינלי שנתי)' (עמ' 2)",
+      "publisher": "Bank of Jerusalem Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-10-20",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed '1.50%' in both the offered and the common rate columns; rate type 'קבועה', linkage 'צמוד', a rate above the linkage (whether a linked rate in the 447 tables is real or nominal is BANK open question 17). No plan-specific terms were found to say whether the rate is set per deposit or at joining. Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a)."
+  },
+  "linkage": "cpi",
+  "tax_bucket": {
+    "value": "linked_25",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ב); עמ' 41, סעיף 9(13)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-02",
+      "TXI-04",
+      "TXI-05",
+      "TXI-19"
+    ],
+    "state": "sourced",
+    "notes": "Read as fully linked to the consumer price index on the 447 table's linkage column 'צמוד למדד המחירים לצרכן'; whether the linkage is full, which the bucket needs (TXI-04: a deposit counts as linked only when fully linked to the index), rests on that wording. Fully linked: the linkage differentials are exempt (TXI-05) and the interest above the linkage is taxed at up to 25% (TXI-02), at a lower bracket from age 60 (TXI-19). Copied from the rule base (sources read there 2026-10-25), not re-read today. The engine reads no tax_bucket today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7047/pikdonot-20102026-nagish.pdf",
+        "title": "בנק ירושלים, 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים', 'בתוקף החל מה-20.10.2026', 'פיקדונות נוספים', שורת 'ירח צמוד מדד - פיקדון בהפקדה חודשית', 'סכום מינימלי להפקדה' (עמ' 2)",
+        "publisher": "Bank of Jerusalem Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed '100 ₪' (minimum) and '10,000 ₪' (maximum) under 'טווח סכום להפקדה'. The product page: 'ניתן להפקיד מדי חודש החל מ-100 ₪ ועד 10,000 ₪', so both bound the monthly deposit."
+    },
+    "max": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7047/pikdonot-20102026-nagish.pdf",
+        "title": "בנק ירושלים, 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים', 'בתוקף החל מה-20.10.2026', 'פיקדונות נוספים', שורת 'ירח צמוד מדד - פיקדון בהפקדה חודשית', 'סכום מקסימלי להפקדה' (עמ' 2)",
+        "publisher": "Bank of Jerusalem Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed '10,000 ₪'; the product page: 'ניתן להפקיד מדי חודש החל מ-100 ₪ ועד 10,000 ₪'."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדונות: לא קיימת' (447 table column, p.2); no plan-specific form found. General terms (הסכם תנאים כלליים לפתיחת חשבון 73813, מהדורת ינואר 2024, PDF p.29, library 43f36f509e83fcf3) s.88.1: 'הלקוח לא יהיה רשאי למשוך פיקדון או כל חלק ממנו לפני מועד פרעונו ... הבנק רשאי, לפי שיקול דעתו הבלעדי ובתנאים שימצא לנכון, להתיר ללקוח למשוך פיקדון או חלק ממנו, לפני המועדים הנ\"ל (להלן: \"שבירה\")'; s.88.2: on a break the bank may charge 'קנס שבירה בשיעור שיהיה נהוג בבנק במועד השבירה', the customer gets no interest or linkage, and 'יתכן והלקוח יקבל אף סכומים נמוכים מהסכום המקורי אותו הפקיד בפיקדון'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 12
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "תחנות יציאה מתום שנתיים ואחר כך כל שנה, עם כל הריבית שנצברה. פתוחה ללקוחות כל הבנקים: ההפקדות מחשבון בבנק ירושלים או בהוראת קבע מחשבון בבנק אחר.",
+  "doubt_he": "לא נמצא טופס תנאים לתוכנית הזאת; התנאים נלקחו מטבלת הריביות, מעמוד המוצר ומהתנאים הכלליים של הבנק.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.bankjerusalem.co.il/media/7047/pikdonot-20102026-nagish.pdf",
+    "title": "בנק ירושלים, 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים', 'בתוקף החל מה-20.10.2026', 'פיקדונות נוספים'",
+    "publisher": "Bank of Jerusalem Ltd.",
+    "strength": "institution"
+  }
+}

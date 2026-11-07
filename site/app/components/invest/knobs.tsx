@@ -6,8 +6,9 @@ import { useMemo, useState } from "react";
 import { changedByShare, sweep } from "@finance-tool/engine";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
-import type { FeeInputs } from "../../lib/fees";
+import type { FeeInputs, FieldNeed } from "../../lib/fees";
 import { fmt } from "../../lib/format";
+import { pctBoundsFor } from "../../lib/goal";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
 import { pairCosts, pairLeft, type InvestView } from "../../lib/invest";
@@ -192,24 +193,30 @@ const CHOICES = [-20, -10, 10, 20, 50];
  * What the button beside the sliders opens: inflation, and where the page's product needs them, employment and age; written to the
  * same entered values. The page leaves out what it never reads (founder 2026-10-28, every control earns its place).
  */
-export function OtherAssumptions({ inflation, pct, employment, age }: { inflation: SiteValue; pct: { min: number; max: number }; employment?: boolean; age?: { min: number; max: number } }) {
-  const { state, ready, setEntered, setAge, setEmployment } = useInputs();
+export function OtherAssumptions({ inflation, pct, employment, age, need, insurance }: { inflation: SiteValue; pct: { min: number; max: number }; employment?: boolean; age?: { min: number; max: number }; need?: { age?: FieldNeed; employment?: FieldNeed }; insurance?: FieldNeed }) {
+  const { state, ready, setEntered, setAge, setEmployment, setInsurance } = useInputs();
   const ageCheck = (r: { min: number; max: number }) => (n: number) => (!Number.isInteger(n) ? valuesCopy.errors.nan : n < r.min || n > r.max ? `${valuesCopy.errors.age[0]} ${fmt.number(r.min)} ${valuesCopy.errors.age[1]}${fmt.number(r.max)}.` : null);
+  // a field the run cannot go without says "required" and why; the others stay "not required" (2026-11-07, independent check)
+  // on a page whose run reads them (the fee page), an optional field says it changes the result, not what it marks on a graph
+  const mark = (required: boolean | undefined) => <span className="text-muted-foreground font-normal">{required ? valuesCopy.required : valuesCopy.optional}</span>;
+  const h = valuesCopy.hints;
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
       <ParameterLine />
-      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} disabled={!ready} />
-      <p className="text-xs text-muted-foreground -mt-2">{valuesCopy.hints.inflation}</p>
+      {/* the hint is the field's own, under its box: as a line after the field it floated below the state line's held room (2026-11-07, a fresh reader) */}
+      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
       {employment && (
         <div className="field">
           <span className="field-label" id="plan-emp-label">
-            {valuesCopy.fields.employment} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span>
+            {valuesCopy.fields.employment} {mark(need?.employment === "required")}
           </span>
           <SegmentedControl<Employment> labelledBy="plan-emp-label" options={[{ value: "employee", label: valuesCopy.employment.employee }, { value: "self-employed", label: valuesCopy.employment["self-employed"] }]} value={state.employment} onChange={(v) => setEmployment(state.employment === v ? null : v)} />
-          <span className="text-xs text-muted-foreground">{valuesCopy.hints.employment}</span>
+          <span className="text-xs text-muted-foreground">{need?.employment === "required" ? h.employmentNeeded : need?.employment === "optional" ? h.employmentChanges : h.employment}</span>
         </div>
       )}
-      {age && <NumberField label={<>{valuesCopy.fields.age} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span></>} unit="years" value={state.age} isEntered={state.age !== null} validate={ageCheck(age)} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={valuesCopy.hints.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
+      {age && <NumberField label={<>{valuesCopy.fields.age} {mark(need?.age === "required")}</>} unit="years" value={state.age} isEntered={state.age !== null} validate={ageCheck(age)} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={need?.age === "required" ? h.ageNeeded : need?.age === "optional" ? h.ageChanges : h.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
+      {/* A-17 has no default (G-12): the field starts empty, and an empty field is "not entered" */}
+      {insurance && <NumberField label={<>{r2.form.insurance} {mark(insurance === "required")}</>} unit="pct" value={state.insurance ?? null} isEntered={typeof state.insurance === "number"} validate={percentCheck(pctBoundsFor("insurance", pct))} onCommit={(n) => setInsurance(n)} onReset={() => setInsurance(null)} hint={insurance === "required" ? h.insurance : h.insuranceOptional} optional disabled={!ready} />}
     </div>
   );
 }

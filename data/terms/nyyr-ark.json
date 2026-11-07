@@ -1,0 +1,27 @@
+{
+  "id": "nyyr-ark",
+  "he": "נייר ערך",
+  "en": null,
+  "meaning": "בחוק: תעודה שמנפיקה חברה או תאגיד אחר, בסדרה, ושנותנת חלק בתאגיד או זכות לקבל ממנו כסף, כמו מניה או איגרת חוב.",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "ני\"ע"
+  ],
+  "rule_ids": [
+    "BRK-01",
+    "CORP-01"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=10",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 1, עמוד 10",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

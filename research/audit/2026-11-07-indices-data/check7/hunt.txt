@@ -1,0 +1,657 @@
+## first run, 81 plans (slider ends and a quarter): three indices
+index-msci-acwi renders 19278 fails 0
+index-msci-world renders 16524 fails 0
+index-nasdaq100 renders 22032 fails 0
+## past the sliders' ends (typed): every index
+index-sp500 renders 52326 fails 0
+index-msci-acwi renders 5712 fails 79
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1149772: -2147483648.00
+   pair 1000000000000/1000000/80/0.5 excellence 1149772 chosen=true: wholeParts: the target 1.0128082222665333e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 1149772 chosen=false: wholeParts: the target 1.0128082222665333e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 1149772: wholeParts: the target 1.0128082222665333e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1144237: -1073741824.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1144237: -1073741824.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1144237: -1073741824.00
+   negative remainder 1000000000000/1000000/80/0.5 discount 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1159235: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav ie00b6r52259: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 massad ie00b6r52259: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 discount 1201003: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 1201003: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 yahav 1201003: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 1201003: -6442450944.00
+   negative remainder 1000000000000/0/80/0.5 massad 1201003: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1201003: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 fibi 1201003: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 1149772: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 1144237: -1073741824.00
+   negative remainder 1000000000000/0/80/0.5 yahav 1144237: -1073741824.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1144237: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 1147362: -536870912.00
+   negative remainder 1000000000000/0/80/0.5 fibi 1144336: -536870912.00
+   negative remainder 1000000000000/0/80/0.5 fibi 1159235: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 discount ie00b6r52259: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile ie00b6r52259: -4294967296.00
+   pair 1000000000000/0/80/0.5 excellence ie00b6r52259 chosen=true: wholeParts: the target 1.8383112042935574e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   pair 1000000000000/0/80/0.5 excellence ie00b6r52259 chosen=false: wholeParts: the target 1.8383112042935574e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   accounts 1000000000000/0/80/0.5 ie00b6r52259: wholeParts: the target 1.8383112042935574e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   negative remainder 50000000/1000000/80/0.5 yahav 1201003: -524288.00
+   negative remainder 50000000/1000000/80/0.5 discount 1149772: -393216.00
+   negative remainder 50000000/1000000/80/0.5 jerusalem 1149772: -262144.00
+index-ta125 renders 16524 fails 0
+index-msci-world renders 4896 fails 88
+   pair 1000000000000/1000000/80/0.5 excellence 5122569 chosen=true: wholeParts: the target 1.4181718089628848e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 5122569 chosen=false: wholeParts: the target 1.4181718089628848e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 5122569: wholeParts: the target 1.4181718089628848e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 discount 5124573: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5124573: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5124573: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 5124573: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 discount 5139696: -1073741824.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5139696: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 5139696: -1073741824.00
+   accounts 1000000000000/1000000/80/0.5 5140165: wholeParts: the target 1.4181718089628848e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 massad 1145804: -2147483648.00
+   pair 1000000000000/1000000/80/0.5 excellence 1145804 chosen=true: wholeParts: the target 9.08437006213852e+24 is 1073741824.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 1145804 chosen=false: wholeParts: the target 9.08437006213852e+24 is 1073741824.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 1145804: wholeParts: the target 9.08437006213852e+24 is 1073741824.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1185164: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1185164: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav ie00b4l5y983: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 massad ie00b4l5y983: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 discount 5122569: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 5122569: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 yahav 5122569: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 5122569: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 5122569: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 5122569: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 fibi 5122569: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 yahav 5139696: -1073741824.00
+   negative remainder 1000000000000/0/80/0.5 massad 5139696: -1073741824.00
+   pair 1000000000000/0/80/0.5 excellence 1185164 chosen=true: wholeParts: the target 2.0637696422953426e+25 is 4294967296.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/0/80/0.5 excellence 1185164 chosen=false: wholeParts: the target 2.0637696422953426e+25 is 4294967296.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/0/80/0.5 1185164: wholeParts: the target 2.0637696422953426e+25 is 4294967296.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/0/80/0.5 discount ie00b4l5y983: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile ie00b4l5y983: -4294967296.00
+   pair 1000000000000/0/80/0.5 excellence ie00b4l5y983 chosen=true: wholeParts: the target 1.8383112042935574e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   pair 1000000000000/0/80/0.5 excellence ie00b4l5y983 chosen=false: wholeParts: the target 1.8383112042935574e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   accounts 1000000000000/0/80/0.5 ie00b4l5y983: wholeParts: the target 1.8383112042935574e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   negative remainder 50000000/1000000/80/0.5 discount 5122569: -262144.00
+   negative remainder 50000000/1000000/80/0.5 yahav 5122569: -262144.00
+   negative remainder 50000000/1000000/80/0.5 mercantile 5122569: -262144.00
+   pair 50000000/1000000/80/0.5 excellence 5122569 chosen=true: wholeParts: the target 1.1592499095621881e+21 is -131072.00 from the parts' sum, more than a shekel a part (5.5)
+index-ta35 renders 13770 fails 0
+index-nasdaq100 renders 6528 fails 100
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5129283: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5128905: -4294967296.00
+   pair 1000000000000/1000000/80/0.5 excellence 5128905 chosen=true: wholeParts: the target 1.8025496642212248e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 5128905 chosen=false: wholeParts: the target 1.8025496642212248e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 5128905: wholeParts: the target 1.8025496642212248e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 massad 1146505: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1165844: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1165844: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1165844: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1143734: -268435456.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1143734: -268435456.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1143734: -268435456.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1186063: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1159243: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1159243: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav ie00b53szb19: -42949672960.00
+   pair 1000000000000/1000000/80/0.5 excellence ie00b53szb19 chosen=true: wholeParts: the target 1.7015187777638375e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   pair 1000000000000/1000000/80/0.5 excellence ie00b53szb19 chosen=false: wholeParts: the target 1.7015187777638375e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   accounts 1000000000000/1000000/80/0.5 ie00b53szb19: wholeParts: the target 1.7015187777638375e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (6.5)
+   negative remainder 1000000000000/0/80/0.5 discount 5129283: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 yahav 5129283: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 leumi 5129283: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 5129283: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 5129283: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 5128905: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 discount 1146505: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 1146505: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1146505: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 massad 1146505: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1146505: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 fibi 1186063: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 1159243: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 1159243: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1159243: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 1159243: -8589934592.00
+index-ta90 renders 16524 fails 0
+index-sp500 renders 15504 fails 248
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5139282: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 5139100: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5139100: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 5124482: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5124482: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 5124482: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 5124482: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5124482: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 5124482: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 5129275: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5129275: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 5129275: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 5129275: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5129275: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 5129275: -4294967296.00
+   pair 1000000000000/1000000/80/0.5 excellence 5127527 chosen=true: wholeParts: the target 3.2377661185036894e+24 is 536870912.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 5127527 chosen=false: wholeParts: the target 3.2377661185036894e+24 is 536870912.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 5127527: wholeParts: the target 3.2377661185036894e+24 is 536870912.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1218916: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1218916: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1218916: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1218916: -8589934592.00
+   pair 1000000000000/1000000/80/0.5 excellence 1218916 chosen=true: wholeParts: the target 1.826410514142755e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 1218916 chosen=false: wholeParts: the target 1.826410514142755e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 1218916: wholeParts: the target 1.826410514142755e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1201656: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1201656: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1201656: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1201656: -4294967296.00
+   pair 1000000000000/1000000/80/0.5 excellence 1201656 chosen=true: wholeParts: the target 1.6748290970830928e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 1201656 chosen=false: wholeParts: the target 1.6748290970830928e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 1201656: wholeParts: the target 1.6748290970830928e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1165810: -4294967296.00
+   pair 1000000000000/1000000/80/0.5 excellence 1165810 chosen=true: wholeParts: the target 1.5501412999728605e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 1165810 chosen=false: wholeParts: the target 1.5501412999728605e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 1165810: wholeParts: the target 1.5501412999728605e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 discount 1150333: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1150333: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1150333: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1150333: -2147483648.00
+index-ta125 renders 4896 fails 91
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 5112628: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5112628: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 5112628: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 5112628: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5112628: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 5112628: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 discount 1150283: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1150283: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1150283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1150283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 1150283: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1150283: -8589934592.00
+   pair 1000000000000/1000000/80/0.5 excellence 1150283 chosen=true: wholeParts: the target 1.6769899550704353e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 1150283 chosen=false: wholeParts: the target 1.6769899550704353e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 1150283: wholeParts: the target 1.6769899550704353e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1148899: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1148899: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1148899: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1143718: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 discount 5112628: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 yahav 5112628: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 leumi 5112628: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 5112628: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 5112628: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 discount 1150283: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 1150283: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 massad 1150283: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1150283: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 discount 1148899: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 1148899: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 yahav 1148899: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 1148899: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1148899: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 1148899: -6442450944.00
+   negative remainder 1000000000000/0/80/0.5 massad 1148899: -6442450944.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1148899: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 fibi 1148899: -2147483648.00
+   pair 1000000000000/0/80/0.5 excellence 1148899 chosen=true: wholeParts: the target 1.6467253835679212e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/0/80/0.5 excellence 1148899 chosen=false: wholeParts: the target 1.6467253835679212e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/0/80/0.5 1148899: wholeParts: the target 1.6467253835679212e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+index-ta35 renders 4080 fails 86
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1150184: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1150184: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1150184: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1150184: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1146570: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1146570: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1143700: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1143700: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1148907: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 discount 5130661: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 5130661: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 yahav 5130661: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 5130661: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 leumi 5130661: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 5130661: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 massad 5130661: -12884901888.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 5130661: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 fibi 5130661: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 discount 1150184: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 1150184: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 yahav 1150184: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 1150184: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1150184: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 1150184: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 massad 1150184: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1150184: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 fibi 1150184: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 discount 1146570: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1146570: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 massad 1146570: -8589934592.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1146570: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1143700: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 mizrahi-tefahot 1143700: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 massad 1143700: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 fibi 1143700: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 1148907: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 massad 1148907: -4294967296.00
+   negative remainder 50000000/1000000/80/0.5 hapoalim 5130661: -262144.00
+   negative remainder 50000000/1000000/80/0.5 jerusalem 5130661: -262144.00
+   negative remainder 50000000/1000000/80/0.5 leumi 5130661: -262144.00
+index-ta90 renders 4896 fails 92
+   negative remainder 1000000000000/1000000/80/0.5 discount 5130638: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 5130638: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 5130638: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1209444: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 discount 1148931: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1148931: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1148931: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1148931: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1148931: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 1148931: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1143783: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1143783: -2147483648.00
+   pair 1000000000000/1000000/80/0.5 excellence 1143783 chosen=true: wholeParts: the target 1.2417625070360544e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/80/0.5 excellence 1143783 chosen=false: wholeParts: the target 1.2417625070360544e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/80/0.5 1143783: wholeParts: the target 1.2417625070360544e+25 is 2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/80/0.5 discount 1146331: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1146331: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1146331: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1146331: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1146331: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 1146331: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1150259: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 discount 5130638: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 5130638: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 discount 1209444: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 yahav 1209444: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1209444: -4294967296.00
+   pair 1000000000000/0/80/0.5 excellence 1209444 chosen=true: wholeParts: the target 1.895439569369502e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/0/80/0.5 excellence 1209444 chosen=false: wholeParts: the target 1.895439569369502e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/0/80/0.5 1209444: wholeParts: the target 1.895439569369502e+25 is -2147483648.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/0/80/0.5 discount 1148931: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 1148931: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 leumi 1148931: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 massad 1148931: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 mercantile 1148931: -4294967296.00
+   negative remainder 1000000000000/0/80/0.5 hapoalim 1143783: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 yahav 1143783: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 jerusalem 1143783: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 massad 1143783: -2147483648.00
+   negative remainder 1000000000000/0/80/0.5 discount 1146331: -2147483648.00
+exit 1
+## slider ends, the four indices not finished
+## typed past the ends, short of 80 years at 50%: every index
+index-sp500 renders 15504 fails 0
+index-msci-acwi renders 3808 fails 44
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1201003: -512.00
+   pair 1000000000000/1000000/40/0.5 excellence 1201003 chosen=true: wholeParts: the target 2660096047694223000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 1201003 chosen=false: wholeParts: the target 2660096047694223000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 1201003: wholeParts: the target 2660096047694223000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 discount 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1149772: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1144237: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1144237: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1147362: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1147362: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1147362: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1147362: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1144336: -768.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1144336: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1144336: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1144336: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1159235: -1024.00
+   accounts 1000000000000/1000000/40/0.5 us-acwi: wholeParts: the target 2660096047694223000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/0/40/0.5 leumi 1201003: -512.00
+   negative remainder 1000000000000/0/40/0.5 fibi 1201003: -512.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 1144237: -512.00
+   negative remainder 1000000000000/0/40/0.5 yahav 1144237: -512.00
+   negative remainder 1000000000000/0/40/0.5 discount 1147362: -256.00
+   negative remainder 1000000000000/0/40/0.5 yahav 1147362: -512.00
+   negative remainder 1000000000000/0/40/0.5 leumi 1147362: -512.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 1147362: -256.00
+   negative remainder 1000000000000/0/40/0.5 mercantile 1147362: -256.00
+   negative remainder 1000000000000/0/40/0.5 fibi 1147362: -256.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 1144336: -256.00
+   negative remainder 1000000000000/0/40/0.5 fibi 1144336: -512.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 1159235: -1024.00
+   negative remainder 1000000000000/0/40/0.5 jerusalem 1159235: -1024.00
+   negative remainder 1000000000000/0/40/0.5 leumi 1159235: -1024.00
+   negative remainder 1000000000000/0/40/0.5 massad 1159235: -1024.00
+   negative remainder 1000000000000/0/40/0.5 discount ie00b6r52259: -2048.00
+index-ta125 renders 4896 fails 0
+index-msci-world renders 3264 fails 30
+   negative remainder 1000000000000/1000000/40/0.5 yahav 5122569: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 5122569: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 5124573: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 5139696: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 5139696: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1185164: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1185164: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1185164: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1185164: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1185164: -1024.00
+   negative remainder 1000000000000/0/40/0.5 yahav 5122569: -512.00
+   negative remainder 1000000000000/0/40/0.5 fibi 5122569: -512.00
+   pair 1000000000000/0/40/0.5 excellence 5122569 chosen=true: wholeParts: the target 2529546688335965000 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/0/40/0.5 excellence 5122569 chosen=false: wholeParts: the target 2529546688335965000 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/0/40/0.5 5122569: wholeParts: the target 2529546688335965000 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/0/40/0.5 hapoalim 5139696: -768.00
+   negative remainder 1000000000000/0/40/0.5 leumi 5139696: -256.00
+   pair 1000000000000/0/40/0.5 excellence 5139696 chosen=true: wholeParts: the target 1369503132730126000 is -256.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/0/40/0.5 excellence 5139696 chosen=false: wholeParts: the target 1369503132730126000 is -256.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/0/40/0.5 5139696: wholeParts: the target 1369503132730126000 is -256.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/0/40/0.5 5140165: wholeParts: the target 2529546688335965000 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/0/40/0.5 discount 1145804: -512.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 1145804: -512.00
+   negative remainder 1000000000000/0/40/0.5 massad 1145804: -512.00
+   negative remainder 1000000000000/0/40/0.5 mercantile 1145804: -512.00
+   negative remainder 1000000000000/0/40/0.5 discount ie00b4l5y983: -2048.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim ie00b4l5y983: -1024.00
+   negative remainder 1000000000000/0/40/0.5 massad ie00b4l5y983: -3072.00
+   negative remainder 1000000000000/0/40/0.5 mercantile ie00b4l5y983: -2048.00
+   negative remainder 1000000000000/0/40/0.5 fibi ie00b4l5y983: -1024.00
+index-ta35 renders 4080 fails 0
+index-nasdaq100 renders 4352 fails 73
+   negative remainder 1000000000000/1000000/40/0.5 massad 5129283: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 5128905: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 5128905: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1146505: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1146505: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1165844: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1143734: -640.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1143734: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1143734: -384.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1143734: -128.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1143734: -384.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1143734: -128.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1143734: -128.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1143734: -640.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1143734: -128.00
+   pair 1000000000000/1000000/40/0.5 excellence 1143734 chosen=true: wholeParts: the target 712016526825318100 is 128.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 1143734 chosen=false: wholeParts: the target 712016526825318100 is 128.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 1143734: wholeParts: the target 712016526825318100 is 128.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1186063: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1159243: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1159243: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1159243: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1159243: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1159243: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1159243: -2048.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav ie00b53szb19: -4096.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 5129283: -1024.00
+   negative remainder 1000000000000/0/40/0.5 leumi 5129283: -1024.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 5129283: -1024.00
+   negative remainder 1000000000000/0/40/0.5 massad 5129283: -1024.00
+   negative remainder 1000000000000/0/40/0.5 fibi 5129283: -1024.00
+   negative remainder 1000000000000/0/40/0.5 discount 5128905: -1536.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 5128905: -1024.00
+   negative remainder 1000000000000/0/40/0.5 leumi 5128905: -1024.00
+   negative remainder 1000000000000/0/40/0.5 massad 5128905: -1024.00
+   negative remainder 1000000000000/0/40/0.5 mercantile 5128905: -1536.00
+index-ta90 renders 4896 fails 0
+index-sp500 renders 10336 fails 137
+   pair 1000000000000/1000000/40/0.5 excellence 5139282 chosen=true: wholeParts: the target 3087219675681129000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 5139282 chosen=false: wholeParts: the target 3087219675681129000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 5139282: wholeParts: the target 3087219675681129000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 leumi 5139100: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 5124482: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 5129275: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 5127527: -256.00
+   pair 1000000000000/1000000/40/0.5 excellence 5127527 chosen=true: wholeParts: the target 1208689366991035400 is 256.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 5127527 chosen=false: wholeParts: the target 1208689366991035400 is 256.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 5127527: wholeParts: the target 1208689366991035400 is 256.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1218916: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1218916: -2048.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1201656: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1201656: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1201656: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1201656: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1201656: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1201656: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1165810: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1165810: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1165810: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1150333: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1150333: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1150333: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1146471: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1146471: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1146471: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1146471: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1146471: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1146471: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1146471: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1149020: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1144385: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1144385: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1144385: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1144385: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1144385: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1148162: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1148162: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1183441: -1024.00
+index-ta125 renders 3264 fails 26
+   negative remainder 1000000000000/1000000/40/0.5 massad 5112628: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1150283: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1150283: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1150283: -1024.00
+   pair 1000000000000/1000000/40/0.5 excellence 1150283 chosen=true: wholeParts: the target 2750786378119569400 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 1150283 chosen=false: wholeParts: the target 2750786378119569400 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 1150283: wholeParts: the target 2750786378119569400 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1146356: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1146356: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1148899: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1148808: -1024.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 5112628: -1024.00
+   negative remainder 1000000000000/0/40/0.5 leumi 5112628: -1024.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 5112628: -1024.00
+   negative remainder 1000000000000/0/40/0.5 massad 5112628: -1024.00
+   negative remainder 1000000000000/0/40/0.5 fibi 5112628: -1024.00
+   negative remainder 1000000000000/0/40/0.5 massad 1150283: -512.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 1143718: -1024.00
+   negative remainder 1000000000000/0/40/0.5 yahav 1143718: -512.00
+   negative remainder 1000000000000/0/40/0.5 jerusalem 1143718: -1536.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 1143718: -512.00
+   negative remainder 1000000000000/0/40/0.5 massad 1143718: -1536.00
+   negative remainder 1000000000000/0/40/0.5 fibi 1143718: -512.00
+   negative remainder 1000000000000/0/40/0.5 yahav 1148808: -512.00
+   negative remainder 1000000000000/0/40/0.5 leumi 1148808: -512.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 1148808: -512.00
+index-ta35 renders 2720 fails 31
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 5130661: -2048.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 5130661: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 5130661: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 5130661: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 5130661: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1150184: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1146570: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1146570: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1146570: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1146570: -512.00
+   pair 1000000000000/1000000/40/0.5 excellence 1146570 chosen=true: wholeParts: the target 2741933721752024600 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 1146570 chosen=false: wholeParts: the target 2741933721752024600 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 1146570: wholeParts: the target 2741933721752024600 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 discount 1143700: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1143700: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1143700: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1143700: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1143700: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1143700: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1148907: -512.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 5130661: -1024.00
+   negative remainder 1000000000000/0/40/0.5 yahav 5130661: -2048.00
+   negative remainder 1000000000000/0/40/0.5 leumi 1150184: -1536.00
+   negative remainder 1000000000000/0/40/0.5 massad 1150184: -1024.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 1143700: -1024.00
+   negative remainder 1000000000000/0/40/0.5 fibi 1143700: -1024.00
+   negative remainder 1000000000000/0/40/0.5 discount 1148907: -2048.00
+   negative remainder 1000000000000/0/40/0.5 yahav 1148907: -512.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 1148907: -1536.00
+   negative remainder 1000000000000/0/40/0.5 mercantile 1148907: -2048.00
+   negative remainder 1000000000000/0/40/0.5 fibi 1148907: -512.00
+index-ta90 renders 3264 fails 51
+   negative remainder 1000000000000/1000000/40/0.5 discount 5130638: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 5130638: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 5130638: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 5130638: -1024.00
+   pair 1000000000000/1000000/40/0.5 excellence 5130638 chosen=true: wholeParts: the target 2977774094632038000 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 5130638 chosen=false: wholeParts: the target 2977774094632038000 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 5130638: wholeParts: the target 2977774094632038000 is -512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1209444: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1209444: -1024.00
+   pair 1000000000000/1000000/40/0.5 excellence 1209444 chosen=true: wholeParts: the target 2924512031434286000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 1209444 chosen=false: wholeParts: the target 2924512031434286000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 1209444: wholeParts: the target 2924512031434286000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1148931: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1148931: -1024.00
+   pair 1000000000000/1000000/40/0.5 excellence 1148931 chosen=true: wholeParts: the target 2389923239478079000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/1000000/40/0.5 excellence 1148931 chosen=false: wholeParts: the target 2389923239478079000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/1000000/40/0.5 1148931: wholeParts: the target 2389923239478079000 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/1000000/40/0.5 discount 1143783: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1143783: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1143783: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1150259: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1150259: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1150259: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1150259: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1150259: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1150259: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1150259: -1536.00
+   negative remainder 1000000000000/0/40/0.5 yahav 5130638: -1024.00
+   negative remainder 1000000000000/0/40/0.5 jerusalem 5130638: -1024.00
+   negative remainder 1000000000000/0/40/0.5 leumi 5130638: -1024.00
+   negative remainder 1000000000000/0/40/0.5 hapoalim 1209444: -1024.00
+   negative remainder 1000000000000/0/40/0.5 yahav 1209444: -2048.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 1209444: -1024.00
+   pair 1000000000000/0/40/0.5 excellence 1209444 chosen=true: wholeParts: the target 2924422658572951600 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   pair 1000000000000/0/40/0.5 excellence 1209444 chosen=false: wholeParts: the target 2924422658572951600 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   accounts 1000000000000/0/40/0.5 1209444: wholeParts: the target 2924422658572951600 is 512.00 from the parts' sum, more than a shekel a part (5.5)
+   negative remainder 1000000000000/0/40/0.5 yahav 1148931: -512.00
+   negative remainder 1000000000000/0/40/0.5 jerusalem 1148931: -1024.00
+   negative remainder 1000000000000/0/40/0.5 leumi 1148931: -512.00
+   negative remainder 1000000000000/0/40/0.5 mizrahi-tefahot 1148931: -512.00
+exit 1
+## 80 years at -50% and 12%: every index
+index-msci-acwi renders 476 fails 2
+   negative remainder 1000000000000/1000000/80/0.12 yahav ie00b6r52259: -6.75
+   negative remainder 1000000000000/1000000/80/0.12 massad ie00b6r52259: -4.50
+index-msci-world renders 408 fails 2
+   negative remainder 1000000000000/1000000/80/0.12 yahav ie00b4l5y983: -6.75
+   negative remainder 1000000000000/1000000/80/0.12 massad ie00b4l5y983: -4.50
+index-nasdaq100 renders 544 fails 2
+   negative remainder 1000000000000/1000000/80/0.12 yahav ie00b53szb19: -1.25
+   negative remainder 1000000000000/1000000/80/0.12 massad ie00b53szb19: -1.75
+index-sp500 renders 1292 fails 6
+   negative remainder 1000000000000/1000000/80/0.12 jerusalem 1165810: -0.75
+   negative remainder 1000000000000/1000000/80/0.12 yahav ie00b5bmr087: -7.75
+   negative remainder 1000000000000/1000000/80/0.12 yahav ie00bfmxxd54: -7.75
+   negative remainder 1000000000000/1000000/80/0.12 yahav ie0031442068: -1.25
+   negative remainder 1000000000000/1000000/80/0.12 massad ie0031442068: -2.25
+   negative remainder 1000000000000/1000000/80/0.12 massad ie00b3xxrp09: -1.50
+index-ta125 renders 408 fails 0
+index-ta35 renders 340 fails 0
+index-ta90 renders 408 fails 0
+exit 1
+HUNT3 DONE
+## after the guard's float allowance: 40 and 80 years at 50% (pair and list renders; the remainder probe still notes float noise)
+index-msci-acwi renders 476 fails 34
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1201003: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1149772: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1149772: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1144237: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1144237: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1147362: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1147362: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1147362: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1147362: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1144336: -768.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1144336: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1144336: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1144336: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1159235: -1024.00
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1149772: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 leumi 1144237: -1073741824.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1144237: -1073741824.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1144237: -1073741824.00
+   negative remainder 1000000000000/1000000/80/0.5 discount 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 mercantile 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1144336: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 1159235: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav ie00b6r52259: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 massad ie00b6r52259: -8589934592.00
+index-nasdaq100 renders 544 fails 45
+   negative remainder 1000000000000/1000000/40/0.5 massad 5129283: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 5128905: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 5128905: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 5128905: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1146505: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1146505: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1165844: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 discount 1143734: -640.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1143734: -256.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1143734: -384.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1143734: -128.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1143734: -384.00
+   negative remainder 1000000000000/1000000/40/0.5 mizrahi-tefahot 1143734: -128.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1143734: -128.00
+   negative remainder 1000000000000/1000000/40/0.5 mercantile 1143734: -640.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1143734: -128.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1186063: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 hapoalim 1159243: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav 1159243: -512.00
+   negative remainder 1000000000000/1000000/40/0.5 jerusalem 1159243: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 leumi 1159243: -1024.00
+   negative remainder 1000000000000/1000000/40/0.5 massad 1159243: -1536.00
+   negative remainder 1000000000000/1000000/40/0.5 fibi 1159243: -2048.00
+   negative remainder 1000000000000/1000000/40/0.5 yahav ie00b53szb19: -4096.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 jerusalem 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5129283: -8589934592.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 5129283: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 5128905: -4294967296.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1146505: -2147483648.00
+   negative remainder 1000000000000/1000000/80/0.5 yahav 1165844: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 massad 1165844: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 fibi 1165844: -536870912.00
+   negative remainder 1000000000000/1000000/80/0.5 hapoalim 1143734: -268435456.00
+   negative remainder 1000000000000/1000000/80/0.5 mizrahi-tefahot 1143734: -268435456.00

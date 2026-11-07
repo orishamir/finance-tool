@@ -31,6 +31,7 @@ describe("provident listing: one card per company, linked by the regulator's com
     }
     const meitav = listing.cards.find((c) => c.provider === "meitav");
     expect(meitav?.companyId).toBe("512065202");
-    expect(listing.companies).toBeGreaterThan(listing.cards.length);
+    // 2026-11-07: with Ayalon collected (31654e7c), every company the regulator lists for the product has a card: 12 of 12
+    expect(listing.cards.length).toBe(listing.companies);
   });
 });

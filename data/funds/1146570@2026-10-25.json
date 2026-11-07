@@ -186,8 +186,38 @@
       {
         "year": 2025,
         "fund_pct": 51.23,
-        "tracking_pct": 51.63
+        "tracking_pct": 51.63,
+        "fees_charged": {
+          "fixed": 0.25,
+          "variable": 0.015,
+          "trustee": 0.015
+        }
+      },
+      {
+        "year": 2024,
+        "fund_pct": 28.05,
+        "tracking_pct": 28.39,
+        "fees_charged": {
+          "fixed": 0.25,
+          "variable": 0.085,
+          "trustee": 0.015
+        }
+      },
+      {
+        "year": 2023,
+        "fund_pct": 3.61,
+        "tracking_pct": 3.81,
+        "fees_charged": {
+          "fixed": 0.25,
+          "variable": 0.1,
+          "trustee": 0.015
+        }
       }
+    ],
+    "years_printed": [
+      2023,
+      2024,
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768240-00.pdf",
@@ -196,7 +226,23 @@
       "strength": "institution"
     },
     "page": 7,
-    "checked": "2026-10-25"
+    "fees_page": 9,
+    "changes_page": 8,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "ת\"א-35",
+      "dividends": "gross",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/index/142/about",
+        "title": "\"ת\"א-35 אודות המדד\" (מדד 142): \"אופן חישוב המדד: תשואה כוללת ברוטו (GTR)\"; הדוח השנתי של הקרן נותן את נכס המעקב בשמו, ותשואת המדד בו שווה לזו של שאר הקרנות על המדד",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "rule_ids": [
+        "ETF-44"
+      ]
+    }
   },
   "snapshot": "2026-10-25"
 }

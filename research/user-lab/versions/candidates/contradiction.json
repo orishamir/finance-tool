@@ -1,0 +1,41 @@
+{
+ "id": "contradiction",
+ "written": "2026-11-07",
+ "built_from": [
+  "live-04-not-covered-wrong-entries, his key as corrected by the coordinator on 2026-11-07: the page says the site has not researched or covered something the site covers (the exchange fee, explained with its houses on the securities account guide)"
+ ],
+ "reason": "A site that contradicts itself about what it knows loses the reader's trust in both pages: a reader cannot tell which place is right, and one who does not notice believes the page they are on.",
+ "for": "every session (behaviour), still screens and browser alike",
+ "result": {
+  "date": "2026-11-07",
+  "own_case": {
+   "run": "runs/live-04b (without, v1, 3 personas x 3) and runs/live-04b/contradiction-own (with, 3 personas x 1); both see the ten not-covered screens and the two screens of the securities account guide",
+   "says_uncovered_what_site_covers": {
+    "without": "0 of 9",
+    "with": "3 of 3, at ranks 1, 2 and 6"
+   },
+   "note": "built from this case, so not evidence that it generalises. Without it, every session that named the exchange fee believed the not-covered page, though it had the guide's fee table and term row in front of it."
+  },
+  "same_reason_held_out": {
+   "run": "runs/live-04b/contradiction-held (with: run-reviewer.json's s14 and s19, first-job-phone and careful-retiree-pc, repeat 2); without: runs/baseline-1/reviewer and runs/baseline-2/reviewer",
+   "caught_in_first_10": {
+    "hg-not-entered (text that says no figures were entered beside fields that hold them)": {
+     "without": "0 of 2 (baseline-1), 0 of 6 (baseline-2)",
+     "with": "0 of 4"
+    },
+    "tracks-stale-annuity (says monthly, shows September in November)": {
+     "without": "2 of 2 (baseline-1), 3 of 6 (baseline-2)",
+     "with": "3 of 4 (ranks 1, 6, 7)"
+    }
+   },
+   "graders": "agreed on 4 of 4 and 3 of 4"
+  },
+  "verdict": "not kept: it adds nothing on the held-out cases of the same reason (the within-page contradiction is still missed by every session; the stale-date one was already caught about as often), so the own-case gain looks like memorising its own form (two pages, one saying it lacks what the other gives).",
+  "not_done": [
+   "the planted p09 instances (two figures for the same thing that disagree), on their score pages",
+   "a negative check on a screen free of contradictions",
+   "a planted instance of the cross-page form: a page that says the site lacks something a second screen of the same session shows it has"
+  ],
+  "cost_usd": "about 5.7 for runs/live-04b and its two candidate runs, graders included"
+ }
+}

@@ -11,11 +11,10 @@ import type { KnobRanges } from "../components/invest/knobs";
 
 /** The goal form's ranges this page reads, with the plan sliders' (P-05). */
 type FeeForm = FormData & { knobs: KnobRanges };
-import { employmentMatters } from "../components/compare/inferred";
 import { OtherAssumptions, PlanKnobs } from "../components/invest/knobs";
 import { ChartLegend, ChartReadout, ChartTable, FeeDragChart } from "../components/fees/FeeDragChart";
 import { FeeRow, NotReportedRow } from "../components/fees/FeeRow";
-import { FeeHeadline, ReasonWithCode, RemainderLine, SubjectStrip, ThresholdsLine } from "../components/fees/parts";
+import { FeeHeadline, ReasonWithCode, RemainderLine, SubjectStrip, ThresholdsLine, verdictWord } from "../components/fees/parts";
 import { FeeSensitivityPanel } from "../components/fees/sensitivity";
 import { IconLock } from "../components/icons";
 import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance";
@@ -25,7 +24,7 @@ import { Breadcrumb, PageShell } from "../components/shell";
 import { Button, Callout, Card, LongestCase, Sentence, useChartPick } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
-import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
+import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, pageFields, parseSubject, subjectWrapperId, rankedFor, ruleMap, type FeeSensitivity, type FeesData, type FeesResult, type NeedField, type PlanError, type SubjectSpec } from "../lib/fees";
 import type { FieldKey } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { useAfterRender, useSettled } from "../lib/settled";
@@ -129,7 +128,7 @@ function NotFoundLinks() {
   );
 }
 
-function errorText(e: PlanError, wrapperId: string): React.ReactNode {
+function errorText(e: PlanError, wrapperId: string, missing: NeedField[] = []): React.ReactNode {
   switch (e.kind) {
     case "no-wrapper":
       return (
@@ -145,6 +144,7 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
           {shown("/holdings") && (
             <>
               {" "}
+              {r3fees.review.noTermsHoldings}{" "}
               <Link to="/holdings" className="text-link hover:underline">
                 {r3fees.notFoundLinks.holdings}
               </Link>
@@ -152,16 +152,16 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
           )}
         </>
       );
-    case "need-input":
-      return (
-        <>
-          {r3fees.review.needInput}
-          {(() => {
-            const n = r3fees.review.needNames;
-            return /insurance/.test(e.detail) ? n.insurance : /salary/i.test(e.detail) ? n.salary : /employment|hishtalmut/i.test(e.detail) ? n.employment : /age/i.test(e.detail) ? n.age : r3fees.review.needGeneric;
-          })()}.
-        </>
-      );
+    case "need-input": {
+      // the field's own name, the one its label in "more assumptions" carries (lib/fees needFieldOf), with every other required field
+      // still empty, and where they are entered
+      const n = r3fees.review;
+      const fields = [...new Set([...(e.field ? [e.field] : []), ...missing])];
+      if (fields.length === 0) return <>{n.needInput}{n.needGeneric}. {n.needWhere}</>;
+      return fields.length === 1 ? <>{n.needInput}{n.needNames[fields[0]!]}. {n.needWhere}</> : <>{n.needInputMany}{n.needList(fields.map((f) => n.needNames[f]))}. {n.needWhereMany}</>;
+    }
+    case "monthly-not-run":
+      return <ReasonWithCode message={r3fees.review.monthlyNotRun} code={e.code} />;
     case "no-fee":
       return r3fees.review.notReportedRow;
     case "needs-pf36":
@@ -209,7 +209,11 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
     setSuggestion({ field, value: suggested });
     setPanelOpen(true);
   };
-  const wrapperId = subject.kind === "wrapper" ? subject.wrapperId : subject.kind === "holding" ? (holding.holding?.wrapperId ?? null) : result?.kind === "ok" ? result.subject.wrapperId : null;
+  const wrapperId = subjectWrapperId(subject, fees, holding.holding?.wrapperId ?? null);
+  const fields = pageFields(bundle, wrapperId, subject.kind === "holding");
+  const st = released.state;
+  const allRequired: NeedField[] = [...(fields.age === "required" ? ["age" as const] : []), ...(fields.employment === "required" ? ["employment" as const] : []), ...(fields.insurance === "required" ? ["insurance" as const] : [])];
+  const missingRequired: NeedField[] = [...(fields.age === "required" && st.age === null ? ["age" as const] : []), ...(fields.employment === "required" && st.employment === null ? ["employment" as const] : []), ...(fields.insurance === "required" && typeof st.insurance !== "number" ? ["insurance" as const] : [])];
   // a holding's amount and monthly deposit are its own (the statement's), so only the years and the return move it
   const plan = (
     <FeePlan fi={live} form={form} holding={subject.kind === "holding"} onOpen={() => {
@@ -223,7 +227,16 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         {r3fees.assumptionsTitle}
       </h2>
       {panelOpen && suggestion && <SuggestionLine s={suggestion} onDone={() => setSuggestion(null)} />}
-      {panelOpen && <OtherAssumptions inflation={live.values.inflation} pct={form.pct} employment={employmentMatters(wrapperId)} age={ageMatters(wrapperId, released.state.age) ? form.age : undefined} />}
+      {panelOpen && (
+        <OtherAssumptions
+          inflation={live.values.inflation}
+          pct={form.pct}
+          employment={fields.employment !== null}
+          age={fields.age !== null ? form.age : undefined}
+          need={{ age: fields.age, employment: fields.employment }}
+          insurance={fields.insurance}
+        />
+      )}
     </Sheet>
   );
 
@@ -251,9 +264,14 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
             </p>
           )}
         </header>
-        <Callout tone={result.error.kind === "needs-pf36" ? "blocked" : "caution"}>{errorText(result.error, subject.kind === "wrapper" ? subject.wrapperId : "")}</Callout>
-        {/* a missing number (age, employment) is entered here, on the page's own fields */}
-        {result.error.kind === "need-input" && (
+        <Callout tone={result.error.kind === "needs-pf36" ? "blocked" : "caution"}>{result.error.kind === "need-input" ? (
+            // the line keeps the room of its longest case (every required field missing) while the fields are filled in behind it
+            <LongestCase cases={[errorText({ ...result.error, field: null }, "", allRequired)]}>{errorText(result.error, "", missingRequired)}</LongestCase>
+          ) : (
+            errorText(result.error, subject.kind === "wrapper" ? subject.wrapperId : "", missingRequired)
+          )}</Callout>
+        {/* a missing number (age, employment, insurance) is entered here, on the page's own fields; with no monthly deposit a renewable fund runs */}
+        {(result.error.kind === "need-input" || result.error.kind === "monthly-not-run") && (
           <>
             {plan}
             {sheet}
@@ -279,14 +297,14 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
   const workbench = fees.wrapperTrack[sv.wrapperId] !== undefined || ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(sv.wrapperId);
   const grossNote = hasChart && Math.abs((an.series!.points.at(-1)?.total ?? 0) - (an.fm.total.value as number)) > 1;
   void staleLine;
-  // A9, A18: the plain sentence above the chart, the subject's place among every option on the page's numbers, the softened badge
+  // A9, A18: the plain sentence above the chart, the subject's place among every option on the page's numbers
   const gap = headlineGap(an);
   const place = rankedFor(result.comparison, sv.wrapperId);
   const providersLink = sv.wrapperId === "brokerage-account";
   const otherRecords = workbench ? { href: `/tracks/${sv.wrapperId}`, label: r3fees.linksWorkbench } : providersLink ? { href: "/indices/sp500", label: r3fees.linkProviders } : null;
 
   const rows = an.lines.map((l) => (
-    <FeeRow key={l.line} line={l} an={an} subject={sv} years={years} thresholds={an.thresholds} reduction={reductions[l.line] ?? null} onReduce={(n) => setReductions((r) => ({ ...r, [l.line]: n }))} rules={rules} soften={softensAvoid(l.verdict, place)} />
+    <FeeRow key={l.line} line={l} an={an} subject={sv} years={years} thresholds={an.thresholds} reduction={reductions[l.line] ?? null} onReduce={(n) => setReductions((r) => ({ ...r, [l.line]: n }))} rules={rules} reach={sens?.reach[l.line]} />
   ));
   const chartCard = hasChart && (
     <section className="flex flex-col gap-3" aria-labelledby={`${headId}-chart`}>
@@ -321,7 +339,15 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
               {rows}
               {omitted.includes("deposit") && <NotReportedRow name={r3fees.names.deposit!} />}
             </ol>
-            <RemainderLine value={an.remainder} />
+            {/* the remainder line comes and goes with the amounts (none while a discount still keeps a fee at 0%); with two lines or
+                more its room stays, or the page below it moves (D63, 2026-11-07) */}
+            {an.lines.length > 1 ? (
+              <LongestCase cases={[<RemainderLine key="room" value={{ ...an.remainder, value: 99_999.99 }} />]}>
+                <RemainderLine value={an.remainder} />
+              </LongestCase>
+            ) : (
+              <RemainderLine value={an.remainder} />
+            )}
             <ThresholdsLine negotiate={an.thresholds.negotiate} avoid={an.thresholds.avoid} />
           </section>
           <div className="flex flex-col gap-6 min-w-0">
@@ -334,7 +360,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
           <h2 id={`${headId}-sens`} className="text-xl lg:text-2xl font-semibold">
             {r3fees.sens.title}
           </h2>
-          <FeeSensitivityPanel view={sens} an={an} bundle={bundle} onOpen={(f, v) => openField(f, v)} />
+          <FeeSensitivityPanel view={sens} an={an} bundle={bundle} onOpen={(f, v) => openField(f, v)} wordOf={verdictWord} />
         </section>
       )}
       <nav className="flex flex-wrap gap-x-6 gap-y-1 text-sm" aria-label={site.linksAria}>
@@ -376,10 +402,6 @@ function GrossNote({ gap }: { gap: SiteValue }) {
   );
 }
 
-/** Wrappers whose run reads the age (an exit or annuity rule by age), as the guide page asks it; or an age already entered. */
-const AGE_WRAPPERS = new Set(["pension-comprehensive", "pension-general", "provident-for-annuity", "kupat-gemel-lehashkaa", "ira-provident"]);
-const ageMatters = (wrapperId: string | null, age: number | null) => age !== null || (!!wrapperId && AGE_WRAPPERS.has(wrapperId));
-
 /** The page's numbers (founder, 2026-10-28): the plan sliders, as on the indices page, and the rest behind a button. */
 function FeePlan({ fi, form, holding, onOpen }: { fi: FeeInputs; form: FeeForm; holding: boolean; onOpen: () => void }) {
   const entered = fi.values;
@@ -388,7 +410,7 @@ function FeePlan({ fi, form, holding, onOpen }: { fi: FeeInputs; form: FeeForm; 
     <section className="flex flex-col gap-3" aria-label={r3fees.assumptionsTitle}>
       <PlanKnobs fi={fi} ranges={form.knobs} pct={form.pct} only={holding ? ["years", "ret"] : undefined} />
       <p className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
-        <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={onOpen}>
+        <Button variant="secondary" className="!h-target px-3 text-sm" onClick={onOpen}>
           {r3fees.othersButton}
         </Button>
         <LongestCase cases={[<span key="example">{r3fees.siteExample}</span>]}>{example && <span>{r3fees.siteExample}</span>}</LongestCase>
@@ -408,7 +430,7 @@ function SuggestionLine({ s, onDone }: { s: { field: FieldKey; value: number }; 
       <bdi dir="ltr" className="font-medium">
         {s.field === "horizonYears" ? fmt.years(s.value) : fmt.pct(s.value)}
       </bdi>
-      <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={() => {
+      <Button variant="secondary" className="!h-target px-3 text-sm" onClick={() => {
         setEntered(key, s.value);
         onDone();
       }}>

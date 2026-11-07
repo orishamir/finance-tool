@@ -18,13 +18,13 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב, p.2, reg. 4",
-        "publisher": "המוסד לביטוח לאומי",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012), gazette p.600, s.3, amending reg. 4",
+        "publisher": "רשומות",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
-      "effective_from": "2006-01-01",
+      "checked": "2026-11-07",
+      "effective_from": "2012-01-01",
       "effective_to": null,
       "tax_year": 2026,
       "update_rule": "fixed in regulation",
@@ -32,18 +32,18 @@
         "TXI-08"
       ],
       "state": "sourced",
-      "notes": "A banking corporation that pays interest to an individual withholds 25% (reg. 4). Covers any interest a bank pays to an individual, so it reaches current-account credit interest as well as deposits and plans. Regulations in force from 1.1.2006; the consolidated text (Wikisource mirror) lists no amendment after ק\"ת תשע\"ח p.444 (2017)."
+      "notes": "A banking corporation that pays interest to an individual withholds 25% (reg. 4). Covers any interest a bank pays to an individual, so it reaches current-account credit interest as well as deposits and plans. Reg. 4 set 20% from 1.1.2006 (KT 6449); the 2012 amendment (KT 7076, s.3) made it 25% from 1.1.2012. The only later amendment of the regulations (KT 7907, 2017) touches regs. 13-14."
     },
     "withholding_rate_unlinked": {
       "value": 15,
       "unit": "pct",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב, p.2, reg. 4",
-        "publisher": "המוסד לביטוח לאומי",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005), gazette p.289, reg. 4",
+        "publisher": "רשומות",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": "2006-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -60,44 +60,70 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 4",
-      "locator_he": "עמוד 2, תקנה 4",
-      "page": 2,
-      "quote": "תאגיד בנקאי המשלם ליחיד ריבית ינכה ממנה מס בשיעור של 25%",
-      "checked": "2026-10-25"
+      "locator": "file p.7 (gazette p.289), reg. 4",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 4",
+      "page": 7,
+      "quote": "תאגיד בנקאי המשלם ליחיד ריבית ינכה ממנה מס בשיעור של 20%",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.3, regs. 8, 9",
-      "locator_he": "עמוד 3, תקנות 8, 9",
-      "page": 3,
-      "checked": "2026-10-25"
+      "locator": "file p.2 (gazette p.600), s.3, amending reg. 4",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 600), סעיף 3, תיקון תקנה 4",
+      "quote": "בתקנה 4 לתקנות העיקריות, במקום \"20%\" יבוא \"25%\"",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.4, regs. 16, 17",
-      "locator_he": "עמוד 4, תקנות 16, 17",
-      "page": 4,
-      "checked": "2026-10-25"
+      "locator": "file p.8 (gazette p.290), regs. 8, 9",
+      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 290), תקנות 8, 9",
+      "page": 8,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.601), s.6, amending reg. 8",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 601), סעיף 6, תיקון תקנה 8",
+      "quote": "בתקנה 8 לתקנות העיקריות, אחרי \"לפי תקנה 4\" יבוא \"או 5\"",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=9",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.9 (gazette p.291), regs. 16, 17",
+      "locator_he": "עמוד הקובץ 9 (עמוד הרשומות 291), תקנות 16, 17",
+      "page": 9,
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -113,16 +139,16 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (ויקיטקסט, מראה של החוק)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (ויקיטקסט, מראה של החוק)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7907%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ח-2017, קובץ התקנות 7907 (27.12.2017)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ח-2017, קובץ התקנות 7907 (27.12.2017)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "quote": "ק״ת תשס״ו, 287",
-      "checked": "2026-10-26"
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.444), ss.1-2, replacing reg. 13 and amending reg. 14 (payment and report days), the only amendment after 2012; the Reshumot search lists none later (2026-11-07)",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 444), סעיפים 1-2, החלפת תקנה 13 ותיקון תקנה 14",
+      "checked": "2026-11-07"
     }
   ]
 }

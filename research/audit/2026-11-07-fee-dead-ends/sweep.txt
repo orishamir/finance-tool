@@ -1,0 +1,53 @@
+/fees/?wrapper=bank-deposit	no inputs	other: ההנחות של חישוב העמלות
+/fees/?wrapper=brokerage-account	no inputs	result (4 list items)
+/fees/?wrapper=child-savings-bank	no inputs	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=child-savings-provident	no inputs	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=current-account	no inputs	other: ההנחות של חישוב העמלות
+/fees/?wrapper=ira-hishtalmut	no inputs	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=ira-provident	no inputs	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=keren-hishtalmut	no inputs	result (1 list items)
+/fees/?wrapper=kupat-gemel-lehashkaa	no inputs	result (1 list items)
+/fees/?wrapper=pension-comprehensive	no inputs	message: כדי לחשב צריך עוד כמה פרטים: גיל, סוג ההעסקה ודמי הביטוח בקרן הפנסיה. אפשר להזין אותם ב״הנחות נוספות״.כדי לחשב צריך עוד כמה פרטים: גיל, סוג ההעסקה ודמי הביטוח בקרן הפנסיה. אפשר להזין אותם ב״הנחות נוספות״.
+/fees/?wrapper=pension-general	no inputs	message: כדי לחשב צריך עוד כמה פרטים: גיל, סוג ההעסקה ודמי הביטוח בקרן הפנסיה. אפשר להזין אותם ב״הנחות נוספות״.כדי לחשב צריך עוד כמה פרטים: גיל, סוג ההעסקה ודמי הביטוח בקרן הפנסיה. אפשר להזין אותם ב״הנחות נוספות״.
+/fees/?wrapper=provident-for-annuity	no inputs	message: כדי לחשב צריך עוד כמה פרטים: גיל וסוג ההעסקה. אפשר להזין אותם ב״הנחות נוספות״.כדי לחשב צריך עוד כמה פרטים: גיל וסוג ההעסקה. אפשר להזין אותם ב״הנחות נוספות״.
+/fees/?wrapper=savings-plan	no inputs	other: ההנחות של חישוב העמלות
+/fees/?wrapper=government-bond	no inputs	result (2 list items)
+/fees/?wrapper=makam	no inputs	result (1 list items)
+/fees/?wrapper=money-market-fund-daily	no inputs	result (1 list items)
+/fees/?wrapper=money-market-fund-renewable	no inputs	message: בקרן כספית מתחדשת האתר עוד לא מחשב הפקדה חודשית, כי לא נקבע לאיזו סדרה של הקרן נכנסת כל הפקדה. כדי לראות כמה העמלות עולות על סכום שמפקידים פעם אחת, הזיזו את ההפקדה החודשית ל־0.G-30
+/fees/?wrapper=bank-deposit	typical (age 40, employee, insurance 0.3%)	other: ההנחות של חישוב העמלות
+/fees/?wrapper=brokerage-account	typical (age 40, employee, insurance 0.3%)	result (4 list items)
+/fees/?wrapper=child-savings-bank	typical (age 40, employee, insurance 0.3%)	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=child-savings-provident	typical (age 40, employee, insurance 0.3%)	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=current-account	typical (age 40, employee, insurance 0.3%)	other: ההנחות של חישוב העמלות
+/fees/?wrapper=ira-hishtalmut	typical (age 40, employee, insurance 0.3%)	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=ira-provident	typical (age 40, employee, insurance 0.3%)	message: עוד אין לאתר את תנאי המוצר, ולכן אין כאן חישוב.
+/fees/?wrapper=keren-hishtalmut	typical (age 40, employee, insurance 0.3%)	result (1 list items)
+/fees/?wrapper=kupat-gemel-lehashkaa	typical (age 40, employee, insurance 0.3%)	result (1 list items)
+/fees/?wrapper=pension-comprehensive	typical (age 40, employee, insurance 0.3%)	result (2 list items)
+/fees/?wrapper=pension-general	typical (age 40, employee, insurance 0.3%)	result (2 list items)
+/fees/?wrapper=provident-for-annuity	typical (age 40, employee, insurance 0.3%)	result (1 list items)
+/fees/?wrapper=savings-plan	typical (age 40, employee, insurance 0.3%)	other: ההנחות של חישוב העמלות
+/fees/?wrapper=government-bond	typical (age 40, employee, insurance 0.3%)	result (2 list items)
+/fees/?wrapper=makam	typical (age 40, employee, insurance 0.3%)	result (1 list items)
+/fees/?wrapper=money-market-fund-daily	typical (age 40, employee, insurance 0.3%)	result (1 list items)
+/fees/?wrapper=money-market-fund-renewable	typical (age 40, employee, insurance 0.3%)	message: בקרן כספית מתחדשת האתר עוד לא מחשב הפקדה חודשית, כי לא נקבע לאיזו סדרה של הקרן נכנסת כל הפקדה. כדי לראות כמה העמלות עולות על סכום שמפקידים פעם אחת, הזיזו את ההפקדה החודשית ל־0.G-30
+/guide/bank-deposit	status 200	fee links: none
+/guide/brokerage-account	status 200	fee links: /finance-tool/fees?wrapper=brokerage-account
+/guide/child-savings-bank	status 200	fee links: none
+/guide/child-savings-provident	status 200	fee links: none
+/guide/current-account	status 200	fee links: none
+/guide/ira-hishtalmut	status 200	fee links: none
+/guide/ira-provident	status 200	fee links: none
+/guide/keren-hishtalmut	status 200	fee links: /finance-tool/fees?wrapper=keren-hishtalmut
+/guide/kupat-gemel-lehashkaa	status 200	fee links: /finance-tool/fees?wrapper=kupat-gemel-lehashkaa
+/guide/pension-comprehensive	status 200	fee links: /finance-tool/fees?wrapper=pension-comprehensive
+/guide/pension-general	status 200	fee links: /finance-tool/fees?wrapper=pension-general
+/guide/provident-for-annuity	status 200	fee links: /finance-tool/fees?wrapper=provident-for-annuity
+/guide/savings-plan	status 200	fee links: none
+/guide/government-bond	status 200	fee links: none
+/guide/makam	status 200	fee links: none
+/guide/money-market-fund-daily	status 200	fee links: /finance-tool/fees?wrapper=money-market-fund-daily
+/guide/money-market-fund-renewable	status 200	fee links: /finance-tool/fees?wrapper=money-market-fund-renewable
+/guide/limited-bond-fund	status 200	fee links: none
+/guide/mutual-funds	status 200	fee links: none

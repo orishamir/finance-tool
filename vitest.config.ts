@@ -8,5 +8,8 @@ export default defineConfig({
     // while no test patches a module or a global: the one store a test swaps (lib/state.ts) is reset before each of its tests, and
     // the records the cache hands out are frozen. The suite passes with one worker and in shuffled order.
     isolate: false,
+    // Several tests sweep every index, fund or guide: about 0.5 s alone, ten times that when builds run beside them (2026-11-07,
+    // pair.test.ts took 5.2 s with four builds and failed vitest's 5 s default). One limit for the whole suite instead of one per test.
+    testTimeout: 30_000,
   },
 });

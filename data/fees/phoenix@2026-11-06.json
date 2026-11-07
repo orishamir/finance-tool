@@ -1,0 +1,122 @@
+{
+  "id": "phoenix",
+  "provider": {
+    "name_he": "הפניקס פנסיה וגמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/Gemel/%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%90%D7%A7-60.pdf",
+    "title": "טופס הצטרפות לקופת גמל להשקעה",
+    "notes": "The Phoenix's joining form for הפניקס גמל להשקעה, 13 pages, no printed date (file created 2026-03-11, modified 2026-04-15); fee field p.1, fee declaration p.2, 2025 average p.3. It still states the 70,000 NIS deposit ceiling. Read 2026-11-06. Keren hishtalmut: none printed, see phoenix@2026-10-23.",
+    "published": null,
+    "printed": {
+      "kind": "none"
+    },
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-06",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "phoenix-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/Gemel/%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%90%D7%A7-60.pdf",
+          "title": "טופס הצטרפות לקופת גמל להשקעה, הצהרות העמית",
+          "publisher": "The Phoenix Pension and Gemel",
+          "strength": "institution",
+          "page": 2,
+          "quote": "החברה המנהלת תהא רשאית לגבות מחשבוני דמי ניהול: בקופת גמל בשיעור שנתי של 1.05% מהיתר הצבורה על שמי"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The Phoenix's joining form prints no agreed rate: \"שיעור דמי ניהול מצבירה (שנתי) __%\" is left blank (p.1), and the member's declaration (p.2) says \"החברה המנהלת תהא רשאית לגבות מחשבוני דמי ניהול: בקופת גמל בשיעור שנתי של 1.05% מהיתר הצבורה על שמי בקופה ובשיעור של 4% מההפקדות החודשיות ... בהיעדר ציון דמי ניהול, יחולו דמי הניהול על-פי תקנון הקופה\". Recorded at the printed rate the member agrees the company may charge, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The form also prints the average fee charged in the fund in 2025, 0.60% of savings (p.3): an average actually charged, not a list fee, not recorded. The product sheet (https://www.fnx.co.il/sites/docs/genery/for_new_site/xnes-docs/Daf%20Mutzar%20Gemel%20Hashkaa_2022.pdf) says \"דמי ניהול קבועים מהצבירה בלבד\" with no rate; it is a leaflet, not a binding document, and the form's deposit clause stands. On top of the fees the company may charge direct expenses for transactions (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "בשיעור שנתי של 1.05% מהיתר הצבורה"
+        ]
+      }
+    },
+    {
+      "id": "phoenix-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/Gemel/%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%90%D7%A7-60.pdf",
+          "title": "טופס הצטרפות לקופת גמל להשקעה, הצהרות העמית",
+          "publisher": "The Phoenix Pension and Gemel",
+          "strength": "institution",
+          "page": 2,
+          "quote": "ובשיעור של 4% מההפקדות החודשיות"
+        },
+        "checked": "2026-11-06",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The Phoenix's joining form prints no agreed rate: \"שיעור דמי ניהול מצבירה (שנתי) __%\" is left blank (p.1), and the member's declaration (p.2) says \"החברה המנהלת תהא רשאית לגבות מחשבוני דמי ניהול: בקופת גמל בשיעור שנתי של 1.05% מהיתר הצבורה על שמי בקופה ובשיעור של 4% מההפקדות החודשיות ... בהיעדר ציון דמי ניהול, יחולו דמי הניהול על-פי תקנון הקופה\". Recorded at the printed rate the member agrees the company may charge, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The form also prints the average fee charged in the fund in 2025, 0.60% of savings (p.3): an average actually charged, not a list fee, not recorded. The product sheet (https://www.fnx.co.il/sites/docs/genery/for_new_site/xnes-docs/Daf%20Mutzar%20Gemel%20Hashkaa_2022.pdf) says \"דמי ניהול קבועים מהצבירה בלבד\" with no rate; it is a leaflet, not a binding document, and the form's deposit clause stands. On top of the fees the company may charge direct expenses for transactions (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "בשיעור של 4% מההפקדות החודשיות"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

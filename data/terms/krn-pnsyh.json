@@ -1,0 +1,29 @@
+{
+  "id": "krn-pnsyh",
+  "he": "קרן פנסיה",
+  "en": null,
+  "meaning": "קופת גמל לקצבה שמשלמת קצבה חודשית מגיל הפרישה; קרן פנסיה חדשה מקיפה משלמת גם קצבת נכות וקצבה לשאירים.",
+  "where": [
+    "app",
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-01",
+    "PEN-06"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2",
+    "title": "משרד העבודה, צו הרחבה לביטוח פנסיוני מקיף במשק, סעיף 2 (הגדרות)",
+    "publisher": "gov.il",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

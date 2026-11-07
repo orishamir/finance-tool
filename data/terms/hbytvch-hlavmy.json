@@ -1,0 +1,23 @@
+{
+  "id": "hbytvch-hlavmy",
+  "he": "הביטוח הלאומי",
+  "en": null,
+  "meaning": "המוסד הממלכתי לביטוח סוציאלי, שמשלם קצבאות לפי חוק הביטוח הלאומי, ובהן קצבת ילדים",
+  "where": [],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "המוסד לביטוח לאומי",
+    "ביטוח לאומי"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.btl.gov.il/About/Pages/default.aspx",
+    "title": "המוסד לביטוח לאומי, אודות",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

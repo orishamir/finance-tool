@@ -17,8 +17,9 @@ import { isoToday } from "../../lib/state";
 import { computed, entered, type SiteValue } from "../../lib/value";
 import { withCustomEntries } from "../../lib/custom-entries";
 import { Num, StateTag } from "../provenance";
-import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, atPdfPage, useChartPick, cx, type CostPart } from "../kit";
+import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, useChartPick, cx, type CostPart } from "../kit";
 import { Actions, EditButton, isInvalid, nisCheck, useDraft, useEditors, type PanelWorld } from "./editors";
+import { sourceHref, type CitedPlace } from "../../lib/sources";
 
 const c = root.customEntries;
 const p = root.ownAccount.panel;
@@ -59,8 +60,8 @@ function Figures({ figs, asEntered, today, about }: { figs: LayerFigure[]; /** T
 }
 
 /** The link to the document a figure is from: its own page of a PDF where the record names one. */
-function SourceLink({ source, children }: { source: { url: string; title?: string; page?: number }; children: ReactNode }) {
-  return <DocLink href={atPdfPage(source.url, source.page)}>{children}</DocLink>;
+function SourceLink({ source, children }: { source: CitedPlace & { title?: string }; children: ReactNode }) {
+  return <DocLink href={sourceHref(source)}>{children}</DocLink>;
 }
 
 // ---------------------------------------------------------------- the person's column
@@ -178,7 +179,8 @@ function ListCell({ layer }: { layer: FeeLayers }) {
 function costParts(pc: PairCosts, lines: readonly string[], source: (line: string) => ReactNode): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
   const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: fixedName(line, pc.account.some((l) => l.line === "account")) ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
-  return [...parts, { id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }];
+  // the account's fees on each other first, as on every bar of the page (pass 7)
+  return [{ id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }, ...parts];
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
 
@@ -188,7 +190,7 @@ function Bar({ who, parts, scale, label, today, highlight }: { who: string; part
     <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[7rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
       <span className="text-sm text-muted-foreground">{who}</span>
       <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
-        <CostStack parts={parts} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(sum)}`} />
+        <CostStack parts={parts} total={Math.round(sum)} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(sum)}`} />
       </div>
       <span className="text-end font-semibold">
         <Num animate value={computed(Math.round(sum), "nis", "F-91", {}, { today, about: label })} />
@@ -269,7 +271,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   const yoursParts = result ? costParts(result.yours, lineIds, sourceYours) : [];
   const scale = Math.max(total(listParts), total(yoursParts));
   const barLabels = { list: p.costs.total(p.costs.list), yours: p.costs.total(p.costs.yours) };
-  const legendLines = [...lineIds.filter((l) => l !== "remainder"), "remainder"];
+  const legendLines = ["remainder", ...lineIds.filter((l) => l !== "remainder")];
 
   const noWay = !option || (answer !== null && !result);
   const nameError = errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null;

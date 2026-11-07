@@ -205,8 +205,16 @@
       {
         "year": 2025,
         "fund_pct": 2.93,
-        "tracking_pct": 2.61
+        "tracking_pct": 2.61,
+        "fees_charged": {
+          "fixed": 0,
+          "variable": 0,
+          "trustee": 0.01
+        }
       }
+    ],
+    "years_printed": [
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731568-00.pdf",
@@ -214,8 +222,16 @@
       "publisher": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
       "strength": "institution"
     },
-    "page": null,
-    "checked": "2026-10-24"
+    "page": 6,
+    "fees_page": 9,
+    "changes_page": 8,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 NTR",
+      "dividends": "net",
+      "page": 2
+    }
   },
   "snapshot": "2026-10-25"
 }

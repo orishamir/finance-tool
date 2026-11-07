@@ -9,7 +9,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primar
 export function Button({ variant = "secondary", className, children, type = "button", ...rest }: ButtonProps) {
   const styles = {
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
-    secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 px-5 rounded-md hover:bg-accent",
+    secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 lg:tap-area px-5 rounded-md hover:bg-accent",
     quiet: "text-link min-h-target px-2 rounded-md hover:underline",
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet (2026-10-24).
     destructive: "text-destructive min-h-target px-2 rounded-md hover:underline",
@@ -30,7 +30,7 @@ export function Button({ variant = "secondary", className, children, type = "but
 export function LinkButton({ to, children, className, variant = "secondary", onClick }: { to: string; children: ReactNode; className?: string; variant?: "primary" | "secondary"; onClick?: () => void }) {
   const styles = variant === "primary" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent";
   return (
-    <Link to={to} onClick={onClick} className={cx("inline-flex items-center justify-center gap-2 font-medium min-h-field lg:min-h-10 py-1.5 px-5 rounded-md text-center text-balance", styles, className)}>
+    <Link to={to} onClick={onClick} className={cx("inline-flex items-center justify-center gap-2 font-medium min-h-field lg:min-h-10 lg:tap-area py-1.5 px-5 rounded-md text-center text-balance", styles, className)}>
       {children}
     </Link>
   );

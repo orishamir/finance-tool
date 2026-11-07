@@ -18,12 +18,13 @@
       "value": 3,
       "unit": "business_days",
       "source": {
-        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.9, reg. 33ב(ב)",
-        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
-        "strength": "primary"
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=10",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות, file p.10 (gazette p.864), reg. 15, reg. 33ב(ב)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary",
+        "quote": "העברת כספים ממסלול למסלול תיעשה בתוך שלושה ימי עסקים, אלא אם כן נקבעה בתקנון הקופה תקופה קצרה יותר"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -36,7 +37,7 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -68,31 +69,42 @@
       "checked": "2026-10-26"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=9",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.9, reg. 33ב(א)-(ב)",
-      "locator_he": "עמוד 9, תקנה 33ב(א)-(ב)",
-      "page": 9,
-      "quote": "בתוך שלושה ימי עסקים, אלא אם כן נקבעה בתקנון הקופה תקופה קצרה יותר",
-      "checked": "2026-10-25"
+      "locator": "file p.9 (gazette p.863), reg. 15 (adding reg. 33ב), reg. 33ב(א)",
+      "locator_he": "עמוד הקובץ 9 (עמוד הרשומות 863), תקנה 15 (הוספת תקנה 33ב), תקנה 33ב(א)",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=10",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.3, reg. 1 (מסלול השקעה)",
-      "locator_he": "עמוד 3, תקנה 1 (מסלול השקעה)",
-      "page": 3,
-      "checked": "2026-10-25"
+      "locator": "file p.10 (gazette p.864), reg. 15, reg. 33ב(ב)",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 864), תקנה 15, תקנה 33ב(ב)",
+      "quote": "העברת כספים ממסלול למסלול תיעשה בתוך שלושה ימי עסקים, אלא אם כן נקבעה בתקנון הקופה תקופה קצרה יותר",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.857), reg. 1 (substituting reg. 1), definition 'מסלול השקעה'",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 857), תקנה 1 (החלפת תקנה 1), ההגדרה 'מסלול השקעה'",
+      "quote": "אפיק השקעה לכספי העמיתים המאופיין במגבלות השקעה שנקבעו בתקנון קופת הגמל",
+      "checked": "2026-11-07"
     }
   ]
 }

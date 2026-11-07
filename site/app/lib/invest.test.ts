@@ -185,6 +185,19 @@ describe("invest page computation", () => {
     expect(cheapestWay(bundle, world, plan())!.fundRecordId).toBe(v.headline!.fund.rec.id);
   });
 
+  it("a hedged fund whose years F-92 (d) does not compare falls back to the hedged rule: listed with its reason, never priced at A-07 = 0 (finance review F3)", () => {
+    const world = indexById(bundle, "index-msci-world")!;
+    const id = "5139696";
+    const reasonOf = (b: typeof bundle) => buildInvest({ bundle: b, index: world, plan: plan() }).options.flatMap((o) => o.funds).find((f) => f.rec.id === id)!;
+    expect(reasonOf(bundle).best).toBeDefined();
+    for (const dividends of ["unstated", "gross"] as const) {
+      const funds = bundle.funds.map((f) => (f.id === id ? { ...f, tracking_record: { ...f.tracking_record!, benchmark: { ...f.tracking_record!.benchmark, dividends } } } : f));
+      const way = reasonOf({ ...bundle, funds });
+      expect(way.best, dividends).toBeUndefined();
+      expect(way.reason, dividends).toEqual({ code: "no-hedge-record" });
+    }
+  });
+
   it("a hedged fund is not moved by the dollar against the shekel; an unhedged one is (F-04, 2026-10-29)", () => {
     const sp500 = indexById(bundle, "index-sp500")!;
     const at = (fx: number, id: string) => {

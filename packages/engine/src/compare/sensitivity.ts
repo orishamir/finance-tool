@@ -117,6 +117,11 @@ export interface SensitivitySpec {
   /** Current values as fractions (0.06 is 6 percent a year); an assumption not listed is not an axis. */
   current: Partial<Record<"A-01" | "A-02" | "A-03" | "A-06", number>>;
   horizonYears?: number;
+  /**
+   * The shortest holding period the horizon axis may test, in years (default one year, the shortest the pages offer, P-05's slider): a
+   * plan of no years has nothing to hold, and the page never says "0 years". A horizon already shorter than it is not moved lower.
+   */
+  horizonMinYears?: number;
   /** One axis per fee, each scaled from half to double (P-02 `fee_rates`), one at a time. */
   fees?: readonly { key: string; label: string }[];
 }
@@ -151,7 +156,8 @@ export function sensitivityAxes(parameters: readonly unknown[], spec: Sensitivit
   }
   if (spec.horizonYears !== undefined) {
     const b = read("horizon", "years");
-    axes.push({ key: "horizon", label: "horizon", unit: "years", current: spec.horizonYears, lo: spec.horizonYears + b.lo, hi: spec.horizonYears + b.hi, step: 1 / 12 });
+    const floor = Math.min(spec.horizonYears, spec.horizonMinYears ?? 1);
+    axes.push({ key: "horizon", label: "horizon", unit: "years", current: spec.horizonYears, lo: Math.max(spec.horizonYears + b.lo, floor), hi: spec.horizonYears + b.hi, step: 1 / 12 });
   }
   if (spec.fees && spec.fees.length > 0) {
     const b = read("fee_rates", "count");

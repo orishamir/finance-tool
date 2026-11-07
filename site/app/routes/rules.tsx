@@ -10,7 +10,7 @@ import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName } 
 import { NumberLegend, RuleCard, SlottedText, type RuleUses } from "../components/provenance";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
-import { AskField, Button, Card, cx, DidYouKnow, Disclosure, FilterChip, FoldGroup, PHONE_GONE, TableCols, useSoftSwap, type FactItem } from "../components/kit";
+import { AskField, Button, Card, cx, gershayim, DidYouKnow, Disclosure, FilterChip, FoldGroup, PHONE_GONE, TableCols, useSoftSwap, type FactItem } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, facetCounts, filtersToSearch, isFiltering, isNarrowing, matchRules, parseFilters, passesFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
@@ -447,7 +447,7 @@ export default function Rules() {
           {data.productChips.map((c) => (
             <li key={c.id} className="shrink-0">
               <FilterChip on={filters.product === c.id} count={counts.product.get(c.id) ?? 0} onClick={() => setFilters({ product: filters.product === c.id ? null : c.id, ids: [] })}>
-                {c.name}
+                {gershayim(c.name)}
               </FilterChip>
             </li>
           ))}
@@ -672,7 +672,7 @@ function ClaimResults({ law, shown, onAll, company, names, docs, pd, failed, lig
                     <td className="align-top">
                       <span className="flex flex-col lg:flex-row lg:flex-wrap lg:gap-x-2">
                         {d.pages.map((p) => (
-                          <a key={p} href={pageHref(d.url, p)} target="_blank" rel="noreferrer" className="text-link hover:underline whitespace-nowrap min-h-target lg:min-h-0 inline-flex items-center gap-1">
+                          <a key={p} href={pageHref(d.url, p)} target="_blank" rel="noreferrer" className="text-link hover:underline whitespace-nowrap min-h-target lg:min-h-0 lg:tap-area inline-flex items-center gap-1">
                             <WithNumber text={words.page} n={p} />
                             <span className="text-[13px]" aria-hidden="true">↗</span>
                           </a>

@@ -1,0 +1,103 @@
+{
+  "task": "not-covered",
+  "persona": "student-small-amounts",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:05:01.226Z",
+  "structured": {
+    "answer": "The site still doesn't calculate a long list of things: ETC, gold (LBMA price, gold through קרנות סל), corporate bonds, אגרת בונדס, a digital currency wallet, insurance stuff like ביטוח מנהלים and ביטוח חיים משתתף ברווחים, היוון קצבה, structured products and structured deposits, dollar-linked and foreign-currency deposits, ני\"ע. I didn't see ETF, S&P or Nasdaq on it, but I quit about halfway, so I'm not certain.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "'מצב הכיסוי' sections with 'חסום: שאלה פתוחה אחת' and codes like TXA-28, MF-28",
+        "why": "Couldn't tell if this means the product is partly covered or totally blocked"
+      },
+      {
+        "where": "Crossed-out 'נסגר ב-' dates",
+        "why": "Couldn't tell if crossed out means done or cancelled"
+      },
+      {
+        "where": "Screens 4-6",
+        "why": "Endless cards, no grouping, nothing about my stuff, so I got bored and stopped"
+      }
+    ],
+    "used": [
+      "Page title 'מה האתר עוד לא מכסה' and subtitle",
+      "Red box: 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "Bold card titles",
+      "Red 'לא מחושב' tags"
+    ],
+    "skimmed": [
+      "'מה ידוע' descriptions",
+      "'נקרא גם' lines",
+      "'מצב הכיסוי' open sections"
+    ],
+    "skipped": [
+      "Blue law and source links",
+      "Dates and 'מקור ראשי' chips",
+      "Grey 'כשייסגר…' lines",
+      "'חוקים וכללים · N' chips",
+      "Screens 7-10"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA",
+      "אג\"ח קונצרניות",
+      "אגרת בונדס",
+      "היוון קצבה",
+      "מנוטרלת מט\"ח",
+      "ני\"ע",
+      "מסלולי אירוע",
+      "צמוד דולר",
+      "'לפי החברה' orange tag",
+      "TXA-28 / MF-28 / TX2-01 codes",
+      "crossed-out 'נסגר ב-' dates"
+    ],
+    "not_found": [
+      "A short summary of which product types are missing",
+      "Grouping by category",
+      "Whether ETFs / S&P / Nasdaq funds are covered",
+      "Anything on the end of the list (stopped at screen 6)"
+    ],
+    "findings": [
+      {
+        "what": "Very long list of near-identical dark cards with no summary or grouping, too heavy for a quick check",
+        "where": "Whole page, screens 1-6"
+      },
+      {
+        "what": "Cards packed with law names and legal links; reads like a government document",
+        "where": "Blue source lines on every card"
+      },
+      {
+        "what": "Status codes and crossed-out dates mean nothing to a regular person",
+        "where": "'מצב הכיסוי' sections"
+      },
+      {
+        "what": "Mostly products I'd never use, so I couldn't tell if what I care about (index funds) is affected",
+        "where": "Card titles"
+      },
+      {
+        "what": "Lots of unexplained jargon in the titles",
+        "where": "Card titles like ETC, אגרת בונדס, היוון קצבה"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34299,
+    "turns": 8,
+    "usd": 0.15411580000000002,
+    "input": 8,
+    "cacheWrite": 11470,
+    "cacheRead": 26519,
+    "output": 2851,
+    "model": "claude-opus-5-5"
+  }
+}

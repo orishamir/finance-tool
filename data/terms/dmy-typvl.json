@@ -2,7 +2,7 @@
   "id": "dmy-typvl",
   "he": "דמי טיפול",
   "en": null,
-  "meaning": "עמלה חודשית על החשבון עצמו; ב־IBI, למשל, היא נקראת ״דמי שימוש / דמי טיפול״ ונגבית פעם בחודש.",
+  "meaning": "עמלה שבתי השקעות גובים על חשבון ניירות הערך עצמו, לרוב סכום קבוע בשקלים; לא פעם היא מוחזרת או לא נגבית כהטבה",
   "where": [
     "statement",
     "tariff"
@@ -19,10 +19,10 @@
     "BRK-24"
   ],
   "source": {
-    "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-    "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
-    "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-26"
+    "url": "https://boi.org.il/media/uo4k5b20/מודלי-תגמול-בפעילות-הציבור-בניירות-ערך-דוח-סופי.pdf#page=10",
+    "title": "בנק ישראל, משרד האוצר ורשות ניירות ערך: מודלי תגמול בפעילות הציבור בניירות ערך, דוח סופי, יוני 2026, עמ' 10",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-07"
   }
 }

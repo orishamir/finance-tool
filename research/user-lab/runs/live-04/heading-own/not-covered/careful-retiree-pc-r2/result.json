@@ -1,0 +1,118 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:11:39.867Z",
+  "structured": {
+    "answer": "This page says the site doesn't yet calculate or fully explain any of the products it lists, including the ones close to me: structured deposits, dollar-linked and foreign-currency deposits, company bonds, manager's insurance and savings policies. So I won't rely on it for a decision; I'll ask my son or the bank.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, first cards",
+        "why": "The first cards are 'ETC' and 'LBMA Gold Price AM / PM', all English letters. I'd have left if the title hadn't been exactly my question."
+      },
+      {
+        "where": "The 'צמוד דולר' card and the other cards",
+        "why": "The page says these aren't covered, yet cards show 'חוקים וכללים' counts and crossed-out 'נסגר ב־' dates. I couldn't tell what is done and what isn't."
+      },
+      {
+        "where": "Screen 2, 'מה חוסם' / 'שאלה פתוחה' parts",
+        "why": "I didn't understand what is blocked or why it matters to me."
+      }
+    ],
+    "used": [
+      "Title 'מה האתר עוד לא מכסה' and the line 'מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף, ולמה'",
+      "Red notice 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם'",
+      "Red 'לא מחושב' tags on each card",
+      "Card headings and the 'מה ידוע' line, screens 1–6"
+    ],
+    "skimmed": [
+      "Green law titles and source links under each card",
+      "'מצב הכיסוי' sections",
+      "'כשייסגר: יופיע במדריך...' lines",
+      "'נקרא גם' lines"
+    ],
+    "skipped": [
+      "Screens 7–10, never reached",
+      "Codes MF-28, TX2-01, TXA-28",
+      "Crossed-out 'נסגר ב־' dates",
+      "Top menu items"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "ICE Benchmark Administration",
+      "לא מחושב",
+      "מקור ראשי / מקור ראשי (עותק)",
+      "לפי החברה",
+      "חוקים וכללים · 3",
+      "מצב הכיסוי",
+      "חסום: שאלה פתוחה אחת",
+      "MF-28",
+      "TX2-01",
+      "TXA-28",
+      "נסגר ב־ (crossed out)",
+      "מנוטרלת מט\"ח",
+      "מסלולי האירוח",
+      "נע\"מ",
+      "Funder-hosted copy",
+      "Wikisource",
+      "State Comptroller"
+    ],
+    "not_found": [
+      "Any comparison with ordinary bank deposits or interest rates",
+      "Whether the bank is taking too high a fee from me",
+      "When each missing item will be finished",
+      "A plain sentence saying which options are safe"
+    ],
+    "findings": [
+      {
+        "what": "The heading promises 'מוצרים' (products), but the list includes things that aren't products: 'חברת דירוג' (rating company), 'נאמן' (trustee), 'עמלת חליפין' (exchange fee), 'הסדר חוב' (debt settlement), 'מענק' (bonus). That makes me doubt the whole list.",
+        "where": "Subtitle 'מוצרים שהאתר מכיר' vs. cards on screens 3–5"
+      },
+      {
+        "what": "The page opens with English letters (ETC, LBMA Gold Price), which feels like it isn't for someone like me",
+        "where": "Screen 1, first two cards"
+      },
+      {
+        "what": "Mixed signals: every card says 'לא מחושב', but some show rules 'נסגר' (closed) with crossed-out dates. It's unclear how much is actually missing.",
+        "where": "Screens 5–6, 'מצב הכיסוי' sections"
+      },
+      {
+        "what": "Dark background, small grey text and small pale coloured tags are hard to read, even enlarged",
+        "where": "All screens: source lines, 'מה ידוע' labels, tags"
+      },
+      {
+        "what": "Codes like MF-28, TX2-01, TXA-28 mean nothing to a normal reader",
+        "where": "Screens 5–6"
+      },
+      {
+        "what": "No time frame for when missing items will be covered; only a vague 'כשייסגר'",
+        "where": "'כשייסגר: יופיע במדריך' lines"
+      },
+      {
+        "what": "The page is long, with many similar cards and no grouping (deposits, insurance, bonds), so I tired before the end",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41404,
+    "turns": 8,
+    "usd": 0.1747548,
+    "input": 8,
+    "cacheWrite": 12032,
+    "cacheRead": 27334,
+    "output": 3650,
+    "model": "claude-opus-5-5"
+  }
+}

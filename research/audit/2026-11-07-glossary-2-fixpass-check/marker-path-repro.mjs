@@ -1,0 +1,17 @@
+import { createRequire } from "node:module";
+const require = createRequire("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
+const { chromium } = require("playwright");
+const browser = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+await page.goto(`http://127.0.0.1:5937/finance-tool/guide/makam/`, { waitUntil: "networkidle" });
+await page.waitForTimeout(500);
+const read = () => page.evaluate(() => { const s = document.querySelector("#different"); const t = s.innerText; const i = t.indexOf("אם מוכרים"); const j = t.indexOf("בפדיון:"); const k = t.indexOf("מחיר ל"); const amt = [...s.querySelectorAll("input")].map(e=>e.value).join("/"); return amt + " | " + t.slice(k, k + 330).replace(/\s+/g, " "); });
+console.log("default:", await read());
+const slider = page.locator('[role="slider"]').first();
+await slider.focus(); await page.keyboard.press("ArrowRight"); await page.waitForTimeout(200); await page.keyboard.press("ArrowLeft"); await page.waitForTimeout(300);
+console.log("right,left:", await read());
+await page.keyboard.press("Home"); await page.waitForTimeout(200); console.log("home:", await read());
+for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowRight"); await page.waitForTimeout(300);
+console.log("home+5:", await read());
+console.log("slider value:", await slider.getAttribute("aria-valuenow"));
+await browser.close();

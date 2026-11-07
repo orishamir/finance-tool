@@ -90,7 +90,7 @@ export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation
   const line = (ex: boolean, withDollar = dollar) => (
     <Sentence size="sm" tone="muted">
       {ex && <>{c.plan.siteExample} · </>}
-      {c.plan.knobs.retBefore} · {c.plan.knobs.leftAfter}
+      {c.plan.knobs.retBefore} · {c.plan.knobs.leftAfter} · {c.plan.knobs.monthlyRises}
       {withDollar &&
         (usd ? (
           <>

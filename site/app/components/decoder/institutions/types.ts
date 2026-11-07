@@ -1,7 +1,10 @@
 // The shapes the bank and broker pages and the companies list share (flows 15.4, design-spec 20). Plain JSON: the
 // loader builds them in lib/institutions.server.ts, the components in this folder show them.
+import type { TariffDated } from "../../../lib/tariff-date";
 import type { RuleRecord } from "@finance-tool/schema";
+import type { TextFragment } from "../../../lib/sources";
 import type { SiteValue } from "../../../lib/value";
+import type { DepositVariant } from "../../../lib/deposit-kind";
 
 export type InstitutionKind = "bank" | "broker";
 
@@ -16,8 +19,8 @@ export interface InstitutionRow {
   id: string;
   name: string;
   kind: InstitutionKind;
-  /** The tariff's published date (null: it carries none), or undefined when no snapshot was obtained. */
-  published: string | null;
+  /** What the price list prints as its date (kit TariffDate); null when no snapshot was obtained. */
+  dated: TariffDated | null;
   missing: boolean;
   /** No snapshot at all (a bank known only from its deposit records). */
   noSnapshot: boolean;
@@ -46,11 +49,18 @@ export interface ProductRowData {
   taxBucket: SiteValue;
   amountMin: SiteValue;
   amountMax: SiteValue | null;
-  breakTerms: { penalty: "none" | "with_penalty" | "not_allowed"; text: string; rules: string[] };
+  /** The bank's own printed words about a break (its quoted passages), never the record's English note. */
+  breakTerms: { penalty: "none" | "with_penalty" | "not_allowed"; quotes: string[]; rules: string[] };
   exitPoints: { exists: boolean; everyMonths: number | null };
   autoRenew: { value: boolean; maxRenewals: number | null };
-  /** The record's own note on the rate: tiers, conditions (a current account's credit-interest conditions). */
-  rateNote: string;
+  /** The deposit's kinds (`variant`): each a label on its card. */
+  variant: DepositVariant[];
+  /** The conditions the bank prints, in plain Hebrew (`conditions_he`), or null. */
+  conditions: string | null;
+  /** An open doubt about the record (`doubt_he`), or null. */
+  doubt: string | null;
+  /** The bank's table the record was read from: a kind's sheet links to it. */
+  table: { url: string; title: string };
   stale: boolean;
   snapshot: string;
 }
@@ -79,8 +89,8 @@ export interface TariffLineRow {
   period: "month" | "quarter" | "year" | null;
   min: SiteValue | null;
   max: SiteValue | null;
-  /** Where the rate stands (D57 amended 2026-11-04): its document, and the page of a PDF; `tariff` when it is the record's own price list. */
-  where: { url: string; title: string; page?: number; tariff: boolean } | null;
+  /** Where the rate stands (D57 amended 2026-11-04): its document, the page of a PDF, the quoted words of a web page; `tariff` when it is the record's own price list. */
+  where: { url: string; title: string; page?: number; fragment?: TextFragment; tariff: boolean } | null;
   /** A conversion's spread: printed ("עד 0.7%"), or not limited by the documents (D56: never zero); null when the line has none. */
   spread: SiteValue | "not_limited" | null;
 }
@@ -99,6 +109,8 @@ export interface TariffCardData {
   title: string;
   url: string;
   format: string;
+  /** What the price list prints as its date (kit TariffDate), and that date as a figure where it prints one (the whole's or the part's). */
+  dated: TariffDated;
   published: SiteValue | null;
   snapshot: SiteValue;
   stale: boolean;

@@ -33,12 +33,12 @@
     "value": "ISA",
     "unit": "text",
     "source": {
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-      "title": "חוק ניירות ערך, ss.45, 45א, 46, 48, 51 (Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-      "strength": "primary-mirror"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=128",
+      "title": "חוק ניירות ערך, התשכ\"ח-1968, Securities Authority's consolidated text: s.45 (p.93, exchange licence), ss.45א, 46, 48, s.51(א) (p.128: \"הרשות תפקח על ניהולה התקין וההוגן של הבורסה\")",
+      "publisher": "Israel Securities Authority",
+      "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,
@@ -105,12 +105,12 @@
     "value": true,
     "unit": "boolean",
     "source": {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance (Hebrew Wikisource mirror)",
-      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "Income Tax Ordinance, s.88 definition \"מכירה\" (Tax Authority's text, p.148): \"לרבות חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון\"",
+      "publisher": "Israel Tax Authority",
       "strength": "primary"
     },
-    "checked": "2026-10-22",
+    "checked": "2026-11-07",
     "effective_from": null,
     "effective_to": null,
     "tax_year": null,

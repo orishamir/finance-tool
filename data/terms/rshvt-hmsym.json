@@ -1,0 +1,24 @@
+{
+  "id": "rshvt-hmsym",
+  "he": "רשות המסים",
+  "en": null,
+  "meaning": "הרשות הממשלתית שבה מאוחדים אגפי המס: מס הכנסה, מיסוי מקרקעין, מס ערך מוסף, מכס ועוד",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "makam"
+  ],
+  "variants": [
+    "רשות המסים בישראל"
+  ],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.gov.il/he/departments/israel_tax_authority/govil-landing-page",
+    "title": "רשות המסים בישראל, דף המשרד ב־gov.il",
+    "publisher": "Israel Tax Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

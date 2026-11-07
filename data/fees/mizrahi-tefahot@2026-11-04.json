@@ -16,6 +16,12 @@
     "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות",
     "notes": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכן לתאריך' משלו, המאוחר שבהם 14/10/2026): חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'; זהה לקובץ חלק 4 הנפרד smallbusiness4.pdf), חלק 5 - מטבע חוץ ('11.7.2025'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'). מקושר מעמוד https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/ Re-read 2026-11-04. The price-list page (https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/) still links smallbusinessMeugad.pdf; it is byte for byte the 31 October copy (md5 5facf477…, library 8dedbb45235cd662; HTTP Last-Modified 2026-10-20, PDF ModDate 2026-10-20), and it is the newest binding document. The parts carry their own dates: part 1 '01/10/2026', part 4 '02/04/2024' (the separate smallbusiness4.pdf was created 2024-04-01 and modified 2025-02-24), part 5 '11.7.2025', part 11 '18/08/2026' (smallbusiness11.pdf created 2026-09-24), annex A '13.01.2026', annex E '12/08/2025'. The exchange's sheet (market.tase.co.il trading_fees, list 'עדכון אחרון: 30/06/26') prints the same direct rates and custody. No account agreement with a securities fee annex is published: the agreements page links only the general securities terms of 7.2025 (library 97e568f32eb2e075), which print no price. No promotion terms with a securities price were found.",
     "published": null,
+    "printed": {
+      "kind": "part",
+      "part_he": "חלק ניירות הערך",
+      "date": "2024-04-02",
+      "as_printed": "02/04/2024"
+    },
     "format": "pdf"
   },
   "snapshot": "2026-11-04",
@@ -1273,7 +1279,7 @@
       "available": true,
       "source": {
         "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכ",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, חלק 4 - ניירות ערך",
         "checked": "2026-11-04",
         "page": 13,
         "quote": "אך לרבות \"קרן מחקה\""
@@ -1286,7 +1292,7 @@
       "available": true,
       "source": {
         "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכ",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, חלק 4 - ניירות ערך",
         "checked": "2026-11-04",
         "page": 11,
         "quote": "מניות ,איגרות חוב וקרנות"

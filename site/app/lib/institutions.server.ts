@@ -1,6 +1,8 @@
 // Banks and brokers in the catalogue (flows 32, 33; design-spec 20): the institutions the fee snapshots and the
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
+import { datedDay, tariffDated } from "./tariff-date";
+import { depositKindRules, printedQuotes } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
@@ -26,6 +28,7 @@ import { fileRank } from "./rule-shelves";
 import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
 import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
+import { sourceHref, type TextFragment } from "./sources";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -74,9 +77,9 @@ export function institutionRows(): InstitutionRow[] {
 
 function allInstitutionRows(): InstitutionRow[] {
   const snaps = institutionSnapshots();
-  const rows: InstitutionRow[] = snaps.map((s) => ({ id: s.id, name: s.provider.name_he, kind: s.kind, published: s.tariff.published, missing: s.missing, noSnapshot: false }));
+  const rows: InstitutionRow[] = snaps.map((s) => ({ id: s.id, name: s.provider.name_he, kind: s.kind, dated: tariffDated(s.tariff, s.snapshot), missing: s.missing, noSnapshot: false }));
   for (const d of loadDepositTerms()) {
-    if (!rows.some((r) => r.id === d.bank)) rows.push({ id: d.bank, name: d.bank, kind: "bank", published: null, missing: true, noSnapshot: true });
+    if (!rows.some((r) => r.id === d.bank)) rows.push({ id: d.bank, name: d.bank, kind: "bank", dated: null, missing: true, noSnapshot: true });
   }
   return rows.sort((a, b) => collator.compare(a.name, b.name));
 }
@@ -174,7 +177,8 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     rateType: d.rate_type,
     anchor: d.anchor ?? null,
     spread: d.spread ? mark(d.spread) : null,
-    rate: mark(d.rate_offered),
+    // a doubt travels with the number: its sheet says it, not "not found in the source" (Mizrahi-Tefahot 189 prints a rate per exit period)
+    rate: mark(d.doubt_he ? { ...d.rate_offered, notes: d.doubt_he } : d.rate_offered),
     asOf: dateValue(asOfDate ?? d.snapshot, d.rate_offered, d.rate_offered.checked, t, d.snapshot, owner),
     asOfAfterRead: !!asOfDate && asOfDate > d.rate_offered.checked,
     linkage: d.linkage,
@@ -182,10 +186,15 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     taxBucket: mark(d.tax_bucket),
     amountMin: mark(d.amount_range.min),
     amountMax: d.amount_range.max ? mark(d.amount_range.max) : null,
-    breakTerms: { penalty: d.break.penalty, text: d.break.mechanism_text, rules: d.break.rule_ids },
+    breakTerms: { penalty: d.break.penalty, quotes: printedQuotes(d.break.mechanism_text), rules: d.break.rule_ids },
     exitPoints: { exists: d.exit_points.exists, everyMonths: d.exit_points.every_months },
     autoRenew: { value: d.auto_renew.value, maxRenewals: d.auto_renew.max_renewals },
-    rateNote: d.rate_offered.notes ?? "",
+    // what sets the deposit apart (2026-11-07): its kind as labels, the conditions the bank prints in plain Hebrew, and an open doubt; the
+    // record's English working notes stay in the data (the current account's card showed them as the bank's words)
+    variant: d.variant ?? [],
+    conditions: d.conditions_he ?? null,
+    doubt: d.doubt_he ?? null,
+    table: { url: d.rate_offered.source.url, title: d.rate_offered.source.title },
     stale,
     snapshot: d.snapshot,
   };
@@ -200,7 +209,7 @@ const cardRuleIds = (s: FeesSnapshot) => (s.lines.some((l) => l.level === "list"
 
 
 function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffUrl: string): TariffLineRow {
-  const src = l.rate.source as { url?: string; title?: string; page?: number };
+  const src = l.rate.source as { url?: string; title?: string; page?: number; fragment?: TextFragment };
   const docOf = (u: string) => u.replace(/#.*$/, "");
   // a spread the documents do not limit is said so, never shown as zero (D56)
   const spread = l.base !== "fx" || l.spread === undefined ? null : l.spread === null || l.spread.value === null ? ("not_limited" as const) : site(l.spread, t, snapshot, owner);
@@ -216,7 +225,7 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,
     max: l.max ? site(l.max, t, snapshot, owner) : null,
-    where: src.url && src.title ? { url: src.url, title: src.title, ...(src.page ? { page: src.page } : {}), tariff: docOf(src.url) === docOf(tariffUrl) } : null,
+    where: src.url && src.title ? { url: src.url, title: src.title, ...(src.page ? { page: src.page } : {}), ...(src.fragment ? { fragment: src.fragment } : {}), tariff: docOf(src.url) === docOf(tariffUrl) } : null,
     spread,
   };
 }
@@ -234,6 +243,8 @@ function availabilityRows(s: FeesSnapshot): AvailabilityRow[] {
 function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: string): TariffCardData {
   const from = { source: { url: s.tariff.url, title: s.tariff.title, publisher: s.provider.name_he, strength: "institution" as const } };
   const stale = isStale(s.snapshot, t);
+  const dated = tariffDated(s.tariff, s.snapshot);
+  const day = datedDay(dated);
   // every line of the price list (founder, 2026-11-05: "show all lines"), in its own order; the card groups them by kind
   const lines: TariffLineRow[] = s.lines.filter((l) => l.level === "list").map((l) => lineRow(l, t, s.snapshot, s.provider.name_he, s.tariff.url));
   const min = s.minimums.account_opening;
@@ -243,7 +254,8 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     title: s.tariff.title,
     url: s.tariff.url,
     format: s.tariff.format,
-    published: s.tariff.published ? dateValue(s.tariff.published, from, s.snapshot, t, s.snapshot, s.provider.name_he) : null,
+    dated,
+    published: day ? dateValue(day, from, s.snapshot, t, s.snapshot, s.provider.name_he) : null,
     snapshot: dateValue(s.snapshot, from, s.snapshot, t, s.snapshot, s.provider.name_he),
     stale,
     lines,
@@ -297,6 +309,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   for (const d of deposits) {
     for (const v of [d.term_months, d.rate_offered, d.tax_bucket, d.amount_range.min, d.amount_range.max]) for (const r of v?.rule_ids ?? []) cited.add(r);
     for (const r of d.break.rule_ids) cited.add(r);
+    for (const r of depositKindRules(d.variant)) cited.add(r);
   }
   if (snap) {
     for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
@@ -320,8 +333,8 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     hasDeposits: deposits.length > 0,
     depositsAsOf: groups.length ? rows.find((r) => r.id === latest?.id)?.asOf ?? null : null,
     rateTable: (() => {
-      const href = rateTableUrl(id);
-      return href ? { href } : null;
+      const url = rateTableUrl(id);
+      return url ? { href: sourceHref({ url }) } : null;
     })(),
     catalogue,
     rules,
@@ -354,7 +367,11 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
     const wrapper = wrappers.find((w) => w.id === d.wrapper_id)?.names.he[0] ?? "";
     const line = [names.get(d.bank) ?? d.bank, wrapper].filter(Boolean).join(" · ");
     const seen = new Set<string>();
-    for (const n of [...d.names["447"], ...d.names.app, ...d.names.ad, ...d.names.abbrev]) {
+    for (const raw of [...d.names["447"], ...d.names.app, ...d.names.ad, ...d.names.abbrev]) {
+      // a table name that opens with the bank's code ("256 - רימונים- …") keeps the code after the name, so a bare number ("25") finds
+      // a fund's track number first and the deposit's code still finds the deposit (2026-11-06, Mizrahi-Tefahot's 256 collected)
+      const coded = /^(\d+)\s*-\s*(.+)$/.exec(raw);
+      const n = coded ? `${coded[2]} (${coded[1]})` : raw;
       if (seen.has(n)) continue;
       seen.add(n);
       out.push({ name: n, line, href: `/companies/${d.bank}#product-${d.id}` });

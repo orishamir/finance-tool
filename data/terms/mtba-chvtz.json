@@ -1,0 +1,29 @@
+{
+  "id": "mtba-chvtz",
+  "he": "מטבע חוץ",
+  "en": null,
+  "meaning": "כסף של מדינה אחרת, כמו דולר או אירו.",
+  "where": [
+    "law",
+    "statement",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "מט\"ח",
+    "מטבע זר"
+  ],
+  "rule_ids": [
+    "FXD-01",
+    "FXD-05"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301176.pdf#page=2",
+    "title": "חוק בנק ישראל, התש\"ע-2010, ספר החוקים 2231, ס' 1, \"מטבע חוץ\"",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

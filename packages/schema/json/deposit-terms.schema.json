@@ -675,11 +675,29 @@
       "type": "object",
       "properties": {
         "value": {
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "null"
+          "allOf": [
+            {
+              "type": [
+                "number",
+                "string",
+                "boolean",
+                "null"
+              ]
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "unlinked_15",
+                    "linked_25"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
           ]
         },
         "unit": {
@@ -1338,6 +1356,19 @@
     "conditions_he": {
       "type": "string",
       "minLength": 1
+    },
+    "variant": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "campaign",
+          "closed_system",
+          "interest_during_term",
+          "best_of"
+        ]
+      }
     },
     "doubt_he": {
       "type": "string",

@@ -9,7 +9,7 @@ import { addDays, daysBetween, fact, fixedDateModel } from "../../lib/guide-sign
 import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
 import { Num, RulesLine } from "../provenance";
 import { Gap, type VisualProps } from "./kit";
-import { Marker, MarkerMark, Sentence, useWidth } from "../kit";
+import { Marker, MarkerMark, Sentence, useWidth, When } from "../kit";
 
 const HEIGHT = 130;
 const LANE_Y = 40;
@@ -101,7 +101,7 @@ export function MoneyMarketRenewableVisual({ data, today }: VisualProps) {
       ) : (
         <div className="flex flex-col gap-2">
           <p className="font-medium">
-            {copy.renewable.need}<bdi dir="ltr">{fmt.date(needOn)}</bdi>:
+            <When iso={needOn} lead={copy.renewable.need} />:
           </p>
           {waitValue ? (
             <p>

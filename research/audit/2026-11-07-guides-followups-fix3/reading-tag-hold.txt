@@ -1,0 +1,7 @@
+Goal comparison, kupat gemel lehashkaa card, inflation 2% then typed -1% in the card's assumption field (research/audit/tools: scratch script).
+Each entry: [option, card height px, card top px, count of "קריאה של האתר"].
+1440 before [["brokerage-account",486,989,0],["kupat-gemel-lehashkaa",380,1487,0],["money-market-fund-daily",341,1880,0],["bank-deposit",450,2233,0],["savings-plan",285,2695,0],["current-account",285,2992,0]]
+1440 after  [["brokerage-account",486,989,0],["kupat-gemel-lehashkaa",380,1487,1],["money-market-fund-daily",341,1880,0],["bank-deposit",450,2233,0],["savings-plan",285,2695,0],["current-account",285,2992,0]]
+390 before  [["brokerage-account",688,1410,0],["kupat-gemel-lehashkaa",410,2109,0],["money-market-fund-daily",392,2532,0],["bank-deposit",525,2936,0],["savings-plan",315,3473,0],["current-account",315,3800,0]]
+390 after   [["brokerage-account",688,1410,0],["kupat-gemel-lehashkaa",410,2109,1],["money-market-fund-daily",392,2532,0],["bank-deposit",525,2936,0],["savings-plan",315,3473,0],["current-account",315,3800,0]]
+The tag appears and no card changes height or place. Before this pass the third check measured the card growing (goal-compare-infl-typed-1280.png in ../2026-11-07-guides-followups-recheck/).

@@ -1,0 +1,489 @@
+Pass 6, item 2: the variable management fee counted forward (F-92 (b), the lead's decision of 2026-11-07, with one addition below).
+Before: today's listed fixed, variable and trustee fees, plus A-07. After: the variable fee is the mean of the variable fee each Israeli
+report's table "הוצאות שנפרעו מנכסי הקרן" prints as charged, over the record's years charged at today's listed rate; with no such year,
+the listed rate. A-07 is unchanged. Foreign records keep the listed rate.
+
+The addition (the lead's rule, restricted to the years at today's rate): nine reports' tables "שינויים במאפייני הקרן" date a change of
+the variable rate (read on each report's changes page, now `tracking_record.changes_page` and `variable_rate_since`): 5122569 0% -> 0.3%
+on 1.1.2024; 5129275 and 5129283 0% -> 0.1% on 1.1.2025; 1149772 0.3% -> 0.15% on 1.1.2025; 1147362 changes on 27.2.2023 and 1.1.2024
+(back to 0.3%); 5112628 0% -> 0.1% on 1.1.2023 and 0.1% -> 0% on 1.1.2026; 5124573 0% -> 0.3% on 1.1.2026; 5128905 0.1% -> 0.2% on
+1.1.2026; 5130661 0% -> 0.05% on 1.1.2026. A year charged at another rate says nothing of today's: taken literally over every year,
+Meitav MSCI World 5124573 (0% charged in 2022 to 2025, at a 0% rate; 0.3% from 1.1.2026) would count 0% forward and take the MSCI World
+headline from 5122569 (150,143 against 146,712 NIS at 20 years); see the second run at the end.
+
+Plans: 6,000 NIS now plus 400 NIS a month for 20 years at 7% and at 5% gross (pass 5's plan), and the page's default, 10,000 NIS plus
+500 NIS a month for 10 years at 7%; 2% inflation; the real value left in today's NIS (F-65, buildInvest and pairLeft). Every priced
+pair on every index; "best pair" is each fund's best house (the order the fund list shows), "at Psagot" the order of pass 5.
+Listed: every order change, and every fund whose value moves by 100 NIS or more at some house, with its best pair's and Psagot's figure
+old -> new and the range of the move over its houses. Produced by rank.test.ts (copied into site/app/lib) and rank-diff.mjs beside this file.
+Expected test numbers: one changed, with this evidence: site/app/lib/compare-index.test.ts, the founder's plan's lowest index (MSCI World, Psagot
+with MTF 5122569) 146,712 -> 147,227 (first run below, index-msci-world at 7%). The goal comparison's fund terms (instruments.server.ts)
+now take the variable fee from the engine's fundOf, so the comparison prices a way at the invest page's value, as its test holds.
+
+==================== the change as committed (years at today's rate)
+
+== 6000+400x20y@7%
+index-msci-acwi
+  order by each fund's best pair:
+    1201003       3 -> 2
+    ie00b6r52259  2 -> 3
+    1147362       7 -> 6
+    1144336       6 -> 7
+  order by the pair at Psagot:
+    1147362       6 -> 5
+    1144336       5 -> 6
+  1201003       best pair psagot 147,744 -> psagot 149,162 ₪; at Psagot 147,744 -> 149,162 ₪; 14 houses move 830 to 1,418 ₪
+  1147362       best pair psagot 117,233 -> psagot 118,014 ₪; at Psagot 117,233 -> 118,014 ₪; 14 houses move 474 to 781 ₪
+  1144336       best pair psagot 117,495 -> psagot 117,703 ₪; at Psagot 117,495 -> 117,703 ₪; 14 houses move 126 to 208 ₪
+index-msci-world
+  headline: psagot 5122569 146712 -> psagot 5122569 147227
+  5122569       best pair psagot 146,712 -> psagot 147,227 ₪; at Psagot 146,712 -> 147,227 ₪; 15 houses move 302 to 515 ₪
+  5139696       best pair psagot 120,600 -> psagot 126,395 ₪; at Psagot 120,600 -> 126,395 ₪; 15 houses move 3,488 to 5,795 ₪
+  1145804       best pair psagot 138,429 -> psagot 139,096 ₪; at Psagot 138,429 -> 139,096 ₪; 14 houses move 395 to 667 ₪
+index-nasdaq100
+  1146505       best pair psagot 141,711 -> psagot 142,798 ₪; at Psagot 141,711 -> 142,798 ₪; 14 houses move 639 to 1,087 ₪
+  1165844       best pair psagot 116,360 -> psagot 116,925 ₪; at Psagot 116,360 -> 116,925 ₪; 14 houses move 344 to 565 ₪
+  1143734       best pair psagot 108,785 -> psagot 108,900 ₪; at Psagot 108,785 -> 108,900 ₪; 10 houses move 100 to 115 ₪
+index-sp500
+  order by each fund's best pair:
+    1146471       16 -> 15
+    1149020       15 -> 16
+  order by the pair at Psagot:
+    1146471       12 -> 11
+    1149020       11 -> 12
+  1146471       best pair psagot 141,572 -> psagot 142,428 ₪; at Psagot 141,572 -> 142,428 ₪; 14 houses move 503 to 856 ₪
+  1149020       best pair psagot 141,879 -> psagot 142,340 ₪; at Psagot 141,879 -> 142,340 ₪; 14 houses move 272 to 461 ₪
+index-ta125
+  order by each fund's best pair:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  order by the pair at Psagot:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  1150283       best pair psagot 150,067 -> psagot 150,472 ₪; at Psagot 150,067 -> 150,472 ₪; 14 houses move 237 to 405 ₪
+  1146356       best pair psagot 149,840 -> psagot 150,194 ₪; at Psagot 149,840 -> 150,194 ₪; 14 houses move 207 to 354 ₪
+  1148899       best pair psagot 149,863 -> psagot 150,115 ₪; at Psagot 149,863 -> 150,115 ₪; 14 houses move 147 to 252 ₪
+  1143718       best pair psagot 149,689 -> psagot 149,991 ₪; at Psagot 149,689 -> 149,991 ₪; 14 houses move 177 to 302 ₪
+  1148808       best pair psagot 148,368 -> psagot 148,517 ₪; at Psagot 148,368 -> 148,517 ₪; 13 houses move 102 to 149 ₪
+index-ta35
+  order by each fund's best pair:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  order by the pair at Psagot:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  1150184       best pair psagot 150,067 -> psagot 150,574 ₪; at Psagot 150,067 -> 150,574 ₪; 14 houses move 296 to 507 ₪
+  1146570       best pair psagot 149,840 -> psagot 150,345 ₪; at Psagot 149,840 -> 150,345 ₪; 14 houses move 296 to 505 ₪
+  1143700       best pair psagot 149,689 -> psagot 150,092 ₪; at Psagot 149,689 -> 150,092 ₪; 14 houses move 236 to 403 ₪
+  1148907       best pair psagot 149,870 -> psagot 150,072 ₪; at Psagot 149,870 -> 150,072 ₪; 14 houses move 118 to 202 ₪
+index-ta90
+  headline: psagot 5130638 153536 -> psagot 5130638 153641
+  order by each fund's best pair:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  order by the pair at Psagot:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  5130638       best pair psagot 153,536 -> psagot 153,641 ₪; at Psagot 153,536 -> 153,641 ₪; 2 houses move 101 to 105 ₪
+  1209444       best pair psagot 151,980 -> psagot 152,911 ₪; at Psagot 151,980 -> 152,911 ₪; 14 houses move 543 to 931 ₪
+  1148931       best pair psagot 144,702 -> psagot 145,086 ₪; at Psagot 144,702 -> 145,086 ₪; 14 houses move 225 to 384 ₪
+  1143783       best pair psagot 144,537 -> psagot 144,729 ₪; at Psagot 144,537 -> 144,729 ₪; 14 houses move 112 to 192 ₪
+  1150259       best pair psagot 144,444 -> psagot 144,587 ₪; at Psagot 144,444 -> 144,587 ₪; 12 houses move 104 to 143 ₪
+
+== 6000+400x20y@5%
+index-msci-acwi
+  order by each fund's best pair:
+    1147362       7 -> 6
+    1144336       6 -> 7
+  order by the pair at Psagot:
+    1147362       6 -> 5
+    1144336       5 -> 6
+  1201003       best pair psagot 123,235 -> psagot 124,308 ₪; at Psagot 123,235 -> 124,308 ₪; 14 houses move 645 to 1,073 ₪
+  1147362       best pair psagot 99,908 -> psagot 100,615 ₪; at Psagot 99,908 -> 100,615 ₪; 14 houses move 451 to 736 ₪
+  1144336       best pair psagot 100,175 -> psagot 100,377 ₪; at Psagot 100,175 -> 100,377 ₪; 14 houses move 120 to 202 ₪
+index-msci-world
+  headline: psagot 5122569 122454 -> psagot 5122569 122843
+  5122569       best pair psagot 122,454 -> psagot 122,843 ₪; at Psagot 122,454 -> 122,843 ₪; 15 houses move 235 to 389 ₪
+  5139696       best pair psagot 102,592 -> psagot 107,015 ₪; at Psagot 102,592 -> 107,015 ₪; 15 houses move 3,015 to 4,423 ₪
+  1145804       best pair psagot 116,171 -> psagot 116,678 ₪; at Psagot 116,171 -> 116,678 ₪; 14 houses move 308 to 507 ₪
+index-nasdaq100
+  1146505       best pair psagot 118,663 -> psagot 119,487 ₪; at Psagot 118,663 -> 119,487 ₪; 14 houses move 500 to 824 ₪
+  1165844       best pair psagot 99,020 -> psagot 99,595 ₪; at Psagot 99,020 -> 99,595 ₪; 14 houses move 326 to 575 ₪
+  1143734       best pair psagot 91,298 -> psagot 91,414 ₪; at Psagot 91,298 -> 91,414 ₪; 10 houses move 101 to 116 ₪
+index-sp500
+  order by each fund's best pair:
+    1146471       16 -> 15
+    1149020       15 -> 16
+  order by the pair at Psagot:
+    1146471       12 -> 11
+    1149020       11 -> 12
+  1146471       best pair psagot 118,557 -> psagot 119,206 ₪; at Psagot 118,557 -> 119,206 ₪; 14 houses move 394 to 649 ₪
+  1149020       best pair psagot 118,789 -> psagot 119,139 ₪; at Psagot 118,789 -> 119,139 ₪; 14 houses move 212 to 350 ₪
+index-ta125
+  order by each fund's best pair:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  order by the pair at Psagot:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  1150283       best pair psagot 124,994 -> psagot 125,300 ₪; at Psagot 124,994 -> 125,300 ₪; 14 houses move 184 to 306 ₪
+  1146356       best pair psagot 124,822 -> psagot 125,090 ₪; at Psagot 124,822 -> 125,090 ₪; 14 houses move 161 to 268 ₪
+  1148899       best pair psagot 124,839 -> psagot 125,030 ₪; at Psagot 124,839 -> 125,030 ₪; 14 houses move 115 to 191 ₪
+  1143718       best pair psagot 124,708 -> psagot 124,937 ₪; at Psagot 124,708 -> 124,937 ₪; 14 houses move 138 to 229 ₪
+  1148808       best pair psagot 123,708 -> psagot 123,821 ₪; at Psagot 123,708 -> 123,821 ₪; 8 houses move 100 to 113 ₪
+index-ta35
+  order by each fund's best pair:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  order by the pair at Psagot:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  1150184       best pair psagot 124,994 -> psagot 125,377 ₪; at Psagot 124,994 -> 125,377 ₪; 14 houses move 230 to 383 ₪
+  1146570       best pair psagot 124,822 -> psagot 125,205 ₪; at Psagot 124,822 -> 125,205 ₪; 14 houses move 230 to 383 ₪
+  1143700       best pair psagot 124,708 -> psagot 125,013 ₪; at Psagot 124,708 -> 125,013 ₪; 14 houses move 184 to 305 ₪
+  1148907       best pair psagot 124,845 -> psagot 124,998 ₪; at Psagot 124,845 -> 124,998 ₪; 13 houses move 107 to 153 ₪
+index-ta90
+  headline: psagot 5130638 127618 -> psagot 5130638 127697
+  order by each fund's best pair:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  order by the pair at Psagot:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  1209444       best pair psagot 126,441 -> psagot 127,145 ₪; at Psagot 126,441 -> 127,145 ₪; 14 houses move 422 to 704 ₪
+  1148931       best pair psagot 120,931 -> psagot 121,221 ₪; at Psagot 120,931 -> 121,221 ₪; 14 houses move 175 to 290 ₪
+  1143783       best pair psagot 120,805 -> psagot 120,951 ₪; at Psagot 120,805 -> 120,951 ₪; 13 houses move 101 to 146 ₪
+  1150259       best pair psagot 120,734 -> psagot 120,843 ₪; at Psagot 120,734 -> 120,843 ₪; 2 houses move 101 to 109 ₪
+
+== 10000+500x10y@7% (page default)
+index-msci-acwi
+  order by each fund's best pair:
+    1147362       7 -> 6
+    1144336       6 -> 7
+  order by the pair at Psagot:
+    1147362       6 -> 5
+    1144336       5 -> 6
+  1201003       best pair psagot 84,477 -> psagot 84,870 ₪; at Psagot 84,477 -> 84,870 ₪; 14 houses move 294 to 393 ₪
+  1147362       best pair psagot 75,252 -> psagot 75,509 ₪; at Psagot 75,252 -> 75,509 ₪; 14 houses move 195 to 257 ₪
+index-msci-world
+  headline: psagot 5122569 84189 -> psagot 5122569 84333
+  5122569       best pair psagot 84,189 -> psagot 84,333 ₪; at Psagot 84,189 -> 84,333 ₪; 15 houses move 107 to 144 ₪
+  5139696       best pair psagot 76,352 -> psagot 78,194 ₪; at Psagot 76,352 -> 78,194 ₪; 15 houses move 1,389 to 1,842 ₪
+  1145804       best pair psagot 81,823 -> psagot 82,018 ₪; at Psagot 81,823 -> 82,018 ₪; 14 houses move 145 to 195 ₪
+index-nasdaq100
+  1146505       best pair psagot 82,773 -> psagot 83,084 ₪; at Psagot 82,773 -> 83,084 ₪; 14 houses move 232 to 311 ₪
+  1165844       best pair psagot 74,962 -> psagot 75,150 ₪; at Psagot 74,962 -> 75,150 ₪; 14 houses move 142 to 188 ₪
+index-sp500
+  order by each fund's best pair:
+    1146471       16 -> 15
+    1149020       15 -> 16
+  order by the pair at Psagot:
+    1146471       12 -> 11
+    1149020       11 -> 12
+  1146471       best pair psagot 82,733 -> psagot 82,978 ₪; at Psagot 82,733 -> 82,978 ₪; 14 houses move 183 to 245 ₪
+  1149020       best pair psagot 82,821 -> psagot 82,953 ₪; at Psagot 82,821 -> 82,953 ₪; 13 houses move 105 to 132 ₪
+index-ta125
+  order by each fund's best pair:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  order by the pair at Psagot:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  1150283       best pair psagot 85,119 -> psagot 85,231 ₪; at Psagot 85,119 -> 85,231 ₪; 11 houses move 100 to 112 ₪
+index-ta35
+  order by each fund's best pair:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  order by the pair at Psagot:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  1150184       best pair psagot 85,119 -> psagot 85,259 ₪; at Psagot 85,119 -> 85,259 ₪; 14 houses move 104 to 140 ₪
+  1146570       best pair psagot 85,057 -> psagot 85,196 ₪; at Psagot 85,057 -> 85,196 ₪; 14 houses move 104 to 139 ₪
+  1143700       best pair psagot 85,015 -> psagot 85,126 ₪; at Psagot 85,015 -> 85,126 ₪; 11 houses move 100 to 111 ₪
+index-ta90
+  headline: psagot 5130638 86066 -> psagot 5130638 86094
+  order by each fund's best pair:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  order by the pair at Psagot:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  1209444       best pair psagot 85,643 -> psagot 85,897 ₪; at Psagot 85,643 -> 85,897 ₪; 14 houses move 189 to 254 ₪
+  1148931       best pair psagot 83,624 -> psagot 83,732 ₪; at Psagot 83,624 -> 83,732 ₪; 10 houses move 100 to 108 ₪
+
+==================== for comparison: the rule taken literally, every year's charge whatever its rate (not committed)
+
+== 6000+400x20y@7%
+index-msci-acwi
+  order by each fund's best pair:
+    1201003       3 -> 2
+    ie00b6r52259  2 -> 3
+  1201003       best pair psagot 147,744 -> psagot 149,162 ₪; at Psagot 147,744 -> 149,162 ₪; 14 houses move 830 to 1,418 ₪
+  1149772       best pair psagot 141,018 -> psagot 140,330 ₪; at Psagot 141,018 -> 140,330 ₪; 14 houses move -688 to -406 ₪
+  1144336       best pair psagot 117,495 -> psagot 117,703 ₪; at Psagot 117,495 -> 117,703 ₪; 14 houses move 126 to 208 ₪
+  1147362       best pair psagot 117,233 -> psagot 117,669 ₪; at Psagot 117,233 -> 117,669 ₪; 14 houses move 265 to 436 ₪
+index-msci-world
+  headline: psagot 5122569 146712 -> psagot 5124573 150143
+  order by each fund's best pair:
+    5124573       4 -> 2
+    ie00b4l5y983  2 -> 4
+  order by the pair at Psagot:
+    5124573       3 -> 2
+    5122569       2 -> 3
+  5124573       best pair psagot 145,691 -> psagot 150,143 ₪; at Psagot 145,691 -> 150,143 ₪; 15 houses move 2,608 to 4,452 ₪
+  5122569       best pair psagot 146,712 -> psagot 149,199 ₪; at Psagot 146,712 -> 149,199 ₪; 15 houses move 1,457 to 2,487 ₪
+  5139696       best pair psagot 120,600 -> psagot 126,395 ₪; at Psagot 120,600 -> 126,395 ₪; 15 houses move 3,488 to 5,795 ₪
+  1145804       best pair psagot 138,429 -> psagot 139,096 ₪; at Psagot 138,429 -> 139,096 ₪; 14 houses move 395 to 667 ₪
+index-nasdaq100
+  headline: psagot 5129283 153458 -> psagot 5129283 154639
+  order by each fund's best pair:
+    5128905       3 -> 2
+    1186063       2 -> 3
+  order by the pair at Psagot:
+    5128905       3 -> 2
+    1186063       2 -> 3
+  5129283       best pair psagot 153,458 -> psagot 154,639 ₪; at Psagot 153,458 -> 154,639 ₪; 15 houses move 688 to 1,181 ₪
+  5128905       best pair psagot 151,903 -> psagot 153,466 ₪; at Psagot 151,903 -> 153,466 ₪; 15 houses move 912 to 1,563 ₪
+  1146505       best pair psagot 141,711 -> psagot 142,798 ₪; at Psagot 141,711 -> 142,798 ₪; 14 houses move 639 to 1,087 ₪
+  1165844       best pair psagot 116,360 -> psagot 116,925 ₪; at Psagot 116,360 -> 116,925 ₪; 14 houses move 344 to 565 ₪
+  1143734       best pair psagot 108,785 -> psagot 108,900 ₪; at Psagot 108,785 -> 108,900 ₪; 10 houses move 100 to 115 ₪
+index-sp500
+  order by each fund's best pair:
+    5129275       6 -> 3
+    1183441       3 -> 4
+    1159250       4 -> 5
+    5124482       5 -> 6
+    1146471       16 -> 15
+    1149020       15 -> 16
+  order by the pair at Psagot:
+    5129275       6 -> 3
+    1183441       3 -> 4
+    1159250       4 -> 5
+    5124482       5 -> 6
+    1146471       12 -> 11
+    1149020       11 -> 12
+  5129275       best pair psagot 153,458 -> psagot 154,639 ₪; at Psagot 153,458 -> 154,639 ₪; 15 houses move 688 to 1,181 ₪
+  1146471       best pair psagot 141,572 -> psagot 142,428 ₪; at Psagot 141,572 -> 142,428 ₪; 14 houses move 503 to 856 ₪
+  1149020       best pair psagot 141,879 -> psagot 142,340 ₪; at Psagot 141,879 -> 142,340 ₪; 14 houses move 272 to 461 ₪
+index-ta125
+  headline: psagot 5112628 153458 -> psagot 5112628 152367
+  order by each fund's best pair:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  order by the pair at Psagot:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  5112628       best pair psagot 153,458 -> psagot 152,367 ₪; at Psagot 153,458 -> 152,367 ₪; 15 houses move -1,091 to -637 ₪
+  1150283       best pair psagot 150,067 -> psagot 150,472 ₪; at Psagot 150,067 -> 150,472 ₪; 14 houses move 237 to 405 ₪
+  1146356       best pair psagot 149,840 -> psagot 150,194 ₪; at Psagot 149,840 -> 150,194 ₪; 14 houses move 207 to 354 ₪
+  1148899       best pair psagot 149,863 -> psagot 150,115 ₪; at Psagot 149,863 -> 150,115 ₪; 14 houses move 147 to 252 ₪
+  1143718       best pair psagot 149,689 -> psagot 149,991 ₪; at Psagot 149,689 -> 149,991 ₪; 14 houses move 177 to 302 ₪
+  1148808       best pair psagot 148,368 -> psagot 148,517 ₪; at Psagot 148,368 -> 148,517 ₪; 13 houses move 102 to 149 ₪
+index-ta35
+  headline: psagot 5130661 154323 -> psagot 5130661 155116
+  order by each fund's best pair:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  order by the pair at Psagot:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  5130661       best pair psagot 154,323 -> psagot 155,116 ₪; at Psagot 154,323 -> 155,116 ₪; 15 houses move 462 to 793 ₪
+  1150184       best pair psagot 150,067 -> psagot 150,574 ₪; at Psagot 150,067 -> 150,574 ₪; 14 houses move 296 to 507 ₪
+  1146570       best pair psagot 149,840 -> psagot 150,345 ₪; at Psagot 149,840 -> 150,345 ₪; 14 houses move 296 to 505 ₪
+  1143700       best pair psagot 149,689 -> psagot 150,092 ₪; at Psagot 149,689 -> 150,092 ₪; 14 houses move 236 to 403 ₪
+  1148907       best pair psagot 149,870 -> psagot 150,072 ₪; at Psagot 149,870 -> 150,072 ₪; 14 houses move 118 to 202 ₪
+index-ta90
+  headline: psagot 5130638 153536 -> psagot 5130638 153641
+  order by each fund's best pair:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  order by the pair at Psagot:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  5130638       best pair psagot 153,536 -> psagot 153,641 ₪; at Psagot 153,536 -> 153,641 ₪; 2 houses move 101 to 105 ₪
+  1209444       best pair psagot 151,980 -> psagot 152,911 ₪; at Psagot 151,980 -> 152,911 ₪; 14 houses move 543 to 931 ₪
+  1148931       best pair psagot 144,702 -> psagot 145,086 ₪; at Psagot 144,702 -> 145,086 ₪; 14 houses move 225 to 384 ₪
+  1143783       best pair psagot 144,537 -> psagot 144,729 ₪; at Psagot 144,537 -> 144,729 ₪; 14 houses move 112 to 192 ₪
+  1150259       best pair psagot 144,444 -> psagot 144,587 ₪; at Psagot 144,444 -> 144,587 ₪; 12 houses move 104 to 143 ₪
+
+== 6000+400x20y@5%
+index-msci-acwi
+  1201003       best pair psagot 123,235 -> psagot 124,308 ₪; at Psagot 123,235 -> 124,308 ₪; 14 houses move 645 to 1,073 ₪
+  1149772       best pair psagot 118,136 -> psagot 117,614 ₪; at Psagot 118,136 -> 117,614 ₪; 14 houses move -522 to -317 ₪
+  1144336       best pair psagot 100,175 -> psagot 100,377 ₪; at Psagot 100,175 -> 100,377 ₪; 14 houses move 120 to 202 ₪
+  1147362       best pair psagot 99,908 -> psagot 100,352 ₪; at Psagot 99,908 -> 100,352 ₪; 14 houses move 252 to 444 ₪
+index-msci-world
+  headline: psagot 5122569 122454 -> psagot 5124573 125051
+  order by each fund's best pair:
+    5124573       4 -> 2
+    5122569       2 -> 3
+    ie00b4l5y983  3 -> 4
+  order by the pair at Psagot:
+    5124573       3 -> 2
+    5122569       2 -> 3
+  5124573       best pair psagot 121,680 -> psagot 125,051 ₪; at Psagot 121,680 -> 125,051 ₪; 15 houses move 2,030 to 3,371 ₪
+  5122569       best pair psagot 122,454 -> psagot 124,337 ₪; at Psagot 122,454 -> 124,337 ₪; 15 houses move 1,133 to 1,883 ₪
+  5139696       best pair psagot 102,592 -> psagot 107,015 ₪; at Psagot 102,592 -> 107,015 ₪; 15 houses move 3,015 to 4,423 ₪
+  1145804       best pair psagot 116,171 -> psagot 116,678 ₪; at Psagot 116,171 -> 116,678 ₪; 14 houses move 308 to 507 ₪
+index-nasdaq100
+  headline: psagot 5129283 127559 -> psagot 5129283 128452
+  order by each fund's best pair:
+    5128905       3 -> 2
+    1186063       2 -> 3
+  order by the pair at Psagot:
+    5128905       3 -> 2
+    1186063       2 -> 3
+  5129283       best pair psagot 127,559 -> psagot 128,452 ₪; at Psagot 127,559 -> 128,452 ₪; 15 houses move 535 to 893 ₪
+  5128905       best pair psagot 126,383 -> psagot 127,565 ₪; at Psagot 126,383 -> 127,565 ₪; 15 houses move 708 to 1,182 ₪
+  1146505       best pair psagot 118,663 -> psagot 119,487 ₪; at Psagot 118,663 -> 119,487 ₪; 14 houses move 500 to 824 ₪
+  1165844       best pair psagot 99,020 -> psagot 99,595 ₪; at Psagot 99,020 -> 99,595 ₪; 14 houses move 326 to 575 ₪
+  1143734       best pair psagot 91,298 -> psagot 91,414 ₪; at Psagot 91,298 -> 91,414 ₪; 10 houses move 101 to 116 ₪
+index-sp500
+  order by each fund's best pair:
+    5129275       6 -> 3
+    1183441       3 -> 4
+    1159250       4 -> 5
+    5124482       5 -> 6
+    1146471       16 -> 15
+    1149020       15 -> 16
+  order by the pair at Psagot:
+    5129275       6 -> 3
+    1183441       3 -> 4
+    1159250       4 -> 5
+    5124482       5 -> 6
+    1146471       12 -> 11
+    1149020       11 -> 12
+  5129275       best pair psagot 127,559 -> psagot 128,452 ₪; at Psagot 127,559 -> 128,452 ₪; 15 houses move 535 to 893 ₪
+  1146471       best pair psagot 118,557 -> psagot 119,206 ₪; at Psagot 118,557 -> 119,206 ₪; 14 houses move 394 to 649 ₪
+  1149020       best pair psagot 118,789 -> psagot 119,139 ₪; at Psagot 118,789 -> 119,139 ₪; 14 houses move 212 to 350 ₪
+index-ta125
+  headline: psagot 5112628 127559 -> psagot 5112628 126734
+  order by each fund's best pair:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  order by the pair at Psagot:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  5112628       best pair psagot 127,559 -> psagot 126,734 ₪; at Psagot 127,559 -> 126,734 ₪; 15 houses move -825 to -494 ₪
+  1150283       best pair psagot 124,994 -> psagot 125,300 ₪; at Psagot 124,994 -> 125,300 ₪; 14 houses move 184 to 306 ₪
+  1146356       best pair psagot 124,822 -> psagot 125,090 ₪; at Psagot 124,822 -> 125,090 ₪; 14 houses move 161 to 268 ₪
+  1148899       best pair psagot 124,839 -> psagot 125,030 ₪; at Psagot 124,839 -> 125,030 ₪; 14 houses move 115 to 191 ₪
+  1143718       best pair psagot 124,708 -> psagot 124,937 ₪; at Psagot 124,708 -> 124,937 ₪; 14 houses move 138 to 229 ₪
+  1148808       best pair psagot 123,708 -> psagot 123,821 ₪; at Psagot 123,708 -> 123,821 ₪; 8 houses move 100 to 113 ₪
+index-ta35
+  headline: psagot 5130661 128213 -> psagot 5130661 128813
+  order by each fund's best pair:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  order by the pair at Psagot:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  5130661       best pair psagot 128,213 -> psagot 128,813 ₪; at Psagot 128,213 -> 128,813 ₪; 15 houses move 358 to 600 ₪
+  1150184       best pair psagot 124,994 -> psagot 125,377 ₪; at Psagot 124,994 -> 125,377 ₪; 14 houses move 230 to 383 ₪
+  1146570       best pair psagot 124,822 -> psagot 125,205 ₪; at Psagot 124,822 -> 125,205 ₪; 14 houses move 230 to 383 ₪
+  1143700       best pair psagot 124,708 -> psagot 125,013 ₪; at Psagot 124,708 -> 125,013 ₪; 14 houses move 184 to 305 ₪
+  1148907       best pair psagot 124,845 -> psagot 124,998 ₪; at Psagot 124,845 -> 124,998 ₪; 13 houses move 107 to 153 ₪
+index-ta90
+  headline: psagot 5130638 127618 -> psagot 5130638 127697
+  order by each fund's best pair:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  order by the pair at Psagot:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  1209444       best pair psagot 126,441 -> psagot 127,145 ₪; at Psagot 126,441 -> 127,145 ₪; 14 houses move 422 to 704 ₪
+  1148931       best pair psagot 120,931 -> psagot 121,221 ₪; at Psagot 120,931 -> 121,221 ₪; 14 houses move 175 to 290 ₪
+  1143783       best pair psagot 120,805 -> psagot 120,951 ₪; at Psagot 120,805 -> 120,951 ₪; 13 houses move 101 to 146 ₪
+  1150259       best pair psagot 120,734 -> psagot 120,843 ₪; at Psagot 120,734 -> 120,843 ₪; 2 houses move 101 to 109 ₪
+
+== 10000+500x10y@7% (page default)
+index-msci-acwi
+  1201003       best pair psagot 84,477 -> psagot 84,870 ₪; at Psagot 84,477 -> 84,870 ₪; 14 houses move 294 to 393 ₪
+  1149772       best pair psagot 82,574 -> psagot 82,375 ₪; at Psagot 82,574 -> 82,375 ₪; 14 houses move -199 to -149 ₪
+  1147362       best pair psagot 75,252 -> psagot 75,396 ₪; at Psagot 75,252 -> 75,396 ₪; 14 houses move 109 to 144 ₪
+index-msci-world
+  headline: psagot 5122569 84189 -> psagot 5124573 85140
+  order by each fund's best pair:
+    5124573       3 -> 2
+    5122569       2 -> 3
+  order by the pair at Psagot:
+    5124573       3 -> 2
+    5122569       2 -> 3
+  5124573       best pair psagot 83,903 -> psagot 85,140 ₪; at Psagot 83,903 -> 85,140 ₪; 15 houses move 923 to 1,237 ₪
+  5122569       best pair psagot 84,189 -> psagot 84,880 ₪; at Psagot 84,189 -> 84,880 ₪; 15 houses move 515 to 691 ₪
+  5139696       best pair psagot 76,352 -> psagot 78,194 ₪; at Psagot 76,352 -> 78,194 ₪; 15 houses move 1,389 to 1,842 ₪
+  1145804       best pair psagot 81,823 -> psagot 82,018 ₪; at Psagot 81,823 -> 82,018 ₪; 14 houses move 145 to 195 ₪
+index-nasdaq100
+  headline: psagot 5129283 86045 -> psagot 5129283 86364
+  order by each fund's best pair:
+    5128905       3 -> 2
+    1186063       2 -> 3
+  order by the pair at Psagot:
+    5128905       3 -> 2
+    1186063       2 -> 3
+  5129283       best pair psagot 86,045 -> psagot 86,364 ₪; at Psagot 86,045 -> 86,364 ₪; 15 houses move 238 to 319 ₪
+  5128905       best pair psagot 85,622 -> psagot 86,047 ₪; at Psagot 85,622 -> 86,047 ₪; 15 houses move 316 to 425 ₪
+  1146505       best pair psagot 82,773 -> psagot 83,084 ₪; at Psagot 82,773 -> 83,084 ₪; 14 houses move 232 to 311 ₪
+  1165844       best pair psagot 74,962 -> psagot 75,150 ₪; at Psagot 74,962 -> 75,150 ₪; 14 houses move 142 to 188 ₪
+index-sp500
+  order by each fund's best pair:
+    5129275       6 -> 3
+    1183441       3 -> 4
+    1159250       4 -> 5
+    5124482       5 -> 6
+    1146471       16 -> 15
+    1149020       15 -> 16
+  order by the pair at Psagot:
+    5129275       6 -> 3
+    1183441       3 -> 4
+    1159250       4 -> 5
+    5124482       5 -> 6
+    1146471       12 -> 11
+    1149020       11 -> 12
+  5129275       best pair psagot 86,045 -> psagot 86,364 ₪; at Psagot 86,045 -> 86,364 ₪; 15 houses move 238 to 319 ₪
+  1146471       best pair psagot 82,733 -> psagot 82,978 ₪; at Psagot 82,733 -> 82,978 ₪; 14 houses move 183 to 245 ₪
+  1149020       best pair psagot 82,821 -> psagot 82,953 ₪; at Psagot 82,821 -> 82,953 ₪; 13 houses move 105 to 132 ₪
+index-ta125
+  headline: psagot 5112628 86045 -> psagot 5112628 85749
+  order by each fund's best pair:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  order by the pair at Psagot:
+    1146356       4 -> 3
+    1148899       3 -> 4
+  5112628       best pair psagot 86,045 -> psagot 85,749 ₪; at Psagot 86,045 -> 85,749 ₪; 15 houses move -296 to -220 ₪
+  1150283       best pair psagot 85,119 -> psagot 85,231 ₪; at Psagot 85,119 -> 85,231 ₪; 11 houses move 100 to 112 ₪
+index-ta35
+  headline: psagot 5130661 86279 -> psagot 5130661 86492
+  order by each fund's best pair:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  order by the pair at Psagot:
+    1146570       4 -> 3
+    1143700       5 -> 4
+    1148907       3 -> 5
+  5130661       best pair psagot 86,279 -> psagot 86,492 ₪; at Psagot 86,279 -> 86,492 ₪; 15 houses move 159 to 213 ₪
+  1150184       best pair psagot 85,119 -> psagot 85,259 ₪; at Psagot 85,119 -> 85,259 ₪; 14 houses move 104 to 140 ₪
+  1146570       best pair psagot 85,057 -> psagot 85,196 ₪; at Psagot 85,057 -> 85,196 ₪; 14 houses move 104 to 139 ₪
+  1143700       best pair psagot 85,015 -> psagot 85,126 ₪; at Psagot 85,015 -> 85,126 ₪; 11 houses move 100 to 111 ₪
+index-ta90
+  headline: psagot 5130638 86066 -> psagot 5130638 86094
+  order by each fund's best pair:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  order by the pair at Psagot:
+    1143783       5 -> 4
+    1146331       4 -> 5
+  1209444       best pair psagot 85,643 -> psagot 85,897 ₪; at Psagot 85,643 -> 85,897 ₪; 14 houses move 189 to 254 ₪
+  1148931       best pair psagot 83,624 -> psagot 83,732 ₪; at Psagot 83,624 -> 83,732 ₪; 10 houses move 100 to 108 ₪

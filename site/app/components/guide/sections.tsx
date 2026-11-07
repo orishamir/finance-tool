@@ -7,7 +7,7 @@ import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
 import { IdRef, RulesLine, StrengthLabel } from "../provenance";
-import { Card, cx, Disclosure, KeyValueList as KitKeyValueList, Section, TableCols, Tag } from "../kit";
+import { Card, cx, Disclosure, gershayim, KeyValueList as KitKeyValueList, Section, TableCols, Tag } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -53,7 +53,7 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
         <ul>
           {sections.map((s) => (
             <li key={s.id}>
-              <a href={`#${s.id}`} aria-current={current === s.id ? "location" : undefined} className={cx("block py-2.5 px-3.5 border-s-2 hover:text-foreground", current === s.id ? "border-primary text-foreground font-medium" : "border-border text-muted-foreground")}>
+              <a href={`#${s.id}`} aria-current={current === s.id ? "location" : undefined} className={cx("flex items-center min-h-target py-2.5 px-3.5 border-s-2 hover:text-foreground", current === s.id ? "border-primary text-foreground font-medium" : "border-border text-muted-foreground")}>
                 {s.title}
               </a>
             </li>
@@ -97,9 +97,12 @@ export interface FeeRow {
   tag?: ReactNode;
   /** "תלוי בחברה" and the companies whose own rate the site holds for this fee (D30), under the cap. */
   varies?: ReactNode;
+  /** What the collected managers' binding documents charge for this fee, over all of them (F-105), under the cap. */
+  range?: ReactNode;
 }
 
-export function FeeTable({ fees, note }: { fees: FeeRow[]; note: ReactNode }) {
+/** `feePage`: the fee page has an answer for this guide's product; without one the guide does not send the reader there (2026-11-07). */
+export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactNode; feePage: boolean }) {
   const { id } = useParams();
   return (
     <div className="flex flex-col gap-3">
@@ -112,6 +115,7 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: ReactNode }) {
               {f.cap}
               {f.tag}
             </span>
+            {f.range && <span className="block text-sm text-muted-foreground">{f.range}</span>}
             {f.varies && <span className="block">{f.varies}</span>}
             <RulesLine ids={f.rules} name={f.name} className="pt-1" />
           </div>
@@ -137,6 +141,7 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: ReactNode }) {
                     {f.cap}
                     {f.tag}
                   </span>
+                  {f.range && <span className="block pt-1 text-sm text-muted-foreground">{f.range}</span>}
                   {f.varies && <span className="block pt-1">{f.varies}</span>}
                   <RulesLine ids={f.rules} name={f.name} className="pt-1" />
                 </td>
@@ -146,7 +151,7 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: ReactNode }) {
         </table>
       </Card>
       <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
-      {id && (
+      {id && feePage && (
         <Link to={`/fees?wrapper=${id}`} className="text-link hover:underline self-start min-h-target inline-flex items-center">
           {r3fees.links.fromGuide}
         </Link>
@@ -241,13 +246,13 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
           {r.applies}
         </span>
         <span className="text-sm text-muted-foreground">
-          {r.explanation}
+          {gershayim(r.explanation)}
           {r.mark === "blocked" && !endsSentence && "."}
         </span>
         {/* audit A90: the status sentence is its own line, not glued to the question */}
         {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
         {r.rules.length > 0 && (
-          <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
+          <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-target justify-start gap-1 [&>svg]:size-4">
             <RulesLine ids={r.rules} className="pb-2" />
           </Disclosure>
         )}
@@ -311,7 +316,7 @@ export function ExposureLinks({ items }: { items: { id: string; name: string; hr
       <span>{copy.exposuresRow}</span>
       {items.map((it) => (
         <Link key={it.id} to={it.href} className="a-chip">
-          {it.name}
+          {gershayim(it.name)}
         </Link>
       ))}
     </p>
@@ -324,7 +329,7 @@ function CompanyLinks({ companies }: { companies: { id: string; name: string }[]
       {companies.map((c) => (
         <li key={c.id} className="break-inside-avoid">
           <Link to={`/companies/${c.id}`} className="text-link hover:underline">
-            <bdi>{c.name}</bdi>
+            <bdi>{gershayim(c.name)}</bdi>
           </Link>
         </li>
       ))}
@@ -372,8 +377,8 @@ export function TermTable({ terms }: { terms: TermRow[] }) {
       <dl className="md:hidden flex flex-col divide-y divide-border">
         {terms.map((t, i) => (
           <div key={`${t.he}-${i}`} className="py-3 flex flex-col gap-1">
-            <dt className="font-medium">{t.he}</dt>
-            <dd className="text-sm">{t.explanation}</dd>
+            <dt className="font-medium">{gershayim(t.he)}</dt>
+            <dd className="text-sm">{gershayim(t.explanation)}</dd>
             <dd className="flex flex-wrap gap-1.5">{whereTags(t.where)}</dd>
           </div>
         ))}
@@ -391,8 +396,8 @@ export function TermTable({ terms }: { terms: TermRow[] }) {
           <tbody>
             {terms.map((t, i) => (
               <tr key={`${t.he}-${i}`}>
-                <th scope="row">{t.he}</th>
-                <td>{t.explanation}</td>
+                <th scope="row">{gershayim(t.he)}</th>
+                <td>{gershayim(t.explanation)}</td>
                 <td>
                   <span className="flex flex-wrap gap-1.5">{whereTags(t.where)}</span>
                 </td>

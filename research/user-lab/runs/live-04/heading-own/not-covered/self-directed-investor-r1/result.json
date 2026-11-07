@@ -1,0 +1,104 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:10:50.423Z",
+  "structured": {
+    "answer": "Not yet computed (each card tagged \"לא מחושב\"): ETC, gold via funds, corporate bonds, Israel Bonds, FX accounts/deposits and dollar-linked deposits, structured products/deposits, life insurance with profit participation, executive insurance and insurance plans, managed policy tracks, Keren Yud-type portfolios, REITs, digital portfolio management, Amendment 190 and commuting a recognized pension. Never covered by design: loans, insurance beyond risk policies, stock picking/trading/derivatives, physical real estate, ranking by past returns, executing actions. So my stock trading and FX conversion costs aren't covered.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Card list under 'מה האתר עוד לא מכסה'",
+        "why": "Heading says 'מוצרים' but many cards are benchmarks, organisations, fees or tax categories, so I couldn't tell what really counts as an uncovered product"
+      },
+      {
+        "where": "מה חוסם blocks",
+        "why": "Codes like MF-28, TX2-01, TXA-28 with no explanation"
+      }
+    ],
+    "used": [
+      "Page title and subtitle 'מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף'",
+      "Red banner about rules still being checked",
+      "Card titles and 'לא מחושב' tags",
+      "Open 'מצב הכיסוי / מה חוסם' sections",
+      "Section 'מה האתר לא משווה ולא עושה' and its bullet list",
+      "Footer 'אישי, לא מסחרי, בלי קישורי שיווק'"
+    ],
+    "skimmed": [
+      "'מה ידוע' definitions on each card",
+      "'נקרא גם' alias lines",
+      "Source citations and dates",
+      "Closed-question lists ('נסגר ב...')"
+    ],
+    "skipped": [
+      "Explanatory sentence repeated on each card ('כשייסגר: יופיע במדריך...')",
+      "Top nav pages (מדריך, חברות ומסלולים, השקעה במדד)"
+    ],
+    "unsure_meaning": [
+      "MF-28, TX2-01, TXA-28 codes",
+      "'לפי החברה' amber tag",
+      "'מקור ראשי (עותק)'",
+      "'חוקים וכללים · N' counters",
+      "Strikethrough 'נסגר ב' dates"
+    ],
+    "not_found": [
+      "A number I can compare to what I pay my broker",
+      "Coverage of FX conversion cost (עמלת חליפין is marked not computed)",
+      "Any timeline for when items will be covered",
+      "A filter or search on this list"
+    ],
+    "findings": [
+      {
+        "what": "Heading promises 'מוצרים' but list includes non-products: LBMA Gold Price (benchmark), חברת דירוג and נאמן (entities), הסדר חוב (event), עמלת חליפין (fee), מענק (feature), שיווק השקעות (service), היוון קצבה מוכרת (action), תשלומים פטורים/קצבה מוכרת (tax categories)",
+        "where": "Card grid, screens 1–9"
+      },
+      {
+        "what": "FX conversion fee not computed: the cost a trader like me never checks is exactly what's missing",
+        "where": "עמלת חליפין card, screen 5"
+      },
+      {
+        "what": "Stock picking/trading permanently out of scope, so half my setup is never covered",
+        "where": "'מה האתר לא משווה ולא עושה', screen 10"
+      },
+      {
+        "what": "Same boilerplate 'כשייסגר: יופיע במדריך...' and 'עוד לא נרשמו סגירות' on every card, no timeline",
+        "where": "מצב הכיסוי sections"
+      },
+      {
+        "what": "Unexplained internal codes in blockers",
+        "where": "MF-28, TX2-01, TXA-28 cards"
+      },
+      {
+        "what": "Blanket banner says all rules still under review, which tells me nothing specific",
+        "where": "Red banner, screen 1"
+      },
+      {
+        "what": "Some sources are the issuer's own word ('לפי החברה')",
+        "where": "LBMA, ארנק מט\"ח דיגיטלי, מענק cards"
+      },
+      {
+        "what": "Long card list with no filter or grouping by type",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 50787,
+    "turns": 12,
+    "usd": 0.26284660000000004,
+    "input": 12,
+    "cacheWrite": 21109,
+    "cacheRead": 60033,
+    "output": 4096,
+    "model": "claude-opus-5-5"
+  }
+}

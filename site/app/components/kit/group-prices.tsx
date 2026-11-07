@@ -8,7 +8,8 @@ import { Link } from "react-router";
 import { groupPrices as copy } from "../../copy";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
-import { DocLink, atPdfPage } from "./doc-link";
+import { isPdfUrl, sourceHref, type CitedPlace } from "../../lib/sources";
+import { DocLink } from "./doc-link";
 import { TableCols } from "./table-cols";
 import { Tag } from "./tag";
 
@@ -30,12 +31,17 @@ export interface GroupBlock {
 const FEES: Fee[] = ["trade_israel", "trade_abroad", "custody_israel", "custody_abroad"];
 const ends = (e: GroupEntry) => e.ends_short_he ?? e.ends_he;
 
-/** The sub-rows, in the order the record lists its entries. */
+const priced = (e: GroupEntry) => e.prices.some((p) => p.value != null);
+
+/**
+ * The sub-rows, in the order the record lists its entries: one per short words for what is cheaper, a priced entry never with one not
+ * priced (re-check F3; the data check fails such a pair, checkGroupWords).
+ */
 export function groupBlocks(entries: readonly GroupEntry[]): GroupBlock[] {
   const out: GroupBlock[] = [];
   for (const e of entries) {
     const cheaper = e.cheaper_he ?? e.name_he;
-    const b = out.find((x) => x.cheaper === cheaper);
+    const b = out.find((x) => x.cheaper === cheaper && priced(x.entries[0]!) === priced(e));
     if (b) b.entries.push(e);
     else out.push({ cheaper, entries: [e], sameEnd: true, funds: "all" });
   }
@@ -49,11 +55,42 @@ export function groupBlocks(entries: readonly GroupEntry[]): GroupBlock[] {
   return out;
 }
 
-/** The closed line's words: each kind once, and an other entry by its own short words, in the record's order. */
+/**
+ * The ages the priced young entries' short words print ("בגילאי 14 עד 21.5", "מגיל 14 עד 21", "מגיל 14", "עד גיל 25"): the youngest and the
+ * oldest over them. An entry that is not priced (no price carries a value: the bank's advertising, D56, or a binding price not modelled) is not read. A bound one entry
+ * leaves out is left out of the line too, so the line never tells someone in a group that the price is not theirs (Leumi's 18+ runs to 21
+ * or the end of army service, whichever is later, which its short words do not try to say); null where an entry prints no age at all. The
+ * data check holds every number of `who_short_he` to the entry's long words, so these are the documents' ages (readers, 2026-11-06: "none
+ * of them says what age counts as young").
+ */
+export function youngAges(entries: readonly GroupEntry[]): { from: string | null; to: string | null; /** Some groups print a top age and others none: the line says the top age differs by group (re-check F2: "מגיל 14" read as no upper age). */ topVaries?: true } | null {
+  const young = entries.filter((e) => e.kind === "young" && e.prices.some((p) => p.value != null));
+  if (young.length === 0) return null;
+  const num = "(\\d+(?:\\.\\d+)?)";
+  let from: number | null = null, to: number | null = null, fromOpen = false, toOpen = false, someTop = false;
+  for (const e of young) {
+    const w = e.who_short_he ?? "";
+    const span = w.match(new RegExp(`(?:בגילאי|מגיל) ${num} עד (?:גיל )?${num}`));
+    const lo = span?.[1] ?? w.match(new RegExp(`מגיל ${num}`))?.[1];
+    const hi = span?.[2] ?? w.match(new RegExp(`עד גיל ${num}`))?.[1];
+    if (lo === undefined && hi === undefined) return null;
+    if (lo === undefined) fromOpen = true;
+    else from = from === null ? Number(lo) : Math.min(from, Number(lo));
+    if (hi === undefined) toOpen = true;
+    else {
+      to = to === null ? Number(hi) : Math.max(to, Number(hi));
+      someTop = true;
+    }
+  }
+  return { from: fromOpen || from === null ? null : String(from), to: toOpen || to === null ? null : String(to), ...(toOpen && someTop ? { topVaries: true as const } : {}) };
+}
+
+/** The closed line's words: each kind once (the young with their ages), and an other entry by its own short words, in the record's order. */
 export function groupLineWho(entries: readonly GroupEntry[]): string[] {
   const out: string[] = [];
+  const ages = youngAges(entries);
   for (const e of entries) {
-    const w = e.kind === "other" ? (e.who_short_he ?? e.name_he) : (copy.kinds[e.kind] ?? e.name_he);
+    const w = e.kind === "other" ? (e.who_short_he ?? e.name_he) : e.kind === "young" && ages ? copy.youngAges(ages.from, ages.to, ages.topVaries) : (copy.kinds[e.kind] ?? e.name_he);
     if (!out.includes(w)) out.push(w);
   }
   return out;
@@ -83,11 +120,12 @@ function SourceLinks({ entries }: { entries: readonly GroupEntry[] }) {
     const here = all.filter((s) => s.url === url);
     const title = here[0]!.title;
     const rows = [...new Set(here.flatMap((s) => (s.row ? [s.row] : [])))].sort((x, y) => x - y);
-    if (rows.length) return [{ href: url, title, word: `${title}, ${copy.atRows(rows)}` }];
-    const pdf = /\.pdf/i.test(url);
+    if (rows.length) return [{ href: sourceHref({ url }), title, word: `${title}, ${copy.atRows(rows)}` }];
+    const pdf = isPdfUrl(url);
     const pages = pdf ? [...new Set(here.flatMap((s) => (s.page ? [s.page] : [])))].sort((x, y) => x - y) : [];
-    if (pages.length === 0) return [{ href: url, title, word: title }];
-    return pages.map((n) => ({ href: atPdfPage(url, n), title, word: `${title}, ${copy.atPage(n)}` }));
+    // a web page is linked once, opening at the first quoted words found on it
+    if (pages.length === 0) return [{ href: sourceHref(here.find((s) => (s as CitedPlace).fragment) ?? { url }), title, word: title }];
+    return pages.map((n) => ({ href: sourceHref({ url, page: n }), title, word: `${title}, ${copy.atPage(n)}` }));
   });
   return (
     <span className="flex flex-wrap items-center gap-x-4 gap-y-0 text-xs">

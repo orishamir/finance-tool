@@ -41,6 +41,13 @@ export interface Label {
   ruleId: string;
 }
 
+/**
+ * Every rule the engine may label `reading`, some only when a condition holds (an index that fell below a deposit's, a payment
+ * after the period): a page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it
+ * appears (third check, 2026-11-07). A test holds this list to the engine's `label("reading", …)` calls.
+ */
+export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11", "TXH-17", "TXH-19", "TXI-25", "TXK-04", "TXK-07", "TXK-29", "TXP-32"];
+
 /** Section 8 and B3: whether the run may enter a ranking. */
 export type Outcome =
   | { code: "eligible" }
@@ -71,7 +78,7 @@ export interface RunResult {
   taxDuring: number;
   taxAtExit: number;
   series: MonthPoint[];
-  /** Named intermediate figures a page or test needs (real gain, withheld, refund, alternative bases). */
+  /** Named intermediate figures a page or test needs (real gain, withheld, refund, the tax at the full rate). */
   detail: Record<string, number>;
   flags: Flag[];
   labels: Label[];

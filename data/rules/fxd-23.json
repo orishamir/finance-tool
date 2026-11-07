@@ -1,0 +1,46 @@
+{
+  "id": "FXD-23",
+  "title": "What a structured deposit costs",
+  "title_he": "כמה עולה פיקדון מובנה",
+  "text_he": "בנק רשאי לגבות עמלה רק על שירות שמופיע בתעריפון המלא, ובתעריפון אין חלק לפיקדונות, ולכן אין עמלה על פתיחה או החזקה של פיקדון מובנה. העלות גלומה בנוסחה: לפי רשות ניירות ערך הריבית תלויה בביצועי נכס הבסיס, והמפקיד לא מקבל בהכרח את תשואתו. אף כלל שנקרא לא מחייב את הבנק לגלות כמה הוא שומר לעצמו בתוך הנוסחה.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-deposit",
+    "conditional-return",
+    "issuer-conflict"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Structure.pdf#page=5",
+      "title": "עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, רשות ניירות ערך, 4.5.2026",
+      "title_he": "עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, רשות ניירות ערך, 4.5.2026",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "תלויה בביצועי נכס הבסיס על פי נוסחה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.boi.org.il/media/rauj0a4n/460.pdf#page=3",
+      "title": "הוראת ניהול בנקאי תקין 460",
+      "title_he": "הוראת ניהול בנקאי תקין 460",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "s.11 p.3",
+      "locator_he": "סעיף 11 עמוד 3",
+      "page": 3,
+      "checked": "2026-11-07"
+    }
+  ]
+}

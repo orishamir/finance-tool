@@ -43,7 +43,7 @@ export function IndexCard({ reading, ranked, known, chosenId, onChoose }: IndexC
             <Tpl t={t.cheapest} vars={{ broker: <bdi>{reading.way.providerName}</bdi>, fund: <bdi>{reading.way.fundName}</bdi> }} />
           </p>
           {!ranked && <p className="text-xs text-muted-foreground">{t.notRun}</p>}
-          <Link to={indexPath(chosen!.id)} className="text-link hover:underline min-h-9 inline-flex items-center self-start">
+          <Link to={indexPath(chosen!.id)} className="text-link hover:underline min-h-target inline-flex items-center self-start">
             {t.all}
           </Link>
         </>
@@ -67,7 +67,7 @@ export function IndexCard({ reading, ranked, known, chosenId, onChoose }: IndexC
           );
         })}
         {chosenId && (
-          <Button variant="quiet" className="text-sm min-h-9" onClick={() => onChoose(undefined)}>
+          <Button variant="quiet" className="text-sm min-h-target" onClick={() => onChoose(undefined)}>
             {t.clear}
           </Button>
         )}

@@ -228,11 +228,11 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         )}
         {hasInsurance && earlyAge && (
           <Sentence tone="muted">
-            {copy.pension.none.before} <Num value={earlyAge} display={String(earlyAge.value)} />.
+            <Term id="קצבת זקנה">{copy.pension.none.pension}</Term> <Term prefix="מ" id="קרן פנסיה">{copy.pension.none.fund}</Term> {copy.pension.none.after} <Num value={earlyAge} display={String(earlyAge.value)} />.
           </Sentence>
         )}
         <Sentence tone="muted">
-          {copy.hishtalmut.assumption.before} {returnPct && <Num value={returnPct} />} {copy.hishtalmut.assumption.middle} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after} {copy.pension.todayMoney}
+          <Term prefix="ה" id="תשואה">{copy.hishtalmut.assumption.ret}</Term> {copy.hishtalmut.assumption.before} {returnPct && <Num value={returnPct} />} {copy.hishtalmut.assumption.middle} <Term prefix="וה" id="אינפלציה">{copy.hishtalmut.assumption.inflation}</Term> {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after} {copy.pension.todayMoney}
         </Sentence>
       </div>
       <RulesLine ids={[...data.ruleIds, ...model.rules.filter((r) => /^(PEN|TXP)-/.test(r))].filter((r, i, a) => a.indexOf(r) === i)} />

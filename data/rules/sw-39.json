@@ -66,19 +66,6 @@
       "locator": "p.8, reg. 9 as",
       "page": 8,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, נוסח משולב (Nevo, mirror of the regulations)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 3(א)(11א) and 3(ב)(1)",
-      "quote": "למעט לפי – (1) פסקאות (8) עד (12) שבה",
-      "checked": "2026-10-26"
     }
   ]
 }

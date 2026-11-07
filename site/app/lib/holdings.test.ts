@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { buildCompareBundle } from "./compare.server";
 import type { CompareBundle, RunGoal } from "./compare";
 import { buildHoldingsBundle } from "./holdings.server";
-import { draftOf, holdingPlan, liquidityOf, mergedRules, prefillFees } from "./holdings";
+import { buildCtx, draftOf, holdingPlan, liquidityOf, mergedRules, prefillFees, viewOf } from "./holdings";
 import type { Holding } from "./state";
 import { entered } from "./value";
 
@@ -257,5 +257,22 @@ describe("liquidity of a study fund (TXH-09)", () => {
     expect(hp).toMatchObject({ ok: true });
     const none = holdingPlan({ ...h, firstDepositOverSix: undefined } as never, bundle, { years: 10, name: "g", run: runGoal }, rules);
     expect(none).toMatchObject({ ok: false, reason: "needs-first-deposit" });
+  });
+});
+
+describe("the worth at the class average says the cut is held (D90, extended the same day)", () => {
+  it("a study fund's statement fee above its class mean: the worth counts the lower fee for PF-13's five years, and the card is told so", () => {
+    const hb = buildHoldingsBundle();
+    const track = hb.tracks.find((t) => t.w === "keren-hishtalmut" && typeof t.fb.value === "number" && (t.fb.value as number) < 1.5)!;
+    const ctx = buildCtx(hb, bundle, runGoal);
+    const v = viewOf(holding({ feeBalance: entered(1.5, "pct_per_year", day), track: { fundId: track.id, name: track.n } }), ctx);
+    if (v.fees.kind !== "ok") throw new Error(`no run: ${JSON.stringify(v.fees)}`);
+    expect(v.fees.cost.atAverage).toBeDefined();
+    expect(v.fees.cost.atAverageHeld).toMatchObject({ years: { value: 5 }, ends: true });
+    // a horizon that ends inside the five years: the cut covers it all, so nothing is said (the line keeps its room)
+    const short = viewOf(holding({ feeBalance: entered(1.5, "pct_per_year", day), track: { fundId: track.id, name: track.n } }), buildCtx(hb, bundle, { ...runGoal, horizonYears: 4 }));
+    if (short.fees.kind !== "ok") throw new Error("no run");
+    expect(short.fees.cost.atAverage).toBeDefined();
+    expect(short.fees.cost.atAverageHeld).toMatchObject({ ends: false });
   });
 });

@@ -1,0 +1,103 @@
+{
+  "task": "not-covered",
+  "persona": "student-small-amounts",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:12:25.455Z",
+  "structured": {
+    "answer": "Okay, so the page \"מה האתר עוד לא מכסה\" lists stuff it can't calculate yet: ETC, LBMA gold price, corporate bonds (אג\"ח קונצרנית), Israel bonds (אגרת בונדס), a digital forex wallet, profit-sharing life insurance, ביטוח מנהלים, gold funds, structured products, managed currency funds, managed accounts and more, all marked \"לא מחושב\". Honestly though, it says those are \"מוצרים\" and then puts a debt arrangement, a rating company, a gold price and an exchange fee in there, none of which are things you can buy. So I'm only half trusting the list. At least it doesn't seem to mention plain index funds, which is the thing I care about.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top heading vs. the cards",
+        "why": "The subtitle promises 'מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף', but then there are cards for 'הסדר חוב', 'חברת דירוג', 'LBMA Gold Price AM / PM' and 'עמלת חליפין'. Those are a process, a company, a price and a fee, not products. So I couldn't tell which cards are real options I could actually use"
+      },
+      {
+        "where": "'מצב הכיסוי' blocks with 'חסום: שאלה פתוחה אחת' and 'MF-28'",
+        "why": "I didn't know if that means it's nearly done or blocked for good. And 'MF-28' is just a code to me"
+      },
+      {
+        "where": "'נסגר ב-24.10.2026' crossed out",
+        "why": "Is that closed or not closed? The strikethrough confused me"
+      }
+    ],
+    "used": [
+      "Heading 'מה האתר עוד לא מכסה' and subtitle",
+      "Red banner: 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.'",
+      "Card titles plus the red 'לא מחושב' tags",
+      "Line 'כשייסגר: יופיע במדריך... ובעמודים \"השקעה במדד\" ו\"איזו קרן לקנות\"'"
+    ],
+    "skimmed": [
+      "'מה ידוע' sentences on each card",
+      "'נקרא גם' lines",
+      "Screens 3–5, titles only"
+    ],
+    "skipped": [
+      "Blue law/source links and dates",
+      "'מקור ראשי' and 'לפי החברה' badges",
+      "'חוקים וכללים · N' pills",
+      "Screens 6–10, got bored after screen 5"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA",
+      "אג\"ח קונצרנית",
+      "אגרת בונדס",
+      "היוון קצבה מוכרת",
+      "מסלולי האירוע (הוסטינג)",
+      "מנוטרלת מט\"ח",
+      "מענק",
+      "נע\"מ / ניירות ערך מסחריים",
+      "MF-28",
+      "לפי החברה",
+      "חסום: שאלה פתוחה אחת",
+      "מקור ראשי (עותק)"
+    ],
+    "not_found": [
+      "A short summary up top saying which everyday options (index fund, ETF, תעודת סל, קרן מחקה) ARE covered",
+      "Anything about small monthly amounts or fees",
+      "A count of how many items are on the list",
+      "Any timeline for when items will be covered"
+    ],
+    "findings": [
+      {
+        "what": "The heading promises 'מוצרים', but some items aren't products: 'הסדר חוב' (a debt arrangement), 'חברת דירוג' (a rating company), 'LBMA Gold Price AM / PM' (a price) and 'עמלת חליפין' (a fee). That makes me doubt the whole list",
+        "where": "Cards on screens 1, 3, 4, 5"
+      },
+      {
+        "what": "It's an endless grid of near-identical cards with no summary or count, so I couldn't tell how long it goes. I got bored around screen 5",
+        "where": "Whole page"
+      },
+      {
+        "what": "Every card is stuffed with legal citations and law links. It feels like a government form, not something you can read on a phone",
+        "where": "Blue source lines on every card"
+      },
+      {
+        "what": "Jargon codes like 'MF-28' and the crossed-out 'נסגר ב-24.10.2026' with no explanation",
+        "where": "Screen 5, 'מצב הכיסוי' block"
+      },
+      {
+        "what": "The red 'לא מחושב' tag on every single card is a bit scary. It doesn't tell me whether the stuff I'd actually use is affected",
+        "where": "All cards"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 29355,
+    "turns": 7,
+    "usd": 0.1295028,
+    "input": 8,
+    "cacheWrite": 9669,
+    "cacheRead": 26994,
+    "output": 2336,
+    "model": "claude-opus-5-5"
+  }
+}

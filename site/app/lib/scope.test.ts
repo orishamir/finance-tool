@@ -19,8 +19,11 @@ for (const f of readdirSync(join(root, "data/rules")).filter((x) => x.endsWith("
   rules.set(r.id, r);
 }
 
+/** A whole `<VariesByCompany … />`, its props' braces nested up to three deep: a `lead` may hold a term's mark (`lead={<>… <Term …>…</Term></>}`). */
+const VARIES = /<VariesByCompany\b(?:[^>{]|\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\})*\/>/g;
+
 function citedOutsideVaries(src: string): string[] {
-  const without = src.replace(/<VariesByCompany\b[^>]*\/>/g, "");
+  const without = src.replace(VARIES, "");
   return [...new Set([...without.matchAll(/["'`]([A-Z][A-Z0-9]*-[A-Z0-9]+)["'`]/g)].map((m) => m[1]!))].filter((id) => rules.has(id));
 }
 
@@ -63,6 +66,7 @@ describe("guide and exposure prose cites general rules only", () => {
   it("a company's term inside VariesByCompany is not counted", () => {
     expect(citedOutsideVaries(`<VariesByCompany ids={["CS-30"]} lead="x" /> <RulesLine ids={["CS-18"]} />`)).toEqual(["CS-18"]);
     expect(citedOutsideVaries(`<VariesByCompany ids={[{ rule: "CS-30", companies: ["harel"] }]} lead="x" />`)).toEqual([]);
+    expect(citedOutsideVaries(`<VariesByCompany ids={[{ rule: "CS-30", companies: ["harel"] }]} lead={<>x <Term id="y">y</Term></>} /> <RulesLine ids={["CS-18"]} />`)).toEqual(["CS-18"]);
   });
   // the validator's rule for a wrapper's company_terms, in the prose (review, 2026-10-26): a record that names several companies rarely
   // states the property for all of them, so its entry names those it does ({ rule, companies })
@@ -70,7 +74,7 @@ describe("guide and exposure prose cites general rules only", () => {
     const bare: string[] = [];
     for (const [file] of cites) {
       const src = readFileSync(join(root, file), "utf8");
-      for (const m of src.matchAll(/<VariesByCompany\b[^>]*\/>/g)) {
+      for (const m of src.matchAll(VARIES)) {
         for (const id of [...m[0].matchAll(/(?<!rule:\s*)["'`]([A-Z][A-Z0-9]*-[A-Z0-9]+)["'`]/g)].map((x) => x[1]!)) if ((rules.get(id)?.scope_institutions ?? []).length > 1) bare.push(`${id} in ${file}`);
       }
     }

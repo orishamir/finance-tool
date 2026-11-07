@@ -4,13 +4,13 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { ProvenanceProvider } from "../provenance";
+import { ProvenanceProvider, TermCard } from "../provenance";
 import { Disclosure, Sentence, Stat, StatRow } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
 import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
-import { keepTitleWhole } from "./name";
+import { gershayim, keepTitleWhole } from "./name";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -112,6 +112,14 @@ describe("PickList holds its height (#190)", () => {
     expect(out).toMatch(/aria-hidden="true" data-case-of="a" data-case="two" class="[^"]*absolute[^"]*invisible/);
     expect((out.match(/role="radio"/g) ?? []).length).toBe(1);
   });
+  it("the fold's button counts things, not rows: two rows that are one thing count once, and none already above the fold (independent check of pass 7: no test held countAs)", () => {
+    const more = (n: number) => `more ${n}`;
+    // a and b above the fold; c is b's twin (one thing), d and e are one thing too: two things behind the button, not three rows
+    const rows = [row("a"), row("b", { countAs: "x" }), row("c", { countAs: "x" }), row("d", { countAs: "y" }), row("e", { countAs: "y" })];
+    expect(renderToString(createElement(PickList, { label: "x", columns: "1fr", phoneLimit: 2, more, rows }))).toContain(">more 1<");
+    // without twins it counts each row
+    expect(renderToString(createElement(PickList, { label: "x", columns: "1fr", phoneLimit: 2, more, rows: ["a", "b", "c", "d"].map((k) => row(k)) }))).toContain(">more 2<");
+  });
 });
 
 describe("keepTitleWhole (fresh readers, round 3, 2026-11-07)", () => {
@@ -119,5 +127,23 @@ describe("keepTitleWhole (fresh readers, round 3, 2026-11-07)", () => {
     expect(keepTitleWhole('קסם, דוח שנתי "קסם MSCI AC World (4A) ETF מנוטרלת דולר" (1147362)')).toBe('קסם, דוח שנתי ⁧"קסם MSCI AC World (4A) ETF מנוטרלת דולר"⁩ (1147362)');
     expect(keepTitleWhole('קסם, דוח שנתי "קסם (4A) KTF ת"א 35" (5124490), 30.6.2026')).toBe('קסם, דוח שנתי ⁧"קסם (4A) KTF ת״א 35"⁩ (5124490), 30.6.2026');
     expect(keepTitleWhole("iShares Core S&P 500 UCITS ETF annual report")).toBe("iShares Core S&P 500 UCITS ETF annual report");
+  });
+});
+
+// 2026-11-07 (independent check of the glossary sweep): a card's "נקרא גם" names showed the data's straight quote (ני"ע, אג"ח).
+describe("a glossary card writes every abbreviation with its gershayim (copy 10.4)", () => {
+  it("gershayim turns a quote between two Hebrew letters into ״ and leaves other quotes alone", () => {
+    expect(gershayim('ני"ע')).toBe("ני״ע");
+    expect(gershayim('אג"ח, מט"ח')).toBe("אג״ח, מט״ח");
+    expect(gershayim('"קרן" S&P "500"')).toBe('"קרן" S&P "500"');
+  });
+  it("the card's name and its other names", () => {
+    const term = { he: 'מק"מ', explanation: "x", variants: ['ני"ע', 'קופ"ג'], ruleIds: [], source: null, where: [], wrapperIds: [], exposureIds: [] };
+    const out = renderToString(
+      createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, terms: { [term.he]: term } }, children: createElement(TermCard, { id: term.he, data: { ...data, terms: { [term.he]: term } } }) })),
+    );
+    expect(out).toContain("מק״מ");
+    expect(out).toContain("ני״ע · קופ״ג");
+    expect(out).not.toMatch(/[א-ת](?:"|&quot;)[א-ת]/);
   });
 });

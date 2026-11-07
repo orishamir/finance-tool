@@ -12,7 +12,7 @@ export function EmploymentInferredNote({ show }: { show: boolean }) {
   return (
     <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2" data-employment-inferred>
       <span>{r2.result.employmentInferred}</span>
-      <Link to="/goal" className="text-link min-h-9 inline-flex items-center hover:underline">
+      <Link to="/goal" className="text-link min-h-target inline-flex items-center hover:underline">
         {r2.result.employmentInferredChange}
       </Link>
     </p>

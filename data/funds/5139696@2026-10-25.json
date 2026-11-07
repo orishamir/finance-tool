@@ -205,8 +205,16 @@
       {
         "year": 2025,
         "fund_pct": 18.2,
-        "tracking_pct": 20.32
+        "tracking_pct": 20.32,
+        "fees_charged": {
+          "fixed": 0,
+          "variable": -0.215,
+          "trustee": 0.03
+        }
       }
+    ],
+    "years_printed": [
+      2025
     ],
     "source": {
       "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732864-00.pdf",
@@ -215,7 +223,15 @@
       "strength": "institution"
     },
     "page": 8,
-    "checked": "2026-10-25"
+    "fees_page": 11,
+    "changes_page": 10,
+    "variable_rate_since": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "MSCI WORLD INDEX - NTR",
+      "dividends": "net",
+      "page": 2
+    }
   },
   "snapshot": "2026-10-25"
 }

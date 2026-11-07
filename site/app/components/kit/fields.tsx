@@ -233,7 +233,7 @@ export function RangeField(props: RangeFieldProps) {
                 {error}
               </span>
             ) : (
-              <button type="button" onClick={onReset} className={cx("relative h-5 text-xs text-link hover:underline whitespace-nowrap after:absolute after:inset-x-0 after:-top-4 after:-bottom-2", !(isEntered && !disabled) && "invisible")}>
+              <button type="button" onClick={onReset} className={cx("h-5 tap-area text-xs text-link hover:underline whitespace-nowrap", !(isEntered && !disabled) && "invisible")}>
                 {buttons.resetOne}
               </button>
             )}

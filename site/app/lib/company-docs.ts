@@ -1,6 +1,7 @@
 // "מה כתוב אצל החברות" on the rules page (founder, 2026-11-01): which company documents speak of what a claim is about. A company's
 // document is never general (D30): each row names its company, leads to the page in the document, and the site does not sum it up.
 import { documentTopicWords } from "./search-aliases";
+import { isPdfUrl, sourceHref } from "./sources";
 
 export type DocGroup = "bank" | "fund" | "other";
 export const docGroups: DocGroup[] = ["bank", "fund", "other"];
@@ -39,8 +40,8 @@ export function docsForTopics(docs: CompanyDoc[], topics: string[]): (CompanyDoc
     .filter((d) => d.pages.length > 0);
 }
 
-/** A link to the page inside the document: a PDF opens at the page, another document at its start. */
-export const pageHref = (url: string, page: number) => (/\.pdf($|[?#])/i.test(url) ? `${url.split("#")[0]}#page=${page}` : url);
+/** A link to the page inside the document: a PDF opens at the page (any `#` it had gives way), another document at its start. */
+export const pageHref = (url: string, page: number) => sourceHref({ url: isPdfUrl(url) ? url.split("#")[0]! : url, page });
 
 /** An edition for the table: "2026-03-15" as 15.03.2026, "2026-03" as 03.2026, anything else as it stands. */
 export function editionText(version: string | null): string | null {

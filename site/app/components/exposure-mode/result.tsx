@@ -5,18 +5,18 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Link, useNavigate } from "react-router";
 import { decompose, relativeGap } from "@finance-tool/engine";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, r5, system } from "../../copy";
+import { r2, r5, scnCompare, system } from "../../copy";
 import { AssumptionChips, AssumptionsPanel } from "../compare/assumptions";
 import { EnteredReturnCaveat, HorizonDefaultedNote } from "../compare/why";
 import { BiggestDifference } from "../compare/why";
-import { countForm } from "../../lib/compare";
+import { blockedMarks, countForm, keepsFromRank } from "../../lib/compare";
 import { useValueMode } from "../../lib/mode-store";
 import type { FormData } from "../compare/goal-form";
 import { goalTitle } from "../compare/goal-form";
 import { DimensionChecklist, type ChecklistRowView } from "../guide/sections";
 import { Num, NumberLegend, RulesLine } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Callout, Card, CoverageFold, Disclosure, SegmentedControl, TableCols, Tag, useFlip } from "../kit";
+import { BlockedGroups, Callout, Card, CoverageFold, Disclosure, SegmentedControl, TableCols, Tag, useFlip } from "../kit";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { forgetRevisit, useRevisit } from "../revisit/use-revisit";
 import { computed } from "../../lib/value";
@@ -275,30 +275,32 @@ function marksOf(bundle: CompareBundle, view: ExposureResultView): ChecklistRowV
       (dimOptions.get(d) ?? dimOptions.set(d, new Set()).get(d)!).add(r.id);
     }
   }
-  const blocked = new Map<string, { code: string; options: Set<string> }>();
-  for (const r of [...view.ranked, ...view.listed]) {
-    const w = r.holding.wrapperId ? byWrapper.get(r.holding.wrapperId) : undefined;
-    for (const [d, m] of Object.entries(w?.record.dimensions ?? {})) {
-      if (!m.startsWith("blocked:")) continue;
-      const b = blocked.get(d) ?? { code: m.slice("blocked:".length), options: new Set<string>() };
-      b.options.add(r.id);
-      blocked.set(d, b);
-    }
-  }
+  const blocked = blockedMarks([...view.ranked, ...view.listed].map((r) => ({ id: r.id, dimensions: (r.holding.wrapperId ? byWrapper.get(r.holding.wrapperId) : undefined)?.record.dimensions })));
   const names = Object.fromEntries(view.rows.map((r) => [r.id, r.entry.name]));
   return bundle.checklist.map((row): ChecklistRowView => {
     const rules = [...(dimRules.get(row.id) ?? [])];
     const b = blocked.get(row.id);
     const mark: ChecklistRowView["mark"] = rules.length > 0 ? "covered" : b ? "blocked" : "na";
-    const options = rules.length > 0 ? [...(dimOptions.get(row.id) ?? [])] : b ? [...b.options] : [];
+    const options = rules.length > 0 ? [...(dimOptions.get(row.id) ?? [])] : b ? b.options : [];
     return {
       id: row.id,
       name: row.name,
       explanation: mark === "blocked" ? row.explanation.replace(/[.\s]*$/, ".") : row.explanation,
       mark,
-      ...(b && mark === "blocked" ? { code: b.code } : {}),
+      ...(b?.code && mark === "blocked" ? { code: b.code } : {}),
       rules,
-      applies: options.length > 0 ? <span className="text-xs text-muted-foreground">{mark === "blocked" ? r2.result.checklistBlocks : r2.result.checklistAffected} {options.map((id) => names[id] ?? id).join(", ")}</span> : undefined,
+      applies:
+        options.length === 0 ? undefined : mark === "blocked" && b ? (
+          <BlockedGroups lead={keepsFromRank(row.id) ? r2.result.checklistBlocks : scnCompare.blockedFor} groups={b.groups} names={names} chips={!b.code} />
+        ) : (
+          <>
+            <span className="text-xs text-muted-foreground">
+              {r2.result.checklistAffected} {options.map((id) => names[id] ?? id).join(", ")}
+            </span>
+            {/* a covered row still shows the options blocked on it in their own record, as the goal comparison does (third check, 2026-11-07) */}
+            {b && <BlockedGroups lead={scnCompare.blockedFor} groups={b.groups} names={names} tone="blocked" />}
+          </>
+        ),
     };
   });
 }

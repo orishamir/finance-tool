@@ -1,0 +1,47 @@
+{
+  "id": "FXD-24",
+  "title": "Getting the money out of a structured deposit",
+  "title_he": "איך מוציאים כסף מפיקדון מובנה",
+  "text_he": "פיקדון מובנה הוא פיקדון בנקאי, ולכן יציאה ממנו לפני המועד, אם הבנק מתיר אותה, עוברת בטופס לפי כללי הגילוי הנאות. רשות ניירות ערך מתארת את הפיקדונות המובנים של הבנקים כפיקדונות שאי אפשר לפרוע לפני סוף התקופה. לפי עמדת סגל מ-4.5.2026, מוצר בנקאי שעוקב אחרי מדד ניירות ערך נשאר פיקדון רק אם לפחות 90% מהקרן מובטחים ורק אם עוברים לפחות שלושה חודשים עד שאפשר לפדות אותו.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Structure.pdf#page=7",
+      "title": "עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, רשות ניירות ערך, 4.5.2026",
+      "title_he": "עמדת סגל משפטית בדבר מוצר מובנה עוקב מדדים, רשות ניירות ערך, 4.5.2026",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "והעדר אפשרות פירעון אלא בתום",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf#page=5",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, Bank of Israel's consolidated copy",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.7 p.5, s.10 p.6",
+      "locator_he": "סעיף 7 עמוד 5, סעיף 10 עמוד 6",
+      "page": 5,
+      "checked": "2026-11-07",
+      "qualifier": "(state body's consolidated copy)"
+    }
+  ]
+}

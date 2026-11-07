@@ -1,0 +1,84 @@
+{
+  "case": "live-04-not-covered-wrong-entries",
+  "stamp": "{\"keys\":[{\"id\":\"list-holds-what-it-is-not\",\"problem\":\"The page says it lists the products the site knows but cannot yet explain, yet many of its entries are not products at all: a fee, a fund's label, a gold price benchmark, a role, an event, a grant. A reader cannot trust that the list says what is really missing, and a fee the site does handle elsewhere shows up as unknown, so the whole list reads as unchecked.\",\"where\":\"the cards of the list under the title and subtitle at the top (for example the cards of an exchange fee, a gold price, a rating company, a debt settlement)\",\"kind\":\"general\"},{\"id\":\"bare-code\",\"problem\":\"Where a card says what blocks it, some lines show only an internal code (letters and a number) instead of the question in words, so the reader cannot tell what is still open.\",\"where\":\"the 'what blocks it' line of a few cards, beside the words 'open question' or 'set on'\",\"kind\":\"general\"},{\"id\":\"fragment-no-noun\",\"problem\":\"Lines under 'what was closed' read as fragments, a struck-out date followed by a bare number and a link, with no noun saying what the number counts or what was closed, so they mean nothing to a reader.\",\"where\":\"the 'what was closed' lines of the open cards\",\"kind\":\"general\"},{\"id\":\"source-names-not-for-reader\",\"problem\":\"Some source lines name the source in English or as a copy (a wiki copy, a 'hosted copy', an English office name inside the Hebrew page) and still label it a primary source, which tells a reader neither who the source is nor whether to trust it.\",\"where\":\"the source line under 'what is known' on a few cards\",\"kind\":\"general\"},{\"id\":\"same-promise-every-card\",\"problem\":\"Every open card ends with the same long promise of everything that will appear once it is closed (several pages and features named), the same words on each, more than the reader can believe will happen for each entry.\",\"where\":\"the line starting 'when it is closed' at the bottom of each open card\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 0,
+        "why": "Finding 4 says the products are ones the reader wouldn't use, but no finding says many entries aren't products at all or that the list looks unchecked."
+      },
+      {
+        "id": "bare-code",
+        "rank": 3,
+        "why": "Finding 3 says the status codes in the coverage-status sections mean nothing to a regular person, which matches the complaint about bare internal codes shown instead of the question in words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 3,
+        "why": "Finding 3 says the crossed-out dates in the status sections mean nothing to a reader, which is a clear part of the complaint about struck-out-date fragments with no noun."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 2 complains that source lines are full of law names and legal links, not that sources are named in English or as copies while still being called primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 complains that the cards look alike and the list has no grouping, not that every card ends with the same long, unbelievable promise."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0295394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "list-holds-what-it-is-not",
+        "rank": 0,
+        "why": "No finding says the list holds entries that aren't products, or that a fee the site handles elsewhere shows up as unknown; finding 4 is about products the reader wouldn't use, not about what belongs in the list."
+      },
+      {
+        "id": "bare-code",
+        "rank": 3,
+        "why": "Finding 3 says status codes in the coverage sections mean nothing to a regular person, which is the person's complaint that internal codes appear instead of the question in words."
+      },
+      {
+        "id": "fragment-no-noun",
+        "rank": 3,
+        "why": "Finding 3 also says crossed-out dates mean nothing, a clear part of the person's complaint that the struck-out date lines have nothing saying what they refer to."
+      },
+      {
+        "id": "source-names-not-for-reader",
+        "rank": 0,
+        "why": "Finding 2 objects that the source lines are full of law names and read like a government document, not that sources are named in English or as copies while still labelled primary."
+      },
+      {
+        "id": "same-promise-every-card",
+        "rank": 0,
+        "why": "Finding 1 says the cards look alike and the list is too long, but nothing mentions the same long promise repeated at the bottom of each open card."
+      }
+    ],
+    "liked": [],
+    "usd": 0.029083400000000002
+  },
+  "third": null,
+  "ranks": {
+    "list-holds-what-it-is-not": 0,
+    "bare-code": 3,
+    "fragment-no-noun": 3,
+    "source-names-not-for-reader": 0,
+    "same-promise-every-card": 0
+  },
+  "agreed": {
+    "list-holds-what-it-is-not": true,
+    "bare-code": true,
+    "fragment-no-noun": true,
+    "source-names-not-for-reader": true,
+    "same-promise-every-card": true
+  },
+  "against": {},
+  "usd": 0.0586228
+}

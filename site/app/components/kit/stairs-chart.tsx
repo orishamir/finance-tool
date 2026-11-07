@@ -148,7 +148,8 @@ export function StairsChart({
               {first ? (
                 <>
                   <rect x={x} y={y(c.level)} width={bw} height={floor - y(c.level)} rx={3} className={FILL.start} />
-                  {c.open && <rect x={x + 1} y={y(c.level) + 1} width={bw - 2} height={floor - y(c.level) - 2} rx={3} className="fill-card stroke-chart-marker" strokeWidth={1.5} />}
+                  {/* never a negative height: a plan with no money puts the first bar on the floor (independent check of pass 7: "-2" in the console) */}
+                  {c.open && <rect x={x + 1} y={y(c.level) + 1} width={bw - 2} height={Math.max(0, floor - y(c.level) - 2)} rx={3} className="fill-card stroke-chart-marker" strokeWidth={1.5} />}
                   {/* the axis does not begin at zero: a break mark across the foot of the bar */}
                   <path d={`M${x} ${floor - 12}l${bw / 6} -5l${bw / 3} 10l${bw / 3} -10l${bw / 6} 5`} fill="none" className="stroke-card" strokeWidth={3} />
                 </>

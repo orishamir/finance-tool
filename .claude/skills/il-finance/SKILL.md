@@ -55,7 +55,7 @@ The project's rule base (`docs/product.md` 3.8). 1073 rules in 31 topic files un
 | `bank-product-names.md` (BPN) | Per-bank deposit and savings-plan names |
 | `switching-and-transfers.md` (SW) | Switching playbook per wrapper |
 | **Tier 2** | |
-| `savings-policies-and-executive-insurance.md` (INS), `corporate-bonds.md` (CORP), `managed-and-robo-portfolios.md` (MGD), `fx-and-structured-deposits.md` (FXD), `reits-and-gold-funds.md` (RG) | Tier-2 instruments, each with a graduation status |
+| `savings-policies-and-executive-insurance.md` (INS), `corporate-bonds.md` (CORP), `managed-and-robo-portfolios.md` (MGD), `fx-and-structured-deposits.md` (FXD), `reits-and-gold-funds.md` (RG), `single-shares.md` (SHR) | Tier-2 instruments, each with a graduation status |
 | **About the base** | |
 | `README.md` | Conventions, file template, dimension vocabulary |
 | `coverage.md` | What product.md still lacks, founder decisions F1-F8, contradictions, corrections |

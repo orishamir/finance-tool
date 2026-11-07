@@ -1,0 +1,124 @@
+{
+  "task": "s19",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T17:14:32.607Z",
+  "structured": {
+    "answer": "I didn't choose anything. I'll go over it with my son or the bank. The only track I understood was \"אג\"ח ממשלתי\" (at מיטב: 4.9% for 3 years and 2.69% for 5 years), and I don't understand why the five-year number is lower. All the rest is shares and English letters.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Screen 1, the row of buttons under 'במה הכסף מושקע'",
+        "why": "Lots of buttons, some in English (s&p 500), and I didn't know which one was the 'safe' one. I only recognised 'אג\"ח ממשלתי'."
+      },
+      {
+        "where": "The table, the 'תשואה שנתית ממוצעת' column",
+        "why": "Two numbers per track, '3 שנים' and '5 שנים', and the five-year one is much lower. I didn't understand which one counts."
+      },
+      {
+        "where": "The 'מניות / מט\"ח' column",
+        "why": "Numbers above 100% (101%, 103%). It made no sense to me."
+      },
+      {
+        "where": "Screen 4",
+        "why": "I got tired. Lots of rows that look alike, and I lost track of which company I was in."
+      }
+    ],
+    "used": [
+      "The heading 'כל המסלולים בכל החברות' and the warning 'נתוני הרשות לא עודכנו מאז ספטמבר 2026'",
+      "The button 'תגמולים ואישית לפיצויים 182', already chosen",
+      "The track names in the table, especially 'גמל אג\"ח ממשלתי' at מיטב and at אלטשולר שחם",
+      "The 'ההחיסכון' percentage in each row",
+      "The company names: מיטב, מור, הפניקס, אלטשולר שחם, כלל"
+    ],
+    "skimmed": [
+      "The 'תשואה שנתית ממוצעת' column",
+      "The 'כסף מנוהל' column",
+      "The grey line at the top about the data and the sources",
+      "The grey row at each company's heading"
+    ],
+    "skipped": [
+      "The coloured circles",
+      "The 'מניות / מט\"ח' column",
+      "The fund numbers in turquoise (1486, 120...)",
+      "The search box",
+      "Screens 5 to 10"
+    ],
+    "unsure_meaning": [
+      "s&p 500 / S&P500",
+      "עוקב מדדי מניות, עוקב מדדים - גמיש",
+      "מט\"ח",
+      "כספי (שקלי)",
+      "בניהול אישי: כל חוסך מחליט במה להשקיע",
+      "123 ממקור, 123 מחושב, 123 הזנה",
+      "עוד לא דווח, with the orange circle",
+      "מבטיח תשואה / מבטיחת תשואה: is the profit guaranteed?",
+      "Percentages above 100% in stocks and foreign currency",
+      "'3 שנים' versus '5 שנים' in the returns",
+      "ההפקדה versus ההחיסכון, under the fees"
+    ],
+    "not_found": [
+      "A sentence that says plainly which track is safe, like a deposit",
+      "A comparison with a bank deposit",
+      "A big bank I know",
+      "An explanation of what to choose at my age"
+    ],
+    "findings": [
+      {
+        "what": "A dark screen, crowded with numbers, with pale grey writing on black. Hard to read even with glasses.",
+        "where": "The whole page, especially the explanation lines under the buttons and the column headings"
+      },
+      {
+        "what": "English letters right in the first buttons and the track names (s&p 500, S&P500). It feels like this isn't for me.",
+        "where": "Screen 1, the buttons under 'במה הכסף מושקע', and the table"
+      },
+      {
+        "what": "Stock and foreign-currency percentages above 100% (101%, 102%, 103%), which seem impossible",
+        "where": "The 'מניות / מט\"ח' column, for example מיטב 'גמל מניות' 101% and מור 'עוקב מדדים גמיש' 103%"
+      },
+      {
+        "what": "A government bond track that still shows 3% foreign currency, when I thought it was all safe, in Israel",
+        "where": "מיטב 'גמל אג\"ח ממשלתי', screen 1"
+      },
+      {
+        "what": "Two returns per track with no explanation of which one matters; the five-year one is lower than the three-year one in a safe track",
+        "where": "The 'תשואה שנתית ממוצעת' column, for example 4.9% versus 2.69%"
+      },
+      {
+        "what": "A warning that the data hasn't been updated since September, when it's already November",
+        "where": "The orange strip on screen 1"
+      },
+      {
+        "what": "'עוד לא דווח' and 'לא דווח' in some tracks, with no explanation",
+        "where": "מיטב 'ביטוחן מבטיח תשואה', מור 'הלכה', הפניקס 'גמולה מבטיחת תשואה'"
+      },
+      {
+        "what": "Rows that look the same with the same names at every company; it's easy to get lost in which company you are",
+        "where": "Screens 2 to 4"
+      },
+      {
+        "what": "Circles in colours that are close, turquoise and yellow; I couldn't tell them apart",
+        "where": "The circle column in the table"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 48886,
+    "turns": 6,
+    "usd": 0.2125824,
+    "input": 6,
+    "cacheWrite": 14698,
+    "cacheRead": 19572,
+    "output": 4553,
+    "model": "claude-opus-5-5"
+  }
+}

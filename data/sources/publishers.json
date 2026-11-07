@@ -43,6 +43,8 @@
   "interactivebrokers.ie": { "publisher": "Interactive Brokers Ireland", "publisher_he": "Interactive Brokers", "kind": "institution_doc", "mirror": null },
   "interactivebrokers.com": { "publisher": "Interactive Brokers", "publisher_he": "Interactive Brokers", "kind": "institution_doc", "mirror": null },
   "israelbonds.com": { "publisher": "Israel Bonds", "publisher_he": "Israel Bonds (בונדס)", "kind": "institution_doc", "mirror": null },
+  "israelbondsintl.com": { "publisher": "Development Company for Israel (International)", "publisher_he": "Development Company for Israel (International) (בונדס)", "kind": "institution_doc", "mirror": null },
+  "sec.gov": { "publisher": "U.S. SEC EDGAR (the issuer's own filing)", "publisher_he": "מאגר EDGAR של רשות ניירות הערך האמריקאית (מסמך שהמנפיק הגיש)", "kind": "official_pdf", "mirror": null },
   "leumi.co.il": { "publisher": "Bank Leumi", "publisher_he": "בנק לאומי", "kind": "institution_doc", "mirror": null },
   "bankleumi.co.il": { "publisher": "Bank Leumi", "publisher_he": "בנק לאומי", "kind": "institution_doc", "mirror": null },
   "bankhapoalim.co.il": { "publisher": "Bank Hapoalim", "publisher_he": "בנק הפועלים", "kind": "institution_doc", "mirror": null },

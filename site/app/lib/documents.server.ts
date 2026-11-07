@@ -14,6 +14,7 @@ import * as dataServer from "./data.server";
 import { companyLinks, ownDocuments } from "./institutions.server";
 import { companyTermsHref } from "./scope";
 import { readJsonCached } from "./read-cache.server";
+import { tariffDated, type TariffDated } from "./tariff-date";
 
 export type SectionId = "laws" | "regulators" | "exchange" | "institutions" | "secondary";
 export const sectionOrder: SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"];
@@ -245,7 +246,7 @@ export interface DataCard {
   lines?: number;
 }
 export interface DocumentData {
-  tariffs: (DataCard & { date: string | null })[];
+  tariffs: (DataCard & { dated: TariffDated })[];
   funds: DataCard[];
   deposits: DataCard[];
   series: DataCard[];
@@ -269,7 +270,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
     .map((s) => ({
       key: s.id,
       title: s.provider.name_he,
-      date: s.tariff.published ?? null,
+      dated: tariffDated(s.tariff, s.snapshot),
       missing: s.missing,
       lines: s.lines.length,
       // banks and brokers have their own page; a manager has its company page when the regulator's data names it; else the fees page

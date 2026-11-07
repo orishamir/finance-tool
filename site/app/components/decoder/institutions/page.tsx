@@ -6,9 +6,9 @@ import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { buttons, catalogue, companies as companiesCopy, r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn, IconExternal } from "../../icons";
-import { LeadTail, NumAfter, NumberLegend } from "../../provenance";
+import { NumAfter, NumberLegend } from "../../provenance";
 import { Breadcrumb, PageShell } from "../../shell";
-import { Button, Callout, Card, Disclosure } from "../../kit";
+import { Button, Callout, Card, Disclosure, LabelSheetHost, When } from "../../kit";
 import { PasteCard } from "../tracks";
 import { BrokerageGroupCard } from "./brokerage-card";
 import { CompanyTerms } from "../company-terms";
@@ -97,9 +97,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
             <NumberLegend />
             {tariff && !tariff.missing && tariff.stale && (
               <Callout tone="caution">
-                <LeadTail lead={copy.card.stale.before}>
-                  <bdi dir="ltr">{fmt.date(String(tariff.snapshot.value))}</bdi>
-                </LeadTail>
+                <When iso={String(tariff.snapshot.value)} lead={copy.card.stale.before} />
                 {copy.card.stale.after}
               </Callout>
             )}
@@ -133,6 +131,8 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
                   </Card>
                 </Disclosure>
               )}
+              {/* one sheet for the page's deposit-kind labels (kit LabelSheetHost) */}
+              <LabelSheetHost>
               {data.groups.map((g, i) => (
                 <Disclosure
                   key={g.wrapperId}
@@ -166,6 +166,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
                   </div>
                 </Disclosure>
               ))}
+              </LabelSheetHost>
               {/* in the page's column at every width since the card holds the account's details (D57 amended 2026-11-04) */}
               <div ref={account} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
                 <Disclosure

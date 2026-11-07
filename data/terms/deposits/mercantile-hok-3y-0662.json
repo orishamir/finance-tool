@@ -1,0 +1,177 @@
+{
+  "id": "mercantile-hok-3y-0662",
+  "bank": "mercantile",
+  "names": {
+    "447": [
+      "הו\"ק ל-3 שנים",
+      "פיקדון הוראות קבע ל 3 שנים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": [
+      "הו\"ק"
+    ]
+  },
+  "type_447": "הו\"ק ל-3 שנים",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 36,
+    "unit": "months",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק ל-3 שנים' קוד 0662, 'שלוש שנים'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed period 'שלוש שנים'; the product page names it 'פיקדון הוראות קבע ל 3 שנים'. Recorded as 36 months."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -2.75,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק ל-3 שנים' קוד 0662, 'שלוש שנים', 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'p-2.75': spread from prime -2.75 percentage points."
+  },
+  "rate_offered": {
+    "value": 2.0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע', שורת 'הו\"ק ל-3 שנים' קוד 0662, 'שלוש שנים', 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'p-2.75' with '2.0' beside it: the offered nominal annual rate before tax is prime less 2.75 points, 2.0% at prime 4.75% (rate type 'משתנה', 'לא צמוד'); the product page prints 'שיעור הריבית השנתית: p-2.75%'. Exit points 'There are exit stations', 'חודשית', remark 'תחנת יציאה לאחר 3 חודשים מיום ההפקדה כל חודש'; break 'קיימת עם קנס שבירה'. Product page: 'ריבית אי רצף תרד ב-0.04% כפוף לקבלת ריבית מינימלית של 0.02%'. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002)."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the 447 table's linkage column 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+        "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון הוראות קבע ל 3 שנים', 'מידע נוסף בפיקדון הוראות קבע ל 3 שנים'",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The product page prints 'מינימום הפקדה חודשית 50 ש\"ח,מקסימום הפקדה חודשית 30,000 ש\"ח'; the 447 table prints ' החל מ 50 עד 30000'."
+    },
+    "max": {
+      "value": 30000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+        "title": "בנק מרכנתיל, 'פיקדונות חיסכון בהפקדות חודשיות', 'פיקדון הוראות קבע ל 3 שנים', 'מידע נוסף בפיקדון הוראות קבע ל 3 שנים'",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound as printed; see min."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column); the page: 'שבירת הפיקדון (ככל והיא מאושרת על ידי הבנק) גורמת להקדמת התשלום ללקוח' and 'קנס השבירה ייקבע ביום השבירה על בסיס \"טבלת ריבית לווים\" המתעדכנת בבנק ברמה יומית'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 1
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "תחנת יציאה ראשונה 3 חודשים אחרי ההפקדה ואחר כך כל חודש. אפשר להוסיף פעם בחודש הפקדה חד-פעמית של עד 10,000 ₪. בחודש שבו לא מפקידים, הריבית יורדת ב-0.04%.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+    "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'פקדונות נוספים - שקלי', סינון 'פיקדון בהוראת קבע'",
+    "publisher": "Mercantile Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

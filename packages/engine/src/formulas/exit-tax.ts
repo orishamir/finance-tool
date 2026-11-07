@@ -52,10 +52,10 @@ export function surtax(
 
 /**
  * F-44 Kupat gemel lehashkaa, lump sum at any age. `τ = 0.25 × max(0, real)` on the real gain (TXK-07; in law since the
- * 2026-10-25 tax-bases research), with the 15%-of-nominal line (TXK-06 second limb) as the sensitivity the page shows (G-02).
+ * 2026-10-25 tax-bases research).
  */
-export function kglExitTax(real: number, nominalGain: number, realRate: number, nominalRate: number) {
-  return { tax: realRate * Math.max(0, real), alternative: nominalRate * Math.max(0, nominalGain) };
+export function kglExitTax(real: number, realRate: number): number {
+  return realRate * Math.max(0, real);
 }
 
 /**

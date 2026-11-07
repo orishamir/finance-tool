@@ -1,0 +1,114 @@
+{
+  "task": "not-covered",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:11:39.128Z",
+  "structured": {
+    "answer": "This page is a list of things the site can't calculate or explain yet: ETC, gold, corporate bonds, Israel Bonds, structured deposits, savings policies, managers' insurance, foreign-currency and dollar-linked deposits and more, all marked \"לא מחושב\". So I won't rely on it for my deposits yet. I'll ask my son or the bank.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screens 1-6, cards with 'מצב הכיסוי', 'חסום: שאלה פתוחה אחת', 'מה חוסם', 'מה נסגר'",
+        "why": "I couldn't follow what's blocked and what's been closed, or why some dates are crossed out"
+      },
+      {
+        "where": "Screen 1, the 'LBMA Gold Price AM / PM' card",
+        "why": "The heading promises products, but this is a gold price, so I started doubting the list"
+      },
+      {
+        "where": "Screen 6, the top-left card",
+        "why": "Its heading was cut off at the top of the screen, so I had to guess from the text and the open question that it's a foreign-currency deposit"
+      },
+      {
+        "where": "Screens 4-6",
+        "why": "Too many boxes, codes and red tags on a black background; I got tired and stopped after the sixth screen"
+      }
+    ],
+    "used": [
+      "Page heading 'מה האתר עוד לא מכסה' and the subtitle 'מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף'",
+      "Red box: 'החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם'",
+      "The red 'לא מחושב' tags",
+      "The card headings and the 'מה ידוע' lines on screens 1-6"
+    ],
+    "skimmed": [
+      "The 'מה ידוע' text on cards with words I don't know (ETC, מנוטרלת מט\"ח, מסלולי האירוח)",
+      "The 'כשייסגר: יופיע במדריך...' lines"
+    ],
+    "skipped": [
+      "The small light-blue law and source links",
+      "The grey 'נקרא גם' lines",
+      "The 'חוקים וכללים · N' tags and the dates",
+      "Screens 7-10",
+      "The top menu and the search"
+    ],
+    "unsure_meaning": [
+      "ETC",
+      "LBMA Gold Price AM / PM",
+      "LAYA",
+      "MF-28, TX2-01, TXA-28",
+      "מנוטרלת מט\"ח",
+      "מסלולי האירוח",
+      "נע\"מ",
+      "קרנות סל / קרן מחקה",
+      "מדד (seems not to be the price index)",
+      "לפי החברה (orange tag)",
+      "Crossed-out dates next to 'נסגר ב'",
+      "מקור ראשי (עותק)",
+      "חסום: שאלה פתוחה אחת"
+    ],
+    "not_found": [
+      "Anything about ordinary bank deposits or a regular savings plan compared with something safe that pays more",
+      "Whether the bank charges too much in fees",
+      "A simple sentence saying which of these is safe"
+    ],
+    "findings": [
+      {
+        "what": "The heading promises 'מוצרים', but the list also has things that aren't products: 'LBMA Gold Price' (a price), 'חברת דירוג' (a company), 'הסדר חוב' (a debt arrangement), 'עמלת חליפין' (a fee), 'היוון קצבה מוכרת' (an action), 'מענק' (a bonus on a deposit). This makes me doubt the whole list.",
+        "where": "Screens 1, 2, 3/4, 4, 5"
+      },
+      {
+        "what": "Black background, red tags on every card and a red warning box. It frightens me and is hard to read.",
+        "where": "Whole page, from screen 1"
+      },
+      {
+        "what": "The source links, the 'נקרא גם' lines and the 'כשייסגר' lines are too small and too pale to read even enlarged",
+        "where": "Every card"
+      },
+      {
+        "what": "The page opens with English letters (ETC, LBMA) and gold, not with deposits. It feels like it isn't for me.",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Codes like MF-28, TX2-01, TXA-28 and crossed-out dates mean nothing to me",
+        "where": "Screens 5-6"
+      },
+      {
+        "what": "The cards are long, there are many of them, and the cards and their text run in two side-by-side columns; I lose my place",
+        "where": "Screens 2-6"
+      },
+      {
+        "what": "One card's heading is cut off at the top of the screen, so I couldn't tell for sure what it was about",
+        "where": "Screen 6, top left"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40798,
+    "turns": 8,
+    "usd": 0.1783674,
+    "input": 8,
+    "cacheWrite": 12158,
+    "cacheRead": 27457,
+    "output": 3779,
+    "model": "claude-opus-5-5"
+  }
+}

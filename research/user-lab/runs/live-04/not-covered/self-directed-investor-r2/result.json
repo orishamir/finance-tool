@@ -1,0 +1,98 @@
+{
+  "task": "not-covered",
+  "persona": "self-directed-investor",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-07T16:03:36.598Z",
+  "structured": {
+    "answer": "Basically nothing on this page is computed yet. Every card is tagged \"לא מחושב\" until the tax and rules questions are settled. That covers ETCs, gold funds, currency-hedged funds, dollar deposits and FX fees, bonds and נע\"מ, structured products and deposits, ביטוח מנהלים and participating policies, קרן י', commuted pension, exempt payments and תיקון 190, REITs and digital portfolios. On top of that, single stocks, trading and derivatives, mortgages, physical real estate and ranking by past return are permanently out of scope.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Gaps between screenshots (e.g. cards cut at the top of 04, 05, 06)",
+        "why": "Some card titles weren't visible, so the list of uncovered products may be incomplete"
+      },
+      {
+        "where": "Open-question codes like MF-28, TX2-01, TXA-28",
+        "why": "Not explained; no idea what they refer to"
+      }
+    ],
+    "used": [
+      "Red banner: החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם",
+      "Card titles and 'לא מחושב' tags",
+      "Opened 'מצב הכיסוי' folds: 'חסום: שאלה פתוחה', 'עוד לא נרשמו סגירות'",
+      "Section 'מה האתר לא משווה ולא עושה'",
+      "Footer: אישי, לא מסחרי, בלי קישורי שיווק"
+    ],
+    "skimmed": [
+      "'מה ידוע' definitions on each card",
+      "Struck-through 'נסגר ב-' items in folds",
+      "Sources and dates under each card"
+    ],
+    "skipped": [
+      "Law citations and page references",
+      "Repeated 'כשייסגר: יופיע במדריך...' boilerplate",
+      "Top nav (מדריך, חברות ומסלולים, השקעה במדד)"
+    ],
+    "unsure_meaning": [
+      "MF-28 / TX2-01 / TXA-28 codes",
+      "'לפי החברה' tag, presumably the info comes from the company itself",
+      "'מקור ראשי (עותק)' vs 'מקור ראשי'",
+      "Card about a company the issuer must appoint for bondholders, probably נאמן; title cut off"
+    ],
+    "not_found": [
+      "Any number or cost figure I could compare with my broker",
+      "A clear count or summary of how many products are blocked",
+      "Who runs the site (no name, only 'אישי, לא מסחרי')",
+      "Any timeline for when the open questions will be closed"
+    ],
+    "findings": [
+      {
+        "what": "Every product card says 'לא מחושב', so nothing on the page gives a comparable figure",
+        "where": "All cards, plus the red banner at top"
+      },
+      {
+        "what": "FX conversion fee (עמלת חליפין), dollar deposits and currency-hedged funds aren't computed. These are exactly the costs relevant to someone holding US ETFs",
+        "where": "Cards עמלת חליפין, פיקדון מט\"ח, מנוטרלת מט\"ח, צמוד דולר"
+      },
+      {
+        "what": "Single stocks, trading and derivatives are permanently out of scope, and so is ranking by past return",
+        "where": "'מה האתר לא משווה ולא עושה' list at bottom"
+      },
+      {
+        "what": "The same boilerplate 'כשייסגר: יופיע במדריך...' repeats on every card, which is noise",
+        "where": "Inside 'מצב הכיסוי' folds"
+      },
+      {
+        "what": "Unexplained internal codes for open questions",
+        "where": "Folds on מנוטרלת/ניהול תיקים, פיקדון מט\"ח, ביטוח חיים cards"
+      },
+      {
+        "what": "Some information comes from the issuer itself ('לפי החברה'), e.g. LAYA wallet, LBMA gold",
+        "where": "LAYA and LBMA Gold cards"
+      },
+      {
+        "what": "No operator name, only 'אישי, לא מסחרי, בלי קישורי שיווק'. At least no broker is promoted",
+        "where": "Footer"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 45021,
+    "turns": 12,
+    "usd": 0.2646566,
+    "input": 8,
+    "cacheWrite": 22389,
+    "cacheRead": 28763,
+    "output": 3988,
+    "model": "claude-opus-5-5"
+  }
+}

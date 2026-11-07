@@ -3,7 +3,7 @@
 // illustrative guide timeline runs on are collected (method F-67, scenario S47); the workbench's
 // averages, bands and minimums arrive with R4.
 import { z } from "zod";
-import { feeBase, instrumentClass, isoDate, source, valueObject } from "../value.ts";
+import { feeBase, instrumentClass, isoDate, source, textFragment, valueObject } from "../value.ts";
 import { companyName } from "../scope.ts";
 
 const ruleIds = z.array(z.string().min(1));
@@ -13,7 +13,7 @@ const ruleIds = z.array(z.string().min(1));
  * PDF (the library's count, not the number printed on the sheet); `quote` is the document's own words,
  * at most 240 characters. A web page has only `quote`. Both optional: no page means not yet confirmed.
  */
-const place = { page: z.number().int().positive().optional(), quote: z.string().min(1).max(240).optional() };
+const place = { page: z.number().int().positive().optional(), quote: z.string().min(1).max(240).optional(), fragment: textFragment.optional() };
 const feeValue = valueObject.safeExtend({ source: source.extend(place) });
 
 export const feeLine = z.strictObject({
@@ -44,6 +44,12 @@ export const feeLine = z.strictObject({
   /** A-19: how long a discount lasts, and the list fee it reverts to. */
   discount_months: feeValue.optional(),
   reverts_to: feeValue.optional(),
+  /**
+   * D56 (2026-11-07): the document's own words that make the printed `rate` an offer, a rate conditional on a document that is not
+   * published (a discount letter sent after joining). The row shows the rate with these words; the ranking and the example price the
+   * line at `reverts_to` from the start. Requires `reverts_to`.
+   */
+  offer_he: z.string().min(1).max(240).optional(),
   names: z.strictObject({ tariff: z.array(z.string()) }),
 });
 
@@ -64,6 +70,7 @@ export const groupSource = z.strictObject({
   page: z.number().int().positive().optional(),
   row: z.number().int().positive().optional(),
   quote: z.string().min(1),
+  fragment: textFragment.optional(),
 });
 /**
  * A group price's numbers, as the words state them and nothing more (2026-11-04, own account on a house, F-101). Exactly one kind of price:
@@ -173,7 +180,7 @@ export const advertisingEntry = z.strictObject({
   verdict: z.enum(["contradicted", "offer", "not_found"]),
   /** The advert's own words, exactly as printed; the cells of one table row are joined with " … ". */
   claim_he: z.string().min(1).max(240),
-  claim_source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), seen: isoDate }),
+  claim_source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), seen: isoDate, fragment: textFragment.optional() }),
   /** The binding document's own words that differ; absent for `not_found`. Fragments of one place are joined with " … ". */
   binding_he: z.string().min(1).max(400).optional(),
   binding_source: z.strictObject({
@@ -185,6 +192,7 @@ export const advertisingEntry = z.strictObject({
     dated: isoDate,
     dated_from: z.enum(["printed", "file"]),
     checked: isoDate,
+    fragment: textFragment.optional(),
   }),
 });
 
@@ -213,7 +221,22 @@ export const feesSnapshot = z.strictObject({
     title: z.string().min(1),
     /** How the document was read: its parts, pages and dates per part, files read alongside, what it leaves out. Kept with the data, not shown. */
     notes: z.string().min(1).optional(),
-    published: isoDate.nullable(),
+    /** The date the document prints; a month (YYYY-MM) when it prints only a month ("11/2025"), so no day is invented (2026-11-07). */
+    published: z.union([isoDate, z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, "month must be YYYY-MM, 01 to 12")]).nullable(),
+    /**
+     * What the document prints instead, when it prints no date for the whole (`published` null; 2026-11-07, founder: a bare "no
+     * publication date" reads as a fault and says nothing). `part`: a date on each part and none for the whole, so the date of the part
+     * the site reads, the part as the site names it, and the date as printed (`date` null where the print is no real date, such as
+     * "06/02/20217"); `version`: a version printed in place of a date ("גרסת 04/2026" is `04/2026`); `none`: nothing printed. The data
+     * check asks for it on every latest record that has no `published` and was collected.
+     */
+    printed: z
+      .discriminatedUnion("kind", [
+        z.strictObject({ kind: z.literal("part"), part_he: z.string().min(1), date: isoDate.nullable(), as_printed: z.string().min(1) }),
+        z.strictObject({ kind: z.literal("version"), version: z.string().min(1) }),
+        z.strictObject({ kind: z.literal("none") }),
+      ])
+      .optional(),
     format: z.enum(["pdf", "html", "xlsx"]),
   }),
   snapshot: isoDate,

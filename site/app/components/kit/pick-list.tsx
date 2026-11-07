@@ -27,6 +27,8 @@ export interface PickRow {
    */
   cases?: { key: string; cells: ReactNode; marks?: string[] }[];
   caseKey?: string;
+  /** What the fold's button counts the row as, when two rows are one thing (the same fund in Tel Aviv and abroad): rows with one value count once. */
+  countAs?: string;
 }
 
 /**
@@ -141,7 +143,12 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   // a row that opens a group stays, so a group's heading is never hidden behind the fold, and the person's own rows stay
   const shownInFold = folds ? foldShown(rows.map((r) => ({ heading: !!r.heading, keep: !!r.keep, selected: r.selected })), phoneLimit!) : new Set<number>();
   const folded = (i: number) => folds && !shownInFold.has(i);
-  const hidden = rows.filter((_, i) => folded(i)).length;
+  // what the button counts: the things behind the fold, each once, and none already shown above it (pass 7: "עוד 15 קרנות" counted rows, the
+  // same fund in Tel Aviv and abroad twice)
+  const unit = (r: PickRow) => r.countAs ?? r.key;
+  const above = new Set(rows.filter((_, i) => !folded(i)).map(unit));
+  const hiddenRows = rows.filter((_, i) => folded(i)).length;
+  const hidden = new Set(rows.filter((r, i) => folded(i) && !above.has(unit(r))).map(unit)).size || hiddenRows;
   // the folded rows and the rows' other states are laid out unseen, out of the flow, and measured (a row's height depends on its words at
   // this width): the list holds the height of its tallest state, and the fold the height of its tallest rows
   useLayoutEffect(() => {
@@ -252,7 +259,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         </div>
         </Fragment>
       ))}
-      {hidden > 0 && more && (
+      {hiddenRows > 0 && more && (
         <button type="button" onClick={() => setOpen(true)} className="md:hidden text-link text-sm font-medium min-h-target px-4 text-start hover:underline">
           {more(hidden)}
         </button>

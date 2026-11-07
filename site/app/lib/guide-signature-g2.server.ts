@@ -4,13 +4,15 @@
 // becomes a `gap` (shown as "עוד לא חושב" with its reason).
 import type { CatalogEntry, DepositTerms, ExposureRecord, FundRecord, ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { loadCma, loadCmaFees, loadFees } from "./data.server";
+import { providentLists, providentPick, providentTerms } from "./compare.server";
 import type { Bundle } from "./engine";
-import { p05Value } from "./engine";
+import { p05Number, p05Value } from "./engine";
 import type { SignatureData } from "./guide-signature";
 import { accountRuns, buildInstrumentBundle } from "./guide-signature-bundle.server";
-import { hishtalmutTerms, pensionModel, rulesRead, runWith, type Employment } from "./guide-signature-g2";
+import { hishtalmutTerms, pensionModel, rulesRead, runWith, sideOf, type Employment } from "./guide-signature-g2";
 import { loadCatalog, loadExposures, regulatorAverageFees } from "./instruments.server";
 import { cmaFeeValue, computed, ownBy, ruleFigure, type SiteValue } from "./value";
+import { signatureFacts } from "../copy";
 
 /** What the builders of guide-signature.server.ts pass in (structurally the same as its private `Ctx`). */
 export interface G2Ctx {
@@ -138,6 +140,43 @@ function trackBundle(c: G2Ctx, wrapperId: string, track: IndexTrack): { bundle: 
   return { bundle: { record, p05: c.p05, terms: { fees: reg.fees }, feeValues: reg.feeValues, rules: [], runDate: c.t } };
 }
 
+/** A provident wrapper's bundle on one manager's binding documents (`providentTerms`, F-80): that manager's list, or the one P-05 names or F-80 picks. */
+function listBundle(c: G2Ctx, wrapperId: string, manager?: string): { bundle: Bundle; feeValues: Record<string, SiteValue> } | null {
+  const record = c.wrappers.find((w) => w.id === wrapperId);
+  if (!record) return null;
+  const spec = manager ? { ...(c.p05.instruments?.[wrapperId] ?? {}), tariff: manager } : c.p05.instruments?.[wrapperId];
+  const r = providentTerms(wrapperId, loadFees(), spec as never, c.allRules, c.t);
+  if (!r.terms) return null;
+  return { bundle: { record, p05: c.p05, terms: r.terms, feeValues: r.feeValues, rules: [], runDate: c.t }, feeValues: r.feeValues };
+}
+
+/**
+ * Rule 3 for the provident fund for investing (D89): how far the result moves with the managing company, over every manager whose binding
+ * documents are collected, each priced as the ranking prices it (F-80, D56, D83). The two at the ends on the example plan (P-05's amount,
+ * monthly deposit and horizon) ship as bundles, as the brokerage range does, so the visual can run them on any plan.
+ */
+function addManagerRange(d: SignatureData, c: G2Ctx) {
+  const months = 12 * p05Number(c.p05, "horizon_years");
+  const plan = { amount_now: p05Number(c.p05, "amount_now"), monthly_deposit: p05Number(c.p05, "monthly_deposit") };
+  const rows = providentLists(c.id, loadFees())
+    .map((l) => {
+      const b = listBundle(c, c.id, l.snap.id);
+      // the ranking run reads every rule; the shipped bundle keeps only those its runs read (`widen`)
+      const run = b ? runWith({ ...b.bundle, rules: Object.values(c.allRules) }, plan, months) : null;
+      return b && run && run.outcome.code === "eligible" ? { id: l.snap.id, name: l.snap.provider.name_he, gain: sideOf(run, plan.amount_now).gain, bundle: b.bundle, source: { url: l.snap.tariff.url, title: l.snap.tariff.title }, checked: l.snap.snapshot } : null;
+    })
+    .filter((x) => x !== null)
+    .sort((a, b) => a.gain - b.gain);
+  if (rows.length < 2) return;
+  const [worst, best] = [rows[0]!, rows[rows.length - 1]!];
+  const variants = plainVariants([12, 120, 240, 480]);
+  d.bundles["kgl-manager-worst"] = widen(worst.bundle, c, variants);
+  d.bundles["kgl-manager-best"] = widen(best.bundle, c, variants);
+  d.facts.managerWorstName = ownBy(textFact(worst.name, { source: { ...worst.source, publisher: worst.name, strength: "institution" }, checked: worst.checked }, signatureFacts.managerWorst), worst.name);
+  d.facts.managerBestName = ownBy(textFact(best.name, { source: { ...best.source, publisher: best.name, strength: "institution" }, checked: best.checked }, signatureFacts.managerBest), best.name);
+  d.facts.managerCount = computed(rows.length, "count", "F-80", {}, { today: c.t, about: signatureFacts.managerCount });
+}
+
 /** The bundle with the rules its runs may read, found by running the variants the visual can ask for (a bigger amount, an age of 65, a high salary). */
 function widen(bundle: Bundle, c: G2Ctx, variants: ((b: Bundle) => ReturnType<typeof runWith>)[]): Bundle {
   const rules = rulesRead(bundle, c.allRules, variants);
@@ -174,9 +213,9 @@ function addBrokerRange(d: SignatureData, c: G2Ctx) {
   const [worst, best] = [rows[0]!, rows[rows.length - 1]!];
   d.bundles["brokerage-worst"] = widen(worst.bundle, c, brokerVariants);
   d.bundles["brokerage-best"] = widen(best.bundle, c, brokerVariants);
-  d.facts.brokerWorstName = ownBy(textFact(worst.name, worst, "בית ההשקעות שהחשבון בו משאיר הכי מעט בתוכנית לדוגמה של האתר"), worst.name);
-  d.facts.brokerBestName = ownBy(textFact(best.name, best, "בית ההשקעות שהחשבון בו משאיר הכי הרבה בתוכנית לדוגמה של האתר"), best.name);
-  d.facts.brokerCount = computed(rows.length, "count", "F-63", {}, { today: c.t, about: "כמה בנקים ובתי השקעות שהתעריפון שלהם נאסף ושהאתר מחשב בשבילם את החשבון" });
+  d.facts.brokerWorstName = ownBy(textFact(worst.name, worst, signatureFacts.brokerWorst), worst.name);
+  d.facts.brokerBestName = ownBy(textFact(best.name, best, signatureFacts.brokerBest), best.name);
+  d.facts.brokerCount = computed(rows.length, "count", "F-63", {}, { today: c.t, about: signatureFacts.brokerCount });
   const own = loadFees().filter((x) => x.id === c.p05.instruments?.["brokerage-account"]?.tariff).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1);
   if (own) d.facts.brokerName = ownBy(textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך"), own.provider.name_he);
 }
@@ -259,24 +298,33 @@ export function buildProvident(c: G2Ctx): SignatureData {
   else d.gaps.push("bundle:brokerage-account");
   addBrokerRange(d, c);
   useBestBroker(d);
-  // the page's run is on the manager whose list fee it uses; the same manager's track on the index is the holding
-  const provider = loadFees().find((f) => f.lines.some((l) => l.applies_to.includes(c.id) && l.level === "list"))?.id;
+  // the page's run is on the manager whose list fee it uses (F-80: the one P-05 names, else the lowest on both bases); the same manager's track on the index is the holding
+  const fees = loadFees();
+  const provider = providentPick(c.id, fees, c.p05.instruments?.[c.id] as { tariff?: string } | undefined, c.allRules)?.id ?? fees.find((f) => f.lines.some((l) => l.applies_to.includes(c.id) && l.level === "list"))?.id;
   const pick = holding && provider ? sameIndexTrack(c.id, holding.exposure, { institution: provider }) : null;
-  const track = holding && pick ? (indexTracks(c, c.id, holding.exposure).find((t) => t.id === pick.trackId) ?? null) : null;
+  // a manager the catalogue does not map: its track on the index among the regulator's, by the exact company name its snapshot gives (as companyLinks)
+  const providerName = fees.find((f) => f.id === provider)?.provider.name_he.trim();
+  const byName = (t: IndexTrack) => !!providerName && t.company.trim() === providerName;
+  const tracks = holding ? indexTracks(c, c.id, holding.exposure) : [];
+  const track = holding ? (pick ? (tracks.find((t) => t.id === pick.trackId) ?? null) : ([...tracks].sort((a, b) => a.id - b.id).find(byName) ?? null)) : null;
   if (!holding) d.gaps.push("holding:brokerage");
   else if (!track || !track.fee) d.gaps.push("indexTrack");
   if (holding) addHoldings(d, c, holding, track, c.id);
-  if (track) {
-    const { bundle, gap } = trackBundle(c, c.id, track);
-    if (bundle) d.bundles[c.id] = widen(bundle, c, plainVariants([12, 120, 240, 480]));
-    else if (gap) d.gaps.push(gap);
-  }
+  // D89 (2026-11-07): the run is priced on the manager's binding documents, as the ranking prices it (F-80, D56, D83): the list rate
+  // for the discount period, then the most the bylaws allow. The regulator's average for the track is what was charged, not a price.
+  const listed = listBundle(c, c.id, provider);
+  if (track && listed) {
+    d.bundles[c.id] = widen(listed.bundle, c, plainVariants([12, 120, 240, 480]));
+    for (const k of ["balance", "afterBalance", "deposit", "afterDeposit", "discountYears", "discountMonths"] as const) if (listed.feeValues[k]) d.facts[`list_${k}`] = listed.feeValues[k]!;
+    // the line under the holding names the list's fee, not the regulator's average for the track; the managers' range is the lists'
+    for (const k of ["trackFee", "rangeMin", "rangeMax", "rangeCount", "rangeMinName", "rangeMaxName"]) delete d.facts[k];
+  } else if (track) d.gaps.push(`fees:${c.id}`);
+  addManagerRange(d, c);
   addFigures(d, c, [
     ["earlyAge", "TXK-10", "early_retirement_age"],
     ["exemptAge", "TXK-09", "age"],
     ["taxRate", "TXK-07", "rate"],
     ["taxRateLaw", "TXK-06", "rate"],
-    ["nominalRate", "TXK-06", "nominal_rate"],
     ["ceiling", "KGL-03", "ceiling"],
     ["brokerTaxRate", "TXS-09", "rate"],
   ]);

@@ -141,7 +141,7 @@ export function CoverageFold({ lead, openLabel, closeLabel, children, defaultOpe
       <summary className={cx("flex items-start", SUMMARY_BASE)}>
         <span className="flex flex-col gap-1">
           <span>{lead}</span>
-          <span className="text-sm text-link flex items-center gap-1 min-h-9">
+          <span className="text-sm text-link flex items-center gap-1 min-h-target">
             {open ? closeLabel : openLabel}
             <IconChevronDown size={16} className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
           </span>

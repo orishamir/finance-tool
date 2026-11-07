@@ -1,0 +1,178 @@
+{
+  "id": "yahav-hisachon-gamish-hadash",
+  "bank": "yahav",
+  "names": {
+    "447": [
+      "חסכון גמיש חדש"
+    ],
+    "app": [],
+    "ad": [
+      "חסכון גמיש"
+    ],
+    "abbrev": []
+  },
+  "type_447": "חסכון גמיש חדש",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 24,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/investments/deposits/",
+      "title": "בנק יהב, 'פיקדונות', 'פיקדונות בהוראות קבע', שורת 'חסכון גמיש', 'תקופת הפיקדון'",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The page prints 'הפקדות חודשיות לתקופה של 24 חודשים'; the rate board: 'פיקדון בהוראת קבע חודשית לתקופה של שנתיים בריבית משתנה על בסיס הפריים' (p.2); recorded as 24 months. The deposits page, under 'פיקדונות בהוראות קבע': 'חסכון גמיש' | 'הפקדות חודשיות לתקופה של 24 חודשים' | 'משתנה' | 'פיקדון שקלי בריבית משתנה, הנגזרת מריבית הפריים, בריבית דריבית חודשית, המאפשר הפקדות חודשיות בהוראת קבע.ניתן לשנות את סכום הוראת הקבע מדי חודש, להפסיק ולחדש הפקדות, לבצע הפקדה מזדמנת ולבצע משיכה חלקית או מלאה בתחנה.'; 'בחסכון גמיש סכום הפקדה מינימאלי - 200 ש\"ח. סכום הפקדה מקסימאלי - 5,000 ש\"ח.' Rate board read 2026-11-07 (library 124adbb22147699a, checked against the rendered page 2). The deposits page fetched by curl 2026-11-07 (library 322d2fa5d65f10a0); it is undated. The 447 table 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' and 'נוספים' (https://www.bank-yahav.co.il/all-savings/deposit-table/, a PDF created 05.10.2026) lists no standing-order plan."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -4.7,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית על פקדונות בריבית משתנה', 'סוג פיקדון - חסכון גמיש חדש', 'מרווח מ\"פריים\"' (עמ' 2)",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '-4.70%' as 'מרווח מ\"פריים\"' in the board's one column, headed 'מ-28 יום', for 'מ-200 ש\"ח'."
+  },
+  "rate_offered": {
+    "value": 0.05,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית על פקדונות בריבית משתנה', 'סוג פיקדון - חסכון גמיש חדש', 'ריבית שנתית' (עמ' 2)",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-07",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '0.05%' as both 'תעריפית' and 'מתואמת' in the column 'מ-28 יום', amount 'מ-200 ש\"ח' (-4.70% from prime 4.75%). The page: 'בריבית דריבית חודשית'. Neither the board nor the page says what 'מ-28 יום' refers to, or whether the plan renews. Rate board 'מחליף לוח קודם מיום 03/09/2026'. Rate board read 2026-11-07 (library 124adbb22147699a, checked against the rendered page 2). The deposits page fetched by curl 2026-11-07 (library 322d2fa5d65f10a0); it is undated. The 447 table 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' and 'נוספים' (https://www.bank-yahav.co.il/all-savings/deposit-table/, a PDF created 05.10.2026) lists no standing-order plan."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel plan (the product page's 'מגזר – שקלי'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 200,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/investments/deposits/",
+        "title": "בנק יהב, 'פיקדונות', 'פיקדונות בהוראות קבע', שורת 'חסכון גמיש', 'סכום הפקדה מינימאלי'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The page: 'בחסכון גמיש סכום הפקדה מינימאלי - 200 ש\"ח'; the board's amount row: 'מ-200 ש\"ח'."
+    },
+    "max": {
+      "value": 5000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/investments/deposits/",
+        "title": "בנק יהב, 'פיקדונות', 'פיקדונות בהוראות קבע', שורת 'חסכון גמיש', 'סכום הפקדה מקסימאלי'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The page: 'סכום הפקדה מקסימאלי - 5,000 ש\"ח'; read as the bound of each monthly deposit, which the page does not say in words. The board prints no upper bound."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "No plan-specific terms found; the bank's account agreement governs: Account agreement, chapter 4 'פיקדונות בשקלים ותוכניות חיסכון' (applied to savings plans by s.8.1, p.38), s.2.5 'איסור משיכה טרם המועד': 'אנו לא נהיה רשאים למשוך את הפיקדון, כולו או חלקו, טרם הגיע יום הפירעון, או יום תחנת היציאה'; s.6.1.1 (p.36): 'אם התיר הבנק לפנים משורת הדין בהתאם לבקשתנו, משיכת הפיקדון או חלקו ... לפני תום תקופת הפיקדון, היינו, \"שבירת הפיקדון\", לא יישא הפיקדון, או חלק מהפיקדון שנמשך, ריבית כלשהי ו/או הפרשי הצמדה'. Agreement https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf, library 322ff632b328571c; its s.2.2 leaves exit points to each deposit's terms ('תחנות יציאה הינן יום או ימים בהם יהיה הלקוח ...'). The same s.6.1.1 also offsets interest already paid and lets the bank charge 'בסכום השווה לנזק שיגרם לבנק', and p.37 warns 'עלולה להיות אף פגיעה בקרן' (BANK-48).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-33",
+      "BANK-28",
+      "BANK-48"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "הפקדות חודשיות בהוראת קבע לשנתיים. אפשר לשנות את סכום ההפקדה כל חודש, להפסיק ולחדש הפקדות, להוסיף הפקדה מזדמנת ולמשוך חלק מהכסף או את כולו בתחנה.",
+  "doubt_he": "הבנק כותב שאפשר למשוך בתחנה אך אינו מפרסם כל כמה זמן יש תחנה; לא נמצאו תנאים כתובים לתוכנית עצמה.",
+  "snapshot": "2026-11-07",
+  "source": {
+    "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+    "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'לוח שיעורי ריבית על פקדונות בריבית משתנה'",
+    "publisher": "Bank Yahav for Government Employees Ltd.",
+    "strength": "institution"
+  }
+}

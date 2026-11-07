@@ -1,0 +1,119 @@
+{
+  "id": "altshuler-shaham",
+  "provider": {
+    "name_he": "אלטשולר שחם גמל ופנסיה בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.as-invest.co.il/media/md1afb1l/%D7%90%D7%9C%D7%98%D7%A9%D7%95%D7%9C%D7%A8-%D7%A9%D7%97%D7%9D-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%9C%D7%95%D7%A1-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A0%D7%A7%D7%99-%D7%9E%D7%A8%D7%A5-2025.pdf",
+    "title": "תקנון קופת גמל להשקעה חיסכון פלוס",
+    "notes": "Bylaws of אלטשולר שחם גמל להשקעה חיסכון פלוס, 15 pages, 'מהדורה עדכנית ממרץ 2025' on p.1 (printed as a month; its first day is recorded as published); fees in s.35.1 on p.10, a lower fee for at least two years in s.36.1. In the library since 2026-10-31, read for this record 2026-11-07. The joining and transfer kit for self-employed members (February 2021, p.3, read 2026-11-06) leaves the agreed rates blank and has the member declare the fees \"לא יעלו על שיעור של 1.05% מהצבירה ו-4% מההפקדות\"; no newer kit was found.",
+    "published": "2025-03-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-07",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "altshuler-shaham-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1.05,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/md1afb1l/%D7%90%D7%9C%D7%98%D7%A9%D7%95%D7%9C%D7%A8-%D7%A9%D7%97%D7%9D-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%9C%D7%95%D7%A1-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A0%D7%A7%D7%99-%D7%9E%D7%A8%D7%A5-2025.pdf",
+          "title": "תקנון קופת גמל להשקעה חיסכון פלוס (מרץ 2025), סעיף 35.1",
+          "publisher": "Altshuler Shaham Gemel and Pension",
+          "strength": "institution",
+          "page": 10,
+          "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The fund's bylaws (March 2025 edition, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment; recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. The joining kit (February 2021, p.3) leaves the agreed rates blank and prints the same ceiling in the member's declaration. A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "לא יעלו על שיעור של 1.05% מהצבירה"
+        ]
+      }
+    },
+    {
+      "id": "altshuler-shaham-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 4,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/md1afb1l/%D7%90%D7%9C%D7%98%D7%A9%D7%95%D7%9C%D7%A8-%D7%A9%D7%97%D7%9D-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%9C%D7%95%D7%A1-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A0%D7%A7%D7%99-%D7%9E%D7%A8%D7%A5-2025.pdf",
+          "title": "תקנון קופת גמל להשקעה חיסכון פלוס (מרץ 2025), סעיף 35.1",
+          "publisher": "Altshuler Shaham Gemel and Pension",
+          "strength": "institution",
+          "page": 10,
+          "quote": "מתוך התשלומים המועברים אליה בשל כל עמית בשיעור שלא יעלה על שיעור דמי הניהול המרבי הקבוע בהסדר"
+        },
+        "checked": "2026-11-07",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-02",
+          "PF-03",
+          "KGL-14"
+        ],
+        "state": "sourced",
+        "notes": "The fund's bylaws (March 2025 edition, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment; recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. The joining kit (February 2021, p.3) leaves the agreed rates blank and prints the same ceiling in the member's declaration. A member's own agreement sets the fee actually paid (D4)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "4% מההפקדות"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

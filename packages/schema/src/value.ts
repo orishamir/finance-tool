@@ -67,6 +67,18 @@ export const updateRule = z.union([
   z.string().regex(/^frozen \d{4}-\d{4}$/, 'update_rule "frozen" must name its years, e.g. "frozen 2025-2027"'),
 ]);
 
+/**
+ * The words a link to a cited web page opens at (`#:~:text=`; founder, 2026-11-07). Never written in a record under data/: the site
+ * attaches it when it reads the record, from data/sources/fragments.json (the validator fails a record file that carries one). Declared
+ * on the places that can carry it so a record the site checks again after reading keeps it.
+ */
+export const textFragment = z.strictObject({
+  prefix: z.string().min(1).optional(),
+  start: z.string().min(1),
+  end: z.string().min(1).optional(),
+  suffix: z.string().min(1).optional(),
+});
+
 export const source = z.object({
   url: z.string().min(1),
   title: z.string().min(1),

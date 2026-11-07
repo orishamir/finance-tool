@@ -15,11 +15,14 @@
   ],
   "variants": [
     "מנוטרלת מט\"ח",
-    "Currency-Hedged"
+    "Currency-Hedged",
+    "מנוטרלת דולר"
   ],
   "rule_ids": [
     "ETF-10",
-    "ETF-12"
+    "ETF-12",
+    "MF-43",
+    "RG-19"
   ],
   "source": {
     "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",

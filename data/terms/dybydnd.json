@@ -2,7 +2,7 @@
   "id": "dybydnd",
   "he": "דיבידנד",
   "en": null,
-  "meaning": "תשלום שחברה מעבירה לבעלי המניות שלה; מגיע לחשבון ניירות הערך וחייב במס.",
+  "meaning": "חלק מרווחי חברה שהיא מחלקת לבעלי המניות שלה; מגיע לחשבון ניירות הערך וחייב במס",
   "where": [
     "app",
     "statement"
@@ -21,10 +21,10 @@
     "TXS-16"
   ],
   "source": {
-    "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-    "title": "TASE, דוח תקופתי לשנת 2025",
+    "url": "https://www.tase.co.il/he/terms-page",
+    "title": "הבורסה לניירות ערך בתל אביב: דף מונחים, \"דיבידנד\" (קטע שנקרא בכרום)",
     "publisher": "Tel Aviv Stock Exchange",
     "strength": "primary",
-    "checked": "2026-10-22"
+    "checked": "2026-11-07"
   }
 }

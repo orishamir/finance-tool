@@ -11,7 +11,7 @@ import { isChild, liquidityOf, type HoldingView, type HoldingsCtx, type Liquidit
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { LeadTail, Num, RuleRef, RulesChip } from "../provenance";
-import { Button, Card, cx, Disclosure, FeeNum, KeyValue, Sentence, Tag } from "../kit";
+import { Button, Card, cx, Disclosure, FeeNum, KeyValue, LongestCase, Sentence, Tag, When } from "../kit";
 import { ImportedTag } from "../transfer/imported-tag";
 import { IconDown, IconUp } from "../compare/icons";
 import { OpenQuestion, YearsNum, sourcedText } from "./shared";
@@ -153,7 +153,7 @@ function fromAverage(fee: { state?: string } | undefined, view: HoldingView): bo
   return fee?.state === "sourced" && !!view.cma;
 }
 
-/** Under each fee, its two references: the track's own average (sourced) and the class mean and median (computed, F-68). */
+/** Under each fee, its two references: the track's own average (sourced) and the class mean (computed, F-68), the one measure the page uses. */
 function FeeRefs({ view, kind, skipAverage = false }: { view: HoldingView; kind: "balance" | "deposit"; skipAverage?: boolean }) {
   const cma = view.cma;
   if (!cma) return null;
@@ -165,7 +165,7 @@ function FeeRefs({ view, kind, skipAverage = false }: { view: HoldingView; kind:
     <div className="flex flex-col gap-0.5 text-sm text-muted-foreground">
       {skipAverage ? null : avg.value === null ? (
         <p>
-          {copy.trackAvgNone} <bdi dir="ltr">{year ?? fmt.period(String(cma.period.value))}</bdi>.
+          {year ? <>{copy.trackAvgNone} <bdi dir="ltr">{year}</bdi></> : <When iso={String(cma.period.value)} lead={`${copy.trackAvgNone} `} />}.
         </p>
       ) : (
         <p>
@@ -181,10 +181,7 @@ function FeeRefs({ view, kind, skipAverage = false }: { view: HoldingView; kind:
       )}
       {ref && (kind === "balance" ? ref.count : ref.countDeposit).value !== 0 ? (
         <p>
-          {r.before} <bdi>{ref.classification}</bdi>: <Num value={kind === "balance" ? ref.meanBalance : ref.meanDeposit} />{" "}
-          <span className="whitespace-nowrap">
-            {r.mid} <Num value={kind === "balance" ? ref.medianBalance : ref.medianDeposit} />
-          </span>
+          {r.before} <bdi>{ref.classification}</bdi>: <Num value={kind === "balance" ? ref.meanBalance : ref.meanDeposit} />
           {(kind === "balance" ? ref.count : ref.countDeposit).value === 1 ? (
             r.afterOne
           ) : (
@@ -221,9 +218,21 @@ function StaleLine({ view }: { view: HoldingView }) {
     <p className="text-sm text-caution-foreground flex items-center gap-2">
       <IconClock size={16} className="text-caution shrink-0" />
       <span>
-        {copy.staleLine} <bdi dir="ltr">{fmt.period(String(view.cma.period.value))}</bdi>.
+        <When iso={String(view.cma.period.value)} lead={`${copy.staleLine} `} />.
       </span>
     </p>
+  );
+}
+
+/** "בחישוב, עמלה נמוכה יותר נספרת רק {שנים}, ואחר כך חוזרת העמלה של היום." beside the worth at the class average (D86, D90). */
+function AvgHeld({ years }: { years: SiteValue }) {
+  return (
+    <Sentence size="sm" tone="muted">
+      <LeadTail lead={copy.avgHeld.lead}>
+        <Num value={years} display={fmt.years(Number(years.value))} />
+      </LeadTail>
+      {copy.avgHeld.end}
+    </Sentence>
   );
 }
 
@@ -250,6 +259,10 @@ function FeeLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
               </LeadTail>
               {copy.avgSaving.after}
             </p>
+          )}
+          {f.cost.atAverage && f.cost.atAverageHeld && (
+            // D90, extended the same day: said where the held years end within the run; its room stays when the years slider passes them (D63)
+            <LongestCase cases={[<AvgHeld key="held" years={f.cost.atAverageHeld.years} />]}>{f.cost.atAverageHeld.ends && <AvgHeld years={f.cost.atAverageHeld.years} />}</LongestCase>
           )}
           {f.cost.preTax && (
             <p className="flex flex-wrap items-center gap-x-2">

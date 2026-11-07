@@ -163,6 +163,8 @@ export interface InputsLike {
   entered: Record<string, number>;
   age: number | null;
   employment: Employment | null;
+  /** A-17, entered on the fee page of a pension fund: the insurance cost as a percent of each deposit (G-12). Absent: not entered. */
+  insurance?: number | null;
 }
 
 const inputUnits: Record<string, ValueObject["unit"]> = {
@@ -181,15 +183,17 @@ export function inputsToRecord(i: InputsLike, today = isoToday()): Record<string
   for (const [k, v] of Object.entries(i.entered)) if (Number.isFinite(v)) out[k] = enteredValue(v, inputUnits[k] ?? "count", today);
   if (i.age !== null) out.age = enteredValue(i.age, "years", today);
   if (i.employment !== null) out.employment = { ...enteredValue(0, "text", today), value: i.employment };
+  if (typeof i.insurance === "number" && Number.isFinite(i.insurance)) out.insurance = enteredValue(i.insurance, "pct", today);
   return out;
 }
 
 export function inputsFromRecord(rec: Record<string, ValueObject>): InputsLike {
   const entered: Record<string, number> = {};
-  for (const [k, v] of Object.entries(rec)) if (k !== "age" && k !== "employment" && typeof v.value === "number") entered[k] = v.value;
+  for (const [k, v] of Object.entries(rec)) if (k !== "age" && k !== "employment" && k !== "insurance" && typeof v.value === "number") entered[k] = v.value;
   const age = typeof rec.age?.value === "number" ? rec.age.value : null;
   const e = rec.employment?.value;
-  return { entered, age, employment: e === "employee" || e === "self-employed" ? e : null };
+  const insurance = typeof rec.insurance?.value === "number" ? rec.insurance.value : null;
+  return { entered, age, employment: e === "employee" || e === "self-employed" ? e : null, insurance };
 }
 
 // ---------------------------------------------------------------- reading and checking a document

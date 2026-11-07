@@ -378,18 +378,23 @@ def run_sec2(sec, T, sched, g_m, dist=None):
 def run_provident(T, sched, r, path, direct=0.0, balfee=lambda m: 0.0, depfee=0.0, ins=0.0):
     """sched: dict month -> list of (amount, J_month). Direct expenses are added to the balance
     fee as in method F-15 (D16 closed as immaterial: PF-10's inside-the-return reading differs
-    by a few shekels)."""
+    by a few shekels). `balfee` is a rate for the month m of the charge; `depfee` is a rate, or a
+    rate for the deposit's own month (J_month: 0 for the amount now), for a deposit fee that
+    changes when its discount ends (F-16, A-19; S56)."""
     g = mrate(r)
     B = 0.0
     dep = []
+    basis = []  # (amount credited after the deposit fee and insurance, J_month): the tax basis of method F-08 step 2
     fees = defaultdict(float)
     snaps = []
     for m in range(1, T + 1):
         for a, jm in sched.get(m, []):
-            fees['deposit'] += depfee * a
+            dr = depfee(jm) if callable(depfee) else depfee
+            fees['deposit'] += dr * a
             fees['insurance'] += ins * a
-            B += a * (1.0 - depfee - ins)
+            B += a * (1.0 - dr - ins)
             dep.append((a, jm, m))
+            basis.append((a * (1.0 - dr - ins), jm))
         B *= (1.0 + g)
         fees['balance'] += balfee(m) / 12.0 * B
         fees['direct'] += direct / 12.0 * B
@@ -397,23 +402,27 @@ def run_provident(T, sched, r, path, direct=0.0, balfee=lambda m: 0.0, depfee=0.
         if m % 12 == 0:
             snaps.append({'m': m, 'B': B, 'in': sum(d[0] for d in dep),
                           'fees': sum(fees.values()), 'real_B': B / path.I(m)})
-    return {'B': B, 'deposits': dep, 'fees': dict(fees), 'snaps': snaps}
+    return {'B': B, 'deposits': dep, 'basis': basis, 'fees': dict(fees), 'snaps': snaps}
 
 
 def kgl_exit(res, path, T):
     """F-44: 25% of the real gain. Gains withdrawn are interest; only gains equal to the linkage on the money are linkage
     income (TXK-05, TXK-07). When the CPI fell over a deposit's life there is no such gain, so that deposit counts at its
-    amount and the base never exceeds the gains withdrawn (a reading, added 2026-10-26)."""
+    amount and the base never exceeds the gains withdrawn (a reading, added 2026-10-26).
+    The money indexed is what each deposit put into the account after its deposit fee (method F-08 step 2: the basis is
+    A_m = D_m × (1 − φ_dep) where there is no trade), as the engine has it; the rule base has no text on whether a deposit
+    fee is part of the principal that comes out untaxed (TXK-05, TXK-26), so the method's choice, the conservative one of
+    G-20, stands (added 2026-11-07 with S56, the first scenario here with a deposit fee on this exit; no earlier one moves)."""
     dep_sum = sum(a for a, _, _ in res['deposits'])
-    indexed = sum(a * path.I(T) / path.I(j) if path.I(T) >= path.I(j) else a for a, j, _ in res['deposits'])
+    base = res.get('basis', [(a, j) for a, j, _ in res['deposits']])
+    indexed = sum(a * path.I(T) / path.I(j) if path.I(T) >= path.I(j) else a for a, j in base)
     nominal_gain = res['B'] - dep_sum
     real_gain = res['B'] - indexed
     t25 = 0.25 * max(0.0, real_gain)
-    t15 = 0.15 * max(0.0, nominal_gain)
     return {'dep_sum': dep_sum, 'indexed': indexed, 'nominal_gain': nominal_gain,
-            'real_gain': real_gain, 'tax25real': t25, 'tax15nom': t15,
-            'V25': res['B'] - t25, 'V15': res['B'] - t15,
-            'realV25': (res['B'] - t25) / path.I(T), 'realV15': (res['B'] - t15) / path.I(T)}
+            'real_gain': real_gain, 'tax25real': t25,
+            'V25': res['B'] - t25,
+            'realV25': (res['B'] - t25) / path.I(T)}
 
 
 # --------------------------------------------------------------------------
@@ -964,15 +973,14 @@ def s20_s21_s22():
         f'| 3 | Deposit fee 0% (cap 4%); balance fee 0.8%/12 of the month-end balance (cap 1.05%) | {L("KGL-14", "KGL-15", "PF-02", "PF-09")} | — |\n'
         f'| 4 | Direct investment expenses 0.10% added to the balance fee, 0.10%/12 of the month-end balance (method F-15; D16 closed as immaterial) | {L("PF-10")} | — |\n'
         f'| 5 | No tax during | {L("TXK-03")} | 0 |\n'
-        f'| 6 | Lump sum at exit: gains are interest income at up to 25%; managers withhold 25% of the real gain (deposits indexed from each deposit month) — institution/secondary strength, label "base: secondary source" | {L("TXK-05", "TXK-06", "TXK-07")} | real gain {f2(ex["real_gain"])} |\n'
-        f'| 7 | Sensitivity line: 15% of the nominal gain (s.125C(c) limb) | {L("TXK-06")} (TXK OQ2) | nominal gain {f2(ex["nominal_gain"])} |\n'
-        f'| 8 | NII on the deemed interest is open | {L("TXK-05")} (TXK OQ9) | flag G-11 |\n\n'
+        f'| 6 | Lump sum at exit: gains are interest income at up to 25%; managers withhold 25% of the real gain (deposits indexed from each deposit month); the real base is set by the law, primary, so no label | {L("TXK-05", "TXK-06", "TXK-07")} | real gain {f2(ex["real_gain"])} |\n'
+        f'| 7 | No National Insurance or health contributions on the deemed interest, which is taxed under s.125C | {L("TXK-27")} | no flag |\n\n'
         + table(['Calendar year', 'Deposits', 'Within 83,641'], crows) + '\n\n'
         + year_table(snaps) + '\n\n'
-        + f'Result: B_T = {f2(res["B"])}; 25% real: tax {f2(ex["tax25real"])}, V {f2(ex["V25"])}, real {f2(ex["realV25"])}; 15% nominal: tax {f2(ex["tax15nom"])}, V {f2(ex["V15"])}, real {f2(ex["realV15"])}.'
+        + f'Result: B_T = {f2(res["B"])}; 25% real: tax {f2(ex["tax25real"])}, V {f2(ex["V25"])}, real {f2(ex["realV25"])}.'
     )
     section('S20', 'Kupat gemel lehashkaa, list fees', 'computed', body,
-            f'Real V_T/I_T = {f2(ex["realV25"])} with 25% of the real gain (label "base: secondary source"); nominal V_T = {f2(ex["V25"])}; alternative 15% of nominal gain: real {f2(ex["realV15"])}, nominal {f2(ex["V15"])}; gross balance {f2(res["B"])}; fees: balance {f2(res["fees"]["balance"])}, direct expenses {f2(res["fees"]["direct"])}, deposit 0; tax during 0; tax at exit {f2(ex["tax25real"])} (alt. {f2(ex["tax15nom"])}); ceiling not reached in any year; flag G-11 (NII on deemed interest). Subject to D15, Q1.')
+            f'Real V_T/I_T = {f2(ex["realV25"])} with 25% of the real gain (no label); nominal V_T = {f2(ex["V25"])}; gross balance {f2(res["B"])}; fees: balance {f2(res["fees"]["balance"])}, direct expenses {f2(res["fees"]["direct"])}, deposit 0; tax during 0; tax at exit {f2(ex["tax25real"])}; ceiling not reached in any year; no National Insurance on the gains (TXK-27). Subject to D15, Q1.')
 
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
@@ -997,7 +1005,7 @@ def s20_s21_s22():
         f'| 4 | Exit tax as S20 | {L("TXK-07")} | — |\n'
     )
     section('S22', 'Kupat gemel lehashkaa, fee discount expiring', 'computed', body,
-            f'Real V_T/I_T = {f2(e60["realV25"])} (25% real), nominal {f2(e60["V25"])}; 15%-nominal alternative real {f2(e60["realV15"])}; balance fees {f2(res60["fees"]["balance"])}; tax at exit {f2(e60["tax25real"])}. The discount cannot revert inside 5 years (PF-13 covers kupat gemel lehashkaa), so the fee stays 0.5% for the whole 60 months; the scenario\'s 24-month reversion is not allowed by the rule (it would give real {f2(e24["realV25"])}). Subject to D15.')
+            f'Real V_T/I_T = {f2(e60["realV25"])} (25% real), nominal {f2(e60["V25"])}; balance fees {f2(res60["fees"]["balance"])}; tax at exit {f2(e60["tax25real"])}. The discount cannot revert inside 5 years (PF-13 covers kupat gemel lehashkaa), so the fee stays 0.5% for the whole 60 months; the scenario\'s 24-month reversion is not allowed by the rule (it would give real {f2(e24["realV25"])}). Subject to D15.')
     return ex
 
 
@@ -1375,7 +1383,7 @@ def s39_s48():
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Brokerage with the S14 ETF, 30,000 now + 2,000 × I_m, 240 months | as S14 | real V_T {f2(out["real_V"])} |\n'
-        f'| 2 | Kupat gemel lehashkaa with S20 fees; ceiling check (largest calendar year {f2(max_year)} ≤ 83,641) | as S20; {L("KGL-02")} | real V_T {f2(ek["realV25"])} (25% real) / {f2(ek["realV15"])} (15% nominal) |\n'
+        f'| 2 | Kupat gemel lehashkaa with S20 fees; ceiling check (largest calendar year {f2(max_year)} ≤ 83,641) | as S20; {L("KGL-02")} | real V_T {f2(ek["realV25"])} (25% real) |\n'
         f'| 3 | Hishtalmut: the person is an employee, so under product D15 it is listed, not ranked: "only funded through your employer; you already deposit the tax-free maximum" | {L("TXH-08", "KH-02")}; product D15 | listed |\n'
         f'| 4 | Pension extra deposit: existing 6% × 144,000 = 8,640 > cap 8,148 → no credit on new money; exit blocked (G-03) and locked to 60: listed, not ranked | {L("TXP-02", "TXP-14")} | listed |\n'
         f'| 5 | Tie test between the two ranked rows with θ = {THETA}% (P-01) | method F-80 | {tie_text(ek["realV25"], out["real_V"])} |\n'
@@ -1384,7 +1392,7 @@ def s39_s48():
         + table(['Guess', 'Base', 'At the bounds'], sens_rows) + '\n'
     )
     section('S39', "Wrapper mode: the founder's ETF-vs-provident case", 'computed', body,
-            f'Computed: brokerage (S14 ETF) real V_T/I_T = {f2(out["real_V"])}, nominal {f2(out["V"])}; kupat gemel lehashkaa (S20 fees) real {f2(ek["realV25"])} with 25% real (label "secondary source"), {f2(ek["realV15"])} with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; {tie_text(ek["realV25"], out["real_V"])}. Deciding formula: {decider} (the brokerage pays {f2(drag_b)} in fees against {f2(drag_k)}, real; tax at exit {f2(tax_b)} against {f2(tax_k)}). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): {sens_text}.')
+            f'Computed: brokerage (S14 ETF) real V_T/I_T = {f2(out["real_V"])}, nominal {f2(out["V"])}; kupat gemel lehashkaa (S20 fees) real {f2(ek["realV25"])} with 25% real. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; {tie_text(ek["realV25"], out["real_V"])}. Deciding formula: {decider} (the brokerage pays {f2(drag_b)} in fees against {f2(drag_k)}, real; tax at exit {f2(tax_b)} against {f2(tax_k)}). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): {sens_text}.')
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Re-run S39 brokerage with the TXS-09 rate set to 30% (test only) | {L("TXS-09")} | real V_T {f2(out30["real_V"])} |\n'
@@ -1404,39 +1412,44 @@ def s42():
         s[1].append((120000.0, 0))
         for m in range(1, T + 1):
             s[m].append((1200.0, m))
-        r = run_provident(T, s, 0.06, path, direct=direct, balfee=lambda m: bal)
+        r = run_provident(T, s, 0.06, path, direct=direct, balfee=bal if callable(bal) else (lambda m: bal))
         return r['B'] / path.I(T), r
     vF, rF = run(0.0074, 0.0011)
     v0, _ = run(0.0, 0.0)
     vNoBal, _ = run(0.0, 0.0011)
     vNoDir, _ = run(0.0074, 0.0)
-    vRed, _ = run(0.0034, 0.0011)
+    # D86 (2026-11-07): a reduction a company agrees to holds for PF-13's five years (60 months), then the line returns to its own 0.74%
+    vRed, _ = run(lambda m: 0.0034 if m <= 60 else 0.0074, 0.0011)
+    vRedAll, _ = run(0.0034, 0.0011)
     total = v0 - vF
     c_bal = vNoBal - vF
     c_dir = vNoDir - vF
     rem = total - c_bal - c_dir
     red = vRed - vF
+    red_all = vRedAll - vF
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Holding: 120,000 existing + 300 own + 900 employer a month (constant nominal, as S23), r_g 6%, π 2.5%, 120 months; exempt at exit (past 6 years) | {L("TXH-09", "TXH-18")} | — |\n'
         f'| 2 | Balance fee 0.74% (cap 2%); direct expenses 0.11% inside the return | {L("KH-22", "PF-10")} | — |\n'
         f'| 3 | Real values with all fees, none, and each fee removed | method F-61 (output definition) | V(F) {f2(vF)}, V(∅) {f2(v0)} |\n'
         f'| 4 | Regulator reference: Gemel-Net study-fund track averages 0.34–0.74 (units not confirmed) | {L("KH-23")} | reference |\n'
+        f'| 4a | Value of a reduction to 0.34%: held for PF-13\'s 60 months, then back to 0.74% (D86); for the whole horizon it would be {f2(red_all)} | {L("PF-13")}; method F-61 | {f2(red)} |\n'
     )
     p03 = load_parameter_file('fee-verdict-thresholds')
     neg = p03['negotiate_nis']['value'] if p03 else None
 
-    def verdict(cost, reference_below):
+    # D90 revised (2026-11-07): the negotiate test reads the worth of bringing the fee to the reference (step 4a), not its cost
+    def verdict(worth, reference_below):
         if neg is None:
             return 'not set'
-        if cost >= neg and reference_below:
+        if worth is not None and worth >= neg and reference_below:
             return 'worth negotiating'
         return 'not worth the effort'
-    v_bal = verdict(c_bal, True)
-    v_dir = verdict(c_dir, False)
-    body += (f'| 5 | Verdicts with the P-03 thresholds: negotiate if the cost is at least {f2(neg)} and a lower reference exists (balance fee: Gemel-Net averages go down to 0.34%); direct expenses have no collected reference (G-14) | method F-62; {param_src("fee-verdict-thresholds")} | balance fee: {v_bal}; direct expenses: {v_dir} |\n')
+    v_bal = verdict(red, True)
+    v_dir = verdict(None, False)
+    body += (f'| 5 | Verdicts with the P-03 thresholds: negotiate if the cut to a lower reference is worth at least {f2(neg)} (balance fee: Gemel-Net averages go down to 0.34%, worth {f2(red)}, step 4a); direct expenses have no collected reference (G-14) | method F-62; {param_src("fee-verdict-thresholds")} | balance fee: {v_bal}; direct expenses: {v_dir} |\n')
     section('S42', "Fee materiality on the founder's hishtalmut", 'computed', body,
-            f'Real V_T/I_T with fees {f2(vF)}; total fee drag {f2(total)}; cost of balance fee 0.74% = {f2(c_bal)}; cost of direct expenses 0.11% = {f2(c_dir)}; interaction remainder {f2(rem)}; value of cutting the balance fee to 0.34% = {f2(red)} (all real NIS over 10 years). Verdicts (P-03): balance fee "{v_bal}" (reference 0.34%, KH-23); direct expenses "{v_dir}" (no reference collected). Subject to Q20.')
+            f'Real V_T/I_T with fees {f2(vF)}; total fee drag {f2(total)}; cost of balance fee 0.74% = {f2(c_bal)}; cost of direct expenses 0.11% = {f2(c_dir)}; interaction remainder {f2(rem)}; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = {f2(red)} (all real NIS over 10 years; for all ten years it would be {f2(red_all)}). Verdicts (P-03): balance fee "{v_bal}" (reference 0.34%, KH-23); direct expenses "{v_dir}" (no reference collected). Subject to Q20.')
 
 
 def s43():
@@ -2158,6 +2171,62 @@ def s55():
             f'Real V_T/I_T = {f2(out["real_V"])}; nominal V_T = {f2(out["V"])}; fees: fund (δ) {f2(sec.fees["fund"])}, trade 0, custody {f2(sec.fees["custody"])}; tax at exit {f2(out["tax"])} (25% of real gain {f2(out["real_gain"])}).')
 
 
+def s56():
+    """The fee page (/fees) on kupat gemel lehashkaa: P-05's example on Harel's binding documents (data/fees/harel@2026-11-07.json),
+    0.7% of the balance and 0% of deposits for PF-13's five years, then the regulation's caps 1.05% and 4% (A-19, D83)."""
+    now, monthly, years, r, pi = 10000.0, 500.0, 10, 0.07, 0.02
+    # The scenario fixes its inputs; P-05 is where the page takes them from, so a change there is told, not followed.
+    p05 = load_parameter_file('illustrative-scenario')['inputs']
+    if [p05[k]['value'] for k in ('amount_now', 'monthly_deposit', 'horizon_years', 'A-01', 'A-02')] != [now, monthly, years, round(100 * r, 9), round(100 * pi, 9)]:
+        sys.exit('S56: P-05 (data/parameters/illustrative-scenario.json) no longer holds the scenario\'s inputs')
+    path = Path(pi)
+    T = 12 * years
+    D = 60  # PF-13: five years; Harel prints no period of its own (its bylaws' two years are the replaced 2012 rule, KGL-30)
+    bal = lambda m: 0.007 if m <= D else 0.0105
+    dep = lambda j: 0.0 if j <= D else 0.04
+    sched = kgl_schedule(T, now, monthly, path)
+    ceil = ceiling_check(sched, T)
+
+    def run(b, d):
+        res = run_provident(T, sched, r, path, balfee=b, depfee=d)
+        return res, kgl_exit(res, path, T)
+    rF, eF = run(bal, dep)
+    r0, e0 = run(lambda m: 0.0, 0.0)
+    rNoDep, eNoDep = run(bal, 0.0)
+    rNoBal, eNoBal = run(lambda m: 0.0, dep)
+    vF, v0 = eF['realV25'], e0['realV25']
+    total = v0 - vF
+    c_dep = eNoDep['realV25'] - vF
+    c_bal = eNoBal['realV25'] - vF
+    rem = total - c_dep - c_bal
+    # The chart's last point is before exit tax (F-61, per month); the headline is after it; the note under the chart gives the gap.
+    pre = r0['B'] / path.I(T) - rF['B'] / path.I(T)
+    gap = pre - total
+    # For reference: each month's deposit at the index of the month before (I_{m-1}) for its amount and its tax index, as an
+    # outside hand check did; method F-05 and F-03 put a deposit of month m at I_m.
+    lag = defaultdict(list)
+    lag[1].append((now, 0))
+    for m in range(1, T + 1):
+        lag[m].append((monthly * path.I(m - 1), m - 1))
+    eLag = kgl_exit(run_provident(T, lag, r, path), path, T)
+    body = (
+        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
+        f'| 1 | P-05\'s example (data/parameters/illustrative-scenario.json): {f2(now)} now at the start of month 1 (index I_0 = 1), {f2(monthly)} × I_m at the start of months 1..{T}, constant real (A-04); r_g {pct(r, 0)} effective, g = {f6(mrate(r))} a month (F-07); π {pct(pi, 0)}, I_m = {1 + pi}^(m/12) (F-03); exit at the end of month {T} (A-05); no deduction or credit | {L("TXK-01")}; method F-03, F-05, A-04, A-05 | Σ deposits {f2(eF["dep_sum"])} |\n'
+        f'| 2 | Every calendar year within the ceiling, checked at deposit | {L("KGL-02", "KGL-03", "KGL-04")} | largest year {f2(max(v for v, _ in ceil.values()))} of 83,641 |\n'
+        f'| 3 | Harel\'s joining request (fund 8207, version 11/2025) prints 0.7% of the balance and 0% of deposits; its bylaws allow up to the legal maximum, so both are a discount (D83) that lasts PF-13\'s five years (Harel prints no period; the bylaws\' two years is the replaced 2012 rule) and then reverts to the caps | {L("KGL-30", "KGL-16", "PF-13", "PF-02")}; data/fees/harel@2026-11-07.json | balance 0.7% for months 1–{D}, 1.05% from {D + 1}; deposit 0% on the amount now and the deposits of months 1–{D}, 4% from {D + 1} |\n'
+        f'| 4 | Balance fee a twelfth of the annual rate on the month-end balance after growth (F-07, F-15); deposit fee on each deposit at its rate of the deposit\'s month (F-11, F-16); no direct expenses in the record; the discount is not ended early (A-19: no PF-14 trigger) | {L("PF-09", "KGL-14", "PF-14")} | fees: balance {f2(rF["fees"]["balance"])}, deposit {f2(rF["fees"]["deposit"])} |\n'
+        f'| 5 | No tax while invested | {L("TXK-03")} | 0 |\n'
+        f'| 6 | Lump sum at exit: gains are interest income at up to 25%; the linkage on each deposit (indexed from its own month, I_T / I_j) is exempt, so 25% of the real gain | {L("TXK-05", "TXK-06", "TXK-07")} | with fees: gross {f2(rF["B"])}, real gain {f2(eF["real_gain"])}, tax {f2(eF["tax25real"])} |\n'
+        f'| 7 | Surtax: other income 144,000 (P-05) plus the gain is far below the threshold; no National Insurance or health on the gains | {L("TXG-09", "TXK-27")} | 0 |\n'
+        f'| 8 | Real values after exit tax, (B_T − tax) / I_T: with every fee V(F); with none V(∅); with no deposit fee; with no balance fee (a line removed in both its periods) | method F-06, F-61 | V(F) {f2(vF)}; V(∅) {f2(v0)}; no deposit fee {f2(eNoDep["realV25"])}; no balance fee {f2(eNoBal["realV25"])} |\n'
+        f'| 9 | F-61: cost of a line = V(F without it) − V(F); total = V(∅) − V(F); combined effect = total − Σ line costs | method F-61 | deposit {f2(c_dep)}; balance {f2(c_bal)}; total {f2(total)}; combined {f2(rem)} |\n'
+        f'| 10 | The headline under the page\'s title ("העמלות ב… יעלו לכם … ב־10 שנים, בכסף של היום") is the total, after exit tax; the chart\'s last point is before exit tax, and the note under it gives the difference | method F-61 (per month) | headline {f2(total)}; chart end {f2(pre)}; note {f2(gap)} |\n'
+        f'| 10\' | For reference, V(∅) with each deposit at the index of the month before (500 × I_(m−1), taxed from I_(m−1)), as an outside hand check had it: the method puts a deposit of month m at I_m (F-03, F-05), and Q1 closed this timing under the 0.5% line | method F-03, F-05; Q1 | {f2(eLag["realV25"])} |\n'
+    )
+    section('S56', 'Kupat gemel lehashkaa on the fee page, a discount that ends', 'computed', body,
+            f'Real values after exit tax: with every fee {f2(vF)}, with none {f2(v0)}, with no deposit fee {f2(eNoDep["realV25"])}, with no balance fee {f2(eNoBal["realV25"])}. F-61: the deposit fee costs {f2(c_dep)}, the balance fee {f2(c_bal)}, total {f2(total)} (the headline under the title, after exit tax), combined effect {f2(rem)}; the chart ends at {f2(pre)} before exit tax, {f2(gap)} above the headline. Fees paid with every fee: balance {f2(rF["fees"]["balance"])}, deposit {f2(rF["fees"]["deposit"])}; tax at exit {f2(eF["tax25real"])} on a real gain of {f2(eF["real_gain"])}; ceiling not reached. With each deposit at the previous month\'s index the no-fee value would be {f2(eLag["realV25"])}; the method uses the deposit month\'s (F-03, F-05; Q1). The tax basis is each deposit after its fee (C14, Q25).')
+
+
 def main():
     s01_s02_s04()
     s03()
@@ -2192,6 +2261,7 @@ def main():
     s53()
     s54()
     s55()
+    s56()
     missing = sorted(i for i in USED if i not in RULES or not RULES[i]['url'])
     if missing:
         sys.exit('rules cited but not in the rule base: ' + ', '.join(missing))

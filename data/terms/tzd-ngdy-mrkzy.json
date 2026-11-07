@@ -1,0 +1,24 @@
+{
+  "id": "tzd-ngdy-mrkzy",
+  "he": "צד נגדי מרכזי",
+  "en": null,
+  "meaning": "גורם שמבטיח לכל צד בעסקה בניירות ערך שהעסקה תושלם, למשל באמצעות ערבות.",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-12"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=93",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968, נוסח משולב באתר רשות ניירות ערך, ס' 44לא, עמוד 93",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-07"
+  }
+}

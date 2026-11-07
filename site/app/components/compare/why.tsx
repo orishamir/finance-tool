@@ -137,10 +137,10 @@ function LimitationLine({ ctx, onField }: { ctx: ResultCtx; onField: (f: FieldKe
         <Tpl t={t.text} vars={{ years: <Num value={goalValueObjects(ctx.bundle, ctx.g).horizon} display={fmt.number(ctx.g.horizonYears)} /> }} />
       </p>
       <p className="text-sm flex flex-wrap items-center gap-x-4">
-        <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => onField("return")}>
+        <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={() => onField("return")}>
           {t.enterReturn}
         </button>
-        <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => onField("horizonYears")}>
+        <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={() => onField("horizonYears")}>
           {t.orYears}
         </button>
       </p>
@@ -160,7 +160,7 @@ function ParameterRateLine({ ctx }: { ctx: ResultCtx }) {
       <p className="flex flex-wrap items-center gap-x-1.5">
         <Tpl t={t.text} vars={{ rate: <Num value={lead.rate} />, name: <bdi>{lead.name}</bdi> }} />
         {!open && (
-          <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => setOpen(true)}>
+          <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={() => setOpen(true)}>
             {t.enter}
           </button>
         )}
@@ -236,7 +236,7 @@ function NextStepLine({ ctx }: { ctx: ResultCtx }) {
       <Tpl t={t.text} vars={{ x: <Num value={row.cost} /> }} />
       {!top.cashLike && <span>{t.stocks}</span>}
       {shown("/idle-cash") && (
-        <Link to={`/idle-cash?balance=${g.amountNow}&keep=${g.available}`} className="text-link min-h-9 inline-flex items-center hover:underline">
+        <Link to={`/idle-cash?balance=${g.amountNow}&keep=${g.available}`} className="text-link min-h-target inline-flex items-center hover:underline">
           {t.link}
         </Link>
       )}
@@ -515,7 +515,7 @@ export function DetailSheetBody({ ctx, option, headId }: { ctx: ResultCtx; optio
             <div key={r.key} className="readout-row">
               <dt>{r.label}</dt>
               <dd>
-                <Num value={mk.nis(breakdown[r.key], r.formula, r.label, { usedRules: ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules, flags: run.flags })} />
+                <Num value={mk.nis(breakdown[r.key], r.formula, r.label, { usedRules: ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules, flags: run.flags, labels: run.labels })} />
               </dd>
             </div>
           ))}
@@ -558,7 +558,7 @@ export function HorizonDefaultedNote({ bundle, g, presetName, onChange, figures 
           <Tpl t={scnCompare.horizonFigures.first} vars={{ a: figures.a }} />; <Tpl t={scnCompare.horizonFigures.rest} vars={{ n: fmt.number(g.horizonYears), b: figures.b }} />.
         </span>
       )}
-      <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={onChange}>
+      <button type="button" className="text-link min-h-target inline-flex items-center hover:underline" onClick={onChange}>
         {h.change}
       </button>
     </div>

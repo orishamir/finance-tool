@@ -1,0 +1,13 @@
+import { readFileSync, readdirSync } from "node:fs";
+const root = "/home/ori/dev/finance-tool/.claude/worktrees/idx-data";
+const [id, which] = process.argv.slice(2);
+const f = readdirSync(root + "/data/funds").find((x) => x === id + "@2026-10-25.json");
+const r = JSON.parse(readFileSync(root + "/data/funds/" + f, "utf8"));
+const t = r.tracking_record;
+const idx = readFileSync(root + "/research/library/index.jsonl", "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l));
+const hit = idx.find((e) => e.url && e.url.split("#")[0] === t.source.url.split("#")[0] && e.text === "ok");
+const text = readFileSync(root + "/research/library/store/" + hit.id + ".txt", "utf8");
+const pages = text.split("\f");
+const p = which === "fees" ? t.fees_page : which === "ret" ? t.page : Number(which);
+console.log(`--- ${id} page ${p} of ${pages.length} (lib ${hit.id})`);
+console.log(pages[p - 1].replace(/[‎‏‪-‮]/g, ""));
