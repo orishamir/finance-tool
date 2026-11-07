@@ -783,8 +783,8 @@
   {
     "term_he": "מגודרות מט\"ח",
     "term_source": {
-      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025 (hosted by Funder)",
-      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025, עמוד 20",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf"
     },
     "variants_he": [
       "מנוטרלת מט\"ח",
@@ -796,10 +796,11 @@
       "ETF-12"
     ],
     "source": {
-      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025 (hosted by Funder)",
-      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025, עמוד 20",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "app",
@@ -964,8 +965,8 @@
   {
     "term_he": "TER",
     "term_source": {
-      "title": "CESR/05-302b (July 2005), Annex I: Commission Recommendation 2004/384/EC, Total expense ratio (TER)",
-      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/05_302b.pdf"
+      "title": "Commission Recommendation 2004/384/EC (27.4.2004), OJ L 144, 30.4.2004, Annex I: Total expense ratio (TER)",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32004H0384"
     },
     "variants_he": [],
     "explain_he": "כל ההוצאות שיורדות בשנה מנכסי קרן אירופית מסוג UCITS, כאחוז מהשווי הנקי הממוצע שלה; עלויות המסחר של הקרן ועמלות שהמשקיע משלם ישירות לא נכללות.",
@@ -974,10 +975,11 @@
       "ETF-30"
     ],
     "source": {
-      "title": "CESR/05-302b (July 2005), Annex I: Commission Recommendation 2004/384/EC, Total expense ratio (TER)",
-      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/05_302b.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary-mirror"
+      "title": "Commission Recommendation 2004/384/EC (27.4.2004), OJ L 144, 30.4.2004, Annex I: Total expense ratio (TER)",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32004H0384",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "EUR-Lex (Publications Office of the EU)"
     },
     "where": [
       "app",

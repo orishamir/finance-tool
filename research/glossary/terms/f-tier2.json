@@ -1029,8 +1029,8 @@
   {
     "term_he": "מנוטרלת מט\"ח",
     "term_source": {
-      "title": "Funder, fund page 5142096 (קסם KTF LBMA GOLD PRICE PM USD מנוטרלת מט\"ח)",
-      "url": "https://funder.co.il/fund/5142096"
+      "title": "רשות ניירות ערך, כותרות מאפיינות לצורך סיווג קרן – בניהול פסיבי (31.10.2024), עמוד 2: \"מניות גיאוגרפי - מנוטרלת מט\"ח\"",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/passivefunds311024.pdf"
     },
     "variants_he": [],
     "explain_he": "בשם של קרן: הקרן מנטרלת את החשיפה למטבע זר, כך ששער הדולר כמעט אינו משפיע עליה.",
@@ -1042,10 +1042,11 @@
       "RG-19"
     ],
     "source": {
-      "title": "Funder, fund page 5142096 (קסם KTF LBMA GOLD PRICE PM USD מנוטרלת מט\"ח)",
-      "url": "https://funder.co.il/fund/5142096",
-      "checked": "2026-10-22",
-      "strength": "secondary"
+      "title": "רשות ניירות ערך, כותרות מאפיינות לצורך סיווג קרן – בניהול פסיבי (31.10.2024), עמוד 2: \"מניות גיאוגרפי - מנוטרלת מט\"ח\"",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/passivefunds311024.pdf",
+      "checked": "2026-11-07",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
