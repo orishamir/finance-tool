@@ -1522,7 +1522,7 @@
       "guide:money-market-fund-daily",
       "guide:money-market-fund-renewable"
     ],
-    "notes": "Hours differ by fund and are set in each prospectus; current hours and Friday handling are open (MF OQ3, MF-14). The law says the next price-calculation day.",
+    "notes": "Hours differ by fund and are set in each prospectus; Friday orders are MF-68 and the hours most managers print are MF-69. The law says the next price-calculation day.",
     "id": "hshah-hyavdh"
   },
   {
