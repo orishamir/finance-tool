@@ -146,7 +146,7 @@ export interface ExposureEntry {
   name: string;
   oneLine: string | null;
   guideHref: string;
-  /** The index page, for an index with a fund record (the funds page is gone, issue 174). */
+  /** The index page, for an index with a fund record (the funds page is gone). */
   fundsHref: string | null;
 }
 
@@ -1277,7 +1277,7 @@ export const decidingFormulaOf = (f: string): string => decidingFormulaId[f] ?? 
 /** Where the person picks the actual product the card's run stands for (A10, A14): the track, provider or fund workbench of the wrapper, when it has one. */
 export function workbenchHref(wrapperId: string): string | null {
   if (["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(wrapperId)) return `/tracks/${wrapperId}`;
-  // the index page, on the S&P 500 the house-ranking page it replaced defaulted to (issue 172)
+  // the index page, on the S&P 500 the house-ranking page it replaced defaulted to
   if (wrapperId === "brokerage-account") return "/indices/sp500";
   return null;
 }

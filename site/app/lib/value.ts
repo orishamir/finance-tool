@@ -21,6 +21,11 @@ export interface SiteValue extends ValueObject {
    * shown as sourced, with no "לפי החברה" caution.
    */
   own?: string;
+  /**
+   * A doubt the record itself holds about this very figure, in Hebrew (a bank's `doubt_he`): the figure shows on an amber tint with the
+   * caution icon, and its sheet says the doubt. It is the value's own, so every place that shows the figure warns (founder, 2026-11-08).
+   */
+  doubt?: string;
   /** For a site parameter: its rationale (copy 3.8). */
   parameter?: { rationale: string; rationaleHe?: string | null };
   /** Rules a computed value read, with the strength the run recorded. */
@@ -40,6 +45,17 @@ export interface SiteValue extends ValueObject {
   /** For an entered value: the P-05 value it replaced, and the input key the reset button clears. */
   replaces?: SiteValue;
   resetKey?: string;
+  /**
+   * A field's value: the default a chart's field starts at, or what the reader typed in it (founder, 2026-11-08, charts.md). It shows as
+   * a plain number wherever it appears (the sentence that repeats it, a calculation sheet's input row): no site-parameter tag, no "you
+   * entered" mark, nothing that opens. The field beside it is where it changes. Its record still traces to data/parameters.
+   */
+  field?: boolean;
+}
+
+/** A value as a field's own (`SiteValue.field`): the default a chart's field starts at, or what the reader typed in it. */
+export function asField<T extends SiteValue>(v: T): T {
+  return { ...v, field: true };
 }
 
 const order: Record<Strength, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };

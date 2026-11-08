@@ -5,7 +5,7 @@ import { companies as companiesCopy, formulaNames, home as homeCopy, knowledgeEn
 
 import { isHeld, shown } from "../lib/review";
 import { IconBack, IconMenu, IconSearch } from "./icons";
-import { ProvenanceProvider, type ProvenanceData } from "./provenance";
+import { ProvenanceProvider, TermFromAddress, type ProvenanceData } from "./provenance";
 import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, Callout, CountingFigures, cx, gershayim, When } from "./kit";
@@ -84,6 +84,7 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
   };
   return (
     <ProvenanceProvider data={data}>
+      <TermFromAddress hash={location.hash} />
       <SearchOpenCtx.Provider value={openSearch}>
         <div className="min-h-dvh flex flex-col">
           <Header width={width} current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />

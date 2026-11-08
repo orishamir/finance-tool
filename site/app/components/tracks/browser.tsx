@@ -1,4 +1,4 @@
-// The track browser (D54, 2026-11-03; issue 173): the controls and the list for one product. The product is in the address
+// The track browser (D54, 2026-11-03): the controls and the list for one product. The product is in the address
 // (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are the person's state on the page.
 // No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list (founder, 2026-11-03). The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
 // The controls stand in the order they narrow the list (product, search, kind); the count and the order are said right over the list.

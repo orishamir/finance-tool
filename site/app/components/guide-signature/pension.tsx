@@ -11,11 +11,11 @@ import { fact } from "../../lib/guide-signature";
 import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, LongestCase, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
+import { asField, type SiteValue } from "../../lib/value";
+import { Callout, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap } from "./g2-parts";
-import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
   const bundle = props.data.bundles[props.data.id];
@@ -36,13 +36,6 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const hasInsurance = id !== "provident-for-annuity";
   const [insurancePick, setInsurancePick] = useState<number | null>(null);
   const insurancePct = insurancePick;
-  const insuranceSource = insurancePick !== null ? "guide" : null;
-  const sourceLine = (salaryFrom: string, yearsFrom: string, insuranceFrom: string | null) => (
-    <p className="text-xs text-muted-foreground">
-      {copy.pension.salarySource} {copy.common.source[salaryFrom]}. {copy.pension.yearsSource} {copy.common.source[yearsFrom]}.
-      {insuranceFrom ? ` ${copy.pension.insuranceSource} ${copy.common.source[insuranceFrom]}.` : ""}
-    </p>
-  );
   const yr = yearsRange(bundle);
   const years = Math.min(yr.max, Math.max(yr.min, Math.round(inputs.years)));
   const model = useMemo(() => pensionModel(data, id, { salary, years, insurancePct }), [data, id, salary, years, insurancePct]);
@@ -58,9 +51,10 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   if (!model) return <G2Gap id="bundle" />;
 
   // ---- value objects
-  const salaryIn: SiteValue = salarySource === "p05" ? figure(salary, "nis", "F-67", { [copy.pension.salaryAnnual]: p05Value(bundle.p05, "annual_income") }, today, copy.pension.salaryAbout) : enteredValue(salary, "nis", today, copy.pension.salaryAbout);
+  // the salary field's default, like what the reader types in it, is a plain number (founder, 2026-11-08)
+  const salaryIn: SiteValue = salarySource === "p05" ? asField(figure(salary, "nis", "F-67", { [copy.pension.salaryAnnual]: p05Value(bundle.p05, "annual_income") }, today, copy.pension.salaryAbout)) : typed(salary, "nis", today, copy.pension.salaryAbout);
   const yearsIn = inputSite(bundle, "horizon_years", years, inputs.source.years, today, copy.common.inputNames.years);
-  const insuranceIn: SiteValue | null = insurancePct !== null ? enteredValue(insurancePct, "pct", today, copy.pension.insuranceAbout) : null;
+  const insuranceIn: SiteValue | null = insurancePct !== null ? typed(insurancePct, "pct", today, copy.pension.insuranceAbout) : null;
   const avgWage = fact(data, "avgWage");
   const employeePct = fact(data, "employeePct");
   const employerPct = fact(data, "employerPct");
@@ -91,7 +85,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
     net: figure(model.netYou, "nis", model.relief.formula, { ...base, ...(creditPct ? { [copy.pension.inputNames.credit]: creditPct } : {}) }, today, copy.pension.about.net, rules),
     depositFee: depositFee ? figure((Number(depositFee.value) / 100) * model.total, "nis", "F-11", { ...base, [copy.pension.inputNames.depositFee]: depositFee }, today, copy.pension.about.depositFee) : null,
     insurance: model.insuranceMonthly !== null && insuranceIn ? figure(model.insuranceMonthly, "nis", "F-53", { ...base, [copy.pension.insuranceAbout]: insuranceIn }, today, copy.pension.about.insurance) : null,
-    balance: model.balance ? figure(model.balance.real, "nis", "F-67", { ...base, [copy.pension.insuranceAbout]: insuranceIn ?? enteredValue(0, "pct", today), [copy.common.inputNames.years]: yearsIn, ...(returnPct ? { [copy.hishtalmut.inputNames.ret]: returnPct } : {}), ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}), ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}) }, today, copy.pension.about.balance, rules) : null,
+    balance: model.balance ? figure(model.balance.real, "nis", "F-67", { ...base, [copy.pension.insuranceAbout]: insuranceIn ?? typed(0, "pct", today), [copy.common.inputNames.years]: yearsIn, ...(returnPct ? { [copy.hishtalmut.inputNames.ret]: returnPct } : {}), ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}), ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}) }, today, copy.pension.about.balance, rules) : null,
   };
   const share = (n: number) => `${(n / model.total) * 100}%`;
   const parts = [
@@ -108,6 +102,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           label={copy.pension.salary}
           unit="nis"
           value={salary}
+          start={p05Salary}
           isEntered={salaryPick !== null}
           validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)}
           onCommit={(n) => setSalaryPick(n)}
@@ -133,6 +128,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           label={copy.common.years}
           unit="years"
           value={years}
+          start={inputs.p05.years}
           isEntered={inputs.source.years === "guide"}
           validate={(n) => (n < yr.min || n > yr.max || !Number.isInteger(n) ? `${valuesCopy.errors.years[0]} ${fmt.number(yr.min)} ${valuesCopy.errors.years[1]}${fmt.number(yr.max)}.` : null)}
           onCommit={inputs.setYears}
@@ -144,10 +140,6 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           disabled={!inputs.ready}
         />
       </div>
-      {/* which of them the person entered changes the words: the longest wording keeps the line's room */}
-      <LongestCase className="-mt-3" cases={[sourceLine("p05", "p05", "p05")]}>
-        {sourceLine(salarySource, inputs.source.years, insuranceSource)}
-      </LongestCase>
 
       {/* an HTML chart: the chart check (site/scripts/chart-check) finds it by data-chart, and reads the bar's start and parts */}
       <div className="flex flex-col gap-2" data-chart="split-bar">

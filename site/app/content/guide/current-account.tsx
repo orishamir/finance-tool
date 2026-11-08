@@ -4,7 +4,7 @@
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { effectiveFromValue } from "../../lib/value";
-import { Sentence } from "../../components/kit";
+import { Callout, Sentence, When } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -32,9 +32,12 @@ export const content: GuideContent = {
           {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="וה" id="מסלול מורחב">מסלול המורחב</Term>{" "}
           {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי מוגבל בצו{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null} <RuleRef id="BANK-17" end="." />
         </Sentence>
-        <Sentence measure>
-          הכללים האלה עומדים להשתנות. צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו מבטל את המסלולים וקובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null} <RuleRef id="BANK-35" end="." />
-        </Sentence>
+        {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark (founder, 2026-11-08) */}
+        <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
+          <Sentence size="sm">
+            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו מבטל את המסלולים וקובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null} <RuleRef id="BANK-35" end="." />
+          </Sentence>
+        </Callout>
         <RulesLine ids={["BANK-01", "BANK-09", "BANK-17", "BANK-35", "TXI-08"]} />
       </>
     );

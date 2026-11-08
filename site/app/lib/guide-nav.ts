@@ -30,7 +30,7 @@ export function exposureFoldedInto(holderIds: readonly string[], products: reado
   return null;
 }
 
-/** The sections a product guide leaves out (founder, issue 33: one template does not fit every guide). Unlisted guides keep them all. */
+/** The sections a product guide leaves out (founder: one template does not fit every guide). Unlisted guides keep them all. */
 const omittedSections: Record<string, readonly string[]> = {
   "current-account": ["who", "inout", "cost", "tax"],
   // a section of one row that says nothing the page does not (2026-11-02): "by the provider's tariff", "withdraw on any trading day"
@@ -48,7 +48,7 @@ const omittedSections: Record<string, readonly string[]> = {
 export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
 
 /**
- * The withdrawal rules a guide's money-in-and-out section shows (issue 129). PF-46 holds for every provident product. PF-45 and TXP-18
+ * The withdrawal rules a guide's money-in-and-out section shows. PF-46 holds for every provident product. PF-45 and TXP-18
  * speak of money drawn against the rules, read for the provident funds for annuity, so only those guides carry them.
  */
 const providentFamily = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
@@ -88,17 +88,4 @@ export function rulesAnchor(rules: readonly { id: string; il_finance_file: strin
     else if (rank(file) < rank(best) || (rank(file) === rank(best) && n > count.get(best)!)) best = file;
   }
   return best ? best.replace(/\.md$/, "") : rules[0]?.id ?? "";
-}
-
-/**
- * The terms table of a guide or exposure page (audit A83): nothing under `min` rows (an empty or one-row table teaches
- * nothing); otherwise the terms the page's own text opens (`highlighted`) when there are enough of them, with the rest
- * behind a toggle; when too few are highlighted, all of them sit behind the toggle.
- */
-export function splitTerms<T extends { he: string }>(terms: readonly T[], highlighted: readonly string[], min = 3): { main: T[]; rest: T[]; hide: boolean } {
-  if (terms.length < min) return { main: [], rest: [], hide: true };
-  const on = new Set(highlighted);
-  const main = terms.filter((t) => on.has(t.he));
-  if (main.length >= min) return { main, rest: terms.filter((t) => !on.has(t.he)), hide: false };
-  return { main: [], rest: [...terms], hide: false };
 }

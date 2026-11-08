@@ -1,7 +1,7 @@
-// A choice that changed something else too (2026-11-05, issue 190, the indices page: a fund picked at an account that cannot price it moved
+// A choice that changed something else too (2026-11-05, the indices page: a fund picked at an account that cannot price it moved
 // the account, with nothing near the row to say so). Said where the person tapped, with the way back to what was there before the tap.
 // The way back is a 44 px target that takes no more height than the words beside it, so the note never grows its row. The target is a
-// layer around the words, not a margin pulled in: a way back wrapped onto two lines in a narrow cell was drawn over the note (#190, 390 px).
+// layer around the words, not a margin pulled in: a way back wrapped onto two lines in a narrow cell was drawn over the note (390 px).
 import type { MouseEvent, ReactNode } from "react";
 import { cx } from "./cx";
 

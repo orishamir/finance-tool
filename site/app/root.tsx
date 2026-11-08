@@ -15,9 +15,8 @@ import { system } from "./copy";
  * companies whose own document it cites (only those list it, review 2026-10-26). PageShell reads it.
  */
 export async function loader() {
-  const { loadFormulaParameters, loadOpenQuestions, loadParameterAnchors, loadPublishersHe } = await import("./lib/data.server");
-  const { companyLinks, ownDocuments } = await import("./lib/institutions.server");
-  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors(), publishersHe: loadPublishersHe(), openQuestions: loadOpenQuestions(), companies: companyLinks(), ownDocs: ownDocuments() };
+  const { rootData } = await import("./lib/root.server");
+  return rootData();
 }
 
 export function links() {

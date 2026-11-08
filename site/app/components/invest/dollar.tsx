@@ -1,4 +1,4 @@
-// "Hedged or not: what happened" (F-95; founder 2026-10-31, option A of research/specs/2026-10-31-hedged): what the dollar did each year
+// "Hedged or not: what happened" (F-95; founder 2026-10-31, option A of 8dd1f013:research/specs/2026-10-31-hedged): what the dollar did each year
 // and what each kind of fund did in the same years, from the funds' own reports, and one sentence on the plan. No forecast, no ranking.
 import { useMemo } from "react";
 import { comparedYears, kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread } from "@finance-tool/engine";
@@ -204,7 +204,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         ]}
         rows={rows}
       />
-      {/* held at its longest case (#190: a ratchet held it only after the fact, and a longer pair's name grew it by a few pixels the first
+      {/* held at its longest case (a ratchet held it only after the fact, and a longer pair's name grew it by a few pixels the first
           time): the longest names of an account and a fund on this index in both places, the longest years and figures */}
       <div ref={held}>
       <LongestCase cases={planCases}>
@@ -216,7 +216,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         )}
       </LongestCase>
       </div>
-      {/* held with the tax sentence: with nothing left to tax (amount and deposit 0) it goes, and what follows moved 45 px (#190) */}
+      {/* held with the tax sentence: with nothing left to tax (amount and deposit 0) it goes, and what follows moved 45 px */}
       <LongestCase className="text-sm text-muted-foreground" cases={[<p key="t">{c.dollar.small(rec.years.length, hedgedFunds.length)} {c.dollar.taxLead} {"⁦100%⁩"} {c.dollar.taxTail} {c.dollar.noSource}</p>]}>
         <p>
           {c.dollar.small(rec.years.length, hedgedFunds.length)} {money?.taxShare != null && <>{c.dollar.taxLead} {`⁦${Math.round(money.taxShare * 100)}%⁩`} {c.dollar.taxTail} </>}

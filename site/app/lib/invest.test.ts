@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount } from "./invest";
+import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -25,7 +25,7 @@ const sp = indexById(bundle, "index-sp500")!;
 describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
 
-  it("prices the Irish distributing funds from their records' yields, and keeps a reason on the US ones (issue 147)", () => {
+  it("prices the Irish distributing funds from their records' yields, and keeps a reason on the US ones", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const of = (id: string) => abroad.funds.find((f) => f.rec.id === id)!;
     for (const id of ["ie0031442068", "ie00b3xxrp09"]) {
@@ -41,13 +41,13 @@ describe("invest page computation", () => {
   });
 
   it("marks the houses that print a price for monthly buying, and only them", () => {
-    // three banks print a commission for a standing order; Interactive Israel a conversion for its recurring plan (p.6 of its tariff, issue 132)
+    // three banks print a commission for a standing order; Interactive Israel a conversion for its recurring plan (p.6 of its tariff)
     const marked = view.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
     expect(marked.sort()).toEqual(["fibi", "interactive-israel", "leumi", "massad"]);
   });
 
 
-  it("Psagot is grey on funds abroad, with its tariff's own words on why (issue 144, D42)", () => {
+  it("Psagot is grey on funds abroad, with its tariff's own words on why (D42)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const accumulating = abroad.funds.filter((f) => f.rec.distribution_policy === "accumulating");
     expect(accumulating.length).toBeGreaterThan(0);
@@ -83,9 +83,11 @@ describe("invest page computation", () => {
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
     // 2026-11-04: One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
     // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. 2026-11-05: Altshuler answered in writing that it
-    // trades only on the Israeli and US exchanges (issue 188), so it is priced on its US line for a fund that trades in the US, as One Zero is
+    // trades only on the Israeli and US exchanges, so it is priced on its US line for a fund that trades in the US, as One Zero is.
+    // 2026-11-08: IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
     expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
-    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["ibi", "psagot"]);
+    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["psagot"]);
+    expect(abroad.cells.find((c) => c.providerId === "ibi")?.kind).toBe("cost");
     expect(abroad.cells.find((c) => c.providerId === "altshuler-trade")).toMatchObject({ kind: "cost", venue: "us" });
   });
 
@@ -93,6 +95,22 @@ describe("invest page computation", () => {
     const c = view.options.find((o) => o.id === "abroad")!.cells.find((x) => x.providerId === "interactive-israel")!;
     expect(c.kind).toBe("cost");
     expect(c.venue).toBe("europe");
+  });
+
+  it("IBI prices a fund bought in Europe on its line for other markets, and says it is bought by phone only (2026-11-08)", () => {
+    const f = view.options.find((o) => o.id === "abroad")!.funds.find((x) => x.rec.id === "ie00b5bmr087")!;
+    expect(f.byHouse.ibi).toMatchObject({ venue: "europe" });
+    expect((f.byHouse.ibi as { valueN?: number }).valueN).toBeGreaterThan(0);
+    // the house's words, for a fund bought in Europe only: not on the US exchanges, not on a fund of Tel Aviv
+    const ibi = bundle.snapshots.find((s) => s.id === "ibi");
+    expect(phoneOnlyOf(ibi, "abroad", "europe")?.source.quote).toBe("טלפונית מול חדר מסחר");
+    expect(phoneOnlyOf(ibi, "abroad", "us")).toBeNull();
+    expect(phoneOnlyOf(ibi, "abroad", null)).toBeNull();
+    expect(phoneOnlyOf(ibi, "il-etf", "europe")).toBeNull();
+    const v = phoneOnlyValue(ibi, "abroad", "europe", "IBI")!;
+    expect(v).toMatchObject({ value: "בטלפון בלבד", unit: "text", state: "sourced", own: ibi!.provider.name_he });
+    expect(v.source.url).toBe("docs/company-answers.md#ibi-2026-11-08");
+    expect(v.lead).toContain("טלפונית מול חדר מסחר");
   });
 
   it("the funds of an option are ranked by value at the option's cheapest broker", () => {
@@ -360,7 +378,7 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
     expect(best(ownLeumi, "hapoalim").valueN).toBe(best(counted, "hapoalim").valueN);
   });
 
-  it("re-sorts the list where the gap is smaller than the account (evidence: research/audit/2026-11-06-indices-pricing)", () => {
+  it("re-sorts the list where the gap is smaller than the account (evidence: 8dd1f013:research/audit/2026-11-06-indices-pricing)", () => {
     const order = (v: typeof before) => v.houses.filter((h) => h.best?.price).sort((a, b) => b.best!.price!.valueN - a.best!.price!.valueN).map((h) => h.provider.id);
     // Yahav's current account (4 shekels) is the cheapest of the banks': it passes Hapoalim, and IBI passes Discount and Mercantile
     expect(order(before).indexOf("hapoalim")).toBeLessThan(order(before).indexOf("yahav"));

@@ -128,14 +128,24 @@ export function textDirective(f: TextFragment): string {
  * (`#anchor:~:text=…`). An address that already carries a `#` keeps it, and gains only the words.
  */
 export function sourceHref(source: CitedPlace): string {
-  const pdf = isPdfUrl(source.url);
+  const url = publicUrl(source.url);
+  const pdf = isPdfUrl(url);
   const words = source.fragment && !pdf ? `:~:${textDirective(source.fragment)}` : "";
   // an address that carries a directive already gains the words as a second one (`&text=`)
-  if (source.url.includes("#")) return words ? `${source.url}${source.url.includes(":~:") ? words.replace(":~:", "&") : words}` : source.url;
-  if (pdf) return source.page ? `${source.url}#page=${source.page}` : source.url;
-  if (source.anchor) return `${source.url}#${source.anchor}${words}`;
-  return words ? `${source.url}#${words}` : source.url;
+  if (url.includes("#")) return words ? `${url}${url.includes(":~:") ? words.replace(":~:", "&") : words}` : url;
+  if (pdf) return source.page ? `${url}#page=${source.page}` : url;
+  if (source.anchor) return `${url}#${source.anchor}${words}`;
+  return words ? `${url}#${words}` : url;
 }
+
+/**
+ * A company's written answer is cited at a file of the repository, `docs/company-answers.md#<company>-<date>` (2026-11-08), and
+ * opens at that file's public page; any other address stays as it is (a parameter's rationale keeps its plain label).
+ */
+export function publicUrl(url: string): string {
+  return /^docs\/company-answers\.md(#|$)/.test(url) ? `${REPO_FILES}${url}` : url;
+}
+const REPO_FILES = "https://github.com/orishamir/finance-tool/blob/main/";
 
 export interface SourceNames {
   publisher: string;

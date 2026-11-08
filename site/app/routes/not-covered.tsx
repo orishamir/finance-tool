@@ -89,16 +89,11 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
         ) : (
           <ul className="flex flex-col gap-1">
             {s.closed.map((c, i) => (
-              <li key={`${c.code}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
-                {/* a closure is said in words, not struck: a struck date and a bare count read as a fragment (2026-11-07) */}
+              <li key={`${c.ruleIds.join(" ")}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
+                {/* a closure is said in words, not struck: a struck date and a bare count read as a fragment (2026-11-07). It names the
+                    rules that answered it, never a question: an answered question is deleted from the rule base (2026-11-08) */}
                 <span>
-                  {!c.code ? (
-                    <Tpl t={c.closedOn ? g.closureNoCode : g.closureNoCodeNoDate} vars={{ date: c.closedOn ? dateNode(c.closedOn) : "", topic: g.closureTopics[s.id] ?? "" }} />
-                  ) : c.closedOn ? (
-                    <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} />
-                  ) : (
-                    <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} />
-                  )}
+                  <Tpl t={c.closedOn ? g.closure : g.closureNoDate} vars={{ date: c.closedOn ? dateNode(c.closedOn) : "", topic: g.closureTopics[s.id]?.[c.ruleIds.join(" ")] ?? "" }} />
                 </span>
                 <RulesChip ids={c.ruleIds} />
               </li>

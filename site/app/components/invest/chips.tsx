@@ -84,9 +84,9 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean; /** The inflation the page runs on, said beside the button that changes it, through the figure's own sheet (its source, or entered). */ inflation?: SiteValue }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   // held at the words' longest case, the site's example included: on a phone, entering a first number dropped "לדוגמה של האתר" and
-  // the line under the sliders lost a line (#190)
+  // the line under the sliders lost a line
   // the unseen longest case names the dollar too, on an index in shekels as well: the line wrapped once more on a foreign index, and
-  // the whole page under it moved from index to index (#190)
+  // the whole page under it moved from index to index
   const line = (ex: boolean, withDollar = dollar) => (
     <Sentence size="sm" tone="muted">
       {ex && <>{c.plan.siteExample} · </>}
@@ -109,7 +109,7 @@ export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation
     <section className="flex flex-col gap-2" aria-label={c.plan.heading}>
       {knobs}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 content-start max-md:min-h-[7rem]">
-        {/* the figure is a figure of the page, with its own sheet; the button beside it opens the assumptions, a 44 px target (#190: the
+        {/* the figure is a figure of the page, with its own sheet; the button beside it opens the assumptions, a 44 px target (the
             figure was plain text inside a 36 px button) */}
         {inflation ? (
           <span className="inline-flex items-center gap-x-2 text-sm">

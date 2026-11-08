@@ -101,7 +101,7 @@ export function StairsChart({
   const grid: number[] = [];
   for (let g = lo; g <= hi + 1e-9; g += step) grid.push(g);
   // the left margin holds the widest label on the axis, measured (chart-text.ts): a large plan's "1,000,000K" lost its leading digits past
-  // a fixed 44 px (#190)
+  // a fixed 44 px
   const widest = Math.max(0, ...grid.map((g) => chartTextWidth(tick(g, compact), CHART_TEXT_PX))) + 12;
   const m = compact ? { l: Math.max(44, widest), r: 6, t: 40, b: 6 } : { l: Math.max(W * STAIRS_MARGIN.left, widest), r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
   const cw = (W - m.l - m.r) / STAIRS_SLOTS;

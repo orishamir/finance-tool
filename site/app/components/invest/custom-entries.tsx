@@ -130,8 +130,8 @@ export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fu
   );
 }
 
-/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike (#190). The entered tag stands before
- *  what was typed, and only when something was: alone, it stood before its own "not entered" (#190). */
+/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike. The entered tag stands before
+ *  what was typed, and only when something was: alone, it stood before its own "not entered". */
 export function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
   return (
     <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
@@ -252,7 +252,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
   const foreign = isForeignKind(draft.kind);
-  // no "0" in an empty field: an empty fee is not known, not a fee of zero (#190)
+  // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
     flushPendingFields();

@@ -94,7 +94,7 @@ describe("before a choice (D27)", () => {
   });
   // since 2026-10-28 an index's way opens on an unhedged fund: MSCI World runs through MTF's unhedged fund, no longer Kesem's hedged one
   // pass 6 (F-92 (b)): MTF 5122569's variable fee forward is the mean charged at today's 0.3% rate, 0.265% in 2024 and 2025, not 0.3%:
-  // 146,712 -> 147,227 (research/audit/2026-11-07-indices-data/pass6/rank.txt)
+  // 146,712 -> 147,227 (8dd1f013:research/audit/2026-11-07-indices-data/pass6/rank.txt)
   it("the founder's plan: the lowest is MSCI World at about 147,227, the highest the S&P 500 at 155,116", () => {
     if (out.reading?.kind !== "range") throw new Error("range");
     expect(out.reading.low.indexId).toBe("index-msci-world");

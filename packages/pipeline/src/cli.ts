@@ -1,11 +1,12 @@
-import { appendFileSync } from "node:fs";
+import { appendFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { refreshCbsCpi } from "./adapters/cbs-cpi.ts";
 import { refreshCma } from "./adapters/cma.ts";
 import { refreshEcbFx, refreshEcbMonthEnd } from "./adapters/ecb-fx.ts";
 import { refreshMofChildSavings } from "./adapters/mof-child-savings.ts";
 import type { SourceReport } from "./adapters/series-common.ts";
-import { readFormulaIds, readRuleBaseIds } from "./references.ts";
+import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds } from "./references.ts";
 import { validateData } from "./validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -64,11 +65,28 @@ async function refresh(args: string[]): Promise<number> {
   return errored ? 1 : failed ? 3 : 0;
 }
 
+/** Every file under `dir` whose name matches, test files left out (their fixtures name questions that need not exist). */
+function filesUnder(dir: string, name: RegExp): string[] {
+  return readdirSync(dir, { withFileTypes: true, recursive: true })
+    .filter((e) => e.isFile() && name.test(e.name) && !/\.test\.[jt]sx?$/.test(e.name))
+    .map((e) => join(e.parentPath, e.name));
+}
+
 if (command === "validate") {
+  const refs = `${root}.claude/skills/il-finance/references`;
+  // where the repository names open questions, besides data/: the docs, the rule base itself, the packages' sources and the golden
+  // workings; the site's sources are the kit guard's (site/app/components/kit/guards.test.ts). research/ holds dated records.
+  const citing = [
+    ...filesUnder(`${root}docs`, /\.md$/),
+    ...filesUnder(refs, /\.md$/),
+    ...["engine", "pipeline", "schema"].flatMap((p) => filesUnder(`${root}packages/${p}/src`, /\.ts$/)),
+    ...filesUnder(`${root}tests/golden`, /\.(md|py)$/),
+  ];
   const problems = validateData({
     dataDir: `${root}data`,
-    ruleBase: readRuleBaseIds(`${root}.claude/skills/il-finance/references`),
+    ruleBase: readRuleBaseIds(refs),
     formulas: readFormulaIds(`${root}docs/method.md`),
+    citing: { files: citing, prefixOf: readQuestionPrefixes(refs) },
   });
   for (const p of problems) console.error(`${p.file}: ${p.message}`);
   console.log(problems.length === 0 ? "data/ is valid" : `${problems.length} problem(s) in data/`);

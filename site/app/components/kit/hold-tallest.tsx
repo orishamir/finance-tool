@@ -1,4 +1,4 @@
-// A block held at the tallest of its cases, when the cases are too many to keep laid out in the page as LongestCase keeps them (#190, the
+// A block held at the tallest of its cases, when the cases are too many to keep laid out in the page as LongestCase keeps them (the
 // stairs' lanes on the indices page: a lane lists every account, every kind or every fund from where the person stands, so it has as many
 // cases as there are starts). The cases are laid out unseen once, measured and dropped; they are laid out again only when `id` or the
 // block's width changes, never when a figure does, so a slider costs nothing here. The cases are a function, called only then.

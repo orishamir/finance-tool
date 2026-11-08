@@ -8,7 +8,7 @@ import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, prov
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
-import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
+import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, shownTitle, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
 import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
@@ -16,12 +16,12 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, LongestCase, Tpl, When, countsByItself, gershayim, keepTitleWhole, useCounting, useGlidingNumbers, useUnseen } from "./kit";
+import { CompanyLinks, LongestCase, PrintedText, Tpl, When, useAheadSaid, countsByItself, gershayim, keepTitleWhole, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms. */ lead?: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string } | { kind: "formula"; id: string } | { kind: "question"; id: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -49,9 +49,9 @@ export interface ProvenanceData {
   parameters?: Record<string, string>;
   /**
    * Per open question (`TX2 OQ6`), from data/open-questions.json: the root loader fills it for every page (PageShell), as `parameters`.
-   * `status` and `closed_on` make a closed question's chip open the closure wherever it appears; the sheet shows the Hebrew lines.
+   * The sheet shows its status and Hebrew lines. An answered question is deleted from the rule base, so none here is closed.
    */
-  openQuestions?: Record<string, { status?: "open" | "narrowed" | "closed"; closed_on?: string; title_he?: string; status_he?: string; blocks_he?: string }>;
+  openQuestions?: Record<string, { status?: "open" | "narrowed"; title_he?: string; status_he?: string; blocks_he?: string }>;
   /** Per source host, the company's Hebrew name (`data/sources/publishers.json`); PageShell fills it for every page. */
   publishersHe?: Record<string, string>;
   /** Per company of `data/sources/institutions.json`, where its terms are listed (D30): its page, or its group on /companies. PageShell fills it for every page. */
@@ -134,6 +134,31 @@ export function useOpen() {
   const push = useContext(PushCtx);
   const inside = useContext(InsideSheetCtx);
   return (item: Item, el: HTMLElement | null) => (inside ? push(item) : api.open(item, el));
+}
+
+/**
+ * Where a search hit for a term leads (`/guide/x#term=<the term>`): the term's card opens at its first marked use on the page, or alone
+ * when the page lists it without a mark. The pages' terms list is gone: every term is marked where it is used (founder, 2026-11-08).
+ */
+export function TermFromAddress({ hash }: { hash: string }) {
+  const api = useContext(Ctx);
+  const data = useContext(DataCtx);
+  const terms = data?.terms;
+  useEffect(() => {
+    const m = /^#term=(.+)$/.exec(hash);
+    if (!m || !terms) return;
+    let id: string;
+    try {
+      id = decodeURIComponent(m[1]!);
+    } catch {
+      return;
+    }
+    if (!terms[id]) return;
+    const el = [...document.querySelectorAll<HTMLElement>("[data-term]")].find((n) => n.dataset.term === id) ?? null;
+    el?.scrollIntoView({ block: "center" });
+    api.open({ kind: "term", id }, el);
+  }, [hash, terms, api]);
+  return null;
 }
 
 const InsideSheetCtx = createContext(false);
@@ -244,18 +269,20 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const open = useOpen();
   const today = useContext(TodayCtx);
   const staleSaid = useContext(StaleSaidCtx);
+  const aheadSaid = useAheadSaid();
   const param = isParameter(value);
   const counting = useCounting();
   const states = useContext(StatesCtx);
   const unseen = useUnseen();
-  // a copy that only holds a block's size (LongestCase) is not on the page
-  useEffect(() => (!unseen && states ? states.add(value.state) : undefined), [value.state, unseen, states]);
-  // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (#190: a list's cases counted on every key)
+  // a copy that only holds a block's size (LongestCase) is not on the page; a field's value shows no state, so the legend leaves it out
+  const plain = !!value.field;
+  useEffect(() => (!unseen && !plain && states ? states.add(value.state) : undefined), [value.state, unseen, plain, states]);
+  // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (a list's cases counted on every key)
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
   // display rounding (A13): computed and entered amounts round, in table cells too (founder, 2026-11-08: "16,000.00 ₪" in a table); `exact` keeps the agorot
   const keepDecimals = !!exact;
   const roundState = keepDecimals ? undefined : value.state;
-  // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped (#190)
+  // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped
   const target = typeof value.value === "number" ? value.value : null;
   const landing = target === null || shown === target ? null : typeof display === "function" ? display(target) : formatValue(target, value.unit, roundState, param);
   const frame = shown !== null && landing !== null && !/\d\.\d/.test(landing ?? "") ? Math.round(shown) : shown;
@@ -273,10 +300,12 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const shortPc = nisFigure ? shortBillions(text, 1e12) : null;
   const strength = strengthOf(value);
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
-  const fromDate = startsAfter(value, today);
+  // in a callout that already says these rules start later, the figure leaves out its own "starts on" mark (founder, 2026-11-08); its sheet says it
+  const fromDate = aheadSaid ? null : startsAfter(value, today);
   const future = fromDate ? `${numbers.startsOn}${fmt.date(fromDate)}` : null;
   // an open value is no sourced figure: its label says the open question and the lock, not "ממקור" (independent check 2, 2026-11-07)
-  const label = [text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
+  const doubt = value.doubt ? numbers.doubt : null;
+  const label = [text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
   // one caution icon, before the digits, for a weak source or a date still ahead (the sheet says which); a computed figure
   // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence (audit A23). At figure size a date ahead
@@ -286,15 +315,21 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26); any other figure is
   // one unit with its icon, which stood alone on the line above its digits in a phone's table (2026-11-03)
   const oneLine = !(typeof value.value === "string" && text.length > 24);
+  // a field's value (its default, or what the reader typed) is a plain number: no mark, no sheet; the field beside it is where it changes
+  // (founder, 2026-11-08, charts.md)
+  if (plain) {
+    const bare = <bdi dir={textDir(text)} className={cx("whitespace-nowrap", className)}>{text}</bdi>;
+    return prefix ? <span className="whitespace-nowrap">{typeof prefix === "string" ? joinLead(prefix, text) : prefix}{bare}</span> : bare;
+  }
   const button = (
     <button
       type="button"
-      className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}
+      className={cx("num", `num-${value.state}`, doubt && "num-doubt", size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}
       aria-label={label}
       onClick={(e) => open(valueItem(value, written, keepDecimals), e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
-      {(fromDate || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
+      {(fromDate || markWeak || doubt) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {blocked && <IconLock size={14} className={cx("text-blocked me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none"><When iso={fromDate} lead={numbers.startsOn} /></span>}
       {short ? (
@@ -420,9 +455,6 @@ export function idKind(id: string): IdKind | null {
 /**
  * One chip for any id the site shows (2026-10-26): a rule opens its card, a formula its sheet, an open question its sheet,
  * a parameter goes to its card on the parameters page. The ID is LTR with a slashed zero and a 44px tap area.
- * - `closedOn`: a question that was closed on that date; the chip looks the same, its sheet says it was closed. Since 2026-10-26 the
- *   status and date also come from the page's `openQuestions` (data/open-questions.json), so a closed question shows as closed
- *   without the prop.
  * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
@@ -441,11 +473,11 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
   );
 }
 
-export function IdRef(props: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own (#190). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own. */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
 }
 
-function IdChip({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; titled?: boolean }) {
+function IdChip({ id, className, asLabel, titled }: { id: string; className?: string; asLabel?: boolean; titled?: boolean }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
   const data = useContext(DataCtx);
@@ -477,9 +509,7 @@ function IdChip({ id, className, closedOn, asLabel, titled }: { id: string; clas
     );
   }
   const aria = kind === "rule" ? `${ruleCopy.title} ${id}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed} ${id}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula} ${shown}`;
-  const known = kind === "question" ? questionOf(data, shown) : undefined;
-  const closed = closedOn ?? (known?.status === "closed" ? known.closed_on : undefined);
-  const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closed ? { closedOn: closed } : {}) } : { kind: kind as "rule" | "formula", id: shown };
+  const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: kind as "rule" | "formula", id: shown };
   return (
     <button type="button" className={cx("rule-chip", (title || ruleTitle) && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
       {chip}
@@ -572,7 +602,7 @@ export function VariesByCompany({ ids, lead = scopeWords.varies, size, className
 }
 
 /**
- * The rules behind one fact, as one chip with their count (founder, 2026-11-02, issue 15): a code says nothing to the reader, and a block
+ * The rules behind one fact, as one chip with their count (founder, 2026-11-02): a code says nothing to the reader, and a block
  * could carry 25 of them. It opens the list of their titles; one rule opens its card at once. No ids, no chip: a control with nothing behind it cannot exist.
  */
 export function RulesChip({ ids, name, className }: { ids: readonly string[]; /** The fact it closes, under the title of the list. */ name?: string; className?: string }) {
@@ -656,6 +686,7 @@ export function Term({ id, children, prefix, name, lead }: { /** Several ids ope
       role="button"
       tabIndex={0}
       className="term"
+      data-term={typeof id === "string" ? id : undefined}
       onClick={(e) => open(item, e.currentTarget)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -885,7 +916,7 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
-      {item.kind === "question" && <QuestionSheet id={item.id} closedOn={item.closedOn} data={data} headId={headId} />}
+      {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
   );
 }
@@ -928,12 +959,12 @@ function questionOf(data: ProvenanceData | null, id: string) {
 
 /**
  * An open question's sheet: its title, status and what it blocks from data/open-questions.json, then what an open question means on
- * the site. A closed one (from the data, or `closedOn` from the not-covered page) says when it closed and blocks nothing.
+ * the site. An answered question is deleted from the rule base once its answer is in a rule (founder, 2026-11-08), so no sheet is closed.
  */
-function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: string; data: ProvenanceData; headId: string }) {
+function QuestionSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
   const q = questionOf(data, id);
-  const status = closedOn ? undefined : (q?.status_he ?? (q?.status ? copy.questionSheet.statuses[q.status] : undefined));
-  const blocks = closedOn ? undefined : q?.blocks_he;
+  const status = q?.status_he ?? (q?.status ? copy.questionSheet.statuses[q.status] : undefined);
+  const blocks = q?.blocks_he;
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} className="text-lg font-semibold">
@@ -945,17 +976,8 @@ function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: 
           {blocks && <Row label={copy.questionSheet.blocks}>{blocks}</Row>}
         </dl>
       )}
-      {closedOn ? (
-        <p className="text-sm">
-          <When iso={closedOn} lead={copy.questionSheet.closed.before} />
-          {copy.questionSheet.closed.after}
-        </p>
-      ) : (
-        <>
-          <p className="text-sm">{copy.questionSheet.what}</p>
-          <p className="text-sm text-muted-foreground">{copy.questionSheet.onSite}</p>
-        </>
-      )}
+      <p className="text-sm">{copy.questionSheet.what}</p>
+      <p className="text-sm text-muted-foreground">{copy.questionSheet.onSite}</p>
     </div>
   );
 }
@@ -971,7 +993,7 @@ function Row({ label, children }: { label: ReactNode; children: ReactNode }) {
 
 /** A source: its Hebrew title, or the link's host with the English title in a collapsed line (audit A21). */
 function SourceLink({ url, title }: { url: string; title: string }) {
-  const external = /^https?:/.test(url);
+  const external = /^https?:/.test(publicUrl(url));
   const label = sourceLabel({ url, title }, copy.sourced.localFile);
   const text = label.host ? <bdi dir="ltr">{label.text}</bdi> : label.text;
   const link = !external ? (
@@ -1012,7 +1034,7 @@ export function inputName(key: string): string {
 }
 
 /** An input read from a document: the place its source line points to (the same document at another page is another place). */
-const docKey = (input: SiteValue): string | null => (input.state === "sourced" && !isParameter(input) && input.source?.url ? `${sourceHref(input.source as RuleSource)}|${input.source.title}` : null);
+const docKey = (input: SiteValue): string | null => (input.state === "sourced" && !isParameter(input) && !input.field && input.source?.url ? `${sourceHref(input.source as RuleSource)}|${input.source.title}` : null);
 
 /**
  * A computed value's inputs in order, each with how many inputs before it, itself included, its source line closes: the line is shown once,
@@ -1078,7 +1100,7 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
     checked: value.checked,
   };
   // a figure's source can be a file of the site, not a web address: the old plain label stays for it
-  if (!/^https?:/.test(source.url)) return <SourceLink url={source.url} title={source.title} />;
+  if (!/^https?:/.test(publicUrl(source.url))) return <SourceLink url={source.url} title={source.title} />;
   return <SourceBlock source={source} rule={owner} today={data.today} english own={!!value.own} />;
 }
 
@@ -1177,6 +1199,13 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         </p>
       )}
 
+      {/* the record's own doubt about this figure (SiteValue.doubt): said near the top of the figure's sheet, wherever the figure shows; at the end it sat below a phone's fold (founder, 2026-11-08) */}
+      {value.doubt && (
+        <Callout tone="caution" title={numbers.doubt}>
+          <PrintedText text={value.doubt} />
+        </Callout>
+      )}
+
       {/* the working notes are English; only a note written in Hebrew is shown (audit A21) */}
       {/* an open value's reason is the blocked callout below; "not found in the source" would be untrue of it */}
       {value.value === null && !(blocked && !mostlyHebrew(value.notes)) && <p className="text-sm">{mostlyHebrew(value.notes) ? value.notes : copy.sourced.noValue}</p>}
@@ -1257,7 +1286,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                   <dt>{inputName(label)}</dt>
                   <dd>
                     <Num value={input} display={inputDisplay(label, input)} />
-                    {isParameter(input) && <Tag tone="parameter">{numbers.parameter}</Tag>}
+                    {/* a field's value (its default or what the reader typed) shows plainly: no parameter tag (founder, 2026-11-08) */}
+                    {isParameter(input) && !input.field && <Tag tone="parameter">{numbers.parameter}</Tag>}
                   </dd>
                   {/* a figure read from a document says which, on its own row, as a parameter says it is the site's (fresh readers, round 3);
                       inputs in a row from one document say it once, under the last of them (fresh readers, 2026-11-07: a gap's sheet printed
@@ -1306,7 +1336,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                 <dt>{copy.entered.instead}</dt>
                 <dd>
                   <Num value={value.replaces} />
-                  <Tag tone="parameter">{numbers.parameter}</Tag>
+                  {isParameter(value.replaces) && !value.replaces.field && <Tag tone="parameter">{numbers.parameter}</Tag>}
                 </dd>
               </div>
             </dl>

@@ -6,7 +6,7 @@ import { cx } from "./cx";
 const HEBREW = /[֐-׿]/;
 
 // An index's name and its number never part at a line's end: "S&P" ended one line and "500" began the next, beside a fund's security
-// number on a phone or alone under the name (#190, fourth pass). A no-break space joins a Latin word to the number after it.
+// number on a phone or alone under the name (fourth pass). A no-break space joins a Latin word to the number after it.
 const LATIN_NUMBER = /([A-Za-z&]+) (\d)/g;
 /** The name as drawn: an index's name kept with its number. */
 export const keepIndexWhole = (name: string) => name.replace(LATIN_NUMBER, "$1\u00a0$2");
@@ -42,7 +42,7 @@ export function MixedName({ children, show, className }: { children: string; sho
 /**
  * A name on a line or two of its own that may be cut (`className` sets the cut: `truncate`, `line-clamp-2`): laid out in its own
  * direction, so the cut falls at the end of the name in reading order and its start, the brand, always shows, aligned with the Hebrew
- * around it (#190: in a Hebrew line the cut took the start of "iShares Core S&P 500 UCITS ETF", the very word that tells two funds apart).
+ * around it (in a Hebrew line the cut took the start of "iShares Core S&P 500 UCITS ETF", the very word that tells two funds apart).
  */
 export function NameLine({ children, className }: { children: string; className?: string }) {
   const rtl = HEBREW.test(children);

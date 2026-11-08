@@ -37,7 +37,7 @@ import { blockedHe, failureHe } from "./failure-he";
 import type { Holding } from "./state";
 import type { InputsState } from "./inputs";
 import type { FieldKey } from "./goal";
-import { computed, depositFeeNoneByRule, entered as enteredValue, expandFee, ruleFigure, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
+import { asField, computed, depositFeeNoneByRule, entered as enteredValue, expandFee, ruleFigure, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
 
 Object.assign(formulaNames, { "F-62": "פסק דין על עמלה", "F-68": "ממוצע הרשות למסלולי הסיווג", "F-61": "עלות דמי הניהול" });
 
@@ -111,6 +111,8 @@ export interface FeeInputs {
   /** Fields whose value comes from the subject and not the goal (a holding's balance and deposits): shown, not editable here. */
   fixed?: ("amountNow" | "monthly")[];
   values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; inflation: SiteValue; returnV: SiteValue; insurance?: SiteValue };
+  /** The values the plan's fields start at (P-05's scenario): what each field's reset goes back to, "חזרה ל־10". */
+  starts?: { amount: number; monthly: number; years: number; inflation: number; returnV: number };
 }
 
 const p05Inputs = (bundle: CompareBundle) => (parameterOf(bundle, "P-05") as unknown as { inputs: Record<string, ValueObject> }).inputs;
@@ -122,14 +124,16 @@ export function feeInputs(bundle: CompareBundle, goalG: RunGoal | null, released
   const param = (key: string) => asParameter(p05, inp[key]!);
   const num = (key: string) => inp[key]!.value as number;
   const meaningful = goalG !== null && !nothingToCompare(goalG);
+  const starts = { amount: num("amount_now"), monthly: num("monthly_deposit"), years: num("horizon_years"), inflation: num("A-02"), returnV: num("A-01") };
   if (meaningful) {
     const gv = goalValueObjects(bundle, goalG);
     const returnFromParameter = goalG.returnPct === null;
     const g: RunGoal = { ...goalG, returnPct: goalG.returnPct ?? num("A-01") };
-    return { g, fromGoal: true, returnFromParameter, goalG, values: { amount: gv.amountNow, monthly: gv.monthly, years: gv.horizon, inflation: gv.inflation, returnV: gv.returnV ?? param("A-01") } };
+    return { g, fromGoal: true, returnFromParameter, goalG, starts, values: { amount: gv.amountNow, monthly: gv.monthly, years: gv.horizon, inflation: gv.inflation, returnV: gv.returnV ?? param("A-01") } };
   }
   const e = released.entered;
-  const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) => (e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : param(key));
+  // each is a field's value on the page, its default or what the reader typed: a plain number wherever it shows (founder, 2026-11-08)
+  const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) => asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : param(key));
   const amount = val("amount_now", "nis", ci.amountNow);
   const monthly = val("monthly_deposit", "nis_per_month", ci.monthly);
   const years = val("horizon_years", "years", ci.years);
@@ -155,8 +159,8 @@ export function feeInputs(bundle: CompareBundle, goalG: RunGoal | null, released
     preset: "none",
     fromPreset: { horizon: false, monthly: false, available: false },
   };
-  const insurance = insurancePct !== null ? enteredValue(insurancePct, "pct", bundle.runDate, ci.insurance) : undefined;
-  return { g, fromGoal: false, returnFromParameter: e["A-01"] === undefined, goalG, values: { amount, monthly, years, inflation, returnV, ...(insurance ? { insurance } : {}) } };
+  const insurance = insurancePct !== null ? asField(enteredValue(insurancePct, "pct", bundle.runDate, ci.insurance)) : undefined;
+  return { g, fromGoal: false, returnFromParameter: e["A-01"] === undefined, goalG, starts, values: { amount, monthly, years, inflation, returnV, ...(insurance ? { insurance } : {}) } };
 }
 
 // ---------------------------------------------------------------- value factory

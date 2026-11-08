@@ -48,7 +48,7 @@ function shotBytes(spec) {
 mkdirSync(join(OUT, "variants"), { recursive: true });
 writeFileSync(join(OUT, "run.json"), JSON.stringify({ ...run, brief: "old fresh-reader brief (tools/old-brief.mjs)" }, null, 2) + "\n");
 
-// The "who" lines of the old briefs (research/audit/2026-11-05-indices-relevance/readers-brief.json), matched to the
+// The "who" lines of the old briefs (8dd1f013:research/audit/2026-11-05-indices-relevance/readers-brief.json), matched to the
 // panel's personas; the device words follow the task's device.
 const WHO = {
   "first-job-phone": (d) => `You are 24, salaried, on your ${d === "phone" ? "phone" : "computer"}. You have heard "invest in the S&P 500" and know what a percentage is; you know no finance words beyond everyday Hebrew and have never compared funds or brokers.`,

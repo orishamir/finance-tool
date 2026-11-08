@@ -230,6 +230,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       {panelOpen && (
         <OtherAssumptions
           inflation={live.values.inflation}
+          inflationStart={live.starts?.inflation}
           pct={form.pct}
           employment={fields.employment !== null}
           age={fields.age !== null ? form.age : undefined}

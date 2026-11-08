@@ -10,12 +10,12 @@ import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { providentModel } from "../../lib/guide-signature-g2";
 import { useInputs } from "../../lib/inputs";
-import { entered as enteredValue, type SiteValue } from "../../lib/value";
+import type { SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
 import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, Sentence, clamp, useGlidingNumbers, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
-import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 92;
 const LANE_Y = 26;
@@ -77,7 +77,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // ---- value objects
   const amountIn = inputSite(base, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
   const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
-  const yearsIn = enteredValue(years, "years", today, copy.provident.marker);
+  const yearsIn = typed(years, "years", today, copy.provident.marker);
   const common: Record<string, SiteValue> = {
     [copy.common.inputNames.amount]: amountIn,
     [copy.common.inputNames.monthly]: monthlyIn,
@@ -96,7 +96,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const incomeP05 = fact(data, "incomeP05");
   const atSixty = model.lump !== null && model.lump.run.formulas.includes("F-42");
   const ageInputs: Record<string, SiteValue> =
-    atSixty && age !== null ? { [copy.provident.ageLabel]: enteredValue(age, "years", today, copy.provident.ageLabel), ...(incomeP05 ? { [copy.provident.incomeName]: incomeP05 } : {}) } : {};
+    atSixty && age !== null ? { [copy.provident.ageLabel]: typed(age, "years", today, copy.provident.ageLabel), ...(incomeP05 ? { [copy.provident.incomeName]: incomeP05 } : {}) } : {};
   const kglRules = kgl ? rulesOfBundle(kgl) : [];
   // The tax and what is left are the lump sum run's own numbers: they carry the rules that run read (TXG-04, TXG-07 and TXK-26 from 60),
   // its flags and its labels (review 2026-10-26). From 60 the tax is F-42 over the real gain F-44 sets: the slice above the income.
@@ -262,7 +262,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.provident.at.before} <InputSlot chars={7}><bdi>{fmt.years(years)}</bdi></InputSlot>
+          {copy.provident.at.before} <InputSlot><bdi>{fmt.years(years)}</bdi></InputSlot>
           {model.ageAtExit !== null ? (
             <>
               {" "}

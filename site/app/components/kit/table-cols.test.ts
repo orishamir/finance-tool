@@ -1,4 +1,4 @@
-// A column a phone leaves out leaves the table's grid with its cells (#190): a <col> kept at width 0 while its cells were hidden took the
+// A column a phone leaves out leaves the table's grid with its cells: a <col> kept at width 0 while its cells were hidden took the
 // next cell into it, and two figures of the indices page's hedge table were drawn over each other at 390 px.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";

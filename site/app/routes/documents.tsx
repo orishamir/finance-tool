@@ -1,4 +1,4 @@
-// The documents page (research/knowledge/2026-10-24-synthesis.md §3.5): the documents the rules were read from, one card
+// The documents page (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.5): the documents the rules were read from, one card
 // each with the rules that rest on it, then the data records the site read, each pointing at the page that uses it.
 import { Link, useLoaderData } from "react-router";
 import { documents as copy, site } from "../copy";

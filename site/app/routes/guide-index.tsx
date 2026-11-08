@@ -31,7 +31,7 @@ export async function loader() {
     const name = funds[0]!.names.he[0]!;
     exposures.push({ key: "money-market-funds", name, line: line(name), href: `/guide/${funds[0]!.id}`, kinds: funds.map((f) => ({ href: `/guide/${f.id}`, label: copy.fundKinds[f.id] ?? f.names.he[0]! })) });
   }
-  // a guide of its own, no product id: not an option in the comparison (issue 159)
+  // a guide of its own, no product id: not an option in the comparison
   exposures.push({ key: "limited-bond-fund", name: limitedBondFund.title, line: limitedBondFund.indexLine, href: "/guide/limited-bond-fund", kinds: [] });
   // funds of every kind, before the kinds that have pages of their own (D55)
   exposures.push({ key: "mutual-funds", name: mutualFunds.title, line: mutualFunds.indexLine, href: "/guide/mutual-funds", kinds: [] });

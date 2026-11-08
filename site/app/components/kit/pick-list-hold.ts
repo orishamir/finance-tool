@@ -1,4 +1,4 @@
-// The height a PickList holds (#190, third pass): the tallest state the list can reach, every state measured the same way, the one on
+// The height a PickList holds (third pass): the tallest state the list can reach, every state measured the same way, the one on
 // the screen included. The second pass counted the state on the screen at its real rows and every other state at a case that carried
 // every tag at once, so the held height depended on the state the page opened in (122 px on a phone after a link to a fund abroad).
 
@@ -76,7 +76,7 @@ export interface FoldRow {
 }
 
 /**
- * The rows a phone's fold shows, by index (#190, fourth pass): every row that opens a group, the person's own rows and the chosen row,
+ * The rows a phone's fold shows, by index (fourth pass): every row that opens a group, the person's own rows and the chosen row,
  * always; then the first other rows in order while places last. A row that opens a group takes a place like any row, and is shown even
  * past the places, so the fold shows the same rows whichever row is chosen: a chosen heading row took one more place than it does unchosen,
  * and hid the row above it (170 px on a phone).
@@ -106,7 +106,7 @@ export interface FoldOrder {
 
 /**
  * The height a folded list holds: the tallest set of rows the fold can show, over every order the list can take and every row that can be
- * chosen in it (#190, fourth pass: the fold held the rows of the order the page opened in, and the first pick after a link moved 233 px).
+ * chosen in it (fourth pass: the fold held the rows of the order the page opened in, and the first pick after a link moved 233 px).
  * `height`: a row's height by key (its tallest case).
  */
 export function heldFoldHeight(orders: readonly FoldOrder[], limit: number, height: (key: string) => number): number {

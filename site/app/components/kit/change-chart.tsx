@@ -85,7 +85,7 @@ export function ChangeChart({
 }) {
   const [ref, w] = useWidth(600);
   const [drag, setDrag] = useState(false);
-  // a row of the table sets its line apart (issue 22); the marker already answers the pointer on the plot
+  // a row of the table sets its line apart; the marker already answers the pointer on the plot
   const pick = useChartPick();
   const lo = shares[0]!;
   const hi = shares[shares.length - 1]!;
@@ -102,7 +102,7 @@ export function ChangeChart({
   const gstep = [1, 2, 5, 10].map((m) => m * mag).find((v) => v >= raw)!;
   const gridAt = Array.from({ length: Math.floor((maxGoal - minGoal) / gstep) + 1 }, (_, i) => Math.ceil(minGoal / gstep) * gstep + i * gstep).filter((v) => v <= maxGoal);
   // the gutter holds the widest label the axis draws, a fading one too, measured (chart-text.ts): a large plan's "100,000,000" lost its
-  // leading digits past a fixed 64 px (#190)
+  // leading digits past a fixed 64 px
   const fading = useFadingTicks(gridAt);
   const left = Math.max(LEFT, 12 + Math.ceil(Math.max(0, ...fading.map((t) => chartTextWidth(yFormat(t.value), CHART_TEXT_PX)))));
   const plotR = w - RIGHT;

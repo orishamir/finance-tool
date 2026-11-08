@@ -1,4 +1,4 @@
-// Where each rule is used (research/knowledge/2026-10-24-synthesis.md §3.4): the pages of the site that cite it, whether the
+// Where each rule is used (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.4): the pages of the site that cite it, whether the
 // calculation engine reads it, which data collections reference it, and a score that orders rules inside a group.
 // Computed once per build from the source files themselves (a quoted id in content/, routes/, components/, a few lib/ files),
 // so a page that starts citing a rule shows up here with no table to maintain.
@@ -71,7 +71,7 @@ function pageTable(): Record<string, RuleUsePage> {
     transfer: { href: "/transfer", label: r3transfer.title },
     companies: { href: "/companies", label: companiesCopy.title },
     guide: { href: "/guide", label: guideIndex.title },
-    // the securities run the house-ranking page made is the index page's now (issue 172)
+    // the securities run the house-ranking page made is the index page's now
     indices: { href: "/indices", label: invest.nav },
     tracks: { href: "/tracks", label: trackBrowser.title },
   };

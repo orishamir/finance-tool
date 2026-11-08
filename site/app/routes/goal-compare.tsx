@@ -202,13 +202,6 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
   const ctx: ResultCtx = { bundle, view, g, mk, mode, openField, fall: current!.assumptions.acceptedFall ?? null, setOwnRate, setOwnFee, setOwnProvider, targetCost: current!.targetCost ?? null, subjectCurrency: subject && subject.record.currency !== "ILS" ? subject.record.currency : null, index: { wrapperId: BROKERAGE, card: { reading: index?.reading ?? null, ranked: index?.ranked ?? null, known: wb ? knownIndices(wb).map((i) => ({ id: i.id, name: i.name })) : [], chosenId: index?.reading?.kind === "chosen" ? index.reading.index.id : undefined, onChoose: setOwnIndex } } };
   const hideAll = view.headline === "excludes-all" || view.headline === "nothing-ranked";
   const title = goalTitle(current!);
-  const sources = {
-    horizon: resolved!.source.horizonYears === "entered",
-    amountNow: resolved!.source.amountNow === "entered",
-    monthly: resolved!.source.monthly === "entered",
-    available: resolved!.source.available === "entered",
-    inflation: g.inflationPct !== null,
-  };
   const detailOption = popup?.kind === "detail" ? view.ranked.find((o) => o.id === popup.id) ?? view.listed.find((o) => o.id === popup.id) : null;
   const above = (o: RankedOption) => view.ranked[view.ranked.indexOf(o) - 1];
   const showCoverageOpen = hideAll || view.headline === "only-baseline";
@@ -362,7 +355,6 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
               )}
               <AssumptionChips
                 g={g}
-                sources={sources}
                 onOpen={(f) => {
                   if (f === "all") openField("horizonYears");
                   else openField(f);

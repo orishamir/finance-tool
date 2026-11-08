@@ -1,4 +1,4 @@
-// What the site found in a company's own documents (D30; research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): on a managing
+// What the site found in a company's own documents (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): on a managing
 // company's page and on a bank's or broker's page, "מה כתוב במסמכים של {company}", grouped by topic; and on /companies the same for
 // the companies the site has no page for, one fold per company. Each item is the rule card (inline), which names the document, the
 // date it was read and, for a rule not shown to hold everywhere, "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי". A company's section

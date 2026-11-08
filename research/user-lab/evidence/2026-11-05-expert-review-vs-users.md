@@ -8,7 +8,7 @@ among the first 10 findings, noise under 30%) realistic, too low or too high?
 **How to read the marks.** In the source column: *[full text]* I read the paper or page itself; *[abstract]* I read
 only the abstract (through OpenAlex or PubMed) and the figure is the abstract's; *[secondary: X]* the figure comes from
 X's summary and I did not open the original; *[not opened]* cited from its standard record only. The bracketed hex
-code is the document's id in `research/library/` (`node research/library/library.mjs find <words>`).
+code is the document's id in `research/library/` (`node tools/library.mjs find <words>`).
 
 **Strength.** *Strong*: replicated across labs, or a large field or multi-team study. *Moderate*: one good study, or a
 vendor's study with a stated method. *Weak*: small, students only, a single case, or a secondary report.

@@ -56,7 +56,7 @@ describe("PickList's phone fold", () => {
   const order = (sel: number) => Array.from({ length: 10 }, (_, i) => ({ heading: i === 0 || i === 6, selected: i === sel }));
   it("shows the same rows whichever row is chosen, a group's heading row included", () => {
     const plain = foldShown(order(0), 6);
-    // choosing the hedged group's only fund (it opens its group) hid the row above it on a phone (#190: 170 px)
+    // choosing the hedged group's only fund (it opens its group) hid the row above it on a phone (170 px)
     expect([...foldShown(order(6), 6)].sort()).toEqual([...plain].sort());
     expect(plain.size).toBe(6);
     // a chosen row past the places takes the last free one: the count never changes

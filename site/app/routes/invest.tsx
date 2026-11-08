@@ -1,4 +1,4 @@
-// "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
+// "השקעה במדד" (D28, spec 8dd1f013:research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
@@ -203,7 +203,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
   // the pick lives in the address (`?house=` and `?fund=`, founder 2026-11-04), so a link opens the same pair: a house's page sends `house`
-  // alone (issue 172), which opens on its cheapest way on the index; a fund alone opens at the house where it leaves the most
+  // alone, which opens on its cheapest way on the index; a fund alone opens at the house where it leaves the most
   const houseParam = new URLSearchParams(search).get("house");
   const fundParam = new URLSearchParams(search).get("fund");
   // a house's group picked in its fold (`?group=<n>`, 2026-11-04): kept only where the page offers that group for the fund
@@ -251,7 +251,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const [moved, setMoved] = useState<Moved | null>(null);
   const onPick = (p: Pick, m?: Moved) => {
     // the way back puts back the address as it was before the tap: no pick (the page's own pair, never made the person's), or the pick
-    // with its group (#190: it wrote the pair back as a pick, and a group's held account in place of its house)
+    // with its group (it wrote the pair back as a pick, and a group's held account in place of its house)
     const before = search;
     setMoved(
       m
@@ -371,7 +371,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
           {c.plan.panelTitle}
         </h2>
-        {panelOpen && <OtherAssumptions inflation={fi.values.inflation} pct={data.form.pct} />}
+        {panelOpen && <OtherAssumptions inflation={fi.values.inflation} inflationStart={fi.starts?.inflation} pct={data.form.pct} />}
       </Sheet>
       </CustomEntriesHost>
     </LabelSheetHost>

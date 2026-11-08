@@ -86,7 +86,7 @@ export interface TimelineInputs {
  * month it was paid, `C_0 / I_0 + Σ C_m / I_m` (F-03: an event in month m uses `I_m`, the amount now `I_0 = 1`). The ledgers add the
  * amount now inside month 1, so it is taken back out of that month and counted at `I_0`. The chart used to divide the whole sum by
  * the last month's index, which shrank every deposit by all the inflation of the horizon and drew idle cash as a gain (finding 6 of
- * research/discovery/2026-10-25-guide-pages-sweep.md).
+ * 8dd1f013:research/discovery/2026-10-25-guide-pages-sweep.md).
  */
 export function paidInToday(run: { paidIn: number; series: readonly { month: number; paidIn: number; index: number }[] }, amountNow: number): number {
   if (run.series.length === 0) return run.paidIn;

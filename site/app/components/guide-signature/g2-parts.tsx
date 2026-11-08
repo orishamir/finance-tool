@@ -6,7 +6,7 @@ import type { SignatureData } from "../../lib/guide-signature";
 import type { Bundle } from "../../lib/engine";
 import { IdText, Num } from "../provenance";
 import { Disclosure, GapNote, NumberField, Sentence } from "../kit";
-import { SourceLine, inputSite, type SigInputs } from "./kit";
+import { inputSite, type SigInputs } from "./kit";
 
 /** The amount now and the monthly deposit: a sentence with both as numbers, and the fields behind a fold (they write the guide's own fields, the ones the timeline reads). */
 export function PlanInputs({ bundle, inputs, today }: { bundle: Bundle; inputs: SigInputs; today: string }) {
@@ -17,13 +17,13 @@ export function PlanInputs({ bundle, inputs, today }: { bundle: Bundle; inputs: 
       <Sentence size="sm">
         {copy.g2.plan.before} <Num value={amount} /> {copy.g2.plan.middle} <Num value={monthly} /> {copy.g2.plan.after}
       </Sentence>
-      <SourceLine sources={[inputs.source.amount, inputs.source.monthly]} />
       <Disclosure label={<span className="text-sm text-link">{copy.g2.plan.change}</span>} openLabel={<span className="text-sm text-link">{copy.g2.plan.hide}</span>}>
         <div className="grid gap-4 sm:grid-cols-2 pt-2 pb-3">
           <NumberField
             label={copy.g2.plan.amount}
             unit="nis"
             value={inputs.amount}
+            start={inputs.p05.amount}
             isEntered={inputs.source.amount === "guide"}
             validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
             onCommit={inputs.setAmount}
@@ -34,6 +34,7 @@ export function PlanInputs({ bundle, inputs, today }: { bundle: Bundle; inputs: 
             label={copy.g2.plan.monthly}
             unit="nis"
             value={inputs.monthly}
+            start={inputs.p05.monthly}
             isEntered={inputs.source.monthly === "guide"}
             validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
             onCommit={inputs.setMonthly}

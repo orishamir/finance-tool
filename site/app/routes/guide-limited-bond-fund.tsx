@@ -1,4 +1,4 @@
-// The guide page of a bond fund with a limited period (issue 159): prose only for now, no product id and no comparison option.
+// The guide page of a bond fund with a limited period: prose only for now, no product id and no comparison option.
 import { useLoaderData } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, limitedBondFund as copy, site } from "../copy";

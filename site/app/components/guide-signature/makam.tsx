@@ -7,15 +7,14 @@ import { useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, makamModel } from "../../lib/guide-signature";
-import { entered as enteredValue } from "../../lib/value";
+
 import { Callout, InputSlot, LongestCase, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, fill, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
-import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, useSigInputs, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 230;
 const TOP = 24;
 const BOTTOM = 28;
-
 
 export function MakamVisual({ data, today }: VisualProps) {
   const bundle = data.bundles["makam"]!;
@@ -51,7 +50,7 @@ export function MakamVisual({ data, today }: VisualProps) {
   const ticks = Array.from({ length: Math.floor(term / 3) + 1 }, (_, i) => i * 3);
 
   const amountIn = inputSite(bundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
-  const sale = enteredValue(m, "months", today, copy.makam.marker);
+  const sale = typed(m, "months", today, copy.makam.marker);
   const runInputs = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale, ...(model?.atRedemption ? (discountRate ? { [copy.makam.taxRedeem]: discountRate } : {}) : gainRate ? { [`${copy.makam.taxSale.before} ${copy.makam.taxSale.term}`]: gainRate } : {}) };
   const rules = rulesOfBundle(bundle);
   const v = model
@@ -107,6 +106,7 @@ export function MakamVisual({ data, today }: VisualProps) {
           label={copy.makam.amount}
           unit="nis"
           value={inputs.amount}
+          start={inputs.p05.amount}
           isEntered={inputs.source.amount === "guide"}
           validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
           onCommit={inputs.setAmount}
@@ -114,7 +114,6 @@ export function MakamVisual({ data, today }: VisualProps) {
           disabled={!inputs.ready}
         />
       </div>
-      <SourceLine sources={[inputs.source.amount]} />
 
       {model && v && (
         <div className="flex flex-col gap-2">
@@ -153,7 +152,7 @@ export function MakamVisual({ data, today }: VisualProps) {
         <div className="flex flex-col gap-3">
           {/* one height with or without the slot: the blocks under it keep their place when the marker reaches redemption */}
           <p className="text-sm font-medium min-h-6">
-            {m >= term ? copy.makam.atRedemption : <>{copy.makam.atSale} <InputSlot chars={9}>{fmt.months(m)}</InputSlot></>}:
+            {m >= term ? copy.makam.atRedemption : <>{copy.makam.atSale} <InputSlot>{fmt.months(m)}</InputSlot></>}:
           </p>
           <StatRow cols={4}>
             <Stat label={copy.makam.figures.price}>

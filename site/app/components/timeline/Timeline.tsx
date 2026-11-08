@@ -8,12 +8,12 @@ import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
-import { computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
-import { IconPencil, IconReset } from "../icons";
+import { IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, cx, useChartPick, InputSlot, LongestCase, NumberField, ParameterLine, RangeField, SegmentedControl, Swatch } from "../kit";
+import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch } from "../kit";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -62,7 +62,6 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
   const [sheetOpen, setSheetOpen] = useState(false);
   const [focusField, setFocusField] = useState<P05Input | "all">("all");
   const headlineRef = useRef<HTMLSpanElement>(null);
-  const asideRef = useRef<HTMLElement>(null);
   const titleId = useId();
   const today = bundle.runDate;
 
@@ -70,11 +69,10 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
 
   // ---- value objects for every figure on the card
   const inputValue = (key: P05Input): SiteValue => {
-    const base = p05Value(bundle.p05, key);
+    // a field's value, its default or what the reader typed: a plain number wherever it shows (founder, 2026-11-08); its reset is the field's
     const own = enteredOf(key);
-    if (own === undefined) return { ...base, about: labelOf(key) };
-    // the cash rate is kept in the own-rates store; its reset is the field's, not the sheet's
-    return { ...enteredValue(own, p05Units[key], today, labelOf(key)), replaces: base, ...(key === "cash_rate" ? {} : { resetKey: key }) };
+    if (own === undefined) return asField({ ...p05Value(bundle.p05, key), about: labelOf(key) });
+    return asField(enteredValue(own, p05Units[key], today, labelOf(key)));
   };
   const horizonYears = state.entered.horizon_years ?? p05Number(bundle.p05, "horizon_years");
   const returnEntered = cash ? ownRate !== undefined : timeline.kind === "ok" && timeline.enteredReturn;
@@ -165,17 +163,9 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     headlineRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
     setSheetOpen(true);
   };
-  // a blank in the example sentence opens its field: the panel beside the graph on a PC, the values sheet on a phone
-  const editField = (field: P05Input) => {
-    const input = asideRef.current?.querySelector<HTMLInputElement>(`[data-field="${field}"] input`);
-    if (input && input.offsetParent !== null) input.focus();
-    else openSheet(field);
-  };
-  const slot = (field: P05Input, chars: number, value: ReactNode) => (
-    <InputSlot chars={chars} onEdit={() => editField(field)} editLabel={`${copy.editSlot} ${labelOf(field)}`}>
-      {value}
-    </InputSlot>
-  );
+  // a number the reader sets, in the example sentence: plain, at its own width; the fields beside the graph (on a phone, the chips under
+  // it) are where it changes (founder, 2026-11-08)
+  const slot = (_field: P05Input, value: ReactNode) => <InputSlot>{value}</InputSlot>;
   const anyEntered = Object.keys(state.entered).length > 0 || ownRate !== undefined;
   const horizonValue = inputValue("horizon_years");
   // the age changes a run only through a rule that turns on it (the tax at 60, TXG-04; a lock-up to an age): with no tax and no such
@@ -222,11 +212,11 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               {values ? (
                 <>
                   {/* founder 2026-10-26: each number the reader sets is a fixed-width blank, so the line does not jump as it changes */}
-                  {copy.headlineExample.lead} {slot("amount_now", 12, <Num value={values.inputs[ci.amountNow]!} />)} {copy.headlineExample.plus} {slot("monthly_deposit", 11, <Num value={values.inputs[ci.monthly]!} />)} {cash ? copy.headlineExample.perMonthCash : copy.headlineExample.perMonth} {slot(returnKey, 7, <Num value={values.inputs[returnLabel]!} />)} {copy.headlineExample.perYear} {slot("horizon_years", 10, <Num value={horizonValue} display={fmt.years(horizonYears)} />)}, {tail}
+                  {copy.headlineExample.lead} {slot("amount_now", <Num value={values.inputs[ci.amountNow]!} />)} {copy.headlineExample.plus} {slot("monthly_deposit", <Num value={values.inputs[ci.monthly]!} />)} {cash ? copy.headlineExample.perMonthCash : copy.headlineExample.perMonth} {slot(returnKey, <Num value={values.inputs[returnLabel]!} />)} {copy.headlineExample.perYear} {slot("horizon_years", <Num value={horizonValue} display={fmt.years(horizonYears)} />)}, {tail}
                 </>
               ) : (
                 <>
-                  {copy.headline.before} {slot("horizon_years", 10, <Num value={horizonValue} display={fmt.years(horizonYears)} />)}, {tail}
+                  {copy.headline.before} {slot("horizon_years", <Num value={horizonValue} display={fmt.years(horizonYears)} />)}, {tail}
                 </>
               )}
             </span>
@@ -244,7 +234,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           <SegmentedControl label={copy.modeLabel} options={[{ value: "real", label: copy.modes.real }, { value: "nominal", label: copy.modes.nominal }]} value={mode} onChange={setMode} className="lg:w-auto lg:min-w-[260px] max-w-full" />
         </div>
 
-        {/* issue 23: a figure in future shekels read as ignoring inflation; each mode names the other's figure and why deposits exceed what was typed */}
+        {/* a figure in future shekels read as ignoring inflation; each mode names the other's figure and why deposits exceed what was typed */}
         {values && timeline.kind === "ok" ? (
           <p className="text-sm text-muted-foreground max-w-measure min-h-[6rem] lg:min-h-[3lh]">
             {copy.modeNote[mode].before} <Num value={values.yearValues(timeline.years[timeline.years.length - 1]!, mode === "real" ? "nominal" : "real").net} /> {copy.modeNote[mode].after}
@@ -260,10 +250,10 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
                 const n = own ?? p05Number(bundle.p05, key);
                 const text = key === "horizon_years" ? fmt.years(n) : key.startsWith("A-") || key === "cash_rate" ? fmt.pct(n) : nisShown(n, own !== undefined ? "entered" : undefined, own === undefined);
                 return (
-                  <button key={key} type="button" onClick={() => openSheet(key)} className={cx("a-chip", own !== undefined && "a-chip-entered")}>
+                  // what the reader typed looks the same as the default (founder, 2026-11-08)
+                  <button key={key} type="button" onClick={() => openSheet(key)} className="a-chip">
                     <span className="text-muted-foreground">{(copy.chips as Record<string, string>)[key]}</span>
-                    {own !== undefined && <IconPencil size={14} className="text-entered" />}
-                    <bdi dir="ltr" className={cx("font-medium", own !== undefined && "text-entered")}>{text}</bdi>
+                    <bdi dir="ltr" className="font-medium">{text}</bdi>
                   </button>
                 );
               })}
@@ -318,7 +308,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
         )}
       </Card>
 
-      <Card as="aside" ref={asideRef} pad="aside" className="hidden lg:block w-[300px] shrink-0" aria-label={valuesCopy.title}>
+      <Card as="aside" pad="aside" className="hidden lg:block w-[300px] shrink-0" aria-label={valuesCopy.title}>
         <h3 className="text-lg font-semibold mb-4">{valuesCopy.title}</h3>
         {panel}
         <TermsList bundle={bundle} />
@@ -489,23 +479,22 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, ownRate, s
   );
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
-      <ParameterLine />
       <div data-field="amount_now" className="contents">
-        <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} isEntered={isEntered("amount_now")} validate={nonNegative} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
+        <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} start={p05Number(p05, "amount_now")} isEntered={isEntered("amount_now")} validate={nonNegative} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
       </div>
       <div data-field="monthly_deposit" className="contents">
-        <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
+        <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} start={p05Number(p05, "monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
       </div>
       <div data-field="horizon_years" className="contents">
-        <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
+        <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} start={p05Number(p05, "horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
       </div>
       <div className="field-row grid grid-cols-2 gap-3">
         {cash ? (
-          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} isEntered={isEntered("cash_rate")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
+          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} start={p05Number(p05, "cash_rate")} isEntered={isEntered("cash_rate")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
         ) : (
-          <div data-field="A-01" className="contents"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} isEntered={isEntered("A-01")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
+          <div data-field="A-01" className="contents"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} start={p05Number(p05, "A-01")} isEntered={isEntered("A-01")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
         )}
-        <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={current("A-02")} isEntered={isEntered("A-02")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-02")} onReset={() => setEntered("A-02", null)} disabled={!ready} autoFocus={focusField === "A-02"} />
+        <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={current("A-02")} start={p05Number(p05, "A-02")} isEntered={isEntered("A-02")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-02")} onReset={() => setEntered("A-02", null)} disabled={!ready} autoFocus={focusField === "A-02"} />
       </div>
       {hints}
       {employment && (

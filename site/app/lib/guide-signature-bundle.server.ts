@@ -80,10 +80,11 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
   for (const r of records) {
     if (typeof r.rate_offered.value !== "number" || r.rate_offered.unit !== "pct_per_year") continue;
     const max = r.amount_range.max;
-    // a doubt travels with the number: its sheet says it (the record's English notes stay in the data)
+    // the record's doubt is the number's own (SiteValue.doubt): wherever the rate shows, it shows tinted and its sheet says the doubt
+    // (founder, 2026-11-08); the record's English notes stay in the data
     // D31: each rate and ceiling is the bank's own, shown on the line that names the bank
     const name = shortName(r.bank, r.bank);
-    const rate = ownBy({ ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue, name);
+    const rate = ownBy({ ...r.rate_offered, ...(r.doubt_he ? { doubt: r.doubt_he } : {}) } as SiteValue, name);
     banks.push({
       id: r.id,
       bank: r.bank,
@@ -91,7 +92,6 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
       rate,
       ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max } as SiteValue, name) : null,
       conditions: r.conditions_he ?? null,
-      doubt: r.doubt_he ?? null,
       until: r.rate_offered.effective_to,
       // the record's notes quote the sentence a bank prints when it offers no interest ("לא מוצעת ריבית על יתרת זכות")
       noOffer: /לא מוצעת ריבית/.test(r.rate_offered.notes ?? ""),

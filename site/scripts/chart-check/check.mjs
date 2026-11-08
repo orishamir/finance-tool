@@ -18,6 +18,7 @@ if (!existsSync(join(build, "index.html"))) { console.error(`no build at ${build
 
 const WIDTHS = [1440, 390, 320];
 const MIN_TEXT_PX = 13; // the site's smallest text (text-xs)
+const TABS = Number(process.env.CHART_CHECK_TABS) || 3; // tabs open at once at each width (checkWidth)
 const MAX_COLOURS = 6; // charts.md: at most six colours in one chart; greys (the neutral contributions, a remainder) aren't counted
 // evident-charts' severities, except: text under 13 px fails (charts.md), and contrast only warns (a light edge line on its own area, as on
 // the guide chart's value line, is measured against the fill under it and reads fine against the page)
@@ -37,7 +38,7 @@ const fontCss =
 
 const server = await serveBuild(build, { port: 0 });
 const browser = await chromium.launch();
-// the widths run side by side, each in its own page; the svg charts are measured afterwards in one Python run
+// the widths run side by side, each in TABS pages of its own; the svg charts are measured afterwards in one Python run
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
 await server.close();
@@ -92,32 +93,53 @@ function defaultPages() {
   return [...under("guide"), ...under("indices"), "/kit"];
 }
 
+/**
+ * Every page at one width, TABS at a time, each tab in a context of its own with its own lab page: most of a page's time is waiting for it
+ * to settle, so tabs side by side cut the run (2026-11-08). Results come back in the order of the pages.
+ */
 async function checkWidth(width) {
-  const phone = width < 800;
-  const ctx = await browser.newContext({ viewport: { width, height: 900 }, ...(phone ? { hasTouch: true, isMobile: true } : {}) });
-  const page = await ctx.newPage();
-  // a fresh document for each chart (a document written again keeps its first Content-Security-Policy), served from memory
-  const lab = await ctx.newPage();
-  await lab.route(LAB + "**", (route) => route.fulfill({ contentType: "text/html; charset=utf-8", body: lab.html }));
-  const out = [];
-  for (const p of paths) {
-    await page.goto(server.url.replace(/\/$/, "") + p, { waitUntil: "networkidle" });
-    await page.evaluate(() => document.fonts.ready);
-    await page.waitForTimeout(800); // charts glide into place
-    const found = await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS });
-    let n = 0;
-    for (const [i, c] of found.entries()) {
-      c.id = `${p}|${width}|${i}`;
-      if (!c.svg) continue;
-      c.n = ++n;
-      c.measure = await measure(lab, c.svg.replace(/^<svg([^>]*)>/, `<svg$1><style>${fontCss}</style><rect width="100%" height="100%" fill="${c.bg}"/>`));
-      delete c.svg;
-      c.svg = true;
+  const out = new Array(paths.length);
+  let next = 0;
+  const tab = async () => {
+    const ctx = await browser.newContext({ viewport: { width, height: 900 }, ...(width < 800 ? { hasTouch: true, isMobile: true } : {}) });
+    const page = await ctx.newPage();
+    // a fresh document for each chart (a document written again keeps its first Content-Security-Policy), served from memory
+    const lab = await ctx.newPage();
+    await lab.route(LAB + "**", (route) => route.fulfill({ contentType: "text/html; charset=utf-8", body: lab.html }));
+    while (next < paths.length) {
+      const i = next++;
+      out[i] = await checkPage(page, lab, paths[i], width);
     }
-    out.push({ path: p, charts: found });
-  }
-  await ctx.close();
+    await ctx.close();
+  };
+  await Promise.all(Array.from({ length: Math.min(TABS, paths.length) }, tab));
   return out;
+}
+
+/** The charts of one page at one width, each svg measured on the lab page. */
+async function checkPage(page, lab, p, width) {
+  await page.goto(server.url.replace(/\/$/, "") + p, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(800); // charts glide into place
+  await page.evaluate(settled);
+  const found = await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS });
+  let n = 0;
+  for (const [i, c] of found.entries()) {
+    c.id = `${p}|${width}|${i}`;
+    if (!c.svg) continue;
+    c.n = ++n;
+    c.measure = await measure(lab, c.svg.replace(/^<svg([^>]*)>/, `<svg$1><style>${fontCss}</style><rect width="100%" height="100%" fill="${c.bg}"/>`));
+    delete c.svg;
+    c.svg = true;
+  }
+  return { path: p, charts: found };
+}
+
+// Runs in the page. Resolves once the page has hydrated and stopped drawing itself again (a chart draws again at its measured width after
+// hydration, useWidth): the main thread idle, then two frames, twice. The layout check has the same.
+function settled() {
+  const once = () => new Promise((done) => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 }));
+  return once().then(once);
 }
 
 /** measure_svg.js on a page of its own, as check_svg.py builds it (the svg as data, only the two nonce'd scripts run, nothing is fetched). */

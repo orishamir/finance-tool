@@ -156,17 +156,16 @@ describe("current account", () => {
   it("every bank carries the record's own Hebrew conditions; the doubts, the end date and the printed no-offer sentence travel with the rows", () => {
     expect(d.banks!.every((b) => !!b.conditions)).toBe(true);
     const by = (bank: string) => d.banks!.find((b) => b.bank === bank)!;
-    expect(by("fibi").doubt).toContain("31.03.2026");
-    expect(by("mercantile").doubt).toContain("דיסקונט");
-    expect(d.banks!.filter((b) => b.doubt).map((b) => b.bank).sort()).toEqual(["fibi", "mercantile"]);
+    // the doubt is the rate's own: it goes wherever the rate shows (founder, 2026-11-08)
+    expect(by("fibi").rate.doubt).toContain("31.03.2026");
+    expect(by("mercantile").rate.doubt).toContain("דיסקונט");
+    expect(d.banks!.filter((b) => b.rate.doubt).map((b) => b.bank).sort()).toEqual(["fibi", "mercantile"]);
     expect(by("yahav").until).toBe("2026-12-31");
     expect(d.banks!.filter((b) => !b.until)).toHaveLength(7);
     // Hapoalim, Mizrahi-Tefahot and Massad print the no-interest sentence; Mercantile prints a rate of 0
     expect(d.banks!.filter((b) => b.noOffer).map((b) => b.bank).sort()).toEqual(["hapoalim", "massad", "mizrahi-tefahot"]);
     expect(by("mercantile").noOffer).toBe(false);
     expect(by("mercantile").rate.value).toBe(0);
-    // the doubt is in the number's own sheet
-    expect(by("fibi").rate.notes).toBe(by("fibi").doubt);
   });
 
   it("the worth-knowing fact counts the banks that pay, says they all have conditions and a ceiling, and names the highest", () => {

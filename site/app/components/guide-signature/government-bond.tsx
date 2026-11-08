@@ -6,10 +6,10 @@ import { useId, useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { bondModel, fact } from "../../lib/guide-signature";
-import { entered as enteredValue } from "../../lib/value";
+
 import { GainBars, NumberField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { SourceLine, figure, inputSite, useSigInputs, type VisualProps } from "./kit";
+import { figure, inputSite, useSigInputs, typed, type VisualProps } from "./kit";
 
 const SHIFT_MIN = -3;
 const SHIFT_MAX = 3;
@@ -43,8 +43,8 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
   const years = Math.min(YEARS_MAX, Math.max(YEARS_MIN, yearsOverride ?? Math.round(inputs.years)));
   const model = useMemo(() => bondModel(data, { amount: inputs.amount, years, shiftPct: shift }), [data, inputs.amount, years, shift]);
   const amountIn = inputSite(bundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
-  const shiftIn = enteredValue(shift, "pct", today, copy.bond.shift);
-  const yearsIn = enteredValue(years, "years", today, copy.bond.years);
+  const shiftIn = typed(shift, "pct", today, copy.bond.shift);
+  const yearsIn = typed(years, "years", today, copy.bond.years);
   const base = { [copy.common.inputNames.amount]: amountIn, [copy.bond.shift]: shiftIn, [copy.bond.years]: yearsIn, [copy.common.inputNames.coupon]: cash, ...(every ? { [copy.common.inputNames.couponEvery]: every } : {}) };
   const v = model
     ? {
@@ -66,6 +66,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
           label={copy.bond.amount}
           unit="nis"
           value={inputs.amount}
+          start={inputs.p05.amount}
           isEntered={inputs.source.amount === "guide"}
           validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
           onCommit={inputs.setAmount}
@@ -88,7 +89,6 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
         value={shift}
         onChange={setShift}
       />
-      <SourceLine sources={[inputs.source.amount]} />
 
       {model && v && (
         <>

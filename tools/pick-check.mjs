@@ -1,4 +1,4 @@
-// Pick check (2026-11-01, issue 160): on a page with two linked lists, taps every row of each list, one after another, and after each
+// Pick check (2026-11-01): on a page with two linked lists, taps every row of each list, one after another, and after each
 // tap reads where the top of each list stands, in its card and in the page. Nothing above a list in its card may move with the pick (design-system 2.5a).
 // box-check.mjs moves sliders and selects; jump-check.mjs presses buttons; this one picks rows.
 //

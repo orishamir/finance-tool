@@ -33,10 +33,25 @@ export async function loader({ params }: Route.LoaderArgs) {
   const { registryIdsOfPage } = await import("../lib/institutions.server");
   const companyIds = registryIdsOfPage(track.companyId);
   const ours = (r: (typeof rules)[string]) => r.scope === "general" || (r.scope_institutions ?? []).some((c) => companyIds.includes(c.id));
+  // the rules the wrapper's record names anywhere in it (a key or a whole string value equal to the rule's id), in the rule base's order:
+  // its strings gathered once per page (searching the serialised record for every checklist row and every rule was most of the build's
+  // prerender time, 2026-11-08)
+  const strings = new Set<string>();
+  const gather = (v: unknown): void => {
+    if (typeof v === "string") strings.add(v);
+    else if (Array.isArray(v)) v.forEach(gather);
+    else if (v && typeof v === "object")
+      for (const [k, x] of Object.entries(v)) {
+        strings.add(k);
+        gather(x);
+      }
+  };
+  gather(wrapper);
+  const cited = Object.values(rules).filter((r) => strings.has(r.id));
   const checklist = wrapper
     ? loadChecklistRows().map((row) => {
         const mark = wrapper.dimensions[row.id];
-        const carrying = Object.values(rules).filter((r) => r.dimensions.includes(row.id) && ours(r) && JSON.stringify(wrapper).includes(`"${r.id}"`)).map((r) => r.id);
+        const carrying = cited.filter((r) => r.dimensions.includes(row.id) && ours(r)).map((r) => r.id);
         return { id: row.id, name: row.name, explanation: row.explanation, mark: mark === "covered" ? "covered" : mark === "blocked" || mark?.startsWith("blocked:") ? "blocked" : "na", code: mark?.startsWith("blocked:") ? mark.slice(8) : undefined, rules: carrying } as ChecklistRowView;
       })
     : [];
@@ -55,7 +70,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     stale: cma.periodValue.stale,
     notes,
   });
-  const citedRules = Object.fromEntries(Object.values(rules).filter((r) => wrapper && JSON.stringify(wrapper).includes(`"${r.id}"`)).map((r) => [r.id, r]));
+  const citedRules = Object.fromEntries(cited.map((r) => [r.id, r]));
   // names the catalogue gives this track alone (a fund-level or programme-level name is not this track's name)
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);

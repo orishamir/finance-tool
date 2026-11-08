@@ -77,6 +77,15 @@ describe("what a ranked price rests on", () => {
     expect(checkPricePremises({ ...abroad, availability: [{ ...entry("ניירות ערך בחוץ לארץ -מניות"), applies_to: ["foreign_securities"] }] })[0]).toMatch(/does not name/);
     expect(checkPricePremises({ ...abroad, availability: [{ ...entry("מניות, אגרות חוב וקרנות נאמנות"), applies_to: ["foreign_securities"] }] })).toEqual([]);
   });
+  it("says 'by phone only' of a kind a person can buy, in the house's words, with exchanges only for a fund bought abroad", () => {
+    const abroad = { ...base, lines: [{ base: "trade", applies_to: ["foreign_securities"] }] };
+    const fund = (phone_only: { venues?: string[]; source: { quote: string } }, available: boolean | "unknown" = true) => ({ ...entry("קרן סל"), applies_to: ["foreign_securities"], available, reason_he: "x", phone_only });
+    expect(checkPricePremises({ ...abroad, availability: [fund({ venues: ["europe"], source: { quote: "טלפונית מול חדר מסחר" } })] })).toEqual([]);
+    expect(checkPricePremises({ ...abroad, availability: [fund({ source: { quote: "דרך חדר המסחר" } })] })[0]).toMatch(/does not say "by phone"/);
+    expect(checkPricePremises({ ...abroad, availability: [fund({ source: { quote: "טלפונית" } }, "unknown")] })[0]).toMatch(/does not say it can be bought/);
+    const both = { ...fund({ venues: ["europe"], source: { quote: "טלפונית" } }), applies_to: ["foreign_securities", "etf_units"] };
+    expect(checkPricePremises({ ...abroad, availability: [both] }).join(" ")).toMatch(/only a fund bought abroad has/);
+  });
   it("refuses a trade line that names no kind of holding", () => {
     expect(checkPricePremises({ ...base, lines: [{ base: "trade", applies_to: ["all"] }] }).join(" ")).toMatch(/names every holding/);
   });

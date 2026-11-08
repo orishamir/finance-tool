@@ -23,7 +23,7 @@ export interface PickRow {
    * not, with each reason it can give. Laid out unseen and out of the flow, to be measured; every state is measured from its cases, so
    * the held height is the same whichever state the page opened in. A case's plain cells carry every tag that can stand on many rows at
    * once; a tag that stands on one row at a time (the cheapest's star, the way back after a tap) is a mark, in a case of its own with
-   * `marks`, and counts on the one row where it adds the most (#190, third pass: a case with every tag at once held 122 px too many).
+   * `marks`, and counts on the one row where it adds the most (third pass: a case with every tag at once held 122 px too many).
    */
   cases?: { key: string; cells: ReactNode; marks?: string[] }[];
   caseKey?: string;
@@ -37,15 +37,15 @@ export interface PickRow {
  * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out. The fold shows
  * the same rows whichever is chosen (a chosen row further down takes the last place, and a group's heading row is always shown), and it
  * holds the height of the tallest rows that can stand in it: a pick that sorts other rows into the fold moves nothing below the list
- * (#190). `orders`: every order the rows can take (one per state of the page), so the fold holds the tallest rows of any of them, whichever
+ *. `orders`: every order the rows can take (one per state of the page), so the fold holds the tallest rows of any of them, whichever
  * the page opened in; without it, the tallest N rows of the list.
  * `states`: the list's states (each fund that can be picked in a linked list), each the case key of every row; the list holds the height
  * of its tallest state, measured from the rows' cases whichever state is on the screen, so a pick that turns rows grey with their reasons
- * moves nothing below it (#190: up to 433 px on a phone), and opening the page on another state holds the same height.
+ * moves nothing below it (up to 433 px on a phone), and opening the page on another state holds the same height.
  */
 /**
  * A figure that must fit a fixed width, a size down as its digits grow, so a plan typed past the sliders' ends never cuts its leading
- * digits (#190). `list`: a list's fixed last column (7.5rem on a computer holds "999,999,999 ₪", 6.5rem on a phone "99,999,999 ₪"), a
+ * digits. `list`: a list's fixed last column (7.5rem on a computer holds "999,999,999 ₪", 6.5rem on a phone "99,999,999 ₪"), a
  * size down past eight digits on a phone, past nine digits on a computer, and again past twelve on both; a phone shows a billion or more
  * in its short form ("2.30 מיליארד ₪").
  * `tile`: a 24 px figure in one of two tiles side by side on a phone, a size down past seven digits, nine and eleven; the tile holds the
@@ -77,7 +77,7 @@ let pending: Hold | null = null;
 /**
  * A tapped row is held where it was for a moment, over every render in it, not only the first: a pick renders more than once (a note
  * on the row before the address changes, the sorted lists after it), and the first render used the hold up while the rows moved on the
- * next (#190: a row that moved the other half landed 1,400 px off screen). The person's own scroll ends the hold.
+ * next (a row that moved the other half landed 1,400 px off screen). The person's own scroll ends the hold.
  */
 const HOLD_MS = 1200;
 interface Hold { key: string; top: number; until: number }
@@ -88,7 +88,7 @@ export function holdOnPick(key: string, el: HTMLElement) {
   pending = holdOf(key, el);
 }
 
-export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders, holdKey }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[]; /** What the list's hold lasts for (an index): the list also keeps the tallest it has held for it at this width, because `orders` and the rows' cases are those of the plan on the screen, and another plan sorts other rows into the fold or words a row longer (#190: 14 px at the sliders' ends). */ holdKey?: string }) {
+export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders, holdKey }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[]; /** What the list's hold lasts for (an index): the list also keeps the tallest it has held for it at this width, because `orders` and the rows' cases are those of the plan on the screen, and another plan sorts other rows into the fold or words a row longer (14 px at the sliders' ends). */ holdKey?: string }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
   // was on the screen, wherever the list now puts it
@@ -187,7 +187,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
       let held = most - now > 0.5 ? h(list) + most - now : 0;
       if (holdKey !== undefined) {
         // kept outside the component: a plan with nothing to invest unmounts the lists for a moment, and a held height kept in the
-        // component started over and shrank (#190: 14 px at the sliders' start)
+        // component started over and shrank (14 px at the sliders' start)
         const k = `${label}|${holdKey}|${window.innerWidth}`;
         held = Math.max(held, h(list), keptHeights.get(k) ?? 0);
         keptHeights.set(k, held);

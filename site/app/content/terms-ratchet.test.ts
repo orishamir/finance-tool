@@ -1,4 +1,4 @@
-// Ratchets of the glossary (issue 205, 2026-11-06): a financial term the site names has a row in data/terms, the rows the
+// Ratchets of the glossary (2026-11-06): a financial term the site names has a row in data/terms, the rows the
 // glossary generator writes (docs/glossary.md, "Where the rows come from"). Two checks, both listing today's leftovers by name
 // so the lists only shrink (the pattern of components/kit/ratchets.test.ts):
 //  1. every term id the site opens (`<Term id>`, `<HelpMark term>`, a page's `termIds`) is the Hebrew name of a row;
@@ -477,7 +477,8 @@ const visualText = (file: string): string => {
   // the names of a figure's inputs (`{ [copy.x.y]: value }`) and an entered value's `about` (its fourth argument) are its sheet too
   // (independent check, 2026-11-07: 17 of the 31 leftovers were input names such as "האינפלציה שהאתר מניח")
   src = src.replace(/\[\s*(?:copy(?:\.[\w$]+)+|`[^`]*`)\s*\]\s*:/g, blankOut);
-  src = src.replace(/(\benteredValue\([^()]*?,[^()]*?,[^()]*?,\s*)copy(?:\.[\w$]+)+(?=\s*\))/g, (_m, head: string) => head + " ");
+  // (`typed`, the visuals' own entered value, a field's: 2026-11-08)
+  src = src.replace(/(\b(?:enteredValue|typed)\([^()]*?,[^()]*?,[^()]*?,\s*)copy(?:\.[\w$]+)+(?=\s*\))/g, (_m, head: string) => head + " ");
   // an `about` text is a figure's sheet, opened by a tap, not the page's text where the figure is declared
   return src.replace(/\bcopy((?:\.[\w$]+)+)(\[)?/g, (_m, p: string, index?: string) => (index || /\.about\b/.test(p) ? " " : ` ${copyWords(p)} `));
 };

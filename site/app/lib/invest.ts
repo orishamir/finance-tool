@@ -1,4 +1,4 @@
-// "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses, the options for
+// "השקעה במדד" (D28, spec 8dd1f013:research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses, the options for
 // owning it, the cheapest broker for each option and the cheapest complete way (broker + fund) for the plan. Pure: the
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
@@ -90,7 +90,7 @@ export const INDICES_PATH = "/indices";
 export const indexPath = (exposureId: string): string => `${INDICES_PATH}/${exposureId.replace(/^index-/, "")}`;
 export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=${encodeURIComponent(id)}`;
 export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
-/** The index page with one house picked, for a house's own page (issue 172: it replaced the page that ranked the houses on one S&P 500 fund). */
+/** The index page with one house picked, for a house's own page (it replaced the page that ranked the houses on one S&P 500 fund). */
 export const housePath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}`;
 /** A house's own page, opened at its securities account: who its price is for, its fees and where they stand, its offers (D57 amended). */
 /** A house's page opens the index page with the account panel started from its price list (`list`) or one of its groups (`group:<n>`): 2026-11-04. */
@@ -552,7 +552,7 @@ const sameCand = (a: Cand, b: Cand) => a.venue === b.venue && JSON.stringify(a.b
 
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
   // an account the person typed with a price left empty for this kind of fund (its conversion, for a fund bought abroad) has no price for
-  // it: never run, so the empty field is never charged as zero (D56, #190)
+  // it: never run, so the empty field is never charged as zero (D56)
   // (an account built on a house reads an empty field as the house's price: it follows the house, below)
   const baseOf = (s: FeesSnapshot) => (houseOfSnap(ctx, s) === s.id ? null : houseOfSnap(ctx, s));
   const typedOpen = (s: FeesSnapshot) => isCustomBrokerId(s.id) && !baseOf(s) && doubtOf(s, option) !== null;
@@ -625,11 +625,45 @@ function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
 
 /**
  * A price the person left empty in an account they typed (its conversion): carried as an open entry, so that kind of fund has no price
- * there, but it is a price not known, never a doubt about whether the account sells it (#190, fourth pass: the stairs listed it under
+ * there, but it is a price not known, never a doubt about whether the account sells it (fourth pass: the stairs listed it under
  * "יש ספק אם נמכרת שם" while its own row said the conversion was not typed). Such an entry is the person's, with no document behind it.
  */
 export function leftEmpty(s: FeesSnapshot | undefined, option: OptionId): boolean {
   return (s?.availability ?? []).some((a) => a.available === "unknown" && a.source.url === "local" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c)));
+}
+
+/**
+ * The house's words that this kind of fund is bought there only by phone (2026-11-08, an availability entry's `phone_only`), for the exchange
+ * the price rests on; an entry that names exchanges says nothing of a price whose line names none. A sourced fact beside the house: no price
+ * and no order reads it.
+ */
+export function phoneOnlyOf(s: FeesSnapshot | undefined, option: OptionId, venue: Venue | null | undefined): NonNullable<AvailabilityEntry["phone_only"]> | null {
+  for (const a of s?.availability ?? []) {
+    const p = a.phone_only;
+    if (!p || a.available !== true || !a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) continue;
+    if (!p.venues || (venue && p.venues.includes(venue))) return p;
+  }
+  return null;
+}
+
+/** The same as the value its tag opens: the word, the house's quoted words and their source, the house's own (D31). */
+export function phoneOnlyValue(s: FeesSnapshot | undefined, option: OptionId, venue: Venue | null | undefined, house: string): SiteValue | null {
+  const p = phoneOnlyOf(s, option, venue);
+  if (!s || !p) return null;
+  const v = {
+    value: copy.pair.phoneTag,
+    unit: "text",
+    source: { url: p.source.url, title: p.source.title, publisher: s.provider.name_he, strength: "institution" },
+    checked: p.source.checked,
+    effective_from: null,
+    effective_to: null,
+    update_rule: "provider-set",
+    state: "sourced",
+    about: copy.pair.phoneAbout(house),
+    lead: copy.pair.phoneLead(p.source.quote),
+    notes: "",
+  } as SiteValue;
+  return ownBy(v, s.provider.name_he);
 }
 
 /** Why the documents leave this kind of holding open at the house: said on its grey row (2026-10-31). */
@@ -759,7 +793,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
 
 const nameOf = (rec: FundRecord) => rec.names.he[0] ?? rec.names.en[0] ?? rec.id;
 /** A fund the person typed with no number has none to show: its id is the site's own. */
-// a fund with neither number is known by its ticker (a US fund: "VOO"), never by the site's own record id ("us-voo", #190)
+// a fund with neither number is known by its ticker (a US fund: "VOO"), never by the site's own record id ("us-voo")
 const tickerOf = (rec: FundRecord) => Object.values(rec.identifiers.ticker ?? {})[0] ?? null;
 const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identifiers.isin ?? tickerOf(rec) ?? (isCustomFund(rec) ? "" : rec.id);
 

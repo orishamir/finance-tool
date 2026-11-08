@@ -15,17 +15,17 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.chamber.org.il/media/159262/fees.pdf#page=5",
-      "title": "הוראה למנהלי קרנות הנאמנות בעניין חישוב דמי ניהול משתנים בקרן מחקה (עותק באתר לשכת המסחר, 23.8.2018)",
-      "title_he": "הוראה למנהלי קרנות הנאמנות בעניין חישוב דמי ניהול משתנים בקרן מחקה (עותק באתר לשכת המסחר, 23.8.2018)",
-      "publisher": "Israel Securities Authority (copy at the Chamber of Commerce)",
-      "publisher_he": "רשות ניירות ערך (עותק באתר לשכת המסחר)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fees.pdf#page=5",
+      "title": "הוראה למנהלי קרנות הנאמנות בעניין חישוב דמי ניהול משתנים בקרן מחקה (23.8.2018)",
+      "title_he": "הוראה למנהלי קרנות הנאמנות בעניין חישוב דמי ניהול משתנים בקרן מחקה (23.8.2018)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.1 s.3; p.5 Appendix A",
       "locator_he": "עמוד 1 סעיף 3; עמוד 5 נספח א",
       "page": 5,
-      "checked": "2026-10-31"
+      "checked": "2026-11-08"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/shared_investments_rules.pdf#page=3",

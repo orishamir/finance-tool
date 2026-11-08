@@ -344,7 +344,7 @@ export function brokerTerms(b: CustomBroker): { shown: EntryTerm[]; empty: strin
 
 /**
  * The fields of an account typed from scratch that the person left empty (2026-11-05, the founder's rule that silence is not zero, D56):
- * each is a price not known, a minimum as much as a percent (#190: a blank minimum was charged as none, and the account took first place).
+ * each is a price not known, a minimum as much as a percent (a blank minimum was charged as none, and the account took first place).
  * `fx`: the conversion, asked of an account that sells abroad. An account built on a house has none: what is left empty there is the
  * house's price list.
  */
@@ -366,7 +366,7 @@ export const unknownLines = (b: CustomBroker): string[] => emptyFields(b).map((x
 /** `onHouse` false: an account built on a house that is no longer on the site keeps only what was typed, and an empty field is not known. */
 export const unpricedEverywhere = (b: CustomBroker, onHouse = !!b.base): boolean => emptyFields(b, onHouse).some((x) => !x.fx);
 /**
- * The conversion left empty: only a fund bought abroad converts (#190: on an Israeli index, where nothing converts, the account was not
+ * The conversion left empty: only a fund bought abroad converts (on an Israeli index, where nothing converts, the account was not
  * ranked), so only that kind is without a price at the account.
  */
 export const fxUnknown = (b: CustomBroker, onHouse = !!b.base): boolean => emptyFields(b, onHouse).some((x) => x.fx);
@@ -504,7 +504,7 @@ export interface EnteredInBundle {
   /** By broker id: an account built on a house (F-101) is priced on the house's own list tariff for each fund, so its tariff is built per run. */
   layered: Record<string, NonNullable<ProviderInput["layered"]>>;
   /** By broker id: the house an account built on a house stands on. It is priced where that house is, on that house's own reading of its
-   *  price list, and nowhere else (#190: an account built on One Zero was priced on funds abroad that One Zero's price list leaves out). */
+   *  price list, and nowhere else (an account built on One Zero was priced on funds abroad that One Zero's price list leaves out). */
   bases?: Record<string, string>;
   /** By broker or fund id: what its run's provenance sheet lists. */
   inputs: Record<string, Record<string, SiteValue>>;

@@ -1,8 +1,0 @@
-134,136d133
-< GOLDEN	S20	alternative nominal	167098.078579
-< GOLDEN	S20	alternative real	147690.353204
-< GOLDEN	S20	alternative tax	3396.058576
-151d147
-< GOLDEN	S22	alternative real	148832.722763
-317d312
-< GOLDEN	S39	kgl real, 15% nominal alternative	629850.660911

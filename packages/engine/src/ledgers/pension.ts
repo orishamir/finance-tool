@@ -292,7 +292,7 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   const out = ledger(book, tally, input, gross, gross.map(() => 0), T, I);
 
   // TXP-10: employer component above the exempt limit. TXP-11: the severance ceiling, applied monthly as 1/12 of the yearly
-  // amount (Income Tax circular 4/2019 s.2.1.1; TXP OQ5 closed 2026-10-26); a severance deposit above it is work income at
+  // amount (Income Tax circular 4/2019 s.2.1.1); a severance deposit above it is work income at
   // deposit, which this run does not tax yet, so it is flagged under the rule.
   const ceiling = book.amount("TXP-10", "employer_ceiling");
   const exemptPct = book.rate("TXP-10", "employer_exempt_pct");

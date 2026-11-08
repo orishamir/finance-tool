@@ -521,12 +521,12 @@ def s01_s02_s04():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Rate = prime − 1.4% = 4.75% − 1.40% = 3.35%, constant (scenario) | {L("BANK-25")} (prime as the anchor) | 3.35% |\n'
         f'| 2 | Read as an effective annual rate, as in S01: g = 1.0335^(1/12) − 1 (D2 closed: reading it as r/12 changes the result by under 0.1%) | {L("BANK-04")} | g = {f6(mrate(0.0335))} |\n'
-        f'| 3 | Tax bucket: prime is neither CPI nor an exchange rate, so the deposit is "not linked": 15% of all interest. This is the rule file\'s own reading, not a published statement | {L("TXI-04", "TXI-03")} (TXI OQ2) | 15% |\n'
+        f'| 3 | Tax bucket: prime is neither CPI nor an exchange rate, so the deposit is "not linked": 15% of all interest. This is the rule file\'s own reading, not a published statement | {L("TXI-04", "TXI-03")} | 15% |\n'
         f'| 4 | Ledger as S01 (contributions constant real, monthly maturity, 15% withheld) | {L("TXI-08")} | see below |\n\n'
         f'Result: V_T = {f2(r4e["V"])}; real {f2(r4e["real_V"])}; tax during {f2(r4e["tax"])}.'
     )
     section('S04', 'Prime-linked monthly deposit', 'computed', body4,
-            f'Real V_T/I_T = {f2(r4e["real_V"])}; nominal V_T = {f2(r4e["V"])}; fees 0; tax during {f2(r4e["tax"])}; tax at exit 0; label "tax bucket: Tax Authority reading, TXI-04" (strength: the rule file\'s own reading, TXI OQ2). Subject to Q1.')
+            f'Real V_T/I_T = {f2(r4e["real_V"])}; nominal V_T = {f2(r4e["V"])}; fees 0; tax during {f2(r4e["tax"])}; tax at exit 0; label "tax bucket: Tax Authority reading, TXI-04" (strength: the rule file\'s own reading). Subject to Q1.')
     return r1
 
 
@@ -768,7 +768,7 @@ def s08_s09_s10():
         f'| 1 | π = −1%: principal and coupon are reduced with the index, no floor | {L("GOV-12", "GOV-11")} | I_36 = {f6(pm.I(36))} |\n'
         f'| 2 | The reduced coupon is still taxed in full at 25%; interest and linkage are separate incomes (Supreme Court, applied here by analogy from an FX-linked deposit) | {L("TXI-25", "TXI-14")} | tax during {f2(r10["tax_during"])} |\n'
         f'| 3 | The negative linkage on the principal is not offset: a positive linkage would have been exempt | {L("TXI-25", "TXI-05")} | no loss carried |\n'
-        f'| 4 | Exit at indexed par: the CPI fell, so each lot\'s inflationary amount is 0 and its nominal loss counts only beyond the fall, which here takes it all; the exit-year custody is the only loss left → no exit tax (TXS OQ15 closed 2026-10-26) | {L("TXS-02", "TXI-12", "TXS-17")} | gain {f2(r10["real_gain"])}, tax at exit {f2(r10["tax_exit"])} |\n\n'
+        f'| 4 | Exit at indexed par: the CPI fell, so each lot\'s inflationary amount is 0 and its nominal loss counts only beyond the fall, which here takes it all; the exit-year custody is the only loss left → no exit tax | {L("TXS-02", "TXI-12", "TXS-17")} | gain {f2(r10["real_gain"])}, tax at exit {f2(r10["tax_exit"])} |\n\n'
         + table(['Year', 'Indexed coupon', 'Tax 25%'], rows)
         + f'\n\nResult: V_T = {f2(r10["V"])}; real {f2(r10["real_V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}.'
     )
@@ -820,7 +820,7 @@ def s11_s13_s37():
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Taxable fund: the fund pays tax at individual rates on its income; the holder pays nothing on sale or distributions; a loss cannot be offset | {L("TXS-11", "TXS-24")} | — |\n'
-        f'| 2 | Fund-level rate on unlinked shekel interest: 15% of nominal interest (derived in the rule file, not stated by the Tax Authority) | {L("TXS-11", "TXS-12")} (TXS OQ11) | 15% × g each month |\n'
+        f'| 2 | Fund-level rate on unlinked shekel interest: 15% of nominal interest (derived in the rule file, not stated by the Tax Authority) | {L("TXS-11", "TXS-12")} | 15% × g each month |\n'
         f'| 3 | Monthly NAV growth = g − δ/12 − 0.15 × g (tax on gross interest; whether fees are deductible at fund level is not in the rule base, Q11) | as above | — |\n'
         f'| 4 | Holder exit tax 0 | {L("TXS-11")} | 0 |\n\n'
         + year_table(snaps13)
@@ -836,10 +836,10 @@ def s11_s13_s37():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | As S11 with BoI 1%: g = 1.01^(1/12) − 1, δ = 0.18% | {L("MF-34", "MF-16")} | g = {f6(mrate(0.01))} |\n'
         f'| 2 | Real gain = gain − inflationary amount; tax 25% of real gain; a negative real gain gives no tax | {L("TXS-09", "TXS-02", "TXG-12")} | real {f2(out37["real_gain"])} |\n'
-        f'| 3 | The nominal gain is positive, so the CPI rise above it is exempt and no capital loss arises: a capital loss is measured in nominal terms only (TXG OQ13 closed 2026-10-26) | {L("TXG-12", "TXS-02")} | flag |\n'
+        f'| 3 | The nominal gain is positive, so the CPI rise above it is exempt and no capital loss arises: a capital loss is measured in nominal terms only | {L("TXG-12", "TXS-02")} | flag |\n'
     )
     section('S37', 'Negative real gain', 'computed', body,
-            f'Real V_T/I_T = {f2(out37["real_V"])}; nominal V_T = {f2(out37["V"])}; nominal gain {f2(nominal)} (positive); real gain {f2(out37["real_gain"])} (negative); tax 0; fees: fund {f2(sec37.fees["fund"])}; flag "real loss not carried, G-07" (TXG OQ13).')
+            f'Real V_T/I_T = {f2(out37["real_V"])}; nominal V_T = {f2(out37["V"])}; nominal gain {f2(nominal)} (positive); real gain {f2(out37["real_gain"])} (negative); tax 0; fees: fund {f2(sec37.fees["fund"])}; flag "real loss not carried, G-07".')
 
 
 def s12():
@@ -1622,7 +1622,7 @@ def s17_s18_s19():
     for sid, title, extra, wtext in (
             ('S17', 'US-domiciled distributing ETF at a foreign broker, with W-8BEN', f'| 5 | US withholding 25% with W-8BEN; Israel 25% fully credited → nothing more | {L("TXF-12", "TXF-13")} | — |\n', 'US 25% withheld, nothing more in Israel'),
             ('S18', 'Same ETF without a W-8BEN', f'| 5 | Without W-8BEN the US withholds 30%; credit capped at the Israeli 25%, so 5% is lost | {L("TXF-13", "TXF-18")} | — |\n', 'US 30% withheld; the extra 5% is lost'),
-            ('S19', 'Irish distributing ETF at a foreign broker', f'| 5 | Irish fund: expense 0.07% + fund-level US withholding 0.23%; Irish withholding on its distributions open, 0 used; Israel 25% on distributions | {L("TXF-16")} (TXF OQ6) | flag G-05 |\n', 'Irish withholding 0 (open, flagged); Israel 25% by advance')):
+            ('S19', 'Irish distributing ETF at a foreign broker', f'| 5 | Irish fund: expense 0.07% + fund-level US withholding 0.23%; Irish withholding on its distributions open, 0 used; Israel 25% on distributions | {L("TXF-16")} | flag G-05 |\n', 'Irish withholding 0 (open, flagged); Israel 25% by advance')):
         sec, out, path, est, shares = rows[sid]
         body = common.replace('{shares}', f'{shares:.0f}') + extra + (
             f'\nResult: V_T = {f2(out["V"])}; real {f2(out["real_V"])}; foreign tax on distributions {f2(sec.foreign_tax)}, Israeli tax on distributions {f2(sec.tax_during)}; tax at exit {f2(out["tax"])} (real gain {f2(out["real_gain"])}).')

@@ -383,13 +383,6 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
     setSaveFailed(!saveComparisonRecord(rest));
     forgetRevisit();
   };
-  const sources = {
-    horizon: resolved!.source.horizonYears === "entered",
-    amountNow: resolved!.source.amountNow === "entered",
-    monthly: resolved!.source.monthly === "entered",
-    available: resolved!.source.available === "entered",
-    inflation: g.inflationPct !== null,
-  };
   const openField = (f: FieldKey | "all") => {
     void f;
     if (typeof window !== "undefined" && window.matchMedia("(min-width: 64rem)").matches) panelRef.current?.scrollIntoView({ block: "center" });
@@ -472,7 +465,7 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
             </h2>
             <Card className="flex flex-col gap-4">
               <ExposureChartCard ctx={ctx} view={view} mode={mode} onMode={setMode} />
-              <AssumptionChips g={g} sources={sources} onOpen={openField} exposure={{ acceptedFall: goal.assumptions.acceptedFall ?? null }} />
+              <AssumptionChips g={g} onOpen={openField} exposure={{ acceptedFall: goal.assumptions.acceptedFall ?? null }} />
             </Card>
           </section>
           <Card as="aside" pad="aside" ref={panelRef} className="hidden lg:block" aria-label={r5.exposure.assumptions.title}>

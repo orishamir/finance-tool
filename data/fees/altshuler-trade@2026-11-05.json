@@ -595,7 +595,7 @@
         "page": 2,
         "quote": "מסחר במניות ו-ETF'S בארה\"ב"
       },
-      "note": "2026-11-05: US shares and ETFs only. The company's written answer of 2026-11-05, filed without names at https://github.com/orishamir/finance-tool/issues/188#issuecomment-6654907333, says: 'ניתן לסחור במערכת רק בבורסה הישראלית והאמריקאית וכל המניות הנמצאות בהן.' So a fund listed in London or elsewhere in Europe cannot be bought here; the US trade line's band names the US, so a fund bought abroad that trades in Europe finds no line here, as at One Zero. Before: 'unknown', because the tariff names no exchange outside the US."
+      "note": "2026-11-05: US shares and ETFs only. The company's written answer of 2026-11-05 (docs/company-answers.md#altshuler-trade-2026-11-05) says: 'ניתן לסחור במערכת רק בבורסה הישראלית והאמריקאית וכל המניות הנמצאות בהן.' So a fund listed in London or elsewhere in Europe cannot be bought here; the US trade line's band names the US, so a fund bought abroad that trades in Europe finds no line here, as at One Zero. Before: 'unknown', because the tariff names no exchange outside the US."
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
@@ -643,7 +643,7 @@
     {
       "what": "ני\"ע זרים בארה\"ב \"על פי אחד מהמסלולים\": (1) \"1 סנט למניה, מינימום 9$\"; (2) \"עמלה קבועה בסך 11$ לעסקה\"; (3) \"0.15% משווי העסקה, מינימום 9$\"",
       "page": 2,
-      "why": "The tariff does not say which track a customer is on or who picks it; the record prices track (3). Under D56 the most the documents allow for one buy is the dearer track: track (2), 11 USD, costs more than track (3) for a buy under about 7,333 USD (11 / 0.15%). For the lead to decide, as for IBI's US tracks. 2026-11-05, the company's written answer (issue 188): new customers are put on the joining offer's terms (its page: '1 סנט למניה (מינימום $6)') and may ask the trading room, after joining, to move to 'מסלול פיקס'; which track that is, is not stated (inferred: track (2), 11 USD a trade)."
+      "why": "The tariff does not say which track a customer is on or who picks it; the record prices track (3). Under D56 the most the documents allow for one buy is the dearer track: track (2), 11 USD, costs more than track (3) for a buy under about 7,333 USD (11 / 0.15%). For the lead to decide, as for IBI's US tracks. 2026-11-05, the company's written answer: new customers are put on the joining offer's terms (its page: '1 סנט למניה (מינימום $6)') and may ask the trading room, after joining, to move to 'מסלול פיקס'; which track that is, is not stated (inferred: track (2), 11 USD a trade)."
     },
     {
       "what": "צדדים שלישיים: \"פטור מדמי ניהול לשנתיים (לאחר מכן 15 ₪ בחודש)\" ו-0.08% מינימום 4.65 ₪ באתרי השוואה; לקוח בפורום hasolidit (19.1.2026) מספר שההסכם מפנה לתעריפון באתר ומתיר לשנות עמלות ודמי ניהול בלי התראה",

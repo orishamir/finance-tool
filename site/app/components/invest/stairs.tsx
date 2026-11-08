@@ -1,4 +1,4 @@
-// The stairs (founder, 2026-11-01; drawing A of research/specs/2026-11-01-indices-general/stairs.html): from one account and one fund, which
+// The stairs (founder, 2026-11-01; drawing A of 8dd1f013:research/specs/2026-11-01-indices-general/stairs.html): from one account and one fund, which
 // single change leaves more at the end and by how much, taken one step at a time. Appended after the page's other sections and reading
 // the same view: the start is the person's pick; every figure is the engine's (`buildInvest` for the rows, `pairCosts` for the stairs shown
 // only), every difference a computation of F-91. The selection logic is `lib/stairs.ts`; the chart and the rows are the kit's.
@@ -49,7 +49,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const today = bundle.today;
   const t = c.stairs;
   // the two cards hold the tallest height they have had on this index: another start drew fewer stairs, or shorter lists under them,
-  // and everything below moved (#190); the hold starts over on another index or screen width
+  // and everything below moved; the hold starts over on another index or screen width
   const heldChart = useHeldHeight<HTMLElement>(`${view.index.id}:chart`);
   const heldRows = useHeldHeight<HTMLElement>(`${view.index.id}:rows`);
   const g = useMemo(() => gridOf(view, bundle.snapshots), [view, bundle.snapshots]);
@@ -321,7 +321,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     );
 
   // the lines whose names and figures change with a pick or a plan, laid out unseen at their longest: every fund's name with the longest
-  // account's, and the longest amount (#190, fourth pass: 40 years at 12% put a long fund abroad in the status line, and the phone's
+  // account's, and the longest amount (fourth pass: 40 years at 12% put a long fund abroad in the status line, and the phone's
   // step card grew 38 px; a pick changed the heading's words and moved the card's inside 29 px)
   const longestHouse = view.providers.map((p) => p.short).sort((a, b) => b.length - a.length)[0] ?? "";
   const fundNames = [...new Set(allFunds(view).map((f) => f.name))];
@@ -332,7 +332,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       <span key={`n${n}`}>
         {t.statusNone} {sample}
         {t.statusTogether}{" "}
-        {/* the same button as the line's own: a button wraps as one box, and a span in its place held a line too few (#190) */}
+        {/* the same button as the line's own: a button wraps as one box, and a span in its place held a line too few */}
         <JumpLink>
           {t.jump} {n}, {longestHouse}
         </JumpLink>
@@ -428,7 +428,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         <p className="text-sm text-muted-foreground">{t.rowsHint}</p>
         <div className="grid items-start gap-x-9 gap-y-3 lg:grid-cols-2">
           {/* each lane held at its longest list on this index: on a phone they stand one under another, and a lane that grew moved the
-              lanes and everything below it (#190) */}
+              lanes and everything below it */}
           <div>{heldLane("account")}</div>
           <div className="flex flex-col gap-[22px]">
             {heldLane("kind")}

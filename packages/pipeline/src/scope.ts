@@ -1,4 +1,4 @@
-// Who a rule applies to (D30; research/specs/2026-10-25-rules-scope/spec.md §3): reading the `- Scope:` line of a rule-base block,
+// Who a rule applies to (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): reading the `- Scope:` line of a rule-base block,
 // resolving the company names it writes against data/sources/institutions.json, and the validator's scope checks. The extraction
 // (scripts/extract-sources.ts) writes what `scopeFromLine` returns; the validator re-reads the line and fails a record that drifted.
 import { existsSync, readdirSync, readFileSync } from "node:fs";

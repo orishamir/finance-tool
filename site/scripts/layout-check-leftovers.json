@@ -1,0 +1,33 @@
+{
+  "about": "Findings of site/scripts/layout-check.mjs that were on the site when the check came in (2026-11-08). Each is reported, not failed; a new finding fails. `pages` is a path prefix, `id` the box or text the finding names. Remove an entry when its fix lands (a full run says GONE).",
+  "leftovers": [
+    {
+      "pages": "/indices/",
+      "width": 320,
+      "check": "cut",
+      "id": "div.md:flex-1.md:min-w-64",
+      "why": "The pick card's headline figure (24 px, \"86,492 ₪\") is wider than a card half a 320 px screen wide: its first digit is cut off. Fine at 390."
+    },
+    {
+      "pages": "/indices/",
+      "width": 320,
+      "check": "cut",
+      "id": "div.relative.rounded-lg",
+      "why": "The same figure in the second pick card."
+    },
+    {
+      "pages": "/indices/",
+      "width": 320,
+      "check": "cut",
+      "id": "div.bg-popover.border-b",
+      "why": "A fund card's fee line \"0.265% שנגבו בפועל בממוצע בשנים 2024 עד 2025\" doesn't wrap and runs off the card. Fine at 390."
+    },
+    {
+      "pages": "/guide/government-bond",
+      "width": 320,
+      "check": "cut",
+      "id": "div.bg-card.border",
+      "why": "The price calculator's amount field and sliders are wider than their card: the field's edge and \"10 שנים\" are cut off. Fine at 390."
+    }
+  ]
+}

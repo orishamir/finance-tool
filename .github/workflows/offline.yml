@@ -1,0 +1,40 @@
+# The site as a .tar.gz to run offline (docs/architecture.md section 6), made only when asked: Actions > offline > Run workflow, or
+# `gh workflow run offline.yml` (founder, 2026-11-08: needed rarely, so no longer made on every push). It builds the branch it is run on
+# without the checks (ci.yml checks every push to main). Extract it, run `python3 -m http.server` in the folder, open http://localhost:8000/.
+# The pages sit under finance-tool/ (the basename); index.html at the top sends the browser there.
+name: offline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      # without the research screenshots no build reads, as in ci.yml
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/research/user-lab/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # compressed on every core with pigz where the runner has it
+      - run: |
+          mkdir offline
+          mv site/build/client offline/finance-tool
+          printf '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=finance-tool/"><a href="finance-tool/">finance-tool</a>\n' > offline/index.html
+          printf 'Run: python3 -m http.server   (in this folder)\nOpen: http://localhost:8000/\nBuilt from %s on %s.\n' "$GITHUB_SHA" "$(date -u +%F)" > offline/README.txt
+          tar -I "$(command -v pigz || echo gzip)" -cf finance-tool-site.tar.gz -C offline .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: finance-tool-site
+          path: finance-tool-site.tar.gz
+          # already gzipped; about 105 MB, kept two weeks
+          compression-level: 0
+          retention-days: 14

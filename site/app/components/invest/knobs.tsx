@@ -15,7 +15,7 @@ import { pairCosts, pairLeft, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
-import { ChangeChart, KnobStrip, NumberField, ParameterLine, SegmentedControl, percentCheck, type Knob } from "../kit";
+import { ChangeChart, KnobStrip, NumberField, SegmentedControl, percentCheck, type Knob } from "../kit";
 
 type Range = { min: number; max: number; step: number };
 export type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
@@ -64,7 +64,7 @@ export function PlanKnobs({ fi, ranges, pct, only }: { fi: FeeInputs; ranges: Kn
   const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
   const field = (id: Id) => {
     const v = valueOf(fi, id);
-    return { id, label: labelOf[id], value: v.value, isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
+    return { id, label: labelOf[id], value: v.value, start: fi.starts?.[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"], isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
   };
   const negative = (n: number) => (n < 0 ? valuesCopy.errors.negative : null);
   const knobs: Knob[] = [
@@ -193,7 +193,7 @@ const CHOICES = [-20, -10, 10, 20, 50];
  * What the button beside the sliders opens: inflation, and where the page's product needs them, employment and age; written to the
  * same entered values. The page leaves out what it never reads (founder 2026-10-28, every control earns its place).
  */
-export function OtherAssumptions({ inflation, pct, employment, age, need, insurance }: { inflation: SiteValue; pct: { min: number; max: number }; employment?: boolean; age?: { min: number; max: number }; need?: { age?: FieldNeed; employment?: FieldNeed }; insurance?: FieldNeed }) {
+export function OtherAssumptions({ inflation, inflationStart, pct, employment, age, need, insurance }: { inflation: SiteValue; /** The inflation field's start value (P-05): its reset says "חזרה ל־2.5%". */ inflationStart?: number; pct: { min: number; max: number }; employment?: boolean; age?: { min: number; max: number }; need?: { age?: FieldNeed; employment?: FieldNeed }; insurance?: FieldNeed }) {
   const { state, ready, setEntered, setAge, setEmployment, setInsurance } = useInputs();
   const ageCheck = (r: { min: number; max: number }) => (n: number) => (!Number.isInteger(n) ? valuesCopy.errors.nan : n < r.min || n > r.max ? `${valuesCopy.errors.age[0]} ${fmt.number(r.min)} ${valuesCopy.errors.age[1]}${fmt.number(r.max)}.` : null);
   // a field the run cannot go without says "required" and why; the others stay "not required" (2026-11-07, independent check)
@@ -202,9 +202,8 @@ export function OtherAssumptions({ inflation, pct, employment, age, need, insura
   const h = valuesCopy.hints;
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
-      <ParameterLine />
-      {/* the hint is the field's own, under its box: as a line after the field it floated below the state line's held room (2026-11-07, a fresh reader) */}
-      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
+      {/* the hint is the field's own, under its box (2026-11-07, a fresh reader) */}
+      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} start={inflationStart} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
       {employment && (
         <div className="field">
           <span className="field-label" id="plan-emp-label">

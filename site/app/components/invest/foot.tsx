@@ -22,7 +22,7 @@ export function Foot({ view }: { view: InvestView }) {
         {o && !o.holds && (
           <Disclosure plain label={c.foot.flipsSummary(new Set(flips.map((f) => words(f))).size)}>
             {/* opened, held at its longest list (every order on the index changing, at 0% and at 10%): a slider changes which orders change, and the lines
-                under it moved 112 px on a phone (#190) */}
+                under it moved 112 px on a phone */}
             <LongestCase cases={[<p key="all" className="mt-1">{`${c.foot.flips} ${everyWhat.flatMap((w) => [0, 10].map((at) => `${w} (${c.foot.flipsAt(at)})`)).join("; ")}.`}</p>]}>
               <p className="mt-1">{`${c.foot.flips} ${[...new Set(flips.map((f) => `${words(f)} (${c.foot.flipsAt(f.at)})`))].join("; ")}.`}</p>
             </LongestCase>

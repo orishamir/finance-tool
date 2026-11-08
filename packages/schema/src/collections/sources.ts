@@ -1,4 +1,4 @@
-// data/sources/: the two hand tables the source extraction reads (research/knowledge/2026-10-24-synthesis.md §3.2).
+// data/sources/: the two hand tables the source extraction reads (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.2).
 // `publishers.json` names every host a rule source points at; `documents.json` names the recurring documents.
 import { z } from "zod";
 import { textFragment } from "../value.ts";
@@ -27,7 +27,7 @@ export const documentRow = z.strictObject({
    * משולב באתר המוסד לביטוח לאומי") is limited to that host, so another copy of the same document keeps its own host's label.
    */
   hosts: z.array(z.string().min(1)).min(1).optional(),
-  /** A company's own terms for the law and terms browser (issue 123, 2026-10-31): its row in the document library and what kind of document it is. */
+  /** A company's own terms for the law and terms browser (2026-10-31): its row in the document library and what kind of document it is. */
   library_id: z.string().regex(/^[0-9a-f]{16}$/).optional(),
   doc_kind: z.enum(["terms", "regulations", "prospectus", "notice", "leaflet", "terms-hub", "tariff", "agreement"]).optional(),
   /** The institution whose term this is (`institutions.json`); a company's term is shown under its name and never as a fact about a product (D30). */
@@ -103,7 +103,7 @@ export const brandsTable = z.array(brandRow);
  * One row of `fragments.json` (founder, 2026-11-07): the words a link to a cited web page opens at, by text fragment (`#:~:text=`).
  * `url` and `words` are exactly a record's link and its quoted words (`quote`, or an advertising entry's `claim_he` or `binding_he`);
  * `text` holds the fragment's terms as the page prints them, kept only where they were found there and land on the quoted words first;
- * `seen` is the day the page was read. Written by research/audit/tools/quote-fragments.mjs, never by hand; a PDF has no row (its link
+ * `seen` is the day the page was read. Written by tools/quote-fragments.mjs, never by hand; a PDF has no row (its link
  * opens at its page).
  */
 export const fragmentRow = z.strictObject({

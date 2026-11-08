@@ -1,4 +1,4 @@
-// "כל המסלולים בכל החברות" (D54, 2026-11-03; issue 173): every company's tracks of one product, grouped by company or by what the money
+// "כל המסלולים בכל החברות" (D54, 2026-11-03): every company's tracks of one product, grouped by company or by what the money
 // is invested in, with the regulator's fee averages, the stock and currency exposure, the past yield and the assets beside them.
 // Every product is one route (`tracks/:product?`): choosing another keeps the page and fetches nothing, as the index page does.
 import { useLoaderData } from "react-router";

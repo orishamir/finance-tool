@@ -43,7 +43,7 @@ export interface LegendItem {
 
 /**
  * What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its
- * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps (issue 22).
+ * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps.
  */
 export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
   return (

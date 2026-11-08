@@ -1,4 +1,4 @@
-// A provident wrapper with several managers' list fees collected (issue 210, 2026-11-07): the guide shows the range over all of them (F-105)
+// A provident wrapper with several managers' list fees collected (2026-11-07): the guide shows the range over all of them (F-105)
 // and runs its example on one, chosen by F-80, never one manager's list standing for the product.
 import { describe, expect, it } from "vitest";
 import type { FeesSnapshot } from "@finance-tool/schema";

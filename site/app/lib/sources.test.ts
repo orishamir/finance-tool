@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { citationText, isPdfUrl, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, strongestStrength, type RuleSource } from "./sources";
+import { citationText, isPdfUrl, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, strongestStrength, type RuleSource } from "./sources";
 
 const src = (o: Partial<RuleSource> = {}): RuleSource => ({ url: "https://example.gov.il/a", title: "T", publisher: "Pub", strength: "primary", checked: "2026-10-01", ...o });
 const fig = (url: string, strength: string) => ({
@@ -37,6 +37,11 @@ describe("sourceHref", () => {
     expect(sourceHref({ url: "https://x/a", fragment: { prefix: "a-b", start: "1,5 & 2", suffix: "c" } })).toBe("https://x/a#:~:text=a%2Db-,1%2C5%20%26%202,-c"));
   it("keeps the anchor before the words", () => expect(sourceHref({ url: "https://x/a", anchor: "s3", fragment: { start: "w" } })).toBe("https://x/a#s3:~:text=w"));
   it("adds the words to an address that has a # already", () => expect(sourceHref({ url: "https://x/a#b", fragment: { start: "w" } })).toBe("https://x/a#b:~:text=w"));
+  // 2026-11-08: a company's written answer is a file of the repository, opened at its public page; a parameter's rationale is not
+  it("opens a company's written answer at the repository's page, and leaves other files alone", () => {
+    expect(sourceHref({ url: "docs/company-answers.md#ibi-2026-11-08", page: 73 })).toBe("https://github.com/orishamir/finance-tool/blob/main/docs/company-answers.md#ibi-2026-11-08");
+    expect(publicUrl("docs/parameters-rationale.md#goal-presets")).toBe("docs/parameters-rationale.md#goal-presets");
+  });
   it("adds the words as a second directive to an address that has one", () => expect(sourceHref({ url: "https://x/a#:~:text=v", fragment: { start: "w" } })).toBe("https://x/a#:~:text=v&text=w"));
   it("opens a PDF at its page, never at words", () => expect(sourceHref({ url: "https://x/a.pdf", page: 4, fragment: { start: "w" } })).toBe("https://x/a.pdf#page=4"));
 });

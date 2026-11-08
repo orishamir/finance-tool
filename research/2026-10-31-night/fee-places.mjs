@@ -93,7 +93,7 @@ if (cmd === "propose") {
     const citePage = e.page ?? 1;
     const key = `${e.doc}|${citePage}|${e.quote}`;
     if (e.doc && !seen.has(key)) {
-      execFileSync("node", [`${root}research/library/library.mjs`, "cite", e.doc, "--page", String(citePage), "--quote", e.quote], { stdio: "pipe" });
+      execFileSync("node", [`${root}tools/library.mjs`, "cite", e.doc, "--page", String(citePage), "--quote", e.quote], { stdio: "pipe" });
       seen.add(key);
       cited++;
     }
@@ -146,7 +146,7 @@ if (cmd === "propose") {
     const [rule, doc, page, quote] = l.split(" | ");
     if (seen.has(`${doc}|${page}|${quote}`)) continue;
     try {
-      execFileSync("node", [`${root}research/library/library.mjs`, "cite", doc, "--page", page, "--quote", quote], { stdio: "pipe" });
+      execFileSync("node", [`${root}tools/library.mjs`, "cite", doc, "--page", page, "--quote", quote], { stdio: "pipe" });
       console.log(`ok ${rule} ${doc} p${page}`);
     } catch (err) { console.log(`refused ${rule} ${doc} p${page}: ${String(err.stderr).trim().split("\n").at(-1)}`); }
   }

@@ -12,9 +12,9 @@ const index: SearchEntry[] = [
   e("guide", "קרן השתלמות", "/guide/keren-hishtalmut"),
   e("guide", "קרן השתלמות לעצמאים", "/guide/keren-hishtalmut"),
   e("guide", "קרן השתלמות", "/guide/keren-hishtalmut"),
-  e("term", "תעודת סל", "/guide/x#terms"),
-  e("term", "תעודת סל", "/guide/x#terms"),
-  e("term", "קרן נאמנות", "/guide/x#terms"),
+  e("term", "תעודת סל", "/guide/x#term=x"),
+  e("term", "תעודת סל", "/guide/x#term=x"),
+  e("term", "קרן נאמנות", "/guide/x#term=x"),
   e("company", "איילון", "/companies/512065202", ["512065202"]),
   e("notcovered", "ביטוח מנהלים", "/not-covered#executive-insurance"),
   e("product", "קרן השתלמות איילון", "/companies/1/880", ["880"]),
@@ -92,7 +92,7 @@ describe("ranking and dedupe", () => {
 });
 
 // ---------------------------------------------------------------------------------------------------------------
-// The knowledge layer (research/knowledge/2026-10-24-search.md §6, synthesis 3.6): rules, parameters, aliases, numbers.
+// The knowledge layer (8dd1f013:research/knowledge/2026-10-24-search.md §6, synthesis 3.6): rules, parameters, aliases, numbers.
 // The fixture is the real index and the real texts file, built through the two route loaders.
 // ---------------------------------------------------------------------------------------------------------------
 import { beforeAll } from "vitest";
@@ -163,7 +163,7 @@ describe("the nineteen queries (top href)", () => {
     ["מעבר מסלול", "/rules#TXH-17"],
     ["כמה מס על פיקדון", "/rules#TXI-03"],
     ["תקרת הפקדה קופת גמל להשקעה", "/rules#KGL-02"],
-    ["מס רווחי הון", "/guide/brokerage-account#terms"],
+    ["מס רווחי הון", `/guide/brokerage-account#term=${encodeURIComponent("מס רווחי הון")}`],
     ["קרן כספית", "/guide/money-market-fund-daily"],
     ["פק״מ", "/guide/bank-deposit"],
     ["פקמ", "/guide/bank-deposit"],
@@ -188,7 +188,7 @@ describe("rules in groups and the negatives", () => {
   it("18: ניוד finds the glossary term of the guides that carry it, and the SW rules in the rules group", () => {
     // two guides (pension-comprehensive, child-savings-bank) hold "ניוד" as an exact term, so the design's single top href is a tie
     const hits = top("ניוד");
-    expect(hits.slice(0, 2).map((h) => h.entry.href).sort()).toEqual(["/guide/child-savings-bank#terms", "/guide/pension-comprehensive#terms"]);
+    expect(hits.slice(0, 2).map((h) => h.entry.href).sort()).toEqual(["child-savings-bank", "pension-comprehensive"].map((g) => `/guide/${g}#term=${encodeURIComponent("העברת כספים בין קופות גמל")}`)); // "ניוד" is a variant of that row
     expect(hits.some((h) => h.entry.key?.startsWith("SW-"))).toBe(true);
   });
   it("lists the other rules a name query finds in the rules group", () => {

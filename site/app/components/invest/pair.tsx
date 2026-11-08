@@ -1,4 +1,4 @@
-// The index page as two linked lists (founder, 2026-10-27; spec research/specs/2026-10-27-invest-improvements 3.8 to 3.10): an account
+// The index page as two linked lists (founder, 2026-10-27; spec 8dd1f013:research/specs/2026-10-27-invest-improvements 3.8 to 3.10): an account
 // and a fund. The account list prices every account with the chosen fund, the fund list prices every fund at the chosen account;
 // neither list leaves anything out (a row that cannot be priced stays, with its reason). Above them, the result: what is put in, what
 // is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
@@ -8,14 +8,14 @@ import { Fragment, useMemo, useRef, useState, type MouseEvent, type ReactNode } 
 import { isTie, type FeeLine, type GapList } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { brokeragePagePath, chargesCurrentAccount, doubtOf, firstCount, placesOf, tieShareOf, tieThresholdValue, paybackMayLower, accountWhole, pricedVariable, gapOf, gapListFor, gapUnstated, indexSeenBy, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, chargesCurrentAccount, doubtOf, firstCount, placesOf, tieShareOf, tieThresholdValue, paybackMayLower, accountWhole, pricedVariable, gapOf, gapListFor, gapUnstated, indexSeenBy, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, phoneOnlyValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, sharedLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num, ShortRow, shortRow, Term } from "../provenance";
-import { AlsoChanged, ClampedText, gershayim, wholeParts, writtenAmounts, holdOnPick, MixedName, NameLine, figureFit, Card, PickCard, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, Tpl, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
+import { AlsoChanged, ClampedText, gershayim, wholeParts, writtenAmounts, holdOnPick, MixedName, NameLine, figureFit, Card, PickCard, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, SourcedTag, Swatch, Tag, Tpl, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -54,6 +54,14 @@ export const nis = (n: number, formula: string, about: string, today: string, in
 /** A gain shown with its plus sign, isolated so it reads "+2,621 ₪" inside Hebrew. */
 const plus = (n: number) => (n > 0 ? `\u2066+${fmt.nisWhole(n)}\u2069` : undefined);
 const priced = (x: WayPrice | { reason: Reason } | undefined): x is WayPrice => !!x && "valueN" in x;
+
+/** A pair's "by phone only" (2026-11-08): the house's words for the exchange its price rests on, as the value its tag opens; null for any other pair. */
+function phoneOf(view: InvestView, bundle: WorkbenchBundle, p: { house: string; fund: string }): SiteValue | null {
+  const f = allFunds(view).find((x) => x.rec.id === p.fund);
+  const at = f?.byHouse[p.house];
+  if (!f || !priced(at)) return null;
+  return phoneOnlyValue(bundle.snapshots.find((s) => s.id === p.house), f.option, at.venue, providerName(view, p.house)?.short ?? p.house);
+}
 
 /** Every fund on the index, of every option that exists for it. */
 export const allFunds = (view: InvestView): FundWay[] => view.options.filter((o) => o.exists).flatMap((o) => o.funds);
@@ -129,7 +137,7 @@ export interface Moved {
   at: Pick;
   /** The half that changed without being tapped. */
   half: "house" | "fund";
-  /** Set by the page: puts back what was there before the tap, the page's own pair or a group included (#190: the way back made the page's
+  /** Set by the page: puts back what was there before the tap, the page's own pair or a group included (the way back made the page's
    *  pair the person's pick, and dropped a group). */
   back?: () => void;
 }
@@ -204,7 +212,7 @@ function CostLegend({ lines, pick, current = true, taxName = c.pair.taxLine }: {
   );
 }
 
-/** Every role a cost bar can name, laid out unseen under its own: a longer role took a second line on a phone (#190). */
+/** Every role a cost bar can name, laid out unseen under its own: a longer role took a second line on a phone. */
 const BAR_ROLES = [c.pair.yours, c.pair.cheapest, c.pair.next, c.pair.tieRole, c.pair.openTop];
 
 /** A cost bar's total: the rounded base less the rounded value left, so two bars differ by exactly what the two "left" figures differ by. */
@@ -214,8 +222,8 @@ function CostBar({ who, fund, funds, sub, pc, scale, you, entered, today, highli
   const total = barTotal(pc);
   const parts = partsOf(pc, entered ? c.pair.sourceEntered : c.pair.sourceList(who), taxName);
   return (
-    // the figure's column has one width for every plan, so a long figure never narrows the lines beside it (#190); on a phone the fund's
-    // name has the bar's whole width, under the figure, and it wraps rather than being cut: cut, a Latin name lost its start (#190)
+    // the figure's column has one width for every plan, so a long figure never narrows the lines beside it; on a phone the fund's
+    // name has the bar's whole width, under the figure, and it wraps rather than being cut: cut, a Latin name lost its start
     <div className="grid grid-cols-[minmax(0,1fr)_7rem] md:grid-cols-[15rem_minmax(0,1fr)_6rem] items-center gap-x-3 md:gap-y-1.5">
       {/* three lines on every bar, whichever pair: whose pair it is, the account, the fund */}
       <span className="flex flex-col min-w-0 leading-tight max-md:contents">
@@ -265,7 +273,7 @@ const valueOfPair = (view: InvestView, p: Pick): number | null => {
 };
 /**
  * The tie set of F-80: every ranked pair of the best one's kind within the site's tie threshold of it (P-01), the best included; 0 when it
- * has no price (#190: the words said "one of the two" when three pairs were within it).
+ * has no price (the words said "one of the two" when three pairs were within it).
  */
 export function tieCount(view: InvestView, best: Pick | null, theta: number): number {
   return tieSet(view, best, theta).length;
@@ -279,13 +287,13 @@ function tieSet(view: InvestView, best: Pick | null, theta: number): { house: st
 }
 /**
  * The best pair is crowned only when it is alone in its tie set (P-01, F-80; 2026-11-05: a pair 43 ₪ ahead, 0.05%, took the star).
- * Within the threshold the pairs share the top, and no star is drawn: in the tiles and in the account list alike (#190).
+ * Within the threshold the pairs share the top, and no star is drawn: in the tiles and in the account list alike.
  */
 export function crowned(view: InvestView, best: Pick | null, theta: number): boolean {
   return tieCount(view, best, theta) === 1;
 }
 /**
- * The account the account list stars, from the same tie set: the one house every pair of the set is at, else none (#190: on the S&P 500
+ * The account the account list stars, from the same tie set: the one house every pair of the set is at, else none (on the S&P 500
  * three of Psagot's own funds were within the threshold, no other house was, and the clearly cheapest account lost its star). The tiles
  * speak of pairs and the list of accounts: a set of three pairs at one house crowns no pair and crowns the house.
  */
@@ -331,7 +339,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
     const rec = allFunds(view).find((f) => f.rec.id === fund)!.rec;
     return kindOf(rec) === "unhedged" && !indexSeenBy(view.index, rec, bundle).israeli;
   };
-  // held at its longest case on every index, empty on an Israeli one, so the tiles keep one height from index to index (nothing moves, #190)
+  // held at its longest case on every index, empty on an Israeli one, so the tiles keep one height from index to index (nothing moves)
   const steady = (fund: string) => (
     <LongestCase className="text-xs text-muted-foreground" cases={[<span key="d">{c.pair.steadyDollar}</span>, <span key="i">{c.pair.steadyIndexCurrency}</span>]}>
       <span>{!view.index.israeli && onSteadyDollar(fund) ? (view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar) : ""}</span>
@@ -341,7 +349,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const months = 12 * plan.years;
   const lines = legendLines(!!view.index.israeli, [...pc.account, ...(pcOther?.account ?? [])].map((l) => lineOf(l.line)));
   // the tie set of F-80: every ranked pair within the site's tie threshold of the best one (P-01); crowned when it is alone, in the tiles
-  // as in the account list (#190: with the person's own pick far from the best, the tile crowned a best pair that was in a tie)
+  // as in the account list (with the person's own pick far from the best, the tile crowned a best pair that was in a tie)
   const theta = tieShareOf(bundle);
   const n = tieCount(view, best, theta);
   // the funds the tied pairs hold, each once: the fund list counts these, and the tile names both counts where they differ (pass 7)
@@ -387,29 +395,38 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
       </>
     );
   // each tile names its pair (2026-11-05: the tiles named neither): the account on a line, the fund under it in its own direction, so a
-  // cut falls at the end of its name and the brand and the index always show (#190: "...re S&P 500 UCITS ETF" lost "iShares Co")
-  // The fund's number closes it, always (#190, fourth pass: readers could not tell iShares' "(Accumulating)" abroad from the same name on
+  // cut falls at the end of its name and the brand and the index always show ("...re S&P 500 UCITS ETF" lost "iShares Co")
+  // The fund's number closes it, always (fourth pass: readers could not tell iShares' "(Accumulating)" abroad from the same name on
   // the exchange here, nor from its "(Dist)", once a phone's lines cut the name): beside the name on a computer, on a line of its own on a phone.
   const numberOf = (p: Pick) => allFunds(view).find((f) => f.rec.id === p.fund)?.number ?? null;
-  const pairLine = (p: Pick) => (
-    <span className="flex flex-col text-sm text-muted-foreground">
-      <span className="truncate">
-        <MixedName>{nameOf(p)}</MixedName>
-      </span>
-      <span className="flex max-md:flex-col md:items-baseline md:gap-2 min-w-0">
-        <NameLine className="md:truncate md:flex-initial min-w-0 max-md:line-clamp-2 max-md:min-h-[2lh]">{fundOf(p)}</NameLine>
-        {/* a line held on a phone even for a fund typed without a number, so a pick of one moves nothing */}
-        <span className="shrink-0 max-md:min-h-[1lh]">
-          {numberOf(p) && (
-            <bdi dir="ltr" className="num-id">
-              {numberOf(p)}
-            </bdi>
-          )}
+  const pairLine = (p: Pick) => {
+    const phone = phoneOf(view, bundle, p);
+    return (
+      <span className="flex flex-col text-sm text-muted-foreground">
+        {/* a house that sells this fund only by phone says so beside its name, and the tag opens the house's words (2026-11-08); in a
+            phone's narrow tile the tag goes under the name: a small shift on that pair alone, not a blank line on every pair (guidelines/design.md) */}
+        <span className="flex flex-wrap items-center gap-x-2 min-w-0">
+          <span className="truncate min-w-0">
+            <MixedName>{nameOf(p)}</MixedName>
+          </span>
+          {phone && <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag>}
+        </span>
+        <span className="flex max-md:flex-col md:items-baseline md:gap-2 min-w-0">
+          <NameLine className="md:truncate md:flex-initial min-w-0 max-md:line-clamp-2 max-md:min-h-[2lh]">{fundOf(p)}</NameLine>
+          {/* a line held on a phone even for a fund typed without a number, so a pick of one moves nothing */}
+          <span className="shrink-0 max-md:min-h-[1lh]">
+            {numberOf(p) && (
+              <bdi dir="ltr" className="num-id">
+                {numberOf(p)}
+              </bdi>
+            )}
+          </span>
         </span>
       </span>
-    </span>
-  );
-  // every title a tile can carry, laid out unseen: a tie that comes or goes with a slider, a pick, another index move nothing (#190)
+    );
+  };
+  const phonePick = phoneOf(view, bundle, pick);
+  // every title a tile can carry, laid out unseen: a tie that comes or goes with a slider, a pick, another index move nothing
   const mineTitles = [
     <span key="y1">{c.pair.yours}<span className="font-medium"> · {c.pair.tiedWith}</span></span>,
     <span key="y2">{c.pair.yours}<span className="font-medium"> · {c.pair.cheapestTag}</span></span>,
@@ -422,8 +439,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const otherTitle = onBest ? (tie ? c.pair.tieOther : c.pair.next) : crown ? c.pair.cheapestStar : c.pair.tieTop(n, nFunds);
   const mineTag = onBest ? (tie ? c.pair.tiedWith : c.pair.cheapestTag) : tied ? c.pair.tiedWith : null;
   const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), c.pair.moreIfCheapest) : null;
-  // why there is no order, counted as the title counts (#190: "one of 3" stood above "the two pairs are equal"); the pairs of the tie in
-  // neither tile are named after it, one and a count, so "3" points at a pair the reader can find (#190, fourth pass)
+  // why there is no order, counted as the title counts ("one of 3" stood above "the two pairs are equal"); the pairs of the tie in
+  // neither tile are named after it, one and a count, so "3" points at a pair the reader can find (fourth pass)
   // a fund named as another of the index is (iShares on the exchange here and abroad) is told apart by its number
   const twin = (id: string) => { const f = allFunds(view).find((x) => x.rec.id === id); return f && allFunds(view).some((x) => x !== f && x.name === f.name) ? f.number : null; };
   const pairName = (p: { house: string; fund: string }) => (
@@ -521,7 +538,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
                 <Num animate value={pcOther.left} />
               </span>
               <span className="flex flex-col items-start gap-1 text-sm">
-                {/* the gap, held at its longest case, so a tie that comes or goes with a slider moves nothing (#190) */}
+                {/* the gap, held at its longest case, so a tie that comes or goes with a slider moves nothing */}
                 <LongestCase className="self-stretch" cases={gapCases}>
                   <span className="block">
                     {onBest ? (
@@ -529,7 +546,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
                         <Num animate value={gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), vsMine)} /> {vsMine}
                       </>
                     ) : tied ? (
-                      // the pick is in the tie set: the other pair is not "the cheap one", only the other one (#190)
+                      // the pick is in the tie set: the other pair is not "the cheap one", only the other one
                       <>
                         <Num animate value={moreIfOther!} display={plus} /> {vsMine}
                       </>
@@ -546,7 +563,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
           )}
         </div>
         </ShortRow>
-        {/* under a tie, why no pair is first: a line of the block's width under both tiles, held whether or not there is a tie (#190: held
+        {/* under a tie, why no pair is first: a line of the block's width under both tiles, held whether or not there is a tie (held
             inside the narrow tile it left a 127 px hole on a phone when there was none) */}
         <LongestCase className="text-xs text-muted-foreground md:basis-full" cases={[<p key="t">{c.pair.tieWhy(TIE_MOST)}{tieRule}{restLine(longestPairNames, TIE_MOST - 3)}</p>]}>
           <p>{whyTie}</p>
@@ -556,6 +573,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         <p className="text-xs text-muted-foreground md:basis-full empty:hidden">
           <ProfileNote names={[pick, ...(other ? [other] : []), ...rest.slice(0, 1)].map(fundOf)} />
         </p>
+        {/* the chosen pair's house sells this fund only by phone: one line under the tiles (2026-11-08); the price and the order stay */}
+        {phonePick && <p className="text-xs text-muted-foreground md:basis-full">{c.pair.phoneLine(nameOf(pick))}</p>}
       </div>
       <div className="flex flex-col gap-2">
         <LongestCase cases={[1, 2, LONGEST_YEARS].map((y) => <span key={y} className="block font-semibold">{c.pair.costTitleBoth(y)}</span>)}>
@@ -721,9 +740,9 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const [abroadOpen, setAbroadOpen] = useState(false);
   const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${openWhys.join()}:${abroadOpen}`);
   // the rows' cases, laid out unseen, hold heights a plan does not change: kept over a slider's moves, so they are not laid out again on
-  // every key (#190: the cases of every state cost about 8 ms a key)
+  // every key (the cases of every state cost about 8 ms a key)
   const casesKept = useRef<{ key: string; byRow: Map<string, NonNullable<PickRow["cases"]>> } | null>(null);
-  // every house and every fund the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
+  // every house and every fund the header can name, laid out unseen, so a long one moves nothing above the list
   const longest = useMemo(() => {
     const houses = providers.map((p) => providerName(view, p.id)!);
     // each house's longest group that some fund can be priced at: its line under the house's, inside the same held height
@@ -740,7 +759,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           {pickedOf(h.id) && <span className="block text-sm text-muted-foreground">{groupPrices.pickedLine(pickedOf(h.id)!)}</span>}
         </span>
       )),
-      // laid out as the shown line is, a wrapping tag included: a nowrap case held one line where the shown name took two (#190)
+      // laid out as the shown line is, a wrapping tag included: a nowrap case held one line where the shown name took two
       funds: allFunds(view).map((f) => <span key={f.rec.id} className="text-sm flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">{c.pair.accountsCond} <Tag wrap><MixedName>{f.name}</MixedName></Tag></span>),
     };
   }, [heldKey, bundle.snapshots]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -767,7 +786,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const rows = providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
   // the cost figure beside each bar: one width on every row, for the longest amount in the list (a plan typed past the sliders' ends
-  // ran "1,527,297,489 ₪" past the card's edge in a fixed 5.5rem, #190)
+  // ran "1,527,297,489 ₪" past the card's edge in a fixed 5.5rem)
   const costWidth = `max(5.5rem, ${Math.max(0, ...ok.map((r) => fmt.nisWhole(r.at.accountCost).length))}ch)`;
   const noWay = (r: (typeof rows)[number]) => (r.at && "availability" in r.at && r.at.availability ? r.at.availability : null);
   // every house keeps a row: what cannot be priced is grey, "no data" first and "not possible there" last (founder, 2026-10-31)
@@ -793,6 +812,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   type Prov = (typeof providers)[number];
   // a house that sells a fund at a standing-order price keeps the tag's room whichever fund and plan (a monthly 0 and back moves nothing)
   const standingSomewhere = (id: string) => allFunds(view).some((f) => { const a = f.byHouse[id]; return priced(a) && a.standing; });
+  // a house that sells some fund of the index only by phone keeps the tag's room whichever fund is picked (2026-11-08)
+  const phoneSomewhere = (id: string) => allFunds(view).map((f) => phoneOf(view, bundle, { house: id, fund: f.rec.id })).find((v) => v) ?? null;
   /**
    * A priced row's cells; `unseen`: one of the row's cases, laid out to hold its height (PickList): every tag that can stand on many rows
    * at once (the tie, on a computer), and the one-per-list marks it is laid out with: the cheapest's star, the way back after a tap.
@@ -804,6 +825,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
     const place = placeOf.get(p.id);
     const tiedTop = unseen ? unseen.tie && !unseen.crown : sharedTop && place === 1;
     const isBest = unseen ? unseen.crown : crownHere && crownHouse === p.id && !tiedTop;
+    const phone = unseen ? phoneSomewhere(p.id) : phoneOf(view, bundle, { house: p.id, fund: fund.rec.id });
     return (
       // a row whose figure what is left or what it costs is a billion or more writes both in the short form on a phone (fresh readers, round 3)
       <ShortRow when={shortRow(wp.valueN, wp.accountCost)}>
@@ -814,12 +836,13 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
             {isYours && <span>{c.pair.yoursTag}</span>}
             {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
-            {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line (#190) */}
+            {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line */}
             {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
             {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
             {/* unseen, it is held too, on one row at a time: the row a tap turns from grey to priced is the one that carries it */}
             {unseen ? unseen.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBackTo(longestShort)} onBack={() => undefined} /> : p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBackTo(providerName(view, moved.prev.house)?.short ?? moved.prev.house)} onBack={backFrom(moved, p.id)} />}
             {(unseen ? standingSomewhere(p.id) : wp.standing && monthly > 0) && <span>{c.pair.standingTag}</span>}
+            {phone && <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag>}
           </span>
         </span>
         {/* a narrow list (a phone, or this panel beside the funds on a computer) gives the bar a line of its own under the name, so it is wide enough to compare (2026-11-04) */}
@@ -863,14 +886,14 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
         <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
           {na && p.custom && <span>{c.customEntries.notSold}</span>}
           {/* the reason in words on the row, never only in a link's title (nothing depends on hover) */}
-          {/* two lines of it, the rest at a tap: a record's nine-line reason made the list's tallest state about 450 px taller on a phone (#190) */}
+          {/* two lines of it, the rest at a tap: a record's nine-line reason made the list's tallest state about 450 px taller on a phone */}
           {!(na && p.custom) && (
             <ClampedText open={!unseen && openWhys.includes(p.id)} onOpenChange={(o) => onWhy(p.id, o)} more={c.pair.reasonMore} less={c.pair.reasonLess}>
               {whyNoPrice(bundle, p.id, f)}
             </ClampedText>
           )}
           {/* what a tap on the row does, in words alone: a row with no data shows no figure (readers: "אין נתון" beside "נשארים 84,172 ₪"
-              read as a value for this account); the fund it names changes with the plan, held at every fund the house prices (#190: 18 px) */}
+              read as a value for this account); the fund it names changes with the plan, held at every fund the house prices (18 px) */}
           {other && (
             <LongestCase cases={waysOf(view, p.id).map((w) => <span key={w.fund.rec.id}>{c.pair.elsewhere} <MixedName>{w.fund.name}</MixedName>.</span>)}>
               <span>
@@ -1003,7 +1026,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           <>
             <span>#</span>
             <span>{c.pair.colAccount}</span>
-            {/* over the bar and its figure, wherever the bar is: beside the name, or on a line of its own under it in a narrow list (#190) */}
+            {/* over the bar and its figure, wherever the bar is: beside the name, or on a line of its own under it in a narrow list */}
             <span className="@max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1] @max-2xl:pt-1">{c.pair.colCharges(years)}</span>
             <span className="text-end col-end-[-1] row-start-1">{c.pair.colLeft}</span>
           </>
@@ -1014,7 +1037,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
       </div>
       <div className="px-5 py-3 flex flex-col gap-3">
         <AddEntryButton kind="broker" />
-        {/* held at every item a fund of the index or a plan can bring (a line only some funds have, a broken bar), so a pick moves nothing (#190: 24 px) */}
+        {/* held at every item a fund of the index or a plan can bring (a line only some funds have, a broken bar), so a pick moves nothing (24 px) */}
         <LongestCase cases={[<ChartLegend key="l" pick={legendPick} items={legendItems(legendLines(!!view.index.israeli, allLines), true)} />]}>
           <ChartLegend pick={legendPick} items={legendItems(lines, ok.some((r) => r.at.accountCost > scale), ok.some((r) => hasCurrent(r.at.lines)))} />
         </LongestCase>
@@ -1180,12 +1203,12 @@ function FundKind({ fund }: { fund: FundWay }) {
   );
 }
 
-export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onPick, moved = null, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; /** The person picked this pair; else it is the page's own, and the list never calls its fund their choice (#190). */ chosen?: boolean; onPick: OnPick; /** The tap before changed the account too. */ moved?: Moved | null; filter: string | null; onFilter: (id: string | null) => void }) {
+export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onPick, moved = null, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; /** The person picked this pair; else it is the page's own, and the list never calls its fund their choice. */ chosen?: boolean; onPick: OnPick; /** The tap before changed the account too. */ moved?: Moved | null; filter: string | null; onFilter: (id: string | null) => void }) {
   const funds = allFunds(view);
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   const heldKey = `${view.index.id}:${funds.length}`;
   const held = useHeldHeight<HTMLDivElement>(heldKey);
-  // every fund and house the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
+  // every fund and house the header can name, laid out unseen, so a long one moves nothing above the list
   const longest = useMemo(
     () => ({
       names: funds.map((f) => <FundName key={f.rec.id} fund={f} />),
@@ -1266,7 +1289,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
   const sortedAt = (list: typeof rows) =>
     list.filter((r) => !active || allLabelsBy.get(r.f.rec.id)!.some((l) => l.id === active) || r.f.rec.id === pick.fund).sort((a, b) => kindRank(a) - kindRank(b) || order(a) - order(b) || (priced(b.at) ? b.at.valueN : 0) - (priced(a.at) ? a.at.valueN : 0));
   const shown = sortedAt(rows);
-  // every order the list takes, one per account a pick can bring, so a phone's fold holds the tallest rows of any (#190: it held the rows of
+  // every order the list takes, one per account a pick can bring, so a phone's fold holds the tallest rows of any (it held the rows of
   // the order the page opened in, and the first pick after a link moved what lies below by 233 px)
   const opensGroup = (list: typeof rows, i: number) => kinds && (i === 0 || kindOf(list[i - 1]!.f.rec) !== kindOf(list[i]!.f.rec));
   const orders: FoldOrder[] = view.providers.map((p) => {
@@ -1304,9 +1327,9 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
       </div>
     ) : null;
   // the block is held at its longest case over every account on the index: a house with more reasons grew the column, and the held
-  // height kept it grown after the pick went back (#190)
+  // height kept it grown after the pick went back
   const whyCases = view.providers.map((p) => <Fragment key={p.id}>{whyBlock(p.short, whysAt(p.id, funds.map((f) => ({ f }))))}</Fragment>);
-  // what a row's last cell can say at any account, laid out unseen in it: the row keeps one height whichever account is picked (#190: a
+  // what a row's last cell can say at any account, laid out unseen in it: the row keeps one height whichever account is picked (a
   // pick sorted taller rows into a phone's folded list, and every section below moved)
   const longestHouse = view.providers.map((p) => p.short).sort((a, b) => b.length - a.length)[0] ?? "";
   const sampleGap = nis(LONGEST_AMOUNT, "F-65", c.pair.colDiff, today);
@@ -1364,7 +1387,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
       )
     ) : x && range ? (
       <span className="flex flex-col items-end gap-0.5 text-sm">
-        {/* a line per figure, never wrapped: a plan typed past the sliders' ends gave an eight-digit figure a third line (#190) */}
+        {/* a line per figure, never wrapped: a plan typed past the sliders' ends gave an eight-digit figure a third line */}
         <span className={cx("block font-semibold", figureFit(Math.max(Math.abs(x.atLo), Math.abs(x.atHi))))}>
           <ShortRow when={shortRow(x.atLo, x.atHi)}>
             <span className="block whitespace-nowrap">{c.kinds.between} <Num animate value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus} /></span>
@@ -1406,7 +1429,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
         <>
           <span className="flex flex-col gap-1.5 min-w-0">
             {/* the name wraps inside its own column and the identifier moves to the next line whole: a long name run unwrapped across the
-                columns, under the note a pick brings to the row's end (#190: 19 px over "החשבון עבר ל…" at 1440) */}
+                columns, under the note a pick brings to the row's end (19 px over "החשבון עבר ל…" at 1440) */}
             <span className={cx("leading-snug", mineTyped && "[overflow-wrap:anywhere]")}>
               <span className={cx("font-semibold", mineTyped && "text-entered")}>
                 <MixedName>{r.f.name}</MixedName>
@@ -1422,7 +1445,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
             </span>
             {/* why the row stands below the ranked ones, on a line of its own so a phone's scrolling label strip never hides it (pass 7: the
                 reason was only in a legend elsewhere); held on every row of a fund that rests on an open rule at some house, unseen where it
-                does not here: a pick that moved the tag in or out grew the row and moved every section below (#190) */}
+                does not here: a pick that moved the tag in or out grew the row and moved every section below */}
             {openSomewhere(r.f) && (
               <span className={cx("flex", priced(at) && at.open ? undefined : "invisible")}>
                 <Tag wrap tone="blocked" icon={<IconLock size={14} />}>
@@ -1480,7 +1503,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
         label={c.pair.listLabelFunds}
         columns={gapKind ? "minmax(0,1fr) 6rem 10.5rem" : "minmax(0,1fr) 10.5rem"}
         // a fixed width on a phone too: each row is its own grid, and an "auto" column as wide as its own figure wrapped the fund's name
-        // differently on every row and at every plan (#190)
+        // differently on every row and at every plan
         phoneColumns="minmax(0,1fr) 8.5rem"
         phoneLimit={6}
         more={c.pair.moreFunds}

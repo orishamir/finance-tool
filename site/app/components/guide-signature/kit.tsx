@@ -1,13 +1,13 @@
 // The parts that belong to the "what makes it different" visuals alone (D29): the guide inputs they start from (rule 9 of the spec), the
-// run date and what a visual receives, and the lines that look their copy up (the source of a starting value, a gap). The parts any
+// run date and what a visual receives, and the lines that look their copy up (a gap, a common rate). The parts any
 // page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
 import type { P05Input, RunResult } from "@finance-tool/engine";
 import { guideSignature as copy } from "../../copy";
 import { p05Number, p05Range, p05Units, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
-import { computed, entered as enteredValue, weaker, type SiteValue, type Strength } from "../../lib/value";
-import { GapNote, SourceLine as SourceNote } from "../kit";
+import { asField, computed, entered as enteredValue, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { GapNote } from "../kit";
 import { IdText, Num } from "../provenance";
 
 // ---------------------------------------------------------------- the guide inputs a visual starts from
@@ -45,12 +45,6 @@ export function useSigInputs(bundle: Bundle): SigInputs {
 /** The slider range of the years field, from P-05. */
 export const yearsRange = (bundle: Bundle) => p05Range(bundle.p05, "sliders", "horizon_years") ?? { min: 1, max: 40, step: 1, values: {} };
 
-/** Where the starting values came from, in one small line under the controls. */
-export function SourceLine({ sources }: { sources: InputSource[] }) {
-  const unique = [...new Set(sources)];
-  return <SourceNote lead={copy.common.sourceLead} items={unique.map((s) => copy.common.source[s] ?? "")} />;
-}
-
 /** "עוד לא חושב" with its reason, for a part the data cannot compute yet. */
 export function Gap({ id, className }: { id: string; className?: string }) {
   const reason = (copy.common.gaps as Record<string, string>)[id.split(":")[0]!] ?? copy.common.gapFallback;
@@ -81,9 +75,17 @@ export function runFigure(value: number, unit: SiteValue["unit"], formula: strin
 /** The rules a bundle's runs read, as the list a computed value carries. */
 export const rulesOfBundle = (b: Bundle): { id: string; strength: Strength }[] => b.rules.map((r) => ({ id: r.id, strength: r.strength as Strength }));
 
-/** A guide input as a value object: P-05's own (a site parameter) when untouched, else an entered one. */
+/**
+ * A guide input as a value object: P-05's own when untouched, else an entered one. Either way it is a field's value (founder, 2026-11-08):
+ * a plain number in the sentence and in a calculation sheet, with no site-parameter tag and no "you entered" mark.
+ */
 export function inputSite(bundle: Bundle, key: P05Input, n: number, source: InputSource, today: string, about: string): SiteValue {
-  return source === "p05" ? { ...p05Value(bundle.p05, key), about } : enteredValue(n, p05Units[key], today, about);
+  return asField(source === "p05" ? { ...p05Value(bundle.p05, key), about } : enteredValue(n, p05Units[key], today, about));
+}
+
+/** A value the reader set in a visual's own control (a field, a point picked on the chart), as a field's value: plain wherever it shows. */
+export function typed(n: number, unit: SiteValue["unit"], today: string, about?: string): SiteValue {
+  return asField(enteredValue(n, unit, today, about));
 }
 
 /** What a visual receives: the data the loader built for the page and the run date. */

@@ -10,11 +10,11 @@ import { earlySettlement, type EarlySettlement } from "@finance-tool/engine";
 import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment, type StudyStanding, type StudyStoryCase } from "../../lib/guide-signature-g2";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
+import { asField, computed, type SiteValue } from "../../lib/value";
 import { gershayim, InputSlot, LongestCase, NumberField, PercentField, PileStory, PileYears, SegmentedControl, Sentence, clamp, percentCheck, pileFirstRow, type PileStep } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, text } from "./g2-parts";
-import { figure, inputSite, notFeeFlag, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
+import { figure, inputSite, notFeeFlag, rulesOfBundle, useSigInputs, typed, type VisualProps } from "./kit";
 
 const YEARS = 12;
 const story = copy.hishtalmut.story;
@@ -76,9 +76,10 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const overLimit = taxedAfterLock(years, lock);
 
   // ---- value objects
-  const returnIn: SiteValue = returnPick !== null ? enteredValue(returnPick, "pct_per_year", today, story.fields.ret) : p05Value(base.p05, "A-01");
-  const incomeIn: SiteValue = incomePick !== null ? enteredValue(income, "nis", today, copy.hishtalmut.incomeAbout) : figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout);
-  const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : enteredValue(value, "pct", today, about));
+  // a field's default, like what the reader types in it, is a plain number (founder, 2026-11-08)
+  const returnIn: SiteValue = returnPick !== null ? typed(returnPick, "pct_per_year", today, story.fields.ret) : asField(p05Value(base.p05, "A-01"));
+  const incomeIn: SiteValue = incomePick !== null ? typed(income, "nis", today, copy.hishtalmut.incomeAbout) : asField(figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout));
+  const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : typed(value, "pct", today, about));
   const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
   const deposits: Record<string, SiteValue> = {
     [copy.hishtalmut.income[employment]!]: incomeIn,
@@ -88,8 +89,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     ...deposits,
     [copy.hishtalmut.inputNames.ret]: returnIn,
     ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
-    ...(feePick !== null ? { [story.fields.fee]: enteredValue(feePick, "pct_per_year", today, story.fields.fee) } : trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
-    [story.yearName]: enteredValue(year, "years", today, story.yearName),
+    ...(feePick !== null ? { [story.fields.fee]: typed(feePick, "pct_per_year", today, story.fields.fee) } : trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
+    [story.yearName]: typed(year, "years", today, story.yearName),
   };
   const rules = rulesOfBundle(base);
   const nis = (value: number, about: string) => figure(value, "nis", "F-96", common, today, about, rules);
@@ -365,23 +366,23 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       {/* the first field takes a phone's whole row, so five fields and four take the same rows */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
         <div className="col-span-2 lg:col-span-1">
-          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
+          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} start={p05Number(base.p05, "annual_income") / 12} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
         </div>
         {isEmployee ? (
           <>
-            <PercentField unit="pct" label={story.fields.own} value={ownShare} isEntered={ownPick !== null} onCommit={setOwnPick} onReset={() => setOwnPick(null)} disabled={!inputs.ready} />
-            <PercentField unit="pct" label={story.fields.employer} value={employerShare} isEntered={employerPick !== null} onCommit={setEmployerPick} onReset={() => setEmployerPick(null)} disabled={!inputs.ready} />
+            <PercentField unit="pct" label={story.fields.own} value={ownShare} start={Number(ownPct?.value ?? 0)} isEntered={ownPick !== null} onCommit={setOwnPick} onReset={() => setOwnPick(null)} disabled={!inputs.ready} />
+            <PercentField unit="pct" label={story.fields.employer} value={employerShare} start={Number(employerPct?.value ?? 0)} isEntered={employerPick !== null} onCommit={setEmployerPick} onReset={() => setEmployerPick(null)} disabled={!inputs.ready} />
           </>
         ) : (
-          <NumberField label={copy.g2.plan.monthly} unit="nis" value={inputs.monthly} isEntered={inputs.source.monthly === "guide"} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} onCommit={inputs.setMonthly} onReset={() => inputs.setMonthly(null)} disabled={!inputs.ready} />
+          <NumberField label={copy.g2.plan.monthly} unit="nis" value={inputs.monthly} start={inputs.p05.monthly} isEntered={inputs.source.monthly === "guide"} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} onCommit={inputs.setMonthly} onReset={() => inputs.setMonthly(null)} disabled={!inputs.ready} />
         )}
-        <PercentField label={story.fields.ret} value={returnPct} isEntered={returnPick !== null} validate={percentCheck(p05Range(base.p05, "sliders", "A-01") ?? { min: 0, max: 20 })} onCommit={setReturnPick} onReset={() => setReturnPick(null)} disabled={!inputs.ready} />
-        <PercentField label={story.fields.fee} value={feeShown} isEntered={feePick !== null} validate={percentCheck({ min: 0, max: Number(feeCap?.value ?? 100) })} onCommit={setFeePick} onReset={() => setFeePick(null)} disabled={!inputs.ready} />
+        <PercentField label={story.fields.ret} value={returnPct} start={p05Number(base.p05, "A-01")} isEntered={returnPick !== null} validate={percentCheck(p05Range(base.p05, "sliders", "A-01") ?? { min: 0, max: 20 })} onCommit={setReturnPick} onReset={() => setReturnPick(null)} disabled={!inputs.ready} />
+        <PercentField label={story.fields.fee} value={feeShown} start={Number(trackFee?.value ?? 0)} isEntered={feePick !== null} validate={percentCheck({ min: 0, max: Number(feeCap?.value ?? 100) })} onCommit={setFeePick} onReset={() => setFeePick(null)} disabled={!inputs.ready} />
       </div>
 
       <div className="flex flex-col gap-3">
         <h3 className="text-lg font-semibold">
-          {story.title} <InputSlot chars={7}><bdi>{shownYear}</bdi></InputSlot>
+          {story.title} <InputSlot><bdi>{shownYear}</bdi></InputSlot>
         </h3>
         <PileYears
           years={slices}

@@ -1,4 +1,4 @@
-// The securities account in the comparison, over the indices (2026-10-25, D27 and D28, spec research/specs/2026-10-25-invest-page/spec.md section 5).
+// The securities account in the comparison, over the indices (2026-10-25, D27 and D28, spec 8dd1f013:research/specs/2026-10-25-invest-page/spec.md section 5).
 // D27: the site never recommends an index, so the account names none until the person chooses one. Before a choice the card shows the
 // range of what the plan leaves over the known indices, each through its cheapest way (`rangeOverKnownIndices`), and the ranking places the
 // account by the lowest of them (the conservative reading, D10; provisional, the founder has been told). After a choice the account runs on

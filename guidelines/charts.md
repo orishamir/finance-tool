@@ -98,7 +98,13 @@ them, and change the shared piece when a rule here asks for it.
   a coloured dot or swatch beside it carries the colour.
 - Round amounts to what matters: whole shekels, or thousands on an axis
   ("10 אלף").
-- Every number keeps its sourced, computed or entered mark.
+- **A field's starting value is a default, not a site parameter.** A chart's
+  field (an amount, years, a return) starts at a default the reader can
+  change. Show it as a plain number, with no site-parameter tag and nothing
+  that opens. What the reader types looks the same, with no blue background
+  and no "you entered" mark; a reset beside the fields brings the defaults
+  back. Every other number keeps its sourced or computed mark, and the
+  site's real parameters keep theirs.
 
 ### Legend
 

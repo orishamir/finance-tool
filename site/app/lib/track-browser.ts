@@ -1,4 +1,4 @@
-// The track browser (D54, 2026-11-03; issue 173): every company's tracks of one product, grouped by company or by what the money is
+// The track browser (D54, 2026-11-03): every company's tracks of one product, grouped by company or by what the money is
 // invested in, with a filter, a search and a sort. The loader ships each product's tracks compactly (`TbData`, built by
 // `track-browser.server.ts`); this expands one product into the value objects the page shows, then filters, sorts and groups them.
 // Pure: no React, no storage. Nothing here ranks a track: the sort is the person's action on a sourced column, and the order of the

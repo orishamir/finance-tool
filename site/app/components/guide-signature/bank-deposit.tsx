@@ -7,10 +7,10 @@ import { useId, useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { depositEndBanks, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
-import { entered as enteredValue, type SiteValue } from "../../lib/value";
+import type { SiteValue } from "../../lib/value";
 import { Callout, GainBars, InputSlot, KeyValue, LaneLabel, Marker, MarkerMark, NumberField, PrintedText, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
+import { Gap, figure, inputSite, rulesOfBundle, useSigInputs, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 150;
 const LANE_H = 28;
@@ -72,6 +72,7 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           label={copy.deposit.amount}
           unit="nis"
           value={inputs.amount}
+          start={inputs.p05.amount}
           isEntered={inputs.source.amount === "guide"}
           validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
           onCommit={inputs.setAmount}
@@ -79,7 +80,6 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           disabled={!inputs.ready}
         />
       </div>
-      <SourceLine sources={[inputs.source.amount]} />
       {outOfRange && min && (
         <Callout tone="caution">
           {copy.common.outOfRange.before} <Num value={min} />
@@ -155,7 +155,7 @@ export function BankDepositVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.deposit.atMarker.lead} <InputSlot chars={9}>{fmt.months(m)}</InputSlot>:
+          {copy.deposit.atMarker.lead} <InputSlot>{fmt.months(m)}</InputSlot>:
         </p>
         <StatRow cols={2}>
           <Stat label={copy.deposit.atMarker.deposit} tone="value">
@@ -249,5 +249,5 @@ export function BankDepositVisual({ data, today }: VisualProps) {
 
 /** The marker's month as an entered value, so the sheet of the fund's figure names it. */
 function figureMonths(m: number, today: string): SiteValue {
-  return enteredValue(m, "months", today);
+  return typed(m, "months", today);
 }

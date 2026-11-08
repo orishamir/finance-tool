@@ -1,4 +1,4 @@
-// The alias table of the search (research/knowledge/2026-10-24-search.md §3.4, 52 rows): what a person types on the
+// The alias table of the search (8dd1f013:research/knowledge/2026-10-24-search.md §3.4, 52 rows): what a person types on the
 // left, the names the site and the rule base use on the right. Equivalences of names only, not finance facts. Applied to
 // the query by `aliasQueries` in lib/search.ts: a matching phrase is replaced by each canonical name, and the original
 // query also stays. Rows with `confirm: true` are everyday Israeli wording the sources do not spell out; the Hebrew
