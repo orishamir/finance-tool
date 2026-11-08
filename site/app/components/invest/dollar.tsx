@@ -190,7 +190,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
               { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <MixedName>{hedgedName}</MixedName> },
             ]}
           />
-          <PairBars label={c.dollar.fundsLabel} tickStep={20} format={barLabel} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={c.dollar.legendUnhedged} nameB={hedgedName} highlight={legendPick.active === "u" ? "a" : legendPick.active === "h" ? "b" : null} items={rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }))} />
+          <PairBars label={c.dollar.fundsLabel} format={barLabel} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={c.dollar.legendUnhedged} nameB={hedgedName} highlight={legendPick.active === "u" ? "a" : legendPick.active === "h" ? "b" : null} items={rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }))} />
         </div>
       </div>
       <FixedTable

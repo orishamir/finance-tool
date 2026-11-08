@@ -361,7 +361,7 @@ Machine-like, and to be removed:
 - **They check the arithmetic.** One noticed that 1,757 + 1,118 is far from 4,278. A real reader of a fee bar does
   not add segments.
 - **They read every screenshot, because the tool tells them to** ("Read every one of them before you answer" in
-  `research/audit/tools/fresh-reader.mjs`). People leave after the first screens (1.1).
+  `tools/fresh-reader.mjs`). People leave after the first screens (1.1).
 - **They report block by block in 1,000 to 2,000 words**, quoting every Hebrew label. The report format invites full
   reading.
 - **They compare two versions side by side, part by part.** People see one version, once.

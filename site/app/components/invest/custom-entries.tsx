@@ -1,5 +1,5 @@
 // The person's own broker and fund on the index page (D44): the two quiet buttons under the lists, the panel they open, and what a row of
-// an entry says. Typing stays in the panel: nothing on the page changes until the person saves (ground rule 4, "nothing moves").
+// an entry says. Typing stays in the panel: nothing on the page changes until the person saves (guidelines/design.md, "little movement").
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";

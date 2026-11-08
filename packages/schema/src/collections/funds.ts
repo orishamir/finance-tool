@@ -103,7 +103,7 @@ export const fundRecord = z.strictObject({
       variable_positive_only: z.literal(true).optional(),
       checked: isoDate,
       /**
-       * 2026-11-07 (issue 163, ground rule 2): the benchmark the document compares the fund with, by the name it prints, and whether that
+       * 2026-11-07 (issue 163, former ground rule 2): the benchmark the document compares the fund with, by the name it prints, and whether that
        * index counts dividends after the tax withheld at source (`net`), before it (`gross`), or no official document says (`unstated`).
        * Every record carries it, Israeli and foreign alike: a `net` record shows a gap and takes A-07 from its years, a `gross` one only on the list F-92 (d) allows.
        * `source`: the document that says so, when it is not the one in `source` above; `page`: its PDF page; `rule_ids`: the rule that

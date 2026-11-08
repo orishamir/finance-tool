@@ -337,11 +337,16 @@ function CompanyLinks({ companies }: { companies: { id: string; name: string }[]
   );
 }
 
-/** The companies that offer the product, behind one toggle (audit A42); the "all companies" link stays outside. */
-export function InstitutionChips({ companies, allHref, tracks }: { companies: { id: string; name: string }[]; allHref: string; /** The product's track browser (`/tracks/<id>`) and the product's name, for the link to every company's tracks of it. */ tracks?: { href: string; name: string } }) {
+/** The companies that offer the product, behind one toggle (audit A42), or shown open (`open`); the "all companies" link stays outside. */
+export function InstitutionChips({ companies, allHref, tracks, open }: { companies: { id: string; name: string }[]; allHref: string; /** The product's track browser (`/tracks/<id>`) and the product's name, for the link to every company's tracks of it. */ tracks?: { href: string; name: string }; /** The list shows with no toggle. */ open?: boolean }) {
   return (
     <div className="flex flex-col gap-1">
-      {companies.length > 0 && (
+      {companies.length > 0 && open && (
+        <div className="pb-2">
+          <CompanyLinks companies={companies} />
+        </div>
+      )}
+      {companies.length > 0 && !open && (
         <Disclosure label={<span className="text-link">{copy.companiesShow}</span>} openLabel={<span className="text-link">{copy.companiesHide}</span>} summaryClassName="justify-start">
           <div className="pb-2">
             <CompanyLinks companies={companies} />

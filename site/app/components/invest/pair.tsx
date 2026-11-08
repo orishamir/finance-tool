@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num, ShortRow, shortRow, Term } from "../provenance";
-import { AlsoChanged, ClampedText, gershayim, wholeParts, writtenAmounts, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, Tpl, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
+import { AlsoChanged, ClampedText, gershayim, wholeParts, writtenAmounts, holdOnPick, MixedName, NameLine, figureFit, Card, PickCard, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, Tpl, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -507,7 +507,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
             {steady(pick.fund)}
           </div>
           {pcOther && other && (
-            <div className="md:flex-1 md:min-w-64 min-w-0 rounded-lg border border-border p-3 flex flex-col gap-1">
+            // the whole card chooses the pair (founder, 2026-11-08: choose by tapping the option itself)
+            <PickCard label={`${c.pair.pickCheapest}: ${nameOf(other)}`} onPick={() => onPick(other)} className="md:flex-1 md:min-w-64 min-w-0 p-3 flex flex-col gap-1">
               <LongestCase className="text-sm text-muted-foreground" cases={otherTitles}>
                 <span>{otherTitle}</span>
               </LongestCase>
@@ -515,7 +516,6 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
               <span className={cx("text-2xl md:text-3xl font-bold leading-tight max-md:min-h-[1.875rem]", figureFit(pcOther.left.value as number, "tile"), !onBest && "text-primary")}>
                 <Num animate value={pcOther.left} />
               </span>
-              {/* the button on a line of its own: beside the figure, another digit moved it from under the finger */}
               <span className="flex flex-col items-start gap-1 text-sm">
                 {/* the gap, held at its longest case, so a tie that comes or goes with a slider moves nothing (#190) */}
                 <LongestCase className="self-stretch" cases={gapCases}>
@@ -536,12 +536,9 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
                     )}
                   </span>
                 </LongestCase>
-                <Button variant="quiet" onClick={() => onPick(other)}>
-                  {c.pair.pickCheapest}
-                </Button>
               </span>
               {steady(other.fund)}
-            </div>
+            </PickCard>
           )}
         </div>
         </ShortRow>
@@ -550,6 +547,11 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         <LongestCase className="text-xs text-muted-foreground md:basis-full" cases={[<p key="t">{c.pair.tieWhy(TIE_MOST)}{tieRule}{restLine(longestPairNames, TIE_MOST - 3)}</p>]}>
           <p>{whyTie}</p>
         </LongestCase>
+        {/* the exposure codes, (4D) and the like, said where a fund name first carries one (readers: the tiles showed "(4D)" with nothing
+            to say what it is, and the list's note sat far below) */}
+        <p className="text-xs text-muted-foreground md:basis-full empty:hidden">
+          <ProfileNote names={[pick, ...(other ? [other] : []), ...rest.slice(0, 1)].map(fundOf)} />
+        </p>
       </div>
       <div className="flex flex-col gap-2">
         <LongestCase cases={[1, 2, LONGEST_YEARS].map((y) => <span key={y} className="block font-semibold">{c.pair.costTitleBoth(y)}</span>)}>
@@ -863,12 +865,12 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
               {whyNoPrice(bundle, p.id, f)}
             </ClampedText>
           )}
-          {/* the fund it names and its figure change with the plan: held at every fund the house prices, at the sliders' ends (#190: 18 px) */}
+          {/* what a tap on the row does, in words alone: a row with no data shows no figure (readers: "אין נתון" beside "נשארים 84,172 ₪"
+              read as a value for this account); the fund it names changes with the plan, held at every fund the house prices (#190: 18 px) */}
           {other && (
-            <LongestCase cases={waysOf(view, p.id).map((w) => <span key={w.fund.rec.id}>{c.pair.elsewhere} <MixedName>{w.fund.name}</MixedName>, {c.pair.elsewhereLeft} {fmt.nisWhole(LONGEST_LEFT)}{w.at.open && ` (${c.pair.elsewhereOpen})`}</span>)}>
+            <LongestCase cases={waysOf(view, p.id).map((w) => <span key={w.fund.rec.id}>{c.pair.elsewhere} <MixedName>{w.fund.name}</MixedName>.</span>)}>
               <span>
-                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
-                {other.at.open && ` (${c.pair.elsewhereOpen})`}
+                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>.
               </span>
             </LongestCase>
           )}

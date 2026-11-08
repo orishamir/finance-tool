@@ -37,11 +37,13 @@
 //     a document prints alone is said in words in the text's direction, never padded with an invented "-01" or isolated left to right,
 //     and the words before a date go in its `lead`, where a maqaf lead writes its letter on a month ("מנובמבר 2025"). A figure's own
 //     lead (NumAfter, LeadTail with `text`) does the same before a figure said in words ("בשנה").
-// 22. a control is at least 44 px tall at every width (ground rule 8; 2026-11-07, "הנחות נוספות" and "לתעריפון (PDF)" were 36 px, and
+// 22. a control is at least 44 px tall at every width (guidelines/design.md; 2026-11-07, "הנחות נוספות" and "לתעריפון (PDF)" were 36 px, and
 //     thirty other buttons, links and fold summaries with them): no `min-h-9` or `!h-9` on an unprefixed class; a control is `min-h-target`.
 //     Any fixed height under 44 px on a control fails, not only 36 px, unless `min-h-target` or the kit's `tap-area` brings its tap area to
 //     44 (lead, 2026-11-07: a `<button className="h-8">` passed); leftovers by name, a list that only shrinks.
 // 23. a link to a cited source is built by sourceHref, never from a raw address (2026-11-07, the founder: open at the quoted words).
+// 24. a key never shows a made-up figure (fresh readers, 2026-11-08: the number key's "123 ממקור 123 מחושב" read as a placeholder left
+//     in the page): no `num-sample` element holds digits; a key draws each style on its own word, after a lead that says what it keys.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -391,7 +393,7 @@ describe("the shared stylesheet", () => {
     const css = readFileSync(join(root, "app.css"), "utf8");
     expect(css).toMatch(/button:not\(:disabled\),\s*\[role="button"\]:not\(\[aria-disabled="true"\]\),\s*summary \{\s*cursor: pointer;/);
   });
-  // 19. A figure's and a term's tap area (ground rule 8). Lone, it reaches 11 px above and below and never less than 44 px (re-check 2,
+  // 19. A figure's and a term's tap area (guidelines/design.md). Lone, it reaches 11 px above and below and never less than 44 px (re-check 2,
   //     2026-11-07: an area that grew only sideways took 44 px from about 1,200 lone figures on a phone). In running text its own box sits
   //     above every other figure's area, so the figure on the next line never takes its click (independent check, 2026-11-07: "0.7%"
   //     opened the "5 שנים" sheet of the figure under it).
@@ -900,7 +902,7 @@ describe("a control is at least 44 px tall", () => {
   // Any fixed height under 44 px on a control, not only 36 px (lead, 2026-11-07: a `<button className="h-8">` passed): a button, a link,
   // a fold's summary or a field whose unprefixed classes set `h-`, `min-h-` or `size-` under 44 px and nothing that brings its tap area to
   // 44 (min-h-target or a larger min-h, or the kit's `tap-area`). Today's leftovers are listed by name; the list only shrinks. The rendered
-  // check of what a finger hits, pseudo-element areas included, is research/audit/tools/hit-check.mjs.
+  // check of what a finger hits, pseudo-element areas included, is tools/hit-check.mjs.
   const LEFTOVERS: Record<string, number> = SHORT_CONTROL_LEFTOVERS;
   it("no control sets a fixed height under 44 px without a tap area that reaches it (leftovers listed by name)", () => {
     const found: Record<string, number> = {};
@@ -922,5 +924,18 @@ describe("a control is at least 44 px tall", () => {
     expect(shortControls('<button className="max-md:min-h-target md:tap-area">x</button>')).toHaveLength(0);
     expect(shortControls('<button className="h-11">x</button>')).toHaveLength(0);
     expect(shortControls('<span className="h-5">x</span>')).toHaveLength(0);
+  });
+});
+
+// 24. A key's sample is a word in its style, never a made-up figure.
+const SAMPLE_WITH_DIGITS = /className="[^"]*\bnum-sample\b[^"]*"[^>]*>\s*[^<{]*\d/g;
+describe("a key never shows a made-up figure (24)", () => {
+  it("no num-sample element holds digits", () => {
+    const hits = files.filter((f) => f.endsWith(".tsx")).flatMap((f) => (code(read(f)).match(SAMPLE_WITH_DIGITS) ?? []).map((m) => `${rel(f)}: ${m}`));
+    expect(hits).toEqual([]);
+  });
+  it("the scanner sees the broken pattern", () => {
+    expect('<span className="num num-sourced num-sample" aria-hidden="true">123</span>'.match(SAMPLE_WITH_DIGITS)).toHaveLength(1);
+    expect('<span className="num num-sourced num-sample whitespace-nowrap">\n  {numbers.legend.sourced}</span>'.match(SAMPLE_WITH_DIGITS)).toBeNull();
   });
 });

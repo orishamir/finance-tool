@@ -2,13 +2,13 @@
 
 Every file under `data/` and every other file the site, the calculation engine and the data check read: what reads it, where its content comes from, and what it holds today. The format of each collection is `docs/data-schema.md`; this document says what is there.
 
-Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ticks, entered rates and saved comparisons are on the device (CLAUDE.md, "Saved state").
+Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ticks, entered rates and saved comparisons are on the device (`guidelines/project.md`, "Saved state").
 
 **Origins:**
 
 - **Published source**: collected from an official or institution page, file or dataset, with the URL and the date read.
 - **Rule base**: copied from the `il-finance` skill, with each rule's source link and checked date.
-- **Approved wording**: the site's Hebrew text, in `site/app/copy.ts` and the content files, written to the voice and word choices of `docs/copy.md` and `docs/glossary.md`.
+- **Approved wording**: the site's Hebrew text, in `site/app/copy.ts` and the content files, written to `guidelines/wording.md`, with the word choices of `docs/copy.md` and the terms of `docs/glossary.md`.
 - **Founder's choice**: a site parameter or a scope decision that only the founder makes.
 - **Project document**: a document in this repository that the code reads for IDs or test values (not shown on the site).
 - **Derived**: built from other files at build time; never edited by hand.

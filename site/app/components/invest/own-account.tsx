@@ -1,7 +1,7 @@
 // An account on your own terms, started from a house (founder, 2026-11-04, option א of research/specs/2026-11-04-own-broker/mockups.html):
 // the panel that starts from a house's price list, or from one of its groups' prices, and lets the person change only what they got; the
 // buttons that open it; and the line a person's row carries in the comparison. Typing stays in the panel: the page changes when the person adds
-// the account (ground rule 4). The prices are the library's (own-account.ts, own-account-view.ts); nothing here prices anything.
+// the account (guidelines/design.md). The prices are the library's (own-account.ts, own-account-view.ts); nothing here prices anything.
 import type { FeeLine } from "@finance-tool/engine";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root, r4catalogue } from "../../copy";

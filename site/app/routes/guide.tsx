@@ -346,7 +346,10 @@ export default function GuidePage() {
   const byEmployment = record.id === "keren-hishtalmut" && record.deposit_side_tax.formula === "F-33" && ["TXH-04", "TXH-01", "TXH-03", "TXH-05"].every((r) => rules[r]);
   const steps: TaxStep[] = [
     byEmployment ? hishtalmutDeposit(inputsState.employment) : plainStep("deposit", copy.taxSteps.deposit, record.deposit_side_tax),
-    plainStep("during", copy.taxSteps.during, record.tax_during),
+    // the list above already says moving between tracks is not taxed (F-27's line), so a page that asks does not repeat it here
+    content?.omitSwitchInTax && record.tax_during.formula === "F-27" && record.switch_is_tax_event?.value === false && data.pendingFormulas["F-27"] === undefined
+      ? { ...plainStep("during", copy.taxSteps.during, record.tax_during), text: "" }
+      : plainStep("during", copy.taxSteps.during, record.tax_during),
     {
       id: "exit",
       when: copy.taxSteps.exit,
@@ -466,7 +469,7 @@ export default function GuidePage() {
                 </p>
               )}
               {companyTerms().length > 0 && <KeyValueList items={companyTerms()} />}
-              <InstitutionChips companies={data.companies} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
+              <InstitutionChips companies={data.companies} open={content?.companiesOpen} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
             </GuideSection>
           )}
 

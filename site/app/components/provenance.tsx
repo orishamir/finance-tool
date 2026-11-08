@@ -702,21 +702,25 @@ export function NumberLegend({ className, institution = false, term = false, can
 }
 
 function LegendLine({ className, institution, term, sourced, computed, entered }: { className?: string; institution: boolean; term: boolean; sourced: boolean; computed: boolean; entered: boolean }) {
+  // Each state's own word drawn in its style, after a lead that says what the key is: the old "123" samples read as a placeholder left in
+  // the page (fresh readers, 2026-11-08, "123 ממקור 123 מחושב"). A key never shows a made-up figure (design-system 3.2).
+  const anyNumber = sourced || computed || entered || institution;
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
+      {(sourced || computed || entered) && <span className="whitespace-nowrap">{numbers.legend.lead}</span>}
       {sourced && (
-        <span className="whitespace-nowrap">
-          <span className="num num-sourced num-sample" aria-hidden="true">123</span> {numbers.legend.sourced}
+        <span className="num num-sourced num-sample whitespace-nowrap">
+          {numbers.legend.sourced}
         </span>
       )}
       {computed && (
-        <span className="whitespace-nowrap">
-          <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
+        <span className="num num-computed num-sample whitespace-nowrap">
+          {numbers.legend.computed}
         </span>
       )}
       {entered && (
-        <span className="whitespace-nowrap">
-          <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
+        <span className="num num-entered num-sample whitespace-nowrap">
+          {numbers.legend.enteredSample}
         </span>
       )}
       {institution && (
@@ -724,16 +728,16 @@ function LegendLine({ className, institution, term, sourced, computed, entered }
           <MarkHead mark={<IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />} text={numbers.legend.institution} />
         </span>
       )}
-      {term && (
-        <span className="whitespace-nowrap">
-          <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
-        </span>
-      )}
-      {(sourced || computed || entered || institution) && (
+      {anyNumber && (
         <>
           <span className="lg:hidden">{numbers.legendHintPhone}</span>
           <span className="hidden lg:inline">{numbers.legendHintPc}</span>
         </>
+      )}
+      {term && (
+        <span className="whitespace-nowrap">
+          <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
+        </span>
       )}
     </p>
   );

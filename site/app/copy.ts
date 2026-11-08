@@ -45,6 +45,9 @@ export const numbers = {
     sourced: "ממקור",
     computed: "מחושב",
     entered: "הזנתם",
+    // fresh readers 2026-11-08: "123 ממקור 123 מחושב" read as a placeholder; the key says what it is and draws each state on its own word
+    lead: "כך מסומן מספר:",
+    enteredSample: "שהזנתם",
     // audit 2026-10-24 (A23): the fourth legend item, the caution mark beside a figure that rests on a company's own document
     institution: "לפי החברה: המספר מבוסס על מסמך של החברה",
     // audit 2026-10-24 (A78, asked by the guides package): the glossary-term sample in the legend
@@ -504,7 +507,7 @@ export const parametersPage = {
     "P-02.bounds.lo": "{name}: הגבול התחתון",
     "P-02.bounds.hi": "{name}: הגבול העליון",
     "P-03.negotiate_nis": "שווי הורדת העמלה לממוצע לאורך האופק שמעליו שווה להתמקח", // D90 revised, 2026-11-07: the worth of the cut, not the cost
-    "P-03.avoid_nis": "עלות לאורך האופק שמעליה שווה להימנע",
+    "P-03.avoid_nis": "עלות העמלה שממנה מוצג מוצר במקום גבוה יותר",
     "P-03.negotiate_share": "חלק מכלל העלות (סף ההתמקחות)",
     "P-04.table.horizon_min_years": "סיווג {row}: אופק מינימלי",
     "P-04.table.horizon_max_years": "סיווג {row}: אופק מקסימלי",
@@ -1748,7 +1751,9 @@ export const r3fees = {
   costIn: "ב־",
   /** after the years under a fee's cost: the cost is what is left less at the end, after tax (lead, 2026-11-07) */
   costAfterTax: ", אחרי מס",
-  verdict: { negotiate: "שווה להתמקח", avoid: "שווה להימנע", "not-worth": "לא שווה את הטרחה" } as Record<string, string>,
+  // fresh readers, 2026-11-07: the old "worth avoiding" was read as "worth remembering", and "avoid what, the fund?"; the badge says the fact plainly, that
+  // another product ranks above this one on the page's own comparison, and the card's next lines name it (copy.md 5)
+  verdict: { negotiate: "שווה להתמקח", avoid: "מוצר אחר במקום גבוה יותר", "not-worth": "לא שווה את הטרחה" } as Record<string, string>,
   /** D90 revised (2026-11-07): not worth negotiating now, but the discount ends within the period and the fee can rise above the average then */
   verdictLater: "לא שווה עכשיו",
   /**
@@ -1757,7 +1762,9 @@ export const r3fees = {
    */
   reason: {
     negotiate: ["הורדת העמלה לממוצע שווה ", " או יותר."],
-    avoid: ["העלות ", " או יותר, ולפחות אפשרות אחת במקום גבוה יותר בהשוואה לא גובה עמלה כזו או גובה פחות."],
+    /** the products above this one are named after it in the same line; the cost is said as the site's threshold, since "2,500 ₪ or more" alone
+     *  read as "compared with what?" (fresh reader, 2026-11-07) */
+    avoid: ["העמלה עולה לפחות ", ", הסף שהאתר קבע."],
     below: ["הורדת העמלה לממוצע שווה פחות מ־", "."],
     noReference: "אין ממוצע להשוואה, ולכן אין לפי מה לבקש הורדה.",
     nothingRemoves: "כל האפשרויות בהשוואה גובות עמלה כזו.",
@@ -1771,12 +1778,15 @@ export const r3fees = {
    * fresh readers, 2026-11-07: "the page never says what would push the 108 ₪ above 1,000 ₪". After a "not worth it" reason: the amount today
    * or the years at which the cut to the average reaches the threshold, every other number as it is (F-61 searched)
    */
-  reach: { lead: " שווה להתמקח ", amount: ["כשסכום היום ", " או יותר"], or: ", או ", years: ["כשהכסף נשאר ", " או יותר"], end: ".", amountName: "סכום היום שבו הורדת העמלה לממוצע שווה את הסף", yearsName: "מספר השנים שבו הורדת העמלה לממוצע שווה את הסף" },
-  avoidNotEvaluated: "להימנע: לא נבדק. עם המספרים האלה אי אפשר להשוות בין האפשרויות.",
+  // fresh reader, 2026-11-07: "two thresholds, 170,000 ₪ and 1,000 ₪; they probably describe the same cutoff, but the page doesn't link them": the line
+  // names the 1,000 ₪ it reaches
+  reach: { lead: " שווה להתמקח כשהיא מגיעה ", to: "ל־", colon: ":", amount: ["כשסכום היום ", " או יותר"], or: ", או ", years: ["כשהכסף נשאר ", " או יותר"], end: ".", amountName: "סכום היום שבו הורדת העמלה לממוצע שווה את הסף", yearsName: "מספר השנים שבו הורדת העמלה לממוצע שווה את הסף" },
+  avoidNotEvaluated: "לא נבדק אם יש מוצר במקום גבוה יותר: עם המספרים האלה אי אפשר להשוות בין האפשרויות.",
   othersButton: "הנחות נוספות",
   siteExample: "המספרים לדוגמה של האתר, עד שתשנו אותם",
   /** D90 revised the same day (2026-11-07): under "avoid", the options that rank above the product, said as better places, not as any option */
-  removedBy: { without: "במקום גבוה יותר בהשוואה, בלי עמלה כזו: ", lower: "במקום גבוה יותר בהשוואה, עם עמלה כזו אבל נמוכה יותר: " },
+  // a fresh reader (2026-11-07) asked whether "בלי עמלה כזו: חשבון ניירות ערך" told them to move: the line says where the place comes from
+  removedBy: { without: "לפי המספרים בעמוד, במקום גבוה יותר ובלי עמלה כזו: ", lower: "לפי המספרים בעמוד, במקום גבוה יותר ועם עמלה כזו, אבל נמוכה יותר: " },
   noReference: "אין ממוצע להשוואה",
   noReferenceReasons: {
     D20: "הממוצע של בנק ישראל מוצג רק בקישור: תנאי השימוש של בנק ישראל לא מתירים לפרסם אותו מחדש בלי הסכמה בכתב.",
@@ -1802,7 +1812,8 @@ export const r3fees = {
     worthBefore: "שווה ",
     /** before the years: "ב־10 שנים", and before a year said in words the letter joins it, "בשנה", "בשנתיים" (copy.md 10) */
     worthIn: "ב־",
-    worthAfter: ".",
+    /** F-61's value of the reduction is after the tax at exit, as the card's cost (a fresh reader, 2026-11-07: "is 108 ₪ before or after tax?") */
+    worthAfter: ", אחרי מס.",
     notReduction: "זו לא הורדה.",
     suggestion: "הצעה: הממוצע",
     // audit 2026-10-24 (A9, A61): the what-if does not change the ranking; the bounds are named
@@ -1831,7 +1842,7 @@ export const r3fees = {
   },
   // audit 2026-10-24 (A9, A10, A14, A18): the sentence above the chart, the ranked sentence, the links
   gap: {
-    more: ["אם דמי הניהול היו כממוצע של המסלולים הדומים, הייתם משאירים אצלכם כ־", " ב־", "."],
+    more: ["אם דמי הניהול היו כממוצע של המסלולים הדומים, הייתם משאירים אצלכם כ־", " ב־", ", אחרי מס."],
     less: "דמי הניהול שלכם לא גבוהים מהממוצע של המסלולים הדומים.",
     /** none is above the average now, but a fee whose discount ends within the period is above it then (D88, D90): the card says "worth negotiating" */
     after: "דמי הניהול שלכם היום לא גבוהים מהממוצע של המסלולים הדומים, אבל כשההנחה תיגמר הם יכולים לעלות מעליו.", // Hebrew editor, 2026-11-07: future "תיגמר", the point first
@@ -1840,8 +1851,10 @@ export const r3fees = {
   },
   ranked: { first: "לפי המספרים בעמוד, המוצר הזה במקום הראשון מבין כל האפשרויות, גם אחרי העמלות.", other: ["למרות העמלה, לפי המספרים בעמוד, המוצר הזה במקום ", " מבין כל האפשרויות."], tied: " (שקול לאחרים)" },
   linkProviders: "השוואה מול שאר הבנקים ובתי ההשקעות, בהשקעה במדד", // the index page (issue 172)
-  remainder: { before: "השפעה משולבת של העמלות זו על זו: ", line: "הסכום של כל השורות והשורה הזו הוא העלות הכוללת." },
-  thresholds: { before: "שווה להתמקח כשהורדת העמלה לממוצע שווה ", mid: " או יותר; שווה להימנע כשעלות העמלה ", after: " או יותר ולפחות אפשרות אחת במקום גבוה יותר בהשוואה לא גובה עמלה כזו או גובה פחות. הספים הם פרמטרים של האתר.", link: "לכל הפרמטרים" },
+  // fresh readers, 2026-11-07: the old "combined effect: 0 ₪", "I don't know what's being combined": the indices page's name for the same part (the founder,
+  // invest.pair.remainder) and its words for what it is, from the glossary row (docs/glossary.md 6.6)
+  remainder: { before: "העמלות זו על זו: ", about: "העמלות זו על זו: החלק של העלות שלא שייך לעמלה אחת", line: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת. השורות שלמעלה והשורה הזו יחד הן העלות הכוללת." },
+  thresholds: { before: "הספים שהאתר קבע: שווה להתמקח כשהורדת העמלה לממוצע שווה ", mid: " או יותר. כשעמלה עולה ", after: " או יותר, הכרטיס שלה מראה אם מוצר אחר במקום גבוה יותר.", link: "לכל הפרמטרים" },
   chart: {
     title: "העמלות לאורך הזמן",
     // 2026-10-24 (evening, the founder's screenshot): one short name per fee kind, so each direct label is one line in the 94 px strip
@@ -1850,8 +1863,11 @@ export const r3fees = {
     /** the readout's head and total: the chart is before tax, the headline after it (lead, 2026-11-07) */
     preTax: ", לפני מס",
     totalPreTax: "סך העמלות לפני מס",
+    /** the exit point of a run whose exit takes nothing: the figure is the cards' and the headline's, after tax (fresh reader, 2026-11-07) */
+    afterTax: ", אחרי מס",
+    totalAfterTax: "סך העמלות אחרי מס",
     rest: "שאר העמלות",
-    remainderLegend: "השפעה משולבת: הפער עד הקו",
+    remainderLegend: "העמלות זו על זו: הפער עד הקו",
     notReported: "לא דווח",
     endMarker: "סוף התקופה",
     aria: ["גרף: העלות של ", " עמלות לאורך ", ". הנתונים המלאים בטבלה."],
@@ -1897,7 +1913,8 @@ export const r3fees = {
     // copy.md 7.1 (changed 2026-10-24, B6): the exact reason for the gap at the chart's end
     chartGross: {
       before: "הגרף מראה את ההפרש לפני מס ועלויות היציאה, ולכן בקצהו הוא גבוה ב־",
-      after: " מהסכום שבכותרת: בלי העמלות הרווח גדול יותר, והמס עליו גדול יותר.",
+      // a fresh reader (2026-11-07) saw 3,902 ₪ on a card and 5,203 ₪ in the chart: the line explained only the total
+      after: " מהסכום שבכותרת, וכל עמלה בו גבוהה מהסכום שבכרטיס שלה: בלי העמלות הרווח גדול יותר, והמס עליו גדול יותר.",
       label: "מס ועלויות היציאה על ההפרש",
     },
     ruleMissing: "הנוסח עוד לא נמצא במאגר החוקים והכללים של האתר.",
@@ -3988,8 +4005,9 @@ export const invest = {
     taxLinePayouts: "מס רווחי הון ומס על דיבידנד",
     taxAbout: "מס רווחי הון במכירה, בכסף של היום",
     taxAboutPayouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, בכסף של היום",
-    /** The part of the account's cost no single fee line explains (F-91), founder 2026-11-04. */
-    remainder: "העמלות זו על זו",
+    /** The part of the account's cost no single fee line explains (F-91). Named by what it adds and where it comes from: readers could not
+     *  read "העמלות זו על זו" (founder, 2026-11-08); the fee page keeps its own name. */
+    remainder: "תוספת משילוב עמלות החשבון",
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.",
     accountSlot: "חשבון ניירות ערך",
     fundSlot: "קרן",
@@ -4070,9 +4088,9 @@ export const invest = {
     /** A house whose own documents say this kind of fund cannot be bought there (2026-11-05: said only in a link's title before). */
     notPossibleAny: "לפי המסמכים של החברה, אי אפשר לקנות שם קרן על המדד הזה.",
     notPossibleWhy: (kind: string) => `לפי המסמכים של החברה, אי אפשר לקנות שם ${kind}.`,
-    /** On an account row with no price for the fund: picking it picks another fund too, said before the tap (2026-11-05). */
+    /** On an account row with no price for the fund: picking it picks another fund too, said before the tap (2026-11-05), with no figure: a
+     *  row with no data shows no value (readers, 2026-11-08: "אין נתון" beside "ונשארים 84,172 ₪"). */
     elsewhere: "בחירה בחשבון הזה מעבירה גם לקרן",
-    elsewhereLeft: "ונשארים",
     /** On a fund row with no price at the account: picking it moves the account, said before the tap. */
     pickMoves: (house: string) => `בחירה בה מעבירה את החשבון ${toName(house)}`,
     /** On the row tapped, after the tap changed the other half too, with the way back: it puts back both the account and the fund (#190:
@@ -4080,7 +4098,6 @@ export const invest = {
     movedHouse: (house: string) => `החשבון עבר ${toName(house)}`,
     moveBackTo: (house: string) => `חזרה ${toName(house)} ולקרן הקודמת`,
     movedFund: "גם הקרן הוחלפה.",
-    elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",
     /** On a fund row priced on an open rule: why it stands below the ranked funds, on the row itself (pass 7: a reader saw Invesco
      *  1183441 leave more than a tied fund and stand under it, the reason only in a legend elsewhere). */
     openRow: "מוצגת, לא מדורגת: שאלה פתוחה",
@@ -4508,6 +4525,7 @@ export const kit = {
       StairsChart: "מדרגות: מה שנשאר בסוף על הציר האנכי, סדר הצעדים משמאל לימין. הראשונה אפורה עם סימן שבר כי הציר לא מתחיל באפס; כל מדרגה צפה בגוון של מה ששונה, ואדומה כשהיא מפסידה. שנלקחה: מלאה; מוצעת: בהירה ומוקפת; על כלל פתוח: חלולה. מתחתיה טבלה באותן עמודות (מחשב) או רשימת צעדים (טלפון).",
       DiffRow: "שורה של שינוי אחד: מה משתנה, מה נשאר בסוף, וסרגל מקו האמצע: ימינה וירוק לעוד כסף, שמאלה ואדום לפחות. יחידה אחת לכל השורות; סרגל ארוך נחתך בסימן והמספר אומר את הגודל המלא. לחיצה על השורה לוקחת אותה.",
       PlanChips: "שורת המספרים שהעמוד רץ עליהם: תווית וערך, כחול כשהוזן, תג כשהערך של האתר, ולחיצה פותחת את השדות. fixed: ערך שאי אפשר לשנות כאן.",
+      PickCard: "כרטיס שכולו כפתור: לחיצה בכל מקום עליו בוחרת בו, בלי קישור ״בחרו״ בתוכו. מספרים וקישורים שבתוכו נשארים לחיצים בפני עצמם. הכרטיס שכבר נבחר אינו PickCard.",
       TileChoice: "תשובות לשאלה אחת, כל אחת אריח שמראה מה היא מביאה (התוויות שהיא מוסיפה, או שורה קצרה). אפשר שלא תהיה בחירה עדיין. מה שבתוך אריח לא לחיץ בפני עצמו.",
       ChoiceChips: "ארבע אפשרויות ומעלה או תוויות ארוכות, אחת נבחרת. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
       LongestCase: "גוש שתוכנו משתנה לפי בחירה: תמיד בגובה המקרה הארוך ביותר, בכל רוחב מסך, כדי ששום דבר מתחתיו לא יזוז.",
@@ -4570,7 +4588,7 @@ export const kit = {
       /** keepTitleWhole: a document's title naming a fund, made up, with a Latin run and a quoted name ending in a number. */
       chipSentence: "במכירת ניירות ערך הבנק או חבר הבורסה מנכים מס רווח הון במקור",
       docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
-      cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fund: "דמי ניהול הקרן", tax: "מס רווחי הון", remainder: "העמלות זו על זו", remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
+      cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fund: "דמי ניהול הקרן", tax: "מס רווחי הון", remainder: "תוספת משילוב עמלות החשבון", remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       strip: { label: "השנים של התוכנית, לדוגמה", first: "מחירי הקבוצה", middle: "קנייה בלבד במחיר הקבוצה", after: "התעריפון", today: "היום", year: (y: number) => `שנה ${y}` },
       groups: {
         house: "בית השקעות לדוגמה",
@@ -4599,6 +4617,8 @@ export const kit = {
       title: "כותרת לדוגמה",
       other: "אחר",
       otherField: "הערך שלכם",
+      pickCard: "בחרו באפשרות הזאת",
+      pickCardLink: "קישור בתוך הכרטיס",
       lead: "שורת פתיחה קצרה שמסבירה מה יש בקבוצה.",
       body: "גוף הקבוצה: טקסט, רשימה או טבלה.",
       foldLabel: "הצגת הפרטים",

@@ -132,7 +132,6 @@ patterns["a name in a plain bdi"] = {
     "components/exposure-mode/result.tsx": 4,
     "components/exposure-mode/row.tsx": 1,
     "components/fees/FeeDragChart.tsx": 3,
-    "components/fees/FeeRow.tsx": 1,
     "components/fees/parts.tsx": 2,
     "components/fees/sensitivity.tsx": 2,
     "components/guide-signature/bank-deposit.tsx": 5,
@@ -201,7 +200,7 @@ describe("no field painted in the edge colour", () => {
   });
 });
 
-// Colour inside a chart (ground rule 6; design-system section 12; founder, 2026-11-05: "i'd rather have two conflicting colors on
+// Colour inside a chart (guidelines/charts.md; design-system section 12; founder, 2026-11-05: "i'd rather have two conflicting colors on
 // opposite sites of the pages than a graph with all its lines the same color", the fault he flagged on six days). The roles each
 // chart draws together, pair by pair, by the palette validator's own method (lib/palette-check.ts): under 15 ΔE to normal vision,
 // or under 6 to a colour-blind reader (the validator's floor, legal only with words on the marks), a pair fails. Today's pairs below
@@ -269,7 +268,7 @@ describe("ratchet: colours inside a chart", () => {
   });
 });
 
-// Process words in what a reader sees (CLAUDE.md ground rule 9; copy.md 1, "Words that add something"; founder, 2026-10-25:
+// Process words in what a reader sees (guidelines/wording.md; copy.md 1, "Words that add something"; founder, 2026-10-25:
 // "this monstrous of a message, saying things about claude etc."): no decision id (D22), no Claude, no audit and no talk of the
 // researcher's reading in the reader's text of the copy, the guide and exposure prose, or a record's Hebrew fields. A decision id as a
 // key of a map, and English working notes (never shown), are not reader text. Today's leftovers are the rule records below.

@@ -1,4 +1,4 @@
-// The old fresh-reader brief (research/audit/tools/fresh-reader.mjs, as used on 2026-11-05), run on the same tasks as a
+// The old fresh-reader brief (tools/fresh-reader.mjs, as used on 2026-11-05), run on the same tasks as a
 // panel run file, so the two can be scored side by side ("against the usual", metric.md number 5).
 //
 //   node research/user-lab/tools/old-brief.mjs <run.json> <out-folder> [--dry] [--parallel n]

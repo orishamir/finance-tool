@@ -44,9 +44,15 @@ describe("display rounding (audit A13)", () => {
     expect(nisShown(10000, "entered")).toBe("10,000 ₪");
     expect(nisShown(500, "entered", true)).toBe("500 ₪");
   });
-  it("keeps two decimals on a sourced tariff or fee, whatever its size", () => {
+  it("keeps two decimals on a sourced tariff or fee under 1,000 ₪", () => {
     expect(nisShown(32, "sourced")).toBe("32.00 ₪");
-    expect(nisShown(2500, "sourced")).toBe("2,500.00 ₪");
+    expect(nisShown(999, "sourced")).toBe("999.00 ₪");
+  });
+  it("shows a whole sourced amount of 1,000 ₪ or more without .00, and keeps the agorot a source prints (2026-11-08)", () => {
+    expect(nisShown(83641, "sourced")).toBe("83,641 ₪");
+    expect(nisShown(2500, "sourced")).toBe("2,500 ₪");
+    expect(nisShown(5645.29, "sourced")).toBe("5,645.29 ₪");
+    expect(formatValue(83641, "nis", "sourced")).toBe("83,641 ₪");
   });
   it("applies by state in formatValue, and only to plain shekel amounts", () => {
     expect(formatValue(93511.08, "nis", "computed")).toBe("93,511 ₪");

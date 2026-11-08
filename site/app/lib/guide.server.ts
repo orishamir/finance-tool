@@ -79,7 +79,7 @@ export interface ListRange {
 
 /**
  * F-105: a provident wrapper's list fees over every collected manager, for each base, so the page never shows one company's list as the
- * product's price (ground rule 2). Each figure is computed over the managers' own figures, which its sheet lists.
+ * product's price (former ground rule 2). Each figure is computed over the managers' own figures, which its sheet lists.
  */
 function managersFeeRange(record: ProductRecord, t: string): GuidePageData["listRange"] {
   const lists = providentLists(record.id, loadFees());

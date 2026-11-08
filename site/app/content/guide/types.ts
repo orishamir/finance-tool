@@ -23,6 +23,10 @@ export interface GuideContent {
   omitCompanyTerms?: readonly string[];
   /** The prose already says when the money is free, so the list does not say it again. */
   omitFreeRow?: boolean;
+  /** The money-in-and-out list already says that moving between tracks is not taxed, so the tax step "while the money is in" does not say it again. */
+  omitSwitchInTax?: boolean;
+  /** The list of companies that offer it shows open, not behind a toggle. */
+  companiesOpen?: boolean;
   /** The guides under "כדאי להכיר גם", where the record's transfer routes would not be the ones a reader of this page wants. */
   relatedIds?: string[];
   /** Glossary terms the prose opens with <Term>, so their cards ship with the page. */

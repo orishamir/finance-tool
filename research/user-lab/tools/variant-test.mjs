@@ -17,7 +17,7 @@ import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 import { CHROME, PLAYWRIGHT, sessionAct } from "./lib/session.mjs";
 import { LAB, capture, labBrowser, loadVariant } from "./lib/variant.mjs";
-import { serveBuild } from "./serve-build.mjs";
+import { serveBuild } from "../../../site/scripts/serve-build.mjs";
 
 const args = process.argv.slice(2);
 const opt = (n, d) => {

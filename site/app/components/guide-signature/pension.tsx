@@ -149,23 +149,26 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         {sourceLine(salarySource, inputs.source.years, insuranceSource)}
       </LongestCase>
 
-      <div className="flex flex-col gap-2">
+      {/* an HTML chart: the chart check (site/scripts/chart-check) finds it by data-chart, and reads the bar's start and parts */}
+      <div className="flex flex-col gap-2" data-chart="split-bar">
         <p className="text-sm font-medium">
           {copy.pension.monthLead} <Num value={v.total} />
         </p>
         <div className="flex gap-0.5 text-sm" aria-hidden="false">
           {parts.map((p) => (
             <div key={p.key} className="min-w-0 flex flex-col gap-0.5 transition-[width] duration-[var(--duration-chart)]" style={{ width: share(p.n) }}>
-              <span className="text-xs text-muted-foreground leading-tight">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
+              {/* a term keeps to one line elsewhere; here it may wrap, as the other labels do: at 320 px the severance label ran 17 px past its
+                  part's column and the chart's edge (2026-11-08, the chart check) */}
+              <span className="text-xs text-muted-foreground leading-tight [&_.term]:whitespace-normal">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
               <span className="font-semibold">
                 <Num value={p.value} />
               </span>
             </div>
           ))}
         </div>
-        <div className="flex gap-0.5 h-3.5" role="img" aria-label={copy.pension.chart.aria}>
+        <div className="flex gap-0.5 h-3.5" role="img" aria-label={copy.pension.chart.aria} data-zero="">
           {parts.map((p) => (
-            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-[var(--duration-chart)]`} style={{ width: share(p.n) }} />
+            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-[var(--duration-chart)]`} style={{ width: share(p.n) }} data-mark="part" />
           ))}
         </div>
         <div className="flex flex-col">

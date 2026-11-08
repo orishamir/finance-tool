@@ -126,12 +126,15 @@ export const fmt = {
 /**
  * Display rounding (audit 2026-10-24 A13; method §13 unchanged, this is display only). A computed, entered or
  * parameter shekel amount of 1,000 ₪ or more shows whole shekels; a whole-number amount of any size shows no agorot
- * ("10,000 ₪", "0 ₪"), per month and per trade as well. Tariffs and fees (sourced, non-parameter) and every figure under 1,000 ₪ that has agorot keep
- * two decimals. The values themselves are never rounded; the detail view of a table keeps two decimals.
+ * ("10,000 ₪", "0 ₪"), per month and per trade as well. A sourced amount of 1,000 ₪ or more shows no ".00" either ("83,641 ₪", the
+ * provident fund's ceiling: fresh readers, 2026-11-08, read "83,641.00 ₪" as false precision), and keeps the agorot its source prints
+ * ("5,645.29 ₪"). Tariffs and fees under 1,000 ₪ (sourced, non-parameter) keep two decimals ("27.00 ₪"), as does every figure under
+ * 1,000 ₪ that has agorot. The values themselves are never rounded; the detail view of a table keeps two decimals.
  */
 export function nisShown(v: number, state?: "sourced" | "computed" | "entered", parameter = false): string {
   const derived = state === "computed" || state === "entered" || parameter;
   if (derived && (Math.abs(v) >= 1000 || Number.isInteger(v))) return fmt.nisWhole(v);
+  if (Math.abs(v) >= 1000 && Number.isInteger(v)) return fmt.nisWhole(v);
   return fmt.nis(v);
 }
 

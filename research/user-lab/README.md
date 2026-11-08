@@ -148,7 +148,7 @@ and writes a panel run file for it.
 ### Old brief: `tools/old-brief.mjs <run.json> <out-folder> [--dry] [--parallel n]`
 
 The fresh-reader brief, older than the lab and still the one CLAUDE.md's fresh readers run
-(`research/audit/tools/fresh-reader.mjs`: a one-line "who", the goal, seven numbered questions, free text back, the
+(`tools/fresh-reader.mjs`: a one-line "who", the goal, seven numbered questions, free text back, the
 default system prompt), run on a panel run file's captured-page tasks with the
 panel's isolation, for metric.md's "against the usual". Browser tasks are skipped (the old brief only ever had
 screenshots). Writes the layout `score.mjs` reads; the grader reads the free text whole.
@@ -225,7 +225,7 @@ and `device` too. A variant for one device is refused on a session on the other.
 Elements are found by `selector` or by the words they show (`text`); found by words, the anchor is looked up after the
 variant's own text changes, so anchor on words the variant does not change.
 
-`build` points the whole site at another build: `node research/user-lab/tools/serve-build.mjs <build/client folder>`
+`build` points the whole site at another build: `node site/scripts/serve-build.mjs <build/client folder>`
 serves it as GitHub Pages does, at `http://127.0.0.1:4173/finance-tool/`; every request to the live address is answered
 from there, and the address bar still shows the live one. For a branch: build it in a worktree (`npm run build -w site`)
 and serve its `site/build/client`.

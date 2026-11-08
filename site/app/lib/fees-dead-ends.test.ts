@@ -95,7 +95,7 @@ describe("a track's fee page offers the fields its run asks for", () => {
   });
 });
 
-describe("every field the page offers changes what it shows (ground rule 4)", () => {
+describe("every field the page offers changes what it shows (guidelines/design.md)", () => {
   const total = (r: FeesResult) => (r.kind === "ok" ? (r.analysis.total.value as number) : null);
   for (const id of answered.filter((w) => pageFields(bundle, w).insurance)) {
     it(`${id}: the insurance share moves the fees' cost`, () => {

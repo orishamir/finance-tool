@@ -1,4 +1,4 @@
-// How far apart two colour roles look, under normal vision and to a colour-blind reader (ground rule 6; design-system section 12,
+// How far apart two colour roles look, under normal vision and to a colour-blind reader (guidelines/charts.md; design-system section 12,
 // "Colour inside a chart"). The same method as the dataviz palette validator: Euclidean distance in OKLab ×100, colour-blind
 // vision simulated by Machado, Oliveira and Fernandes (2009) at severity 1.0 for protan and deutan, the smaller of the two kept.
 // It reads the roles from theme.css and follows their var() chains down to an oklch() value. Used by kit/ratchets.test.ts.

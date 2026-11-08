@@ -7,6 +7,7 @@ import { pickDim, useChartPick } from "./chart-interact";
 import { cx } from "./cx";
 import { PHONE_GONE, TableCols } from "./table-cols";
 import { ChoiceChips } from "./choice";
+import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { useWidth } from "./marker";
 
 export interface ChangeLine {
@@ -28,9 +29,14 @@ export interface ChangeRow {
 
 const H = 260;
 const TOP = 12;
-const BOTTOM = 22;
+/** Room under the plot for the shares: their line sits clear of the axis's lowest figure. */
+const BOTTOM = 28;
+/** A second line of shares, baseline to baseline. */
+const TICK_ROW = 18;
 const LEFT = 64;
 const RIGHT = 104;
+/** Baseline to baseline between two line names at the right ends. */
+const END_GAP = 18;
 /** A column left out on a phone leaves the grid with its <col> (TableCols), so its cells go too. */
 const GONE = PHONE_GONE;
 
@@ -95,10 +101,10 @@ export function ChangeChart({
   const mag = Math.pow(10, Math.floor(Math.log10(raw)));
   const gstep = [1, 2, 5, 10].map((m) => m * mag).find((v) => v >= raw)!;
   const gridAt = Array.from({ length: Math.floor((maxGoal - minGoal) / gstep) + 1 }, (_, i) => Math.ceil(minGoal / gstep) * gstep + i * gstep).filter((v) => v <= maxGoal);
-  // the gutter holds the widest label the axis draws, a fading one too (11 px tabular digits, about 6.8 px each): a large plan's "100,000,000"
-  // lost its leading digits past a fixed 64 px (#190)
+  // the gutter holds the widest label the axis draws, a fading one too, measured (chart-text.ts): a large plan's "100,000,000" lost its
+  // leading digits past a fixed 64 px (#190)
   const fading = useFadingTicks(gridAt);
-  const left = Math.max(LEFT, 12 + Math.ceil(Math.max(0, ...fading.map((t) => yFormat(t.value).length)) * 6.8));
+  const left = Math.max(LEFT, 12 + Math.ceil(Math.max(0, ...fading.map((t) => chartTextWidth(yFormat(t.value), CHART_TEXT_PX)))));
   const plotR = w - RIGHT;
   const x = (s: number) => left + ((s - lo) / (hi - lo)) * (plotR - left);
   const y = (v: number) => TOP + (1 - (v - yMin) / (yMax - yMin)) * (H - TOP - BOTTOM);
@@ -114,9 +120,21 @@ export function ChangeChart({
     .filter((e): e is { l: ChangeLine; v: number } => e.v !== undefined && Number.isFinite(e.v))
     .map((e) => ({ l: e.l, y: y(e.v) }))
     .sort((a, b) => a.y - b.y);
-  for (let i = 1; i < ends.length; i++) if (ends[i]!.y - ends[i - 1]!.y < 15) ends[i]!.y = ends[i - 1]!.y + 15;
-  // a phone keeps the two ends and the plan; a computer also the halves
-  const ticks = (w < 520 ? [lo, 0, hi] : [lo, lo / 2, 0, hi / 2, hi]).filter((s, i, a) => a.indexOf(s) === i);
+  // 13 px words take about 16.5 px from top to bottom: 15 px apart, two of them touched (2026-11-08)
+  for (let i = 1; i < ends.length; i++) if (ends[i]!.y - ends[i - 1]!.y < END_GAP) ends[i]!.y = ends[i - 1]!.y + END_GAP;
+  // the shares written under the plot, each measured (chart-text.ts): the two ends, then the plan, then the halves where they fit. The plan
+  // that would meet an end goes to a second line under them (2026-11-08: at 13 px on a phone, "התוכנית שלכם" ran into both ends)
+  const tickText = (s: number) => (s === 0 ? planWord : shareWord(s));
+  const ticks: { s: number; row: number }[] = [];
+  for (const s of [lo, hi, 0, lo / 2, hi / 2]) {
+    if (ticks.some((t) => t.s === s)) continue;
+    const half = chartTextWidth(tickText(s), CHART_TEXT_PX) / 2;
+    const meets = ticks.some((t) => t.row === 0 && Math.abs(x(t.s) - x(s)) < half + chartTextWidth(tickText(t.s), CHART_TEXT_PX) / 2 + 8);
+    if (!meets) ticks.push({ s, row: 0 });
+    else if (s === 0) ticks.push({ s, row: 1 });
+  }
+  const tickRows = Math.max(...ticks.map((t) => t.row)) + 1;
+  const height = H + (tickRows - 1) * TICK_ROW;
   const grid = ticksOn(fading, y, [TOP, H - BOTTOM]);
   const path = (pts: { year: number; v: number }[]) => pts.reduce<string>((acc, p, i) => (!Number.isFinite(p.v) ? acc : `${acc}${acc && Number.isFinite(pts[i - 1]?.v) ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`), "");
   const ids = choices.map(String);
@@ -128,7 +146,7 @@ export function ChangeChart({
       <div ref={ref} dir="ltr" className="select-none -mt-2">
         <svg
           width={w}
-          height={H}
+          height={height}
           aria-hidden="true"
           className="block touch-none cursor-ew-resize"
           onPointerDown={(e) => {
@@ -142,19 +160,19 @@ export function ChangeChart({
           {grid.map((t) => (
             <g key={t.value} className={tickFade(t)}>
               <line x1={left} x2={plotR} y1={y(t.value)} y2={y(t.value)} className="stroke-chart-grid" strokeWidth={1} />
-              <text x={left - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
+              <text x={left - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-xs tabular-nums">
                 {yFormat(t.value)}
               </text>
             </g>
           ))}
-          {ticks.map((s) => (
-            <text key={s} x={x(s)} y={H - BOTTOM + 16} textAnchor="middle" className={s === 0 ? "fill-foreground text-[11px]" : "fill-chart-text text-[11px]"}>
-              {s === 0 ? planWord : shareWord(s)}
+          {ticks.map(({ s, row }) => (
+            <text key={s} x={x(s)} y={H - BOTTOM + 22 + row * TICK_ROW} textAnchor="middle" className={cx("text-xs", s === 0 ? "fill-foreground" : "fill-chart-text")}>
+              {tickText(s)}
             </text>
           ))}
           <line x1={x(0)} x2={x(0)} y1={TOP} y2={H - BOTTOM} className="stroke-chart-axis" strokeDasharray="3 3" />
           {lines.map((l) => (
-            <path key={l.id} d={path(drawn[l.id] ?? [])} fill="none" className={cx(l.stroke, pickDim(pick.active, l.id))} strokeWidth={2.2} />
+            <path key={l.id} d={path(drawn[l.id] ?? [])} fill="none" className={cx(l.stroke, pickDim(pick.active, l.id))} strokeWidth={2.2} data-mark="line" />
           ))}
           {ends.map((e) => (
             <text key={e.l.id} x={plotR + 8} y={e.y + 4} className={cx(e.l.fill, "text-xs", pickDim(pick.active, e.l.id))}>
@@ -164,7 +182,7 @@ export function ChangeChart({
           {at !== 0 && <line x1={x(at)} x2={x(at)} y1={TOP} y2={H - BOTTOM} className="stroke-chart-crosshair" strokeWidth={1.5} />}
           {lines.map((l) => {
             const v = l.ys[idx(at)] === null || l.ys[idx(at)] === undefined ? null : valueOn(drawn[l.id] ?? [], at);
-            return v === null || !Number.isFinite(v) ? null : <circle key={l.id} cx={x(at)} cy={y(v)} r={4.5} className={cx(l.fill, "stroke-card", pickDim(pick.active, l.id))} strokeWidth={1.5} />;
+            return v === null || !Number.isFinite(v) ? null : <circle key={l.id} cx={x(at)} cy={y(v)} r={4.5} className={cx(l.fill, "stroke-card", pickDim(pick.active, l.id))} strokeWidth={1.5} data-mark="point" />;
           })}
         </svg>
       </div>

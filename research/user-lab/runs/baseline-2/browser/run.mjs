@@ -12,7 +12,7 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
-import { serveBuild } from "../../../tools/serve-build.mjs";
+import { serveBuild } from "../../../../../site/scripts/serve-build.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const lab = resolve(here, "..", "..", "..");
