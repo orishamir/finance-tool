@@ -57,8 +57,12 @@ describe("the 20-year case on the cheapest collected broker", () => {
   it("ranks the providers by what the option ends at; the cheapest is the one the workbench's lines make cheapest", () => {
     expect(outcomes.length).toBe(Object.keys(wrapper.providers!).length);
     for (let i = 1; i < outcomes.length; i++) expect(outcomes[i - 1]!.real).toBeGreaterThanOrEqual(outcomes[i]!.real);
-    expect(best.id).toBe("one-zero"); // no custody fee; its TASE line covers tracking funds by footnote (MF-27, snapshot 2026-10-31)
-    expect(outcomes[1]!.id).toBe("psagot");
+    // 2026-11-08: IBI on its account agreement's fee annex (D56, now): no custody fee, 0.08% a trade, at least 5 NIS for a tracking fund, and
+    // 15 NIS a month charged in full (the offset against the month's trading fees is not modelled); One Zero, with no custody fee and its TASE
+    // line covering tracking funds by footnote (MF-27, snapshot 2026-10-31), is second
+    expect(best.id).toBe("ibi");
+    expect(outcomes[1]!.id).toBe("one-zero");
+    expect(outcomes[2]!.id).toBe("psagot");
     expect(outcomes.at(-1)!.id).toBe("excellence");
   });
   it("marks the card's own run (P-05's Leumi tariff) on its row, on the direct channel, with no second row for it", () => {
@@ -82,7 +86,7 @@ describe("the 20-year case on the cheapest collected broker", () => {
     expect(dflt).toBeGreaterThan(kgl);
     expect(cheapest).toBeGreaterThan(kgl);
     expect(Math.round(kgl)).toBe(985_597);
-    expect(cheapest).toBeCloseTo(1_098_743, -2);
+    expect(cheapest).toBeCloseTo(1_104_645, -2); // at IBI since 2026-11-08; at One Zero it was 1,098,743
     // 240 purchases of 3,000: 0.225% (6.75) instead of the regular line's 26 saves 4,620 before growth and tax
     expect(Math.abs(dflt - 1_034_620)).toBeLessThan(100);
     // the ranking moves: the brokerage account leads outright with that broker

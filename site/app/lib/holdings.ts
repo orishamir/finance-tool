@@ -20,7 +20,7 @@ import {
 } from "@finance-tool/engine";
 import type { RuleRecord, ValueObject, WrapperId } from "@finance-tool/schema";
 import { formulaNames, holdingsValues as hv } from "../copy";
-import { goalValueObjects, runGoalOf, type CompareBundle, type RunGoal } from "./compare";
+import { asParameter, goalValueObjects, parameterOf, runGoalOf, type CompareBundle, type RunGoal } from "./compare";
 import { p05Units } from "./engine";
 import { referenceOfClass, tracksBehind } from "./class-reference";
 import { fitOf, type FitTableData } from "./fit";
@@ -302,15 +302,19 @@ function referenceFor(hb: HoldingsBundle, track: HTrack, today: string): ClassRe
   const ref = referenceOfClass(cmaTracks(hb), classification, track.s);
   const countOf = (fee: "management" | "deposit") => computed(tracksBehind(ref, fee), "count", "F-68", {}, { today, about: hv.about.count });
   const count = countOf("management");
-  const inputs = { [hv.inputs.tracks]: count, [hv.inputs.asOf]: hb.period };
-  const mk = (value: number | null, unit: ValueObject["unit"], about: string): SiteValue => computed(value, unit, "F-68", inputs, { today, about });
+  const countDeposit = countOf("deposit");
+  // F-68's inputs: the class (the regulator's classification and specialization, from the same period's data), the period, and the
+  // tracks the mean is over, those that report that fee: the deposit fee's mean is over its own count
+  const classValue: SiteValue = { ...hb.period, value: [classification.trim(), track.s.trim()].filter(Boolean).join(", "), unit: "text", about: hv.inputs.className };
+  const mk = (value: number | null, unit: ValueObject["unit"], about: string, tracks: SiteValue): SiteValue =>
+    computed(value, unit, "F-68", { [hv.inputs.className]: classValue, [hv.inputs.asOf]: hb.period, [hv.inputs.tracks]: tracks }, { today, about });
   const m = (v: ValueObject) => (typeof v.value === "number" ? v.value : null);
   return {
     classification: track.s || track.ss || classification,
     count,
-    countDeposit: countOf("deposit"),
-    meanBalance: mk(m(ref.management.mean), "pct_per_year", hv.about.meanBalance),
-    meanDeposit: mk(m(ref.deposit.mean), "pct_of_deposit", hv.about.meanDeposit),
+    countDeposit,
+    meanBalance: mk(m(ref.management.mean), "pct_per_year", hv.about.meanBalance, count),
+    meanDeposit: mk(m(ref.deposit.mean), "pct_of_deposit", hv.about.meanDeposit, countDeposit),
   };
 }
 
@@ -328,8 +332,22 @@ const monthsBetweenIso = (from: string, to: string): number => {
   return (ty - fy) * 12 + (tm - fm) - (td < fd ? 1 : 0);
 };
 
+/** What a holding's run reads beyond the balance, its balance fee, the years, the return and inflation, each as `holdingPlan` decided it. */
+export interface PlanReads {
+  /** The monthly deposits run (and so the deposit fee is charged). */
+  deposits: boolean;
+  salary: boolean;
+  age: boolean;
+  /** A pension fund's insurance, when the goal enters one (A-17). */
+  insurance: boolean;
+  /** A study fund's clock: its first deposit's date, or the checkbox that stands for the whole wait (TXH-09). */
+  firstDeposit: "date" | "over-six" | null;
+  /** A kupat gemel lehashkaa's gain already in the balance (PF-36). */
+  embeddedGain: boolean;
+}
+
 export type HoldingPlan =
-  | { ok: true; plan: RunPlan; ctx: RunContext; horizonYears: number; depositsLeftOut: boolean; returnFromParameter: boolean }
+  | { ok: true; plan: RunPlan; ctx: RunContext; horizonYears: number; depositsLeftOut: boolean; returnFromParameter: boolean; reads: PlanReads }
   | { ok: false; reason: "no-goal" | "unsupported" | "needs-pf36" | "needs-first-deposit" | "failed"; message?: string };
 
 const pct = (v: ValueObject | undefined): number => (v && typeof v.value === "number" ? v.value / 100 : 0);
@@ -386,6 +404,15 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
       terms.hishtalmut = { employment, clockStartMonth: typeof first === "string" ? -monthsBetweenIso(first, today) : overSixClockStart(lock!), ...(employment === "employee" && hasSalary ? { monthlySalary: salary! } : {}), ...(employment === "employee" && deposits && monthlyEmployer > 0 ? { employerMonthly: monthlyEmployer } : {}) };
     }
     const profile = { ...(g.age === null ? {} : { ageAtStart: g.age }), ...(employment === "self-employed" && hasSalary ? { annualIncome: 12 * salary! } : {}) };
+    const isStudy = h.wrapperId === "keren-hishtalmut";
+    const reads: PlanReads = {
+      deposits,
+      salary: hasSalary && (pensionLike || (isStudy && employment === "employee") || employment === "self-employed"),
+      age: g.age !== null,
+      insurance: pensionLike && h.wrapperId !== "provident-for-annuity" && g.insurancePct !== null,
+      firstDeposit: !isStudy ? null : typeof h.firstDeposit?.value === "string" ? "date" : "over-six",
+      embeddedGain: false,
+    };
     const plan = runInputs(entry.record, [p05], terms, { entered: enteredP05 as never, profile });
     // the statement's deposits are the flat amounts it prints (scenario S42, workings Q20: "constant nominal"), not A-04's real-terms pattern for a goal's saving
     if (plan.run === "runPension" || plan.run === "runProvident") plan.input.goal.contributions = "nominal";
@@ -394,9 +421,12 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
     else if (plan.run === "runProvident") {
       plan.input.existingBalance = balance;
       const gain = h.embeddedGain?.value;
-      if (h.wrapperId === "kupat-gemel-lehashkaa" && typeof gain === "number" && over.balance === undefined) plan.input.embeddedGain = Math.min(gain, balance);
+      if (h.wrapperId === "kupat-gemel-lehashkaa" && typeof gain === "number" && over.balance === undefined) {
+        plan.input.embeddedGain = Math.min(gain, balance);
+        reads.embeddedGain = true;
+      }
     } else return { ok: false, reason: "unsupported" };
-    return { ok: true, plan, ctx: { rules: Object.values(rules), runDate: today }, horizonYears: g.horizonYears, depositsLeftOut: monthlyOwn + monthlyEmployer > 0 && !deposits, returnFromParameter: g.returnPct === null };
+    return { ok: true, plan, ctx: { rules: Object.values(rules), runDate: today }, horizonYears: g.horizonYears, depositsLeftOut: monthlyOwn + monthlyEmployer > 0 && !deposits, returnFromParameter: g.returnPct === null, reads };
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
     // the study fund still inside its lock: the engine asks for the tax-layer split of the detailed statement (PF-36)
@@ -405,16 +435,51 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
   }
 }
 
+/**
+ * What `holdingPlan` put into a holding's run, as the inputs of a figure from it (F-61): the holding's own figures (`own`: the balance, the
+ * fees the run charges, the deposits it takes, a study fund's first deposit, the gain already in a provident fund) and the goal's (`goal`:
+ * the years, the return, inflation, and the salary, age and insurance the run reads). Built from the plan's own choices, so a figure cannot
+ * name a deposit fee the run leaves out or miss the deposits it takes (founder, 2026-11-08: "make sure the chip displayed is correct").
+ */
+function runInputsOf(h: Holding, reads: PlanReads, ctx: HoldingsCtx): { own: Record<string, SiteValue>; goal: Record<string, SiteValue> } {
+  const g = ctx.goal!.run;
+  const gv = goalValueObjects(ctx.cb!, g);
+  const today = ctx.cb!.runDate;
+  const p05 = parameterOf(ctx.cb!, "P-05");
+  const returnV = gv.returnV ?? asParameter(p05, (p05 as unknown as { inputs: Record<string, ValueObject> }).inputs["A-01"]!);
+  const field = (name: string, v: ValueObject | undefined, on = true): Record<string, SiteValue> => (on && v ? { [name]: v as SiteValue } : {});
+  const lock = reads.firstDeposit === "over-six" ? lockYearsOf(ctx.rules, today) : null;
+  return {
+    own: {
+      ...field(hv.inputs.balance, h.balance),
+      ...field(hv.inputs.feeBalance, h.feeBalance),
+      ...field(hv.inputs.feeDeposit, h.feeDeposit, reads.deposits),
+      ...field(hv.inputs.directExpenses, h.directExpenses),
+      ...field(hv.inputs.monthlyOwn, h.monthlyOwn, reads.deposits),
+      ...field(hv.inputs.monthlyEmployer, h.monthlyEmployer, reads.deposits && h.wrapperId === "keren-hishtalmut"),
+      ...field(hv.inputs.firstDeposit, h.firstDeposit, reads.firstDeposit === "date"),
+      ...(lock ? { [hv.inputs.yearsToLiquid]: lock } : {}),
+      ...field(hv.inputs.embeddedGain, h.embeddedGain, reads.embeddedGain),
+    },
+    goal: {
+      [hv.inputs.years]: gv.horizon,
+      [hv.inputs.ret]: returnV,
+      [hv.inputs.inflation]: gv.inflation,
+      ...(reads.salary && g.salary !== null ? { [hv.inputs.salary]: enteredValue(g.salary, "nis_per_month", today, hv.inputs.salary) } : {}),
+      ...(reads.age && g.age !== null ? { [hv.inputs.age]: enteredValue(g.age, "years", today, hv.inputs.age) } : {}),
+      ...(reads.insurance && g.insurancePct !== null ? { [hv.inputs.insurance]: enteredValue(g.insurancePct, "pct", today, hv.inputs.insurance) } : {}),
+    },
+  };
+}
+
 function feeCostOf(h: Holding, ctx: HoldingsCtx, meanBalance: SiteValue | null): FeeCostResult {
   const p = holdingPlan(h, ctx.cb, ctx.goal, ctx.rules);
   if (!p.ok) return p.reason === "failed" ? failed(p.message ?? "") : { kind: p.reason };
   try {
     const fm = feeMateriality(p.plan, p.ctx);
     const gv = goalValueObjects(ctx.cb!, ctx.goal!.run);
-    const inputs: Record<string, SiteValue> = { [hv.inputs.balance]: h.balance as SiteValue, [hv.inputs.years]: gv.horizon, [hv.inputs.inflation]: gv.inflation };
-    if (gv.returnV) inputs[hv.inputs.ret] = gv.returnV;
-    if (h.feeBalance) inputs[hv.inputs.feeBalance] = h.feeBalance as SiteValue;
-    if (h.feeDeposit) inputs[hv.inputs.feeDeposit] = h.feeDeposit as SiteValue;
+    const run = runInputsOf(h, p.reads, ctx);
+    const inputs: Record<string, SiteValue> = { ...run.own, ...run.goal };
     const usedRules = fm.run.rules.map((r) => ({ id: r.id, strength: r.strength as SiteValue["source"]["strength"] }));
     const total = computed(fm.total.value as number, "nis", "F-61", inputs, {
       today: p.ctx.runDate,
@@ -432,7 +497,8 @@ function feeCostOf(h: Holding, ctx: HoldingsCtx, meanBalance: SiteValue | null):
     if (feeNow !== null && meanNow !== null && meanNow < feeNow) {
       const r = valueOfReduction(p.plan, "balance", meanNow / 100, p.ctx);
       if ((r.value.value as number) > 0) {
-        atAverage = computed(r.value.value as number, "nis", "F-61", { [hv.inputs.feeBalance]: h.feeBalance as SiteValue, [hv.inputs.classMean]: meanBalance as SiteValue, [hv.inputs.years]: gv.horizon }, { today: p.ctx.runDate, rules: usedRules, flags: r.flags.map((f) => f.code), labels: r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: hv.about.atAverage });
+        // the whole run again at the class's mean (valueOfReduction): its inputs and the mean
+        atAverage = computed(r.value.value as number, "nis", "F-61", { ...inputs, [hv.inputs.classMean]: meanBalance as SiteValue }, { today: p.ctx.runDate, rules: usedRules, flags: r.flags.map((f) => f.code), labels: r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: hv.about.atAverage });
         // a statement's rate has no discount of its own, so the cut holds for PF-13's period alone (withHeldRate); said where it ends within the run
         const changed = withFeeRate(p.plan, "balance", meanNow / 100, p.ctx);
         const d = changed.run === "runPension" || changed.run === "runProvident" ? changed.input.fees.discount : undefined;
@@ -631,7 +697,11 @@ export function consolidationGroups(views: HoldingView[], ctx: HoldingsCtx): Con
         if (!latest || from > latest.from) latest = { holdingId: v.holding.id, from, first, months: n.monthsNeeded, rule: n.lockRule };
       }
       if (latest) {
-        const years = computed(latest.months / 12, "years", "F-72", {}, { today: ctx.today, about: hv.about.lockYears, rules: [{ id: latest.rule, strength: "primary" }] });
+        // the wait is the lock rule's own figure (TXH-09, or TXH-10 at retirement age), which the engine read: shown as that figure
+        const rule = ctx.rules[latest.rule];
+        const fig = rule ? ruleFigure(rule, "lock_years", ctx.today) : null;
+        const years: SiteValue =
+          fig && fig.value === latest.months / 12 ? { ...fig, about: hv.about.lockYears } : computed(latest.months / 12, "years", "F-72", fig ? { [hv.inputs.yearsToLiquid]: fig } : {}, { today: ctx.today, about: hv.about.lockYears, rules: [{ id: latest.rule, strength: "primary" }] });
         group.notYet = {
           holdingId: latest.holdingId,
           liquidFrom: { ...computed(null, "text", "F-72", { [hv.inputs.firstDeposit]: latest.first as SiteValue, [hv.inputs.yearsToLiquid]: years }, { today: ctx.today, about: hv.about.liquidAccount, rules: [{ id: latest.rule, strength: "primary" }] }), value: latest.from },
@@ -678,6 +748,8 @@ function worthOf(group: ConsolidationGroup, list: HoldingView[], ctx: HoldingsCt
   }
   let sum = 0;
   const inputs: Record<string, SiteValue> = {};
+  // each mover's run, its own figures named by its company, and the goal's once (runInputsOf)
+  let goal: Record<string, SiteValue> = {};
   for (const v of movers) {
     const p = holdingPlan(v.holding, ctx.cb, ctx.goal, ctx.rules);
     if (!p.ok) {
@@ -688,15 +760,16 @@ function worthOf(group: ConsolidationGroup, list: HoldingView[], ctx: HoldingsCt
       // a move to another fund at its own rate, not an offer on this line: the rate holds for the whole horizon (D86)
       const r = valueOfReduction(p.plan, "balance", targetFee / 100, p.ctx, { held: false });
       sum += r.value.value as number;
-      inputs[hv.inputs.balanceAt + v.companyName] = v.holding.balance as SiteValue;
+      const run = runInputsOf(v.holding, p.reads, ctx);
+      for (const [name, value] of Object.entries(run.own)) inputs[`${name} ${hv.inputs.at}${v.companyName}`] = value;
+      goal = { ...goal, ...run.goal };
     } catch {
       group.worthUnavailable = "failed";
       return;
     }
   }
-  inputs[hv.inputs.feeBalanceAt + target.companyName] = target.holding.feeBalance as SiteValue;
-  inputs[hv.inputs.years] = goalValueObjects(ctx.cb!, ctx.goal.run).horizon;
-  group.worth = computed(sum, "nis", "F-61", inputs, {
+  inputs[`${hv.inputs.feeBalance} ${hv.inputs.at}${target.companyName}`] = target.holding.feeBalance as SiteValue;
+  group.worth = computed(sum, "nis", "F-61", { ...inputs, ...goal }, {
     today: ctx.today,
     about: hv.about.consolidation,
     rules: [{ id: "PF-17", strength: "primary" }],
@@ -753,9 +826,9 @@ export function liquidityOf(h: Holding, rules: Record<string, RuleRecord>, today
   if (!hasDate) return { kind: "liquid", from: null, lock };
   const months = (lock.value as number) * 12;
   const from = monthEndAfter(first as string, months);
-  const years = computed(lock.value as number, "years", "F-72", {}, { today, about: hv.about.lockYears, rules: [{ id: "TXH-09", strength: "primary" }] });
+  // F-46: tax-free from the first deposit plus TXH-09's wait, the rule's own figure
   const date: SiteValue = {
-    ...computed(null, "text", "F-72", { [hv.inputs.firstDeposit]: h.firstDeposit as SiteValue, [hv.inputs.yearsToLiquid]: years }, { today, about: hv.about.liquidFund, rules: [{ id: "TXH-09", strength: "primary" }] }),
+    ...computed(null, "text", "F-46", { [hv.inputs.firstDeposit]: h.firstDeposit as SiteValue, [hv.inputs.yearsToLiquid]: { ...lock, about: hv.about.lockYears } }, { today, about: hv.about.liquidFund, rules: [{ id: "TXH-09", strength: "primary" }] }),
     value: from,
   };
   return from <= today ? { kind: "liquid", from: date, lock } : { kind: "not-yet", from: date, lock };

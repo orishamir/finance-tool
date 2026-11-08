@@ -9,15 +9,23 @@ export function useHeldHeight<T extends HTMLElement>(key: string) {
     const el = ref.current;
     if (!el) return;
     const width = window.innerWidth;
-    if (held.current.key !== key || held.current.width !== width) {
+    const fresh = held.current.key !== key || held.current.width !== width;
+    if (fresh) {
       held.current = { key, width, height: 0 };
       el.style.minHeight = "";
     }
-    const height = el.getBoundingClientRect().height;
-    if (height > held.current.height) {
-      held.current.height = height;
-      el.style.minHeight = `${height}px`;
-    }
+    const hold = () => {
+      const height = el.getBoundingClientRect().height;
+      if (height > held.current.height) {
+        held.current.height = height;
+        el.style.minHeight = `${height}px`;
+      }
+    };
+    // a fresh hold waits a frame: the first layout comes before a child measures itself (a chart drawn at its default width, scaled to the
+    // card's), and holding it left 106 px blank under the steps chart (founder, 2026-11-08: "remove unused space in the bottom of the charts")
+    if (!fresh) return hold();
+    const frame = requestAnimationFrame(hold);
+    return () => cancelAnimationFrame(frame);
   });
   return ref;
 }

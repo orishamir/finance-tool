@@ -9,7 +9,7 @@ import { companyName } from "../scope.ts";
 const ruleIds = z.array(z.string().min(1));
 
 /**
- * Issue 19 (2026-10-31): where in the document a fee value stands. `page` is the file's own page of a
+ * Where in the document (2026-10-31) a fee value stands. `page` is the file's own page of a
  * PDF (the library's count, not the number printed on the sheet); `quote` is the document's own words,
  * at most 240 characters. A web page has only `quote`. Both optional: no page means not yet confirmed.
  */
@@ -53,6 +53,9 @@ export const feeLine = z.strictObject({
   names: z.strictObject({ tariff: z.array(z.string()) }),
 });
 
+/** The exchanges the site tells apart for a fund bought abroad: `us`, and `europe` for every exchange outside the US (a trade line's band, `venueOfBand`). */
+export const venue = z.enum(["us", "europe"]);
+
 /** S3 (2026-10-25): sourced availability of an instrument class at the provider. */
 export const availabilityEntry = z.strictObject({
   applies_to: z.array(instrumentClass).min(1),
@@ -61,9 +64,21 @@ export const availabilityEntry = z.strictObject({
   source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...place }),
   note: z.string().optional(),
   reason_he: z.string().min(1).optional(),
+  /**
+   * 2026-11-08: the class can be bought there only by phone (through the house's trading desk), as the house's own words say, with their
+   * own source and its quote; with `venues`, only a fund bought on those exchanges (a class of funds bought abroad). A sourced fact shown
+   * beside the house; it changes no price and no ranking. Only on an entry that says the class can be bought (`available: true`).
+   */
+  phone_only: z
+    .strictObject({
+      venues: z.array(venue).min(1).optional(),
+      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+      note: z.string().optional(),
+    })
+    .optional(),
 });
 
-/** A group price's place in a document: its page or sheet row, and the document's own words there (2026-10-31, issue 140). */
+/** A group price's place in a document: its page or sheet row, and the document's own words there (2026-10-31). */
 export const groupSource = z.strictObject({
   url: z.string().min(1),
   title: z.string().min(1),

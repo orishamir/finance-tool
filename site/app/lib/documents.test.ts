@@ -17,7 +17,7 @@ describe("groupDocuments", () => {
     "A-4": rule("A-4", [src("https://example.org/doc.pdf", "A guide", { kind: "other" })]),
   };
   const cards = groupDocuments(rules, table, {});
-  it("keeps a Hebrew title that opens with a host or a Latin name (#190)", () => {
+  it("keeps a Hebrew title that opens with a host or a Latin name", () => {
     const own = groupDocuments({ "B-1": rule("B-1", [src("https://data.gov.il/dataset/banks", "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים", { kind: "dataset" })]), "B-2": rule("B-2", [src("https://example.org/fee", "Trustee fee (שכר נאמן): p. 1 '0.02% מהשווי הנקי השנתי הממוצע של נכסי הקרן'", { kind: "article" })]) }, [], {});
     expect(own.find((x) => x.url.includes("data.gov.il"))!.title).toBe("data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים");
   });
@@ -55,7 +55,7 @@ describe("loadDocuments on the real data", () => {
   });
 });
 
-describe("documents filed for the law and terms browser (issue 123)", () => {
+describe("documents filed for the law and terms browser", () => {
   it("name no card on this page", () => {
     const filed = (JSON.parse(readFileSync(join(dataServer.root, "data/sources/documents.json"), "utf8")) as { id: string; doc_kind?: string }[]).filter((d) => d.doc_kind).map((d) => d.id);
     expect(filed.length).toBeGreaterThan(100);

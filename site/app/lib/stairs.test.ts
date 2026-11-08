@@ -71,7 +71,7 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
     expect(c.chain).toHaveLength(1);
     expect(Math.round(c.ceiling.v) - Math.round(c.chain[0]!.v)).toBe(2294);
   });
-  // the lanes' held heights are measured from these cases (#190): every lane any start shows has a case with each of its rows, in the
+  // the lanes' held heights are measured from these cases: every lane any start shows has a case with each of its rows, in the
   // same state, so no start draws a lane taller than its hold
   it("every lane from every priced start is covered by one of the lane's cases", () => {
     const cases = laneCases(grid);

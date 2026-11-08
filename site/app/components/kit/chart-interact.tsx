@@ -1,4 +1,4 @@
-// How a chart answers the pointer (issue 22, 2026-11-01). A year chart reads the year under the pointer; a click or a tap keeps that year;
+// How a chart answers the pointer (2026-11-01). A year chart reads the year under the pointer; a click or a tap keeps that year;
 // on a mouse, a drag across the plot zooms to the years it covers, and ctrl with the wheel (a pinch on a touchpad) zooms around the
 // pointer, so plain scrolling still moves the page. A phone keeps its scrolling: no zoom there, and a tap does not need hover. A legend's
 // item, a bar or a row picks its series with `useChartPick`: a mouse previews it, a click or a tap keeps it. Nothing here moves the layout.

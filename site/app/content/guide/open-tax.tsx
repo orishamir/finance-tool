@@ -1,4 +1,4 @@
-// Open tax questions several guides share (2026-11-02, issue 33): until the guides' checklist left, it alone told them.
+// Open tax questions several guides share (2026-11-02): until the guides' checklist left, it alone told them.
 import { IdRef, RuleRef } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 

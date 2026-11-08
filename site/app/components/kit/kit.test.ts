@@ -19,7 +19,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "CoverageFold", "SegmentedControl", "ChoiceChips", "ChipList", "PlanChips", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "KeyValue, KeyValueList", "HeadlineFigure", "RankBadge", "SourceLine, GapNote", "NumberField", "FieldState, ParameterLine", "RangeField", "PercentField", "SelectField", "StepButtons", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "CoverageFold", "SegmentedControl", "ChoiceChips", "ChipList", "PlanChips", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "KeyValue, KeyValueList", "HeadlineFigure", "RankBadge", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "StepButtons", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -67,7 +67,7 @@ describe("the stairs chart's text", () => {
 });
 
 describe("figureFit", () => {
-  it("steps a list's figure down a size past nine digits and again past twelve, so its fixed column never cuts it (#190)", () => {
+  it("steps a list's figure down a size past nine digits and again past twelve, so its fixed column never cuts it", () => {
     expect(figureFit(86_492)).toBe("");
     expect(figureFit(99_999_999)).toBe("");
     expect(figureFit(999_999_999)).toBe("max-md:text-sm");
@@ -98,7 +98,7 @@ describe("figureFit", () => {
   });
 });
 
-describe("PickList holds its height (#190)", () => {
+describe("PickList holds its height", () => {
   const row = (key: string, extra: Partial<PickRow> = {}): PickRow => ({ key, selected: false, onSelect: () => {}, cells: createElement("span", null, key), ...extra });
   const folded = (out: string) => (out.match(/data-folded=""/g) ?? []).length;
   it("the phone's fold shows the same number of rows whichever is chosen: a chosen row further down takes the last place", () => {

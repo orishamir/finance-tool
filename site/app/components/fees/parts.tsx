@@ -251,9 +251,16 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
     );
   };
   // fresh readers, 2026-11-07: "the page never says what would push the 108 ₪ above 1,000 ₪": one plain line after a "not worth it" reason
-  const reachLine = (x: FeeReach | undefined) => {
+  const reachLine = (x: FeeReach | undefined, l: LineView) => {
     if (!x || !mk || (x.amountNow === undefined && x.horizonYears === undefined)) return null;
     const rr = r3fees.reach;
+    // F-61's search (D90 revised): the amount or the years at which bringing the line from its rate to the regulator's mean is worth the
+    // site's negotiate threshold (P-03), so each found figure lists those three beside the plan's run
+    const searched: Record<string, SiteValue> = {
+      [rr.thresholdName]: thresholds.negotiate,
+      ...(l.reference.cma ? { [rr.toName]: l.reference.cma.mean } : {}),
+      ...(l.rate ? { [r3fees.names[l.line]!]: l.rate } : {}),
+    };
     // the 1,000 ₪ the cut reaches, in the same line (fresh reader, 2026-11-07); the maqaf lead is bound to its figure, the colon after it
     return (
       <>
@@ -264,7 +271,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
         {x.amountNow !== undefined && (
           <>
             {rr.amount[0]}
-            <Num value={mk.nis(x.amountNow, "F-61", rr.amountName)} />
+            <Num value={mk.nis(x.amountNow, "F-61", rr.amountName, undefined, searched)} />
             {rr.amount[1]}
           </>
         )}
@@ -272,7 +279,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
         {x.horizonYears !== undefined && (
           <>
             {rr.years[0]}
-            <Num value={mk.plain(x.horizonYears, "years", "F-61", rr.yearsName)} display={fmt.years(x.horizonYears)} />
+            <Num value={mk.plain(x.horizonYears, "years", "F-61", rr.yearsName, searched)} display={fmt.years(x.horizonYears)} />
             {rr.years[1]}
           </>
         )}
@@ -304,7 +311,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
             ) : (
               r.nowNothing
             )}
-            {l.suggestion !== null && reachLine(x)}
+            {l.suggestion !== null && reachLine(x, l)}
           </>
         );
       case "avoid":
@@ -325,7 +332,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
             {r.below[0]}
             <Num value={thresholds.negotiate} />
             {r.below[1]}
-            {reachLine(x)}
+            {reachLine(x, l)}
           </>
         );
       case "no-reference":

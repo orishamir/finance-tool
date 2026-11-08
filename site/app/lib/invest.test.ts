@@ -1,9 +1,10 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount } from "./invest";
+import { accountSum, buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
-import { entered } from "./value";
+import { entered, type SiteValue } from "./value";
+import { invest as words } from "../copy";
 
 const bundle = buildWorkbenchBundle();
 const t = bundle.today;
@@ -25,7 +26,7 @@ const sp = indexById(bundle, "index-sp500")!;
 describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
 
-  it("prices the Irish distributing funds from their records' yields, and keeps a reason on the US ones (issue 147)", () => {
+  it("prices the Irish distributing funds from their records' yields, and keeps a reason on the US ones", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const of = (id: string) => abroad.funds.find((f) => f.rec.id === id)!;
     for (const id of ["ie0031442068", "ie00b3xxrp09"]) {
@@ -41,13 +42,13 @@ describe("invest page computation", () => {
   });
 
   it("marks the houses that print a price for monthly buying, and only them", () => {
-    // three banks print a commission for a standing order; Interactive Israel a conversion for its recurring plan (p.6 of its tariff, issue 132)
+    // three banks print a commission for a standing order; Interactive Israel a conversion for its recurring plan (p.6 of its tariff)
     const marked = view.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
     expect(marked.sort()).toEqual(["fibi", "interactive-israel", "leumi", "massad"]);
   });
 
 
-  it("Psagot is grey on funds abroad, with its tariff's own words on why (issue 144, D42)", () => {
+  it("Psagot is grey on funds abroad, with its tariff's own words on why (D42)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const accumulating = abroad.funds.filter((f) => f.rec.distribution_policy === "accumulating");
     expect(accumulating.length).toBeGreaterThan(0);
@@ -83,9 +84,11 @@ describe("invest page computation", () => {
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
     // 2026-11-04: One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
     // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. 2026-11-05: Altshuler answered in writing that it
-    // trades only on the Israeli and US exchanges (issue 188), so it is priced on its US line for a fund that trades in the US, as One Zero is
+    // trades only on the Israeli and US exchanges, so it is priced on its US line for a fund that trades in the US, as One Zero is.
+    // 2026-11-08: IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
     expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
-    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["ibi", "psagot"]);
+    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["psagot"]);
+    expect(abroad.cells.find((c) => c.providerId === "ibi")?.kind).toBe("cost");
     expect(abroad.cells.find((c) => c.providerId === "altshuler-trade")).toMatchObject({ kind: "cost", venue: "us" });
   });
 
@@ -93,6 +96,22 @@ describe("invest page computation", () => {
     const c = view.options.find((o) => o.id === "abroad")!.cells.find((x) => x.providerId === "interactive-israel")!;
     expect(c.kind).toBe("cost");
     expect(c.venue).toBe("europe");
+  });
+
+  it("IBI prices a fund bought in Europe on its line for other markets, and says it is bought by phone only (2026-11-08)", () => {
+    const f = view.options.find((o) => o.id === "abroad")!.funds.find((x) => x.rec.id === "ie00b5bmr087")!;
+    expect(f.byHouse.ibi).toMatchObject({ venue: "europe" });
+    expect((f.byHouse.ibi as { valueN?: number }).valueN).toBeGreaterThan(0);
+    // the house's words, for a fund bought in Europe only: not on the US exchanges, not on a fund of Tel Aviv
+    const ibi = bundle.snapshots.find((s) => s.id === "ibi");
+    expect(phoneOnlyOf(ibi, "abroad", "europe")?.source.quote).toBe("טלפונית מול חדר מסחר");
+    expect(phoneOnlyOf(ibi, "abroad", "us")).toBeNull();
+    expect(phoneOnlyOf(ibi, "abroad", null)).toBeNull();
+    expect(phoneOnlyOf(ibi, "il-etf", "europe")).toBeNull();
+    const v = phoneOnlyValue(ibi, "abroad", "europe", "IBI")!;
+    expect(v).toMatchObject({ value: "בטלפון בלבד", unit: "text", state: "sourced", own: ibi!.provider.name_he });
+    expect(v.source.url).toBe("docs/company-answers.md#ibi-2026-11-08");
+    expect(v.lead).toContain("טלפונית מול חדר מסחר");
   });
 
   it("the funds of an option are ranked by value at the option's cheapest broker", () => {
@@ -360,7 +379,7 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
     expect(best(ownLeumi, "hapoalim").valueN).toBe(best(counted, "hapoalim").valueN);
   });
 
-  it("re-sorts the list where the gap is smaller than the account (evidence: research/audit/2026-11-06-indices-pricing)", () => {
+  it("re-sorts the list where the gap is smaller than the account (evidence: 8dd1f013:research/audit/2026-11-06-indices-pricing)", () => {
     const order = (v: typeof before) => v.houses.filter((h) => h.best?.price).sort((a, b) => b.best!.price!.valueN - a.best!.price!.valueN).map((h) => h.provider.id);
     // Yahav's current account (4 shekels) is the cheapest of the banks': it passes Hapoalim, and IBI passes Discount and Mercantile
     expect(order(before).indexOf("hapoalim")).toBeLessThan(order(before).indexOf("yahav"));
@@ -383,5 +402,53 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     const own = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
     const mine = own.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
     for (const w of mine) expect(w.cost("עלות").flags ?? []).not.toContain("BANK-35");
+  });
+});
+
+describe("what each figure's sheet lists (founder, 2026-11-08: \"make sure the chip displayed is correct\")", () => {
+  const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+  const inputs = (v: SiteValue) => v.computed_from!.inputs as Record<string, SiteValue>;
+  const abroad = view.options.find((o) => o.id === "abroad")!;
+  const irish = abroad.funds.find((f) => f.rec.id === "ie0031442068")!;
+  const israeli = view.options.find((o) => o.id === "il-etf")!.funds.find((f) => f.best)!;
+  const dollar = words.pair.rateInput("USD");
+
+  it("a run priced in dollars lists the dollar rate (F-84), and a fund that pays out its payout yield (A-10)", () => {
+    expect(inputs(irish.best!.value)[dollar]!.computed_from!.formula).toBe("F-84");
+    expect(inputs(irish.best!.value)[words.pair.fundInputs.payout]!.value).toBe(irish.rec.distribution!.yield.value);
+    expect(inputs(irish.best!.cost("x"))[dollar]).toBeDefined();
+    // the abroad option's generic fund is bought in dollars too; an Israeli fund reads no rate and pays nothing out
+    expect(inputs(abroad.bestCell!.cost!)[dollar]).toBeDefined();
+    expect(inputs(israeli.best!.value)[dollar]).toBeUndefined();
+    expect(inputs(israeli.best!.value)[words.pair.fundInputs.payout]).toBeUndefined();
+  });
+
+  it("A-07 from a report that prints no fees charged lists the fees listed today, which F-92 (b) measures those years against", () => {
+    const funds = view.options.flatMap((o) => o.funds).filter((f) => f.best && f.rec.tracking_record?.years.some((y) => !y.fees_charged));
+    const beyond = funds.flatMap((f) => Object.entries(inputs(f.best!.value)).filter(([k]) => k.startsWith(words.pair.fundInputs.beyond([2000, 2001]).slice(0, 10))).map(([, v]) => v));
+    expect(beyond.length).toBeGreaterThan(0);
+    for (const b of beyond) expect(inputs(b)[words.pair.fundInputs.listedFixed]).toBeDefined();
+  });
+
+  it("an account's cost is F-91, and a gap between two ways is the one figure less the other", () => {
+    expect(irish.best!.cost("x").computed_from!.formula).toBe("F-91");
+    const broker = view.bars.find((b) => b.id === "broker")!;
+    expect(broker.spread!.computed_from!.formula).toBe("F-91");
+    expect(broker.spread!.value).toBeCloseTo(broker.high! - broker.low!, 9);
+    const fund = view.bars.find((b) => b.id === "fund")!;
+    expect(fund.spread!.computed_from!.formula).toBe("F-65");
+    expect(Object.values(inputs(fund.spread!)).map((v) => v.computed_from!.formula)).toEqual(["F-65", "F-65"]);
+    for (const h of view.houses.filter((x) => x.gap)) expect(Object.keys(inputs(h.gap!))).toHaveLength(2);
+  });
+
+  it("a pair's parts: the fund's part reads no account, X neither the fund nor the account, and the account's cost adds up its parts", () => {
+    const fundId = view.houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
+    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }), fundId, providerId: "leumi" })!;
+    expect(inputs(pc.fund)[words.pair.accountMinimum]).toBeUndefined();
+    expect(inputs(pc.tax)[words.pair.accountMinimum]).toBeDefined();
+    expect(inputs(pc.fund)[words.pair.fundInputs.fixed]).toBeDefined();
+    expect(Object.keys(inputs(pc.baseValue)).sort()).toEqual(Object.values(words.planInputs).sort());
+    expect(accountSum(pc, "x", t).value).toBeCloseTo(pc.accountCost, 6);
+    expect(Object.keys(inputs(accountSum(pc, "x", t)))).toContain(words.pair.remainder);
   });
 });

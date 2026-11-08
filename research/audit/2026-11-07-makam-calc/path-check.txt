@@ -1,6 +1,0 @@
-== /guide/makam at 390 px: 1 sliders
-  מתי מוכרים?: 1 to 12, 47 reads by 12 values, one text for each value
-PASS: every value shows the same figures by every path
-== /guide/makam at 1440 px: 1 sliders
-  מתי מוכרים?: 1 to 12, 47 reads by 12 values, one text for each value
-PASS: every value shows the same figures by every path

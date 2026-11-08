@@ -48,6 +48,9 @@ export function compactHoldings(h: Holdings | undefined, template: HoldingsTempl
   return out;
 }
 
+/** The rule both shares rest on (CAT-24: the exposure in plain words comes from the regulator's dated fields); a page that shows a share loads it for the share's sheet. */
+export const EXPOSURE_RULE_IDS = ["CAT-24"] as const;
+
 /**
  * One share as a computed site value over two sourced amounts. A share that cannot be computed is a value of null whose note says why:
  * an amount not reported, or assets of 0.
@@ -59,7 +62,7 @@ function share(formula: "F-87" | "F-88", amount: SiteValue, assets: SiteValue, p
   const notes = value !== null ? copy.stock.note : reported ? copy.stock.noteNoAssets : copy.stock.noteMissing;
   const about = `${formula === "F-87" ? copy.stock.about : copy.stock.aboutCurrency} ${fmt.period(period)}`;
   const inputs: Record<string, SiteValue> = { [formula === "F-87" ? "stock_market_exposure" : "foreign_currency_exposure"]: amount, total_assets: assets };
-  const v = computed(value, "pct", formula, inputs, { today, rules: [{ id: "CAT-24", strength: "primary" }], about, notes });
+  const v = computed(value, "pct", formula, inputs, { today, rules: EXPOSURE_RULE_IDS.map((id) => ({ id, strength: "primary" as const })), about, notes });
   return { ...v, stale: assets.stale ?? null };
 }
 

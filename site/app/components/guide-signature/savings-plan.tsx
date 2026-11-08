@@ -6,10 +6,10 @@ import { useId, useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
-import { entered as enteredValue } from "../../lib/value";
+
 import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useGlidingNumbers, useWidth } from "../kit";
 import { IdText, Num, RulesLine } from "../provenance";
-import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, useSigInputs, typed, type VisualProps } from "./kit";
 
 const TOP = 22;
 const AXIS = 24;
@@ -48,10 +48,13 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
 
   const monthlyIn = inputSite(bundle, "monthly_deposit", monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
   const runInputs = { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.rate]: rate, [copy.common.inputNames.term]: termFact };
-  const dateIn = enteredValue(m, "months", today, copy.plan.marker);
-  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn }, today, copy.plan.about.free, rulesOfBundle(bundle)) : null;
-  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn }, today, copy.plan.about.locked) : null;
-  const lastUnlock = model ? figure(model.lastUnlock, "months", "F-22", { [copy.common.inputNames.term]: termFact, [copy.plan.count]: enteredValue(n, "count", today) }, today, copy.plan.about.last) : null;
+  const dateIn = typed(m, "months", today, copy.plan.marker);
+  const countIn = { [copy.plan.count]: typed(n, "count", today, copy.plan.count) };
+  // the number of deposits counts only once the date is past the last of them (what is locked) or past the last one's end (what is free)
+  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn, ...(m - term + 1 >= n ? countIn : {}) }, today, copy.plan.about.free, rulesOfBundle(bundle)) : null;
+  // what is still locked is the deposits made and not yet free, at their face: no interest in it
+  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.term]: termFact, [copy.plan.marker]: dateIn, ...(m >= n - 1 ? countIn : {}) }, today, copy.plan.about.locked) : null;
+  const lastUnlock = model ? figure(model.lastUnlock, "months", "F-22", { [copy.common.inputNames.term]: termFact, ...countIn }, today, copy.plan.about.last) : null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -60,6 +63,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
           label={copy.plan.monthly}
           unit="nis"
           value={monthly}
+          start={inputs.p05.monthly}
           isEntered={inputs.source.monthly === "guide"}
           validate={(v) => (v < 0 ? valuesCopy.errors.negative : null)}
           onCommit={inputs.setMonthly}
@@ -73,7 +77,6 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
           <SegmentedControl<Count> labelledBy="sig-plan-count" options={copy.plan.countOptions.map((c) => ({ value: c as Count, label: c }))} value={count} onChange={(c) => { setCount(c); setMonth(null); }} />
         </div>
       </div>
-      <SourceLine sources={[inputs.source.monthly]} />
       {outOfRange && min && max && (
         <Callout tone="caution">
           {copy.common.outOfRange.before} <Num value={min} /> {copy.common.outOfRange.middle} <Num value={max} />
@@ -133,7 +136,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.plan.at.before} <InputSlot chars={3}><bdi dir="ltr">{m}</bdi></InputSlot> {copy.plan.at.after}:
+          {copy.plan.at.before} <InputSlot><bdi dir="ltr">{m}</bdi></InputSlot> {copy.plan.at.after}:
         </p>
         <StatRow cols={3}>
           <Stat label={copy.plan.figures.free} tone="value">{free && <Num value={free} />}</Stat>

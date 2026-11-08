@@ -61,6 +61,8 @@ interface IndexTrack {
   id: number;
   name: string;
   company: string;
+  /** The managing company's id, for the track's page on the site (/companies/:id/:fund). */
+  companyId: string;
   fee: SiteValue | null;
   deposit: SiteValue | null;
 }
@@ -75,7 +77,7 @@ function indexTracks(c: G2Ctx, wrapperId: string, exposure: ExposureRecord): Ind
       const f = fees.get(t.fundId);
       const fee = f && typeof f.balance.value === "number" ? cmaFeeValue(f.balance, c.t) : null;
       const deposit = f && typeof f.deposit.value === "number" ? cmaFeeValue(f.deposit, c.t) : null;
-      return { id: t.fundId, name: t.name, company: t.companyName, fee, deposit };
+      return { id: t.fundId, name: t.name, company: t.companyName, companyId: t.companyId, fee, deposit };
     });
 }
 
@@ -116,6 +118,7 @@ function addHoldings(d: SignatureData, c: G2Ctx, holding: { fund: FundRecord; ex
     if (from) {
       d.facts.trackName = textFact(track.name, { source: from.source, checked: from.checked }, `שם המסלול ברשות שוק ההון (מסלול ${track.id}, ${track.company})`);
       d.facts.trackNumber = textFact(String(track.id), { source: from.source, checked: from.checked }, "מספר המסלול ברשות שוק ההון");
+      d.facts.trackCompany = textFact(track.companyId, { source: from.source, checked: from.checked }, "מספר החברה המנהלת ברשות שוק ההון");
       d.facts.trackFee = track.fee!;
     }
   }
@@ -125,7 +128,8 @@ function addHoldings(d: SignatureData, c: G2Ctx, holding: { fund: FundRecord; ex
     const sorted = [...all].sort((a, b) => (a.fee!.value as number) - (b.fee!.value as number));
     d.facts.rangeMin = sorted[0]!.fee!;
     d.facts.rangeMax = sorted[sorted.length - 1]!.fee!;
-    d.facts.rangeCount = computed(all.length, "count", "F-64", {}, { today: c.t, about: "כמה מסלולים על המדד הזה דיווחה הרשות בתקופה האחרונה, עם דמי ניהול" });
+    // F-67's rule 3: the range is shown with the number of tracks it is over
+    d.facts.rangeCount = computed(all.length, "count", "F-67", {}, { today: c.t, about: "כמה מסלולים על המדד הזה דיווחה הרשות בתקופה האחרונה, עם דמי ניהול" });
     d.facts.rangeMinName = textFact(sorted[0]!.name, { source: sorted[0]!.fee!.source, checked: c.t }, sorted[0]!.company);
     d.facts.rangeMaxName = textFact(sorted[sorted.length - 1]!.name, { source: sorted[sorted.length - 1]!.fee!.source, checked: c.t }, sorted[sorted.length - 1]!.company);
   }
@@ -215,7 +219,8 @@ function addBrokerRange(d: SignatureData, c: G2Ctx) {
   d.bundles["brokerage-best"] = widen(best.bundle, c, brokerVariants);
   d.facts.brokerWorstName = ownBy(textFact(worst.name, worst, signatureFacts.brokerWorst), worst.name);
   d.facts.brokerBestName = ownBy(textFact(best.name, best, signatureFacts.brokerBest), best.name);
-  d.facts.brokerCount = computed(rows.length, "count", "F-63", {}, { today: c.t, about: signatureFacts.brokerCount });
+  // F-80 on the guide pages: the pick is named with how many tariffs were compared
+  d.facts.brokerCount = computed(rows.length, "count", "F-80", {}, { today: c.t, about: signatureFacts.brokerCount });
   const own = loadFees().filter((x) => x.id === c.p05.instruments?.["brokerage-account"]?.tariff).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1);
   if (own) d.facts.brokerName = ownBy(textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך"), own.provider.name_he);
 }

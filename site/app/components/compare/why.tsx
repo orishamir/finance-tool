@@ -2,14 +2,14 @@
 // the sheet that sets the top two side by side, and the detail of one option.
 import { Fragment, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { r2, scnCompare } from "../../copy";
+import { computedInputs as ci, r2, scnCompare } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { FitTableData } from "../../lib/fit";
 import { showsHorizonHonestLine } from "../../lib/quick-goal";
 import { buildIdle } from "../../lib/idle";
 import { shortfall } from "../../lib/goal";
 import { rankCandidates } from "@finance-tool/engine";
-import { enteredLead, feeShieldPair, goalValueObjects, asParameter, countPhrase, decidingFormulaOf, equityFit, grossReturnRow, headlineState, limitationFirst, parameterOf, parameterRateLead, providerOf, realOfIdle, type Breakdown, type HeadlineState, type ListedOption, type RankedOption, type SensitivityView } from "../../lib/compare";
+import { breakdownFormulas, enteredLead, feeShieldPair, goalValueObjects, asParameter, countPhrase, decidingFormulaOf, equityFit, grossReturnRow, headlineState, limitationFirst, parameterOf, parameterRateLead, providerOf, realOfIdle, type Breakdown, type HeadlineState, type ListedOption, type RankedOption, type SensitivityView } from "../../lib/compare";
 import type { FieldKey } from "../../lib/goal";
 import { Tpl } from "../exposure-mode/tpl";
 import { FlipSentence } from "./sensitivity";
@@ -19,6 +19,7 @@ import { IconAlert, IconCheck } from "../icons";
 import { Num, RuleRef, RulesLine } from "../provenance";
 import type { ResultCtx } from "./ctx";
 import { shown } from "../../lib/review";
+import { differenceOf } from "../../lib/value";
 
 const NameLink = ({ id, name }: { id: string; name: string }) => (
   <Link to={`/guide/${id}`} className="text-link font-medium hover:underline">
@@ -52,13 +53,13 @@ function joinNames(items: ReactNode[]): ReactNode {
   ));
 }
 
-export function thetaValue(ctx: ResultCtx) {
+export function thetaValue(ctx: Pick<ResultCtx, "bundle">) {
   const p = parameterOf(ctx.bundle, "P-01");
   return asParameter(p, (p as unknown as { value: import("@finance-tool/schema").ValueObject }).value);
 }
 
 type DecidingGaps = { formula: string | null; gaps: Record<string, number>; top: { feeDrag: number; taxAtExit: number; depositSideRelief: number; lockUp: number }; second: { feeDrag: number; taxAtExit: number; depositSideRelief: number; lockUp: number } };
-type RunRef = { usedRules: readonly import("@finance-tool/engine").UsedRule[]; flags?: { code: string }[] } | undefined;
+type RunRef = import("../../lib/compare").RunRef | undefined;
 
 /** The figure of one option under the deciding formula (real NIS; the relief is shown as a gain, so its sign is flipped). */
 export function decidingFigure(f: string, d: DecidingGaps["top"]): number {
@@ -208,7 +209,7 @@ function TargetCostLine({ ctx }: { ctx: ResultCtx }) {
   const cost = <Num value={targetCost} />;
   return (
     <p className="text-sm" data-target-cost>
-      {sf.enough ? <Tpl t={t.enough} vars={{ value, cost }} /> : <Tpl t={t.short} vars={{ value, cost, gap: <Num value={mk.nis(sf.gap, "F-06", about, top, { [about]: mk.nis(top.real, "F-06", about, top), [scnCompare.targetCostLabel]: targetCost })} /> }} />}
+      {sf.enough ? <Tpl t={t.enough} vars={{ value, cost }} /> : <Tpl t={t.short} vars={{ value, cost, gap: <Num value={differenceOf([scnCompare.targetCostLabel, targetCost], [about, mk.nis(top.real, "F-06", about, top)], "F-06", { today: ctx.bundle.runDate, about })} /> }} />}
     </p>
   );
 }
@@ -253,7 +254,7 @@ function RealTermsLine({ ctx }: { ctx: ResultCtx }) {
   const y = realOfIdle(g.amountNow, infl.value, g.horizonYears);
   return (
     <p className="text-sm text-muted-foreground" data-real-terms>
-      <Tpl t={scnCompare.realTerms} vars={{ i: <Num value={infl} />, amount: <Num value={mk.goal.amountNow} />, y: <Num value={mk.nis(y, "F-06", scnCompare.realTermsAbout)} />, n: fmt.number(g.horizonYears) }} />
+      <Tpl t={scnCompare.realTerms} vars={{ i: <Num value={infl} />, amount: <Num value={mk.goal.amountNow} />, y: <Num value={mk.of(y, "nis", "F-06", scnCompare.realTermsAbout, { [ci.amountNow]: mk.goal.amountNow, [ci.years]: mk.goal.horizon, [ci.inflation]: infl })} />, n: fmt.number(g.horizonYears) }} />
     </p>
   );
 }
@@ -317,7 +318,7 @@ export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onW
       const gap = relativeGap(tied[0]!.real, tied[tied.length - 1]!.real) * 100;
       body = (
         <>
-          {joinNames(tied.map((o) => <OptionName key={o.id} ctx={ctx} id={o.id} name={o.name} />))} {r2.result.tieMid} <Num value={mk.pct(gap, "F-80", r2.result.tieMid, {})} />
+          {joinNames(tied.map((o) => <OptionName key={o.id} ctx={ctx} id={o.id} name={o.name} />))} {r2.result.tieMid} <Num value={mk.tieGap(gap, { name: tied[0]!.name, real: tied[0]!.real, run: tied[0] }, { name: tied[tied.length - 1]!.name, real: tied[tied.length - 1]!.real, run: tied[tied.length - 1] })} />
           {r2.result.tieThen} <Num value={theta} />.
         </>
       );
@@ -379,16 +380,11 @@ export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onW
 
 type Row = { key: keyof Breakdown; label: string; formula: string; deciding: boolean };
 
-function rowsFor(ctx: ResultCtx, deciding: string | null | undefined, a: RankedOption): Row[] {
-  const w = ctx.bundle.wrappers.find((x) => x.id === a.id)!;
-  return [
-    { key: "relief", label: r2.result.whyRows.relief, formula: "F-30", deciding: deciding === "deposit-side-relief" },
-    { key: "fees", label: r2.result.whyRows.fees, formula: "F-61", deciding: deciding === "fee-drag" },
-    { key: "taxDuring", label: r2.result.whyRows.taxDuring, formula: w.record.tax_during.formula, deciding: deciding === "tax-at-exit" },
-    { key: "taxExit", label: r2.result.whyRows.taxExit, formula: w.record.tax_at_exit.formula, deciding: deciding === "tax-at-exit" },
-    { key: "lockUp", label: r2.result.whyRows.lockUp, formula: "B3", deciding: deciding === "lock-up" },
-    { key: "result", label: r2.result.whyRows.result, formula: "F-06", deciding: false },
-  ];
+/** The breakdown's lines for one option, each with its formula (`breakdownFormulas`) and whether the deciding gap is on it. */
+function rowsFor(ctx: ResultCtx, deciding: string | null | undefined, id: string): Row[] {
+  const f = breakdownFormulas(ctx.bundle.wrappers.find((x) => x.id === id)!.record);
+  const on: Record<keyof Breakdown, boolean> = { relief: deciding === "deposit-side-relief", fees: deciding === "fee-drag", taxDuring: deciding === "tax-at-exit", taxExit: deciding === "tax-at-exit", lockUp: deciding === "lock-up", result: false };
+  return (["relief", "fees", "taxDuring", "taxExit", "lockUp", "result"] as const).map((key) => ({ key, label: r2.result.whyRows[key]!, formula: f[key], deciding: on[key] }));
 }
 
 /** The dimensions the rules of one option carry and the other's do not (the "what differed" rows). */
@@ -410,8 +406,8 @@ export function WhySheetBody({ ctx, headId }: { ctx: ResultCtx; headId: string }
   const tied = isTop && view.topTie.length > 1;
   const d = useMemo(() => rankCandidates([a.candidate, b.candidate], { theta: view.evaluated.theta, ctx: view.evaluated.ctx }).topTwo?.deciding.formula, [a, b, view.evaluated]);
   const deciding = tied ? null : d;
-  const rowsA = rowsFor(ctx, deciding, a);
-  const rowsB = rowsFor(ctx, deciding, b);
+  const rowsA = rowsFor(ctx, deciding, a.id);
+  const rowsB = rowsFor(ctx, deciding, b.id);
   const diff = differing(ctx, a, b);
   const gross = grossReturnRow(a, b);
   const rules = [...new Set([...a.usedRules, ...b.usedRules].map((u) => u.id))];
@@ -492,15 +488,7 @@ export function DetailSheetBody({ ctx, option, headId }: { ctx: ResultCtx; optio
   const ranked = "run" in option;
   const breakdown = option.breakdown;
   const run = ranked ? (option as RankedOption).run : (option as ListedOption).candidate.run;
-  const w = ctx.bundle.wrappers.find((x) => x.id === option.id)!;
-  const rows: Row[] = [
-    { key: "relief", label: r2.result.whyRows.relief, formula: "F-30", deciding: false },
-    { key: "fees", label: r2.result.whyRows.fees, formula: "F-61", deciding: false },
-    { key: "taxDuring", label: r2.result.whyRows.taxDuring, formula: w.record.tax_during.formula, deciding: false },
-    { key: "taxExit", label: r2.result.whyRows.taxExit, formula: w.record.tax_at_exit.formula, deciding: false },
-    { key: "lockUp", label: r2.result.whyRows.lockUp, formula: "B3", deciding: false },
-    { key: "result", label: r2.result.whyRows.result, formula: "F-06", deciding: false },
-  ];
+  const rows = rowsFor(ctx, null, option.id);
   const rules = (ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules).map((u) => u.id);
   const dims = new Set((ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules).flatMap((u) => u.dimensions));
   const names = ctx.bundle.checklist.filter((r) => dims.has(r.id));
@@ -515,7 +503,7 @@ export function DetailSheetBody({ ctx, option, headId }: { ctx: ResultCtx; optio
             <div key={r.key} className="readout-row">
               <dt>{r.label}</dt>
               <dd>
-                <Num value={mk.nis(breakdown[r.key], r.formula, r.label, { usedRules: ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules, flags: run.flags, labels: run.labels })} />
+                <Num value={mk.nis(breakdown[r.key], r.formula, r.label, { id: option.id, usedRules: ranked ? (option as RankedOption).usedRules : (option as ListedOption).usedRules, flags: run.flags, labels: run.labels })} />
               </dd>
             </div>
           ))}

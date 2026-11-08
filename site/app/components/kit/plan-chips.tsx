@@ -1,19 +1,12 @@
-// The numbers a page runs on, as a row of chips (design-spec 12): label and value; blue when the person typed it, plain when it is
-// a site value; a tap opens the fields. The comparison, the exposure mode, the fees page and the index page all use it (2026-10-25).
-import { numbers } from "../../copy";
+// The numbers a page runs on, as a row of chips (design-spec 12): label and value, a tap opens the fields. A value the person typed
+// looks the same as the start value, with no site-parameter tag on either (founder, 2026-11-08): the fields are where they differ.
 import type { FieldKey } from "../../lib/goal";
-import { cx } from "./cx";
-import { Tag } from "./tag";
 
 export interface PlanChipItem {
   field: FieldKey;
   label: string;
   /** The value as text; empty shows the label alone. */
   text: string;
-  /** Typed by the person: blue. */
-  entered: boolean;
-  /** A starting value the site gave (a preset's): wears the "site parameter" tag. */
-  parameter?: boolean;
   /** Not editable here (the holding's own amount): a plain span, not a button. */
   fixed?: boolean;
 }
@@ -26,19 +19,18 @@ export function PlanChips({ items, allLabel, onOpen }: { items: PlanChipItem[]; 
           <>
             <span className="text-muted-foreground">{c.label}</span>
             {c.text && (
-              <bdi dir="ltr" className={cx("font-medium", c.entered && "text-entered")}>
+              <bdi dir="ltr" className="font-medium">
                 {c.text}
               </bdi>
             )}
-            {c.parameter && <Tag tone="parameter">{numbers.parameter}</Tag>}
           </>
         );
         return c.fixed ? (
-          <span key={c.field} className={cx("a-chip shrink-0 cursor-default", c.entered && "a-chip-entered")}>
+          <span key={c.field} className="a-chip shrink-0 cursor-default">
             {body}
           </span>
         ) : (
-          <button key={c.field} type="button" onClick={() => onOpen(c.field)} className={cx("a-chip shrink-0", c.entered && "a-chip-entered")}>
+          <button key={c.field} type="button" onClick={() => onOpen(c.field)} className="a-chip shrink-0">
             {body}
           </button>
         );

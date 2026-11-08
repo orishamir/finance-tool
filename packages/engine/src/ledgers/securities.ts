@@ -132,7 +132,7 @@ export interface SecuritiesInput {
   /**
    * F-14 (2026-10-26): whether an Israeli account is at a bank or at a TASE member that is not a bank. A bank may not charge
    * custody on money-market fund units (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on them, so there the
-   * tariff's line applies (BRK OQ11 closed: the distribution-fee regulations leave out an investment marketer, MF-26). Default
+   * tariff's line applies (BRK-52: the distribution-fee regulations leave out an investment marketer, MF-26). Default
    * `bank`, the case every money-market guide and comparison assumes.
    */
   memberKind?: "bank" | "non-bank";

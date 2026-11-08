@@ -25,8 +25,8 @@ copied into `data/` or the rule base with its source and date.
 
 ## Rules for every file
 
-1. **Official sources first.** Legislation (Knesset, Nevo text only as a mirror of
-   the law), Tax Authority, Capital Market Authority (CMA), Israel Securities
+1. **Official sources first.** Legislation (Reshumot and the Knesset; Nevo and
+   Wikisource copies are leads only, never a source), Tax Authority, Capital Market Authority (CMA), Israel Securities
    Authority (ISA), Bank of Israel (BoI), National Insurance (NII), Ministry of
    Finance, TASE. Then the institution's own documents (bylaws, prospectus,
    tariff, product page). Then secondary sources (Kol Zchut, accounting firms,
@@ -93,7 +93,7 @@ Every URL used, with title, publisher, strength and date checked.
 ## The Scope line
 
 Added 2026-10-25 for D30 (`docs/product.md`), from the scope research in
-`research/knowledge/2026-10-25-scope/`. A later builder turns it into a field of
+`8dd1f013:research/knowledge/2026-10-25-scope/`. A later builder turns it into a field of
 the rule records, so the format is strict. One line, directly after `- Source:`,
 in exactly one of three forms:
 

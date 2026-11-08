@@ -8,7 +8,7 @@ It adds to `behaviour-guide.md` (sections 1.4, 1.5, 2) and does not repeat it. T
 edges: `2026-11-05-comparison-and-money-choices.md` (choice overload, the European Commission survey) and
 `2026-11-05-replication-check.md` (re-checks of the guide's own sources); they are pointed to, not repeated.
 
-**How to read the tables.** *Source*: the link, the library id (`node research/library/library.mjs find <id>`), and
+**How to read the tables.** *Source*: the link, the library id (`node tools/library.mjs find <id>`), and
 whether I read the **full text** (opened), only the **abstract**, or **not opened** (figure taken from another paper or
 a search summary). *Measured, on whom*: what was observed, where, how many people, and whether lab, online experiment,
 national survey or field data. *Effect size*: the number. *Replication*: replicated, smaller on replication, depends on

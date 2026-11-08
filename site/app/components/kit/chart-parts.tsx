@@ -43,13 +43,25 @@ export interface LegendItem {
 
 /**
  * What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its
- * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps (issue 22).
+ * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps.
  */
 export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
+  // a group's name ("הקרן:") goes on one line with its first item: in a narrow legend it ended a line apart from its items, and read as the
+  // last item of the group before it (indices page at 390 px, 2026-11-08)
+  const rows: { head?: LegendItem; it: LegendItem }[] = [];
+  for (let i = 0; i < items.length; i++) {
+    const it = items[i]!;
+    const next = items[i + 1];
+    if (!it.swatch && next?.swatch) {
+      rows.push({ head: it, it: next });
+      i++;
+    } else rows.push({ it });
+  }
   return (
     <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label={kitCopy.legend}>
-      {items.map((it) => (
+      {rows.map(({ head, it }) => (
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
+          {head && <span className="me-2.5">{head.label}</span>}
           {pick && it.swatch ? (
             <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target md:tap-area cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
               {it.swatch}

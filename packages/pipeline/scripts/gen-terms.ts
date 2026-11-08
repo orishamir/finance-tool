@@ -1,6 +1,7 @@
 // Generates data/terms/*.json (one per merged glossary row) and data/dimensions/*.json (one per checklist row)
 // from research/glossary/terms/*.json and docs/glossary.md section 2. Re-runnable: it deletes and rewrites both
-// folders (but never data/terms/deposits/). Run: npx tsx packages/pipeline/scripts/gen-terms.ts
+// folders (but never data/terms/deposits/). Last of the three glossary generators: `npm run gen:terms` runs merge_terms.py,
+// gen_glossary.py (which writes docs/glossary.md, whose section 2 this reads), then this.
 //
 // Every run also refreshes each dimension's `rule_ids`: they are the ids of the data/rules/*.json records that list the
 // dimension in their `dimensions`, so a rule record added or changed since the last run shows up in data/dimensions/ even

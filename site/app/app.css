@@ -174,7 +174,7 @@
      independent check 2026-11-07), and an area that grew only sideways took the 44 px from about 1,200 lone figures (re-check 2,
      2026-11-07). Where two areas overlap in the space between lines, the later figure takes it; never a figure's own box.
      Three layers (fix pass 8, 2026-11-07: a value pencil's area was 24 to 35 px and a rule chip's 36 to 42, under the figures' areas around
-     them): a figure's or a term's area at 0, a control's that stands alone (a rule chip, a value pencil, the kit's tap-area) at 1, and every
+     them): a figure's or a term's area at 0, a control's that stands alone (a rule chip, the kit's tap-area) at 1, and every
      own box at 2, so a control keeps its 44 px over the figures in the text beside it and nobody's area takes another's own box. */
   .num::after,
   .term::after {
@@ -222,6 +222,14 @@
   .num-unknown {
     color: var(--muted-foreground);
   }
+  /* a figure the record itself doubts (SiteValue.doubt): a light amber tint behind it, the caution icon before it, its sheet says why
+     (founder, 2026-11-08: "make it a bit yellow and the warning inside it") */
+  .num-doubt {
+    background: var(--caution-subtle);
+    color: var(--caution-foreground);
+    padding-inline: 0.15em;
+    border-radius: 2px;
+  }
   .num:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
@@ -262,8 +270,7 @@
     cursor: pointer;
     white-space: nowrap;
   }
-  .rule-chip::after,
-  .input-slot-edit::after {
+  .rule-chip::after {
     content: "";
     position: absolute;
     z-index: 1;
@@ -272,8 +279,7 @@
     height: max(calc(100% + 22px), 44px);
     translate: 0 -50%;
   }
-  .rule-chip::before,
-  .input-slot-edit::before {
+  .rule-chip::before {
     content: "";
     position: absolute;
     z-index: 2;
@@ -303,34 +309,11 @@
     text-decoration-thickness: 1.5px;
     text-underline-offset: 0.25em;
   }
-  /* ---- a number the reader sets, inside a sentence (kit InputSlot, 2026-10-26): a fixed-width blank, so the line never jumps */
+  /* ---- a number the reader sets, inside a sentence (kit InputSlot, 2026-10-26): a room of fixed width, so the line never jumps. The
+     number in it is plain (founder, 2026-11-08): no blue, no line under it, nothing to tap; the field beside the sentence changes it. */
   .input-slot {
-    display: inline-flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 2px;
-    padding-inline: 2px;
-    border-bottom: 1px dashed color-mix(in oklab, var(--entered) 55%, var(--border));
-    /* the pencil's 44 px area needs a 44 px line: the figure on the line below covered half of it (24 to 35 px, fix pass 8, 2026-11-07) */
-    margin-block: 11px;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-  }
-  .input-slot-value {
-    flex: 1;
-    text-align: center;
-  }
-  .input-slot-edit {
-    position: relative;
-    display: inline-flex;
-    align-self: center;
-    padding: 2px;
-    border-radius: 4px;
-    color: var(--entered);
-    cursor: pointer;
-  }
-  .input-slot-edit:hover {
-    background: var(--entered-subtle);
   }
 
   /* ---- chips */
@@ -350,10 +333,6 @@
   }
   .a-chip:hover {
     background: var(--accent);
-  }
-  .a-chip-entered {
-    background: var(--entered-subtle);
-    border-color: color-mix(in oklab, var(--entered) 45%, var(--border));
   }
   .sec-chip {
     display: inline-flex;
@@ -448,6 +427,11 @@
   .sheet-dl dt {
     color: var(--muted-foreground);
     font-size: var(--text-sm);
+  }
+
+  /* ---- a formula in math type (kit/formula.tsx): KaTeX's display formula keeps its centre but not its 1em margins, which the sheet's gaps give */
+  .tex-display .katex-display {
+    margin: 0;
   }
 
   /* ---- sheet (dialog) */
@@ -686,13 +670,10 @@
     outline-offset: 1px;
   }
   .field-box-compact {
-    /* holds "50,000,000" and its unit: a plan typed past the slider's end showed "50,000,00(" (#190) */
+    /* holds "50,000,000" and its unit: a plan typed past the slider's end showed "50,000,00(" */
     width: 152px;
     height: var(--target);
     padding: 0 10px;
-  }
-  .field-box-entered {
-    border-color: color-mix(in oklab, var(--entered) 55%, var(--input));
   }
   .field-box-error {
     border-color: var(--destructive);

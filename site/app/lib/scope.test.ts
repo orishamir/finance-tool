@@ -1,4 +1,4 @@
-// D30 on the site (research/specs/2026-10-25-rules-scope/spec.md §4): a guide or exposure page cites general rules only. The
+// D30 on the site (8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4): a guide or exposure page cites general rules only. The
 // validator checks the records under data/ (wrappers, exposures, P-09); this checks the prose modules, where a rule id is written by
 // hand. A company's term may appear only inside `<VariesByCompany ids={[…]}>` (the "תלוי בחברה" links), and an index page may cite
 // the records of its index provider that `ownContextExposures` names (D31). A record the rule base keeps that is not a rule, and is not

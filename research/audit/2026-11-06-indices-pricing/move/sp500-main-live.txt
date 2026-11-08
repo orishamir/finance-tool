@@ -1,6 +1,0 @@
-
-== /indices/sp500 at 1280 px: 4 sliders, 0 selects; page wider than the screen: false
-  slider 1 max: page height +48, 0 moved, 8 blocks new
-    h 0 w -115 y 0 <p text-sm text-muted-foreground> 598x22 "בכסף של היום · שער הדולר 3.17 ₪ · מחושב משערי הייחוס של הבנק המרכזי הא"
-
-total boxes that changed on the screen: 1

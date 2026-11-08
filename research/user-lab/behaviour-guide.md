@@ -344,7 +344,7 @@ reads Hebrew as a second language; Israel's spread in adult skills is among the 
 
 ### 4.3 What our three earlier fresh-reader runs show (2026-11-05)
 
-Runs: `research/audit/2026-11-05-indices-relevance/readers/` and `research/specs/2026-11-05-indices-colours/readers/`
+Runs: `8dd1f013:research/audit/2026-11-05-indices-relevance/readers/` and `8dd1f013:research/specs/2026-11-05-indices-colours/readers/`
 (summary there). Strength: weak as evidence about people (three model readers each), strong as evidence about how
 the model behaves.
 

@@ -3,6 +3,7 @@
 // An employee's fund stands alone, since no other place receives the employer's money (B2); a self-employed person's stands beside the same outlay
 // in a securities account, which is a choice they really have. Every figure is an engine run on the person's own values (F-96).
 import { useMemo, useState } from "react";
+import { Link } from "react-router";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
@@ -10,11 +11,11 @@ import { earlySettlement, type EarlySettlement } from "@finance-tool/engine";
 import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment, type StudyStanding, type StudyStoryCase } from "../../lib/guide-signature-g2";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
-import { gershayim, InputSlot, LongestCase, NumberField, PercentField, PileStory, PileYears, SegmentedControl, Sentence, clamp, percentCheck, pileFirstRow, type PileStep } from "../kit";
+import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
+import { gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, clamp, percentCheck, type PileBarPart } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, text } from "./g2-parts";
-import { figure, inputSite, notFeeFlag, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
+import { figure, inputSite, notFeeFlag, rulesOfBundle, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
 const YEARS = 12;
 const story = copy.hishtalmut.story;
@@ -62,6 +63,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const feeShown = feePick ?? Number(trackFee?.value ?? 0);
   const feeCap = fact(data, "feeCap");
   const year = clamp(yearPick ?? lock - 1, 1, YEARS);
+  const shownYear = fmt.years(year);
 
   const ownMonthly = isEmployee ? (income * ownShare) / 100 : inputs.monthly;
   const employerMonthly = isEmployee ? (income * employerShare) / 100 : 0;
@@ -76,102 +78,135 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const overLimit = taxedAfterLock(years, lock);
 
   // ---- value objects
-  const returnIn: SiteValue = returnPick !== null ? enteredValue(returnPick, "pct_per_year", today, story.fields.ret) : p05Value(base.p05, "A-01");
-  const incomeIn: SiteValue = incomePick !== null ? enteredValue(income, "nis", today, copy.hishtalmut.incomeAbout) : figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout);
-  const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : enteredValue(value, "pct", today, about));
+  // a field's default, like what the reader types in it, is a plain number (founder, 2026-11-08)
+  const returnIn: SiteValue = returnPick !== null ? typed(returnPick, "pct_per_year", today, story.fields.ret) : asField(p05Value(base.p05, "A-01"));
+  const incomeIn: SiteValue = incomePick !== null ? typed(income, "nis", today, copy.hishtalmut.incomeAbout) : asField(figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout));
+  const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : typed(value, "pct", today, about));
   const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
-  const deposits: Record<string, SiteValue> = {
-    [copy.hishtalmut.income[employment]!]: incomeIn,
-    ...(isEmployee ? { [story.fields.own]: pctIn(ownPick, ownPct, ownShare, story.fields.own), [story.fields.employer]: pctIn(employerPick, employerPct, employerShare, story.fields.employer) } : { [copy.common.inputNames.monthly]: monthlyIn }),
-  };
-  const common: Record<string, SiteValue> = {
+  const incomeEntry = { [copy.hishtalmut.income[employment]!]: incomeIn };
+  const ownShareEntry = { [story.fields.own]: pctIn(ownPick, ownPct, ownShare, story.fields.own) };
+  const employerShareEntry = { [story.fields.employer]: pctIn(employerPick, employerPct, employerShare, story.fields.employer) };
+  const monthlyEntry = { [copy.common.inputNames.monthly]: monthlyIn };
+  const inflationEntry: Record<string, SiteValue> = inflationPct ? { [copy.common.inputNames.inflation]: inflationPct } : {};
+  const deposits: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? { ...ownShareEntry, ...employerShareEntry } : monthlyEntry) };
+  const yearEntry = { [story.yearName]: typed(year, "years", today, story.yearName) };
+  // the run's inputs before the year it stops at: the deposits, the return, inflation and the balance fee
+  const runIn: Record<string, SiteValue> = {
     ...deposits,
-    [copy.hishtalmut.inputNames.ret]: returnIn,
-    ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
-    ...(feePick !== null ? { [story.fields.fee]: enteredValue(feePick, "pct_per_year", today, story.fields.fee) } : trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
-    [story.yearName]: enteredValue(year, "years", today, story.yearName),
+    [copy.common.inputNames.ret]: returnIn,
+    ...inflationEntry,
+    ...(feePick !== null ? { [story.fields.fee]: typed(feePick, "pct_per_year", today, story.fields.fee) } : trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
   };
+  const common: Record<string, SiteValue> = { ...runIn, ...yearEntry };
+  // the same runs stopped at the end of the lock (TXH-09), or a year before it: the year is the rule's, not the one picked
+  const lockIn: Record<string, SiteValue> = { ...runIn, ...(lockYears ? { [copy.hishtalmut.inputNames.lockYears]: lockYears } : {}) };
+  // what was paid in, each deposit in today's money (F-96, A-04): the monthly deposit, twelve times a year, with no return and no fee in it;
+  // a self-employed person's tax back is the deduction on that deposit, at the income (reliefToday)
+  const ownIn: Record<string, SiteValue> = { ...(isEmployee ? { ...incomeEntry, ...ownShareEntry } : monthlyEntry), ...yearEntry };
+  const extraIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : monthlyEntry), ...yearEntry };
+  // the tax paid from the salary on the employer's money above the limit: the limit stays while the salary follows prices (F-96)
+  const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : {}), ...inflationEntry, ...yearEntry };
   const rules = rulesOfBundle(base);
-  const nis = (value: number, about: string) => figure(value, "nis", "F-96", common, today, about, rules);
+  const nis = (value: number, about: string, inputs: Record<string, SiteValue> = common) => figure(value, "nis", "F-96", inputs, today, about, rules);
   // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
   const ranValue = (value: number, about: string, isTax: boolean, formula = "F-96", inputs = common) => {
     const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(isTax ? notFeeFlag : () => true);
     return computed(value, "nis", formula, inputs, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
   };
-  const stepValue = (step: PileStep): SiteValue | null => {
+  // the year picked as one bar: what went in, the return before fees, and what a loss, the fees and the tax took (F-96)
+  const partValue = (part: PileBarPart): SiteValue | null => {
     if (!slice) return null;
-    const value = { own: slice.own, extra: slice.extra, gain: slice.gain, tax: slice.tax, left: slice.net }[step];
-    const about = step === "extra" && !isEmployee ? story.about.extraSelf : story.about[step];
-    if (step === "own" || step === "extra") return nis(value, about);
-    return ranValue(value, about, step === "tax");
+    // whole shekels that add up: the return before fees takes up the rounding, so what is shown in the bar sums to what is left (method.md F-96)
+    const r = Math.round;
+    const fees = r(slice.fees);
+    const salary = r(slice.taxFromSalary);
+    const taxAtExit = r(slice.tax) - salary;
+    const before = r(slice.net) + fees + salary + taxAtExit - r(slice.own) - r(slice.extra);
+    const value = { own: r(slice.own), extra: r(slice.extra), gain: before, loss: -before, fees, salary, tax: taxAtExit }[part];
+    const about = { own: story.about.own, extra: isEmployee ? story.about.extra : story.about.extraSelf, gain: story.about.gain, loss: story.about.gain, fees: story.about.fee, salary: story.about.taxSalary, tax: slice.taxFromSalary > 1 ? story.about.taxWithdrawal : story.about.tax }[part];
+    if (part === "own" || part === "extra") return nis(value, about, part === "own" ? ownIn : extraIn);
+    if (part === "salary") return ranValue(value, about, true, "F-96", salaryTaxIn);
+    return ranValue(value, about, part === "tax");
   };
-  const taxPart = (word: string, value: number, about: string) => ({ word, number: (compact: boolean) => <Num value={ranValue(value, about, true)} display={signed("", compact)} /> });
-  const PLUS: Record<PileStep, string> = { own: "", extra: "+", gain: slice && slice.gain < 0 ? "−" : "+", tax: "−", left: "" };
-  const stepNumber = (step: PileStep, compact: boolean) => {
-    const v = stepValue(step);
-    return v && <Num value={v} display={signed(PLUS[step], compact)} />;
+  const SIGN: Record<PileBarPart, string> = { own: "", extra: "+", gain: "+", loss: "−", fees: "−", salary: "−", tax: "−" };
+  const partNumber = (part: PileBarPart, compact: boolean) => {
+    const v = partValue(part);
+    return v && <Num value={v} display={signed(SIGN[part], compact)} />;
   };
+  const leftValue = slice ? ranValue(slice.net, story.about.left, false) : null;
+  const ownValue = slice ? nis(slice.own, story.about.own, ownIn) : null;
+
+  // the choice the drawing is for: the year picked against the lock year (or, from the lock on, against the year before it)
+  const yearAt = (y: number) => (y >= 1 && y <= YEARS ? (years[y - 1]?.slice ?? null) : null);
+  const compareYear = year < lock ? lock : lock - 1 >= 1 ? lock - 1 : null;
+  const lockSlice = yearAt(lock);
+  const beforeLock = yearAt(lock - 1);
+  // what waiting for the lock's end adds and saves: the gaps between the year picked and the lock year, each of the two its own figure
+  const lockNet = lockSlice ? nis(lockSlice.net, story.about.lockNet, lockIn) : null;
+  const waitWords =
+    slice && lockSlice && lockNet && leftValue && year < lock
+      ? {
+          more: differenceOf([story.inputs.lockNet, lockNet], [story.inputs.left, leftValue], "F-96", { today, about: story.about.waitMore }),
+          saved: differenceOf([story.inputs.tax, ranValue(slice.tax, story.about.tax, true)], [story.inputs.lockTax, nis(lockSlice.tax, story.about.lockTax, lockIn)], "F-96", { today, about: story.about.taxSaved }),
+          at: lockNet,
+        }
+      : null;
+  const head = story.head;
+  const lockYearsWords = <bdi>{fmt.years(lock)}</bdi>;
+  const secondCard = !slice
+    ? null
+    : year < lock
+      ? waitWords && (
+          <StatTile label={<>{head.wait} {lockYearsWords}</>} size="figure" note={<span className="text-gain">{head.more.before} <Num value={waitWords.more} display={fmt.nisWhole} />{head.more.middle} <Num value={waitWords.saved} display={fmt.nisWhole} /> {head.more.after}</span>}>
+            <Num value={waitWords.at} display={fmt.nisWhole} />
+          </StatTile>
+        )
+      : slice.tax < 1
+        ? (
+            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={beforeLock && beforeLock.tax >= 1 && <span>{head.wasBefore.before} <bdi>{fmt.years(lock - 1)}</bdi> {head.wasBefore.after} <Num value={nis(beforeLock.tax, story.about.taxBefore, lockIn)} display={fmt.nisWhole} />.</span>}>
+              <Num value={ranValue(slice.tax, story.about.tax, true)} display={fmt.nisWhole} />
+            </StatTile>
+          )
+        : (
+            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={<span>{head.taxStays.before} {lockYearsWords}{head.taxStays.after}</span>}>
+              <Num value={ranValue(slice.tax, story.about.tax, true)} display={fmt.nisWhole} />
+            </StatTile>
+          );
+  const stripNote = waitWords && (
+    <>
+      <div>
+        {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className="text-gain font-semibold"><Num value={waitWords.more} display={fmt.nisWhole} /></span> {story.note.more}
+      </div>
+      <div>
+        <Num value={waitWords.saved} display={fmt.nisWhole} /> {story.note.saved}
+      </div>
+    </>
+  );
 
   const big: SiteValue = { ...monthlyIn, value: 9_999_999 };
-  const rangeMin = fact(data, "rangeMin");
-  const rangeMax = fact(data, "rangeMax");
-  const rangeCount = fact(data, "rangeCount");
   const brokerCount = fact(data, "brokerCount");
   const trackName = text(data, "trackName");
   const trackNumber = text(data, "trackNumber");
+  const trackCompany = text(data, "trackCompany");
   const fundName = text(data, "fundName");
   const fundNumber = text(data, "fundNumber");
   const brokerName = text(data, "brokerName");
 
-  const subLine = (own: SiteValue, employer: SiteValue, employee: boolean) => (
-    <Sentence size="sm">
-      {story.sub.lead} <Num value={own} /> {employee ? story.sub.fromYou : story.sub.afterRefund}
-      {employee && (
-        <>
-          {" "}
-          <Num value={employer} /> {story.sub.fromEmployer}
-        </>
-      )}
-    </Sentence>
+  const feeHint = trackName && (
+    <>
+      {story.hints.fee.before} <Term id="דמי ניהול">{story.hints.fee.fee}</Term> {story.hints.fee.middle} ״{trackCompany ? <Link to={`/companies/${trackCompany}/${trackNumber}`} className="text-link hover:underline"><MixedName>{trackName}</MixedName></Link> : <MixedName>{trackName}</MixedName>}״ ({story.hints.fee.number} <bdi dir="ltr">{trackNumber}</bdi>){story.hints.fee.after}
+    </>
   );
-  const fundRange = (low: SiteValue, high: SiteValue, gap: SiteValue) =>
-    rangeCount &&
-    rangeMin &&
-    rangeMax && (
-      <>
-        {story.range.among} <Num value={rangeCount} /> {story.range.tracks}
-        <Num value={rangeMin} /> {story.range.to} <Num value={rangeMax} />
-        {story.range.moves} <Num value={gap} display={fmt.nisWhole} />
-        {story.range.left} <Num value={high} display={fmt.nisWhole} /> {story.range.to} <Num value={low} display={fmt.nisWhole} />.
-      </>
-    );
-  const accountRange = (low: SiteValue, high: SiteValue) =>
-    brokerCount && (
-      <>
-        <Term prefix={story.range.inAccount.prefix} id="חשבון ניירות ערך">{story.range.inAccount.term}</Term>
-        {story.range.inAccount.after} <Num value={brokerCount} /> {story.range.tariffs} <Num value={high} /> {story.range.to} <Num value={low} />.
-      </>
-    );
-  const trackNote = (typed: boolean, fund: { low: SiteValue; high: SiteValue; gap: SiteValue } | null, account: { low: SiteValue; high: SiteValue } | null) => (
-    <Sentence size="sm">
-      {trackName && (
-        <>
-          {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {story.held.trackFee.before} <Term id="דמי ניהול">{story.held.trackFee.term}</Term> {story.held.trackFee.after} {trackFee && <Num value={trackFee} />} {story.held.trackAvg.before}{" "}
-          <Term id="רשות שוק ההון ביטוח וחיסכון">{story.held.trackAvg.term}</Term>
-          {story.held.trackAvg.after}
-          {typed && ` ${story.held.feeEntered}`}{" "}
-        </>
-      )}
-      {fund && fundRange(fund.low, fund.high, fund.gap)}
-      {fund && account && " "}
-      {account && accountRange(account.low, account.high)}
-    </Sentence>
-  );
-
-  const shownYear = fmt.years(year);
   // ---- the reader's own values, not the rule: that is in the guide's text above (founder, 2026-11-02)
   const lockWords = lockYears && <Num value={lockYears} display={fmt.years(lock)} />;
-  const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis") => figure(value, unit, "F-97", deposits, today, about, rules);
+  // F-97 stands the deposits against the limit: an employee's share of the salary up to the ceiling (TXH-02, which counts only above it),
+  // a self-employed person's yearly benefited amount (TXH-08); the year a deposit crosses it also rests on inflation, since the deposits
+  // rise with prices and the ceiling does not
+  const capEntry: Record<string, SiteValue> = cap ? { [copy.hishtalmut.inputNames.cap]: cap } : {};
+  const limitEntry: Record<string, SiteValue> = isEmployee ? (cap && income > Number(cap.value) ? capEntry : {}) : selfBenefited ? { [copy.hishtalmut.inputNames.selfBenefited]: selfBenefited } : {};
+  const standingIn: Record<string, SiteValue> = { ...deposits, ...limitEntry };
+  const crossIn: Record<string, SiteValue> = { ...deposits, ...(isEmployee ? capEntry : limitEntry), ...inflationEntry };
+  const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn) => figure(value, unit, "F-97", inputs, today, about, rules);
   const capWords = cap && <Num value={cap} display={fmt.nisWhole} />;
   const inflationWords = inflationPct && <Num value={inflationPct} />;
   const standingLine = (st: StudyStanding, taxed: boolean, employee: boolean) => {
@@ -213,7 +248,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         </Sentence>
       );
     if (st.firstOverYear !== null) {
-      const yearWords = <Num value={standingNum(st.firstOverYear, story.about.crossYear, "years")} display={String(st.firstOverYear)} />;
+      const yearWords = <Num value={standingNum(st.firstOverYear, story.about.crossYear, "years", crossIn)} display={String(st.firstOverYear)} />;
       return (
         <Sentence size="sm">
           {words.crossing.today}{" "}
@@ -260,26 +295,33 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     );
   };
   const settlementInputs = { ...common, ...(withheld ? { [story.early.rate]: withheld } : {}) };
-  const earlyLine = (e: EarlySettlement) => (
-    <Sentence size="sm">
-      {story.early.before} <bdi>{shownYear}</bdi>
-      {e.back < 1 ? story.early.first : story.early.firstThenBack} <Num value={ranValue(e.first, story.about.first, true, "F-98", settlementInputs)} display={fmt.nisWhole} />
-      {story.early.withheld} <Num value={ranValue(e.withheld, story.about.withheld, true, "F-98", settlementInputs)} display={fmt.nisWhole} />{" "}
-      {e.back >= 1 ? (
-        <>
-          {story.early.more} <Num value={ranValue(e.back, story.about.back, true, "F-98", settlementInputs)} display={fmt.nisWhole} /> {story.early.back}
-        </>
-      ) : e.owed >= 1 ? (
-        <>
-          {story.early.owedBefore} <Num value={ranValue(e.owed, story.about.owed, true, "F-98", settlementInputs)} display={fmt.nisWhole} />
-          {story.early.owed}
-        </>
-      ) : (
-        story.early.stop
-      )}
-    </Sentence>
-  );
-  const notes = (n: { employee: boolean; st: StudyStanding | null; e: EarlySettlement | null; taxed: boolean; retTyped: boolean; feeTyped: boolean; fund: { low: SiteValue; high: SiteValue; gap: SiteValue } | null; account: { low: SiteValue; high: SiteValue } | null }) => (
+  const earlyLine = (e: EarlySettlement) => {
+    const money = (value: number, about: string, prefix?: string) => <Num value={ranValue(value, about, true, "F-98", settlementInputs)} display={fmt.nisWhole} {...(prefix ? { prefix } : {})} />;
+    // the usual case, conclusion first: the columns count the refund, so say what is left without it (guidelines/wording.md, sentences 1 and 3)
+    if (e.back >= 1)
+      return (
+        <Sentence size="sm">
+          {story.early.noClaim} {money(e.first, story.about.first)}
+          {story.early.because} {money(e.withheld, story.about.withheld)} {story.early.toTax} {money(e.back, story.about.back, story.early.and)} {story.early.onlyIf}
+        </Sentence>
+      );
+    return (
+      <Sentence size="sm">
+        {story.early.before} <bdi>{shownYear}</bdi>
+        {story.early.first} {money(e.first, story.about.first)}
+        {story.early.withheld} {money(e.withheld, story.about.withheld)}{" "}
+        {e.owed >= 1 ? (
+          <>
+            {story.early.owedBefore} {money(e.owed, story.about.owed)}
+            {story.early.owed}
+          </>
+        ) : (
+          story.early.stop
+        )}
+      </Sentence>
+    );
+  };
+  const notes = (n: { employee: boolean; st: StudyStanding | null; e: EarlySettlement | null; taxed: boolean }) => (
     <div className="flex flex-col gap-5">
       {((n.st && standingLine(n.st, n.taxed, n.employee)) || n.e) && (
         <div className="flex flex-col gap-1.5 text-sm max-w-measure">
@@ -288,58 +330,36 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         </div>
       )}
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
-        {/* a return the person typed is theirs, not the site's assumption */}
-        {n.retTyped ? (
-          <p>
-            {story.held.retEntered.before} <Num value={returnIn} /> {story.held.retEntered.middle}{" "}
-            <Term prefix={story.held.retEntered.prefix} id="אינפלציה">{story.held.retEntered.inflation}</Term> {inflationPct && <Num value={inflationPct} />} {story.held.retEntered.after}
-          </p>
-        ) : (
-          <p>
-            <Term prefix={story.held.ret.prefix} id="תשואה">{story.held.ret.term}</Term> <Num value={returnIn} /> {story.held.inflation.before}{" "}
-            <Term prefix={story.held.inflation.prefix} id="אינפלציה">{story.held.inflation.term}</Term> {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after}
-          </p>
-        )}
-        <p>{story.held.today}</p>
         <p>
-          {n.employee ? story.held.follows.employee : story.held.follows.self}
+          {n.employee ? story.assume.employee : story.assume.self}
           {inflationPct && <Num value={inflationPct} />}
-          {n.employee ? (
-            <>
-              {story.held.follows.employeeAfter} {capWords} {story.held.follows.employeeCapAfter}
-            </>
-          ) : (
-            story.held.follows.selfAfter
-          )}
+          {story.assume.like}
+          <Term id="אינפלציה">{story.assume.term}</Term>
+          {story.assume.after}
         </p>
         {!n.employee && fundName && brokerCount && (
           <p>
             {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{gershayim(brokerName)}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
           </p>
         )}
-        {trackNote(n.feeTyped, n.fund, n.account)}
       </div>
       <RulesLine ids={data.ruleIds} />
     </div>
   );
   // the notes follow one another and only the card keeps its size (founder, 2026-11-03): its room is the longest notes of either kind of work, so what is under the card stays where it is
   const longest = (employee: boolean, over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: over.map(() => 0), per: employee ? "month" : "year", firstOverYear, grows: employee });
-  const notesCases = [true, false].flatMap((employee) =>
+  // the height the notes hold while the year is dragged: only the employment shown, so an employee's card keeps no room for a self-employed line
+  const notesCases = [isEmployee].flatMap((employee) =>
     [longest(employee, employee ? [99_999, 99_999] : [99_999], 1), longest(employee, employee ? [0, 0] : [0], 12)].map((st) =>
-      notes({ employee, st, e: employee ? { withheld: 9_999_999, back: 9_999_999, owed: 0, first: 9_999_999 } : null, taxed: true, retTyped: true, feeTyped: true, fund: { low: big, high: big, gap: big }, account: employee ? null : { low: big, high: big } }),
+      notes({ employee, st, e: employee ? { withheld: 9_999_999, back: 9_999_999, owed: 0, first: 9_999_999 } : null, taxed: true }),
     ),
   );
 
   const lockText = lockWords;
   const account = range.account;
-  const accountOther = !isEmployee
-    ? {
-        to: account?.net ?? null,
-        names: story.names.account,
-        fine: story.names.accountFine,
-        number: (compact: boolean) => account && <Num value={nis(account.net, story.about.account)} display={signed("", compact)} />,
-      }
-    : undefined;
+  // a self-employed person's same outlay in a securities account: that run's own plan and the tariff and fund it ran on (brokerage-account, the best tariff)
+  const accountBundle = data.bundles["brokerage-account"];
+  const accountIn: Record<string, SiteValue> = { ...incomeEntry, ...monthlyEntry, [copy.common.inputNames.ret]: returnIn, ...inflationEntry, ...yearEntry, ...(accountBundle ? termInputs(accountBundle) : {}) };
   const gapWords = picked.gap === "self-employed-early" ? (
     <p>
       {story.selfGap.before} {lockText}
@@ -365,44 +385,59 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       {/* the first field takes a phone's whole row, so five fields and four take the same rows */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
         <div className="col-span-2 lg:col-span-1">
-          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
+          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} start={p05Number(base.p05, "annual_income") / 12} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
         </div>
         {isEmployee ? (
           <>
-            <PercentField unit="pct" label={story.fields.own} value={ownShare} isEntered={ownPick !== null} onCommit={setOwnPick} onReset={() => setOwnPick(null)} disabled={!inputs.ready} />
-            <PercentField unit="pct" label={story.fields.employer} value={employerShare} isEntered={employerPick !== null} onCommit={setEmployerPick} onReset={() => setEmployerPick(null)} disabled={!inputs.ready} />
+            <PercentField unit="pct" label={story.fields.own} value={ownShare} start={Number(ownPct?.value ?? 0)} isEntered={ownPick !== null} onCommit={setOwnPick} onReset={() => setOwnPick(null)} disabled={!inputs.ready} />
+            <PercentField unit="pct" label={story.fields.employer} value={employerShare} start={Number(employerPct?.value ?? 0)} isEntered={employerPick !== null} onCommit={setEmployerPick} onReset={() => setEmployerPick(null)} disabled={!inputs.ready} />
           </>
         ) : (
-          <NumberField label={copy.g2.plan.monthly} unit="nis" value={inputs.monthly} isEntered={inputs.source.monthly === "guide"} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} onCommit={inputs.setMonthly} onReset={() => inputs.setMonthly(null)} disabled={!inputs.ready} />
+          <NumberField label={copy.g2.plan.monthly} unit="nis" value={inputs.monthly} start={inputs.p05.monthly} isEntered={inputs.source.monthly === "guide"} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} onCommit={inputs.setMonthly} onReset={() => inputs.setMonthly(null)} disabled={!inputs.ready} />
         )}
-        <PercentField label={story.fields.ret} value={returnPct} isEntered={returnPick !== null} validate={percentCheck(p05Range(base.p05, "sliders", "A-01") ?? { min: 0, max: 20 })} onCommit={setReturnPick} onReset={() => setReturnPick(null)} disabled={!inputs.ready} />
-        <PercentField label={story.fields.fee} value={feeShown} isEntered={feePick !== null} validate={percentCheck({ min: 0, max: Number(feeCap?.value ?? 100) })} onCommit={setFeePick} onReset={() => setFeePick(null)} disabled={!inputs.ready} />
+        <PercentField label={story.fields.ret} value={returnPct} start={p05Number(base.p05, "A-01")} isEntered={returnPick !== null} validate={percentCheck(p05Range(base.p05, "sliders", "A-01") ?? { min: 0, max: 20 })} onCommit={setReturnPick} onReset={() => setReturnPick(null)} disabled={!inputs.ready} />
+        <PercentField label={story.fields.fee} {...(feePick === null && feeHint ? { hint: feeHint } : {})} value={feeShown} start={Number(trackFee?.value ?? 0)} isEntered={feePick !== null} validate={percentCheck({ min: 0, max: Number(feeCap?.value ?? 100) })} onCommit={setFeePick} onReset={() => setFeePick(null)} disabled={!inputs.ready} />
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className="text-lg font-semibold">
-          {story.title} <InputSlot chars={7}><bdi>{shownYear}</bdi></InputSlot>
-        </h3>
+        {slice && leftValue && ownValue && (
+          <StatRow cols={2}>
+            <StatTile label={<>{head.at} <InputSlot><bdi>{shownYear}</bdi></InputSlot></>} size="figure" note={<span>{head.times.before} <Num value={figure(slice.net / slice.own, "count", "F-96", { [story.bar.left]: leftValue, [story.bar.own]: ownValue }, today, story.about.times)} display={(v) => fmt.number(Math.round(Number(v) * 10) / 10)} /> {head.times.after} (<Num value={ownValue} display={fmt.nisWhole} />)</span>}>
+              <Num value={leftValue} display={fmt.nisWhole} />
+            </StatTile>
+            {secondCard}
+          </StatRow>
+        )}
         <PileYears
           years={slices}
           year={year}
           onYear={setYearPick}
           lockYear={lock}
-          before={<span className="text-chart-pile-tax">{story.strip.before} {lockText}{story.strip.taxed}</span>}
+          compare={compareYear}
+          axis={story.yearName}
+          valueAxis={story.chartLine}
+          {...(stripNote ? { note: stripNote } : {})}
+          amount={(net, isPicked) => (isPicked ? fmt.number(Math.round(net / 100) / 10) : fmt.number(Math.round(net / 1000)))}
+          before={
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              <span aria-hidden="true" className="size-2.5 shrink-0 rounded-[1px] bg-chart-pile-tax" />
+              <span>
+                {story.strip.before} {lockText}
+                {story.strip.taxed}
+              </span>
+            </span>
+          }
           after={<span className="text-muted-foreground">{story.strip.from}{lockText}{overLimit ? story.strip.exemptUnderLimit : story.strip.exempt}</span>}
           label={story.strip.aria}
           valueText={shownYear}
         />
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
-        <LongestCase cases={[subLine(big, big, true), subLine(big, big, false)]}>{subLine(isEmployee ? nis(ownMonthly, story.about.ownMonthly) : monthlyIn, nis(employerMonthly, story.about.employerMonthly), isEmployee)}</LongestCase>
-        <PileStory
-          slice={slice}
-          names={{ own: story.names.own, extra: isEmployee ? story.names.employer : story.names.refund, gain: slice && slice.gain < 0 ? story.names.loss : story.names.gain, tax: story.names.tax, left: story.names.left }}
-          fine={{ gain: story.names.gainFine }}
-          number={stepNumber}
-          firstRow={pileFirstRow(slices)}
-          {...(isEmployee && slice ? { taxParts: { salary: taxPart(story.names.taxSalary, slice.taxFromSalary, story.about.taxSalary), withdrawal: taxPart(story.names.taxWithdrawal, slice.tax - slice.taxFromSalary, story.about.taxWithdrawal) } } : {})}
-          {...(accountOther ? { other: accountOther } : {})}
+        <PileBar
+          slice={slice && { ...slice, fees: Math.round(slice.fees), tax: Math.round(slice.tax), taxFromSalary: Math.round(slice.taxFromSalary) }}
+          names={{ own: story.bar.own, extra: isEmployee ? story.bar.employer : story.bar.refund, gain: story.bar.gain, loss: story.bar.loss, fees: story.bar.fees, salary: story.bar.salary, tax: slice && slice.taxFromSalary > 1 ? story.bar.taxWithdrawal : story.bar.tax }}
+          number={partNumber}
+          left={{ words: story.bar.left, number: leftValue && <Num value={leftValue} display={fmt.nisWhole} /> }}
+          {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <Num value={nis(account.net, story.about.account, accountIn)} display={fmt.nisWhole} /> } } : {})}
           gap={gapWords}
           label={story.aria}
         />
@@ -415,10 +450,6 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           // whole shekels, so what enters plus what returns is exactly the column
           e: early && early.withheld >= 1 ? { ...early, first: slice ? Math.round(slice.net) - Math.round(early.back) + Math.round(early.owed) : early.first } : null,
           taxed: overLimit,
-          retTyped: returnPick !== null,
-          feeTyped: feePick !== null,
-          fund: range.fund ? { low: nis(range.fund.low, story.about.rangeFund), high: nis(range.fund.high, story.about.rangeFund), gap: nis(range.fund.high - range.fund.low, story.about.rangeGap) } : null,
-          account: account?.range ? { low: nis(account.range.low, story.about.rangeAccount), high: nis(account.range.high, story.about.rangeAccount) } : null,
         })}
       </LongestCase>
     </div>

@@ -4,7 +4,7 @@ import type { Config } from "@react-router/dev/config";
 // its loader data written beside it. Served by GitHub Pages as a project site, under /finance-tool/.
 export default {
   ssr: false,
-  // QUICK=1 skips the ~890 company and track pages, for a quick local build (13 s instead of 2 min); QUICK=/companies/x,...
+  // QUICK=1 skips the ~890 company and track pages, for a quick local build (about 12 s instead of 40); QUICK=/companies/x,...
   // keeps those listed. One of each kind is always built, since every route with a loader must be pre-rendered. GitHub
   // always builds every page.
   prerender: async () => {

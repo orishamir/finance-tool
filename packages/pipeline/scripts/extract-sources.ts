@@ -1,10 +1,11 @@
 // Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`),
 // plus `derived_from` (and, for a general rule, `examples`: the companies' terms its line names, review 2026-10-26) and
 // `sources_missing_reason`, and, since 2026-10-26, who it applies to from the `- Scope:` line:
-// `scope`, `scope_institutions` and `scope_settle` (D30; research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
+// `scope`, `scope_institutions` and `scope_settle` (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
 // resolved against data/sources/institutions.json. Re-runnable: it strips its own keys from a record and writes them again,
-// never touches any other field and never touches the markdown. Spec: research/knowledge/2026-10-24-synthesis.md 3.2,
-// docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (add `--dry` to only print the report).
+// never touches any other field and never touches the markdown. Spec: 8dd1f013:research/knowledge/2026-10-24-synthesis.md 3.2,
+// docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (it prints its report; add `--dry` to
+// write nothing).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -591,7 +592,6 @@ function main() {
   console.log(`Scope: ${Object.entries(scopeCounts).map(([k, v]) => `${k} ${v}`).join(", ")}; problems ${scopeProblems.length}`);
   for (const p of scopeProblems) console.error(`scope: ${p}`);
   if (scopeProblems.length > 0) process.exitCode = 1;
-  if (!dry) writeFileSync(join(root, "research/knowledge/2026-10-24-extraction-report.md"), md);
 }
 
 function renderReport(r: Report, tables: { publishers: boolean; documents: boolean }): string {

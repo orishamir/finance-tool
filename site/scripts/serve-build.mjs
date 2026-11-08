@@ -50,7 +50,10 @@ export function serveBuild(folder, { port = 0, base = "/finance-tool/" } = {}) {
       const nf = join(root, "404.html");
       return res.writeHead(404, { "content-type": TYPES[".html"] }).end(existsSync(nf) ? readFileSync(nf) : "");
     }
-    res.writeHead(200, { "content-type": TYPES[extname(f)] || "application/octet-stream", "cache-control": "no-cache" }).end(readFileSync(f));
+    // the build's assets/ are named by their content, so a browser keeps them across pages (the checks open hundreds of pages, each
+    // fetching every script again before 2026-11-08); a page and its .data are always fetched afresh
+    const cache = rel.startsWith("assets/") ? "public, max-age=31536000, immutable" : "no-cache";
+    res.writeHead(200, { "content-type": TYPES[extname(f)] || "application/octet-stream", "cache-control": cache }).end(readFileSync(f));
   });
   return new Promise((ok) =>
     server.listen(port, "127.0.0.1", () => {

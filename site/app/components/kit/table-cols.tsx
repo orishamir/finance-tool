@@ -3,7 +3,7 @@
 // columns that share the rest, "0" on a phone for a column the phone leaves out. A guard in guards.test.ts holds every <table> to it.
 // A column left out on a phone leaves the table's grid, its <col> with its cells (`PHONE_GONE` on each): a <col> kept at width 0 while
 // its cells were hidden took the next cell into it, and on the indices page two figures of the hedge table were drawn over each other
-// (#190, 390 px; the rules page's documents table had the same fault, hidden by the empty column beside it).
+// (390 px; the rules page's documents table had the same fault, hidden by the empty column beside it).
 import type { CSSProperties } from "react";
 
 export interface ColWidth {

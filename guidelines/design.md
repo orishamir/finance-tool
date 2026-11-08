@@ -13,7 +13,16 @@ one and specifies every component.
 3. **Colour by role, never by value.** Use the semantic roles as Tailwind
    utilities (`bg-card`, `text-entered`, `text-muted-foreground`), never a
    palette step or a literal colour.
-4. **Check it** in the gallery and on the page, at 1440 px and 390 px.
+4. **Check it** in the gallery and on the page, at 1440 px and 390 px, by
+   script, not by screenshot ([working.md](working.md)). `npm run
+   layout-check` runs with `npm run check` and on GitHub. It loads every
+   page at 1440, 390 and 320 px and fails on a page wider than the screen,
+   words that don't wrap running out of their card or cell, a "?" on a line
+   of its own, and a warning that a small phone's sheet shows only after
+   scrolling. When a layout mistake turns up that it misses, add a check for
+   it there, with a planted failure on `/kit` that the check must catch.
+   What it found when it came in is listed, each with why, in
+   `site/scripts/layout-check-leftovers.json`.
 
 ## When the founder asks for a page change
 
@@ -54,7 +63,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **Number states.**
   - Sourced: a solid grey underline.
   - Computed: a dotted violet underline.
-  - Entered by the person: blue ink on a blue highlight.
+  - Entered by the person: blue ink on a blue highlight. Not a chart's
+    field: its default and what the reader types in it are plain numbers
+    ([charts.md](charts.md)).
   - `caution`, amber: stale, a secondary source, or a company's figure used
     outside its own context, labelled "לפי החברה". A company's figure about
     its own product, shown on that product, is plain sourced.
@@ -81,7 +92,8 @@ What goes on a page is his call. When he asks for a change, build it this way:
   depends on: "בשנה על 10,000 ₪, אחרי מס", not "הכי הרבה" plus a sentence
   that decodes it.
 - **When a head, name or cell needs more than it can say, add a "?" beside
-  it** (`HelpMark`) that opens the longer explanation on a tap.
+  it** (`HelpMark`) that opens the longer explanation on a tap: a glossary
+  term's card, or a short text of its own.
 - **A sentence above a table may say what the table is about, never what
   one column, row or cell means.** That goes in the head or its "?". Where
   the table's title already says what it is about, keep just the title.

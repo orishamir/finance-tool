@@ -5,7 +5,7 @@ import { AcceptedFallField } from "../exposure-mode/fields";
 import { fmt } from "../../lib/format";
 import { useGoals, type FieldKey } from "../../lib/goal";
 import type { RunGoal } from "../../lib/compare";
-import { Button, ParameterLine, PlanChips, type PlanChipItem } from "../kit";
+import { Button, PlanChips, type PlanChipItem } from "../kit";
 import { availableTooBig, InsuranceField, type FormData } from "./goal-form";
 import { GoalNumber, GoalSlider, SwitchRow } from "./fields";
 
@@ -16,19 +16,18 @@ export interface Suggestion {
 
 const between = (r: { min: number; max: number }, msg: readonly [string, string]) => (n: number) => (n < r.min || n > r.max ? `${msg[0]} ${fmt.number(r.min)} ${msg[1]}${fmt.number(r.max)}.` : null);
 
-/** The chips under the chart: years, amounts, return, inflation; entered ones in blue, an empty return says so. */
-export function AssumptionChips({ g, sources, onOpen, exposure }: { g: RunGoal; sources: { horizon: boolean; amountNow: boolean; monthly: boolean; available: boolean; inflation: boolean }; onOpen: (f: FieldKey | "all") => void; exposure?: { acceptedFall: number | null } }) {
-  // a horizon the preset gave ("לא יודעים" on the home page, D7) wears the site-parameter tag
+/** The chips under the chart: years, amounts, return, inflation; an empty return says so. A typed value looks like a start value (founder, 2026-11-08). */
+export function AssumptionChips({ g, onOpen, exposure }: { g: RunGoal; onOpen: (f: FieldKey | "all") => void; exposure?: { acceptedFall: number | null } }) {
   const chips: PlanChipItem[] = [
-    { field: "horizonYears", label: r2.result.chips.years, text: fmt.years(g.horizonYears), entered: sources.horizon, parameter: g.fromPreset.horizon && !sources.horizon },
-    { field: "amountNow", label: r2.result.chips.amountNow, text: fmt.nisWhole(g.amountNow), entered: sources.amountNow },
-    { field: "monthly", label: r2.result.chips.monthly, text: fmt.nisWhole(g.monthly), entered: sources.monthly },
-    { field: "available", label: r2.result.chips.available, text: fmt.nisWhole(g.available), entered: sources.available },
+    { field: "horizonYears", label: r2.result.chips.years, text: fmt.years(g.horizonYears) },
+    { field: "amountNow", label: r2.result.chips.amountNow, text: fmt.nisWhole(g.amountNow) },
+    { field: "monthly", label: r2.result.chips.monthly, text: fmt.nisWhole(g.monthly) },
+    { field: "available", label: r2.result.chips.available, text: fmt.nisWhole(g.available) },
     // exposure mode (release 5): each exposure has its own return, so the goal's single return gives way to the accepted fall
     exposure
-      ? { field: "acceptedFall", label: r5.exposure.chips.acceptedFall, text: exposure.acceptedFall === null ? r2.result.chipEmpty : fmt.pct(exposure.acceptedFall), entered: exposure.acceptedFall !== null }
-      : { field: "return", label: r2.result.chips.return, text: g.returnPct === null ? r2.result.chipEmpty : fmt.pct(g.returnPct), entered: g.returnPct !== null },
-    { field: "inflation", label: r2.result.chips.inflation, text: g.inflationPct === null ? "" : fmt.pct(g.inflationPct), entered: g.inflationPct !== null },
+      ? { field: "acceptedFall", label: r5.exposure.chips.acceptedFall, text: exposure.acceptedFall === null ? r2.result.chipEmpty : fmt.pct(exposure.acceptedFall) }
+      : { field: "return", label: r2.result.chips.return, text: g.returnPct === null ? r2.result.chipEmpty : fmt.pct(g.returnPct) },
+    { field: "inflation", label: r2.result.chips.inflation, text: g.inflationPct === null ? "" : fmt.pct(g.inflationPct) },
   ];
   return <PlanChips items={chips} allLabel={r2.result.chips.all} onOpen={onOpen} />;
 }
@@ -72,13 +71,12 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveO
   };
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
-      <ParameterLine />
       <Suggest s={suggestion} field="horizonYears" onAdopt={adopt("horizonYears")}>
         <GoalSlider label={r2.form.years} unit="years" value={resolved.horizonYears} source={src.horizonYears} presetValue={resolved.preset.horizon} onChange={set("horizonYears")} validate={(n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null)} min={data.horizon.min} max={data.horizon.max} step={data.horizon.step} inputMode="numeric" />
       </Suggest>
       <GoalNumber label={r2.form.amountNow} unit="nis" value={resolved.amountNow} source={src.amountNow} onChange={set("amountNow")} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} />
       <GoalSlider label={r2.form.monthly} unit="nis_per_month" value={resolved.monthly} source={src.monthly} presetValue={resolved.preset.monthly} onChange={set("monthly")} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} min={data.monthly.min} max={data.monthly.max} step={data.monthly.step} />
-      {!leaveOut.includes("available") && <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} externalError={availableTooBig(resolved)} validate={(n) => (n < 0 ? valuesCopy.errors.negative : resolved.amountNow !== null && n > resolved.amountNow ? r2.form.errAvailable : null)} />}
+      {!leaveOut.includes("available") && <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.preset.share !== null && resolved.amountNow !== null ? Math.round((resolved.amountNow * resolved.preset.share) / 100) : null} onChange={set("available")} externalError={availableTooBig(resolved)} validate={(n) => (n < 0 ? valuesCopy.errors.negative : resolved.amountNow !== null && n > resolved.amountNow ? r2.form.errAvailable : null)} />}
       <div className="grid grid-cols-2 gap-3">
         {exposure ? (
           <div className="col-span-2">
@@ -95,7 +93,7 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveO
       </div>
       {!leaveOut.includes("insurance") && <InsuranceField data={data} />}
       {!exposure && <p className="text-xs text-muted-foreground -mt-2">{current.assumptions.return === null ? `${r2.form.returnEmpty} ${r2.form.returnHint}` : r2.form.returnFilled}</p>}
-      {!leaveOut.includes("anytime") && <SwitchRow label={r2.form.anytime} checked={resolved.anytime} source={src.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))} />}
+      {!leaveOut.includes("anytime") && <SwitchRow label={r2.form.anytime} checked={resolved.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} />}
     </div>
   );
 }

@@ -7,9 +7,9 @@ import { decompose, relativeGap } from "@finance-tool/engine";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, r5, scnCompare, system } from "../../copy";
 import { AssumptionChips, AssumptionsPanel } from "../compare/assumptions";
-import { EnteredReturnCaveat, HorizonDefaultedNote } from "../compare/why";
+import { EnteredReturnCaveat, HorizonDefaultedNote, thetaValue } from "../compare/why";
 import { BiggestDifference } from "../compare/why";
-import { blockedMarks, countForm, keepsFromRank } from "../../lib/compare";
+import { blockedMarks, breakdownFormulas, countForm, keepsFromRank } from "../../lib/compare";
 import { useValueMode } from "../../lib/mode-store";
 import type { FormData } from "../compare/goal-form";
 import { goalTitle } from "../compare/goal-form";
@@ -19,12 +19,11 @@ import { Sheet } from "../Sheet";
 import { BlockedGroups, Callout, Card, CoverageFold, Disclosure, SegmentedControl, TableCols, Tag, useFlip } from "../kit";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { forgetRevisit, useRevisit } from "../revisit/use-revisit";
-import { computed } from "../../lib/value";
 import { makeValues, runGoalOf, type CompareBundle } from "../../lib/compare";
-import { beginEdit, commitEdit, computeExposureMode, rankingInputs, seriesFor, stageEmpty, type ExposureResultView, type ExposureRowView, type RankStage } from "../../lib/exposure-mode";
+import { beginEdit, commitEdit, computeExposureMode, rankingInputs, runRefOf, seriesFor, stageEmpty, type ExposureResultView, type ExposureRowView, type RankStage } from "../../lib/exposure-mode";
 import { fmt } from "../../lib/format";
 import { useGoals, type FieldKey } from "../../lib/goal";
-import { snapshotExposure } from "../../lib/revisit";
+import { revisitValue, snapshotExposure } from "../../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../../lib/state";
 import { ExposureChartCard } from "./chart";
 import type { ExpCtx } from "./ctx";
@@ -65,7 +64,8 @@ export function ExposureHeadline({ ctx, onWhy }: { ctx: ExpCtx; onWhy: (el: HTML
   const h = view.headline;
   const top = h.winner;
   const second = view.ranked[1];
-  const theta = mk.pct(view.theta * 100, "F-80", r2.result.tieMid);
+  // θ is P-01 itself, the site's parameter: shown as that value, never as a figure computed over the plan
+  const theta = thetaValue(ctx);
   const hl = r5.exposure.headline;
   let body: ReactNode = null;
   let reason: ReactNode = null;
@@ -85,7 +85,9 @@ export function ExposureHeadline({ ctx, onWhy }: { ctx: ExpCtx; onWhy: (el: HTML
     case "tie": {
       const tied = view.ranked.filter((r) => h.topTie.includes(r.id));
       const gap = relativeGap(tied[0]!.real!, tied[tied.length - 1]!.real!) * 100;
-      const gapNum = <Num value={mk.pct(gap, "F-80", r2.result.tieMid)} />;
+      const first = tied[0]!;
+      const last = tied[tied.length - 1]!;
+      const gapNum = <Num value={mk.tieGap(gap, { name: first.entry.name, real: first.real!, run: runRefOf(first) }, { name: last.entry.name, real: last.real!, run: runRefOf(last) })} />;
       body =
         tied.length === 2 ? (
           <Tpl t={hl.tie} vars={{ a: <NameLink row={tied[0]!} />, b: <NameLink row={tied[1]!} />, gap: gapNum, theta: <Num value={theta} /> }} />
@@ -98,7 +100,7 @@ export function ExposureHeadline({ ctx, onWhy }: { ctx: ExpCtx; onWhy: (el: HTML
       const d = view.comparison.ranking.topTwo?.deciding;
       body = <Tpl t={h.sourcedWinner ? hl.bareSourced : hl.bare} vars={{ exposure: <NameLink row={top!} /> }} />;
       // A7: "ההבדל הגדול ביותר", not "כי": the largest gap need not favour the leader
-      if (d?.formula && second) reason = <BiggestDifference deciding={d as never} mk={mk} top={{ name: top!.entry.name, run: top!.run && { usedRules: top!.run.rules } }} second={{ name: second.entry.name, run: second.run && { usedRules: second.run.rules } }} />;
+      if (d?.formula && second) reason = <BiggestDifference deciding={d as never} mk={mk} top={{ name: top!.entry.name, run: runRefOf(top!) }} second={{ name: second.entry.name, run: runRefOf(second) }} />;
       break;
     }
   }
@@ -135,6 +137,11 @@ const view_ctx = (ctx: ExpCtx) => ctx.view.ctx;
 
 function BreakdownTable({ ctx, rows }: { ctx: ExpCtx; rows: ExposureRowView[] }) {
   const b = rows.map((r) => breakdownOf(ctx, r));
+  // each line by its own formula, as the comparison's table (`breakdownFormulas`): each tax by the holding wrapper's record
+  const formulas = rows.map((r) => {
+    const w = r.holding.wrapperId ? ctx.bundle.wrappers.find((x) => x.id === r.holding.wrapperId) : undefined;
+    return w ? breakdownFormulas(w.record) : null;
+  });
   const keys = ["relief", "fees", "taxDuring", "taxExit", "lockUp", "result"] as const;
   return (
     <table className="tbl text-sm [&_td]:whitespace-nowrap">
@@ -155,7 +162,7 @@ function BreakdownTable({ ctx, rows }: { ctx: ExpCtx; rows: ExposureRowView[] })
             <th scope="row">{breakdownLabels[k]}</th>
             {rows.map((r, i) => (
               <td key={r.id}>
-                <Num size="cell" value={ctx.mk.nis(b[i]![k], "F-06", breakdownLabels[k], r.run && { usedRules: r.run.rules })} />
+                <Num size="cell" value={ctx.mk.nis(b[i]![k], formulas[i]?.[k] ?? "F-06", breakdownLabels[k], runRefOf(r))} />
               </td>
             ))}
           </tr>
@@ -314,7 +321,7 @@ function exposureFigures(view: ExposureResultView, g: ReturnType<typeof runGoalO
   const a = at(1);
   const b = at(g.horizonYears);
   if (a === undefined || b === undefined) return null;
-  const run = { usedRules: top.run.rules };
+  const run = runRefOf(top);
   return { a: <Num value={mk.nis(a, "F-06", r2.realLabel, run)} />, b: <Num value={mk.nis(b, "F-06", r2.realLabel, run)} /> };
 }
 
@@ -382,13 +389,6 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
     const { choice: _drop, ...rest } = saved;
     setSaveFailed(!saveComparisonRecord(rest));
     forgetRevisit();
-  };
-  const sources = {
-    horizon: resolved!.source.horizonYears === "entered",
-    amountNow: resolved!.source.amountNow === "entered",
-    monthly: resolved!.source.monthly === "entered",
-    available: resolved!.source.available === "entered",
-    inflation: g.inflationPct !== null,
   };
   const openField = (f: FieldKey | "all") => {
     void f;
@@ -472,7 +472,7 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
             </h2>
             <Card className="flex flex-col gap-4">
               <ExposureChartCard ctx={ctx} view={view} mode={mode} onMode={setMode} />
-              <AssumptionChips g={g} sources={sources} onOpen={openField} exposure={{ acceptedFall: goal.assumptions.acceptedFall ?? null }} />
+              <AssumptionChips g={g} onOpen={openField} exposure={{ acceptedFall: goal.assumptions.acceptedFall ?? null }} />
             </Card>
           </section>
           <Card as="aside" pad="aside" ref={panelRef} className="hidden lg:block" aria-label={r5.exposure.assumptions.title}>
@@ -505,7 +505,7 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
         {panelOpen && <AssumptionsPanel data={data} suggestion={null} onAdopted={() => {}} exposure />}
       </Sheet>
       {readableSaved && revisit && revisit.status !== "unreadable" && (
-        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
+        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={revisitValue(revisit, v, about, isoToday())} />} />
       )}
     </>,
   );

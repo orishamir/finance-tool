@@ -1,4 +1,4 @@
-// Who a rule applies to, on the site (D30; research/specs/2026-10-25-rules-scope/spec.md §4). Pure helpers, safe in the browser:
+// Who a rule applies to, on the site (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4). Pure helpers, safe in the browser:
 // the record carries its scope and the companies it names (extracted from the rule base), and the root loader gives every page the
 // link of each company (`ProvenanceData.companies`) and, per record that is not general, the companies whose own document it cites
 // (`ProvenanceData.ownDocs`): only those list it in their section (review, 2026-10-26).

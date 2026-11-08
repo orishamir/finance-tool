@@ -1,4 +1,4 @@
-// The track browser (D54, 2026-11-03; issue 173): the controls and the list for one product. The product is in the address
+// The track browser (D54, 2026-11-03): the controls and the list for one product. The product is in the address
 // (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are the person's state on the page.
 // No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list (founder, 2026-11-03). The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
 // The controls stand in the order they narrow the list (product, search, kind); the count and the order are said right over the list.
@@ -6,11 +6,11 @@ import { startTransition, useDeferredValue, useEffect, useMemo, useState } from 
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { HELP_TERMS, SORTS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, feeRangeOf, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
+import { HELP_TERMS, SORTS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
 import { normName } from "../../lib/track-names";
 import { FilterChip, LongestCase, SelectField, TextField, useFlip } from "../kit";
 import { Term } from "../provenance";
-import { FeeRange, TrackList } from "./list";
+import { TrackList } from "./list";
 
 const ids = Object.keys(SORTS) as SortId[];
 
@@ -27,8 +27,8 @@ function keepFor(search: URLSearchParams): string {
   return s ? `?${s}` : "";
 }
 
-/** "143 מסלולים של 12 חברות (מתוך 143) · דמי ניהול מהחיסכון: מ־0.10% עד 0.90%." A narrow screen breaks it at the dot, never inside a part. */
-function CountLine({ view, shown, companies, fees }: { view: ProductView; shown: number; companies: number; fees: TbGroup["fees"] }) {
+/** "143 מסלולים של 12 חברות (מתוך 143)." No fee range: the table's cells show the fees (founder, 2026-11-08). */
+function CountLine({ view, shown, companies }: { view: ProductView; shown: number; companies: number }) {
   const total = view.tracks.length;
   return (
     <p className="text-sm text-muted-foreground">
@@ -36,12 +36,6 @@ function CountLine({ view, shown, companies, fees }: { view: ProductView; shown:
         {shown === 0 ? t.count.tracksNone : `${tracksPhrase(shown)} ${t.count.of} ${companiesPhrase(companies)}`}
         {shown < total && ` (${t.count.outOf} ${fmt.number(total)})`}
       </span>
-      {shown > 0 && (
-        <>
-          {" · "}
-          <FeeRange fees={fees} />
-        </>
-      )}
       .
     </p>
   );
@@ -54,8 +48,6 @@ export function TrackBrowser({ data }: { data: TbData }) {
   // every product's view is built once: a switch of product then only redraws
   const views = useMemo(() => data.products.map((p) => buildProductView(data, p.id)!), [data]);
   const view = views.find((v) => v.id === productId)!;
-  // the product's whole fee range, for the count line's longest case
-  const allFees = useMemo(() => feeRangeOf(view.tracks, data.today, { low: t.about.listLow, high: t.about.listHigh }), [view, data.today]);
   // the kind and the sort live in the address (founder, 2026-11-03), so a link opens the same list:
   // ?kind=מניות&sort=assets&order=reverse; the defaults are left out. The page is pre-rendered without them, so they are
   // read once the page is in the browser (reading them while hydrating would not match the pre-rendered page).
@@ -88,7 +80,6 @@ export function TrackBrowser({ data }: { data: TbData }) {
   const shown = useMemo(() => filterTracks(view, { kind, q: dq }), [view, kind, dq]);
   const sorted = useMemo(() => sortTracks(shown, sort, by), [shown, sort, by]);
   const groups = useMemo(() => buildGroups(view, sorted, by, data.today), [view, sorted, by, data.today]);
-  const fees = useMemo(() => feeRangeOf(shown, data.today, { low: t.about.listLow, high: t.about.listHigh }), [shown, data.today]);
   const listKey = `${productId}|${kind}`;
   const [grown, setGrown] = useState("");
   const limit = grown === listKey ? Infinity : FIRST_ROWS;
@@ -173,8 +164,8 @@ export function TrackBrowser({ data }: { data: TbData }) {
       />
 
       <div className="flex flex-col gap-1 pt-1">
-        <LongestCase cases={[<CountLine key="a" view={view} shown={view.tracks.length} companies={view.companies.length} fees={allFees} />, <CountLine key="b" view={view} shown={view.tracks.length - 1} companies={view.companies.length} fees={allFees} />]}>
-          <CountLine view={view} shown={shown.length} companies={companiesIn(shown)} fees={fees} />
+        <LongestCase cases={[<CountLine key="a" view={view} shown={view.tracks.length} companies={view.companies.length} />, <CountLine key="b" view={view} shown={view.tracks.length - 1} companies={view.companies.length} />]}>
+          <CountLine view={view} shown={shown.length} companies={companiesIn(shown)} />
         </LongestCase>
         <LongestCase cases={longestOrder.map((line, i) => <p key={i} className="text-sm">{line}</p>)}>
           <p className="text-sm text-muted-foreground">{orderLine(sort, by)}</p>

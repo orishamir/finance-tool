@@ -11,7 +11,7 @@ The page shows which of the three it is.
 
 1. **Look in what we have.** Search the rule base
    (`.claude/skills/il-finance/references/`) and the document library
-   (`node research/library/library.mjs find <words>`). Most answers are
+   (`node tools/library.mjs find <words>`). Most answers are
    already there.
 2. **Never answer from memory.** If the rule isn't in the rule base and you
    can't find it, say it is missing and stop. Don't guess or approximate.
@@ -68,6 +68,9 @@ The page shows which of the three it is.
 ## Privacy
 
 - The repository and the site are public. Nothing private goes into them:
-  nothing from the founder's mail, nothing about his own money, nothing about
-  the people who use the site.
+  nothing about the founder's own money or his mail beyond what the next
+  line allows, nothing about the people who use the site.
+- A company's written answer or document sent to the founder may be cited as
+  the company's own, with its name and date, never with the founder's name,
+  address or anything about his own money.
 - No data whose terms forbid republishing (so no TASE fund list).

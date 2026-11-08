@@ -1,12 +1,11 @@
 // The goal form's inputs (design-spec 6.3): number and slider fields that know whether their value is the
 // person's or a preset's, month field, switch row, percent pair, age stepper and the preset chips. They reuse
-// the release 1 field anatomy (the kit's NumberField and RangeField) and add the "ערך התחלתי" / "הוזן על ידך" state line.
+// the release 1 field anatomy (the kit's NumberField and RangeField): a field a preset fills carries the kit's reset to the preset's
+// value on its label line (founder, 2026-11-08).
 import { useId, useState, type ReactNode } from "react";
-import { buttons, r2, values as valuesCopy } from "../../copy";
+import { r2, values as valuesCopy } from "../../copy";
 import type { FieldSource, PresetId } from "../../lib/goal";
-import { IconReset } from "../icons";
-import { StateTag } from "../provenance";
-import { ChoiceChips, cx, FieldState, NumberField, RangeField, StepButtons } from "../kit";
+import { ChoiceChips, cx, NumberField, RangeField, StepButtons } from "../kit";
 
 export interface GoalNumberProps {
   label: ReactNode;
@@ -39,13 +38,9 @@ export function GoalNumber({ label, unit, value, source, presetValue, onChange, 
       validate={validate ?? (() => null)}
       onCommit={(n) => onChange(n)}
       onReset={() => onChange(null)}
+      start={compact ? null : (presetValue ?? null)}
       hint={hint}
-      note={
-        <>
-          {note}
-          {!bare && !compact && <FieldState entered={source === "entered"} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
-        </>
-      }
+      note={note}
       placeholder={placeholder}
       inputMode={inputMode}
       compact={compact}
@@ -94,7 +89,7 @@ export function GoalSlider({
       step={step}
       inputMode={inputMode}
       optional
-      footer={<FieldState entered={source === "entered"} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
+      start={presetValue ?? null}
     />
   );
 }
@@ -161,7 +156,7 @@ export function MonthField({ label, value, min, max, onChange }: { label: ReactN
 }
 
 /** A switch row: the label at the start, the switch at the end, 44px tall. */
-export function SwitchRow({ label, checked, onChange, source, onReset }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void; source: FieldSource; onReset: () => void }) {
+export function SwitchRow({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void }) {
   const id = useId();
   return (
     <div className="flex flex-col gap-1">
@@ -180,7 +175,6 @@ export function SwitchRow({ label, checked, onChange, source, onReset }: { label
           <span className={cx("absolute top-0.5 size-5 rounded-full transition-all duration-[var(--duration-fast)]", checked ? "bg-background start-6" : "bg-muted-foreground start-0.5")} />
         </button>
       </div>
-      <FieldState entered={source === "entered"} canReset={false} onReset={onReset} />
     </div>
   );
 }

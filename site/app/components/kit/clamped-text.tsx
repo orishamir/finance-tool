@@ -1,4 +1,4 @@
-// A long text on a row of a list whose rows must keep their heights (#190, fourth pass: on a phone the account list held about 450 px of
+// A long text on a row of a list whose rows must keep their heights (fourth pass: on a phone the account list held about 450 px of
 // blank because a house's grey row carried its record's nine-line reason in one state and a two-line price in the other). The text shows
 // its first two lines; the rest opens at the person's own tap, as a fold does, and closes again. The toggle is a 44 px target that takes
 // no more height than a line of text, and stands only when the text is cut.

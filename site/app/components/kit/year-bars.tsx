@@ -1,6 +1,6 @@
 // A value for each year as a bar from zero (2026-10-29, the index page: the dollar's change against the shekel each year): years left to
 // right, the value axis at the left edge, each bar's figure at its end. One neutral hue: the bars are one series. Own SVG. Pointing at or
-// tapping a year reads it; on a computer a drag zooms to the years it covers, and a zoomed bar has room for its figure (issue 22).
+// tapping a year reads it; on a computer a drag zooms to the years it covers, and a zoomed bar has room for its figure.
 import { useId, useState } from "react";
 import { tickFade, ticksOn, useFadingTicks, useGlidingNumbers, useGlidingRows } from "./chart-glide";
 import { ChartTip, ZoomBar, ZoomBrush, useYearZoom } from "./chart-interact";
@@ -19,7 +19,7 @@ export function YearBars({ items: goal, format, tickStep, label, bright }: { ite
   const [ref, w] = useWidth(420);
   const [hover, setHover] = useState<number | null>(null);
   const items = useGlidingRows(goal, VALUE);
-  // room past the last bar for half its year's label, measured (chart-text.ts): 4 px drew it past the chart's edge on a phone (#190)
+  // room past the last bar for half its year's label, measured (chart-text.ts): 4 px drew it past the chart's edge on a phone
   const yearW = chartTextWidth("2025", CHART_TEXT_PX);
   const plotW = w - LEFT - Math.ceil(yearW / 2) - 2;
   const zoom = useYearZoom({ first: goal[0]?.year ?? 0, last: goal[goal.length - 1]?.year ?? 0, plotLeft: LEFT, plotWidth: plotW, band: true, onHover: setHover });

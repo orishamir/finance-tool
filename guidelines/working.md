@@ -68,19 +68,9 @@
 
 ## Issues
 
-- An issue is for work the founder asked for that waits on him, on a later
-  goal, or is too big for now. Suggestions go in the report, not in issues.
-- The pinned Roadmap issue (#122) is rewritten by an Action
-  (`.github/scripts/roadmap.mjs`): change the issues, never its text, and
-  never set the `ready`, `blocked` or `unblocks` labels by hand.
-- A goal is a feature the site provides, named as its page would be, with the
-  question it answers and its finish line, as a milestone.
-- An issue waiting on the founder gets `you decide` or `you do` and says in
-  plain words what the question is, what each answer does, and what you
-  recommend.
-- `long horizon` means no work on it now.
-- A commit that finishes an issue says `Closes #n`.
-- The board is [Project 5](https://github.com/users/orishamir/projects/5).
+- There are no GitHub issues, milestones, labels or project board: the
+  founder had them all deleted on 2026-11-08. Don't create them. What waits
+  on him or comes later goes in the report.
 
 ## Budget
 

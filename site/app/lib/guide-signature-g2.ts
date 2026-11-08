@@ -86,6 +86,9 @@ export type HishtalmutGap = "self-employed-early" | "blocked" | "no-run";
 export interface DiffRange {
   low: number;
   high: number;
+  /** Where the range is over bundles: the bundle each end ran on, so its figure can name that bundle's terms. */
+  lowOf?: string;
+  highOf?: string;
 }
 
 /** The study fund's terms for the person: employment and the start of the six-year clock (A-12); `early` opts into withdrawing before the lock ends (B3, F-47). */
@@ -100,9 +103,13 @@ export function withBalanceFee(terms: InstrumentTerms, feePct: number): Instrume
   return terms.fees ? { ...terms, fees: withFee(terms.fees, "balance", feePct / 100) } : terms;
 }
 
-const rangeOf = (diffs: (number | null)[]): DiffRange | null => {
-  const v = diffs.filter((x): x is number => x !== null);
-  return v.length < 2 ? null : { low: Math.min(...v), high: Math.max(...v) };
+/** The lowest and the highest of the differences, each with the bundle it ran on. */
+const rangeOf = (diffs: [bundle: string, diff: number | null][]): DiffRange | null => {
+  const v = diffs.filter((x): x is [string, number] => x[1] !== null);
+  if (v.length < 2) return null;
+  const low = v.reduce((a, b) => (b[1] < a[1] ? b : a));
+  const high = v.reduce((a, b) => (b[1] > a[1] ? b : a));
+  return { low: low[1], high: high[1], lowOf: low[0], highOf: high[0] };
 };
 
 /** The plan the study fund's drawing runs. An employee's two deposits are a share of the salary; a self-employed person has one deposit, the net outlay. */
@@ -270,8 +277,8 @@ export function providentModel(d: SignatureData, c: ProvidentCase): ProvidentMod
     return run ? sideOf(run, c.amount) : null;
   };
   const range = {
-    broker: lump ? rangeOf([diff, diffWith(lump, brokerSide("brokerage-best")), diffWith(lump, brokerSide("brokerage-worst"))]) : null,
-    manager: broker && d.bundles["kgl-manager-best"] && d.bundles["kgl-manager-worst"] ? rangeOf([diff, diffWith(managerSide("kgl-manager-best"), broker), diffWith(managerSide("kgl-manager-worst"), broker)]) : null,
+    broker: lump ? rangeOf([["brokerage-account", diff], ["brokerage-best", diffWith(lump, brokerSide("brokerage-best"))], ["brokerage-worst", diffWith(lump, brokerSide("brokerage-worst"))]]) : null,
+    manager: broker && d.bundles["kgl-manager-best"] && d.bundles["kgl-manager-worst"] ? rangeOf([["kupat-gemel-lehashkaa", diff], ["kgl-manager-best", diffWith(managerSide("kgl-manager-best"), broker)], ["kgl-manager-worst", diffWith(managerSide("kgl-manager-worst"), broker)]]) : null,
   };
   const index = main ? main.series[main.series.length - 1]!.index : 1;
   const ageAtExit = c.age === null ? null : c.age + c.years;

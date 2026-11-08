@@ -27,7 +27,7 @@ for (const dir of ["wrappers", "securities", "exposures"])
   }
 
 const questions = new Map(
-  (JSON.parse(readFileSync(join(root, "data/open-questions.json"), "utf8")) as { id: string; status: string; title_he?: string }[]).map((q) => [q.id, q]),
+  (JSON.parse(readFileSync(join(root, "data/open-questions.json"), "utf8")) as { id: string; title_he?: string }[]).map((q) => [q.id, q]),
 );
 // a rule id (TX2-17, MF-28) or a question code (MGD OQ2) typed where words belong
 const ID = /\b[A-Z]{2,4}\d?(?:-\d{2}|[ -]OQ\d+)\b/;
@@ -49,30 +49,26 @@ describe("the not-covered page lists only what the site lacks", () => {
     expect(clash).toEqual([]);
   });
 
-  it("names every blocker as an open question with its words, never a rule or a closed question", () => {
+  it("names every blocker as an open question with its words, never a rule or a question the rule base no longer has", () => {
     const bad: string[] = [];
     for (const s of graduationStatuses())
       for (const o of s.open) {
         const q = questions.get(o.code);
         if (!q) bad.push(`${s.id}: ${o.code} is not a question in data/open-questions.json`);
-        else if (q.status === "closed") bad.push(`${s.id}: ${o.code} is closed`);
         else if (!q.title_he) bad.push(`${s.id}: ${o.code} has no title_he, so the page would show its code`);
       }
     expect(bad).toEqual([]);
   });
 
-  it("says every closure with a question in words", () => {
-    const bare = graduationStatuses().flatMap((s) => s.closed.filter((c) => c.code && !questions.get(c.code)?.title_he).map((c) => `${s.id}: ${c.code}`));
-    expect(bare).toEqual([]);
-  });
-
-  // a fresh reader, 2026-11-07: "שאלה נסגרה ב־24.10.2026, לפי" named no question. A closure the rule base records without a question
-  // number is named by the card's entry in closureTopics, and an entry no such closure uses goes
-  it("names every closure without a question number in words, and keeps no topic it does not use", () => {
+  // a fresh reader, 2026-11-07: "שאלה נסגרה ב־24.10.2026, לפי" named no question. Every closure is named by its entry in
+  // closureTopics (by the card and the closure's rules: an answered question is deleted from the rule base, 2026-11-08), and an
+  // entry no closure uses goes
+  it("names every closure in words, and keeps no topic it does not use", () => {
     const topics = r5.graduation.closureTopics;
     const statuses = graduationStatuses();
-    expect(statuses.filter((s) => s.closed.some((c) => !c.code) && !topics[s.id]).map((s) => s.id)).toEqual([]);
-    expect(Object.keys(topics).filter((id) => !statuses.some((s) => s.id === id && s.closed.some((c) => !c.code)))).toEqual([]);
+    const keys = statuses.flatMap((s) => s.closed.map((c) => `${s.id}: ${c.ruleIds.join(" ")}`));
+    expect(keys.filter((k) => { const [id, rules] = k.split(": ") as [string, string]; return !topics[id]?.[rules]; })).toEqual([]);
+    expect(Object.entries(topics).flatMap(([id, byRules]) => Object.keys(byRules).map((r) => `${id}: ${r}`)).filter((k) => !keys.includes(k))).toEqual([]);
   });
 
   // the same reader: source titles ended in "…" ("ינואר…", "נוסח מש…"), cut by the glossary generator; the page shows them whole

@@ -106,9 +106,9 @@ The Bank of Israel series have no adapter on purpose: their terms of use forbid 
 
 **Raw archive.** CMA CSVs are several megabytes each and cumulative, so the normalised per-period extract goes in git and the raw file, gzipped, is attached to a GitHub Release (`raw-cma-<period>`, section 6), with its archive key and hash in the snapshot's `raw` block. This keeps the repository small and still keeps the evidence D3 asks for. `--no-archive` skips the upload; the key and hash are still recorded.
 
-**Failure.** A failed fetch changes nothing in `data/`, so the site keeps the last value with its date and the browser raises the stale flag (product.md §6, "on fetch failure"). A dead-man check (`refresh-watchdog.yml`, weekly) opens an issue when `refresh.yml` or `refresh-rates.yml` had no successful run in the last 3 days.
+**Failure.** A failed fetch changes nothing in `data/`, so the site keeps the last value with its date and the browser raises the stale flag (product.md §6, "on fetch failure"). A dead-man check (`refresh-watchdog.yml`, weekly) fails its run, which GitHub mails to the owner, when `refresh.yml` or `refresh-rates.yml` had no successful run in the last 3 days.
 
-**Helpers for hand-collected data** (`packages/pipeline/scripts/`): `extract-sources.ts` writes each rule record's `sources`, derivation and scope from the rule base; `gen-open-questions.ts` writes `data/open-questions.json` from the rule base's open-question sections; `gen-terms.ts` writes `data/terms/` and `data/dimensions/` from the glossary (`npm run gen:terms`).
+**Helpers for hand-collected data** (`packages/pipeline/scripts/`): `extract-sources.ts` writes each rule record's `sources`, derivation and scope from the rule base; `gen-open-questions.ts` writes `data/open-questions.json` from the rule base's open-question sections; `merge_terms.py`, `gen_glossary.py` and `gen-terms.ts` write the glossary's tables in `docs/glossary.md`, then `data/terms/` and `data/dimensions/`, from the rows in `research/glossary/terms/` (`npm run gen:terms` runs the three in turn).
 
 ### 3.4 Calculation engine
 
@@ -219,7 +219,7 @@ packages/schema/               Zod schemas, types, JSON Schema export (json/), d
 packages/engine/               formulas by method topic, registry, figure resolver; no I/O
 packages/pipeline/             adapters, validator, CLI (src/cli.ts), helpers (scripts/)
 site/                          React Router app: app/ (routes, components, kit, lib, content, copy.ts), scripts/, public/
-.github/workflows/             ci, refresh, refresh-rates, refresh-watchdog, roadmap
+.github/workflows/             ci, offline, refresh, refresh-rates, refresh-watchdog
 ```
 
 Root commands: `npm run check` (typecheck, tests, validation and site build, what CI runs), `npm test`, `npm run validate`, `npm run refresh -- <source>`, `npm run dev`, `npm run build`.
@@ -237,7 +237,7 @@ React, pre-rendered (React Router in framework mode, no server; option C), chose
 **GitHub Pages, from a public repository** (`orishamir/finance-tool`), chosen by the founder; the site is static files and the pipeline is one command, so the choice is reversible at low cost.
 
 - **Address and paths.** The site is served at `https://orishamir.github.io/finance-tool/`. The app's `basename` and Vite's `base` are both `/finance-tool/`. After the build, `site/scripts/pages-layout.mjs` lays out `site/build/client` for Pages: pre-rendered pages at the root, and React Router's SPA fallback as `404.html`, so a path without a pre-rendered page still loads the app.
-- **Deploy.** The `ci` workflow deploys `main` to Pages only after typecheck, tests, validation and build pass. Pull requests run the checks only. A run on `main` also keeps the built site as a workflow artifact, `finance-tool-site` (a `.tar.gz`, two weeks), to run offline: extract it, run `python3 -m http.server` in the folder and open `http://localhost:8000/`. One difference from Pages: an address the build has no page for gets Python's own 404, not the site's not-found page.
+- **Deploy.** The `ci` workflow deploys `main` to Pages only after typecheck, tests, validation, the build and its chart and layout checks pass, in two jobs side by side (the tests; the build and the checks that open it in a browser). Pull requests run the checks only. The site to run offline is made only when asked: the `offline` workflow (Actions > offline > Run workflow, or `gh workflow run offline.yml`) builds the branch and keeps it as a workflow artifact, `finance-tool-site` (a `.tar.gz`, two weeks): extract it, run `python3 -m http.server` in the folder and open `http://localhost:8000/`. One difference from Pages: an address the build has no page for gets Python's own 404, not the site's not-found page.
 - **Everything in the repository is public.** That includes the founder interview in `docs/discovery.md`, the research, and every file under `data/`. So the terms gate (3.3) applies to the repository too: a series whose redistribution terms are unconfirmed is not committed to `data/` until the terms are confirmed or an open copy is used. CMA and MoF data are under the data.gov.il open licence and can be committed.
 - **Raw archive.** The original file each refresh downloads is attached, gzipped, to a GitHub Release in the same repository: one release per source and month (`raw-<source>-<YYYY-MM>`), and for CMA one per report period (`raw-cma-<period>`). The raw files stay out of the git history, so clones stay small, and they need no extra service. Releases are public, which is fine for openly licensed data. A file with unconfirmed terms is not attached. Nothing on the site reads these files: they are evidence of what the source said on that date, and they let the pipeline re-derive fields later.
 - **Scheduled refresh.** `refresh.yml` runs daily at 05:30 UTC (CMA, CBS consumer price index, MoF child-savings rates, in one CLI call, committed together); `refresh-rates.yml` runs daily at 15:30 UTC (ECB rates). GitHub disables scheduled workflows in a public repository after a stretch with no repository activity; the refresh commits keep it active, and the dead-man check (3.3) catches it if not.
@@ -247,4 +247,4 @@ React, pre-rendered (React Router in framework mode, no server; option C), chose
 
 ## 7. Work by release
 
-All five releases of the roadmap (`research/2026-10-23-release-1/roadmap.md`, a record of its day) are built. Release 1 computed F-01 to F-28, F-33, F-40 to F-46, F-50, F-51 and F-54 for the guide timelines (F-67); a formula in `docs/method.md` that is not implemented yet is in the engine registry's `pending` list with the release that was to bring it.
+All five releases of the roadmap (`8dd1f013:research/2026-10-23-release-1/roadmap.md`, a record of its day) are built. Release 1 computed F-01 to F-28, F-33, F-40 to F-46, F-50, F-51 and F-54 for the guide timelines (F-67); a formula in `docs/method.md` that is not implemented yet is in the engine registry's `pending` list with the release that was to bring it.

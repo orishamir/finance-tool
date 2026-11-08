@@ -6,10 +6,10 @@ import type { FeeLine } from "@finance-tool/engine";
 import type { FeesSnapshot, GroupPrice } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import type { CustomBroker } from "./custom-entries";
-import { buildInvest, inputMap, listReading, pairCosts, type InvestArgs, type InvestView, type OptionId, type PairCosts } from "./invest";
+import { buildInvest, planInputs, WHOLE_PLAN, listReading, pairCosts, type InvestArgs, type InvestView, type OptionId, type PairCosts } from "./invest";
 import { groupFigure, groupValues, type FigurePart, type GroupCopy } from "./own-account";
 import type { WorkbenchBundle, WorkbenchInputs } from "./providers";
-import { computed, ownBy, type SiteValue } from "./value";
+import { computed, differenceOf, ownBy, type SiteValue } from "./value";
 
 // ---------------------------------------------------------------- the layers by fee type
 
@@ -185,7 +185,7 @@ export function ownAccountResult(a: InvestArgs & { broker: CustomBroker; view?: 
   if (!row || !best?.price) return null;
   const mine = best.price;
   const fundId = best.fund.rec.id;
-  const inputs = { ...inputMap(a.plan), ...(a.bundle.entered?.inputs[id] ?? {}) };
+  const inputs = { ...planInputs(a.plan, WHOLE_PLAN), ...(a.bundle.entered?.inputs[id] ?? {}) };
   const today = a.bundle.today;
 
   // the place among the compared rows: the collected houses of the account's group, each at its own best way, and this one
@@ -198,7 +198,9 @@ export function ownAccountResult(a: InvestArgs & { broker: CustomBroker; view?: 
   const houseId = a.broker.base?.houseId ?? null;
   const houseAt = houseId ? best.fund.byHouse[houseId] : undefined;
   const house = houseAt && "value" in houseAt ? houseAt : null;
-  const difference = house ? computed(mine.valueN - house.valueN, "nis", "F-65", inputs, { today, about: copy.ownAccount.differenceAbout }) : null;
+  // the two values left, each with what its run reads (the fund's costs among them): the difference is the one less the other
+  const words = copy.ownAccount.panel.costs;
+  const difference = house ? differenceOf([copy.pair.input(words.yours, copy.pair.colLeft), mine.value], [copy.pair.input(words.list, copy.pair.colLeft), house.value], "F-65", { today, about: copy.ownAccount.differenceAbout }) : null;
 
   const base = { bundle: a.bundle, index: a.index, plan: a.plan, ...(a.yourBroker !== undefined ? { yourBroker: a.yourBroker } : {}), ...(a.assumptions ? { assumptions: a.assumptions } : {}) };
   const yours = pairCosts({ ...base, fundId, providerId: id });
@@ -207,14 +209,20 @@ export function ownAccountResult(a: InvestArgs & { broker: CustomBroker; view?: 
 
   let deciding: OwnAccountResult["deciding"] = null;
   if (list) {
-    const cost = (pc: PairCosts, line: FeeLine) => (pc.account.find((x) => x.line === line)?.cost.value as number | undefined) ?? 0;
+    const figure = (pc: PairCosts, line: FeeLine) => pc.account.find((x) => x.line === line)?.cost;
+    const cost = (pc: PairCosts, line: FeeLine) => (figure(pc, line)?.value as number | undefined) ?? 0;
     let top = 0;
     for (const fee of FEE_TYPES) {
       const line = FEE_LINE[fee];
       const gap = cost(list, line) - cost(yours, line);
       if (Math.abs(gap) > Math.abs(top) && Math.abs(gap) >= 0.005) {
         top = gap;
-        deciding = { line, gap: computed(gap, "nis", "F-91", inputs, { today, about: copy.ownAccount.decidingAbout(copy.pair.lines[line] ?? line) }) };
+        // the line's cost on each side, each with what its run reads; a side that does not charge the line has no figure, and the gap is the other's
+        const name = copy.pair.lines[line] ?? line;
+        const about = copy.ownAccount.decidingAbout(name);
+        const a = figure(list, line), b = figure(yours, line);
+        const an = copy.pair.input(words.list, name), bn = copy.pair.input(words.yours, name);
+        deciding = { line, gap: a && b ? differenceOf([an, a], [bn, b], "F-91", { today, about }) : computed(gap, "nis", "F-91", a ? { [an]: a } : b ? { [bn]: b } : {}, { today, about }) };
       }
     }
   }

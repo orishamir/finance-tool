@@ -7,15 +7,15 @@ import { useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, makamModel } from "../../lib/guide-signature";
-import { entered as enteredValue } from "../../lib/value";
+import type { SiteValue } from "../../lib/value";
+
 import { Callout, InputSlot, LongestCase, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, fill, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
-import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, termInputs, termOf, useSigInputs, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 230;
 const TOP = 24;
 const BOTTOM = 28;
-
 
 export function MakamVisual({ data, today }: VisualProps) {
   const bundle = data.bundles["makam"]!;
@@ -51,17 +51,23 @@ export function MakamVisual({ data, today }: VisualProps) {
   const ticks = Array.from({ length: Math.floor(term / 3) + 1 }, (_, i) => i * 3);
 
   const amountIn = inputSite(bundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
-  const sale = enteredValue(m, "months", today, copy.makam.marker);
-  const runInputs = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale, ...(model?.atRedemption ? (discountRate ? { [copy.makam.taxRedeem]: discountRate } : {}) : gainRate ? { [`${copy.makam.taxSale.before} ${copy.makam.taxSale.term}`]: gainRate } : {}) };
+  const sale = typed(m, "months", today, copy.makam.marker);
+  // the series' term sets the price curve (F-24, GOV-22): the prices list it beside the yield
+  const priceIn: Record<string, SiteValue> = { [copy.common.inputNames.assumption]: cash, ...termOf(bundle) };
+  // the run's own inputs: the amount, the yield, the sale month and every line of the tariff it ran on (termInputs); the tax rate only on the tax and what is left
+  const runInputs: Record<string, SiteValue> = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale, ...termInputs(bundle) };
+  const taxRate = model?.atRedemption ? (discountRate ? { [copy.makam.taxRedeem]: discountRate } : {}) : gainRate ? { [`${copy.makam.taxSale.before} ${copy.makam.taxSale.term}`]: gainRate } : {};
+  const taxInputs: Record<string, SiteValue> = { ...runInputs, ...taxRate };
   const rules = rulesOfBundle(bundle);
   const v = model
     ? {
-        buy: figure(prices[0]!, "index_points", "F-24", { [copy.common.inputNames.assumption]: cash }, today, copy.makam.about.buy),
-        price: figure(model.price, "index_points", "F-24", { [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale }, today, copy.makam.about.price),
+        buy: figure(prices[0]!, "index_points", "F-24", priceIn, today, copy.makam.about.buy),
+        price: figure(model.price, "index_points", "F-24", { ...priceIn, [copy.makam.marker]: sale }, today, copy.makam.about.price),
         gain: figure(model.gain, "nis", "F-24", runInputs, today, copy.makam.about.gain, rules),
-        tax: figure(model.tax, "nis", model.atRedemption ? "F-24" : "F-40", runInputs, today, copy.makam.about.tax, rules),
-        fees: figure(model.fees, "nis", "F-12", runInputs, today, copy.makam.about.fees, rules),
-        net: figure(model.net, "nis", "F-24", runInputs, today, copy.makam.about.net, rules),
+        tax: figure(model.tax, "nis", model.atRedemption ? "F-24" : "F-40", taxInputs, today, copy.makam.about.tax, rules),
+        // the commissions, custody and the account's fixed fee of the run, with the redemption's commission (F-24)
+        fees: figure(model.fees, "nis", "F-24", runInputs, today, copy.makam.about.fees, rules),
+        net: figure(model.net, "nis", "F-24", taxInputs, today, copy.makam.about.net, rules),
         base: figure(model.taxedBase, "nis", model.atRedemption ? "F-24" : "F-40", runInputs, today, copy.makam.taxBase.about.base, rules),
         taxedFees: figure(model.taxedFees, "nis", "F-09", runInputs, today, copy.makam.taxBase.about.fees, rules),
         custody: figure(model.custody, "nis", "F-14", runInputs, today, copy.makam.about.custody, rules),
@@ -107,6 +113,7 @@ export function MakamVisual({ data, today }: VisualProps) {
           label={copy.makam.amount}
           unit="nis"
           value={inputs.amount}
+          start={inputs.p05.amount}
           isEntered={inputs.source.amount === "guide"}
           validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
           onCommit={inputs.setAmount}
@@ -114,7 +121,6 @@ export function MakamVisual({ data, today }: VisualProps) {
           disabled={!inputs.ready}
         />
       </div>
-      <SourceLine sources={[inputs.source.amount]} />
 
       {model && v && (
         <div className="flex flex-col gap-2">
@@ -153,7 +159,7 @@ export function MakamVisual({ data, today }: VisualProps) {
         <div className="flex flex-col gap-3">
           {/* one height with or without the slot: the blocks under it keep their place when the marker reaches redemption */}
           <p className="text-sm font-medium min-h-6">
-            {m >= term ? copy.makam.atRedemption : <>{copy.makam.atSale} <InputSlot chars={9}>{fmt.months(m)}</InputSlot></>}:
+            {m >= term ? copy.makam.atRedemption : <>{copy.makam.atSale} <InputSlot>{fmt.months(m)}</InputSlot></>}:
           </p>
           <StatRow cols={4}>
             <Stat label={copy.makam.figures.price}>

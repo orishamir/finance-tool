@@ -5,6 +5,7 @@
 import { idleCash, type CandidateInput, type IdleCash, type IdleKind, type RunContext } from "@finance-tool/engine";
 import { asParameter, cashRateOf, openConstraintOf, parameterOf, type CompareBundle } from "./compare";
 import { computed, entered as enteredValue, ownBy, type SiteValue } from "./value";
+import { computedInputs as ci, guideBlocks, idle as idleCopy } from "../copy";
 import type { ValueObject } from "@finance-tool/schema";
 import type { Reason } from "@finance-tool/engine";
 
@@ -137,6 +138,13 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
         offerOnTerm = termMonths === 1 ? r : idleCash({ ...base, wrappers: inputs(bundle, termMonths), ...(bankRate ? { bankAverage: bankRate as ValueObject } : {}), ownOffer: enteredValue(offerPct, "pct_per_year", today) as ValueObject }, ctx).rows.find((x) => x.id === "bank-deposit:own-offer") ?? null;
       }
     }
+    // what the runs read beyond the amount and the rates: the inflation, for the money-market fund only (its tax is on the real gain, F-23
+    // with F-40; the deposit's and the makam's are on the nominal interest), and the current account's balance ceiling when the amount
+    // passes it (F-26: the baseline then earns only up to it)
+    const inflationV = asParameter(parameterOf(bundle, "P-05"), p05.inputs["A-02"]!);
+    const ceiling = current.terms?.deposit?.balanceCeiling;
+    const ceilingInput: Record<string, SiteValue> = ceiling !== undefined && current.cashCeiling && main.amount > ceiling ? { [guideBlocks.terms.labels.balanceCeiling!]: current.cashCeiling } : {};
+    const readsOf = (id: string): Record<string, SiteValue> => (id === "money-market-fund-daily" ? { [ci.inflation]: inflationV } : {});
     const amount: SiteValue = computed(main.amount, "nis", "F-60", { balance: enteredValue(balance, "nis", today), keep: enteredValue(keep, "nis", today) }, { today, about: "הסכום שנבדק: היתרה פחות מה שחייב להישאר זמין" });
     const rows: IdleRowView[] = [];
     for (const id of rowOrder) {
@@ -147,7 +155,7 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
       const owner = id === "bank-deposit:average" ? (bankRate as SiteValue | undefined)?.own : undefined;
       const rate = owner ? ownBy(r.rate as SiteValue, owner) : (r.rate as SiteValue);
       const baseline = current.cashRate!.own ? ownBy(main.baseline.rate as SiteValue, current.cashRate!.own) : (main.baseline.rate as SiteValue);
-      const cost = computed(r.monthlyCost, "nis", "F-60", { amount: enteredValue(main.amount, "nis", today), rate, baseline }, { today, about: id, rules: r.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: r.run.flags.map((f) => f.code), labels: r.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
+      const cost = computed(r.monthlyCost, "nis", "F-60", { amount: enteredValue(main.amount, "nis", today), rate, baseline, ...ceilingInput, ...readsOf(id) }, { today, about: id, rules: r.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: r.run.flags.map((f) => f.code), labels: r.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
       rows.push({ id, label, rate, cost, monthlyCost: r.monthlyCost, notes: r.notes });
     }
     const failed: IdleFailedRow[] = main.candidates.filter((c) => c.tier === 1 && cashOptions.has(c.id) && c.kind === "not-evaluated").map((c) => ({ id: c.id, reasons: c.reasons }));
@@ -157,8 +165,10 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
     const fundRow = rowsById.get("money-market-fund-daily");
     let verdict: IdleVerdict | null = null;
     if (offerOnTerm && fundRow && termMonths !== null && threshold) {
+      // the offer runs on the term the person gave (rolled within the year); the fund reads the inflation (`readsOf`)
+      const termV = enteredValue(termMonths, "months", today, idleCopy.term.label);
       const after = (row: IdleCash["rows"][number], label: string) =>
-        computed(row.run.nominal - main.amount, "nis", "F-60", { הסכום: amount, הריבית: row.rate as SiteValue }, { today, about: label, rules: row.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: row.run.flags.map((f) => f.code), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
+        computed(row.run.nominal - main.amount, "nis", "F-60", { הסכום: amount, הריבית: row.rate as SiteValue, ...(row.id === "bank-deposit:own-offer" ? { [idleCopy.term.label]: termV } : readsOf(row.id)) }, { today, about: label, rules: row.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: row.run.flags.map((f) => f.code), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
       const offerAfterTax = after(offerOnTerm, "הרווח אחרי מס בשנה אחת מההצעה שהזנתם");
       const fundAfterTax = after(fundRow, "הרווח אחרי מס בשנה אחת מהקרן הכספית");
       const diff = (offerOnTerm.run.nominal - main.amount) - (fundRow.run.nominal - main.amount);

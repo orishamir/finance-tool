@@ -6,10 +6,11 @@ import { useId, useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { bondModel, fact } from "../../lib/guide-signature";
-import { entered as enteredValue } from "../../lib/value";
+
 import { GainBars, NumberField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { SourceLine, figure, inputSite, useSigInputs, type VisualProps } from "./kit";
+import { figure, inputSite, termOf, useSigInputs, typed, type VisualProps } from "./kit";
+import { differenceOf } from "../../lib/value";
 
 const SHIFT_MIN = -3;
 const SHIFT_MAX = 3;
@@ -43,20 +44,25 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
   const years = Math.min(YEARS_MAX, Math.max(YEARS_MIN, yearsOverride ?? Math.round(inputs.years)));
   const model = useMemo(() => bondModel(data, { amount: inputs.amount, years, shiftPct: shift }), [data, inputs.amount, years, shift]);
   const amountIn = inputSite(bundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
-  const shiftIn = enteredValue(shift, "pct", today, copy.bond.shift);
-  const yearsIn = enteredValue(years, "years", today, copy.bond.years);
-  const base = { [copy.common.inputNames.amount]: amountIn, [copy.bond.shift]: shiftIn, [copy.bond.years]: yearsIn, [copy.common.inputNames.coupon]: cash, ...(every ? { [copy.common.inputNames.couponEvery]: every } : {}) };
+  const shiftIn = typed(shift, "pct", today, copy.bond.shift);
+  const yearsIn = typed(years, "years", today, copy.bond.years);
+  // the price moves with the rate, the years and the coupon (F-25, bondPrice), not with the amount; a sale's value is the price on the amount
+  const priceIn = { [copy.bond.shift]: shiftIn, [copy.bond.years]: yearsIn, [copy.common.inputNames.coupon]: cash, ...(every ? { [copy.common.inputNames.couponEvery]: every } : {}) };
+  const base = { [copy.common.inputNames.amount]: amountIn, ...priceIn };
   const v = model
     ? {
-        price: figure(model.price, "index_points", "F-25", base, today, copy.bond.about.price),
-        change: figure(model.changePct, "pct", "F-25", base, today, copy.bond.about.change),
+        price: figure(model.price, "index_points", "F-25", priceIn, today, copy.bond.about.price),
+        change: figure(model.changePct, "pct", "F-25", priceIn, today, copy.bond.about.change),
         sale: figure(model.saleValue, "nis", "F-25", base, today, copy.bond.about.sale),
         redeem: figure(model.redemption, "nis", "F-25", { [copy.common.inputNames.amount]: amountIn }, today, copy.bond.about.redeem),
-        coupons: figure(model.coupons, "nis", "F-25", base, today, copy.bond.about.coupons),
-        makam: figure(model.makamChangePct, "pct", "F-24", { [copy.bond.shift]: shiftIn, [copy.common.inputNames.assumption]: cash }, today, copy.bond.about.makam),
-        diff: figure(Math.abs(model.saleValue - model.redemption), "nis", "F-25", base, today, copy.bond.about.diff),
+        // the coupons held to redemption: the amount, times the coupon, times the years
+        coupons: figure(model.coupons, "nis", "F-25", { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.coupon]: cash, [copy.bond.years]: yearsIn }, today, copy.bond.about.coupons),
+        // the same move on a makam of its series' term (F-24)
+        makam: figure(model.makamChangePct, "pct", "F-24", { [copy.bond.shift]: shiftIn, [copy.common.inputNames.assumption]: cash, ...termOf(data.bundles["makam"]) }, today, copy.bond.about.makam),
       }
     : null;
+  // what a sale today brings against holding to redemption: the gap between the two figures above
+  const diff = v ? differenceOf([copy.bond.bars.sell, v.sale], [copy.bond.bars.hold, v.redeem], "F-25", { today, about: copy.bond.about.diff, round: Math.abs }) : null;
   const signed = (n: number) => `${n > 0 ? "+" : ""}${fmt.number(n)}`;
 
   return (
@@ -66,6 +72,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
           label={copy.bond.amount}
           unit="nis"
           value={inputs.amount}
+          start={inputs.p05.amount}
           isEntered={inputs.source.amount === "guide"}
           validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
           onCommit={inputs.setAmount}
@@ -88,9 +95,8 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
         value={shift}
         onChange={setShift}
       />
-      <SourceLine sources={[inputs.source.amount]} />
 
-      {model && v && (
+      {model && v && diff && (
         <>
           <StatRow cols={3}>
             <Stat label={copy.bond.figures.price} tone="value">
@@ -108,7 +114,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
               { key: "sale", label: copy.bond.bars.sell, value: v.sale, tone: "value" },
               { key: "hold", label: copy.bond.bars.hold, value: v.redeem, tone: "alt" },
             ]}
-            diff={v.diff}
+            diff={diff}
             diffLabel={model.saleValue < model.redemption ? copy.bond.diffLoss : copy.bond.diffGain}
           />
           <Sentence size="sm" measure>

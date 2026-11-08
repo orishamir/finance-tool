@@ -1,4 +1,4 @@
-// The documents page's data (research/knowledge/2026-10-24-synthesis.md §3.5): every source of every rule grouped by the
+// The documents page's data (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.5): every source of every rule grouped by the
 // document it points at, and the data records (tariffs, funds, deposit terms, series) as cards pointing at their pages.
 // Server-only. The sources of a rule are read loosely: the `sources` field is W1's, and a record without it contributes
 // only its figures' own sources.
@@ -41,7 +41,7 @@ interface TableDoc {
   publisher_he?: string;
   kind?: string;
   official_url?: string | null;
-  /** A document filed for the law and terms browser (`doc_kind`, issue 123), which does not name a card on this page. */
+  /** A document filed for the law and terms browser (`doc_kind`), which does not name a card on this page. */
   doc_kind?: string;
 }
 interface PublisherRow {
@@ -187,7 +187,7 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
     // a title written in Hebrew, a web host before it allowed: "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים" is a Hebrew title, and
-    // "Tax Authority, מדריך…" an English working title that quotes one (#190: a count of letters alone showed it)
+    // "Tax Authority, מדריך…" an English working title that quotes one (a count of letters alone showed it)
     const titleHe = doc?.title_he ?? mostCommon(entries.filter((e) => hebrewDocTitle(e.title_he ?? e.title)).map((e) => e.title_he ?? e.title));
     const url0 = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
@@ -250,7 +250,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const { institutionIds } = await import("./institutions.server");
   const { loadDepositTerms, loadExposures, loadFunds, exposureHref } = await import("./instruments.server");
   const { indexPath } = await import("./invest");
-  // an index fund on its index's page, any other on its holding's page (the funds page is gone, issue 174)
+  // an index fund on its index's page, any other on its holding's page (the funds page is gone)
   const indexIds = new Set(loadExposures().filter((e) => e.kind === "equity_index").map((e) => e.id));
   const fundHref = (exposureId: string) => (indexIds.has(exposureId) ? indexPath(exposureId) : exposureHref(exposureId));
   const { latestSnapshots, companyLinks } = await import("./providers.server");

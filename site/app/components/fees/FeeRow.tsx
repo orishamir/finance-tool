@@ -5,11 +5,10 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { r3fees } from "../../copy";
 import { reducible, reductionWorth, type Analysis, type FeeReach, type LineView, type SubjectView } from "../../lib/fees";
 import { formatValue, fmt, nearThreshold } from "../../lib/format";
-import type { SiteValue } from "../../lib/value";
-import { entered as enteredValue } from "../../lib/value";
+import { asField, entered as enteredValue, type SiteValue } from "../../lib/value";
 import { IconCopy } from "../icons";
 import { LeadTail, Num, RuleRef, StateTag } from "../provenance";
-import { Button, Callout, Card, cx, Disclosure, gershayim, LongestCase, NumberField, Sentence, Tag } from "../kit";
+import { Button, Callout, Card, cx, Disclosure, gershayim, LongestCase, NumberField, ResetToStart, Sentence } from "../kit";
 import { CapLine, ReadingMark, ReferenceLine, VerdictTag } from "./parts";
 
 function periodWord(months: number): string {
@@ -65,11 +64,15 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
             }}
           />
         </div>
-        {!isEntered && line.suggestion !== null && <Tag tone="parameter">{r3fees.reduction.suggestion}</Tag>}
-        {isEntered && line.suggestion !== null && (
-          <Button variant="quiet" className="text-sm min-h-target" onClick={() => onChange(null)}>
-            {r3fees.reduction.suggestion}
-          </Button>
+        {/* the field starts at the average, said in plain words; once changed, the same place holds "↺ חזרה ל־…" (founder, 2026-11-08).
+            Both keep their room in one cell, so nothing moves when one gives way to the other */}
+        {line.suggestion !== null && (
+          <span className="grid items-center">
+            <span className={cx("[grid-area:1/1] text-xs text-muted-foreground whitespace-nowrap", isEntered && "invisible")} aria-hidden={isEntered ? true : undefined}>
+              {r3fees.reduction.suggestion}
+            </span>
+            <ResetToStart shown={isEntered} start={line.suggestion} unit="pct" onReset={() => onChange(null)} className="[grid-area:1/1] justify-self-start" />
+          </span>
         )}
       </div>
       {/* D86: a lower rate holds only for the discount period; said where it is typed, always there so nothing moves when it is */}
@@ -121,7 +124,8 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
   const cma = line.reference.cma!;
   const n = r3fees.negotiation;
   // nothing typed, the script asks for the regulator's average: the figure is that average, not one the person entered (2026-11-03)
-  const toV = toPct === null ? cma.mean : enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם");
+  // what the reader typed in the field above is a field's value: plain in the script too (founder, 2026-11-08)
+  const toV = toPct === null ? cma.mean : asField(enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם"));
   const cls = cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification;
   const dataset = n.datasets[cma.dataset] ?? cma.dataset;
   const segs: Seg[] = [

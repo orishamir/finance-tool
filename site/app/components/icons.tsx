@@ -3,6 +3,7 @@
 import {
   ArrowRight,
   Calculator,
+  CalendarDays,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -50,4 +51,5 @@ export const IconCalculator = base(Calculator);
 export const IconFile = base(FileText);
 export const IconReset = base(RotateCcw);
 export const IconInfo = base(Info);
+export const IconCalendar = base(CalendarDays);
 export const IconCopy = base(Copy);

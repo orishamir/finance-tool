@@ -1,6 +1,0 @@
-olive-500 largest in-gamut chroma 0.135 #929213
-gold-200 {"hex":"#fdc010","outOfGamut":false}
-magenta-400 {"hex":"#cf64bb","outOfGamut":false}
-lime-300 {"hex":"#ade02a","outOfGamut":false}
-brown-600 {"hex":"#a04f27","outOfGamut":false}
-olive-500 {"hex":"#939300","outOfGamut":true}

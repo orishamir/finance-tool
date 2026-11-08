@@ -128,14 +128,24 @@ export function textDirective(f: TextFragment): string {
  * (`#anchor:~:text=…`). An address that already carries a `#` keeps it, and gains only the words.
  */
 export function sourceHref(source: CitedPlace): string {
-  const pdf = isPdfUrl(source.url);
+  const url = publicUrl(source.url);
+  const pdf = isPdfUrl(url);
   const words = source.fragment && !pdf ? `:~:${textDirective(source.fragment)}` : "";
   // an address that carries a directive already gains the words as a second one (`&text=`)
-  if (source.url.includes("#")) return words ? `${source.url}${source.url.includes(":~:") ? words.replace(":~:", "&") : words}` : source.url;
-  if (pdf) return source.page ? `${source.url}#page=${source.page}` : source.url;
-  if (source.anchor) return `${source.url}#${source.anchor}${words}`;
-  return words ? `${source.url}#${words}` : source.url;
+  if (url.includes("#")) return words ? `${url}${url.includes(":~:") ? words.replace(":~:", "&") : words}` : url;
+  if (pdf) return source.page ? `${url}#page=${source.page}` : url;
+  if (source.anchor) return `${url}#${source.anchor}${words}`;
+  return words ? `${url}#${words}` : url;
 }
+
+/**
+ * A company's written answer is cited at a file of the repository, `docs/company-answers.md#<company>-<date>` (2026-11-08), and
+ * opens at that file's public page; any other address stays as it is (a parameter's rationale keeps its plain label).
+ */
+export function publicUrl(url: string): string {
+  return /^docs\/company-answers\.md(#|$)/.test(url) ? `${REPO_FILES}${url}` : url;
+}
+const REPO_FILES = "https://github.com/orishamir/finance-tool/blob/main/";
 
 export interface SourceNames {
   publisher: string;
@@ -167,11 +177,23 @@ export function shownTitle(title: string, url: string, kind?: string): { text: s
   return { text: hostOf(url) ?? title, host: !!hostOf(url) };
 }
 
+/**
+ * What a source line shows, each name once: who published it, the document's title as shown (`shownTitle`), its place in it. The publisher
+ * is left out when the title opens with it ("בנק לאומי, 'שיעורי הריבית…'"); the title is left out when it is only the link's host and
+ * the publisher's name holds that host already: "מאגר המידע הממשלתי (data.gov.il)", not "מאגר המידע הממשלתי (data.gov.il) · data.gov.il"
+ * (founder, 2026-11-08: "shorten all these kinds of source where the data.gov.il is repeated twice").
+ */
+export function sourceParts(source: RuleSource): { publisher: string | null; title: { text: string; host: boolean } | null; locator: string | null; pdf: boolean } {
+  const n = sourceLabel2(source);
+  const title = shownTitle(n.title, source.url, source.kind);
+  if (title.host && n.publisher && n.publisher.includes(title.text)) return { publisher: n.publisher, title: null, locator: n.locator, pdf: n.pdf };
+  return { publisher: !n.publisher || title.text.startsWith(n.publisher) ? null : n.publisher, title, locator: n.locator, pdf: n.pdf };
+}
+
 /** `{title_he} — {publisher}, {document}, {locator}. {url} (נבדק {date})`, the line the copy button writes. */
 export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, source: RuleSource, date: string): string {
-  const n = sourceLabel2(source);
-  const doc = shownTitle(n.title, source.url, source.kind).text;
-  const parts = n.publisher && n.publisher !== doc ? [n.publisher, doc] : [doc];
+  const n = sourceParts(source);
+  const parts = [n.publisher, n.title?.text].filter((x): x is string => !!x);
   if (n.locator) parts.push(n.locator);
   const claim = ruleTitle(rule).text;
   return `${claim} — ${parts.join(", ")}. ${sourceHref(source)} (${sourceBlock.citation.checked} ${fmt.date(date)})`;
