@@ -182,6 +182,8 @@
   --sourced: var(--palette-neutral-500); /* solid hairline under a sourced number */
   --computed: var(--palette-violet-400); /* dotted underline and mark of a computed number */
   --computed-subtle: var(--palette-violet-950);
+  /* A value the person entered outside a chart's fields (an offer, a custom entry). A chart field's value, its default or what the
+     reader typed, is a plain number with no blue (founder, 2026-11-08, guidelines/charts.md). */
   --entered: var(--palette-blue-300); /* text of a value the person entered */
   --entered-subtle: var(--palette-blue-950); /* highlight behind it */
 
@@ -214,15 +216,16 @@
   --chart-net: var(--palette-teal-200); /* the headline line: net value at each month */
   --chart-fee: var(--palette-orange-500);
   /* Fee kinds (fee-drag bands, cost-by-type bars, cumulative-cost lines): four clearly different hues in a fixed order,
-     orange first; blue and violet stay out because they are the entered and computed number inks beside every chart
-     (2026-10-24 evening; were orange-700 → 400). */
+     orange first; blue and violet stay out because they are the entered and computed number inks, and blue the dashed line
+     of an entered return (2026-10-24 evening; were orange-700 → 400). */
   --chart-fee-1: var(--palette-orange-500);
   --chart-fee-2: var(--palette-gold-200);
   --chart-fee-3: var(--palette-teal-300);
   --chart-fee-4: var(--palette-magenta-400);
-  /* the indices page's change chart (2026-10-28): one line per plan number, the four validated fee-kind hues in the same order */
+  /* the indices page's change chart (2026-10-28): one line per plan number; the second line near-white, not gold, since amber and its
+     neighbours mean status, never a series (charts.md; 2026-11-08) */
   --chart-lever-1: var(--palette-orange-500);
-  --chart-lever-2: var(--palette-gold-200);
+  --chart-lever-2: var(--palette-neutral-100);
   --chart-lever-3: var(--palette-teal-300);
   --chart-lever-4: var(--palette-magenta-400);
   --chart-fee-total: var(--palette-neutral-50); /* the fee-drag chart's total line over the bands: a reference line, not a fee kind (2026-10-24 evening); neutral-200 until 2026-10-26, 4.9 ΔE from fee kind 3 under protanopia */
@@ -236,20 +239,23 @@
      The bar of a difference goes right and green for more money left, left and red for less; the same red colours a stair that loses. */
   --gain: oklch(0.74 0.17 150);
   --loss: oklch(0.63 0.2 25);
-  /* a stair takes the hue of what changed (the account, the kind of fund, the fund): teal, magenta, gold, the validated fee-kind hues, so the
-     three never read as shades of one family; the start is neutral and the column under a floating stair is the card's own darker step */
+  /* a stair takes the hue of what changed (the account, the kind of fund, the fund): teal, magenta, near-white, so the three never read as
+     shades of one family (near-white, not gold, since 2026-11-08: amber and its neighbours mean status, charts.md; orange sat too near the
+     gain and loss colours); the start is a darker neutral and
+     the column under a floating stair is the card's own darker step */
   --chart-stairs-start: var(--palette-neutral-600);
   --chart-stairs-below: var(--palette-neutral-850);
   --chart-stairs-account: var(--palette-teal-300);
   --chart-stairs-kind: var(--palette-magenta-400);
-  --chart-stairs-fund: var(--palette-gold-200);
-  /* the money's story (2026-11-02): each part of the pile, tax as a hatch over a veil, and what is left */
+  --chart-stairs-fund: var(--palette-neutral-100);
+  /* the money's story (2026-11-02, reworked 2026-11-08): each part of the pile, what fees and tax take, solid (hatching is for a blocked part), and what is left */
   --chart-pile-own: var(--palette-neutral-400);
   --chart-pile-extra: var(--palette-gold-200);
   --chart-pile-gain: var(--palette-teal-500);
   --chart-pile-tax: var(--palette-rose-400);
-  --chart-pile-salary-tax: var(--palette-orange-500); /* tax paid out of the salary month by month, apart from the tax at the withdrawal */
-  --chart-pile-veil: color-mix(in oklch, var(--palette-neutral-975) 62%, transparent);
+  --chart-pile-fee: var(--palette-orange-500); /* what the management fees took: the site's fee colour */
+  --chart-pile-salary-tax: var(--chart-tax-1); /* tax paid out of the salary month by month, apart from the tax at the withdrawal: the site's "tax during" rose (orange is the fees') */
+  --chart-pile-loss: var(--palette-neutral-700); /* what a return below rising prices took from the deposits: a cut, not a part */
   --chart-pile-left: var(--palette-neutral-100);
   /* The comparison chart (design-system 6.5): the ranking is ordinal, so one hue in steps (lighter is better);
      the baseline is neutral. Width and a direct label also tell the lines apart. */
@@ -263,11 +269,12 @@
   --chart-stocks: var(--palette-teal-400);
   --chart-currency: var(--palette-gold-200);
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
-  /* the index page's two kinds of fund (2026-10-29, founder: option A of research/specs/2026-10-29-hedging): keeping the index's currency, and
-     neutralising it; the guide's value-and-alternative pair (teal against gold, as --chart-alt), not the fee orange the page's cost bars use */
+  /* the index page's two kinds of fund (2026-10-29, founder: option A of 8dd1f013:research/specs/2026-10-29-hedging): keeping the index's currency, and
+     neutralising it: teal against magenta (gold until 2026-11-08: amber and its neighbours mean status, charts.md), not the fee orange the
+     page's cost bars use */
   --chart-kind-unhedged: var(--palette-teal-300);
-  --chart-kind-hedged: var(--palette-gold-200);
-  /* the index page's cost bar (founder, 2026-10-27, research/specs/2026-10-27-invest-improvements 3.10): one hue per part, by who
+  --chart-kind-hedged: var(--palette-magenta-400);
+  /* the index page's cost bar (founder, 2026-10-27, 8dd1f013:research/specs/2026-10-27-invest-improvements 3.10): one hue per part, by who
      takes it. The account's tariff lines (trade, custody, the fixed account fee, FX), then the fund's own fees, then tax (`--chart-tax`).
      The founder asked for "more color variation" than the orange steps; blue and violet stay out (entered and computed inks).
      Re-picked twice on 2026-11-07 through the dataviz validator on the card (`--mode dark`), the seven together, every pair, since a part
@@ -468,8 +475,9 @@
   --color-chart-pile-extra: var(--chart-pile-extra);
   --color-chart-pile-gain: var(--chart-pile-gain);
   --color-chart-pile-tax: var(--chart-pile-tax);
+  --color-chart-pile-fee: var(--chart-pile-fee);
   --color-chart-pile-salary-tax: var(--chart-pile-salary-tax);
-  --color-chart-pile-veil: var(--chart-pile-veil);
+  --color-chart-pile-loss: var(--chart-pile-loss);
   --color-chart-pile-left: var(--chart-pile-left);
   --color-chart-option-1: var(--chart-option-1);
   --color-chart-option-2: var(--chart-option-2);

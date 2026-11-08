@@ -1,8 +1,8 @@
 // Current account (D29): what money costs while it sits there. The page leads with the answer most people live with: the bank pays
 // nothing, so the balance loses value at the pace of inflation (the rate most of the collected banks publish, F-85). Two lines in
 // today's money, the account and a daily money-market fund, the gap between them filled, bracketed and named. The few banks that do
-// pay a small rate, with conditions and on a small balance, are a folded table with a picker that redraws the account line at a
-// bank's own rate (spec section 7). Figures come from engine runs of the two bundles (guide-signature.ts `currentAccountModel`).
+// pay a small rate, with conditions and on a small balance, are a folded table (spec section 7; the bank picker that redrew the line at
+// one bank's rate was removed, founder 2026-11-08). Figures come from engine runs of the two bundles (guide-signature.ts `currentAccountModel`).
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
@@ -10,13 +10,12 @@ import { guideSignature as copy, values as valuesCopy, kit as kitCopy } from "..
 import { fmt } from "../../lib/format";
 import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, payingBanks, silentBanks, type SignatureData } from "../../lib/guide-signature";
-import type { SiteValue } from "../../lib/value";
+import { differenceOf, type SiteValue } from "../../lib/value";
 import { AxisLabels, yearTicksIn } from "../chart/TimelineChart";
-import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { ChartLegend, ChartTip, cx, Disclosure, DoubtNote, PrintedText, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When } from "../kit";
+import { ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
-import { CommonRateLine, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, termInputs, typed, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -43,14 +42,13 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const account = data.bundles["current-account"]!;
   const fundBundle = data.bundles["money-market-fund-daily"]!;
   const inputs = useSigInputs(account);
-  const [bankId, setBankId] = useState<string | null>(null);
   const cash = fact(data, "cashRate")!;
   const commonRate = fact(data, "commonRate");
   const commonCount = fact(data, "commonCount");
   const bankCount = fact(data, "bankCount");
   const tax = fact(data, "taxRate");
   const years = Math.max(1, Math.round(inputs.years));
-  const model = useMemo(() => currentAccountModel(data, { balance: inputs.amount, years, bankId }), [data, inputs.amount, years, bankId]);
+  const model = useMemo(() => currentAccountModel(data, { balance: inputs.amount, years, bankId: null }), [data, inputs.amount, years]);
   const yr = yearsRange(account);
   const foldRef = useRef<HTMLDetailsElement>(null);
 
@@ -67,21 +65,21 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const base = (key: "amount_now" | "horizon_years", n: number, src: "amount" | "years") => inputSite(account, key, n, inputs.source[src], today, key === "amount_now" ? copy.common.inputNames.balance : copy.common.inputNames.years);
   const balanceValue = base("amount_now", inputs.amount, "amount");
   const yearsValue = base("horizon_years", years, "years");
-  const inputValues = { [copy.common.inputNames.balance]: balanceValue, [copy.common.inputNames.years]: yearsValue };
-  const bank = model?.bank ?? null;
-  const rateName = bank ? copy.account.inputs.rate : copy.account.inputs.common;
-  const runInputs = model ? { ...inputValues, [rateName]: model.rate, ...(model.ceiling ? { [copy.account.inputs.ceiling]: model.ceiling } : {}) } : inputValues;
-  const fundInputs = { ...inputValues, [copy.common.inputNames.assumption]: cash };
+  const inflation = p05Value(account.p05, "A-02");
+  // both lines are in today's money (A-02), the fund's after its own fee lines; `years` is the run's length: the chart's point at a year
+  // is that year's own run (runTimeline), so its sheet names the year hovered, not the horizon
+  const accountIn = (yearsIn: SiteValue) => ({ [copy.common.inputNames.balance]: balanceValue, [copy.common.inputNames.years]: yearsIn, ...(model ? { [copy.account.inputs.common]: model.rate, ...(model.ceiling ? { [copy.account.inputs.ceiling]: model.ceiling } : {}) } : {}), [copy.common.inputNames.inflation]: inflation });
+  const fundIn = (yearsIn: SiteValue) => ({ [copy.common.inputNames.balance]: balanceValue, [copy.common.inputNames.years]: yearsIn, [copy.common.inputNames.assumption]: cash, [copy.common.inputNames.inflation]: inflation, ...termInputs(fundBundle) });
+  const yearIn = (year: number) => typed(year, "years", today, copy.common.inputNames.years);
   const values = model
     ? {
-        account: figure(model.end.account, "nis", "F-67", runInputs, today, copy.account.about.account, rulesOfBundle(account)),
-        fund: figure(model.end.fund, "nis", "F-67", fundInputs, today, copy.account.about.fund, rulesOfBundle(fundBundle)),
+        account: figure(model.end.account, "nis", "F-67", accountIn(yearsValue), today, copy.account.about.account, rulesOfBundle(account)),
+        fund: figure(model.end.fund, "nis", "F-67", fundIn(yearsValue), today, copy.account.about.fund, rulesOfBundle(fundBundle)),
       }
     : null;
-  const cost = values && model ? figure(model.end.cost, "nis", "F-67", { [copy.account.figures.fund]: values.fund, [copy.account.figures.account]: values.account }, today, copy.account.about.cost) : null;
-  const change = values && model ? figure(Math.abs(model.end.change), "nis", "F-67", { [copy.account.figures.account]: values.account, [copy.account.balance]: balanceValue }, today, copy.account.about.change) : null;
+  const cost = values ? differenceOf([copy.account.figures.fund, values.fund], [copy.account.figures.account, values.account], "F-67", { today, about: copy.account.about.cost }) : null;
+  const change = values ? differenceOf([copy.account.figures.account, values.account], [copy.account.balance, balanceValue], "F-67", { today, about: copy.account.about.change, round: Math.abs }) : null;
   const direction = model ? (model.end.change < -0.5 ? copy.account.headline.less : model.end.change > 0.5 ? copy.account.headline.more : null) : null;
-  const inflation = p05Value(account.p05, "A-02");
 
   const paying = payingBanks(data);
   const silent = silentBanks(data);
@@ -90,54 +88,25 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const everyBank = [...paying, ...silent];
   const commonIsZero = commonRate ? Number(commonRate.value) === 0 : false;
   const f = copy.account.fold;
+  // the rate's head opens where the rates come from (it was a sentence above the table, founder 2026-11-08)
+  const rateHelp = <HelpMark term={["בנק ישראל"]} about={f.columns.rate} lead={f.rateHelp} className="ms-1" />;
+  const maxHead = (
+    <>
+      {f.columns.max.before} <Num value={balanceValue} />
+      {f.columns.max.after}
+    </>
+  );
 
   return (
     <div className="flex flex-col gap-5">
       {model && values && change ? (
         <div className="flex flex-col gap-2 max-w-measure">
           <p className="text-lg lg:text-xl font-medium">
-            {copy.account.headline.lead} <InputSlot chars={10}><Num value={yearsValue} display={fmt.years(years)} /></InputSlot>, <InputSlot chars={12}><Num value={balanceValue} /></InputSlot>{" "}
-            {bank ? (
-              <>
-                {copy.account.headline.inBank} <bdi>{bank.name}</bdi> {copy.account.headline.worth}
-              </>
-            ) : (
-              copy.account.headline.inAccount
-            )}{" "}
+            {copy.account.headline.lead} <InputSlot><Num value={yearsValue} display={fmt.years(years)} /></InputSlot>, <InputSlot><Num value={balanceValue} /></InputSlot>{" "}
+            {copy.account.headline.inAccount}{" "}
             <Num value={values.account} /> {copy.account.headline.today} {direction ? <><Num value={change} /> {direction}</> : copy.account.headline.same}.
           </p>
-          {!bank && commonIsZero && <p>{copy.account.mostPayNothing}</p>}
-          {!bank && commonRate && commonCount && bankCount && (
-            <Sentence tone="muted">
-              <CommonRateLine rate={commonRate} count={commonCount} of={bankCount} />
-            </Sentence>
-          )}
-          {bank && (
-            <div role="status" className="flex flex-col gap-1.5 text-sm">
-              <p>
-                {Number(bank.rate.value) > 0 && model.ceiling ? (
-                  <>
-                    {copy.account.picked.pays.before} <bdi>{bank.name}</bdi>
-                    {copy.account.picked.pays.mid} <Num value={bank.rate} /> {copy.account.picked.pays.cap} <Num value={model.ceiling} display={wholeNis(model.ceiling)} />, {copy.account.picked.pays.after}
-                  </>
-                ) : Number(bank.rate.value) > 0 ? (
-                  <>
-                    {copy.account.picked.pays.before} <bdi>{bank.name}</bdi>
-                    {copy.account.picked.pays.mid} <Num value={bank.rate} />, {copy.account.picked.pays.after}
-                  </>
-                ) : (
-                  <>
-                    {copy.account.picked.none.before} <bdi>{bank.name}</bdi>
-                    {copy.account.picked.none.mid} <Num value={bank.rate} />.
-                  </>
-                )}{" "}
-                <button type="button" onClick={() => setBankId(null)} className="text-link hover:underline min-h-target">
-                  {copy.account.picked.clear}
-                </button>
-              </p>
-              {bank.doubt && <DoubtNote text={bank.doubt} />}
-            </div>
-          )}
+          {commonIsZero && <p>{copy.account.mostPayNothing}</p>}
         </div>
       ) : null}
 
@@ -146,6 +115,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           label={copy.account.balance}
           unit="nis"
           value={inputs.amount}
+          start={inputs.p05.amount}
           isEntered={inputs.source.amount === "guide"}
           validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
           onCommit={inputs.setAmount}
@@ -156,6 +126,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           label={copy.common.years}
           unit="years"
           value={years}
+          start={inputs.p05.years}
           isEntered={inputs.source.years === "guide"}
           validate={(n) => (n < yr.min || n > yr.max || !Number.isInteger(n) ? `${valuesCopy.errors.years[0]} ${fmt.number(yr.min)} ${valuesCopy.errors.years[1]}${fmt.number(yr.max)}.` : null)}
           onCommit={inputs.setYears}
@@ -167,7 +138,6 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           disabled={!inputs.ready}
         />
       </div>
-      <SourceLine sources={[inputs.source.amount, inputs.source.years]} />
 
       {model ? (
         <>
@@ -177,8 +147,8 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             amount={inputs.amount}
             years={years}
             cost={cost}
-            accountFigure={(v) => figure(v, "nis", "F-67", runInputs, today, copy.account.about.account)}
-            fundFigure={(v) => figure(v, "nis", "F-67", fundInputs, today, copy.account.about.fund)}
+            accountFigure={(v, year) => figure(v, "nis", "F-67", accountIn(yearIn(year)), today, copy.account.about.account)}
+            fundFigure={(v, year) => figure(v, "nis", "F-67", fundIn(yearIn(year)), today, copy.account.about.fund)}
           />
           <p className="text-xs text-muted-foreground">{copy.account.axisNote}</p>
           <StatRow cols={3}>
@@ -203,50 +173,32 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       {everyBank.length > 0 ? (
         <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border scroll-mt-24" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
           <div className="flex flex-col gap-4 px-4 pb-4">
-            <p className="text-sm text-muted-foreground max-w-measure">
-              {f.lead.before} <Term id="בנק ישראל">{f.lead.term}</Term>
-              {f.lead.after}
-            </p>
-
-            <div className="flex flex-col gap-1.5">
-              <span className="field-label" id="sig-account-bank">
-                {f.picker.label}
-              </span>
-              <div role="group" aria-labelledby="sig-account-bank" className="flex flex-wrap gap-2">
-                {everyBank.map((b) => (
-                  <button key={b.id} type="button" aria-pressed={bankId === b.id} onClick={() => setBankId(bankId === b.id ? null : b.id)} className={cx("sec-chip", bankId === b.id && "sec-chip-on")}>
-                    <bdi>{b.name}</bdi>
-                  </button>
-                ))}
-              </div>
-              <span className="text-xs text-muted-foreground max-w-measure">{f.picker.hint}</span>
-            </div>
-
-            {tax ? (
-              <Sentence size="sm" tone="muted" measure>
-                {f.maxNote.before} <Num value={balanceValue} />
-                {f.maxNote.middle} <Num value={tax} />
-                {f.maxNote.after}
+            {/* each column says what it holds in its head: the last one with the balance the person entered, the rate with a "?" for where the
+                rates come from; no sentence around the table explains a column (founder, 2026-11-08, guidelines/design.md "Tables"). The tax
+                and the bank's ceiling open from each figure. */}
+            {!tax && <Gap id="rule:TXI-03" />}
+            {/* how many banks pay nothing, said with the banks themselves (founder, 2026-11-08), not under the headline */}
+            {commonRate && commonCount && bankCount && (
+              <Sentence size="sm" tone="muted">
+                <CommonRateLine rate={commonRate} count={commonCount} of={bankCount} />
               </Sentence>
-            ) : (
-              <Gap id="rule:TXI-03" />
             )}
 
             <table className="w-full table-fixed text-sm border-collapse tabular-nums max-md:block max-md:[&>colgroup]:hidden">
-              <TableCols widths={["8rem", "6rem", "auto", "9rem"]} />
+              <TableCols widths={["8rem", "8rem", "auto", "9rem"]} />
               <thead className="hidden md:table-header-group">
                 <tr className="text-muted-foreground text-start">
                   <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.bank}</th>
-                  <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.rate}</th>
+                  <th scope="col" className="font-medium text-start pb-2 pe-4 whitespace-nowrap">{f.columns.rate}{rateHelp}</th>
                   <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.who}</th>
-                  <th scope="col" className="font-medium text-start pb-2">{f.columns.max}</th>
+                  <th scope="col" className="font-medium text-start pb-2">{maxHead}</th>
                 </tr>
               </thead>
               <tbody className="block md:table-row-group">
-                {paying.map((b) => {
+                {paying.map((b, row) => {
                   const yearly = tax ? figure(bankYearlyMax(b, inputs.amount, Number(tax.value)), "nis", "F-26", { [copy.account.inputs.rate]: b.rate, ...(b.ceiling ? { [copy.account.inputs.ceiling]: b.ceiling } : {}), [copy.account.balance]: balanceValue, [copy.account.inputs.tax]: tax }, today, copy.account.about.maxYear, rulesOfBundle(account)) : null;
                   return (
-                    <tr key={b.id} className={cx("flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border py-3 md:table-row", bankId === b.id && "bg-accent/40")}>
+                    <tr key={b.id} className={cx("flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border py-3 md:table-row")}>
                       <td className="md:table-cell md:py-3 md:pe-4 md:align-top flex-1 min-w-32">
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                           <span className="font-medium"><bdi>{b.name}</bdi></span>
@@ -255,23 +207,17 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                               <When iso={b.until} lead={`${f.until} `} />
                             </Tag>
                           )}
-                          {b.doubt && (
-                            <Tag tone="caution" icon={<IconAlert size={14} />}>
-                              {f.doubtTag}
-                            </Tag>
-                          )}
                         </div>
                       </td>
                       <td className="md:table-cell md:py-3 md:pe-4 md:align-top font-semibold">
-                        <span className="md:hidden text-xs font-normal text-muted-foreground">{f.columns.rate}: </span>
+                        <span className="md:hidden text-xs font-normal text-muted-foreground">{f.columns.rate}{row === 0 && rateHelp}: </span>
                         <Num value={b.rate} />
                       </td>
                       <td className="md:table-cell md:py-3 md:pe-4 md:align-top basis-full text-muted-foreground">
                         {b.conditions && <PrintedText text={b.conditions} />}
-                        {b.doubt && <DoubtNote text={b.doubt} className="mt-1.5" />}
                       </td>
                       <td className="md:table-cell md:py-3 md:align-top basis-full">
-                        <span className="md:hidden text-xs text-muted-foreground">{f.columns.max}: </span>
+                        <span className="md:hidden text-xs text-muted-foreground">{maxHead}: </span>
                         {yearly ? <Num value={yearly} /> : null}
                       </td>
                     </tr>
@@ -288,24 +234,15 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                           </p>
                         )}
                         {printedZero.map((b) => (
-                          <div key={b.id} className="flex flex-col gap-1.5">
-                            <p>
-                              <bdi>{b.name}</bdi>{" "}
-                              {b.doubt && (
-                                <Tag tone="caution" icon={<IconAlert size={14} />}>
-                                  {f.doubtTag}
-                                </Tag>
-                              )}{" "}
-                              {f.silent.printedZero.mid} <Num value={b.rate} />
-                              {f.silent.printedZero.end}
-                            </p>
-                            {b.doubt && <DoubtNote text={b.doubt} />}
-                          </div>
+                          <p key={b.id}>
+                            <bdi>{b.name}</bdi> {f.silent.printedZero.mid} <Num value={b.rate} />
+                            {f.silent.printedZero.end}
+                          </p>
                         ))}
                       </div>
                     </td>
                     <td className="md:table-cell md:py-3 md:align-top basis-full">
-                      <span className="md:hidden text-xs text-muted-foreground">{f.columns.max}: </span>
+                      <span className="md:hidden text-xs text-muted-foreground">{maxHead}: </span>
                       {f.silent.nothing}
                     </td>
                   </tr>
@@ -364,7 +301,7 @@ export function accountWorthRow(data: SignatureData): WorthFactRow | null {
  * The account and the fund over the years, on their own, so a frame of the chart's glide draws the chart and not the whole visual. The value
  * axis's two ends and the amount's dashed line glide with the lines; the words at the lines' ends follow them.
  */
-function AccountChart({ points, start, amount, years, cost, accountFigure, fundFigure }: { points: AccountPoint[]; start: number; amount: number; years: number; cost: SiteValue | null; accountFigure: (v: number) => SiteValue; fundFigure: (v: number) => SiteValue }) {
+function AccountChart({ points, start, amount, years, cost, accountFigure, fundFigure }: { points: AccountPoint[]; start: number; amount: number; years: number; cost: SiteValue | null; accountFigure: (v: number, year: number) => SiteValue; fundFigure: (v: number, year: number) => SiteValue }) {
   const [box, width] = useWidth();
   const plotW = width - 8;
   const [hover, setHover] = useState<number | null>(null);
@@ -431,16 +368,18 @@ function AccountChart({ points, start, amount, years, cost, accountFigure, fundF
             )}
             <ZoomBrush brush={zoom.brush} left={LEFT} top={TOP} bottom={HEIGHT - BOTTOM} />
           </svg>
+          {/* the words over the plot let a tap through to the year under them (2026-11-08: a tap on them read nothing); the cost's figure
+              opens its source from the figures above the chart */}
           {last && (
             <>
-              <span className="absolute text-xs text-chart-text whitespace-nowrap" dir="rtl" style={{ right: 12, top: Math.max(0, y(last.fund) - 22) }}>
+              <span className="pointer-events-none absolute text-xs text-chart-text whitespace-nowrap" dir="rtl" style={{ right: 12, top: Math.max(0, y(last.fund) - 22) }}>
                 {copy.account.chart.fund}
               </span>
-              <span className="absolute text-xs text-chart-text whitespace-nowrap" dir="rtl" style={{ right: 12, top: y(last.account) + 6 }}>
+              <span className="pointer-events-none absolute text-xs text-chart-text whitespace-nowrap" dir="rtl" style={{ right: 12, top: y(last.account) + 6 }}>
                 {copy.account.chart.account}
               </span>
               {cost && !zoom.view && (
-                <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ right: 26, top: Math.min(HEIGHT - BOTTOM - 24, Math.max(TOP, (y(last.fund) + y(last.account)) / 2 - 10)) }}>
+                <span className="pointer-events-none absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ right: 26, top: Math.min(HEIGHT - BOTTOM - 24, Math.max(TOP, (y(last.fund) + y(last.account)) / 2 - 10)) }}>
                   {copy.account.chart.cost} <Num value={cost} animate />
                 </span>
               )}
@@ -450,10 +389,10 @@ function AccountChart({ points, start, amount, years, cost, accountFigure, fundF
             <ChartTip x={x(read.year)} top={TOP} width={width}>
               <span className="block font-medium">{read.year === 0 ? copy.account.today : <>{kitCopy.chart.yearWord} <bdi dir="ltr">{read.year}</bdi></>}</span>
               <span className="block">
-                {copy.account.chart.account}: <Num value={accountFigure(read.account)} />
+                {copy.account.chart.account}: <Num value={accountFigure(read.account, read.year)} />
               </span>
               <span className="block">
-                {copy.account.chart.fund}: <Num value={fundFigure(read.fund)} />
+                {copy.account.chart.fund}: <Num value={fundFigure(read.fund, read.year)} />
               </span>
             </ChartTip>
           )}

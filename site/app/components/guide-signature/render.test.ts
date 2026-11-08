@@ -44,23 +44,29 @@ describe("current account page", () => {
     expect(html).not.toContain("sig-account-cond");
   });
 
-  it("holds the folded table: closed by default, a row for each paying bank and one for those that pay nothing, a picker over the eight", () => {
+  it("holds the folded table: closed by default, a row for each paying bank and one for those that pay nothing, and no bank picker (removed, founder 2026-11-08)", () => {
     expect(html).toMatch(/<details[^>]*id="current-account-banks"/);
     expect(html).not.toMatch(/<details[^>]*id="current-account-banks"[^>]*\sopen/);
     for (const name of ["דיסקונט", "הבינלאומי", "לאומי", "יהב"]) expect(text).toContain(name);
     expect(text).toContain("לא משלמים ריבית");
     expect(text).toContain("הפועלים, מזרחי טפחות ומסד");
     expect(text).toContain("״לא מוצעת ריבית על יתרת זכות״");
-    expect(text).toMatch(/מרכנתיל\s+יש ספק\s+כתב בפרסום ריבית/);
-    // the picker's chips only: the chart's legend items press too (issue 22)
-    expect(html.match(/aria-pressed="[^"]*" class="sec-chip/g)).toHaveLength(8);
+    expect(text).toMatch(/מרכנתיל\s+כתב בפרסום ריבית/);
+    expect(html).not.toMatch(/class="sec-chip/);
   });
 
-  it("flags First International and Mercantile with the caution mark and their own doubt", () => {
-    expect(text).toContain("ההטבה בתוקף עד 31.03.2026");
-    expect(text).toContain("לא בטוח שהבנק לא משלם");
-    expect(text.match(/יש ספק/g)).toHaveLength(2); // one tag on First International's row, one on Mercantile's line in the row of the banks that pay nothing
+  it("tints First International's and Mercantile's own rates: the doubt is the figure's, said in its sheet, with no chip or note on the page (founder, 2026-11-08)", () => {
+    expect(html.match(/class="[^"]*\bnum-doubt\b/g)).toHaveLength(2);
+    expect(html.match(/aria-label="[^"]*יש ספק/g)).toHaveLength(2);
+    expect(text).not.toContain("יש ספק");
+    expect(text).not.toContain("לא בטוח שהבנק לא משלם");
     expect(text).toContain("עד 31.12.2026");
+  });
+
+  it("says how many banks pay nothing inside the banks' table, not under the headline (founder, 2026-11-08)", () => {
+    const fold = html.slice(html.search(/<details[^>]*id="current-account-banks"/));
+    expect(fold.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ")).toMatch(/רוב הבנקים משלמים בעו״ש/);
+    expect(html.slice(0, html.search(/<details[^>]*id="current-account-banks"/)).replace(/<[^>]+>/g, " ")).not.toMatch(/רוב הבנקים משלמים בעו״ש/);
   });
 });
 

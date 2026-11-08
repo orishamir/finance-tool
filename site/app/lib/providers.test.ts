@@ -1,5 +1,5 @@
 // The securities lib's own facts on the collected data: a stale tariff's clock and the provident wrappers' listing. The house
-// ranking these tests covered went with its page (issue 172); the index page's tests cover the ranking it does.
+// ranking these tests covered went with its page; the index page's tests cover the ranking it does.
 import { describe, expect, it } from "vitest";
 import { staleTariff } from "./providers";
 import { buildWorkbenchBundle } from "./providers.server";

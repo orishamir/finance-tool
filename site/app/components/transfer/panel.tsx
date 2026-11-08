@@ -32,7 +32,7 @@ import {
 } from "../../lib/state";
 import { emptySide, type SideStores } from "../../lib/side-stores";
 import type { Rejected } from "../../lib/import-check";
-import { computed } from "../../lib/value";
+import { entered } from "../../lib/value";
 import { IconAlert, IconCopy } from "../icons";
 import { IconDownload, IconFileUp, IconShare } from "../holdings/icons";
 import { Num } from "../provenance";
@@ -41,7 +41,9 @@ import { shown } from "../../lib/review";
 
 type Site = { version: string; data: string };
 
-const count = (n: number, about: string) => computed(n, "count", "F-83", {}, { today: isoToday(), about });
+// a count of what the person saved (goals, holdings, names, duplicates in a file): their own entries, not a calculation of the site
+// (F-83 until 2026-11-08, the comparison's candidate count; founder: "fix the wrong formulas")
+const count = (n: number, about: string) => entered(n, "count", isoToday(), about);
 
 type Forms = { readonly one: string; readonly two: string; readonly many: string };
 

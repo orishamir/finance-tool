@@ -5,6 +5,7 @@
 // priced pair leaves. Under the chart a table of the same columns on a computer, a list of the steps on a phone. Own SVG.
 import type { KeyboardEvent, ReactNode } from "react";
 import { cx } from "./cx";
+import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { useWidth } from "./marker";
 
 export type StairHue = "start" | "account" | "kind" | "fund";
@@ -76,44 +77,77 @@ export function StairsChart({
   endsAt,
   now,
   label,
-  tick,
   onGo,
 }: {
   /** The columns on screen (at most `STAIRS_SLOTS`). */
   columns: StairColumn[];
   /** How many steps are folded away before the first column; a column's index for `onGo` counts them. */
   fold: number;
-  axis: { lo: number; hi: number; step: number };
+  /** The levels the plot spans (no figures drawn on the axis: the amounts on the columns are the axis, charts.md). */
+  axis: { lo: number; hi: number };
   /** The dashed line: what the most that any priced pair leaves, and the words beside it on a computer (the first is a heading). */
   ceiling: { level: number; lines: string[] };
   /** The level where the climb stops below the ceiling and the words for it; shown on a computer when there is room. */
   endsAt: { level: number; text: string } | null;
   now: string;
   label: string;
-  tick: (n: number, compact: boolean) => string;
   onGo: (index: number) => void;
 }) {
   const [ref, W] = useWidth(1000);
   const compact = W < 860;
   const H = compact ? 300 : 340;
-  const { lo, hi, step } = axis;
-  const grid: number[] = [];
-  for (let g = lo; g <= hi + 1e-9; g += step) grid.push(g);
-  // the left margin holds the widest label on the axis (digits about 0.57 of the font each): a large plan's "1,000,000K" lost its
-  // leading digits past a fixed 44 px (#190)
-  const widest = Math.max(0, ...grid.map((g) => tick(g, compact).length)) * (compact ? 6 : 6.9) + 12;
-  const m = compact ? { l: Math.max(44, widest), r: 6, t: 40, b: 6 } : { l: Math.max(W * STAIRS_MARGIN.left, widest), r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
+  const { lo, hi } = axis;
+  // no value axis: every column carries its amount, and up to about twelve marks the amounts replace the axis (charts.md, 2026-11-08)
+  const m = compact ? { l: 6, r: 6, t: 40, b: 6 } : { l: W * STAIRS_MARGIN.left, r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
   const cw = (W - m.l - m.r) / STAIRS_SLOTS;
   const y = (v: number) => m.t + (1 - (v - lo) / (hi - lo || 1)) * (H - m.t - m.b);
   const floor = y(lo);
   const bx = (i: number) => m.l + i * cw + cw * 0.1;
   const bw = cw * 0.8;
+  // the figure over each column, and the "now" words over the current one: centred on the column, kept clear of the chart's left edge and
+  // the chart's right edge, and raised above the one before where they would meet it (2026-11-08: at 13 px, five columns on a phone are
+  // narrower than their figures, and "+4,875 ₪" ran into "−2,148 ₪")
+  const topPx = compact ? CHART_TEXT_PX : 15;
+  const place = () => {
+    const marks: { x: number; base: number; y1: number }[] = [];
+    let prev: { x1: number; x2: number; y1: number; y2: number } | null = null;
+    for (const [i, c] of columns.entries()) {
+      const top = i === 0 ? y(c.level) : y(Math.max(c.level, c.from));
+      const w = Math.max(chartTextWidth(c.top, topPx), c.current ? chartTextWidth(now, CHART_TEXT_PX) : 0);
+      const x = Math.min(W - 2 - w / 2, Math.max(m.l - 4 + w / 2, bx(i) + bw / 2));
+      const lift = c.current ? 27 + CHART_TEXT_PX : topPx;
+      const box = (base: number) => ({ x1: x - w / 2, x2: x + w / 2, y1: base - lift, y2: base + topPx * 0.3 });
+      let base = top - 7;
+      // a figure wider than its column clears the columns beside it that it reaches over (2026-11-08: at 320 px "78,038 ₪" ran over the
+      // next step's edge)
+      for (const j of [i - 1, i + 1]) {
+        const n = columns[j];
+        if (!n) continue;
+        const nb = box(base);
+        const nTop = j === 0 ? y(n.level) : y(Math.max(n.level, n.from));
+        if (nb.x2 > bx(j) && nb.x1 < bx(j) + bw) base = Math.min(base, nTop - 4 - topPx * 0.3);
+      }
+      const b = box(base);
+      if (prev && b.x1 < prev.x2 + 4 && b.x2 > prev.x1 - 4 && b.y1 < prev.y2 + 2 && b.y2 > prev.y1 - 2) base = prev.y1 - 2 - topPx * 0.3;
+      prev = box(base);
+      marks.push({ x, base, y1: prev.y1 });
+    }
+    return marks;
+  };
+  // a figure raised that far would leave the chart at its top: the plot starts lower, as far as the highest figure needs
+  let marks = place();
+  for (let pass = 0; pass < 3; pass++) {
+    const over = 2 - Math.min(Infinity, ...marks.map((k) => k.y1));
+    if (over <= 0.5) break;
+    m.t += Math.ceil(over);
+    marks = place();
+  }
   // the words beside the dashed line: a heading above, the figure on it, the names below, each broken to fit the margin
   const maxChars = Math.max(8, Math.floor((m.r - 12) / 6.6));
   const heading = wrapLines(ceiling.lines[0] ?? "", maxChars);
   const detail = ceiling.lines.slice(2).flatMap((t) => wrapLines(t, maxChars));
   const lines = [
-    ...heading.map((t, j) => ({ key: `h${j}`, text: t, y: y(ceiling.level) - 3 - 19 * (heading.length - j), big: false })),
+    ...heading.map((t, j) => ({ key: `h${j}`, text: t, y: y(ceiling.level) - 3 - 21 * (heading.length - j), big: false })),
     ...(ceiling.lines[1] ? [{ key: "m", text: ceiling.lines[1], y: y(ceiling.level) - 3, big: true }] : []),
     ...detail.map((t, j) => ({ key: `d${j}`, text: t, y: y(ceiling.level) + 17 + 18 * j, big: false })),
   ];
@@ -127,27 +161,21 @@ export function StairsChart({
     <div ref={ref} className="w-full">
       <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label={label} className="block w-full h-auto [direction:ltr]">
         <line x1={m.l} x2={W - m.r + (compact ? 0 : 4)} y1={y(ceiling.level)} y2={y(ceiling.level)} className="stroke-chart-crosshair" strokeWidth={1.5} strokeDasharray="3 5" />
-        {grid.map((g) => (
-          <g key={g}>
-            <line x1={m.l} x2={W - m.r} y1={y(g)} y2={y(g)} className="stroke-chart-grid" />
-            <text x={m.l - 8} y={y(g) + 4} textAnchor="end" fontSize={compact ? 10.5 : 12} className="fill-chart-text">
-              {tick(g, compact)}
-            </text>
-          </g>
-        ))}
+        {/* the floor, where the first column stands, is the chart's zero line for the chart check (it does not begin at zero: the first
+            column carries a break mark) */}
+        <line x1={m.l} x2={W - m.r} y1={floor} y2={floor} className="stroke-chart-grid" data-zero="" />
         {columns.map((c, i) => {
           const low = Math.min(c.level, c.from);
           const high = Math.max(c.level, c.from);
           const first = i === 0;
           const hue = c.loses ? "loss" : c.hue;
-          const top = first ? y(c.level) : y(high);
           const x = bx(i);
           const h = Math.max(y(low) - y(high), 2);
           return (
             <g key={c.id}>
               {first ? (
                 <>
-                  <rect x={x} y={y(c.level)} width={bw} height={floor - y(c.level)} rx={3} className={FILL.start} />
+                  <rect x={x} y={y(c.level)} width={bw} height={floor - y(c.level)} rx={3} className={FILL.start} data-mark="bar" />
                   {/* never a negative height: a plan with no money puts the first bar on the floor (independent check of pass 7: "-2" in the console) */}
                   {c.open && <rect x={x + 1} y={y(c.level) + 1} width={bw - 2} height={Math.max(0, floor - y(c.level) - 2)} rx={3} className="fill-card stroke-chart-marker" strokeWidth={1.5} />}
                   {/* the axis does not begin at zero: a break mark across the foot of the bar */}
@@ -157,27 +185,16 @@ export function StairsChart({
                 <>
                   <rect x={x} y={y(low)} width={bw} height={floor - y(low)} className="fill-chart-stairs-below" />
                   {c.open ? (
-                    <rect x={x + 1} y={y(high) + 1} width={bw - 2} height={Math.max(y(low) - y(high) - 2, 2)} rx={3} className={cx("fill-card", STROKE[hue])} strokeWidth={2} />
+                    <rect x={x + 1} y={y(high) + 1} width={bw - 2} height={Math.max(y(low) - y(high) - 2, 2)} rx={3} className={cx("fill-card", STROKE[hue])} strokeWidth={2} data-mark="step" />
                   ) : (
                     <>
-                      <rect x={x} y={y(high)} width={bw} height={h} rx={3} className={FILL[hue]} opacity={c.taken ? 1 : 0.5} />
+                      <rect x={x} y={y(high)} width={bw} height={h} rx={3} className={FILL[hue]} opacity={c.taken ? 1 : 0.5} data-mark="step" />
                       {!c.taken && <rect x={x + 0.75} y={y(high) + 0.75} width={bw - 1.5} height={Math.max(h - 1.5, 1)} rx={3} fill="none" className={STROKE[hue]} strokeWidth={1.5} />}
                     </>
                   )}
                 </>
               )}
               {i < columns.length - 1 && <line x1={x + bw} x2={bx(i + 1)} y1={y(c.level)} y2={y(c.level)} className="stroke-chart-marker" strokeWidth={1.5} />}
-              <Txt x={x + bw / 2} y={top - 7} a="mid" size={compact ? 11.5 : 15} className="fill-foreground" weight={600}>
-                {c.top}
-              </Txt>
-              {c.current && (
-                <>
-                  <path d={`M${x + bw / 2 - 6} ${top - 30}h12l-6 7z`} className="fill-primary" />
-                  <Txt x={x + bw / 2} y={top - 34} a="mid" size={compact ? 11 : 13} className="fill-primary" weight={600}>
-                    {now}
-                  </Txt>
-                </>
-              )}
               <rect
                 data-go={fold + i}
                 role="button"
@@ -194,6 +211,25 @@ export function StairsChart({
             </g>
           );
         })}
+        {/* the figures over the columns come after every column, so their card-coloured halo keeps them clear of the next column's
+            outline where a figure is wider than its column (a phone at 320 px: "78,038 ₪" was crossed by the next step's edge) */}
+        <g pointerEvents="none">
+          {columns.map((c, i) => (
+            <g key={c.id}>
+              <Txt x={marks[i]!.x} y={marks[i]!.base} a="mid" size={topPx} className="fill-foreground" weight={600}>
+                {c.top}
+              </Txt>
+              {c.current && (
+                <>
+                  <path d={`M${bx(i) + bw / 2 - 6} ${marks[i]!.base - 23}h12l-6 7z`} className="fill-primary" />
+                  <Txt x={marks[i]!.x} y={marks[i]!.base - 27} a="mid" size={CHART_TEXT_PX} className="fill-primary" weight={600}>
+                    {now}
+                  </Txt>
+                </>
+              )}
+            </g>
+          ))}
+        </g>
         {!compact && (
           <>
             {lines.map((l) => (
@@ -268,7 +304,7 @@ export function StairsSteps({ steps, onGo }: { steps: StairStep[]; onGo: (index:
               <b className={cx("min-w-0 font-medium", s.next && "text-muted-foreground")}>{s.head}</b>
               <span className="ms-auto font-semibold tabular-nums">{s.delta}</span>
             </span>
-            {s.parts && <span className="ps-[19px] text-[12.5px] text-muted-foreground">{s.parts}</span>}
+            {s.parts && <span className="ps-[19px] text-xs text-muted-foreground">{s.parts}</span>}
           </div>
         </li>
       ))}

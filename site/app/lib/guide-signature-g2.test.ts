@@ -154,7 +154,7 @@ describe("study fund", () => {
   });
 });
 
-describe("the guides' securities-account range and the indices page (issue 143)", () => {
+describe("the guides' securities-account range and the indices page", () => {
   const bundle = buildWorkbenchBundle();
   const t = bundle.today;
   const money = (n: number) => enteredValue(n, "nis", t);

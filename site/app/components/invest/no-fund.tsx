@@ -3,14 +3,15 @@
 // the cheapest kind of fund at it; the fund column says there is no fund yet. Once a fund is added the page is the pair page.
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import { firstCount, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
+import { firstCount, phoneOnlyValue, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
+import type { SiteValue } from "../../lib/value";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
+import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, SourcedTag, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -39,13 +40,14 @@ function ordered(view: InvestView) {
   return { rows, ok, missing };
 }
 
-/** Under a house's name: the kind of fund its cost is for, the cheapest mark, and the standing-order price. */
-function SubLine({ kind, cheapest, standing }: { kind: OptionId | null; cheapest: boolean; standing: boolean }) {
+/** Under a house's name: the kind of fund its cost is for, the cheapest mark, the standing-order price, and "by phone only" (2026-11-08). */
+function SubLine({ kind, cheapest, standing, phone = null }: { kind: OptionId | null; cheapest: boolean; standing: boolean; /** The house sells that kind of fund only by phone: its words, which the tag opens. */ phone?: SiteValue | null }) {
   return (
     <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
       {kind && <span>{c.typeTags[kind]}</span>}
       {cheapest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
       {standing && <span>{c.pair.standingTag}</span>}
+      {phone && <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag>}
     </span>
   );
 }
@@ -58,7 +60,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
   const [abroadOpen, setAbroadOpen] = useState(false);
   const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${abroadOpen}`);
-  // every house the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
+  // every house the header can name, laid out unseen, so a long one moves nothing above the list
   const longest = useMemo(
     () => ({
       names: rows.map((h) => <span key={h.provider.id} className={cx("block text-xl font-bold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}><ProviderLink p={h.provider} /></span>),
@@ -79,13 +81,16 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   // equal costs share a place, and a first place shared by two crowns neither (2026-11-05); the tie threshold is for what is left, not for costs
   const places = placesOf(ok.map((h) => h.generic.costN!), 0);
   const crown = firstCount(places) === 1;
+  const snapOf = (id: string) => bundle.snapshots.find((s) => s.id === id);
+  // the tag's room on a house that sells a kind of fund only by phone on some exchange, whichever the plan makes cheapest (2026-11-08)
+  const phoneAny = (id: string, short: string, k: OptionId) => phoneOnlyValue(snapOf(id), k, "europe", short) ?? phoneOnlyValue(snapOf(id), k, "us", short);
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
     // the account's fees on each other first, as on every bar of the page (pass 7)
     const parts: CostPart[] = [
       { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
-      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
+      ...byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
     ];
     return {
       key: h.provider.id,
@@ -97,8 +102,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}>
             {h.provider.short}
             {/* the kind of fund and the cheapest mark change with the plan: the line holds its longest case, so a row keeps its height */}
-            <LongestCase cases={kinds.map((k) => <SubLine key={k} kind={k} cheapest standing={h.standing} />)}>
-              <SubLine kind={g.option ?? null} cheapest={crown && i === 0} standing={h.standing && monthly > 0} />
+            <LongestCase cases={kinds.map((k) => <SubLine key={k} kind={k} cheapest standing={h.standing} phone={phoneAny(h.provider.id, h.provider.short, k)} />)}>
+              <SubLine kind={g.option ?? null} cheapest={crown && i === 0} standing={h.standing && monthly > 0} phone={g.option ? phoneOnlyValue(snapOf(h.provider.id), g.option, g.venue, h.provider.short) : null} />
             </LongestCase>
           </span>
           <span className="flex items-center min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
@@ -157,9 +162,9 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             house={house}
             snapshot={bundle.snapshots.find((s) => s.id === house.id)}
             charge={
-              row.generic?.costN !== undefined && (
+              row.generic?.costAs && (
                 <>
-                  {c.pair.colCharges(years)}: <Num animate value={nis(row.generic.costN, "F-63", c.pair.colCharges(years), bundle.today)} />
+                  {c.pair.colCharges(years)}: <Num animate value={row.generic.costAs(c.pair.colCharges(years))} />
                 </>
               )
             }

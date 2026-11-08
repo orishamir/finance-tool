@@ -192,18 +192,31 @@ export function ChartLegend({ an, pick }: { an: Analysis; pick?: ChartPick<strin
   );
 }
 
+/**
+ * The exit point of a run whose exit takes nothing (no exit tax, no exit cost: a study fund held past its sixth year, within the ceiling):
+ * there the chart's figure is F-61's, the one the cards and the headline call "after tax". A fresh reader (2026-11-07) saw the study
+ * fund's 3,911 ₪ "after tax" on its card and "before tax" in the readout, and wrote that one number cannot be both.
+ */
+function afterTaxAt(an: Analysis, year: number): boolean {
+  const s = an.series;
+  if (!s || Math.abs(year * 12 - s.exitMonth) > 1e-6) return false;
+  return Math.abs(s.exitEffect.total) < 0.5 && Object.values(s.exitEffect.cost).every((v) => Math.abs(v ?? 0) < 0.5);
+}
+
 export function ChartReadout({ an, year }: { an: Analysis; year: number }) {
   const bands = bandsOf(an);
   const p = points(an, bands).find((q) => Math.abs(q.year - year) < 1e-6) ?? points(an, bands).at(-1)!;
   const run = { rules: an.fm.run.rules, flags: an.fm.run.flags, labels: an.fm.run.labels };
   const sum = p.parts.reduce((a, b) => a + b, 0);
+  const after = afterTaxAt(an, p.year);
+  const totalName = after ? r3fees.chart.totalAfterTax : r3fees.chart.totalPreTax;
   return (
     <Readout
-      title={`${p.year === 0 ? guideCopy.readout.today : `${r3fees.chart.year} ${p.year}`}${r3fees.chart.preTax}`}
+      title={`${p.year === 0 ? guideCopy.readout.today : `${r3fees.chart.year} ${p.year}`}${after ? r3fees.chart.afterTax : r3fees.chart.preTax}`}
       rows={[
         ...bands.map((b, i) => ({ id: b.id, swatch: <Swatch shape="box" className={b.bg} />, label: <bdi>{b.name}</bdi>, value: <Num value={an.mk.nis(p.parts[i]!, "F-61", b.name, run)} animate /> })),
-        { id: "total", swatch: <Swatch className="bg-chart-fee-total" />, label: r3fees.chart.totalPreTax, value: <Num value={an.mk.nis(p.total, "F-61", r3fees.chart.totalPreTax, run)} animate /> },
-        { id: "remainder", label: r3fees.chart.remainderLegend.split(":")[0], value: <Num value={an.mk.nis(p.total - sum, "F-61", r3fees.chart.remainderLegend, run)} animate /> },
+        { id: "total", swatch: <Swatch className="bg-chart-fee-total" />, label: totalName, value: <Num value={an.mk.nis(p.total, "F-61", totalName, run)} animate /> },
+        { id: "remainder", label: r3fees.chart.remainderLegend.split(":")[0], value: <Num value={an.mk.nis(p.total - sum, "F-61", r3fees.remainder.about, run)} animate /> },
       ]}
     />
   );
@@ -223,7 +236,7 @@ export function ChartTable({ an }: { an: Analysis }) {
         cells: [
           ...bands.map((b, i) => <Num key={b.id} size="cell" value={an.mk.nis(p.parts[i]!, "F-61", b.name, run)} />),
           <Num key="total" size="cell" value={an.mk.nis(p.total, "F-61", r3fees.chart.total, run)} />,
-          <Num key="remainder" size="cell" value={an.mk.nis(p.total - p.parts.reduce((a, b) => a + b, 0), "F-61", r3fees.chart.remainderLegend, run)} />,
+          <Num key="remainder" size="cell" value={an.mk.nis(p.total - p.parts.reduce((a, b) => a + b, 0), "F-61", r3fees.remainder.about, run)} />,
         ],
       }))}
     />

@@ -1,4 +1,4 @@
-// Who a rule applies to (D30; research/specs/2026-10-25-rules-scope/spec.md §3): reading the `- Scope:` line of a rule-base block,
+// Who a rule applies to (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): reading the `- Scope:` line of a rule-base block,
 // resolving the company names it writes against data/sources/institutions.json, and the validator's scope checks. The extraction
 // (scripts/extract-sources.ts) writes what `scopeFromLine` returns; the validator re-reads the line and fails a record that drifted.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -137,7 +137,7 @@ export interface ScopeCounts {
  *  - an `institution` or `unsettled` rule names a company the registry does not have, or under another Hebrew name;
  *  - a `general` rule's first source is a company's document (kind `institution_doc` or strength `institution`), or is neither a general
  *    kind (law, regulation, circular, regulator page, official PDF, exchange rule, dataset) nor another official text of strength
- *    primary or primary-mirror (a court ruling, a government form, a foreign regulator's page: kinds `other` and `form`);
+ *    primary (a court ruling, a government form, a foreign regulator's page: kinds `other` and `form`);
  *  - a `general` rule derives from (`derived_from`) a rule that is not general, or names as an example (`examples`) one that is
  *    (review, 2026-10-26: a company's term a general rule's Source line mentions is an example, never a derivation);
  *  - a record that is not general, and not a not-rule, cites no own document of any company it names (the registry's `own_hosts` and
@@ -235,7 +235,7 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
       const first = rule.sources?.[0];
       if (!first) warn("general rule with no source to check", rule.id);
       else if (first.kind === "institution_doc" || first.strength === "institution") report(file, `scope: a general rule's first source is a company's document (${first.kind}, ${first.strength}); cite the law or regulator first, or the scope is not general`);
-      else if (!generalSourceKinds.has(first.kind) && !(first.strength === "primary" || first.strength === "primary-mirror")) report(file, `scope: a general rule's first source is ${first.kind} (${first.strength}), not a general source (law, regulation, circular, regulator page, official PDF, exchange rule, dataset, or another official text: a ruling, a government form)`);
+      else if (!generalSourceKinds.has(first.kind) && first.strength !== "primary") report(file, `scope: a general rule's first source is ${first.kind} (${first.strength}), not a general source (law, regulation, circular, regulator page, official PDF, exchange rule, dataset, or another official text: a ruling, a government form)`);
     }
   }
 

@@ -3,10 +3,10 @@ import { isCopySource, isIssuerFiling, isUnlistedPrimary, unofficialSources } fr
 
 describe("unofficialSources", () => {
   const articles = new Set(["hasolidit.com"]);
-  it("lists secondary, mirror and article-host sources, nested", () => {
+  it("lists secondary, copy and article-host sources, nested", () => {
     const rec = {
       a: { source: { url: "https://www.calcalist.co.il/x", strength: "secondary" } },
-      b: [{ url: "https://he.wikisource.org/wiki/x", strength: "primary-mirror" }],
+      b: [{ url: "https://he.wikisource.org/wiki/x", strength: "primary" }],
       c: { url: "https://hasolidit.com/y", strength: "institution" },
     };
     expect(unofficialSources(rec, articles).sort()).toEqual(["https://hasolidit.com/y", "https://he.wikisource.org/wiki/x", "https://www.calcalist.co.il/x"]);
@@ -14,7 +14,7 @@ describe("unofficialSources", () => {
   it("lists National Insurance's consolidated copies (btl.gov.il/Laws1) whatever their strength, and leaves its own pages", () => {
     const rec = {
       a: { url: "https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=120", strength: "primary" },
-      b: { url: "https://btl.gov.il/laws1/02_0103_100269.pdf", strength: "primary-mirror" },
+      b: { url: "https://btl.gov.il/laws1/02_0103_100269.pdf", strength: "institution" },
       c: { url: "https://www.btl.gov.il/Mediniyut/Situation/statistics/Pages/default.aspx", strength: "primary" },
     };
     expect(unofficialSources(rec, articles).sort()).toEqual(["https://btl.gov.il/laws1/02_0103_100269.pdf", "https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=120"]);

@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, scopeWords, site } from "../copy";
-import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
+import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { IdRef, Num, NumberLegend, ReadingTag, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
@@ -15,7 +15,7 @@ import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence } from "../components/kit";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
-import { omitsSection, sectionTitle, splitTerms, withdrawalRules } from "../lib/guide-nav";
+import { omitsSection, sectionTitle, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { exitRateLines, exitStepMark, type ExitRate } from "../lib/exit-step";
 import { guideContent } from "../content/guide";
@@ -103,7 +103,7 @@ export default function GuidePage() {
         return { value: exitCopy.otherKind as string, rules: [] };
     }
   };
-  // the rules the record's sentence cites join the fact's own, so its detail is read in their cards (issue 15)
+  // the rules the record's sentence cites join the fact's own, so its detail is read in their cards
   const exitTextRules = exit.kind === "any_time" ? [] : data.exitTextRules.filter((id) => isGeneral(rules[id]));
   const exitItem = (): KeyValueItem => {
     const v = exitValue();
@@ -152,7 +152,7 @@ export default function GuidePage() {
       lead: onlyAt ? <span>{blocks.exit.onlyAt.before} {onlyAt}{blocks.exit.onlyAt.after}</span> : undefined,
     });
   }
-  // issue 129: the same three rows on every guide they apply to
+  // the same three rows on every guide they apply to
   if (withdrawalRules(record.id).includes("PF-46")) inout.push({ id: "days-count", label: blocks.withdrawal.daysCount.label, value: blocks.withdrawal.daysCount.value, rules: ["PF-46"] });
   const messageCeiling = withdrawalRules(record.id).includes("PF-45") ? figure("PF-45", "digital_message_ceiling") : null;
   if (messageCeiling) inout.push({ id: "unlawful", label: blocks.withdrawal.unlawful.label, value: <>{blocks.withdrawal.unlawful.before} <Num value={messageCeiling} display={fmt.nisWhole(Number(messageCeiling.value))} />{blocks.withdrawal.unlawful.after}</>, rules: ["PF-45"] });
@@ -346,7 +346,10 @@ export default function GuidePage() {
   const byEmployment = record.id === "keren-hishtalmut" && record.deposit_side_tax.formula === "F-33" && ["TXH-04", "TXH-01", "TXH-03", "TXH-05"].every((r) => rules[r]);
   const steps: TaxStep[] = [
     byEmployment ? hishtalmutDeposit(inputsState.employment) : plainStep("deposit", copy.taxSteps.deposit, record.deposit_side_tax),
-    plainStep("during", copy.taxSteps.during, record.tax_during),
+    // the list above already says moving between tracks is not taxed (F-27's line), so a page that asks does not repeat it here
+    content?.omitSwitchInTax && record.tax_during.formula === "F-27" && record.switch_is_tax_event?.value === false && data.pendingFormulas["F-27"] === undefined
+      ? { ...plainStep("during", copy.taxSteps.during, record.tax_during), text: "" }
+      : plainStep("during", copy.taxSteps.during, record.tax_during),
     {
       id: "exit",
       when: copy.taxSteps.exit,
@@ -392,12 +395,6 @@ export default function GuidePage() {
     data.bundle && data.initial ? (
       <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} />
     ) : null;
-  // audit A83: the terms table the page's own text opens, the rest and the shared terms behind toggles; nothing under three rows
-  const generalTerms = data.terms.filter((x) => x.wrapperIds.length >= data.wrapperCount);
-  const mainTerms = splitTerms(
-    data.terms.filter((x) => x.wrapperIds.length < data.wrapperCount),
-    content?.termIds ?? [],
-  );
 
   const links = (
     <>
@@ -410,7 +407,7 @@ export default function GuidePage() {
   return (
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -466,7 +463,7 @@ export default function GuidePage() {
                 </p>
               )}
               {companyTerms().length > 0 && <KeyValueList items={companyTerms()} />}
-              <InstitutionChips companies={data.companies} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
+              <InstitutionChips companies={data.companies} open={content?.companiesOpen} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
             </GuideSection>
           )}
 
@@ -516,23 +513,6 @@ export default function GuidePage() {
             )}
           </GuideSection>
 
-          {(mainTerms.hide ? 0 : 1) + (generalTerms.length > 0 ? 1 : 0) > 0 && (
-            <GuideSection id="terms" title={title("terms")}>
-              <p className="text-sm text-muted-foreground">{copy.termsLine}</p>
-              {mainTerms.main.length > 0 && <TermTable terms={mainTerms.main} />}
-              {mainTerms.rest.length > 0 && (
-                <Disclosure label={<span className="text-link">{copy.termsShowAll}</span>} openLabel={<span className="text-link">{copy.termsHideAll}</span>} className="flex flex-col gap-2" summaryClassName="justify-start">
-                  <TermTable terms={mainTerms.rest} />
-                </Disclosure>
-              )}
-              {generalTerms.length > 0 && (
-                <Disclosure label={<span className="text-link">{copy.generalTermsShow}</span>} openLabel={<span className="text-link">{copy.termsHideAll}</span>} className="flex flex-col gap-2" summaryClassName="justify-start">
-                  <p className="text-sm text-muted-foreground">{copy.generalTermsLine}</p>
-                  <TermTable terms={generalTerms} />
-                </Disclosure>
-              )}
-            </GuideSection>
-          )}
         </div>
       </div>
     </PageShell>

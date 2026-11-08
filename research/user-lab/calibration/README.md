@@ -35,7 +35,8 @@ and `source` must never reach a simulated user**, and neither may this README.
 
 ### Shot formats
 
-- `research/specs/...png`: a file in the repository as it is today.
+- A plain path: a file in the repository as it is today. The shots that were under `research/specs/` read at
+  `git:8dd1f013:` since that folder left the tree on 2026-11-08.
 - `git:<commit>:<path>`: a file as it was at that commit. The founder saw that version, and the file was later
   replaced or deleted. `node research/user-lab/calibration/extract.mjs <out> [ids]` writes these files out.
 - `git:<commit>:<path>.html` with its `.css`, `.js` and `.json` beside it: a drawing that was a working page
@@ -61,7 +62,7 @@ The drawings were made for the founder, not for readers, and several of them car
 
 ## How the cases were chosen
 
-The cases were mined from `research/2026-10-28-founder-patterns.md`, the decisions and their reasons in
+The cases were mined from `8dd1f013:research/2026-10-28-founder-patterns.md`, the decisions and their reasons in
 `docs/product.md` (D25 to D61), the specs under `research/specs/` with their notes, briefs and drawings, the audits
 under `research/audit/`, the dated amendments in `docs/`, the git log (every commit body that names the founder), and
 GitHub issue #33, which is his own text. Each case was kept only when all of these hold:
@@ -137,4 +138,4 @@ friend's goal (the 67,000 ₪ case), the case leaves the figures out: the fee-ch
 - `../bench/cases.jsonl`, built separately, holds every problem he flagged, for the catch-rate metric. Some defects
   here are the same problems. When both sets are used together, match them by page and date, and never let a case
   that is held out in one set be used for training through the other.
-- `research/audit/tools/fresh-reader.mjs` runs a reader on a list of files; `extract.mjs` produces those files.
+- `tools/fresh-reader.mjs` runs a reader on a list of files; `extract.mjs` produces those files.

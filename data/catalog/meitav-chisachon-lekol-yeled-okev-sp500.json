@@ -1,19 +1,23 @@
 {
   "id": "meitav-chisachon-lekol-yeled-okev-sp500",
   "institution": "meitav",
-  "where_seen": "Meitav, חיסכון לכל ילד – מידע להורים, https://www.meitav.co.il/provident_pension/saving_for_every_kid/",
-  "seen_on": "2026-10-23",
-  "seen_by": "this collection",
+  "where_seen": "Meitav, חיסכון לכל ילד – מידע להורים, https://www.meitav.co.il/provident_pension/saving_for_every_kid/; Meitav, דוחות תשואה חסכון לכל ילד, https://www.meitav.co.il/provident_pension/kids_reports/",
+  "seen_on": "2026-11-08",
+  "seen_by": "this collection; re-read 2026-11-08",
   "names": {
     "he": [
       "עוקב S&P 500",
-      "מסלול המחקה את תשואות מדד ה- S&P500 האמריקאי"
+      "מסלול המחקה את תשואות מדד ה- S&P500 האמריקאי",
+      "מסלול הלכה מחקה מדד S&P 500",
+      "הלכה מחקה מדד S&P 500"
     ]
   },
   "maps_to": {
     "wrapper_id": "child-savings-provident",
     "cma_fund_id": null,
-    "track_ids": []
+    "track_ids": [
+      11388
+    ]
   },
   "near_duplicates": [
     {
@@ -21,9 +25,9 @@
       "track_ids": [
         11388
       ],
-      "resolution": "unresolved: the only Meitav child-savings track whose published policy mentions the S&P 500 (equity exposure tracking the index since 1.11.2024), but Meitav does not say the two are the same"
+      "resolution": "the same track: Meitav's kid page names the S&P 500 track \"מסלול הלכה מחקה מדד S&P 500\" and says it offers \"ארבעה מסלולי השקעה, שלושה מהם לפי דרגות סיכון ( נמוך, בינוני, גבוה) ו\"מסלול הלכה\"\"; the reports page says of track 11388: \"החל מיום 1.11.2024 ונכון למועד הפרסום – נכסי המסלול בחשיפה מנייתית עוקבת אחר מדד s&p500\""
     }
   ],
-  "status": "not-catalogued-yet",
-  "notes": "The kid page (\"מהם מסלולי ההשקעה המומלצים\") says: \"במיטב קיים אף מסלול נוסף – עוקב S&P 500\", and the intro mentions \"מסלול המחקה את תשואות מדד ה- S&P500 האמריקאי\". No such track exists in the regulator's 2026-09 child-savings list for Meitav (four tracks: 11385 to 11388) or on Meitav's own child-savings reports page. Missing: a Meitav document naming the track and its fund number, or confirmation that the page means the halacha track 11388."
+  "status": "catalogued",
+  "notes": "Meitav's marketing names for its child-savings halacha track 11388, whose current investment policy follows the S&P 500 (kid page: \"עכשיו בחיסכון לכל ילד במיטב-מסלול הלכה-מחקה מדד S&P 500*\", footnote \"*בהתאם למדיניות ההשקעה הצפויה במועד הפרסום ובהתאם למדיניות כפי שהיא מתעדכנת מעת לעת\"). \"עוקב S&P 500\" is mapped because the same page lists only four tracks, three by risk level and the halacha one. The regulator classes 11388 as a halacha track, not an S&P 500 tracker (its 2026-09 list), so the site does not label it as one. Re-read 2026-11-08: the earlier note that Meitav does not tie the two together was wrong."
 }

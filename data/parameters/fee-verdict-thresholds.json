@@ -15,7 +15,7 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": "real NIS over the horizon of what bringing the fee to the cheaper reference is worth (F-61's value of that reduction), not the fee's cost, since 2026-11-07 (D90 revised); since 2026-10-24 the idle-cash page also reads it over one year (the offer-versus-fund gap and the small-sum line), see docs/parameters-rationale.md#fee-verdict-thresholds; the founder's sign-off of 2026-10-23 covers the threshold as a cost; its reading as the worth of the cut is Claude's choice at the lead's request (D90 revised), not signed off",
+    "notes": "real NIS over the horizon of what bringing the fee to the cheaper reference is worth (F-61's value of that reduction), not the fee's cost, since 2026-11-07 (D90 revised); since 2026-10-24 the idle-cash page also reads it over one year (the offer-versus-fund gap and the small-sum line), see docs/parameters-rationale.md#fee-verdict-thresholds; its reading as the worth of the cut is Claude's choice at the lead's request (D90 revised)",
     "rationale_he": "שווה להתקשר ולבקש הורדה כשהורדת העמלה לממוצע שווה לפחות את הסכום הזה, בכסף של היום ולאורך התקופה. מתחתיו השיחה לא שווה את הזמן. בעמוד על כסף שיושב בעו״ש הסף נבדק על שנה אחת."
   },
   "avoid_nis": {
@@ -32,8 +32,8 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": "real cost over the horizon; since 2026-11-07 (D90 revised the same day) the avoid verdict also needs an option ranked above the product on the fee page's own comparison that charges no such fee or a lower rate of it. That condition is the lead's addition after fresh readers, not part of the founder's sign-off of 2026-10-23",
-    "rationale_he": "מהעלות הזאת ומעלה, בכסף של היום ולאורך התקופה, שווה להימנע מעמלה, כשלפחות אפשרות אחת במקום גבוה יותר בהשוואה לא גובה אותה או גובה פחות."
+    "notes": "real cost over the horizon; since 2026-11-07 (D90 revised the same day) the avoid verdict also needs an option ranked above the product on the fee page's own comparison that charges no such fee or a lower rate of it. That condition is the lead's addition after fresh readers",
+    "rationale_he": "מהעלות הזאת ומעלה, בכסף של היום ולאורך התקופה, הכרטיס של העמלה מציג מוצר שבמקום גבוה יותר בהשוואה ולא גובה אותה או גובה פחות."
   },
   "negotiate_share": {
     "value": 10,
@@ -53,9 +53,7 @@
     "rationale_he": "אם עמלה אחת היא לפחות החלק הזה מכלל העלות של העמלות, האתר מציין זאת ליד ההכרעה. החלק הזה לא משנה את ההכרעה."
   },
   "rationale": "A fee is worth a phone call when bringing it to a cheaper reference is worth 1,000 NIS or more in today's money over the horizon (since 2026-11-07, D90 revised: the worth of the cut, not the fee's cost), and worth avoiding when it costs 2,500 NIS or more and an option without it, or with a lower one, ranks above the product on the same comparison (D90 revised the same day). Below about 1,000 NIS over several years, the call is not worth the time.",
-  "rationale_he": "שווה להתמקח כשהורדת העמלה לממוצע שווה 1,000 ₪ או יותר בכסף של היום לאורך התקופה: על פחות מזה, השיחה לא שווה את הזמן. שווה להימנע מעמלה כשעלותה 2,500 ₪ או יותר ולפחות אפשרות אחת במקום גבוה יותר בהשוואה לא גובה אותה או גובה פחות.",
+  "rationale_he": "שווה להתמקח כשהורדת העמלה לממוצע שווה 1,000 ₪ או יותר בכסף של היום לאורך התקופה: על פחות מזה, השיחה לא שווה את הזמן. כשעלות העמלה 2,500 ₪ או יותר, הכרטיס שלה מציג מוצר שבמקום גבוה יותר בהשוואה ולא גובה אותה או גובה פחות.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\"); the negotiate threshold read on the worth of the cut since 2026-11-07, by Claude at the lead's request (D90 revised)",
-  "signed_off_by": "founder",
-  "signed_off_on": "2026-10-23",
   "shown_as": "site parameter"
 }

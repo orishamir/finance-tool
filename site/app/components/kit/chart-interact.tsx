@@ -1,8 +1,8 @@
-// How a chart answers the pointer (issue 22, 2026-11-01). A year chart reads the year under the pointer; a click or a tap keeps that year;
+// How a chart answers the pointer (2026-11-01). A year chart reads the year under the pointer; a click or a tap keeps that year;
 // on a mouse, a drag across the plot zooms to the years it covers, and ctrl with the wheel (a pinch on a touchpad) zooms around the
 // pointer, so plain scrolling still moves the page. A phone keeps its scrolling: no zoom there, and a tap does not need hover. A legend's
 // item, a bar or a row picks its series with `useChartPick`: a mouse previews it, a click or a tap keeps it. Nothing here moves the layout.
-import { useCallback, useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
 import { useGlidingNumbers } from "./chart-glide";
 import { CountingFigures } from "./counting";
@@ -202,8 +202,12 @@ export interface ChartPick<T> {
   active: T | null;
   /** The item a click or a tap kept. */
   pinned: T | null;
-  /** On the item's element. `tap: false` leaves clicks to what the item sits in (a bar inside a row that picks the row). */
-  bind: (id: T, tap?: boolean) => { onPointerEnter: (e: PointerEvent) => void; onPointerLeave: (e: PointerEvent) => void; onClick?: () => void };
+  /**
+   * On the item's element. `tap: false` leaves clicks to what the item sits in. `"touch"`: a finger's tap keeps the item and a mouse's click
+   * does not, and neither stops the click, so what the item sits in still gets it (a bar inside a row that picks the row: a phone has no
+   * hover, and a tap there showed nothing of the part; a mouse already shows it by pointing).
+   */
+  bind: (id: T, tap?: boolean | "touch") => { onPointerEnter: (e: PointerEvent) => void; onPointerLeave: (e: PointerEvent) => void; onPointerDown?: (e: PointerEvent) => void; onClick?: () => void };
   /** Lets go of the kept item (a tap outside the chart). */
   clear: () => void;
 }
@@ -212,6 +216,9 @@ export interface ChartPick<T> {
 export function useChartPick<T = string>(): ChartPick<T> {
   const [preview, setPreview] = useState<T | null>(null);
   const [pinned, setPinned] = useState<T | null>(null);
+  // the kind of pointer that pressed last, for a `"touch"` item's click
+  const pressedBy = useRef("");
+  const toggle = (id: T) => setPinned((p) => (p === id ? null : id));
   return {
     active: preview ?? pinned,
     pinned,
@@ -222,7 +229,18 @@ export function useChartPick<T = string>(): ChartPick<T> {
       onPointerLeave: (e) => {
         if (e.pointerType === "mouse") setPreview(null);
       },
-      ...(tap ? { onClick: () => setPinned((p) => (p === id ? null : id)) } : {}),
+      ...(tap === "touch"
+        ? {
+            onPointerDown: (e: PointerEvent) => {
+              pressedBy.current = e.pointerType;
+            },
+            onClick: () => {
+              if (pressedBy.current !== "mouse") toggle(id);
+            },
+          }
+        : tap
+          ? { onClick: () => toggle(id) }
+          : {}),
     }),
     clear: () => setPinned(null),
   };
@@ -232,12 +250,23 @@ export function useChartPick<T = string>(): ChartPick<T> {
 export const pickDim = (active: string | null | undefined, id: string) => cx("transition-opacity duration-[var(--duration-fast)]", active && active !== id && "opacity-20");
 
 /**
- * A small box of values at a point of a chart, over the chart, so nothing under it moves. The parent is positioned and reads left to right;
- * `x` is its px from the parent's left, and past `width / 2` the box stands to the left of the point, so it stays on the screen.
+ * A small box of values at a point of a chart, over the chart, so nothing under it moves. The parent is positioned, reads left to right and
+ * is `width` px wide; `x` is the point's px from the parent's left. The box stands beside the point, to its left past `width / 2`, and is
+ * then held inside the parent: it wraps its lines at the parent's width (at most 20rem), and it is moved along so no edge leaves the parent
+ * (2026-11-08: one line of two long fund names was 575 px; on a phone it widened the page, at 1440 the right-hand year put it off the left
+ * edge). Measured before paint, so it never shows in the wrong place.
  */
 export function ChartTip({ x, top = 0, width, children }: { x: number; top?: number; width: number; children: ReactNode }) {
+  const box = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const w = el.offsetWidth;
+    const want = x > width / 2 ? x - 8 - w : x + 8;
+    el.style.transform = `translateX(${Math.max(0, Math.min(want, width - w))}px)`;
+  });
   return (
-    <div dir="rtl" className="absolute z-20 pointer-events-none whitespace-nowrap rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm" style={{ left: x, top, transform: x > width / 2 ? "translateX(calc(-100% - 8px))" : "translateX(8px)" }}>
+    <div ref={box} dir="rtl" className="absolute z-20 pointer-events-none w-max max-w-[min(100%,20rem)] rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm [&_bdi[dir=ltr]]:whitespace-nowrap" style={{ left: 0, top }}>
       <CountingFigures on={false}>{children}</CountingFigures>
     </div>
   );

@@ -7,10 +7,10 @@ import { startTransition, useEffect, useMemo, useState, type ReactNode } from "r
 import { Link, useSearchParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { HELP_TERMS, SORTS, buildProductView, defaultSort, feeRangeOf, inProductsPhrase, pressSort, sortInForce, sortTracks, sortWords, sortableIn, tracksPhrase, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
+import { HELP_TERMS, SORTS, buildProductView, defaultSort, feeRangeOf, inProductsPhrase, pressSort, sortInForce, sortTracks, sortableIn, tracksPhrase, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
 import { FilterChip, LongestCase, SelectField, useFlip } from "../kit";
 import { Term } from "../provenance";
-import { FeeRange, TrackList } from "./list";
+import { TrackList } from "./list";
 
 /** Something else the company offers (its funds of a kind, its securities account): a chip of its own, and a block under the tracks of "כל המוצרים". */
 export interface CompanyExtra {
@@ -28,24 +28,13 @@ const ids = Object.keys(SORTS) as SortId[];
 const FIRST_ROWS = 12;
 const EMPTY_PARAMS = new URLSearchParams();
 
-/** One product: "16 מסלולים · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%."; every product: "112 מסלולים ב־8 מוצרים." (no fee range across products). */
-function CountLine({ view, products, today }: { view: ProductView | null; products: readonly ProductView[]; today: string }) {
-  const fees = useMemo(() => (view ? feeRangeOf(view.tracks, today, { low: t.about.listLow, high: t.about.listHigh }) : null), [view, today]);
+/** One product: "16 מסלולים."; every product: "112 מסלולים ב־8 מוצרים." No fee range and no line on the order: the table shows both (founder, 2026-11-08). */
+function CountLine({ view, products }: { view: ProductView | null; products: readonly ProductView[] }) {
   if (!view) {
     const n = products.reduce((k, v) => k + v.tracks.length, 0);
     return <p className="text-sm text-muted-foreground">{`${tracksPhrase(n)} ${inProductsPhrase(products.length)}.`}</p>;
   }
-  return (
-    <p className="text-sm text-muted-foreground">
-      <span className="whitespace-nowrap">{tracksPhrase(view.tracks.length)}</span>
-      {" · "}
-      <FeeRange fees={fees} />.
-    </p>
-  );
-}
-
-function orderLine(s: SortState, all: boolean): string {
-  return `${all ? t.company.order : t.order.kind}${sortWords(s, "company")}.`;
+  return <p className="text-sm text-muted-foreground">{`${tracksPhrase(view.tracks.length)}.`}</p>;
 }
 
 export function CompanyTracks({ data, extras, defaults, foot }: { data: TbData; extras: readonly CompanyExtra[]; /** The tracks a new member joins. */ defaults: readonly number[]; /** The lines under a product's list ("" for every product). */ foot: (productId: string) => ReactNode }) {
@@ -101,7 +90,6 @@ export function CompanyTracks({ data, extras, defaults, foot }: { data: TbData; 
   };
   const feeYear = data.feeYear && typeof data.feeYear.value === "string" ? data.feeYear.value : null;
   const tracks = view || isAll ? groups.length > 0 : false;
-  const longestOrder = ids.flatMap((id) => ([1, -1] as const).flatMap((dir) => [orderLine({ id, dir }, true), orderLine({ id, dir }, false)]));
   const allCount = all.tracks.length + extras.reduce((k, e) => k + (e.count ?? 0), 0);
 
   return (
@@ -160,11 +148,8 @@ export function CompanyTracks({ data, extras, defaults, foot }: { data: TbData; 
             onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
           />
           <div className="flex flex-col gap-1 pt-1">
-            <LongestCase cases={[<CountLine key="all" view={null} products={views} today={data.today} />, ...views.map((v) => <CountLine key={v.id} view={v} products={views} today={data.today} />)]}>
-              <CountLine view={view} products={views} today={data.today} />
-            </LongestCase>
-            <LongestCase cases={longestOrder.map((line, i) => <p key={i} className="text-sm">{line}</p>)}>
-              <p className="text-sm text-muted-foreground">{orderLine(sort, isAll)}</p>
+            <LongestCase cases={[<CountLine key="all" view={null} products={views} />, ...views.map((v) => <CountLine key={v.id} view={v} products={views} />)]}>
+              <CountLine view={view} products={views} />
             </LongestCase>
           </div>
           {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}

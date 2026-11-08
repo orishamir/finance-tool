@@ -26,7 +26,7 @@ import {
   type SeriesRecord,
   sourcesFile,
 } from "@finance-tool/schema";
-import { urlInBlock, type RuleBaseIds } from "./references.ts";
+import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
 
 /**
@@ -60,6 +60,11 @@ export interface ValidationContext {
   today?: string;
   /** Receives each warning category as one line; default: console.warn. */
   warn?: (line: string) => void;
+  /**
+   * Files outside data/ whose question codes are checked too (docs, the rule base, the packages' sources), and the rule base's
+   * file-to-prefix table for the questions its files name in words; absent in hand-built contexts.
+   */
+  citing?: { files: string[]; prefixOf: Map<string, string> };
 }
 
 export interface Problem {
@@ -111,7 +116,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (!result.success) report(file, formatIssues(result.error));
     // the words a cited page opens at live in data/sources/fragments.json only; the site attaches them to the record when it reads it
     if (rel !== join("sources", "fragments.json") && collectKeys(parsed.value).has("fragment"))
-      report(file, "fragment: written only in data/sources/fragments.json (by research/audit/tools/quote-fragments.mjs), never in a record");
+      report(file, "fragment: written only in data/sources/fragments.json (by tools/quote-fragments.mjs), never in a record");
 
     for (const id of collectStrings(parsed.value, "rule_ids")) {
       if (!ctx.ruleBase.rules.has(id)) report(file, `rule_ids: ${id} is not a rule in il-finance (data-schema §4 item 2)`);
@@ -193,7 +198,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkTermNames(files, ctx.dataDir, report);
   checkOpenQuestions(files, ctx, report, warn);
-  // who each rule applies to and where it may appear (D30; research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
+  // who each rule applies to and where it may appear (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
   const scopeCounts = checkScope(ctx, ruleRecords, report, warn);
   const emit = ctx.warn ?? ((line: string) => console.warn(line));
   emit(`scope: ${scopeCounts.general} general, ${scopeCounts.institution} institution, ${scopeCounts.unsettled} unsettled`);
@@ -204,16 +209,16 @@ export function validateData(ctx: ValidationContext): Problem[] {
 }
 
 /**
- * data-schema §3.5 and §4 item 15 (issue 44): the page shows no load and prices none while every collected load is zero. A load
+ * data-schema §3.5 and §4 item 15: the page shows no load and prices none while every collected load is zero. A load
  * above zero would be a cost the reader never sees, so it fails until the page prices it.
  */
 export function checkFundLoad(record: Pick<FundRecord, "fees">): string[] {
   const value = record.fees.load?.value;
   if (typeof value !== "number" || value <= 0) return [];
-  return [`fees.load: this fund charges a load on purchase of ${value}%, and the page does not yet price it; show and price the load before adding this value (issue 44)`];
+  return [`fees.load: this fund charges a load on purchase of ${value}%, and the page does not yet price it; show and price the load before adding this value`];
 }
 
-/** data-schema §3.5 (issue 147, A-10): a yield belongs to a distributing fund, as a number in percent a year from a document. */
+/** data-schema §3.5 (A-10): a yield belongs to a distributing fund, as a number in percent a year from a document. */
 export function checkFundDistribution(record: Pick<FundRecord, "distribution_policy" | "distribution">): string[] {
   const d = record.distribution;
   if (!d) return [];
@@ -388,7 +393,13 @@ interface PremiseSnapshot {
   price_for_he?: string;
   left_out?: unknown[];
   lines: { base: string; applies_to: string[]; rate?: { value?: number | null; source?: { url?: string } } | null }[];
-  availability?: { applies_to: string[]; available: boolean | "unknown"; reason_he?: string; source: { quote?: string } }[];
+  availability?: {
+    applies_to: string[];
+    available: boolean | "unknown";
+    reason_he?: string;
+    source: { quote?: string };
+    phone_only?: { venues?: string[]; source: { quote: string } };
+  }[];
   groups?: { state: string; entries: GroupEntryLike[] };
   snapshot?: string;
   tariff?: { url: string };
@@ -710,6 +721,14 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   }
   for (const a of entries) {
     if (a.available === "unknown" && !a.reason_he) out.push(`availability: ${a.applies_to.join(", ")} is unknown and gives no reason_he for the row`);
+    // 2026-11-08: "by phone only" is said of a kind a person can buy there, in the house's words; its exchanges only for a fund bought abroad
+    const phone = a.phone_only;
+    if (phone) {
+      if (a.available !== true) out.push(`availability: ${a.applies_to.join(", ")} is bought by phone only, on an entry that does not say it can be bought`);
+      if (phone.venues && !(a.applies_to.length === 1 && a.applies_to[0] === "foreign_securities"))
+        out.push(`availability: phone_only.venues names exchanges, which only a fund bought abroad has; give foreign_securities an entry of its own`);
+      if (!/טלפון|טלפוני/.test(phone.source.quote)) out.push(`availability: phone_only's quote for ${a.applies_to.join(", ")} does not say "by phone" in the house's words`);
+    }
     if (a.available !== true) continue;
     for (const c of a.applies_to) {
       const words = NAMES_CLASS[c];
@@ -732,7 +751,6 @@ export interface RuleLike {
     title: string;
     strength: string;
     kind: string;
-    mirror_host?: string;
     page?: number;
     anchor?: string;
     checked: string;
@@ -747,10 +765,9 @@ export interface RuleLike {
   scope_settle?: string;
 }
 
-const STRENGTH_RANK: Record<string, number> = { primary: 3, "primary-mirror": 2, institution: 1, secondary: 0 };
-const MIRROR_HOSTS = ["he.wikisource.org", "nevo.co.il"];
+const STRENGTH_RANK: Record<string, number> = { primary: 2, institution: 1, secondary: 0 };
 /**
- * Copies kept on an official host, named by path because the rest of the host is official (issue #262, 2026-11-07):
+ * Copies kept on an official host, named by path because the rest of the host is official (2026-11-07):
  * National Insurance's Laws1 folder holds its own consolidated copies of laws and regulations it does not publish
  * (the Income Tax Ordinance, the 2002 and 2005 withholding regulations, its own law), while its other pages are the
  * regulator's. A copy is a lead; the official text is the Tax Authority's (gov.il) or Reshumot and the Knesset.
@@ -768,10 +785,10 @@ export function isCopyPath(url: string): boolean {
 }
 
 /**
- * Hosts that only copy official texts (glossary sweep, 2026-11-07): Wikisource and Nevo (MIRROR_HOSTS), Olaw, Capitax and
- * Funder's file host. A source on one of them is a copy whatever strength it was given, so it fails like a mirror.
+ * Hosts that only copy official texts (glossary sweep, 2026-11-07): Wikisource, Nevo, Olaw, Capitax and Funder's file host. A
+ * source on one of them is a copy whatever strength it was given, so it fails: a copy is a lead, never a source (CLAUDE.md).
  */
-const COPY_HOSTS = [...MIRROR_HOSTS, "olaw.org.il", "olaw.co.il", "capitax.co.il", "funder.co.il"];
+const COPY_HOSTS = ["he.wikisource.org", "nevo.co.il", "olaw.org.il", "olaw.co.il", "capitax.co.il", "funder.co.il"];
 
 /** A copy's address: a copy-only host (or a subdomain of one) or a copy folder on an official host (COPY_PATHS). */
 export function isCopySource(url: string): boolean {
@@ -835,7 +852,7 @@ function isPdfUrl(url: string): boolean {
   try {
     const u = new URL(url);
     // the Reshumot gazette service serves PDFs at a document key with no `.pdf` (2026-10-25)
-    return /\.pdf$/i.test(u.pathname) || u.pathname.includes("BlobFolder") || (u.host === "free-justice.openapi.gov.il" && u.pathname.includes("/Documents/"));
+    return /\.pdf$/i.test(u.pathname) || u.pathname.includes("BlobFolder") || (u.host === "free-justice.openapi.gov.il" && u.pathname.includes("/Documents/")) || (u.host === "api.justice.gov.il" && u.pathname === "/reshumot/resolver");
   } catch {
     return false;
   }
@@ -867,7 +884,7 @@ export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): st
 
 /**
  * CLAUDE.md "General sources first" (founder, 2026-11-07): cite only official publications. A source whose strength
- * is `secondary` or `primary-mirror`, whose host data/sources/publishers.json calls an `article`, or whose address is a
+ * is `secondary`, whose host data/sources/publishers.json calls an `article`, or whose address is a
  * copy (COPY_HOSTS such as Wikisource, Nevo and Olaw, or COPY_PATHS: National Insurance's Laws1 folder), or that is marked
  * `primary` on a host no official publisher uses (isUnlistedPrimary), fails, unless it is
  * a leftover named in unofficial-leftovers.json (`<file> <url>`). The list only shrinks: a leftover that is gone fails
@@ -879,7 +896,7 @@ export function unofficialSources(record: unknown, articleHosts: Set<string>): s
     if (Array.isArray(node)) return node.forEach(walk);
     if (!node || typeof node !== "object") return;
     const v = node as { url?: unknown; strength?: unknown };
-    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || v.strength === "primary-mirror" || articleHosts.has(hostOf(v.url)) || isCopySource(v.url) || isUnlistedPrimary(v.url, v.strength))) out.push(v.url);
+    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || articleHosts.has(hostOf(v.url)) || isCopySource(v.url) || isUnlistedPrimary(v.url, v.strength))) out.push(v.url);
     Object.values(node).forEach(walk);
   };
   walk(record);
@@ -962,13 +979,9 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
   if (block) for (const m of block.body.matchAll(/^- Source: (.*)$/gm)) for (const link of m[1]!.matchAll(/\[([^\]]+)\]\(/g)) if (checkTitleBrackets(link[1]!).length) warn("rule base source line quotes a broken fund name", rule.id);
   sources.forEach((s, i) => {
     const at = `sources[${i}]`;
-    const host = hostOf(s.url);
-    if (MIRROR_HOSTS.includes(host) && s.strength === "primary") out.push(`${at}: a ${host} copy is primary-mirror, never primary`);
-    if (isCopyPath(s.url) && s.strength === "primary") out.push(`${at}: a copy kept on an official host (${s.url}) is primary-mirror, never primary`);
-    if ((s.strength === "primary-mirror") !== (s.mirror_host !== undefined)) out.push(`${at}: mirror_host is set exactly when strength is primary-mirror`);
     if (s.page !== undefined && !isPdfUrl(s.url)) out.push(`${at}: page is only for a PDF URL`);
     if (s.anchor !== undefined && isPdfUrl(s.url)) out.push(`${at}: anchor is only for an HTML URL`);
-    if (block && !urlInBlock(s.url, block)) out.push(`${at}: ${s.url} is not in the markdown block of ${rule.id} (verbatim or as a raw-Wikisource rewrite)`);
+    if (block && !urlInBlock(s.url, block)) out.push(`${at}: ${s.url} is not in the markdown block of ${rule.id}`);
     if (s.checked > rule.checked) warn("source checked later than the rule's checked", rule.id);
   });
   if (sources.length > 0 && rule.strength !== "open") {
@@ -989,7 +1002,7 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
   return out;
 }
 
-/** P-09 (`data/parameters/pinned-rules.json`): its ids exist, and a row's first rule has a primary or primary-mirror source. */
+/** P-09 (`data/parameters/pinned-rules.json`): its ids exist, and a row's first rule has a primary source. */
 function checkPinnedRules(files: string[], dataDir: string, all: Map<string, RuleLike>, report: (file: string, message: string) => void) {
   const file = files.find((f) => relative(dataDir, f).replace(/\\/g, "/") === "parameters/pinned-rules.json");
   if (!file) return;
@@ -1009,7 +1022,7 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
       continue;
     }
     if (rule.scope !== "general") report(file, `pinned-rules: fact ${id} rests on a company's term, which is never a fact in general`);
-    if (rule.sources && !rule.sources.some((s) => s.strength === "primary" || s.strength === "primary-mirror")) report(file, `pinned-rules: fact ${id} has no primary or primary-mirror source`);
+    if (rule.sources && !rule.sources.some((s) => s.strength === "primary")) report(file, `pinned-rules: fact ${id} has no primary source`);
     const text = fact.text_he ?? "";
     if (text.length > 200) report(file, `pinned-rules: fact ${id} is ${text.length} characters; the block's cards hold 200`);
     if (/\d/.test(text.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, ""))) report(file, `pinned-rules: fact ${id} carries a typed digit; use a {ID:figure} slot`);
@@ -1022,8 +1035,8 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
   for (const row of rec.rows ?? []) {
     const first = row.ids?.[0];
     const rule = first ? all.get(first) : undefined;
-    if (rule?.sources && !rule.sources.some((s) => s.strength === "primary" || s.strength === "primary-mirror"))
-      report(file, `pinned-rules: the first rule of a row (${first}) has no primary or primary-mirror source`);
+    if (rule?.sources && !rule.sources.some((s) => s.strength === "primary"))
+      report(file, `pinned-rules: the first rule of a row (${first}) has no primary source`);
     // the answer line of the questions page: no digit typed by hand; every figure is a {ID:figure} slot over one of the row's rules
     if (typeof row.answer_he === "string") {
       const plain = row.answer_he.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, "");
@@ -1088,12 +1101,30 @@ function checkTermNames(files: string[], dataDir: string, report: (file: string,
 }
 
 /**
- * data-schema §3.15 (2026-10-26): `data/open-questions.json` against the rule base and the guide records.
- * Warns when the file is behind the markdown (an id missing or extra, or a closure the file does not have, or the other way);
- * fails when a guide record lists a question the file has as closed (`open_questions`, `blocked_by`, a `blocked:` mark), marks a
- * dimension a bare `blocked`, or blocks one on a question its `open_questions` does not list.
+ * data-schema §3.15 and §4 item 13: `data/open-questions.json` against the rule base, and every question the repository names.
+ * Fails: a struck item left in a rule base's open questions (an answered question is deleted once its answer is in a rule, founder
+ * 2026-11-08); a code (`TXI OQ19`, `TXI-OQ19`) in any text of data/ or of `ctx.citing`, or a question a rule-base file names in words
+ * ("open question 7"), that is not a question of the rule base; a guide record that marks a dimension a bare `blocked`, or blocks one
+ * on a question its `open_questions` does not list. Warns when the file is behind the markdown (an id missing or extra).
  */
 function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (file: string, message: string) => void, warn: (category: string, id: string) => void) {
+  const refsDir = join(ctx.dataDir, "..", ".claude/skills/il-finance/references");
+  for (const q of ctx.ruleBase.questions ?? [])
+    if (q.struck) report(join(refsDir, q.file), `${q.id} is struck: an answered question is deleted once its answer is in a rule (its number is never used again); delete it`);
+  const known = (code: string) => ctx.ruleBase.openQuestions.has(code.replace(" OQ", "-OQ")) || (ctx.ruleBase.questions?.some((q) => q.id === code) ?? false);
+  const missing = (code: string) => `${code} is not a question of the rule base (an answered question is deleted): cite the rule that answered it, or drop the citation`;
+  for (const f of files) {
+    const rel = relative(ctx.dataDir, f).split(/[\\/]/).join("/");
+    if (rel === "open-questions.json" || !f.endsWith(".json")) continue;
+    const text = readFileSync(f, "utf8");
+    for (const code of new Set(questionCodesIn(text))) if (!known(code)) report(f, missing(code));
+  }
+  for (const f of ctx.citing?.files ?? []) {
+    const text = readFileSync(f, "utf8");
+    const own = ctx.citing!.prefixOf.get(f.split(/[\\/]/).pop()!);
+    const codes = [...questionCodesIn(text), ...(own ? questionWordsIn(text, own, ctx.citing!.prefixOf) : [])];
+    for (const code of new Set(codes)) if (!known(code)) report(f, missing(code));
+  }
   const file = files.find((f) => relative(ctx.dataDir, f) === "open-questions.json");
   if (!file) return;
   const list = parseJson(readFileSync(file, "utf8")).value as OpenQuestionEntry[] | undefined;
@@ -1101,28 +1132,17 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
   const byId = new Map(list.map((q) => [q.id, q]));
   const behind = "data/open-questions.json is behind the rule base (npm run gen:open-questions -w @finance-tool/pipeline)";
   if (ctx.ruleBase.questions) {
-    const md = new Map(ctx.ruleBase.questions.map((q) => [q.id, q]));
-    for (const q of ctx.ruleBase.questions) {
-      const f = byId.get(q.id);
-      if (!f) warn(behind, `${q.id} missing`);
-      else if ((q.closedOn !== null) !== (f.status === "closed") || (q.closedOn !== null && q.closedOn !== f.closed_on))
-        warn(behind, `${q.id} ${q.closedOn ? `closed ${q.closedOn}` : "not closed"} in the markdown`);
-    }
+    const md = new Set(ctx.ruleBase.questions.map((q) => q.id));
+    for (const q of ctx.ruleBase.questions) if (!byId.has(q.id)) warn(behind, `${q.id} missing`);
     for (const q of list) if (!md.has(q.id)) warn(behind, `${q.id} not in the markdown`);
   }
-  const closed = (code: string) => byId.get(code.replace("-OQ", " OQ"))?.status === "closed";
   for (const f of files) {
     if (!relative(ctx.dataDir, f).split(/[\\/]/).join("/").startsWith("instruments/") || !f.endsWith(".json")) continue;
     const rec = parseJson(readFileSync(f, "utf8")).value;
-    for (const key of ["open_questions", "blocked_by"]) {
-      for (const id of collectStrings(rec, key)) if (closed(id)) report(f, `${key}: ${id} is closed in data/open-questions.json; state the answer with its rule instead`);
-    }
     const marks = ((rec as { dimensions?: unknown } | undefined)?.dimensions ?? {}) as Record<string, unknown>;
     const oq = (rec as { open_questions?: unknown } | undefined)?.open_questions;
     const listed = new Set(Array.isArray(oq) ? oq.filter((x): x is string => typeof x === "string") : []);
     for (const [dim, mark] of Object.entries(marks)) {
-      if (typeof mark === "string" && mark.startsWith("blocked:") && closed(mark.slice("blocked:".length)))
-        report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} is closed in data/open-questions.json; unblock it`);
       // a blocked mark names the question that blocks it, and the record lists that question (third check, 2026-11-07: two
       // records marked loss offset a bare "blocked" with no question opened, and a page showed "חסום" with nothing to open)
       if (mark === "blocked" || mark === "blocked:") report(f, `dimensions.${dim}: a bare "blocked" names no open question; open one in il-finance and mark blocked:<id>`);
@@ -1130,10 +1150,10 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
         report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} blocks it but is not in the record's open_questions`);
     }
     // a dimension still marked open while the record's own value for it is known (child savings, 2026-11-07)
-    const known = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
+    const switchKnown = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
     const sw = marks["switching-tax-event"];
-    if (known !== undefined && known !== null && typeof sw === "string" && sw.startsWith("blocked:"))
-      report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${String(known)}); mark it covered`);
+    if (switchKnown !== undefined && switchKnown !== null && typeof sw === "string" && sw.startsWith("blocked:"))
+      report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${String(switchKnown)}); mark it covered`);
   }
 }
 

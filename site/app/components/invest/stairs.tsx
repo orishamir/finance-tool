@@ -1,4 +1,4 @@
-// The stairs (founder, 2026-11-01; drawing A of research/specs/2026-11-01-indices-general/stairs.html): from one account and one fund, which
+// The stairs (founder, 2026-11-01; drawing A of 8dd1f013:research/specs/2026-11-01-indices-general/stairs.html): from one account and one fund, which
 // single change leaves more at the end and by how much, taken one step at a time. Appended after the page's other sections and reading
 // the same view: the start is the person's pick; every figure is the engine's (`buildInvest` for the rows, `pairCosts` for the stairs shown
 // only), every difference a computation of F-91. The selection logic is `lib/stairs.ts`; the chart and the rows are the kit's.
@@ -8,11 +8,11 @@ import { fmt } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
 import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
-import { LANES, byGain, chainOf, gridOf, laneCases, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
-import { computed, type SiteValue } from "../../lib/value";
+import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
+import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { LeadTail, Num } from "../provenance";
-import { wholeParts, MixedName, Card, HoldTallest, LongestCase, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { wholeParts, MixedName, Card, LongestCase, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
@@ -30,9 +30,10 @@ interface Level {
   house: ProviderInfo;
   left: SiteValue;
   account: SiteValue;
-  fund: SiteValue;
-  tax: SiteValue;
-  /** The three costs less the stair before's, in whole shekels that add up to minus the difference in what is left (F-91); null for the start. */
+  /** The fund's and the state's parts (F-91); null where the way's cost could not be split by who takes it (`pairCosts` gave none): the cell says so, never a 0. */
+  fund: SiteValue | null;
+  tax: SiteValue | null;
+  /** The three costs less the stair before's, in whole shekels that add up to minus the difference in what is left (F-91); null for the start, and where this stair or the one before has no split. */
   dParts: [number, number, number] | null;
 }
 
@@ -49,7 +50,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const today = bundle.today;
   const t = c.stairs;
   // the two cards hold the tallest height they have had on this index: another start drew fewer stairs, or shorter lists under them,
-  // and everything below moved (#190); the hold starts over on another index or screen width
+  // and everything below moved; the hold starts over on another index or screen width
   const heldChart = useHeldHeight<HTMLElement>(`${view.index.id}:chart`);
   const heldRows = useHeldHeight<HTMLElement>(`${view.index.id}:rows`);
   const g = useMemo(() => gridOf(view, bundle.snapshots), [view, bundle.snapshots]);
@@ -75,7 +76,6 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const chainKey = chain ? chain.chain.map((s) => `${s.pos.a}|${s.pos.f}`).join(",") : "";
   const levels: Level[] = useMemo(() => {
     if (!chain) return [];
-    const nis = (n: number, formula: string, about: string, inputs: Record<string, SiteValue> = {}) => computed(n, "nis", formula, inputs, { today, about });
     const out: Level[] = [];
     chain.chain.forEach((stair, i) => {
       const p = ways.get(stair.pos.f)?.byHouse[stair.pos.a];
@@ -88,13 +88,13 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         house: house(stair.pos.a),
         left: p.value,
         account: p.cost(`${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}`, false),
-        fund: pc?.fund ?? nis(0, "F-91", t.table.fundCost),
-        tax: pc?.tax ?? nis(0, "F-91", t.table.tax),
+        fund: pc?.fund ?? null,
+        tax: pc?.tax ?? null,
         dParts: null,
       };
       const prev = out[i - 1];
-      if (prev) {
-        const raw = [level.account, level.fund, level.tax].map((v, k) => (v.value as number) - ([prev.account, prev.fund, prev.tax][k]!.value as number)) as [number, number, number];
+      if (prev && level.fund && level.tax && prev.fund && prev.tax) {
+        const raw = [level.account, level.fund, level.tax].map((v, k) => (v.value as number) - ([prev.account, prev.fund!, prev.tax!][k]!.value as number)) as [number, number, number];
         // whole shekels that add up to the difference in what is left, so the three figures under a stair never disagree with the stair
         level.dParts = wholeParts(raw, -(stair.d ?? 0)) as [number, number, number];
       }
@@ -126,7 +126,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const partOf = (l: Level, prev: Level, k: 0 | 1 | 2) => {
     const key = (["account", "fund", "tax"] as const)[k];
     const name = [t.table.accountCost, t.table.fundCost, t.table.tax][k]!;
-    return delta(l.dParts![k], l[key], `${name}: ${l.fundName}, ${l.house.short}`, prev[key], `${name}: ${prev.fundName}, ${prev.house.short}`, `${t.about.cost}: ${name}`);
+    // read only where both stairs have their split (`dParts`), so every part is a figure
+    return delta(l.dParts![k], l[key]!, `${name}: ${l.fundName}, ${l.house.short}`, prev[key]!, `${name}: ${prev.fundName}, ${prev.house.short}`, `${t.about.cost}: ${name}`);
   };
 
   // ---------------------------------------------------------------- the chart and what sits under it
@@ -148,6 +149,22 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     };
   });
   const endsBelow = Math.round(end.stair.v) !== Math.round(ceiling.v);
+  // what the steps on the chart add up to, from the start to the last: the chart's title (charts.md: a finding, not the topic)
+  const first = levels[0]!;
+  const climb = differenceOf([`${t.about.left}: ${end.fundName}, ${end.house.short}`, end.left], [`${t.about.left}: ${first.fundName}, ${first.house.short}`, first.left], "F-91", { today, about: t.panelTitle.about, round: Math.round });
+  const climbN = typeof climb.value === "number" ? climb.value : 0;
+  const climbTitle =
+    levels.length < 2 ? (
+      t.panelTitle.none
+    ) : climbN >= 0 ? (
+      <>
+        {t.panelTitle.lead(levels.length - 1)} {t.panelTitle.more} <Num value={climb} /> {t.panelTitle.tail}
+      </>
+    ) : (
+      <>
+        {t.panelTitle.lead(levels.length - 1)} <Num value={climb} display={(v) => fmt.nisWhole(Math.abs(v))} /> {t.panelTitle.less} {t.panelTitle.tail}
+      </>
+    );
 
   const laneWord = (s: Stair) => (s.lane ? t.lanes[s.lane].word : t.startPoint);
   const tone = (l: Level, k: 0 | 1 | 2) => {
@@ -159,7 +176,10 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const costCell = (l: Level, i: number, k: 0 | 1 | 2) => {
     const key = (["account", "fund", "tax"] as const)[k];
     const prev = levels[fold + i - 1];
-    if (!l.dParts || !prev) return <Num value={l[key]} />;
+    // the start shows its own costs; a stair whose split is missing (here or on the stair before) says so, never a difference against a 0
+    const own = l[key];
+    if (!prev) return own ? <Num value={own} /> : <span className="text-muted-foreground">{t.table.notSplit}</span>;
+    if (!l.dParts) return <span className="text-muted-foreground">{t.table.notSplit}</span>;
     return (
       <span className={tone(l, k)}>
         <Num value={partOf(l, prev, k)} display={signedNis} />
@@ -286,12 +306,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       </div>
     );
   };
-  const holdId = `${view.index.id}|${g.accounts.join(",")}|${g.funds.length}`;
-  const heldLane = (lane: Lane) => (
-    <HoldTallest id={`${holdId}|${lane}`} cases={() => laneCases(g)[lane].map((list) => laneBlock(lane, list, true))}>
-      {laneBlock(lane)}
-    </HoldTallest>
-  );
+  // each list takes its own height: held at the tallest list any step could bring, the card kept up to 340 px blank under the lists
+  // (founder, 2026-11-08: "remove unused space ... resize the container"); the card still holds the tallest it has been (useHeldHeight)
+  const heldLane = (lane: Lane) => laneBlock(lane);
 
   // ---------------------------------------------------------------- what is true where the climb stopped
   const openTop = openTopOf(g);
@@ -321,7 +338,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     );
 
   // the lines whose names and figures change with a pick or a plan, laid out unseen at their longest: every fund's name with the longest
-  // account's, and the longest amount (#190, fourth pass: 40 years at 12% put a long fund abroad in the status line, and the phone's
+  // account's, and the longest amount (fourth pass: 40 years at 12% put a long fund abroad in the status line, and the phone's
   // step card grew 38 px; a pick changed the heading's words and moved the card's inside 29 px)
   const longestHouse = view.providers.map((p) => p.short).sort((a, b) => b.length - a.length)[0] ?? "";
   const fundNames = [...new Set(allFunds(view).map((f) => f.name))];
@@ -332,7 +349,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       <span key={`n${n}`}>
         {t.statusNone} {sample}
         {t.statusTogether}{" "}
-        {/* the same button as the line's own: a button wraps as one box, and a span in its place held a line too few (#190) */}
+        {/* the same button as the line's own: a button wraps as one box, and a span in its place held a line too few */}
         <JumpLink>
           {t.jump} {n}, {longestHouse}
         </JumpLink>
@@ -364,38 +381,17 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       </h2>
       <Card ref={heldChart} pad="roomy" className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h3 className="text-lg font-semibold">{t.panelTitle}</h3>
+          {/* the title is what the steps add up to, held at its longest so a step taken moves nothing under it */}
+          <LongestCase className="min-w-0 flex-1" cases={[<h3 key="l" className="text-lg font-semibold">{t.panelTitle.lead(STAIRS_SLOTS)} {t.panelTitle.more} {sample} {t.panelTitle.tail}</h3>]}>
+            <h3 className="text-lg font-semibold">{climbTitle}</h3>
+          </LongestCase>
           <button type="button" onClick={reset} disabled={current.taken.length === 0} className="inline-flex min-h-11 items-center rounded-lg border border-border px-3.5 text-sm text-primary disabled:cursor-default disabled:text-muted-foreground disabled:opacity-50">
             {t.reset}
           </button>
         </div>
         <p className="text-xs text-muted-foreground">{t.axisNote}</p>
-        <StairsChart
-          columns={columns}
-          fold={fold}
-          axis={{ lo: scale.LO, hi: scale.HI, step: scale.step }}
-          ceiling={{ level: ceiling.v, lines: [t.ceiling, fmt.nisWhole(ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
-          endsAt={endsBelow ? { level: end.stair.v, text: `${t.endsAt} ${fmt.nisWhole(end.stair.v)}` } : null}
-          now={atExample ? t.nowExample : t.now}
-          label={t.chartLabel}
-          tick={(n, compact) => (compact && n >= 1e6 ? `${fmt.number(Math.round(n / 1e5) / 10)}M` : compact && n >= 1000 ? `${fmt.number(n / 1000)}K` : fmt.number(Math.round(n)))}
-          onGo={goTo}
-        />
-        <div className="max-lg:hidden">
-          <StairsTable rows={rowsTable} />
-        </div>
-        <div className="lg:hidden">
-          <StairsSteps steps={steps} onGo={goTo} />
-          <LongestCase className="mt-2 text-sm" cases={ceilingCases}>
-            <p>
-              {t.ceilingLine} <Num value={ceilingPrice.value} />, {nameOfPos(ceiling.pos)}.
-            </p>
-          </LongestCase>
-        </div>
-        <LongestCase className="mt-1 text-sm" cases={statusCases}>
-          <p>{status}</p>
-        </LongestCase>
-        <div className="flex flex-wrap gap-x-[18px] gap-y-1 border-t border-border pt-1.5 text-xs text-muted-foreground">
+        {/* one legend for the chart, above it, in the order of the steps (charts.md) */}
+        <div className="flex flex-wrap gap-x-[18px] gap-y-1 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
             <i className={cx("inline-block size-3 rounded-[2px]", STAIR_SWATCH.start)} />
             {t.startPoint}
@@ -414,6 +410,30 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
             {lockIcon(t.lockLabel)} {t.legendOpen}
           </span>
         </div>
+        <StairsChart
+          columns={columns}
+          fold={fold}
+          axis={{ lo: scale.LO, hi: scale.HI }}
+          ceiling={{ level: ceiling.v, lines: [t.ceiling, fmt.nisWhole(ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
+          endsAt={endsBelow ? { level: end.stair.v, text: `${t.endsAt} ${fmt.nisWhole(end.stair.v)}` } : null}
+          now={atExample ? t.nowExample : t.now}
+          label={t.chartLabel}
+          onGo={goTo}
+        />
+        <div className="max-lg:hidden">
+          <StairsTable rows={rowsTable} />
+        </div>
+        <div className="lg:hidden">
+          <StairsSteps steps={steps} onGo={goTo} />
+          <LongestCase className="mt-2 text-sm" cases={ceilingCases}>
+            <p>
+              {t.ceilingLine} <Num value={ceilingPrice.value} />, {nameOfPos(ceiling.pos)}.
+            </p>
+          </LongestCase>
+        </div>
+        <LongestCase className="mt-1 text-sm" cases={statusCases}>
+          <p>{status}</p>
+        </LongestCase>
       </Card>
       <Card ref={heldRows} pad="roomy" className="flex flex-col gap-2">
         <LongestCase cases={hereCases}>
@@ -428,7 +448,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         <p className="text-sm text-muted-foreground">{t.rowsHint}</p>
         <div className="grid items-start gap-x-9 gap-y-3 lg:grid-cols-2">
           {/* each lane held at its longest list on this index: on a phone they stand one under another, and a lane that grew moved the
-              lanes and everything below it (#190) */}
+              lanes and everything below it */}
           <div>{heldLane("account")}</div>
           <div className="flex flex-col gap-[22px]">
             {heldLane("kind")}

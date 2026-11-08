@@ -1,14 +1,16 @@
 // A value for each year as a bar from zero (2026-10-29, the index page: the dollar's change against the shekel each year): years left to
 // right, the value axis at the left edge, each bar's figure at its end. One neutral hue: the bars are one series. Own SVG. Pointing at or
-// tapping a year reads it; on a computer a drag zooms to the years it covers, and a zoomed bar has room for its figure (issue 22).
+// tapping a year reads it; on a computer a drag zooms to the years it covers, and a zoomed bar has room for its figure.
 import { useId, useState } from "react";
 import { tickFade, ticksOn, useFadingTicks, useGlidingNumbers, useGlidingRows } from "./chart-glide";
 import { ChartTip, ZoomBar, ZoomBrush, useYearZoom } from "./chart-interact";
+import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { useWidth } from "./marker";
 
 const H = 220;
 const TOP = 16;
-const BOTTOM = 22;
+// room under the plot for the years: at 13 px, 22 px put the axis's lowest figure on the first year (2026-11-08)
+const BOTTOM = 28;
 const LEFT = 40;
 
 const VALUE = ["value"] as const;
@@ -17,8 +19,9 @@ export function YearBars({ items: goal, format, tickStep, label, bright }: { ite
   const [ref, w] = useWidth(420);
   const [hover, setHover] = useState<number | null>(null);
   const items = useGlidingRows(goal, VALUE);
-  // room past the last bar for half its year's label ("2025" is about 28 px at 11 px): 4 px drew it past the chart's edge on a phone (#190)
-  const plotW = w - LEFT - 16;
+  // room past the last bar for half its year's label, measured (chart-text.ts): 4 px drew it past the chart's edge on a phone
+  const yearW = chartTextWidth("2025", CHART_TEXT_PX);
+  const plotW = w - LEFT - Math.ceil(yearW / 2) - 2;
   const zoom = useYearZoom({ first: goal[0]?.year ?? 0, last: goal[goal.length - 1]?.year ?? 0, plotLeft: LEFT, plotWidth: plotW, band: true, onHover: setHover });
   const clip = useId().replace(/:/g, "");
   const [from, to] = zoom.domain;
@@ -29,8 +32,10 @@ export function YearBars({ items: goal, format, tickStep, label, bright }: { ite
   const y = (v: number) => TOP + ((top - v) / (2 * top)) * (H - TOP - BOTTOM);
   const bw = plotW / Math.max(1, to - from);
   const ticks = ticksOn(useFadingTicks(Array.from({ length: (2 * topGoal) / tickStep + 1 }, (_, i) => -topGoal + i * tickStep)), y, [TOP, H - BOTTOM]);
-  // year labels at least 34 px apart (every second or fifth year on a phone); a bar keeps its figure when there is room for it
-  const every = [1, 2, 5, 10].find((n) => n * bw >= 34) ?? 10;
+  // year labels with at least 6 px between them (every second or fifth year on a phone); a bar keeps its figure when its neighbours' leave
+  // it room, the widest figure and 4 px
+  const every = [1, 2, 5, 10].find((n) => n * bw >= yearW + 6) ?? 10;
+  const figureRoom = Math.max(0, ...goal.map((i) => chartTextWidth(format(i.value), CHART_TEXT_PX))) + 4;
   // among the bright years, only the highest and lowest carry a figure: the bars are too narrow for more
   const shown = items.filter((i) => bright?.includes(i.year));
   const extreme = { lo: shown.reduce((a, i) => (i.value < (a?.value ?? Infinity) ? i : a), shown[0])?.year, hi: shown.reduce((a, i) => (i.value > (a?.value ?? -Infinity) ? i : a), shown[0])?.year };
@@ -47,8 +52,8 @@ export function YearBars({ items: goal, format, tickStep, label, bright }: { ite
           </defs>
           {ticks.map((t) => (
             <g key={t.value} className={tickFade(t)}>
-              <line x1={LEFT} x2={w - 4} y1={y(t.value)} y2={y(t.value)} className={t.value === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth={1} />
-              <text x={LEFT - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
+              <line x1={LEFT} x2={w - 4} y1={y(t.value)} y2={y(t.value)} className={t.value === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth={1} data-zero={t.value === 0 ? "" : undefined} />
+              <text x={LEFT - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-xs tabular-nums">
                 {format(t.value)}
               </text>
             </g>
@@ -59,7 +64,7 @@ export function YearBars({ items: goal, format, tickStep, label, bright }: { ite
               const y1 = y(it.value);
               const on = !!bright?.includes(it.year);
               const lit = hover === it.year;
-              return <rect key={it.year} x={barX(it.year)} y={Math.min(y0, y1)} width={bw * 0.7} height={Math.max(1, Math.abs(y1 - y0))} rx={2} className={on || lit ? "fill-foreground" : "fill-chart-baseline"} opacity={lit || (on && hover === null) ? 1 : hover !== null ? 0.45 : bright ? 0.6 : 0.8} />;
+              return <rect key={it.year} x={barX(it.year)} y={Math.min(y0, y1)} width={bw * 0.7} height={Math.max(1, Math.abs(y1 - y0))} rx={2} className={on || lit ? "fill-foreground" : "fill-chart-baseline"} opacity={lit || (on && hover === null) ? 1 : hover !== null ? 0.45 : bright ? 0.6 : 0.8} data-mark="bar" />;
             })}
           </g>
           {/* the words stand outside the clip: only the bars slide past the plot's edge on the way to a new view */}
@@ -71,13 +76,13 @@ export function YearBars({ items: goal, format, tickStep, label, bright }: { ite
               const on = !!bright?.includes(it.year);
               return (
                 <g key={it.year}>
-                  {(zoom.view || !bright ? bw >= 22 : on && (it.year === extreme.lo || it.year === extreme.hi)) && (
-                    <text x={mid} y={it.value >= 0 ? y1 - 4 : y1 + 12} textAnchor="middle" className="fill-foreground text-[10px] tabular-nums">
+                  {(zoom.view || !bright ? bw >= figureRoom : on && (it.year === extreme.lo || it.year === extreme.hi)) && (
+                    <text x={mid} y={it.value >= 0 ? y1 - 4 : y1 + 14} textAnchor="middle" className="fill-foreground text-xs tabular-nums">
                       {format(it.value)}
                     </text>
                   )}
                   {it.year % every === 0 && (
-                    <text x={mid} y={H - 6} textAnchor="middle" className="fill-chart-text text-[11px] tabular-nums">
+                    <text x={mid} y={H - 6} textAnchor="middle" className="fill-chart-text text-xs tabular-nums">
                       {it.year}
                     </text>
                   )}

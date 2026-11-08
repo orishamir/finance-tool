@@ -93,10 +93,6 @@ jobs:
 
       # Sanity failed: nothing goes to main. Open a pull request with the diff and the reasons.
       - if: steps.refresh.outputs.sanity == 'failed' && steps.changes.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh label create data-refresh --color 0e8a16 --description "Automated data refresh" 2>/dev/null || true
-      - if: steps.refresh.outputs.sanity == 'failed' && steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
@@ -106,7 +102,6 @@ jobs:
           committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           commit-message: "Refresh data: ${{ steps.refresh.outputs.period }} (sanity failed, needs review)"
           title: "Data refresh failed its sanity check (${{ steps.refresh.outputs.period }})"
-          labels: data-refresh
           body: |
             The scheduled data refresh (CMA, CBS CPI, MoF child-savings rates) failed its sanity checks, so nothing was written to main.
             The diff below is what the adapter would have written; review it before merging.

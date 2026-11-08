@@ -1,6 +1,6 @@
 // The securities data in the browser and at build: the bundle of every bank and broker snapshot, fund and exposure record
 // the index page and the funds page read, how one fund runs through the engine, and the provident wrappers' listing. The
-// page that ranked the houses on one fund was removed (issue 172); the index page ranks them. No fee, rate or rule figure
+// page that ranked the houses on one fund was removed; the index page ranks them. No fee, rate or rule figure
 // is written here: tariffs come from the snapshots in the bundle, and every number leaves as a value object with its
 // state. Pure: no storage; the bundle is fetched once.
 import { fundOf, lineClasses, recordDistribution, type GapList, type RunContext } from "@finance-tool/engine";
@@ -121,7 +121,7 @@ export function shortName(id: string, name: string): string {
 
 /** A site parameter as a value object (P-01, A-28): the file's value with the marker the provenance sheet reads. */
 export function parameterValue(p: ParameterRecord, vo: ValueObject): SiteValue {
-  return { ...vo, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: false } };
+  return { ...vo, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
 }
 
 /** A-28's start values (docs/method.md): one trade per contribution and twelve deposits a year. A method default, shown as a site parameter. */
@@ -137,7 +137,7 @@ export function a28Value(value: number, about: string, today: string): SiteValue
     state: "sourced",
     about,
     notes: "",
-    parameter: { rationale: "ברירת המחדל של השיטה: פעולה אחת לכל הפקדה חודשית, 12 הפקדות בשנה.", signedOffOn: null, provisional: false },
+    parameter: { rationale: "ברירת המחדל של השיטה: פעולה אחת לכל הפקדה חודשית, 12 הפקדות בשנה." },
   };
 }
 
@@ -158,7 +158,7 @@ interface SubjectFund {
 }
 
 /**
- * A fee this fund does not have, not one left uncollected (issue 156). The variable fee and the trustee fee are lines of Israeli fund law (ETF-14, MF-20),
+ * A fee this fund does not have, not one left uncollected. The variable fee and the trustee fee are lines of Israeli fund law (ETF-14, MF-20),
  * which does not apply to a foreign fund (ETF-71), so its record holds null for them. A value object with no value is a fee not collected.
  */
 export const feeAbsent = (rec: FundRecord, key: keyof FundRecord["fees"]): boolean => rec.domicile !== "IL" && (key === "variable_management" || key === "trustee") && !rec.fees[key];

@@ -3,13 +3,12 @@
 import { Link, redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/exposure";
 import { exposurePage as copy, guide, guideIndex, site } from "../copy";
-import { GuideSection, SectionIndex, TermTable, useCurrentSection } from "../components/guide/sections";
+import { GuideSection, SectionIndex, useCurrentSection } from "../components/guide/sections";
 import { IconLock } from "../components/icons";
 import { NumberLegend, RuleRef } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Card, Disclosure, RowArrow, Tag } from "../components/kit";
+import { Card, RowArrow, Tag } from "../components/kit";
 import { exposureContent } from "../content/exposure";
-import { splitTerms } from "../lib/guide-nav";
 import type { SiteValue } from "../lib/value";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -44,12 +43,10 @@ export default function ExposurePage() {
   const cp = { figure };
   const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today };
   const kind = copy.kinds[record.kind] ?? record.kind;
-  // audit A83: no terms table under three rows; the page's own terms first, the rest behind a toggle
-  const terms = splitTerms(data.terms, content?.termIds ?? []);
   return (
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => x.id !== "terms" || !terms.hide)} current={current} />
+        <SectionIndex sections={[...copy.sections]} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -78,7 +75,7 @@ export default function ExposurePage() {
             {data.holders.length === 0 ? (
               <p className="text-muted-foreground">{copy.holdNone}</p>
             ) : (
-              <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {data.holders.map((h) => (
                   <li key={h.id}>
                     <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]">
@@ -89,7 +86,7 @@ export default function ExposurePage() {
                       {/* audit A85: red only when the product's own exit tax is blocked; the shared open questions get a neutral tag */}
                       {h.blockedBy.length > 0 && (
                         <span className="flex flex-col gap-1.5">
-                          <Tag tone="blocked" icon={<IconLock size={14} />}>
+                          <Tag tone="blocked" icon={<IconLock size={14} />} wrap>
                             {copy.openTax}
                           </Tag>
                           <span className="flex flex-wrap gap-2">
@@ -120,17 +117,6 @@ export default function ExposurePage() {
             {content ? content.risks(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}
           </GuideSection>
 
-          {!terms.hide && (
-            <GuideSection id="terms" title={copy.sections[3].title}>
-              <p className="text-sm text-muted-foreground">{guide.termsLine}</p>
-              {terms.main.length > 0 && <TermTable terms={terms.main} />}
-              {terms.rest.length > 0 && (
-                <Disclosure label={<span className="text-link">{guide.termsShowAll}</span>} openLabel={<span className="text-link">{guide.termsHideAll}</span>} className="flex flex-col gap-2" summaryClassName="justify-start">
-                  <TermTable terms={terms.rest} />
-                </Disclosure>
-              )}
-            </GuideSection>
-          )}
         </div>
       </div>
     </PageShell>

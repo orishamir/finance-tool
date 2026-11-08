@@ -4,6 +4,7 @@ import { bondPrice, makamPrice } from "@finance-tool/engine";
 import { buildGuidePage, depositSheetNames } from "./guide.server";
 import type { DepositTerms } from "@finance-tool/schema";
 import { runTimeline } from "./engine";
+import { guideSignature } from "../copy";
 import { accountAxis, accountFact, bankYearlyMax, bondModel, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, depositEndBanks, depositModel, fact, fixedDateModel, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, addMonthsIso, silentBanks, topPayer } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
@@ -156,17 +157,16 @@ describe("current account", () => {
   it("every bank carries the record's own Hebrew conditions; the doubts, the end date and the printed no-offer sentence travel with the rows", () => {
     expect(d.banks!.every((b) => !!b.conditions)).toBe(true);
     const by = (bank: string) => d.banks!.find((b) => b.bank === bank)!;
-    expect(by("fibi").doubt).toContain("31.03.2026");
-    expect(by("mercantile").doubt).toContain("דיסקונט");
-    expect(d.banks!.filter((b) => b.doubt).map((b) => b.bank).sort()).toEqual(["fibi", "mercantile"]);
+    // the doubt is the rate's own: it goes wherever the rate shows (founder, 2026-11-08)
+    expect(by("fibi").rate.doubt).toContain("31.03.2026");
+    expect(by("mercantile").rate.doubt).toContain("דיסקונט");
+    expect(d.banks!.filter((b) => b.rate.doubt).map((b) => b.bank).sort()).toEqual(["fibi", "mercantile"]);
     expect(by("yahav").until).toBe("2026-12-31");
     expect(d.banks!.filter((b) => !b.until)).toHaveLength(7);
     // Hapoalim, Mizrahi-Tefahot and Massad print the no-interest sentence; Mercantile prints a rate of 0
     expect(d.banks!.filter((b) => b.noOffer).map((b) => b.bank).sort()).toEqual(["hapoalim", "massad", "mizrahi-tefahot"]);
     expect(by("mercantile").noOffer).toBe(false);
     expect(by("mercantile").rate.value).toBe(0);
-    // the doubt is in the number's own sheet
-    expect(by("fibi").rate.notes).toBe(by("fibi").doubt);
   });
 
   it("the worth-knowing fact counts the banks that pay, says they all have conditions and a ceiling, and names the highest", () => {
@@ -224,7 +224,8 @@ describe("bank deposit", () => {
     expect(b.breakable.map((x) => [x.id, x.deposits.value, x.withPenalty.value, x.free.value])).toEqual([["discount", 10, 10, 0]]);
     const lines = (v: { computed_from?: { inputs?: Record<string, unknown> } }) => Object.keys(v.computed_from?.inputs ?? {}).length;
     expect(lines(b.deposits as never)).toBe(24);
-    expect(lines(b.lockedBanksWithExits as never)).toBe(24);
+    // the banks with exits among those that lock every deposit read both columns of each deposit (founder, 2026-11-08)
+    expect(lines(b.lockedBanksWithExits as never)).toBe(48);
     expect(lines(b.breakable[0]!.deposits as never)).toBe(10);
     // a sheet name still taken gets a number that replaces the last one, never a stack of them (code review, 2026-11-07)
     const twin = { bank: "x", names: { "447": ["פיקדון"] }, type_447: "t", rate_type: "fixed", linkage: "none", exit_points: { exists: false, every_months: null } };
@@ -233,7 +234,10 @@ describe("bank deposit", () => {
     // each bank links its own break rule, not one bank's for all (code review, 2026-11-07)
     expect(b.breakable[0]!.rules).toContain("BANK-33");
     // the exit column says only the exits: no break rule, no condition about opening the deposit (code review, 2026-11-07)
-    const exits = Object.values((b.lockedBanksWithExits as { computed_from?: { inputs?: Record<string, { value: unknown; rule_ids?: string[]; notes?: string }> } }).computed_from!.inputs!);
+    const exits = Object.entries((b.lockedBanksWithExits as { computed_from?: { inputs?: Record<string, { value: unknown; rule_ids?: string[]; notes?: string }> } }).computed_from!.inputs!)
+      .filter(([name]) => name.endsWith(` · ${guideSignature.deposit.exitsInput}`))
+      .map(([, v]) => v);
+    expect(exits).toHaveLength(24);
     for (const e of exits) expect(e.rule_ids ?? []).toEqual([]);
     // a note only on a deposit with exits, never on "אין"
     expect(exits.filter((e) => e.notes).length).toBeGreaterThan(0);

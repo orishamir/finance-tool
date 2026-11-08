@@ -1,16 +1,14 @@
 // A fee row (design-system 7.2, design-spec 11.3): name, rate, cost, verdict, the three quiet lines, the reduction
 // field and the negotiation text.
 import { useMemo, useState, type ReactNode } from "react";
-import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r3fees } from "../../copy";
 import { reducible, reductionWorth, type Analysis, type FeeReach, type LineView, type SubjectView } from "../../lib/fees";
 import { formatValue, fmt, nearThreshold } from "../../lib/format";
-import type { SiteValue } from "../../lib/value";
-import { entered as enteredValue } from "../../lib/value";
+import { asField, entered as enteredValue, type SiteValue } from "../../lib/value";
 import { IconCopy } from "../icons";
 import { LeadTail, Num, RuleRef, StateTag } from "../provenance";
-import { Button, Callout, Card, cx, Disclosure, gershayim, LongestCase, NumberField, Sentence, Tag } from "../kit";
+import { Button, Callout, Card, cx, Disclosure, gershayim, LongestCase, NumberField, ResetToStart, Sentence } from "../kit";
 import { CapLine, ReadingMark, ReferenceLine, VerdictTag } from "./parts";
 
 function periodWord(months: number): string {
@@ -66,11 +64,15 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
             }}
           />
         </div>
-        {!isEntered && line.suggestion !== null && <Tag tone="parameter">{r3fees.reduction.suggestion}</Tag>}
-        {isEntered && line.suggestion !== null && (
-          <Button variant="quiet" className="text-sm min-h-target" onClick={() => onChange(null)}>
-            {r3fees.reduction.suggestion}
-          </Button>
+        {/* the field starts at the average, said in plain words; once changed, the same place holds "↺ חזרה ל־…" (founder, 2026-11-08).
+            Both keep their room in one cell, so nothing moves when one gives way to the other */}
+        {line.suggestion !== null && (
+          <span className="grid items-center">
+            <span className={cx("[grid-area:1/1] text-xs text-muted-foreground whitespace-nowrap", isEntered && "invisible")} aria-hidden={isEntered ? true : undefined}>
+              {r3fees.reduction.suggestion}
+            </span>
+            <ResetToStart shown={isEntered} start={line.suggestion} unit="pct" onReset={() => onChange(null)} className="[grid-area:1/1] justify-self-start" />
+          </span>
         )}
       </div>
       {/* D86: a lower rate holds only for the discount period; said where it is typed, always there so nothing moves when it is */}
@@ -122,7 +124,8 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
   const cma = line.reference.cma!;
   const n = r3fees.negotiation;
   // nothing typed, the script asks for the regulator's average: the figure is that average, not one the person entered (2026-11-03)
-  const toV = toPct === null ? cma.mean : enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם");
+  // what the reader typed in the field above is a field's value: plain in the script too (founder, 2026-11-08)
+  const toV = toPct === null ? cma.mean : asField(enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם"));
   const cls = cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification;
   const dataset = n.datasets[cma.dataset] ?? cma.dataset;
   const segs: Seg[] = [
@@ -250,12 +253,6 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
       <div className="flex flex-col gap-2">
         <ReferenceLine reference={line.reference} noAverageSaid={line.reason === "no-reference"} />
         <CapLine cap={line.cap} />
-        {/* the options above the product without this fee, or with a lower one, show only under "avoid", which a slider can bring and take
-            and the ranking can change: the room of every alternative stays, or the card and everything below it moved by 53 px at 1280
-            and 75 px at 390 (box check, 2026-11-07) */}
-        {line.alternatives.length > 0 && (
-          <LongestCase cases={[<RemovedBy key="all" removedBy={line.alternatives} />]}>{line.verdict === "avoid" && <RemovedBy removedBy={line.removedBy} />}</LongestCase>
-        )}
       </div>
       {/* a fee at 0% now has nothing to bring down: the verdict says when the discount ends, and no field says "זו לא הורדה" (D90) */}
       {reducible(line.line) && line.rateFraction !== undefined && line.rateFraction > 0 && <ReductionField line={line} an={an} years={years} value={reduction} onChange={onReduce} />}
@@ -267,32 +264,6 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
         </Disclosure>
       )}
     </Card>
-  );
-}
-
-/** D90 revised the same day: the options that rank above the product, without the fee or with a lower one, said in two groups. */
-function RemovedBy({ removedBy }: { removedBy: LineView["removedBy"] }) {
-  const groups = [
-    { lead: r3fees.removedBy.without, list: removedBy.filter((o) => !o.lower) },
-    { lead: r3fees.removedBy.lower, list: removedBy.filter((o) => o.lower) },
-  ].filter((g) => g.list.length > 0);
-  return (
-    <>
-      {groups.map((g) => (
-        <p key={g.lead} className="text-sm">
-          {g.lead}
-          {g.list.map((o, i) => (
-            <span key={o.id}>
-              {i > 0 && ", "}
-              <Link to={`/guide/${o.id}`} className="text-link hover:underline">
-                <bdi>{gershayim(o.name)}</bdi>
-              </Link>
-            </span>
-          ))}
-          .
-        </p>
-      ))}
-    </>
   );
 }
 

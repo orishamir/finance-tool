@@ -191,7 +191,7 @@ const records: Rec[] = readdirSync(join(root, "data/funds"))
  * record without its text fails, so no record skips silently.
  */
 const EXCUSED: Record<string, string> = {
-  "us-voo": "Vanguard's fund page, a web page whose figures load by script; read by the lead (research/audit/2026-11-07-indices-data/voo-read-by-lead.md)",
+  "us-voo": "Vanguard's fund page, a web page whose figures load by script; read by the lead (8dd1f013:research/audit/2026-11-07-indices-data/voo-read-by-lead.md)",
 };
 
 describe.skipIf(!hasLibrary)("tracking records against their reports in the library", () => {

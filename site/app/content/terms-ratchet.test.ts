@@ -1,4 +1,4 @@
-// Ratchets of the glossary (issue 205, 2026-11-06): a financial term the site names has a row in data/terms, the rows the
+// Ratchets of the glossary (2026-11-06): a financial term the site names has a row in data/terms, the rows the
 // glossary generator writes (docs/glossary.md, "Where the rows come from"). Two checks, both listing today's leftovers by name
 // so the lists only shrink (the pattern of components/kit/ratchets.test.ts):
 //  1. every term id the site opens (`<Term id>`, `<HelpMark term>`, a page's `termIds`) is the Hebrew name of a row;
@@ -368,7 +368,6 @@ const FRAGMENTS = ["guide/open-tax"];
 // now skipped), 17 were real first uses, marked in the visuals, and ten were left. Nine of those were real first uses, marked in the
 // visuals the same day; the one left is the column name "אותו כסף בחשבון ניירות ערך", split across two copy strings (names, fine).
 const FIRST_USE_UNMARKED: Record<string, readonly string[]> = {
-  "guide/keren-hishtalmut": ["נייר ערך"],
 };
 
 const blankOut = (m: string) => m.replace(/[^\n]/g, " ");
@@ -394,6 +393,11 @@ const usesOf = (src: string, rowOf: ReadonlyMap<string, string>, otherSense: rea
   const rank = (at: number) => spans.findIndex(([a, b]) => at >= a && at < b) * 1e7 + at;
   const uses: Omit<Use, "rank">[] = [];
   s = s.replace(/<Term\b[^>]*?(?:\/>|>[\s\S]*?<\/Term>)/g, (m, at: number) => {
+    for (const id of termIdsIn(m)) uses.push({ at, row: id, marked: true });
+    return blankOut(m);
+  });
+  // a "?" opens its terms' cards, with its own words over them (2026-11-08: the banks table's rate head): the words are a marked use
+  s = s.replace(/<HelpMark\b[^>]*?\/>/g, (m, at: number) => {
     for (const id of termIdsIn(m)) uses.push({ at, row: id, marked: true });
     return blankOut(m);
   });
@@ -472,7 +476,10 @@ const visualText = (file: string): string => {
   // the names of a figure's inputs (`{ [copy.x.y]: value }`) and an entered value's `about` (its fourth argument) are its sheet too
   // (independent check, 2026-11-07: 17 of the 31 leftovers were input names such as "האינפלציה שהאתר מניח")
   src = src.replace(/\[\s*(?:copy(?:\.[\w$]+)+|`[^`]*`)\s*\]\s*:/g, blankOut);
-  src = src.replace(/(\benteredValue\([^()]*?,[^()]*?,[^()]*?,\s*)copy(?:\.[\w$]+)+(?=\s*\))/g, (_m, head: string) => head + " ");
+  // and so are the names of a gap's two figures (`differenceOf([copy.x.y, a], [copy.x.y, b], …)`, lib/value.ts; 2026-11-08)
+  src = src.replace(/(differenceOf\(\s*\[)(\s*copy(?:\.[\w$]+)+)([^\]]*\]\s*,\s*\[)(\s*copy(?:\.[\w$]+)+)/g, (_m, a: string, n1: string, b: string, n2: string) => a + blankOut(n1) + b + blankOut(n2));
+  // (`typed`, the visuals' own entered value, a field's: 2026-11-08)
+  src = src.replace(/(\b(?:enteredValue|typed)\([^()]*?,[^()]*?,[^()]*?,\s*)copy(?:\.[\w$]+)+(?=\s*\))/g, (_m, head: string) => head + " ");
   // an `about` text is a figure's sheet, opened by a tap, not the page's text where the figure is declared
   return src.replace(/\bcopy((?:\.[\w$]+)+)(\[)?/g, (_m, p: string, index?: string) => (index || /\.about\b/.test(p) ? " " : ` ${copyWords(p)} `));
 };

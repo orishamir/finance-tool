@@ -18,14 +18,14 @@ export function isHebrewTitle(text: string): boolean {
  * True when the text is written in Hebrew: its first word is Hebrew and Hebrew letters outnumber Latin ones; false for null, empty and
  * English text that merely quotes a Hebrew phrase. Notes and rationales use this: the English working notes are never shown. An English
  * note that quotes a long Hebrew line from a report ("Trustee fee (שכר נאמן): p. 1 '0.02% מהשווי הנקי…'") has more Hebrew letters
- * than Latin ones, and showed in a fund's fee sheet (#190); its first word is English.
+ * than Latin ones, and showed in a fund's fee sheet; its first word is English.
  */
 export const mostlyHebrew = (text: string | null | undefined): boolean => !!text && /^[^A-Za-z֐-׿]*[֐-׿]/.test(text) && isHebrewTitle(text);
 
 /**
  * A document's title written in Hebrew: `mostlyHebrew` once a leading web host is set aside. "data.gov.il, בנק ישראל: רשימת תאגידים
  * בנקאיים" is a Hebrew title that names its site first; "Tax Authority, מדריך להגשת…" and "Reit 1, investor relations page, "שאלות ותשובות""
- * are English working titles that quote a Hebrew name, never shown (#190).
+ * are English working titles that quote a Hebrew name, never shown.
  */
 export const hebrewDocTitle = (text: string | null | undefined): boolean => !!text && mostlyHebrew(text.replace(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+\s*,\s*/i, ""));
 
@@ -51,7 +51,7 @@ export interface SourceLabel {
 const iso = (s: string) => `\u2066${s}\u2069`;
 /**
  * A Hebrew title's Maya citation in Hebrew, its number isolated: "(Maya filing 1725200, PDF)" read "(1725200, PDF), עמ' 1" and
- * "Maya filing)" in two places of a fund's fee sheet (#190). The data keeps its working words; only the line on screen changes.
+ * "Maya filing)" in two places of a fund's fee sheet. The data keeps its working words; only the line on screen changes.
  */
 export function hebrewCitation(title: string): string {
   const m = provenance.maya;

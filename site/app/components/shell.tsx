@@ -5,7 +5,7 @@ import { companies as companiesCopy, formulaNames, home as homeCopy, knowledgeEn
 
 import { isHeld, shown } from "../lib/review";
 import { IconBack, IconMenu, IconSearch } from "./icons";
-import { ProvenanceProvider, type ProvenanceData } from "./provenance";
+import { ProvenanceProvider, TermFromAddress, type ProvenanceData } from "./provenance";
 import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, Callout, CountingFigures, cx, gershayim, When } from "./kit";
@@ -52,11 +52,11 @@ export function useOpenSearch() {
 }
 
 export function PageShell({ current, data: pageData, children }: { current: Current; data: ProvenanceData; children: ReactNode }) {
-  // every page's sheets know the method: the formulas with their parameters, the parameter cards, the source hosts' Hebrew names, the open questions and where each company's terms are listed (root loader)
-  const method = useRouteLoaderData("root") as { formulaParameters: Record<string, string[]>; parameterAnchors: Record<string, string>; publishersHe: Record<string, string>; openQuestions: NonNullable<ProvenanceData["openQuestions"]>; companies: NonNullable<ProvenanceData["companies"]>; ownDocs: NonNullable<ProvenanceData["ownDocs"]> } | undefined;
+  // every page's sheets know the method: the formulas with their parameters and their math, the parameter cards, the source hosts' Hebrew names, the open questions and where each company's terms are listed (root loader)
+  const method = useRouteLoaderData("root") as { formulaParameters: Record<string, string[]>; formulaTex: Record<string, string[]>; parameterAnchors: Record<string, string>; publishersHe: Record<string, string>; openQuestions: NonNullable<ProvenanceData["openQuestions"]>; companies: NonNullable<ProvenanceData["companies"]>; ownDocs: NonNullable<ProvenanceData["ownDocs"]> } | undefined;
   const data = useMemo<ProvenanceData>(() => {
     if (!method) return pageData;
-    const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [] }]));
+    const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters), ...Object.keys(method.formulaTex)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [], tex: method.formulaTex[f] }]));
     return { ...pageData, formulas, parameters: pageData.parameters ?? method.parameterAnchors, publishersHe: pageData.publishersHe ?? method.publishersHe, openQuestions: pageData.openQuestions ?? method.openQuestions, companies: pageData.companies ?? method.companies, ownDocs: pageData.ownDocs ?? method.ownDocs };
   }, [pageData, method]);
   // One frame for every page (founder, 2026-11-04: some pages used the room of a large screen and others did not): the header, the page and
@@ -84,6 +84,7 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
   };
   return (
     <ProvenanceProvider data={data}>
+      <TermFromAddress hash={location.hash} />
       <SearchOpenCtx.Provider value={openSearch}>
         <div className="min-h-dvh flex flex-col">
           <Header width={width} current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />

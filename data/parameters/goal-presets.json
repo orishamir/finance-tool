@@ -365,7 +365,5 @@
   "rationale": "A starting point in the goal form fills in starting values: a horizon, and whether the money must stay available. Every value can be edited and is then the person's own. The amount today is never preset, and the monthly deposit is preset only as \"none\" for goals with no deposits. The horizons are examples for each kind of goal, not a recommendation.",
   "rationale_he": "נקודות ההתחלה בטופס המטרה ממלאות ערכי התחלה: אופק, והאם הכסף צריך להישאר זמין. כל ערך אפשר לשנות, ואז הוא שלכם. סכום היום לא ממולא מראש, וההפקדה החודשית ממולאת רק כ״אין״ במטרות שבהן אין הפקדות. האופקים הם דוגמאות לכל סוג מטרה, לא המלצה.",
   "chosen_by": "Claude, at the founder's request (2026-10-23); revisable",
-  "signed_off_by": "founder",
-  "signed_off_on": "2026-10-23",
   "shown_as": "site parameter"
 }

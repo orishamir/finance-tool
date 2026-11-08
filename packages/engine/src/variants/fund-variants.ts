@@ -138,7 +138,7 @@ export function sumFees(rec: FundRecord): number {
   return v(rec.fees.fixed_management) + v(rec.fees.variable_management) + v(rec.fees.trustee);
 }
 
-/** A-10 as the record holds it (2026-10-31, issue 147): the yield as a fraction and the payments a year; undefined when the record has none. */
+/** A-10 as the record holds it (2026-10-31): the yield as a fraction and the payments a year; undefined when the record has none. */
 export function recordDistribution(rec: Pick<FundRecord, "id" | "distribution">): { yield: number; perYear: number } | undefined {
   if (!rec.distribution) return undefined;
   const y = fraction(rec.distribution.yield, "pct_per_year", `fund ${rec.id} distribution.yield`);

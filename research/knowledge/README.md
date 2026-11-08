@@ -1,9 +1,0 @@
-# Knowledge layer research, 2026-10-24
-
-> **Looking for the rules themselves?** The latest research on Israeli saving, investing and tax rules is the rule base in `.claude/skills/il-finance/references/`: one file per topic, every rule with its source, date and strength, open questions struck when closed. It is the only maintained copy; this folder holds dated research reports and their working files. The 2026-10-22 topic files that used to sit here were deleted on 2026-10-28 (git history has them).
-
-The founder's brief (2026-10-24, evening): make the `data/` directory accessible to the people who use the site, in two ways: a browsable, user-ordered page of every rule the site relies on (the most known and important rules easiest to reach), and a "wait, really?" path from any surprising claim to a third-party source (a government paper) in a tap or two, without clutter. Expand the search to rules and data. The site holds research on rules, laws, taxes, past data, banks' and investment houses' terms; it must not stay hidden behind the calculations as a black box. The person should be intrigued, not overwhelmed.
-
-Each report here was written by one scoped specialist agent on 2026-10-24. None verifies the site's numbers. The lead's synthesis and the decisions are in `2026-10-24-synthesis.md`.
-
-Files: `2026-10-24-fresh-eyes.md`, `2026-10-24-information-architecture.md` (+ `2026-10-24-rule-signals.csv`), `2026-10-24-verification-ux.md`, `2026-10-24-search.md`, `2026-10-24-risks.md`, `2026-10-24-user-lens.md`, the lead's `2026-10-24-lead-notes.md`, the synthesis and build spec `2026-10-24-synthesis.md` (section 5: the founder's decisions; section 6: what was built and the hand-offs), the build's `requests.md` (cross-file requests between the workstreams) and `2026-10-24-extraction-report.md` (the source extraction's counts, written by `npm run extract:sources`).

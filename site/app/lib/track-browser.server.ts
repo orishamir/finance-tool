@@ -1,4 +1,4 @@
-// The track browser's data, built at build time (D54, issue 173): for each of the six products that have regulator tracks, every
+// The track browser's data, built at build time (D54): for each of the six products that have regulator tracks, every
 // company's tracks with the two fee averages, the amounts the exposure shares are computed from, and the two average annual
 // yields, compacted against one template per product (as the company page does). Server-only.
 import { loadCma, loadCmaFees, loadCmaHoldings, loadCmaYields, loadWrappers, today } from "./data.server";

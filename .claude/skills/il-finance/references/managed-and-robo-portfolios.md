@@ -64,7 +64,7 @@ Out, and where it lives:
   - [Meitav, גילוי נאות](https://www.meitav.co.il/proper_disclosure/) · checked 2026-10-22 · institution
   - [Altshuler Shaham, ניהול תיקים join page](https://join.as-invest.co.il/portfolio-management/) · checked 2026-10-22 · institution
   - [XNES (Phoenix Investment House) home](https://www.xnes.co.il/) · checked 2026-10-22 · institution
-  - [ISA, פעילות חברות בעלות רישיון השקעות 2025 (Funder-hosted copy)](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), p.5 · checked 2026-10-22 · primary (third-party host)
+  - [ISA, פעילות חברות בעלות רישיון השקעות 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), p.5 · checked 2026-11-08 · primary
 - Dimensions: `regulator`, `eligibility`
 - Likely to change: no
 
@@ -90,7 +90,7 @@ Out, and where it lives:
 - Figures: none fixed in the law.
 - Source:
   - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.12 29; s.13 29-32), ss.12, 13(ב)(2), 13(ד) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
-  - [ISA, הצעה לתיקון ההוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים, 26 Mar 2023 (law-firm-hosted copy)](https://www.shibolet.com/wp-content/uploads/2023/05/הצעה-לתיקון-ההוראה-לבעלי-רישיון-בקשר-למתן-שירותים-תוך-שימוש.pdf), p.7 footnote 6 · checked 2026-10-22 · primary (third-party host, draft)
+  - [ISA, הצעה לתיקון ההוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים, 26 Mar 2023 (law-firm-hosted copy)](https://www.shibolet.com/wp-content/uploads/2023/05/הצעה-לתיקון-ההוראה-לבעלי-רישיון-בקשר-למתן-שירותים-תוך-שימוש.pdf), p.7 footnote 6 · checked 2026-11-08 · lead only (law-firm copy of an ISA draft; the ISA's own copy was not found by a Google search limited to isa.gov.il on 2026-11-08)
   - [Funder, "ההנחיות מצטמצמות והאחריות מתרחבת", 26 Jul 2021](https://www.funder.co.il/article/120997) · checked 2026-10-22 · secondary
 - Dimensions: `eligibility`, `regulator`
 - Likely to change: yes. ISA directives are revised by the ISA without legislation.
@@ -193,7 +193,7 @@ Out, and where it lives:
   - "Other income" ("הכנסות אחרות") was NIS 112 m (9.4%). This is income from managing the portfolio that is not a management fee, for example "רכישת מוצרים מובנים עבור לקוחות; עמלות המרת מט"ח".
 - Source:
   - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=32) (file pages: s.17 32-34), s.17 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
-  - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), p.17 · checked 2026-10-22 · primary (third-party host)
+  - [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), p.17 · checked 2026-11-08 · primary
 - Dimensions: `fee-trade`, `fee-fx`, `fee-management-balance`
 - Likely to change: no (law); yearly (figures)
 
@@ -210,9 +210,9 @@ Out, and where it lives:
   - IBI and Altshuler: the fee is set by portfolio size and nature and agreed in the agreement. Neither publishes rates.
 - Conditions / exceptions: A "no direct fee" portfolio of the group's own funds is paid through layer (c). The group's fund manager earns that fee, which is the affiliation case in MGD-12. The fee rates of the funds used by Meitav Manager are not given on its page (open question 4).
 - Figures: see MGD-11.
-- Source check (2026-11-07): the report's official copy was searched for and not found; what was tried is under MGD-11.
+- Source check (2026-11-07): the report's official copy was searched for and not found; what was tried is under MGD-11. **[2026-11-08, copies sweep]** Found on the Securities Authority's own site, on its page "נתונים בדבר פעילות חברות בעלות רישיון השקעות" (item "פעילות חברות בעלות רישיון השקעות בשנת 2025", dated 29 July 2026; file Investments_intermediates_report25.pdf), reached in the founder's Chrome; the citations now point to it. Its text matches the Funder copy page for page (24 pages, same creation date) except p.20, where the client-flow rows were revised (MGD-18).
 - Source:
-  - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.16, 17 · checked 2026-10-22 · primary (third-party host)
+  - [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.16, 17 · checked 2026-11-08 · primary
   - [Meitav private clients](https://www.meitav.co.il/portfolio_management/private_clients/); [Meitav portfolio management](https://www.meitav.co.il/portfolio_management/); [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/) · checked 2026-10-22 · institution
   - [IBI](https://www.ibi.co.il/solutions/portfolio-management/) · checked 2026-10-22 · institution
   - [Altshuler](https://www.as-invest.co.il/interstedin/ניהול-תיקי-השקעות/) · checked 2026-10-22 · institution
@@ -248,8 +248,8 @@ Out, and where it lives:
   - An all-in ratio (total manager income over portfolio value, per size band) can be computed from the p.21 table. That is a computation for `docs/method.md`, not a sourced figure.
   - The ISA notes a fall in the rate charged to small clients (up to NIS 0.5m) and a slight rise for the rest (p.16).
 - Updated: yearly, in the ISA's annual licensees report. The 2025 report was published 29 Jul 2026 (domain report S7).
-- Source check (2026-11-07): the report's copy on the Securities Authority's own site was searched for and not found. Tried: web searches for the report's title and for its file on new.isa.gov.il; the press items on it (Funder 206333, Calcalist, Bizportal), which link only Funder's copy; the Authority's sitemap (pages only, dated 2025-02, and the site is a script-built application whose pages carry no links to a plain fetch); the Wayback Machine's list of the Authority's archived PDFs (204 files, none of them this report); and about 120 likely file names in five of the Authority's folders. The figures stay on the press host's copy (Funder, cdn.funder.co.il), which is the report as published (24 pages, created 28.7.2026); a browser visit to the Authority's investment-licensees pages ("Data-on-consultants-marketers-netonim" in its sitemap) should find the official file.
-- Source: [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.2, 16, 17, 21 · checked 2026-10-22 · primary (third-party host)
+- Source check (2026-11-07): the report's copy on the Securities Authority's own site was searched for and not found. Tried: web searches for the report's title and for its file on new.isa.gov.il; the press items on it (Funder 206333, Calcalist, Bizportal), which link only Funder's copy; the Authority's sitemap (pages only, dated 2025-02, and the site is a script-built application whose pages carry no links to a plain fetch); the Wayback Machine's list of the Authority's archived PDFs (204 files, none of them this report); and about 120 likely file names in five of the Authority's folders. The figures stay on the press host's copy (Funder, cdn.funder.co.il), which is the report as published (24 pages, created 28.7.2026); a browser visit to the Authority's investment-licensees pages ("Data-on-consultants-marketers-netonim" in its sitemap) should find the official file. **[2026-11-08, copies sweep]** Found on the Securities Authority's own site, on its page "נתונים בדבר פעילות חברות בעלות רישיון השקעות" (item "פעילות חברות בעלות רישיון השקעות בשנת 2025", dated 29 July 2026; file Investments_intermediates_report25.pdf), reached in the founder's Chrome; the citations now point to it. Its text matches the Funder copy page for page (24 pages, same creation date) except p.20, where the client-flow rows were revised (MGD-18).
+- Source: [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.2, 16, 17, 21 · checked 2026-11-08 · primary
 - Dimensions: `fee-management-balance`, `fee-change-over-time`
 - Likely to change: yes (annual)
 
@@ -272,7 +272,7 @@ Out, and where it lives:
   By type of affiliation: 45 hosting managers; 16 firms with a sister company that manages funds; 9 with affiliation to other financial assets. 61 firms hold no affiliated assets.
 - Source:
   - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.13 29-32; s.15 30-32; s.16 31; s.16א 32), ss.13(ג)(5), 15, 16, 16א · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
-  - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), p.7 · checked 2026-10-22 · primary (third-party host)
+  - [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), p.7 · checked 2026-11-08 · primary
   - [Meitav, גילוי נאות](https://www.meitav.co.il/proper_disclosure/) · checked 2026-10-22 · institution
   - [Meitav Manager routes](https://www.meitav.co.il/portfolio_management/investment-routes_manager/) · checked 2026-10-22 · institution
 - Dimensions: `conflict-of-interest` (proposed), `fee-fund-underlying` (proposed), `regulator`
@@ -289,7 +289,7 @@ Out, and where it lives:
     - NIS 17.6 m went to a related TASE member for trades.
   - **Savings policies:** NIS 21.4 bn of savings policies are managed through hosting by portfolio managers, per CMA data cited by the ISA.
 - Conditions / exceptions: The ISA states it published a draft directive on outsourcing in hosting and external fund advice. Its text and status were not read (open question 9).
-- Source: [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.2, 7, 18, 19, 23 · checked 2026-10-22 · primary (third-party host)
+- Source: [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.2, 7, 18, 19, 23 · checked 2026-11-08 · primary
 - Dimensions: `conflict-of-interest` (proposed), `fee-fund-underlying` (proposed)
 - Likely to change: yes (annual; hosting directive pending)
 
@@ -316,7 +316,7 @@ Out, and where it lives:
 - Figures: end-2025 shares as above.
 - Source:
   - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=36) (file pages: s.22 36-37; s.23 37), ss.22, 23 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
-  - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), p.9 · checked 2026-10-22 · primary (third-party host)
+  - [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), p.9 · checked 2026-11-08 · primary
   - [Meitav](https://www.meitav.co.il/portfolio_management/), [Altshuler](https://www.as-invest.co.il/interstedin/ניהול-תיקי-השקעות/), [IBI](https://www.ibi.co.il/solutions/portfolio-management/), [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/) · checked 2026-10-22 · institution
 - Dimensions: `protection`, `conflict-of-interest` (proposed)
 - Likely to change: no (law); yearly (shares)
@@ -331,7 +331,7 @@ Out, and where it lives:
 - Conditions / exceptions:
   - No Israeli investor-compensation scheme was found (BRK summary).
   - The deposit-insurance bill would exclude portfolio managers as claimants (REG-05).
-  - The equity figure is reg. 2 as read in the ISA's copy, file p.1 (2026-10-31): "הון עצמי של תאגיד מורשה לא יפחת, בכל עת, מסכום של מאתיים אלף שקלים חדשים", with no separate tier by assets managed in that regulation. The indexed amount is still open (open question 7). This partly answers REG open question 19.
+  - The equity figure is reg. 2 as read in the ISA's copy, file p.1 (2026-10-31): "הון עצמי של תאגיד מורשה לא יפחת, בכל עת, מסכום של מאתיים אלף שקלים חדשים", with no separate tier by assets managed in that regulation. The indexed amount is still open (open question 7).
 - Figures: NIS 200,000 equity floor, CPI-linked from Nov 1998; the indexed amount was not computed. Security stays valid 1 year after the licensee stops operating.
 - Source:
   - [Investment Advice Regulations (Equity and Insurance), Securities Authority's consolidated copy, file of 2.1.2022](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_4105.pdf#page=1) (file pages: s.1 1; s.2 1; s.3 2; s.4 2; s.7 3; s.10 5), regs. 1, 2, 3, 4, 7, 10. The last amendment listed is תשפ"ב, ק"ת 1170. · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
@@ -355,7 +355,7 @@ Out, and where it lives:
   - [Meitav private clients](https://www.meitav.co.il/portfolio_management/private_clients/), [Meitav portfolio management](https://www.meitav.co.il/portfolio_management/), [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/), [Meitav Manager routes](https://www.meitav.co.il/portfolio_management/investment-routes_manager/) · checked 2026-10-22 · institution
   - [IBI](https://www.ibi.co.il/solutions/portfolio-management/), [Altshuler join](https://join.as-invest.co.il/portfolio-management/), [Phoenix digital portfolio](https://www.xnes.co.il/portfoliomanagement/digital-investment-portfolio/) · checked 2026-10-22 · institution
   - [Supermarker portfolio-management comparison](https://www.supermarker.themarker.com/PortfolioManagement/ComparePortfolioManagement.aspx) · checked 2026-10-22 · secondary
-  - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.8, 22 · checked 2026-10-22 · primary (third-party host)
+  - [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.8, 22 · checked 2026-11-08 · primary
 - Dimensions: `minimum`, `eligibility`
 - Likely to change: yes (firm terms)
 
@@ -365,7 +365,7 @@ Out, and where it lives:
   - **Fund share of portfolio value, 2025:** 74.0% (up to NIS 0.5m); 61.6% (0.5m to 1.5m); 51.1% (1.5m to 5m); 29.0% (over 5m). The 2021 shares were 67.7%, 54%, 43.1% and 22.1%.
   - **Fund value:** NIS 101.9 bn of NIS 256.7 bn.
   - **Fund portfolios:** the ISA defines a "תיק קרנות" as one with 50% or more in mutual funds. At end-2025 there were 59,456 such portfolios (63.2% of portfolios, 36.4% of value).
-- Source: [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.2, 14, 15, 22 · checked 2026-10-22 · primary (third-party host)
+- Source: [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.2, 14, 15, 22 · checked 2026-11-08 · primary
 - Dimensions: `fee-fund-underlying` (proposed)
 - Likely to change: yes (annual)
 
@@ -373,10 +373,10 @@ Out, and where it lives:
 - Rule (facts for the guide page): Non-institutional and institutional managed assets, and client numbers, as reported by the ISA.
 - Figures, end-2025:
   - **Assets:** NIS 493 bn managed. Of this, NIS 257 bn is for private and corporate clients and NIS 236 bn is for institutional bodies by outsourcing. The ten largest firms manage 72%.
-  - **Clients:** 96,161 clients in 94,139 client portfolios. In 2025, 5,165 clients joined and 2,623 left. 2,472 are qualified clients.
+  - **Clients:** 96,161 clients in 94,139 client portfolios. In 2025, 24,478 clients joined and 11,002 left (the ISA's own file, p.20, which notes "חלק מהנתונים אינם תואמים לפרסומי דוחות קודמים בעקבות דיווחים מתקנים של חברות"; corrected 2026-11-08: the Funder copy read first gave 5,165 and 2,623, and its history row differs for every year). 2,472 are qualified clients.
   - **Concentration by firm size:** 19 firms with over 1,000 clients each serve 74,185 clients. 112 firms with up to 1,000 clients serve 21,976.
   - **Portfolio sizes:** about 66% of managed portfolios are worth up to NIS 1.5m. About 27% of all portfolios are under NIS 0.5m.
-- Source: [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.2, 5, 6, 20 · checked 2026-10-22 · primary (third-party host)
+- Source: [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.2, 5, 6, 20 · checked 2026-11-08 · primary
 - Dimensions: `regulator`
 - Likely to change: yes (annual)
 
@@ -521,7 +521,7 @@ Out, and where it lives:
 Registers used and what each gave on 2026-10-22:
 
 1. **ISA licensee search** (investors.isa.gov.il/page/search-advisor): JavaScript-only, not read. Names of the 131 firms are therefore not enumerated (same as REG open question 2 and domain report open question 3).
-2. **ISA, פעילות חברות בעלות רישיון השקעות 2025** (PDF, Funder-hosted copy, read in full, pp.1 to 24): counts, fees, affiliation, hosting and custody. It gives no firm names.
+2. **ISA, פעילות חברות בעלות רישיון השקעות 2025** (PDF, read in full in a Funder-hosted copy, pp.1 to 24; the ISA's own file, found 2026-11-08, matches it except p.20): counts, fees, affiliation, hosting and custody. It gives no firm names.
 3. **Providers' own pages** (institution): Meitav (portfolio management, private clients, Manager, routes, disclosure), Altshuler Shaham (product page, join page), IBI (portfolio page), Phoenix / XNES (home, digital portfolio), Psagot (home only), Fjord (home, services, agreement), Leumi (2018 VIDEA release).
 4. **TheMarker Supermarker comparison** (secondary, updated 22/09/2026): a lead list of 15 firms with minimums. Names not on any own page read here: IBI Amban, Harel Finance, Analyst, Migdal Capital Markets, Interactive Israel, Pasternak Shaham, Yalin Lapidot, Mor, Phoenix Portfolio Management, Epsilon, Horizon Capital Markets, Marathon, Sigma. These are leads, not verified licensees.
 
@@ -548,7 +548,6 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
 12. **ISA complaints channel for portfolio-management clients.** Same as REG open question 5.
 13. **Termination fees.** Whether a manager may charge for ending the agreement, or for transferring securities out. The law read only says the client may cancel at any time. Custodian transfer fees are in BRK-18. **[2026-11-07]** Still open. Read: the Bank of Israel's directive 462 (השקעות של לקוחות בנכסים פיננסיים באמצעות מנהלי תיקים, [boi.org.il](https://boi.org.il/media/h0nhnpwx/462_7.pdf), edition 9/11), which governs a bank's arrangements with portfolio managers (separate collection of the manager's fee; the power of attorney and the bank-manager agreement) and says nothing of a fee to the client for ending the agreement; one web search (press and tariffs only). Would settle: a Securities Authority directive on the portfolio-management agreement, or each manager's own agreement (a company term). Money: the custodian's fee per security moved (BRK-18) plus any exit fee of the manager; not found as a figure.
 14. **"Special risk" trades (s.18).** Which trades count. Section 18 was read only in summary.
-15. ~~**VAT on portfolio-management fees.**~~ Closed 2026-10-24: 18% VAT on the fee of a manager that is not a financial institution, none on the fees of a bank or a TASE member; each manager's status is read from its tariff (TX2-17). Fjord states "בתוספת מע"מ"; the others do not say. This is a tax question for `tax-tier2-other.md`. **[2026-10-24 R5 pass: closed at the law level by TX2-17 (18% on a dealer's fee; none from a financial institution). Each manager's status is a fact to read from its tariff.]**
 16. **Investor compensation beyond the manager's security.** Whether any scheme covers a client loss from the manager's misconduct beyond reg. 3 security. None found.
 17. **Psagot's managed-portfolio offering and minimums.** The own site shows only a client login.
 
@@ -591,8 +590,8 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
 |---|---|---|---|
 | [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3) (file pages: s.1 3-6; s.2 6-7; s.11 29; s.13 29-32; s.15 30-32; s.18 35; s.20 36; s.20ג 36; s.22 36-37; s.26 43-44): ss.1, 2, 11 to 13, 15 to 18, 20, 20ג, 22 to 26, First Schedule (read through a summarising fetch, in two parts) | Securities Authority's consolidated copy (file of 26.8.2026) | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
 | [Investment Advice Regulations (Equity and Insurance), Securities Authority's consolidated copy, file of 2.1.2022](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_4105.pdf) | Securities Authority's consolidated copy (file of 2.1.2022) | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
-| [ISA, פעילות חברות בעלות רישיון השקעות 2025](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.1 to 24 read as page images | ISA (Funder-hosted copy) | primary (third-party host) | 2026-10-22 |
-| [ISA, הצעה לתיקון ההוראה ... באמצעים טכנולוגיים, 26 Mar 2023](https://www.shibolet.com/wp-content/uploads/2023/05/הצעה-לתיקון-ההוראה-לבעלי-רישיון-בקשר-למתן-שירותים-תוך-שימוש.pdf), pp.1 to 8 | ISA (law-firm-hosted copy) | primary (third-party host, draft) | 2026-10-22 |
+| [ISA, פעילות חברות בעלות רישיון השקעות 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.1 to 24 read as page images | ISA | primary | 2026-11-08 |
+| [ISA, הצעה לתיקון ההוראה ... באמצעים טכנולוגיים, 26 Mar 2023](https://www.shibolet.com/wp-content/uploads/2023/05/הצעה-לתיקון-ההוראה-לבעלי-רישיון-בקשר-למתן-שירותים-תוך-שימוש.pdf), pp.1 to 8 | ISA (law-firm-hosted copy; the ISA's own copy not found, 2026-11-08) | lead | 2026-11-08 |
 | [Meitav, ניהול תיקי השקעות](https://www.meitav.co.il/portfolio_management/) | Meitav | institution | 2026-10-22 |
 | [Meitav, private clients](https://www.meitav.co.il/portfolio_management/private_clients/) | Meitav | institution | 2026-10-22 |
 | [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/) | Meitav | institution | 2026-10-22 |

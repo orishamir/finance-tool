@@ -25,6 +25,10 @@ const plural = new Intl.PluralRules("he");
  */
 const plainMarks = (text: string) => text.replace(/\u200f/g, "").replace(/[\u00a0\u202f]/g, " ");
 
+// a straight quote between two Hebrew letters is a gershayim ("ת"א"): drawn as one, a fund's name quoted in a title keeps its own quotes
+export const GERSHAYIM = /(?<=[\u05d0-\u05ea])"(?=[\u05d0-\u05ea])/g;
+/** An abbreviation's straight quote written as the gershayim (docs/copy.md 10.4): the data spells ני"ע, the page shows ני״ע. */
+export const gershayim = (text: string) => text.replace(GERSHAYIM, "\u05f4");
 /**
  * Intl writes a negative with an ASCII hyphen after a left-to-right mark. A hyphen is weak in the bidi algorithm and can
  * land on the wrong side of the digits in Hebrew text ("2%-"); the true minus sign U+2212 keeps the left-to-right mark in
@@ -71,7 +75,8 @@ export function shortBillions(text: string, from = 1e9): string | null {
 
 export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
-  nis: (v: number) => withMinus(plainMarks(currency.format(v))),
+  // a whole amount never shows agorot: "10 ₪", not "10.00 ₪" (founder, 2026-11-08)
+  nis: (v: number) => withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? currencyWhole : currency).format(v))),
   nisWhole: (v: number) => withMinus(plainMarks(currencyWhole.format(v))),
   /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (2026-11-04: until then a bare "2"). */
   usd: (v: number) => withMinus(plainMarks(dollars.format(v))),
@@ -125,13 +130,19 @@ export const fmt = {
 
 /**
  * Display rounding (audit 2026-10-24 A13; method §13 unchanged, this is display only). A computed, entered or
- * parameter shekel amount of 1,000 ₪ or more shows whole shekels; a whole-number amount of any size shows no agorot
- * ("10,000 ₪", "0 ₪"), per month and per trade as well. Tariffs and fees (sourced, non-parameter) and every figure under 1,000 ₪ that has agorot keep
- * two decimals. The values themselves are never rounded; the detail view of a table keeps two decimals.
+ * parameter shekel amount of 10 ₪ or more shows whole shekels (founder, 2026-11-08: by the kind of value, not its size); a whole-number amount of any size shows no agorot
+ * ("10,000 ₪", "0 ₪"), per month and per trade as well. A sourced amount of 1,000 ₪ or more shows no ".00" either ("83,641 ₪", the
+ * provident fund's ceiling: fresh readers, 2026-11-08, read "83,641.00 ₪" as false precision), and keeps the agorot its source prints
+ * ("5,645.29 ₪"). A whole amount never shows agorot, sourced ones included ("27 ₪"; founder, 2026-11-08, "floating point numbers for
+ * whole numbers"); every figure under 1,000 ₪ that has agorot keeps them. Table cells follow the same rule. The values themselves are never
+ * rounded.
  */
 export function nisShown(v: number, state?: "sourced" | "computed" | "entered", parameter = false): string {
   const derived = state === "computed" || state === "entered" || parameter;
-  if (derived && (Math.abs(v) >= 1000 || Number.isInteger(v))) return fmt.nisWhole(v);
+  // what the site calculates (or the person entered) shows whole shekels, except a cost of a few shekels, where rounding changes the meaning;
+  // a figure set by law or a price list keeps the agorot it prints (founder, 2026-11-08)
+  if (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) return fmt.nisWhole(v);
+  if (Math.abs(v) >= 1000 && Number.isInteger(v)) return fmt.nisWhole(v);
   return fmt.nis(v);
 }
 

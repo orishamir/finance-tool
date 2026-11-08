@@ -2,7 +2,7 @@
 // fee line removed, all other assumptions (A-01 to A-29) held fixed. Built on ranking's `withoutFees`.
 import type { ValueObject } from "@finance-tool/schema";
 import { RecordInputError, runPlanned, type RunPlan } from "../inputs.ts";
-import { feeCharged, revertRate, withFee, withHeldRate, type Commission, type Custody, type Discount } from "../formulas/fees.ts";
+import { discountEnd, feeCharged, revertRate, withFee, withHeldRate, type Commission, type Custody, type Discount } from "../formulas/fees.ts";
 import { withoutFees } from "../compare/ranking.ts";
 import { MissingRuleError, ruleBook } from "../resolver.ts";
 import type { FeeType, RunContext, RunResult } from "../result.ts";
@@ -98,6 +98,11 @@ export function minDiscountMonthsOf(ctx: RunContext): number {
   return 12 * ruleBook(ctx).amount("PF-13", "min_discount_years");
 }
 
+/** PF-14 case 1's months after deposits stop, from the rule book: the last month a discount holds on a plan with no deposit after month 0 (PF OQ18, D87). */
+function oneDepositDiscountMonthsOf(ctx: RunContext): number {
+  return ruleBook(ctx).amount("PF-14", "months_after_deposits_stop");
+}
+
 /**
  * D86: the rate a held line reverts to after PF-13's period, as a fraction: what the run charges on that line once the period is over. On a
  * discounted line that is the rate its discount reverts to (the record's `reverts_to`, else the regulations' cap); on a line with no discount,
@@ -114,7 +119,8 @@ export function heldRevertRate(plan: RunPlan, line: FeeLine): number | undefined
 
 /**
  * F-62 with A-19 (D88, 2026-11-07): the rate the verdict judges a provident or pension line by, when it is not the rate charged now. A
- * discounted line whose discount ends within the run (at its period, never before PF-13's minimum) is judged by the rate after it: the
+ * discounted line whose discount ends within the run (at its period, never before PF-13's minimum, or after PF-14's six months on a plan with no
+ * deposit after the first, PF OQ18's cautious reading, D87) is judged by the rate after it: the
  * rate charged during the discount (0% on a deposit fee) says nothing about what the fee costs. Null when the line has no discount or it
  * lasts the whole run; the verdict then judges the rate charged now. Never above the line's regulated cap, which is the most the run charges. The page names when the discount ends beside the verdict, since a
  * reduction agreed now holds only through the discount (D86) and is worth only that (D90).
@@ -125,11 +131,24 @@ export function rateAfterDiscount(plan: RunPlan, line: FeeLine, exitMonth: numbe
   const f = plan.input.fees;
   const d: Discount | undefined = line === "balance" ? f.discount : f.depositDiscount;
   if (!d) return null;
-  if (Math.max(d.months, minDiscountMonthsOf(ctx)) >= exitMonth) return null;
+  const stopMonths = depositsOnce(plan, exitMonth) ? oneDepositDiscountMonthsOf(ctx) : undefined;
+  const endsBy = stopMonths !== undefined && exitMonth > stopMonths ? stopMonths : undefined;
+  if (discountEnd(d, minDiscountMonthsOf(ctx), endsBy) >= exitMonth) return null;
   // the run charges no more than the regulated cap (F-11, F-15): a rate after the discount scaled past it (F-81's sensitivity) is judged at the cap;
   // a study fund has no deposit fee at all (PF-06 has no deposit item), and its ledger charges none (finance review, 2026-11-07)
   const cap = plan.run === "runProvident" && plan.input.wrapper === "keren-hishtalmut" && line === "deposit" ? 0 : feeCap(plan, line, ctx)?.rate;
   return cap === undefined ? d.listRate : Math.min(d.listRate, cap);
+}
+
+/** PF OQ18 (D87): no deposit after month 0 up to `exitMonth`, as the provident and pension runs count deposits (months 1 to the goal's, when due). */
+function depositsOnce(plan: Extract<RunPlan, { run: "runProvident" | "runPension" }>, exitMonth: number): boolean {
+  const { goal } = plan.input;
+  if (!(goal.monthly > 0)) return true;
+  const every = plan.run === "runProvident" ? plan.input.depositsEvery : undefined;
+  for (let m = 1; m <= Math.min(exitMonth, goal.months); m++) {
+    if (!every || (m >= every.firstMonth && (m - every.firstMonth) % every.months === 0)) return false;
+  }
+  return true;
 }
 
 function changeLine(plan: RunPlan, line: FeeLine, rate: number, keepDiscount: boolean | { ctx: RunContext }): RunPlan {

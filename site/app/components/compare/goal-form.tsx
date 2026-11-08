@@ -150,7 +150,7 @@ export function GoalFields({ data }: { data: FormData }) {
       )}
       <p className="text-sm text-muted-foreground max-w-measure">{r2.form.couple}</p>
       <div className="field-row flex flex-col gap-4 md:grid md:grid-cols-[1fr_11rem] md:gap-3 md:items-start">
-        <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} validate={availableCheck} externalError={availableTooBig(resolved)} hint={r2.form.availableHint} />
+        <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.preset.share !== null && resolved.amountNow !== null ? Math.round((resolved.amountNow * resolved.preset.share) / 100) : null} onChange={set("available")} validate={availableCheck} externalError={availableTooBig(resolved)} hint={r2.form.availableHint} />
         <MonthField label={r2.form.availableFrom} value={current.availableFrom} min={data.minMonth} max={`${Number(data.minMonth.slice(0, 4)) + data.horizon.max}-12`} onChange={(v) => update((g) => ({ ...g, availableFrom: v }))} />
       </div>
       <div className="flex flex-col gap-1">
@@ -158,9 +158,7 @@ export function GoalFields({ data }: { data: FormData }) {
         <SwitchRow
           label={r2.form.anytime}
           checked={resolved.anytime}
-          source={src.anytime}
           onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))}
-          onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))}
         />
         <Callout tone="blocked">
           <span className="flex flex-wrap items-center gap-x-1.5">

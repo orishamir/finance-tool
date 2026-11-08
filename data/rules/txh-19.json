@@ -78,18 +78,17 @@
       "checked": "2026-11-07"
     },
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6377%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשס\"ה-2005, קובץ התקנות 6377 (17.3.2005), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשס\"ה-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.22, reg. 49ד1",
-      "locator_he": "עמוד 22, תקנה 49ד1",
-      "page": 22,
-      "checked": "2026-10-25"
+      "strength": "primary",
+      "locator": "file p.6, reg. 19 (adding reg. 49ד1)",
+      "locator_he": "עמוד 6, תקנה 49ד1",
+      "quote": "תעביר קופת הגמל המעבירה לקופת הגמל האחרת",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",

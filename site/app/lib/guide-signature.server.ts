@@ -2,14 +2,14 @@
 // the sourced figures it shows by name, and what the data does not hold yet. One builder per wrapper id; builder G2 adds its own
 // entries to `builders`. Server-only. Nothing here types a rate or a date: every figure is a record's value object, a rule's
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
-import { printedLine } from "./deposit-kind";
 import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
 import { loadParameters, loadRules, loadProducts, today } from "./data.server";
-import { guideSignature, r4catalogue } from "../copy";
+import { guideSignature } from "../copy";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
-import { breakTermOf } from "@finance-tool/engine";
-import { accountBanks, commonAccountRate, currentAccountRecords, depositBundleOf, depositEnds, depositExample, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+import { accountBanks, breakFact, breakInput, commonAccountRate, currentAccountRecords, depositBundleOf, depositEnds, depositExample, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+// the break column moved beside the deposit example that counts by it; the guide loader still takes it from here
+export { breakFact, breakInput };
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
@@ -60,33 +60,6 @@ const figureOf = (c: Ctx, rule: string, name: string): SiteValue | undefined => 
   const r = c.allRules[rule];
   return r ? (ruleFigure(r, name, c.t) ?? undefined) : undefined;
 };
-
-/** A deposit's 447 break column as a sourced value: `not_allowed`, `with_penalty` or `none`, with the bank's words in its notes. */
-export function breakFact(rec: DepositTerms): SiteValue {
-  const b = rec.break;
-  return {
-    value: breakTermOf(b),
-    unit: "text",
-    source: rec.source,
-    checked: rec.snapshot,
-    effective_from: rec.rate_offered.effective_from,
-    effective_to: null,
-    update_rule: "provider-set",
-    state: "sourced",
-    rule_ids: b.rule_ids,
-    // the bank's own quoted words only: the rest is the collector's English note (2026-11-07)
-    notes: printedLine(b.mechanism_text),
-  };
-}
-
-/**
- * The same column as an input of a count over the banks (F-86's lock, F-104): the bank's words in Hebrew, never the record's code, and
- * the bank's own term about its own product, so it carries no caution (D31). `name` is the bank's name as the sheet shows it.
- */
-export function breakInput(rec: DepositTerms, name: string): SiteValue {
-  const f = breakFact(rec);
-  return ownBy({ ...f, value: r4catalogue.breakWord[f.value as keyof typeof r4catalogue.breakWord] ?? f.value }, name);
-}
 
 const withRules = (d: SignatureData, ...ids: string[]): SignatureData => ({ ...d, ruleIds: [...new Set([...d.ruleIds, ...ids])] });
 
@@ -242,7 +215,7 @@ builders["money-market-fund-daily"] = (c) => {
   if (max) d.facts.maxInterval = max;
   else d.gaps.push("maxInterval");
   // MF-10, MF-11 (prices regulations reg. 15): an order before the fund's set hour is redeemed that day and the distributor pays the same day
-  // (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
+  // (MF-11, 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
   return withRules(d, "MF-08", "MF-10", "MF-11", "MF-34", "MF-35", "BANK-06", "BANK-09", "BANK-13");
 };
 

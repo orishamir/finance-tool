@@ -1,16 +1,17 @@
-// "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses, the options for
+// "השקעה במדד" (D28, spec 8dd1f013:research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses, the options for
 // owning it, the cheapest broker for each option and the cheapest complete way (broker + fund) for the plan. Pure: the
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
+import { gershayim } from "./format";
 import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
-import { fxRunInput } from "./fx";
+import { fxRunInput, nisPer } from "./fx";
 import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
-import { computed, ownBy, type SiteValue, type Strength } from "./value";
+import { computed, differenceOf, ownBy, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
 
@@ -76,7 +77,8 @@ export function knownIndices(bundle: Pick<WorkbenchBundle, "exposures">): IndexR
   return bundle.exposures.filter((e) => e.kind === "equity_index").map(refOfExposure);
 }
 
-export const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name: e.names.he[0] ?? e.names.en[0] ?? e.id, israeli: e.constituents_israeli === true, exposure: e, custom: null, oneLine: e.one_line_he ?? null });
+// the record keeps the name as its source spells it ("נאסד\"ק"); the page writes the gershayim (guidelines/wording.md)
+export const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name: gershayim(e.names.he[0] ?? e.names.en[0] ?? e.id), israeli: e.constituents_israeli === true, exposure: e, custom: null, oneLine: e.one_line_he ?? null });
 
 /** An index the person added asks nothing of its currency (founder, 2026-11-05): every kind of fund is offered on it, and each fund says. */
 export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: false, exposure: null, custom: c, oneLine: null });
@@ -90,7 +92,7 @@ export const INDICES_PATH = "/indices";
 export const indexPath = (exposureId: string): string => `${INDICES_PATH}/${exposureId.replace(/^index-/, "")}`;
 export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=${encodeURIComponent(id)}`;
 export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
-/** The index page with one house picked, for a house's own page (issue 172: it replaced the page that ranked the houses on one S&P 500 fund). */
+/** The index page with one house picked, for a house's own page (it replaced the page that ranked the houses on one S&P 500 fund). */
 export const housePath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}`;
 /** A house's own page, opened at its securities account: who its price is for, its fees and where they stand, its offers (D57 amended). */
 /** A house's page opens the index page with the account panel started from its price list (`list`) or one of its groups (`group:<n>`): 2026-11-04. */
@@ -150,6 +152,8 @@ export interface BrokerCell {
   kind: "cost" | "unavailable" | "no-line" | "not-comparable";
   /** The broker's cost over the horizon before the tax it saves, in today's shekels (F-91 on F-63; generic fund: no fund fees). */
   cost?: SiteValue;
+  /** The same figure in whole shekels, with `about` for the place that shows it (an account's header). */
+  costAs?: (about: string) => SiteValue;
   costN?: number;
   /** What is left with this broker (F-63's real value): the cells are ordered on it, as F-80 ranks. */
   leftN?: number;
@@ -176,7 +180,7 @@ export interface WayPrice {
   open: boolean;
   /** What the account itself charges over the horizon, before the tax it saves (F-91 on F-63), real shekels: the same figure as the account's part of the cost bar. */
   accountCost: number;
-  /** The account's cost as a figure (F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
+  /** The account's cost as a figure (F-91 on F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
   cost: (about: string, whole?: boolean) => SiteValue;
   /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
   lines: { line: FeeLine; cost: number }[];
@@ -359,7 +363,7 @@ export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): r
 
 export const providerInfo = (s: FeesSnapshot): ProviderInfo => {
   const custom = isCustomBrokerId(s.id);
-  return { id: s.id, name: s.provider.name_he, short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, // every bank and broker on this page has a company page, a foreign one too (2026-11-05)
+  return { id: s.id, name: gershayim(s.provider.name_he), short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, // every bank and broker on this page has a company page, a foreign one too (2026-11-05)
     hasPage: !custom && (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker"), custom };
 };
 
@@ -552,7 +556,7 @@ const sameCand = (a: Cand, b: Cand) => a.venue === b.venue && JSON.stringify(a.b
 
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
   // an account the person typed with a price left empty for this kind of fund (its conversion, for a fund bought abroad) has no price for
-  // it: never run, so the empty field is never charged as zero (D56, #190)
+  // it: never run, so the empty field is never charged as zero (D56)
   // (an account built on a house reads an empty field as the house's price: it follows the house, below)
   const baseOf = (s: FeesSnapshot) => (houseOfSnap(ctx, s) === s.id ? null : houseOfSnap(ctx, s));
   const typedOpen = (s: FeesSnapshot) => isCustomBrokerId(s.id) && !baseOf(s) && doubtOf(s, option) !== null;
@@ -625,11 +629,45 @@ function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
 
 /**
  * A price the person left empty in an account they typed (its conversion): carried as an open entry, so that kind of fund has no price
- * there, but it is a price not known, never a doubt about whether the account sells it (#190, fourth pass: the stairs listed it under
+ * there, but it is a price not known, never a doubt about whether the account sells it (fourth pass: the stairs listed it under
  * "יש ספק אם נמכרת שם" while its own row said the conversion was not typed). Such an entry is the person's, with no document behind it.
  */
 export function leftEmpty(s: FeesSnapshot | undefined, option: OptionId): boolean {
   return (s?.availability ?? []).some((a) => a.available === "unknown" && a.source.url === "local" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c)));
+}
+
+/**
+ * The house's words that this kind of fund is bought there only by phone (2026-11-08, an availability entry's `phone_only`), for the exchange
+ * the price rests on; an entry that names exchanges says nothing of a price whose line names none. A sourced fact beside the house: no price
+ * and no order reads it.
+ */
+export function phoneOnlyOf(s: FeesSnapshot | undefined, option: OptionId, venue: Venue | null | undefined): NonNullable<AvailabilityEntry["phone_only"]> | null {
+  for (const a of s?.availability ?? []) {
+    const p = a.phone_only;
+    if (!p || a.available !== true || !a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) continue;
+    if (!p.venues || (venue && p.venues.includes(venue))) return p;
+  }
+  return null;
+}
+
+/** The same as the value its tag opens: the word, the house's quoted words and their source, the house's own (D31). */
+export function phoneOnlyValue(s: FeesSnapshot | undefined, option: OptionId, venue: Venue | null | undefined, house: string): SiteValue | null {
+  const p = phoneOnlyOf(s, option, venue);
+  if (!s || !p) return null;
+  const v = {
+    value: copy.pair.phoneTag,
+    unit: "text",
+    source: { url: p.source.url, title: p.source.title, publisher: s.provider.name_he, strength: "institution" },
+    checked: p.source.checked,
+    effective_from: null,
+    effective_to: null,
+    update_rule: "provider-set",
+    state: "sourced",
+    about: copy.pair.phoneAbout(house),
+    lead: copy.pair.phoneLead(p.source.quote),
+    notes: "",
+  } as SiteValue;
+  return ownBy(v, s.provider.name_he);
 }
 
 /** Why the documents leave this kind of holding open at the house: said on its grey row (2026-10-31). */
@@ -640,27 +678,97 @@ export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string |
 
 // ---------------------------------------------------------------- values
 
-export const inputMap = (plan: WorkbenchInputs): Record<string, SiteValue> => ({ סכום: plan.values.amount, "הפקדה חודשית": plan.values.monthly, שנים: plan.values.years, תשואה: plan.values.returnV, אינפלציה: plan.values.inflation });
-const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
+/** One of the plan's five inputs. */
+export type PlanInput = keyof typeof copy.planInputs;
+/** What a run of the whole plan rests on: every input (a balance at the horizon moves with each). */
+export const WHOLE_PLAN: readonly PlanInput[] = ["amount", "monthly", "years", "return", "inflation"];
 /**
- * The plan's inputs and, on a run of something the person typed, what they typed: its sheet lists them (D7, D44). A bank's row that counts a
- * current account lists the bank's monthly minimum too, its current-account price list the source, so the figure that cost adds is one the
- * sheet opens (F-102; lens review S5: the minimum was counted and shown nowhere). `ids[0]` is the row's house.
+ * The plan's inputs a figure rests on, each named by the caller, so a figure lists only what its formula uses: what was paid in rests on
+ * the amount, the deposit and the years, not on the return (founder, 2026-11-08: "סך ההפקדות" listed the return and the inflation).
  */
-const inputsOfRun = (ctx: Ctx, ...ids: string[]): Record<string, SiteValue> => {
-  const snap = ids[0] ? ctx.bundle.snapshots.find((s) => s.id === ids[0]) : undefined;
+export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<string, SiteValue> {
+  const v = plan.values;
+  const of: Record<PlanInput, SiteValue> = { amount: v.amount, monthly: v.monthly, years: v.years, return: v.returnV, inflation: v.inflation };
+  return Object.fromEntries(which.map((k) => [copy.planInputs[k], of[k]]));
+}
+const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
+
+/** What one engine run reads, for the sheet of a figure that comes out of it (`inputsOfRun`). */
+interface RunReads {
+  /** The account the run prices at: its house's current account (F-102), its lines in a foreign currency, what the person typed for it. Left out for a run with no account (F-91's fund part). */
+  house?: string;
+  /** The fund record the run holds; none for an option's generic fund. */
+  fund?: string;
+  /** The run's spec: a run priced in a foreign currency reads that currency's rate (F-84). */
+  spec?: Spec;
+  /** The row the run gave: the lines of the house's price list it read, for a line set in a foreign currency (F-84). */
+  row?: ComparedProvider;
+  /** F-91's X: the fund with none of its own costs and no distribution, measured with no account: the fund's figures are not read. */
+  costsOff?: boolean;
+}
+
+/** A price-list line's unit in a foreign currency (a minimum in dollars, a charge per share or per event in dollars): the run converts it at F-84. */
+const FOREIGN_UNIT = /^(usd|eur|gbp)(?:_|$)/;
+
+/**
+ * The exchange rates a run reads (F-84, D26), each as the site's computed rate: the currency the run is priced in (a fund bought abroad, the
+ * abroad option's generic fund), and any currency a line of the house's price list that the row read is set in.
+ */
+function ratesOfRun(ctx: Ctx, r: RunReads): Record<string, SiteValue> {
+  const fx = ctx.bundle.fx;
+  if (!fx) return {};
+  const codes = new Set<string>();
+  if (r.spec?.currency) codes.add(r.spec.currency.code);
+  const snap = r.house ? ctx.bundle.snapshots.find((s) => s.id === r.house) : undefined;
+  if (r.row && snap) {
+    // an account built on a house (F-101) reads the house's lines
+    const house = ctx.bundle.snapshots.find((s) => s.id === houseOfSnap(ctx, snap));
+    for (const id of r.row.linesUsed) {
+      const l = snap.lines.find((x) => x.id === id) ?? house?.lines.find((x) => x.id === id);
+      for (const v of [l?.rate, l?.min, l?.max]) {
+        const m = v && typeof v.value === "number" ? FOREIGN_UNIT.exec(v.unit) : null;
+        if (m) codes.add(m[1]!.toUpperCase());
+      }
+    }
+  }
+  const out: Record<string, SiteValue> = {};
+  for (const code of codes) {
+    const v = nisPer(fx, code, ctx.bundle.today);
+    if (v) out[copy.pair.rateInput(code)] = v;
+  }
+  return out;
+}
+
+/**
+ * What a run reads, as the sheet of every figure that comes out of it lists it (D7, D44): the plan's inputs, the exchange rates it is
+ * priced at (F-84), the fund's own costs and payout yield (`fundInputs`), and, on a run of something the person typed, what they typed. A
+ * bank's row that counts a current account lists the bank's monthly minimum too, its current-account price list the source, so the figure
+ * that cost adds is one the sheet opens (F-102; lens review S5: the minimum was counted and shown nowhere). The one place that says what a
+ * run reads, so no figure's sheet lists by hand (founder, 2026-11-08: "make sure the chip displayed is correct").
+ */
+const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
+  const snap = r.house ? ctx.bundle.snapshots.find((s) => s.id === r.house) : undefined;
   const current = snap ? currentAccountOf(ctx, snap) : null;
   // D31: the bank's own figure, on the bank's own row (or an account built on it), weakens nothing
   const bank = snap && current ? (ctx.bundle.snapshots.find((x) => x.id === houseOfSnap(ctx, snap)) ?? snap) : null;
   const minimum = current && bank ? { [copy.pair.accountMinimum]: ownBy(current.monthly_minimum as SiteValue, bank.provider.name_he) } : {};
-  const fund = ids[1] ? ctx.bundle.funds.find((f) => f.id === ids[1]) : undefined;
-  return Object.assign({}, inputMap(ctx.plan), minimum, fund && !isCustomFund(fund) ? fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today) : {}, ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
+  const fundId = r.costsOff ? undefined : r.fund;
+  const fund = fundId ? ctx.bundle.funds.find((f) => f.id === fundId) : undefined;
+  const typed = [r.house, fundId].flatMap((id) => (id ? [ctx.bundle.entered?.inputs[id] ?? {}] : []));
+  return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), ratesOfRun(ctx, r), minimum, fund && !isCustomFund(fund) ? fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today) : {}, ...typed);
 };
+
+/** A figure of a fund's annual report (a year's return, its index's, a fee it charged), from the report at its page: the fund's own document (D31). */
+export function reportFigure(rec: FundRecord, value: number, page: number | null | undefined): SiteValue {
+  const t = rec.tracking_record!;
+  return ownBy({ ...(rec.fees.fixed_management as SiteValue), value, unit: "pct", source: { ...t.source, ...(page ? { page, locator_he: copy.kinds.gapPage(page) } : {}) }, checked: t.checked, notes: undefined, state: "sourced" } as SiteValue, rec.manager);
+}
 
 /**
  * The fund's yearly costs as the engine prices them (F-10, F-92 (b)): its listed fixed management and trustee fees, the variable fee priced
  * (the mean charged in the years at today's rate where the reports give A-07, else the listed rate) and A-07 from the reports with the
- * years it rests on. Among the inputs of a figure that runs the fund, so two funds' sheets show why one costs less (pass 7).
+ * years it rests on; and, for a fund that pays out, its payout yield (A-10). Among the inputs of a figure that runs the fund, so two funds'
+ * sheets show why one costs less (pass 7).
  */
 function fundInputs(rec: FundRecord, list: GapList, today: string): Record<string, SiteValue> {
   const w = copy.pair.fundInputs;
@@ -671,21 +779,31 @@ function fundInputs(rec: FundRecord, list: GapList, today: string): Record<strin
   if (fixed) out[w.fixed] = fixed;
   if (variable) out[w.variable] = variable;
   if (trustee) out[w.trustee] = trustee;
+  // A-10: the yield the run pays out at, as the record holds it from the fund's own documents (`recordDistribution`)
+  const payout = rec.distribution_policy === "distributing" ? own(rec.distribution?.yield) : null;
+  if (payout) out[w.payout] = payout;
   const a07 = a07FromReports(rec, list);
   const years = comparedYears(rec.tracking_record, list);
   const t = rec.tracking_record;
   if (a07 !== null && years && t) {
     // the years' own figures, each from the report at its page: the fund's return, its index's, and the fees it charged that year
-    const at = (value: number, page: number | null | undefined) => ownBy({ ...(rec.fees.fixed_management as SiteValue), value, unit: "pct", source: { ...t.source, ...(page ? { page, locator_he: copy.kinds.gapPage(page) } : {}) }, checked: t.checked, notes: undefined, state: "sourced" } as SiteValue, rec.manager);
     const inputs: Record<string, SiteValue> = {};
     for (const y of years) {
-      inputs[copy.kinds.gapInputFund(y.year)] = at(y.fund_pct, t.page);
-      inputs[copy.kinds.gapInputBenchmark(t.benchmark.name, y.year)] = at(y.tracking_pct, t.page);
+      inputs[copy.kinds.gapInputFund(y.year)] = reportFigure(rec, y.fund_pct, t.page);
+      inputs[copy.kinds.gapInputBenchmark(t.benchmark.name, y.year)] = reportFigure(rec, y.tracking_pct, t.page);
       const c = y.fees_charged;
       if (c) {
-        inputs[w.chargedFixed(y.year)] = at(c.fixed, t.fees_page);
-        inputs[w.chargedVariable(y.year)] = at(c.variable, t.fees_page);
-        inputs[w.chargedTrustee(y.year)] = at(c.trustee, t.fees_page);
+        inputs[w.chargedFixed(y.year)] = reportFigure(rec, c.fixed, t.fees_page);
+        inputs[w.chargedVariable(y.year)] = reportFigure(rec, c.variable, t.fees_page);
+        inputs[w.chargedTrustee(y.year)] = reportFigure(rec, c.trustee, t.fees_page);
+      }
+    }
+    // F-92 (b): a year whose report prints no fees charged (a foreign fund's factsheet) is measured against today's listed fees (`feesInYear`)
+    if (years.some((y) => !y.fees_charged)) {
+      const listed: [string, unknown][] = [[w.listedFixed, rec.fees.fixed_management], [w.listedVariable, rec.fees.variable_management], [w.listedTrustee, rec.fees.trustee]];
+      for (const [name, v] of listed) {
+        const fee = own(v);
+        if (fee) inputs[name] = fee;
       }
     }
     const ys = years.map((y) => y.year);
@@ -700,15 +818,22 @@ function fundInputs(rec: FundRecord, list: GapList, today: string): Record<strin
  */
 const COST_FLAGS: readonly string[] = ["BANK-35"];
 
-function costValue(ctx: Ctx, row: ComparedProvider, about: string): SiteValue {
+/** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
+function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, whole = false): SiteValue {
   const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
-  return computed(row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, row.id), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
+  return computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
 
-function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string): WayPrice {
+/** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
+function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
+  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, reads), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+}
+
+function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {
   const row = p.row;
   const open = row.run.outcome.code === "listed-not-ranked";
-  const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+  const reads: RunReads = { house: providerId, fund: fundId, spec, row };
+  const value = valueFigure(ctx, row, reads, about);
   let split: Pick<WayPrice, "lines" | "interaction"> | undefined;
   // the lines of a way take a run each and the page shows the picked fund's only: read when shown
   const splitOf = () => {
@@ -725,7 +850,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     accountCost: row.horizonCostBeforeTax,
     // the cost before tax carries the run's labels on its sources; every reading the engine gives is a tax rule's (READING_RULE_IDS), which a cost before tax does not rest on
     cost: (about: string, whole = true) =>
-      computed(whole ? accountWhole({ accountCost: row.horizonCostBeforeTax }) : row.horizonCostBeforeTax, "nis", "F-63", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
+      computed(whole ? accountWhole({ accountCost: row.horizonCostBeforeTax }) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
     get lines() {
       return splitOf().lines;
     },
@@ -738,9 +863,16 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
 
 // ---------------------------------------------------------------- funds
 
-function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
+const isIls = (c: string) => c === "NIS" || c === "ILS";
+
+/** The index a fund is on, as its run reads it: a collected one, or the one the person typed (in shekels where they said the fund is). */
+function exposureOf(ctx: Ctx, rec: FundRecord) {
   const entered = ctx.bundle.entered?.exposures[rec.exposure_id];
-  const exposure = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? (entered && ctx.bundle.entered!.shekelFunds.includes(rec.id) ? { ...entered, currency: "ILS" } : entered);
+  return ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? (entered && ctx.bundle.entered!.shekelFunds.includes(rec.id) ? { ...entered, currency: "ILS" } : entered);
+}
+
+function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
+  const exposure = exposureOf(ctx, rec);
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
   // a fund the person typed: what they left unsaid is named, never filled in (2026-11-05)
@@ -759,7 +891,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
 
 const nameOf = (rec: FundRecord) => rec.names.he[0] ?? rec.names.en[0] ?? rec.id;
 /** A fund the person typed with no number has none to show: its id is the site's own. */
-// a fund with neither number is known by its ticker (a US fund: "VOO"), never by the site's own record id ("us-voo", #190)
+// a fund with neither number is known by its ticker (a US fund: "VOO"), never by the site's own record id ("us-voo")
 const tickerOf = (rec: FundRecord) => Object.values(rec.identifiers.ticker ?? {})[0] ?? null;
 const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identifiers.isin ?? tickerOf(rec) ?? (isCustomFund(rec) ? "" : rec.id);
 
@@ -792,7 +924,8 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
         providerId: s.id,
         kind: "cost",
         option,
-        cost: costValue(ctx, row, copy.houses.costAbout(s.provider.name_he)),
+        cost: costValue(ctx, row, spec, copy.houses.costAbout(s.provider.name_he)),
+        costAs: (about: string) => costValue(ctx, row, spec, about, true),
         costN: row.horizonCostBeforeTax,
         leftN: row.real,
         venue: p.venue,
@@ -832,7 +965,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
       }
       const p = got.get(s.id)!;
       if (p.kind === "ok") {
-        const w = wayPrice(ctx, p, s.id, nameOf(rec), rec.id);
+        const w = wayPrice(ctx, p, s.id, nameOf(rec), rec.id, fs.spec);
         base.byHouse[s.id] = w;
         if (!best || w.valueN > best.valueN) best = w;
       } else {
@@ -906,28 +1039,47 @@ function orderCheck(ctx: Ctx, index: IndexRef, yourBroker: string | null, atPlan
   return { holds: flips.length === 0, flips };
 }
 
-function spreadValue(ctx: Ctx, n: number, about: string): SiteValue {
-  return computed(n, "nis", "F-65", inputMap(ctx.plan), { today: ctx.bundle.today, about });
+/** One end of a gap between two ways: its number, its figure (what is left, or what an account costs) and the name its sheet gives it. */
+interface GapEnd {
+  n: number;
+  v: SiteValue;
+  name: string;
 }
+/** The gap between two ways' figures, `a − b`, each opening its own sheet (what a choice is worth, a house's distance from the cheapest way). */
+const gapOf2 = (ctx: Ctx, a: GapEnd, b: GapEnd, formula: string, about: string): SiteValue => differenceOf([a.name, a.v], [b.name, b.v], formula, { today: ctx.bundle.today, about });
+/** A way's figure of what is left, named by whose it is. */
+const leftEnd = (name: string, n: number, v: SiteValue): GapEnd => ({ n, v, name: copy.pair.input(name, copy.pair.colLeft) });
+/** The cheapest way's figure, the one every gap to it starts from. */
+const headlineEnd = (w: Way): GapEnd => leftEnd(copy.pair.cheapest, w.valueN, w.value);
+const lowest = (xs: GapEnd[]) => xs.reduce<GapEnd | null>((a, x) => (!a || x.n < a.n ? x : a), null);
+const highest = (xs: GapEnd[]) => xs.reduce<GapEnd | null>((a, x) => (!a || x.n > a.n ? x : a), null);
+const shortOf = (ctx: Ctx, id: string) => {
+  const s = ctx.snaps.find((x) => x.id === id);
+  return s ? providerInfo(s).short : id;
+};
 
 function barsOf(ctx: Ctx, options: OptionView[], headline: Way | null): Bar[] {
-  const bar = (id: BarId, low: number | null, high: number | null, pending: Bar["pending"], open: boolean, extra: Partial<Bar> = {}): Bar => ({ id, pending: low === null || high === null ? (pending ?? "not-priced") : null, low, high, spread: low !== null && high !== null ? spreadValue(ctx, high - low, id) : null, open, ...extra });
+  // the spread is the high end's figure less the low end's: a cost range is the accounts' costs before tax (F-91), a value range what is left (F-65)
+  const bar = (id: BarId, low: GapEnd | null, high: GapEnd | null, formula: string, pending: Bar["pending"], open: boolean, extra: Partial<Bar> = {}): Bar => ({ id, pending: low === null || high === null ? (pending ?? "not-priced") : null, low: low?.n ?? null, high: high?.n ?? null, spread: low && high ? gapOf2(ctx, high, low, formula, id) : null, open, ...extra });
   const at = headline ? options.find((o) => o.id === headline.option)! : options.find((o) => o.bestCell) ?? null;
   const out: Bar[] = [];
   // the broker: the cost range of the option's brokers
-  const costs = at ? at.cells.filter((c) => c.kind === "cost").map((c) => c.costN!) : [];
-  out.push(bar("broker", costs.length ? Math.min(...costs) : null, costs.length ? Math.max(...costs) : null, null, !!at?.open, at ? { option: at.id } : {}));
+  const costs = at ? at.cells.flatMap((c): GapEnd[] => (c.kind === "cost" ? [{ n: c.costN!, v: c.cost!, name: copy.pair.input(shortOf(ctx, c.providerId), copy.pair.colChargesShort) }] : [])) : [];
+  out.push(bar("broker", lowest(costs), highest(costs), "F-91", null, !!at?.open, at ? { option: at.id } : {}));
   // the fund: values among the option's funds at its broker
-  const vals = at ? at.funds.flatMap((f) => (f.best ? [f.best.valueN] : [])) : [];
-  out.push(bar("fund", vals.length ? Math.min(...vals) : null, vals.length ? Math.max(...vals) : null, vals.length === 0 ? "no-records" : null, !!at?.open, at ? { option: at.id } : {}));
+  const vals = at ? at.funds.flatMap((f) => (f.best ? [leftEnd(f.name, f.best.valueN, f.best.value)] : [])) : [];
+  out.push(bar("fund", lowest(vals), highest(vals), "F-65", vals.length === 0 ? "no-records" : null, !!at?.open, at ? { option: at.id } : {}));
   // ETF against tracking fund
+  const wayEnd = (w: Way) => leftEnd(w.fund.name, w.valueN, w.value);
   const t = options.find((o) => o.id === "il-tracking")?.bestWay;
   const e = options.find((o) => o.id === "il-etf")?.bestWay;
-  out.push(bar("etf-tracking", t && e ? Math.min(t.valueN, e.valueN) : null, t && e ? Math.max(t.valueN, e.valueN) : null, "no-records", false, { between: ["il-tracking", "il-etf"] }));
+  const te = t && e ? [wayEnd(t), wayEnd(e)] : [];
+  out.push(bar("etf-tracking", lowest(te), highest(te), "F-65", "no-records", false, { between: ["il-tracking", "il-etf"] }));
   // in Israel or abroad: the best of the Israeli-rail options against the best abroad option
-  const il = options.filter((o) => o.id !== "abroad" && o.bestWay).map((o) => o.bestWay!.valueN);
+  const il = highest(options.filter((o) => o.id !== "abroad" && o.bestWay).map((o) => wayEnd(o.bestWay!)));
   const ab = options.find((o) => o.id === "abroad")?.bestWay;
-  out.push(bar("abroad", il.length && ab ? Math.min(Math.max(...il), ab.valueN) : null, il.length && ab ? Math.max(Math.max(...il), ab.valueN) : null, "no-records", !!ab?.open, { between: ["il-etf", "abroad"] }));
+  const both = il && ab ? [il, wayEnd(ab)] : [];
+  out.push(bar("abroad", lowest(both), highest(both), "F-65", "no-records", !!ab?.open, { between: ["il-etf", "abroad"] }));
   return out;
 }
 
@@ -952,7 +1104,7 @@ function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, provide
     const cells = opts.flatMap((o) => o.cells.filter((c) => c.providerId === provider.id));
     const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
     const na = cells.find((c) => c.kind === "unavailable");
-    const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? spreadValue(ctx, headline.valueN - best.price!.valueN, copy.houses.gapAbout(provider.name)) : null;
+    const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? gapOf2(ctx, headlineEnd(headline), leftEnd(provider.short, best.price!.valueN, best.price!.value), "F-65", copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
     const standing = cells.some((c) => c.standing) || entries.some((e) => e.price?.standing);
     return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, standing };
@@ -967,22 +1119,25 @@ function worthOf(ctx: Ctx, options: OptionView[], headline: Way | null, provider
   const foreign = providers.find((p) => p.id === headline.providerId)?.foreign ?? false;
   const group = foreign ? GROUP_OPTIONS.foreign : GROUP_OPTIONS.il;
   const fStar = headline.fund;
-  const others: number[] = [];
+  const others: GapEnd[] = [];
   for (const p of providers) {
     if (p.foreign !== foreign || p.id === headline.providerId) continue;
     const at = fStar.byHouse[p.id];
-    if (at && "value" in at && !at.open) others.push(at.valueN);
+    if (at && "value" in at && !at.open) others.push(leftEnd(p.short, at.valueN, at.value));
   }
-  const sameHouse: number[] = [];
+  const sameHouse: GapEnd[] = [];
   for (const o of options) {
     if (!o.exists || !(group as readonly OptionId[]).includes(o.id)) continue;
     for (const f of o.funds) {
       if (f.rec.id === fStar.rec.id) continue;
       const at = f.byHouse[headline.providerId];
-      if (at && "value" in at && !at.open) sameHouse.push(at.valueN);
+      if (at && "value" in at && !at.open) sameHouse.push(leftEnd(f.name, at.valueN, at.value));
     }
   }
-  const gap = (xs: number[], about: string) => (xs.length ? spreadValue(ctx, headline.valueN - Math.min(...xs), about) : null);
+  const gap = (xs: GapEnd[], about: string) => {
+    const low = lowest(xs);
+    return low ? gapOf2(ctx, headlineEnd(headline), low, "F-65", about) : null;
+  };
   return { house: gap(others, copy.worth.lines.house), houseCount: others.length, fund: gap(sameHouse, copy.worth.lines.fund), fundCount: sameHouse.length };
 }
 
@@ -1005,7 +1160,7 @@ export function buildInvest(a: InvestArgs): InvestView {
   if (yourBroker && headline) {
     const y = headline.fund.atYours;
     const price = y && "value" in y ? y : null;
-    atYours = { providerId: yourBroker, price, reason: y && "reason" in y ? y.reason : null, less: price ? spreadValue(ctx, headline.valueN - price.valueN, "less") : null };
+    atYours = { providerId: yourBroker, price, reason: y && "reason" in y ? y.reason : null, less: price ? gapOf2(ctx, headlineEnd(headline), leftEnd(shortOf(ctx, yourBroker), price.valueN, price.value), "F-65", "less") : null };
   }
   const illustrative = a.plan.returnFromParameter;
   const providers = ctx.snaps.map(providerInfo);
@@ -1036,11 +1191,15 @@ export interface PairCosts {
   paidIn: SiteValue;
   /** The same deposits grown at the plan's return with no fee and no tax (F-91): `left` plus every cost. */
   base: number;
+  /** `base` as a figure (F-91's X), with what its run reads: the plan and the exchange rate, none of the fund's or the account's prices. */
+  baseValue: SiteValue;
   /** Real value left at the horizon (F-65). */
   left: SiteValue;
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
   interaction: number;
+  /** `interaction` as a figure (F-91), so the account's whole cost adds up figures that each open (`accountSum`). */
+  remainder: SiteValue;
   /** The account's whole cost before the tax it saves (F-91): its lines and `interaction` together, the figure the account list shows. */
   accountCost: number;
   /** The fund pays out (A-10): the state's part holds the tax on what it pays as well as the capital gains tax at the sale. */
@@ -1093,24 +1252,41 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   const noAccount = (r: ComparedProvider) => r.horizonCostBeforeTax + beforeTax(r.run);
   const base = noAccount(rX);
   const parts = costByWho({ base, left: row.real, account: row.horizonCostBeforeTax, fund: noAccount(r0) - noAccount(row) });
-  const inputs = inputsOfRun(ctx, s.id, rec.id);
-  const at = (n: number, formula: string, about: string) => computed(n, "nis", formula, inputs, { today: ctx.bundle.today, rules: rulesOf(row), about });
-  const lines = row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(x.line)) }));
+  // the whole run (the account and the fund); the fund's part is measured with no account, so it reads none of the account's prices
+  const inputs = inputsOfRun(ctx, { house: s.id, fund: rec.id, spec: fs.spec, row });
+  const at = (n: number, formula: string, about: string, from = inputs) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row), about });
+  const lines = row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
+  const interaction = row.horizonCostBeforeTax - row.byType.reduce((t, x) => t + x.costBeforeTax, 0);
   const paidInReal = ctx.plan.amountNow + ctx.plan.monthly * 12 * ctx.plan.years;
   return {
     providerId: s.id,
     fundId: rec.id,
-    // what was paid in rests on the plan alone: the account's minimum and what was typed for a house are not its inputs
-    paidIn: computed(paidInReal, "nis", "F-05", inputMap(ctx.plan), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
+    // what was paid in, in today's money: F-05's sum of the deposits as entered, each rising with the index that takes it back (A-04
+    // "constant real"); the amount, the deposit and the years, and nothing else (founder, 2026-11-08: "the chip for F-05 which the 70,000 uses")
+    paidIn: computed(paidInReal, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
-    interaction: row.horizonCostBeforeTax - row.byType.reduce((t, x) => t + x.costBeforeTax, 0),
+    interaction,
+    remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder)),
     accountCost: row.horizonCostBeforeTax,
     distributes: !!distribution,
-    fund: at(parts.fund, "F-91", copy.pair.fundAbout),
+    fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec })),
     tax: at(parts.state, "F-91", distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout),
     base,
+    // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
+    baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
   };
+}
+
+/**
+ * The account's whole cost before the tax it saves, as a figure (F-91): its lines and the remainder no single line explains, added up, each
+ * part opening its own sheet. `round` shapes it (a whole shekel).
+ */
+export function accountSum(pc: PairCosts, about: string, today: string, round?: (n: number) => number): SiteValue {
+  const parts: Record<string, SiteValue> = {};
+  for (const l of pc.account) parts[copy.pair.lines[l.line] ?? copy.pair.lines.other!] = l.cost;
+  parts[copy.pair.remainder] = pc.remainder;
+  return sumOf(parts, "F-91", { today, about, ...(round ? { round } : {}) });
 }
 
 // ---------------------------------------------------------------- the API the goal comparison calls (B1 API, requests.md)
@@ -1201,16 +1377,49 @@ export function hasKinds(view: InvestView): boolean {
   return (["unhedged", "hedged"] as const).every((k) => funds.some((f) => kindOf(f.rec) === k && Object.values(f.byHouse).some((x) => "valueN" in x && !x.open)));
 }
 
-/** One pair's real value left (F-65) at a dollar change `fxChange` (percent a year, A-03), A-07 replaced by `tracking` when given. */
-export function pairValue(a: InvestArgs & { fundId: string; providerId: string; fxChange: number; tracking?: number }): number | null {
-  const pair = pairOf(makeCtx(a.bundle, a.plan, { ...a.assumptions, fxChange: a.fxChange }), a);
+type PairValueArgs = InvestArgs & { fundId: string; providerId: string; fxChange: number; tracking?: number };
+
+/** One pair's run at a dollar change `fxChange` (percent a year, A-03), A-07 replaced by `tracking` when given. */
+function pairRun(a: PairValueArgs) {
+  const ctx = makeCtx(a.bundle, a.plan, { ...a.assumptions, fxChange: a.fxChange });
+  const pair = pairOf(ctx, a);
   if (!pair) return null;
   let spec = pair.fs.spec;
   if (a.tracking !== undefined) {
     const fund = spec.fund as { drag?: Record<string, number> };
     spec = { ...spec, fund: { ...fund, drag: { ...fund.drag, tracking: a.tracking } } } as Spec;
   }
-  return pair.price(spec)?.real ?? null;
+  const row = pair.price(spec);
+  return row ? { ctx, rec: pair.rec, spec, row } : null;
+}
+
+/** One pair's real value left (F-65) at a dollar change `fxChange` (percent a year, A-03), A-07 replaced by `tracking` when given. */
+export function pairValue(a: PairValueArgs): number | null {
+  return pairRun(a)?.row.real ?? null;
+}
+
+/** The fund's value moves with the dollar's change (A-03, F-04): a fund in a foreign currency, or a shekel fund on a foreign index that does not neutralise it. */
+function movesWithDollar(ctx: Ctx, rec: FundRecord): boolean {
+  const exposure = exposureOf(ctx, rec);
+  return !isIls(rec.currency) || (rec.hedged !== true && !!exposure && !isIls(exposure.currency));
+}
+
+/**
+ * The same as a figure, with what its run reads (F-65): `dollarChange` is the A-03 figure the run is at (P-02's bound), listed where the
+ * fund moves with the dollar (a hedged fund's run does not read it, F-04).
+ */
+export function pairValueFigure(a: PairValueArgs & { about: string; dollarChange?: SiteValue | null }): SiteValue | null {
+  const r = pairRun(a);
+  if (!r) return null;
+  const extra: Record<string, SiteValue> = a.dollarChange && movesWithDollar(r.ctx, r.rec) ? { [copy.kinds.dollarChangeInput]: a.dollarChange } : {};
+  return valueFigure(r.ctx, r.row, { house: a.providerId, fund: a.fundId, spec: r.spec, row: r.row }, a.about, extra);
+}
+
+/** P-02's bound of the dollar's yearly change against the shekel (A-03) as a figure, with its card; null without the record. */
+export function dollarBound(bundle: Pick<WorkbenchBundle, "dollarRange">, end: "lo" | "hi"): SiteValue | null {
+  const p = bundle.dollarRange?.p02 as unknown as { bounds?: Record<string, { lo: SiteValue; hi: SiteValue }>; rationale: string; rationale_he?: string | null } | undefined;
+  const v = p?.bounds?.["A-03"]?.[end];
+  return p && v ? { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } } : null;
 }
 
 /** One pair's real value left (F-65) on the plan: the figure `pairCosts` gives as `left`, without the runs that split the cost by who takes it. */
@@ -1280,18 +1489,26 @@ export interface KindMoney {
   /** Value left on a steady dollar with the shortfall the reports give. */
   unhedged: number;
   hedged: number;
+  /** The same two as figures (F-65), with what their runs read: the figures F-95's sentence is worked out from. */
+  figures: { unhedged: SiteValue; hedged: SiteValue };
   /** What a point a year is worth in value left: of the dollar, either way from 0, and of the hedged fund's shortfall, either way from the reports (F-95). */
   worth: { low: number; high: number };
-  /** The share of a difference between the two that goes to tax; null where the two cannot be priced for it. */
-  taxShare: number | null;
+  /** The share of a difference between the two that goes to tax (F-95), in percent, with the four figures it is worked out from; null where
+   *  the two cannot be priced for it or nothing is taxed. */
+  taxShare: SiteValue | null;
 }
 
 /** F-95's sentence on the plan, over two pairs, one of each kind. */
 export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; providerId: string }; hedged: { fundId: string; providerId: string } }): KindMoney | null {
   const u = (fx: number) => pairValue({ ...a, ...a.unhedged, fxChange: fx });
-  const u0 = u(0), uDown = u(-1), uUp = u(1);
-  const h0 = pairValue({ ...a, ...a.hedged, fxChange: 0 });
-  if (u0 === null || uDown === null || uUp === null || h0 === null) return null;
+  const figure = (p: { fundId: string; providerId: string }) => {
+    const rec = a.bundle.funds.find((f) => f.id === p.fundId);
+    return pairValueFigure({ ...a, ...p, fxChange: 0, about: rec ? nameOf(rec) : p.fundId });
+  };
+  const uFig = figure(a.unhedged), hFig = figure(a.hedged);
+  const u0 = (uFig?.value as number | undefined) ?? null, uDown = u(-1), uUp = u(1);
+  const h0 = (hFig?.value as number | undefined) ?? null;
+  if (u0 === null || uDown === null || uUp === null || h0 === null || !uFig || !hFig) return null;
   const steps = [u0 - uDown, uUp - u0];
   const rec = a.bundle.funds.find((f) => f.id === a.hedged.fundId);
   const reported = rec ? comparedYears(rec.tracking_record, gapListFor(a.bundle, rec)) : null;
@@ -1307,8 +1524,12 @@ export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; provider
   const cDown = at(-1), cUp = at(1);
   const leftGap = cDown && cUp ? (cUp.left.value as number) - (cDown.left.value as number) : 0;
   const taxGap = cDown && cUp ? (cUp.tax.value as number) - (cDown.tax.value as number) : 0;
-  const taxShare = leftGap + taxGap > 0 ? taxGap / (leftGap + taxGap) : null;
-  return { unhedged: u0, hedged: h0, worth: { low: Math.min(...steps), high: Math.max(...steps) }, taxShare };
+  const w = copy.dollar.taxInputs;
+  const taxShare =
+    cDown && cUp && leftGap + taxGap > 0 && taxGap > 0
+      ? computed(Math.round((taxGap / (leftGap + taxGap)) * 100), "pct", "F-95", { [w.leftDown]: cDown.left, [w.leftUp]: cUp.left, [w.taxDown]: cDown.tax, [w.taxUp]: cUp.tax }, { today: a.bundle.today, about: copy.dollar.taxAbout })
+      : null;
+  return { unhedged: u0, hedged: h0, figures: { unhedged: uFig, hedged: hFig }, worth: { low: Math.min(...steps), high: Math.max(...steps) }, taxShare };
 }
 
 /** P-01 as the page reads it: the share of the larger value below which two pairs are a tie (F-80). */
@@ -1317,7 +1538,7 @@ export const tieShareOf = (bundle: Pick<WorkbenchBundle, "p01">): number => tieT
 export const tieThresholdValue = (bundle: Pick<WorkbenchBundle, "p01">): SiteValue => {
   const p = bundle.p01;
   const v = p.value!;
-  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: (v.notes ?? "").startsWith("provisional") } };
+  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
 };
 
 /**

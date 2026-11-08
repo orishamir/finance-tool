@@ -7,7 +7,7 @@ export interface BlockedExit {
   blocked: true;
   /**
    * Why there is no value after tax: G-03 (an annuity's value needs conversion factors that are not collected), or for F-48
-   * its own id: its rule is known (TXP-18; G-06 and TXP OQ3 closed 2026-10-26), but the formula is not built yet.
+   * its own id: its rule is known (TXP-18; G-06 closed 2026-10-26), but the formula is not built yet.
    */
   reason: "G-03" | "F-48";
   /** The method gap behind it, flagged on the run: G-03 for an annuity; none for F-48. */
@@ -22,7 +22,7 @@ export interface BlockedExit {
 
 const exits = {
   "F-45": { reason: "G-03", gap: "G-03", ruleIds: ["TXK-08", "TXK-09", "TXK-10", "TXK-12"], openQuestions: ["PEN-OQ7", "TXK-OQ4"] },
-  // TXP OQ3 closed 2026-10-26 (the base is the whole amount paid, TXP-18): nothing open blocks F-48 any more; it is not built yet
+  // the base is the whole amount paid (TXP-18, 2026-10-26): nothing open blocks F-48 any more; it is not built yet
   "F-48": { reason: "F-48", gap: null, ruleIds: ["TXP-18", "PEN-29", "PEN-30"], openQuestions: [] },
   "F-49": { reason: "G-03", gap: "G-03", ruleIds: ["TXP-14", "TXP-15", "TXP-17", "PEN-27", "PEN-28"], openQuestions: ["PEN-OQ7"] },
 } as const;
@@ -31,7 +31,7 @@ const exits = {
  * F-45 Kupat gemel lehashkaa, annuity route from 60: the value transferred at 60 is the gross balance; the
  * annuity itself is blocked (conversion factors, PEN OQ7; commutation, TXK OQ4; G-03).
  * F-48 Pension and provident fund for annuity, early withdrawal (only if the person opts in): taxed at the higher of
- * 35% and the marginal rate on the whole amount paid (TXP-18; TXP OQ3 closed 2026-10-26, G-06 closed). The formula is
+ * 35% and the marginal rate on the whole amount paid (TXP-18; G-06 closed 2026-10-26). The formula is
  * not built yet, so it stays blocked even when the person opts in, with "F-48" as its reason and no gap.
  * F-49 Pension and provident fund for annuity at or after retirement: the lawful exit is an annuity, partly
  * exempt (TXP-14, TXP-15) with commutation rules (TXP-17, PEN-28); its value needs conversion factors that

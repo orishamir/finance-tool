@@ -2,13 +2,13 @@
 
 Every file under `data/` and every other file the site, the calculation engine and the data check read: what reads it, where its content comes from, and what it holds today. The format of each collection is `docs/data-schema.md`; this document says what is there.
 
-Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ticks, entered rates and saved comparisons are on the device (CLAUDE.md, "Saved state").
+Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ticks, entered rates and saved comparisons are on the device (`guidelines/project.md`, "Saved state").
 
 **Origins:**
 
 - **Published source**: collected from an official or institution page, file or dataset, with the URL and the date read.
 - **Rule base**: copied from the `il-finance` skill, with each rule's source link and checked date.
-- **Approved wording**: the site's Hebrew text, in `site/app/copy.ts` and the content files, written to the voice and word choices of `docs/copy.md` and `docs/glossary.md`.
+- **Approved wording**: the site's Hebrew text, in `site/app/copy.ts` and the content files, written to `guidelines/wording.md`, with the word choices of `docs/copy.md` and the terms of `docs/glossary.md`.
 - **Founder's choice**: a site parameter or a scope decision that only the founder makes.
 - **Project document**: a document in this repository that the code reads for IDs or test values (not shown on the site).
 - **Derived**: built from other files at build time; never edited by hand.
@@ -22,7 +22,7 @@ Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ti
 | # | Path | Read by | Origin | Today |
 |---|---|---|---|---|
 | 1 | `data/rules/<rule-id>.json` | Engine (figure resolver, every run); every page that shows a rule figure or a rule card: guide and exposure pages, the indices page, company and track pages, the rules page, the documents page, the not-covered page, the fee page, the goal comparison, search; the number sheet; data check | Rule base | **632 records.** A record exists for every rule a data file or a page names, open rules included. Every record carries `text_he`, the rule in plain Hebrew that the rule card shows. The four forum accounts the rule base stores as rules (`SW-X01` to `SW-X04`) show last on the rules pages, labelled as one person's experience. |
-| 29 | `sources[]` on every rule record (with `sources_missing_reason` and `derived_from`), and the four tables under `data/sources/`: `publishers.json` (one row per host: publisher in English and Hebrew, kind, mirror), `documents.json` (the recurring documents: match tokens, Hebrew name, publisher, kind, official address, and a company's own terms for the law and terms browser), `institutions.json` (the institution registry: one row per company a rule's scope can name) and `brands.json` (one row per group the site shows as one company, D33) | Rule card and sheet source block; number sheet's rule chips; rules page and its filter; documents page; company pages and the companies list (brands, registry); track browser; search (documents, companies, rule filter on publisher and title); rule scopes (D30); data check | Sources extracted by script from the `- Source:` line of each rule in the rule base (`packages/pipeline/scripts/extract-sources.ts`), never typed from memory; the Hebrew names are written by the Hebrew editor. The registry and the brands are written by hand (data-schema 3.1). Knowledge layer, D25 | Every one of the 626 rule records has `sources`. The validator fails a rule with neither `sources` nor `sources_missing_reason`. |
+| 29 | `sources[]` on every rule record (with `sources_missing_reason` and `derived_from`), and the four tables under `data/sources/`: `publishers.json` (one row per host: publisher in English and Hebrew, kind), `documents.json` (the recurring documents: match tokens, Hebrew name, publisher, kind, official address, and a company's own terms for the law and terms browser), `institutions.json` (the institution registry: one row per company a rule's scope can name) and `brands.json` (one row per group the site shows as one company, D33) | Rule card and sheet source block; number sheet's rule chips; rules page and its filter; documents page; company pages and the companies list (brands, registry); track browser; search (documents, companies, rule filter on publisher and title); rule scopes (D30); data check | Sources extracted by script from the `- Source:` line of each rule in the rule base (`packages/pipeline/scripts/extract-sources.ts`), never typed from memory; the Hebrew names are written by the Hebrew editor. The registry and the brands are written by hand (data-schema 3.1). Knowledge layer, D25 | Every one of the 626 rule records has `sources`. The validator fails a rule with neither `sources` nor `sources_missing_reason`. |
 | 32 | `data/open-questions.json` (data-schema 3.15) | The open-question sheet on every page (root loader); data check | Rule base: every numbered item of the reference files' open-question sections | **529 entries.** |
 
 ### Wrappers, securities and exposures
@@ -63,7 +63,7 @@ Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ti
 
 ### Site parameters
 
-All ten parameters, P-01 to P-10, exist and are signed off by the founder. The parameters page (`/parameters`) lists every one and shows "עוד לא נקבע" for a parameter without a value. Their reasons are in `docs/parameters-rationale.md`.
+All ten parameters, P-01 to P-10, exist. The parameters page (`/parameters`) lists every one and shows "עוד לא נקבע" for a parameter without a value. Their reasons are in `docs/parameters-rationale.md`.
 
 | # | Path | Read by | Origin |
 |---|---|---|---|
@@ -72,7 +72,7 @@ All ten parameters, P-01 to P-10, exist and are signed off by the founder. The p
 | 11 | `data/parameters/sensitivity-bounds.json` (P-02), `fee-verdict-thresholds.json` (P-03), `classification-fit.json` (P-04), `golden-tolerance.json` (P-06) | P-02: the sensitivity runs (F-81); P-03: the fee verdicts (F-62); P-04: the fit mark (F-70); P-06: the engine golden tests (row 17) | Founder's choice (chosen by Claude at his request) |
 | 26 | `data/parameters/goal-presets.json` (P-07) | Goal form `/goal` (the five presets of D13, D21); the catalogue fit mark | Founder's choice (chosen by Claude at his request) |
 | 27 | `data/parameters/exposure-holding-wrapper.json` (P-08) | Exposure mode on `/goal/compare?mode=exposure`: the wrapper each exposure runs through by default (F-71; the person may change it, and the choice is then "entered") | Founder's choice (chosen by Claude at his request) |
-| 30 | `data/parameters/pinned-rules.json` (P-09) | Rules front (the twelve pinned questions); the "שווה לדעת" block on wrapper guide pages; data check (every id exists; the first id of a row has a primary or mirror source) | Founder's choice (chosen by Claude at his request) |
+| 30 | `data/parameters/pinned-rules.json` (P-09) | Rules front (the twelve pinned questions); the "שווה לדעת" block on wrapper guide pages; data check (every id exists; the first id of a row has a primary source) | Founder's choice (chosen by Claude at his request) |
 | 31 | `data/parameters/home-guide-door.json` (P-10) | The home page's guide door: the six kinds of saving it names, each opening its guide page | Founder's choice |
 
 ### Not in `data/`

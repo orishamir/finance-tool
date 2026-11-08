@@ -123,14 +123,19 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
   let insurance = 0;
   const series: number[] = [];
   let discountExtended = false;
+  // PF OQ18 (D87): a discount on a fund that receives no deposit after month 0 ends PF-14's months (six) after it (PF-14 case 1, the
+  // cautious reading); PF-14 is read only where the case can arise
   let laterDeposit = false;
+  for (let m = 1; m <= Math.min(months, input.goal.months); m++) if ((gross[m] ?? 0) > 0) laterDeposit = true;
+  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.amount("PF-14", "months_after_deposits_stop") : undefined;
+  const oneDeposit = stopMonths !== undefined && months > stopMonths;
+  const endsBy = oneDeposit ? stopMonths : undefined;
   tally.point(0, 1, balance);
   const deposit = (amount: number, paid: number, month: number) => {
     if (amount <= 0) return;
-    if (month > 0) laterDeposit = true;
     tally.paidIn += paid;
     // F-16: a discounted deposit fee reverts to its rate after the period, no earlier than PF-13's minimum, as on a provident fund
-    const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, month);
+    const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, month, endsBy);
     discountExtended ||= dep.extended;
     const fee = depositFee(dep.rate, depositCap, amount);
     const ins = insuranceCost(input.insurance.rate, amount);
@@ -141,7 +146,7 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
   for (let m = 1; m <= months; m++) {
     if (m === 1) deposit(gross[0]!, outlay[0] ?? 0, 0);
     if (m <= input.goal.months) deposit(gross[m] ?? 0, outlay[m] ?? 0, m);
-    const { rate, extended } = feeForMonth(fees.balance, fees.discount, minDiscountMonths, m);
+    const { rate, extended } = feeForMonth(fees.balance, fees.discount, minDiscountMonths, m, endsBy);
     discountExtended ||= extended;
     balance *= 1 + g;
     const bal = balanceFee(rate, balanceCap, balance);
@@ -153,8 +158,8 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
     tally.point(m, I[m]!, balance);
   }
   if (discountExtended) tally.flag("PF-13");
-  // PF OQ18 (D87): a discount on a fund that receives one deposit and no more may end early; open, the run keeps it (favourable reading)
-  if ((fees.discount || fees.depositDiscount) && !laterDeposit && months > 6) tally.flag("PF-OQ18");
+  // PF OQ18 (D87): whether case 1 reaches one deposit and no more is open; the run ends the discount after PF-14's six months and names the question
+  if (oneDeposit) tally.flag("PF-OQ18");
   return { balance, insurance, series };
 }
 
@@ -287,7 +292,7 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   const out = ledger(book, tally, input, gross, gross.map(() => 0), T, I);
 
   // TXP-10: employer component above the exempt limit. TXP-11: the severance ceiling, applied monthly as 1/12 of the yearly
-  // amount (Income Tax circular 4/2019 s.2.1.1; TXP OQ5 closed 2026-10-26); a severance deposit above it is work income at
+  // amount (Income Tax circular 4/2019 s.2.1.1); a severance deposit above it is work income at
   // deposit, which this run does not tax yet, so it is flagged under the rule.
   const ceiling = book.amount("TXP-10", "employer_ceiling");
   const exemptPct = book.rate("TXP-10", "employer_exempt_pct");

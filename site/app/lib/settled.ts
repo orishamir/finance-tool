@@ -16,7 +16,7 @@ export function useSettled<T>(value: T, ms: number): T {
 
 /**
  * Work too slow for the render, run just after it. The last answer stays on the page until the next is ready, so the block never empties
- * and comes back (issue 158); it is null only before the first answer, and when there is no work (`work` null) or the work failed.
+ * and comes back; it is null only before the first answer, and when there is no work (`work` null) or the work failed.
  */
 export function useAfterRender<T>(work: (() => T | null) | null, deps: DependencyList, ms = 80): T | null {
   const [answer, setAnswer] = useState<T | null>(null);

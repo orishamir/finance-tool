@@ -6,9 +6,9 @@ import { useId, useState } from "react";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { addDays, daysBetween, fact, fixedDateModel } from "../../lib/guide-signature";
-import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
+import { computed, type SiteValue } from "../../lib/value";
 import { Num, RulesLine } from "../provenance";
-import { Gap, type VisualProps } from "./kit";
+import { Gap, typed, type VisualProps } from "./kit";
 import { Marker, MarkerMark, Sentence, useWidth, When } from "../kit";
 
 const HEIGHT = 130;
@@ -35,7 +35,7 @@ export function MoneyMarketRenewableVisual({ data, today }: VisualProps) {
   const plotW = width - 8;
   const x = scaleLinear().domain([0, WINDOW]).range([0, plotW]);
   const ticks = [0, 3, 6, 9, 12];
-  const needIn = enteredValue(o, "days", today, copy.renewable.marker);
+  const needIn = typed(o, "days", today, copy.renewable.marker);
   const waitValue = series && model.waitDays !== null ? computed(model.waitDays, "days", "F-23", { [copy.renewable.known]: series, [copy.renewable.marker]: needIn }, { today, about: copy.renewable.about.wait }) : null;
   const latest = model.latestAfter && series && maxInterval ? dateValue(model.latestAfter, "F-23", { [copy.renewable.known]: series, [copy.common.inputNames.maxInterval]: maxInterval }, today, copy.renewable.about.latest) : null;
   const after = model.known !== null && model.waitDays === null;

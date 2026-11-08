@@ -2,7 +2,7 @@
 // the money and a short tax note. A page of its own and not a product id, so it stays out of the comparison. Every figure is a Num over a rule
 // figure, every block ends with the rules it rests on (il-finance MF, ETF, REG, TXS, BANK, BRK, read 2026-11-03); only general rules, and one
 // record seen only in two companies' fund names (ETF-61), stated as those companies' names. Cut to about half on 2026-11-03 (review in
-// research/specs/2026-11-03-funds-guide/review.md): no risks or documents section, no creation route, no distribution fee, no ETN history.
+// 8dd1f013:research/specs/2026-11-03-funds-guide/review.md): no risks or documents section, no creation route, no distribution fee, no ETN history.
 import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import { Num, RulesLine, Term } from "../../components/provenance";

@@ -30,14 +30,14 @@ import {
 } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { computedInputs as ci, formulaNames, r3fees } from "../copy";
-import { asParameter, evaluate, goalValueObjects, horizonFloorOf, nothingToCompare, parameterOf, placeGroups, type CompareBundle, type FeeKind, type RunGoal, type WrapperEntry } from "./compare";
+import { asParameter, evaluate, fundCostOf, goalValueObjects, horizonFloorOf, nothingToCompare, parameterOf, placeGroups, runInputs, type CompareBundle, type FeeKind, type PlanValues, type RunGoal, type WrapperEntry } from "./compare";
 import { fmt } from "./format";
 import { holdingName, holdingPlan } from "./holdings";
 import { blockedHe, failureHe } from "./failure-he";
 import type { Holding } from "./state";
 import type { InputsState } from "./inputs";
 import type { FieldKey } from "./goal";
-import { computed, depositFeeNoneByRule, entered as enteredValue, expandFee, ruleFigure, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
+import { asField, computed, depositFeeNoneByRule, entered as enteredValue, expandFee, ruleFigure, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
 
 Object.assign(formulaNames, { "F-62": "פסק דין על עמלה", "F-68": "ממוצע הרשות למסלולי הסיווג", "F-61": "עלות דמי הניהול" });
 
@@ -110,7 +110,9 @@ export interface FeeInputs {
   goalG: RunGoal | null;
   /** Fields whose value comes from the subject and not the goal (a holding's balance and deposits): shown, not editable here. */
   fixed?: ("amountNow" | "monthly")[];
-  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; inflation: SiteValue; returnV: SiteValue; insurance?: SiteValue };
+  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; inflation: SiteValue; returnV: SiteValue; insurance?: SiteValue; available?: SiteValue; income?: { name: string; value: SiteValue } };
+  /** The values the plan's fields start at (P-05's scenario): what each field's reset goes back to, "חזרה ל־10". */
+  starts?: { amount: number; monthly: number; years: number; inflation: number; returnV: number };
 }
 
 const p05Inputs = (bundle: CompareBundle) => (parameterOf(bundle, "P-05") as unknown as { inputs: Record<string, ValueObject> }).inputs;
@@ -122,20 +124,24 @@ export function feeInputs(bundle: CompareBundle, goalG: RunGoal | null, released
   const param = (key: string) => asParameter(p05, inp[key]!);
   const num = (key: string) => inp[key]!.value as number;
   const meaningful = goalG !== null && !nothingToCompare(goalG);
+  const starts = { amount: num("amount_now"), monthly: num("monthly_deposit"), years: num("horizon_years"), inflation: num("A-02"), returnV: num("A-01") };
   if (meaningful) {
     const gv = goalValueObjects(bundle, goalG);
     const returnFromParameter = goalG.returnPct === null;
     const g: RunGoal = { ...goalG, returnPct: goalG.returnPct ?? num("A-01") };
-    return { g, fromGoal: true, returnFromParameter, goalG, values: { amount: gv.amountNow, monthly: gv.monthly, years: gv.horizon, inflation: gv.inflation, returnV: gv.returnV ?? param("A-01") } };
+    return { g, fromGoal: true, returnFromParameter, goalG, starts, values: { amount: gv.amountNow, monthly: gv.monthly, years: gv.horizon, inflation: gv.inflation, returnV: gv.returnV ?? param("A-01"), available: gv.available } };
   }
   const e = released.entered;
-  const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) => (e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : param(key));
+  // each is a field's value on the page, its default or what the reader typed: a plain number wherever it shows (founder, 2026-11-08)
+  const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) => asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : param(key));
   const amount = val("amount_now", "nis", ci.amountNow);
   const monthly = val("monthly_deposit", "nis_per_month", ci.monthly);
   const years = val("horizon_years", "years", ci.years);
   const returnV = val("A-01", "pct_per_year", ci.grossReturn);
   const inflation = val("A-02", "pct_per_year", ci.inflation);
   const income = e.annual_income !== undefined ? e.annual_income : num("annual_income");
+  // the yearly income the runs take (their g.salary is it over 12): what the reader entered, else P-05's, as the value its sheet opens
+  const incomeV = asField(e.annual_income !== undefined ? enteredValue(e.annual_income, "nis", bundle.runDate, ci.annualIncome) : param("annual_income"));
   // A-17 has no default (G-12): only what the person entered on a pension fund's fee page
   const insurancePct = typeof released.insurance === "number" ? released.insurance : null;
   const g: RunGoal = {
@@ -155,45 +161,57 @@ export function feeInputs(bundle: CompareBundle, goalG: RunGoal | null, released
     preset: "none",
     fromPreset: { horizon: false, monthly: false, available: false },
   };
-  const insurance = insurancePct !== null ? enteredValue(insurancePct, "pct", bundle.runDate, ci.insurance) : undefined;
-  return { g, fromGoal: false, returnFromParameter: e["A-01"] === undefined, goalG, values: { amount, monthly, years, inflation, returnV, ...(insurance ? { insurance } : {}) } };
+  const insurance = insurancePct !== null ? asField(enteredValue(insurancePct, "pct", bundle.runDate, ci.insurance)) : undefined;
+  return { g, fromGoal: false, returnFromParameter: e["A-01"] === undefined, goalG, starts, values: { amount, monthly, years, inflation, returnV, ...(insurance ? { insurance } : {}), income: { name: ci.annualIncome, value: incomeV } } };
 }
 
 // ---------------------------------------------------------------- value factory
-
-function makeInputsMap(inputs: FeeInputs): Record<string, SiteValue> {
-  const v = inputs.values;
-  return { [ci.amountNow]: v.amount, [ci.monthly]: v.monthly, [ci.years]: v.years, [ci.grossReturn]: v.returnV, [ci.inflation]: v.inflation, ...(v.insurance ? { [ci.insurance]: v.insurance } : {}) };
-}
 
 const rulesOf = (used: readonly UsedRule[]) => used.map((u) => ({ id: u.id, strength: u.figures.reduce<Strength>((w, f) => weaker(w, f.strength as Strength) ?? w, u.strength) }));
 
 export type Factory = ReturnType<typeof factory>;
 
-export function factory(bundle: CompareBundle, inputs: FeeInputs) {
+/**
+ * The fee page's figures, each listing what the run of the subject reads (`runInputs`, the comparison's one helper): the plan's money,
+ * the return or, for a cash-like product, its own rate, and the profile only where the run reads it (founder, 2026-11-08). `goal` is the
+ * page's fields as values: an assumption's value now is the field itself (F-81 moves from it).
+ */
+export function factory(bundle: CompareBundle, inputs: FeeInputs, wrapper?: WrapperEntry) {
   const today = bundle.runDate;
-  const base = makeInputsMap(inputs);
+  const v = inputs.values;
+  const plan: PlanValues = { amount: v.amount, monthly: v.monthly, years: v.years, inflation: v.inflation, returnV: v.returnV, ...(v.available ? { available: v.available } : {}), ...(v.insurance ? { insurance: v.insurance } : {}), ...(v.income ? { income: v.income } : {}) };
+  const w = wrapper ? (bundle.wrappers.find((x) => x.id === wrapper.id) ?? wrapper) : undefined;
+  const inputsOf = (used: readonly UsedRule[] = []) => runInputs(bundle, inputs.g, plan, w, used);
   return {
     nis(value: number, formula: string, about: string, run?: { rules: readonly UsedRule[]; flags?: { code: string }[]; labels?: { code: string; ruleId: string }[] }, extra?: Record<string, SiteValue>): SiteValue {
-      return computed(value, "nis", formula, { ...base, ...(extra ?? {}) }, { today, about, rules: run ? rulesOf(run.rules) : [], flags: run?.flags?.map((f) => f.code), labels: run?.labels?.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
-    },
-    count(value: number, about: string): SiteValue {
-      return computed(value, "count", "F-83", {}, { today, about });
+      return computed(value, "nis", formula, { ...inputsOf(run?.rules), ...(extra ?? {}) }, { today, about, rules: run ? rulesOf(run.rules) : [], flags: run?.flags?.map((f) => f.code), labels: run?.labels?.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
     },
     plain(value: number, unit: ValueObject["unit"], formula: string, about: string, extra?: Record<string, SiteValue>): SiteValue {
-      return computed(value, unit, formula, { ...base, ...(extra ?? {}) }, { today, about });
+      return computed(value, unit, formula, { ...inputsOf(), ...(extra ?? {}) }, { today, about });
     },
-    base,
+    goal: v,
   };
 }
 
-/** The engine's computed value, its raw inputs turned into values the provenance sheet can open, and the clock of the fee year. */
-function lift(v: ValueObject, stale: SiteValue["stale"], today: string): SiteValue {
+/** The class and the period of the regulator's file (F-68's class key): texts of that file, sourced as its values are (`src`, a value of the same file). */
+const classTextKeys = ["fund_classification", "specialization", "period"] as const;
+function classTexts(raw: Record<string, unknown>, src: ValueObject): Record<string, SiteValue> {
+  const out: Record<string, SiteValue> = {};
+  for (const k of classTextKeys) if (typeof raw[k] === "string") out[k] = { ...src, value: raw[k] as string, unit: "text", computed_from: undefined, about: k } as SiteValue;
+  return out;
+}
+
+/**
+ * The engine's computed value, its raw inputs turned into values the provenance sheet can open, and the clock of the fee year. The class
+ * and the period are the regulator's file's own texts (`classTexts`, sourced from `src`); the count and the words of the formula stay its own.
+ */
+function lift(v: ValueObject, stale: SiteValue["stale"], today: string, src?: ValueObject): SiteValue {
   const inputs: Record<string, SiteValue> = {};
   if (v.computed_from) {
+    const texts = src ? classTexts(v.computed_from.inputs as Record<string, unknown>, src) : {};
     for (const [label, raw] of Object.entries(v.computed_from.inputs)) {
       const isNum = typeof raw === "number";
-      inputs[label] = { ...computed(isNum ? raw : null, isNum ? "count" : "text", v.computed_from.formula, {}, { today, about: label }), ...(isNum ? {} : { value: String(raw) }) };
+      inputs[label] = texts[label] ?? { ...computed(isNum ? raw : null, isNum ? "count" : "text", v.computed_from.formula, {}, { today, about: label }), ...(isNum ? {} : { value: String(raw) }) };
     }
   }
   return { ...v, computed_from: v.computed_from ? { formula: v.computed_from.formula, inputs } : undefined, weakest: v.source.strength, stale: stale ?? null, rulesUsed: (v.rule_ids ?? []).map((id) => ({ id, strength: v.source.strength })) } as SiteValue;
@@ -404,12 +422,8 @@ function heldOf(plan: RunPlan, line: FeeLine, after: LineView["after"], rate: Si
 }
 
 function rateValue(wrapper: WrapperEntry, line: FeeLine, today: string): SiteValue | null {
-  if (line === "fund") {
-    const parts = dragKeys.filter((d) => typeof wrapper.feeValues[d]?.value === "number");
-    const total = parts.reduce((s, d) => s + (wrapper.feeValues[d]!.value as number), 0);
-    if (parts.length === 0) return null;
-    return computed(total, "pct_per_year", "A-06", Object.fromEntries(parts.map((d) => [d, wrapper.feeValues[d]!])), { today, about: r3fees.names.fund! });
-  }
+  // the cost inside the fund is the sum of its lines (F-10), as the comparison's chip says it (`fundCostOf`)
+  if (line === "fund") return fundCostOf(wrapper.feeValues, dragKeys, r3fees.names.fund!, today) ?? null;
   const key = feeValueKey[line];
   return key ? wrapper.feeValues[key] ?? null : null;
 }
@@ -454,8 +468,7 @@ export interface ReferenceView {
   official?: { value: SiteValue; year: string };
   /**
    * The class comes from a track the site chose (P-05) that is not the record the run prices (a company's list): the page says so plainly,
-   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude after the
-   * founder's sign-off of P-05, which does not cover it).
+   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude).
    */
   bySite?: { trackId: number; companyId: string; name: string; company: string };
   none?: { reason: NoRefReason; linkOut: LinkOut | null };
@@ -519,12 +532,16 @@ function referenceBase(c: RefContext, line: FeeLine, rate: SiteValue | null): Re
     const stale = tpl ? staleCmaFee(tpl.balance.effective_to, c.today) : null;
     const stat = ref ? (line === "balance" ? ref.management : ref.deposit) : null;
     if (!ref || !stat || stat.count === 0 || stat.mean.value === null) return { ...none("empty-class"), stale };
+    const src = tpl ? (line === "balance" ? tpl.balance : tpl.deposit) : undefined;
     const year = tpl?.balance.effective_from ? tpl.balance.effective_from.slice(0, 4) : null;
-    const yearV: SiteValue | null = year ? { ...computed(Number(year), "text", "F-68", {}, { today: c.today, about: "שנת הממוצע" }), value: year } : null;
+    // the year of the regulator's file is a date of that file, not a figure the site computed: sourced as its values are
+    const yearV: SiteValue | null = year && tpl ? ({ ...tpl.balance, value: year, unit: "text", computed_from: undefined, about: r3fees.referenceLine.yearAbout, stale } as SiteValue) : null;
+    // F-68's count is of the tracks of one class in one period that report the fee: it lists that class and period (a count over the file)
+    const countInputs = src && stat.mean.computed_from ? classTexts(stat.mean.computed_from.inputs as Record<string, unknown>, src) : {};
     const view: ReferenceView = {
       cma: {
-        mean: lift(stat.mean, stale, c.today),
-        count: c.mk.count(stat.count, r3fees.referenceLine.tracksAfter),
+        mean: lift(stat.mean, stale, c.today, src),
+        count: computed(stat.count, "count", "F-68", countInputs, { today: c.today, about: r3fees.referenceLine.tracksAfter }),
         year: yearV,
         classification: t.classification,
         specialization: t.specialization,
@@ -577,6 +594,12 @@ export interface LineView {
   removedBy: Alternative[];
   /** Every alternative, ranked above or not (`alternativesOf`): the card keeps the room of their line whatever the ranking (D63). */
   alternatives: Alternative[];
+  /**
+   * The room of the line that names them: every option of the comparison that could be one, whatever the plan, those without the fee and
+   * the rest as if lower. The alternatives change with the sliders (a renewing money-market fund runs only with no monthly deposit), and
+   * at 390 px one more name moved the card by a line (box check, 2026-11-07).
+   */
+  alternativesRoom: Alternative[];
   reference: ReferenceView;
   cap: CapView;
   /** The suggestion for the reduction field, in percent: the class mean as shown, offered only where it is below the rate charged now. */
@@ -691,6 +714,19 @@ export function alternativesOf(set: ComparisonSet | null, subjectId: string, lin
 }
 
 /**
+ * `LineView.alternativesRoom`: the candidates `alternativesOf` could name as the sliders move, for the room of their line: those with a
+ * plan, and those the method cannot run only for this plan (a gap: a renewing money-market fund with a monthly deposit, G-30). Not the
+ * ones closed to the person whatever the plan (another's money, held inside an IRA) or waiting for a field of the assumptions sheet.
+ */
+export function alternativesRoomOf(set: ComparisonSet | null, subjectId: string, line: FeeLine, names: Record<string, string>): Alternative[] {
+  if (!set) return [];
+  const forThisPlan = (c: ComparisonSet["candidates"][number]) => c.kind === "not-evaluated" && c.reasons.length > 0 && c.reasons.every((r) => r.code === "gap");
+  return set.candidates
+    .filter((c) => c.tier === 1 && c.id !== subjectId && (c.plan || forThisPlan(c)))
+    .map((c) => ({ id: c.id, name: names[c.id] ?? c.id, lower: c.plan ? feeLines(c.plan).includes(line) : false }));
+}
+
+/**
  * D90 revised the same day (lead, 2026-11-07): "worth avoiding" only when there is something better to pick. Of the alternatives, those
  * that rank above the subject on the page's own comparison for the same plan: a better place, never a shared one. A subject the comparison
  * lists without a place is below every ranked option. Readers saw "avoid" on the option ranked first and asked what to pick instead.
@@ -760,7 +796,7 @@ export interface AnalyseArgs {
 export function analyse(a: AnalyseArgs): Analysis {
   const rules = ruleMap(a.runBundle, a.data);
   const ctx = contextFor(a.runBundle, rules);
-  const mk = factory(a.runBundle, a.inputs);
+  const mk = factory(a.runBundle, a.inputs, a.wrapper);
   const fm = feeMateriality(a.plan, ctx);
   const thresholds = feeThresholds(a.data.p03);
   const total = fm.total.value as number;
@@ -819,6 +855,7 @@ export function analyse(a: AnalyseArgs): Analysis {
       avoidEvaluated: hasComparison || costNis < thresholds.avoidNis,
       removedBy,
       alternatives,
+      alternativesRoom: alternatives.length > 0 ? alternativesRoomOf(a.comparison, a.wrapper.id, l.line, a.names) : [],
       reference,
       cap,
       // the average is offered only where it is a reduction of the rate charged now: a field filled with "זו לא הורדה" contradicts the verdict (D90)
@@ -848,7 +885,7 @@ export function analyse(a: AnalyseArgs): Analysis {
     total: mk.nis(total, "F-61", r3fees.chart.total, run),
     withFees: mk.nis(fm.realWithFees, "F-06", "השווי בכסף של היום, עם כל העמלות", run),
     withoutFees: mk.nis(fm.realWithoutFees, "F-06", "השווי בכסף של היום, בלי עמלות", run),
-    remainder: mk.nis(fm.interaction.value as number, "F-61", r3fees.remainder.before.trim(), run),
+    remainder: mk.nis(fm.interaction.value as number, "F-61", r3fees.remainder.about, run),
     thresholds: { negotiate: th("negotiate_nis"), avoid: th("avoid_nis"), values: thresholds },
     ctx,
     plan: a.plan,

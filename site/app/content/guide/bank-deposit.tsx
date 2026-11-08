@@ -147,7 +147,7 @@ export const content: GuideContent = {
   ),
 };
 
-// F-104: what the collected one-year deposits say about breaking them, counted over the banks (ground rule 2: a bank whose rows were
+// F-104: what the collected one-year deposits say about breaking them, counted over the banks (former ground rule 2: a bank whose rows were
 // collected in larger number does not weigh more). The count of the banks where none can be broken names none of them (D30); the banks
 // whose deposits can be broken are named, because the penalty is each bank's own term, and stand as links to their pages, where their
 // terms are (VariesByCompany). No penalty in shekels: no collected term gives it as a formula over published figures (method F-104).

@@ -2,9 +2,9 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, groupPrices as groupWordsDemo, invest as investWords, kit as copy, r2, scnCompare, trackBrowser } from "../../copy";
+import { brands, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, r2, scnCompare, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
-import { computed, entered } from "../../lib/value";
+import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconAlert, IconExternal, IconLock } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, ReadingTag, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
@@ -13,10 +13,10 @@ import { allLabels, label } from "../../lib/labels";
 import { depositLabels } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import { sourceHref } from "../../lib/sources";
-import { PileStory, PileYears } from "./pile-story";
+import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { BlockedGroups, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { BlockedGroups, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -32,6 +32,12 @@ function samples(today: string) {
   // an empty value no rule covers (source strength open): the figure says it is an open question, with the lock
   const open: SiteValue = { ...sourced, value: null, unit: "text", source: { ...sourced.source, strength: "open" }, notes: "sample" };
   return { sourced, stale, rate, comp, comp2, ent, open };
+}
+
+/** A sourced fact a SourcedTag opens: the sample's words, with the gallery's sample source. */
+function phoneSample(today: string): SiteValue {
+  const { sourced } = samples(today);
+  return { ...sourced, value: investWords.pair.phoneTag, unit: "text", effective_from: null, about: investWords.pair.phoneAbout("IBI"), lead: investWords.pair.phoneLead(g.sampleSource) };
 }
 
 /** One component: its name (beside it, left to right), when to use it, and its states. */
@@ -114,6 +120,9 @@ function Basics() {
             {g.sample.body}
           </Callout>
           <Callout tone="info">{g.sample.body}</Callout>
+          <Callout tone="upcoming" title="עומד להשתנות" tag={<When iso="2027-07-01" lead="מ־" />}>
+            {g.sample.body}
+          </Callout>
         </Grid>
       </Demo>
       <Demo name="Card, pad" use={g.uses.Card}>
@@ -272,6 +281,21 @@ function Choices() {
           <SegmentedControl label={g.sample.title} options={g.sample.option.map((o, i) => ({ value: (["a", "b", "c"] as const)[i]!, label: o }))} value={seg} onChange={setSeg} />
         </State>
       </Demo>
+      <Demo name="PickCard" use={g.uses.PickCard}>
+        <State label={g.states.interactive}>
+          <div className="flex flex-col gap-3 md:flex-row">
+            <div className="md:flex-1 rounded-lg border border-primary p-3 flex flex-col gap-1">
+              <span className="text-sm text-primary">{g.sample.option[0]}</span>
+              <span className="text-2xl font-bold">{fmt.nisWhole(1000)}</span>
+            </div>
+            <PickCard label={g.sample.pickCard} onPick={() => {}} className="md:flex-1 p-3 flex flex-col gap-1">
+              <span className="text-sm text-muted-foreground">{g.sample.option[1]}</span>
+              <span className="text-2xl font-bold">{fmt.nisWhole(1040)}</span>
+              <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
+            </PickCard>
+          </div>
+        </State>
+      </Demo>
       <Demo name="TileChoice" use={g.uses.TileChoice}>
         <State label={`labels as the body, ${g.states.interactive}`} wide>
           <TileChoice
@@ -351,15 +375,15 @@ function Chips() {
         </State>
       </Demo>
       <Demo name="PlanChips" use={g.uses.PlanChips}>
-        <State label={`${g.states.filled}, ${g.states.entered}, parameter, fixed`}>
+        <State label={`${g.states.filled}, ${g.states.entered}, fixed`}>
           <PlanChips
             allLabel={g.sample.plan.all}
             onOpen={() => undefined}
             items={[
-              { field: "amountNow", label: g.sample.plan.amount, text: "10,000 ₪", entered: false },
-              { field: "monthly", label: g.sample.plan.monthly, text: "1,000 ₪", entered: true },
-              { field: "horizonYears", label: g.sample.plan.years, text: "10", entered: false, parameter: true },
-              { field: "return", label: g.sample.plan.ret, text: "5%", entered: true, fixed: true },
+              { field: "amountNow", label: g.sample.plan.amount, text: "10,000 ₪" },
+              { field: "monthly", label: g.sample.plan.monthly, text: "1,000 ₪" },
+              { field: "horizonYears", label: g.sample.plan.years, text: "10" },
+              { field: "return", label: g.sample.plan.ret, text: "5%", fixed: true },
             ]}
           />
         </State>
@@ -384,7 +408,6 @@ function Words({ today }: { today: string }) {
       <Demo name="StrengthLabel, ReadingTag" use={g.uses.StrengthLabel}>
         <Grid>
           <State label="primary: plain"><div><StrengthLabel strength="primary" /></div></State>
-          <State label="primary-mirror: plain"><div><StrengthLabel strength="primary-mirror" /></div></State>
           <State label="institution: caution"><div><StrengthLabel strength="institution" /></div></State>
           <State label="secondary: caution, only a leftover still listed in unofficial-leftovers.json (nothing new unofficial is cited)"><div><StrengthLabel strength="secondary" /></div></State>
           <State label="open: blocked, with a lock"><div><StrengthLabel strength="open" /></div></State>
@@ -440,6 +463,14 @@ function Words({ today }: { today: string }) {
           <State label="An empty value whose rule is open (source strength open): the open question and its lock, never null or unknown">
             <Sentence size="sm" t="{a} · {b}" vars={{ a: <Num value={s.open} />, b: <Num value={s.rate} /> }} />
           </State>
+          <State label="doubt: the record itself doubts the figure (SiteValue.doubt): an amber tint and the caution icon, wherever it shows; its sheet says the doubt">
+            <Sentence size="sm" t="{a} · {b}" vars={{ a: <Num value={{ ...s.rate, doubt: g.sample.doubt }} />, b: <Num value={s.rate} /> }} />
+          </State>
+          <State label="In an upcoming callout: the figure that starts later leaves out its mark, since the box says it (the sheet still says when)">
+            <Callout tone="upcoming" title="עומד להשתנות">
+              <Sentence size="sm" t="{a} · {b}" vars={{ a: <Num value={{ ...s.rate, effective_from: "2099-01-01" }} />, b: <Num value={s.rate} /> }} />
+            </Callout>
+          </State>
           <State label="StaleSaid: under a notice that already says the source is old, the figure leaves out its clock (the sheet still says it)">
             <StaleSaid>
               <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
@@ -475,13 +506,13 @@ function Words({ today }: { today: string }) {
       </Demo>
       <Demo name="InputSlot" use={g.uses.InputSlot}>
         <Grid>
-          <State label={`${g.states.entered}, chars=10`}>
+          <State label={`${g.states.entered}, ${g.states.filled}, chars=10`}>
             <Sentence size="sm" measure>
-              {g.sample.sentenceBefore} <InputSlot chars={10} onEdit={() => undefined} editLabel="שינוי">
-                <Num value={s.ent} />
+              {g.sample.sentenceBefore} <InputSlot>
+                <Num value={asField(s.ent)} />
               </InputSlot>{" "}
-              {g.sample.sentenceMid} <InputSlot chars={8} onEdit={() => undefined} editLabel="שינוי">
-                <Num value={s.sourced} display="8" />
+              {g.sample.sentenceMid} <InputSlot>
+                <Num value={asField(s.sourced)} display="8" />
               </InputSlot>
               .
             </Sentence>
@@ -609,6 +640,7 @@ function Fields() {
   const [a, setA] = useState<number | null>(1000);
   const [b, setB] = useState<number | null>(3000);
   const [years, setYears] = useState<number | null>(10);
+  const [years2, setYears2] = useState<number | null>(25);
   const [pct, setPct] = useState<number | null>(5);
   const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
@@ -623,10 +655,10 @@ function Fields() {
             <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} placeholder="0" />
           </State>
           <State label={`${g.states.filled}, ${g.states.interactive}`}>
-            <NumberField label={g.sample.field} unit="nis" value={a} isEntered={a !== 1000} validate={(n) => (n < 0 ? g.sample.error : null)} onCommit={(n) => setA(n)} onReset={() => setA(1000)} hint={g.sample.hint} />
+            <NumberField label={g.sample.field} unit="nis" value={a} start={1000} isEntered={a !== 1000} validate={(n) => (n < 0 ? g.sample.error : null)} onCommit={(n) => setA(n)} onReset={() => setA(1000)} hint={g.sample.hint} />
           </State>
-          <State label={g.states.entered}>
-            <NumberField label={g.sample.field} unit="nis" value={b} isEntered={b !== 1000} validate={(n) => (n < 0 ? g.sample.error : null)} onCommit={(n) => setB(n)} onReset={() => setB(1000)} />
+          <State label={`${g.states.changed}, ${g.states.interactive}`}>
+            <NumberField label={g.sample.field} unit="nis" value={b} start={1000} isEntered={b !== 1000} validate={(n) => (n < 0 ? g.sample.error : null)} onCommit={(n) => setB(n)} onReset={() => setB(1000)} />
           </State>
           <State label={g.states.error}>
             <NumberField label={g.sample.field} unit="nis" value={-5} isEntered validate={() => g.sample.error} onCommit={() => undefined} onReset={() => undefined} externalError={g.sample.error} />
@@ -648,23 +680,23 @@ function Fields() {
           </State>
         </Grid>
       </Demo>
-      <Demo name="FieldState, ParameterLine" use={g.uses.FieldState}>
+      <Demo name="FieldState" use={g.uses.FieldState}>
         <Grid>
-          <State label={g.states.entered}>
+          <State label={g.states.changed}>
             <FieldState entered onReset={() => undefined} />
           </State>
           <State label={g.states.disabled}>
             <FieldState entered={false} onReset={() => undefined} disabled />
           </State>
-          <State label="ParameterLine">
-            <ParameterLine />
-          </State>
         </Grid>
       </Demo>
       <Demo name="RangeField" use={g.uses.RangeField}>
         <Grid>
-          <State label={`${g.states.interactive}, ${g.states.draggable}`}>
-            <RangeField label={g.sample.range} unit="years" value={years} min={1} max={40} step={1} isEntered={years !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
+          <State label={`${g.states.filled}, ${g.states.interactive}, ${g.states.draggable}`}>
+            <RangeField label={g.sample.range} unit="years" value={years} start={10} min={1} max={40} step={1} isEntered={years !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
+          </State>
+          <State label={`${g.states.changed}, ${g.states.interactive}`}>
+            <RangeField label={g.sample.range} unit="years" value={years2} start={10} min={1} max={40} step={1} isEntered={years2 !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears2(n)} onReset={() => setYears2(10)} inputMode="numeric" />
           </State>
           <State label={g.states.disabled}>
             <RangeField label={g.sample.range} unit="years" value={null} min={1} max={40} step={1} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
@@ -675,8 +707,8 @@ function Fields() {
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <KnobStrip
             knobs={[
-              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
-              { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
+              { id: "years", label: g.sample.range, unit: "years", value: years, start: 10, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+              { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
             ]}
           />
         </State>
@@ -713,25 +745,27 @@ function Fields() {
           />
         </State>
       </Demo>
-      <Demo name="PileYears, PileStory" use={g.uses.PileStory}>
+      <Demo name="PileYears, PileBar" use={g.uses.PileBar}>
         <State label={g.states.interactive} wide>
           <PileYears
-            years={[null, { own: 7200, extra: 21600, gain: 3100, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, tax: 5000, taxFromSalary: 4000, net: 64400 }]}
-            year={3}
+            years={[null, { own: 7200, extra: 21600, gain: 3100, fees: 300, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, fees: 600, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, fees: 1000, tax: 5000, taxFromSalary: 4000, net: 64400 }]}
+            year={2}
             onYear={() => undefined}
             lockYear={3}
+            compare={3}
+            axis={g.sample.rowB}
+            note={g.sample.rowA}
+            amount={(net, picked) => (picked ? (Math.round(net / 100) / 10).toFixed(1) : String(Math.round(net / 1000)))}
             before={g.sample.rowA}
             after={g.sample.rowB}
             label={g.sample.rowA}
-            valueText="3"
+            valueText="2"
           />
-          <PileStory
-            slice={{ own: 10800, extra: 32400, gain: 6200, tax: 2500, taxFromSalary: 1900, net: 46900 }}
-            names={{ own: [g.sample.rowA], extra: [g.sample.rowB], gain: [g.sample.rowA], tax: [g.sample.rowB], left: [g.sample.rowA] }}
-            fine={{ gain: g.sample.rowB }}
-            number={(step) => ({ own: "10,800 ₪", extra: "+32,400 ₪", gain: "+6,200 ₪", tax: "−2,500 ₪", left: "46,900 ₪" })[step]}
-            firstRow={0.25}
-            taxParts={{ salary: { word: g.sample.rowA, number: () => "1,900 ₪" }, withdrawal: { word: g.sample.rowB, number: () => "600 ₪" } }}
+          <PileBar
+            slice={{ own: 10800, extra: 32400, gain: 6200, fees: 1300, tax: 2500, taxFromSalary: 1900, net: 46900 }}
+            names={{ own: g.sample.rowA, extra: g.sample.rowB, gain: g.sample.rowA, loss: g.sample.rowB, fees: g.sample.rowB, salary: g.sample.rowA, tax: g.sample.rowB }}
+            number={(part, compact) => ({ own: "10,800", extra: "+32,400", gain: "+7,500", loss: "", fees: "−1,300", salary: "−1,900", tax: "−600" })[part] + (compact ? "" : " ₪")}
+            left={{ words: g.sample.rowA, number: "46,900 ₪" }}
             label={g.sample.rowA}
           />
         </State>
@@ -746,12 +780,11 @@ function Fields() {
               { id: "3", level: 86492, from: 82000, top: "+4,492 ₪", hue: "fund", loses: false, taken: false, open: true, current: false, label: g.sample.rowB },
             ]}
             fold={0}
-            axis={{ lo: 70000, hi: 90000, step: 5000 }}
+            axis={{ lo: 70000, hi: 90000 }}
             ceiling={{ level: 86955, lines: [g.sample.rowA, "86,955 ₪", g.sample.rowB] }}
             endsAt={null}
             now={g.sample.stairsNow}
             label={g.sample.rowA}
-            tick={(n) => fmt.number(n)}
             onGo={() => undefined}
           />
           <StairsTable rows={[{ id: "a", head: g.sample.rowA, cells: ["1", "2", "3", "4"] }]} />
@@ -770,7 +803,7 @@ function Fields() {
       <Demo name="PercentField" use={g.uses.PercentField}>
         <Grid>
           <State label={`range 0 to 50, ${g.states.interactive}`}>
-            <PercentField label={g.sample.percent} value={pct} range={{ min: 0, max: 50 }} isEntered={pct !== 5} onCommit={(n) => setPct(n)} onReset={() => setPct(5)} />
+            <PercentField label={g.sample.percent} value={pct} start={5} range={{ min: 0, max: 50 }} isEntered={pct !== 5} onCommit={(n) => setPct(n)} onReset={() => setPct(5)} />
           </State>
           <State label={g.states.error}>
             <PercentField label={g.sample.percent} value={120} range={{ min: 0, max: 50 }} isEntered onCommit={() => undefined} onReset={() => undefined} externalError="הזינו אחוז בין 0 ל־50." />
@@ -1194,6 +1227,26 @@ function Lists({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
+      <Demo name="SourcedTag" use={g.uses.SourcedTag}>
+        <Grid>
+          <State label="beside a house's name in a row's line of tags (the account list): a tap opens its source">
+            <span className="flex flex-col leading-tight font-semibold">
+              IBI
+              <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
+                <SourcedTag value={phoneSample(today)}>{investWords.pair.phoneTag}</SourcedTag>
+              </span>
+            </span>
+          </State>
+          <State label="beside a house's name on a card, with the card's line under it">
+            <span className="flex flex-col gap-1 text-sm text-muted-foreground">
+              <span className="flex items-center gap-2">
+                IBI <SourcedTag value={phoneSample(today)}>{investWords.pair.phoneTag}</SourcedTag>
+              </span>
+              <span className="text-xs">{investWords.pair.phoneLine("IBI")}</span>
+            </span>
+          </State>
+        </Grid>
+      </Demo>
       <Demo name="HelpMark, FundFeesHead, FundFeesPhoneHelp" use={g.uses.HelpMark}>
         <State label="beside a column head: a 16 px mark in a 44 px target; a tap opens the term's card">
           <span className="inline-flex items-center gap-1 text-sm font-medium">
@@ -1201,11 +1254,29 @@ function Lists({ today }: { today: string }) {
             <HelpMark term="יתרת נכסים לסוף תקופה" about={trackBrowser.help.assets} />
           </span>
         </State>
+        <State label="with no term: a short text of its own, under what it explains (a column's longer explanation)">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {g.sample.helpText.head}
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
+          </span>
+        </State>
         <State label="a column of several figures (a fund's three fees): one mark opens one sheet with each term's card, under the column's name and a line; the phone, with no heads, has one line over the list">
           <span className="text-sm font-medium">
             <FundFeesHead />
           </span>
           <FundFeesPhoneHelp />
+        </State>
+      </Demo>
+      <Demo name="FormulaBlock, Tex" use={g.uses.Formula}>
+        <State label="one formula and its key (the stock share of a provident track, F-87): the math left to right, the key's symbols on the start side">
+          <FormulaBlock lines={[{ tex: String.raw`s = \frac{E}{A} \times 100` }]} symbols={formulaKeys["F-87"]!.symbols} where={provenanceWords.formulaSheet.where} />
+        </State>
+        <State label="several formulas in one entry, each under its name (the dollar against the shekel, F-93)">
+          <FormulaBlock
+            lines={[String.raw`r_t = \frac{\text{ILS}_t}{\text{USD}_t}`, String.raw`\frac{r_{\text{Dec}(y)}}{r_{\text{Dec}(y-1)}} - 1`, String.raw`\left(\frac{r_{t+12H}}{r_t}\right)^{1/H} - 1`].map((tex, i) => ({ tex, label: formulaKeys["F-93"]!.lines?.[i] }))}
+            symbols={formulaKeys["F-93"]!.symbols}
+            where={provenanceWords.formulaSheet.where}
+          />
         </State>
       </Demo>
       <Demo name="LeadTail, MarkHead" use={g.uses.MarkHold}>
@@ -1232,7 +1303,7 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
-      <Demo name="FeeNum, FeeKey, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
+      <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
         <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure with its rings, the labels" wide>
           <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
             <TrackFeeLines fee={s.rate} deposit={{ ...s.rate, value: 0.3 }} size="cell" />
@@ -1241,7 +1312,6 @@ function Lists({ today }: { today: string }) {
             <ShareNum value={{ ...s.comp, value: 49, unit: "pct" }} />
             <TrackLabels isDefault track={{ inception: "2025-06-01", reportPeriod: "2026-09" }} />
           </div>
-          <FeeKey values={[{ ...s.rate, value: null }]} className="flex flex-col gap-1 text-xs text-muted-foreground" />
         </State>
       </Demo>
       <Demo name="CostStack" use={g.uses.CostStack}>
@@ -1252,7 +1322,10 @@ function Lists({ today }: { today: string }) {
           </div>
         </State>
         <State label="every part at once, in its order: the remainder, trade, custody, the account's fee, currency conversion, the fund's fees, tax; seven hues validated together, every pair, none blue, violet, red, amber or green" wide>
+          {/* every cost hue at once: a palette sample, which the chart check's four-colour count leaves alone (data-palette) */}
+          <div data-palette="">
           <CostStack label="7,000" scale={7200} parts={[{ id: "r", value: 1000, className: "bg-chart-cost-other", inside: "1,000" }, { id: "t", value: 1000, className: "bg-chart-cost-trade", inside: "1,000" }, { id: "c", value: 1000, className: "bg-chart-cost-custody", inside: "1,000" }, { id: "f", value: 1000, className: "bg-chart-cost-fixed", inside: "1,000" }, { id: "e", value: 1000, className: "bg-chart-cost-fx", inside: "1,000" }, { id: "u", value: 1000, className: "bg-chart-cost-fund", inside: "1,000" }, { id: "x", value: 1000, className: "bg-chart-tax", inside: "1,000" }]} />
+          </div>
         </State>
         <State label="a case like the TA-125 pair bar: the remainder, the account's fees on each other, comes first among the account's parts, away from the fund's, and holds 2 ₪ in a sliver too thin to see, so its amount is written under the bar in its colour, as is any amount too narrow for its part; pointing at a part opens the box of the whole bar; the amounts written add up to the total beside it, 7,323, the account's parts to the account's own figure written elsewhere on the page, 1,050 (groups), and the rounding goes only to parts whose amounts are written" wide>
           <div className="grid grid-cols-[minmax(0,1fr)_5rem] items-start gap-x-3 pt-24">
@@ -1325,7 +1398,7 @@ function Lists({ today }: { today: string }) {
       </Demo>
       <Demo name="PairBars" use={g.uses.PairBars}>
         <State label="two series each year, from zero, a figure on each bar" wide>
-          <PairBars label={p.figure} tickStep={20} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={p.a} nameB={p.b} items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
+          <PairBars label={p.figure} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={p.a} nameB={p.b} items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
         </State>
       </Demo>
       <Demo name="FixedTable" use={g.uses.FixedTable}>
@@ -1540,7 +1613,9 @@ function GlideDemo() {
   const [end, ceil] = useGlidingNumbers([n, top]) as [number, number];
   const ticks = useFadingTicks(Array.from({ length: top / 100 + 1 }, (_, i) => i * 100));
   const yearTicks = useFadingTicks(Array.from({ length: Math.floor(n / 5) + 1 }, (_, i) => i * 5));
-  const x = (year: number) => 8 + (year / end) * 304;
+  // drawn at its own width, so its 13 px year labels stay 13 px on a phone (a 320 px viewBox shrank them to 10 px at 254 px)
+  const [ref, w] = useWidth(320);
+  const x = (year: number) => 8 + (year / end) * (w - 16);
   const y = (v: number) => 130 - (v / ceil) * 120;
   const path = shown.map((p, i) => `${i ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`).join("");
   const opts = (xs: string[]) => Object.fromEntries(xs.map((v) => [v, v]));
@@ -1548,17 +1623,19 @@ function GlideDemo() {
     <div className="flex flex-col gap-2">
       <ChoiceChips ids={["5", "10", "20", "30"]} labels={opts(["5", "10", "20", "30"])} value={years} onChange={setYears} ariaLabel={g.sample.yearWord} wrap />
       <ChoiceChips ids={["2", "5", "9"]} labels={opts(["2", "5", "9"])} value={rate} onChange={setRate} ariaLabel={g.sample.seriesA} wrap />
-      <svg viewBox="0 0 320 156" aria-hidden="true" className="block w-full max-w-md">
+      <div ref={ref} className="w-full max-w-md">
+      <svg width={w} height={156} aria-hidden="true" className="block">
         <clipPath id="glide-demo">
-          <rect x={8} y={0} width={304} height={156} />
+          <rect x={8} y={0} width={w - 16} height={156} />
         </clipPath>
         {ticks.map((t) => (
-          <line key={t.value} x1={8} x2={312} y1={y(t.value)} y2={y(t.value)} className={cx("stroke-chart-grid", tickFade(t))} />
+          <line key={t.value} x1={8} x2={w - 8} y1={y(t.value)} y2={y(t.value)} className={cx("stroke-chart-grid", tickFade(t))} />
         ))}
         <path d={path} fill="none" clipPath="url(#glide-demo)" className="stroke-chart-value" strokeWidth={2} />
         <circle cx={x(Math.min(end, n))} cy={y(valueOn(shown, Math.min(end, n)))} r={3} className="fill-chart-value" />
-        <YearLabels ticks={yearTicks} x={x} y={150} left={8} right={312} />
+        <YearLabels ticks={yearTicks} x={x} y={150} left={8} right={w - 8} />
       </svg>
+      </div>
     </div>
   );
 }

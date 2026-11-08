@@ -7,11 +7,12 @@ import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObje
 import { buildTariff as engineTariff, memberKindOf, REDEMPTION_BAND, STANDING_ORDER_BAND, Unusable, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { buildInstrumentTerms, redemptionValues, exposureHref, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
-import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
+import { evaluate, fundCostKeys, fundCostOf, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
 import { computed, ownBy, ownEach, ruleFigure, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
 import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-signature-bundle.server";
+import { computedInputs as ci, guideBlocks, r3fees } from "../copy";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
@@ -346,7 +347,10 @@ function providerTariffs(productId: string, instrumentClass: string): Record<str
           if (lo) feeValues.custodyMin = lo;
           if (hi) feeValues.custodyMax = hi;
         } else if (l.base === "fixed_period" && tariff.monthlyFee !== undefined) {
-          feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
+          // F-17 (method 2.4): an account fee printed per period is the printed line divided by the months in its period
+          const printed = ownBy({ ...l.rate } as SiteValue, snap.provider.name_he);
+          const period: Record<string, SiteValue> = l.period ? { [ci.names.period!]: { ...printed, value: r3fees.periods[l.period], unit: "text", about: ci.names.period! } } : {};
+          feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : computed(tariff.monthlyFee, "nis_per_month", "F-17", { [ci.names.fee_line!]: printed, ...period }, { today: today(), about: guideBlocks.terms.labels.monthlyFee! });
         }
       }
       // D31: the card names the provider whose tariff the run reads, so its lines are that provider's own figures
@@ -374,18 +378,21 @@ function classMinFee(spec: { fund?: string | number } | undefined, funds: Return
   const rep = funds.find((f) => f.id === String(spec.fund));
   const exposure = (rep as { exposure_id?: string } | undefined)?.exposure_id;
   if (!rep || !exposure) return undefined;
+  // F-10: each fund's own cost lines (the record's fixed and variable management and trustee, the run's `fundManagement`, `fundVariable`,
+  // `fundTrustee`) added up as the run would take them; the lowest fund's sum is the figure, with that fund's lines as its inputs
+  const lineKey = { fixed_management: "fundManagement", variable_management: "fundVariable", trustee: "fundTrustee" } as const;
   let best: { total: number; lines: Record<string, SiteValue>; id: string } | null = null;
   for (const f of funds.filter((x) => (x as { exposure_id?: string }).exposure_id === exposure)) {
     const lines: Record<string, SiteValue> = {};
     for (const k of ["fixed_management", "variable_management", "trustee"] as const) {
       const v = f.fees[k];
-      if (v && typeof v.value === "number") lines[`${f.id} ${k}`] = { ...v };
+      if (v && typeof v.value === "number") lines[lineKey[k]] = { ...v };
     }
     if (Object.keys(lines).length === 0) continue;
     const total = Object.values(lines).reduce((sum, v) => sum + (v.value as number), 0);
     if (!best || total < best.total) best = { total, lines, id: f.id };
   }
-  return best ? computed(best.total, "pct_per_year", "A-06", best.lines, { today, about: `הנמוכה ביותר שנאספה באותה חשיפה (${best.id})` }) : undefined;
+  return best ? fundCostOf(best.lines, fundCostKeys, `הנמוכה ביותר שנאספה באותה חשיפה (${best.id})`, today) : undefined;
 }
 
 /** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
@@ -511,12 +518,13 @@ export function buildCompareBundle(): CompareBundle {
     const range = depositRange(record.id, family, p05.instruments?.[record.id], sources.deposits);
     const rep = repOf(record.id);
     // F-26 (2026-10-25): the current account's rate is paid on the balance up to the record's `amount_range.max` (BANK-09)
-    const ceiling =
+    const ceilingValue: SiteValue | undefined =
       record.id !== "current-account" ? undefined
-      : common ? (common.ceiling && typeof common.ceiling.value === "number" ? common.ceiling.value : undefined)
-      : rate && range?.max && range.max.unit === "nis" && typeof range.max.value === "number" ? range.max.value : undefined;
+      : common ? (common.ceiling && typeof common.ceiling.value === "number" ? common.ceiling : undefined)
+      : rate && range?.max && range.max.unit === "nis" && typeof range.max.value === "number" ? range.max : undefined;
+    const ceiling = ceilingValue?.value as number | undefined;
     const terms = ceiling !== undefined && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling } } : built.terms;
-    return { ...base, terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(rep ? { representative: rep } : {}) };
+    return { ...base, terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(ceilingValue && ceiling !== undefined && built.terms.deposit ? { cashCeiling: ceilingValue } : {}), ...(rep ? { representative: rep } : {}) };
   });
   // review fix 2026-10-24: what P-04 judges each wrapper's run by (see `WrapperEntry.fitBasis`)
   for (const w of wrappers) {
@@ -616,7 +624,6 @@ export function goalFormData() {
     ranges: Record<string, { min: ValueObject; max: ValueObject; step?: ValueObject }>;
     rationale: string;
     rationale_he?: string;
-    signed_off_on: string | null;
   };
   const p05 = parameters.find((p) => (p as { method_id?: string }).method_id === "P-05") as unknown as {
     inputs: Record<string, ValueObject>;
@@ -630,7 +637,7 @@ export function goalFormData() {
   return {
     today: t,
     presets: p07.presets,
-    meta: { rationale: p07.rationale, rationaleHe: p07.rationale_he ?? null, signedOffOn: p07.signed_off_on },
+    meta: { rationale: p07.rationale, rationaleHe: p07.rationale_he ?? null },
     form: {
       horizon: range(p07.ranges.horizon_years!),
       monthly: range(p05.sliders.monthly_deposit!),
@@ -649,9 +656,9 @@ export function goalFormData() {
   };
 }
 
-let contextCache: { today: string; presets: Record<string, unknown>; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null } } | null = null;
+let contextCache: { today: string; presets: Record<string, unknown>; meta: { rationale: string; rationaleHe?: string | null } } | null = null;
 
-/** What a page needs to mount the saved-goal strip: the presets (P-07, to read a goal's preset-filled numbers) and their sign-off. */
+/** What a page needs to mount the saved-goal strip: the presets (P-07, to read a goal's preset-filled numbers) and their rationale. */
 export function goalContext() {
   if (!contextCache) {
     const d = goalFormData();
@@ -667,10 +674,10 @@ export function goalContext() {
  */
 export function fitTable(): FitTableData {
   const rec = loadParameters().find((p) => (p as { method_id?: string }).method_id === "P-04") as unknown as
-    | { table: { classification: string; horizon_min_years: ValueObject; horizon_max_years: ValueObject; max_fall_pct?: ValueObject }[]; rationale: string; rationale_he?: string; signed_off_on: string | null }
+    | { table: { classification: string; horizon_min_years: ValueObject; horizon_max_years: ValueObject; max_fall_pct?: ValueObject }[]; rationale: string; rationale_he?: string }
     | undefined;
   if (!rec) throw new Error("data/parameters/ holds no P-04 record");
-  const param = (v: ValueObject): SiteValue => ({ ...v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null, signedOffOn: rec.signed_off_on ?? null, provisional: (v.notes ?? "").startsWith("provisional") } });
+  const param = (v: ValueObject): SiteValue => ({ ...v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null } });
   return {
     rows: rec.table.map((r) => ({
       classification: r.classification,

@@ -1,6 +1,6 @@
 {
   "companies/*": 563,
-  "documents/index.html": 340,
+  "documents/index.html": 337,
   "exposure/general-track/index.html": 1,
   "exposure/index-nasdaq100/index.html": 3,
   "exposure/index-sp500/index.html": 4,
@@ -14,10 +14,6 @@
   "guide/ira-provident/index.html": 1,
   "guide/makam/index.html": 2,
   "guide/money-market-fund-daily/index.html": 1,
-  "indices/nasdaq100/index.html": 1,
-  "indices/ta125/index.html": 1,
-  "indices/ta35/index.html": 1,
-  "indices/ta90/index.html": 1,
   "kit/index.html": 2,
   "not-covered/index.html": 5,
   "tracks/index.html": 24,

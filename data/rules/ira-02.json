@@ -114,17 +114,17 @@
       "checked": "2026-11-02"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, נוסח משולב (ויקיטקסט, mirror of the law), unofficial consolidated text, the only copy found of the current wording",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=3",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), ספר החוקים 2507",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.1; s.13(א)(4)",
-      "locator_he": "סעיף 1; סעיף 13(א)(4)",
+      "strength": "primary",
+      "locator": "p.3, s.2 (definition of קרן פנסיה added to s.1)",
+      "locator_he": "עמוד 3, סעיף 2",
+      "page": 3,
       "quote": "קרן ותיקה, קרן חדשה כללית וקרן חדשה מקיפה",
-      "checked": "2026-11-02"
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",

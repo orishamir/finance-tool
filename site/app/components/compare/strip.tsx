@@ -12,7 +12,7 @@ import { Button, cx } from "../kit";
 import { RevisitLine, CompactRevisit, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { useRevisit } from "../revisit/use-revisit";
 import { deleteSavedComparison, isoToday, type CompareMode } from "../../lib/state";
-import { computed } from "../../lib/value";
+import { revisitValue } from "../../lib/revisit";
 import { goalTitle } from "./goal-form";
 import { IconMore, IconTarget } from "./icons";
 
@@ -254,7 +254,7 @@ function GoalRow({ goal, presets, meta, today, showResultLink, editHref, resultH
           onClose={() => setSheet(false)}
           anchor={sheet || null}
           today={today}
-          nis={(val, about) => <Num value={computed(val, "nis", "F-06", {}, { today: isoToday(), about })} />}
+          nis={(val, about) => <Num value={revisitValue(revisit, val, about, isoToday())} />}
         />
       )}
     </>

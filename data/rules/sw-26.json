@@ -122,47 +122,42 @@
       "checked": "2026-11-06"
     },
     {
-      "url": "https://olaw.org.il/takanot/takanot-8302.pdf#page=22",
-      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), התש\"ף-2019 (קובץ התקנות 8302, צילום הרשומות)",
-      "title_he": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), התש\"ף-2019 (קובץ התקנות 8302, צילום הרשומות)",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F8302%2Fheb#page=22",
+      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), התש\"ף-2019 (קובץ התקנות 8302)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), התש\"ף-2019 (קובץ התקנות 8302)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "gazette pp.184-185 (file pages 22-23), rule 2",
       "locator_he": "עמודים 184 עד 185 ברשומות, כלל 2",
-      "page": 22,
       "quote": "החשבון בבנק המקורי והחשבון בבנק הקולט הם חשבונות עובר ושב",
-      "checked": "2026-11-06",
-      "qualifier": "(mirror of Reshumot)"
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://olaw.org.il/takanot/takanot-9480.pdf#page=2",
-      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"א-2021 (קובץ התקנות 9480, צילום הרשומות)",
-      "title_he": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"א-2021 (קובץ התקנות 9480, צילום הרשומות)",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F9480%2Fheb#page=2",
+      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"א-2021 (קובץ התקנות 9480)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"א-2021 (קובץ התקנות 9480)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "gazette p.3574 (file page 2), s.2",
       "locator_he": "עמוד 3574 ברשומות, סעיף 2",
-      "page": 2,
       "quote": "החשבון שממנו מתבקשת העברת הפעילות הפיננסית הוא חשבון אשר טרם",
-      "checked": "2026-11-06",
-      "qualifier": "(mirror of Reshumot)"
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law00/163225.htm",
-      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), תש\"ף-2019, נוסח עדכני נכון ליום 05-10-2026 (Nevo)",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F8302%2Fheb#page=24",
+      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), התש\"ף-2019 (קובץ התקנות 8302), התוספת",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.24, the schedule, item 11",
+      "locator_he": "עמוד 24, התוספת, פרט 11",
       "quote": "ניהול ניירות ערך ישראליים הניתנים להעברה מהבנק המקורי לבנק הקולט",
-      "checked": "2026-10-26"
+      "checked": "2026-11-07"
     }
   ]
 }

@@ -1,4 +1,4 @@
-// The second search file (research/knowledge/2026-10-24-search.md §2.2): the raw Hebrew of every rule text, term meaning
+// The second search file (8dd1f013:research/knowledge/2026-10-24-search.md §2.2): the raw Hebrew of every rule text, term meaning
 // and parameter rationale, keyed like the entries of search-index.json (`TXG-02`, `term:<name>`, `P-03`). The client fetches
 // it after the index and uses it only to re-rank and to answer a question-form query.
 export async function loader() {

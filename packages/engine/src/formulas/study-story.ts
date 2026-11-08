@@ -1,4 +1,4 @@
-// F-96 A study fund's money, step by step: what was put in, what the return added after fees, what tax took and what is left, in today's money.
+// F-96 A study fund's money, step by step: what was put in, what the return added, what fees and tax took and what is left, in today's money.
 import type { RunResult } from "../result.ts";
 
 export interface MoneyStory {
@@ -7,11 +7,24 @@ export interface MoneyStory {
   extra: number;
   /** The return above prices, after fees; below zero when fees and rising prices take more than the return gives. */
   gain: number;
+  /** What the fees took: each month's charges at that month's index, as the deposits (F-06). The return before fees is `gain + fees`. */
+  fees: number;
   /** The tax at the withdrawal, and the income tax, National Insurance and health on what the employer paid above the limit (F-52). */
   tax: number;
   /** The part of `tax` paid out of the salary month by month, on what the employer paid above the limit; the rest is paid at the withdrawal. */
   taxFromSalary: number;
   net: number;
+}
+
+/** A run's fees in today's money: each month's charges (the series is cumulative) over that month's index (F-03, F-06). */
+function feesToday(r: RunResult): number {
+  let total = 0;
+  let prev = 0;
+  for (const p of r.series) {
+    total += (p.fees - prev) / p.index;
+    prev = p.fees;
+  }
+  return total;
 }
 
 /**
@@ -25,7 +38,7 @@ export function moneyStory(own: number, extra: number, runs: readonly RunResult[
   const face = (r: RunResult) => ((r.detail.employerDepositTax ?? 0) + (r.detail.employerSocial ?? 0)) / index(r);
   const tax = runs.reduce((a, r) => a + (r.taxAtExit + r.taxDuring) / index(r) + paid(r), 0);
   const net = runs.reduce((a, r) => a + r.real + face(r) - paid(r), 0);
-  return { own, extra, gain: net + tax - own - extra, tax, taxFromSalary: runs.reduce((a, r) => a + paid(r), 0), net };
+  return { own, extra, gain: net + tax - own - extra, fees: runs.reduce((a, r) => a + feesToday(r), 0), tax, taxFromSalary: runs.reduce((a, r) => a + paid(r), 0), net };
 }
 
 export interface LimitStanding {

@@ -1,20 +1,20 @@
-// An account on your own terms, started from a house (founder, 2026-11-04, option א of research/specs/2026-11-04-own-broker/mockups.html):
+// An account on your own terms, started from a house (founder, 2026-11-04, option א of 8dd1f013:research/specs/2026-11-04-own-broker/mockups.html):
 // the panel that starts from a house's price list, or from one of its groups' prices, and lets the person change only what they got; the
 // buttons that open it; and the line a person's row carries in the comparison. Typing stays in the panel: the page changes when the person adds
-// the account (ground rule 4). The prices are the library's (own-account.ts, own-account-view.ts); nothing here prices anything.
+// the account (guidelines/design.md). The prices are the library's (own-account.ts, own-account-view.ts); nothing here prices anything.
 import type { FeeLine } from "@finance-tool/engine";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root, r4catalogue } from "../../copy";
 import { brokerErrors, brokerFromDraft, brokerTerms, NAME_MAX, newBrokerId, type BrokerDraft, type CustomBroker, type EntryError } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
-import { buildInvest, type PairCosts } from "../../lib/invest";
+import { accountSum, buildInvest, type PairCosts } from "../../lib/invest";
 import { baseOf, startingPointsOf, withAdopted, type GroupCopy } from "../../lib/own-account";
 import { pointOfBroker, startDraft, stretchesOf } from "../../lib/own-account-panel";
 import { FEE_LINE, FEE_TYPES, layersOf, ownAccountResult, type FeeLayers, type FeeType, type LayerFigure } from "../../lib/own-account-view";
 import { customersPaid } from "../../lib/customers-paid";
 import { useAfterRender, useSettled } from "../../lib/settled";
 import { isoToday } from "../../lib/state";
-import { computed, entered, type SiteValue } from "../../lib/value";
+import { entered, type SiteValue } from "../../lib/value";
 import { withCustomEntries } from "../../lib/custom-entries";
 import { Num, StateTag } from "../provenance";
 import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, useChartPick, cx, type CostPart } from "../kit";
@@ -29,6 +29,8 @@ const pctCheck = percentCheck();
 /** The cost bars' colours by fee type: the index page's own (pair.tsx). */
 const LINE_CLASS: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
 const lineClass = (l: string) => LINE_CLASS[l] ?? "bg-chart-cost-other";
+/** A fee type's place in the bars and the legend: the index page's (pair.tsx `byLegend`), any other type after them. */
+const lineRank = (l: string) => { const i = Object.keys(LINE_CLASS).indexOf(l); return i < 0 ? Infinity : i; };
 /** A bank's current account (F-102, D64) is shown as the account's fee, as on the index page's lists (pair.tsx `lineOf`). */
 const lineOf = (l: FeeLine): string => (l === "account" ? "fixed" : l);
 /** The account fee's name, which covers the current account too where the account has one (pair.tsx `legendName`). */
@@ -149,7 +151,7 @@ function YoursCell({ layer, draft, set, setMany, groupName, onAdopt, today }: { 
         {specs.map((s) => (
           <div key={s.key} className="flex flex-col gap-0.5 [&_.field-box-compact]:w-28">
             <span className="text-xs text-muted-foreground">{s.caption}</span>
-            <NumberField compact optional label={s.label} unit={s.unit} value={draft[s.key] as number | null} isEntered={draft[s.key] !== null} validate={s.pct ? pctCheck : nisCheck} onCommit={(n) => set(s.key, n)} onReset={() => set(s.key, null)} placeholder={p.field.placeholder} />
+            <NumberField compact optional agorot={!s.pct} label={s.label} unit={s.unit} value={draft[s.key] as number | null} isEntered={draft[s.key] !== null} validate={s.pct ? pctCheck : nisCheck} onCommit={(n) => set(s.key, n)} onReset={() => set(s.key, null)} placeholder={p.field.placeholder} />
           </div>
         ))}
       </div>
@@ -184,7 +186,8 @@ function costParts(pc: PairCosts, lines: readonly string[], source: (line: strin
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
 
-function Bar({ who, parts, scale, label, today, highlight }: { who: string; parts: CostPart[]; scale: number; label: string; today: string; highlight: string | null }) {
+/** `pc`: the account whose cost the bar draws; its figure adds up the account's line costs and the remainder, each opening its own sheet (F-91). */
+function Bar({ who, pc, parts, scale, label, today, highlight }: { who: string; pc: PairCosts; parts: CostPart[]; scale: number; label: string; today: string; highlight: string | null }) {
   const sum = total(parts);
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[7rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
@@ -193,7 +196,7 @@ function Bar({ who, parts, scale, label, today, highlight }: { who: string; part
         <CostStack parts={parts} total={Math.round(sum)} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(sum)}`} />
       </div>
       <span className="text-end font-semibold">
-        <Num animate value={computed(Math.round(sum), "nis", "F-91", {}, { today, about: label })} />
+        <Num animate value={accountSum(pc, label, today, Math.round)} />
       </span>
     </div>
   );
@@ -260,7 +263,8 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
 
   // the bars: the house's price list against the account, one scale, every fee type in both so a part that falls to zero shrinks in its place
   const withCurrentAccount = !!result && [...result.yours.account, ...(result.list?.account ?? [])].some((l) => l.line === "account");
-  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))] : [];
+  // in the index page's order (pair.tsx `byLegend`), whatever the price list's own, so the bars and the legend agree (2026-11-08)
+  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))].sort((a, b) => lineRank(a) - lineRank(b) || (a < b ? -1 : a > b ? 1 : 0)) : [];
   const layerOf = (line: string) => layers?.find((l) => l.fee === FEE_OF_LINE[line]);
   const sourceYours = (line: string): ReactNode => {
     const l = layerOf(line);
@@ -374,9 +378,9 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
         <h3 className="font-semibold">{p.costs.title}</h3>
         {result && result.list ? (
           <>
-            <Bar who={p.costs.list} parts={listParts} scale={scale} label={barLabels.list} today={today} highlight={legend.active} />
-            <Bar who={p.costs.yours} parts={yoursParts} scale={scale} label={barLabels.yours} today={today} highlight={legend.active} />
-            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: fixedName(l, withCurrentAccount) ?? pairWords.lines.other ?? l }))} />
+            <Bar who={p.costs.list} pc={result.list} parts={listParts} scale={scale} label={barLabels.list} today={today} highlight={legend.active} />
+            <Bar who={p.costs.yours} pc={result.yours} parts={yoursParts} scale={scale} label={barLabels.yours} today={today} highlight={legend.active} />
+            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: l === "remainder" ? pairWords.remainder : (fixedName(l, withCurrentAccount) ?? pairWords.lines.other ?? l) }))} />
           </>
         ) : (
           <p className="text-sm text-muted-foreground min-h-[7rem]">{p.computing}</p>

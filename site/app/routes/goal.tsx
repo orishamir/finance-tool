@@ -32,7 +32,7 @@ export default function GoalPage() {
   );
 }
 
-function Form({ data, presets, meta, today }: { data: FormData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
+function Form({ data, presets, meta, today }: { data: FormData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null }; today: string }) {
   const { status } = useGoals();
   return (
     <div className="flex flex-col gap-6 pt-2 lg:pt-8">

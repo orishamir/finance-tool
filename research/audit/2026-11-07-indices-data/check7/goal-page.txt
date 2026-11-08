@@ -1,4 +1,0 @@
-goal 10000/500/7%: /goal/compare error screen 0/0, 4 index chips pressed
-goal 0/100/0%: /goal/compare error screen 0/0, 4 index chips pressed
-goal 1000000000/100000/12%: /goal/compare error screen 0/0, 4 index chips pressed
-no console or page errors

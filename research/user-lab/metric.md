@@ -6,7 +6,7 @@ existed, so it cannot move after the numbers come in; the rest of this file says
 none of it moves the bar.
 
 This file's bar decides whether the reviewer is **adopted as the judge** of what bothers people, and then whether it is
-trusted alone or stepped back ("The bar"). A different use has its own bar in CLAUDE.md's work order: whether the
+trusted alone or stepped back ("The bar"). A different use has its own bar: whether the
 reviewer becomes **a first pass on every site change**, which it does if a later held-out score catches about half or
 more with noise under 30%. Neither bar replaces the other.
 

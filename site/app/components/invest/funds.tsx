@@ -26,7 +26,7 @@ export function Fees({ rec, inline, priced }: { rec: FundRecord; inline?: boolea
     const v = feeOf(rec, key);
     const word = yearlyOnly ? c.customEntries.yearlyWord : [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
     const absent = feeAbsent(rec, key);
-    // a fee of a fund the person typed and left empty is not known, and says so: it was never collected (#190)
+    // a fee of a fund the person typed and left empty is not known, and says so: it was never collected
     const figure = !v && !absent && isCustomFund(rec) ? <span className="text-sm text-muted-foreground">{c.customEntries.notTyped}</span> : <FeeFigure value={v} absent={absent} inline={inline} />;
     return { id: key, word: absent && key === "trustee" ? c.funds.noTrusteeWord : word, figure };
   });

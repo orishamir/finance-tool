@@ -6,7 +6,8 @@ import { ringFraction, shareText, type ExposureShares } from "../../lib/track-ex
 import { trackLabels } from "../../lib/track-labels";
 import { depositFeeNoneByRule, type SiteValue } from "../../lib/value";
 import { IconAlert, IconExternal } from "../icons";
-import { IdRef, Num } from "../provenance";
+import { Num } from "../provenance";
+import { mostlyHebrew } from "../../lib/source-label";
 import { ProductFigures, ProductIdLink } from "./product-table";
 import { ShareRings } from "./rings";
 import { Swatch } from "./chart-parts";
@@ -35,34 +36,16 @@ export function GemelNetLink({ fundId, dataset }: { fundId: number | string; dat
   );
 }
 
-/** A regulator fee average: the number, "אין" for a deposit fee the product's regulation does not have (PF-06), "עוד לא דווח" with the caution mark for an empty one, and the mark for a negative one. Nothing here ranks a track. */
+/** A regulator fee average: the number, "אין" for a deposit fee the product's regulation does not have (PF-06), "—" for an empty one (its sheet heads "עוד לא דווח"; no caution mark, founder 2026-11-08), and the caution mark for a negative one. Nothing here ranks a track. */
 export function FeeNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
   const none = depositFeeNoneByRule(value);
   const missing = value.value === null && !none;
   const negative = typeof value.value === "number" && value.value < 0;
   return (
     <span className="inline-flex items-center gap-1.5">
-      <Num value={value} size={size} display={none ? trackCopy.feeNone : missing ? trackCopy.feeNotReported : undefined} />
-      {(missing || negative) && <IconAlert size={16} className="text-caution shrink-0" />}
+      <Num value={missing ? { ...value, notes: mostlyHebrew(value.notes) ? `${r3workbench.missingNote} ${value.notes}` : r3workbench.missingNote } : value} size={size} display={none ? trackCopy.feeNone : missing ? trackCopy.emptyMark : undefined} {...(missing ? { fullWord: trackCopy.feeNotReported } : {})} />
+      {negative && <IconAlert size={16} className="text-caution shrink-0" />}
     </span>
-  );
-}
-
-/** The key under a fee table: one line for each of the two empty-cell words the table shows ("אין", "עוד לא דווח"). */
-export function FeeKey({ values, className }: { values: (SiteValue | null | undefined)[]; className?: string }) {
-  const empty = values.filter((v): v is SiteValue => !!v && v.value === null);
-  const none = empty.some(depositFeeNoneByRule);
-  const missing = empty.some((v) => !depositFeeNoneByRule(v));
-  if (!none && !missing) return null;
-  return (
-    <div className={className}>
-      {none && (
-        <p>
-          {r3workbench.noneKey} <IdRef id="PF-06" />
-        </p>
-      )}
-      {missing && <p>{r3workbench.missingKey}</p>}
-    </div>
   );
 }
 

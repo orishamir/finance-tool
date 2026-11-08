@@ -1,7 +1,7 @@
 // A discount that ends (A-19, F-16, D83) outside the run itself: the fee lines F-61 reads, a line replaced or removed, and a line
 // scaled for F-81. Harel's provident fund for investing: 0.7% a year and 0% on deposits for 60 months, then up to 1.05% and 4%.
 import { describe, expect, it } from "vitest";
-import { feeCap, feeCharged, feeLines, heldRevertRate, feeMateriality, rateAfterDiscount, runPension, runProvident, withFee, withHeldRate, valueOfReduction, withFeeRate, withFeeScaled, withoutFeeLine, type RunPlan } from "../src/index.ts";
+import { annualToMonthly, feeCap, feeCharged, feeLines, heldRevertRate, feeMateriality, rateAfterDiscount, runPension, runProvident, withFee, withHeldRate, valueOfReduction, withFeeRate, withFeeScaled, withoutFeeLine, type RunPlan } from "../src/index.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -26,6 +26,11 @@ const plan = (f: typeof fees | Omit<typeof fees, "discount" | "depositDiscount">
   },
 });
 const run = (p: RunPlan) => (p.run === "runProvident" ? runProvident(p.input, ctx) : null)!;
+// the same plan with the amount now alone and no deposit after it (PF OQ18, D87)
+const once = (f: typeof fees | Omit<typeof fees, "discount" | "depositDiscount">, months = 72): RunPlan => {
+  const p = plan(f, months);
+  return p.run === "runProvident" ? { ...p, input: { ...p.input, goal: { ...p.input.goal, monthly: 0 } } } : p;
+};
 
 describe("a discount that ends, outside the run (A-19, F-16)", () => {
   it("the run charges both fees from month 61: 4% of each deposit, 1.05% of the balance", () => {
@@ -192,14 +197,79 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
   });
 
   it("a discounted plan with no deposit after month 0 carries the open question PF OQ18 (D87)", () => {
-    const once = (f: typeof fees | Omit<typeof fees, "discount" | "depositDiscount">, months = 72): RunPlan => {
-      const p = plan(f, months);
-      return p.run === "runProvident" ? { ...p, input: { ...p.input, goal: { ...p.input.goal, monthly: 0 } } } : p;
-    };
     const codes = (p: RunPlan) => run(p).flags.map((f) => f.code);
     expect(codes(once(fees))).toContain("PF-OQ18");
     expect(codes(plan())).not.toContain("PF-OQ18");
     expect(codes(once({ deposit: 0, balance: 0.007, direct: 0 }))).not.toContain("PF-OQ18");
     expect(codes(once(fees, 6))).not.toContain("PF-OQ18");
+  });
+
+  // PF OQ18's cautious reading (D87, guidelines/research.md step 6, 2026-11-08): PF-14 case 1 lets the manager raise the fee six months after
+  // deposits stop, and whether that reaches one deposit and no more is open, so the run takes the reading that costs more. Until that day the
+  // run kept the discount for its whole period (the favourable reading).
+  it("a one-deposit discounted run longer than six months pays the fee without the discount from month 7 (PF OQ18, cautious)", () => {
+    const g = annualToMonthly(0.06);
+    // the hand ledger: 10,000 in at month 0 at the discounted deposit fee (0%), then the balance fee at 0.7% for months 1 to 6, 1.05% after
+    const byHand = (months: number) => {
+      let b = 10_000;
+      let fee = 0;
+      for (let m = 1; m <= months; m++) {
+        b *= 1 + g;
+        const f = ((m <= 6 ? 0.007 : 0.0105) / 12) * b;
+        fee += f;
+        b -= f;
+      }
+      return { b, fee };
+    };
+    for (const months of [7, 12, 72]) {
+      const r = run(once(fees, months));
+      expect(r.fees.deposit).toBe(0);
+      expect(r.fees.balance).toBeCloseTo(byHand(months).fee, 6);
+      expect(r.flags.map((f) => f.code)).toContain("PF-OQ18");
+    }
+    // month 7 alone is charged at 1.05%
+    const m6 = run(once(fees, 6));
+    const m7 = run(once(fees, 7));
+    expect(m6.fees.balance).toBeCloseTo(byHand(6).fee, 6);
+    expect(m7.fees.balance - m6.fees.balance).toBeCloseTo((0.0105 / 12) * byHand(6).b * (1 + g), 6);
+    // PF-13's five years do not outlast the cut: a printed 24-month discount also ends after month 6, and PF-13 is not named as lengthening it
+    const short = run(once({ ...fees, discount: { months: 24, listRate: 0.0105 }, depositDiscount: { months: 24, listRate: 0.04 } }, 12));
+    expect(short.fees.balance).toBeCloseTo(byHand(12).fee, 6);
+    expect(short.flags.map((f) => f.code)).not.toContain("PF-13");
+    // a plan with monthly deposits keeps the discount for PF-13's period: 0.7% through month 60
+    const monthly = run(plan(fees, 12));
+    const flat = run(plan({ deposit: 0, balance: 0.007, direct: 0 }, 12));
+    expect(monthly.fees.balance).toBeCloseTo(flat.fees.balance, 9);
+    // the verdict judges the one-deposit line by the rate after month 6 (D88)
+    expect(rateAfterDiscount(once(fees, 12), "balance", 12, ctx)).toBe(0.0105);
+    expect(rateAfterDiscount(once(fees, 6), "balance", 6, ctx)).toBeNull();
+    expect(rateAfterDiscount(plan(fees, 12), "balance", 12, ctx)).toBeNull();
+  });
+
+  it("a one-deposit discounted pension run pays the fee without the discount from month 7 too (PF OQ18, cautious)", () => {
+    const g = annualToMonthly(0.06);
+    const pensionOnce = (months: number): Parameters<typeof runPension>[0] => ({
+      wrapper: "pension-comprehensive",
+      goal: { amountNow: 0, monthly: 0, months },
+      market: { grossReturn: 0.06, inflation: 0.025 },
+      fees: { deposit: 0, balance: 0.002, direct: 0, discount: { months: 60, listRate: 0.005 } },
+      insurance: { rate: 0 },
+      existingBalance: 100_000,
+      pension: { employment: "employee", monthlySalary: 10_000 },
+      profile: {},
+    });
+    let b = 100_000;
+    let fee = 0;
+    for (let m = 1; m <= 12; m++) {
+      b *= 1 + g;
+      const f = ((m <= 6 ? 0.002 : 0.005) / 12) * b;
+      fee += f;
+      b -= f;
+    }
+    const r = runPension(pensionOnce(12), ctx);
+    expect(r.fees.balance).toBeCloseTo(fee, 6);
+    expect(r.flags.map((f) => f.code)).toContain("PF-OQ18");
+    // six months or fewer: the discount holds throughout and the question does not arise
+    expect(runPension(pensionOnce(6), ctx).flags.map((f) => f.code)).not.toContain("PF-OQ18");
   });
 });

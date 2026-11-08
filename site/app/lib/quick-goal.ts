@@ -65,7 +65,7 @@ export type QuickPlan =
   | { kind: "idle"; to: string }
   | { kind: "invalid"; field: QuickField; message: string };
 
-/** The purpose to preset table (research/2026-10-23-release-1/design-spec.md 1a). "none" depends on whether a monthly deposit was typed. */
+/** The purpose to preset table (8dd1f013:research/2026-10-23-release-1/design-spec.md 1a). "none" depends on whether a monthly deposit was typed. */
 export function presetFor(purpose: PurposeId | null, input: Pick<QuickInput, "monthly">): QuickPreset {
   switch (purpose) {
     case "apartment":

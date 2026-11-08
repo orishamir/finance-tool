@@ -15,9 +15,8 @@ import { system } from "./copy";
  * companies whose own document it cites (only those list it, review 2026-10-26). PageShell reads it.
  */
 export async function loader() {
-  const { loadFormulaParameters, loadOpenQuestions, loadParameterAnchors, loadPublishersHe } = await import("./lib/data.server");
-  const { companyLinks, ownDocuments } = await import("./lib/institutions.server");
-  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors(), publishersHe: loadPublishersHe(), openQuestions: loadOpenQuestions(), companies: companyLinks(), ownDocs: ownDocuments() };
+  const { rootData } = await import("./lib/root.server");
+  return rootData();
 }
 
 export function links() {
@@ -50,7 +49,7 @@ const persist = () => {
 /**
  * The key a scroll position is kept under: the history entry and its address. Every page loaded fresh in a tab (a typed
  * address, a bookmark, a reload) has the entry key "default", so the key alone brought one page's position to another
- * page (2026-10-25, found by research/audit/tools/jump-check.mjs: a guide page typed after scrolling another opened 2,900 px down).
+ * page (2026-10-25, found by tools/jump-check.mjs: a guide page typed after scrolling another opened 2,900 px down).
  */
 const entryKey = (l: { key: string; pathname: string; search: string }) => `${l.key}:${l.pathname}${l.search}`;
 
@@ -59,7 +58,7 @@ const entryKey = (l: { key: string; pathname: string; search: string }) => `${l.
  * the page to be tall enough and turning off the smooth scrolling meanwhile (it made the jump arrive after the check);
  * a new page opens at the top, or at its `#` target. Replaces the router's ScrollRestoration. A change of the query on the
  * same page (a filter or a switch that keeps its state in the address, passing `preventScrollReset`) keeps the place: until
- * 2026-10-25 it went to the top, so pressing such a control moved the page under the pointer (research/audit/tools/jump-check.mjs).
+ * 2026-10-25 it went to the top, so pressing such a control moved the page under the pointer (tools/jump-check.mjs).
  */
 function RestoreScroll() {
   const location = useLocation();

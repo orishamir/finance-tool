@@ -3,11 +3,10 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router";
 import { guide as copy, r3fees, scopeWords, trackBrowser } from "../../copy";
-import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
 import { IdRef, RulesLine, StrengthLabel } from "../provenance";
-import { Card, cx, Disclosure, gershayim, KeyValueList as KitKeyValueList, Section, TableCols, Tag } from "../kit";
+import { Card, cx, Disclosure, gershayim, KeyValueList as KitKeyValueList, Section, TableCols } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -337,11 +336,16 @@ function CompanyLinks({ companies }: { companies: { id: string; name: string }[]
   );
 }
 
-/** The companies that offer the product, behind one toggle (audit A42); the "all companies" link stays outside. */
-export function InstitutionChips({ companies, allHref, tracks }: { companies: { id: string; name: string }[]; allHref: string; /** The product's track browser (`/tracks/<id>`) and the product's name, for the link to every company's tracks of it. */ tracks?: { href: string; name: string } }) {
+/** The companies that offer the product, behind one toggle (audit A42), or shown open (`open`); the "all companies" link stays outside. */
+export function InstitutionChips({ companies, allHref, tracks, open }: { companies: { id: string; name: string }[]; allHref: string; /** The product's track browser (`/tracks/<id>`) and the product's name, for the link to every company's tracks of it. */ tracks?: { href: string; name: string }; /** The list shows with no toggle. */ open?: boolean }) {
   return (
     <div className="flex flex-col gap-1">
-      {companies.length > 0 && (
+      {companies.length > 0 && open && (
+        <div className="pb-2">
+          <CompanyLinks companies={companies} />
+        </div>
+      )}
+      {companies.length > 0 && !open && (
         <Disclosure label={<span className="text-link">{copy.companiesShow}</span>} openLabel={<span className="text-link">{copy.companiesHide}</span>} summaryClassName="justify-start">
           <div className="pb-2">
             <CompanyLinks companies={companies} />
@@ -359,53 +363,5 @@ export function InstitutionChips({ companies, allHref, tracks }: { companies: { 
         </Link>
       )}
     </div>
-  );
-}
-
-function whereTags(where: string[]) {
-  const tags = where.map((w) => copy.where[w]).filter((x): x is string => !!x);
-  return [...new Set(tags)].map((t) => (
-    <Tag key={t} tone="neutral">
-      {t}
-    </Tag>
-  ));
-}
-
-export function TermTable({ terms }: { terms: TermRow[] }) {
-  return (
-    <>
-      <dl className="md:hidden flex flex-col divide-y divide-border">
-        {terms.map((t, i) => (
-          <div key={`${t.he}-${i}`} className="py-3 flex flex-col gap-1">
-            <dt className="font-medium">{gershayim(t.he)}</dt>
-            <dd className="text-sm">{gershayim(t.explanation)}</dd>
-            <dd className="flex flex-wrap gap-1.5">{whereTags(t.where)}</dd>
-          </div>
-        ))}
-      </dl>
-      <Card className="hidden md:block p-0 md:p-0 overflow-hidden">
-        <table className="tbl">
-          <TableCols widths={["22%", "54%", "24%"]} />
-          <thead>
-            <tr>
-              <th scope="col">{copy.termTable.term}</th>
-              <th scope="col">{copy.termTable.meaning}</th>
-              <th scope="col">{copy.termTable.where}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {terms.map((t, i) => (
-              <tr key={`${t.he}-${i}`}>
-                <th scope="row">{gershayim(t.he)}</th>
-                <td>{gershayim(t.explanation)}</td>
-                <td>
-                  <span className="flex flex-wrap gap-1.5">{whereTags(t.where)}</span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Card>
-    </>
   );
 }

@@ -1,4 +1,4 @@
-// The numbers behind the "what makes it different" visuals of the guide pages (D29, research/specs/2026-10-25-guide-signatures).
+// The numbers behind the "what makes it different" visuals of the guide pages (D29, 8dd1f013:research/specs/2026-10-25-guide-signatures).
 // Everything here is a pure function over the data the page loader ships (`SignatureData`): each figure is an engine run on a
 // bundle (`runTimeline`, `runAtMonths`) or an engine formula over a sourced figure, never a number typed here. The components
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
@@ -63,8 +63,6 @@ export interface AccountBank {
   ceiling: SiteValue | null;
   /** `conditions_he` of the record. */
   conditions: string | null;
-  /** `doubt_he` of the record: an open doubt, shown with the caution mark. */
-  doubt: string | null;
   /** The last day of the offer, when the record prints one. */
   until: string | null;
   /** The bank printed the sentence that says it offers no interest (BANK-09), not a rate. */

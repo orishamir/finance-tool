@@ -58,18 +58,16 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(כללי_השקעה_החלים_על_גופים_מוסדיים)",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, Wikisource mirror, unofficial consolidated text, the only copy found of the current wording",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7125%2Fheb#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012 (קובץ התקנות 7125)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 1",
-      "locator_he": "תקנה 1",
-      "anchor": "סעיף_1",
+      "strength": "primary",
+      "locator": "file p.4, reg. 1",
+      "locator_he": "עמוד 4, תקנה 1",
       "quote": "מדינת חוץ מאושרת",
-      "checked": "2026-10-25"
+      "checked": "2026-11-07"
     }
   ]
 }

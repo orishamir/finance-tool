@@ -32,7 +32,7 @@
         "BRK-18"
       ],
       "state": "sourced",
-      "notes": "Transfer of securities to the same client's account at another financial body on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs (part 4(א)(6) note, as read from the consolidated rules). The supervised price while the account stays open is not in the rules: the Bank of Israel's fees page gives at most NIS 5 for the service plus what the bank paid a third party (SW-33; BRK OQ12 closed 2026-11-06)."
+      "notes": "Transfer of securities to the same client's account at another financial body on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs (part 4(א)(6) note, as read from the consolidated rules). The supervised price while the account stays open is not in the rules: the Bank of Israel's fees page gives at most NIS 5 for the service plus what the bank paid a third party (SW-33)."
     }
   },
   "il_finance_file": "brokerage-account.md",

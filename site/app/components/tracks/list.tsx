@@ -4,28 +4,32 @@
 // the groups are its products (`fixed`: one product, no heading over it), and a track a new member joins by default says so.
 import { useMemo, type ReactNode } from "react";
 import { Link } from "react-router";
-import { trackBrowser as t } from "../../copy";
+import { track as trackCopy, trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { ExposureCell, gershayim, FeeKey, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, gershayim, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
+/** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word (founder, 2026-11-08); a note with a reason stays. */
+const sayEmpty = (value: SiteValue, sentence: string): SiteValue => (!value.notes || value.notes.trim() === `${t.yield.missing}.` ? { ...value, notes: sentence } : value);
 
-/** A figure of the regulator's that may be empty: its number, or its words ("לא דווח", "פחות מ־3 שנים") on the same button, so the sheet says why. */
+/** A figure of the regulator's that may be empty: its number, or its words ("לא דווח", "אין") on the same button, so the sheet says why. */
 function YieldFigure({ value, track, years, size }: { value: SiteValue | null; track: TbTrack; years: 3 | 5; size: "inline" | "cell" }) {
   if (!value) return <span className={mutedWord}>{missingYield(track, years)}</span>;
-  if (value.value === null) return <Num value={value} size={size} display={missingYield(track, years)} />;
+  // not reported: a short mark, the sheet heads with the words (founder, 2026-11-08); a young track's "אין" is short already
+  if (value.value === null) return (years === 3 ? track.young3 : track.young5) ? <Num value={value} size={size} display={missingYield(track, years)} /> : <Num value={sayEmpty(value, `${t.yield.emptyNote.before}${years}${t.yield.emptyNote.after}`)} size={size} display={trackCopy.emptyMark} fullWord={missingYield(track, years)} />;
   return <Num value={value} size={size} />;
 }
 
-/** The two yields, each followed by its window; an empty one is its words alone. */
+/** The two yields, each followed by its window; a track younger than the window reads "אין 3 שנים", one not reported its words alone. */
 function Yields({ x, size, inline }: { x: TbTrack; size: "inline" | "cell"; inline?: boolean }) {
   if (x.selfManaged) return <span className={cx(mutedWord, "block whitespace-normal")}>{t.yield.selfManaged}</span>;
   const items = ([3, 5] as const).map((years) => {
     const v = years === 3 ? x.y3 : x.y5;
-    const empty = !v || v.value === null;
+    const young = years === 3 ? x.young3 : x.young5;
+    const empty = (!v || v.value === null) && !young;
     return { id: `y${years}`, figure: <YieldFigure value={v} track={x} years={years} size={size} />, word: empty ? null : years === 3 ? t.yield.years3 : t.yield.years5 };
   });
   return <ProductFigures items={items} inline={inline} />;
@@ -34,24 +38,7 @@ function Yields({ x, size, inline }: { x: TbTrack; size: "inline" | "cell"; inli
 /** Assets at the period's end: "19.1 מיליארד ₪" for a thousand million and more. */
 function AssetsFigure({ value, size = "cell" }: { value: SiteValue | null; size?: "inline" | "cell" }) {
   if (!value) return <span className={mutedWord}>{t.assets.missing}</span>;
-  return <Num value={value} size={size} display={typeof value.value === "number" ? assetsText(value.value) : t.assets.missing} />;
-}
-
-/** "דמי ניהול מהחיסכון: מ־0.54% עד 0.61%" (F-100), one figure when every track has the same, or that none was reported. It does not break inside. */
-export function FeeRange({ fees }: { fees: TbGroup["fees"] }) {
-  if (!fees) return <span className="whitespace-nowrap">{t.group.noFee}</span>;
-  return (
-    <span className="whitespace-nowrap">
-      {t.group.feeLead}{" "}
-      {fees.low.value === fees.high.value ? (
-        <Num value={fees.low} size="inline" />
-      ) : (
-        <>
-          <Num value={fees.low} size="inline" prefix={t.group.feeFrom} /> {t.group.feeTo} <Num value={fees.high} size="inline" />
-        </>
-      )}
-    </span>
-  );
+  return typeof value.value === "number" ? <Num value={value} size={size} display={assetsText(value.value)} /> : <Num value={sayEmpty(value, t.assets.emptyNote)} size={size} display={trackCopy.emptyMark} fullWord={t.assets.missing} />;
 }
 
 /** "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪": the company's size in the product, each part unbroken. `stacked`: one part under the other, in a
@@ -89,9 +76,8 @@ function GroupLine({ g }: { g: TbGroup }) {
   const count = `${tracksPhrase(g.tracks.length)}${filtered ? ` ${t.count.outOf} ${fmt.number(g.total)}` : ""}`;
   return (
     <>
+      {/* no fee range: the rows show each track's fees (founder, 2026-11-08) */}
       <CompanySize count={count} assets={g.assets} />
-      {" · "}
-      <FeeRange fees={g.fees} />
     </>
   );
 }
@@ -279,7 +265,6 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       ),
     [view, by, defaults],
   );
-  const fees = groups.flatMap((g) => g.tracks.flatMap((x) => [x.fee, x.deposit]));
   let left = limit;
   const tableGroups: ProductGroup[] = [];
   for (const g of groups) {
@@ -310,7 +295,6 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       groups={tableGroups}
       foot={(place) => (
         <>
-          <FeeKey values={fees} className={cx("flex flex-col gap-1 py-2 text-xs text-muted-foreground border-t border-border", place === "phone" ? "px-4" : "px-3")} />
           {foot && <div className={cx("py-3 border-t border-border", place === "phone" ? "px-4" : "px-3")}>{foot}</div>}
         </>
       )}

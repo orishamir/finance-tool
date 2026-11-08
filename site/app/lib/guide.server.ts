@@ -2,7 +2,7 @@
 // the engine bundle and its first run on P-05, the terms and the companies that offer it.
 import { breakCount, listFeeRange, oneYearDeposits, pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { join } from "node:path";
-import { companyTermRule, isSecurity, productIds, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
+import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
 import { shortName } from "./providers";
@@ -28,9 +28,6 @@ export interface GuidePageData {
   rules: Record<string, RuleRecord>;
   /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
-  terms: TermRow[];
-  /** How many products the site knows (wrappers and securities): a term that names this many is shared by every product (the guide shows it under "מונחים כלליים"). */
-  wrapperCount: number;
   termsById: Record<string, TermRow>;
   dimensionNames: Record<string, string>;
   companies: { id: string; name: string }[];
@@ -79,7 +76,7 @@ export interface ListRange {
 
 /**
  * F-105: a provident wrapper's list fees over every collected manager, for each base, so the page never shows one company's list as the
- * product's price (ground rule 2). Each figure is computed over the managers' own figures, which its sheet lists.
+ * product's price (former ground rule 2). Each figure is computed over the managers' own figures, which its sheet lists.
  */
 function managersFeeRange(record: ProductRecord, t: string): GuidePageData["listRange"] {
   const lists = providentLists(record.id, loadFees());
@@ -170,7 +167,9 @@ export function depositBreakTerms(t: string): BreakTerms | null {
     deposits: make(result.deposits, about.deposits),
     banks: make(result.banks, about.banks),
     lockedBanks: make(result.lockedBanks, about.lockedBanks),
-    lockedBanksWithExits: make(result.lockedBanksWithExits, about.lockedBanksWithExits, inputsOf(records, exitInput)),
+    // the banks none of whose deposits can be broken (the break column) that have a deposit with exit points (the exit column): both columns,
+    // each deposit's exits on a line of its own beside its break term
+    lockedBanksWithExits: make(result.lockedBanksWithExits, about.lockedBanksWithExits, { ...breaks, ...Object.fromEntries(records.map((r) => [`${sheet.get(r.id)!} · ${guideSignature.deposit.exitsInput}`, exitInput(r, shortName(r.bank, r.bank))])) }),
     breakable: result.breakable.map((b) => {
       const mine = records.filter((r) => r.bank === b.bank);
       const own = inputsOf(mine, breakInput);
@@ -302,7 +301,6 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const dimensionNames = Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name]));
   const all = loadTerms();
   const onPage = (row: TermRow) => row.wrapperIds.includes(id);
-  const terms = all.filter(onPage);
   // A word can carry another sense in another product; the page's own sense wins, then the strongest.
   const termsById: Record<string, TermRow> = {};
   for (const row of [...all].sort((a, b) => Number(onPage(b)) - Number(onPage(a)))) if (!termsById[row.he]) termsById[row.he] = row;
@@ -336,7 +334,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // the break rules of each bank the prose links to (its records' own), so each link opens
   for (const r of breakTerms?.breakable.flatMap((b) => b.rules) ?? []) if (allRules[r]) rules[r] = allRules[r]!;
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, today: t };
 }
 
 export { familyOf };
@@ -372,7 +370,6 @@ export interface ExposurePageData {
   rules: Record<string, RuleRecord>;
   /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
-  terms: TermRow[];
   termsById: Record<string, TermRow>;
   /**
    * Wrappers that can hold this exposure. `blockedBy` are the wrapper's own exit-tax blockers (its record's
@@ -408,12 +405,11 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
 
   const all = loadTerms();
   const onPage = (row: TermRow) => row.exposureIds.includes(id);
-  const terms = all.filter(onPage);
   const termsById: Record<string, TermRow> = {};
   for (const row of [...all].sort((a, b) => Number(onPage(b)) - Number(onPage(a)))) if (!termsById[row.he]) termsById[row.he] = row;
   for (const key of Object.keys(termsById)) if (!onPage(termsById[key]!) && !extraTermIds.includes(key)) delete termsById[key];
   const name = record.names.he[0] ?? record.id;
   // the exposure record's own one-line description, else the glossary line (F: one_line_he)
   const lede = record.one_line_he ?? termsById[name]?.explanation ?? all.find((r) => r.he === name)?.explanation ?? null;
-  return { record, name, lede, rules, pointed: pointedRecords(rules, allRules), terms, termsById, holders, dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: t };
+  return { record, name, lede, rules, pointed: pointedRecords(rules, allRules), termsById, holders, dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: t };
 }

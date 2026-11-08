@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { exposureFoldedInto, groupGuides, guideLayout, rulesAnchor, splitTerms, omitsSection } from "./guide-nav";
+import { exposureFoldedInto, groupGuides, guideLayout, rulesAnchor, omitsSection } from "./guide-nav";
 
 const allIds = guideLayout.flatMap((g) => g.ids);
 
@@ -51,25 +51,6 @@ describe("rulesAnchor (audit A27)", () => {
   });
 });
 
-describe("splitTerms (audit A83)", () => {
-  const t = (he: string) => ({ he });
-  it("hides a table under three rows", () => {
-    expect(splitTerms([t("א"), t("ב")], ["א"]).hide).toBe(true);
-    expect(splitTerms([], []).hide).toBe(true);
-  });
-  it("caps the table at the terms the page opens when there are enough of them", () => {
-    const r = splitTerms([t("א"), t("ב"), t("ג"), t("ד"), t("ה")], ["א", "ג", "ה", "ו"]);
-    expect(r.main.map((x) => x.he)).toEqual(["א", "ג", "ה"]);
-    expect(r.rest.map((x) => x.he)).toEqual(["ב", "ד"]);
-    expect(r.hide).toBe(false);
-  });
-  it("puts everything behind the toggle when too few terms are highlighted", () => {
-    const r = splitTerms([t("א"), t("ב"), t("ג")], ["א"]);
-    expect(r.main).toEqual([]);
-    expect(r.rest).toHaveLength(3);
-  });
-});
-
 describe("exposureFoldedInto (D6 as amended 2026-10-27)", () => {
   const products = [{ id: "makam", held_as: "direct" }, { id: "money-market-fund-daily", held_as: "fund_units" }, { id: "brokerage-account" }];
   it("an exposure a security held directly is gets that security's page", () => {
@@ -80,7 +61,7 @@ describe("exposureFoldedInto (D6 as amended 2026-10-27)", () => {
   });
 });
 
-describe("omitsSection (issue 33, D49)", () => {
+describe("omitsSection (D49)", () => {
   it("leaves out only what a guide lists", () => {
     expect(omitsSection("bank-deposit", "cost")).toBe(true);
     expect(omitsSection("bank-deposit", "tax")).toBe(false);

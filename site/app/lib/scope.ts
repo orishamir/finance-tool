@@ -1,4 +1,4 @@
-// Who a rule applies to, on the site (D30; research/specs/2026-10-25-rules-scope/spec.md §4). Pure helpers, safe in the browser:
+// Who a rule applies to, on the site (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4). Pure helpers, safe in the browser:
 // the record carries its scope and the companies it names (extracted from the rule base), and the root loader gives every page the
 // link of each company (`ProvenanceData.companies`) and, per record that is not general, the companies whose own document it cites
 // (`ProvenanceData.ownDocs`): only those list it in their section (review, 2026-10-26).
@@ -20,7 +20,7 @@ export interface CompanyLink {
 /** The anchor of the company-terms section on a company page, and of a company's group on /companies. */
 export const companyTermsAnchor = "company-terms";
 export const noPageAnchor = (id: string) => `terms-${id}`;
-/** The group on /companies for records that are not general and that no company's section lists: the not-rules (a forum post, a press report, a list, a count, a site's terms). */
+/** The group on /companies for records that are not general and that no company's section lists: the not-rules (a list, a count, a site's terms). */
 export const noCompanyAnchor = "terms-none";
 
 /** Per record that is not general, the companies (registry ids) whose own document it cites; a record missing from the map cites none. */
@@ -41,7 +41,7 @@ export function generalOnly(ids: readonly string[], rules: Record<string, Pick<R
   return ids.filter((id) => !rules[id] || isGeneral(rules[id]));
 }
 
-/** Whether a record is one the rule base keeps that is not a rule (a forum post, a press report, a list, a count, a site's terms): never in a company's section, listed on /companies under "לא נכלל ככלל". */
+/** Whether a record is one the rule base keeps that is not a rule (a list, a count, a site's terms): never in a company's section, listed on /companies under "לא נכלל ככלל". */
 export const isNotRule = (id: string): boolean => Object.hasOwn(notRules, id);
 
 /** Of the companies a record names, those whose own document it cites: the record is found in their documents. */
@@ -52,7 +52,7 @@ export function ownDocCompanies(rule: Pick<RuleRecord, "id" | "scope_institution
 
 /**
  * The companies whose section lists a record (spec §4; review, 2026-10-26): those whose own document it cites, never for a not-rule
- * (`listedAt` in the schema, which the validator shares). A press report or a forum post about a company is not that company's.
+ * (`listedAt` in the schema, which the validator shares). A record about a company that cites none of its documents is not that company's.
  */
 export function listedCompanies(rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
   const listed = new Set(listedAt(rule, ownDocs?.[rule.id] ?? []));
@@ -77,7 +77,7 @@ export function companyTermsHref(rule: Pick<RuleRecord, "id" | "scope" | "scope_
 
 /**
  * The companies a record is shown as from (its chip, its tag, its card's line): those whose own documents it cites; a record that cites
- * none of their documents (a press report, a forum post) is shown as about every company it names (review, 2026-10-26: PEN-37 names
+ * none of their documents (a regulator's announcement about them) is shown as about every company it names (review, 2026-10-26: PEN-37 names
  * Meitav, but cites no document of Meitav, so neither its chip nor its card counts Meitav).
  */
 export function shownCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
@@ -113,7 +113,7 @@ export function pageView(rule: RuleRecord, page: readonly string[], companies: R
   return { ...rule, scope_institutions: mine, sources: (rule.sources ?? []).filter((s) => !foreign(s)), figures };
 }
 
-/** Of the companies a record names, the one whose own document a source is; null for a law, a regulator, a press report. */
+/** Of the companies a record names, the one whose own document a source is; null for a law or a regulator. */
 export function sourceCompany(rule: Pick<RuleRecord, "scope_institutions">, source: { url: string; title: string; title_he?: string }, companies: Record<string, CompanyLink> | undefined): { id: string; name_he: string } | null {
   return (
     scopeCompanies(rule).find((c) => {

@@ -4,8 +4,8 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { r2, r5, scnCompare } from "../../copy";
-import { decidingFormulaOf } from "../../lib/compare";
-import type { ExposureRowView } from "../../lib/exposure-mode";
+import { decidingFormulaOf, nominalFormula } from "../../lib/compare";
+import { runRefOf, type ExposureRowView } from "../../lib/exposure-mode";
 import { IconDrillIn, IconLock } from "../icons";
 import { IconDash, IconDashed, IconEdit, IconEqual } from "../compare/icons";
 import { Num, ReadingTag } from "../provenance";
@@ -51,7 +51,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
   const hasValue = row.real !== undefined;
   // a listed row shows no headline figure, only "לא מדורג" and its reason (scenario fix 2026-10-24)
   const showFigure = hasValue && ranked;
-  const value = hasValue ? mk.nis(mode === "real" ? row.real! : row.nominal!, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, row.run ? { usedRules: row.run.rules, flags: row.run.flags, labels: row.run.labels } : undefined) : null;
+  const value = hasValue ? mk.nis(mode === "real" ? row.real! : row.nominal!, mode === "real" ? "F-06" : nominalFormula(row.run, row.holding.wrapperId ? ctx.bundle.wrappers.find((w) => w.id === row.holding.wrapperId)?.record : null), mode === "real" ? r2.realLabel : r2.nominalLabel, runRefOf(row)) : null;
   const tied = row.tiedWith.length > 0;
   const f = row.deciding;
   const reading = !!row.run?.labels.some((l) => l.code === "reading");
@@ -107,7 +107,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
 
       {ranked && f && above && !tied && (
         <Sentence size="sm" tone="muted">
-          {r2.result.decidingLine} {r2.deciding[f.formula]}, <Num value={mk.nis(f.mine, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, row.run ? { usedRules: row.run.rules } : undefined)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(f.above, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, above.run ? { usedRules: above.run.rules } : undefined)} />
+          {r2.result.decidingLine} {r2.deciding[f.formula]}, <Num value={mk.nis(f.mine, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, runRefOf(row))} /> {r2.result.reasonFeeVs} <Num value={mk.nis(f.above, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, runRefOf(above))} />
         </Sentence>
       )}
 

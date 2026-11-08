@@ -1,18 +1,20 @@
 // Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`),
 // plus `derived_from` (and, for a general rule, `examples`: the companies' terms its line names, review 2026-10-26) and
 // `sources_missing_reason`, and, since 2026-10-26, who it applies to from the `- Scope:` line:
-// `scope`, `scope_institutions` and `scope_settle` (D30; research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
+// `scope`, `scope_institutions` and `scope_settle` (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
 // resolved against data/sources/institutions.json. Re-runnable: it strips its own keys from a record and writes them again,
-// never touches any other field and never touches the markdown. Spec: research/knowledge/2026-10-24-synthesis.md 3.2,
-// docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (add `--dry` to only print the report).
+// never touches any other field and never touches the markdown. Spec: 8dd1f013:research/knowledge/2026-10-24-synthesis.md 3.2,
+// docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (it prints its report; add `--dry` to
+// write nothing).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { readRuleBaseIds, rewriteRawWikisource, type RuleBlock } from "../src/references.ts";
+import { readRuleBaseIds, type RuleBlock } from "../src/references.ts";
 import { readRegistry, scopeFromLine, scopeLineOf } from "../src/scope.ts";
+import { isCopySource } from "../src/validate.ts";
 
 export type SourceKind = "law" | "regulation" | "circular" | "regulator_page" | "official_pdf" | "exchange_rules" | "institution_doc" | "article" | "dataset" | "form" | "other";
-export type SourceStrength = "primary" | "primary-mirror" | "institution" | "secondary";
+export type SourceStrength = "primary" | "institution" | "secondary";
 
 export interface ExtractedSource {
   url: string;
@@ -22,11 +24,9 @@ export interface ExtractedSource {
   publisher_he?: string;
   kind: SourceKind;
   strength: SourceStrength;
-  mirror_host?: "wikisource" | "nevo" | "other";
   locator?: string;
   locator_he?: string;
   page?: number;
-  anchor?: string;
   quote?: string;
   checked: string;
   qualifier?: string;
@@ -37,7 +37,6 @@ export interface PublisherRow {
   publisher: string;
   publisher_he?: string;
   kind?: SourceKind;
-  mirror?: "wikisource" | "nevo" | null;
 }
 export interface DocumentRow {
   id: string;
@@ -178,9 +177,9 @@ function strengthHits(text: string): StrengthHit[] {
 
 const CHECKED_RE = /checked (\d{4}-\d{2}-\d{2})/;
 
-// ---------------------------------------------------------------- locator, anchor, page, quote
+// ---------------------------------------------------------------- locator, page, quote
 
-/** Cleans the raw text after a link into a locator: sections, regulations, pages; quotes and mirror noise removed. */
+/** Cleans the raw text after a link into a locator: sections, regulations, pages; quotes removed. */
 export function cleanLocator(text: string): string {
   // Hebrew abbreviations such as תשע"ה carry a quote mark that is not a quotation; mask it while cutting.
   let t = text.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "\uE000");
@@ -188,7 +187,6 @@ export function cleanLocator(text: string): string {
   const q = t.search(/["“]/);
   if (q >= 0) t = t.slice(0, q);
   t = t.replace(/\uE000/g, '"');
-  t = t.replace(/\b((?:Hebrew )?Wikisource( consolidated)?( text)?( mirror)?|Nevo( mirror)?|mirror)\b/gi, " ");
   // Parenthetical remarks in English ("(gov.il)", "(as amended 2007)", "(link above)") are not part of the locator.
   t = t.replace(/\((?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
   t = t.replace(/\(\s*\)/g, " ");
@@ -241,35 +239,6 @@ export function toHebrewLocator(locator: string): string | undefined {
   return t || undefined;
 }
 
-/** The Wikisource section id: `סעיף_3`, `סעיף_3.ה4`, `סעיף_125ג`. Only one level below the section, and only for a Hebrew sub-letter.
- * Regulation pages on Hebrew Wikisource carry the same `סעיף_N` ids for their תקנות (checked on the transfer regulations page, 2026-10-24),
- * so a `reg.`/`regs.`/`תקנה`/`סעיף` locator builds the same anchor. */
-export function wikisourceAnchor(locator: string): string | undefined {
-  // the section may follow a page ("עמוד 8, סעיף 3(ה4)(3)"): the first section-like token anywhere in the locator
-  const m = /(?:^|[\s,;(])(?:ss?\.|sections?\s|regs?\.|regulations?\s|תקנות?\s|סעיפים?\s)\s*(\d+)([A-Za-zא-ת]{0,2})(\d*)(?:\(([^)]*)\))?/i.exec(locator.trim());
-  if (!m) return undefined;
-  let id = m[1]!;
-  const suffix = m[2]!;
-  if (suffix) {
-    const mapped = [...suffix].map((c) => (/[A-Za-z]/.test(c) ? LATIN_TO_HE[c.toLowerCase()] : c));
-    if (mapped.some((c) => c === undefined)) return undefined;
-    id += mapped.join("") + m[3]!;
-  } else if (m[3]) {
-    return undefined;
-  }
-  const sub = m[4];
-  if (sub && !suffix) {
-    const letterDigits = /^([a-eא-ת]{1,2})(\d*)$/i.exec(sub.trim());
-    if (letterDigits) {
-      const [, letters, digits] = letterDigits;
-      const isLatin = /[A-Za-z]/.test(letters!);
-      // A bare Latin letter, "(b)", is a lower level the Hebrew ids do not carry; "(e4)" is a section suffix.
-      if (!isLatin || digits) id += "." + [...letters!].map((c) => (/[A-Za-z]/.test(c) ? LATIN_TO_HE[c.toLowerCase()]! : c)).join("") + digits;
-    }
-  }
-  return `סעיף_${id}`;
-}
-
 /** First page for "#page=": only from a `p.`/`pp.` locator on a PDF, never a printed page. */
 export function firstPage(locator: string, url: string): number | undefined {
   if (!isPdf(url) || /printed|bylaws/i.test(locator)) return undefined;
@@ -291,13 +260,12 @@ export function findQuote(segment: string): string | undefined {
   return undefined;
 }
 
-// ---------------------------------------------------------------- kind, mirror, rank
+// ---------------------------------------------------------------- kind, rank
 
 function kindOf(url: string, host: string, title: string, locator: string, strength: SourceStrength, publisherKind?: SourceKind): SourceKind {
   const text = `${title} ${locator}`;
   if (/\/Odata\//i.test(url) || /api\/3\/action/.test(url)) return "dataset";
   if (host === "fs.knesset.gov.il" && isPdf(url)) return /\bbill\b|הצעת חוק|explanatory/i.test(title) ? "official_pdf" : "law";
-  if (host === "he.wikisource.org" || host === "nevo.co.il") return /תקנות|Regulations|regulations|\breg\.|\bregs\.|\bOrder\b|\bצו\b/.test(text) ? "regulation" : "law";
   if (host === "mayafiles.tase.co.il" || host === "maya.tase.co.il") return "institution_doc";
   if (NEWS_HOSTS.includes(host)) return "article";
   if (host === "data.gov.il") return "dataset";
@@ -313,19 +281,17 @@ function kindOf(url: string, host: string, title: string, locator: string, stren
   return "other";
 }
 
-/** Preference order: regulator or ministry document, Knesset gazette, Wikisource, Nevo, institution, article. */
+/** Preference order: regulator or ministry document, Knesset gazette, institution, article. */
 function rankOf(s: ExtractedSource, host: string): number {
-  if (host === "he.wikisource.org") return 2;
-  if (host === "nevo.co.il") return 3;
   if (host === "fs.knesset.gov.il" || host === "knesset.gov.il") return 1;
-  if (s.kind === "article" || s.strength === "secondary") return 5;
+  if (s.kind === "article" || s.strength === "secondary") return 3;
   // a company's own data page (TASE's index pages, labelled a dataset by host) is that company's document, not a regulator's: it ranks
   // with the institutions, after the exchange's guidelines (scope settling requests §7, ETF-44 and ETF-45; 2026-10-26)
   if (OFFICIAL(host) || host.endsWith(".gov") || host === "btl.gov.il" || host.endsWith("isa.gov.il") || (s.kind === "dataset" && s.strength !== "institution")) return 0;
-  return 4;
+  return 2;
 }
 
-const KEY_ORDER = ["url", "title", "title_he", "publisher", "publisher_he", "kind", "strength", "mirror_host", "locator", "locator_he", "page", "anchor", "quote", "checked", "qualifier", "note"];
+const KEY_ORDER = ["url", "title", "title_he", "publisher", "publisher_he", "kind", "strength", "locator", "locator_he", "page", "quote", "checked", "qualifier", "note"];
 /** The keys in the order of docs/data-schema.md 3.1, so the JSON reads the same in every record. */
 function orderKeys(e: ExtractedSource): ExtractedSource {
   const src = e as unknown as Record<string, unknown>;
@@ -362,7 +328,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (!word) word = strengthHits(raw.slice(link.end))[0]?.word;
     const checked = CHECKED_RE.exec(rest)?.[1] ?? lineChecked ?? ctx.ruleChecked;
     const rawUrl = link.url;
-    const url = rewriteRawWikisource(rawUrl);
+    const url = rawUrl;
     const host = hostOf(url);
     if (!host) {
       skipped.push(`bad url ${rawUrl}`);
@@ -371,16 +337,19 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const afterLink = (rest.includes("·") ? rest.split("·")[0]! : rest.split(";")[0]!).trim();
     const locator = cleanLocator(afterLink) || locatorFromTitle(link.title);
     const word0 = word ?? lineStrengthWord ?? (ctx.ruleStrength === "open" || ctx.ruleStrength === "entered" ? "secondary" : ctx.ruleStrength);
-    const lowerNote = note.toLowerCase();
-    const mirrorNote = word0 === "primary" && /mirror|copy|third-party|unofficial|עותק/.test(lowerNote);
-    // a regulator's or ministry's own host is never a copy, whatever the qualifier says ("government copy"); only a third-party host is (lead, 2026-10-24)
+    // a copy of an official text is a lead, never a source (CLAUDE.md): a copy host, or a third-party host the line calls a copy (a
+    // regulator's or ministry's own host is never a copy, whatever the qualifier says, "government copy"; lead, 2026-10-24)
     const officialHost = /(^|\.)(gov\.il|boi\.org\.il|knesset\.gov\.il|isa\.gov\.il|tase\.co\.il|cbs\.gov\.il)$/.test(host);
-    const mirrorHost = host === "he.wikisource.org" ? "wikisource" : host === "nevo.co.il" ? "nevo" : !officialHost && (mirrorNote || word0 === "primary-mirror") ? "other" : undefined;
-    const strength: SourceStrength = mirrorHost ? "primary-mirror" : word0 === "primary" || word0 === "institution" || word0 === "secondary" ? word0 : "secondary";
+    const copyNote = /mirror|copy|third-party|unofficial|עותק/.test(note.toLowerCase());
+    if (isCopySource(url) || (!officialHost && word0 === "primary" && copyNote)) {
+      skipped.push(`copy of an official text, a lead only: ${url}`);
+      return;
+    }
+    const strength: SourceStrength = word0 === "primary" || word0 === "institution" || word0 === "secondary" ? word0 : "secondary";
 
     const pub = ctx.publishers?.[host];
     const title = link.title.replace(/\s+/g, " ").trim() || host;
-    // the longest matching token wins across the table (tokens nest: "Law (Wikisource mirror)" sits inside "National Insurance Law (Wikisource mirror)"); a tie keeps the table's order
+    // the longest matching token wins across the table (tokens nest); a tie keeps the table's order
     const doc = (ctx.documents ?? [])
       .filter((d) => !d.hosts || d.hosts.includes(host))
       .flatMap((d) => d.match.filter(Boolean).map((tok) => ({ d, tok })))
@@ -398,7 +367,6 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (titleHe) entry.title_he = titleHe;
     const publisherHe = doc?.publisher_he ?? pub?.publisher_he;
     if (publisherHe) entry.publisher_he = publisherHe;
-    if (mirrorHost) entry.mirror_host = mirrorHost;
     const locate = (e: ExtractedSource, loc: string, quoteText: string) => {
       if (loc) {
         e.locator = loc;
@@ -406,10 +374,6 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
         if (he) e.locator_he = he;
         const page = firstPage(loc, url);
         if (page) e.page = page;
-        if (host === "he.wikisource.org" && /\/wiki\//.test(url)) {
-          const anchor = wikisourceAnchor(loc);
-          if (anchor) e.anchor = anchor;
-        }
       }
       const quote = findQuote(quoteText);
       if (quote) e.quote = quote;
@@ -423,7 +387,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
     locate(entry, locator, covered.join("; "));
-    if (note && !/^\(\s*(nevo |wikisource )?mirror\s*\)$/i.test(note)) {
+    if (note) {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;
     }
@@ -432,7 +396,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
       const loc = cleanLocator(passage);
       if (!loc) continue;
       const more: ExtractedSource = { ...entry };
-      for (const k of ["locator", "locator_he", "page", "anchor", "quote"] as const) delete more[k];
+      for (const k of ["locator", "locator_he", "page", "quote"] as const) delete more[k];
       locate(more, loc, passage);
       sources.push(orderKeys(more));
     }
@@ -502,7 +466,6 @@ interface Report {
   perFile: Map<string, { rules: number; entries: number; missing: number }>;
   totals: Record<string, number>;
   strengths: Record<string, number>;
-  realigned: string[];
   kinds: Record<string, number>;
   unresolved: { id: string; reason: string }[];
   skipped: { id: string; what: string }[];
@@ -544,9 +507,8 @@ function main() {
 
   const rep: Report = {
     perFile: new Map(),
-    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, anchor: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0, examples: 0 },
+    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0, examples: 0 },
     strengths: {},
-    realigned: [],
     kinds: {},
     unresolved: [],
     skipped: [],
@@ -597,7 +559,6 @@ function main() {
           if (s.locator) rep.totals.locator!++;
           if (s.locator_he) rep.totals.locator_he!++;
           if (s.quote) rep.totals.quote!++;
-          if (s.anchor) rep.totals.anchor!++;
           if (s.page) rep.totals.page!++;
           if (s.title_he) rep.totals.title_he!++;
           else rep.untitled.set(titleKey(s.title), (rep.untitled.get(titleKey(s.title)) ?? 0) + 1);
@@ -622,18 +583,7 @@ function main() {
         rep.totals.examples!++;
       }
     }
-    let out = writeKeys(text, add);
-    // The record's strength follows its best source for the primary/mirror pair only (lead, 2026-10-24): a rule marked
-    // primary whose sources are all copies of the law is a copy; a rule marked copy that cites an official document is
-    // primary. Other mismatches (institution against a law link, and so on) are the researcher's call and stay as warnings.
-    const srcs = (add.sources as { strength: string }[] | undefined) ?? [];
-    if (srcs.length > 0 && (rec.strength === "primary" || rec.strength === "primary-mirror")) {
-      const best = srcs.some((x) => x.strength === "primary") ? "primary" : srcs.some((x) => x.strength === "primary-mirror") ? "primary-mirror" : null;
-      if (best && best !== rec.strength) {
-        out = out.replace(/\n  "strength": "(primary|primary-mirror)"/, `\n  "strength": "${best}"`);
-        rep.realigned.push(`${rec.id}: ${rec.strength} → ${best}`);
-      }
-    }
+    const out = writeKeys(text, add);
     if (!dry && out !== text) writeFileSync(path, out);
   }
 
@@ -642,7 +592,6 @@ function main() {
   console.log(`Scope: ${Object.entries(scopeCounts).map(([k, v]) => `${k} ${v}`).join(", ")}; problems ${scopeProblems.length}`);
   for (const p of scopeProblems) console.error(`scope: ${p}`);
   if (scopeProblems.length > 0) process.exitCode = 1;
-  if (!dry) writeFileSync(join(root, "research/knowledge/2026-10-24-extraction-report.md"), md);
 }
 
 function renderReport(r: Report, tables: { publishers: boolean; documents: boolean }): string {
@@ -653,11 +602,10 @@ function renderReport(r: Report, tables: { publishers: boolean; documents: boole
   L.push(`Tables read: publishers.json ${tables.publishers ? "yes" : "absent"}, documents.json ${tables.documents ? "yes" : "absent"}.`, "");
   L.push("## Headline", "");
   L.push(`- Rules: ${t.rules}; with sources: ${t.withSources}; unresolved (sources_missing_reason): ${r.unresolved.length}`);
-  L.push(`- Entries: ${t.entries}; with locator ${t.locator}, locator_he ${t.locator_he}, quote ${t.quote}, anchor ${t.anchor}, page ${t.page}`);
+  L.push(`- Entries: ${t.entries}; with locator ${t.locator}, locator_he ${t.locator_he}, quote ${t.quote}, page ${t.page}`);
   L.push(`- Entries with title_he: ${t.title_he}; with publisher_he: ${t.publisher_he}; rules whose first source lacks publisher_he: ${r.noPublisherHe.length}`);
   L.push(`- Rules with derived_from: ${t.derived}; general rules with examples (companies' terms they point to): ${t.examples}`);
   L.push(`- Strengths: ${Object.entries(r.strengths).map(([k, v]) => `${k} ${v}`).join(", ")}`);
-  L.push(`- Rule strength realigned to its best source (primary/mirror pair only): ${r.realigned.length}${r.realigned.length ? ": " + r.realigned.join("; ") : ""}`);
   L.push(`- Kinds: ${Object.entries(r.kinds).map(([k, v]) => `${k} ${v}`).join(", ")}`, "");
   L.push("## Per rule base file", "", "| file | rules | entries | unresolved |", "|---|---|---|---|");
   for (const [f, v] of [...r.perFile].sort()) L.push(`| ${f} | ${v.rules} | ${v.entries} | ${v.missing} |`);

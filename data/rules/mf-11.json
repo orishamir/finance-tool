@@ -143,39 +143,40 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://olaw.org.il/takanot/takanot-5637.pdf#page=24",
-      "title": "קובץ התקנות 5637 (10.11.1994), סריקה באתר olaw",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5637%2Fheb#page=24",
+      "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ\"ה-1994 (קובץ התקנות 5637, 10.11.1994)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host: olaw.org.il)"
+      "strength": "primary",
+      "locator": "file p.24, reg. 15 as made",
+      "locator_he": "עמוד 24, תקנה 15",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://olaw.org.il/takanot/takanot-5987.pdf#page=6",
-      "title": "קובץ התקנות 5987 (1.7.1999), סריקה באתר olaw",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5987%2Fheb#page=6",
+      "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן) (תיקון), התשנ\"ט-1999 (קובץ התקנות 5987, 1.7.1999)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host: olaw.org.il)"
+      "strength": "primary",
+      "locator": "file p.6, s.12 (amending reg. 15(א))",
+      "locator_he": "עמוד 6, סעיף 12",
+      "quote": "שעל פי מדיניות ההשקעות שלה לא יעלה שווי ניירות ערך חוץ שיוחזקו בה על עשרה אחוזים מהשווי הנקי של נכסיה",
+      "checked": "2026-11-07"
     },
     {
-      "url": "https://olaw.org.il/takanot/takanot-11476.pdf#page=6",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F11476%2Fheb#page=6",
       "title": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024 (קובץ התקנות 11476)",
       "title_he": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024 (קובץ התקנות 11476)",
-      "publisher": "Open Law (copy of Reshumot)",
-      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
+      "locator": "file p.6",
+      "locator_he": "עמוד 6",
       "quote": "בעל יחידות בקרן יוכל להגיש למפיץ הזמנות ליחידות או הוראות לפדיונן, במועדים הקבועים",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host: olaw.org.il)"
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/more-information/",

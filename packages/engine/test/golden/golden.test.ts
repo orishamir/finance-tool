@@ -124,7 +124,7 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("tax during", r.taxDuring, 1_064.89);
     g.value("tax at exit", r.taxAtExit, 0);
     g.done();
-    // TXI OQ2 closed 2026-10-26: TXI-04 states the prime case (the statutory index is the CPI or an exchange rate), so it is cited, not labelled a reading
+    // since 2026-10-26 TXI-04 states the prime case (the statutory index is the CPI or an exchange rate), so it is cited, not labelled a reading
     expect(labelOf(r, "TXI-04")).toBeUndefined();
     expect(r.rules.map((u) => u.id)).toContain("TXI-04");
   });

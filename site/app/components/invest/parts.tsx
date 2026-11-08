@@ -77,7 +77,7 @@ export function reasonText(r: Reason, cls: string): string {
   }
 }
 
-/** The sentence for a house the engine could not price (moved here with the house-ranking page's removal, issue 172). */
+/** The sentence for a house the engine could not price (moved here with the house-ranking page's removal). */
 export function reasonSentence(r: NotComparable, instrumentClass: string, channelWord: string): string {
   const n = r4workbench.notComparable;
   const cls = r4workbench.instrumentClasses[instrumentClass] ?? instrumentClass;

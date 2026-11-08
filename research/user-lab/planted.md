@@ -13,7 +13,7 @@ session: the panel shows the session the changed page at the live address, the g
 
 - **Evidence, not taste.** Every kind is something people are measured tripping on (`behaviour-guide.md`, cited by
   section) or something the founder actually flagged (a case id from `calibration/cases.jsonl`, or an item of
-  `research/2026-10-28-founder-patterns.md` sections 2 and 3). A kind with neither is not added.
+  `8dd1f013:research/2026-10-28-founder-patterns.md` sections 2 and 3). A kind with neither is not added.
 - **Realistic.** Each instance is the size and style of a real mistake on this site: one element, the site's own
   classes and words, numbers in a plausible range. Text a plant adds (a long paragraph, a folded paragraph) is copied
   from the site's own sourced copy, so a plant never states a new financial fact. The planted figures themselves are

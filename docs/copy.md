@@ -1,24 +1,24 @@
 # Hebrew copy: voice, style guide and word choices
 
-This file holds what `site/app/copy.ts` cannot: the site's voice (section 1), the word choices with their reasons,
-by topic (sections 2 to 9), and the Hebrew style guide (section 10). The strings the site shows are in
-`site/app/copy.ts`; the prose of the guide and exposure pages is in `site/app/content/`; names, questions and answers
-that belong to a record are in its file under `data/`. Financial terms and their one-line explanations are in
-`docs/glossary.md`, each with its source in the il-finance rule base. A code comment that cites an older per-screen
-section of this file (3.x, 6.x to 9.x) now means the string in `copy.ts` beside it.
+The rules for writing the site's words are in `guidelines/wording.md`, and they win where this file disagrees. This file
+holds only what they don't: the word choices with their reasons, by topic (sections 2 to 9), the term table (10.3), and the
+finer Hebrew detail the guideline leaves out (sections 1 and 10). The strings the site shows are in `site/app/copy.ts`; the
+prose of the guide and exposure pages is in `site/app/content/`; names, questions and answers that belong to a record are in
+its file under `data/`. Financial terms and their one-line explanations are in `docs/glossary.md`, each with its source in
+the il-finance rule base. A code comment that cites an older per-screen section of this file (3.x, 6.x to 9.x) now means the
+string in `copy.ts` beside it.
 
-The founder asked Claude to settle the wording. A builder's Hebrew goes through the Hebrew editor, and words meant for
-readers are judged by fresh readers (CLAUDE.md). Where a choice below names the founder, it is his.
+The founder asked Claude to settle the wording. Builders write Hebrew to `guidelines/wording.md` and section 10; fresh readers run when the founder asks. Where a choice below names the founder, it is his.
 
 ---
 
 ## 1. Voice
 
-- **Direct and plain.** One idea per sentence. Point first, reason second. No softeners ("נשמח אם"), no exclamation marks, no "שימו לב".
-- **Addressing the reader:** plural imperative ("הדביקו", "בחרו", "הקישו") or impersonal ("אפשר", "יש"). Never "אתה" or "את". This keeps every line gender-neutral.
-- **Words that add something.** A sentence says what the screen does not already say: not the figure in the field above it, not the heading again, not how the site checks or sources its numbers (the source and terms lines every number carries, CLAUDE.md "Every number traces to a source", are not such sentences), nothing about who made the site, and no name followed by itself in brackets. Under a result it speaks of the reader's choices (founder, 2026-11-02: "no you dont need to repeat what is written above. you need to say things about the user's choices there"; 2026-10-25: "you dont have to mention this in the actual sentence yeah?"; 2026-11-05: "remove the ()"). A line that every card or row of a list would carry is said once, above it.
+What the guideline's voice, sentence and word-choice rules don't already say:
+
+- **Words that add something.** Beyond what the guideline says: not how the site checks or sources its numbers (the source and terms lines every number carries, CLAUDE.md "Every number traces to a source", are not such sentences), nothing about who made the site, and no name followed by itself in brackets. Under a result it speaks of the reader's choices (founder, 2026-11-02: "no you dont need to repeat what is written above. you need to say things about the user's choices there"; 2026-10-25: "you dont have to mention this in the actual sentence yeah?"; 2026-11-05: "remove the ()"). A line that every card or row of a list would carry is said once, above it.
 - **The exact word.** Say which: income tax or capital gains tax, never a bare "מס" where either could be meant; whose money (the employer's deposit, the person's own, the gains the fund made); a percent of what; inflation (the rise of prices) or an index's rise; and, where two figures stand together, which one the calculation uses (founder, 2026-11-02: "בכל מקום תבדיל בין מס רווחי הון למס הכנסה, שיהיה ברור"; "תהיה ספציפי יותר"; 2026-11-04: "its not clear which of these is being used - 0.07 or 0.15").
-- **Spelling:** ktiv maleh throughout. Gershayim inside acronyms (אג״ח, מק״מ, עו״ש). Maqaf between a prefix and a number or Latin word (ב־2026, ה־S&P 500).
+- **Spelling:** ktiv maleh throughout (the list of spellings is in 10.8).
 - **Names:** products, tracks and companies appear exactly as their source writes them. The site's words go beside them, never instead of them.
 - **No typed numbers.** Every figure comes from the number component with its source. In this file a figure's place is shown as `{שם}`, for example `{סכום}`, `{תאריך}`, `{שנים}`. Placeholders are filled by the site with value objects, never by typed figures; one and two are words ("מסלול אחד", "שני מסלולים"), from three a number.
 - **Financial terms:** the first time a term from the glossary appears on a page, it can be tapped for its one-line explanation (`docs/glossary.md`), wherever on the page that first use falls, a calculator's or chart's words and a word behind a prefix such as וכשה included (a reader met קרנות סל and מק״מ unexplained in a page's first lines while their marks sat lower, 2026-11-07; the government bond's calculator said עמלה above its mark, and a mark sat on the verb מנפיק, the same day). A term is marked where it is a term: not on a verb or an everyday word that shares its spelling. Use the official Hebrew term from the glossary, not a synonym.
@@ -42,10 +42,10 @@ readers are judged by fresh readers (CLAUDE.md). Where a choice below names the 
 
 ## 3. Numbers, sources and their state
 
-- **"הזנתם"** for a value the person entered: the key, the number sheet's line, the state of a field and the diff row. It replaced "הוזן על ידך", which is second person singular masculine and broke the address rule.
+- **"הזנתם"** for a value the person entered: the key, the number sheet's line and the diff row. A chart's field says nothing of the kind: what the reader types there looks the same as its default (founder, 2026-11-08, guidelines/charts.md). It replaced "הוזן על ידך", which is second person singular masculine and broke the address rule.
 - **"לפי החברה"** for a figure from a bank's or managing company's document. It replaced "מוסדי", which in Israeli finance reads as "institutional", that is, more authoritative. Its one-line explanation is unchanged.
-- **One word per source strength**, the same in every place: "מקור ראשי", "מקור ראשי (עותק)" (the tag after a date: "עותק"), "לפי החברה", "מקור משני" or "משני", "שאלה פתוחה". "ראשוני" and "פתוח" are not used. A figure or rate that rests on the site's own reading of official texts (the engine's `reading` label, a rate the law sets whose reach to this product no official text states) says **"קריאה של האתר"** (`ReadingTag`), never "מקור משני": a secondary source is a press article or a forum post, and a reading is not one (2026-11-07). A primary source read on a mirror says "עותק", the plain word, not "מירור"; the popover names the host, and a law read in a copy is "נוסח החוק (עותק)".
-- **"פרמטר של האתר"** for a value the site sets (not "ערך של האתר"), and **"התרחיש לדוגמה"** for P-05 wherever a run rests on it, as the parameters page names it; never "תרחיש הדגמה" or "התרחיש המייצג". "הרשומה המייצגת" names the instrument P-05 names, and "מסלול מייצג" its track.
+- **One word per source strength**, the same in every place: "מקור ראשי", "לפי החברה", "מקור משני" or "משני", "שאלה פתוחה". "ראשוני" and "פתוח" are not used. A figure or rate that rests on the site's own reading of official texts (the engine's `reading` label, a rate the law sets whose reach to this product no official text states) says **"קריאה של האתר"** (`ReadingTag`), never "מקור משני": a reading is not a secondary source (2026-11-07). A copy of an official text is never a source, so no strength word names one.
+- **"פרמטר של האתר"** for a value the site sets (not "ערך של האתר"), except a chart field's starting value, which is a plain number with no tag (founder, 2026-11-08), and **"התרחיש לדוגמה"** for P-05 wherever a run rests on it, as the parameters page names it; never "תרחיש הדגמה" or "התרחיש המייצג". "הרשומה המייצגת" names the instrument P-05 names, and "מסלול מייצג" its track.
 - **"רשומה שנאספה"** for a hand-collected file under `data/`: "רשומה" stays only as this glossary term.
 - **"עוד לא דווח"** for an empty fee field in the regulator's data, everywhere: an empty field is not zero. Not "טרם דווח". **"אין"** is shown instead where a rule allows no such fee (a deposit fee on a product that may charge only from the balance, PF-06), without a caution mark.
 - **"לא נאסף" / "עוד לא נאספו"** says what the site has not collected; it never implies that a product or provider is missing or worse.
@@ -64,7 +64,6 @@ readers are judged by fresh readers (CLAUDE.md). Where a choice below names the 
 - **Text a record holds is rendered from the record, never retyped**: a rule's text with its chip (a condition, a protection line, a statement field), an exposure's name (`names.he[0]`) and its one-line explanation (`one_line_he`).
 - **A topic's Hebrew name, never a file name**, on the page; a file without a name in the map shows "נושא נוסף במאגר החוקים והכללים". The reader's names of the topics drop the "מס:" prefix.
 - **"מראה מקום"** for a citation (the founder: "הפניה" is not the Hebrew word for it).
-- **No copy "for an easy read"** (the founder): a mirror copy is not offered when the rule has an official source.
 - **"נבדק"** followed by the date, with no colon: a sentence fragment.
 - **One date, one word.** The day the site read a record (a fee record's `snapshot`) is "נאסף ב־" on every page that shows it; "נבדק ב־" promises that someone confirmed the document is still the current one, and two words for one date read as two promises (fresh readers, 2026-11-07: "נבדק" on the companies list and "נאסף" on the bank's page for the same 04.11.2026: "Is 'collected' the same as 'checked that it's still the current one'?").
 - **"שאלה פתוחה"** for a rule without a source, its code after the words; its sign is **"מנעול"** ("מסומן במנעול", not "בנעילה").
@@ -89,8 +88,8 @@ readers are judged by fresh readers (CLAUDE.md). Where a choice below names the 
 - **The three fee levels** (D4) are **"תעריפון · ממוצע שפורסם · ההצעה שלכם"**: "ממוצע שפורסם" covers the Bank of Israel's and TASE's averages without naming a regulator that TASE is not; "ההצעה שלכם" says whose number it is.
 - **"ממוצע הרשות לכל המסלולים מהסוג {סיווג}"** names what F-68 computes: the regulator's data, averaged by the site across one classification, and says it is every track of that kind, not one fund (a reader asked "which fund is this?", 2026-11-07). One measure: the mean alone, the figure the verdict and the field use; no median beside it, which read as "the fee is normal" where it equalled the fee (2026-11-07).
 - **"אין ממוצע להשוואה"** rather than "אין נתון": a number exists somewhere (the Bank's, TASE's, the ISA's); the site may not show it or has not confirmed it, and the reason says which. **"אין ממוצע שנאסף"** where the averages exist, are free to read on the publishers' pages and the site may not copy them (D20, D22).
-- **The fee verdicts** (F-62): **"שווה להתמקח"**, not "כדאי לנהל משא ומתן" (the founder's own words were "which battles to fight", and P-03's rationale says "שווה שיחת טלפון"; "להתמקח" is the everyday verb and fits a tag; not "שווה שיחה", because the verdict is about the fee, not the call). **"שווה להימנע"** keeps F-62's meaning (avoid by choosing differently), and not "להחליף": the site does not tell a person to switch. **"לא שווה את הטרחה"** says the effort is not worth it, not that the fee is fair. The page says "המסקנה", not the method's "פסק הדין".
-- **"השפעה משולבת"** for the interaction remainder on the fee page: the costs of fees taken one at a time do not add up to the total because they compound on each other; "שארית אינטראקציה" would be opaque. On the indices page the same part is **"העמלות זו על זו"** (the founder, 2026-11-04; "השפעת השורות יחד" meant nothing beside a bar). Pass 7 of the indices data renamed it "עמלות החשבון זו על זו" because readers took the grey part for the fund's, and the readers still could not read it; the founder's label was put back (2026-11-07) and the question of the label went to him. What says whose part it is meanwhile is its place, first in the account's group of the legend and the bar, and the box that opens on it says "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו." The part is an extra cost (F-61: each fee's own part is what dropping it alone saves, the others still charging), so an explanation that says the fees shrink each other's base points the wrong way (the Hebrew editor, pass 7).
+- **The fee verdicts** (F-62): **"שווה להתמקח"**, not "כדאי לנהל משא ומתן" (the founder's own words were "which battles to fight", and P-03's rationale says "שווה שיחת טלפון"; "להתמקח" is the everyday verb and fits a tag; not "שווה שיחה", because the verdict is about the fee, not the call). **"מוצר אחר במקום גבוה יותר"** says F-62's "avoid" as the fact it rests on, and the line under it names the products (2026-11-07: fresh readers read "שווה להימנע" as "שווה להיזכר" and asked "avoid what, the fund?"); not "להחליף": the site does not tell a person to switch. **"לא שווה את הטרחה"** says the effort is not worth it, not that the fee is fair. The page says "המסקנה", not the method's "פסק הדין".
+- **"תוספת משילוב עמלות החשבון"** for the interaction remainder on the indices page, **"שילוב העמלות"** where a line has no room (founder, 2026-11-08: readers could not read "העמלות זו על זו"): the name says what the part is, an addition, and where it comes from, the account's fees together; "שארית אינטראקציה" would be opaque and "השפעת השורות יחד" meant nothing beside a bar. The fee page still says **"העמלות זו על זו"** (2026-11-07: "השפעה משולבת: 0 ₪" told fresh readers nothing), with the box that opens on it: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת".
 - **"אבקש להוריד"** in the negotiation text: the first person future is gender-neutral and is what the person will say; the site's voice stays out of the text, which quotes a public number and its source and commits to nothing.
 - **"לפי העלות, מהזולה ליקרה"**, not "מהזולה לגבוהה".
 - **Short names on the fee chart:** every fee kind has a short direct label ("ניהול מחיסכון", "קנייה ומכירה", "בתוך הקרן" …), so each label is one line and none overlaps the next (the founder's screenshot); the legend and the readout keep the full names.
@@ -153,34 +152,22 @@ Written by the Hebrew editor from section 1, the word choices above, `docs/gloss
 
 ### 10.1 Register — המשלב
 
-**היעד: חבר שמבין, שבמקרה גם איש מקצוע. לא בנק, לא בלוג.**
+The register, the form words and the voice are in `guidelines/wording.md`. Only what it leaves out:
 
-- משפט אחד, רעיון אחד. קודם המסקנה, אחר כך הסיבה.
-- מילים של דיבור יומיומי משכיל: "אפשר", "אי אפשר", "עוד לא", "שווה", "כדאי", "בלי", "כמה זה עולה". לא מילות טופס: "ניתן", "אינו", "בכדי", "טרם", "לרבות", "במידה ו", "יש לציין".
-- בלי ריפוד: לא "נשמח אם", לא "שימו לב", לא סימני קריאה, לא "אנא".
-- בלי יועץ־פיננסי־בטלוויזיה: לא "אל תפספסו", לא "הטיפ שלנו", לא הבטחות. האתר מראה מספר ואומר מאיפה הוא.
-- כשהאתר מדבר על עצמו: "האתר" בגוף שלישי ("האתר לא מנחש תשואה", "האתר לא הצליח לחשב", "לפי הנתונים של האתר"), לא "אנחנו". פעולה שנעשתה נכתבת בסביל ("השדות … מולאו", "מה שהזנתם נשמר", "ההעתקה לא הצליחה"). כשהאתר מדווח על עבודה שהוא עושה עכשיו: יחיד ("טוען…", "בודק…").
 - כשהאדם מדבר (טקסט להעתקה, כפתור בחירה): גוף ראשון יחיד ("אבקש להוריד", "בחרתי בזה"). זה המקום היחיד שבו יש "אני" באתר.
 
-#### מה נשמע "מתורגם מאנגלית" כאן, ואיך מתקנים
+#### מה נשמע "מתורגם מאנגלית" כאן, מעבר לטבלה שבהנחיה
 | סימן | דוגמה | תיקון |
 |---|---|---|
-| "לא עדיין" (not yet) | "לא עדיין: החשבון השני נזיל מ־…" | "עוד לא: …" |
-| "חופשי ממס" (tax-free) | "העברה … חופשית ממס" | "פטורה ממס" |
 | "ההתנהגות שלכם" (your behaviour) ככותרת קטע | כותרת קטע הפעולות בחודש והערוץ | "הפעילות שלכם" |
 | "איפה ש" ליעד (where you send it) | "עובר רק איפה שאתם שולחים אותו" | "לאן שאתם שולחים אותו" |
-| "קלט" (input) | "חסר קלט: {שדה}" | "חסר נתון: {שדה}" |
-| "זה לא" + שם עצם נקבה (it's not a) | "זה לא הורדה" | "זו לא הורדה" |
-| "מהזולה לגבוהה" (cheapest to highest) | כותרת טבלת הספקים | "מהזולה ליקרה" |
 | "X עד Y" כשני מספרים שאינם טווח | "עברה את מסנן הירידה: 20% עד 30%" | "צופים 20%, מסכימים לספוג עד 30%" |
-| "ניתן / לא ניתן" כפועל סתמי | "לא ניתן לומר", "לא ניתנים לשינוי" | "אי אפשר לומר", "אי אפשר לשנות" |
 | "סף תיקו", "מכריע", "שקולה" | — | אלה טובים: מילים של עברית מדוברת, לא תרגום. |
 
 ### 10.2 Address form — צורת הפנייה
 
-**הכלל העומד נשאר: ציווי רבים ("הזינו", "בחרו", "הקישו") או ניסוח סתמי ("אפשר", "יש", "כדי לחשב צריך"). לעולם לא "אתה"/"את", לא "אתה יכול", לא "שלך".**
+The rule (plural imperative or impersonal, never "אתה" or "את") is in `guidelines/wording.md`. Beyond it:
 
-- "אתם"/"שלכם"/"לכם" ברבים מותר ונכון ("התשואה שאתם מניחים", "נשאר לכם"). זהו הגוף השני של האתר, והוא נייטרלי־מגדר בפועל.
 - "מי ש…" + יחיד זכר סתמי בעובדות על אדם כללי מותר ("מי שההכנסה השנתית שלו עוברת סף"); זה לא פנייה לקורא. אבל צריך התאמה במספר: "למי שנחשב עמית מוטב", לא "למי שנחשבים עמית מוטב".
 - ערך שהאדם הזין: "הזנתם", לא "הוזן על ידך" ("על ידך" הוא גוף שני יחיד זכר ומפר את הכלל).
 - בתוויות וצ'יפים אפשר גם צורת הסתמי בלי נושא: "לא הוזן", "נבדקו 7 אפשרויות".
@@ -221,38 +208,35 @@ Written by the Hebrew editor from section 1, the word choices above, `docs/gloss
 | המילה לפעולה בבורסה | **פעולה** (לאדם), **פקודה** (בהסבר הטכני) | | "פעולות בחודש", "כל הפקדה מתחלקת ל־3 פקודות" |
 | הפער בין קרן למדד | **הפרש עקיבה** (מילון) | | |
 | הנתונים של בנק ישראל | **לוח הנתונים של בנק ישראל** | "דשבורד" | |
+| עמלה שמוצר במקום גבוה יותר בהשוואה לא גובה, או גובה פחות | **מוצר אחר במקום גבוה יותר**, ושמו בשורה שאחריו | "שווה להימנע" | נקרא "שווה להיזכר", ולא אמר ממה להימנע (קוראים, 2026-11-07) |
+| החלק של עלות העמלות שלא שייך לעמלה אחת | **תוספת משילוב עמלות החשבון** בעמוד המדדים (**שילוב העמלות** כשאין מקום); **העמלות זו על זו** בעמוד העמלות; עם ההסבר לידו | "השפעה משולבת" | לא אמר לקוראים מה משתלב (2026-11-07); "העמלות זו על זו" לא נקרא בעמוד המדדים (2026-11-08) |
 
 ### 10.4 Punctuation and numbers — פיסוק ומספרים
 
-- **מקף (־, U+05BE maqaf) בלי רווחים** בין אות שימוש למספר, לתאריך, לקוד או למילה לטינית: ב־2026, ל־10 שנים, מ־1,000 ₪, ה־API, ב־USD, נכון ל־25.10.2026. לפני מילה עברית אין מקף: "נכון לספטמבר 2026", "להסתיר". כשהערך שמתמלא יכול להיות גם לטיני וגם עברי (שם קרן, שם ספק), הרכיב מחליט בזמן ריצה. כך גם תאריך: חודש שמסמך מדפיס לבד נכתב במילים, ולכן "תעריפון מנובמבר 2025" אבל "תעריפון מ־01.10.2026". הכלל נאכף ברכיב, לא בטקסט: תאריך עובר דרך `When` של הקיט עם המילים שלפניו ב־`lead`, ומספר דרך `NumAfter` או `LeadTail` עם `text` (מבחן 21 ב־`kit/guards.test.ts`, 2026-11-07, אחרי "תעריפון מ־נובמבר 2025").
-- **גרשיים (״) בראשי תיבות**, לפני האות האחרונה: אג״ח, מק״מ, עו״ש, ני״ע, ארה״ב, חו״ל. גרש (׳) בקיצור: מס׳, צ׳יפ. שם שמגיע מהנתונים (חברה, מסלול, מסמך) כתוב לרוב עם " של ASCII כמו שהמקור מדפיס אותו ("בע"מ"), ולכן כל שם כזה עובר דרך `gershayim` של הקיט במקום שבו הוא מוצג. הכלל נאכף ברכיב ובבדיקה: `scripts/hebrew-quotes.mjs` נכשל אחרי הבנייה על " חדש בין שתי אותיות עבריות בעמודים הבנויים, והשאריות רשומות בשמן ב־`hebrew-quotes-leftovers.json`, רשימה שרק מתקצרת (2026-11-07, אחרי "בע"מ" בשמות החברות).
-- **מירכאות:** ״…״ (גרשיים משני הצדדים) בכל ציטוט של שם או תווית: לפי המטרה ״עתודה נזילה״, מסומן ״אי אפשר להשוות״. לא " " של ASCII ולא “ ”.
-- **₪** אחרי המספר עם רווח: 1,234.50 ₪. **%** צמוד למספר: 0.8%. שני הסימנים מגיעים מהרכיב, לא מהטקסט; בטקסט חופשי כותבים "אחוז" ("אחוז מהשווי").
-- **תאריכים** DD.MM.YYYY ("22.10.2026"); חודש במילים כשהנתון חודשי ("ספטמבר 2026").
-- **טווח:** "0% עד 10%", "8 שנים עד 12 שנים" — במילה "עד", לא בקו מפריד. שני מספרים שאינם טווח לא נכתבים "X עד Y".
+What `guidelines/wording.md` (Numbers and punctuation) doesn't already say:
+
+- **מקף** (הכלל הבסיסי בהנחיה): לפני מילה עברית אין מקף: "נכון לספטמבר 2026", "להסתיר". כשהערך שמתמלא יכול להיות גם לטיני וגם עברי (שם קרן, שם ספק), הרכיב מחליט בזמן ריצה. כך גם תאריך: חודש שמסמך מדפיס לבד נכתב במילים, ולכן "תעריפון מנובמבר 2025" אבל "תעריפון מ־01.10.2026". הכלל נאכף ברכיב, לא בטקסט: תאריך עובר דרך `When` של הקיט עם המילים שלפניו ב־`lead`, ומספר דרך `NumAfter` או `LeadTail` עם `text` (מבחן 21 ב־`kit/guards.test.ts`, 2026-11-07, אחרי "תעריפון מ־נובמבר 2025").
+- **גרשיים** (הכלל הבסיסי בהנחיה): גרש (׳) בקיצור: מס׳, צ׳יפ. שם שמגיע מהנתונים (חברה, מסלול, מסמך) כתוב לרוב עם " של ASCII כמו שהמקור מדפיס אותו ("בע"מ"), ולכן כל שם כזה עובר דרך `gershayim` של הקיט במקום שבו הוא מוצג. הכלל נאכף ברכיב ובבדיקה: `scripts/hebrew-quotes.mjs` נכשל אחרי הבנייה על " חדש בין שתי אותיות עבריות בעמודים הבנויים, והשאריות רשומות בשמן ב־`hebrew-quotes-leftovers.json`, רשימה שרק מתקצרת (2026-11-07, אחרי "בע"מ" בשמות החברות).
+- **מירכאות:** לא " " של ASCII ולא “ ”.
+- **₪ ו־%** מגיעים מהרכיב, לא מהטקסט; בטקסט חופשי כותבים "אחוז" ("אחוז מהשווי").
 - **שלוש נקודות (…):** תו אחד (U+2026), צמוד למילה, רק בדיווח על פעולה שנמשכת ("טוען…", "בודק…"). לא בסוף משפט רגיל.
-- **נקודה בסוף משפט**, גם כשהוא בן שתי מילים ("לא הוזן."). בלי נקודה: תוויות, כותרות, צ'יפים, כפתורים, שורות ברשימה של פריטים.
 - **נקודתיים** פותחות פירוט או סיבה ("חסום: שאלה פתוחה", "לא נבדק: אין מטרה שמורה"); **נקודה־פסיק** מחברת שני משפטים קצרים שהם עובדה אחת ("השאלות נסגרו; נותר: …").
 - **פסיק לפני "ולכן", "אבל", "כי"** כשאחריהם משפט שלם.
 - **רשימה בתוך משפט:** פסיקים, ו׳ החיבור רק לפני הפריט האחרון ("מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים").
 - **הקוד של כלל/שאלה אחרי המילים**, לא בסוגריים: "שאלה פתוחה TXG OQ4". קודים של החלטות־מוצר (D11, D20) אינם משהו שהקורא יכול לפתוח ולא שייכים לממשק.
 - **מספרים ומגדר:** "שני מספרים", "שתי החזקות", "עד ארבע [חשיפות] בבת אחת", "אחת־אחת". **צורת זוגי** חובה ל־2 בשנה/חודש/יום: שנתיים, חודשיים, יומיים; "{n} חודשים" צריך מסלול נפרד ל־2 (סעיף 1, Intl.PluralRules). אחד/שתיים במילים ("מסלול אחד", "שני מסלולים"), מ־3 בספרות.
 - **מילה אחרי מספר:** "ב־10 שנים", "4 ימי עסקים", "12 חודשים"; לא "10 שנה".
-- **מספר סופר את מה שהמילה שלו אומרת, בכל מקום באותו אופן:** "אחת מ־3 הקרנות השקולות" סופר קרנות, ולא שורות או זוגות; קרן שמופיעה בשתי שורות (בתל אביב ובחו״ל) נספרת פעם אחת, בצ'יפים של הסינון, בכותרות הקבוצות ובכפתור "עוד". כשבאותו אזור נספרים גם זוגות וגם קרנות, שני המספרים נאמרים יחד ("אחד מ־5 הזוגות הזולים ביותר לתוכנית שלכם, שבהם 3 קרנות שונות"; סבב 7 של עמוד המדדים, 2026-11-07: "5 הזוגות" ליד "3 השקולות").
-- **המספר שהחישוב משתמש בו עומד ליד המספר המפורסם כשהם שונים:** "0.3% משתנים · ‎0.265% שנגבו בפועל בממוצע בשנים 2022 עד 2025", והגיליון שלו מפרט את השנים ואת המקור (סבב 7: הכרטיס הראה 0.3% והחישוב השתמש ב־‎−0.215%). זה הכלל של סעיף 1, "איזה מהם החישוב משתמש בו".
-- **ממוצע של פריט אחד נקרא בשמו:** נתון שנשען על שנה אחת אומר "ב־2025", לא "בשנה · שנה אחת"; "בשנה" ו"בממוצע" רק כשיש יותר משנה אחת (קוראים טריים, עמוד המדדים, 2026-11-07: "per year about a single year"). **גיליון של נתון אומר את היחידה כמו השורה שלו:** ראש הגיליון של פער של שנה אחת אומר "ב־2025" כמו השורה, לא "בשנה" (בדיקה עצמאית 3, 2026-11-07); בדיקה ב־`render.test.ts` מחזיקה את ראש הגיליון ואת השורה יחד.
 
 ### 10.5 Buttons, chips and labels — כפתורים, צ'יפים ותוויות
 
-- **כפתור שעושה פעולה: שם פעולה** (שם עצם) או **שם פועל** (ל־): "שמירה", "מחיקה", "העתקה", "ביטול", "לשמור את ההשוואה", "להציג עוד". לא ציווי ("שמרו") — הציווי שמור למשפטי הנחיה בגוף הטקסט. שתי הצורות חיות באתר זו לצד זו; הכלל: **כפתור קצר של פעולה אחת ← שם עצם; כפתור שמתאר תוצאה או כולל מושא ← שם פועל**.
-- **קישור ליעד: ל־ + היעד**: "לתוצאה", "לטופס המטרה", "לעמוד המדריך", "לכל הפרמטרים". הקישור מבטיח רק את מה שיש ביעד: "לעמוד של עו״ש ופיקדון לשנה" מוביל לעמוד שמדבר על שניהם, ודלת "להבין סוג של חיסכון" לא מובילה סתם לרשימה (המייסד, 2026-10-26). עמוד שהוא חלק משלם מקשר גם לשלם (המייסד, 2026-10-24: "why is there no 'all rules' link").
-- **כל תווית אומרת מה היא או מה היא עושה.** כותרת עמודה, תג, צ'יפ או קישור מובנים בלי הסבר בצד: "בחירה של האתר", "השפעת השורות יחד" ו"שינוי התשובה" לא אמרו לקורא כלום, ושמות של משתנים (a, b) לא מגיעים לעמוד (המייסד, 2026-11-04: "מזה 'השפעת השורות יחד'?"; 2026-11-05: "what is שינוי התשובה??").
-- **כותרת קוראת לגוש בשם של מה שהוא עושה:** כרטיס שקובע מטרה שואל "מה המטרה שלכם?" ולא "מה השאלה שלכם?" (סעיף 2); כותרת שהיא שאלה נשאלת רק כשהגוש עונה עליה.
-- **כפתור שמכניס את האדם למצב של בחירה: שם פועל עם מושא**: "להזין ריבית אחרת", "לחזור לריבית שפורסמה", "להחליף מוצר".
+What `guidelines/wording.md` (By kind of text) doesn't already say:
+
+- **כפתור** (שם פעולה או שם פועל, בהנחיה): הציווי שמור למשפטי הנחיה בגוף הטקסט. שתי הצורות חיות באתר זו לצד זו; הכלל: **כפתור קצר של פעולה אחת ← שם עצם; כפתור שמתאר תוצאה או כולל מושא ← שם פועל**.
+- **קישור** (ל־ + היעד, בהנחיה): "לעמוד של עו״ש ופיקדון לשנה" מוביל לעמוד שמדבר על שניהם, ודלת "להבין סוג של חיסכון" לא מובילה סתם לרשימה (המייסד, 2026-10-26). עמוד שהוא חלק משלם מקשר גם לשלם (המייסד, 2026-10-24: "why is there no 'all rules' link").
+- **תווית שלא אמרה כלום** (הכלל בהנחיה): "בחירה של האתר", "השפעת השורות יחד" ו"שינוי התשובה" לא אמרו לקורא כלום, ושמות של משתנים (a, b) לא מגיעים לעמוד (המייסד, 2026-11-04: "מזה 'השפעת השורות יחד'?"; 2026-11-05: "what is שינוי התשובה??").
 - **קישור־שאלה בשורת פריט: שאלה קצרה + ציווי**: "קיבלתם הצעה? הזינו אותה".
-- **אורך:** כפתור עד 3 מילים; צ'יפ עד 4; תווית שדה עד 7 (הארוכות שבאתר, "הירידה הגדולה ביותר שתסכימו לספוג בדרך למטרה", מוצדקות בסעיף 6 ונשארות).
+- **אורך** (המגבלות בהנחיה): התוויות הארוכות שבאתר, "הירידה הגדולה ביותר שתסכימו לספוג בדרך למטרה", מוצדקות בסעיף 6 ונשארות.
 - **צ'יפ מצב:** בינוני סביל נקבה, מתאים ל"אפשרות"/"חשיפה"/"קרן" ("דורגה", "נפסלה", "הושוותה"); ברבים לפי המנייה ("3 דורגו"). זכר רק כשהשם המונה זכר ("דורג 1 מתוך 7 ספקים", "מסלול: מתאים").
-- **תווית של צ'יפ** לא חוזרת על היחידה שכבר יש בערך שלו: "תקופה 10 שנים", לא "שנים 10 שנים" (המייסד ראה את הכפילות בעמוד ההשקעה במדד; כל שורות הצ'יפים אומרות "תקופה").
 - **תווית של ערך:** שם עצם בלבד, בלי נקודתיים כשהערך בשורה נפרדת ("יתרה", "סיווג"); עם נקודתיים כשהערך ממשיך באותה שורה ("מפוקח: {רגולטור}", "סיווג:"). תוויות שורה בגיליון המקור הן שמות עצם, בלי מקף תלוי ("בתוקף מתאריך", "בתוקף עד").
 - **לטינית בכותרות ותוויות:** כפי שהמקור כותב: S&P 500, W-8BEN, ISIN, PDF, gov.il. שמות מותגים לא מתורגמים ולא מתועתקים ("iShares"). קודים של רשויות באותיות גדולות (CMA, ISA) נשארים בקוד בלבד; על המסך השם העברי. פורמט הקובץ של קישור בא בסוף, בסוגריים ובבידוד משמאל לימין ("לתעריפון (PDF)").
 - **שם לקורא מסך (לא נראה):** תיאורי ובפעולה ברורה: "להגדיל את הגיל בשנה", "עוד פעולה בחודש", "מצב ההשוואה". לא שם של אייקון.

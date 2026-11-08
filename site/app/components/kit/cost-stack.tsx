@@ -11,11 +11,12 @@
 // the amounts beside it fell 2 to 75 ₪ short of the total): inside the part where it fits, else, on a `md` bar, under the bar at the part's
 // place, with its colour; and always in the box. The rounding that makes the amounts add up to the total never goes to a part whose amount
 // is not written.
-import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { useGlidingSeries, type GlideSeries } from "./chart-glide";
 import { useChartPick } from "./chart-interact";
+import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { cx } from "./cx";
 
 export interface CostPart {
@@ -98,8 +99,8 @@ export function writtenAmounts(parts: readonly CostPart[], total?: number, group
   return wholesOf(parts, total ?? Math.round(parts.reduce((a, p) => a + p.value, 0)), w, groups).map((x, i) => (w[i] ? x : 0));
 }
 
-/** The px an amount written under the bar takes: its colour mark, its figures at about 7 px each, and a little air. */
-const labelPx = (text: string) => 8 + 4 + text.length * 7 + 8;
+/** The px an amount written under the bar takes: its colour mark, its 13 px figures (measured, chart-text.ts), and a little air (`air`). */
+const labelPx = (text: string, air = 8) => 8 + 4 + Math.ceil(chartTextWidth(text, CHART_TEXT_PX)) + air;
 
 /**
  * Where each amount written under the bar starts, in px from the bar's start: under its part, pushed along so none overlaps the one before,
@@ -112,8 +113,9 @@ export function placeLabels(at: readonly number[], widths: readonly number[], ro
   return pos;
 }
 
-/** The part colours dark enough that an amount inside them is written in light ink. */
-const DARK_FILLS: ReadonlySet<string> = new Set(["bg-chart-cost-other"]);
+/** The part colours on which an amount inside reads better in light ink. */
+// the tax's rose too (2026-11-08): near-black on it read at 3.55:1, white at 4.73:1
+const DARK_FILLS: ReadonlySet<string> = new Set(["bg-chart-cost-other", "bg-chart-tax"]);
 
 /** A part's width is at least a sliver while its bar has anything, and a part this thin has no edge of its own. */
 const THIN = 0.003;
@@ -123,11 +125,13 @@ const SLIVER = 0.01;
 /**
  * `scale`: the total that fills the whole width. `size`: `sm` for a list row, `md` for a figure of its own. `label` is the bar's spoken
  * summary; the figures beside it are the caller's. `highlight`: the legend item set apart, on every bar it is compared with.
- * A `sm` bar sits in a row that picks the row on a tap, so it answers a mouse only. A part of the bar that is not in `parts` any more
+ * A `sm` bar sits in a row that picks the row on a tap: a mouse's click is left to the row (pointing shows the box), and a finger's tap
+ * shows the part's box and still picks the row (2026-11-08: on a phone a tap showed nothing of the part). A part of the bar that is not in `parts` any more
  * keeps its place and shrinks to nothing. `total`: the whole-shekel total the caller writes beside the bar; the amounts written in the parts,
  * under the bar and in its box are whole shekels that add up to it (pass 5 readers: 693 + 354 + 719 + 5,555 = 7,321 beside 7,323). Without
  * it, to the parts' own rounded sum. A `md` bar keeps a line under it, at one height, for the amounts too narrow to write inside; the root
- * carries the total and the amounts written (`data-total`, `data-amounts`), which a render test holds together on the pages.
+ * carries the total and the amounts written (`data-total`, `data-amounts`), which a render test holds together on the pages. The chart
+ * check (site/scripts/chart-check) finds it by `data-chart` and reads the bar's start (`data-zero`) and its parts (`data-mark`).
  */
 export function CostStack({ parts, scale, size = "md", label, highlight, total: writtenTotal, groups }: { parts: CostPart[]; scale: number; size?: "sm" | "md"; label: string; highlight?: string | null; total?: number; /** A group's whole-shekel figure written elsewhere on the page (`{ account: 1043 }`): its parts' amounts add up to it. */ groups?: Readonly<Record<string, number>> }) {
   const pick = useChartPick();
@@ -172,13 +176,17 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   const firstLive = live.indexOf(true);
   const lastLive = live.lastIndexOf(true);
   const starts = widths.map((_, i) => widths.slice(0, i).reduce((a, w) => a + w, 0));
-  // the text inside each part, where it fits: 11 px figures, about 7 px a character, and a little air at both sides
+  // the text inside each part, where it fits: 13 px figures at their measured width (chart-text.ts) and 5 px of air at both sides; a
+  // caller's own text is taken as six figures wide
   const inner = list.map((p, i) => (p.inside === true ? amountOf(p, i).toLocaleString("he-IL") : p.inside));
-  const fits = list.map((_, i) => widths[i]! * px >= (typeof inner[i] === "string" ? (inner[i] as string).length : 6) * 7 + 10);
+  const fits = list.map((_, i) => widths[i]! * px >= chartTextWidth(typeof inner[i] === "string" ? (inner[i] as string) : "000000", CHART_TEXT_PX) + 10);
   // on a `md` bar, an amount too narrow for its part is written under the bar, at the part's place
   const under = size === "md" ? list.map((p, i) => i).filter((i) => list[i]!.inside === true && shows(i) && !fits[i]) : [];
   const underText = under.map((i) => amountOf(list[i]!, i).toLocaleString("he-IL"));
-  const underAt = placeLabels(under.map((i) => (starts[i]! + widths[i]! / 2) * px), underText.map(labelPx), px);
+  // where the amounts with their air don't fit side by side under the bar, they give up the air: placed with it, the last ones were pushed
+  // back over each other (2026-11-08, the chart check: at 320 px the kit's "693" ran its colour mark into "3")
+  const underAir = underText.reduce((a, t) => a + labelPx(t) + 4, -4) <= px ? 8 : 0;
+  const underAt = placeLabels(under.map((i) => (starts[i]! + widths[i]! / 2) * px), underText.map((t) => labelPx(t, underAir)), px);
 
   // a tap outside lets go of a part kept by a tap
   const pinned = pick.pinned;
@@ -195,8 +203,8 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   const activeAt = list.findIndex((p) => p.name && pick.active === p.id && shows(list.indexOf(p)));
   const boxRows = list.map((p, i) => ({ p, i })).filter(({ p, i }) => p.name && shows(i));
   return (
-    <div ref={root} className="relative w-full min-w-0" data-total={shownSum} data-amounts={list.map((_, i) => (shows(i) ? wholes[i] : null)).filter((x) => x !== null).join(",")}>
-      <div role="img" aria-label={label} className={cx("flex", size === "sm" ? "h-3" : "h-7")}>
+    <div ref={root} className="relative w-full min-w-0" data-chart="cost-stack" data-total={shownSum} data-amounts={list.map((_, i) => (shows(i) ? wholes[i] : null)).filter((x) => x !== null).join(",")}>
+      <div role="img" aria-label={label} className={cx("flex", size === "sm" ? "h-3" : "h-7")} data-zero="">
         {list.map((p, i) => {
           const w = widths[i]!;
           const named = !!p.name && p.value > 0;
@@ -204,10 +212,10 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
           return (
             <span
               key={p.id}
-              {...(named ? pick.bind(p.id, size === "md") : {})}
+              {...(named ? pick.bind(p.id, size === "md" ? true : "touch") : {})}
               className={cx(
-                "relative flex shrink-0 items-center justify-center text-[11px] font-semibold tabular-nums whitespace-nowrap",
-                // the remainder's grey is dark (pass 7: re-picked through the palette validator), and its amount is written in light ink
+                "relative flex shrink-0 items-center justify-center text-xs font-semibold tabular-nums whitespace-nowrap",
+                // the remainder's grey is dark (pass 7: re-picked through the palette validator) and the tax's rose mid-dark: their amounts are written in light ink
                 DARK_FILLS.has(p.className) ? "text-foreground" : "text-background",
                 live[i] && i !== lastLive && "border-e border-card",
                 i === firstLive && "rounded-s-sm",
@@ -219,6 +227,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
                 (highlight ? highlight !== (p.legendId ?? p.id) : pick.active && pick.active !== p.id) && "opacity-20",
               )}
               style={{ width: `${w * 100}%` }}
+              data-mark="part"
             >
               <span className="overflow-hidden">{text}</span>
             </span>
@@ -237,7 +246,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
                 <span className={cx("absolute top-0 h-1 w-px bg-muted-foreground", dim && "opacity-20")} style={{ insetInlineStart: (starts[i]! + widths[i]! / 2) * px }} />
                 <span
                   {...(p.name ? pick.bind(p.id, true) : {})}
-                  className={cx("absolute top-1 flex items-center gap-1 text-[11px] leading-4 text-muted-foreground tabular-nums whitespace-nowrap transition-opacity duration-[var(--duration-fast)]", p.name && "cursor-pointer", dim && "opacity-20")}
+                  className={cx("absolute top-1 flex items-center gap-1 text-xs leading-4 text-muted-foreground tabular-nums whitespace-nowrap transition-opacity duration-[var(--duration-fast)]", p.name && "cursor-pointer", dim && "opacity-20")}
                   style={{ insetInlineStart: underAt[k] }}
                 >
                   <span className={cx("inline-block size-2 rounded-[2px]", p.className)} />
@@ -254,10 +263,25 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   );
 }
 
-/** The box of a bar as a whole: every part's name and amount, the one pointed at with its share, what it is and its source, then the total. */
+/**
+ * The box of a bar as a whole: every part's name and amount, the one pointed at with its share, what it is and its source, then the total.
+ * It stands from one end of the bar and is moved along, before paint, so it stays on the screen (2026-11-08: a list row's bar on a 320 px
+ * phone is narrower than the box, which ran 65 px past the screen's edge once a tap showed it).
+ */
 function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; /** Whole shekels, of the parts that add up to the total. */ amount: number }[]; active: string; share: number; total: number; toStart: boolean }) {
+  const box = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    el.style.transform = "";
+    const r = el.getBoundingClientRect();
+    const room = document.documentElement.clientWidth;
+    const edge = 8;
+    const dx = r.left < edge ? edge - r.left : r.right > room - edge ? room - edge - r.right : 0;
+    if (dx) el.style.transform = `translateX(${dx}px)`;
+  });
   return (
-    <span className={cx("absolute bottom-full mb-1 z-20 pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "end-0" : "start-0")}>
+    <span ref={box} className={cx("absolute bottom-full mb-1 z-20 pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "end-0" : "start-0")}>
       {rows.map(({ part, amount }) => (
         <span key={part.id} className="flex flex-col">
           <span className={cx("flex items-baseline gap-1.5", part.id === active ? "font-semibold" : "text-muted-foreground")}>

@@ -4,9 +4,9 @@ The founder: "when something in the site bothers me, i dont want you to simply f
 understand from it. understand whats the thing that annoys humans about it, and be able to flag it next time. (but no
 overfitting yeah?)"
 
-CLAUDE.md (ground rule 7 and the work order) makes this the first step for every problem he flags. It sets no bar of
+Since 2026-11-08 this is no longer the first step for every problem he flags (`guidelines/working.md`: a flaw is fixed, then he is asked about a site-wide check). It sets no bar of
 its own: whether the reviewer is adopted as the judge is `metric.md`'s bar, and whether it becomes a first pass on
-every site change is CLAUDE.md's.
+every site change is `guidelines/working.md`'s.
 
 ## When the founder flags something
 
@@ -35,7 +35,7 @@ every site change is CLAUDE.md's.
    replaces the weakest; every few rounds, an instruction that no longer adds a held-out catch is removed. Every
    version is kept with its scores in `versions/`.
 7. **Then fix the site**, in the shared piece and every place of the same kind, and teach the builders and the checks
-   (ground rule 7): the reason goes, as one general rule, into the doc they build from (`docs/design-system.md`,
+   (guidelines/working.md): the reason goes, as one general rule, into the doc they build from (`docs/design-system.md`,
    `docs/copy.md`), and a guard or a script enforces it where it can be named.
 
 A catch in step 2 needs no change to the instructions; it is the evidence that the reviewer already sees what a person

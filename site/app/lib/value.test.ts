@@ -1,6 +1,6 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import { compactFee, computed, depositFeeNoneByRule, expandFee, isWeak, ownBy, ownEach, staleCma, staleCmaFee, type SiteValue } from "./value";
+import { compactFee, computed, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -25,7 +25,6 @@ describe("isWeak", () => {
   });
   it("primary and entered figures are never weak", () => {
     expect(isWeak(fig("primary"))).toBe(false);
-    expect(isWeak(fig("primary-mirror"))).toBe(false);
     expect(isWeak(fig("entered", { state: "entered" }))).toBe(false);
   });
   it("a computed figure is weak by its weakest input", () => {
@@ -97,5 +96,23 @@ describe("staleCmaFee waits for the January rows that carry the next year's aver
     expect(staleCmaFee("2025-12-31", "2026-11-03")).toBeNull();
     expect(staleCmaFee("2025-12-31", "2027-02-28")).toBeNull();
     expect(staleCmaFee("2025-12-31", "2027-03-01")).toEqual({ since: "2025-12-31", cadence: "yearly" });
+  });
+});
+
+describe("differenceOf and sumOf (founder, 2026-11-08: a figure's inputs are what its value is worked out from)", () => {
+  const today = "2026-11-08";
+  const a = entered(500, "nis", today);
+  const b = entered(200, "nis", today);
+  it("work the value out from the figures they list, and list only those", () => {
+    const d = differenceOf(["א", a], ["ב", b], "F-91", { today });
+    expect(d.value).toBe(300);
+    expect(Object.keys(d.computed_from!.inputs)).toEqual(["א", "ב"]);
+    const s = sumOf({ א: a, ב: b }, "F-91", { today });
+    expect(s.value).toBe(700);
+    expect(Object.keys(s.computed_from!.inputs)).toEqual(["א", "ב"]);
+  });
+  it("are null when a figure is not a number", () => {
+    expect(differenceOf(["א", a], ["ב", { ...b, value: null }], "F-91", { today }).value).toBeNull();
+    expect(sumOf({}, "F-91", { today }).value).toBeNull();
   });
 });

@@ -40,10 +40,10 @@ Exercises F-21 linked branch (TXI-05, TXI-02), F-03.
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S03): Real V_T/I_T = 102,724.37; nominal V_T = 112,249.70; fees 0; tax during 963.88 (25% of real interest at each maturity, linkage exempt); tax at exit 0. Subject to Q3 (income not given; TXI-20 assumed not to apply).
 
 ### S04 Prime-linked monthly deposit (15% bucket by reading)
-Exercises F-21 partly-linked branch and its "reading" label (TXI-04, TXI OQ2).
+Exercises F-21 partly-linked branch and its "reading" label (TXI-04).
 - As S01 but rate = prime 4.75% minus 1.4% (BANK-25), monthly reset; prime constant over the horizon.
 - Expected: _(founder)_ plus the label "tax bucket: Tax Authority reading, TXI-04".
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S04): Real V_T/I_T = 85,771.83; nominal V_T = 93,725.19; fees 0; tax during 1,064.89; tax at exit 0; label "tax bucket: Tax Authority reading, TXI-04" (strength: the rule file's own reading, TXI OQ2). Subject to Q1.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S04): Real V_T/I_T = 85,771.83; nominal V_T = 93,725.19; fees 0; tax during 1,064.89; tax at exit 0; label "tax bucket: Tax Authority reading, TXI-04" (strength: the rule file's own reading). Subject to Q1.
 
 ### S05 Current-account credit balance
 Exercises F-26, F-60 input side.
@@ -85,7 +85,7 @@ Exercises F-25 linked (TXI-14, GOV-11, GOV-12), F-03.
 ### S10 CPI-linked bond under deflation (no floor)
 Exercises GOV-12 both directions and G-07 (no loss).
 - As S09 with π = −1% for the whole horizon.
-- Expected: _(founder)_ with the flags "deflation treatment open, TXI OQ6" and "real loss not carried, G-07".
+- Expected: _(founder)_ with the flag "real loss not carried, G-07"; the deflation treatment, first expected as an open flag, is TXI-25 since 2026-10-31.
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S10): Real V_T/I_T = 102,622.17; nominal V_T = 99,574.19; fees: trade 456.34, custody 1,190.84; tax during 1,403.43 (25% of the reduced coupons, TXI-25); tax at exit 0.00; flag "real loss not carried, G-07".
 
 ### S11 Daily money-market fund at a bank
@@ -295,7 +295,7 @@ Exercises F-40 `max(0, real)`, G-07.
 - Goal: 100,000 now in the S11 money-market fund; horizon 2 years.
 - Market: BoI rate 1%; δ 0.18%; π = 3%.
 - Expected: _(founder)_: tax 0, nominal gain positive, real gain negative, flag.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S37): Real V_T/I_T = 95,808.94; nominal V_T = 101,643.70; nominal gain 1,643.70 (positive); real gain -4,446.30 (negative); tax 0; fees: fund 362.83; flag "real loss not carried, G-07" (TXG OQ13).
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S37): Real V_T/I_T = 95,808.94; nominal V_T = 101,643.70; nominal gain 1,643.70 (positive); real gain -4,446.30 (negative); tax 0; fees: fund 362.83; flag "real loss not carried, G-07".
 
 ### S38 Brokerage switch versus provident track switch
 Exercises F-66 (TXS-21 vs TXK-04).
@@ -395,7 +395,7 @@ Exercises F-80 tie with P-01.
 
 ## Part E: follow-ups (2026-10-26)
 
-Added 2026-10-26 with the follow-ups brief (`research/specs/2026-10-26-followups/brief.md`): the falling index (TXS-02, TXF-03), the relief from 60 on a kupat gemel lehashkaa lump sum (TXK-06), the child-savings fee after 21 at the legal cap (CS-18), and money-market custody at a non-bank member (F-14). The independent check computes them in `expected_calc.py` like the rest.
+Added 2026-10-26 with the follow-ups brief (`8dd1f013:research/specs/2026-10-26-followups/brief.md`): the falling index (TXS-02, TXF-03), the relief from 60 on a kupat gemel lehashkaa lump sum (TXK-06), the child-savings fee after 21 at the legal cap (CS-18), and money-market custody at a non-bank member (F-14). The independent check computes them in `expected_calc.py` like the rest.
 
 ### S51 Kupat gemel lehashkaa, lump sum at 60 with low other income
 Exercises F-44 with F-42 (TXK-06, TXG-04, TXG-07; the withholding and its settlement, TXK-26), A-13, A-14.

@@ -44,7 +44,7 @@ export interface GapList {
  * F-92 (d) The years a record's gap and A-07 rest on. A record whose own documents say its index counts dividends after the tax withheld
  * at source (`net`) is compared, on a foreign fund and an Israeli one alike. A gross index (`gross`) is compared only on a list where every
  * fund faces the same before-tax index (every other fund with years uses a gross series too, so no gap against a net index stands beside
- * it, ground rule 2) and the fund is an exempt Israeli fund (`incomeUntaxed`: on TA-35, TA-90 or TA-125; TXS-08, s.129ג(א)(1), exempts its
+ * it, former ground rule 2) and the fund is an exempt Israeli fund (`incomeUntaxed`: on TA-35, TA-90 or TA-125; TXS-08, s.129ג(א)(1), exempts its
  * income and gains; ETF-42 says a TA-125 fund is compared with a before-tax benchmark). Tax can still fall inside such a fund: foreign tax
  * (TXS-08 (b), TXS-15), and TA-35 admits foreign shares (ETF-44); tax withheld from REIT income, final in the fund (TXS-08 (a)). So the gap
  * is what the fund bore against that index, whatever the cause.

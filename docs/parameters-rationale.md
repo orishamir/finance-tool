@@ -2,7 +2,7 @@
 
 Each site parameter (`docs/method.md` §2.3, stored in `data/parameters/`) is a judgement, not a rule. This file records the current value of each and why it was chosen, so the page can show it under "site parameter". There are ten, P-01 to P-10, one file each.
 
-The founder set P-01 and approved P-10 himself. He asked Claude to choose the others ("do whatever you think fits") and signed them off as his. Each of those files records who chose it in `chosen_by`, and every file records the sign-off in `signed_off_by` and `signed_off_on`. Any value can be changed at any time.
+The founder set P-01 and chose P-10 himself. He asked Claude to choose the others ("do whatever you think fits"); each of those files records who chose it in `chosen_by`. Parameters are Claude's to decide and carry no sign-off (guidelines/working-with-the-founder.md; founder, 2026-11-08). Any value can be changed at any time.
 
 **Reader text.** Each number in every parameter file carries its own short Hebrew line (`rationale_he` on the value object), and the file has a general line; what the reader text may and may not say is in `docs/data-schema.md` section 3.2. Who chose a value, test scenarios, audit ids and earlier values stay in this file, never on the page, and `site/app/lib/parameter-text.test.ts` fails if they appear there.
 
@@ -66,7 +66,7 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 - **A-01, 7%:** a round starting value the person can change, not a forecast (D9).
 - **A-02, 2%:** a round starting value the site chose, like the other inputs; it is not a measured average and not a forecast, and no inflation series or target is collected for it, so its line says only that.
-- **`cash_rate`, 3.25%:** the Bank of Israel's policy rate, quoted as one published figure from its press release of 21.10.2026 (D20, D22). It is the site's assumption for cash-like options with no published rate of their own (the money-market fund, makam, the government bond); a daily money-market fund tracks it less its costs (MF-34). The bank deposit and the current account run on their banks' published rates. When it was set, every current cash figure read was below it: makam about 3.0% to 3.2% gross, renewing money-market funds' expected net yields 2.75% to 2.81% (`research/knowledge/2026-10-26-cash-rates/report.md`). It is rechecked at each Bank of Israel rate decision. On the comparison page a person can enter another rate to replace it.
+- **`cash_rate`, 3.25%:** the Bank of Israel's policy rate, quoted as one published figure from its press release of 21.10.2026 (D20, D22). It is the site's assumption for cash-like options with no published rate of their own (the money-market fund, makam, the government bond); a daily money-market fund tracks it less its costs (MF-34). The bank deposit and the current account run on their banks' published rates. When it was set, every current cash figure read was below it: makam about 3.0% to 3.2% gross, renewing money-market funds' expected net yields 2.75% to 2.81% (`research/2026-10-26-cash-rates.md`). It is rechecked at each Bank of Israel rate decision. On the comparison page a person can enter another rate to replace it.
 - **`annual_income`, 144,000 NIS a year (12,000 a month):** read only by runs that need an income: the self-employed study-fund deduction (TXH-05), the other income above which a gain is taxed from 60 (method F-42: the kupat gemel lehashkaa lump sum and the brokerage account) and the surtax threshold (F-43); the person's entered income replaces it. Chosen by Claude at the founder's request; revisable.
 
 ### Sliders
@@ -85,7 +85,7 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 - brokerage account: fund 5139282, tariff Leumi; makam: tariff Leumi; government bond: tariff Leumi, series rule GOV-11;
 - study fund (`keren-hishtalmut`): track 880, run as self-employed;
 - general pension fund: track 2158; provident fund for annuity: track 923;
-- provident fund for investing (`kupat-gemel-lehashkaa`): track 7978, Meitav's general track. It only names the class whose averages the fee page compares with (D88); the run prices the collected lists (F-80). **Chosen by Claude on 2026-11-07, after the founder's sign-off of 2026-10-23, and not signed off by him**: the entry says so (`chosen_by`, `signed_off: false`), and the fee page says plainly that the site chose the track.
+- provident fund for investing (`kupat-gemel-lehashkaa`): track 7978, Meitav's general track. It only names the class whose averages the fee page compares with (D88); the run prices the collected lists (F-80). **Chosen by Claude on 2026-11-07**: the entry says so (`chosen_by`), and the fee page says plainly that the site chose the track.
 
 **Why:** the representative instrument is the first collected record of each kind, chosen by Claude at the founder's request; revisable. It is not a recommendation: the page names the records it used, and every term shown carries that record's source. Where a page chooses among all collected records instead, the entry does not price the run:
 
@@ -151,7 +151,7 @@ P-09, `data/parameters/pinned-rules.json`. Chosen by Claude at the founder's req
 
 Importance is a judgement, so it is a parameter: the data-driven score (engine use, site use, references, figure, tier, strength) orders rules inside groups and picks the teasers, and never this list.
 
-**Selection rule:** the rule decides an outcome on the site or is documented as a common misconception or recurring question (`research/knowledge/2026-10-24-user-lens.md` section 2, the BGU 2019 study, the forum catalogue), and it has a primary or primary-mirror source with a link. Row 1 is the capital-gains rule because it is the most known and the founder's own example, not because a formula ranks it (it ranks 13th).
+**Selection rule:** the rule decides an outcome on the site or is documented as a common misconception or recurring question (`8dd1f013:research/knowledge/2026-10-24-user-lens.md` section 2, the BGU 2019 study, the forum catalogue), and it has a primary source with a link. Row 1 is the capital-gains rule because it is the most known and the founder's own example, not because a formula ranks it (it ranks 13th).
 
 **The twelve questions** (`rows`; the question is the row's `question_he`, polished by the Hebrew editor). The rules page (`/rules`) names a question when its filters match the question's rules. Each row carries `answer_he`: one sentence written only from the row's rules, every figure a `{ID:figure}` slot that the page renders as a sourced number, and the validator rejects a typed digit. An answer is prose, so it is the site's reading of the records; the lead reviews each against its records' `text_he`, and a row whose rules do not support a one-line answer says only what they say.
 
@@ -170,7 +170,7 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 | 11 | BANK-20 | money sitting in a current account: what the bank must say |
 | 12 | REG-18, REG-19 | what happens to a pension if the managing company fails |
 
-**Facts** (`facts`): the short facts of the rules page's "הידעת?" block, 36 today, each with its `text_he`. The validator checks that each rests on one general rule (never a company's term) with a primary or primary-mirror source, appears once, and carries no typed digit: every figure is a `{ID:figure}` slot over that rule.
+**Facts** (`facts`): the short facts of the rules page's "הידעת?" block, 36 today, each with its `text_he`. The validator checks that each rests on one general rule (never a company's term) with a primary source, appears once, and carries no typed digit: every figure is a `{ID:figure}` slot over that rule.
 
 **Per-guide lists** (`guide_blocks`, two or three rules each, shown as "שווה לדעת"):
 
@@ -192,11 +192,11 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 - ira-hishtalmut: TXH-09, IRA-16, IRA-18
 - ira-provident: IRA-16, IRA-17, IRA-18
 
-**Why:** a friend arriving at the rules page asks a question, not a topic; the twelve rows are the questions the research found people actually ask or get wrong, each answered by the rules that settle it, so a reader reaches a source in one tap. **Revisable:** the founder may change any row or list; a changed row is re-checked against the selection rule, and the validator fails if an id has no record or a row's first id has no primary or mirror source.
+**Why:** a friend arriving at the rules page asks a question, not a topic; the twelve rows are the questions the research found people actually ask or get wrong, each answered by the rules that settle it, so a reader reaches a source in one tap. **Revisable:** the founder may change any row or list; a changed row is re-checked against the selection rule, and the validator fails if an id has no record or a row's first id has no primary source.
 
 ## Home guide door
 
-P-10, `data/parameters/home-guide-door.json`. Approved by the founder (option A of the door sketch); revisable. No formula reads P-10.
+P-10, `data/parameters/home-guide-door.json`. Chosen by the founder (option A of the door sketch); revisable. No formula reads P-10.
 
 **Value:** the six kinds of saving the first page's guide door names as pills, in order, each opening its own guide page: keren-hishtalmut, kupat-gemel-lehashkaa, money-market-fund-daily, bank-deposit, brokerage-account, child-savings-provident. The rest are one link away in the guide list.
 

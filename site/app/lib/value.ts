@@ -21,8 +21,13 @@ export interface SiteValue extends ValueObject {
    * shown as sourced, with no "לפי החברה" caution.
    */
   own?: string;
-  /** For a site parameter: its rationale and sign-off (copy 3.8). */
-  parameter?: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null; provisional: boolean };
+  /**
+   * A doubt the record itself holds about this very figure, in Hebrew (a bank's `doubt_he`): the figure shows on an amber tint with the
+   * caution icon, and its sheet says the doubt. It is the value's own, so every place that shows the figure warns (founder, 2026-11-08).
+   */
+  doubt?: string;
+  /** For a site parameter: its rationale (copy 3.8). */
+  parameter?: { rationale: string; rationaleHe?: string | null };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
   /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell). */
@@ -40,9 +45,20 @@ export interface SiteValue extends ValueObject {
   /** For an entered value: the P-05 value it replaced, and the input key the reset button clears. */
   replaces?: SiteValue;
   resetKey?: string;
+  /**
+   * A field's value: the default a chart's field starts at, or what the reader typed in it (founder, 2026-11-08, charts.md). It shows as
+   * a plain number wherever it appears (the sentence that repeats it, a calculation sheet's input row): no site-parameter tag, no "you
+   * entered" mark, nothing that opens. The field beside it is where it changes. Its record still traces to data/parameters.
+   */
+  field?: boolean;
 }
 
-const order: Record<Strength, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
+/** A value as a field's own (`SiteValue.field`): the default a chart's field starts at, or what the reader typed in it. */
+export function asField<T extends SiteValue>(v: T): T {
+  return { ...v, field: true };
+}
+
+const order: Record<Strength, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
 
 export function weaker(a: Strength | undefined, b: Strength | undefined): Strength | undefined {
   if (!a) return b;
@@ -94,9 +110,6 @@ export function isParameter(v: SiteValue): boolean {
   return v.update_rule === "founder" && v.state === "sourced";
 }
 
-export function isProvisional(v: SiteValue): boolean {
-  return v.parameter?.provisional ?? (v.notes ?? "").startsWith("provisional");
-}
 
 /** An entered value, in the shape saved state uses (data-schema §1). */
 export function entered(value: number, unit: ValueObject["unit"], today: string, about?: string): SiteValue {
@@ -149,6 +162,29 @@ export function computed(
     ...(options.signed ? { signed: true } : {}),
     ...(options.unitText ? { unitText: options.unitText } : {}),
   };
+}
+
+/** The options of a computed value, as `computed` takes them. */
+export type ComputedOptions = Parameters<typeof computed>[4];
+
+/**
+ * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
+ * the two, and its inputs are the two, each opening its own sheet, so the sheet cannot list what the value does not rest on (founder,
+ * 2026-11-08: "go through all calculations make sure the chip displayed is correct ... share more code make less mistakes"). Null when
+ * either is not a number. `round` shapes the result (a whole shekel).
+ */
+export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
+  const [an, av] = a;
+  const [bn, bv] = b;
+  const n = typeof av.value === "number" && typeof bv.value === "number" ? av.value - bv.value : null;
+  return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
+}
+
+/** A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum. Null when any part is not a number. */
+export function sumOf(parts: Record<string, SiteValue>, formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
+  const list = Object.values(parts);
+  const n = list.length > 0 && list.every((p) => typeof p.value === "number") ? list.reduce((t, p) => t + (p.value as number), 0) : null;
+  return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? list[0]?.unit ?? "nis", formula, parts, options);
 }
 
 /** A figure out of a rule record, carrying the rule's strength and re-check date. */

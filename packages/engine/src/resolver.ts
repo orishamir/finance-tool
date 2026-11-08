@@ -50,12 +50,10 @@ const percentUnits = new Set(["pct", "pct_per_year", "pct_of_deposit", "pct_of_t
 const labelFor: Partial<Record<Strength, Label["code"]>> = {
   secondary: "secondary-source",
   institution: "institution-source",
-  "primary-mirror": "mirror-source",
 };
 const labelWeight: Record<Label["code"], number> = {
   "secondary-source": 3,
   "institution-source": 2,
-  "mirror-source": 1,
   reading: 4,
   derived: 4,
   proxy: 4,

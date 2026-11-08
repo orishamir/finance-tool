@@ -1,4 +1,4 @@
-// The documents page (research/knowledge/2026-10-24-synthesis.md §3.5): the documents the rules were read from, one card
+// The documents page (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.5): the documents the rules were read from, one card
 // each with the rules that rest on it, then the data records the site read, each pointing at the page that uses it.
 import { Link, useLoaderData } from "react-router";
 import { documents as copy, site } from "../copy";
@@ -11,7 +11,7 @@ import type { DocumentCard, SectionId } from "../lib/documents.server";
 import { isPdfUrl, sourceHref } from "../lib/sources";
 
 /** The five sections in order (duplicated from the server module, which the client bundle must not import). */
-const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"] as const;
+const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions"] as const;
 
 export async function loader() {
   const { today } = await import("../lib/data.server");

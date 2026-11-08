@@ -82,7 +82,7 @@ type Bounds = { horizon: Range; monthly: Range };
 
 /** The question, which the comparison and the holdings depend on (docs/design-system.md 6.9). The pre-rendered page and the first client render show
  * the card; a saved goal replaces it with the strip (in a box of at least the strip's height) and the card waits closed as "מטרה נוספת" (D12). */
-function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
+function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; meta: { rationale: string; rationaleHe?: string | null }; today: string; bounds: Bounds }) {
   const { status, goals } = useGoals();
   // any goal holding something: the rows list them all, the blank ones too (2026-10-25)
   const has = status === "old-version" || (status === "ok" && goals.some((g) => !isBlank(g)));
@@ -102,7 +102,7 @@ function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; met
   );
 }
 
-function HomeBody({ presets, meta, today, bounds, guideTypes }: { guideTypes: { id: string; name: string }[]; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
+function HomeBody({ presets, meta, today, bounds, guideTypes }: { guideTypes: { id: string; name: string }[]; presets: Presets; meta: { rationale: string; rationaleHe?: string | null }; today: string; bounds: Bounds }) {
   const { ready, holdings } = useHoldings();
   const names = holdings.map((h) => h.track?.name ?? h.typedName ?? h.company.name);
   const holdingsLine = ready && holdings.length > 0 ? (holdings.length === 1 ? copy.holdingsSaved.one : copy.holdingsSaved.many).replace("{n}", String(holdings.length)).replace("{names}", names.slice(0, 2).join(", ") + (names.length > 2 ? "…" : "")) : null;

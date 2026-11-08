@@ -1,4 +1,4 @@
-// The five shelves of the rules pages (research/knowledge/2026-10-24-synthesis.md §3.4, from the information-architecture
+// The five shelves of the rules pages (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.4, from the information-architecture
 // report of the same night): a shelf is the reader's question ("who takes what, what can I do, who protects"), derived
 // from each rule's first dimension with a default per rule-base file and a short list of explicit moves. No field on any
 // rule; `shelfOf` is the one source of truth for where a rule lives, used by the rules pages and the search index.

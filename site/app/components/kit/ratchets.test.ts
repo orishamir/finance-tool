@@ -1,7 +1,7 @@
 // Ratchets of the kit (founder, 2026-10-25: "how can we make sure that in the future we always use shared components?"). Each
 // pattern the kit owns is counted outside the kit, per file. Today's leftovers are listed by name below; a new use anywhere fails,
 // and a file that drops below its number fails too, until its line is lowered or removed, so the lists only shrink. To clear a
-// leftover, move it to the kit piece named in the test, then lower its number here. Kit round 2 (research/specs/2026-10-25-ui-kit/
+// leftover, move it to the kit piece named in the test, then lower its number here. Kit round 2 (8dd1f013:research/specs/2026-10-25-ui-kit/
 // round-2.md) adds the pieces that empty the input list.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -22,9 +22,8 @@ const PILL: Record<string, number> = {
     "components/compare/strip.tsx": 1,
     "components/exposure-mode/chart.tsx": 2,
     "components/exposure-mode/fields.tsx": 2,
-    "components/guide-signature/current-account.tsx": 2,
     "components/guide/sections.tsx": 4,
-    "components/timeline/Timeline.tsx": 3,
+    "components/timeline/Timeline.tsx": 2,
   };
 const CARD: Record<string, number> = {
     "components/compare/fit.tsx": 1,
@@ -98,7 +97,7 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
   },
 };
 
-// Founder, 2026-11-02 (issue 15): the rules behind a fact are one chip with a count, never a row or a column of codes. Left: the lists
+// Founder, 2026-11-02: the rules behind a fact are one chip with a count, never a row or a column of codes. Left: the lists
 // inside a figure's sheet, already one tap from the reading, and the open questions of a held product, whose codes are what the reader is told.
 patterns["a row of rule chips"] = {
   count: (s) => (s.match(/\.map\(\([^)]*\)\s*=>\s*\(?\s*(?:<span key=\{\w+\}>\s*)?<RuleRef\b/g) ?? []).length,
@@ -106,7 +105,7 @@ patterns["a row of rule chips"] = {
   allowed: { "components/provenance.tsx": 4, "routes/exposure.tsx": 2 },
 };
 
-// 2026-11-05 (issue 190): a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
+// 2026-11-05: a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
 // letters ("MTF סל (4D) S&P 500") was laid out left to right and read backwards. Names go through MixedName; the indices page is done.
 patterns["a name in a plain bdi"] = {
   count: (s) => (s.match(/<bdi>\{[^}]*([nN]ame|manager)[^}]*\}<\/bdi>/g) ?? []).length,
@@ -132,12 +131,11 @@ patterns["a name in a plain bdi"] = {
     "components/exposure-mode/result.tsx": 4,
     "components/exposure-mode/row.tsx": 1,
     "components/fees/FeeDragChart.tsx": 3,
-    "components/fees/FeeRow.tsx": 1,
     "components/fees/parts.tsx": 2,
     "components/fees/sensitivity.tsx": 2,
     "components/guide-signature/bank-deposit.tsx": 5,
-    "components/guide-signature/current-account.tsx": 8,
-    "components/guide-signature/keren-hishtalmut.tsx": 3,
+    "components/guide-signature/current-account.tsx": 3,
+    "components/guide-signature/keren-hishtalmut.tsx": 2,
     "components/guide-signature/kupat-gemel-lehashkaa.tsx": 2,
     "components/guide-signature/makam.tsx": 1,
     "components/guide-signature/pension.tsx": 1,
@@ -154,9 +152,9 @@ patterns["a name in a plain bdi"] = {
   },
 };
 
-// 2026-11-05 (issue 190): a text action is the kit's Button `quiet`, and a choice that changed something else, with the way back, is the
-// kit's AlsoChanged; never a <button> styled by hand as an underlined link. Today's leftovers, other pages' (the stairs' link leaves the
-// indices page with #191).
+// 2026-11-05: a text action is the kit's Button `quiet`, and a choice that changed something else, with the way back, is the
+// kit's AlsoChanged; never a <button> styled by hand as an underlined link. Today's leftovers: other pages', and the stairs' link
+// on the indices page.
 patterns["a button styled by hand as a link"] = {
   count: (s) => (s.match(/<button\b[^>]*className="[^"]*\btext-link\b[^"]*\bunderline\b/g) ?? []).length,
   kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
@@ -201,7 +199,7 @@ describe("no field painted in the edge colour", () => {
   });
 });
 
-// Colour inside a chart (ground rule 6; design-system section 12; founder, 2026-11-05: "i'd rather have two conflicting colors on
+// Colour inside a chart (guidelines/charts.md; design-system section 12; founder, 2026-11-05: "i'd rather have two conflicting colors on
 // opposite sites of the pages than a graph with all its lines the same color", the fault he flagged on six days). The roles each
 // chart draws together, pair by pair, by the palette validator's own method (lib/palette-check.ts): under 15 ΔE to normal vision,
 // or under 6 to a colour-blind reader (the validator's floor, legal only with words on the marks), a pair fails. Today's pairs below
@@ -214,7 +212,7 @@ const CHART_ROLES: Record<string, string[]> = {
   "the fee-drag chart (7.3)": ["chart-fee-1", "chart-fee-2", "chart-fee-3", "chart-fee-4", "chart-fee-total"],
   ChangeChart: ["chart-lever-1", "chart-lever-2", "chart-lever-3", "chart-lever-4"],
   CostStack: ["chart-cost-trade", "chart-cost-custody", "chart-cost-fixed", "chart-cost-fx", "chart-cost-other", "chart-cost-fund", "chart-tax"],
-  PileStory: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-tax", "chart-pile-salary-tax", "chart-pile-left"],
+  PileBar: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-fee", "chart-pile-salary-tax", "chart-pile-tax", "chart-pile-loss", "chart-pile-left"],
   StairsChart: ["chart-stairs-start", "chart-stairs-account", "chart-stairs-kind", "chart-stairs-fund", "gain", "loss"],
   "the comparison and exposure charts (6.5, 9.3)": ["chart-option-1", "chart-option-2", "chart-option-3", "chart-baseline"],
   ShareRings: ["chart-stocks", "chart-currency"],
@@ -223,13 +221,13 @@ const CHART_ROLES: Record<string, string[]> = {
   "the pension deposit bar (10)": ["chart-value", "chart-alt", "chart-fee-4"],
   LabelChip: ["label-held", "label-trade", "label-follow", "label-currency", "label-tax", "label-payout"],
 };
-/** Today's pairs below the line (2026-11-06), as "chart: role / role". Issue 217 redraws the comparison chart. */
+/** Today's pairs below the line (2026-11-06), as "chart: role / role". */
 const TOO_ALIKE = new Set([
   "the timeline (3.4): chart-value / chart-tax-2",
   "the timeline (3.4): chart-tax-1 / chart-contributions",
-  "PileStory: chart-pile-own / chart-pile-gain",
-  "PileStory: chart-pile-own / chart-pile-tax",
-  "PileStory: chart-pile-gain / chart-pile-tax",
+  "PileBar: chart-pile-own / chart-pile-gain",
+  "PileBar: chart-pile-own / chart-pile-tax",
+  "PileBar: chart-pile-gain / chart-pile-tax",
   "StairsChart: chart-stairs-start / loss",
   "StairsChart: chart-stairs-account / gain",
   "the comparison and exposure charts (6.5, 9.3): chart-option-1 / chart-baseline",
@@ -269,7 +267,7 @@ describe("ratchet: colours inside a chart", () => {
   });
 });
 
-// Process words in what a reader sees (CLAUDE.md ground rule 9; copy.md 1, "Words that add something"; founder, 2026-10-25:
+// Process words in what a reader sees (guidelines/wording.md; copy.md 1, "Words that add something"; founder, 2026-10-25:
 // "this monstrous of a message, saying things about claude etc."): no decision id (D22), no Claude, no audit and no talk of the
 // researcher's reading in the reader's text of the copy, the guide and exposure prose, or a record's Hebrew fields. A decision id as a
 // key of a map, and English working notes (never shown), are not reader text. Today's leftovers are the rule records below.
@@ -362,13 +360,14 @@ describe("ratchet: a word the terminology table replaced", () => {
 
 // 2026-11-07 (independent check 3 of the deposit branch): WIN WIN's tax names TXI OQ19, whose sheet opened only the general lines,
 // because the question had no Hebrew title. Every open question a value in data/ names (in its source title or notes, which is
-// where the sheet finds it) has `title_he` in data/open-questions.json, unless it is closed. A value whose source is `open` names its
+// where the sheet finds it) has `title_he` in data/open-questions.json (an answered question is deleted, 2026-11-08, so one the file
+// lacks fails here as well as in the data check). A value whose source is `open` names its
 // question on the page today, so it has no leftovers; the others are listed by name, and the list only shrinks.
 const QUESTION_NO_HEBREW = ["BANK OQ2", "BRK OQ13", "CAT OQ22", "CAT OQ4", "CS OQ7", "FXD OQ2", "INS OQ16", "REG OQ12", "TXF OQ10", "TXF OQ19", "TXS OQ17"];
 
 describe("an open question a value names has Hebrew lines", () => {
   const dataRoot = fileURLToPath(new URL("../../../../data/", import.meta.url));
-  const questions = new Map((JSON.parse(readFileSync(join(dataRoot, "open-questions.json"), "utf8")) as { id: string; status: string; title_he?: string }[]).map((q) => [q.id, q]));
+  const questions = new Map((JSON.parse(readFileSync(join(dataRoot, "open-questions.json"), "utf8")) as { id: string; title_he?: string }[]).map((q) => [q.id, q]));
   const named = new Map<string, boolean>(); // id → named by a value whose source is open
   const scan = (o: unknown): void => {
     if (Array.isArray(o)) return o.forEach(scan);
@@ -383,7 +382,7 @@ describe("an open question a value names has Hebrew lines", () => {
     Object.values(o).forEach(scan);
   };
   for (const f of walk(dataRoot).filter((x) => x.endsWith(".json") && !x.endsWith("open-questions.json"))) scan(JSON.parse(readFileSync(f, "utf8")));
-  const lacking = [...named.keys()].filter((id) => questions.get(id)?.status !== "closed" && !questions.get(id)?.title_he).sort();
+  const lacking = [...named.keys()].filter((id) => !questions.get(id)?.title_he).sort();
 
   it("every question an open value names has a Hebrew title", () => {
     expect(lacking.filter((id) => named.get(id))).toEqual([]);
@@ -397,7 +396,7 @@ describe("an open question a value names has Hebrew lines", () => {
 describe("ratchet: a formula the site shows has words beside its id", () => {
   // pass 5 of the indices data (readers): a value sheet read "נוסחה: חישוב של האתר F-92", the id with no words. Every formula id the site's
   // source passes has a Hebrew name in `formulaNames`, which the sheet shows beside the id's chip. Today's leftovers, by id; the list only shrinks.
-  const LEFTOVERS = ["F-12", "F-31", "F-32", "F-45", "F-48", "F-49", "F-52", "F-53", "F-54", "F-71", "F-86", "F-97", "F-98"];
+  const LEFTOVERS = ["F-31", "F-32", "F-45", "F-48", "F-49", "F-52", "F-53", "F-54", "F-71", "F-86", "F-97", "F-98"];
   const src = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\./.test(f));
   const copySrc = readFileSync(join(root, "copy.ts"), "utf8");
   const block = copySrc.slice(copySrc.indexOf("export const formulaNames"), copySrc.indexOf("_other:", copySrc.indexOf("export const formulaNames")));

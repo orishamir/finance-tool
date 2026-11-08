@@ -77,8 +77,8 @@ export function SignatureFrame({ id, data, today, timeline, held }: { id: string
           </Link>
         </p>
       ) : (
-        // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line
-        <p className="text-sm max-w-measure">{page.altLine}</p>
+        // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line; none on the study fund (founder, 2026-11-08)
+        page.altLine && <p className="text-sm max-w-measure">{page.altLine}</p>
       )}
       {timeline && !NO_TIMELINE.has(id) && (
         <Card pad="none" className="px-4 py-1 md:px-6">

@@ -52,6 +52,9 @@ export interface YearPoint {
   /** What was paid in, in today's money: each deposit at the price level of the month it was made (F-06), not the sum at the end's. */
   paidInReal: number;
   fees: number;
+  /** The fees and the tax, in today's money, each month's at its own price level (`totalToday`). */
+  feesReal: number;
+  taxReal: number;
   taxDuring: number;
   taxAtExit: number;
   index: number;
@@ -86,8 +89,25 @@ export interface TimelineInputs {
  * month it was paid, `C_0 / I_0 + Σ C_m / I_m` (F-03: an event in month m uses `I_m`, the amount now `I_0 = 1`). The ledgers add the
  * amount now inside month 1, so it is taken back out of that month and counted at `I_0`. The chart used to divide the whole sum by
  * the last month's index, which shrank every deposit by all the inflation of the horizon and drew idle cash as a gain (finding 6 of
- * research/discovery/2026-10-25-guide-pages-sweep.md).
+ * 8dd1f013:research/discovery/2026-10-25-guide-pages-sweep.md).
  */
+/**
+ * A run's running total (its fees, or the tax it paid along the way) in today's money: each month's part at that month's price level
+ * (F-06), and what the run adds at the exit at the horizon's; never the total divided by the end's index, the shortcut F-06 forbids for
+ * what was paid in (founder, 2026-11-08: "fix the wrong formulas").
+ */
+export function totalToday<P extends { index: number }>(series: readonly P[], at: (point: P) => number, total: number): number {
+  let sum = 0;
+  let prev = 0;
+  let index = 1;
+  for (const point of series) {
+    sum += (at(point) - prev) / point.index;
+    prev = at(point);
+    index = point.index;
+  }
+  return sum + (total - prev) / index;
+}
+
 export function paidInToday(run: { paidIn: number; series: readonly { month: number; paidIn: number; index: number }[] }, amountNow: number): number {
   if (run.series.length === 0) return run.paidIn;
   let total = 0;
@@ -129,6 +149,8 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
         paidIn: run.paidIn,
         paidInReal: paidInToday(run, plan.input.goal.amountNow),
         fees: Object.values(run.fees).reduce((a, b) => a + b, 0),
+        feesReal: totalToday(run.series, (x) => x.fees, Object.values(run.fees).reduce((a, b) => a + b, 0)),
+        taxReal: totalToday(run.series, (x) => x.taxDuring, run.taxDuring + run.taxAtExit),
         taxDuring: run.taxDuring,
         taxAtExit: run.taxAtExit,
         index: last.index,
@@ -154,7 +176,7 @@ export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
   if (inputs[key].update_rule !== "founder") return { ...inputs[key] };
   return {
     ...inputs[key],
-    parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null, signedOffOn: p05.signed_off_on, provisional: false },
+    parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null },
   };
 }
 
@@ -162,11 +184,11 @@ export function p05Number(p05: ParameterRecord, key: P05Input): number {
   return (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs[key].value as number;
 }
 
-/** P-05's page controls: slider ranges (design-system Q6) and the provisional input ranges. */
+/** P-05's page controls: slider ranges (design-system Q6) and the input ranges. */
 export function p05Range(p05: ParameterRecord, group: "sliders" | "ranges", key: string): { min: number; max: number; step?: number; values: Record<string, SiteValue> } | null {
   const g = (p05 as unknown as Record<string, Record<string, Record<string, ValueObject>>>)[group]?.[key];
   if (!g) return null;
   const values: Record<string, SiteValue> = {};
-  for (const [k, v] of Object.entries(g)) values[k] = { ...v, parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null, signedOffOn: p05.signed_off_on, provisional: (v.notes ?? "").startsWith("provisional") } };
+  for (const [k, v] of Object.entries(g)) values[k] = { ...v, parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null } };
   return { min: g.min!.value as number, max: g.max!.value as number, step: g.step ? (g.step.value as number) : undefined, values };
 }

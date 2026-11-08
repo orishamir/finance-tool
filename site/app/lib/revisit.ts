@@ -23,13 +23,13 @@ import {
 } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
 import { parametersPage, r2, r5 } from "../copy";
-import { applyProviders, comparisonGoal, evaluate, type CompareBundle, type RunGoal } from "./compare";
+import { applyProviders, comparisonGoal, evaluate, makeValues, type CompareBundle, type RunGoal } from "./compare";
 import { applyIndex, planOfGoal } from "./compare-index";
 import type { WorkbenchBundle } from "./providers";
 import { computeExposureMode, type ExposureResultView } from "./exposure-mode";
 import type { Goal } from "./goal";
 import { isReadableSaved, type CompareMode, type SavedComparisonRecord } from "./state";
-import type { SiteValue } from "./value";
+import { computed, type SiteValue } from "./value";
 
 const WRAPPER_PARAMETERS = ["P-01", "P-02", "P-05"];
 const EXPOSURE_PARAMETERS = ["P-01", "P-05", "P-08"];
@@ -226,6 +226,13 @@ export interface RevisitView {
   choiceNow?: { kind: string; rank?: number; reason?: string };
   names: Record<string, string>;
   cannotRun?: string;
+  /** The saved goal's money (`planMoney`): what F-82's re-run of it reads, so each value the sheet reports lists it (`revisitValue`). */
+  money?: Record<string, SiteValue>;
+}
+
+/** A value the revisit reports, before or after (F-82: the saved goal re-run on the current data), resting on the saved goal's money. */
+export function revisitValue(view: RevisitView, value: number, about: string, today: string): SiteValue {
+  return computed(value, "nis", "F-82", view.money ?? {}, { today, about });
 }
 
 export function isSame(a: unknown, b: unknown): boolean {
@@ -268,8 +275,8 @@ function renderRule(bundle: CompareBundle, key: string, v: unknown, today: strin
 
 function renderParameter(bundle: CompareBundle, methodId: string, v: unknown): Rendered {
   if (v === null || v === undefined) return null;
-  const rec = bundle.parameters.find((p) => idOf(p) === methodId) as unknown as { value?: ValueObject; rationale: string; rationale_he?: string; signed_off_on?: string } | undefined;
-  if (rec?.value && (typeof v === "number" || typeof v === "string")) return { kind: "num", value: { ...rec.value, value: v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null, signedOffOn: rec.signed_off_on ?? null, provisional: false } } };
+  const rec = bundle.parameters.find((p) => idOf(p) === methodId) as unknown as { value?: ValueObject; rationale: string; rationale_he?: string } | undefined;
+  if (rec?.value && (typeof v === "number" || typeof v === "string")) return { kind: "num", value: { ...rec.value, value: v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null } } };
   return { kind: "text", text: typeof v === "object" ? "ערכי הפרמטר השתנו" : String(v) };
 }
 
@@ -383,6 +390,8 @@ export function revisitSaved(bundleOrNull: CompareBundle | null, rec: unknown, t
       verdict,
       valueChanges: valueChanges(rec.result, after, names),
       ...(choiceNow ? { choiceNow } : {}),
+      // a record saved before presets has no `fromPreset`: its numbers were the person's own
+      money: makeValues(bundle, { ...rec.run, fromPreset: rec.run.fromPreset ?? { horizon: false, monthly: false, available: false } }).money,
     };
   } catch (e) {
     return { ...base, status: "cannot-run", diff: [], counts: emptyCounts(), valueChanges: [], cannotRun: e instanceof Error ? e.message : String(e) };

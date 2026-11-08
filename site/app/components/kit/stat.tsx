@@ -24,12 +24,12 @@ export function Stat({ label, children, note, tone }: { label: ReactNode; childr
   );
 }
 
-/** One large figure in a frame of its own, with its name above it and a sentence under it: a row of them states a block's main points. Sits in a `<dl>` (`StatRow`). */
-export function StatTile({ label, children, note }: { label: ReactNode; children: ReactNode; note: ReactNode }) {
+/** One large figure in a frame of its own (32 px with `size="figure"`), with its name above it and a sentence under it: a row of them states a block's main points. Sits in a `<dl>` (`StatRow`). */
+export function StatTile({ label, children, note, size }: { label: ReactNode; children: ReactNode; note: ReactNode; /** `figure`: the 32 px headline figure, for the one or two numbers a block answers with (charts.md "One number"). */ size?: "figure" }) {
   return (
     <Card pad="tight" className="flex flex-col gap-0.5 min-w-0">
       <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="text-2xl font-bold leading-snug">{children}</dd>
+      <dd className={cx(size === "figure" ? "text-figure" : "text-2xl", "font-bold leading-snug")}>{children}</dd>
       <dd className="text-xs text-muted-foreground flex flex-col gap-1">{note}</dd>
     </Card>
   );

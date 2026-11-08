@@ -103,7 +103,7 @@ export const fundRecord = z.strictObject({
       variable_positive_only: z.literal(true).optional(),
       checked: isoDate,
       /**
-       * 2026-11-07 (issue 163, ground rule 2): the benchmark the document compares the fund with, by the name it prints, and whether that
+       * 2026-11-07 (former ground rule 2): the benchmark the document compares the fund with, by the name it prints, and whether that
        * index counts dividends after the tax withheld at source (`net`), before it (`gross`), or no official document says (`unstated`).
        * Every record carries it, Israeli and foreign alike: a `net` record shows a gap and takes A-07 from its years, a `gross` one only on the list F-92 (d) allows.
        * `source`: the document that says so, when it is not the one in `source` above; `page`: its PDF page; `rule_ids`: the rule that
@@ -119,7 +119,7 @@ export const fundRecord = z.strictObject({
     })
     .optional(),
   /**
-   * 2026-10-31 (issue 147, A-10): a distributing fund's yield, a value object in `pct_per_year` read from the fund's own factsheet or the
+   * 2026-10-31 (A-10): a distributing fund's yield, a value object in `pct_per_year` read from the fund's own factsheet or the
    * manager's page with its date, and the payments a year the same source prints. Left out when it was not read: the fund then has no price.
    */
   distribution: z
@@ -129,7 +129,7 @@ export const fundRecord = z.strictObject({
     })
     .optional(),
   /**
-   * 2026-11-04 (TXF-11, issue 75): the fund's own Israeli prospectus annex ("נספח לתשקיף קרן חוץ נסחרת") reports a Tax Authority ruling given
+   * 2026-11-04 (TXF-11): the fund's own Israeli prospectus annex ("נספח לתשקיף קרן חוץ נסחרת") reports a Tax Authority ruling given
    * to the fund, and names a sale and a distribution as the only taxed events. The founder judged that enough for that fund (D10): an
    * accumulating fund with it is ranked, not listed under G-18. Units of the same ISIN bought abroad are the same units, so both records carry it.
    */

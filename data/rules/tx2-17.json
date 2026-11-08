@@ -62,18 +62,17 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/00_0022_000000.pdf#page=4",
-      "title": "VAT Law, National Insurance Institute's consolidated copy, file of 16.7.2026",
+      "url": "https://fs.knesset.gov.il/8/law/8_lsr_208901.PDF#page=3",
+      "title": "חוק מס ערך מוסף, תשל\"ו-1975 (ספר החוקים 791)",
       "title_he": "חוק מס ערך מוסף, התשל״ו-1975",
-      "publisher": "National Insurance Institute",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "s.4(ב)",
-      "locator_he": "סעיף 4(ב)",
-      "checked": "2026-10-31",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording; the \"מס שכר וריווח\" sentence is on file p.4)"
+      "strength": "primary",
+      "locator": "p.3, s.4(ב) as enacted",
+      "locator_he": "עמוד 3, סעיף 4(ב)",
+      "page": 3,
+      "checked": "2026-11-07"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZsA~3yZgyGvixaLSmrNuT9FNV0Dr87ujJ8ymJhX0qnM=#page=2",

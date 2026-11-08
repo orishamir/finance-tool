@@ -1,4 +1,4 @@
-// Where each rule is used (research/knowledge/2026-10-24-synthesis.md §3.4): the pages of the site that cite it, whether the
+// Where each rule is used (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.4): the pages of the site that cite it, whether the
 // calculation engine reads it, which data collections reference it, and a score that orders rules inside a group.
 // Computed once per build from the source files themselves (a quoted id in content/, routes/, components/, a few lib/ files),
 // so a page that starts citing a rule shows up here with no table to maintain.
@@ -71,7 +71,7 @@ function pageTable(): Record<string, RuleUsePage> {
     transfer: { href: "/transfer", label: r3transfer.title },
     companies: { href: "/companies", label: companiesCopy.title },
     guide: { href: "/guide", label: guideIndex.title },
-    // the securities run the house-ranking page made is the index page's now (issue 172)
+    // the securities run the house-ranking page made is the index page's now
     indices: { href: "/indices", label: invest.nav },
     tracks: { href: "/tracks", label: trackBrowser.title },
   };
@@ -226,7 +226,7 @@ function build(): Scan {
   return { uses };
 }
 
-/** 3 × engine files + site files + collection references + 2 with a figure + 1 for a tier-1 topic + 1 for a primary or mirror source + 1 likely to change. */
+/** 3 × engine files + site files + collection references + 2 with a figure + 1 for a tier-1 topic + 1 for a primary source + 1 likely to change. */
 export function scoreOf(rule: Pick<RuleRecord, "figures" | "il_finance_file" | "strength" | "likely_to_change">, engineFiles: number, siteFiles: number, collectionRefs: number): number {
   return (
     3 * engineFiles +
@@ -234,7 +234,7 @@ export function scoreOf(rule: Pick<RuleRecord, "figures" | "il_finance_file" | "
     collectionRefs +
     (rule.figures && Object.keys(rule.figures).length > 0 ? 2 : 0) +
     (tier2Files.has(rule.il_finance_file) ? 0 : 1) +
-    (rule.strength === "primary" || rule.strength === "primary-mirror" ? 1 : 0) +
+    (rule.strength === "primary" ? 1 : 0) +
     (rule.likely_to_change === "yes" ? 1 : 0)
   );
 }

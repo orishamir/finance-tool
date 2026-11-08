@@ -16,6 +16,7 @@
     "d3-scale": "^4.0.2",
     "d3-shape": "^3.2.0",
     "isbot": "^5",
+    "katex": "^0.19.1",
     "lucide-react": "^1.61.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

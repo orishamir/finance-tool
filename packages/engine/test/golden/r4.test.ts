@@ -693,7 +693,7 @@ describe("F-65 fund variants on a five-row fixture list", () => {
     expect(r1.rows.find((r) => r.id === "maya:9000001")!.reasons[0]).toMatchObject({ code: "missing-record", detail: "details not collected: fees.fixed_management" });
     const r2 = fundVariants(exposure({ distributions: {} }), [israeliList, taseList], funds, ctx);
     expect(r2.rows.find((r) => r.id === "fund:us0000000005")!.reasons[0]).toMatchObject({ code: "missing-input" });
-    // A-10 on the record (issue 147): the same fund with no yield entered runs on the record's, and the record's wins over an entered one
+    // A-10 on the record: the same fund with no yield entered runs on the record's, and the record's wins over an entered one
     const yieldOf = (value: number) => ({ ...fee(value, "pct_per_year"), source: { url: "https://example.org/factsheet", title: "factsheet", publisher: "manager", strength: "institution" } });
     const withYield = funds.map((f) => ((f as { id?: string }).id === "us0000000005" ? { ...(f as object), distribution: { yield: yieldOf(1.3), per_year: 4 } } : f));
     const held = fundVariants(exposure({ distributions: {} }), [israeliList, taseList], withYield, ctx).rows.find((r) => r.id === "fund:us0000000005")!;

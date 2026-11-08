@@ -516,7 +516,7 @@ describe("the entry (saved, followed, kept)", () => {
     const inputs = Object.values(withCustomEntries(bundle, [student], []).entered!.inputs[student.id]!);
     expect(inputs.some((v) => v.state === "sourced")).toBe(true);
   });
-  it("a house that is no longer on the site leaves the row with what the person typed; an empty fee there is not known, so it is not ranked (D56, #190)", () => {
+  it("a house that is no longer on the site leaves the row with what the person typed; an empty fee there is not known, so it is not ranked (D56)", () => {
     const gone = { ...top, base: { ...top.base!, houseId: "nobody" } };
     const b = withCustomEntries(bundle, [gone], []);
     expect(b.snapshots.find((s) => s.id === gone.id)!.lines).toEqual([]);

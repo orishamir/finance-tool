@@ -11,11 +11,11 @@ import { fact } from "../../lib/guide-signature";
 import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, LongestCase, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
+import { asField, type SiteValue } from "../../lib/value";
+import { Callout, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap } from "./g2-parts";
-import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
   const bundle = props.data.bundles[props.data.id];
@@ -36,13 +36,6 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const hasInsurance = id !== "provident-for-annuity";
   const [insurancePick, setInsurancePick] = useState<number | null>(null);
   const insurancePct = insurancePick;
-  const insuranceSource = insurancePick !== null ? "guide" : null;
-  const sourceLine = (salaryFrom: string, yearsFrom: string, insuranceFrom: string | null) => (
-    <p className="text-xs text-muted-foreground">
-      {copy.pension.salarySource} {copy.common.source[salaryFrom]}. {copy.pension.yearsSource} {copy.common.source[yearsFrom]}.
-      {insuranceFrom ? ` ${copy.pension.insuranceSource} ${copy.common.source[insuranceFrom]}.` : ""}
-    </p>
-  );
   const yr = yearsRange(bundle);
   const years = Math.min(yr.max, Math.max(yr.min, Math.round(inputs.years)));
   const model = useMemo(() => pensionModel(data, id, { salary, years, insurancePct }), [data, id, salary, years, insurancePct]);
@@ -58,9 +51,10 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   if (!model) return <G2Gap id="bundle" />;
 
   // ---- value objects
-  const salaryIn: SiteValue = salarySource === "p05" ? figure(salary, "nis", "F-67", { [copy.pension.salaryAnnual]: p05Value(bundle.p05, "annual_income") }, today, copy.pension.salaryAbout) : enteredValue(salary, "nis", today, copy.pension.salaryAbout);
+  // the salary field's default, like what the reader types in it, is a plain number (founder, 2026-11-08)
+  const salaryIn: SiteValue = salarySource === "p05" ? asField(figure(salary, "nis", "F-67", { [copy.pension.salaryAnnual]: p05Value(bundle.p05, "annual_income") }, today, copy.pension.salaryAbout)) : typed(salary, "nis", today, copy.pension.salaryAbout);
   const yearsIn = inputSite(bundle, "horizon_years", years, inputs.source.years, today, copy.common.inputNames.years);
-  const insuranceIn: SiteValue | null = insurancePct !== null ? enteredValue(insurancePct, "pct", today, copy.pension.insuranceAbout) : null;
+  const insuranceIn: SiteValue | null = insurancePct !== null ? typed(insurancePct, "pct", today, copy.pension.insuranceAbout) : null;
   const avgWage = fact(data, "avgWage");
   const employeePct = fact(data, "employeePct");
   const employerPct = fact(data, "employerPct");
@@ -73,25 +67,36 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const returnPct = fact(data, "returnPct");
   const inflationPct = fact(data, "inflationPct");
   const earlyAge = fact(data, "earlyAge");
-  const rates: Record<string, SiteValue> = {
-    ...(avgWage ? { [copy.pension.inputNames.avgWage]: avgWage } : {}),
-    ...(employeePct ? { [copy.pension.inputNames.employee]: employeePct } : {}),
-    ...(employerPct ? { [copy.pension.inputNames.employer]: employerPct } : {}),
-    ...(severancePct ? { [copy.pension.inputNames.severance]: severancePct } : {}),
+  // each part of the deposit is its own legal rate on min(salary, average wage) (F-67, PEN-03, PEN-04): its sheet names that rate, not the other two
+  const wageIn: Record<string, SiteValue> = { [copy.pension.salary]: salaryIn, ...(avgWage ? { [copy.pension.inputNames.avgWage]: avgWage } : {}) };
+  const youIn: Record<string, SiteValue> = { ...wageIn, ...(employeePct ? { [copy.pension.inputNames.employee]: employeePct } : {}) };
+  const employerIn: Record<string, SiteValue> = { ...wageIn, ...(employerPct ? { [copy.pension.inputNames.employer]: employerPct } : {}) };
+  const severanceIn: Record<string, SiteValue> = { ...wageIn, ...(severancePct ? { [copy.pension.inputNames.severance]: severancePct } : {}) };
+  const base: Record<string, SiteValue> = { ...youIn, ...employerIn, ...severanceIn };
+  // the relief is F-31's credit or F-32, and which one is the threshold's to say (TXP-03): both read it
+  const reliefIn: Record<string, SiteValue> = { ...base, ...(creditPct ? { [copy.pension.inputNames.credit]: creditPct } : {}), ...(threshold ? { [copy.pension.inputNames.threshold]: threshold } : {}) };
+  // the balance is the pension ledger's run on the bundle's fees (both the balance and the deposit fee, termInputs), the years, the return
+  // and inflation; the insurance is the run's only for a pension fund (a provident fund for annuity has none, A-17)
+  const balanceIn: Record<string, SiteValue> = {
+    ...base,
+    ...(hasInsurance ? { [copy.pension.insuranceAbout]: insuranceIn ?? typed(0, "pct", today) } : {}),
+    [copy.common.inputNames.years]: yearsIn,
+    ...(returnPct ? { [copy.common.inputNames.ret]: returnPct } : {}),
+    ...(inflationPct ? { [copy.common.inputNames.inflation]: inflationPct } : {}),
+    ...termInputs(bundle),
   };
-  const base: Record<string, SiteValue> = { [copy.pension.salary]: salaryIn, ...rates };
   const rules = rulesOfBundle(bundle);
-  const m = (value: number, about: string, extra: Record<string, SiteValue> = {}) => figure(value, "nis", "F-31", { ...base, ...extra }, today, about, rules);
+  const m = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-67", inputs, today, about, rules);
   const v = {
-    you: m(model.you, copy.pension.about.you),
-    employer: m(model.employer, copy.pension.about.employer),
-    severance: m(model.severance, copy.pension.about.severance),
-    total: m(model.total, copy.pension.about.total),
-    relief: figure(model.relief.monthly, "nis", model.relief.formula, { ...base, ...(creditPct ? { [copy.pension.inputNames.credit]: creditPct } : {}) }, today, copy.pension.about.relief, rules),
-    net: figure(model.netYou, "nis", model.relief.formula, { ...base, ...(creditPct ? { [copy.pension.inputNames.credit]: creditPct } : {}) }, today, copy.pension.about.net, rules),
+    you: m(model.you, copy.pension.about.you, youIn),
+    employer: m(model.employer, copy.pension.about.employer, employerIn),
+    severance: m(model.severance, copy.pension.about.severance, severanceIn),
+    total: m(model.total, copy.pension.about.total, base),
+    relief: figure(model.relief.monthly, "nis", model.relief.formula, reliefIn, today, copy.pension.about.relief, rules),
+    net: figure(model.netYou, "nis", model.relief.formula, reliefIn, today, copy.pension.about.net, rules),
     depositFee: depositFee ? figure((Number(depositFee.value) / 100) * model.total, "nis", "F-11", { ...base, [copy.pension.inputNames.depositFee]: depositFee }, today, copy.pension.about.depositFee) : null,
     insurance: model.insuranceMonthly !== null && insuranceIn ? figure(model.insuranceMonthly, "nis", "F-53", { ...base, [copy.pension.insuranceAbout]: insuranceIn }, today, copy.pension.about.insurance) : null,
-    balance: model.balance ? figure(model.balance.real, "nis", "F-67", { ...base, [copy.pension.insuranceAbout]: insuranceIn ?? enteredValue(0, "pct", today), [copy.common.inputNames.years]: yearsIn, ...(returnPct ? { [copy.hishtalmut.inputNames.ret]: returnPct } : {}), ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}), ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}) }, today, copy.pension.about.balance, rules) : null,
+    balance: model.balance ? m(model.balance.real, copy.pension.about.balance, balanceIn) : null,
   };
   const share = (n: number) => `${(n / model.total) * 100}%`;
   const parts = [
@@ -108,6 +113,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           label={copy.pension.salary}
           unit="nis"
           value={salary}
+          start={p05Salary}
           isEntered={salaryPick !== null}
           validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)}
           onCommit={(n) => setSalaryPick(n)}
@@ -133,6 +139,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           label={copy.common.years}
           unit="years"
           value={years}
+          start={inputs.p05.years}
           isEntered={inputs.source.years === "guide"}
           validate={(n) => (n < yr.min || n > yr.max || !Number.isInteger(n) ? `${valuesCopy.errors.years[0]} ${fmt.number(yr.min)} ${valuesCopy.errors.years[1]}${fmt.number(yr.max)}.` : null)}
           onCommit={inputs.setYears}
@@ -144,28 +151,27 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           disabled={!inputs.ready}
         />
       </div>
-      {/* which of them the person entered changes the words: the longest wording keeps the line's room */}
-      <LongestCase className="-mt-3" cases={[sourceLine("p05", "p05", "p05")]}>
-        {sourceLine(salarySource, inputs.source.years, insuranceSource)}
-      </LongestCase>
 
-      <div className="flex flex-col gap-2">
+      {/* an HTML chart: the chart check (site/scripts/chart-check) finds it by data-chart, and reads the bar's start and parts */}
+      <div className="flex flex-col gap-2" data-chart="split-bar">
         <p className="text-sm font-medium">
           {copy.pension.monthLead} <Num value={v.total} />
         </p>
         <div className="flex gap-0.5 text-sm" aria-hidden="false">
           {parts.map((p) => (
             <div key={p.key} className="min-w-0 flex flex-col gap-0.5 transition-[width] duration-[var(--duration-chart)]" style={{ width: share(p.n) }}>
-              <span className="text-xs text-muted-foreground leading-tight">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
+              {/* a term keeps to one line elsewhere; here it may wrap, as the other labels do: at 320 px the severance label ran 17 px past its
+                  part's column and the chart's edge (2026-11-08, the chart check) */}
+              <span className="text-xs text-muted-foreground leading-tight [&_.term]:whitespace-normal">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
               <span className="font-semibold">
                 <Num value={p.value} />
               </span>
             </div>
           ))}
         </div>
-        <div className="flex gap-0.5 h-3.5" role="img" aria-label={copy.pension.chart.aria}>
+        <div className="flex gap-0.5 h-3.5" role="img" aria-label={copy.pension.chart.aria} data-zero="">
           {parts.map((p) => (
-            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-[var(--duration-chart)]`} style={{ width: share(p.n) }} />
+            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-[var(--duration-chart)]`} style={{ width: share(p.n) }} data-mark="part" />
           ))}
         </div>
         <div className="flex flex-col">

@@ -1,4 +1,4 @@
-// What the site found in a company's own documents (D30; research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): on a managing
+// What the site found in a company's own documents (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): on a managing
 // company's page and on a bank's or broker's page, "מה כתוב במסמכים של {company}", grouped by topic; and on /companies the same for
 // the companies the site has no page for, one fold per company. Each item is the rule card (inline), which names the document, the
 // date it was read and, for a rule not shown to hold everywhere, "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי". A company's section
@@ -93,7 +93,7 @@ export function CompanyTerms({ name, groups }: { name: string; groups: readonly 
 
 /**
  * /companies: the terms of the companies the site has no page for, a fold each; then, in a section of its own, what the site keeps but
- * does not show as a rule, which no company's section lists (the not-rules: a forum post, a press report, a list, a count, a site's
+ * does not show as a rule, which no company's section lists (the not-rules: a list, a count, a site's
  * terms, a company's tariff; review, 2026-10-26), its cards shown in full.
  */
 export function NoPageCompanyTerms({ companies, none }: { companies: readonly { id: string; name: string; ids: string[] }[]; none: readonly string[] }) {

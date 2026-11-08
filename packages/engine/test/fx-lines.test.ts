@@ -154,6 +154,8 @@ describe("a spread the price list limits (F-13, D56, D65)", () => {
     expect(tariffOf("altshuler-trade@2026-11-05")).toMatchObject({ fx: 0, fxSpread: expect.closeTo(0.007, 10) }); // no fee, "עד 0.7%"
     expect(tariffOf("meitav-trade@2026-11-04")).toMatchObject({ fx: expect.closeTo(0.0013, 10), fxSpread: expect.closeTo(0.008, 10) }); // 0.13% and "עד 0.8%"
     expect(tariffOf("ibi@2026-11-04")).toMatchObject({ fx: 0, fxSpread: expect.closeTo(0.007, 10) }); // "וללא עמלה", "עד 0.7%"
+    // 2026-11-08: the account agreement's annex, 0.7% under USD 15,000 and 0.5% above; one spread, so the higher for every conversion
+    expect(tariffOf("ibi@2026-11-08")).toMatchObject({ fx: 0, fxSpread: expect.closeTo(0.007, 10) });
   });
   it("a spread with no ceiling is not priced: the fee alone", () => {
     expect(tariffOf("leumi@2026-11-04").fx).toBeCloseTo(0.0016, 10);

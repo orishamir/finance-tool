@@ -1,6 +1,6 @@
 // A provident wrapper's company listing (design-spec 17 edge cases): every manager's list fees from the snapshots, not ranked,
-// beside the wrapper's track page. The securities account's house ranking that this address also served was removed
-// (issue 172): the index page ranks the houses.
+// beside the wrapper's track page. The securities account's house ranking that this address also served was removed:
+// the index page ranks the houses.
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";

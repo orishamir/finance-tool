@@ -1,12 +1,13 @@
 // F-83 reasons in words (copy 6.2): the engine returns a code with rule and gap IDs; the words come first
 // and the code after. A reason the person can fix links to the field; a reason the site must fix names what is open.
 import { Link } from "react-router";
-import { ownTermsCopy, r2, scnCompare } from "../../copy";
+import { computedInputs as ci, ownTermsCopy, r2, scnCompare } from "../../copy";
 import type { CoverageRow, ListedOption, ReasonView } from "../../lib/compare";
 import { addMonths, equityFit, fitDropOf, openConstraintCode } from "../../lib/compare";
 import { Tpl } from "../exposure-mode/tpl";
 import type { FieldKey } from "../../lib/goal";
 import { IdRef, Num, RulesChip } from "../provenance";
+import type { SiteValue } from "../../lib/value";
 import type { ResultCtx } from "./ctx";
 
 const profileFields: FieldKey[] = ["age", "salary", "employment"];
@@ -125,10 +126,12 @@ export function ReasonText({ r, id, ctx, routed }: { r: ReasonView; id: string; 
       return <>{r2.result.listedEmployee}</>;
     case "ceiling-partial": {
       // A11: what the ceiling is and what stays outside it, in words that say what happened to this goal's money
-      const ceiling = ctx.bundle.wrappers.find((w) => w.id === id)?.record.ceiling?.amount;
+      const ceiling = ctx.bundle.wrappers.find((w) => w.id === id)?.record.ceiling?.amount as SiteValue | undefined;
+      // F-05: what is routed on is the goal's money over the years above the wrapper's ceiling (KGL-03); no return or rate moves it
+      const excess = routed !== undefined ? ctx.mk.of(routed, "nis", "F-05", r2.result.listedCeilingBefore, { ...ctx.mk.money, ...(ceiling ? { [ci.depositCeiling]: ceiling } : {}) }) : null;
       return (
         <>
-          {r2.result.listedCeilingBefore} {ceiling ? <Num value={ceiling as never} /> : null} {r2.result.listedCeilingMid} {routed !== undefined ? <Num value={ctx.mk.nis(routed, "F-05", r2.result.listedCeilingBefore)} /> : null} {r2.result.listedCeilingAfter}
+          {r2.result.listedCeilingBefore} {ceiling ? <Num value={ceiling} /> : null} {r2.result.listedCeilingMid} {excess ? <Num value={excess} /> : null} {r2.result.listedCeilingAfter}
           <Rules ids={r.ruleIds} />
         </>
       );

@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { readFormulaIds, readRuleBaseIds, validateData } from "../src/index.ts";
+import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -46,7 +46,7 @@ const rule = {
 describe("reference IDs", () => {
   it("reads rules, open questions and formulas", () => {
     expect(ruleBase.rules.has("TXS-09")).toBe(true);
-    expect(ruleBase.openQuestions.has("TXK-OQ2")).toBe(true);
+    expect(ruleBase.openQuestions.has("TXK-OQ3")).toBe(true);
     expect(formulas.has("F-40")).toBe(true);
   });
 });
@@ -242,8 +242,6 @@ describe("P-08 exposure holding wrapper", () => {
     id: "exposure-holding-wrapper",
     method_id: "P-08",
     rationale: "r",
-    signed_off_by: "founder",
-    signed_off_on: "2026-10-24",
     shown_as: "site parameter",
     holding: { [id]: { wrapper_id: { ...vo, value: wrapper, unit: "text", update_rule: "founder" } } },
   });
@@ -263,8 +261,6 @@ describe("P-05 instruments map", () => {
     id: "illustrative-scenario",
     method_id: "P-05",
     rationale: "r",
-    signed_off_by: "founder",
-    signed_off_on: "2026-10-23",
     shown_as: "site parameter",
     instruments,
   });
@@ -309,7 +305,7 @@ describe("P-05 instruments map", () => {
 
 describe("P-05 instruments track", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
-  const p05 = (instruments: unknown) => ({ id: "illustrative-scenario", method_id: "P-05", rationale: "r", signed_off_by: "founder", signed_off_on: "2026-10-23", shown_as: "site parameter", instruments });
+  const p05 = (instruments: unknown) => ({ id: "illustrative-scenario", method_id: "P-05", rationale: "r", shown_as: "site parameter", instruments });
   const cma = (period: string, ids: number[]) => ({ dataset: "gemelnet", report_period: period, funds: ids.map((fund_id) => ({ fund_id })) });
   const messages = (files: Record<string, unknown>) => run(files).filter((p) => p.file.startsWith("parameters")).map((p) => p.message).join("\n");
 
@@ -430,80 +426,72 @@ describe("fund lists (data-schema 3.14, terms gate)", () => {
   });
 });
 
-describe("open questions (data-schema 3.15, 2026-10-26)", () => {
+describe("open questions (data-schema 3.15, 2026-10-26; an answered one is deleted, 2026-11-08)", () => {
   const items = ruleBase.questions!;
-  const fromMarkdown = items.map((q) => ({ id: q.id, status: q.closedOn ? "closed" : "open", ...(q.closedOn ? { closed_on: q.closedOn } : {}) }));
-  const run = (files: Record<string, unknown>) => {
+  const fromMarkdown = items.map((q) => ({ id: q.id, status: "open" }));
+  const run = (files: Record<string, unknown>, citing?: string[]) => {
     const lines: string[] = [];
-    const problems = validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: (l) => lines.push(l) });
+    const extra = citing ? { citing: { files: citing, prefixOf: readQuestionPrefixes(`${root}.claude/skills/il-finance/references`) } } : {};
+    const problems = validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: (l) => lines.push(l), ...extra });
     return { problems, lines };
   };
 
-  it("reads every numbered item under the file's prefix, with the closures the audit struck", () => {
-    // the audit's 493, SW OQ17, opened by the scope settling on 2026-10-26, and CAT OQ24 to OQ26 (empty deposit fees, 2026-10-27)
-    // plus ETF OQ30 to OQ32 (hedged funds) and TXF OQ23 (a fund's legal form), opened by the research of 2026-10-31
-    // plus IRA OQ16 (which personal funds are approved as annuity funds) and REG OQ22 (holders' money in a manager's insolvency), opened 2026-11-02
-    // plus TXF OQ26 (whether a bank's holding commission on foreign fund units reduces the gain), opened 2026-11-06
-    // plus BRK OQ22 and OQ23 (the clearing house's own share; its lien and client sub-accounts) and ETF OQ34 to OQ36 (ETF market makers), opened 2026-11-06
-    // plus REG OQ23 to OQ25 (foreign securities at a failing bank; custody inside a US fund; structured notes), opened 2026-11-06
-    // plus REG OQ26 to OQ28 (Insolvency Law amendments and other priorities; Insurance Supervision Law current wording; the clearing-house board's exclusions), opened 2026-11-06
-    // plus PEN OQ24 to OQ30 (pension factors: tables, editions, fee adjustment) and PF OQ17 (the yearly report's insurance percent row), opened 2026-11-06
-    // plus ETF OQ37 (what counts as a commodity for a fund), opened 2026-11-06
-    // plus TXS OQ24 (the US tax on dividends inside an exempt Israeli fund holding US shares), opened 2026-11-06
-    // plus TXH OQ15 (how a study-fund withdrawal splits between deposits and gains), opened 2026-11-06
-    // plus INS OQ17 (savings-policy withdrawal: partial floors, the two-year condition on one deposit, surrender charges, when the 30 days start), opened 2026-11-06
-    // plus PEN OQ31 (where the bylaws' exception for money moved in only to start a pension came from), opened 2026-11-06
-    // plus TXP OQ17 (how the annuity paragraph of personal-effort income reads), opened 2026-11-07; SW OQ8 closed 2026-11-07 (TXP-32), still counted
-    // plus TXF OQ27 (how Israel taxes a US fund's capital gain dividend), opened 2026-11-07
-    // plus CAT OQ27 to OQ35 (the CMA list of tracks: a later amendment, variable-fee names, government bonds, index-tracking
-    // instruments, classification pairs off the list, the age model's blanks, a definition of credit, exposure measure,
-    // sustainability criteria), opened 2026-11-07
-    // plus TXI OQ19 (how a deposit paying the better of a fixed unlinked rate and full CPI linkage is taxed), opened 2026-11-07
-    // plus PF OQ18 (a discounted fee raised after a lump sum), opened 2026-11-07
-    // plus TXH OQ16 and TXP OQ18 (a withdrawal below the deposits from a study fund, a pension or provident fund), opened 2026-11-07
-    // plus RG OQ16 (whether all of a REIT holder's shares go dormant above a holding limit, or only the excess), opened 2026-11-07;
-    // RG OQ2 closed 2026-11-07 (s.64A7C, RG-03), still counted
-    // plus CORP OQ17 to OQ20 (structured bonds: which they are, trading, the issuer's margin, the pledge behind deposit certificates)
-    // and FXD OQ13 (the bank's margin inside a structured deposit), opened 2026-11-07; REG OQ25 closed 2026-11-07 (CORP-30), still counted
-    // plus SHR OQ1 (the current wording of the Companies Law sections behind SHR-01), opened 2026-11-07
-    // CS OQ8, MF OQ5, RG OQ9, INS OQ3 and SW OQ7 closed 2026-11-07 (the open questions that change a reader's result), still counted
-    // plus TXG OQ15, TXH OQ17, TXP OQ19, TX2 OQ18 and TXK OQ13 (what still rests on National Insurance's copies, issue #262), opened 2026-11-07
-    // plus TX2 OQ19 and OQ20 (Israel Bonds: withholding abroad and the Savings series' year; no Tax Authority text on structured bonds), opened 2026-11-07;
-    // TX2 OQ9 and OQ16 closed 2026-11-07 (TX2-24, TX2-23), still counted
-    expect(items.length).toBe(583);
-    expect(items.find((q) => q.id === "RG OQ9")?.closedOn).toBe("2026-11-07");
-    expect(items.find((q) => q.id === "SW OQ8")?.closedOn).toBe("2026-11-07");
-    expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
-    // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
-    expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
-    expect(items.find((q) => q.id === "SW OQ17")?.closedOn).toBeNull();
-    expect(items.find((q) => q.id === "PEN OQ7")?.closedOn).toBeNull();
+  it("reads every numbered item under the file's prefix, none struck, and keeps the numbers of the deleted ones unused", () => {
+    // 583 items on the morning of 2026-11-08, less the 163 answered ones deleted that day (founder: an answered question is deleted
+    // once its answer is in a rule, and its number is never used again)
+    expect(items.length).toBe(420);
+    expect(items.filter((q) => q.struck)).toEqual([]);
+    expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
+    expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
+    expect(items.some((q) => q.id === "TXP OQ6")).toBe(true);
+  });
+
+  it("fails a struck item left in the markdown, and says to delete it", () => {
+    const withStruck = { ...ruleBase, questions: [...items, { id: "TXP OQ99", file: "tax-pension-gemel-lekitzba.md", struck: true }] };
+    const problems = validateData({ dataDir: dataDir({}), ruleBase: withStruck, formulas, warn: () => {} });
+    expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringMatching(/^TXP OQ99 is struck: .*; delete it$/)]));
   });
 
   it("passes a file that matches the markdown, and is strict", () => {
     expect(run({ "open-questions.json": fromMarkdown }).problems).toEqual([]);
-    const bad = run({ "open-questions.json": [{ id: "TXP OQ3", status: "closed" }, { id: "PEN OQ7", status: "open", note: "x" }] }).problems;
-    expect(bad.map((p) => p.message).join("\n")).toMatch(/closed_on is set exactly when status is closed/);
-    expect(bad.map((p) => p.message).join("\n")).toMatch(/note/);
+    const bad = run({ "open-questions.json": [{ id: "PEN OQ7", status: "closed", closed_on: "2026-10-26" }, { id: "TXI OQ19", status: "open", note: "x" }] }).problems;
+    const text = bad.map((p) => p.message).join("\n");
+    expect(text).toMatch(/0\.status/);
+    expect(text).toMatch(/closed_on/);
+    expect(text).toMatch(/note/);
   });
 
   it("warns when the file is behind the markdown", () => {
-    const behind = fromMarkdown.filter((q) => q.id !== "BANK OQ1").map((q) => (q.id === "TXP OQ3" ? { id: q.id, status: "open" } : q));
+    const behind = fromMarkdown.filter((q) => q.id !== "BANK OQ1");
     const { problems, lines } = run({ "open-questions.json": [...behind, { id: "ZZZ OQ1", status: "open" }] });
     expect(problems).toEqual([]);
     const line = lines.find((l) => l.includes("behind the rule base"))!;
     expect(line).toMatch(/BANK OQ1 missing/);
-    expect(line).toMatch(/TXP OQ3 closed 2026-10-26 in the markdown/);
+    expect(line).toMatch(/ZZZ OQ1 not in the markdown/);
   });
 
-  it("fails a guide record that lists or blocks on a closed question", () => {
-    const wrapper = { id: "x", open_questions: ["TXP-OQ3", "PEN-OQ7"], tax_at_exit: { blocked_by: ["TXP-OQ3"] }, dimensions: { "real-vs-nominal": "blocked:PEN-OQ8" } };
-    const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/exposures/x.json": wrapper });
-    const messages = problems.filter((p) => p.message.includes("data/open-questions.json")).map((p) => p.message);
+  it("fails a question the rule base does not have, in a guide record's lists and marks and in any text of data/", () => {
+    const record = { id: "x", open_questions: ["TXP-OQ3", "PEN-OQ7"], tax_at_exit: { blocked_by: ["TXP-OQ3"] }, dimensions: { "real-vs-nominal": "blocked:PEN-OQ8" }, notes: "the whole amount (TXP-18; TXP OQ3 closed); PEN OQ7 is open" };
+    const messages = run({ "open-questions.json": fromMarkdown, "instruments/exposures/x.json": record }).problems.map((p) => p.message);
     expect(messages).toEqual(
-      expect.arrayContaining([expect.stringMatching(/^open_questions: TXP-OQ3 is closed/), expect.stringMatching(/^blocked_by: TXP-OQ3 is closed/), expect.stringMatching(/^dimensions.real-vs-nominal: PEN-OQ8 is closed/)]),
+      expect.arrayContaining([
+        expect.stringMatching(/^open_questions: TXP-OQ3 is not an open question in il-finance/),
+        expect.stringMatching(/^blocked_by: TXP-OQ3 is not an open question in il-finance/),
+        expect.stringMatching(/^TXP OQ3 is not a question of the rule base/),
+        expect.stringMatching(/^PEN OQ8 is not a question of the rule base/),
+      ]),
     );
-    expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
+    expect(messages.some((m) => /PEN.OQ7/.test(m))).toBe(false);
+  });
+
+  it("fails a code, or a question a rule-base file names in words, that the rule base does not have, in the files it is given", () => {
+    const dir = mkdtempSync(join(tmpdir(), "cite-"));
+    const doc = join(dir, "method.md");
+    writeFileSync(doc, "G-06 closed (TXP-18; TXP OQ3 closed); still open: PEN OQ7, GOV OQ2, OQ99.");
+    const md = join(dir, "tax-pension-gemel-lekitzba.md");
+    writeFileSync(md, "The base is the whole amount (open question 3, closed 2026-10-26). See open question 6 and `pension-and-gemel-lekitzba.md` open question 7; domain question 3 is the landscape report's.");
+    const found = run({ "open-questions.json": fromMarkdown }, [doc, md]).problems.map((p) => `${p.file.split(/[\\/]/).pop()}: ${p.message.split(" is ")[0]}`);
+    expect(found.sort()).toEqual(["method.md: GOV OQ99", "method.md: TXP OQ3", "tax-pension-gemel-lekitzba.md: TXP OQ3"]);
   });
 
   it("fails a bare blocked mark and a blocked mark whose question the record does not list (no leftovers, 2026-11-07)", () => {
@@ -513,14 +501,14 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     expect(messages.some((m) => m.startsWith("dimensions.real-vs-nominal"))).toBe(false);
   });
 
-  it("fails a record whose moving-tax mark is open while its own value says whether a move is taxed (no leftovers since SW OQ8, 2026-11-07)", () => {
-    const wrapper = { id: "pension-comprehensive", open_questions: [], switch_is_tax_event: { value: false }, dimensions: { "switching-tax-event": "blocked:SW-OQ8" } };
+  it("fails a record whose moving-tax mark is open while its own value says whether a move is taxed (no leftovers since TXP-32, 2026-11-07)", () => {
+    const wrapper = { id: "pension-comprehensive", open_questions: ["SW-OQ9"], switch_is_tax_event: { value: false }, dimensions: { "switching-tax-event": "blocked:SW-OQ9" } };
     const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/wrappers/pension-comprehensive.json": wrapper });
-    expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringMatching(/^dimensions.switching-tax-event is blocked:SW-OQ8 but switch_is_tax_event is known \(false\); mark it covered/)]));
+    expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringMatching(/^dimensions.switching-tax-event is blocked:SW-OQ9 but switch_is_tax_event is known \(false\); mark it covered/)]));
   });
 });
 
-// D30 (research/specs/2026-10-25-rules-scope/spec.md §3): who a rule applies to, and where it may appear
+// D30 (8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): who a rule applies to, and where it may appear
 describe("scope", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: () => {} });
   const harel = { id: "harel", name_he: "הראל", kind: "provident-manager", scope_names: [{ name: "Harel" }], cma_legal_id: null, fees_id: null, deposit_bank_id: null, own_hosts: ["harel-group.co.il"] };

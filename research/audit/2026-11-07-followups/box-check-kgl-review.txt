@@ -1,8 +1,0 @@
-
-== /guide/kupat-gemel-lehashkaa/?review at 390 px: 0 sliders, 0 selects; page wider than the screen: false
-  1 markers
-
-== /guide/kupat-gemel-lehashkaa/?review at 1280 px: 0 sliders, 0 selects; page wider than the screen: false
-  1 markers
-
-total boxes that changed on the screen: 0

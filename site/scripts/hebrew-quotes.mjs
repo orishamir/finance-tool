@@ -75,7 +75,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       for (const x of hits.filter((x) => keyOf(x.page) === k).slice(0, 8)) problems.push(`    ${x.page}: …${x.h}…`);
     }
   }
-  for (const [k, allowed] of Object.entries(left)) {
+  // A QUICK build (react-router.config.ts) has only some pages, so a page's count can't be told to shrink.
+  for (const [k, allowed] of process.env.QUICK ? [] : Object.entries(left)) {
     const n = counts[k] ?? 0;
     if (n < allowed) problems.push(`${k}: now ${n}, the list allows ${allowed}: lower it in scripts/hebrew-quotes-leftovers.json (the list only shrinks)`);
   }

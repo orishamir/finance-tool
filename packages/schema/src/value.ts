@@ -47,8 +47,8 @@ export const instrumentClass = z.enum([
   "all",
 ]);
 
-/** data-schema §1, strength vocabulary (il-finance README plus primary-mirror and entered). */
-export const strength = z.enum(["primary", "primary-mirror", "institution", "secondary", "open", "entered"]);
+/** data-schema §1, strength vocabulary (il-finance README plus entered). A copy of an official text is never a source (CLAUDE.md). */
+export const strength = z.enum(["primary", "institution", "secondary", "open", "entered"]);
 
 /** D7: the three number states. */
 export const numberState = z.enum(["sourced", "computed", "entered"]);

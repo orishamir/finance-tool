@@ -1,9 +1,9 @@
-// The inputs behind the graph (design-spec 4, design-system 3.3): number field, range field (slider and number), percent field, field state.
+// The inputs behind the graph (design-spec 4, design-system 3.3): number field, range field (slider and number), percent field, and the
+// reset each field carries on its label line (founder, 2026-11-08).
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconClose, IconReset, IconSearch } from "../icons";
-import { StateTag } from "../provenance";
 import { Button } from "./button";
 import { cx } from "./cx";
 
@@ -18,7 +18,13 @@ export interface FieldProps {
   unit: string;
   /** The value the engine currently uses (P-05 or entered). */
   value: number | null;
+  /** The reader typed the value (it is not the start value). It changes nothing in the field's look (founder, 2026-11-08): what the reader types looks the same as the default. */
   isEntered: boolean;
+  /**
+   * The value the field starts at, its default: the reset on the label line says "חזרה ל־{start}" and shows while the value differs from
+   * it. `null`: there is nothing to go back to (no reset). Left out: the reset shows while `isEntered`, in general words.
+   */
+  start?: number | null;
   /** Returns an error message for a parsed number, or null. */
   validate: (n: number) => ReactNode | null;
   onCommit: (n: number) => void;
@@ -27,21 +33,71 @@ export interface FieldProps {
   note?: ReactNode;
   placeholder?: string;
   disabled?: boolean;
-  /** Only the box and its error, without the label row and state (inside a slider's label row). */
+  /** Only the box and its error, without the label row (inside a slider's label row). */
   compact?: boolean;
-  /** No start-value state line (optional fields such as age). */
+  /** An empty field is allowed and clears the value (optional fields such as age); without a `start` it has no reset. */
   optional?: boolean;
   inputMode?: "decimal" | "numeric";
+  /** A price that may have agorot (a fee from a price list, "9.90 ₪"). Without it, a shekel field takes whole shekels only (founder, 2026-11-08). */
+  agorot?: boolean;
   autoFocus?: boolean;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
-  /** Compact only: hands the error to the row that holds the box, which shows it in a line it already keeps, instead of a line under the box that would push what follows down (nothing moves, #190). */
+  /** Compact only: hands the error to the row that holds the box, which shows it in a line it already keeps, instead of a line under the box that would push what follows down (nothing moves). */
   errorOut?: (error: ReactNode | null) => void;
 }
 
-/** A box for one typed number, with its unit, hint, error and the state line (start value, or entered with a reset). The default for any number the reader may change. */
+/** How a field writes its start value in its reset: "10", "12,000 ₪", "4.5%", as the field shows it. */
+export function startText(n: number, unit: string): string {
+  if (/^nis/.test(unit)) return fmt.nis(n);
+  if (/^pct/.test(unit)) return `${formatTyped(n)}%`;
+  return formatTyped(n);
+}
+
+/** Whether a field has a reset at all: a start value to go back to, or (with none given) a field that is not optional. Without one, no room is kept. */
+function resetKept({ start, optional }: Pick<FieldProps, "start" | "optional">): boolean {
+  return start === undefined ? !optional : start !== null;
+}
+
+/** Whether a field's reset shows: the value differs from the start value, or, with no start value given, the reader typed it. */
+function resetShown({ value, isEntered, start, optional, disabled }: Pick<FieldProps, "value" | "isEntered" | "start" | "optional" | "disabled">): boolean {
+  if (disabled || !resetKept({ start, optional })) return false;
+  if (start === undefined) return isEntered;
+  return value !== null && value !== start;
+}
+
+/**
+ * The reset at the far end of a field's label line (founder, 2026-11-08): small and muted, "↺ חזרה ל־10". It holds its place while it is
+ * hidden (`invisible` also takes it out of the tab order and what a screen reader reads), so nothing moves when it comes or goes; its tap
+ * area reaches 44 px past its small text.
+ */
+export function ResetToStart({ shown, start, unit, onReset, describedBy, className }: { shown: boolean; start?: number | null; unit: string; onReset: () => void; /** The label's id: the reset is spoken with the field's name. */ describedBy?: string; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onReset}
+      aria-describedby={describedBy}
+      className={cx("tap-area shrink-0 inline-flex items-center gap-1 text-xs leading-5 font-normal text-muted-foreground hover:text-foreground whitespace-nowrap", !shown && "invisible", className)}
+    >
+      <IconReset size={14} aria-hidden="true" />
+      {typeof start === "number" ? (
+        <span>
+          {buttons.resetTo}
+          <bdi dir="ltr">{startText(start, unit)}</bdi>
+        </span>
+      ) : (
+        <span>{buttons.resetOne}</span>
+      )}
+    </button>
+  );
+}
+
+/** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
-  const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode = "decimal", autoFocus, externalError = null, errorOut } = props;
+  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode: mode = "decimal", autoFocus, externalError = null, errorOut, agorot, start } = props;
+  // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
+  const whole = /^nis/.test(unit) && !agorot;
+  const inputMode = whole ? "numeric" : mode;
 
   const ids = useId();
   const [text, setText] = useState(value === null ? "" : formatTyped(value));
@@ -108,12 +164,12 @@ export function NumberField(props: FieldProps) {
       return;
     }
     const n = parseNumber(t);
-    const err = Number.isNaN(n) ? copy.errors.nan : validate(n);
+    const err = Number.isNaN(n) ? copy.errors.nan : whole && !Number.isInteger(n) ? copy.errors.whole : validate(n);
     setError(err);
     if (!err) later(() => onCommit(n));
   };
   const box = (
-    <div className={cx("field-box", compact && "field-box-compact", isEntered && "field-box-entered", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
+    <div className={cx("field-box", compact && "field-box-compact", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
         ref={inputRef}
         id={ids}
@@ -133,7 +189,7 @@ export function NumberField(props: FieldProps) {
           if (!error && value !== null && text.trim() !== "") setText(formatTyped(value));
         }}
         autoFocus={autoFocus}
-        className={cx("field-input", isEntered && "text-entered")}
+        className="field-input"
       />
       <span className="field-unit">{unitWord(unit)}</span>
     </div>
@@ -153,12 +209,16 @@ export function NumberField(props: FieldProps) {
       </div>
     );
   }
-  // the label, then one body with the box and what follows it: a field in a `.field-row` is a two-row subgrid (app.css)
+  // the label line (the label, and its reset at the far end), then one body with the box and what follows it: a field in a `.field-row` is a
+  // two-row subgrid (app.css). The reset keeps its place while hidden, so the label never rewraps when it comes (founder, 2026-11-08)
   return (
     <div className="field">
-      <label htmlFor={ids} className="field-label">
-        {label}
-      </label>
+      <div className="field-label flex flex-wrap items-end justify-between gap-x-3">
+        <label htmlFor={ids} id={`${ids}-l`} className="min-w-0">
+          {label}
+        </label>
+        {resetKept(props) && <ResetToStart shown={resetShown(props)} start={start} unit={unit} onReset={onReset} describedBy={`${ids}-l`} className="ms-auto" />}
+      </div>
       <div className="field-body">
         {box}
         {shownError ? (
@@ -171,31 +231,26 @@ export function NumberField(props: FieldProps) {
           </span>
         ) : null}
         {note}
-        {!optional && <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />}
       </div>
     </div>
   );
 }
 
 /**
- * The line under a field: "loading", or "entered by you" with a reset (`canReset` false leaves the tag alone); empty while the field holds
- * its start value. The line keeps its height either way: the tag and the reset appearing used to push everything under the field down as
- * a slider moved (founder, 2026-10-26).
+ * A reset for a group of typed values on a line of its own, under them (a table cell of several small boxes with no label line, such as an
+ * own account's prices): a quiet "חזרה לערך ההתחלתי" while something is typed, "loading" while the fields wait. No "you entered" tag
+ * (founder, 2026-11-08). The line keeps its height either way, so nothing under it moves (founder, 2026-10-26). A field with a label line
+ * carries its own reset there instead (`NumberField`, `RangeField`).
  */
 export function FieldState({ entered, onReset, disabled, canReset = true }: { entered: boolean; onReset: () => void; disabled?: boolean; canReset?: boolean }) {
   return (
     <span className="flex items-center gap-2 min-h-target">
       {disabled ? (
         <span className="text-xs text-muted-foreground">{copy.loading}</span>
-      ) : entered ? (
-        <>
-          <StateTag state="entered" />
-          {canReset && (
-            <Button variant="quiet" className="text-sm leading-tight -ms-2 min-h-target" onClick={onReset}>
-              <IconReset size={16} /> {buttons.resetOne}
-            </Button>
-          )}
-        </>
+      ) : entered && canReset ? (
+        <Button variant="quiet" className="text-sm leading-tight -ms-2 min-h-target" onClick={onReset}>
+          <IconReset size={16} /> {buttons.resetOne}
+        </Button>
       ) : null}
     </span>
   );
@@ -205,15 +260,19 @@ export interface RangeFieldProps extends FieldProps {
   min: number;
   max: number;
   step: number;
-  /** Replaces the state line under the slider (the goal form's own: a preset's value, not the start value). */
-  footer?: ReactNode;
+  /** A line under the slider (the goals board's own words). `false` or left out: none. */
+  footer?: ReactNode | false;
 }
 
-/** A number and a slider for it, together: the label and the box on one row, the slider under them. For a quantity with a natural range (years, a monthly deposit). */
+/**
+ * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them. For a quantity with a
+ * natural range (years, a monthly deposit). The reset sits at the far end of the label, beside the box, and keeps its place while hidden;
+ * where the row is too narrow for both it takes a second line in the same row, so nothing moves when it comes (founder, 2026-11-08). The
+ * box's error takes the reset's place while it lasts, so no line opens under the box.
+ */
 export function RangeField(props: RangeFieldProps) {
-  const { label, min, max, step, value, onCommit, disabled, isEntered, onReset, footer } = props;
+  const { label, unit, min, max, step, value, onCommit, disabled, onReset, footer, start } = props;
   const id = useId();
-  // with no line under the slider, the box's error takes the reset's place under the label: the row keeps its height (#190)
   const [error, setError] = useState<ReactNode | null>(null);
   const current = value ?? min;
   const clamped = Math.max(min, Math.min(max, current));
@@ -221,29 +280,19 @@ export function RangeField(props: RangeFieldProps) {
   return (
     <div className="field">
       <div className="flex items-center justify-between gap-3 min-h-target">
-        {footer === false ? (
-          // the label and the reset, one over the other in a row of one height: the reset's place is kept while it is not there, so a
-          // number becoming the person's own moves nothing; its tap target reaches 44 px past its line (2026-10-31)
-          <span className="flex flex-col items-start min-w-0">
-            <span className="field-label whitespace-nowrap" id={`${id}-l`}>
-              {label}
-            </span>
-            {error ? (
-              <span role="alert" className="h-5 text-xs leading-5 text-destructive whitespace-nowrap">
-                {error}
-              </span>
-            ) : (
-              <button type="button" onClick={onReset} className={cx("h-5 tap-area text-xs text-link hover:underline whitespace-nowrap", !(isEntered && !disabled) && "invisible")}>
-                {buttons.resetOne}
-              </button>
-            )}
-          </span>
-        ) : (
+        <span className="flex flex-wrap items-center gap-x-2 min-w-0 flex-1">
           <span className="field-label min-w-0" id={`${id}-l`}>
             {label}
           </span>
-        )}
-        <NumberField {...props} compact errorOut={footer === false ? setError : undefined} />
+          {error ? (
+            <span role="alert" className="ms-auto text-xs leading-5 text-destructive">
+              {error}
+            </span>
+          ) : (
+            resetKept(props) && <ResetToStart shown={resetShown(props)} start={start} unit={unit} onReset={onReset} describedBy={`${id}-l`} className="ms-auto" />
+          )}
+        </span>
+        <NumberField {...props} compact errorOut={setError} />
       </div>
       <input
         type="range"
@@ -257,7 +306,7 @@ export function RangeField(props: RangeFieldProps) {
         style={{ "--fill": `${fill}%` } as CSSProperties}
         onChange={(e) => onCommit(Number(e.target.value))}
       />
-      {footer ?? <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />}
+      {footer || null}
     </div>
   );
 }
@@ -270,11 +319,6 @@ export function percentCheck(range: { min: number; max: number } = { min: 0, max
 /** A number field for a percent: the unit is a yearly rate unless `unit` says otherwise, and the range check is the standard one (0 to 100 unless `range` says otherwise). */
 export function PercentField({ unit = "pct_per_year", range, validate, ...rest }: Omit<FieldProps, "unit" | "validate"> & { unit?: string; range?: { min: number; max: number }; validate?: FieldProps["validate"] }) {
   return <NumberField unit={unit} validate={validate ?? percentCheck(range)} {...rest} />;
-}
-
-/** The one line above a panel of fields: what an untouched field is (UX fix 17). */
-export function ParameterLine({ className }: { className?: string }) {
-  return <p className={cx("text-xs text-muted-foreground", className)}>{copy.stateStart}</p>;
 }
 
 /** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
@@ -353,13 +397,14 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
 }
 
 /** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */
-export function SelectField({ label, options, value, onChange, none, help, wide, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; /** The list fills the width, as a text field beside it does (a phone's controls over a list). */ wide?: boolean; className?: string }) {
+export function SelectField({ label, options, value, onChange, none, help, mark, wide, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; /** A `HelpMark` after the label, outside it, so the field's spoken name stays the label alone: what the choice does, said once in its "?" (founder, 2026-11-08). */ mark?: ReactNode; /** The list fills the width, as a text field beside it does (a phone's controls over a list). */ wide?: boolean; className?: string }) {
   const id = useId();
   return (
     <div className={cx("flex flex-col gap-1", wide ? null : "max-w-measure", className)}>
-      <label htmlFor={id} className="text-sm font-medium">
-        {label}
-      </label>
+      <span className="text-sm font-medium">
+        <label htmlFor={id}>{label}</label>
+        {mark && <> {mark}</>}
+      </span>
       <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className={cx("h-field rounded-md bg-card border border-input px-3", wide ? "w-full" : "max-w-72")}>
         {none !== undefined && <option value="">{none}</option>}
         {options.map((o) => (

@@ -142,13 +142,22 @@ export interface Discount {
 
 /**
  * F-16 Fee change over time. A discounted fee reverts to the list fee at the end of the discount period,
- * no earlier than the minimum period of PF-13 after it started. Returns the rate for month m and whether
- * PF-13 moved the end.
+ * no earlier than the minimum period of PF-13 after it started. `endsBy`, when given, is the last month the
+ * discount may hold because PF-14 lets the manager end it earlier: on a plan with no deposit after the first, PF-14's
+ * `months_after_deposits_stop` (six months, circular 2017-9-15 s.3(ב)(1); PF OQ18, the cautious reading, D87), which the
+ * provident and pension runs read from the rule book; it caps PF-13's minimum too. Returns the rate
+ * for month m and whether PF-13 moved the end.
  */
-export function feeForMonth(rate: number, discount: Discount | undefined, minMonths: number, month: number) {
+export function feeForMonth(rate: number, discount: Discount | undefined, minMonths: number, month: number, endsBy?: number) {
   if (!discount) return { rate, extended: false };
-  const end = Math.max(discount.months, minMonths);
+  const end = discountEnd(discount, minMonths, endsBy);
   return { rate: month <= end ? rate : discount.listRate, extended: end > discount.months };
+}
+
+/** F-16: the last month a discount holds: its period, no shorter than PF-13's minimum, and no later than `endsBy` (PF-14, PF OQ18). */
+export function discountEnd(discount: Discount, minMonths: number, endsBy?: number): number {
+  const end = Math.max(discount.months, minMonths);
+  return endsBy === undefined ? end : Math.min(end, endsBy);
 }
 
 /** The provident family's fee lines with their discounts (F-11, F-15, A-18, A-19): the shape the provident and pension runs take. */

@@ -59,7 +59,7 @@ describe("the money-market funds keep the bank case", () => {
   });
 });
 
-describe("the guides price an account and its securities on the comparison's pick (issue 112)", () => {
+describe("the guides price an account and its securities on the comparison's pick", () => {
   // the guide's example plan: P-05's amount, monthly deposit and horizon
   const plan: RunGoal = { ...goal, horizonYears: 10, amountNow: 10_000, monthly: 500, inflationPct: 2 };
   for (const id of ["makam", "government-bond"]) {

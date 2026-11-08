@@ -1,5 +1,5 @@
 // The person's own broker and fund on the index page (D44): the two quiet buttons under the lists, the panel they open, and what a row of
-// an entry says. Typing stays in the panel: nothing on the page changes until the person saves (ground rule 4, "nothing moves").
+// an entry says. Typing stays in the panel: nothing on the page changes until the person saves (guidelines/design.md, "little movement").
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
@@ -130,8 +130,8 @@ export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fu
   );
 }
 
-/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike (#190). The entered tag stands before
- *  what was typed, and only when something was: alone, it stood before its own "not entered" (#190). */
+/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike. The entered tag stands before
+ *  what was typed, and only when something was: alone, it stood before its own "not entered". */
 export function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
   return (
     <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
@@ -184,7 +184,7 @@ function BrokerPanel({ headId, broker, houses, onHouse, others, writable, onSave
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
   // no "0" in an empty field: an empty field is a price not known, not a price of zero
-  const field = (k: "tradeMin" | "custodyMin" | "monthlyFee", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={nisCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
+  const field = (k: "tradeMin" | "custodyMin" | "monthlyFee", label: string, unit: string) => <NumberField agorot label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={nisCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const percent = (k: "tradePct" | "custodyPct" | "fxPct", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
     flushPendingFields();
@@ -252,7 +252,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
   const foreign = isForeignKind(draft.kind);
-  // no "0" in an empty field: an empty fee is not known, not a fee of zero (#190)
+  // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
     flushPendingFields();

@@ -1,4 +1,4 @@
-// The stairs on the indices page (founder, 2026-11-01, drawing A of research/specs/2026-11-01-indices-general/stairs.html): start from one
+// The stairs on the indices page (founder, 2026-11-01, drawing A of 8dd1f013:research/specs/2026-11-01-indices-general/stairs.html): start from one
 // account and one fund, see which single change leaves more at the end, take it, and see what the next single change adds.
 // This module is the selection logic only: rows, climb, ceiling, scale. It reads a grid of account x fund prices (the page's
 // `buildInvest` output, `gridOf`) and writes no figure of its own beyond differences between two of them (F-91: the gap in what is
@@ -117,7 +117,7 @@ export function rowsAt(g: Grid, pos: Pos): Row[] {
 /**
  * Every list a lane can show on this grid, each one row longer than any start can show (the start's own row is among them), told apart
  * by what sets a row's height (priced or why not, open, hedged, the kind's fund) and kept once: what each lane's held height is measured
- * from, so a pick or a step moves nothing below a lane (#190: on a phone the lanes stand one under another, and a fund bought abroad
+ * from, so a pick or a step moves nothing below a lane (on a phone the lanes stand one under another, and a fund bought abroad
  * after one bought here grew the account lane by 357 px). The figures are any priced start's; only their presence counts.
  */
 export function laneCases(g: Grid): Record<Lane, Row[][]> {
@@ -241,8 +241,9 @@ export function chainOf(g: Grid, s: StairsState): Chain | null {
 
 // ---------------------------------------------------------------- the scale
 
-/** The value axis: from a little under the lowest that matters to the highest, in round steps. The low end ignores the lowest 5% of the priced pairs. */
-export function yScale(g: Grid, chain: readonly Stair[], ceiling: Top): { LO: number; HI: number; step: number } {
+/** The levels the plot spans: from a little under the lowest that matters, rounded down, to the highest. The low end ignores the lowest 5% of
+ *  the priced pairs. */
+export function yScale(g: Grid, chain: readonly Stair[], ceiling: Top): { LO: number; HI: number } {
   const all: number[] = [];
   for (const f of g.funds) if (!f.hedged) for (const a of g.accounts) { const c = g.cell(a, f.id); if (c) all.push(c.v); }
   all.sort((x, y) => x - y);
@@ -253,7 +254,7 @@ export function yScale(g: Grid, chain: readonly Stair[], ceiling: Top): { LO: nu
   const mag = 10 ** Math.floor(Math.log10(raw));
   const step = [1, 2, 2.5, 5, 10].map((x) => x * mag).find((x) => x >= raw)!;
   const LO = Math.max(0, Math.floor((lo - (hi - lo) * 0.06) / step) * step);
-  return { LO, HI: hi, step };
+  return { LO, HI: hi };
 }
 
 /**

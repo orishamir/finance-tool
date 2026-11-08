@@ -137,7 +137,7 @@ export interface BankBreak {
 }
 
 /**
- * The answer of F-104: what the collected deposits say about breaking them, counted over the banks (ground rule 2: a bank whose rows
+ * The answer of F-104: what the collected deposits say about breaking them, counted over the banks (former ground rule 2: a bank whose rows
  * were collected in larger number does not weigh more), with the deposits counted only for the sheet.
  */
 export interface BreakCount {

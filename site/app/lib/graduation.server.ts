@@ -1,8 +1,9 @@
 // How far each tier-2 instrument is from full coverage (release 5, flow 37, design-spec 25). Read at build from the
 // "Graduation status" sections of the rule base's tier-2 files (.claude/skills/il-finance/references/) and from method
 // G-24's open questions (the table in compare.server.ts); never typed by hand. The `data/instruments/tier2/` files the
-// design spec proposes do not exist, so a closure is a struck-through item with "closed <date>" in a status section,
-// and an instrument with none says so. Server-only.
+// design spec proposes do not exist, so a closure is a struck-through item with "closed <date>" in a status section, and
+// an instrument with none says so. A closure names the rules that answered it, never a question: an answered question is
+// deleted from the rule base (founder, 2026-11-08). Server-only.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { loadNotCovered, loadRules, root, type NotCoveredRow } from "./data.server";
@@ -18,8 +19,8 @@ export interface GraduationOpen {
   institutionAnswer?: { ruleId: string };
 }
 
+/** A question of the status section that has its answer: the rules that answered it, and the date. The page names it in words from `closureTopics` (copy.ts), by its card and its rules joined with a space. */
 export interface GraduationClosed {
-  code: string;
   closedOn?: string;
   ruleIds: string[];
 }
@@ -37,18 +38,18 @@ export interface GraduationStatusView {
 
 const REFS = ".claude/skills/il-finance/references";
 
-/** Per instrument: the il-finance file, the block of its status section (a bold lead-in), the prefix of its own open questions. */
-const sources: Record<string, { file: string; block: RegExp | null; prefix: string }> = {
-  "savings-policies": { file: "savings-policies-and-executive-insurance.md", block: /^\*\*Savings policy\*\*/, prefix: "INS" },
-  "executive-insurance": { file: "savings-policies-and-executive-insurance.md", block: /^\*\*Executive insurance\*\*/, prefix: "INS" },
-  "structured-deposits": { file: "fx-and-structured-deposits.md", block: /^- \*\*Structured deposits\*\*/, prefix: "FXD" },
-  "foreign-currency-deposits": { file: "fx-and-structured-deposits.md", block: /^- \*\*FX deposits/, prefix: "FXD" },
-  "corporate-bonds": { file: "corporate-bonds.md", block: null, prefix: "CORP" },
-  "managed-portfolios": { file: "managed-and-robo-portfolios.md", block: null, prefix: "MGD" },
-  reits: { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli REIT shares/, prefix: "RG" },
-  "gold-via-funds": { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli gold funds/, prefix: "RG" },
-  // added 2026-10-26: without it the closures of TXA OQ9 to OQ11 (ruling 6849/15, circular 2/2013) never reached the page
-  "amendment-190-deposits": { file: "tax-insurance-and-amendment-190.md", block: /^- \*\*Amendment 190 deposits/, prefix: "TXA" },
+/** Per instrument: the il-finance file and the block of its status section (a bold lead-in). */
+const sources: Record<string, { file: string; block: RegExp | null }> = {
+  "savings-policies": { file: "savings-policies-and-executive-insurance.md", block: /^\*\*Savings policy\*\*/ },
+  "executive-insurance": { file: "savings-policies-and-executive-insurance.md", block: /^\*\*Executive insurance\*\*/ },
+  "structured-deposits": { file: "fx-and-structured-deposits.md", block: /^- \*\*Structured deposits\*\*/ },
+  "foreign-currency-deposits": { file: "fx-and-structured-deposits.md", block: /^- \*\*FX deposits/ },
+  "corporate-bonds": { file: "corporate-bonds.md", block: null },
+  "managed-portfolios": { file: "managed-and-robo-portfolios.md", block: null },
+  reits: { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli REIT shares/ },
+  "gold-via-funds": { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli gold funds/ },
+  // added 2026-10-26: without it the Amendment 190 closures (ruling 6849/15, TXA-30; circular 2/2013, TXA-19) never reached the page
+  "amendment-190-deposits": { file: "tax-insurance-and-amendment-190.md", block: /^- \*\*Amendment 190 deposits/ },
 };
 
 /** Where an institution's statement is the only answer to a blocking question (r5-tier2.md, D23; a REIT's TX2-21 answers TX2 OQ7, which G-24 no longer lists as blocking, so it is not a blocker line): checked against the rule record at build.
@@ -77,35 +78,19 @@ function blockLines(section: string[], lead: RegExp | null): string[] {
 
 const ruleIdsIn = (text: string): string[] => [...new Set(text.match(/\b[A-Z]{2,4}\d?-\d{2}\b/g) ?? [])];
 
-function closuresOf(prefix: string, lines: string[]): GraduationClosed[] {
+function closuresOf(lines: string[]): GraduationClosed[] {
   const out: GraduationClosed[] = [];
   for (const line of lines) {
     for (const m of line.matchAll(/~~([^~]+)~~([^\n]*)/g)) {
-      const struck = m[1]!;
       const rest = m[2]!;
       const date = /[Cc]losed[^\d]{0,12}(\d{4}-\d{2}-\d{2})/.exec(rest)?.[1];
       if (!/closed/i.test(rest) && !date) continue;
-      const q = /(?:\b([A-Z]{2,4}\d?) )?open questions? (\d+(?:(?:,| and| to) \d+)*)/i.exec(struck);
-      const rules = ruleIdsIn(rest);
       // the struck text itself is the rule base's English note, never shown (2026-10-26: "tax treatment in `tax-tier2-other.md`…"
-      // reached the page); a closure without a question number shows only the rules that closed it. "Open questions 9 and 10"
-      // is one closure line for two questions (2026-10-26): each gets its own row
-      const numbers = q ? questionNumbers(q[2]!) : [];
-      if (numbers.length === 0) out.push({ code: "", ...(date ? { closedOn: date } : {}), ruleIds: rules });
-      for (const n of numbers) out.push({ code: `${q![1] ?? prefix} OQ${n}`, ...(date ? { closedOn: date } : {}), ruleIds: rules });
+      // reached the page); the closure is the rules that answered it
+      out.push({ ...(date ? { closedOn: date } : {}), ruleIds: ruleIdsIn(rest) });
     }
   }
   return out;
-}
-
-/** "9", "9 and 10", "9, 10 and 11", "9 to 11": the question numbers of a struck closure. */
-function questionNumbers(list: string): number[] {
-  const range = /^(\d+) to (\d+)$/.exec(list);
-  if (range) {
-    const [a, b] = [Number(range[1]), Number(range[2])];
-    return b >= a && b - a < 20 ? Array.from({ length: b - a + 1 }, (_, i) => a + i) : [a];
-  }
-  return list.split(/,| and /).map((x) => Number(x.trim())).filter((n) => Number.isInteger(n) && n > 0);
 }
 
 /** "TXA open question 1 ... narrowed ... (TXA-28)": a blocking question the status text says was narrowed, with the date and the rule. */
@@ -129,7 +114,7 @@ export function graduationStatuses(): GraduationStatusView[] {
   const out = tier2Table.map((t): GraduationStatusView => {
     const src = sources[t.id];
     const lines = src ? blockLines(statusSection(src.file), src.block) : [];
-    const closed = src ? closuresOf(src.prefix, lines) : [];
+    const closed = src ? closuresOf(lines) : [];
     const open: GraduationOpen[] = t.questions.map((q) => {
       const n = narrowing(q, lines);
       const inst = institutionAnswers.find((a) => a.instrument === t.id && a.code === q);

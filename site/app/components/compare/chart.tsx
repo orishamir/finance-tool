@@ -5,7 +5,7 @@ import { useId } from "react";
 import { scaleLinear } from "d3-scale";
 import { line } from "d3-shape";
 import { guide as guideCopy, r2 } from "../../copy";
-import type { SeriesLine } from "../../lib/compare";
+import { nominalFormula, type SeriesLine } from "../../lib/compare";
 import { fmt } from "../../lib/format";
 import { Num } from "../provenance";
 import { AxisLabels, niceYearTicks, yearTicksIn } from "../chart/TimelineChart";
@@ -71,7 +71,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
   const leadOpt = lead ? ctx.view.ranked.find((o) => o.id === lead.id) : undefined;
   const leadLast = lead?.points[lead.points.length - 1];
   const leadRaw = zoom.view && lead ? valueOn(valueOf(lead, mode), endYear) : ((mode === "real" ? leadOpt?.real ?? leadLast?.real : leadOpt?.nominal ?? leadLast?.nominal) ?? 0);
-  const leadValue = ctx.mk.nis(leadRaw, mode === "real" ? "F-06" : "F-09", lead?.name ?? "", leadOpt);
+  const leadValue = ctx.mk.nis(leadRaw, mode === "real" ? "F-06" : nominalFormula(leadOpt?.run, ctx.bundle.wrappers.find((w) => w.id === lead?.id)?.record), lead?.name ?? "", leadOpt);
   const hovered = hover === null ? null : hover;
   // Each ranked line carries its place in a small circle, the number its card shows: the three options are shades of one teal and
   // often run on top of each other, so the colour alone could not tell them apart (V6, 2026-10-26). The circles stand at different
@@ -172,7 +172,7 @@ export function ChartReadout({ lines, mode, year, ctx }: { lines: SeriesLine[]; 
         const p = l.points.find((q) => q.year === year) ?? l.points[l.points.length - 1]!;
         const opt = ctx.view.ranked.find((o) => o.id === l.id);
         const v = mode === "real" ? p.real : p.nominal;
-        return { id: l.id, swatch: l.role === "baseline" ? <Swatch shape="dotted-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi>, value: <Num value={ctx.mk.nis(v, mode === "real" ? "F-06" : "F-09", l.name, opt)} animate /> };
+        return { id: l.id, swatch: l.role === "baseline" ? <Swatch shape="dotted-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi>, value: <Num value={ctx.mk.nis(v, mode === "real" ? "F-06" : nominalFormula(opt?.run, ctx.bundle.wrappers.find((w) => w.id === l.id)?.record), l.name, opt)} animate /> };
       })}
     />
   );
@@ -190,7 +190,7 @@ export function ChartTable({ lines, mode, ctx }: { lines: SeriesLine[]; mode: Mo
         cells: lines.map((l) => {
           const p = l.points.find((q) => q.year === yr);
           const opt = ctx.view.ranked.find((o) => o.id === l.id);
-          return p ? <Num size="cell" value={ctx.mk.nis(mode === "real" ? p.real : p.nominal, mode === "real" ? "F-06" : "F-09", l.name, opt)} /> : null;
+          return p ? <Num size="cell" value={ctx.mk.nis(mode === "real" ? p.real : p.nominal, mode === "real" ? "F-06" : nominalFormula(opt?.run, ctx.bundle.wrappers.find((w) => w.id === l.id)?.record), l.name, opt)} /> : null;
         }),
       }))}
     />

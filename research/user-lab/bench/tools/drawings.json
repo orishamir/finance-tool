@@ -4,15 +4,15 @@
     {"src": "git:9603e18:research/specs/2026-10-27-invest-improvements/mockups/option-B-sp500-pc.png", "name": "option-B"},
     {"src": "git:9603e18:research/specs/2026-10-27-invest-improvements/mockups/option-C-sp500-pc.png", "name": "option-C"}]},
   {"case": "idx-r2-c-variants", "drawings": [
-    {"src": "research/specs/2026-10-27-invest-improvements/mockups/option-C1-pc.png", "name": "option-C1"},
-    {"src": "research/specs/2026-10-27-invest-improvements/mockups/option-C2-pc.png", "name": "option-C2"},
-    {"src": "research/specs/2026-10-27-invest-improvements/mockups/option-C3-pc.png", "name": "option-C3"},
-    {"src": "research/specs/2026-10-27-invest-improvements/mockups/option-C4-pc.png", "name": "option-C4"}]},
+    {"src": "git:8dd1f013:research/specs/2026-10-27-invest-improvements/mockups/option-C1-pc.png", "name": "option-C1"},
+    {"src": "git:8dd1f013:research/specs/2026-10-27-invest-improvements/mockups/option-C2-pc.png", "name": "option-C2"},
+    {"src": "git:8dd1f013:research/specs/2026-10-27-invest-improvements/mockups/option-C3-pc.png", "name": "option-C3"},
+    {"src": "git:8dd1f013:research/specs/2026-10-27-invest-improvements/mockups/option-C4-pc.png", "name": "option-C4"}]},
   {"case": "idx-r2-no-column-heads", "same_as": "idx-r2-c-variants"},
   {"case": "idx-r3-pricing", "drawings": [
-    {"src": "research/specs/2026-10-27-invest-improvements/mockups/option-E1-pc.png", "name": "option-E1"},
-    {"src": "research/specs/2026-10-27-invest-improvements/mockups/option-E2-pc.png", "name": "option-E2"},
-    {"src": "research/specs/2026-10-27-invest-improvements/mockups/option-E3-pc.png", "name": "option-E3"}]},
+    {"src": "git:8dd1f013:research/specs/2026-10-27-invest-improvements/mockups/option-E1-pc.png", "name": "option-E1"},
+    {"src": "git:8dd1f013:research/specs/2026-10-27-invest-improvements/mockups/option-E2-pc.png", "name": "option-E2"},
+    {"src": "git:8dd1f013:research/specs/2026-10-27-invest-improvements/mockups/option-E3-pc.png", "name": "option-E3"}]},
   {"case": "idx-r6-costs", "drawings": [
     {"src": "git:ec04051:research/specs/2026-10-27-invest-improvements/mockups/option-H1-pc.png", "name": "option-H1"},
     {"src": "git:ec04051:research/specs/2026-10-27-invest-improvements/mockups/option-H3-pc.png", "name": "option-H3"}]},
@@ -26,10 +26,10 @@
     {"src": "git:00a84e3:research/specs/2026-10-27-company-fund-card/shots/index-a-desktop.png", "name": "index-a"},
     {"src": "git:00a84e3:research/specs/2026-10-27-company-fund-card/shots/index-b-desktop.png", "name": "index-b"}]},
   {"case": "hedging-r1-steady-dollar", "drawings": [
-    {"src": "research/specs/2026-10-29-hedging/mockups/round1/option-A1-msci-world-now-and-after-pc.png", "name": "option-A1"},
-    {"src": "research/specs/2026-10-29-hedging/mockups/round1/option-A2-label-sheet-pc.png", "name": "option-A2"},
-    {"src": "research/specs/2026-10-29-hedging/mockups/round1/option-B-hedged-without-figure-pc.png", "name": "option-B"},
-    {"src": "research/specs/2026-10-29-hedging/mockups/round1/option-C-currency-field-pc.png", "name": "option-C"}]},
+    {"src": "git:8dd1f013:research/specs/2026-10-29-hedging/mockups/round1/option-A1-msci-world-now-and-after-pc.png", "name": "option-A1"},
+    {"src": "git:8dd1f013:research/specs/2026-10-29-hedging/mockups/round1/option-A2-label-sheet-pc.png", "name": "option-A2"},
+    {"src": "git:8dd1f013:research/specs/2026-10-29-hedging/mockups/round1/option-B-hedged-without-figure-pc.png", "name": "option-B"},
+    {"src": "git:8dd1f013:research/specs/2026-10-29-hedging/mockups/round1/option-C-currency-field-pc.png", "name": "option-C"}]},
   {"case": "hedged-what-happened", "drawings": [
     {"src": "git:4a1a326:research/specs/2026-10-31-hedged/mockups-1440.png", "name": "options"}]},
   {"case": "hedged-step-table", "drawings": [

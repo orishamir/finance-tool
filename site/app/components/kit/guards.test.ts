@@ -4,13 +4,13 @@
 //  3. a <p>, or a <span> with words of its own, that holds a <Num> is flowed text: never a flex or grid container, whose children
 //     (each piece of text, each number) become separate items and lines (the fees page's "שווה … ב־8 שנים." sentence);
 //  4. the gallery at /kit stays out of the menu and the search;
-//  5. a question data/open-questions.json has as closed is not named as open (2026-10-26);
+//  5. every open question the site names is in data/open-questions.json: an answered one is deleted from the rule base (2026-11-08);
 //  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26);
 //  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31);
-//  8. a year chart's pointer is the kit's useYearZoom: a chart that clears its reading when the pointer lifts lost the year on a phone (issue 22);
+//  8. a year chart's pointer is the kit's useYearZoom: a chart that clears its reading when the pointer lifts lost the year on a phone;
 //  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider (2026-11-01);
 // 11. the arrow at the end of a row that opens a page is the kit's RowArrow, in the link's colour (founder, 2026-11-03), never a grey one.
-// 12. a rule chip in a list of rules says the rule's title beside its id (#190).
+// 12. a rule chip in a list of rules says the rule's title beside its id.
 // 13. Hebrew is never addressed to one gender (copy.md 1 and 10.2).
 // 14. a figure's sheet never prints a record's raw English value ("none", "unlinked_15"): a word value heads its sheet with the word it
 //     was shown as, and every such value in the data reads in Hebrew without one (independent check 3, 2026-11-07).
@@ -37,11 +37,13 @@
 //     a document prints alone is said in words in the text's direction, never padded with an invented "-01" or isolated left to right,
 //     and the words before a date go in its `lead`, where a maqaf lead writes its letter on a month ("מנובמבר 2025"). A figure's own
 //     lead (NumAfter, LeadTail with `text`) does the same before a figure said in words ("בשנה").
-// 22. a control is at least 44 px tall at every width (ground rule 8; 2026-11-07, "הנחות נוספות" and "לתעריפון (PDF)" were 36 px, and
+// 22. a control is at least 44 px tall at every width (guidelines/design.md; 2026-11-07, "הנחות נוספות" and "לתעריפון (PDF)" were 36 px, and
 //     thirty other buttons, links and fold summaries with them): no `min-h-9` or `!h-9` on an unprefixed class; a control is `min-h-target`.
 //     Any fixed height under 44 px on a control fails, not only 36 px, unless `min-h-target` or the kit's `tap-area` brings its tap area to
 //     44 (lead, 2026-11-07: a `<button className="h-8">` passed); leftovers by name, a list that only shrinks.
 // 23. a link to a cited source is built by sourceHref, never from a raw address (2026-11-07, the founder: open at the quoted words).
+// 24. a key never shows a made-up figure (fresh readers, 2026-11-08: the number key's "123 ממקור 123 מחושב" read as a placeholder left
+//     in the page): no `num-sample` element holds digits; a key draws each style on its own word, after a lead that says what it keys.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -146,42 +148,40 @@ describe("ids go through IdRef", () => {
   });
 });
 
-// 2026-10-26: a question the rule base has closed is never named as open. data/open-questions.json holds each question's status
-// (generated from the rule base's markdown); no source of the site may name a closed one, in an IdRef, in a string that IdText
-// turns into chips, or typed bare in JSX text. The not-covered page reads its closures from the rule base at build time, so it
-// names no code in its source and needs no exception. The scanner does not pair quotes: a gershayim in Hebrew text (עו"ש, אג"ח)
-// broke the first version's string pairing and hid the IdRef that followed it (review, 2026-10-26).
-describe("no closed open question is named as open", () => {
-  const questions = JSON.parse(readFileSync(join(root, "../../data/open-questions.json"), "utf8")) as { id: string; status: string }[];
-  const closed = new Set(questions.filter((q) => q.status === "closed").map((q) => q.id));
+// 2026-10-26, changed 2026-11-08: every question the site names is a question of the rule base. data/open-questions.json lists them
+// (generated from the rule base's markdown), and an answered question is deleted from the markdown once its answer is in a rule
+// (founder, 2026-11-08), so a source that names one the file lacks points at nothing: in an IdRef, in a string that IdText turns into
+// chips, typed bare in JSX text, or in a comment. The scanner does not pair quotes: a gershayim in Hebrew text (עו"ש, אג"ח) broke
+// the first version's string pairing and hid the IdRef that followed it (review, 2026-10-26).
+describe("every open question the site names exists", () => {
+  const questions = JSON.parse(readFileSync(join(root, "../../data/open-questions.json"), "utf8")) as { id: string }[];
+  const ids = new Set(questions.map((q) => q.id));
   const scanned = files.filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f));
-  /** Source without comments: block and JSX comments, and `//` comments (a `//` after a colon or a quote, as in a URL, stays). */
-  const uncommented = (src: string): string => src.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:"'`\\\w])\/\/[^\n]*/g, "$1");
   /** The ids of `<IdRef … id="…">`, and of `id={"…"}`, `id={'…'}` or `` id={`…`} ``. */
   const idRefIds = (src: string): string[] =>
-    [...uncommented(src).matchAll(/<IdRef\b[^>]*?\bid=(?:"([^"]*)"|\{\s*(["'`])(.*?)\2\s*\})/g)].map((m) => m[1] ?? m[3] ?? "");
+    [...src.matchAll(/<IdRef\b[^>]*?\bid=(?:"([^"]*)"|\{\s*(["'`])(.*?)\2\s*\})/g)].map((m) => m[1] ?? m[3] ?? "");
   const codesIn = (text: string): string[] => [...text.matchAll(/\b([A-Z][A-Z0-9]*)[ -]OQ ?(\d+)\b/g)].map((m) => `${m[1]} OQ${m[2]}`);
-  /** Every code a source names: its IdRef ids, and any `<PREFIX> OQ<n>` or `<PREFIX>-OQ<n>` outside comments (JSX text, strings, keys). */
-  const named = (src: string): string[] => [...new Set([...idRefIds(src).flatMap(codesIn), ...codesIn(uncommented(src))])];
-  it("the data file is there and has closed questions, and the scan reaches the files", () => {
-    expect(closed.size).toBeGreaterThan(0);
+  /** Every code a source names: its IdRef ids, and any `<PREFIX> OQ<n>` or `<PREFIX>-OQ<n>` (JSX text, strings, keys, comments). */
+  const named = (src: string): string[] => [...new Set([...idRefIds(src).flatMap(codesIn), ...codesIn(src)])];
+  it("the data file is there, and the scan reaches the files", () => {
+    expect(ids.size).toBeGreaterThan(0);
     expect(scanned.map(rel)).toEqual(expect.arrayContaining(["copy.ts", "content/guide/pension-comprehensive.tsx", "routes/not-covered.tsx"]));
   });
-  it("names none in any source of the site", () => {
+  it("names none the rule base does not have", () => {
     const bad: string[] = [];
-    for (const f of scanned) for (const c of named(read(f))) if (closed.has(c)) bad.push(`${rel(f)}: ${c}`);
+    for (const f of scanned) for (const c of named(read(f))) if (!ids.has(c)) bad.push(`${rel(f)}: ${c}`);
     expect(bad).toEqual([]);
   });
-  it("sees an IdRef after a gershayim, id={…}, a bare code in JSX text and a key, and skips comments", () => {
+  it("sees an IdRef after a gershayim, id={…}, a bare code in JSX text, a key and a comment", () => {
     const src = [
-      `// TXK OQ12 was closed`,
+      `// TXK OQ3 is open`,
       `const a = <p>הפטור על ריבית בעו"ש לא ידוע. שאלה פתוחה: <IdRef id="TXI OQ11" />, ובבית השקעות שהוא חש"ב: <IdRef id="REG OQ9" />, <IdRef id={"REG OQ10"} /></p>;`,
-      `const b = <p>אג"ח: עוד לא ידוע, שאלה פתוחה GOV OQ6.</p>; const c = { "SW-OQ6": "x" };`,
-      `const url = "https://x.org/a"; // PEN OQ8`,
-      `const d = <p>{/* MF OQ4 in a JSX comment */}טקסט</p>;`,
+      `const b = <p>אג"ח: עוד לא ידוע, שאלה פתוחה GOV OQ6.</p>; const c = { "SW-OQ4": "x" };`,
+      `const url = "https://x.org/a"; // PEN OQ7`,
+      `const d = <p>{/* MF OQ1 in a JSX comment */}טקסט</p>;`,
     ].join("\n");
     expect(idRefIds(src)).toEqual(["TXI OQ11", "REG OQ9", "REG OQ10"]);
-    expect(named(src)).toEqual(["TXI OQ11", "REG OQ9", "REG OQ10", "GOV OQ6", "SW OQ6"]);
+    expect(named(src)).toEqual(["TXI OQ11", "REG OQ9", "REG OQ10", "TXK OQ3", "GOV OQ6", "SW OQ4", "PEN OQ7", "MF OQ1"]);
   });
 });
 
@@ -391,7 +391,7 @@ describe("the shared stylesheet", () => {
     const css = readFileSync(join(root, "app.css"), "utf8");
     expect(css).toMatch(/button:not\(:disabled\),\s*\[role="button"\]:not\(\[aria-disabled="true"\]\),\s*summary \{\s*cursor: pointer;/);
   });
-  // 19. A figure's and a term's tap area (ground rule 8). Lone, it reaches 11 px above and below and never less than 44 px (re-check 2,
+  // 19. A figure's and a term's tap area (guidelines/design.md). Lone, it reaches 11 px above and below and never less than 44 px (re-check 2,
   //     2026-11-07: an area that grew only sideways took 44 px from about 1,200 lone figures on a phone). In running text its own box sits
   //     above every other figure's area, so the figure on the next line never takes its click (independent check, 2026-11-07: "0.7%"
   //     opened the "5 שנים" sheet of the figure under it).
@@ -529,7 +529,7 @@ describe("a chip at the end of a sentence (20)", () => {
       `function f() { return <IdRef id="A" />; }`,
       `items.push(<IdRef id="A" />);`,
       `ids.map((id) => (\n  <IdRef key={id} id={id} />\n));`,
-      `<p>שאלה פתוחה: <IdRef id="SW OQ4" /> ועוד <IdRef id="SW OQ5" /></p>`,
+      `<p>שאלה פתוחה: <IdRef id="SW OQ4" /> ועוד <IdRef id="SW OQ9" /></p>`,
       `<p>ראו <IdRef id="A-03" />{" "}<Num value={v} /></p>`,
       `<p>ראו <IdRef id="A-03" />…</p>`,
       `// <IdRef id="A-03" />.`,
@@ -563,7 +563,7 @@ describe("the page frame", () => {
   });
 });
 
-// 12. a rule id never stands alone (#190): a chip in a list of rules (a sheet's "חוק או כלל", "נגזר מ") has no words beside it, so it
+// 12. a rule id never stands alone: a chip in a list of rules (a sheet's "חוק או כלל", "נגזר מ") has no words beside it, so it
 //     carries the rule's own title (`titled`). A chip after a sentence that states the rule is its citation and stays short.
 describe("a rule chip in a list of rules", () => {
   it("says the rule's title beside its id", () => {
@@ -900,7 +900,7 @@ describe("a control is at least 44 px tall", () => {
   // Any fixed height under 44 px on a control, not only 36 px (lead, 2026-11-07: a `<button className="h-8">` passed): a button, a link,
   // a fold's summary or a field whose unprefixed classes set `h-`, `min-h-` or `size-` under 44 px and nothing that brings its tap area to
   // 44 (min-h-target or a larger min-h, or the kit's `tap-area`). Today's leftovers are listed by name; the list only shrinks. The rendered
-  // check of what a finger hits, pseudo-element areas included, is research/audit/tools/hit-check.mjs.
+  // check of what a finger hits, pseudo-element areas included, is tools/hit-check.mjs.
   const LEFTOVERS: Record<string, number> = SHORT_CONTROL_LEFTOVERS;
   it("no control sets a fixed height under 44 px without a tap area that reaches it (leftovers listed by name)", () => {
     const found: Record<string, number> = {};
@@ -922,5 +922,18 @@ describe("a control is at least 44 px tall", () => {
     expect(shortControls('<button className="max-md:min-h-target md:tap-area">x</button>')).toHaveLength(0);
     expect(shortControls('<button className="h-11">x</button>')).toHaveLength(0);
     expect(shortControls('<span className="h-5">x</span>')).toHaveLength(0);
+  });
+});
+
+// 24. A key's sample is a word in its style, never a made-up figure.
+const SAMPLE_WITH_DIGITS = /className="[^"]*\bnum-sample\b[^"]*"[^>]*>\s*[^<{]*\d/g;
+describe("a key never shows a made-up figure (24)", () => {
+  it("no num-sample element holds digits", () => {
+    const hits = files.filter((f) => f.endsWith(".tsx")).flatMap((f) => (code(read(f)).match(SAMPLE_WITH_DIGITS) ?? []).map((m) => `${rel(f)}: ${m}`));
+    expect(hits).toEqual([]);
+  });
+  it("the scanner sees the broken pattern", () => {
+    expect('<span className="num num-sourced num-sample" aria-hidden="true">123</span>'.match(SAMPLE_WITH_DIGITS)).toHaveLength(1);
+    expect('<span className="num num-sourced num-sample whitespace-nowrap">\n  {numbers.legend.sourced}</span>'.match(SAMPLE_WITH_DIGITS)).toBeNull();
   });
 });

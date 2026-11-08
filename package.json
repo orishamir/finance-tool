@@ -15,13 +15,16 @@
     "validate": "npm run validate -w @finance-tool/pipeline",
     "refresh": "npm run refresh -w @finance-tool/pipeline --",
     "build": "npm run build -w site",
+    "chart-check": "node site/scripts/chart-check/check.mjs",
+    "layout-check": "node site/scripts/layout-check.mjs",
     "dev": "npm run dev -w site",
-    "check": "npm run typecheck && npm test && npm run validate && npm run build",
-    "gen:terms": "tsx packages/pipeline/scripts/gen-terms.ts"
+    "check": "npm run typecheck && npm test && npm run validate && npm run build && npm run chart-check && npm run layout-check",
+    "gen:terms": "python3 packages/pipeline/scripts/merge_terms.py && python3 packages/pipeline/scripts/gen_glossary.py && tsx packages/pipeline/scripts/gen-terms.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
     "fast-check": "^4.10.2",
+    "playwright": "1.63.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^5.0.5"

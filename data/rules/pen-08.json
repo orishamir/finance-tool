@@ -104,17 +104,16 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (עותק בוויקיטקסט)",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (עותק בוויקיטקסט)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5953%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשנ\"ט-1999, קובץ התקנות 5953 (22.2.1999)",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשנ\"ט-1999",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "תוספת שביעית",
-      "locator_he": "תוספת שביעית",
-      "checked": "2026-10-25"
+      "strength": "primary",
+      "locator": "file p.6, תוספת שביעית (formula for the monthly ceiling of insured wages)",
+      "locator_he": "עמוד 6, תוספת שביעית",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",

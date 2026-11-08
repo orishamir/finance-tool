@@ -1,4 +1,4 @@
-// Who a rule applies to (D30, research/specs/2026-10-25-rules-scope/spec.md §1 and §3), shared by the validator and the site so
+// Who a rule applies to (D30, 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §1 and §3), shared by the validator and the site so
 // both read the same lists: the scope words, the source kinds a general rule may be cited from first, the records the rule base
 // keeps that are not rules (left where they are for now), and the index pages that are an index provider's own context (D31).
 import { z } from "zod";
@@ -25,7 +25,7 @@ export type ScopeInstitution = z.infer<typeof scopeInstitution>;
 export const generalSourceKinds: ReadonlySet<string> = new Set(["law", "regulation", "circular", "regulator_page", "official_pdf", "exchange_rules", "dataset"]);
 
 /**
- * Records the rule base keeps that are not rules (research/knowledge/2026-10-25-scope/requests.md §4, a judgement call: listed,
+ * Records the rule base keeps that are not rules (8dd1f013:research/knowledge/2026-10-25-scope/requests.md §4, a judgement call: listed,
  * not moved). The lead's brief of 2026-10-26: leave them where they are for now. Each entry that is not general names every file
  * that cites it today (reviews, 2026-10-26): a data file whose `rule_ids` hold it (the validator checks every file under data/ but
  * data/rules and data/sources) and a site source file that quotes it (the site test `site/app/lib/scope.test.ts` checks every file
@@ -36,7 +36,6 @@ export const generalSourceKinds: ReadonlySet<string> = new Set(["law", "regulati
  */
 export const notRules: Readonly<Record<string, { why: string; files: readonly string[] }>> = {
   "IRA-28": { why: "a regulator's announcement of an event at one company (Slice)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
-  "TXH-24": { why: "press report", files: [] },
   "MF-61": { why: "the exchange's press release about its own indices", files: ["site/app/content/guide/limited-bond-fund.tsx", "site/app/routes/guide-limited-bond-fund.tsx"] },
   "MKT-01": { why: "a series (J.P. Morgan's past-return slide; S&P's data, not shown on the site since 2026-11-07, D82)", files: [] },
   "PEN-46": { why: "a per-fund series", files: [] },
@@ -90,7 +89,7 @@ export const ownContextExposures: Readonly<Record<string, readonly string[]>> = 
 };
 
 /**
- * A guide whose subject has no general source for its terms (issue 159, 2026-11-02): no law or regulator lists these funds or their fees, so the
+ * A guide whose subject has no general source for its terms (2026-11-02): no law or regulator lists these funds or their fees, so the
  * page shows each company's own documents, every one under that company's name. The list names the records; it only grows with a new company's document.
  */
 export const ownContextGuides: Readonly<Record<string, readonly string[]>> = {
@@ -142,8 +141,8 @@ export function ownDocumentCompanies(rule: { scope_institutions?: readonly { id:
 
 /**
  * The companies whose section lists a record (spec §4, "מה כתוב במסמכים של {company}"; review, 2026-10-26): each company it names
- * whose own document it cites (`own`, from `ownDocumentCompanies`); none for a general rule or a not-rule. A press report about a
- * company, or a forum post, is never listed as that company's.
+ * whose own document it cites (`own`, from `ownDocumentCompanies`); none for a general rule or a not-rule. A record about a company
+ * that cites none of its documents is never listed as that company's.
  */
 export function listedAt(rule: { id: string; scope: string }, own: readonly string[]): string[] {
   return rule.scope === "general" || Object.hasOwn(notRules, rule.id) ? [] : [...own];

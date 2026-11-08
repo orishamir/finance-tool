@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useAfterRender } from "../lib/settled";
 import { Link, Navigate, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, scnCompare, site, system } from "../copy";
+import { computedInputs as ci, r2, scnCompare, site, system } from "../copy";
 import { useValueMode } from "../lib/mode-store";
 import { splitOwnTerms, useOwnTerms } from "../lib/own-rate";
 import { applyIndex, planOfGoal } from "../lib/compare-index";
@@ -38,9 +38,9 @@ import { ExposureBody, ModeTabs } from "../components/exposure-mode/result";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../components/revisit/revisit";
 import { forgetRevisit, useRevisit } from "../components/revisit/use-revisit";
 import { Tpl } from "../components/exposure-mode/tpl";
-import { snapshotWrapper } from "../lib/revisit";
+import { revisitValue, snapshotWrapper } from "../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../lib/state";
-import { anyWeak, computed, entered } from "../lib/value";
+import { anyWeak, differenceOf, entered } from "../lib/value";
 import { r5 } from "../copy";
 import { bundleLinks } from "../lib/bundle";
 import { recordsById } from "../lib/scope";
@@ -86,7 +86,7 @@ export default function GoalComparePage() {
   );
 }
 
-function Result({ bundle, wb, failed, data, fit, presets, meta, today }: { bundle: CompareBundle | null; wb: WorkbenchBundle | null; failed: boolean; data: FormData; fit: FitTableData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
+function Result({ bundle, wb, failed, data, fit, presets, meta, today }: { bundle: CompareBundle | null; wb: WorkbenchBundle | null; failed: boolean; data: FormData; fit: FitTableData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null }; today: string }) {
   const { status, current, resolved } = useGoals();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -202,13 +202,6 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
   const ctx: ResultCtx = { bundle, view, g, mk, mode, openField, fall: current!.assumptions.acceptedFall ?? null, setOwnRate, setOwnFee, setOwnProvider, targetCost: current!.targetCost ?? null, subjectCurrency: subject && subject.record.currency !== "ILS" ? subject.record.currency : null, index: { wrapperId: BROKERAGE, card: { reading: index?.reading ?? null, ranked: index?.ranked ?? null, known: wb ? knownIndices(wb).map((i) => ({ id: i.id, name: i.name })) : [], chosenId: index?.reading?.kind === "chosen" ? index.reading.index.id : undefined, onChoose: setOwnIndex } } };
   const hideAll = view.headline === "excludes-all" || view.headline === "nothing-ranked";
   const title = goalTitle(current!);
-  const sources = {
-    horizon: resolved!.source.horizonYears === "entered",
-    amountNow: resolved!.source.amountNow === "entered",
-    monthly: resolved!.source.monthly === "entered",
-    available: resolved!.source.available === "entered",
-    inflation: g.inflationPct !== null,
-  };
   const detailOption = popup?.kind === "detail" ? view.ranked.find((o) => o.id === popup.id) ?? view.listed.find((o) => o.id === popup.id) : null;
   const above = (o: RankedOption) => view.ranked[view.ranked.indexOf(o) - 1];
   const showCoverageOpen = hideAll || view.headline === "only-baseline";
@@ -362,7 +355,6 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
               )}
               <AssumptionChips
                 g={g}
-                sources={sources}
                 onOpen={(f) => {
                   if (f === "all") openField("horizonYears");
                   else openField(f);
@@ -424,7 +416,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
       <SaveComparisonButton {...(readableSaved ? { savedOn: readableSaved.savedOn } : {})} onSave={() => doSave(readableSaved?.choice)} failed={saveFailed} />
       <RulesLine ids={view.rulesUsed} />
       {readableSaved && revisit && revisit.status !== "unreadable" && (
-        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
+        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={revisitValue(revisit, v, about, isoToday())} />} />
       )}
 
       <Sheet open={popup !== null} onClose={() => setPopup(null)} anchor={anchor} pc="popover" height={78} labelledBy={headId}>
@@ -459,14 +451,19 @@ function FallEcho({ ctx }: { ctx: ResultCtx }) {
   const start = g.amountNow - g.available;
   if (!fall || fall <= 0 || start <= 0) return null;
   const drop = (start * Math.min(fall, 100)) / 100;
+  // F-71 over the amount compared today, the amount now less what stays available, and the fall the person accepts (A-29): no deposit,
+  // years, inflation or return moves either (founder, 2026-11-08: a figure lists only what it uses)
+  const fallV = entered(fall, "pct", isoToday(), r2.result.fallBand);
+  const startV = g.available > 0 ? differenceOf([ci.amountNow, mk.goal.amountNow], [ci.names.keep!, mk.goal.available], "F-71", { today: ctx.bundle.runDate, about: r2.result.fallBand }) : mk.goal.amountNow;
+  const dropInputs = { [ci.amountNow]: mk.goal.amountNow, ...(g.available > 0 ? { [ci.names.keep!]: mk.goal.available } : {}), [r2.result.fallBand]: fallV };
   return (
     <p className="text-xs text-muted-foreground" data-fall-echo>
       <Tpl
         t={r2.result.fallEcho}
         vars={{
-          pct: <Num value={entered(fall, "pct", isoToday(), r2.result.fallBand)} />,
-          amount: <Num value={mk.nis(start, "F-71", r2.result.fallBand)} />,
-          drop: <Num value={mk.nis(drop, "F-71", r2.result.fallBand)} />,
+          pct: <Num value={fallV} />,
+          amount: <Num value={startV} />,
+          drop: <Num value={mk.of(drop, "nis", "F-71", r2.result.fallBand, dropInputs)} />,
         }}
       />
     </p>

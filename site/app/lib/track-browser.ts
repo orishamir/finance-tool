@@ -1,4 +1,4 @@
-// The track browser (D54, 2026-11-03; issue 173): every company's tracks of one product, grouped by company or by what the money is
+// The track browser (D54, 2026-11-03): every company's tracks of one product, grouped by company or by what the money is
 // invested in, with a filter, a search and a sort. The loader ships each product's tracks compactly (`TbData`, built by
 // `track-browser.server.ts`); this expands one product into the value objects the page shows, then filters, sorts and groups them.
 // Pure: no React, no storage. Nothing here ranks a track: the sort is the person's action on a sourced column, and the order of the
@@ -360,10 +360,10 @@ export const showsKindChip = (x: TbTrack): boolean => !!x.sub && !nameSaysKind(x
  *  that kind (founder, 2026-11-03: a name that only says the kind again, "עוקב S&P 500" under the S&P 500 kind, is not wanted). */
 export const showsShortName = (x: TbTrack): boolean => x.twin && nameAddsToKind(x.short, x.sub);
 
-/** The yield's empty word: "less than N years" for a track younger than the window, else "not reported". */
+/** The yield's empty word: "אין" for a track younger than the window, written beside the window ("אין 3 שנים"; founder, 2026-11-08: shorter than "פחות מ־3 שנים"), else "not reported". */
 export function missingYield(x: TbTrack, years: 3 | 5): string {
   if (x.selfManaged) return t.yield.selfManaged;
-  return (years === 3 ? x.young3 : x.young5) ? (years === 3 ? t.yield.young3 : t.yield.young5) : t.yield.missing;
+  return (years === 3 ? x.young3 : x.young5) ? t.yield.young : t.yield.missing;
 }
 
 /** The number of companies among the shown tracks. */

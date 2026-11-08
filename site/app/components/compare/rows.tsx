@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { ownTermsCopy, r2, r3fees, scnCompare } from "../../copy";
-import { addMonths, decidingFormulaOf, depositRangeFlag, feeShieldPair, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
+import { addMonths, decidingFormulaOf, depositRangeFlag, feeShieldPair, nominalFormula, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
 
 import { Button, Card, cx, HeadlineFigure, PercentField, RankBadge, Sentence, Tag, When } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
@@ -41,7 +41,7 @@ export function OutcomeTag({ kind, blocked, fixableByPerson }: { kind: CoverageR
 export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { o: RankedOption; above?: RankedOption; ctx: ResultCtx; onDetail: (el: HTMLElement) => void; /** A tag after the row's own (release 5: "לא מחזיק {חשיפה}"). */ extra?: ReactNode; /** The "בחרתי בזה" button (release 5). */ choose?: ReactNode; /** This is the option the person chose: the next steps open under it (A14). */ chosen?: boolean }) {
   const { mk, view, mode } = ctx;
   const value = mode === "real" ? o.real : o.nominal;
-  const figure = mk.nis(value, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, { usedRules: o.usedRules, flags: o.run.flags, labels: o.run.labels }, o.enteredFee ? { [ownTermsCopy.feeAbout]: o.enteredFee } : undefined);
+  const figure = mk.nis(value, mode === "real" ? "F-06" : nominalFormula(o.run, ctx.bundle.wrappers.find((w) => w.id === o.id)?.record), mode === "real" ? r2.realLabel : r2.nominalLabel, { id: o.id, usedRules: o.usedRules, flags: o.run.flags, labels: o.run.labels }, o.enteredFee ? { [ownTermsCopy.feeAbout]: o.enteredFee } : undefined);
   const names = view.names;
   const tied = o.tiedWith.length > 0;
   const stale = o.staleRules[0];
@@ -94,7 +94,7 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
       )}
       {extra && <div className="flex flex-wrap gap-2">{extra}</div>}
       <AssumptionRow o={o} ctx={ctx} />
-      {wrapperEntry && <Representative w={wrapperEntry} g={ctx.g} today={ctx.bundle.runDate} {...(ctx.setOwnFee ? { onFee: ctx.setOwnFee } : {})} {...(ctx.setOwnRate ? { onRate: ctx.setOwnRate } : {})} {...(ctx.setOwnProvider ? { onProvider: ctx.setOwnProvider, outcomes: () => providerOutcomes(ctx.bundle, ctx.g, o.id), figureOf: (p: ProviderOutcome) => mk.nis(Math.round(mode === "real" ? p.real : p.nominal), mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, p.run) } : {})} {...(ctx.index && o.id === ctx.index.wrapperId ? { index: ctx.index.card } : {})} />}
+      {wrapperEntry && <Representative w={wrapperEntry} g={ctx.g} today={ctx.bundle.runDate} {...(ctx.setOwnFee ? { onFee: ctx.setOwnFee } : {})} {...(ctx.setOwnRate ? { onRate: ctx.setOwnRate } : {})} {...(ctx.setOwnProvider ? { onProvider: ctx.setOwnProvider, outcomes: () => providerOutcomes(ctx.bundle, ctx.g, o.id), figureOf: (p: ProviderOutcome) => mk.nis(Math.round(mode === "real" ? p.real : p.nominal), mode === "real" ? "F-06" : nominalFormula(undefined, ctx.bundle.wrappers.find((w) => w.id === o.id)?.record), mode === "real" ? r2.realLabel : r2.nominalLabel, { ...p.run, id: o.id }) } : {})} {...(ctx.index && o.id === ctx.index.wrapperId ? { index: ctx.index.card } : {})} />}
       <DepositRange o={o} ctx={ctx} />
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
         <Link to={`/fees?wrapper=${o.id}&from=compare`} className="text-sm text-link hover:underline self-start min-h-target inline-flex items-center">
@@ -251,7 +251,7 @@ export function AvailableCard({ ctx }: { ctx: ResultCtx }) {
       <Num value={kept} /> {r2.result.availableMid} {r2.result.availableIn[k.where]}{" "}
       {k.real !== null ? (
         <>
-          {r2.result.availableWorth} <Num value={mk.nis(k.real, "F-06", r2.result.availableIn[k.where]!, k.run ? { usedRules: k.run.rules, flags: k.run.flags, labels: k.run.labels } : undefined)} /> {r2.result.availableAt}
+          {r2.result.availableWorth} <Num value={mk.keptNis(k.real, "F-06", r2.result.availableIn[k.where]!, k.where, k.run ? { usedRules: k.run.rules, flags: k.run.flags, labels: k.run.labels } : undefined)} /> {r2.result.availableAt}
         </>
       ) : (
         r2.result.availableNoRun

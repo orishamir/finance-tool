@@ -212,7 +212,6 @@
                 "type": "string",
                 "enum": [
                   "primary",
-                  "primary-mirror",
                   "institution",
                   "secondary",
                   "open",

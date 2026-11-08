@@ -1,11 +1,10 @@
-// The documents page's data (research/knowledge/2026-10-24-synthesis.md §3.5): every source of every rule grouped by the
+// The documents page's data (8dd1f013:research/knowledge/2026-10-24-synthesis.md §3.5): every source of every rule grouped by the
 // document it points at, and the data records (tariffs, funds, deposit terms, series) as cards pointing at their pages.
 // Server-only. The sources of a rule are read loosely: the `sources` field is W1's, and a record without it contributes
 // only its figures' own sources.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { wikisourcePageTitle } from "./sources";
 import { documents as documentsCopy } from "../copy";
 import { hebrewDocTitle } from "./source-label";
 import { ruleTitle } from "./rule-title";
@@ -16,8 +15,8 @@ import { companyTermsHref } from "./scope";
 import { readJsonCached } from "./read-cache.server";
 import { tariffDated, type TariffDated } from "./tariff-date";
 
-export type SectionId = "laws" | "regulators" | "exchange" | "institutions" | "secondary";
-export const sectionOrder: SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"];
+export type SectionId = "laws" | "regulators" | "exchange" | "institutions";
+export const sectionOrder: SectionId[] = ["laws", "regulators", "exchange", "institutions"];
 
 export interface DocumentCard {
   key: string;
@@ -27,7 +26,6 @@ export interface DocumentCard {
   publisher: string;
   kind: string;
   url: string;
-  mirror: "wikisource" | "nevo" | null;
   strength: Strength;
   checked: string;
   rules: { id: string; title: string; href: string }[];
@@ -43,14 +41,13 @@ interface TableDoc {
   publisher_he?: string;
   kind?: string;
   official_url?: string | null;
-  /** A document filed for the law and terms browser (`doc_kind`, issue 123), which does not name a card on this page. */
+  /** A document filed for the law and terms browser (`doc_kind`), which does not name a card on this page. */
   doc_kind?: string;
 }
 interface PublisherRow {
   publisher?: string;
   publisher_he?: string;
   kind?: string;
-  mirror?: "wikisource" | "nevo" | null;
 }
 
 /** One source entry, from a rule's `sources[]` or from a figure's own `source`. */
@@ -63,12 +60,10 @@ export interface Entry {
   publisher_he?: string;
   kind?: string;
   strength?: Strength;
-  mirror_host?: string;
   checked?: string;
 }
 
-const strengthOrder: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
-const mirrorHosts: Record<string, "wikisource" | "nevo"> = { "he.wikisource.org": "wikisource", "nevo.co.il": "nevo", "www.nevo.co.il": "nevo" };
+const strengthOrder: Record<string, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
 const regulatorHosts = ["gov.il", "btl.gov.il", "boi.org.il", "isa.gov.il", "knesset.gov.il", "main.knesset.gov.il", "data.gov.il", "cbs.gov.il", "mof.gov.il", "cma.gov.il", "mimshal.gov.il"];
 
 const hostOf = (url: string): string => {
@@ -161,12 +156,11 @@ const mostCommon = <T,>(xs: T[]): T | undefined => {
   return [...n.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
 };
 
-function sectionOf(kind: string, strength: Strength, host: string, mirror: string | null, publisherKind: string | undefined): SectionId {
-  if (mirror || kind === "law" || kind === "regulation") return "laws";
+function sectionOf(kind: string, strength: Strength, host: string, publisherKind: string | undefined): SectionId {
+  if (kind === "law" || kind === "regulation") return "laws";
   if (hostIs(host, "tase.co.il")) return "exchange";
   if (regulatorHosts.some((h) => hostIs(host, h))) return "regulators";
   if (kind === "institution_doc" || strength === "institution" || ["bank", "broker", "manager", "institution", "provider"].includes(publisherKind ?? "")) return "institutions";
-  if (kind === "article" || kind === "other" || strength === "secondary") return "secondary";
   return "regulators";
 }
 
@@ -193,26 +187,24 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
     // a title written in Hebrew, a web host before it allowed: "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים" is a Hebrew title, and
-    // "Tax Authority, מדריך…" an English working title that quotes one (#190: a count of letters alone showed it)
+    // "Tax Authority, מדריך…" an English working title that quotes one (a count of letters alone showed it)
     const titleHe = doc?.title_he ?? mostCommon(entries.filter((e) => hebrewDocTitle(e.title_he ?? e.title)).map((e) => e.title_he ?? e.title));
     const url0 = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
-    // never an English working title: the Wikisource page's own name, then the kind's word (QA 2026-10-24, F4)
-    const title = titleHe ?? wikisourcePageTitle(url0) ?? (kind0 ? (documentsCopy.kinds as Record<string, string>)[kind0] : undefined) ?? hostOf(url0);
+    // never an English working title: the kind's word stands in (QA 2026-10-24, F4)
+    const title = titleHe ?? (kind0 ? (documentsCopy.kinds as Record<string, string>)[kind0] : undefined) ?? hostOf(url0);
     const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => pub(e)?.publisher_he ?? e.publisher_he).filter((x): x is string => !!x)) ?? mostCommon(entries.map((e) => e.publisher).filter((x): x is string => !!x)) ?? hosts[0] ?? "";
     const kind = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x)) ?? pub(entries[0]!)?.kind ?? "other";
-    const mirrors = entries.map((e) => (e.mirror_host as "wikisource" | "nevo" | undefined) ?? pub(e)?.mirror ?? mirrorHosts[hostOf(e.url)] ?? null);
-    // an official url is the card's link; without one the most common url, and a mirror only when that url is a mirror's
+    // an official url is the card's link; without one the most common url
     const url = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;
-    const mirror = doc?.official_url ? null : mirrors[entries.findIndex((e) => e.url === url)] ?? null;
     const strength = entries.map((e) => e.strength ?? "secondary").sort((a, b) => (strengthOrder[a] ?? 9) - (strengthOrder[b] ?? 9))[0]! as Strength;
     const checked = entries.map((e) => e.checked ?? "").sort().at(-1) ?? "";
     const ids = [...new Set(entries.map((e) => e.ruleId))].sort();
     const cardRules = ids.map((id) => ({ id, title: ruleTitle(rules[id]!).text, href: hrefOf(id) }));
     // a card for a document the table names or that several rules rest on; the long tail of single-rule pages and articles is a row (lead, 2026-10-24)
     const featured = !!doc || ids.length >= 3;
-    const section = sectionOf(kind, strength, hostOf(url), mirror, doc ? undefined : pub(entries[0]!)?.kind);
-    cards.push({ key, title, titleEnglish: !titleHe && !wikisourcePageTitle(url0) && !(kind0 && (documentsCopy.kinds as Record<string, string>)[kind0]), publisher, kind, url, mirror, strength, checked, rules: cardRules, section, featured });
+    const section = sectionOf(kind, strength, hostOf(url), doc ? undefined : pub(entries[0]!)?.kind);
+    cards.push({ key, title, titleEnglish: !titleHe && !(kind0 && (documentsCopy.kinds as Record<string, string>)[kind0]), publisher, kind, url, strength, checked, rules: cardRules, section, featured });
   }
   return cards.sort((a, b) => b.rules.length - a.rules.length || a.title.localeCompare(b.title, "he"));
 }
@@ -258,7 +250,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const { institutionIds } = await import("./institutions.server");
   const { loadDepositTerms, loadExposures, loadFunds, exposureHref } = await import("./instruments.server");
   const { indexPath } = await import("./invest");
-  // an index fund on its index's page, any other on its holding's page (the funds page is gone, issue 174)
+  // an index fund on its index's page, any other on its holding's page (the funds page is gone)
   const indexIds = new Set(loadExposures().filter((e) => e.kind === "equity_index").map((e) => e.id));
   const fundHref = (exposureId: string) => (indexIds.has(exposureId) ? indexPath(exposureId) : exposureHref(exposureId));
   const { latestSnapshots, companyLinks } = await import("./providers.server");

@@ -38,7 +38,7 @@ export async function loader() {
     for (const name of c.names.he) entries.push({ kind: "product", name, line, href, norm: normalize(name), ...(ids.length > 0 ? { ids } : {}) });
   }
   // audit 2026-10-24 (A4): the funds the site holds a record of, by name and by TASE number: an index fund on its index's page,
-  // any other on its holding's page (the funds page is gone, issue 174)
+  // any other on its holding's page (the funds page is gone)
   const { loadFunds } = await import("../lib/instruments.server");
   const { indexPath } = await import("../lib/invest");
   for (const f of loadFunds()) {
@@ -61,12 +61,13 @@ export async function loader() {
     const exposure = guide ? undefined : term.exposureIds.find((id) => exposures.some((e) => e.id === id));
     if (!guide && !exposure) continue;
     const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;
-    const href = guide ? `/guide/${guide}#terms` : `${exposureHref(exposure!)}#terms`;
+    // the term's card opens on its page (TermFromAddress): the pages' terms list is gone (founder, 2026-11-08)
+    const href = `${guide ? `/guide/${guide}` : exposureHref(exposure!)}#term=${encodeURIComponent(term.he)}`;
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title
   const { ruleTitle } = await import("../lib/rule-title");
-  const strengthRank: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
+  const strengthRank: Record<string, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
   // D30 (spec 2026-10-25-rules-scope §4): two groups; a company's term (or an unsettled one) names its company and leads to where it is listed
   const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
   const { companyTermsHref, joinNames, listedCompanies, ownDocCompanies } = await import("../lib/scope");

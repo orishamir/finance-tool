@@ -1,4 +1,4 @@
-// The search (architecture 3.5; design in research/knowledge/2026-10-24-search.md, scope in the synthesis 3.6).
+// The search (architecture 3.5; design in 8dd1f013:research/knowledge/2026-10-24-search.md, scope in the synthesis 3.6).
 // Pure functions, no I/O: the index is a list of entries built at build time (routes/search-index.ts), the second file
 // (routes/search-texts.ts) holds the raw texts of rules, terms and parameters and only re-ranks and answers questions.
 import { aliasRows, wordFamilies } from "./search-aliases";

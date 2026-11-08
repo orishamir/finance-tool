@@ -4,13 +4,13 @@
 // this company alone (components/tracks/company-browser.tsx): its products, funds and securities account are chips, "כל המוצרים" first.
 import { useLoaderData, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
-import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, r4catalogue, site, trackBrowser } from "../copy";
+import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, r4catalogue, site } from "../copy";
 import { PasteCard } from "../components/decoder/tracks";
 import { InstitutionPage } from "../components/decoder/institutions/page";
 import { CompanyTerms } from "../components/decoder/company-terms";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
-import { IdRef, Num, NumAfter, NumberLegend, StaleSaid } from "../components/provenance";
+import { IdRef, Num, NumAfter, NumberLegend, OwnCompanyPage, StaleSaid } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { CompanyTracks, type CompanyExtra } from "../components/tracks/company-browser";
 import type { TbData } from "../lib/track-browser";
@@ -120,8 +120,8 @@ export function meta({ loaderData: data }: Route.MetaArgs) {
 
 export default function Company() {
   const data = useLoaderData<typeof loader>();
-  if (data.kind === "institution") return <InstitutionPage data={data.institution} notes={data.notes} />;
-  return <ManagerCompany data={data} />;
+  // a page about one company: its own figures carry no "לפי החברה" (founder, 2026-11-08)
+  return <OwnCompanyPage>{data.kind === "institution" ? <InstitutionPage data={data.institution} notes={data.notes} /> : <ManagerCompany data={data} />}</OwnCompanyPage>;
 }
 
 type CompanyData = Extract<ReturnType<typeof useLoaderData<typeof loader>>, { kind: "company" }>;
@@ -135,7 +135,6 @@ function fundCountLine(n: number) {
 function ManagerCompany({ data }: { data: CompanyData }) {
   const company = data.company;
   const browser = data.browser;
-  const hasTracks = browser.products.length > 0;
   // the funds and the securities account are chips after the tracks, in the founder's order (extraOrder)
   const extras: CompanyExtra[] = [
     ...data.funds.map((g) => ({
@@ -165,20 +164,6 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             <h1 className="text-2xl lg:text-3xl font-semibold">
               <bdi>{gershayim(data.name)}</bdi>
             </h1>
-            {hasTracks && (
-              // the tracks page's line: what the fee, the exposure, the yield and the assets are and when
-              <p className="text-muted-foreground max-w-measure">
-                {browser.feeYear ? (
-                  <>
-                    <NumAfter lead={trackBrowser.lead.intro} value={browser.feeYear} />
-                    <NumAfter lead={trackBrowser.lead.figures} value={data.period} />
-                  </>
-                ) : (
-                  <NumAfter lead={trackBrowser.lead.noYear} value={data.period} />
-                )}
-                {trackBrowser.lead.source}
-              </p>
-            )}
             {data.members.length > 1 && (
               <p className="text-sm text-muted-foreground max-w-measure">
                 {brandsCopy.members}{" "}

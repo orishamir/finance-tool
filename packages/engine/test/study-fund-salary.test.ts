@@ -64,6 +64,38 @@ describe("moneyStory (F-96)", () => {
     expect(s.own + s.extra + s.gain - s.tax).toBeCloseTo(s.net, 6);
     expect(s.gain).toBeCloseTo(over.detail.grossBalance! / lastIndex - 75_000, 6);
   });
+  it("counts each month's fees at its own index, below their face total and above it over the last index", () => {
+    const s = moneyStory(70_000, 5_000, [over]);
+    const face = Object.values(over.fees).reduce((x, y) => x + y, 0);
+    expect(face).toBeGreaterThan(0);
+    expect(s.fees).toBeLessThan(face);
+    expect(s.fees).toBeGreaterThan(face / lastIndex);
+    expect(s.fees).toBeCloseTo(over.series.reduce((a, p, i) => a + (p.fees - (over.series[i - 1]?.fees ?? 0)) / p.index, 0), 6);
+  });
+  it("has no fees at a zero fee, and more at a higher one", () => {
+    const run = (balance: number, grossReturn = 0.06) => runProvident({ ...plan(12_000, 300, true), market: { grossReturn, inflation: 0.02 }, fees: { deposit: 0, balance, direct: 0 } }, ctx);
+    // own = what was paid in, each deposit at its own month's index, so `gain` is a gain (F-06)
+    const at = (balance: number, grossReturn = 0.06) => {
+      const r = run(balance, grossReturn);
+      const own = r.series.reduce((a, p, i) => a + (p.paidIn - (r.series[i - 1]?.paidIn ?? 0)) / p.index, 0);
+      return moneyStory(own, 0, [r]);
+    };
+    expect(at(0).fees).toBeCloseTo(0, 6);
+    expect(at(0.01).fees).toBeGreaterThan(at(0.005).fees);
+    // the return before fees is the fee-free gain less what the charges would have earned: above inflation, a small part of the fees
+    const left = at(0).gain - (at(0.005).gain + at(0.005).fees);
+    expect(left).toBeGreaterThan(0);
+    expect(left).toBeLessThan(0.3 * at(0.005).fees);
+    // below inflation it turns the other way (method.md F-96)
+    expect(at(0, 0.01).gain - (at(0.005, 0.01).gain + at(0.005, 0.01).fees)).toBeLessThan(0);
+  });
+  it("sums the fees of an employee's two runs", () => {
+    const mine = runProvident(plan(12_000, 300, true), ctx);
+    const employer = runProvident(plan(12_000, 900, true, "employer"), ctx);
+    const both = moneyStory(0, 0, [mine, employer]);
+    expect(both.fees).toBeCloseTo(moneyStory(0, 0, [mine]).fees + moneyStory(0, 0, [employer]).fees, 6);
+    expect(both.fees).toBeGreaterThan(0);
+  });
   it("leaves a run under the limits as the engine has it", () => {
     const r = runProvident(plan(12_000, 300, true), ctx);
     const s = moneyStory(25_000, 0, [r]);
