@@ -54,10 +54,9 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 - **One term for one idea, across the whole site.** Use the term in the word
   table (copy.md 10.3) and the glossary. The first time a financial term
   appears on a page, it opens its explanation.
-- **Full words.** No abbreviations a reader must decode, no internal codes
-  ("F-92", "D56"), no process words ("Claude", test names). A code the
-  reader needs, such as a fund's number, comes with words that say what it
-  is.
+- **Full words.** No abbreviations a reader must decode, no process words
+  ("Claude", test names). A code the reader needs, such as a fund's number,
+  comes with words that say what it is.
 - **Watch for English underneath.** Read it aloud.
 
   | Sounds translated | Natural Hebrew |

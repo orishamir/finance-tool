@@ -7,14 +7,14 @@ import { useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root, r4catalogue } from "../../copy";
 import { brokerErrors, brokerFromDraft, brokerTerms, NAME_MAX, newBrokerId, type BrokerDraft, type CustomBroker, type EntryError } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
-import { buildInvest, type PairCosts } from "../../lib/invest";
+import { accountSum, buildInvest, type PairCosts } from "../../lib/invest";
 import { baseOf, startingPointsOf, withAdopted, type GroupCopy } from "../../lib/own-account";
 import { pointOfBroker, startDraft, stretchesOf } from "../../lib/own-account-panel";
 import { FEE_LINE, FEE_TYPES, layersOf, ownAccountResult, type FeeLayers, type FeeType, type LayerFigure } from "../../lib/own-account-view";
 import { customersPaid } from "../../lib/customers-paid";
 import { useAfterRender, useSettled } from "../../lib/settled";
 import { isoToday } from "../../lib/state";
-import { computed, entered, type SiteValue } from "../../lib/value";
+import { entered, type SiteValue } from "../../lib/value";
 import { withCustomEntries } from "../../lib/custom-entries";
 import { Num, StateTag } from "../provenance";
 import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, useChartPick, cx, type CostPart } from "../kit";
@@ -186,7 +186,8 @@ function costParts(pc: PairCosts, lines: readonly string[], source: (line: strin
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
 
-function Bar({ who, parts, scale, label, today, highlight }: { who: string; parts: CostPart[]; scale: number; label: string; today: string; highlight: string | null }) {
+/** `pc`: the account whose cost the bar draws; its figure adds up the account's line costs and the remainder, each opening its own sheet (F-91). */
+function Bar({ who, pc, parts, scale, label, today, highlight }: { who: string; pc: PairCosts; parts: CostPart[]; scale: number; label: string; today: string; highlight: string | null }) {
   const sum = total(parts);
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[7rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
@@ -195,7 +196,7 @@ function Bar({ who, parts, scale, label, today, highlight }: { who: string; part
         <CostStack parts={parts} total={Math.round(sum)} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(sum)}`} />
       </div>
       <span className="text-end font-semibold">
-        <Num animate value={computed(Math.round(sum), "nis", "F-91", {}, { today, about: label })} />
+        <Num animate value={accountSum(pc, label, today, Math.round)} />
       </span>
     </div>
   );
@@ -377,8 +378,8 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
         <h3 className="font-semibold">{p.costs.title}</h3>
         {result && result.list ? (
           <>
-            <Bar who={p.costs.list} parts={listParts} scale={scale} label={barLabels.list} today={today} highlight={legend.active} />
-            <Bar who={p.costs.yours} parts={yoursParts} scale={scale} label={barLabels.yours} today={today} highlight={legend.active} />
+            <Bar who={p.costs.list} pc={result.list} parts={listParts} scale={scale} label={barLabels.list} today={today} highlight={legend.active} />
+            <Bar who={p.costs.yours} pc={result.yours} parts={yoursParts} scale={scale} label={barLabels.yours} today={today} highlight={legend.active} />
             <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: l === "remainder" ? pairWords.remainder : (fixedName(l, withCurrentAccount) ?? pairWords.lines.other ?? l) }))} />
           </>
         ) : (

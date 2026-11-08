@@ -18,7 +18,7 @@ import {
   type RunResult,
 } from "@finance-tool/engine";
 import { isSecurity, type ParameterRecord, type ValueObject, type ProductId } from "@finance-tool/schema";
-import { applyProviders, comparisonGoal, equityFit, openConstraintOf, parameterOf, readingMayAppear, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
+import { applyProviders, comparisonGoal, equityFit, openConstraintOf, parameterOf, readingMayAppear, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type RunRef, type WrapperEntry } from "./compare";
 import type { ExposureInputs, FieldKey, Goal } from "./goal";
 import { entered as enteredValue, type SiteValue } from "./value";
 import { r5 } from "../copy";
@@ -55,6 +55,15 @@ export interface ExposureModeInput {
 
 /** A reason as the page words it: an engine code, or one of the site's own for a row that cannot run yet. */
 export type RowReason = { code: "engine"; reason: Reason } | { code: "p08-gov"; blockedBy: string } | { code: "no-fund" } | { code: "no-terms" } | { code: "no-wrapper" };
+
+/**
+ * The run behind a row's figures, as `makeValues` takes it: the wrapper that holds the exposure, the rules the run cited and the return it
+ * ran at (the exposure's own, F-71: entered, from the product comparison or a bank's published rate), so each figure lists what that run read.
+ */
+export function runRefOf(row: Pick<ExposureRowView, "holding" | "run" | "grossReturn">): RunRef | undefined {
+  if (!row.run) return undefined;
+  return { ...(row.holding.wrapperId ? { id: row.holding.wrapperId } : {}), usedRules: row.run.rules, flags: row.run.flags, labels: row.run.labels, ...(row.grossReturn ? { rate: row.grossReturn as SiteValue } : {}) };
+}
 
 export interface ExposureRowView {
   id: string;

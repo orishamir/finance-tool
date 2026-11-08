@@ -9,8 +9,9 @@
 //
 // 2026-10-26 (founder: a general page names no single bank's rate): the one-year deposit on the money-market ladder is the range
 // across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
-import { isTie, middleIndex, mostCommonRate, plainOneYearDeposits, rateRange, tieThreshold } from "@finance-tool/engine";
-import { guideBlocks, guideSignature } from "../copy";
+import { breakTermOf, isTie, middleIndex, mostCommonRate, plainOneYearDeposits, rateRange, tieThreshold } from "@finance-tool/engine";
+import { guideBlocks, guideSignature, r4catalogue } from "../copy";
+import { printedLine } from "./deposit-kind";
 import type { Bundle } from "./engine";
 import { p05Number, p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
@@ -270,6 +271,33 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
   return rows.sort((a, b) => a.gain - b.gain);
 }
 
+/** A deposit's 447 break column as a sourced value: `not_allowed`, `with_penalty` or `none`, with the bank's words in its notes. */
+export function breakFact(rec: DepositTerms): SiteValue {
+  const b = rec.break;
+  return {
+    value: breakTermOf(b),
+    unit: "text",
+    source: rec.source,
+    checked: rec.snapshot,
+    effective_from: rec.rate_offered.effective_from,
+    effective_to: null,
+    update_rule: "provider-set",
+    state: "sourced",
+    rule_ids: b.rule_ids,
+    // the bank's own quoted words only: the rest is the collector's English note (2026-11-07)
+    notes: printedLine(b.mechanism_text),
+  };
+}
+
+/**
+ * The same column as an input of a count over the banks (F-86's lock, F-104): the bank's words in Hebrew, never the record's code, and
+ * the bank's own term about its own product, so it carries no caution (D31). `name` is the bank's name as the sheet shows it.
+ */
+export function breakInput(rec: DepositTerms, name: string): SiteValue {
+  const f = breakFact(rec);
+  return ownBy({ ...f, value: r4catalogue.breakWord[f.value as keyof typeof r4catalogue.breakWord] ?? f.value }, name);
+}
+
 /** The highest and the lowest rate of the banks' one-year deposits (F-86): the records themselves. */
 export function depositEnds(deposits: DepositTerms[]): { top: DepositTerms; bottom: DepositTerms; count: number } | null {
   const records = oneYearDepositRecords(deposits).filter((r) => typeof r.rate_offered.value === "number");
@@ -306,7 +334,9 @@ export function guideInstrumentBundle(record: ProductRecord, family: InstrumentF
     const example = depositExample(loadDepositTerms());
     if (!example) return buildInstrumentBundle(record, family, p05, allRules, t);
     const built = depositBundleOf(record, example.record, p05, allRules, t);
-    const inputs = Object.fromEntries(oneYearDepositRecords(loadDepositTerms()).filter((r) => !r.break.allowed).map((r) => [shortName(r.bank, r.bank), { ...r.rate_offered } as SiteValue]));
+    // a count by the break column (F-86): each plain deposit it is over, with whether it can be broken, as the lock's count lists them
+    const counted = oneYearDepositRecords(loadDepositTerms()).filter((r) => typeof r.rate_offered.value === "number");
+    const inputs = Object.fromEntries(counted.map((r) => [shortName(r.bank, r.bank), breakInput(r, shortName(r.bank, r.bank))]));
     const count = computed(example.count, "count", "F-86", inputs, { today: t, about: guideSignature.deposit.about.exampleCount });
     return { ...built, bundle: built.bundle ? { ...built.bundle, pick: { kind: "deposit", id: example.record.id, count } } : null };
   }

@@ -11,7 +11,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, SourcedTag, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
+import { barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -162,9 +162,9 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             house={house}
             snapshot={bundle.snapshots.find((s) => s.id === house.id)}
             charge={
-              row.generic?.costN !== undefined && (
+              row.generic?.costAs && (
                 <>
-                  {c.pair.colCharges(years)}: <Num animate value={nis(row.generic.costN, "F-63", c.pair.colCharges(years), bundle.today)} />
+                  {c.pair.colCharges(years)}: <Num animate value={row.generic.costAs(c.pair.colCharges(years))} />
                 </>
               )
             }

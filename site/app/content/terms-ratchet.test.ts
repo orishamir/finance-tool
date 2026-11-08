@@ -368,7 +368,6 @@ const FRAGMENTS = ["guide/open-tax"];
 // now skipped), 17 were real first uses, marked in the visuals, and ten were left. Nine of those were real first uses, marked in the
 // visuals the same day; the one left is the column name "אותו כסף בחשבון ניירות ערך", split across two copy strings (names, fine).
 const FIRST_USE_UNMARKED: Record<string, readonly string[]> = {
-  "guide/keren-hishtalmut": ["נייר ערך"],
 };
 
 const blankOut = (m: string) => m.replace(/[^\n]/g, " ");
@@ -477,6 +476,8 @@ const visualText = (file: string): string => {
   // the names of a figure's inputs (`{ [copy.x.y]: value }`) and an entered value's `about` (its fourth argument) are its sheet too
   // (independent check, 2026-11-07: 17 of the 31 leftovers were input names such as "האינפלציה שהאתר מניח")
   src = src.replace(/\[\s*(?:copy(?:\.[\w$]+)+|`[^`]*`)\s*\]\s*:/g, blankOut);
+  // and so are the names of a gap's two figures (`differenceOf([copy.x.y, a], [copy.x.y, b], …)`, lib/value.ts; 2026-11-08)
+  src = src.replace(/(differenceOf\(\s*\[)(\s*copy(?:\.[\w$]+)+)([^\]]*\]\s*,\s*\[)(\s*copy(?:\.[\w$]+)+)/g, (_m, a: string, n1: string, b: string, n2: string) => a + blankOut(n1) + b + blankOut(n2));
   // (`typed`, the visuals' own entered value, a field's: 2026-11-08)
   src = src.replace(/(\b(?:enteredValue|typed)\([^()]*?,[^()]*?,[^()]*?,\s*)copy(?:\.[\w$]+)+(?=\s*\))/g, (_m, head: string) => head + " ");
   // an `about` text is a figure's sheet, opened by a tap, not the page's text where the figure is declared

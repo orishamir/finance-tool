@@ -7,10 +7,11 @@ import { useId, useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { depositEndBanks, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
+import { p05Value } from "../../lib/engine";
 import type { SiteValue } from "../../lib/value";
 import { Callout, GainBars, InputSlot, KeyValue, LaneLabel, Marker, MarkerMark, NumberField, PrintedText, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { Gap, figure, inputSite, rulesOfBundle, useSigInputs, typed, type VisualProps } from "./kit";
+import { Gap, figure, inputSite, rulesOfBundle, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 150;
 const LANE_H = 28;
@@ -50,13 +51,14 @@ export function BankDepositVisual({ data, today }: VisualProps) {
 
   const amountIn = inputSite(depositBundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
   const depInputs = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.rate]: rate, [copy.common.inputNames.term]: termFact };
-  const fundInputs = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash };
+  // the fund's run: the amount, the rate the site assumes, the fund's own fee lines and inflation, since the fund's gain is taxed on what is above it
+  const fundInputs = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.common.inputNames.inflation]: p05Value(fundBundle.p05, "A-02"), ...termInputs(fundBundle) };
   const fundNow = model ? model.fundAt(m) : null;
   const v = model
     ? {
         depositEnd: figure(model.atTerm, "nis", "F-67", depInputs, today, copy.deposit.about.depositEnd, rulesOfBundle(depositBundle)),
         depositGain: figure(model.atTerm - inputs.amount, "nis", "F-67", depInputs, today, copy.deposit.about.depositGain, rulesOfBundle(depositBundle)),
-        fundGain: figure(model.fundAtTerm - inputs.amount, "nis", "F-67", fundInputs, today, copy.deposit.about.fundGain, rulesOfBundle(fundBundle)),
+        fundGain: figure(model.fundAtTerm - inputs.amount, "nis", "F-67", { ...fundInputs, [copy.common.inputNames.term]: termFact }, today, copy.deposit.about.fundGain, rulesOfBundle(fundBundle)),
         fundNow: fundNow === null ? null : figure(fundNow, "nis", "F-67", { ...fundInputs, [copy.deposit.marker]: figureMonths(m, today) }, today, copy.deposit.about.fundNow, rulesOfBundle(fundBundle)),
       }
     : null;

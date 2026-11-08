@@ -15,7 +15,7 @@ import { asField, type SiteValue } from "../../lib/value";
 import { Callout, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap } from "./g2-parts";
-import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
   const bundle = props.data.bundles[props.data.id];
@@ -67,25 +67,36 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const returnPct = fact(data, "returnPct");
   const inflationPct = fact(data, "inflationPct");
   const earlyAge = fact(data, "earlyAge");
-  const rates: Record<string, SiteValue> = {
-    ...(avgWage ? { [copy.pension.inputNames.avgWage]: avgWage } : {}),
-    ...(employeePct ? { [copy.pension.inputNames.employee]: employeePct } : {}),
-    ...(employerPct ? { [copy.pension.inputNames.employer]: employerPct } : {}),
-    ...(severancePct ? { [copy.pension.inputNames.severance]: severancePct } : {}),
+  // each part of the deposit is its own legal rate on min(salary, average wage) (F-67, PEN-03, PEN-04): its sheet names that rate, not the other two
+  const wageIn: Record<string, SiteValue> = { [copy.pension.salary]: salaryIn, ...(avgWage ? { [copy.pension.inputNames.avgWage]: avgWage } : {}) };
+  const youIn: Record<string, SiteValue> = { ...wageIn, ...(employeePct ? { [copy.pension.inputNames.employee]: employeePct } : {}) };
+  const employerIn: Record<string, SiteValue> = { ...wageIn, ...(employerPct ? { [copy.pension.inputNames.employer]: employerPct } : {}) };
+  const severanceIn: Record<string, SiteValue> = { ...wageIn, ...(severancePct ? { [copy.pension.inputNames.severance]: severancePct } : {}) };
+  const base: Record<string, SiteValue> = { ...youIn, ...employerIn, ...severanceIn };
+  // the relief is F-31's credit or F-32, and which one is the threshold's to say (TXP-03): both read it
+  const reliefIn: Record<string, SiteValue> = { ...base, ...(creditPct ? { [copy.pension.inputNames.credit]: creditPct } : {}), ...(threshold ? { [copy.pension.inputNames.threshold]: threshold } : {}) };
+  // the balance is the pension ledger's run on the bundle's fees (both the balance and the deposit fee, termInputs), the years, the return
+  // and inflation; the insurance is the run's only for a pension fund (a provident fund for annuity has none, A-17)
+  const balanceIn: Record<string, SiteValue> = {
+    ...base,
+    ...(hasInsurance ? { [copy.pension.insuranceAbout]: insuranceIn ?? typed(0, "pct", today) } : {}),
+    [copy.common.inputNames.years]: yearsIn,
+    ...(returnPct ? { [copy.common.inputNames.ret]: returnPct } : {}),
+    ...(inflationPct ? { [copy.common.inputNames.inflation]: inflationPct } : {}),
+    ...termInputs(bundle),
   };
-  const base: Record<string, SiteValue> = { [copy.pension.salary]: salaryIn, ...rates };
   const rules = rulesOfBundle(bundle);
-  const m = (value: number, about: string, extra: Record<string, SiteValue> = {}) => figure(value, "nis", "F-31", { ...base, ...extra }, today, about, rules);
+  const m = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-67", inputs, today, about, rules);
   const v = {
-    you: m(model.you, copy.pension.about.you),
-    employer: m(model.employer, copy.pension.about.employer),
-    severance: m(model.severance, copy.pension.about.severance),
-    total: m(model.total, copy.pension.about.total),
-    relief: figure(model.relief.monthly, "nis", model.relief.formula, { ...base, ...(creditPct ? { [copy.pension.inputNames.credit]: creditPct } : {}) }, today, copy.pension.about.relief, rules),
-    net: figure(model.netYou, "nis", model.relief.formula, { ...base, ...(creditPct ? { [copy.pension.inputNames.credit]: creditPct } : {}) }, today, copy.pension.about.net, rules),
+    you: m(model.you, copy.pension.about.you, youIn),
+    employer: m(model.employer, copy.pension.about.employer, employerIn),
+    severance: m(model.severance, copy.pension.about.severance, severanceIn),
+    total: m(model.total, copy.pension.about.total, base),
+    relief: figure(model.relief.monthly, "nis", model.relief.formula, reliefIn, today, copy.pension.about.relief, rules),
+    net: figure(model.netYou, "nis", model.relief.formula, reliefIn, today, copy.pension.about.net, rules),
     depositFee: depositFee ? figure((Number(depositFee.value) / 100) * model.total, "nis", "F-11", { ...base, [copy.pension.inputNames.depositFee]: depositFee }, today, copy.pension.about.depositFee) : null,
     insurance: model.insuranceMonthly !== null && insuranceIn ? figure(model.insuranceMonthly, "nis", "F-53", { ...base, [copy.pension.insuranceAbout]: insuranceIn }, today, copy.pension.about.insurance) : null,
-    balance: model.balance ? figure(model.balance.real, "nis", "F-67", { ...base, [copy.pension.insuranceAbout]: insuranceIn ?? typed(0, "pct", today), [copy.common.inputNames.years]: yearsIn, ...(returnPct ? { [copy.hishtalmut.inputNames.ret]: returnPct } : {}), ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}), ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}) }, today, copy.pension.about.balance, rules) : null,
+    balance: model.balance ? m(model.balance.real, copy.pension.about.balance, balanceIn) : null,
   };
   const share = (n: number) => `${(n / model.total) * 100}%`;
   const parts = [

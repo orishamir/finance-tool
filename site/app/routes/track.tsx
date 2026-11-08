@@ -5,7 +5,7 @@ import { catalogue, companies as companiesCopy, company as companyCopy, r3workbe
 import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
-import { Num, NumAfter } from "../components/provenance";
+import { Num, NumAfter, OwnCompanyPage } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, FeeNum, GemelNetLink, Sentence, ShareNum, Tag, gershayim } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
@@ -70,7 +70,9 @@ export async function loader({ params }: Route.LoaderArgs) {
     stale: cma.periodValue.stale,
     notes,
   });
-  const citedRules = Object.fromEntries(cited.map((r) => [r.id, r]));
+  // and the rule the stock and currency shares' sheets name, so their chip carries its title and source (founder, 2026-11-08)
+  const { EXPOSURE_RULE_IDS } = await import("../lib/track-exposure");
+  const citedRules = Object.fromEntries([...cited, ...EXPOSURE_RULE_IDS.flatMap((id) => (rules[id] ? [rules[id]] : []))].map((r) => [r.id, r]));
   // names the catalogue gives this track alone (a fund-level or programme-level name is not this track's name)
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);
@@ -121,7 +123,9 @@ export default function TrackPage() {
   );
   // pension fees belong to the fund, not to the track (CAT-39)
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
+  // a page about one company's track: its own figures carry no "לפי החברה" (founder, 2026-11-08)
   return (
+    <OwnCompanyPage>
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
       <div className="flex flex-col gap-8 pt-2 lg:pt-8">
         <header className="flex flex-col gap-3">
@@ -219,5 +223,6 @@ export default function TrackPage() {
         )}
       </div>
     </PageShell>
+    </OwnCompanyPage>
   );
 }

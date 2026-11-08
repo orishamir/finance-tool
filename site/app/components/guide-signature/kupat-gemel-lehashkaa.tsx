@@ -8,14 +8,14 @@ import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
-import { providentModel } from "../../lib/guide-signature-g2";
+import { providentModel, type DiffRange } from "../../lib/guide-signature-g2";
 import { useInputs } from "../../lib/inputs";
-import type { SiteValue } from "../../lib/value";
+import { differenceOf, type SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
 import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, Sentence, clamp, useGlidingNumbers, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
-import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
+import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 92;
 const LANE_Y = 26;
@@ -78,17 +78,18 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const amountIn = inputSite(base, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
   const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
   const yearsIn = typed(years, "years", today, copy.provident.marker);
-  const common: Record<string, SiteValue> = {
+  const plan: Record<string, SiteValue> = {
     [copy.common.inputNames.amount]: amountIn,
     [copy.common.inputNames.monthly]: monthlyIn,
     [copy.provident.marker]: yearsIn,
-    ...(returnPct ? { [copy.hishtalmut.inputNames.ret]: returnPct } : {}),
-    ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
-    ...(listBalance ? { [copy.provident.inputNames.listBalance]: listBalance } : {}),
-    ...(listDeposit ? { [copy.provident.inputNames.listDeposit]: listDeposit } : {}),
-    ...(afterBalance ? { [copy.provident.inputNames.afterBalance]: afterBalance } : {}),
-    ...(afterDeposit ? { [copy.provident.inputNames.afterDeposit]: afterDeposit } : {}),
+    ...(returnPct ? { [copy.common.inputNames.ret]: returnPct } : {}),
+    ...(inflationPct ? { [copy.common.inputNames.inflation]: inflationPct } : {}),
   };
+  // each run names the plan and the terms of the bundle it ran on: the fund's, its manager's binding documents (the fees in the discount
+  // period and after it, and when the discount ends, D89); the account's, its own tariff and fund (the best collected tariff)
+  const runIn = (b: Bundle | undefined): Record<string, SiteValue> => ({ ...plan, ...(b ? termInputs(b) : {}) });
+  const common = runIn(kgl);
+  const brokerIn = runIn(broker);
   // 2026-10-26 (F-44 with F-42): once the exit year is at 60 or over, the reduced brackets apply first, so the tax and what is left
   // depend on the age and on the other income in that year (the site's scenario income, P-05); the sheets name both. The brokerage
   // side runs with the same profile, so its gain, the difference and the ranges move with the age too and name it as well.
@@ -111,12 +112,15 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     tax: taxFig,
     transfer: model.transfer !== null ? figure(model.transfer, "nis", "F-45", common, today, copy.provident.about.transfer, kglRules) : null,
     gain: model.lump ? runFigure(model.lump.gain, "nis", "F-67", { ...common, ...ageInputs }, today, copy.provident.about.gain, model.lump.run) : null,
-    brokerGain: model.broker && broker ? runFigure(model.broker.gain, "nis", "F-67", { ...common, ...ageInputs }, today, copy.provident.about.brokerGain, model.broker.run) : null,
+    brokerGain: model.broker && broker ? runFigure(model.broker.gain, "nis", "F-67", { ...brokerIn, ...ageInputs }, today, copy.provident.about.brokerGain, model.broker.run) : null,
   };
-  const diff = v.gain && v.brokerGain && model.diff !== null ? figure(Math.abs(model.diff), "nis", "F-67", { [copy.provident.lump]: v.gain, [copy.hishtalmut.broker]: v.brokerGain, ...ageInputs }, today, copy.provident.about.diff) : null;
-  const rangeFig = (r: { low: number; high: number } | null, about: string) => (r ? { low: figure(r.low, "nis", "F-67", { ...common, ...ageInputs }, today, about), high: figure(r.high, "nis", "F-67", { ...common, ...ageInputs }, today, about) } : null);
-  const brokerRange = rangeFig(model.range.broker, copy.provident.about.rangeBroker);
-  const managerRange = rangeFig(model.range.manager, copy.provident.about.rangeManager);
+  const diff = v.gain && v.brokerGain ? differenceOf([copy.provident.lump, v.gain], [copy.hishtalmut.broker, v.brokerGain], "F-67", { today, about: copy.provident.about.diff, round: Math.abs }) : null;
+  // each end of a range is the fund less the account with one side on another company's terms (rule 3): it names the plan and the terms of
+  // the two runs it came from, the fund's and the account's
+  const endIn = (fund: Bundle | undefined, account: Bundle | undefined): Record<string, SiteValue> => ({ ...plan, ...(fund ? termInputs(fund) : {}), ...(account ? termInputs(account) : {}), ...ageInputs });
+  const rangeFig = (r: DiffRange | null, about: string, ends: (key: string | undefined) => Record<string, SiteValue>) => (r ? { low: figure(r.low, "nis", "F-67", ends(r.lowOf), today, about), high: figure(r.high, "nis", "F-67", ends(r.highOf), today, about) } : null);
+  const brokerRange = rangeFig(model.range.broker, copy.provident.about.rangeBroker, (key) => endIn(kgl, key ? data.bundles[key] : undefined));
+  const managerRange = rangeFig(model.range.manager, copy.provident.about.rangeManager, (key) => endIn(key ? data.bundles[key] : undefined, broker));
 
   return (
     <div className="flex flex-col gap-5">

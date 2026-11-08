@@ -177,11 +177,23 @@ export function shownTitle(title: string, url: string, kind?: string): { text: s
   return { text: hostOf(url) ?? title, host: !!hostOf(url) };
 }
 
+/**
+ * What a source line shows, each name once: who published it, the document's title as shown (`shownTitle`), its place in it. The publisher
+ * is left out when the title opens with it ("בנק לאומי, 'שיעורי הריבית…'"); the title is left out when it is only the link's host and
+ * the publisher's name holds that host already: "מאגר המידע הממשלתי (data.gov.il)", not "מאגר המידע הממשלתי (data.gov.il) · data.gov.il"
+ * (founder, 2026-11-08: "shorten all these kinds of source where the data.gov.il is repeated twice").
+ */
+export function sourceParts(source: RuleSource): { publisher: string | null; title: { text: string; host: boolean } | null; locator: string | null; pdf: boolean } {
+  const n = sourceLabel2(source);
+  const title = shownTitle(n.title, source.url, source.kind);
+  if (title.host && n.publisher && n.publisher.includes(title.text)) return { publisher: n.publisher, title: null, locator: n.locator, pdf: n.pdf };
+  return { publisher: !n.publisher || title.text.startsWith(n.publisher) ? null : n.publisher, title, locator: n.locator, pdf: n.pdf };
+}
+
 /** `{title_he} — {publisher}, {document}, {locator}. {url} (נבדק {date})`, the line the copy button writes. */
 export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, source: RuleSource, date: string): string {
-  const n = sourceLabel2(source);
-  const doc = shownTitle(n.title, source.url, source.kind).text;
-  const parts = n.publisher && n.publisher !== doc ? [n.publisher, doc] : [doc];
+  const n = sourceParts(source);
+  const parts = [n.publisher, n.title?.text].filter((x): x is string => !!x);
   if (n.locator) parts.push(n.locator);
   const claim = ruleTitle(rule).text;
   return `${claim} — ${parts.join(", ")}. ${sourceHref(source)} (${sourceBlock.citation.checked} ${fmt.date(date)})`;

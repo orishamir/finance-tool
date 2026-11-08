@@ -344,6 +344,17 @@ export function loadFormulaParameters(): Record<string, string[]> {
   return out;
 }
 
+/** docs/method.md: per formula, the math its entry writes ($`…`$, GitHub's inline math), in order: what the formula's sheet shows (founder, 2026-11-08). */
+export function loadFormulaTex(): Record<string, string[]> {
+  const doc = readTextCached(join(root, "docs/method.md"));
+  const out: Record<string, string[]> = {};
+  for (const m of doc.matchAll(/^\*\*(F-\d{2,3}) .*$/gm)) {
+    const tex = [...m[0].matchAll(/\$`([^`]+)`\$/g)].map((x) => x[1]!);
+    if (tex.length) out[m[1]!] = tex;
+  }
+  return out;
+}
+
 /** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one (founder, 2026-10-26). */
 export function loadPublishersHe(): Record<string, string> {
   const rows = readJsonCached(join(root, "data/sources/publishers.json")) as Record<string, { publisher_he?: string }>;

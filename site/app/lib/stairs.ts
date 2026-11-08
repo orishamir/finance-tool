@@ -241,8 +241,9 @@ export function chainOf(g: Grid, s: StairsState): Chain | null {
 
 // ---------------------------------------------------------------- the scale
 
-/** The value axis: from a little under the lowest that matters to the highest, in round steps. The low end ignores the lowest 5% of the priced pairs. */
-export function yScale(g: Grid, chain: readonly Stair[], ceiling: Top): { LO: number; HI: number; step: number } {
+/** The levels the plot spans: from a little under the lowest that matters, rounded down, to the highest. The low end ignores the lowest 5% of
+ *  the priced pairs. */
+export function yScale(g: Grid, chain: readonly Stair[], ceiling: Top): { LO: number; HI: number } {
   const all: number[] = [];
   for (const f of g.funds) if (!f.hedged) for (const a of g.accounts) { const c = g.cell(a, f.id); if (c) all.push(c.v); }
   all.sort((x, y) => x - y);
@@ -253,7 +254,7 @@ export function yScale(g: Grid, chain: readonly Stair[], ceiling: Top): { LO: nu
   const mag = 10 ** Math.floor(Math.log10(raw));
   const step = [1, 2, 2.5, 5, 10].map((x) => x * mag).find((x) => x >= raw)!;
   const LO = Math.max(0, Math.floor((lo - (hi - lo) * 0.06) / step) * step);
-  return { LO, HI: hi, step };
+  return { LO, HI: hi };
 }
 
 /**

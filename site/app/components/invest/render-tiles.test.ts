@@ -6,7 +6,7 @@ import { buildInvest, indexById, tieShareOf, hasKinds, kindOf } from "../../lib/
 import { entered } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import type { WorkbenchInputs } from "../../lib/providers";
-import { AccountColumn, allFunds, crowned, FundColumn, PairResult, pickOfHeadline, tieCount, tieFunds } from "./pair";
+import { AccountColumn, allFunds, crowned, FundColumn, ownBankHelp, PairResult, pickOfHeadline, tieCount, tieFunds } from "./pair";
 import { Terms } from "./custom-entries";
 import { DollarSection } from "./dollar";
 import { bundle, t, plan, shown, fundRow, html } from "./render-fixtures";
@@ -30,8 +30,8 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
   });
   // recheck 3 S5: a hedged report F-92 (d) does not compare gives no gap, and the sentence beside the range does not count it
   it("leaves a report it does not compare out of the gap range and out of the count beside it", () => {
-    // the costs tile's figure: "⁦1.8⁩ עד ⁦2.7⁩ נקודות בשנה"
-    const tile = (o: string) => o.match(new RegExp(`⁦[-−0-9.]+⁩ <span[^>]*>[^<]*</span> ⁦[-−0-9.]+⁩ ${invest.dollar.pointsAYear}`))?.[0] ?? "";
+    // the costs tile's figure, each end a computed figure that opens its sheet: "⁦1.8⁩ עד ⁦2.7⁩ נקודות בשנה"
+    const tile = (o: string) => shown(o).match(new RegExp(`⁦[-−0-9.]+⁩ עד ⁦[-−0-9.]+⁩ ${invest.dollar.pointsAYear}`))?.[0] ?? "";
     const render = (b: typeof bundle) => {
       const v = buildInvest({ bundle: b, index: indexById(b, "index-nasdaq100")!, plan });
       return html(createElement(DollarSection, { view: v, bundle: b, plan, pick: pickOfHeadline(v)! })).replace(/<!-- -->/g, "");
@@ -239,11 +239,13 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     expect(out.includes(invest.pair.abroadTitle)).toBe(abroad);
   });
 
-  it("offers every bank whose current account costs something, and says which row leaves it out", () => {
+  it("offers every bank whose current account costs something, under the list, with what it does in its \"?\"", () => {
     // the bank whose current account is free is named, so its row reads as a bank's (fresh readers, round 3)
-    expect(card(sp, null)).toContain(invest.pair.ownBank.counted(["וואן זירו"]));
-    expect(card(sp, "leumi")).toContain(invest.pair.ownBank.left("לאומי"));
+    expect(ownBankHelp(buildInvest({ bundle, index: sp, plan }), bundle)).toBe(invest.pair.ownBank.counted(["וואן זירו"]));
     const raw = html(createElement(AccountColumn, { view: buildInvest({ bundle, index: sp, plan }), bundle, years: 20, pick: pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, onPick: () => undefined, ownBank: { value: null, onChange: () => undefined } }));
+    // at the bottom of the card, under the list it changes (founder, 2026-11-08), its words in the "?" and not in a line under it
+    expect(raw.indexOf(invest.pair.ownBank.label)).toBeGreaterThan(raw.indexOf(invest.pair.listLabelAccounts));
+    expect(shown(raw)).not.toContain(invest.pair.ownBank.counted(["וואן זירו"]));
     for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]) expect(raw).toContain(`value="${id}"`);
     // One Zero's price list prints its current account free: marking it would change no figure (guidelines/design.md)
     expect(raw).not.toContain(`value="one-zero"`);

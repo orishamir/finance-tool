@@ -184,7 +184,7 @@ describe("rows", () => {
   it("a track is marked new when it opened in or after the fee year, and a younger one says it", () => {
     const young = gemel.tracks.find((x) => x.young3);
     expect(young).toBeDefined();
-    expect(missingYield(young!, 3)).toBe("פחות מ־3 שנים");
+    expect(missingYield(young!, 3)).toBe("אין");
     const old = gemel.tracks.find((x) => !x.young5 && x.y5?.value === null);
     if (old) expect(missingYield(old, 5)).toBe("לא דווח");
     expect(gemel.tracks.some((x) => x.isNew)).toBe(true);

@@ -135,7 +135,7 @@ patterns["a name in a plain bdi"] = {
     "components/fees/sensitivity.tsx": 2,
     "components/guide-signature/bank-deposit.tsx": 5,
     "components/guide-signature/current-account.tsx": 3,
-    "components/guide-signature/keren-hishtalmut.tsx": 3,
+    "components/guide-signature/keren-hishtalmut.tsx": 2,
     "components/guide-signature/kupat-gemel-lehashkaa.tsx": 2,
     "components/guide-signature/makam.tsx": 1,
     "components/guide-signature/pension.tsx": 1,
@@ -212,7 +212,7 @@ const CHART_ROLES: Record<string, string[]> = {
   "the fee-drag chart (7.3)": ["chart-fee-1", "chart-fee-2", "chart-fee-3", "chart-fee-4", "chart-fee-total"],
   ChangeChart: ["chart-lever-1", "chart-lever-2", "chart-lever-3", "chart-lever-4"],
   CostStack: ["chart-cost-trade", "chart-cost-custody", "chart-cost-fixed", "chart-cost-fx", "chart-cost-other", "chart-cost-fund", "chart-tax"],
-  PileStory: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-tax", "chart-pile-salary-tax", "chart-pile-left"],
+  PileBar: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-fee", "chart-pile-salary-tax", "chart-pile-tax", "chart-pile-loss", "chart-pile-left"],
   StairsChart: ["chart-stairs-start", "chart-stairs-account", "chart-stairs-kind", "chart-stairs-fund", "gain", "loss"],
   "the comparison and exposure charts (6.5, 9.3)": ["chart-option-1", "chart-option-2", "chart-option-3", "chart-baseline"],
   ShareRings: ["chart-stocks", "chart-currency"],
@@ -225,9 +225,9 @@ const CHART_ROLES: Record<string, string[]> = {
 const TOO_ALIKE = new Set([
   "the timeline (3.4): chart-value / chart-tax-2",
   "the timeline (3.4): chart-tax-1 / chart-contributions",
-  "PileStory: chart-pile-own / chart-pile-gain",
-  "PileStory: chart-pile-own / chart-pile-tax",
-  "PileStory: chart-pile-gain / chart-pile-tax",
+  "PileBar: chart-pile-own / chart-pile-gain",
+  "PileBar: chart-pile-own / chart-pile-tax",
+  "PileBar: chart-pile-gain / chart-pile-tax",
   "StairsChart: chart-stairs-start / loss",
   "StairsChart: chart-stairs-account / gain",
   "the comparison and exposure charts (6.5, 9.3): chart-option-1 / chart-baseline",
@@ -396,7 +396,7 @@ describe("an open question a value names has Hebrew lines", () => {
 describe("ratchet: a formula the site shows has words beside its id", () => {
   // pass 5 of the indices data (readers): a value sheet read "נוסחה: חישוב של האתר F-92", the id with no words. Every formula id the site's
   // source passes has a Hebrew name in `formulaNames`, which the sheet shows beside the id's chip. Today's leftovers, by id; the list only shrinks.
-  const LEFTOVERS = ["F-12", "F-31", "F-32", "F-45", "F-48", "F-49", "F-52", "F-53", "F-54", "F-71", "F-86", "F-97", "F-98"];
+  const LEFTOVERS = ["F-31", "F-32", "F-45", "F-48", "F-49", "F-52", "F-53", "F-54", "F-71", "F-86", "F-97", "F-98"];
   const src = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\./.test(f));
   const copySrc = readFileSync(join(root, "copy.ts"), "utf8");
   const block = copySrc.slice(copySrc.indexOf("export const formulaNames"), copySrc.indexOf("_other:", copySrc.indexOf("export const formulaNames")));

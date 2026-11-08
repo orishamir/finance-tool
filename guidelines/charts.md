@@ -74,13 +74,27 @@ them, and change the shared piece when a rule here asks for it.
   solid enough to read but lighter than the line on top of it.
 - A series that rests on a return the person entered is dashed.
 
-### Overview strip with detail
+### Years with the chosen one in detail
 
-- A thin strip across the whole period in the parts' colours, with the chosen
-  year highlighted, and the detail for that year beside or below it in the
-  same colours. Never a grey strip.
-- Tell the money's story in order: what was deposited, what was added, what
-  was earned, what fees and tax took, what is left.
+- When the chart serves one choice over time (withdraw now or wait), lead
+  with the answer: one or two large figures, what is left at the chosen
+  year and what waiting changes, before the chart.
+- The years are the main chart, not a thin scrubber: a bar a year in the
+  parts' colours, its net written above it (what the amounts are and their
+  unit named once, up the value axis), the chosen year and the one it is set against at full
+  strength and the rest dimmed. Never a grey strip. When the amounts don't
+  fit side by side, keep the chosen year's, its comparison's and the two
+  ends', and show the rest on tap.
+- Point at the year it is set against with what waiting changes, in the
+  reader's money.
+- The chosen year's detail is one stacked bar from the right, in the same
+  colours: what was deposited, what was added, what was earned before fees.
+  What fees and tax took is hatched in its own colour over the bar's far
+  end, so the part under it still shows, with its amount under it, and a
+  bracket under the rest says what is left. This hatching means "taken
+  from"; red hatching alone means blocked.
+- Tell the money's story in that order: deposited, added, earned, what fees
+  and tax took, what is left.
 
 ### One number
 

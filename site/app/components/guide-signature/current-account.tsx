@@ -10,12 +10,12 @@ import { guideSignature as copy, values as valuesCopy, kit as kitCopy } from "..
 import { fmt } from "../../lib/format";
 import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, payingBanks, silentBanks, type SignatureData } from "../../lib/guide-signature";
-import type { SiteValue } from "../../lib/value";
+import { differenceOf, type SiteValue } from "../../lib/value";
 import { AxisLabels, yearTicksIn } from "../chart/TimelineChart";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
-import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, termInputs, typed, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -65,19 +65,21 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const base = (key: "amount_now" | "horizon_years", n: number, src: "amount" | "years") => inputSite(account, key, n, inputs.source[src], today, key === "amount_now" ? copy.common.inputNames.balance : copy.common.inputNames.years);
   const balanceValue = base("amount_now", inputs.amount, "amount");
   const yearsValue = base("horizon_years", years, "years");
-  const inputValues = { [copy.common.inputNames.balance]: balanceValue, [copy.common.inputNames.years]: yearsValue };
-  const runInputs = model ? { ...inputValues, [copy.account.inputs.common]: model.rate, ...(model.ceiling ? { [copy.account.inputs.ceiling]: model.ceiling } : {}) } : inputValues;
-  const fundInputs = { ...inputValues, [copy.common.inputNames.assumption]: cash };
+  const inflation = p05Value(account.p05, "A-02");
+  // both lines are in today's money (A-02), the fund's after its own fee lines; `years` is the run's length: the chart's point at a year
+  // is that year's own run (runTimeline), so its sheet names the year hovered, not the horizon
+  const accountIn = (yearsIn: SiteValue) => ({ [copy.common.inputNames.balance]: balanceValue, [copy.common.inputNames.years]: yearsIn, ...(model ? { [copy.account.inputs.common]: model.rate, ...(model.ceiling ? { [copy.account.inputs.ceiling]: model.ceiling } : {}) } : {}), [copy.common.inputNames.inflation]: inflation });
+  const fundIn = (yearsIn: SiteValue) => ({ [copy.common.inputNames.balance]: balanceValue, [copy.common.inputNames.years]: yearsIn, [copy.common.inputNames.assumption]: cash, [copy.common.inputNames.inflation]: inflation, ...termInputs(fundBundle) });
+  const yearIn = (year: number) => typed(year, "years", today, copy.common.inputNames.years);
   const values = model
     ? {
-        account: figure(model.end.account, "nis", "F-67", runInputs, today, copy.account.about.account, rulesOfBundle(account)),
-        fund: figure(model.end.fund, "nis", "F-67", fundInputs, today, copy.account.about.fund, rulesOfBundle(fundBundle)),
+        account: figure(model.end.account, "nis", "F-67", accountIn(yearsValue), today, copy.account.about.account, rulesOfBundle(account)),
+        fund: figure(model.end.fund, "nis", "F-67", fundIn(yearsValue), today, copy.account.about.fund, rulesOfBundle(fundBundle)),
       }
     : null;
-  const cost = values && model ? figure(model.end.cost, "nis", "F-67", { [copy.account.figures.fund]: values.fund, [copy.account.figures.account]: values.account }, today, copy.account.about.cost) : null;
-  const change = values && model ? figure(Math.abs(model.end.change), "nis", "F-67", { [copy.account.figures.account]: values.account, [copy.account.balance]: balanceValue }, today, copy.account.about.change) : null;
+  const cost = values ? differenceOf([copy.account.figures.fund, values.fund], [copy.account.figures.account, values.account], "F-67", { today, about: copy.account.about.cost }) : null;
+  const change = values ? differenceOf([copy.account.figures.account, values.account], [copy.account.balance, balanceValue], "F-67", { today, about: copy.account.about.change, round: Math.abs }) : null;
   const direction = model ? (model.end.change < -0.5 ? copy.account.headline.less : model.end.change > 0.5 ? copy.account.headline.more : null) : null;
-  const inflation = p05Value(account.p05, "A-02");
 
   const paying = payingBanks(data);
   const silent = silentBanks(data);
@@ -145,8 +147,8 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             amount={inputs.amount}
             years={years}
             cost={cost}
-            accountFigure={(v) => figure(v, "nis", "F-67", runInputs, today, copy.account.about.account)}
-            fundFigure={(v) => figure(v, "nis", "F-67", fundInputs, today, copy.account.about.fund)}
+            accountFigure={(v, year) => figure(v, "nis", "F-67", accountIn(yearIn(year)), today, copy.account.about.account)}
+            fundFigure={(v, year) => figure(v, "nis", "F-67", fundIn(yearIn(year)), today, copy.account.about.fund)}
           />
           <p className="text-xs text-muted-foreground">{copy.account.axisNote}</p>
           <StatRow cols={3}>
@@ -299,7 +301,7 @@ export function accountWorthRow(data: SignatureData): WorthFactRow | null {
  * The account and the fund over the years, on their own, so a frame of the chart's glide draws the chart and not the whole visual. The value
  * axis's two ends and the amount's dashed line glide with the lines; the words at the lines' ends follow them.
  */
-function AccountChart({ points, start, amount, years, cost, accountFigure, fundFigure }: { points: AccountPoint[]; start: number; amount: number; years: number; cost: SiteValue | null; accountFigure: (v: number) => SiteValue; fundFigure: (v: number) => SiteValue }) {
+function AccountChart({ points, start, amount, years, cost, accountFigure, fundFigure }: { points: AccountPoint[]; start: number; amount: number; years: number; cost: SiteValue | null; accountFigure: (v: number, year: number) => SiteValue; fundFigure: (v: number, year: number) => SiteValue }) {
   const [box, width] = useWidth();
   const plotW = width - 8;
   const [hover, setHover] = useState<number | null>(null);
@@ -387,10 +389,10 @@ function AccountChart({ points, start, amount, years, cost, accountFigure, fundF
             <ChartTip x={x(read.year)} top={TOP} width={width}>
               <span className="block font-medium">{read.year === 0 ? copy.account.today : <>{kitCopy.chart.yearWord} <bdi dir="ltr">{read.year}</bdi></>}</span>
               <span className="block">
-                {copy.account.chart.account}: <Num value={accountFigure(read.account)} />
+                {copy.account.chart.account}: <Num value={accountFigure(read.account, read.year)} />
               </span>
               <span className="block">
-                {copy.account.chart.fund}: <Num value={fundFigure(read.fund)} />
+                {copy.account.chart.fund}: <Num value={fundFigure(read.fund, read.year)} />
               </span>
             </ChartTip>
           )}

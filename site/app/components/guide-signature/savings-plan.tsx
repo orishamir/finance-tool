@@ -49,9 +49,12 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   const monthlyIn = inputSite(bundle, "monthly_deposit", monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
   const runInputs = { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.rate]: rate, [copy.common.inputNames.term]: termFact };
   const dateIn = typed(m, "months", today, copy.plan.marker);
-  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn }, today, copy.plan.about.free, rulesOfBundle(bundle)) : null;
-  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn }, today, copy.plan.about.locked) : null;
-  const lastUnlock = model ? figure(model.lastUnlock, "months", "F-22", { [copy.common.inputNames.term]: termFact, [copy.plan.count]: typed(n, "count", today) }, today, copy.plan.about.last) : null;
+  const countIn = { [copy.plan.count]: typed(n, "count", today, copy.plan.count) };
+  // the number of deposits counts only once the date is past the last of them (what is locked) or past the last one's end (what is free)
+  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn, ...(m - term + 1 >= n ? countIn : {}) }, today, copy.plan.about.free, rulesOfBundle(bundle)) : null;
+  // what is still locked is the deposits made and not yet free, at their face: no interest in it
+  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.term]: termFact, [copy.plan.marker]: dateIn, ...(m >= n - 1 ? countIn : {}) }, today, copy.plan.about.locked) : null;
+  const lastUnlock = model ? figure(model.lastUnlock, "months", "F-22", { [copy.common.inputNames.term]: termFact, ...countIn }, today, copy.plan.about.last) : null;
 
   return (
     <div className="flex flex-col gap-5">

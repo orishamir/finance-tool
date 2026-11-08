@@ -9,6 +9,7 @@ import { fmt, joinLead, readerRound } from "../../lib/format";
 import type { FieldKey } from "../../lib/goal";
 import { Num } from "../provenance";
 import { Card, cx, Tag } from "../kit";
+import type { SiteValue } from "../../lib/value";
 
 type Bounds = Record<string, { lo: ValueObject; hi: ValueObject }>;
 
@@ -23,10 +24,20 @@ const within = (row: FeeSensRow, r: number, side: "lo" | "hi") => (side === "lo"
 const shownAt = (row: FeeSensRow, v: number, at: { side: "lo" | "hi" }, unit: "years" | "pct") =>
   unit === "years" ? within(row, readerRound(v, at.side, "years"), at.side) : within(row, readerRound(v * 100, at.side, "pct") / 100, at.side) * 100;
 
-function value(an: Analysis, row: FeeSensRow, v: number, at: Shown = null) {
+/**
+ * The value an assumption has now, the one F-81 moves from: the page's field itself, entered or the site's parameter (the return A-01, the
+ * inflation A-02, the years), never a figure computed over the plan. Null for a fee's multiple, which is the comparison's own.
+ */
+function inputNow(an: Analysis, row: FeeSensRow): SiteValue | null {
+  const g = an.mk.goal;
+  return row.key === "A-01" ? g.returnV : row.key === "A-02" ? g.inflation : row.key === "horizon" ? g.years : null;
+}
+
+/** A value on the assumption's scale; `now` is the input itself when the value is the assumption's present one (`inputNow`). */
+function value(an: Analysis, row: FeeSensRow, v: number, at: Shown = null, now: SiteValue | null = null) {
   const s = r3fees.sens;
-  if (row.unit === "fraction") return <Num value={an.mk.plain(v * 100, "pct_per_year", "F-81", row.label)} {...(at ? { display: fmt.pct(Number(shownAt(row, v, at, "pct").toFixed(4))) } : {})} />;
-  if (row.unit === "years") return <Num value={an.mk.plain(v, "years", "F-81", row.label)} display={fmt.years(at ? shownAt(row, v, at, "years") : Number(v.toFixed(2)))} />;
+  if (row.unit === "fraction") return <Num value={now ?? an.mk.plain(v * 100, "pct_per_year", "F-81", row.label)} {...(at ? { display: fmt.pct(Number(shownAt(row, v, at, "pct").toFixed(4))) } : {})} />;
+  if (row.unit === "years") return <Num value={now ?? an.mk.plain(v, "years", "F-81", row.label)} display={fmt.years(at ? shownAt(row, v, at, "years") : Number(v.toFixed(2)))} />;
   // a fee axis moves a multiple of the rate: show the rate that multiple makes, held at the legal cap as the run holds it (PF-02)
   const capped = (x: number) => (row.capPct !== undefined ? Math.min(x, row.capPct) : x);
   // a flip point rounds the rate the row is named for, and the other period's rate follows the same multiple (the multiple rounded, not each rate)
@@ -62,7 +73,7 @@ function Row({ row, an, onOpen, p02, wordOf }: { row: FeeSensRow; an: Analysis; 
         {leadFor(row, s.flipVerdict[0], flip.to, flip)}
         {value(an, row, flip.to, flip)}
         {s.flipVerdict[1]}
-        {value(an, row, flip.from)}
+        {value(an, row, flip.from, null, inputNow(an, row))}
         {s.flipVerdict[2]}
         <bdi>{r3fees.names[flip.line!]}</bdi>
         {s.flipVerdict[3]}
@@ -78,7 +89,7 @@ function Row({ row, an, onOpen, p02, wordOf }: { row: FeeSensRow; an: Analysis; 
         {leadFor(row, s.flipLargest[0], flip.to, flip)}
         {value(an, row, flip.to, flip)}
         {s.flipLargest[1]}
-        {value(an, row, flip.from)}
+        {value(an, row, flip.from, null, inputNow(an, row))}
         {s.flipLargest[2]}
         <bdi>{r3fees.names[flip.newLargest!]}</bdi>.
       </>
@@ -96,7 +107,7 @@ function Row({ row, an, onOpen, p02, wordOf }: { row: FeeSensRow; an: Analysis; 
       </>
     );
   }
-  const current = row.unit === "fraction" ? an.mk.plain(row.current * 100, "pct_per_year", "F-81", row.label) : null;
+  const current = row.unit === "fraction" ? inputNow(an, row) : null;
   const inner = (
     <div className="flex flex-col gap-1 w-full text-start">
       <span className="flex items-center gap-2 flex-wrap">

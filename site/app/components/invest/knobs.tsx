@@ -11,7 +11,7 @@ import { fmt } from "../../lib/format";
 import { pctBoundsFor } from "../../lib/goal";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
-import { pairCosts, pairLeft, type InvestView } from "../../lib/invest";
+import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
@@ -46,6 +46,8 @@ function usePairLeft(bundle: WorkbenchBundle, view: InvestView | null, pick: Pai
 }
 
 const KEY: Record<Id, P05Input> = { amount: "amount_now", monthly: "monthly_deposit", years: "horizon_years", ret: "A-01" };
+/** Each knob's plan input, as a run's sheet names it (`planInputs`). */
+const PLAN_INPUT: Record<Id, PlanInput> = { amount: "amount", monthly: "monthly", years: "years", ret: "return" };
 
 /** Writes one knob into the entered values, or clears it back to the site's example (null). */
 function useSetKnob() {
@@ -101,17 +103,22 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
   const planValue: Record<Id, SiteValue> = { amount: plan.values.amount, monthly: plan.values.monthly, years: plan.values.years, ret: plan.values.returnV };
   const show = (id: Id, n: number) => (id === "years" ? fmt.years(n) : id === "ret" ? fmt.pct(n) : fmt.nisWhole(n));
   const word = (sh: number) => `${Math.abs(sh)}% ${sh > 0 ? ch.more : ch.less}`;
+  // what the plan's run reads (the value left on the plan carries it), the changed number in its place: a run after the change reads the same
+  const baseInputs = (run.base.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
   const rows = run.lines
     .map((l, n) => {
       const after = l.ys[idx] ?? null;
-      const to = l.tos[idx]!;
-      const inputs = { [labelOf[l.id]]: planValue[l.id] };
+      const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [labelOf[l.id]]: planValue[l.id] }, { today: bundle.today, about: ch.aboutTo });
+      const planName = c.planInputs[PLAN_INPUT[l.id]];
+      const afterInputs = Object.fromEntries(Object.entries(baseInputs).map(([name, v]) => [name, name === planName ? to : v]));
+      const afterValue = after === null ? null : computed(Math.round(after), "nis", "F-90", afterInputs, { today: bundle.today, about: ch.aboutLeft });
       return {
         l,
         n,
-        to: computed(to, unitOf[l.id], "F-89", inputs, { today: bundle.today, about: ch.aboutTo }),
-        after: after === null ? null : computed(Math.round(after), "nis", "F-90", inputs, { today: bundle.today, about: ch.aboutLeft }),
-        diff: after === null ? null : computed(Math.round(after - (run.base.value as number)), "nis", "F-89", { ...inputs, [k.changes.planHead]: run.base }, { today: bundle.today, about: ch.aboutDiff }),
+        to,
+        after: afterValue,
+        // the value left after the change less the value left on the plan; taken before the rounding, as the row always was
+        diff: after === null || !afterValue ? null : computed(Math.round(after - (run.base.value as number)), "nis", "F-89", { [ch.aboutLeft]: afterValue, [k.changes.planHead]: run.base }, { today: bundle.today, about: ch.aboutDiff }),
       };
     })
     .sort((a, b) => Math.abs((b.diff?.value as number) ?? 0) - Math.abs((a.diff?.value as number) ?? 0));

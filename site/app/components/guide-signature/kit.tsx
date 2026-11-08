@@ -2,11 +2,11 @@
 // run date and what a visual receives, and the lines that look their copy up (a gap, a common rate). The parts any
 // page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
 import type { P05Input, RunResult } from "@finance-tool/engine";
-import { guideSignature as copy } from "../../copy";
+import { computedInputs as ci, guideBlocks, guideSignature as copy } from "../../copy";
 import { p05Number, p05Range, p05Units, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
-import { asField, computed, entered as enteredValue, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { asField, computed, entered as enteredValue, feeLabel, feeYear, weaker, type SiteValue, type Strength } from "../../lib/value";
 import { GapNote } from "../kit";
 import { IdText, Num } from "../provenance";
 
@@ -70,6 +70,32 @@ export function runFigure(value: number, unit: SiteValue["unit"], formula: strin
     flags: [...new Set(run.flags.map((f) => f.code))].filter(keepFlag),
     labels: run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })),
   });
+}
+
+/**
+ * What a bundle's run reads from its terms: each fee line, the term and every other number the guide's terms block names, under that
+ * block's name (a regulator's average with its year), as the timeline lists them, and the direct expenses. A figure from the run lists
+ * these beside the plan it ran on, so its sheet holds the lines of that run and of no other: a page that runs another bundle (the
+ * brokerage account at the best tariff) names that bundle's lines, not its own fund's (founder, 2026-11-08: "make sure the chip displayed
+ * is correct ... make less mistakes"). A provident fee shown under its list or regulator label is not listed again as the plain fee.
+ */
+export function termInputs(bundle: Bundle): Record<string, SiteValue> {
+  const fv = bundle.feeValues;
+  const out: Record<string, SiteValue> = {};
+  if (fv.balance && !fv.listBalance && !fv.discountBalance && !fv.regBalance) out[ci.balanceFee] = fv.balance;
+  if (fv.deposit && !fv.listDeposit && !fv.discountDeposit && !fv.regDeposit) out[ci.depositFee] = fv.deposit;
+  for (const [key, label] of Object.entries(guideBlocks.terms.labels)) {
+    const v = fv[key];
+    if (v && typeof v.value === "number") out[feeLabel(label, feeYear(v))] = v;
+  }
+  if (fv.direct && typeof fv.direct.value === "number") out[ci.directExpenses] = fv.direct;
+  return out;
+}
+
+/** The bundle's term (a deposit's, a makam series'), under the name termInputs gives it, for a figure that reads the term alone (a price on the curve). */
+export function termOf(bundle: Bundle | undefined): Record<string, SiteValue> {
+  const v = bundle?.feeValues.term;
+  return v && typeof v.value === "number" ? { [feeLabel(guideBlocks.terms.labels.term!, null)]: v } : {};
 }
 
 /** The rules a bundle's runs read, as the list a computed value carries. */

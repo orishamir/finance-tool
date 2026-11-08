@@ -4,9 +4,9 @@ import { invest as c } from "../../copy";
 import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import type { WorkbenchBundle } from "../../lib/providers";
-import { Num } from "../provenance";
+import { LeadTail, Num } from "../provenance";
 import type { SiteValue } from "../../lib/value";
-import { Button, Card, ChipList, LongestCase, Sentence, Tag, type ChipItem } from "../kit";
+import { Button, Card, ChipList, HelpMark, LongestCase, Sentence, Tag, type ChipItem } from "../kit";
 
 /** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
@@ -81,7 +81,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 /** The plan the page runs on: the knob strip (founder, 2026-10-28), the rest of the assumptions behind a button, and the dollar rate on the same line. */
 /** `example`: no number entered yet, so every one is the site's example; once one is entered each slider marks its own. */
 /** `dollar`: an index priced in shekels reads no exchange rate, so it shows none (founder, 2026-10-31); the line keeps its height either way. */
-export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean; /** The inflation the page runs on, said beside the button that changes it, through the figure's own sheet (its source, or entered). */ inflation?: SiteValue }) {
+export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation, returnHelp }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean; /** The inflation the page runs on, said beside the button that changes it, through the figure's own sheet (its source, or entered). */ inflation?: SiteValue; /** What the return is and whether the lists' order holds at another (`returnHelpOf`): the "?" beside the return. */ returnHelp?: string }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   // held at the words' longest case, the site's example included: on a phone, entering a first number dropped "לדוגמה של האתר" and
   // the line under the sliders lost a line
@@ -90,7 +90,15 @@ export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation
   const line = (ex: boolean, withDollar = dollar) => (
     <Sentence size="sm" tone="muted">
       {ex && <>{c.plan.siteExample} · </>}
-      {c.plan.knobs.retBefore} · {c.plan.knobs.leftAfter} · {c.plan.knobs.monthlyRises}
+      {/* the "?" held to the last word before it, so it never stands on a line of its own */}
+      {returnHelp ? (
+        <LeadTail lead={c.plan.knobs.retBefore}>
+          <HelpMark about={c.foot.returnAbout} text={returnHelp} />
+        </LeadTail>
+      ) : (
+        c.plan.knobs.retBefore
+      )}{" "}
+      · {c.plan.knobs.leftAfter} · {c.plan.knobs.monthlyRises}
       {withDollar &&
         (usd ? (
           <>

@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useAfterRender } from "../lib/settled";
 import { Link, Navigate, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, scnCompare, site, system } from "../copy";
+import { computedInputs as ci, r2, scnCompare, site, system } from "../copy";
 import { useValueMode } from "../lib/mode-store";
 import { splitOwnTerms, useOwnTerms } from "../lib/own-rate";
 import { applyIndex, planOfGoal } from "../lib/compare-index";
@@ -38,9 +38,9 @@ import { ExposureBody, ModeTabs } from "../components/exposure-mode/result";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../components/revisit/revisit";
 import { forgetRevisit, useRevisit } from "../components/revisit/use-revisit";
 import { Tpl } from "../components/exposure-mode/tpl";
-import { snapshotWrapper } from "../lib/revisit";
+import { revisitValue, snapshotWrapper } from "../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../lib/state";
-import { anyWeak, computed, entered } from "../lib/value";
+import { anyWeak, differenceOf, entered } from "../lib/value";
 import { r5 } from "../copy";
 import { bundleLinks } from "../lib/bundle";
 import { recordsById } from "../lib/scope";
@@ -416,7 +416,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
       <SaveComparisonButton {...(readableSaved ? { savedOn: readableSaved.savedOn } : {})} onSave={() => doSave(readableSaved?.choice)} failed={saveFailed} />
       <RulesLine ids={view.rulesUsed} />
       {readableSaved && revisit && revisit.status !== "unreadable" && (
-        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
+        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={revisitValue(revisit, v, about, isoToday())} />} />
       )}
 
       <Sheet open={popup !== null} onClose={() => setPopup(null)} anchor={anchor} pc="popover" height={78} labelledBy={headId}>
@@ -451,14 +451,19 @@ function FallEcho({ ctx }: { ctx: ResultCtx }) {
   const start = g.amountNow - g.available;
   if (!fall || fall <= 0 || start <= 0) return null;
   const drop = (start * Math.min(fall, 100)) / 100;
+  // F-71 over the amount compared today, the amount now less what stays available, and the fall the person accepts (A-29): no deposit,
+  // years, inflation or return moves either (founder, 2026-11-08: a figure lists only what it uses)
+  const fallV = entered(fall, "pct", isoToday(), r2.result.fallBand);
+  const startV = g.available > 0 ? differenceOf([ci.amountNow, mk.goal.amountNow], [ci.names.keep!, mk.goal.available], "F-71", { today: ctx.bundle.runDate, about: r2.result.fallBand }) : mk.goal.amountNow;
+  const dropInputs = { [ci.amountNow]: mk.goal.amountNow, ...(g.available > 0 ? { [ci.names.keep!]: mk.goal.available } : {}), [r2.result.fallBand]: fallV };
   return (
     <p className="text-xs text-muted-foreground" data-fall-echo>
       <Tpl
         t={r2.result.fallEcho}
         vars={{
-          pct: <Num value={entered(fall, "pct", isoToday(), r2.result.fallBand)} />,
-          amount: <Num value={mk.nis(start, "F-71", r2.result.fallBand)} />,
-          drop: <Num value={mk.nis(drop, "F-71", r2.result.fallBand)} />,
+          pct: <Num value={fallV} />,
+          amount: <Num value={startV} />,
+          drop: <Num value={mk.of(drop, "nis", "F-71", r2.result.fallBand, dropInputs)} />,
         }}
       />
     </p>

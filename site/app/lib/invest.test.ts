@@ -1,9 +1,10 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
-import { entered } from "./value";
+import { entered, type SiteValue } from "./value";
+import { invest as words } from "../copy";
 
 const bundle = buildWorkbenchBundle();
 const t = bundle.today;
@@ -401,5 +402,53 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     const own = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
     const mine = own.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
     for (const w of mine) expect(w.cost("עלות").flags ?? []).not.toContain("BANK-35");
+  });
+});
+
+describe("what each figure's sheet lists (founder, 2026-11-08: \"make sure the chip displayed is correct\")", () => {
+  const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+  const inputs = (v: SiteValue) => v.computed_from!.inputs as Record<string, SiteValue>;
+  const abroad = view.options.find((o) => o.id === "abroad")!;
+  const irish = abroad.funds.find((f) => f.rec.id === "ie0031442068")!;
+  const israeli = view.options.find((o) => o.id === "il-etf")!.funds.find((f) => f.best)!;
+  const dollar = words.pair.rateInput("USD");
+
+  it("a run priced in dollars lists the dollar rate (F-84), and a fund that pays out its payout yield (A-10)", () => {
+    expect(inputs(irish.best!.value)[dollar]!.computed_from!.formula).toBe("F-84");
+    expect(inputs(irish.best!.value)[words.pair.fundInputs.payout]!.value).toBe(irish.rec.distribution!.yield.value);
+    expect(inputs(irish.best!.cost("x"))[dollar]).toBeDefined();
+    // the abroad option's generic fund is bought in dollars too; an Israeli fund reads no rate and pays nothing out
+    expect(inputs(abroad.bestCell!.cost!)[dollar]).toBeDefined();
+    expect(inputs(israeli.best!.value)[dollar]).toBeUndefined();
+    expect(inputs(israeli.best!.value)[words.pair.fundInputs.payout]).toBeUndefined();
+  });
+
+  it("A-07 from a report that prints no fees charged lists the fees listed today, which F-92 (b) measures those years against", () => {
+    const funds = view.options.flatMap((o) => o.funds).filter((f) => f.best && f.rec.tracking_record?.years.some((y) => !y.fees_charged));
+    const beyond = funds.flatMap((f) => Object.entries(inputs(f.best!.value)).filter(([k]) => k.startsWith(words.pair.fundInputs.beyond([2000, 2001]).slice(0, 10))).map(([, v]) => v));
+    expect(beyond.length).toBeGreaterThan(0);
+    for (const b of beyond) expect(inputs(b)[words.pair.fundInputs.listedFixed]).toBeDefined();
+  });
+
+  it("an account's cost is F-91, and a gap between two ways is the one figure less the other", () => {
+    expect(irish.best!.cost("x").computed_from!.formula).toBe("F-91");
+    const broker = view.bars.find((b) => b.id === "broker")!;
+    expect(broker.spread!.computed_from!.formula).toBe("F-91");
+    expect(broker.spread!.value).toBeCloseTo(broker.high! - broker.low!, 9);
+    const fund = view.bars.find((b) => b.id === "fund")!;
+    expect(fund.spread!.computed_from!.formula).toBe("F-65");
+    expect(Object.values(inputs(fund.spread!)).map((v) => v.computed_from!.formula)).toEqual(["F-65", "F-65"]);
+    for (const h of view.houses.filter((x) => x.gap)) expect(Object.keys(inputs(h.gap!))).toHaveLength(2);
+  });
+
+  it("a pair's parts: the fund's part reads no account, X neither the fund nor the account, and the account's cost adds up its parts", () => {
+    const fundId = view.houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
+    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }), fundId, providerId: "leumi" })!;
+    expect(inputs(pc.fund)[words.pair.accountMinimum]).toBeUndefined();
+    expect(inputs(pc.tax)[words.pair.accountMinimum]).toBeDefined();
+    expect(inputs(pc.fund)[words.pair.fundInputs.fixed]).toBeDefined();
+    expect(Object.keys(inputs(pc.baseValue)).sort()).toEqual(Object.values(words.planInputs).sort());
+    expect(accountSum(pc, "x", t).value).toBeCloseTo(pc.accountCost, 6);
+    expect(Object.keys(inputs(accountSum(pc, "x", t)))).toContain(words.pair.remainder);
   });
 });

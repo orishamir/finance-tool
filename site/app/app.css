@@ -429,6 +429,11 @@
     font-size: var(--text-sm);
   }
 
+  /* ---- a formula in math type (kit/formula.tsx): KaTeX's display formula keeps its centre but not its 1em margins, which the sheet's gaps give */
+  .tex-display .katex-display {
+    margin: 0;
+  }
+
   /* ---- sheet (dialog) */
   .sheet {
     position: fixed;

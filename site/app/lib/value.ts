@@ -164,6 +164,29 @@ export function computed(
   };
 }
 
+/** The options of a computed value, as `computed` takes them. */
+export type ComputedOptions = Parameters<typeof computed>[4];
+
+/**
+ * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
+ * the two, and its inputs are the two, each opening its own sheet, so the sheet cannot list what the value does not rest on (founder,
+ * 2026-11-08: "go through all calculations make sure the chip displayed is correct ... share more code make less mistakes"). Null when
+ * either is not a number. `round` shapes the result (a whole shekel).
+ */
+export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
+  const [an, av] = a;
+  const [bn, bv] = b;
+  const n = typeof av.value === "number" && typeof bv.value === "number" ? av.value - bv.value : null;
+  return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
+}
+
+/** A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum. Null when any part is not a number. */
+export function sumOf(parts: Record<string, SiteValue>, formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
+  const list = Object.values(parts);
+  const n = list.length > 0 && list.every((p) => typeof p.value === "number") ? list.reduce((t, p) => t + (p.value as number), 0) : null;
+  return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? list[0]?.unit ?? "nis", formula, parts, options);
+}
+
 /** A figure out of a rule record, carrying the rule's strength and re-check date. */
 export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteValue | null {
   const f = rule.figures?.[name];

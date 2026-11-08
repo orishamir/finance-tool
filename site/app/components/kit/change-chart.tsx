@@ -34,9 +34,13 @@ const BOTTOM = 28;
 /** A second line of shares, baseline to baseline. */
 const TICK_ROW = 18;
 const LEFT = 64;
-const RIGHT = 104;
-/** Baseline to baseline between two line names at the right ends. */
-const END_GAP = 18;
+/** The swatch before each line's name and value at its right end, and the room after it. */
+const SWATCH = 10;
+const SWATCH_GAP = 5;
+/** Baseline to baseline between the name and the value under it, at a line's right end. */
+const END_LINE = 16;
+/** Top to top between two lines' end labels (a name and the value under it). */
+const END_GAP = 36;
 /** A column left out on a phone leaves the grid with its <col> (TableCols), so its cells go too. */
 const GONE = PHONE_GONE;
 
@@ -105,7 +109,11 @@ export function ChangeChart({
   // leading digits past a fixed 64 px
   const fading = useFadingTicks(gridAt);
   const left = Math.max(LEFT, 12 + Math.ceil(Math.max(0, ...fading.map((t) => chartTextWidth(yFormat(t.value), CHART_TEXT_PX)))));
-  const plotR = w - RIGHT;
+  // each line's name and its value at the right end, in the text colours, the line's colour in a swatch before them (charts.md: the value
+  // at the end of each line, with its name; label text never in the series colour); the room on the right is the widest of them, measured
+  const endValue = (l: ChangeLine) => l.ys.at(-1);
+  const endWidth = Math.max(0, ...lines.flatMap((l) => [chartTextWidth(l.label, CHART_TEXT_PX), chartTextWidth(yFormat(endValue(l) ?? 0), CHART_TEXT_PX)]));
+  const plotR = w - (8 + SWATCH + SWATCH_GAP + Math.ceil(endWidth) + 4);
   const x = (s: number) => left + ((s - lo) / (hi - lo)) * (plotR - left);
   const y = (v: number) => TOP + (1 - (v - yMin) / (yMax - yMin)) * (H - TOP - BOTTOM);
   const idx = (s: number) => Math.round((s - lo) / step);
@@ -120,8 +128,10 @@ export function ChangeChart({
     .filter((e): e is { l: ChangeLine; v: number } => e.v !== undefined && Number.isFinite(e.v))
     .map((e) => ({ l: e.l, y: y(e.v) }))
     .sort((a, b) => a.y - b.y);
-  // 13 px words take about 16.5 px from top to bottom: 15 px apart, two of them touched (2026-11-08)
+  // a name and its value take two 13 px lines: each label starts at least END_GAP under the one above it, and the lowest stays in the plot
   for (let i = 1; i < ends.length; i++) if (ends[i]!.y - ends[i - 1]!.y < END_GAP) ends[i]!.y = ends[i - 1]!.y + END_GAP;
+  const over = ends.length ? ends.at(-1)!.y + END_LINE - (H - BOTTOM) : 0;
+  if (over > 0) for (const e of ends) e.y -= over;
   // the shares written under the plot, each measured (chart-text.ts): the two ends, then the plan, then the halves where they fit. The plan
   // that would meet an end goes to a second line under them (2026-11-08: at 13 px on a phone, "התוכנית שלכם" ran into both ends)
   const tickText = (s: number) => (s === 0 ? planWord : shareWord(s));
@@ -174,11 +184,22 @@ export function ChangeChart({
           {lines.map((l) => (
             <path key={l.id} d={path(drawn[l.id] ?? [])} fill="none" className={cx(l.stroke, pickDim(pick.active, l.id))} strokeWidth={2.2} data-mark="line" />
           ))}
-          {ends.map((e) => (
-            <text key={e.l.id} x={plotR + 8} y={e.y + 4} className={cx(e.l.fill, "text-xs", pickDim(pick.active, e.l.id))}>
-              {e.l.label}
-            </text>
-          ))}
+          {ends.map((e) => {
+            const v = endValue(e.l);
+            return (
+              <g key={e.l.id} className={pickDim(pick.active, e.l.id)}>
+                <rect x={plotR + 8} y={e.y - 5} width={SWATCH} height={SWATCH} rx={2} className={e.l.fill} />
+                <text x={plotR + 8 + SWATCH + SWATCH_GAP} y={e.y + 4} className="fill-chart-text text-xs">
+                  {e.l.label}
+                </text>
+                {v !== null && v !== undefined && (
+                  <text x={plotR + 8 + SWATCH + SWATCH_GAP} y={e.y + 4 + END_LINE} className="fill-foreground text-xs font-semibold tabular-nums">
+                    {yFormat(v)}
+                  </text>
+                )}
+              </g>
+            );
+          })}
           {at !== 0 && <line x1={x(at)} x2={x(at)} y1={TOP} y2={H - BOTTOM} className="stroke-chart-crosshair" strokeWidth={1.5} />}
           {lines.map((l) => {
             const v = l.ys[idx(at)] === null || l.ys[idx(at)] === undefined ? null : valueOn(drawn[l.id] ?? [], at);

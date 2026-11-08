@@ -77,39 +77,34 @@ export function StairsChart({
   endsAt,
   now,
   label,
-  tick,
   onGo,
 }: {
   /** The columns on screen (at most `STAIRS_SLOTS`). */
   columns: StairColumn[];
   /** How many steps are folded away before the first column; a column's index for `onGo` counts them. */
   fold: number;
-  axis: { lo: number; hi: number; step: number };
+  /** The levels the plot spans (no figures drawn on the axis: the amounts on the columns are the axis, charts.md). */
+  axis: { lo: number; hi: number };
   /** The dashed line: what the most that any priced pair leaves, and the words beside it on a computer (the first is a heading). */
   ceiling: { level: number; lines: string[] };
   /** The level where the climb stops below the ceiling and the words for it; shown on a computer when there is room. */
   endsAt: { level: number; text: string } | null;
   now: string;
   label: string;
-  tick: (n: number, compact: boolean) => string;
   onGo: (index: number) => void;
 }) {
   const [ref, W] = useWidth(1000);
   const compact = W < 860;
   const H = compact ? 300 : 340;
-  const { lo, hi, step } = axis;
-  const grid: number[] = [];
-  for (let g = lo; g <= hi + 1e-9; g += step) grid.push(g);
-  // the left margin holds the widest label on the axis, measured (chart-text.ts): a large plan's "1,000,000K" lost its leading digits past
-  // a fixed 44 px
-  const widest = Math.max(0, ...grid.map((g) => chartTextWidth(tick(g, compact), CHART_TEXT_PX))) + 12;
-  const m = compact ? { l: Math.max(44, widest), r: 6, t: 40, b: 6 } : { l: Math.max(W * STAIRS_MARGIN.left, widest), r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
+  const { lo, hi } = axis;
+  // no value axis: every column carries its amount, and up to about twelve marks the amounts replace the axis (charts.md, 2026-11-08)
+  const m = compact ? { l: 6, r: 6, t: 40, b: 6 } : { l: W * STAIRS_MARGIN.left, r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
   const cw = (W - m.l - m.r) / STAIRS_SLOTS;
   const y = (v: number) => m.t + (1 - (v - lo) / (hi - lo || 1)) * (H - m.t - m.b);
   const floor = y(lo);
   const bx = (i: number) => m.l + i * cw + cw * 0.1;
   const bw = cw * 0.8;
-  // the figure over each column, and the "now" words over the current one: centred on the column, kept clear of the axis's figures and
+  // the figure over each column, and the "now" words over the current one: centred on the column, kept clear of the chart's left edge and
   // the chart's right edge, and raised above the one before where they would meet it (2026-11-08: at 13 px, five columns on a phone are
   // narrower than their figures, and "+4,875 ₪" ran into "−2,148 ₪")
   const topPx = compact ? CHART_TEXT_PX : 15;
@@ -166,16 +161,9 @@ export function StairsChart({
     <div ref={ref} className="w-full">
       <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label={label} className="block w-full h-auto [direction:ltr]">
         <line x1={m.l} x2={W - m.r + (compact ? 0 : 4)} y1={y(ceiling.level)} y2={y(ceiling.level)} className="stroke-chart-crosshair" strokeWidth={1.5} strokeDasharray="3 5" />
-        {grid.map((g) => (
-          <g key={g}>
-            {/* the axis's floor, where the first column stands, is the chart's zero line for the chart check (it does not begin at zero: the
-                first column carries a break mark) */}
-            <line x1={m.l} x2={W - m.r} y1={y(g)} y2={y(g)} className="stroke-chart-grid" data-zero={g === lo ? "" : undefined} />
-            <text x={m.l - 8} y={y(g) + 4} textAnchor="end" fontSize={CHART_TEXT_PX} className="fill-chart-text">
-              {tick(g, compact)}
-            </text>
-          </g>
-        ))}
+        {/* the floor, where the first column stands, is the chart's zero line for the chart check (it does not begin at zero: the first
+            column carries a break mark) */}
+        <line x1={m.l} x2={W - m.r} y1={floor} y2={floor} className="stroke-chart-grid" data-zero="" />
         {columns.map((c, i) => {
           const low = Math.min(c.level, c.from);
           const high = Math.max(c.level, c.from);

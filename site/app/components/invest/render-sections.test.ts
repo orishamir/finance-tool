@@ -10,7 +10,6 @@ import { Fees } from "./funds";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
 import { IndexHeader } from "./sections";
 import { AccountColumn, allFunds, FundColumn, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, PairResult, pickOfHeadline } from "./pair";
-import { Foot } from "./foot";
 import { PlanBlock } from "./chips";
 import { StairsSection } from "./stairs";
 import { ValueSheet } from "../provenance";
@@ -27,15 +26,15 @@ describe("the index page's sections render", () => {
       createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
-      createElement(Foot, { view }),
       createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds shows each kind across the dollar (F-94, 2026-10-29)
     expect(out).toContain("בלי נטרול מט״ח");
     expect(out).toContain("עם נטרול מט״ח");
-    expect(out).toContain("אם השער לא משתנה");
+    // the shekel column's "?" says the amounts hold the rate still; the line under the list says what orders each kind
+    expect(out).toContain("והסדר לא תלוי בדולר");
     expect(out).toContain("מול המדד");
-    expect(out).toContain("כמה זה עולה לכם ב־20 שנים, בכל אחד מהזוגות");
+    expect(out).toContain("עלות ב־20 שנים");
     expect(out).toContain("כל החשבונות");
     expect(out).toContain("כל הקרנות על");
     expect(out).toContain("הבחירה");
@@ -233,14 +232,15 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     // S&P 500: net gaps and three funds whose index is of no stated kind
     expect(noteOf(sp)).toContain("מדד נטו");
     expect(noteOf(sp)).toContain("״לא מושווה״");
-    expect(noteOf(sp)).toContain("לא נספרת כרווח");
+    // why the shekels are not the gap is the shekel column's "?", said only where the list has a gap column (2026-11-08)
+    expect(invest.funds.diffHelp(true, true)).toContain("לא נספרת כרווח");
+    expect(invest.funds.diffHelp(true, false)).not.toContain("לא נספרת כרווח");
     // TA-125: every gap against the gross index, nothing "not compared", so no sentence for it
     expect(noteOf(ta)).toContain("מדד ברוטו");
     expect(noteOf(ta)).not.toContain("״לא מושווה״");
     expect(noteOf(ta)).not.toContain("מדד נטו");
     // none compared: the column is left out and the note says so once
     expect(noteOf(["unstated", "none"])).toContain("אין עמודה כזאת");
-    expect(noteOf(["unstated", "none"])).not.toContain("לא נספרת כרווח");
     // "אין שנה מלאה" is explained where an Israeli fund shows it, "עוד לא נאסף" where a foreign one does, and neither otherwise (pass 3 readers)
     expect(noteOf(["gross", "none"])).toContain("״אין שנה מלאה״");
     expect(noteOf(["gross", "gross"])).not.toContain("״אין שנה מלאה״");
@@ -260,16 +260,16 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("the group's head counts that fund once (pass 5 readers: \"20 קרנות\" counted iShares twice)", () => {
+  it("a fund in Tel Aviv and abroad: each of its rows names the other, and the group's head counts nothing (founder, 2026-11-08)", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
     const out = html(createElement(FundColumn, { view: sp, bundle, plan, today: t, pick: pickOfHeadline(sp)!, onPick: () => undefined, filter: null, onFilter: () => undefined })).replace(/<!-- -->/g, "");
-    // and says how many of them take two rows, so the head and the rows agree where a reader looks first (pass 6 readers)
-    expect(out).toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.groupCount(distinct, funds.length)}`);
-    expect(invest.kinds.groupCount(distinct, funds.length)).toMatch(/^\d+ קרנות, אחת מהן בשתי שורות$/);
-    expect(out).not.toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.groupCount(funds.length)}`);
+    // the head counts nothing: it names the group and what all its funds share (founder, 2026-11-08: "remove the fund count")
+    expect(out).toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.allOf}`);
+    expect(out).not.toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.groupCount(distinct)}`);
+    expect(out).not.toContain("בשתי שורות");
     // each row of the fund listed twice names the other, so the rows and the count agree visibly (independent check of pass 5)
     expect(out).toContain(invest.pair.sameFundAs("IE00B5BMR087", true));
     expect(out).toContain(invest.pair.sameFundAs("1159250", false));

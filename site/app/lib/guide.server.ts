@@ -167,7 +167,9 @@ export function depositBreakTerms(t: string): BreakTerms | null {
     deposits: make(result.deposits, about.deposits),
     banks: make(result.banks, about.banks),
     lockedBanks: make(result.lockedBanks, about.lockedBanks),
-    lockedBanksWithExits: make(result.lockedBanksWithExits, about.lockedBanksWithExits, inputsOf(records, exitInput)),
+    // the banks none of whose deposits can be broken (the break column) that have a deposit with exit points (the exit column): both columns,
+    // each deposit's exits on a line of its own beside its break term
+    lockedBanksWithExits: make(result.lockedBanksWithExits, about.lockedBanksWithExits, { ...breaks, ...Object.fromEntries(records.map((r) => [`${sheet.get(r.id)!} · ${guideSignature.deposit.exitsInput}`, exitInput(r, shortName(r.bank, r.bank))])) }),
     breakable: result.breakable.map((b) => {
       const mine = records.filter((r) => r.bank === b.bank);
       const own = inputsOf(mine, breakInput);

@@ -11,6 +11,7 @@ import { fmt, readerRound } from "../../lib/format";
 import { Num } from "../provenance";
 import { Tpl } from "../exposure-mode/tpl";
 import { Card, cx, Tag } from "../kit";
+import type { SiteValue } from "../../lib/value";
 import type { ResultCtx } from "./ctx";
 
 function bounds(ctx: ResultCtx, key: string): { lo: ValueObject; hi: ValueObject } | null {
@@ -19,16 +20,28 @@ function bounds(ctx: ResultCtx, key: string): { lo: ValueObject; hi: ValueObject
 }
 
 /**
+ * The value an assumption has now, the one F-81 moves from: the input itself, entered or the site's parameter (the return A-01, the
+ * inflation A-02, the years), never a figure computed over the plan. Null for a fee's multiple, which is the comparison's own.
+ */
+function inputNow(ctx: ResultCtx, row: SensitivityRowView): SiteValue | null {
+  if (row.key === "A-01") return ctx.mk.goal.returnV;
+  if (row.key === "A-02") return ctx.mk.goal.inflation;
+  if (row.key === "horizon") return ctx.mk.goal.horizon;
+  return null;
+}
+
+/**
  * A value on the assumption's own scale, as a number with its state: a rate, a count of years or a multiple of a fee. A point where the
  * answer changes (`side`) is shown as a reader means it, rounded away from the value now (`readerRound`); its sheet keeps the exact point.
+ * `now` is the input itself when the value is the assumption's present one (`inputNow`).
  */
-function show(ctx: ResultCtx, row: SensitivityRowView, v: number, about: string, side?: "lo" | "hi") {
+function show(ctx: ResultCtx, row: SensitivityRowView, v: number, about: string, side?: "lo" | "hi", now?: SiteValue | null) {
   const { mk } = ctx;
   // held inside the range the search tested (finance review, 2026-11-07): rounding never names a value it never ran
   const within = (r: number, s: "lo" | "hi") => (s === "lo" ? Math.max(r, row.lo) : Math.min(r, row.hi));
-  if (row.unit === "fraction") return <Num value={mk.plain(v * 100, "pct_per_year", "F-81", about)} {...(side ? { display: fmt.pct(Number((within(readerRound(v * 100, side, "pct") / 100, side) * 100).toFixed(4))) } : {})} />;
-  if (row.unit === "years") return <Num value={mk.plain(v, "years", "F-81", about)} display={`${side ? within(readerRound(v, side, "years"), side) : Number(v.toFixed(2))} ${"שנים"}`} />;
-  return <Num value={mk.plain(v, "count", "F-81", about)} display={`${r2.result.times} ${side ? within(readerRound(v, side, "fee"), side) : Number(v.toFixed(2))}`} />;
+  if (row.unit === "fraction") return <Num value={now ?? mk.plain(v * 100, "pct_per_year", "F-81", about)} {...(side ? { display: fmt.pct(Number((within(readerRound(v * 100, side, "pct") / 100, side) * 100).toFixed(4))) } : {})} />;
+  if (row.unit === "years") return <Num value={now ?? mk.plain(v, "years", "F-81", about)} display={`${side ? within(readerRound(v, side, "years"), side) : Number(v.toFixed(2))} ${"שנים"}`} />;
+  return <Num value={now ?? mk.plain(v, "count", "F-81", about)} display={`${r2.result.times} ${side ? within(readerRound(v, side, "fee"), side) : Number(v.toFixed(2))}`} />;
 }
 
 /** The options that lead before any move: the tie at the top, or the one leader. */
@@ -74,7 +87,7 @@ export function FlipSentence({ row, ctx }: { row: SensitivityRowView; ctx: Resul
   return (
     <>
       {lead} {row.label} {row.key === "horizon" || (row.fee && r2.result.sensFeePlural[row.fee.kind]) ? r2.result.sensCrossPlural : r2.result.sensCross}
-      {show(ctx, row, flip.from, row.label)}
+      {show(ctx, row, flip.from, row.label, undefined, inputNow(ctx, row))}
       {r2.result.sensTo}
       {show(ctx, row, flip.to, row.label, flip.side)}
       {then}
@@ -104,7 +117,7 @@ function SensitivityRowItem({ row, ctx, onOpen }: { row: SensitivityRowView; ctx
     );
   }
   void mk;
-  const current = row.unit === "fraction" ? mk.plain(row.current * 100, "pct_per_year", "F-81", row.label) : null;
+  const current = row.unit === "fraction" ? inputNow(ctx, row) : null;
   const inner = (
     <div className="flex flex-col gap-1 w-full text-start">
       <span className="flex items-center gap-2 flex-wrap">

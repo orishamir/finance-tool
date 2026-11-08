@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, groupPrices as groupWordsDemo, invest as investWords, kit as copy, r2, scnCompare, trackBrowser } from "../../copy";
+import { brands, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, r2, scnCompare, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -13,10 +13,10 @@ import { allLabels, label } from "../../lib/labels";
 import { depositLabels } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import { sourceHref } from "../../lib/sources";
-import { PileStory, PileYears } from "./pile-story";
+import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { BlockedGroups, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { BlockedGroups, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -745,25 +745,27 @@ function Fields() {
           />
         </State>
       </Demo>
-      <Demo name="PileYears, PileStory" use={g.uses.PileStory}>
+      <Demo name="PileYears, PileBar" use={g.uses.PileBar}>
         <State label={g.states.interactive} wide>
           <PileYears
-            years={[null, { own: 7200, extra: 21600, gain: 3100, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, tax: 5000, taxFromSalary: 4000, net: 64400 }]}
-            year={3}
+            years={[null, { own: 7200, extra: 21600, gain: 3100, fees: 300, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, fees: 600, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, fees: 1000, tax: 5000, taxFromSalary: 4000, net: 64400 }]}
+            year={2}
             onYear={() => undefined}
             lockYear={3}
+            compare={3}
+            axis={g.sample.rowB}
+            note={g.sample.rowA}
+            amount={(net, picked) => (picked ? (Math.round(net / 100) / 10).toFixed(1) : String(Math.round(net / 1000)))}
             before={g.sample.rowA}
             after={g.sample.rowB}
             label={g.sample.rowA}
-            valueText="3"
+            valueText="2"
           />
-          <PileStory
-            slice={{ own: 10800, extra: 32400, gain: 6200, tax: 2500, taxFromSalary: 1900, net: 46900 }}
-            names={{ own: [g.sample.rowA], extra: [g.sample.rowB], gain: [g.sample.rowA], tax: [g.sample.rowB], left: [g.sample.rowA] }}
-            fine={{ gain: g.sample.rowB }}
-            number={(step) => ({ own: "10,800 ₪", extra: "+32,400 ₪", gain: "+6,200 ₪", tax: "−2,500 ₪", left: "46,900 ₪" })[step]}
-            firstRow={0.25}
-            taxParts={{ salary: { word: g.sample.rowA, number: () => "1,900 ₪" }, withdrawal: { word: g.sample.rowB, number: () => "600 ₪" } }}
+          <PileBar
+            slice={{ own: 10800, extra: 32400, gain: 6200, fees: 1300, tax: 2500, taxFromSalary: 1900, net: 46900 }}
+            names={{ own: g.sample.rowA, extra: g.sample.rowB, gain: g.sample.rowA, loss: g.sample.rowB, fees: g.sample.rowB, salary: g.sample.rowA, tax: g.sample.rowB }}
+            number={(part, compact) => ({ own: "10,800", extra: "+32,400", gain: "+7,500", loss: "", fees: "−1,300", salary: "−1,900", tax: "−600" })[part] + (compact ? "" : " ₪")}
+            left={{ words: g.sample.rowA, number: "46,900 ₪" }}
             label={g.sample.rowA}
           />
         </State>
@@ -778,12 +780,11 @@ function Fields() {
               { id: "3", level: 86492, from: 82000, top: "+4,492 ₪", hue: "fund", loses: false, taken: false, open: true, current: false, label: g.sample.rowB },
             ]}
             fold={0}
-            axis={{ lo: 70000, hi: 90000, step: 5000 }}
+            axis={{ lo: 70000, hi: 90000 }}
             ceiling={{ level: 86955, lines: [g.sample.rowA, "86,955 ₪", g.sample.rowB] }}
             endsAt={null}
             now={g.sample.stairsNow}
             label={g.sample.rowA}
-            tick={(n) => fmt.number(n)}
             onGo={() => undefined}
           />
           <StairsTable rows={[{ id: "a", head: g.sample.rowA, cells: ["1", "2", "3", "4"] }]} />
@@ -1266,6 +1267,18 @@ function Lists({ today }: { today: string }) {
           <FundFeesPhoneHelp />
         </State>
       </Demo>
+      <Demo name="FormulaBlock, Tex" use={g.uses.Formula}>
+        <State label="one formula and its key (the stock share of a provident track, F-87): the math left to right, the key's symbols on the start side">
+          <FormulaBlock lines={[{ tex: String.raw`s = \frac{E}{A} \times 100` }]} symbols={formulaKeys["F-87"]!.symbols} where={provenanceWords.formulaSheet.where} />
+        </State>
+        <State label="several formulas in one entry, each under its name (the dollar against the shekel, F-93)">
+          <FormulaBlock
+            lines={[String.raw`r_t = \frac{\text{ILS}_t}{\text{USD}_t}`, String.raw`\frac{r_{\text{Dec}(y)}}{r_{\text{Dec}(y-1)}} - 1`, String.raw`\left(\frac{r_{t+12H}}{r_t}\right)^{1/H} - 1`].map((tex, i) => ({ tex, label: formulaKeys["F-93"]!.lines?.[i] }))}
+            symbols={formulaKeys["F-93"]!.symbols}
+            where={provenanceWords.formulaSheet.where}
+          />
+        </State>
+      </Demo>
       <Demo name="LeadTail, MarkHead" use={g.uses.MarkHold}>
         <State label="in a narrow box: the mark after a text wraps with the text's last word, the mark before it with its first word; never alone on a line">
           <span className="block w-40 text-sm">
@@ -1290,7 +1303,7 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
-      <Demo name="FeeNum, FeeKey, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
+      <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
         <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure with its rings, the labels" wide>
           <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
             <TrackFeeLines fee={s.rate} deposit={{ ...s.rate, value: 0.3 }} size="cell" />
@@ -1299,7 +1312,6 @@ function Lists({ today }: { today: string }) {
             <ShareNum value={{ ...s.comp, value: 49, unit: "pct" }} />
             <TrackLabels isDefault track={{ inception: "2025-06-01", reportPeriod: "2026-09" }} />
           </div>
-          <FeeKey values={[{ ...s.rate, value: null }]} className="flex flex-col gap-1 text-xs text-muted-foreground" />
         </State>
       </Demo>
       <Demo name="CostStack" use={g.uses.CostStack}>
