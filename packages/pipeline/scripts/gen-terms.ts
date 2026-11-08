@@ -40,7 +40,7 @@ interface Research {
   source?: { title?: string; url?: string; checked?: string; strength?: string; publisher?: string } | null;
   where?: string[];
 }
-type Strength = "primary" | "primary-mirror" | "institution" | "secondary";
+type Strength = "primary" | "institution" | "secondary";
 interface Merged {
   id?: string;
   seenBy?: string;
@@ -52,7 +52,7 @@ interface Merged {
   source: { url: string; title: string; strength: Strength; checked: string; publisher?: string } | null;
   where: string[];
 }
-const rank: Record<string, number> = { primary: 0, "primary-mirror": 1, institution: 2, secondary: 3 };
+const rank: Record<string, number> = { primary: 0, institution: 1, secondary: 2 };
 const rankOf = (m: { source: { strength: string } | null }) => rank[m.source?.strength ?? "secondary"] ?? 4;
 
 // ------------------------------------------------------------------ terms: merge as loadTerms() did

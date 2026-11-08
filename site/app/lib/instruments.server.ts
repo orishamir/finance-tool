@@ -242,8 +242,9 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
 export function buildHishtalmutTerms(wrapperId: string, spec: InstrumentSpec | undefined, p05: ParameterRecord): { hishtalmut: NonNullable<InstrumentTerms["hishtalmut"]>; feeValues: Record<string, SiteValue> } | { missing: string[] } {
   if (!spec?.employment) return { missing: [`${wrapperId}: P-05 instruments names no employment for the study-fund run`] };
   if (spec.employment === "employee") return { missing: [`${wrapperId}: an employee's run needs a salary, which comes from the person's entered profile, not from P-05`] };
-  const note = (p05 as unknown as { inputs?: Record<string, ValueObject> }).inputs?.amount_now;
-  const from = note ?? { source: { url: "docs/parameters-rationale.md#illustrative-scenario", title: "illustrative scenario", publisher: "founder", strength: "primary" as const }, checked: p05.signed_off_on };
+  // the employment is P-05's choice: its value carries the source and date of P-05's own inputs
+  const from = (p05 as unknown as { inputs?: Record<string, ValueObject> }).inputs?.amount_now;
+  if (!from) return { missing: [`${wrapperId}: P-05 has no amount_now input to date the study-fund run's employment by`] };
   return {
     hishtalmut: { employment: spec.employment, clockStartMonth: 0 },
     feeValues: {

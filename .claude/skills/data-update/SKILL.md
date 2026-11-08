@@ -8,7 +8,7 @@ user-invocable: false
 
 # data-update
 
-Collects or refreshes the data from **one source** into `data/`. The site shows every figure with its source and date (CLAUDE.md, "Every number traces to a source"), so a value is only worth writing if a person can open the URL and see it. A gap that is listed honestly costs little; a number that is guessed or copied from memory makes the whole site untrustworthy.
+Collects or refreshes the data from **one source** into `data/`. The site shows every figure with its source and date (`guidelines/research.md`, "Every number traces to a source"), so a value is only worth writing if a person can open the URL and see it. A gap that is listed honestly costs little; a number that is guessed or copied from memory makes the whole site untrustworthy.
 
 The source to work on is the task's argument. If none was given, ask which one.
 

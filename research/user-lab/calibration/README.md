@@ -137,4 +137,4 @@ friend's goal (the 67,000 ₪ case), the case leaves the figures out: the fee-ch
 - `../bench/cases.jsonl`, built separately, holds every problem he flagged, for the catch-rate metric. Some defects
   here are the same problems. When both sets are used together, match them by page and date, and never let a case
   that is held out in one set be used for training through the other.
-- `research/audit/tools/fresh-reader.mjs` runs a reader on a list of files; `extract.mjs` produces those files.
+- `tools/fresh-reader.mjs` runs a reader on a list of files; `extract.mjs` produces those files.

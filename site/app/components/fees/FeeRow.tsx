@@ -1,7 +1,6 @@
 // A fee row (design-system 7.2, design-spec 11.3): name, rate, cost, verdict, the three quiet lines, the reduction
 // field and the negotiation text.
 import { useMemo, useState, type ReactNode } from "react";
-import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r3fees } from "../../copy";
 import { reducible, reductionWorth, type Analysis, type FeeReach, type LineView, type SubjectView } from "../../lib/fees";
@@ -250,12 +249,6 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
       <div className="flex flex-col gap-2">
         <ReferenceLine reference={line.reference} noAverageSaid={line.reason === "no-reference"} />
         <CapLine cap={line.cap} />
-        {/* the options above the product without this fee, or with a lower one, show only under "avoid", which a slider can bring and take
-            and the ranking can change: the room of every alternative stays, or the card and everything below it moved by 53 px at 1280
-            and 75 px at 390 (box check, 2026-11-07) */}
-        {line.alternatives.length > 0 && (
-          <LongestCase cases={[<RemovedBy key="all" removedBy={line.alternatives} />]}>{line.verdict === "avoid" && <RemovedBy removedBy={line.removedBy} />}</LongestCase>
-        )}
       </div>
       {/* a fee at 0% now has nothing to bring down: the verdict says when the discount ends, and no field says "זו לא הורדה" (D90) */}
       {reducible(line.line) && line.rateFraction !== undefined && line.rateFraction > 0 && <ReductionField line={line} an={an} years={years} value={reduction} onChange={onReduce} />}
@@ -267,32 +260,6 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
         </Disclosure>
       )}
     </Card>
-  );
-}
-
-/** D90 revised the same day: the options that rank above the product, without the fee or with a lower one, said in two groups. */
-function RemovedBy({ removedBy }: { removedBy: LineView["removedBy"] }) {
-  const groups = [
-    { lead: r3fees.removedBy.without, list: removedBy.filter((o) => !o.lower) },
-    { lead: r3fees.removedBy.lower, list: removedBy.filter((o) => o.lower) },
-  ].filter((g) => g.list.length > 0);
-  return (
-    <>
-      {groups.map((g) => (
-        <p key={g.lead} className="text-sm">
-          {g.lead}
-          {g.list.map((o, i) => (
-            <span key={o.id}>
-              {i > 0 && ", "}
-              <Link to={`/guide/${o.id}`} className="text-link hover:underline">
-                <bdi>{gershayim(o.name)}</bdi>
-              </Link>
-            </span>
-          ))}
-          .
-        </p>
-      ))}
-    </>
   );
 }
 

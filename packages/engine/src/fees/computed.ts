@@ -5,7 +5,7 @@ import type { ValueObject } from "@finance-tool/schema";
 type Strength = ValueObject["source"]["strength"];
 
 /** Strongest first. A computed figure is only as strong as the weakest rule or record under it. */
-const strengthOrder: readonly Strength[] = ["primary", "primary-mirror", "institution", "secondary", "open", "entered"];
+const strengthOrder: readonly Strength[] = ["primary", "institution", "secondary", "open", "entered"];
 
 export function weakestStrength(strengths: readonly Strength[]): Strength {
   let weakest: Strength = "primary";

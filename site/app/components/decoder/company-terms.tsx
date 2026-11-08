@@ -93,7 +93,7 @@ export function CompanyTerms({ name, groups }: { name: string; groups: readonly 
 
 /**
  * /companies: the terms of the companies the site has no page for, a fold each; then, in a section of its own, what the site keeps but
- * does not show as a rule, which no company's section lists (the not-rules: a forum post, a press report, a list, a count, a site's
+ * does not show as a rule, which no company's section lists (the not-rules: a list, a count, a site's
  * terms, a company's tariff; review, 2026-10-26), its cards shown in full.
  */
 export function NoPageCompanyTerms({ companies, none }: { companies: readonly { id: string; name: string; ids: string[] }[]; none: readonly string[] }) {

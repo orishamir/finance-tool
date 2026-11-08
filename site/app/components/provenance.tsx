@@ -10,7 +10,7 @@ import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isProvisional, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
@@ -252,8 +252,8 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   useEffect(() => (!unseen && states ? states.add(value.state) : undefined), [value.state, unseen, states]);
   // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (#190: a list's cases counted on every key)
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
-  // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
-  const keepDecimals = size === "cell" || !!exact;
+  // display rounding (A13): computed and entered amounts round, in table cells too (founder, 2026-11-08: "16,000.00 ₪" in a table); `exact` keeps the agorot
+  const keepDecimals = !!exact;
   const roundState = keepDecimals ? undefined : value.state;
   // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped (#190)
   const target = typeof value.value === "number" ? value.value : null;
@@ -538,7 +538,7 @@ const chipMore = (n: number) => (n === 1 ? scopeWords.chipMore.one : n === 2 ? s
 
 /**
  * The card's scope label: "חל על כולם", "של הראל ואלטשולר שחם" (the companies whose own documents say it), "לא הוכח שחל על כולם";
- * "על סלייס וגלובלנט" for a record about companies that rests on none of their documents (a press report, a forum post).
+ * "על סלייס וגלובלנט" for a record about companies that rests on none of their documents (a regulator's announcement about them).
  */
 function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): string {
   if (rule.scope === "general") return scopeWords.tag.general;
@@ -702,21 +702,25 @@ export function NumberLegend({ className, institution = false, term = false, can
 }
 
 function LegendLine({ className, institution, term, sourced, computed, entered }: { className?: string; institution: boolean; term: boolean; sourced: boolean; computed: boolean; entered: boolean }) {
+  // Each state's own word drawn in its style, after a lead that says what the key is: the old "123" samples read as a placeholder left in
+  // the page (fresh readers, 2026-11-08, "123 ממקור 123 מחושב"). A key never shows a made-up figure (design-system 3.2).
+  const anyNumber = sourced || computed || entered || institution;
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
+      {(sourced || computed || entered) && <span className="whitespace-nowrap">{numbers.legend.lead}</span>}
       {sourced && (
-        <span className="whitespace-nowrap">
-          <span className="num num-sourced num-sample" aria-hidden="true">123</span> {numbers.legend.sourced}
+        <span className="num num-sourced num-sample whitespace-nowrap">
+          {numbers.legend.sourced}
         </span>
       )}
       {computed && (
-        <span className="whitespace-nowrap">
-          <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
+        <span className="num num-computed num-sample whitespace-nowrap">
+          {numbers.legend.computed}
         </span>
       )}
       {entered && (
-        <span className="whitespace-nowrap">
-          <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
+        <span className="num num-entered num-sample whitespace-nowrap">
+          {numbers.legend.enteredSample}
         </span>
       )}
       {institution && (
@@ -724,16 +728,16 @@ function LegendLine({ className, institution, term, sourced, computed, entered }
           <MarkHead mark={<IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />} text={numbers.legend.institution} />
         </span>
       )}
-      {term && (
-        <span className="whitespace-nowrap">
-          <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
-        </span>
-      )}
-      {(sourced || computed || entered || institution) && (
+      {anyNumber && (
         <>
           <span className="lg:hidden">{numbers.legendHintPhone}</span>
           <span className="hidden lg:inline">{numbers.legendHintPc}</span>
         </>
+      )}
+      {term && (
+        <span className="whitespace-nowrap">
+          <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
+        </span>
       )}
     </p>
   );
@@ -765,7 +769,7 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
   const title = shownTitle(n.title, source.url, source.kind);
   const pubHebrew = hasHebrew(n.publisher);
   // D31: a company's own document on its own term is shown with a neutral source line, no "לפי החברה"; `own` lifts only that label,
-  // never "מקור משני" (a press article, a forum post) or "עותק" (a copy of an official text): review, 2026-10-26
+  // never "מקור משני": review, 2026-10-26
   const isOwn = typeof own === "function" ? own(source) : !!own;
   const weak = source.strength !== "primary" && !(isOwn && source.strength === "institution") ? sourceCopy.weak[source.strength] : null;
   const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
@@ -774,11 +778,7 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
     <div className="flex flex-col gap-1">
       <a href={sourceHref(source)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
         <span className="min-w-0 [overflow-wrap:anywhere]">
-          {n.mirror ? (
-            <>
-              {titleNode} · {n.mirrorKind}, {n.mirror}
-            </>
-          ) : title.text.startsWith(n.publisher) ? (
+          {title.text.startsWith(n.publisher) ? (
             // the title already opens with the company ("בנק לאומי, 'שיעורי הריבית…'"): its name is not repeated before it
             titleNode
           ) : (
@@ -1058,7 +1058,7 @@ function unitWordOf(unit: string): string | null {
 function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData }) {
   if (value.state !== "sourced") return null;
   const ids = value.rule_ids ?? [];
-  const strengthOk = (st: string): st is RuleSource["strength"] => st === "primary" || st === "primary-mirror" || st === "institution" || st === "secondary";
+  const strengthOk = (st: string): st is RuleSource["strength"] => st === "primary" || st === "institution" || st === "secondary";
   let known: RuleSource | undefined;
   let owner: SourcedRule | undefined;
   for (const id of ids) {
@@ -1131,7 +1131,6 @@ export function SlottedText({ text, rules, today }: { text: string; rules: Recor
 export function ValueSheet({ value, exact, display, data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
-  const provisional = isProvisional(value);
   const today = useContext(TodayCtx);
   const blocked = isOpenValue(value);
   const bare = (typeof value.value !== "number" ? display : undefined) ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : value.state, param));
@@ -1157,7 +1156,6 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           {/* a figure that rests on the site's reading of official texts says so wherever it is opened (third check, 2026-11-07: the
               guide visuals and the holdings page carried the engine's reading label and nothing showed it) */}
           {value.labels?.some((l) => l.code === "reading") && <ReadingTag />}
-          {param && provisional && <Tag tone="caution">{numbers.provisionalTag}</Tag>}
           {value.stale && <IconClock size={16} className="text-caution" />}
         </div>
         {value.about && (
@@ -1204,7 +1202,6 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           <Row label={copy.parameter.why}>
             <ParameterWhy value={value} />
           </Row>
-          <Row label={copy.parameter.approved}>{!provisional && value.parameter?.signedOffOn ? <When iso={value.parameter.signedOffOn} /> : <span className="text-sm">{copy.parameter.notApproved}</span>}</Row>
         </dl>
       )}
 
@@ -1322,8 +1319,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         </div>
       )}
 
-      {(isWeak(value) || strength === "primary-mirror" || strength === "open") && value.state !== "entered" && (
-        <Callout tone={strength === "open" ? "blocked" : strength === "primary-mirror" ? "info" : "caution"} title={strengthCopy[strength].label}>
+      {(isWeak(value) || strength === "open") && value.state !== "entered" && (
+        <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
           {strengthCopy[strength].line}
           {/* the question an open value waits on, named in its source or notes ("TXI OQ19"): its chip opens the question (2026-11-07) */}
           {blocked && openQuestionOf(value) && (
@@ -1571,7 +1568,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
 /**
  * "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת." for a company's term, naming only the companies whose own documents it cites;
  * the unsettled line for a rule not shown to hold everywhere; "המקורות כאן אינם מסמכים של …" for a record about companies that cites
- * none of their documents (a press report, a forum post: review, 2026-10-26). A not-rule that cites a company's document says it is
+ * none of their documents (review, 2026-10-26). A not-rule that cites a company's document says it is
  * kept, not shown as a rule, so its line agrees with its foot ("לכל מה שלא נכלל ככלל").
  */
 function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {

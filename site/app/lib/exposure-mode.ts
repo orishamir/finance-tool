@@ -41,7 +41,7 @@ export function holdingRule(bundle: CompareBundle, exposureId: string): HoldingR
   const p = parameterOf(bundle, "P-08") as ParameterRecord & { holding?: Record<string, { wrapper_id: ValueObject; status?: string; blocked_by?: string }> };
   const row = p.holding?.[exposureId];
   if (!row) return null;
-  const value: SiteValue = { ...row.wrapper_id, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: false } };
+  const value: SiteValue = { ...row.wrapper_id, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
   return { wrapperId: row.wrapper_id.value as ProductId, status: row.status ?? "evaluated", ...(row.blocked_by ? { blockedBy: row.blocked_by } : {}), value };
 }
 

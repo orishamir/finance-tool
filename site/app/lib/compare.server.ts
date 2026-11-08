@@ -616,7 +616,6 @@ export function goalFormData() {
     ranges: Record<string, { min: ValueObject; max: ValueObject; step?: ValueObject }>;
     rationale: string;
     rationale_he?: string;
-    signed_off_on: string | null;
   };
   const p05 = parameters.find((p) => (p as { method_id?: string }).method_id === "P-05") as unknown as {
     inputs: Record<string, ValueObject>;
@@ -630,7 +629,7 @@ export function goalFormData() {
   return {
     today: t,
     presets: p07.presets,
-    meta: { rationale: p07.rationale, rationaleHe: p07.rationale_he ?? null, signedOffOn: p07.signed_off_on },
+    meta: { rationale: p07.rationale, rationaleHe: p07.rationale_he ?? null },
     form: {
       horizon: range(p07.ranges.horizon_years!),
       monthly: range(p05.sliders.monthly_deposit!),
@@ -649,9 +648,9 @@ export function goalFormData() {
   };
 }
 
-let contextCache: { today: string; presets: Record<string, unknown>; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null } } | null = null;
+let contextCache: { today: string; presets: Record<string, unknown>; meta: { rationale: string; rationaleHe?: string | null } } | null = null;
 
-/** What a page needs to mount the saved-goal strip: the presets (P-07, to read a goal's preset-filled numbers) and their sign-off. */
+/** What a page needs to mount the saved-goal strip: the presets (P-07, to read a goal's preset-filled numbers) and their rationale. */
 export function goalContext() {
   if (!contextCache) {
     const d = goalFormData();
@@ -667,10 +666,10 @@ export function goalContext() {
  */
 export function fitTable(): FitTableData {
   const rec = loadParameters().find((p) => (p as { method_id?: string }).method_id === "P-04") as unknown as
-    | { table: { classification: string; horizon_min_years: ValueObject; horizon_max_years: ValueObject; max_fall_pct?: ValueObject }[]; rationale: string; rationale_he?: string; signed_off_on: string | null }
+    | { table: { classification: string; horizon_min_years: ValueObject; horizon_max_years: ValueObject; max_fall_pct?: ValueObject }[]; rationale: string; rationale_he?: string }
     | undefined;
   if (!rec) throw new Error("data/parameters/ holds no P-04 record");
-  const param = (v: ValueObject): SiteValue => ({ ...v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null, signedOffOn: rec.signed_off_on ?? null, provisional: (v.notes ?? "").startsWith("provisional") } });
+  const param = (v: ValueObject): SiteValue => ({ ...v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null } });
   return {
     rows: rec.table.map((r) => ({
       classification: r.classification,

@@ -22,6 +22,11 @@ jobs:
       - run: npm test
       - run: npm run validate
       - run: npm run build
+      # The chart check (site/scripts/chart-check/): Playwright's headless Chrome, at the version package.json pins, and python3
+      # with only its standard library, which ubuntu-latest has. A chart that overlaps, cuts off or shrinks its text, or draws bars off the
+      # zero line or in more than six colours, fails the run, and the site doesn't update.
+      - run: npx playwright install --with-deps --only-shell chromium
+      - run: npm run chart-check
       - if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:

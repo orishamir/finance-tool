@@ -254,9 +254,13 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
   const reachLine = (x: FeeReach | undefined) => {
     if (!x || !mk || (x.amountNow === undefined && x.horizonYears === undefined)) return null;
     const rr = r3fees.reach;
+    // the 1,000 ₪ the cut reaches, in the same line (fresh reader, 2026-11-07); the maqaf lead is bound to its figure, the colon after it
     return (
       <>
-        {rr.lead}
+        <LeadTail lead={`${rr.lead}${rr.to}`}>
+          <Num value={thresholds.negotiate} />
+          {rr.colon}
+        </LeadTail>{" "}
         {x.amountNow !== undefined && (
           <>
             {rr.amount[0]}
@@ -304,12 +308,15 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
           </>
         );
       case "avoid":
-        // a discount that ends within the period: the card says when the fee rises, whatever the verdict (D90 revised)
+        // a discount that ends within the period: the card says when the fee rises, whatever the verdict (D90 revised). The products above
+        // follow in the same line, named (fresh readers, 2026-11-07: "avoid what, the fund?"); held apart, the reason's room left a gap
+        // of three lines at 390 px between the cost and the names
         return (
           <>
             {r.avoid[0]}
             <Num value={thresholds.avoid} />
             {r.avoid[1]}
+            <AboveNames removedBy={l.removedBy} />
           </>
         );
       case "below":
@@ -334,7 +341,8 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
   const longReach: FeeReach = { amountNow: REACH_LIMITS.amountNow, horizonYears: REACH_LIMITS.years - 1 };
   const casesOf = (l: LineView): [LineView["reason"], LineView, FeeReach?][] => [
     ["negotiate", l],
-    ["avoid", l],
+    // under "avoid" the line names every option above the product, which a slider and the ranking can change: its room is every option's that could be one
+    ["avoid", { ...l, removedBy: l.alternativesRoom }],
     ["below", l, longReach],
     ["no-reference", l],
     ["nothing-removes", l],
@@ -342,7 +350,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
     ...(l.after
       ? ([
           ["negotiate-ends", l],
-          ["avoid", { ...l, judgedFraction: l.judgedFraction ?? 0 }],
+          ["avoid", { ...l, judgedFraction: l.judgedFraction ?? 0, removedBy: l.alternativesRoom }],
           ["check-after", { ...l, suggestion: l.suggestion ?? 0 }, longReach],
           ["check-after", { ...l, suggestion: null }],
         ] as [LineView["reason"], LineView, FeeReach?][])
@@ -371,6 +379,33 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
         </p>
       )}
     </div>
+  );
+}
+
+/** D90 revised the same day: the options that rank above the product, without the fee or with a lower one, in two groups, each a link. */
+function AboveNames({ removedBy }: { removedBy: LineView["removedBy"] }) {
+  const groups = [
+    { lead: r3fees.removedBy.without, list: removedBy.filter((o) => !o.lower) },
+    { lead: r3fees.removedBy.lower, list: removedBy.filter((o) => o.lower) },
+  ].filter((g) => g.list.length > 0);
+  return (
+    <>
+      {groups.map((g) => (
+        <span key={g.lead}>
+          {" "}
+          {g.lead}
+          {g.list.map((o, i) => (
+            <span key={o.id}>
+              {i > 0 && ", "}
+              <Link to={`/guide/${o.id}`} className="text-link hover:underline">
+                <MixedName>{o.name}</MixedName>
+              </Link>
+            </span>
+          ))}
+          .
+        </span>
+      ))}
+    </>
   );
 }
 
@@ -454,7 +489,9 @@ export function ReferenceLine({ reference, noAverageSaid = false }: { reference:
         <Sentence tone="muted">
           {r3fees.review.official[0]}
           <bdi dir="ltr">{reference.official.year}</bdi>
-          {r3fees.review.official[1]} <Num value={reference.official.value} /> <RuleRef id="PF-39" end="." /> {r3fees.review.officialNotUsed}
+          {r3fees.review.official[1]} <Num value={reference.official.value} />. {r3fees.review.officialNotUsed}{" "}
+          {/* the rule chip's words, not the bare code (fresh readers, 2026-11-07: "PF-39" said nothing), last in its line as the cap line's */}
+          <RulesChip ids={["PF-39"]} />
         </Sentence>
       )}
       {reference.stale && (

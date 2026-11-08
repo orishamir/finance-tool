@@ -14,7 +14,6 @@
       "type": "string",
       "enum": [
         "primary",
-        "primary-mirror",
         "institution",
         "secondary",
         "open"
@@ -112,7 +111,6 @@
                     "type": "string",
                     "enum": [
                       "primary",
-                      "primary-mirror",
                       "institution",
                       "secondary",
                       "open",
@@ -311,7 +309,6 @@
                           "type": "string",
                           "enum": [
                             "primary",
-                            "primary-mirror",
                             "institution",
                             "secondary",
                             "open",
@@ -513,7 +510,6 @@
                           "type": "string",
                           "enum": [
                             "primary",
-                            "primary-mirror",
                             "institution",
                             "secondary",
                             "open",
@@ -703,7 +699,6 @@
                           "type": "string",
                           "enum": [
                             "primary",
-                            "primary-mirror",
                             "institution",
                             "secondary",
                             "open",
@@ -942,17 +937,8 @@
             "type": "string",
             "enum": [
               "primary",
-              "primary-mirror",
               "institution",
               "secondary"
-            ]
-          },
-          "mirror_host": {
-            "type": "string",
-            "enum": [
-              "wikisource",
-              "nevo",
-              "other"
             ]
           },
           "locator": {
@@ -971,6 +957,31 @@
           },
           "quote": {
             "type": "string"
+          },
+          "fragment": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string",
+                "minLength": 1
+              },
+              "start": {
+                "type": "string",
+                "minLength": 1
+              },
+              "end": {
+                "type": "string",
+                "minLength": 1
+              },
+              "suffix": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "start"
+            ],
+            "additionalProperties": false
           },
           "checked": {
             "type": "string",

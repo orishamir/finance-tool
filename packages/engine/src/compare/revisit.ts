@@ -129,7 +129,7 @@ export function assumptionVersions(
   return [...out, ...extra].sort((x, y) => x.id.localeCompare(y.id));
 }
 
-const descriptive = new Set(["id", "method_id", "rationale", "rationale_he", "signed_off_by", "signed_off_on", "shown_as"]);
+const descriptive = new Set(["id", "method_id", "rationale", "rationale_he", "shown_as"]);
 
 /**
  * A parameter's value without the reader's prose: the per-number `rationale_he` lines (2026-10-25) sit inside the value

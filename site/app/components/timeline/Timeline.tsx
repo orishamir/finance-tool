@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import type { P05Input } from "@finance-tool/engine";
 import { buttons, computedInputs as ci, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
 import { p05Number, p05Range, p05Value, p05Units, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
-import { fmt } from "../../lib/format";
+import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
@@ -258,7 +258,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               {(["amount_now", "monthly_deposit", "horizon_years", returnKey, "A-02"] as P05Input[]).map((key) => {
                 const own = enteredOf(key);
                 const n = own ?? p05Number(bundle.p05, key);
-                const text = key === "horizon_years" ? fmt.years(n) : key.startsWith("A-") || key === "cash_rate" ? fmt.pct(n) : fmt.nis(n);
+                const text = key === "horizon_years" ? fmt.years(n) : key.startsWith("A-") || key === "cash_rate" ? fmt.pct(n) : nisShown(n, own !== undefined ? "entered" : undefined, own === undefined);
                 return (
                   <button key={key} type="button" onClick={() => openSheet(key)} className={cx("a-chip", own !== undefined && "a-chip-entered")}>
                     <span className="text-muted-foreground">{(copy.chips as Record<string, string>)[key]}</span>
@@ -370,7 +370,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
   const owners = [...new Set(Object.values(bundle.feeValues).map((v) => v.own).filter((n): n is string => !!n))];
   const unitWord = (v: SiteValue) => (v.unit === "years" ? "" : ((provCopy.unit as Record<string, string>)[v.unit] ?? ""));
   // folded (independent check, 2026-11-07): open, the provident fund's terms made the PC aside about 1,770 px beside a 970 px chart card,
-  // and the page about 1,000 px longer; a block that replaces nothing starts folded (ground rule 1)
+  // and the page about 1,000 px longer; a block that replaces nothing starts folded (former ground rule 1)
   return (
     <FoldGroup title={guideBlocks.terms.title} level={4} className="border-t border-border pt-2 mt-1">
       <div className="flex flex-col gap-2 pb-1">

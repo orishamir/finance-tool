@@ -44,7 +44,7 @@ describe("current account page", () => {
     expect(html).not.toContain("sig-account-cond");
   });
 
-  it("holds the folded table: closed by default, a row for each paying bank and one for those that pay nothing, a picker over the eight", () => {
+  it("holds the folded table: closed by default, a row for each paying bank and one for those that pay nothing, and no bank picker (removed, founder 2026-11-08)", () => {
     expect(html).toMatch(/<details[^>]*id="current-account-banks"/);
     expect(html).not.toMatch(/<details[^>]*id="current-account-banks"[^>]*\sopen/);
     for (const name of ["דיסקונט", "הבינלאומי", "לאומי", "יהב"]) expect(text).toContain(name);
@@ -52,8 +52,7 @@ describe("current account page", () => {
     expect(text).toContain("הפועלים, מזרחי טפחות ומסד");
     expect(text).toContain("״לא מוצעת ריבית על יתרת זכות״");
     expect(text).toMatch(/מרכנתיל\s+יש ספק\s+כתב בפרסום ריבית/);
-    // the picker's chips only: the chart's legend items press too (issue 22)
-    expect(html.match(/aria-pressed="[^"]*" class="sec-chip/g)).toHaveLength(8);
+    expect(html).not.toMatch(/class="sec-chip/);
   });
 
   it("flags First International and Mercantile with the caution mark and their own doubt", () => {

@@ -86,7 +86,7 @@ export default function GoalComparePage() {
   );
 }
 
-function Result({ bundle, wb, failed, data, fit, presets, meta, today }: { bundle: CompareBundle | null; wb: WorkbenchBundle | null; failed: boolean; data: FormData; fit: FitTableData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
+function Result({ bundle, wb, failed, data, fit, presets, meta, today }: { bundle: CompareBundle | null; wb: WorkbenchBundle | null; failed: boolean; data: FormData; fit: FitTableData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null }; today: string }) {
   const { status, current, resolved } = useGoals();
   const navigate = useNavigate();
   const [params] = useSearchParams();

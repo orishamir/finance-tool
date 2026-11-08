@@ -226,7 +226,7 @@ function build(): Scan {
   return { uses };
 }
 
-/** 3 × engine files + site files + collection references + 2 with a figure + 1 for a tier-1 topic + 1 for a primary or mirror source + 1 likely to change. */
+/** 3 × engine files + site files + collection references + 2 with a figure + 1 for a tier-1 topic + 1 for a primary source + 1 likely to change. */
 export function scoreOf(rule: Pick<RuleRecord, "figures" | "il_finance_file" | "strength" | "likely_to_change">, engineFiles: number, siteFiles: number, collectionRefs: number): number {
   return (
     3 * engineFiles +
@@ -234,7 +234,7 @@ export function scoreOf(rule: Pick<RuleRecord, "figures" | "il_finance_file" | "
     collectionRefs +
     (rule.figures && Object.keys(rule.figures).length > 0 ? 2 : 0) +
     (tier2Files.has(rule.il_finance_file) ? 0 : 1) +
-    (rule.strength === "primary" || rule.strength === "primary-mirror" ? 1 : 0) +
+    (rule.strength === "primary" ? 1 : 0) +
     (rule.likely_to_change === "yes" ? 1 : 0)
   );
 }

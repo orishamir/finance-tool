@@ -454,8 +454,7 @@ export interface ReferenceView {
   official?: { value: SiteValue; year: string };
   /**
    * The class comes from a track the site chose (P-05) that is not the record the run prices (a company's list): the page says so plainly,
-   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude after the
-   * founder's sign-off of P-05, which does not cover it).
+   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude).
    */
   bySite?: { trackId: number; companyId: string; name: string; company: string };
   none?: { reason: NoRefReason; linkOut: LinkOut | null };
@@ -577,6 +576,12 @@ export interface LineView {
   removedBy: Alternative[];
   /** Every alternative, ranked above or not (`alternativesOf`): the card keeps the room of their line whatever the ranking (D63). */
   alternatives: Alternative[];
+  /**
+   * The room of the line that names them: every option of the comparison that could be one, whatever the plan, those without the fee and
+   * the rest as if lower. The alternatives change with the sliders (a renewing money-market fund runs only with no monthly deposit), and
+   * at 390 px one more name moved the card by a line (box check, 2026-11-07).
+   */
+  alternativesRoom: Alternative[];
   reference: ReferenceView;
   cap: CapView;
   /** The suggestion for the reduction field, in percent: the class mean as shown, offered only where it is below the rate charged now. */
@@ -688,6 +693,19 @@ export function alternativesOf(set: ComparisonSet | null, subjectId: string, lin
     if (without || lower) out.push({ id: c.id, name: names[c.id] ?? c.id, lower });
   }
   return out;
+}
+
+/**
+ * `LineView.alternativesRoom`: the candidates `alternativesOf` could name as the sliders move, for the room of their line: those with a
+ * plan, and those the method cannot run only for this plan (a gap: a renewing money-market fund with a monthly deposit, G-30). Not the
+ * ones closed to the person whatever the plan (another's money, held inside an IRA) or waiting for a field of the assumptions sheet.
+ */
+export function alternativesRoomOf(set: ComparisonSet | null, subjectId: string, line: FeeLine, names: Record<string, string>): Alternative[] {
+  if (!set) return [];
+  const forThisPlan = (c: ComparisonSet["candidates"][number]) => c.kind === "not-evaluated" && c.reasons.length > 0 && c.reasons.every((r) => r.code === "gap");
+  return set.candidates
+    .filter((c) => c.tier === 1 && c.id !== subjectId && (c.plan || forThisPlan(c)))
+    .map((c) => ({ id: c.id, name: names[c.id] ?? c.id, lower: c.plan ? feeLines(c.plan).includes(line) : false }));
 }
 
 /**
@@ -819,6 +837,7 @@ export function analyse(a: AnalyseArgs): Analysis {
       avoidEvaluated: hasComparison || costNis < thresholds.avoidNis,
       removedBy,
       alternatives,
+      alternativesRoom: alternatives.length > 0 ? alternativesRoomOf(a.comparison, a.wrapper.id, l.line, a.names) : [],
       reference,
       cap,
       // the average is offered only where it is a reduction of the rate charged now: a field filled with "זו לא הורדה" contradicts the verdict (D90)
@@ -848,7 +867,7 @@ export function analyse(a: AnalyseArgs): Analysis {
     total: mk.nis(total, "F-61", r3fees.chart.total, run),
     withFees: mk.nis(fm.realWithFees, "F-06", "השווי בכסף של היום, עם כל העמלות", run),
     withoutFees: mk.nis(fm.realWithoutFees, "F-06", "השווי בכסף של היום, בלי עמלות", run),
-    remainder: mk.nis(fm.interaction.value as number, "F-61", r3fees.remainder.before.trim(), run),
+    remainder: mk.nis(fm.interaction.value as number, "F-61", r3fees.remainder.about, run),
     thresholds: { negotiate: th("negotiate_nis"), avoid: th("avoid_nis"), values: thresholds },
     ctx,
     plan: a.plan,

@@ -344,7 +344,6 @@
                     "type": "string",
                     "enum": [
                       "primary",
-                      "primary-mirror",
                       "institution",
                       "secondary",
                       "open",
@@ -360,6 +359,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -546,7 +570,6 @@
                         "type": "string",
                         "enum": [
                           "primary",
-                          "primary-mirror",
                           "institution",
                           "secondary",
                           "open",
@@ -562,6 +585,31 @@
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 240
+                      },
+                      "fragment": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "start": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "end": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "suffix": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "start"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -753,7 +801,6 @@
                         "type": "string",
                         "enum": [
                           "primary",
-                          "primary-mirror",
                           "institution",
                           "secondary",
                           "open",
@@ -769,6 +816,31 @@
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 240
+                      },
+                      "fragment": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "start": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "end": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "suffix": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "start"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -958,7 +1030,6 @@
                     "type": "string",
                     "enum": [
                       "primary",
-                      "primary-mirror",
                       "institution",
                       "secondary",
                       "open",
@@ -974,6 +1045,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -1161,7 +1257,6 @@
                         "type": "string",
                         "enum": [
                           "primary",
-                          "primary-mirror",
                           "institution",
                           "secondary",
                           "open",
@@ -1177,6 +1272,31 @@
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 240
+                      },
+                      "fragment": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "start": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "end": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "suffix": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "start"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -1361,7 +1481,6 @@
                         "type": "string",
                         "enum": [
                           "primary",
-                          "primary-mirror",
                           "institution",
                           "secondary",
                           "open",
@@ -1377,6 +1496,31 @@
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 240
+                      },
+                      "fragment": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "start": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "end": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "suffix": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "start"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -1570,7 +1714,6 @@
                         "type": "string",
                         "enum": [
                           "primary",
-                          "primary-mirror",
                           "institution",
                           "secondary",
                           "open",
@@ -1586,6 +1729,31 @@
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 240
+                      },
+                      "fragment": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "start": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "end": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "suffix": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "start"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -1817,7 +1985,6 @@
                     "type": "string",
                     "enum": [
                       "primary",
-                      "primary-mirror",
                       "institution",
                       "secondary",
                       "open",
@@ -1833,6 +2000,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -2017,7 +2209,6 @@
                     "type": "string",
                     "enum": [
                       "primary",
-                      "primary-mirror",
                       "institution",
                       "secondary",
                       "open",
@@ -2033,6 +2224,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -2277,7 +2493,6 @@
                     "type": "string",
                     "enum": [
                       "primary",
-                      "primary-mirror",
                       "institution",
                       "secondary",
                       "open",
@@ -2293,6 +2508,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -2492,7 +2732,6 @@
                       "type": "string",
                       "enum": [
                         "primary",
-                        "primary-mirror",
                         "institution",
                         "secondary",
                         "open",
@@ -2508,6 +2747,31 @@
                       "type": "string",
                       "minLength": 1,
                       "maxLength": 240
+                    },
+                    "fragment": {
+                      "type": "object",
+                      "properties": {
+                        "prefix": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "start": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "end": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "suffix": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "start"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": [
@@ -2706,7 +2970,6 @@
                   "type": "string",
                   "enum": [
                     "primary",
-                    "primary-mirror",
                     "institution",
                     "secondary",
                     "open",
@@ -2722,6 +2985,31 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 240
+                },
+                "fragment": {
+                  "type": "object",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "start": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "end": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "suffix": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "start"
+                  ],
+                  "additionalProperties": false
                 }
               },
               "required": [
@@ -2916,6 +3204,31 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 240
+              },
+              "fragment": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "start": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "end": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "suffix": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "start"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [
@@ -3061,6 +3374,31 @@
                   "quote": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -3101,6 +3439,31 @@
                   "quote": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -3233,6 +3596,31 @@
                         "quote": {
                           "type": "string",
                           "minLength": 1
+                        },
+                        "fragment": {
+                          "type": "object",
+                          "properties": {
+                            "prefix": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "start": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "end": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "suffix": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "start"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "required": [
@@ -3293,6 +3681,31 @@
                       "quote": {
                         "type": "string",
                         "minLength": 1
+                      },
+                      "fragment": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "start": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "end": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "suffix": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "start"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -3394,6 +3807,31 @@
               "seen": {
                 "type": "string",
                 "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "fragment": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "start": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "end": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "suffix": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "start"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [
@@ -3452,6 +3890,31 @@
               "checked": {
                 "type": "string",
                 "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "fragment": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "start": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "end": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "suffix": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "start"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [

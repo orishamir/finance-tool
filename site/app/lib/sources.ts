@@ -7,7 +7,7 @@ import { fmt } from "./format";
 import { hostOf, isHebrewTitle, hebrewCitation } from "./source-label";
 import { ruleTitle } from "./rule-title";
 
-export type SourceStrength = "primary" | "primary-mirror" | "institution" | "secondary";
+export type SourceStrength = "primary" | "institution" | "secondary";
 
 /** One entry of a rule record's `sources` (synthesis 3.2). */
 export interface RuleSource {
@@ -18,7 +18,6 @@ export interface RuleSource {
   publisher_he?: string;
   kind?: string;
   strength: SourceStrength;
-  mirror_host?: "wikisource" | "nevo" | "other";
   locator?: string;
   locator_he?: string;
   page?: number;
@@ -37,13 +36,12 @@ export type SourcedRule = Pick<RuleRecord, "id" | "title" | "title_he" | "text_h
 };
 
 /**
- * Sources older than this many months show the "may have changed" line. A constant for now:
- * a future site parameter (P-10) once the founder signs it off.
+ * Sources older than this many months show the "may have changed" line. A constant for now: a future site parameter (P-10).
  */
 export const SOURCE_AGE_WARNING_MONTHS = 6;
 
 /** Preference order, strongest first. */
-const rank: Record<string, number> = { primary: 0, "primary-mirror": 1, institution: 2, secondary: 3 };
+const rank: Record<string, number> = { primary: 0, institution: 1, secondary: 2 };
 const rankOf = (s: string) => rank[s] ?? 9;
 
 /** The strongest strength among the sources, or null for none. */
@@ -67,8 +65,7 @@ function figureValues(figures: RuleRecord["figures"] | undefined): FigureValue[]
 
 /**
  * The rule's sources, strongest first (stable inside a strength, so the data's own order is kept); the figures' sources, one
- * per link, when the record has none. A copy of an official text (Wikisource, Nevo) is left out when an official source is
- * there: the site no longer offers a copy "for an easy read" beside it (2026-10-25, the founder).
+ * per link, when the record has none.
  */
 export function pickSources(rule: Pick<SourcedRule, "sources" | "figures">): RuleSource[] {
   const own = rule.sources;
@@ -82,9 +79,7 @@ export function pickSources(rule: Pick<SourcedRule, "sources" | "figures">): Rul
       list.push({ url: s.url, title: s.title, publisher: s.publisher, strength: s.strength as SourceStrength, checked: v.checked });
     }
   }
-  const official = list.some((s) => s.strength === "primary");
   return list
-    .filter((s) => !(official && s.strength === "primary-mirror"))
     .map((s, i) => ({ s, i }))
     .sort((a, b) => rankOf(a.s.strength) - rankOf(b.s.strength) || a.i - b.i)
     .map((x) => x.s);
@@ -146,51 +141,27 @@ export interface SourceNames {
   publisher: string;
   title: string;
   locator: string | null;
-  /** The host word of a mirror ("ויקיטקסט", "אתר נבו"), or null when the source is not a copy. */
-  mirror: string | null;
-  /** "נוסח החוק (עותק)" for a law or regulation read on a mirror; "עותק" for any other copied document. */
-  mirrorKind: string;
   pdf: boolean;
 }
 
 /** The names a source is shown by: the Hebrew field when the record has one. */
 export function sourceLabel2(source: RuleSource): SourceNames {
-  const isMirror = source.strength === "primary-mirror" || !!source.mirror_host;
-  const host = source.mirror_host ?? (hostOf(source.url)?.includes("wikisource") ? "wikisource" : hostOf(source.url)?.includes("nevo") ? "nevo" : null);
   return {
     publisher: source.publisher_he ?? source.publisher,
     title: source.title_he ?? source.title,
     // only a Hebrew locator is shown; the raw English one ("p.5 and FAQ pp.21–22") is a working note (QA 2026-10-24, F2)
     locator: source.locator_he ?? null,
-    // a copy on another host (a circular re-hosted by an investment house, for example) is named by that host
-    mirror: isMirror ? ((host && sourceBlock.hosts[host]) || hostOf(source.url) || null) : null,
-    mirrorKind: host === "wikisource" || host === "nevo" || source.kind === "law" || source.kind === "regulation" ? sourceBlock.mirrorKind : sourceBlock.copyKind,
     pdf: isPdfUrl(source.url),
   };
 }
 
-/** The title as shown: a Hebrew title as it is, otherwise the link's host (the English working title is never shown). */
-/** The Hebrew page title of a Wikisource law page, from its address ("/wiki/פקודת_מס_הכנסה" → "פקודת מס הכנסה"); null for any other address. */
 /** Maya's page of a fund listed in Israel. An ETF sits under the same address as any other fund; "etfs" does not exist there (47 of 47 checked, 2026-10-31). */
 export const mayaFundHref = (number: string) => `https://maya.tase.co.il/he/funds/mutual-funds/${number}`;
 
-export function wikisourcePageTitle(url: string): string | null {
-  const m = /^https?:\/\/he\.wikisource\.org\/wiki\/([^?#]+)/.exec(url);
-  if (!m) return null;
-  try {
-    const t = decodeURIComponent(m[1]!).replace(/_/g, " ").trim();
-    return /[א-ת]/.test(t) ? t : null;
-  } catch {
-    return null;
-  }
-}
-
-/** The title as shown, in this order: a Hebrew title as it is; the Wikisource page's own Hebrew name; the document kind's word
+/** The title as shown, in this order: a Hebrew title as it is; the document kind's word
  * ("מסמך של החברה", "עמוד של הרשות"); the link's host. The English working title is never shown (QA 2026-10-24, F1 and F4). */
 export function shownTitle(title: string, url: string, kind?: string): { text: string; host: boolean } {
   if (isHebrewTitle(title)) return { text: hebrewCitation(title), host: false };
-  const page = wikisourcePageTitle(url);
-  if (page) return { text: page, host: false };
   const word = kind ? (documentsCopy.kinds as Record<string, string>)[kind] : undefined;
   if (word) return { text: word, host: false };
   return { text: hostOf(url) ?? title, host: !!hostOf(url) };
@@ -200,7 +171,7 @@ export function shownTitle(title: string, url: string, kind?: string): { text: s
 export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, source: RuleSource, date: string): string {
   const n = sourceLabel2(source);
   const doc = shownTitle(n.title, source.url, source.kind).text;
-  const parts = n.mirror ? [`${doc} · ${n.mirrorKind}`, n.mirror] : n.publisher && n.publisher !== doc ? [n.publisher, doc] : [doc];
+  const parts = n.publisher && n.publisher !== doc ? [n.publisher, doc] : [doc];
   if (n.locator) parts.push(n.locator);
   const claim = ruleTitle(rule).text;
   return `${claim} — ${parts.join(", ")}. ${sourceHref(source)} (${sourceBlock.citation.checked} ${fmt.date(date)})`;

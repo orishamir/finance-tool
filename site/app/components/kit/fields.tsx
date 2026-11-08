@@ -32,6 +32,8 @@ export interface FieldProps {
   /** No start-value state line (optional fields such as age). */
   optional?: boolean;
   inputMode?: "decimal" | "numeric";
+  /** A price that may have agorot (a fee from a price list, "9.90 ₪"). Without it, a shekel field takes whole shekels only (founder, 2026-11-08). */
+  agorot?: boolean;
   autoFocus?: boolean;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
@@ -41,7 +43,10 @@ export interface FieldProps {
 
 /** A box for one typed number, with its unit, hint, error and the state line (start value, or entered with a reset). The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
-  const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode = "decimal", autoFocus, externalError = null, errorOut } = props;
+  const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode: mode = "decimal", autoFocus, externalError = null, errorOut, agorot } = props;
+  // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
+  const whole = /^nis/.test(unit) && !agorot;
+  const inputMode = whole ? "numeric" : mode;
 
   const ids = useId();
   const [text, setText] = useState(value === null ? "" : formatTyped(value));
@@ -108,7 +113,7 @@ export function NumberField(props: FieldProps) {
       return;
     }
     const n = parseNumber(t);
-    const err = Number.isNaN(n) ? copy.errors.nan : validate(n);
+    const err = Number.isNaN(n) ? copy.errors.nan : whole && !Number.isInteger(n) ? copy.errors.whole : validate(n);
     setError(err);
     if (!err) later(() => onCommit(n));
   };

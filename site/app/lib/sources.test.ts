@@ -11,10 +11,6 @@ describe("pickSources", () => {
     const list = pickSources({ sources: [src({ url: "https://a/1", strength: "secondary" }), src({ url: "https://a/2", strength: "institution" }), src({ url: "https://a/3" }), src({ url: "https://a/4" })] });
     expect(list.map((s) => s.url)).toEqual(["https://a/3", "https://a/4", "https://a/2", "https://a/1"]);
   });
-  it("leaves out a copy when an official source is there, and keeps it when it is the only text", () => {
-    expect(pickSources({ sources: [src({ url: "https://he.wikisource.org/wiki/X", strength: "primary-mirror" }), src({ url: "https://a/1" })] }).map((s) => s.url)).toEqual(["https://a/1"]);
-    expect(pickSources({ sources: [src({ url: "https://a/2", strength: "institution" }), src({ url: "https://he.wikisource.org/wiki/X", strength: "primary-mirror" })] }).map((s) => s.url)).toEqual(["https://he.wikisource.org/wiki/X", "https://a/2"]);
-  });
   it("falls back to the figures' sources, one per url", () => {
     const figures = { x: fig("https://f/1", "primary"), y: { by_tax_year: { "2025": fig("https://f/1", "primary"), "2026": fig("https://f/2", "institution") } } } as never;
     expect(pickSources({ figures }).map((s) => s.url)).toEqual(["https://f/1", "https://f/2"]);
@@ -24,7 +20,7 @@ describe("pickSources", () => {
 
 describe("sourceHref", () => {
   it("adds the page to a PDF", () => expect(sourceHref(src({ url: "https://x/a.pdf", page: 27 }))).toBe("https://x/a.pdf#page=27"));
-  it("adds the anchor to a page", () => expect(sourceHref(src({ url: "https://he.wikisource.org/wiki/X", anchor: "סעיף_3.ה4" }))).toBe("https://he.wikisource.org/wiki/X#סעיף_3.ה4"));
+  it("adds the anchor to a page", () => expect(sourceHref(src({ url: "https://example.gov.il/law", anchor: "s3" }))).toBe("https://example.gov.il/law#s3"));
   it("leaves a plain link alone, and ignores a page on a web page", () => expect(sourceHref(src({ page: 3 }))).toBe("https://example.gov.il/a"));
   it("knows a PDF", () => {
     expect(isPdfUrl("https://x/BlobFolder/generalpage/a/he/b.pdf")).toBe(true);
@@ -48,11 +44,7 @@ describe("sourceHref", () => {
 describe("sourceLabel2", () => {
   it("prefers the Hebrew fields", () => {
     const n = sourceLabel2(src({ publisher_he: "רשות", title_he: "מסמך", locator: "s. 3", locator_he: "סעיף 3" }));
-    expect(n).toEqual({ publisher: "רשות", title: "מסמך", locator: "סעיף 3", mirror: null, mirrorKind: "עותק", pdf: false });
-  });
-  it("names the mirror host", () => {
-    expect(sourceLabel2(src({ strength: "primary-mirror", mirror_host: "wikisource" })).mirror).toBe("ויקיטקסט");
-    expect(sourceLabel2(src({ strength: "primary-mirror", mirror_host: "nevo" })).mirror).toBe("אתר נבו");
+    expect(n).toEqual({ publisher: "רשות", title: "מסמך", locator: "סעיף 3", pdf: false });
   });
 });
 
@@ -61,10 +53,6 @@ describe("citationText", () => {
   it("writes the one line", () => {
     const t = citationText(rule, src({ publisher_he: "רשות המסים", title_he: "פקודת מס הכנסה", locator_he: "סעיף 3" }), "2026-10-24");
     expect(t).toBe("מעבר מסלול אינו אירוע מס — רשות המסים, פקודת מס הכנסה, סעיף 3. https://example.gov.il/a (נבדק 24.10.2026)");
-  });
-  it("labels a copy", () => {
-    const t = citationText(rule, src({ url: "https://he.wikisource.org/wiki/X", strength: "primary-mirror", mirror_host: "wikisource", title_he: "פקודה" }), "2026-10-24");
-    expect(t).toContain("פקודה · נוסח החוק (עותק), ויקיטקסט.");
   });
 });
 
@@ -80,7 +68,7 @@ describe("mayHaveChanged", () => {
 
 describe("strongestStrength and moreSourcesLabel", () => {
   it("picks the strongest", () => {
-    expect(strongestStrength([{ strength: "secondary" }, { strength: "primary-mirror" }])).toBe("primary-mirror");
+    expect(strongestStrength([{ strength: "secondary" }, { strength: "institution" }])).toBe("institution");
     expect(strongestStrength([])).toBeNull();
   });
   it("uses the one, two, many words", () => {

@@ -3,6 +3,9 @@
   "title": "When a manager may raise the fee before the discount period ends",
   "title_he": "מתי מותר להעלות דמי ניהול לפני תום ההנחה",
   "text_he": "חברה מנהלת רשאית להעלות את דמי הניהול לפני תום תקופת ההנחה, אחרי הודעה, במקרים האלה: חצי שנה אחרי שהפסיקו התשלומים לקופה בעד העמית, אם לא בגלל המעסיק; משיכה או העברה, מלאה או חלקית, לקופה אחרת או למסלול אחר באותה קופה; ומנגנון בהסכם שמדרג את דמי הניהול לפי יתרה או משתנה אחר שהממונה אישר, ולא לפי ותק. כל העלאה כזו דורשת הודעה במסמך נפרד, ולכן מעבר מסלול מתיר העלאה אבל לא מעלה את דמי הניהול מעצמו.",
+  "figure_names_he": {
+    "months_after_deposits_stop": "הזמן מהפסקת ההפקדות עד שמותר להעלות דמי ניהול"
+  },
   "strength": "primary",
   "dimensions": [
     "fee-change-over-time",
@@ -10,6 +13,28 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
+  "figures": {
+    "months_after_deposits_stop": {
+      "value": 6,
+      "unit": "months",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, p.2, s.3(ב)(1)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-08",
+      "effective_from": "2018-04-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-14"
+      ],
+      "state": "sourced",
+      "notes": "Case (1) of s.3(ב): a manager may raise a discounted fee before the discount period ends \"שישה חודשים אחרי הפסקת תשלומים לחיסכון המועברים לקופת הגמל עבור העמית שלא אירעה בשל המעביד\" (p.2; the lead-in of s.3(ב) is on p.1), after notice under s.4(א) (PF-16). In force from 1 April 2018 (s.6, p.4). A CMA circular, not a regulation: update_rule \"fixed in regulation\" is the nearest value in the schema list. Whether the case reaches a member who deposited once and no more is open (PF OQ18); the engine takes the cautious reading (D87) and ends the discount after this many months on a plan with no deposit after month 0. Checked against the official PDF on 2026-11-08 (same file as read on 2026-10-25)."
+    }
+  },
   "il_finance_file": "provident-family-common.md",
   "checked": "2026-10-25",
   "scope": "general",

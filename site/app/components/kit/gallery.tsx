@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileStory, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { BlockedGroups, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { BlockedGroups, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -272,6 +272,21 @@ function Choices() {
           <SegmentedControl label={g.sample.title} options={g.sample.option.map((o, i) => ({ value: (["a", "b", "c"] as const)[i]!, label: o }))} value={seg} onChange={setSeg} />
         </State>
       </Demo>
+      <Demo name="PickCard" use={g.uses.PickCard}>
+        <State label={g.states.interactive}>
+          <div className="flex flex-col gap-3 md:flex-row">
+            <div className="md:flex-1 rounded-lg border border-primary p-3 flex flex-col gap-1">
+              <span className="text-sm text-primary">{g.sample.option[0]}</span>
+              <span className="text-2xl font-bold">{fmt.nisWhole(1000)}</span>
+            </div>
+            <PickCard label={g.sample.pickCard} onPick={() => {}} className="md:flex-1 p-3 flex flex-col gap-1">
+              <span className="text-sm text-muted-foreground">{g.sample.option[1]}</span>
+              <span className="text-2xl font-bold">{fmt.nisWhole(1040)}</span>
+              <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
+            </PickCard>
+          </div>
+        </State>
+      </Demo>
       <Demo name="TileChoice" use={g.uses.TileChoice}>
         <State label={`labels as the body, ${g.states.interactive}`} wide>
           <TileChoice
@@ -384,7 +399,6 @@ function Words({ today }: { today: string }) {
       <Demo name="StrengthLabel, ReadingTag" use={g.uses.StrengthLabel}>
         <Grid>
           <State label="primary: plain"><div><StrengthLabel strength="primary" /></div></State>
-          <State label="primary-mirror: plain"><div><StrengthLabel strength="primary-mirror" /></div></State>
           <State label="institution: caution"><div><StrengthLabel strength="institution" /></div></State>
           <State label="secondary: caution, only a leftover still listed in unofficial-leftovers.json (nothing new unofficial is cited)"><div><StrengthLabel strength="secondary" /></div></State>
           <State label="open: blocked, with a lock"><div><StrengthLabel strength="open" /></div></State>
@@ -1252,7 +1266,10 @@ function Lists({ today }: { today: string }) {
           </div>
         </State>
         <State label="every part at once, in its order: the remainder, trade, custody, the account's fee, currency conversion, the fund's fees, tax; seven hues validated together, every pair, none blue, violet, red, amber or green" wide>
+          {/* every cost hue at once: a palette sample, which the chart check's four-colour count leaves alone (data-palette) */}
+          <div data-palette="">
           <CostStack label="7,000" scale={7200} parts={[{ id: "r", value: 1000, className: "bg-chart-cost-other", inside: "1,000" }, { id: "t", value: 1000, className: "bg-chart-cost-trade", inside: "1,000" }, { id: "c", value: 1000, className: "bg-chart-cost-custody", inside: "1,000" }, { id: "f", value: 1000, className: "bg-chart-cost-fixed", inside: "1,000" }, { id: "e", value: 1000, className: "bg-chart-cost-fx", inside: "1,000" }, { id: "u", value: 1000, className: "bg-chart-cost-fund", inside: "1,000" }, { id: "x", value: 1000, className: "bg-chart-tax", inside: "1,000" }]} />
+          </div>
         </State>
         <State label="a case like the TA-125 pair bar: the remainder, the account's fees on each other, comes first among the account's parts, away from the fund's, and holds 2 ₪ in a sliver too thin to see, so its amount is written under the bar in its colour, as is any amount too narrow for its part; pointing at a part opens the box of the whole bar; the amounts written add up to the total beside it, 7,323, the account's parts to the account's own figure written elsewhere on the page, 1,050 (groups), and the rounding goes only to parts whose amounts are written" wide>
           <div className="grid grid-cols-[minmax(0,1fr)_5rem] items-start gap-x-3 pt-24">
@@ -1325,7 +1342,7 @@ function Lists({ today }: { today: string }) {
       </Demo>
       <Demo name="PairBars" use={g.uses.PairBars}>
         <State label="two series each year, from zero, a figure on each bar" wide>
-          <PairBars label={p.figure} tickStep={20} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={p.a} nameB={p.b} items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
+          <PairBars label={p.figure} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={p.a} nameB={p.b} items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
         </State>
       </Demo>
       <Demo name="FixedTable" use={g.uses.FixedTable}>
@@ -1540,7 +1557,9 @@ function GlideDemo() {
   const [end, ceil] = useGlidingNumbers([n, top]) as [number, number];
   const ticks = useFadingTicks(Array.from({ length: top / 100 + 1 }, (_, i) => i * 100));
   const yearTicks = useFadingTicks(Array.from({ length: Math.floor(n / 5) + 1 }, (_, i) => i * 5));
-  const x = (year: number) => 8 + (year / end) * 304;
+  // drawn at its own width, so its 13 px year labels stay 13 px on a phone (a 320 px viewBox shrank them to 10 px at 254 px)
+  const [ref, w] = useWidth(320);
+  const x = (year: number) => 8 + (year / end) * (w - 16);
   const y = (v: number) => 130 - (v / ceil) * 120;
   const path = shown.map((p, i) => `${i ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`).join("");
   const opts = (xs: string[]) => Object.fromEntries(xs.map((v) => [v, v]));
@@ -1548,17 +1567,19 @@ function GlideDemo() {
     <div className="flex flex-col gap-2">
       <ChoiceChips ids={["5", "10", "20", "30"]} labels={opts(["5", "10", "20", "30"])} value={years} onChange={setYears} ariaLabel={g.sample.yearWord} wrap />
       <ChoiceChips ids={["2", "5", "9"]} labels={opts(["2", "5", "9"])} value={rate} onChange={setRate} ariaLabel={g.sample.seriesA} wrap />
-      <svg viewBox="0 0 320 156" aria-hidden="true" className="block w-full max-w-md">
+      <div ref={ref} className="w-full max-w-md">
+      <svg width={w} height={156} aria-hidden="true" className="block">
         <clipPath id="glide-demo">
-          <rect x={8} y={0} width={304} height={156} />
+          <rect x={8} y={0} width={w - 16} height={156} />
         </clipPath>
         {ticks.map((t) => (
-          <line key={t.value} x1={8} x2={312} y1={y(t.value)} y2={y(t.value)} className={cx("stroke-chart-grid", tickFade(t))} />
+          <line key={t.value} x1={8} x2={w - 8} y1={y(t.value)} y2={y(t.value)} className={cx("stroke-chart-grid", tickFade(t))} />
         ))}
         <path d={path} fill="none" clipPath="url(#glide-demo)" className="stroke-chart-value" strokeWidth={2} />
         <circle cx={x(Math.min(end, n))} cy={y(valueOn(shown, Math.min(end, n)))} r={3} className="fill-chart-value" />
-        <YearLabels ticks={yearTicks} x={x} y={150} left={8} right={312} />
+        <YearLabels ticks={yearTicks} x={x} y={150} left={8} right={w - 8} />
       </svg>
+      </div>
     </div>
   );
 }

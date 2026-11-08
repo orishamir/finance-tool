@@ -70,7 +70,7 @@ export function MakamVisual({ data, today }: VisualProps) {
   // the tax's base under the figures, one height in all four cases (a sale or a redemption, with the year's fees deducted or without): the
   // base and the fees add up to the gain figure as printed, so all three keep their agorot
   const tb = copy.makam.taxBase;
-  const taxLine = (t: string, rate: NonNullable<typeof gainRate>) => v && <Sentence size="sm" tone="muted" t={t} vars={{ rate: <Num value={rate} />, base: <Num value={v.base} exact />, fees: <Num value={v.taxedFees} exact />, kind: bundle.terms.tariff?.monthlyFee ? tb.kind.withAccount : tb.kind.custody, year: <Term prefix="ב" id="שנת המס">{copy.makam.taxBase.year}</Term> }} />;
+  const taxLine = (t: string, rate: NonNullable<typeof gainRate>) => v && <Sentence size="sm" tone="muted" t={t} vars={{ rate: <Num value={rate} />, base: <Num value={v.base} />, fees: <Num value={v.taxedFees} />, kind: bundle.terms.tariff?.monthlyFee ? tb.kind.withAccount : tb.kind.custody, year: <Term prefix="ב" id="שנת המס">{copy.makam.taxBase.year}</Term> }} />;
   const taxText = model?.atRedemption ? (model.taxedFees > 0 ? tb.redeemFees : tb.redeem) : model && model.taxedFees > 0 ? tb.fees : tb.sale;
   const feesLine = (withCustody: boolean) =>
     v &&
@@ -160,7 +160,7 @@ export function MakamVisual({ data, today }: VisualProps) {
               <Num value={v.price} />
             </Stat>
             <Stat label={copy.makam.figures.gain} tone="net">
-              <Num value={v.gain} exact />
+              <Num value={v.gain} />
             </Stat>
             <Stat
               label={

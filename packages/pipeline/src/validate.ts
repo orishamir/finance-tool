@@ -732,7 +732,6 @@ export interface RuleLike {
     title: string;
     strength: string;
     kind: string;
-    mirror_host?: string;
     page?: number;
     anchor?: string;
     checked: string;
@@ -747,8 +746,7 @@ export interface RuleLike {
   scope_settle?: string;
 }
 
-const STRENGTH_RANK: Record<string, number> = { primary: 3, "primary-mirror": 2, institution: 1, secondary: 0 };
-const MIRROR_HOSTS = ["he.wikisource.org", "nevo.co.il"];
+const STRENGTH_RANK: Record<string, number> = { primary: 2, institution: 1, secondary: 0 };
 /**
  * Copies kept on an official host, named by path because the rest of the host is official (issue #262, 2026-11-07):
  * National Insurance's Laws1 folder holds its own consolidated copies of laws and regulations it does not publish
@@ -768,10 +766,10 @@ export function isCopyPath(url: string): boolean {
 }
 
 /**
- * Hosts that only copy official texts (glossary sweep, 2026-11-07): Wikisource and Nevo (MIRROR_HOSTS), Olaw, Capitax and
- * Funder's file host. A source on one of them is a copy whatever strength it was given, so it fails like a mirror.
+ * Hosts that only copy official texts (glossary sweep, 2026-11-07): Wikisource, Nevo, Olaw, Capitax and Funder's file host. A
+ * source on one of them is a copy whatever strength it was given, so it fails: a copy is a lead, never a source (CLAUDE.md).
  */
-const COPY_HOSTS = [...MIRROR_HOSTS, "olaw.org.il", "olaw.co.il", "capitax.co.il", "funder.co.il"];
+const COPY_HOSTS = ["he.wikisource.org", "nevo.co.il", "olaw.org.il", "olaw.co.il", "capitax.co.il", "funder.co.il"];
 
 /** A copy's address: a copy-only host (or a subdomain of one) or a copy folder on an official host (COPY_PATHS). */
 export function isCopySource(url: string): boolean {
@@ -867,7 +865,7 @@ export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): st
 
 /**
  * CLAUDE.md "General sources first" (founder, 2026-11-07): cite only official publications. A source whose strength
- * is `secondary` or `primary-mirror`, whose host data/sources/publishers.json calls an `article`, or whose address is a
+ * is `secondary`, whose host data/sources/publishers.json calls an `article`, or whose address is a
  * copy (COPY_HOSTS such as Wikisource, Nevo and Olaw, or COPY_PATHS: National Insurance's Laws1 folder), or that is marked
  * `primary` on a host no official publisher uses (isUnlistedPrimary), fails, unless it is
  * a leftover named in unofficial-leftovers.json (`<file> <url>`). The list only shrinks: a leftover that is gone fails
@@ -879,7 +877,7 @@ export function unofficialSources(record: unknown, articleHosts: Set<string>): s
     if (Array.isArray(node)) return node.forEach(walk);
     if (!node || typeof node !== "object") return;
     const v = node as { url?: unknown; strength?: unknown };
-    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || v.strength === "primary-mirror" || articleHosts.has(hostOf(v.url)) || isCopySource(v.url) || isUnlistedPrimary(v.url, v.strength))) out.push(v.url);
+    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || articleHosts.has(hostOf(v.url)) || isCopySource(v.url) || isUnlistedPrimary(v.url, v.strength))) out.push(v.url);
     Object.values(node).forEach(walk);
   };
   walk(record);
@@ -962,13 +960,9 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
   if (block) for (const m of block.body.matchAll(/^- Source: (.*)$/gm)) for (const link of m[1]!.matchAll(/\[([^\]]+)\]\(/g)) if (checkTitleBrackets(link[1]!).length) warn("rule base source line quotes a broken fund name", rule.id);
   sources.forEach((s, i) => {
     const at = `sources[${i}]`;
-    const host = hostOf(s.url);
-    if (MIRROR_HOSTS.includes(host) && s.strength === "primary") out.push(`${at}: a ${host} copy is primary-mirror, never primary`);
-    if (isCopyPath(s.url) && s.strength === "primary") out.push(`${at}: a copy kept on an official host (${s.url}) is primary-mirror, never primary`);
-    if ((s.strength === "primary-mirror") !== (s.mirror_host !== undefined)) out.push(`${at}: mirror_host is set exactly when strength is primary-mirror`);
     if (s.page !== undefined && !isPdfUrl(s.url)) out.push(`${at}: page is only for a PDF URL`);
     if (s.anchor !== undefined && isPdfUrl(s.url)) out.push(`${at}: anchor is only for an HTML URL`);
-    if (block && !urlInBlock(s.url, block)) out.push(`${at}: ${s.url} is not in the markdown block of ${rule.id} (verbatim or as a raw-Wikisource rewrite)`);
+    if (block && !urlInBlock(s.url, block)) out.push(`${at}: ${s.url} is not in the markdown block of ${rule.id}`);
     if (s.checked > rule.checked) warn("source checked later than the rule's checked", rule.id);
   });
   if (sources.length > 0 && rule.strength !== "open") {
@@ -989,7 +983,7 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
   return out;
 }
 
-/** P-09 (`data/parameters/pinned-rules.json`): its ids exist, and a row's first rule has a primary or primary-mirror source. */
+/** P-09 (`data/parameters/pinned-rules.json`): its ids exist, and a row's first rule has a primary source. */
 function checkPinnedRules(files: string[], dataDir: string, all: Map<string, RuleLike>, report: (file: string, message: string) => void) {
   const file = files.find((f) => relative(dataDir, f).replace(/\\/g, "/") === "parameters/pinned-rules.json");
   if (!file) return;
@@ -1009,7 +1003,7 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
       continue;
     }
     if (rule.scope !== "general") report(file, `pinned-rules: fact ${id} rests on a company's term, which is never a fact in general`);
-    if (rule.sources && !rule.sources.some((s) => s.strength === "primary" || s.strength === "primary-mirror")) report(file, `pinned-rules: fact ${id} has no primary or primary-mirror source`);
+    if (rule.sources && !rule.sources.some((s) => s.strength === "primary")) report(file, `pinned-rules: fact ${id} has no primary source`);
     const text = fact.text_he ?? "";
     if (text.length > 200) report(file, `pinned-rules: fact ${id} is ${text.length} characters; the block's cards hold 200`);
     if (/\d/.test(text.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, ""))) report(file, `pinned-rules: fact ${id} carries a typed digit; use a {ID:figure} slot`);
@@ -1022,8 +1016,8 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
   for (const row of rec.rows ?? []) {
     const first = row.ids?.[0];
     const rule = first ? all.get(first) : undefined;
-    if (rule?.sources && !rule.sources.some((s) => s.strength === "primary" || s.strength === "primary-mirror"))
-      report(file, `pinned-rules: the first rule of a row (${first}) has no primary or primary-mirror source`);
+    if (rule?.sources && !rule.sources.some((s) => s.strength === "primary"))
+      report(file, `pinned-rules: the first rule of a row (${first}) has no primary source`);
     // the answer line of the questions page: no digit typed by hand; every figure is a {ID:figure} slot over one of the row's rules
     if (typeof row.answer_he === "string") {
       const plain = row.answer_he.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, "");

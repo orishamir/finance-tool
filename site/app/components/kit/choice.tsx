@@ -128,3 +128,21 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
     </div>
   );
 }
+
+// Links, buttons and source taps inside a PickCard lie above the card's own button, so they keep working.
+const LIFT_INNER = "[&_:is(a,button,[role=button]):not([data-pick-card])]:relative [&_:is(a,button,[role=button]):not([data-pick-card])]:z-10";
+
+/**
+ * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by tapping the option
+ * itself"; founder, 2026-11-08), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
+ * figure that opens its source, a fund number that opens its page): they lie above the card's button. The chosen option is not a PickCard;
+ * it is marked by an outline and a word. The button is stretched over the card, last inside it; `label` names it for a screen reader.
+ */
+export function PickCard({ label, onPick, className, children }: { label: string; onPick: () => void; className?: string; children: ReactNode }) {
+  return (
+    <div className={cx("relative rounded-lg border border-border cursor-pointer transition-colors duration-[var(--duration-fast)] hover:bg-accent/60", LIFT_INNER, className)}>
+      {children}
+      <button type="button" data-pick-card aria-label={label} onClick={onPick} className="absolute inset-0 w-full rounded-lg focus-visible:outline-2 focus-visible:outline-ring" />
+    </div>
+  );
+}

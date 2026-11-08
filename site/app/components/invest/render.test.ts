@@ -869,7 +869,7 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     expect(card(sp, "leumi")).toContain(invest.pair.ownBank.left("לאומי"));
     const raw = html(createElement(AccountColumn, { view: buildInvest({ bundle, index: sp, plan }), bundle, years: 20, pick: pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, onPick: () => undefined, ownBank: { value: null, onChange: () => undefined } }));
     for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]) expect(raw).toContain(`value="${id}"`);
-    // One Zero's price list prints its current account free: marking it would change no figure (ground rule 4)
+    // One Zero's price list prints its current account free: marking it would change no figure (guidelines/design.md)
     expect(raw).not.toContain(`value="one-zero"`);
     expect(raw).not.toContain(`value="psagot"`);
     expect(raw).not.toContain(`value="pepper"`);

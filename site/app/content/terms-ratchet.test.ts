@@ -397,6 +397,11 @@ const usesOf = (src: string, rowOf: ReadonlyMap<string, string>, otherSense: rea
     for (const id of termIdsIn(m)) uses.push({ at, row: id, marked: true });
     return blankOut(m);
   });
+  // a "?" opens its terms' cards, with its own words over them (2026-11-08: the banks table's rate head): the words are a marked use
+  s = s.replace(/<HelpMark\b[^>]*?\/>/g, (m, at: number) => {
+    for (const id of termIdsIn(m)) uses.push({ at, row: id, marked: true });
+    return blankOut(m);
+  });
   s = s.replace(/<Link\b[^>]*>([^<{]*)<\/Link>/g, (m, inner: string, at: number) => {
     const t = norm(entities(inner));
     const row = rowOf.get(t) ?? rowOf.get(t.replace(/^[והבלמשכ]{1,4}/, ""));

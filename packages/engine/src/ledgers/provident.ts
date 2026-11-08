@@ -194,7 +194,6 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   let yearTotal = 0;
   let benefitedLeft = benefitedYearly;
   let discountExtended = false;
-  let laterDeposit = false;
   tally.point(0, 1, existing);
 
   const hish = input.hishtalmut;
@@ -255,7 +254,6 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   };
 
   const deposit = (amount: number, eventMonth: number, outlay = amount) => {
-    if (eventMonth > 0 && amount > 0) laterDeposit = true;
     if (amount <= 0) return;
     let accepted = amount;
     if (kgl) {
@@ -268,7 +266,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     reliefTotal += (amount - outlay) * share;
     reliefToday += ((amount - outlay) * share) / I[eventMonth]!;
     // F-16: a discounted deposit fee reverts to its list rate when the period ends, no earlier than PF-13's minimum
-    const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, eventMonth);
+    const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, eventMonth, endsBy);
     discountExtended ||= dep.extended;
     const fee = depositFee(dep.rate, depositCap, accepted);
     tally.fee("deposit", fee);
@@ -307,6 +305,15 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     }
   };
 
+  // PF OQ18 (D87): whether a manager may end a discount early for a member who deposits once and never again (circular 2017-9-15
+  // s.3(ב)(1), six months after payments stop) is open; the run takes the cautious reading (guidelines/research.md step 6): the
+  // discount holds for PF-14's months (six) and the fee without it is charged after them. PF-14 is read only where the case can arise.
+  let laterDeposit = false;
+  for (let m = 1; m <= Math.min(T, goal.months); m++) if (due(m) && (grossDeposits[m] ?? 0) > 0) laterDeposit = true;
+  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.amount("PF-14", "months_after_deposits_stop") : undefined;
+  const oneDeposit = stopMonths !== undefined && T > stopMonths;
+  const endsBy = oneDeposit ? stopMonths : undefined;
+
   for (let m = 1; m <= T; m++) {
     if (m > 1 && taxYearOf(m, first) !== taxYearOf(m - 1, first)) {
       yearTotal = 0;
@@ -315,7 +322,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     if (m === 1) deposit(grossDeposits[0]!, 0, C[0]!);
     if (m <= goal.months && due(m)) deposit(grossDeposits[m]!, m, C[m]!);
 
-    const { rate, extended } = feeForMonth(fees.balance, fees.discount, minDiscountMonths, m);
+    const { rate, extended } = feeForMonth(fees.balance, fees.discount, minDiscountMonths, m, endsBy);
     discountExtended ||= extended;
     for (const pot of [benefited, excess]) {
       pot.balance *= 1 + g;
@@ -328,9 +335,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     tally.point(m, I[m]!, benefited.balance + excess.balance);
   }
   if (discountExtended) tally.flag("PF-13");
-  // PF OQ18 (D87): whether a manager may end a discount early for a member who deposits once and never again (circular 2017-9-15
-  // s.3(ב)(1), six months after payments stop) is open; the run keeps the discount for its whole period, the favourable reading
-  if ((fees.discount || fees.depositDiscount) && !laterDeposit && T > 6) tally.flag("PF-OQ18");
+  if (oneDeposit) tally.flag("PF-OQ18");
 
   const gross = benefited.balance + excess.balance;
   // The real gain: each deposit indexed by I_T / I_deposit. When the CPI fell over a deposit's life its linkage is not a

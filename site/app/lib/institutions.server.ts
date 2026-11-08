@@ -435,7 +435,7 @@ let ownDocsCache: { rules: Record<string, RuleRecord>; out: OwnDocs } | null = n
 /**
  * Per record that is not general, the companies it names whose own document it cites (the registry's `own_hosts` and
  * `filing_names`; review, 2026-10-26). The root loader gives it to every page, so a rule card names only those and links only to
- * where the record is listed. A record that cites none (a press report, a forum post) is left out of the map.
+ * where the record is listed. A record that cites none is left out of the map.
  */
 export function ownDocuments(rules: Record<string, RuleRecord> = loadRules()): OwnDocs {
   if (ownDocsCache?.rules === rules) return ownDocsCache.out;
@@ -452,8 +452,8 @@ export function ownDocuments(rules: Record<string, RuleRecord> = loadRules()): O
 
 /**
  * The records a company's section lists (spec §4: "מה כתוב במסמכים של {company}", grouped by product), by topic in the rules pages'
- * order: those that are not general and cite one of these companies' own documents; never a not-rule, and never a press report or a
- * forum post about the company (review, 2026-10-26).
+ * order: those that are not general and cite one of these companies' own documents; never a not-rule, and never a record about the
+ * company that cites none of its documents (review, 2026-10-26).
  */
 export function companyTermGroups(registryIds: readonly string[], rules: Record<string, RuleRecord>, topic: (file: string) => string, ownDocs: OwnDocs = ownDocuments(rules)): CompanyTermGroup[] {
   const want = new Set(registryIds);
@@ -475,7 +475,7 @@ function groupByTopic(list: RuleRecord[], topic: (file: string) => string): Comp
 
 /**
  * /companies: the companies that have no page of their own and whose terms the site holds, each with the records its section lists;
- * then what no company's section lists (the not-rules: a forum post, a press report, a list, a count, a site's terms).
+ * then what no company's section lists (the not-rules: a list, a count, a site's terms).
  */
 export function noPageCompanyTerms(rules: Record<string, RuleRecord>, ownDocs: OwnDocs = ownDocuments(rules)): { companies: { id: string; name: string; ids: string[] }[]; none: string[] } {
   const links = companyLinks();

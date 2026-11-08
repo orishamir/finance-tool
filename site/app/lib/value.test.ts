@@ -25,7 +25,6 @@ describe("isWeak", () => {
   });
   it("primary and entered figures are never weak", () => {
     expect(isWeak(fig("primary"))).toBe(false);
-    expect(isWeak(fig("primary-mirror"))).toBe(false);
     expect(isWeak(fig("entered", { state: "entered" }))).toBe(false);
   });
   it("a computed figure is weak by its weakest input", () => {

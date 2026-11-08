@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num, ShortRow, shortRow, Term } from "../provenance";
-import { AlsoChanged, ClampedText, gershayim, wholeParts, writtenAmounts, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, Tpl, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
+import { AlsoChanged, ClampedText, gershayim, wholeParts, writtenAmounts, holdOnPick, MixedName, NameLine, figureFit, Card, PickCard, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, Tpl, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -42,6 +42,10 @@ export const legendName = (l: string, current = true) => (l === "fixed" ? (curre
 export const hasCurrent = (lines: readonly { line: FeeLine }[]) => lines.some((l) => l.line === "account");
 /** A part's name: the line's own where it has one (the current account), else its legend item's. */
 export const partName = (line: FeeLine) => c.pair.lines[line] ?? c.pair.lines[lineOf(line)] ?? c.pair.lines.other;
+/** The order of the account's lines in every bar, the legend's (`legendLines`): one order whatever the price list's own (2026-11-08, charts.md:
+ *  the parts in one order in every bar, and the legend's the same); a bank's current account just after the account fee, whose item it shares. */
+const LINE_ORDER = [...Object.keys(lineClass), "other"];
+export const byLegend = <L extends { line: FeeLine }>(ls: readonly L[]): L[] => [...ls].sort((a, b) => LINE_ORDER.indexOf(lineOf(a.line)) - LINE_ORDER.indexOf(lineOf(b.line)) || Number(a.line === "account") - Number(b.line === "account") || (a.line < b.line ? -1 : a.line > b.line ? 1 : 0));
 /** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
  * An index in shekels has no conversion line to name. */
 export const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
@@ -170,7 +174,7 @@ export const isoPct = (x: number, digits = 0) => `\u2066${signedPct(x, digits)}\
 
 function partsOf(pc: PairCosts, from: string, taxName: string): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from, group: "account" }));
+  const account = byLegend(pc.account).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from, group: "account" }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91); it is the account's
   // fees on each other, first among the account's parts, far from the fund's (pass 7: both readers took it for the fund's, beside it)
   return [{ ...remainderPart(pc.interaction), inside: true as const, group: "account" }, ...account, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: taxName, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
@@ -507,7 +511,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
             {steady(pick.fund)}
           </div>
           {pcOther && other && (
-            <div className="md:flex-1 md:min-w-64 min-w-0 rounded-lg border border-border p-3 flex flex-col gap-1">
+            // the whole card chooses the pair (founder, 2026-11-08: choose by tapping the option itself)
+            <PickCard label={`${c.pair.pickCheapest}: ${nameOf(other)}`} onPick={() => onPick(other)} className="md:flex-1 md:min-w-64 min-w-0 p-3 flex flex-col gap-1">
               <LongestCase className="text-sm text-muted-foreground" cases={otherTitles}>
                 <span>{otherTitle}</span>
               </LongestCase>
@@ -515,7 +520,6 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
               <span className={cx("text-2xl md:text-3xl font-bold leading-tight max-md:min-h-[1.875rem]", figureFit(pcOther.left.value as number, "tile"), !onBest && "text-primary")}>
                 <Num animate value={pcOther.left} />
               </span>
-              {/* the button on a line of its own: beside the figure, another digit moved it from under the finger */}
               <span className="flex flex-col items-start gap-1 text-sm">
                 {/* the gap, held at its longest case, so a tie that comes or goes with a slider moves nothing (#190) */}
                 <LongestCase className="self-stretch" cases={gapCases}>
@@ -536,12 +540,9 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
                     )}
                   </span>
                 </LongestCase>
-                <Button variant="quiet" onClick={() => onPick(other)}>
-                  {c.pair.pickCheapest}
-                </Button>
               </span>
               {steady(other.fund)}
-            </div>
+            </PickCard>
           )}
         </div>
         </ShortRow>
@@ -550,6 +551,11 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         <LongestCase className="text-xs text-muted-foreground md:basis-full" cases={[<p key="t">{c.pair.tieWhy(TIE_MOST)}{tieRule}{restLine(longestPairNames, TIE_MOST - 3)}</p>]}>
           <p>{whyTie}</p>
         </LongestCase>
+        {/* the exposure codes, (4D) and the like, said where a fund name first carries one (readers: the tiles showed "(4D)" with nothing
+            to say what it is, and the list's note sat far below) */}
+        <p className="text-xs text-muted-foreground md:basis-full empty:hidden">
+          <ProfileNote names={[pick, ...(other ? [other] : []), ...rest.slice(0, 1)].map(fundOf)} />
+        </p>
       </div>
       <div className="flex flex-col gap-2">
         <LongestCase cases={[1, 2, LONGEST_YEARS].map((y) => <span key={y} className="block font-semibold">{c.pair.costTitleBoth(y)}</span>)}>
@@ -792,7 +798,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
    * at once (the tie, on a computer), and the one-per-list marks it is laid out with: the cheapest's star, the way back after a tap.
    */
   const pricedCells = (p: Prov, wp: WayPrice, unseen?: { crown: boolean; back: boolean; tie: boolean }) => {
-    const parts: CostPart[] = [remainderPart(wp.interaction), ...wp.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) }))];
+    const parts: CostPart[] = [remainderPart(wp.interaction), ...byLegend(wp.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) }))];
     const isYours = p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const place = placeOf.get(p.id);
@@ -863,12 +869,12 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
               {whyNoPrice(bundle, p.id, f)}
             </ClampedText>
           )}
-          {/* the fund it names and its figure change with the plan: held at every fund the house prices, at the sliders' ends (#190: 18 px) */}
+          {/* what a tap on the row does, in words alone: a row with no data shows no figure (readers: "אין נתון" beside "נשארים 84,172 ₪"
+              read as a value for this account); the fund it names changes with the plan, held at every fund the house prices (#190: 18 px) */}
           {other && (
-            <LongestCase cases={waysOf(view, p.id).map((w) => <span key={w.fund.rec.id}>{c.pair.elsewhere} <MixedName>{w.fund.name}</MixedName>, {c.pair.elsewhereLeft} {fmt.nisWhole(LONGEST_LEFT)}{w.at.open && ` (${c.pair.elsewhereOpen})`}</span>)}>
+            <LongestCase cases={waysOf(view, p.id).map((w) => <span key={w.fund.rec.id}>{c.pair.elsewhere} <MixedName>{w.fund.name}</MixedName>.</span>)}>
               <span>
-                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
-                {other.at.open && ` (${c.pair.elsewhereOpen})`}
+                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>.
               </span>
             </LongestCase>
           )}

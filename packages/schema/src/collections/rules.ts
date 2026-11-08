@@ -12,12 +12,12 @@ const figure = z.union([
 ]);
 
 /** The strength vocabulary of a source entry (value.ts without `open` and `entered`). */
-const sourceStrength = z.enum(["primary", "primary-mirror", "institution", "secondary"]);
+const sourceStrength = z.enum(["primary", "institution", "secondary"]);
 
 /**
  * One source of a rule, read from the `- Source:` line of the rule base by `packages/pipeline/scripts/extract-sources.ts`
  * (docs/data-schema.md §3.1). Entries are sorted by preference: regulator or ministry document, Knesset gazette,
- * Wikisource, Nevo, institution, article.
+ * institution, article. A copy of an official text is never a source (CLAUDE.md).
  */
 export const ruleSource = z.object({
   url: z.string().url(),
@@ -30,15 +30,13 @@ export const ruleSource = z.object({
   publisher_he: z.string().min(1).optional(),
   kind: z.enum(["law", "regulation", "circular", "regulator_page", "official_pdf", "exchange_rules", "institution_doc", "article", "dataset", "form", "other"]),
   strength: sourceStrength,
-  /** Set iff `strength` is primary-mirror; `other` is a copy of an official text on a host that is neither Wikisource nor Nevo. */
-  mirror_host: z.enum(["wikisource", "nevo", "other"]).optional(),
   /** Raw, as written: "s. 3(ה4)(3)", "reg. 2(א)(7)", "pp. 27–30". */
   locator: z.string().optional(),
   /** "סעיף 3(ה4)(3)", "תקנה 2(א)(7)", "עמודים 27 עד 30". */
   locator_he: z.string().optional(),
   /** First page, for "#page=" on a PDF link. */
   page: z.number().int().positive().optional(),
-  /** Wikisource section id without "#", e.g. "סעיף_3.ה4". */
+  /** A section id on an HTML page, without "#". */
   anchor: z.string().optional(),
   /** The document's own words, verbatim, Hebrew, at most 240 characters; only when the markdown holds them inside quotes. */
   quote: z.string().optional(),
@@ -57,7 +55,7 @@ export const ruleRecord = z
   .object({
     id: z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/),
     title: z.string().min(1),
-    strength: z.enum(["primary", "primary-mirror", "institution", "secondary", "open"]),
+    strength: z.enum(["primary", "institution", "secondary", "open"]),
     dimensions: z.array(z.string()),
     likely_to_change: z.enum(["yes", "no"]),
     recheck_date: isoDate.nullable().optional(),

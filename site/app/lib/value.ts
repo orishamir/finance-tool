@@ -21,8 +21,8 @@ export interface SiteValue extends ValueObject {
    * shown as sourced, with no "לפי החברה" caution.
    */
   own?: string;
-  /** For a site parameter: its rationale and sign-off (copy 3.8). */
-  parameter?: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null; provisional: boolean };
+  /** For a site parameter: its rationale (copy 3.8). */
+  parameter?: { rationale: string; rationaleHe?: string | null };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
   /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell). */
@@ -42,7 +42,7 @@ export interface SiteValue extends ValueObject {
   resetKey?: string;
 }
 
-const order: Record<Strength, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
+const order: Record<Strength, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
 
 export function weaker(a: Strength | undefined, b: Strength | undefined): Strength | undefined {
   if (!a) return b;
@@ -94,9 +94,6 @@ export function isParameter(v: SiteValue): boolean {
   return v.update_rule === "founder" && v.state === "sourced";
 }
 
-export function isProvisional(v: SiteValue): boolean {
-  return v.parameter?.provisional ?? (v.notes ?? "").startsWith("provisional");
-}
 
 /** An entered value, in the shape saved state uses (data-schema §1). */
 export function entered(value: number, unit: ValueObject["unit"], today: string, about?: string): SiteValue {

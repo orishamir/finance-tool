@@ -274,7 +274,7 @@ export function parameterOf(bundle: CompareBundle, method: string): ParameterRec
 
 /** A parameter's value object with the parameter marker the provenance sheet reads ("פרמטר של האתר"). */
 export function asParameter(p: ParameterRecord, v: ValueObject): SiteValue {
-  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: (v.notes ?? "").startsWith("provisional") } };
+  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
 }
 
 // ---------------------------------------------------------------- terms for one run

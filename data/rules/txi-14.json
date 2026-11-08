@@ -32,7 +32,7 @@
         "TXI-14"
       ],
       "state": "sourced",
-      "notes": "CPI-linked government bond: real interest (linkage exempt, TXI-05) and real capital gain, both at a maximum of 25% as the top slice (\"שלא יעלה על 25%\"). il-finance lists the bond regulations (Nevo mirror) as the rule's first source, so the rule-level strength is primary-mirror; the Ordinance text is recorded there as primary. Guide 2025 p.39 item 2 agrees."
+      "notes": "CPI-linked government bond: real interest (linkage exempt, TXI-05) and real capital gain, both at a maximum of 25% as the top slice (\"שלא יעלה על 25%\"). Guide 2025 p.39 item 2 agrees."
     }
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",

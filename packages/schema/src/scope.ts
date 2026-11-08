@@ -36,7 +36,6 @@ export const generalSourceKinds: ReadonlySet<string> = new Set(["law", "regulati
  */
 export const notRules: Readonly<Record<string, { why: string; files: readonly string[] }>> = {
   "IRA-28": { why: "a regulator's announcement of an event at one company (Slice)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
-  "TXH-24": { why: "press report", files: [] },
   "MF-61": { why: "the exchange's press release about its own indices", files: ["site/app/content/guide/limited-bond-fund.tsx", "site/app/routes/guide-limited-bond-fund.tsx"] },
   "MKT-01": { why: "a series (J.P. Morgan's past-return slide; S&P's data, not shown on the site since 2026-11-07, D82)", files: [] },
   "PEN-46": { why: "a per-fund series", files: [] },
@@ -142,8 +141,8 @@ export function ownDocumentCompanies(rule: { scope_institutions?: readonly { id:
 
 /**
  * The companies whose section lists a record (spec §4, "מה כתוב במסמכים של {company}"; review, 2026-10-26): each company it names
- * whose own document it cites (`own`, from `ownDocumentCompanies`); none for a general rule or a not-rule. A press report about a
- * company, or a forum post, is never listed as that company's.
+ * whose own document it cites (`own`, from `ownDocumentCompanies`); none for a general rule or a not-rule. A record about a company
+ * that cites none of its documents is never listed as that company's.
  */
 export function listedAt(rule: { id: string; scope: string }, own: readonly string[]): string[] {
   return rule.scope === "general" || Object.hasOwn(notRules, rule.id) ? [] : [...own];
