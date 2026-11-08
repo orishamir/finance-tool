@@ -153,7 +153,6 @@
               "type": "string",
               "enum": [
                 "primary",
-                "primary-mirror",
                 "institution",
                 "secondary",
                 "open",
@@ -394,7 +393,6 @@
                 "type": "string",
                 "enum": [
                   "primary",
-                  "primary-mirror",
                   "institution",
                   "secondary",
                   "open",
@@ -594,7 +592,6 @@
                       "type": "string",
                       "enum": [
                         "primary",
-                        "primary-mirror",
                         "institution",
                         "secondary",
                         "open",
@@ -880,7 +877,6 @@
                   "type": "string",
                   "enum": [
                     "primary",
-                    "primary-mirror",
                     "institution",
                     "secondary",
                     "open",
@@ -1070,7 +1066,6 @@
                   "type": "string",
                   "enum": [
                     "primary",
-                    "primary-mirror",
                     "institution",
                     "secondary",
                     "open",
@@ -1260,7 +1255,6 @@
                   "type": "string",
                   "enum": [
                     "primary",
-                    "primary-mirror",
                     "institution",
                     "secondary",
                     "open",
@@ -1450,7 +1444,6 @@
                   "type": "string",
                   "enum": [
                     "primary",
-                    "primary-mirror",
                     "institution",
                     "secondary",
                     "open",
@@ -1650,7 +1643,6 @@
               "type": "string",
               "enum": [
                 "primary",
-                "primary-mirror",
                 "institution",
                 "secondary",
                 "open",

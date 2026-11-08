@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
+import { barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -85,7 +85,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
     // the account's fees on each other first, as on every bar of the page (pass 7)
     const parts: CostPart[] = [
       { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
-      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
+      ...byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
     ];
     return {
       key: h.provider.id,

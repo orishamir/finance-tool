@@ -18,7 +18,7 @@ export function loadRules(): RuleRecord[] {
  * TXF-04 as it stood until 2026-11-07: a 90% main-currency test from the Tax Authority's letter of 4.7.2019, read only in a copy on a
  * third-party site. That day the copy stopped being cited (nothing unofficial is cited, CLAUDE.md) and the record became open, so a
  * TASE foreign fund that commits to the test is blocked (D10). The tests that check the arithmetic of the exchange-rate index run on
- * this stand-in: a test fixture, never data, and its figure carries the mirror strength the copy had.
+ * this stand-in: a test fixture, never data, so it carries a plain strength and only the arithmetic is tested.
  */
 export function withTxf04AsTheLetterCopy(rules: RuleRecord[]): RuleRecord[] {
   return rules.map((r) =>
@@ -26,12 +26,12 @@ export function withTxf04AsTheLetterCopy(rules: RuleRecord[]): RuleRecord[] {
       ? r
       : ({
           ...r,
-          strength: "primary-mirror",
+          strength: "primary",
           figures: {
             threshold_pct: {
               value: 90,
               unit: "pct",
-              source: { url: "https://example.invalid/txf-04-letter-copy", title: "test fixture: TXF-04 as the letter's copy stated it", publisher: "test fixture", strength: "primary-mirror" },
+              source: { url: "https://example.invalid/txf-04-letter-copy", title: "test fixture: TXF-04 as the letter's copy stated it", publisher: "test fixture", strength: "primary" },
               checked: "2026-10-25",
               effective_from: "2019-07-04",
               effective_to: null,

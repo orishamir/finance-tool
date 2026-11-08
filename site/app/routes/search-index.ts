@@ -66,7 +66,7 @@ export async function loader() {
   }
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title
   const { ruleTitle } = await import("../lib/rule-title");
-  const strengthRank: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
+  const strengthRank: Record<string, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
   // D30 (spec 2026-10-25-rules-scope §4): two groups; a company's term (or an unsettled one) names its company and leads to where it is listed
   const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
   const { companyTermsHref, joinNames, listedCompanies, ownDocCompanies } = await import("../lib/scope");

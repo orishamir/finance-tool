@@ -268,8 +268,8 @@ function renderRule(bundle: CompareBundle, key: string, v: unknown, today: strin
 
 function renderParameter(bundle: CompareBundle, methodId: string, v: unknown): Rendered {
   if (v === null || v === undefined) return null;
-  const rec = bundle.parameters.find((p) => idOf(p) === methodId) as unknown as { value?: ValueObject; rationale: string; rationale_he?: string; signed_off_on?: string } | undefined;
-  if (rec?.value && (typeof v === "number" || typeof v === "string")) return { kind: "num", value: { ...rec.value, value: v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null, signedOffOn: rec.signed_off_on ?? null, provisional: false } } };
+  const rec = bundle.parameters.find((p) => idOf(p) === methodId) as unknown as { value?: ValueObject; rationale: string; rationale_he?: string } | undefined;
+  if (rec?.value && (typeof v === "number" || typeof v === "string")) return { kind: "num", value: { ...rec.value, value: v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null } } };
   return { kind: "text", text: typeof v === "object" ? "ערכי הפרמטר השתנו" : String(v) };
 }
 

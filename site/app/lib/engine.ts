@@ -154,7 +154,7 @@ export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
   if (inputs[key].update_rule !== "founder") return { ...inputs[key] };
   return {
     ...inputs[key],
-    parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null, signedOffOn: p05.signed_off_on, provisional: false },
+    parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null },
   };
 }
 
@@ -162,11 +162,11 @@ export function p05Number(p05: ParameterRecord, key: P05Input): number {
   return (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs[key].value as number;
 }
 
-/** P-05's page controls: slider ranges (design-system Q6) and the provisional input ranges. */
+/** P-05's page controls: slider ranges (design-system Q6) and the input ranges. */
 export function p05Range(p05: ParameterRecord, group: "sliders" | "ranges", key: string): { min: number; max: number; step?: number; values: Record<string, SiteValue> } | null {
   const g = (p05 as unknown as Record<string, Record<string, Record<string, ValueObject>>>)[group]?.[key];
   if (!g) return null;
   const values: Record<string, SiteValue> = {};
-  for (const [k, v] of Object.entries(g)) values[k] = { ...v, parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null, signedOffOn: p05.signed_off_on, provisional: (v.notes ?? "").startsWith("provisional") } };
+  for (const [k, v] of Object.entries(g)) values[k] = { ...v, parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null } };
   return { min: g.min!.value as number, max: g.max!.value as number, step: g.step ? (g.step.value as number) : undefined, values };
 }

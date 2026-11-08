@@ -11,7 +11,7 @@ import type { DocumentCard, SectionId } from "../lib/documents.server";
 import { isPdfUrl, sourceHref } from "../lib/sources";
 
 /** The five sections in order (duplicated from the server module, which the client bundle must not import). */
-const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"] as const;
+const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions"] as const;
 
 export async function loader() {
   const { today } = await import("../lib/data.server");

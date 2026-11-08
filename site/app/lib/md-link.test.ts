@@ -6,9 +6,9 @@ describe("parseMdLink", () => {
   it("reads a plain link", () => {
     expect(parseMdLink("x [a b](https://e.com/p) · 2026-10-22")).toMatchObject({ text: "a b", url: "https://e.com/p" });
   });
-  it("keeps balanced parentheses in the url (a Wikisource title)", () => {
-    const url = "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)";
-    expect(parseMdLink(`[תקנות (Wikisource)](${url}) · 2026-10-22 · מקור ראשי (עותק)`)?.url).toBe(url);
+  it("keeps balanced parentheses in the url", () => {
+    const url = "https://www.gov.il/BlobFolder/x/תקנות_(קופות_גמל)_(דמי_ניהול).pdf";
+    expect(parseMdLink(`[תקנות (קופות גמל)](${url}) · 2026-10-22 · מקור ראשי`)?.url).toBe(url);
   });
   // independent check of glossary round 2 (2026-11-07): the not-covered card of the REIT showed "נוסח חדש], נוסח משולב…" as its source
   it("keeps balanced brackets in the text (the Income Tax Ordinance's title)", () => {

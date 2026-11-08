@@ -42,6 +42,10 @@ export const legendName = (l: string, current = true) => (l === "fixed" ? (curre
 export const hasCurrent = (lines: readonly { line: FeeLine }[]) => lines.some((l) => l.line === "account");
 /** A part's name: the line's own where it has one (the current account), else its legend item's. */
 export const partName = (line: FeeLine) => c.pair.lines[line] ?? c.pair.lines[lineOf(line)] ?? c.pair.lines.other;
+/** The order of the account's lines in every bar, the legend's (`legendLines`): one order whatever the price list's own (2026-11-08, charts.md:
+ *  the parts in one order in every bar, and the legend's the same); a bank's current account just after the account fee, whose item it shares. */
+const LINE_ORDER = [...Object.keys(lineClass), "other"];
+export const byLegend = <L extends { line: FeeLine }>(ls: readonly L[]): L[] => [...ls].sort((a, b) => LINE_ORDER.indexOf(lineOf(a.line)) - LINE_ORDER.indexOf(lineOf(b.line)) || Number(a.line === "account") - Number(b.line === "account") || (a.line < b.line ? -1 : a.line > b.line ? 1 : 0));
 /** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
  * An index in shekels has no conversion line to name. */
 export const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
@@ -170,7 +174,7 @@ export const isoPct = (x: number, digits = 0) => `\u2066${signedPct(x, digits)}\
 
 function partsOf(pc: PairCosts, from: string, taxName: string): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from, group: "account" }));
+  const account = byLegend(pc.account).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from, group: "account" }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91); it is the account's
   // fees on each other, first among the account's parts, far from the fund's (pass 7: both readers took it for the fund's, beside it)
   return [{ ...remainderPart(pc.interaction), inside: true as const, group: "account" }, ...account, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: taxName, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
@@ -794,7 +798,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
    * at once (the tie, on a computer), and the one-per-list marks it is laid out with: the cheapest's star, the way back after a tap.
    */
   const pricedCells = (p: Prov, wp: WayPrice, unseen?: { crown: boolean; back: boolean; tie: boolean }) => {
-    const parts: CostPart[] = [remainderPart(wp.interaction), ...wp.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) }))];
+    const parts: CostPart[] = [remainderPart(wp.interaction), ...byLegend(wp.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) }))];
     const isYours = p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const place = placeOf.get(p.id);

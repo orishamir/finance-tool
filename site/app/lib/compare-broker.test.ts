@@ -125,16 +125,18 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
       expect(Object.keys(wrapper.providers!)).toContain(id);
     }
   });
-  it("puts the securities account first for that goal, where Leumi's list tariff left it behind the gemel", () => {
+  it("puts the securities account further ahead of the gemel for that goal than Leumi's list tariff did", () => {
     const before = buildView(bundle, doron);
     const after = buildView(applyProviders(bundle, doron), doron);
     if (before.kind !== "ok" || after.kind !== "ok") throw new Error("not ok");
-    // the gemel ties Leumi's account: at Harel's 0.7% for five years and 1.05% for the last three (A-19, 2026-11-07) it ends at 85,697,
-    // between 85,870 at Meitav's 0.8% (a tie too) and 86,425 at 0.7% for all eight years (which led by more than the tie threshold)
-    expect(before.headline).toBe("tie");
-    expect(before.ranked[0]!.id).toBe("kupat-gemel-lehashkaa");
-    expect(before.ranked[1]!.id).toBe(BRK);
-    expect(Math.round(before.ranked[0]!.real)).toBe(85_697);
+    // one deposit and none after it: Harel's 0.7% holds for six months and 1.05% is charged from month 7, the cautious reading of
+    // PF OQ18 (D87, guidelines/research.md step 6, 2026-11-08), so the gemel ends at 84,619 and Leumi's account (85,507) is already
+    // ahead by more than the tie threshold. Until 2026-11-08 the run kept 0.7% for five years (85,697) and the two tied, the gemel first.
+    expect(before.headline).toBe("winner");
+    expect(before.ranked[0]!.id).toBe(BRK);
+    expect(before.ranked[1]!.id).toBe("kupat-gemel-lehashkaa");
+    expect(Math.round(before.ranked[1]!.real)).toBe(84_619);
+    expect(Math.round(before.ranked[0]!.real)).toBe(85_507);
     expect(after.headline).toBe("winner");
     expect(after.ranked[0]!.id).toBe(BRK);
     expect(after.ranked[1]!.id).toBe("kupat-gemel-lehashkaa");

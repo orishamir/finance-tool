@@ -2,7 +2,7 @@
 // Parameter-specific fields (lo/hi bounds, thresholds, the fit table) are kept loose until the
 // founder's first values are written (N1); each gets its own shape then.
 import { z } from "zod";
-import { isoDate, valueObject } from "../value.ts";
+import { valueObject } from "../value.ts";
 
 /**
  * P-05 `instruments` (data-schema §3.2): per wrapper id, the data records of the representative instrument the
@@ -29,11 +29,6 @@ export const instrumentSpec = z.strictObject({
   track: z.number().int().positive().optional(),
   /** Who chose this instrument when it was not chosen with the record (2026-11-07, D88: the provident fund for investing's track). */
   chosen_by: z.string().min(1).optional(),
-  /**
-   * `false` when the entry was chosen after the record's `signed_off_on` and the founder has not signed it off: the record's sign-off does
-   * not cover it, and nothing that rests on it claims his sign-off (2026-11-07: the provident fund for investing's track 7978).
-   */
-  signed_off: z.boolean().optional(),
   /** `keren-hishtalmut` only: the employment type the illustrative run uses (an employee's salary would come from the person's entered profile). */
   employment: z.enum(["self-employed", "employee"]).optional(),
 });
@@ -44,8 +39,6 @@ export const parameterRecord = z.looseObject({
   value: valueObject.optional(),
   rationale: z.string().min(1),
   rationale_he: z.string().min(1).optional(),
-  signed_off_by: z.literal("founder"),
-  signed_off_on: isoDate,
   shown_as: z.literal("site parameter"),
   /** P-05 only. */
   instruments: z.record(z.string().min(1), instrumentSpec).optional(),

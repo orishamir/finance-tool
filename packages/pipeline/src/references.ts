@@ -89,29 +89,12 @@ export function readLinkDefinitions(text: string): Record<string, string> {
   return defs;
 }
 
-/**
- * The readable form of a Hebrew Wikisource raw-wikitext URL: `.../w/index.php?title=T&action=raw` becomes
- * `https://he.wikisource.org/wiki/T` (T kept as encoded). Any other URL is returned unchanged.
- */
-export function rewriteRawWikisource(url: string): string {
-  const m = /^https:\/\/he\.wikisource\.org\/w\/index\.php\?title=([^&#]+)&action=raw$/.exec(url);
-  if (m) return `https://he.wikisource.org/wiki/${m[1]}`;
-  // the PDF rendering of a page (`/api/rest_v1/page/pdf/T`) is the same page; the readable form is the page itself (lead, 2026-10-24)
-  const pdf = /^https:\/\/he\.wikisource\.org\/api\/rest_v1\/page\/pdf\/([^?#]+)$/.exec(url);
-  return pdf ? `https://he.wikisource.org/wiki/${pdf[1]}` : url;
-}
-
 /** The text a rule's `sources[].url` must come from: its block and the definitions of the file. */
 export function blockUrlText(block: RuleBlock): string {
   return `${block.body}\n${Object.values(block.defs).join("\n")}`;
 }
 
-/** Is `url` in the block verbatim, or the rewrite of a raw Wikisource URL that is? */
+/** Is `url` in the block verbatim? */
 export function urlInBlock(url: string, block: RuleBlock): boolean {
-  const text = blockUrlText(block);
-  if (text.includes(url)) return true;
-  for (const m of text.matchAll(/https:\/\/he\.wikisource\.org\/(?:w\/index\.php\?title=[^&#\s)>]+&action=raw|api\/rest_v1\/page\/pdf\/[^\s)>?#]+)/g)) {
-    if (rewriteRawWikisource(m[0]) === url) return true;
-  }
-  return false;
+  return blockUrlText(block).includes(url);
 }

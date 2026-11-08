@@ -121,7 +121,7 @@ export function shortName(id: string, name: string): string {
 
 /** A site parameter as a value object (P-01, A-28): the file's value with the marker the provenance sheet reads. */
 export function parameterValue(p: ParameterRecord, vo: ValueObject): SiteValue {
-  return { ...vo, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: false } };
+  return { ...vo, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
 }
 
 /** A-28's start values (docs/method.md): one trade per contribution and twelve deposits a year. A method default, shown as a site parameter. */
@@ -137,7 +137,7 @@ export function a28Value(value: number, about: string, today: string): SiteValue
     state: "sourced",
     about,
     notes: "",
-    parameter: { rationale: "ברירת המחדל של השיטה: פעולה אחת לכל הפקדה חודשית, 12 הפקדות בשנה.", signedOffOn: null, provisional: false },
+    parameter: { rationale: "ברירת המחדל של השיטה: פעולה אחת לכל הפקדה חודשית, 12 הפקדות בשנה." },
   };
 }
 

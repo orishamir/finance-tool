@@ -37,7 +37,7 @@ export interface Flag {
  * a figure is derived rather than stated (TXS-12(b)); `proxy` where an input stands in for another (MF-34).
  */
 export interface Label {
-  code: "secondary-source" | "institution-source" | "mirror-source" | "reading" | "derived" | "proxy";
+  code: "secondary-source" | "institution-source" | "reading" | "derived" | "proxy";
   ruleId: string;
 }
 

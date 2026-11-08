@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { extractFromLine, findLinks, findQuote, sourceLineOf, toHebrewLocator, wikisourceAnchor, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
-import { readRuleBaseIds, rewriteRawWikisource, urlInBlock } from "../src/references.ts";
+import { extractFromLine, findLinks, findQuote, sourceLineOf, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
+import { readRuleBaseIds, urlInBlock } from "../src/references.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ctx = (over: Partial<LineContext> = {}): LineContext => ({
@@ -16,31 +16,27 @@ const ctx = (over: Partial<LineContext> = {}): LineContext => ({
 
 describe("extract-sources: fixture Source lines", () => {
   it("inline link with a section, strength and date", () => {
-    const line = "[Income Tax Ordinance (פקודת מס הכנסה), ss. 64A2, 64A3(a)(1)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), Wikisource mirror · checked 2026-10-22 · primary (mirror)";
+    const line = "[Income Tax Ordinance (פקודת מס הכנסה), ss. 64A2, 64A3(a)(1)](https://www.gov.il/BlobFolder/legalinfo/x/he/ordinance.pdf) · checked 2026-10-22 · primary";
     const [s] = extractFromLine(line, ctx()).sources;
     expect(s).toMatchObject({
-      url: "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      publisher: "he.wikisource.org",
+      url: "https://www.gov.il/BlobFolder/legalinfo/x/he/ordinance.pdf",
       kind: "law",
-      strength: "primary-mirror",
-      mirror_host: "wikisource",
+      strength: "primary",
       checked: "2026-10-22",
       locator: "ss. 64A2, 64A3(a)(1)",
-      anchor: "סעיף_64א2",
     });
     expect(s!.locator_he).toBe("סעיפים 64א2, 64א3(א)(1)");
   });
 
-  it("a documents row with hosts labels only links on those hosts; another copy keeps its own host's label (2026-10-26)", () => {
-    const documents = [{ id: "regs", match: ["ניכוי מריבית"], title_he: "תקנות (ניכוי מריבית)", publisher_he: "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)", kind: "regulation" as const, official_url: null, hosts: ["btl.gov.il"] }];
-    const publishers = { "he.wikisource.org": { publisher: "Hebrew Wikisource", publisher_he: "ויקיטקסט", kind: "law" as const, mirror: "wikisource" as const }, "free-justice.openapi.gov.il": { publisher: "Reshumot", publisher_he: "רשומות (משרד המשפטים)", kind: "law" as const, mirror: null } };
+  it("a documents row with hosts labels only links on those hosts; another host keeps its own label (2026-10-26)", () => {
+    const documents = [{ id: "regs", match: ["ניכוי מריבית"], title_he: "תקנות (ניכוי מריבית)", publisher_he: "שר האוצר (באתר המוסד לביטוח לאומי)", kind: "regulation" as const, official_url: null, hosts: ["btl.gov.il"] }];
+    const publishers = { "free-justice.openapi.gov.il": { publisher: "Reshumot", publisher_he: "רשומות (משרד המשפטים)", kind: "law" as const } };
     const at = (url: string, title: string) => extractFromLine(`[${title}](${url}) · checked 2026-10-26 · primary`, ctx({ documents, publishers })).sources[0]!;
-    expect(at("https://www.btl.gov.il/Laws1/02_0103_100269.pdf", "תקנות מס הכנסה (ניכוי מריבית), נוסח משולב").publisher_he).toBe("שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)");
-    const mirror = at("https://he.wikisource.org/wiki/x", "תקנות מס הכנסה (ניכוי מריבית), ויקיטקסט");
-    expect(mirror.publisher_he).toBe("ויקיטקסט");
-    expect(mirror.kind).toBe("regulation");
+    expect(at("https://www.btl.gov.il/Mediniyut/x.pdf", "תקנות מס הכנסה (ניכוי מריבית)").publisher_he).toBe("שר האוצר (באתר המוסד לביטוח לאומי)");
+    const other = at("https://free-justice.openapi.gov.il/free/moj/x/Documents/y", "תקנות מס הכנסה (ניכוי מריבית), רשומות");
+    expect(other.publisher_he).toBe("רשומות (משרד המשפטים)");
     // the gazette host's "law" default gives way to a title that names regulations
-    expect(at("https://free-justice.openapi.gov.il/free/moj/x/Documents/y", "תקנות מס הכנסה (ניכוי מריבית) (תיקון)").kind).toBe("regulation");
+    expect(other.kind).toBe("regulation");
   });
 
   it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
@@ -58,26 +54,26 @@ describe("extract-sources: fixture Source lines", () => {
   });
 
   it("reference-style links resolve through the file's definitions, with angle brackets and parentheses in URLs", () => {
-    const defs = { tr: "https://he.wikisource.org/wiki/תקנות_(קופות_גמל)_(העברת)", c17: "https://www.analyst.co.il/media/x/c17.pdf" };
+    const defs = { tr: "https://www.gov.il/BlobFolder/x/תקנות_(קופות_גמל)_(העברת).pdf", c17: "https://www.analyst.co.il/media/x/c17.pdf" };
     const line =
-      '[Transfer Regulations 2008, regs. 2(א)(1), (4), Hebrew Wikisource][tr] · checked 2026-10-22 · primary (mirror); [Circular 2017-9-17 "העברת כספים", s.3(א)][c17], pp.11 to 17 · primary (third-party host); [Ordinance](<https://example.org/a(b)c>) s.3 · institution';
+      '[Transfer Regulations 2008, regs. 2(א)(1), (4)][tr] · checked 2026-10-22 · primary; [Circular 2017-9-17 "העברת כספים", s.3(א)][c17], pp.11 to 17 · primary (third-party host); [Ordinance](<https://example.org/a(b)c>) s.3 · institution';
     const r = extractFromLine(line, ctx({ defs }));
-    expect(r.sources.map((s) => s.url).sort()).toEqual(["https://example.org/a(b)c", defs.c17, defs.tr].sort());
+    expect(r.sources.map((s) => s.url).sort()).toEqual(["https://example.org/a(b)c", defs.tr].sort());
     const tr = r.sources.find((s) => s.url === defs.tr)!;
-    expect(tr.title).toBe("Transfer Regulations 2008, regs. 2(א)(1), (4), Hebrew Wikisource");
+    expect(tr.title).toBe("Transfer Regulations 2008, regs. 2(א)(1), (4)");
     expect(tr.locator).toBe("regs. 2(א)(1), (4)");
     expect(tr.kind).toBe("regulation");
-    const c17 = r.sources.find((s) => s.url === defs.c17)!;
-    expect(c17).toMatchObject({ strength: "primary-mirror", mirror_host: "other", page: 11, kind: "circular" });
+    // a circular read on a third-party host is a copy: a lead, never a source
+    expect(r.skipped).toContain(`copy of an official text, a lead only: ${defs.c17}`);
   });
 
   it("several sources: per-segment strength, the line's trailing date, sorted by preference", () => {
     const line =
-      "[Mor bylaws](https://www.moreinvest.co.il/media/a.pdf), s.45 · institution; [Guide 2025](https://www.gov.il/BlobFolder/g/he/guide.pdf), p.8 · primary; [Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.88 · primary (mirror) · checked 2026-10-23";
+      "[Mor bylaws](https://www.moreinvest.co.il/media/a.pdf), s.45 · institution; [Guide 2025](https://www.gov.il/BlobFolder/g/he/guide.pdf), p.8 · primary; [Ordinance](https://fs.knesset.gov.il/a.pdf), s.88 · primary · checked 2026-10-23";
     const r = extractFromLine(line, ctx());
     expect(r.sources.map((s) => [new URL(s.url).host, s.strength])).toEqual([
       ["www.gov.il", "primary"],
-      ["he.wikisource.org", "primary-mirror"],
+      ["fs.knesset.gov.il", "primary"],
       ["www.moreinvest.co.il", "institution"],
     ]);
     // the date after the last strength word is the line's trailing date for the segments that have none of their own
@@ -85,14 +81,16 @@ describe("extract-sources: fixture Source lines", () => {
     expect(r.sources[0]).toMatchObject({ kind: "official_pdf", page: 8 });
   });
 
-  it("a raw Wikisource URL becomes the readable page, with the section anchor", () => {
-    const raw = "https://he.wikisource.org/w/index.php?title=%D7%97%D7%95%D7%A7_%D7%94%D7%91%D7%99%D7%98%D7%95%D7%97_%D7%94%D7%9C%D7%90%D7%95%D7%9E%D7%99&action=raw";
-    const line = `[National Insurance Law (Wikisource mirror)](${raw}), s.345(a) · checked 2026-10-22 · primary (mirror)`;
-    const [s] = extractFromLine(line, ctx()).sources;
-    expect(s!.url).toBe("https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%91%D7%99%D7%98%D7%95%D7%97_%D7%94%D7%9C%D7%90%D7%95%D7%9E%D7%99");
-    expect(s!.anchor).toBe("סעיף_345");
-    expect(rewriteRawWikisource(raw)).toBe(s!.url);
-    expect(urlInBlock(s!.url, { file: "x.md", body: line, defs: {} })).toBe(true);
+  it("a copy of an official text is a lead, never a source: Wikisource, Nevo, a copy folder, a third-party host called a copy", () => {
+    const at = (url: string, word = "primary") => extractFromLine(`[Law](${url}), s.3 · checked 2026-10-22 · ${word}`, ctx());
+    for (const url of ["https://he.wikisource.org/wiki/x", "https://www.nevo.co.il/law_html/law01/255_001.htm", "https://www.btl.gov.il/Laws1/00_0103_000000.pdf"]) {
+      const r = at(url);
+      expect(r.sources, url).toEqual([]);
+      expect(r.skipped).toEqual([`copy of an official text, a lead only: ${url}`]);
+    }
+    expect(at("https://www.example.org/law.pdf", "primary (mirror)").sources).toEqual([]);
+    // a regulator's own host is never a copy, whatever the qualifier says
+    expect(at("https://www.gov.il/BlobFolder/x/law.pdf", "primary (government copy)").sources).toHaveLength(1);
   });
 
   it("a pointers-only line has no sources, the raw text as reason material and the pointed rules", () => {
@@ -130,13 +128,7 @@ describe("extract-sources: parts", () => {
     const links = findLinks('[A "q" title](https://x.org/a(1)(2)?f={"k":1}) and [B](<https://y.org/p(q)>)', {});
     expect(links.map((l) => l.url)).toEqual(['https://x.org/a(1)(2)?f={"k":1}', "https://y.org/p(q)"]);
   });
-  it("maps Latin sub-letters a to e to Hebrew and keeps one level below the section", () => {
-    expect(wikisourceAnchor("s.3(e4)(3)")).toBe("סעיף_3.ה4");
-    expect(wikisourceAnchor("s.125C(b)")).toBe("סעיף_125ג");
-    expect(wikisourceAnchor("s.91(b)(1)")).toBe("סעיף_91");
-    expect(wikisourceAnchor("s.3(ה4)(3)")).toBe("סעיף_3.ה4");
-    expect(wikisourceAnchor("reg. 2(א)")).toBe("סעיף_2.א"); // regulation pages carry the same סעיף ids (checked 2026-10-24)
-    expect(wikisourceAnchor("bylaws clause 7")).toBeUndefined();
+  it("writes Hebrew locators", () => {
     expect(toHebrewLocator("pp.27–30")).toBe("עמודים 27 עד 30");
     expect(toHebrewLocator("reg. 2(א)(7)")).toBe("תקנה 2(א)(7)");
     expect(toHebrewLocator("bylaws p. 3")).toBeUndefined();
@@ -163,7 +155,7 @@ describe("extract-sources: the real records", () => {
   const records = readdirSync(rulesDir).map((f) => JSON.parse(readFileSync(`${rulesDir}/${f}`, "utf8")) as { id: string; strength: string; checked: string });
   const known = new Set(records.map((r) => r.id));
 
-  it("every URL the extraction yields appears in the rule's markdown block (verbatim or as the raw-Wikisource rewrite)", () => {
+  it("every URL the extraction yields appears in the rule's markdown block, verbatim", () => {
     for (const r of records) {
       const block = base.blocks!.get(r.id)!;
       const line = sourceLineOf(block.body) ?? "";

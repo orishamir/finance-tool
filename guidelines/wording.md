@@ -98,8 +98,12 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 ## Numbers and punctuation
 
 - Isolate every number, date and identifier inside Hebrew so it doesn't flip.
-- Shekels after the number with a space: `1,234.50 ₪`. A whole amount of
-  1,000 ₪ or more drops the agorot: `83,641 ₪`. Percent attached: `0.8%`.
+- Shekels after the number with a space. A whole amount never shows agorot
+  (`10 ₪`, not `10.00 ₪`). Agorot depend on the kind of value: a figure set
+  by law or a price from a price list keeps the agorot it prints
+  (`5,645.29 ₪`, `9.90 ₪`); what the site calculates shows whole shekels
+  (`952 ₪`), in tables too, except a cost under 10 ₪ (`3.20 ₪`). Percent
+  attached: `0.8%`.
 - Dates as `22.10.2026`; a month in words when the figure is monthly
   ("ספטמבר 2026").
 - A maqaf with no spaces between a prefix and a number, code or Latin word:

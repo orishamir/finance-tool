@@ -454,8 +454,7 @@ export interface ReferenceView {
   official?: { value: SiteValue; year: string };
   /**
    * The class comes from a track the site chose (P-05) that is not the record the run prices (a company's list): the page says so plainly,
-   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude after the
-   * founder's sign-off of P-05, which does not cover it).
+   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude).
    */
   bySite?: { trackId: number; companyId: string; name: string; company: string };
   none?: { reason: NoRefReason; linkOut: LinkOut | null };

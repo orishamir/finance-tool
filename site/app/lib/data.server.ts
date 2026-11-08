@@ -317,7 +317,7 @@ export function loadNotCovered(): NotCoveredRow[] {
     const ids = cell.split(" · ")[0]!.match(/^[A-Z0-9-]+(?:, [A-Z0-9-]+)*$/) ? cell.split(" · ")[0]!.split(", ") : [];
     const checked = cell.match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? "";
     const strengthHe = cell.split(" · ").at(-1) ?? "";
-    const strength = strengthHe.includes("(עותק)") ? "primary-mirror" : strengthHe.includes("ראשי") ? "primary" : strengthHe.includes("מוסדי") ? "institution" : "secondary";
+    const strength = strengthHe.includes("ראשי") ? "primary" : strengthHe.includes("מוסדי") ? "institution" : "secondary";
     return {
       he: m[1]!,
       explanation: m[2]!.trim(),
@@ -393,8 +393,6 @@ export interface PinnedRules {
   /** Wrapper id → two or three rule ids for its guide page's "worth knowing" block. */
   guide_blocks: Record<string, string[]>;
   rationale_he?: string;
-  provisional?: boolean;
-  signed_off_on: string;
 }
 
 /** data/parameters/home-guide-door.json (P-10): the guide pages the first page's guide door names, as id and name, in order. */

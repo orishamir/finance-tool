@@ -4,7 +4,7 @@ import { ruleRecord, valueObject } from "../src/index.ts";
 const sourced = {
   value: 1.05,
   unit: "pct_per_year",
-  source: { url: "https://example.org/reg", title: "reg. 2(a)", publisher: "Knesset", strength: "primary-mirror" },
+  source: { url: "https://example.org/reg", title: "reg. 2(a)", publisher: "Knesset", strength: "primary" },
   checked: "2026-10-22",
   effective_from: "2014-01-01",
   effective_to: null,

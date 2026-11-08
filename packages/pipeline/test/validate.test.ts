@@ -242,8 +242,6 @@ describe("P-08 exposure holding wrapper", () => {
     id: "exposure-holding-wrapper",
     method_id: "P-08",
     rationale: "r",
-    signed_off_by: "founder",
-    signed_off_on: "2026-10-24",
     shown_as: "site parameter",
     holding: { [id]: { wrapper_id: { ...vo, value: wrapper, unit: "text", update_rule: "founder" } } },
   });
@@ -263,8 +261,6 @@ describe("P-05 instruments map", () => {
     id: "illustrative-scenario",
     method_id: "P-05",
     rationale: "r",
-    signed_off_by: "founder",
-    signed_off_on: "2026-10-23",
     shown_as: "site parameter",
     instruments,
   });
@@ -309,7 +305,7 @@ describe("P-05 instruments map", () => {
 
 describe("P-05 instruments track", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
-  const p05 = (instruments: unknown) => ({ id: "illustrative-scenario", method_id: "P-05", rationale: "r", signed_off_by: "founder", signed_off_on: "2026-10-23", shown_as: "site parameter", instruments });
+  const p05 = (instruments: unknown) => ({ id: "illustrative-scenario", method_id: "P-05", rationale: "r", shown_as: "site parameter", instruments });
   const cma = (period: string, ids: number[]) => ({ dataset: "gemelnet", report_period: period, funds: ids.map((fund_id) => ({ fund_id })) });
   const messages = (files: Record<string, unknown>) => run(files).filter((p) => p.file.startsWith("parameters")).map((p) => p.message).join("\n");
 

@@ -399,7 +399,6 @@ function Words({ today }: { today: string }) {
       <Demo name="StrengthLabel, ReadingTag" use={g.uses.StrengthLabel}>
         <Grid>
           <State label="primary: plain"><div><StrengthLabel strength="primary" /></div></State>
-          <State label="primary-mirror: plain"><div><StrengthLabel strength="primary-mirror" /></div></State>
           <State label="institution: caution"><div><StrengthLabel strength="institution" /></div></State>
           <State label="secondary: caution, only a leftover still listed in unofficial-leftovers.json (nothing new unofficial is cited)"><div><StrengthLabel strength="secondary" /></div></State>
           <State label="open: blocked, with a lock"><div><StrengthLabel strength="open" /></div></State>

@@ -1317,7 +1317,7 @@ export const tieShareOf = (bundle: Pick<WorkbenchBundle, "p01">): number => tieT
 export const tieThresholdValue = (bundle: Pick<WorkbenchBundle, "p01">): SiteValue => {
   const p = bundle.p01;
   const v = p.value!;
-  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: (v.notes ?? "").startsWith("provisional") } };
+  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
 };
 
 /**

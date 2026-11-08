@@ -11,7 +11,7 @@
 // the amounts beside it fell 2 to 75 ₪ short of the total): inside the part where it fits, else, on a `md` bar, under the bar at the part's
 // place, with its colour; and always in the box. The rounding that makes the amounts add up to the total never goes to a part whose amount
 // is not written.
-import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { useGlidingSeries, type GlideSeries } from "./chart-glide";
@@ -113,8 +113,9 @@ export function placeLabels(at: readonly number[], widths: readonly number[], ro
   return pos;
 }
 
-/** The part colours dark enough that an amount inside them is written in light ink. */
-const DARK_FILLS: ReadonlySet<string> = new Set(["bg-chart-cost-other"]);
+/** The part colours on which an amount inside reads better in light ink. */
+// the tax's rose too (2026-11-08): near-black on it read at 3.55:1, white at 4.73:1
+const DARK_FILLS: ReadonlySet<string> = new Set(["bg-chart-cost-other", "bg-chart-tax"]);
 
 /** A part's width is at least a sliver while its bar has anything, and a part this thin has no edge of its own. */
 const THIN = 0.003;
@@ -124,7 +125,8 @@ const SLIVER = 0.01;
 /**
  * `scale`: the total that fills the whole width. `size`: `sm` for a list row, `md` for a figure of its own. `label` is the bar's spoken
  * summary; the figures beside it are the caller's. `highlight`: the legend item set apart, on every bar it is compared with.
- * A `sm` bar sits in a row that picks the row on a tap, so it answers a mouse only. A part of the bar that is not in `parts` any more
+ * A `sm` bar sits in a row that picks the row on a tap: a mouse's click is left to the row (pointing shows the box), and a finger's tap
+ * shows the part's box and still picks the row (2026-11-08: on a phone a tap showed nothing of the part). A part of the bar that is not in `parts` any more
  * keeps its place and shrinks to nothing. `total`: the whole-shekel total the caller writes beside the bar; the amounts written in the parts,
  * under the bar and in its box are whole shekels that add up to it (pass 5 readers: 693 + 354 + 719 + 5,555 = 7,321 beside 7,323). Without
  * it, to the parts' own rounded sum. A `md` bar keeps a line under it, at one height, for the amounts too narrow to write inside; the root
@@ -210,10 +212,10 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
           return (
             <span
               key={p.id}
-              {...(named ? pick.bind(p.id, size === "md") : {})}
+              {...(named ? pick.bind(p.id, size === "md" ? true : "touch") : {})}
               className={cx(
                 "relative flex shrink-0 items-center justify-center text-xs font-semibold tabular-nums whitespace-nowrap",
-                // the remainder's grey is dark (pass 7: re-picked through the palette validator), and its amount is written in light ink
+                // the remainder's grey is dark (pass 7: re-picked through the palette validator) and the tax's rose mid-dark: their amounts are written in light ink
                 DARK_FILLS.has(p.className) ? "text-foreground" : "text-background",
                 live[i] && i !== lastLive && "border-e border-card",
                 i === firstLive && "rounded-s-sm",
@@ -261,10 +263,25 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   );
 }
 
-/** The box of a bar as a whole: every part's name and amount, the one pointed at with its share, what it is and its source, then the total. */
+/**
+ * The box of a bar as a whole: every part's name and amount, the one pointed at with its share, what it is and its source, then the total.
+ * It stands from one end of the bar and is moved along, before paint, so it stays on the screen (2026-11-08: a list row's bar on a 320 px
+ * phone is narrower than the box, which ran 65 px past the screen's edge once a tap showed it).
+ */
 function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; /** Whole shekels, of the parts that add up to the total. */ amount: number }[]; active: string; share: number; total: number; toStart: boolean }) {
+  const box = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    el.style.transform = "";
+    const r = el.getBoundingClientRect();
+    const room = document.documentElement.clientWidth;
+    const edge = 8;
+    const dx = r.left < edge ? edge - r.left : r.right > room - edge ? room - edge - r.right : 0;
+    if (dx) el.style.transform = `translateX(${dx}px)`;
+  });
   return (
-    <span className={cx("absolute bottom-full mb-1 z-20 pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "end-0" : "start-0")}>
+    <span ref={box} className={cx("absolute bottom-full mb-1 z-20 pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "end-0" : "start-0")}>
       {rows.map(({ part, amount }) => (
         <span key={part.id} className="flex flex-col">
           <span className={cx("flex items-baseline gap-1.5", part.id === active ? "font-semibold" : "text-muted-foreground")}>

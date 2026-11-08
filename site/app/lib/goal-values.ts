@@ -7,11 +7,10 @@ import type { Goal, PresetRecord, Presets, ResolvedGoal } from "./goal";
 export interface PresetMeta {
   rationale: string;
   rationaleHe?: string | null;
-  signedOffOn: string | null;
 }
 
 /** A P-07 value object with the site-parameter marker the provenance sheet reads. */
-export const asPresetParam = (v: ValueObject, meta: PresetMeta): SiteValue => ({ ...v, parameter: { rationale: meta.rationale, rationaleHe: meta.rationaleHe ?? null, signedOffOn: meta.signedOffOn, provisional: false } });
+export const asPresetParam = (v: ValueObject, meta: PresetMeta): SiteValue => ({ ...v, parameter: { rationale: meta.rationale, rationaleHe: meta.rationaleHe ?? null } });
 
 export interface FieldValues {
   years: SiteValue | null;

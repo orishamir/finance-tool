@@ -29,6 +29,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
   can. A small shift is better than a blank gap kept for a rare case.
 - **Phones.** Touch targets at least 44 px, nothing that depends on hover,
   nothing cut off at 390 px.
+- **Money fields take whole shekels.** A field for an amount of money
+  accepts whole shekels only. A rate (interest, inflation, a return) and a
+  fee from a price list may have decimals.
 - **Choose by tapping the option itself.** When the reader picks one of
   several options shown as cards or chips, the whole card is the button:
   a tap anywhere on it chooses it. No "choose this" link or button inside
@@ -70,6 +73,18 @@ What goes on a page is his call. When he asks for a change, build it this way:
   `max-w-measure` (38rem).
 - **Right to left.** Logical CSS properties only (`ms-`, `pe-`, `start`,
   `end`).
+
+## Tables
+
+- **A table explains itself.** Each column head, row name and cell says
+  what it holds, in the reader's words, with the amount or condition it
+  depends on: "בשנה על 10,000 ₪, אחרי מס", not "הכי הרבה" plus a sentence
+  that decodes it.
+- **When a head, name or cell needs more than it can say, add a "?" beside
+  it** (`HelpMark`) that opens the longer explanation on a tap.
+- **A sentence above a table may say what the table is about, never what
+  one column, row or cell means.** That goes in the head or its "?". Where
+  the table's title already says what it is about, keep just the title.
 
 ## Lists of products
 

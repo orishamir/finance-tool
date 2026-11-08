@@ -22,7 +22,6 @@ const PILL: Record<string, number> = {
     "components/compare/strip.tsx": 1,
     "components/exposure-mode/chart.tsx": 2,
     "components/exposure-mode/fields.tsx": 2,
-    "components/guide-signature/current-account.tsx": 2,
     "components/guide/sections.tsx": 4,
     "components/timeline/Timeline.tsx": 3,
   };
@@ -135,7 +134,7 @@ patterns["a name in a plain bdi"] = {
     "components/fees/parts.tsx": 2,
     "components/fees/sensitivity.tsx": 2,
     "components/guide-signature/bank-deposit.tsx": 5,
-    "components/guide-signature/current-account.tsx": 8,
+    "components/guide-signature/current-account.tsx": 3,
     "components/guide-signature/keren-hishtalmut.tsx": 3,
     "components/guide-signature/kupat-gemel-lehashkaa.tsx": 2,
     "components/guide-signature/makam.tsx": 1,

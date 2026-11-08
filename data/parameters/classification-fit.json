@@ -114,7 +114,5 @@
   "rationale": "A track classified as equity (מניות) fits a long horizon and a larger fall on the way; a general track (כללי) fits a medium horizon and a smaller fall. The regulator's other classifications hold very different mixes under one name (for example index trackers of shares and of bonds), so they show \"no rule\".",
   "rationale_he": "מסלול בסיווג ״מניות״ מתאים לאופק ארוך ולירידה גדולה יותר בדרך, ומסלול בסיווג ״כללי״ לאופק בינוני ולירידה קטנה יותר. שאר הסיווגים של הרשות מכילים תמהילים שונים מאוד תחת שם אחד, למשל מחקי מדד של מניות ושל אג״ח, ולכן הם מוצגים עם ״אין כלל״.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
-  "signed_off_by": "founder",
-  "signed_off_on": "2026-10-23",
   "shown_as": "site parameter"
 }

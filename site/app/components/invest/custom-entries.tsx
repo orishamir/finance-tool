@@ -184,7 +184,7 @@ function BrokerPanel({ headId, broker, houses, onHouse, others, writable, onSave
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
   // no "0" in an empty field: an empty field is a price not known, not a price of zero
-  const field = (k: "tradeMin" | "custodyMin" | "monthlyFee", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={nisCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
+  const field = (k: "tradeMin" | "custodyMin" | "monthlyFee", label: string, unit: string) => <NumberField agorot label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={nisCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const percent = (k: "tradePct" | "custodyPct" | "fxPct", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
     flushPendingFields();
