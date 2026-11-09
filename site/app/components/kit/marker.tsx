@@ -1,12 +1,12 @@
 // A draggable marker on a chart axis, and the two-bar comparison with a bracket (guide visuals, D29).
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode, type RefObject } from "react";
+import { useCallback, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode, type RefObject } from "react";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { cx } from "./cx";
 import { clamp } from "./chart-zoom";
 import { Tpl } from "./sentence";
+import { useIsoLayoutEffect } from "../../lib/hooks";
 
-const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /** The measured size of a box (the SVG plots are as wide as their card), `initialWidth` before the script runs. */
 export function useBox(minWidth = 240, minHeight = 180, initialWidth = 326): [RefObject<HTMLDivElement | null>, { width: number; height: number }] {
@@ -121,7 +121,7 @@ const MARKER_CLEAR = 13;
 /**
  * The name of a band on a marker's lane ("נעול: משיכה ממוסה", "אפשר למשוך בפטור") inside its band (`from` to `to`, px from the plot's
  * left), at the band's `prefer` end. Over a lane the marker crosses, give `markerX`: when the marker stands on the label it moves to the
- * band's other end or beside the marker, and when it fits nowhere it fades out (the marker ran through the words on a phone, 2026-10-26).
+ * band's other end or beside the marker, and when it fits nowhere it fades out (the marker ran through the words on a phone).
  * In the row above a lane, where the marker's line does not reach, leave `markerX` out. The parent reads left to right, as the marker's does.
  */
 export function LaneLabel({ from, to, top, markerX, prefer = "start", children }: { from: number; to: number; top: number; markerX?: number; prefer?: "start" | "end" | "center"; children: ReactNode }) {
@@ -162,7 +162,7 @@ export interface GainBar {
  * Two (or more) amounts as bars from the same start, the difference between the two ends as a bracket with its own number
  * (D29 rule 6: a difference is drawn as a difference, never as a third bar that reads like a third option). Bars grow from the start edge.
  * `diffLabel` is a sentence with `{gap}` that says which side has more ("קרן ההשתלמות משאירה {gap} יותר"): the number sits in it under
- * the bracket, not in the amounts' column, where a bare "400 ₪" read like a third amount with no sign (founder, 2026-10-26).
+ * the bracket, not in the amounts' column, where a bare "400 ₪" read like a third amount with no sign.
  */
 export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: SiteValue | null; diffLabel: string }) {
   const nums = bars.map((b) => Math.max(0, Number(b.value.value) || 0));
@@ -190,7 +190,7 @@ export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: Sit
             <div className="relative h-3">
               <div className="absolute top-0 h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[inset-inline-start,width] duration-[var(--duration-chart)]" style={{ insetInlineStart: `${(lo / max) * 100}%`, width: `${((hi - lo) / max) * 100}%` }} />
             </div>
-            {/* the label sits under the bracket's end of the row at full width: padding it to the bracket squeezed it into one word a line (2026-10-25) */}
+            {/* the label sits under the bracket's end of the row at full width: padding it to the bracket squeezed it into one word a line */}
             <p className="text-sm mt-0.5 text-end">
               <Tpl t={diffLabel.includes("{gap}") ? diffLabel : `${diffLabel} {gap}`} vars={{ gap: <strong className="font-semibold"><Num value={diff} /></strong> }} />
             </p>

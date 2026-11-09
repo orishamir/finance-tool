@@ -19,6 +19,7 @@ import { appendFileSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readd
 import { tmpdir } from "node:os";
 import { basename, dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { israelToday } from "./israel-date.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
@@ -28,7 +29,7 @@ const indexPath = join(lib, "index.jsonl");
 const triedPath = join(lib, "tried.jsonl");
 const unreachablePath = join(lib, "unreachable.jsonl");
 const store = join(lib, "store");
-const today = new Date().toISOString().slice(0, 10);
+const today = israelToday();
 const agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36";
 // Maya refuses automated browsing (it stays by the founder's hand); the others are not documents.
 const skipHosts = /(^|\.)(maya\.tase\.co\.il|github\.com|githubusercontent\.com|claude\.ai|localhost)$/;

@@ -1,8 +1,8 @@
-// What the site found in a company's own documents (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): on a managing
+// What the site found in a company's own documents (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4): on a managing
 // company's page and on a bank's or broker's page, "מה כתוב במסמכים של {company}", grouped by topic; and on /companies the same for
 // the companies the site has no page for, one fold per company. Each item is the rule card (inline), which names the document, the
 // date it was read and, for a rule not shown to hold everywhere, "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי". A company's section
-// holds only records from its own documents (review, 2026-10-26); what no section lists, the not-rules, has a section of its own at
+// holds only records from its own documents; what no section lists, the not-rules, has a section of its own at
 // the end of /companies, "לא נכלל ככלל".
 // Built from the kit's Section, FoldGroup (`variant="section"`, controlled) and Card and the provenance layer's RuleCard; a feature
 // block of the company pages.
@@ -63,7 +63,7 @@ function Cards({ ids, company }: { ids: readonly string[]; company?: string }) {
 export function CompanyTerms({ name, groups }: { name: string; groups: readonly TermGroup[] }) {
   const hash = useHash();
   const total = groups.reduce((n, g) => n + g.ids.length, 0);
-  // every group starts closed (legal text; the founder, 2026-10-27); the one an address names opens
+  // every group starts closed (legal text); the one an address names opens
   const [opened, setOpened] = useState<Set<string>>(() => new Set());
   const named = groups.find((g) => g.ids.includes(hash))?.key;
   useEffect(() => {
@@ -94,7 +94,7 @@ export function CompanyTerms({ name, groups }: { name: string; groups: readonly 
 /**
  * /companies: the terms of the companies the site has no page for, a fold each; then, in a section of its own, what the site keeps but
  * does not show as a rule, which no company's section lists (the not-rules: a list, a count, a site's
- * terms, a company's tariff; review, 2026-10-26), its cards shown in full.
+ * terms, a company's tariff), its cards shown in full.
  */
 export function NoPageCompanyTerms({ companies, none }: { companies: readonly { id: string; name: string; ids: string[] }[]; none: readonly string[] }) {
   const hash = useHash();

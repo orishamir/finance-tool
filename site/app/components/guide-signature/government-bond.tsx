@@ -86,7 +86,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
         label={copy.bond.shift}
         valueText={
           <>
-            <Num value={shiftIn} display={signed(shift)} /> <Term id="נקודת אחוז">{copy.bond.shiftUnit}</Term>
+            <Num value={shiftIn} display={signed(shift)} /> <Term id="נקודת אחוז">{Math.abs(shift) === 1 ? copy.bond.shiftUnitOne : copy.bond.shiftUnit}</Term>
           </>
         }
         min={SHIFT_MIN}

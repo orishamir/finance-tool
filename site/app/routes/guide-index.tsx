@@ -1,9 +1,8 @@
 // The guide list (flows 6.4): where the money is held, what it is invested in, and the not-covered card.
 import { Link, useLoaderData } from "react-router";
-import type { Route } from "./+types/guide-index";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
 import { PageShell } from "../components/shell";
-import { Card, ChipList, RowArrow } from "../components/kit";
+import { Card, ChipList, gershayim, RowArrow } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
@@ -13,8 +12,8 @@ export async function loader() {
   const terms = loadTerms();
   const line = (name: string) => terms.find((t) => t.he === name)?.explanation ?? null;
   const products = loadProducts();
-  // D6 (amended 2026-10-27): "איפה הכסף מוחזק" lists only wrappers; a security (makam, a bond, a money-market fund) is what the money is invested in
-  // a name that must be decoded also shows the plain name the product's own record carries (audit A44)
+  // D6: "איפה הכסף מוחזק" lists only wrappers; a security (makam, a bond, a money-market fund) is what the money is invested in
+  // a name that must be decoded also shows the plain name the product's own record carries
   const wrappers = products.filter((w) => !isSecurity(w)).map((w) => ({ id: w.id, name: w.names.he[0]!, line: line(w.names.he[0]!), plain: (copy.plainSubtitleFor as readonly string[]).includes(w.id) ? (w.names.he[1] ?? null) : null }));
   const securities = products.filter(isSecurity);
   const folds = exposureFolds();
@@ -61,13 +60,13 @@ function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name
       <Link to={href} className="block h-full">
         <Card className={`h-full flex items-start justify-between gap-4 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)] ${quiet ? "bg-background" : ""}`}>
           <span className="flex flex-col gap-1">
-            <span className="text-lg font-semibold">{name}</span>
+            <span className="text-lg font-semibold">{gershayim(name)}</span>
             {plain && (
               <span className="text-sm">
-                {copy.alsoCalled} <bdi>{plain}</bdi>
+                {copy.alsoCalled} <bdi>{gershayim(plain)}</bdi>
               </span>
             )}
-            {line && <span className="text-sm text-muted-foreground">{line}</span>}
+            {line && <span className="text-sm text-muted-foreground">{gershayim(line)}</span>}
           </span>
           <RowArrow className="mt-1" />
         </Card>
@@ -118,11 +117,11 @@ export default function GuideIndex() {
                   <li key={e.key}>
                     <Card className="h-full flex flex-col gap-2">
                       <Link to={e.href} className="flex items-start justify-between gap-4 hover:underline">
-                        <span className="text-lg font-semibold">{e.name}</span>
+                        <span className="text-lg font-semibold">{gershayim(e.name)}</span>
                         <RowArrow className="mt-1" />
                       </Link>
-                      {e.line && <span className="text-sm text-muted-foreground">{e.line}</span>}
-                      <ChipList heading={`${e.name} ${copy.fundKindsLine}`} headingHidden items={e.kinds.map((k) => ({ id: k.href, label: k.label, href: k.href }))} value={null} />
+                      {e.line && <span className="text-sm text-muted-foreground">{gershayim(e.line)}</span>}
+                      <ChipList heading={`${gershayim(e.name)} ${copy.fundKindsLine}`} headingHidden items={e.kinds.map((k) => ({ id: k.href, label: gershayim(k.label), href: k.href }))} value={null} />
                     </Card>
                   </li>
                 ) : (

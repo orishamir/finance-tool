@@ -2,7 +2,7 @@
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { datedDay, tariffDated } from "./tariff-date";
-import { depositKindRules, printedQuotes } from "./deposit-kind";
+import { depositKindRules, printedQuotes, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
@@ -29,6 +29,7 @@ import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from ".
 import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type TextFragment } from "./sources";
+import { heCollator } from "./format";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -53,7 +54,6 @@ export function latestSnapshots(): FeesSnapshot[] {
   return [...best.values()].map((b) => b.record);
 }
 
-const collator = new Intl.Collator("he");
 
 /** Banks and brokers only: a provident manager's snapshot stays with the manager's page (design-spec 20). */
 function institutionSnapshots(): (FeesSnapshot & { kind: InstitutionKind })[] {
@@ -81,7 +81,7 @@ function allInstitutionRows(): InstitutionRow[] {
   for (const d of loadDepositTerms()) {
     if (!rows.some((r) => r.id === d.bank)) rows.push({ id: d.bank, name: d.bank, kind: "bank", dated: null, missing: true, noSnapshot: true });
   }
-  return rows.sort((a, b) => collator.compare(a.name, b.name));
+  return rows.sort((a, b) => heCollator.compare(a.name, b.name));
 }
 
 /** The company ids of the CMA data, so a slug never shadows one (the page resolves the CMA first). */
@@ -123,8 +123,8 @@ function rateTableUrl(bank: string): string | null {
 
 // ---------------------------------------------------------------- value objects
 
-// D31: everything on a company's page is that company's own figure about its own product
-function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
+// D31: everything on a company's page is that company's own figure about its own product; the deposits page shows each bank's the same way
+export function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
   return ownBy({ ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
 }
 
@@ -178,7 +178,7 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     anchor: d.anchor ?? null,
     spread: d.spread ? mark(d.spread) : null,
     // a doubt travels with the number: its sheet says it, not "not found in the source" (Mizrahi-Tefahot 189 prints a rate per exit period)
-    rate: mark(d.doubt_he ? { ...d.rate_offered, notes: d.doubt_he } : d.rate_offered),
+    rate: mark(d.doubt_he ? { ...shownRate(d), notes: d.doubt_he } : shownRate(d)),
     asOf: dateValue(asOfDate ?? d.snapshot, d.rate_offered, d.rate_offered.checked, t, d.snapshot, owner),
     asOfAfterRead: !!asOfDate && asOfDate > d.rate_offered.checked,
     linkage: d.linkage,
@@ -189,7 +189,7 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     breakTerms: { penalty: d.break.penalty, quotes: printedQuotes(d.break.mechanism_text), rules: d.break.rule_ids },
     exitPoints: { exists: d.exit_points.exists, everyMonths: d.exit_points.every_months },
     autoRenew: { value: d.auto_renew.value, maxRenewals: d.auto_renew.max_renewals },
-    // what sets the deposit apart (2026-11-07): its kind as labels, the conditions the bank prints in plain Hebrew, and an open doubt; the
+    // what sets the deposit apart: its kind as labels, the conditions the bank prints in plain Hebrew, and an open doubt; the
     // record's English working notes stay in the data (the current account's card showed them as the bank's words)
     variant: d.variant ?? [],
     conditions: d.conditions_he ?? null,
@@ -245,7 +245,7 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   const stale = isStale(s.snapshot, t);
   const dated = tariffDated(s.tariff, s.snapshot);
   const day = datedDay(dated);
-  // every line of the price list (founder, 2026-11-05: "show all lines"), in its own order; the card groups them by kind
+  // every line of the price list, in its own order; the card groups them by kind
   const lines: TariffLineRow[] = s.lines.filter((l) => l.level === "list").map((l) => lineRow(l, t, s.snapshot, s.provider.name_he, s.tariff.url));
   const min = s.minimums.account_opening;
   return {
@@ -296,7 +296,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const wrappers = loadProducts();
   const rows = deposits.map((d) => productRow(d, t));
   const groups: ProductGroup[] = wrapperOrder
-    .map((w) => ({ wrapperId: w, wrapperName: wrappers.find((x) => x.id === w)?.names.he[0] ?? w, products: rows.filter((r) => r.wrapperId === w).sort((a, b) => collator.compare(a.name, b.name)) }))
+    .map((w) => ({ wrapperId: w, wrapperName: wrappers.find((x) => x.id === w)?.names.he[0] ?? w, products: rows.filter((r) => r.wrapperId === w).sort((a, b) => heCollator.compare(a.name, b.name)) }))
     .filter((g) => g.products.length > 0);
   const latest = [...deposits].sort((a, b) => ((a.rate_offered.effective_from ?? a.snapshot) < (b.rate_offered.effective_from ?? b.snapshot) ? 1 : -1))[0];
   const tariff = snap ? tariffCard(snap, allRules, t) : null;
@@ -369,7 +369,7 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
     const seen = new Set<string>();
     for (const raw of [...d.names["447"], ...d.names.app, ...d.names.ad, ...d.names.abbrev]) {
       // a table name that opens with the bank's code ("256 - רימונים- …") keeps the code after the name, so a bare number ("25") finds
-      // a fund's track number first and the deposit's code still finds the deposit (2026-11-06, Mizrahi-Tefahot's 256 collected)
+      // a fund's track number first and the deposit's code still finds the deposit (Mizrahi-Tefahot's 256 collected)
       const coded = /^(\d+)\s*-\s*(.+)$/.exec(raw);
       const n = coded ? `${coded[2]} (${coded[1]})` : raw;
       if (seen.has(n)) continue;
@@ -398,9 +398,9 @@ export function companyLinks(): Record<string, CompanyLink> {
   for (const r of loadInstitutionRegistry()) {
     const brand = brandOfMember(r.id);
     const page = brand ? brand.page : r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
-    // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31; review, 2026-10-26)
+    // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31)
     const docs = { own_hosts: r.own_hosts, ...(r.filing_names ? { filing_names: r.filing_names } : {}) };
-    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false, docs };
+    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/documents#${noPageAnchor(r.id)}`, hasPage: false, docs };
   }
   return out;
 }
@@ -434,7 +434,7 @@ let ownDocsCache: { rules: Record<string, RuleRecord>; out: OwnDocs } | null = n
 
 /**
  * Per record that is not general, the companies it names whose own document it cites (the registry's `own_hosts` and
- * `filing_names`; review, 2026-10-26). The root loader gives it to every page, so a rule card names only those and links only to
+ * `filing_names`). The root loader gives it to every page, so a rule card names only those and links only to
  * where the record is listed. A record that cites none is left out of the map.
  */
 export function ownDocuments(rules: Record<string, RuleRecord> = loadRules()): OwnDocs {
@@ -453,7 +453,7 @@ export function ownDocuments(rules: Record<string, RuleRecord> = loadRules()): O
 /**
  * The records a company's section lists (spec §4: "מה כתוב במסמכים של {company}", grouped by product), by topic in the rules pages'
  * order: those that are not general and cite one of these companies' own documents; never a not-rule, and never a record about the
- * company that cites none of its documents (review, 2026-10-26).
+ * company that cites none of its documents.
  */
 export function companyTermGroups(registryIds: readonly string[], rules: Record<string, RuleRecord>, topic: (file: string) => string, ownDocs: OwnDocs = ownDocuments(rules)): CompanyTermGroup[] {
   const want = new Set(registryIds);
@@ -487,7 +487,7 @@ export function noPageCompanyTerms(rules: Record<string, RuleRecord>, ownDocs: O
     .filter((r) => !links[r.id]?.hasPage)
     .map((r) => ({ id: r.id, name: r.name_he, ids: listed.filter((x) => x.at.includes(r.id)).map((x) => x.id).sort(byId) }))
     .filter((c) => c.ids.length > 0)
-    .sort((a, b) => collator.compare(a.name, b.name));
+    .sort((a, b) => heCollator.compare(a.name, b.name));
   const none = listed.filter((x) => x.at.length === 0).map((x) => x.id).sort(byId);
   return { companies, none };
 }

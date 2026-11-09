@@ -1,4 +1,4 @@
-// A link out to a document where a word or a figure stands (2026-11-04): a price list's page, a promotion's terms, the page an advert
+// A link out to a document where a word or a figure stands: a price list's page, a promotion's terms, the page an advert
 // was seen on. It opens in a new tab, ends in the outward arrow, and keeps a 44 px target; long Hebrew titles wrap anywhere. Its `href`
 // comes from `sourceHref` (lib/sources.ts), which opens a PDF at its page and a web page at the quoted words.
 import type { ReactNode } from "react";

@@ -135,7 +135,7 @@ describe("a date a document prints as a month (2026-11-07)", () => {
   });
 });
 
-// fresh readers, 2026-11-07: "8.17 שנים" read as oddly precise; a point where the conclusion changes is shown as a reader means it
+// "8.17 שנים" read as oddly precise; a point where the conclusion changes is shown as a reader means it
 describe("readerRound: a flip point as a reader means it, rounded away from the value now", () => {
   it("years whole, or halves under 3, toward the side the conclusion has changed on", () => {
     expect(readerRound(8.17, "lo", "years")).toBe(8);

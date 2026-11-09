@@ -180,7 +180,9 @@
 
   /* The three number states (D7) */
   --sourced: var(--palette-neutral-500); /* solid hairline under a sourced number */
-  --computed: var(--palette-violet-400); /* dotted underline and mark of a computed number */
+  --computed: var(--palette-violet-400); /* mark of a computed number (its tag's ink) */
+  --computed-line: var(--palette-violet-600); /* dotted underline under a computed number: a step darker than the mark, so the line
+                                                 stays quiet under running text */
   --computed-subtle: var(--palette-violet-950);
   /* A value the person entered outside a chart's fields (an offer, a custom entry). A chart field's value, its default or what the
      reader typed, is a plain number with no blue (founder, 2026-11-08, guidelines/charts.md). */
@@ -223,7 +225,7 @@
   --chart-fee-3: var(--palette-teal-300);
   --chart-fee-4: var(--palette-magenta-400);
   /* the indices page's change chart (2026-10-28): one line per plan number; the second line near-white, not gold, since amber and its
-     neighbours mean status, never a series (charts.md; 2026-11-08) */
+     neighbours mean status, never a series (charts.md) */
   --chart-lever-1: var(--palette-orange-500);
   --chart-lever-2: var(--palette-neutral-100);
   --chart-lever-3: var(--palette-teal-300);
@@ -240,7 +242,7 @@
   --gain: oklch(0.74 0.17 150);
   --loss: oklch(0.63 0.2 25);
   /* a stair takes the hue of what changed (the account, the kind of fund, the fund): teal, magenta, near-white, so the three never read as
-     shades of one family (near-white, not gold, since 2026-11-08: amber and its neighbours mean status, charts.md; orange sat too near the
+     shades of one family (near-white, not gold: amber and its neighbours mean status, charts.md; orange sits too near the
      gain and loss colours); the start is a darker neutral and
      the column under a floating stair is the card's own darker step */
   --chart-stairs-start: var(--palette-neutral-600);
@@ -270,7 +272,7 @@
   --chart-currency: var(--palette-gold-200);
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
   /* the index page's two kinds of fund (2026-10-29, founder: option A of 8dd1f013:research/specs/2026-10-29-hedging): keeping the index's currency, and
-     neutralising it: teal against magenta (gold until 2026-11-08: amber and its neighbours mean status, charts.md), not the fee orange the
+     neutralising it: teal against magenta (not gold: amber and its neighbours mean status, charts.md), not the fee orange the
      page's cost bars use */
   --chart-kind-unhedged: var(--palette-teal-300);
   --chart-kind-hedged: var(--palette-magenta-400);
@@ -318,8 +320,7 @@
   --word-spacing-hebrew: 0.05em;
 
   /* Provenance marks under numbers (D7) */
-  --num-underline-thickness: 1px; /* sourced: solid */
-  --num-dotted-thickness: 2px; /* computed: dotted needs the extra weight to read as dots */
+  --num-underline-thickness: 1px; /* sourced solid, computed dotted */
   --num-underline-offset: 0.3em;
 
   /* Motion. Set to zero when the device asks for reduced motion. */

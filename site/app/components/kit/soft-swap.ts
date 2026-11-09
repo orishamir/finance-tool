@@ -21,7 +21,7 @@ const DIM = 0.4;
 const tokenMs = (name: string) => (typeof window === "undefined" ? 0 : cssMs(getComputedStyle(document.documentElement).getPropertyValue(name)));
 
 /**
- * A switch that replaces most of a page (another index, D62, 2026-11-06): what lies below it may move, and it does not jump. On the tap
+ * A switch that replaces most of a page (another index, D62): what lies below it may move, and it does not jump. On the tap
  * the block dims at once, the first answer inside 100 ms (the next index is laid out after the dim is painted, and that can take longer
  * on a phone); when the new content is in place it fades back in where it landed. Opacity only, on the motion tokens: a reader who asks
  * for less motion gets the dim and the return without the fades.

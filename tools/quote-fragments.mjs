@@ -28,6 +28,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { createHash } from "node:crypto";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { israelToday } from "./israel-date.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
@@ -37,7 +38,7 @@ const has = (k) => args.includes(`--${k}`);
 const OUT = join(root, "data/sources/fragments.json");
 const HINTS = join(here, "quote-fragments-hints.json");
 const CACHE = opt("cache") ?? join(process.env.TMPDIR ?? "/tmp", "quote-fragments-cache");
-const today = new Date().toISOString().slice(0, 10);
+const today = israelToday();
 
 /** The same test as site/app/lib/sources.ts `isPdfUrl`. */
 export const isPdfUrl = (url) =>

@@ -2,8 +2,6 @@
 // instrument collections and the step from the records P-05's `instruments` map names to the engine's
 // `InstrumentTerms`. Server-only. Nothing here holds a rate or a term: every number comes from a record under
 // `data/` and keeps its value object, so the values sheet can show its source.
-import { existsSync, readdirSync } from "node:fs";
-import { join } from "node:path";
 import { invest as investCopy } from "../copy";
 import { fundOf, gapListOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
@@ -22,25 +20,9 @@ import {
   type RuleRecord,
   type ValueObject,
 } from "@finance-tool/schema";
-import type { z } from "zod";
-import { loadSecurities, root } from "./data.server";
+import { loadSecurities, readDirFiles } from "./data.server";
 import { exposureFoldedInto } from "./guide-nav";
 import { cmaFeeValue, computed, depositFeeNoneByRule, ownBy, ruleFigure, type SiteValue } from "./value";
-import { readParsedCached } from "./read-cache.server";
-
-// The two helpers of data.server.ts are private there; copied, not imported (both read through the one cache).
-function readJson<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
-  return readParsedCached(path, schema);
-}
-
-function readDir<T extends z.ZodType>(sub: string, schema: T): { file: string; record: z.infer<T> }[] {
-  const dir = join(root, sub);
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((f) => f.endsWith(".json"))
-    .sort()
-    .map((f) => ({ file: f, record: readJson(join(dir, f), schema) }));
-}
 
 /** Of several dated files of one record id (`<id>@<date>.json`), the one with the latest date in its name. */
 function latestPerId<T extends { id: string }>(rows: { file: string; record: T }[]): T[] {
@@ -54,18 +36,18 @@ function latestPerId<T extends { id: string }>(rows: { file: string; record: T }
 }
 
 export function loadDepositTerms(): DepositTerms[] {
-  return latestPerId(readDir("data/terms/deposits", depositTerms));
+  return latestPerId(readDirFiles("data/terms/deposits", depositTerms));
 }
 
 export function loadFunds(): FundRecord[] {
-  return latestPerId(readDir("data/funds", fundRecord));
+  return latestPerId(readDirFiles("data/funds", fundRecord));
 }
 
 export function loadExposures(): ExposureRecord[] {
-  return readDir("data/instruments/exposures", exposureRecord).map((r) => r.record);
+  return readDirFiles("data/instruments/exposures", exposureRecord).map((r) => r.record);
 }
 
-/** The security whose page an exposure's page is (D6 as amended 2026-10-27), by exposure id; absent when it keeps its own page. */
+/** The security whose page an exposure's page is (D6), by exposure id; absent when it keeps its own page. */
 export function exposureFolds(): Record<string, string> {
   const securities = loadSecurities();
   const out: Record<string, string> = {};
@@ -84,7 +66,7 @@ export function exposureHref(id: string): string {
 
 /** data/catalog/: the institution-facing names (data-schema 3.10). */
 export function loadCatalog(): CatalogEntry[] {
-  return readDir("data/catalog", catalogEntry).map((r) => r.record);
+  return readDirFiles("data/catalog", catalogEntry).map((r) => r.record);
 }
 
 /** The company (legal id) each catalogue institution is: the one the tracks its entries name belong to. */
@@ -298,7 +280,7 @@ const securityTypesOf: Record<string, string[]> = {
 };
 
 /**
- * The list lines of a base that apply to a wrapper. Review fix 2026-10-24: lines of the direct (online) channel, and lines with no channel, come before
+ * The list lines of a base that apply to a wrapper. Lines of the direct (online) channel, and lines with no channel, come before
  * branch lines, so the site's default tariff (the first line) is the direct one, as the providers workbench and the provider picker rank it (`channelId` defaults to "direct").
  */
 function listLines(snap: FeesSnapshot, wrapperId: string, base: FeeLine["base"]): FeeLine[] {
@@ -354,7 +336,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       feeValues.ninetyPercentTest = { ...t };
     } else missing.push(`${wrapperId}: fund "${rec.id}" has no 90% test value (TXF-04)`);
   }
-  // TXF-11 (2026-11-04): an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, and ranked
+  // TXF-11: an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, and ranked
   if ((kind === "foreign-fund" || kind === "tase-foreign-fund") && rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   if (kind === "foreign-fund") {
     const d = rec.domicile.toUpperCase();
@@ -366,7 +348,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   if (kind !== "money-market-renewable") {
     const drag: NonNullable<Fund["drag"]> = {};
     const notCollected: string[] = [];
-    const take = (field: keyof FundRecord["fees"], key: keyof typeof drag, label: string) => {
+    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends">, label: string) => {
       const v = rec.fees[field];
       if (!v || v.value === null) {
         if (!feeAbsent(rec, field)) notCollected.push(field);
@@ -381,7 +363,11 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     take("trustee", "trustee", "fundTrustee");
     take("tracking_difference_12m", "tracking", "fundTracking");
     take("fund_level_withholding_drag", "foreignWithholding", "fundWithholding");
-    // F-92 (b), pass 6: the variable fee counted forward as the invest page's engine counts it (fundOf), the mean charged in the years at
+    // A-11 by F-107 is read where the exposure is (fundOf, the indices page): an Irish fund that holds the shares, with no figure of its own
+    // and no published 12-month gap, is not run here at A-11 = 0
+    if (rec.domicile.toUpperCase() === "IE" && rec.replication?.method === "physical" && drag.foreignWithholding === undefined && drag.tracking === undefined)
+      missing.push(`${wrapperId}: fund "${rec.id}" is Irish and holds its index's shares; the guides do not compute F-107 (A-11)`);
+    // F-92 (b): the variable fee counted forward as the invest page's engine counts it (fundOf), the mean charged in the years at
     // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it
     const exposure = (rec as { exposure_id?: string }).exposure_id;
     if (kind === "israeli-fund" && exposure && rec.tracking_record) {
@@ -391,7 +377,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
         drag.variable = forward;
         const t = rec.tracking_record;
         const inputs: Record<string, SiteValue> = {};
-        // only the years the mean is taken over (F-92 (b); pass 7: the sheet listed every year of the record), each written as the index
+        // only the years the mean is taken over (F-92 (b); the sheet listed every year of the record), each written as the index
         // page writes it (pricedVariable): a percent of that year from the report's table at its page, the fund manager's own figure
         const years = (variableForwardYears(t.years, t.variable_rate_since) ?? []).filter((y) => y.fees_charged);
         const source = { ...t.source, ...(t.fees_page ? { page: t.fees_page, locator_he: investCopy.kinds.gapPage(t.fees_page) } : {}) };
@@ -487,7 +473,7 @@ function buildTariff(
   if (!snap) return null;
   type Tariff = NonNullable<InstrumentTerms["tariff"]>;
   const tariff: Tariff = {};
-  // makam and a government bond are securities held in the securities account (D6, 2026-10-26): the account's custody line for their class
+  // makam and a government bond are securities held in the securities account (D6): the account's custody line for their class
   // and its monthly fee apply to them too (F-14, F-17); a bank's custody on makam is barred in the run itself (BRK-17)
   const wants = family === "makam" || family === "bond" ? ["trade", "custody", "fixed_period"] : ["trade", "custody", "fx", "fixed_period"];
   const nis = (v: ValueObject | null) => (isNum(v) && (v.unit === "nis_per_trade" || v.unit === "nis" || v.unit === "nis_per_month") ? (v.value as number) : undefined);
@@ -516,7 +502,7 @@ function buildTariff(
       // A tariff line has no buy/sell split (data-schema §3.6): one commission line applies to both orders.
       tariff.buy = c;
       tariff.sell = { ...c };
-      // F-12 (2026-10-31): monthly purchases of the account's own fund, where the tariff prints a standing-order price for its class
+      // F-12: monthly purchases of the account's own fund, where the tariff prints a standing-order price for its class
       const fundRec = src.funds.find((f) => f.id === spec.fund);
       const exposure = fundRec ? loadExposures().find((e) => e.id === fundRec.exposure_id) : undefined;
       const cls = fundRec ? instrumentClassOf(fundRec, exposure) : null;
@@ -534,7 +520,7 @@ function buildTariff(
         feeValues.tradeFlat = { ...line.flat_up_to.amount };
         feeValues.tradeFlatUpTo = { ...line.flat_up_to.up_to };
       }
-      // F-24 (2026-10-31): a redemption of makam, where the tariff names it (the comparison reads the same line through the engine's tariff step)
+      // F-24: a redemption of makam, where the tariff names it (the comparison reads the same line through the engine's tariff step)
       const redemption = family === "makam" ? snap.lines.find((l) => l.level === "list" && l.base === "trade" && l.band === REDEMPTION_BAND && l.applies_to.includes("makam")) : undefined;
       if (redemption && isNum(redemption.rate) && redemption.rate.unit === "pct_of_trade") {
         tariff.redeem = commission(redemption);

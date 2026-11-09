@@ -1,5 +1,5 @@
 // What the return the page runs on is, and whether the order of the lists holds at another return: said in the "?" beside the return in
-// the line under the sliders (wording.md: a note beside the figure it qualifies, not collected at the page's foot; 2026-11-08).
+// the line under the sliders (wording.md: a note beside the figure it qualifies, not collected at the page's foot).
 import { invest as c } from "../../copy";
 import type { InvestView } from "../../lib/invest";
 

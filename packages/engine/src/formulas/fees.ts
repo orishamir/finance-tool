@@ -12,11 +12,11 @@ export interface Commission {
   flatUpTo?: { amount: number; upTo: number };
   /** A fee per share above a number of shares in one order (BRK-36). */
   perShareAbove?: { shares: number; perShare: number };
-  /** A fee per share on the whole order, in NIS (the line's dollar fee converted at the run's rate, 2026-10-25). Needs the share price. */
+  /** A fee per share on the whole order, in NIS (the line's dollar fee converted at the run's rate). Needs the share price. */
   perShare?: number;
-  /** The most the commission can be, as a fraction of the trade value; it wins over the minimum (E3, 2026-10-25). */
+  /** The most the commission can be, as a fraction of the trade value; it wins over the minimum (E3). */
   cap?: number;
-  /** F-13 (2026-10-31): a conversion priced in shekels per unit of the currency converted (Psagot's 1.5 agorot a dollar). */
+  /** F-13: a conversion priced in shekels per unit of the currency converted (Psagot's 1.5 agorot a dollar). */
   perCurrencyUnit?: number;
 }
 
@@ -31,8 +31,8 @@ export interface TradeTerms {
 /**
  * F-12 Trade commission. Per order, `max(min, min(pct × amount, max))` on the trade value `amount`, from
  * the tariff line for the security type (BRK-16). A per-share line adds `perShare × shares`, and a cap
- * (a share of the trade value) limits the result last (2026-10-25). A line with a flat price charges only that on an
- * order up to its sum (2026-10-31).
+ * (a share of the trade value) limits the result last. A line with a flat price charges only that on an
+ * order up to its sum.
  */
 export function tradeCommission(line: Commission | undefined, amount: number, terms: TradeTerms): number {
   if (!line || amount <= 0) return 0;
@@ -88,7 +88,7 @@ export function navBought(trade: number, halfSpread: number): number {
 /**
  * F-13 FX conversion fee on one conversion of `amount` NIS. A bare number is the percentage with no bounds;
  * a `Commission` carries the tariff's minimum and maximum too, set in the instrument's currency (`in: "instrument"`),
- * so they are converted at the rate of the trade: `max(min × X, min(pct × amount, max × X))` (2026-10-24).
+ * so they are converted at the rate of the trade: `max(min × X, min(pct × amount, max × X))`.
  */
 export function fxFee(line: number | Commission | undefined, amount: number, terms: TradeTerms = { fxRate: 1 }): number {
   if (line === undefined) return 0;
@@ -194,7 +194,7 @@ export function withFee<T extends DiscountedFees>(fees: T, line: "deposit" | "ba
 }
 
 /**
- * A-19 with F-16 and PF-13 (D86, 2026-11-07): a rate a person enters (D4) or states on F-61's page, below what the run would otherwise
+ * A-19 with F-16 and PF-13 (D86): a rate a person enters (D4) or states on F-61's page, below what the run would otherwise
  * charge, is a discount like any other. It holds for `months` (PF-13's period) and then reverts to `revertsTo`: what the run charges on
  * the line after the period, which on a collected list is the most its binding documents allow (the record's `reverts_to`, else the
  * regulations' cap). Counting the low rate for every year would promise what no binding document promises (D83). A rate at or above
@@ -205,8 +205,8 @@ export function withHeldRate<T extends DiscountedFees>(fees: T, line: "deposit" 
   const key = discountKey[line];
   if (key === null || revertsTo === undefined || !(rate < revertsTo)) return withFee(fees, line, rate);
   // a discount the line already has, printed longer than PF-13's period, keeps its length when the rate entered is at or above its printed
-  // rate (the record's own fee entered by hand must not shorten it); a lower rate is promised by no document past PF-13's period (finance
-  // review, 2026-11-07), so it holds for that period alone
+  // rate (the record's own fee entered by hand must not shorten it); a lower rate is promised by no document past PF-13's period,
+  // so it holds for that period alone
   const own = fees[key];
   const keep = own && rate >= fees[line] ? own.months : 0;
   return { ...fees, [line]: rate, [key]: { months: Math.max(months, keep), listRate: revertsTo } } as T;

@@ -10,14 +10,16 @@ type CardProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   children: ReactNode;
   as?: "div" | "section" | "li" | "article" | "aside" | "ul" | "header";
   pad?: CardPad;
+  /** `accent`: a 2 px border in the action colour, for the one card a list leads with (a search's closest match). */
+  edge?: "accent";
   ref?: Ref<HTMLElement>;
 };
 
 /** The one raised surface: a card, a list row, a side panel. Add `flex flex-col gap-*` through `className` for the inside; choose the padding with `pad`, never with a `p-*` class. */
-export function Card({ children, className, as = "div", pad = "default", ...rest }: CardProps) {
+export function Card({ children, className, as = "div", pad = "default", edge, ...rest }: CardProps) {
   const As = as as ElementType;
   return (
-    <As className={cx("bg-card border border-border rounded-lg", PAD[pad], className)} {...rest}>
+    <As className={cx("bg-card", edge === "accent" ? "border-2 border-primary" : "border border-border", "rounded-lg", PAD[pad], className)} {...rest}>
       {children}
     </As>
   );
@@ -43,7 +45,7 @@ export function Section({ id, title, lead, level = "page", action, children, cla
         </h2>
         {action}
       </div>
-      {/* no word alone on the lead's last line (founder, 2026-11-03: a mark alone on a line) */}
+      {/* no word alone on the lead's last line (a mark alone on a line) */}
       {lead && <p className="text-muted-foreground max-w-measure text-pretty">{lead}</p>}
       {children}
     </Wrapper>

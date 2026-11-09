@@ -1,4 +1,4 @@
-// What moves the result (founder, 2026-10-28, the indices page): every plan number changed by the same share on one chart, left to
+// What moves the result (the indices page): every plan number changed by the same share on one chart, left to
 // right from less to more, all lines crossing at the plan; a marker the person drags (or sets with a choice) reads every line at one
 // share, and the table under it says, for each number, what it was, what it becomes, what is left and the difference. Own SVG.
 import { useState, type PointerEvent, type ReactNode } from "react";
@@ -78,12 +78,12 @@ export function ChangeChart({
   head: ReactNode[];
   rows: ChangeRow[];
   /** Each column's width, on a computer and on a phone ("0" leaves the column out on a phone): fixed, so no value that changes
-   * moves a column (founder, 2026-10-28). The widths add up to 100% on each. */
+   * moves a column. The widths add up to 100% on each. */
   widths: { pc: string; phone: string }[];
   /**
    * Two columns that share one on a phone, `[top, under]`: the under column's figure sits below the top one's, and its own column is left
    * out (its phone width "0"). Four figures side by side left a phone's column 63 px for a typed plan's "50,000,000 ₪", and three
-   * figures were printed over each other (fresh readers, round 3, 2026-11-07).
+   * figures were printed over each other.
    */
   stackOnPhone?: [number, number];
 }) {
@@ -133,7 +133,7 @@ export function ChangeChart({
   const over = ends.length ? ends.at(-1)!.y + END_LINE - (H - BOTTOM) : 0;
   if (over > 0) for (const e of ends) e.y -= over;
   // the shares written under the plot, each measured (chart-text.ts): the two ends, then the plan, then the halves where they fit. The plan
-  // that would meet an end goes to a second line under them (2026-11-08: at 13 px on a phone, "התוכנית שלכם" ran into both ends)
+  // that would meet an end goes to a second line under them (at 13 px on a phone, "התוכנית שלכם" ran into both ends)
   const tickText = (s: number) => (s === 0 ? planWord : shareWord(s));
   const ticks: { s: number; row: number }[] = [];
   for (const s of [lo, hi, 0, lo / 2, hi / 2]) {

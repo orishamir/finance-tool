@@ -44,7 +44,7 @@ export interface Label {
 /**
  * Every rule the engine may label `reading`, some only when a condition holds (an index that fell below a deposit's, a payment
  * after the period): a page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it
- * appears (third check, 2026-11-07). A test holds this list to the engine's `label("reading", …)` calls.
+ * appears. A test holds this list to the engine's `label("reading", …)` calls.
  */
 export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11", "TXH-17", "TXH-19", "TXI-25", "TXK-04", "TXK-07", "TXK-29", "TXP-32"];
 
@@ -61,7 +61,7 @@ export interface MonthPoint {
   paidIn: number;
   balance: number;
   fees: number;
-  /** Cumulative nominal trade, custody, FX and fixed-fee charges up to the month (the provider's own lines, F-63); absent from runs that do not report it. Additive 2026-10-24. */
+  /** Cumulative nominal trade, custody, FX and fixed-fee charges up to the month (the provider's own lines, F-63); absent from runs that do not report it. */
   providerFees?: number;
   taxDuring: number;
 }

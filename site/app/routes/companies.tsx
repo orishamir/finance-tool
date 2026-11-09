@@ -1,169 +1,185 @@
-// The companies list (flows 6.10): the brands first (D33: a group's companies as one row), then every other managing company in the
-// regulator's data and every other bank and broker, with a filter.
-import { useState } from "react";
+// The companies page: every company at once beside one company in focus (lib/company-focus.ts). A search and a two-level filter (a kind of
+// product, then one product of it) dim the companies that don't match, in place: nothing moves, reorders, leaves or re-wraps. The company in
+// focus and the filter are the address (`?company=&type=&product=&q=`, written with `history.replaceState`, never a navigation), and the last
+// company focused is kept on the device for the next visit. Below lg the list is the page and the company opens as a sheet over it.
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
-import type { Route } from "./+types/companies";
-import { brands as brandsCopy, companies as copy, r4catalogue as r4, site } from "../copy";
+import { companies as copy, companyFocus as w, site } from "../copy";
 import { IconSearch } from "../components/icons";
-import { PageShell, useOpenSearch } from "../components/shell";
-import { normalize } from "../lib/search";
-import type { InstitutionRow } from "../components/decoder/institutions/types";
-import { NoPageCompanyTerms } from "../components/decoder/company-terms";
+import { PageShell } from "../components/shell";
 import { CompanyTabs } from "../components/decoder/company-tabs";
-import { withoutLtd } from "../lib/company-name";
-import { RowArrow, TariffDate, gershayim } from "../components/kit";
+import { CompanyList, FocusPane } from "../components/companies/focus";
+import { Sheet } from "../components/Sheet";
+import { Card, ChoiceChips, ChoiceTray, HoldTallest, PhoneFold } from "../components/kit";
+import { chooseProduct, chooseType, companyGroups, productTypes, searchFocus, searchToState, stateToSearch, statusLine, toggleFromPane, typeCounts, type FocusFigures, type FocusState, type TypeChoice } from "../lib/company-focus";
+import { deviceStore } from "../lib/device-store";
 
 export async function loader() {
-  const { loadCma, loadProducts, classificationToWrapper, today } = await import("../lib/data.server");
-  const { institutionRows, noPageCompanyTerms } = await import("../lib/institutions.server");
-  const { loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
-  const { shortCompanyName } = await import("../lib/track-browser.server");
-  const cma = loadCma();
-  // a product of the regulator's list goes by the site's name for it ("חיסכון לכל ילד", not "קופת גמל להשקעה - חסכון לילד"), as on the tracks page and the guides
-  const products = loadProducts();
-  const productName = (classification: string) => {
-    const id = classificationToWrapper[classification.trim()];
-    return (id && products.find((w) => w.id === id)?.names.he[0]) || classification;
+  const { buildCompanyFocus } = await import("../lib/company-focus.server");
+  const { loadChecklistRows, loadRules, pointedRecords, today } = await import("../lib/data.server");
+  const { latestSnapshots } = await import("../lib/institutions.server");
+  const { accountSections } = await import("../components/decoder/institutions/sections");
+  const { data: built, figures, accounts } = buildCompanyFocus();
+  // the sections of each securities account's card, named here since two of them depend on the house's advertising and group prices, which
+  // the page shows beside its prices and no calculation reads (D57), as the company page's own loader does
+  const snaps = latestSnapshots();
+  const data = {
+    ...built,
+    companies: built.companies.map((c) => {
+      const a = accounts[c.id];
+      if (!a) return c;
+      const snap = snaps.find((x) => x.id === a.house);
+      return { ...c, sections: accountSections({ fees: a.fees, canBuy: a.canBuy, claims: (snap?.advertising ?? []).length > 0, groups: !!snap?.groups }) };
+    }),
   };
-  // D33: one row per brand, its line the kinds of product it offers, and its members' own rows left out
-  const { brandFunds, loadBrands } = await import("../lib/brands.server");
-  const brandList = loadBrands();
-  const brandRows = brandList
-    .map((b) => {
-      const cmaCompany = cma.companies.find((c) => c.id === b.cmaId);
-      const words = [...(cmaCompany?.classifications ?? []).map(productName), ...brandFunds(b).map((g) => brandsCopy.funds.groups[g.kind]), ...(b.brokerId ? [r4.groups.brokerage] : [])];
-      return { id: b.page, name: b.name, line: [...new Set(words)], match: [b.name, b.id, cmaCompany?.name, ...b.members.map((m) => m.name_he), ...b.fundManagers].join(" ") };
-    })
-    .sort((a, b) => a.name.localeCompare(b.name, "he"));
-  const inBrand = new Set(brandList.flatMap((b) => b.pageIds));
-  // the terms of the companies the site has no page for (fund managers, index providers, foreign brokers, the exchange), and the not-rules (D30)
-  const allRules = loadRules();
-  const noPage = noPageCompanyTerms(allRules);
-  const ids = [...noPage.companies.flatMap((c) => c.ids), ...noPage.none];
-  const rules = Object.fromEntries(ids.map((id) => [id, allRules[id]!]));
-  return { brands: brandRows, companies: cma.companies.filter((c) => !inBrand.has(c.id)).map((c) => ({ id: c.id, name: shortCompanyName(c.id, c.name), match: c.name, line: [...new Set(c.classifications.map(productName))] })), institutions: institutionRows(), today: today(), noPage, rules, pointed: pointedRecords(rules, allRules), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
+  // the rules the figures' sheets name (the tracks' sourced values cite them), shipped with the page since the figures come later
+  const ids = new Set<string>();
+  JSON.stringify(figures, (k, v) => {
+    if (k === "rule_ids" && Array.isArray(v)) for (const id of v) ids.add(id as string);
+    return v;
+  });
+  const all = loadRules();
+  const rules = Object.fromEntries([...ids].filter((id) => all[id]).map((id) => [id, all[id]!]));
+  return { focus: data, today: today(), rules, pointed: pointedRecords(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 
 export function meta() {
   return [{ title: `${copy.title} · ${site.name}` }];
 }
 
+/** The last company the person focused, kept on this device. */
+const lastFocus = deviceStore<string | null>("mekor.companies.focus", null, (raw) => (typeof raw === "string" ? raw : null), (v) => v);
+
+/** From lg the company stands beside the list; below it, it opens as a sheet over the list. */
+const isWide = () => typeof window !== "undefined" && window.matchMedia("(min-width: 64rem)").matches;
+
+/** The figures' sourced values, fetched once per visit. */
+let figuresPromise: Promise<FocusFigures> | null = null;
+function fetchFigures(): Promise<FocusFigures> {
+  if (!figuresPromise) {
+    figuresPromise = fetch(`${import.meta.env.BASE_URL}company-figures.json`).then((r) => {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json() as Promise<FocusFigures>;
+    });
+    figuresPromise.catch(() => (figuresPromise = null));
+  }
+  return figuresPromise;
+}
+
 export default function Companies() {
-  const data = useLoaderData<typeof loader>();
-  return (
-    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensions, today: data.today }}>
-      <Body brands={data.brands} companies={data.companies} institutions={data.institutions} />
-      <div className="pt-section">
-        <NoPageCompanyTerms companies={data.noPage.companies} none={data.noPage.none} />
-      </div>
-    </PageShell>
-  );
-}
+  const { focus: data, today, rules, pointed, dimensions } = useLoaderData<typeof loader>();
+  // on a first visit the first company of the first group is in focus
+  const first = useMemo(() => data.companies.find((c) => c.group === companyGroups[0])!.id, [data]);
+  const [s, setS] = useState<FocusState>({ type: "all", product: null, q: "", focus: first });
+  const [figures, setFigures] = useState<FocusFigures | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const anchor = useRef<HTMLElement | null>(null);
+  const saved = lastFocus.use();
+  const ready = useRef(false);
+  const sheetHead = useId();
 
-type CompanyRow = { id: string; name: string; line: string[]; match: string };
+  // the address first, then the device's last company; once, after hydration
+  useEffect(() => {
+    if (!saved.ready || ready.current) return;
+    ready.current = true;
+    const asked = searchToState(window.location.search, data);
+    const kept = saved.value && data.companies.some((c) => c.id === saved.value) ? saved.value : null;
+    setS((x) => ({ ...x, ...asked, focus: asked.focus ?? kept ?? x.focus }));
+  }, [saved, data]);
 
-/** What a company offers, one product after another: a narrow screen breaks the line at a dot, never inside a product's name. */
-function Offers({ items }: { items: string[] }) {
-  return (
-    <span className="text-sm text-muted-foreground">
-      {items.map((w, i) => (
-        <span key={w}>
-          {i > 0 && " · "}
-          <span className="whitespace-nowrap">{w}</span>
-        </span>
-      ))}
-    </span>
-  );
-}
+  // the state is the address, replaced rather than pushed: a link or the back button returns to the same view
+  useEffect(() => {
+    if (!ready.current) return;
+    const next = `${window.location.pathname}${stateToSearch(s, first)}${window.location.hash}`;
+    if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) window.history.replaceState(window.history.state, "", next);
+  }, [s, first]);
 
-function Body({ brands, companies, institutions }: { brands: CompanyRow[]; companies: CompanyRow[]; institutions: InstitutionRow[] }) {
-  const [q, setQ] = useState("");
-  const open = useOpenSearch();
-  const nq = normalize(q);
-  const shown = nq ? companies.filter((c) => normalize(c.match).includes(nq)) : companies;
-  const shownBrands = nq ? brands.filter((c) => normalize(c.match).includes(nq)) : brands;
-  const shownInstitutions = nq ? institutions.filter((c) => normalize(`${c.name} ${c.id}`).includes(nq)) : institutions;
-  const headed = institutions.length > 0 || brands.length > 0;
+  useEffect(() => {
+    let live = true;
+    fetchFigures().then((f) => live && setFigures(f), () => undefined);
+    return () => void (live = false);
+  }, []);
+
+  const focusOn = useCallback((id: string, el: HTMLElement | null) => {
+    setS((x) => ({ ...x, focus: id }));
+    lastFocus.set(id);
+    if (!isWide()) {
+      anchor.current = el;
+      setSheetOpen(true);
+    }
+  }, []);
+
+  const setQ = (q: string) =>
+    setS((x) => {
+      const next = { ...x, q };
+      const hit = searchFocus(data.kinds, data.companies, next);
+      if (hit) lastFocus.set(hit);
+      return hit ? { ...next, focus: hit } : next;
+    });
+
+  const counts = useMemo(() => typeCounts(data.kinds, data.companies), [data]);
+  const typeIds: TypeChoice[] = ["all", ...productTypes.filter((t) => counts[t] > 0)];
+  const typeKinds = s.type === "all" ? [] : data.kinds.filter((k) => k.type === s.type);
+  const focused = data.companies.find((c) => c.id === s.focus) ?? data.companies[0]!;
+  const status = statusLine(data.kinds, data.companies, s);
+  const choose = (id: string) => setS((x) => ({ ...x, ...toggleFromPane(data.kinds, x, id) }));
+  const pane = (id?: string) => <FocusPane company={focused} data={data} state={s} figures={figures} onChoose={choose} headId={id} />;
+  // what the phone's folded filters say is chosen
+  const summary = [s.product ? data.kinds.find((k) => k.id === s.product)?.name : w.types[s.type], s.q.trim() ? w.quoted(s.q.trim()) : null].filter(Boolean).join(" · ");
+
   return (
-    <div className="flex flex-col gap-6 pt-2 lg:pt-8">
-      <CompanyTabs current="company" />
-      <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-      <div className="flex flex-col gap-2 max-w-measure">
-        <label htmlFor="company-filter" className="text-sm font-medium">
-          {copy.filter}
-        </label>
-        <div className="field-box text-muted-foreground">
-          <IconSearch size={18} />
-          <input id="company-filter" dir="rtl" value={q} onChange={(e) => setQ(e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
-        </div>
-      </div>
-      {shown.length === 0 && shownInstitutions.length === 0 && shownBrands.length === 0 ? (
-        <div className="flex flex-col gap-2">
-          <p>{copy.noMatch}</p>
-          <button type="button" className="text-link self-start min-h-target hover:underline" onClick={(e) => open(e.currentTarget, q)}>
-            {copy.searchAll}
-          </button>
-        </div>
-      ) : (
-        <>
-          {shownBrands.length > 0 && (
-            <Heading title={brandsCopy.heading}>
-              {shownBrands.map((c) => (
-                <Row key={c.id} id={c.id} name={c.name}>
-                  <Offers items={c.line} />
-                </Row>
-              ))}
-            </Heading>
-          )}
-          {shown.length > 0 && (
-            <Heading title={headed ? r4.headings.companies : null}>
-              {shown.map((c) => (
-                <Row key={c.id} id={c.id} name={c.name}>
-                  <Offers items={c.line} />
-                </Row>
-              ))}
-            </Heading>
-          )}
-          {shownInstitutions.length > 0 && (
-            <Heading title={r4.headings.institutions}>
-              {shownInstitutions.map((c) => (
-                <Row key={c.id} id={c.id} name={withoutLtd(c.name)}>
-                  <span className="text-sm text-muted-foreground">
-                    {r4.classWord[c.kind]}
-                    {" · "}
-                    {c.missing || !c.dated ? <span className="text-caution-foreground">{r4.rowLine.missing}</span> : <TariffDate dated={c.dated} />}
+    <PageShell current="decoder" data={{ rules, pointed, terms: {}, dimensions, today }}>
+      <div className="flex flex-col gap-6 pt-2 lg:pt-8">
+        <CompanyTabs current="company" />
+        <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
+        <div className="flex flex-col gap-3">
+          <PhoneFold summary={summary} more={w.fold.more} less={w.fold.less}>
+            <div className="flex flex-col gap-1">
+              <div className="flex flex-col md:flex-row md:items-end gap-4 md:gap-6">
+                <div className="flex flex-col gap-2 md:w-72 shrink-0">
+                  <label htmlFor="company-filter" className="text-sm font-medium">
+                    {w.search}
+                  </label>
+                  <div className="field-box text-muted-foreground">
+                    <IconSearch size={18} />
+                    <input id="company-filter" type="search" dir="rtl" value={s.q} onChange={(e) => setQ(e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 min-w-0">
+                  <span id="type-label" className="text-sm font-medium">
+                    {w.typeLabel}
                   </span>
-                </Row>
-              ))}
-            </Heading>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
-
-/** One heading of the list (release 4): an h2 and its two-column rows; the first group has no heading while it is alone. The two rows side
- *  by side are one height, so their lines meet. */
-function Heading({ title, children }: { title: string | null; children: React.ReactNode }) {
-  return (
-    <section className="flex flex-col gap-2" aria-label={title ?? undefined}>
-      {title && <h2 className="text-xl lg:text-2xl font-semibold">{title}</h2>}
-      <ul className="grid lg:grid-cols-2 gap-x-8">{children}</ul>
-    </section>
-  );
-}
-
-function Row({ id, name, children }: { id: string; name: string; children: React.ReactNode }) {
-  return (
-    <li className="flex">
-      <Link to={`/companies/${id}`} className="flex-1 flex items-center justify-between gap-3 min-h-14 py-2 border-b border-border hover:bg-accent/40 transition-colors duration-[var(--duration-fast)] -mx-2 px-2">
-        <span className="flex flex-col min-w-0">
-          <bdi className="font-medium">{gershayim(name)}</bdi>
-          {children}
-        </span>
-        <RowArrow />
-      </Link>
-    </li>
+                  <ChoiceChips ids={typeIds} labels={w.types} value={s.type} counts={counts} onChange={(t) => setS((x) => ({ ...x, ...chooseType(data.kinds, t) }))} ariaLabel={w.typeLabel} />
+                </div>
+              </div>
+              <ChoiceTray label={w.productLabel} hint={w.trayHint}>
+                {typeKinds.length > 1 && <ChoiceChips ids={typeKinds.map((k) => k.id)} labels={Object.fromEntries(typeKinds.map((k) => [k.id, k.name]))} value={s.product} onChange={(id) => setS((x) => ({ ...x, ...chooseProduct(data.kinds, x, id) }))} ariaLabel={w.productLabel} line bleed="" />}
+              </ChoiceTray>
+            </div>
+          </PhoneFold>
+          {/* one line, one height: the numbers change, nothing else */}
+          <p role="status" className="h-6 truncate text-sm text-muted-foreground">
+            {status}
+          </p>
+        </div>
+        <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+          <div className="lg:w-[510px] shrink-0 min-w-0">
+            <CompanyList data={data} state={s} onFocus={focusOn} />
+          </div>
+          {/* the pane holds the height of its tallest company, so focusing another moves nothing below it */}
+          <Card as="aside" pad="roomy" className="max-lg:hidden flex-1 min-w-0" aria-label={focused.name}>
+            <HoldTallest id="companies" cases={() => data.companies.map((c) => <FocusPane key={c.id} company={c} data={data} state={s} figures={null} onChoose={() => undefined} />)}>
+              {pane()}
+            </HoldTallest>
+          </Card>
+        </div>
+        <Link to="/documents#company-terms" className="self-start inline-flex items-center min-h-target text-link hover:underline">
+          {w.documents}
+        </Link>
+      </div>
+      <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} anchor={anchor.current} height={80} labelledBy={sheetHead}>
+        {pane(sheetHead)}
+      </Sheet>
+    </PageShell>
   );
 }

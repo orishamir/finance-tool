@@ -1,8 +1,8 @@
 {
   "id": "BANK-34",
-  "title": "Nine banks: prime as the anchor, each bank's own definition, how each prints the spread",
-  "title_he": "תשעה בנקים: הפריים כעוגן, וכל בנק מגדיר אותו",
-  "text_he": "בכל תשעת הבנקים שנבדקו, הפיקדונות בריבית משתנה בשקלים נמדדים מול הפריים. שמונה מהם מגדירים אותו בתנאים שלהם כריבית הבסיס של הבנק, בלי מספר: לאומי, הפועלים, דיסקונט, מרכנתיל, הבינלאומי, מסד, יהב וירושלים. שניים כותבים שהוא ריבית בנק ישראל ועוד 1.5%: מזרחי טפחות בתנאים שלו, והפועלים בדף שינויי הריבית אבל לא בתנאים. שמונה בנקים מדפיסים פריים של 4.75% בנתונים שנקראו עד 1.11.2026, כשריבית בנק ישראל 3.25%; בבנק ירושלים לא נקרא נתון. שישה בנקים כותבים את המרווח באות P, למשל P-2.80%, ושניים במילה \"פריים\" עם סימן מינוס. בבינלאומי ובמסד יש פיקדון אחד, \"גולן\", שהמרווח שלו משתפר מדי תקופה. וואן זירו ובנק אש לא נקראו.",
+  "title": "Ten banks: prime as the anchor, each bank's own definition, how each prints the spread",
+  "title_he": "עשרה בנקים: הפריים כעוגן, וכל בנק מגדיר אותו",
+  "text_he": "בכל עשרת הבנקים שנבדקו, הפיקדונות בריבית משתנה בשקלים נמדדים מול הפריים. תשעה מהם מגדירים אותו בתנאים שלהם כריבית הבסיס של הבנק, בלי מספר: לאומי, הפועלים, דיסקונט, מרכנתיל, הבינלאומי, מסד, יהב, ירושלים ווואן זירו. שניים כותבים שהוא ריבית בנק ישראל ועוד 1.5%: מזרחי טפחות בתנאים שלו, והפועלים בדף שינויי הריבית אבל לא בתנאים. שמונה בנקים מדפיסים פריים של 4.75% בנתונים שנקראו עד 1.11.2026, כשריבית בנק ישראל 3.25%; בבנק ירושלים לא נקרא נתון. שישה בנקים כותבים את המרווח באות P, למשל P-2.80%, ושניים במילה \"פריים\" עם סימן מינוס; וואן זירו כותבת בטבלה שלה \"Prime - 2.25%\". בבינלאומי ובמסד יש פיקדון אחד, \"גולן\", שהמרווח שלו משתפר מדי תקופה. בנק אש לא נקרא.",
   "strength": "institution",
   "dimensions": [
     "real-vs-nominal",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-11-01",
+  "checked": "2026-11-09",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -49,6 +49,10 @@
     {
       "id": "jerusalem",
       "name_he": "בנק ירושלים"
+    },
+    {
+      "id": "one-zero",
+      "name_he": "וואן זירו"
     }
   ],
   "sources": [
@@ -250,6 +254,53 @@
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf#page=1",
+      "title": "ONE ZERO: חיסכון חודשי, תנאי הפיקדון v11",
+      "title_he": "וואן זירו: חיסכון חודשי, תנאי הפיקדון (גרסה 11)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1, s.1.2, s.3.1, s.3.2",
+      "locator_he": "עמוד 1, סעיף 1.2, סעיף 3.1, סעיף 3.2",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO: פיקדונות, טבלת תנאי הפיקדונות",
+      "title_he": "וואן זירו: פיקדונות, טבלת תנאי הפיקדונות",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "סוג הריבית",
+      "checked": "2026-11-09"
+    },
+    {
+      "url": "https://www.onezerobank.com/special/5612",
+      "title": "ONE ZERO: פקדונות וחסכונות",
+      "title_he": "וואן זירו: פקדונות וחסכונות",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/One%20Zero%20General%20terms%20and%20conditions_output%20(3)%20(1).pdf#page=16",
+      "title": "ONE ZERO: General terms for managing an account, edition 07/25",
+      "title_he": "וואן זירו: תנאים כלליים לניהול חשבון, מהדורה 07/25",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.16, definition of prime; p.82, s.110.4",
+      "locator_he": "עמוד 16, הגדרת ריבית הפריים; עמוד 82, סעיף 110.4",
+      "page": 16,
+      "checked": "2026-11-09"
     }
   ],
   "derived_from": [

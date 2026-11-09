@@ -1,4 +1,4 @@
-// The tabs at the top of a page that is one of a few views of the same subject (2026-11-03, with the track browser: "לפי חברה" and "לפי
+// The tabs at the top of a page that is one of a few views of the same subject (with the track browser: "לפי חברה" and "לפי
 // מוצר" over the companies and the tracks). Each tab is a page of its own, so each is a link; the one you are on is marked. It was the
 // workbench's tabs, a segmented control; the look is now the underline the site's menu has. The weight is the same on every tab, so
 // choosing another moves nothing.

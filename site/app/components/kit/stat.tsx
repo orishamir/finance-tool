@@ -1,13 +1,10 @@
 // Figures with names: a stat, a row of stats, a label/value row, a list of key/value cards, the headline figure.
 import type { ReactNode } from "react";
-import { StateTag } from "../provenance";
-import { Num } from "../provenance";
-import type { SiteValue } from "../../lib/value";
 import { cx } from "./cx";
 import { Card } from "./card";
 
 // `value` is the teal of the bars and lanes (GainBars, the savings plan's open deposits); `net` the pale teal of a net line (the makam's
-// price, the current account's balance). Until 2026-10-26 `value` drew the net line's pale teal beside teal bars it did not match.
+// price, the current account's balance), so a swatch matches the marks it names.
 const SWATCH = { alt: "bg-chart-alt", value: "bg-chart-value", net: "bg-chart-net", cost: "bg-muted-foreground" } as const;
 
 /** One figure with its name above it (and a note under it): a result of a visual or a card. Sits in a `<dl>`; `tone` adds the swatch of the bar or line it names. */
@@ -99,20 +96,5 @@ export function KeyValueList({ items }: { items: KeyValueItem[] }) {
         ))}
       </div>
     </>
-  );
-}
-
-/** The answer of a card: the big computed figure with its state tag and one line saying what it is (nominal or real, a total). */
-export function HeadlineFigure({ value, caption, animate = true }: { value: SiteValue; caption: ReactNode; animate?: boolean }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-3 flex-wrap">
-        <span className="figure">
-          <Num value={value} size="figure" animate={animate} />
-        </span>
-        <StateTag state="computed" />
-      </div>
-      <span className="text-sm text-muted-foreground">{caption}</span>
-    </div>
   );
 }

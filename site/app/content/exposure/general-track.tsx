@@ -1,4 +1,4 @@
-// Exposure prose for מסלול כללי (flows 6.6). Written 2026-10-23 from the rule base (CAT, PF, TXK, REG); each
+// Exposure prose for מסלול כללי (flows 6.6). Written from the rule base (CAT, PF, TXK, REG); each
 // block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";

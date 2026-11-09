@@ -2,8 +2,8 @@
 // validator checks the records under data/ (wrappers, exposures, P-09); this checks the prose modules, where a rule id is written by
 // hand. A company's term may appear only inside `<VariesByCompany ids={[…]}>` (the "תלוי בחברה" links), and an index page may cite
 // the records of its index provider that `ownContextExposures` names (D31). A record the rule base keeps that is not a rule, and is not
-// general, is quoted only in the site files its `notRules` entry names, every file under site/app (reviews, 2026-10-26; the validator
-// does the same for data/). Then the company sections: only records from the company's own documents, never a not-rule (the same review).
+// general, is quoted only in the site files its `notRules` entry names, every file under site/app (reviews; the validator
+// does the same for data/). Then the company sections: only records from the company's own documents, never a not-rule.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -68,7 +68,7 @@ describe("guide and exposure prose cites general rules only", () => {
     expect(citedOutsideVaries(`<VariesByCompany ids={[{ rule: "CS-30", companies: ["harel"] }]} lead="x" />`)).toEqual([]);
     expect(citedOutsideVaries(`<VariesByCompany ids={[{ rule: "CS-30", companies: ["harel"] }]} lead={<>x <Term id="y">y</Term></>} /> <RulesLine ids={["CS-18"]} />`)).toEqual(["CS-18"]);
   });
-  // the validator's rule for a wrapper's company_terms, in the prose (review, 2026-10-26): a record that names several companies rarely
+  // the validator's rule for a wrapper's company_terms, in the prose: a record that names several companies rarely
   // states the property for all of them, so its entry names those it does ({ rule, companies })
   it("a VariesByCompany record that names several companies says which", () => {
     const bare: string[] = [];
@@ -127,14 +127,14 @@ describe("scope helpers", () => {
     expect(generalOnly(["A-1", "B-2", "C-3"], { "A-1": { scope: "general" }, "B-2": { scope: "institution" } })).toEqual(["A-1", "C-3"]);
   });
   it("sends a company's term to its card on the first listing company's page, else its group, else the not-rules' group", () => {
-    const companies = { harel: { name: "הראל", href: "/companies/512267592", hasPage: true }, msci: { name: "MSCI", href: "/companies#terms-msci", hasPage: false } };
+    const companies = { harel: { name: "הראל", href: "/companies/512267592", hasPage: true }, msci: { name: "MSCI", href: "/documents#terms-msci", hasPage: false } };
     const own = { "CS-30": ["harel"], "ETF-48": ["msci"], "IRA-28": [] };
     expect(companyTermsHref({ id: "CS-30", scope: "institution", scope_institutions: [harel] }, companies, own)).toBe("/companies/512267592#CS-30");
-    expect(companyTermsHref({ id: "ETF-48", scope: "institution", scope_institutions: [{ id: "msci", name_he: "MSCI" }] }, companies, own)).toBe("/companies#terms-msci");
-    expect(companyTermsHref({ id: "SW-34", scope: "unsettled" }, companies, own)).toBe("/companies#terms-none");
+    expect(companyTermsHref({ id: "ETF-48", scope: "institution", scope_institutions: [{ id: "msci", name_he: "MSCI" }] }, companies, own)).toBe("/documents#terms-msci");
+    expect(companyTermsHref({ id: "SW-34", scope: "unsettled" }, companies, own)).toBe("/documents#terms-none");
     // a press report about a company is not its own document, and a not-rule is never listed: both go to the not-rules' group
-    expect(companyTermsHref({ id: "IRA-28", scope: "institution", scope_institutions: [harel] }, companies, own)).toBe("/companies#terms-none");
-    expect(companyTermsHref({ id: "MKT-01", scope: "institution", scope_institutions: [harel] }, companies, { "MKT-01": ["harel"] })).toBe("/companies#terms-none");
+    expect(companyTermsHref({ id: "IRA-28", scope: "institution", scope_institutions: [harel] }, companies, own)).toBe("/documents#terms-none");
+    expect(companyTermsHref({ id: "MKT-01", scope: "institution", scope_institutions: [harel] }, companies, { "MKT-01": ["harel"] })).toBe("/documents#terms-none");
   });
   it("names only the companies whose own documents a record cites", () => {
     const own = { "PEN-37": ["harel"] };
@@ -144,7 +144,7 @@ describe("scope helpers", () => {
   });
 });
 
-// review, 2026-10-26: IRA-28 (then a regulator's announcement and press articles) sat on Slice's and Globalnet's pages, and a forum
+// IRA-28 (then a regulator's announcement and press articles) sat on Slice's and Globalnet's pages, and a forum
 // post on Migdal's and Clal's, each under "מה כתוב במסמכים של …" with "נמצא במסמכים של …"
 describe("a company's section holds only records from its own documents", () => {
   const all = Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord]));

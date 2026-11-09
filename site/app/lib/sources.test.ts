@@ -27,7 +27,7 @@ describe("sourceHref", () => {
     expect(isPdfUrl("https://x/page")).toBe(false);
     expect(isPdfUrl("https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77Q=#page=6")).toBe(true);
   });
-  // 2026-11-07, the founder: a web page opens at the quoted words, by text fragment
+  // a web page opens at the quoted words, by text fragment
   const psagot = "https://www.psagot.co.il/tariff-2/";
   it("opens a web page at the quoted words, start and end", () =>
     expect(sourceHref({ url: psagot, fragment: { start: "דמי משמרת", end: "גבייה רבעונית 0.03%" } })).toBe(
@@ -37,7 +37,7 @@ describe("sourceHref", () => {
     expect(sourceHref({ url: "https://x/a", fragment: { prefix: "a-b", start: "1,5 & 2", suffix: "c" } })).toBe("https://x/a#:~:text=a%2Db-,1%2C5%20%26%202,-c"));
   it("keeps the anchor before the words", () => expect(sourceHref({ url: "https://x/a", anchor: "s3", fragment: { start: "w" } })).toBe("https://x/a#s3:~:text=w"));
   it("adds the words to an address that has a # already", () => expect(sourceHref({ url: "https://x/a#b", fragment: { start: "w" } })).toBe("https://x/a#b:~:text=w"));
-  // 2026-11-08: a company's written answer is a file of the repository, opened at its public page; a parameter's rationale is not
+  // a company's written answer is a file of the repository, opened at its public page; a parameter's rationale is not
   it("opens a company's written answer at the repository's page, and leaves other files alone", () => {
     expect(sourceHref({ url: "docs/company-answers.md#ibi-2026-11-08", page: 73 })).toBe("https://github.com/orishamir/finance-tool/blob/main/docs/company-answers.md#ibi-2026-11-08");
     expect(publicUrl("docs/parameters-rationale.md#goal-presets")).toBe("docs/parameters-rationale.md#goal-presets");

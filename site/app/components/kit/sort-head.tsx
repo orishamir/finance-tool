@@ -1,4 +1,4 @@
-// A table's column head that sorts the table when pressed (founder, 2026-11-03, the track browser: "instead of the sort buttons make the
+// A table's column head that sorts the table when pressed (the track browser: "instead of the sort buttons make the
 // table clickable"). The active head is bold with ▲ (small to large) or ▼ (large to small); every other sortable head shows a faint ⇅.
 // The arrow has a fixed slot and the bold width is held by an unseen copy of the label, so pressing a head moves nothing. Put the sort's
 // state on the column too (`ProductColumn.sort`), which sets `aria-sort` on the head's cell. The label starts where a plain head's words

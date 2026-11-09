@@ -34,7 +34,7 @@ export const fundRecord = z.strictObject({
     median_spread: fee,
     fund_level_withholding_drag: fee,
     /**
-     * 2026-10-31 (MF-21): the load on purchase (שיעור הוספה), unit `pct_of_trade`, from the fund's own document. `0` means a document
+     * MF-21: the load on purchase (שיעור הוספה), unit `pct_of_trade`, from the fund's own document. `0` means a document
      * was read and says zero; left out means not read, so a missing value is never a zero. ETFs and foreign funds leave it out.
      * The validator fails a load above zero until the page prices one.
      */
@@ -46,7 +46,7 @@ export const fundRecord = z.strictObject({
   exposure_code: z.string().nullable().optional(),
   distribution_fee_type: z.string().nullable().optional(),
   creation_redemption_fee_category: z.string().nullable().optional(),
-  /** S4 (2026-10-25): how the fund follows its index, with the page that says so. */
+  /** S4: how the fund follows its index, with the page that says so. */
   replication: z
     .strictObject({
       method: z.enum(["physical", "swap", "futures", "mixed"]),
@@ -56,7 +56,7 @@ export const fundRecord = z.strictObject({
   /** S4: true when the fund neutralises the currency (מנוטרלת מט"ח). */
   hedged: z.boolean().optional(),
   /**
-   * 2026-10-29 (F-92): the fund's return and its tracking asset's in each full calendar year its report prints, in percent, from the
+   * F-92: the fund's return and its tracking asset's in each full calendar year its report prints, in percent, from the
    * report named in `source` (the same as `fees.tracking_difference_12m`). A part year is left out; no full year leaves the field out.
    */
   tracking_record: z
@@ -68,7 +68,7 @@ export const fundRecord = z.strictObject({
             fund_pct: z.number(),
             tracking_pct: z.number(),
             /**
-             * 2026-11-07 (F-92 (b), pass 5 of the indices data): the fees charged that calendar year, in percent of the fund's average net
+             * F-92 (b): the fees charged that calendar year, in percent of the fund's average net
              * assets, as an Israeli annual report's table "הוצאות שנפרעו מנכסי הקרן" prints them on `fees_page`: the fixed management fee,
              * the variable management fee (negative when the fund was paid back) and the trustee's fee. A cell printed "-" or "* שיעור זניח"
              * and a row the table does not print are 0. The variable fee stays within the highest category cap, 0.3% either way (ETF-14). Every year of an Israeli record carries it; a foreign document prints no such
@@ -79,7 +79,7 @@ export const fundRecord = z.strictObject({
         )
         .min(1),
       /**
-       * 2026-11-07 (recheck 3 of the indices data): every full calendar year the report's returns table prints, read off the page in
+       * every full calendar year the report's returns table prints, read off the page in
        * `page`, oldest first. The validator holds `years` to it (data-schema §4 item 17), and where the report's text is in the research
        * library a test reads the page and holds this field to it (packages/pipeline/test/tracking-years-library.test.ts).
        */
@@ -88,22 +88,22 @@ export const fundRecord = z.strictObject({
       page: z.number().int().positive().nullable(),
       /** The PDF page of the same report that prints `years[].fees_charged`; required with them (data-schema §4 item 17). */
       fees_page: z.number().int().positive().optional(),
-      /** 2026-11-07 (F-92 (b), pass 6): the PDF page of the same report whose table "שינויים במאפייני הקרן" lists the changes of its fees; required with `fees_page`. */
+      /** F-92 (b): the PDF page of the same report whose table "שינויים במאפייני הקרן" lists the changes of its fees; required with `fees_page`. */
       changes_page: z.number().int().positive().optional(),
       /**
-       * 2026-11-07 (F-92 (b), pass 6): the day today's listed variable management fee came into force, as that table prints it, or null
+       * F-92 (b): the day today's listed variable management fee came into force, as that table prints it, or null
        * when it prints no change of the variable fee in the years it covers nor after them. The years charged at today's rate (a whole
        * calendar year from that day on) give the variable fee counted forward. Required on an Israeli record with `fees_page`.
        */
       variable_rate_since: isoDate.nullable().optional(),
       /**
-       * 2026-11-07 (pass 6): the report's footnote to the variable fee says its table prints only the positive fees ("לא מקבל ביטוי
+       * the report's footnote to the variable fee says its table prints only the positive fees ("לא מקבל ביטוי
        * בטבלה" for the negative ones), so `fees_charged.variable` may overstate what the fund paid net. No net figure is estimated.
        */
       variable_positive_only: z.literal(true).optional(),
       checked: isoDate,
       /**
-       * 2026-11-07 (former ground rule 2): the benchmark the document compares the fund with, by the name it prints, and whether that
+       * former ground rule 2: the benchmark the document compares the fund with, by the name it prints, and whether that
        * index counts dividends after the tax withheld at source (`net`), before it (`gross`), or no official document says (`unstated`).
        * Every record carries it, Israeli and foreign alike: a `net` record shows a gap and takes A-07 from its years, a `gross` one only on the list F-92 (d) allows.
        * `source`: the document that says so, when it is not the one in `source` above; `page`: its PDF page; `rule_ids`: the rule that
@@ -119,7 +119,7 @@ export const fundRecord = z.strictObject({
     })
     .optional(),
   /**
-   * 2026-10-31 (A-10): a distributing fund's yield, a value object in `pct_per_year` read from the fund's own factsheet or the
+   * A-10: a distributing fund's yield, a value object in `pct_per_year` read from the fund's own factsheet or the
    * manager's page with its date, and the payments a year the same source prints. Left out when it was not read: the fund then has no price.
    */
   distribution: z
@@ -129,8 +129,8 @@ export const fundRecord = z.strictObject({
     })
     .optional(),
   /**
-   * 2026-11-04 (TXF-11): the fund's own Israeli prospectus annex ("נספח לתשקיף קרן חוץ נסחרת") reports a Tax Authority ruling given
-   * to the fund, and names a sale and a distribution as the only taxed events. The founder judged that enough for that fund (D10): an
+   * TXF-11: the fund's own Israeli prospectus annex ("נספח לתשקיף קרן חוץ נסחרת") reports a Tax Authority ruling given
+   * to the fund, and names a sale and a distribution as the only taxed events. D10 judges that enough for that fund: an
    * accumulating fund with it is ranked, not listed under G-18. Units of the same ISIN bought abroad are the same units, so both records carry it.
    */
   tax_ruling: z

@@ -5,9 +5,9 @@ import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import { buildTariff as engineTariff, memberKindOf, REDEMPTION_BAND, STANDING_ORDER_BAND, Unusable, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
-import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
+import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { buildInstrumentTerms, redemptionValues, exposureHref, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
-import { evaluate, fundCostKeys, fundCostOf, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
+import { evaluate, fundCostKeys, fundCostOf, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
 import { computed, ownBy, ownEach, ruleFigure, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
@@ -120,7 +120,7 @@ export function ownFeeHoldOf(id: string, terms: InstrumentTerms, feeValues: Reco
 }
 
 /**
- * The manager a provident wrapper's example runs on when more than one list is collected (F-80, 2026-11-07): the one P-05 names, else the
+ * The manager a provident wrapper's example runs on when more than one list is collected (F-80): the one P-05 names, else the
  * one whose fees, as `pricedLine` prices them, are the lowest on both bases in every month, which leaves any plan the most (direct expenses
  * are left out: no collected list prints a rate for them). Managers whose
  * prices are the same in every month tie: the example runs on the first by id and `tied` names them all. When no list is the lowest on
@@ -219,16 +219,6 @@ export function providentTerms(
   };
 }
 
-function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
-  if (Array.isArray(node)) node.forEach((n) => collectRuleIds(n, out));
-  else if (node && typeof node === "object") {
-    for (const [k, v] of Object.entries(node)) {
-      if (k === "rule_ids" && Array.isArray(v)) v.forEach((id) => typeof id === "string" && out.add(id));
-      else collectRuleIds(v, out);
-    }
-  }
-  return out;
-}
 
 /** BANK-22's Bank of Israel page, read from the il-finance reference the rule record was written from (the record holds no link). */
 function cashLink(): CompareBundle["cashLink"] {
@@ -264,11 +254,11 @@ function depositRate(wrapperId: string, family: string, spec: { deposit_terms?: 
   const rec = deposits.find((d) => d.id === spec.deposit_terms && d.wrapper_id === wrapperId);
   const rate = rec?.rate_offered;
   if (!rate || typeof rate.value !== "number" || rate.unit !== "pct_per_year") return null;
-  // D31: the idle-cash row and the comparison name the bank whose published rate this is
+  // D31: the rate names the bank whose published rate this is
   return ownBy({ ...rate }, publisherHe(rate as SiteValue));
 }
 
-/** A deposit wrapper's `amount_range` as its record holds it (audit 2026-10-24 (sweep)): the amounts the published rate applies to. */
+/** A deposit wrapper's `amount_range` as its record holds it: the amounts the published rate applies to. */
 function depositRange(wrapperId: string, family: string, spec: { deposit_terms?: string } | undefined, deposits: DepositTerms[]): WrapperEntry["cashRange"] | null {
   if (family !== "deposit" || !spec?.deposit_terms) return null;
   const rec = deposits.find((d) => d.id === spec.deposit_terms && d.wrapper_id === wrapperId);
@@ -276,7 +266,7 @@ function depositRange(wrapperId: string, family: string, spec: { deposit_terms?:
   return { min: { ...rec.amount_range.min }, max: rec.amount_range.max ? { ...rec.amount_range.max } : null };
 }
 
-/** The instrument a wrapper's run stands for, named from the data: the fund or track P-05 names and the provider whose tariff it names (audit 2026-10-24 (sweep)). */
+/** The instrument a wrapper's run stands for, named from the data: the fund or track P-05 names and the provider whose tariff it names. */
 function representativeOf(
   spec: { fund?: string | number; track?: string | number; tariff?: string } | undefined,
   funds: { id: string; names: { he: string[] } }[],
@@ -294,14 +284,14 @@ function representativeOf(
 
 
 /**
- * The brokerage wrapper's choice of provider (2026-10-24): the tariff of every bank and broker snapshot the providers workbench
+ * The brokerage wrapper's choice of provider: the tariff of every bank and broker snapshot the providers workbench
  * ranks (the same latest snapshots, the same `providersOf`), read by the engine's own tariff step (F-63's `buildTariff`) for the
  * fund class the representative is, so a chosen provider's run reads the same lines the workbench ranks. The channel is the
  * workbench's default, direct, and the branch one only where the snapshot has no direct trade line. FX is left out as it is in the
  * run (a fund in shekels). A provider whose snapshot is missing, ambiguous or has no trade line is left out. Only the lines the
  * run reads are kept, each as its record's value object.
  *
- * A security run in the securities account (D6, amended 2026-10-26: makam and a government bond held directly) takes the same choice:
+ * A security run in the securities account (D6, makam and a government bond held directly) takes the same choice:
  * `productId` is the security, the lines are the account's for its class, and only the lines its run reads are
  * kept (commissions, custody, the account's monthly fee). The member's kind travels with the tariff (F-14: a bank may not charge
  * custody on makam, BRK-17; a non-bank member's line applies).
@@ -371,7 +361,7 @@ const securityClass: Partial<Record<ProductId, string>> = { makam: "makam", "gov
 
 /**
  * The lowest in-fund cost (fixed and variable management and trustee, the same measure as the run's fee) among the fund records
- * collected for the exposure the wrapper's fund stands for (2026-10-24); undefined when the wrapper holds no fund or no record states a cost.
+ * collected for the exposure the wrapper's fund stands for; undefined when the wrapper holds no fund or no record states a cost.
  */
 function classMinFee(spec: { fund?: string | number } | undefined, funds: ReturnType<typeof loadFunds>, today: string): SiteValue | undefined {
   if (spec?.fund === undefined) return undefined;
@@ -398,55 +388,13 @@ function classMinFee(spec: { fund?: string | number } | undefined, funds: Return
 /** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
 const fundHoldingWrappers: ProductId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
 
-/**
- * Release 5, exposure mode: every exposure record, and for each exposure the terms of a securities wrapper that holds
- * it through the fund collected for it (P-05's tariff for that wrapper, the fund's own costs). An exposure with no
- * fund record has no entry: the row reads "not evaluated: details not collected", never another instrument's terms.
- */
-function exposureData(wrappers: WrapperEntry[], p05: ParameterRecord, sources: Parameters<typeof buildInstrumentTerms>[3]): { exposures: ExposureEntry[]; exposureTerms: Record<string, Record<string, HoldingTerms>> } {
-  const records = loadExposures();
+/** Every exposure record, as the comparison lists it. */
+function exposureEntries(): ExposureEntry[] {
   const funds = loadFunds();
-  const exposureTerms: Record<string, Record<string, HoldingTerms>> = {};
-  const exposures = records.map((record): ExposureEntry => {
+  return loadExposures().map((record): ExposureEntry => {
     const forExposure = funds.filter((f) => (f as { exposure_id?: string }).exposure_id === record.id);
-    for (const wid of fundHoldingWrappers) {
-      if (!record.wrapper_ids?.includes(wid)) continue;
-      const own = p05.instruments?.[wid];
-      const fund = forExposure.find((f) => f.id === own?.fund) ?? forExposure[0];
-      if (!fund) continue;
-      const built = buildInstrumentTerms(wid, "securities", { ...(own ?? {}), fund: fund.id }, sources);
-      if ("missing" in built) {
-        console.log(`[compare] ${record.id} in ${wid} via fund ${fund.id}: no terms: ${built.missing.join("; ")}`);
-        continue;
-      }
-      (exposureTerms[record.id] ??= {})[wid] = { fundId: fund.id, terms: built.terms, feeValues: built.feeValues };
-    }
     return { record, name: record.names.he[0] ?? record.id, oneLine: record.one_line_he ?? null, guideHref: exposureHref(record.id), fundsHref: forExposure.length > 0 && record.kind === "equity_index" ? indexPath(record.id) : null };
   });
-  void wrappers;
-  return { exposures, exposureTerms };
-}
-
-/**
- * The funds the brokerage account can hold for an equity index (2026-10-25, D27/D28): each fund record collected for an `equity_index`
- * exposure that the engine can run, as the fund kind with its cost lines (the same builder as the guide pages and exposure mode). A fund the
- * builder refuses (another currency, a distributing fund with no yield, a tax track not modelled) has no entry, so a way over it is not run
- * by the comparison. Which fund and broker a goal uses comes from `site/app/lib/invest.ts` on the client (`compare-index.ts`).
- */
-function indexFundTerms(p05: ParameterRecord, sources: Parameters<typeof buildInstrumentTerms>[3]): Record<string, IndexFundTerms> {
-  const indices = new Set(loadExposures().filter((e) => e.kind === "equity_index").map((e) => e.id));
-  const out: Record<string, IndexFundTerms> = {};
-  const own = p05.instruments?.[BROKERAGE];
-  for (const f of loadFunds()) {
-    const rec = f as unknown as { id: string; exposure_id?: string; names: { he: string[]; en: string[] } };
-    if (!rec.exposure_id || !indices.has(rec.exposure_id)) continue;
-    const built = buildInstrumentTerms(BROKERAGE, "securities", { ...(own ?? {}), fund: rec.id }, sources);
-    if ("missing" in built || !built.terms.fund) continue;
-    // D31: the way names the fund, so its costs are its manager's own figures
-    const feeValues = ownEach(Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k.startsWith("fund") || k === "ninetyPercentTest")), (f as { manager: string }).manager);
-    out[rec.id] = { name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, fund: built.terms.fund, feeValues };
-  }
-  return out;
 }
 
 /** The latest `checked` date anywhere in a record: what a refresh of the file changes (F-82 compares it). */
@@ -510,14 +458,14 @@ export function buildCompareBundle(): CompareBundle {
     }
     if (family === null) return { ...base, missing: [`${record.id}: no instrument terms are built for it`] };
     const built = buildInstrumentTerms(record.id, family, p05.instruments?.[record.id], sources);
-    // F-85 (founder, 2026-10-26: "almost nobody gets that 1%"): the current account runs on the rate most collected banks print, as on its
-    // guide page, not on the one bank P-05 names; idle cash's baseline and the comparison's current-account row read it
+    // F-85: the current account runs on the rate most collected banks print, as on its
+    // guide page, not on the one bank P-05 names
     const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(sources.deposits)), allRules, t) : null;
     const rate = common ? common.rate : depositRate(record.id, family, p05.instruments?.[record.id], sources.deposits);
     if ("missing" in built) return { ...base, missing: built.missing };
     const range = depositRange(record.id, family, p05.instruments?.[record.id], sources.deposits);
     const rep = repOf(record.id);
-    // F-26 (2026-10-25): the current account's rate is paid on the balance up to the record's `amount_range.max` (BANK-09)
+    // F-26: the current account's rate is paid on the balance up to the record's `amount_range.max` (BANK-09)
     const ceilingValue: SiteValue | undefined =
       record.id !== "current-account" ? undefined
       : common ? (common.ceiling && typeof common.ceiling.value === "number" ? common.ceiling : undefined)
@@ -526,7 +474,7 @@ export function buildCompareBundle(): CompareBundle {
     const terms = ceiling !== undefined && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling } } : built.terms;
     return { ...base, terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(ceilingValue && ceiling !== undefined && built.terms.deposit ? { cashCeiling: ceilingValue } : {}), ...(rep ? { representative: rep } : {}) };
   });
-  // review fix 2026-10-24: what P-04 judges each wrapper's run by (see `WrapperEntry.fitBasis`)
+  // what P-04 judges each wrapper's run by (see `WrapperEntry.fitBasis`)
   for (const w of wrappers) {
     const spec = p05.instruments?.[w.id] as { track?: string | number; fund?: string | number } | undefined;
     if (spec?.track !== undefined) {
@@ -556,13 +504,13 @@ export function buildCompareBundle(): CompareBundle {
   }
   for (const w of wrappers) {
     if (w.id !== BROKERAGE || !w.terms) continue;
-    // the tariff lines are read for the class of the fund the account holds, not a fixed one: a tariff with no line for that class gives no price (F-63, "No line, no price", 2026-10-25)
+    // the tariff lines are read for the class of the fund the account holds, not a fixed one: a tariff with no line for that class gives no price (F-63)
     const fundRec = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
     const fundClass = fundRec ? instrumentClassOf(fundRec, loadExposures().find((e) => e.id === fundRec.exposure_id)) : "etf_units";
     const providers = providerTariffs(w.id, fundClass);
     if (Object.keys(providers).length > 0) w.providers = providers;
   }
-  // D6 (amended 2026-10-26): makam and a government bond are held in the securities account, so the account's choice of provider
+  // D6: makam and a government bond are held in the securities account, so the account's choice of provider
   // (F-80) prices them too, at the lines for their own class. The money-market funds keep the bank case P-05 names: at a bank with a
   // distribution agreement the holder pays nothing to buy, hold or redeem them (MF-26, BANK-18), which no tariff can undercut.
   for (const w of wrappers) {
@@ -573,21 +521,18 @@ export function buildCompareBundle(): CompareBundle {
   }
   for (const w of wrappers) for (const m of w.missing) console.log(`[compare] ${w.id}: no terms: ${m}`);
 
-  const indexFunds = indexFundTerms(p05, sources);
   const tier2 = tier2List();
   const checklist = loadChecklistRows();
-  const { exposures, exposureTerms } = exposureData(wrappers, p05, sources);
+  const exposures = exposureEntries();
   const dataFiles = dataFileVersions();
 
   // ---- the rules a run may read: found by running the comparison over the profiles above with every rule at hand,
   // plus every rule the wrapper records cite (reasons and chips link to them) and the two the screens quote.
-  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, indexFunds, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable() };
+  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable() };
   const needed = new Set<string>(["PEN-36", "BANK-22"]);
   for (const w of wrappers) collectRuleIds(w.record).forEach((id) => needed.add(id));
   for (const w of wrappers) for (const f of Object.values(w.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   for (const e of exposures) (e.record.rule_ids ?? []).forEach((id) => needed.add(id));
-  for (const h of Object.values(indexFunds)) for (const f of Object.values(h.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
-  for (const byWrapper of Object.values(exposureTerms)) for (const h of Object.values(byWrapper)) for (const f of Object.values(h.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   let runs = 0;
   for (const g of probeGoals()) {
     try {
@@ -615,7 +560,7 @@ export function compareBundle(): CompareBundle {
   return (cached ??= buildCompareBundle());
 }
 
-/** What the goal form and the comparison read besides the bundle: the presets (P-07), the ranges, P-05's inflation, PEN-36's text. */
+/** What the fee page and the indices page read besides the bundle: the presets (P-07), the ranges, P-05's inflation, PEN-36's text. */
 export function goalFormData() {
   const t = today();
   const parameters = loadParameters();
@@ -654,17 +599,6 @@ export function goalFormData() {
     rules: pen36 ? { "PEN-36": pen36 } : {},
     pointed: pen36 ? pointedRecords({ "PEN-36": pen36 }, rules) : {},
   };
-}
-
-let contextCache: { today: string; presets: Record<string, unknown>; meta: { rationale: string; rationaleHe?: string | null } } | null = null;
-
-/** What a page needs to mount the saved-goal strip: the presets (P-07, to read a goal's preset-filled numbers) and their rationale. */
-export function goalContext() {
-  if (!contextCache) {
-    const d = goalFormData();
-    contextCache = { today: d.today, presets: d.presets, meta: d.meta };
-  }
-  return contextCache;
 }
 
 /**

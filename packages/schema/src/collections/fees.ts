@@ -9,7 +9,7 @@ import { companyName } from "../scope.ts";
 const ruleIds = z.array(z.string().min(1));
 
 /**
- * Where in the document (2026-10-31) a fee value stands. `page` is the file's own page of a
+ * Where in the document a fee value stands. `page` is the file's own page of a
  * PDF (the library's count, not the number printed on the sheet); `quote` is the document's own words,
  * at most 240 characters. A web page has only `quote`. Both optional: no page means not yet confirmed.
  */
@@ -28,15 +28,15 @@ export const feeLine = z.strictObject({
   rate: feeValue,
   min: feeValue.nullable(),
   max: feeValue.nullable(),
-  /** S2 (2026-10-25): a cap as a share of the trade value (unit `pct_of_trade`): commission = min(cap x trade, max(min, rate x base)). */
+  /** S2: a cap as a share of the trade value (unit `pct_of_trade`): commission = min(cap x trade, max(min, rate x base)). */
   cap: feeValue.optional(),
-  /** F-12 (2026-10-31): a flat price for an order up to a sum; a larger order pays the line's rate, minimum and maximum. */
+  /** F-12: a flat price for an order up to a sum; a larger order pays the line's rate, minimum and maximum. */
   flat_up_to: z.strictObject({ amount: feeValue, up_to: feeValue }).optional(),
   spread: feeValue.nullable().optional(),
   period: z.enum(["month", "quarter", "year"]).nullable(),
   channel: z.string().nullable(),
   band: z.string().nullable(),
-  /** F-13 (2026-10-31): a conversion line for one currency (ISO code); it prices a fund in that currency, and a line with no currency prices the others. */
+  /** F-13: a conversion line for one currency (ISO code); it prices a fund in that currency, and a line with no currency prices the others. */
   conversion_currency: z.string().regex(/^[A-Z]{3}$/).optional(),
   statement_code: z.string().nullable(),
   /** The CMA fund number, when the line is for one track. */
@@ -45,7 +45,7 @@ export const feeLine = z.strictObject({
   discount_months: feeValue.optional(),
   reverts_to: feeValue.optional(),
   /**
-   * D56 (2026-11-07): the document's own words that make the printed `rate` an offer, a rate conditional on a document that is not
+   * D56: the document's own words that make the printed `rate` an offer, a rate conditional on a document that is not
    * published (a discount letter sent after joining). The row shows the rate with these words; the ranking and the example price the
    * line at `reverts_to` from the start. Requires `reverts_to`.
    */
@@ -56,16 +56,16 @@ export const feeLine = z.strictObject({
 /** The exchanges the site tells apart for a fund bought abroad: `us`, and `europe` for every exchange outside the US (a trade line's band, `venueOfBand`). */
 export const venue = z.enum(["us", "europe"]);
 
-/** S3 (2026-10-25): sourced availability of an instrument class at the provider. */
+/** S3: sourced availability of an instrument class at the provider. */
 export const availabilityEntry = z.strictObject({
   applies_to: z.array(instrumentClass).min(1),
-  /** "unknown" (2026-10-31): the documents leave it open, so the class is not priced anywhere and the row says why in `reason_he`. */
+  /** "unknown": the documents leave it open, so the class is not priced anywhere and the row says why in `reason_he`. */
   available: z.union([z.boolean(), z.literal("unknown")]),
   source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...place }),
   note: z.string().optional(),
   reason_he: z.string().min(1).optional(),
   /**
-   * 2026-11-08: the class can be bought there only by phone (through the house's trading desk), as the house's own words say, with their
+   * the class can be bought there only by phone (through the house's trading desk), as the house's own words say, with their
    * own source and its quote; with `venues`, only a fund bought on those exchanges (a class of funds bought abroad). A sourced fact shown
    * beside the house; it changes no price and no ranking. Only on an entry that says the class can be bought (`available: true`).
    */
@@ -78,7 +78,7 @@ export const availabilityEntry = z.strictObject({
     .optional(),
 });
 
-/** A group price's place in a document: its page or sheet row, and the document's own words there (2026-10-31). */
+/** A group price's place in a document: its page or sheet row, and the document's own words there. */
 export const groupSource = z.strictObject({
   url: z.string().min(1),
   title: z.string().min(1),
@@ -88,7 +88,7 @@ export const groupSource = z.strictObject({
   fragment: textFragment.optional(),
 });
 /**
- * A group price's numbers, as the words state them and nothing more (2026-11-04, own account on a house, F-101). Exactly one kind of price:
+ * A group price's numbers, as the words state them and nothing more (own account on a house, F-101). Exactly one kind of price:
  * `exempt` ("פטור", "0 עמלה"); `discount_pct` off the house's own price for the same fee ("50% הנחה", with `not_below_pct` where the words
  * floor it); `rate_pct` of the trade value (`per: "trade"`) or of the balance for each `per` ("0.075% לרבעון"); `flat` for each operation, up to
  * `flat_up_to` where the words limit the order's size; `per_share_cents` for each share. `side` (`buy` or `sell`) only where the words name a purchase only or a sale only (Mercantile Top's "עמלת קניה בחו\"ל"); absent, the price is for both. `min` and `max` are the bounds the words print
@@ -102,7 +102,7 @@ export const groupPriceValue = z
   .strictObject({
     rate_pct: z.number().min(0).max(100).optional(),
     per: z.enum(["trade", "month", "quarter", "year"]).optional(),
-    /** Set only where the words name a purchase only or a sale only; absent means both sides (2026-11-04, finance review). A trade price only. */
+    /** Set only where the words name a purchase only or a sale only; absent means both sides. A trade price only. */
     side: z.enum(["buy", "sell"]).optional(),
     flat: z.number().positive().optional(),
     flat_up_to: z.number().positive().optional(),
@@ -137,7 +137,7 @@ export const groupPrice = z.strictObject({
   source: groupSource,
 });
 export const groupEntry = z.strictObject({
-  /** `salary` (2026-11-04, D43 amended): a lower price for those who move their salary to the bank or hold a portfolio there. */
+  /** `salary` (D43 amended): a lower price for those who move their salary to the bank or hold a portfolio there. */
   kind: z.enum(["young", "soldier", "released", "student", "salary", "other"]),
   name_he: z.string().min(1),
   who_he: z.string().min(1),
@@ -152,7 +152,7 @@ export const groupEntry = z.strictObject({
    * free: `exempt` from the monthly minimum for `for_months` from joining (the entry's printed end), then the bank's ordinary minimum.
    * Absent: the annex was not read for it, prints nothing, or leaves it unclear, and the group pays the ordinary minimum, the most the
    * documents allow (D56). An exemption inferred from other rows (a free teller action under a minimum bounded by its price) is never
-   * recorded: Mercantile's was, and was removed (lens review M2, 2026-11-07).
+   * recorded.
    */
   current_account: z
     .strictObject({ price_he: z.string().min(1), exempt: z.literal(true), for_months: z.number().int().positive(), source: groupSource })
@@ -160,7 +160,7 @@ export const groupEntry = z.strictObject({
   /** What was inferred rather than read. */
   inferred: z.string().min(1).optional(),
   /**
-   * The sub-row under the house's row (D43 amended 2026-11-04): who in a few words, what is cheaper than the record's own price, until
+   * The sub-row under the house's row (D43): who in a few words, what is cheaper than the record's own price, until
    * when. Each restates the long words above with no new fact: the data check holds every number in them to those words (and an
    * ordinary price after "במקום" to a line of the record). Entries with the same `cheaper_he` share one sub-row. Required of a bank's or
    * broker's latest record; who_short_he of an `other` entry follows "ל" in the line above the sub-rows ("מחיר אחר לרופאים עצמאיים").
@@ -182,7 +182,7 @@ export const feeGroups = z.strictObject({
 });
 
 /**
- * What a house's advertising says against its binding documents (D57, 2026-11-04): one entry per claim, both sides in their own words.
+ * What a house's advertising says against its binding documents (D57): one entry per claim, both sides in their own words.
  * `contradicted`: a binding document prints the fee the advert says is not charged. `offer`: the advert reads as for everyone, and the
  * binding terms give it only to some customers, or for a time, or let the house withdraw it. `not_found`: no binding document says it.
  * `binding_source` is what was read: the price list, the account terms, the fee annex or the promotion's terms, never an advertising page;
@@ -217,14 +217,14 @@ export const feesSnapshot = z.strictObject({
     name_he: companyName,
     class: z.enum(["bank", "broker", "foreign_broker", "provident-manager", "fund-manager", "insurer"]),
     regulator: z.enum(["BoI", "ISA", "CMA", "foreign"]),
-    /** S1 (2026-10-25): required when `regulator` is `foreign`. */
+    /** S1: required when `regulator` is `foreign`. */
     regulator_foreign: z.strictObject({ name: z.string().min(1), name_he: z.string().min(1), country: z.string().min(1) }).optional(),
     tase_member: z.boolean(),
-    /** A foreign broker whose own terms offer a service that withholds Israeli tax for those who join (2026-10-31, BRK-36). */
+    /** A foreign broker whose own terms offer a service that withholds Israeli tax for those who join (BRK-36). */
     israeli_tax_service: z.boolean().optional(),
     protection_rule_ids: ruleIds,
     /**
-     * The house whose price list holds this one's prices (2026-11-04, D43 amended): PEPPER's customers trade in Leumi's app at the
+     * The house whose price list holds this one's prices (D43 amended): PEPPER's customers trade in Leumi's app at the
      * prices of the PEPPER annex of Leumi's price list, stated there as a group. Such a record stays as it was read; the indices page
      * lists it under that house, not as a house of its own.
      */
@@ -232,14 +232,14 @@ export const feesSnapshot = z.strictObject({
   }),
   tariff: z.strictObject({
     url: z.string().min(1),
-    /** The document's name as its publisher writes it: the site shows it as the source's name (2026-11-03). */
+    /** The document's name as its publisher writes it: the site shows it as the source's name. */
     title: z.string().min(1),
     /** How the document was read: its parts, pages and dates per part, files read alongside, what it leaves out. Kept with the data, not shown. */
     notes: z.string().min(1).optional(),
-    /** The date the document prints; a month (YYYY-MM) when it prints only a month ("11/2025"), so no day is invented (2026-11-07). */
+    /** The date the document prints; a month (YYYY-MM) when it prints only a month ("11/2025"), so no day is invented. */
     published: z.union([isoDate, z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, "month must be YYYY-MM, 01 to 12")]).nullable(),
     /**
-     * What the document prints instead, when it prints no date for the whole (`published` null; 2026-11-07, founder: a bare "no
+     * What the document prints instead, when it prints no date for the whole (`published` null; a bare "no
      * publication date" reads as a fault and says nothing). `part`: a date on each part and none for the whole, so the date of the part
      * the site reads, the part as the site names it, and the date as printed (`date` null where the print is no real date, such as
      * "06/02/20217"); `version`: a version printed in place of a date ("גרסת 04/2026" is `04/2026`); `none`: nothing printed. The data
@@ -256,7 +256,7 @@ export const feesSnapshot = z.strictObject({
   }),
   snapshot: isoDate,
   missing: z.boolean(),
-  /** The reason in Hebrew, for the page, where the plain "not collected" would be untrue (2026-10-31). */
+  /** The reason in Hebrew, for the page, where the plain "not collected" would be untrue. */
   missing_reason_he: z.string().min(1).optional(),
   missing_reason: z.string().nullable(),
   lines: z.array(feeLine),
@@ -278,9 +278,9 @@ export const feesSnapshot = z.strictObject({
   current_account: z.strictObject({ monthly_minimum: feeValue }).optional(),
   notice_rule_ids: ruleIds,
   availability: z.array(availabilityEntry).optional(),
-  /** Who pays the prices on this record (2026-10-31): required of a bank's or broker's record by the data check. */
+  /** Who pays the prices on this record: required of a bank's or broker's record by the data check. */
   price_for_he: z.string().min(1).optional(),
-  /** What the documents hold that this record does not use, and why (2026-10-31); empty means nothing was found. */
+  /** What the documents hold that this record does not use, and why; empty means nothing was found. */
   left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1) })).optional(),
   groups: feeGroups.optional(),
   /** What the house's advertising says against its binding documents (D57); absent or empty when nothing was found. */

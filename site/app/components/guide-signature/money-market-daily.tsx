@@ -1,9 +1,8 @@
 // Daily money-market fund (D29): how fast can I get my money, and what does it pay? A table of four cash products from the fastest to
-// the slowest way back (founder, 2026-10-26): how soon the money is back is a coloured tag with an icon and a word (an order, not a
+// the slowest way back: how soon the money is back is a coloured tag with an icon and a word (an order, not a
 // measure, so no bar), and the rate is a bar with its figure, all on one scale. Each rate says where it comes from (the rate most of the
 // collected banks publish, F-85, in the notes; the range across the collected banks, F-86; the site's assumption, D20). The other
-// products link to their own guide pages. Until 2026-10-26 it was a filter over cards ("when do you need the money?"), with bars measured
-// against the highest rate.
+// products link to their own guide pages.
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
@@ -11,7 +10,6 @@ import { fact, ladderRows, slowerPayNoMore, speedOrder, type LadderRow, type Spe
 import { Num, RulesLine, Term } from "../provenance";
 import { ChartLegend, CompareTable, NoteList, Sentence, StepTag, Swatch, Tag, ValueBar } from "../kit";
 import { CommonRateLine, type VisualProps } from "./kit";
-import { shown } from "../../lib/review";
 
 const icons: Record<Speed, React.ReactNode> = { "any-time": <Zap aria-hidden="true" />, "trading-day": <CalendarCheck aria-hidden="true" />, "fixed-dates": <CalendarDays aria-hidden="true" />, "at-maturity": <Lock aria-hidden="true" /> };
 
@@ -59,8 +57,9 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                 key="rate"
                 value={
                   r.range ? (
-                    <span dir="ltr" className="inline-block">
-                      <Num value={r.range.lo} />–<Num value={r.rate} />
+                    // a range may wrap at "עד": at 320 px "1.55% עד 2.25%" is wider than its cell, and the figure's slot does not break
+                    <span className="inline-block whitespace-normal">
+                      <Num value={r.range.lo} /> {copy.common.rangeTo} <Num value={r.rate} />
                     </span>
                   ) : (
                     <Num value={r.rate} />
@@ -105,15 +104,6 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                     <>
                       {copy.ladder.notes.exit.before}
                       <Num value={noExit} /> {copy.ladder.notes.exit.of} <Num value={deposit.range.count} /> {copy.ladder.notes.exit.after}
-                    </>
-                  )}
-                  {/* the list stands in the bank-deposit visual: no link while that is held (lib/review.ts) */}
-                  {shown(`/guide/bank-deposit#${copy.ladder.range.anchorId}`) && (
-                    <>
-                      {" "}
-                      <Link to={`/guide/bank-deposit#${copy.ladder.range.anchorId}`} className="text-link hover:underline">
-                        {copy.ladder.notes.banksLink}
-                      </Link>
                     </>
                   )}
                 </span>,

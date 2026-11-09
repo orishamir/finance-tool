@@ -72,7 +72,7 @@ export type PairVerdict =
       condition?: string;
       /** The three bars the page asks about (loan, attachment, started annuity). */
       stillBarredIf: TransferBarrier[];
-      /** The other bars of PF-17 reg. 4 the person can state on a holding (additive, 2026-10-24). */
+      /** The other bars of PF-17 reg. 4 the person can state on a holding (additive). */
       alsoBarredIf: TransferBarrier[];
     }
   | { kind: "not-allowed"; ruleIds: string[]; reason: "barrier" | "partial-move"; detail: string }
@@ -168,7 +168,7 @@ function pairVerdict(a: Holding, b: Holding, record: WrapperRecord, book: Return
   }
 
   // PF-18: a study fund's accounts consolidate only when both are withdrawable tax-free. Decided on the wrapper, not
-  // on which rules the route happens to list (review 2026-10-24).
+  // on which rules the route happens to list.
   if (a.wrapper === "keren-hishtalmut") {
     if (a.partialMove || b.partialMove) {
       return { kind: "not-allowed", ruleIds: [...noPartialRules], reason: "partial-move", detail: "a study fund account moves whole, never in part" };

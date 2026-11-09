@@ -1,0 +1,129 @@
+{
+  "id": "hapoalim-win-win-leshana",
+  "bank": "hapoalim",
+  "names": {
+    "447": [
+      "WIN WIN לשנה"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'WIN WIN לשנה'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "Name printed 'WIN WIN לשנה'; the table prints no period column for it; recorded as 12 months from the name."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 2.35,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'WIN WIN לשנה', 'שיעור הריבית'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax as printed ('2.35%'). Row 'WIN WIN לשנה': rate type 'קבועה', linkage 'ללא הצמדה', amount 'החל מ-1000 ₪', break 'אין אפשרות לשבירת הפיקדון', renewal '-' / '-', exit points 'לא קיימת' '-', common-deposit rate '-', remark 'בסוף תקופה החיסכון ייבחר אוטומטית המסלול המשתלם יותר - הצמדה מלאה למדד המחירים לצרכן או ריבית צבורה לתקופת החיסכון', deposit method 'חד פעמית'. The table prints no deposit channel. Read 2026-11-06 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data); the data carries no date and the page says 'המידע נכון למועד הצגתו ולפני חישוב מס רווחי הון', so effective_from is the day read. The bank's WIN WIN contract (https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/win_win_1832025.pdf, p.1, read from the project library, filed 2026-10-31) s.1.1: two independent calculations at the end, the higher gross amount is credited: track A the agreed interest, not CPI-linked; track B the deposit with no interest plus CPI linkage differentials; s.4: no withdrawal before maturity; s.7: one deposit only. So the printed 2.35% is what track A pays; linkage 'none' is the table's word for track A. Re-read 2026-11-09: Read 2026-11-09 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), whose message reads 'המידע נכון ל-09.11.2026 ולפני חישוב מס במקור'. The row prints the same figures as on 2026-11-06."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": null,
+    "unit": "text",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/win_win_1832025.pdf",
+      "title": "בנק הפועלים, WIN WIN, תנאי תכנית חיסכון, סעיף 8 'מיסוי'; שאלה פתוחה TXI OQ19 בבסיס החוקים",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "open"
+    },
+    "checked": "2026-11-06",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "BPN-09"
+    ],
+    "state": "sourced",
+    "notes": "Open: TXI OQ19 (proposed 2026-11-07; tax-interest-deposits-bonds.md): how a deposit that pays the better of an unlinked fixed rate and full CPI linkage with no interest (BPN-09) is taxed. No rule in the rule base covers it yet. BPN-09 names this kind of deposit; no TXI rule says how its interest or its linkage is taxed, so neither TXI-03 (15% on unlinked interest) nor TXI-05 (exempt linkage) is applied to it, and the source's strength is 'open' until the rule base holds one. The bank's own contract, section 8, says: 'מחוסך יחיד, במידה והחוסך מזוכה על פי מסלול א' - 15% על המענק/הריבית שנצברה. במידה והחוסך מזוכה על פי מסלול ב' - פטור ממס' (a company's statement about its own product, not a rule)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 1000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+        "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים', שורת 'WIN WIN לשנה', 'טווח סכום להפקדה'",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-09",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-1000 ₪'."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירת הפיקדון' (447 table column).",
+    "rule_ids": [
+      "BANK-06"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "בסוף התקופה מקבלים את הטוב מבין שניים: הריבית הקבועה בלי הצמדה, או הצמדה מלאה למדד בלי ריבית.",
+  "variant": [
+    "best_of"
+  ],
+  "snapshot": "2026-11-09",
+  "source": {
+    "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+    "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'ריבית בפיקדונות נוספים'",
+    "publisher": "Bank Hapoalim B.M.",
+    "strength": "institution"
+  }
+}

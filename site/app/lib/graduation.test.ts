@@ -12,7 +12,7 @@ describe("graduation status", () => {
   });
   it("lists the savings policy's fee-cap closure with its rule and date, and flags the insurer-statement answer", () => {
     expect(by("savings-policies").closed).toEqual(expect.arrayContaining([{ closedOn: "2026-10-24", ruleIds: ["INS-25"] }]));
-    // 2026-10-25 tax-bases research: TXA OQ1's base is answered by the law (TXA-28 became general), so no insurer statement is flagged as its answer
+    // TXA OQ1's base is answered by the law (TXA-28 became general), so no insurer statement is flagged as its answer
     expect(by("savings-policies").open.find((o) => o.code === "TXA OQ1")?.institutionAnswer).toBeUndefined();
     // a REIT's blocker in G-24 is TX2 OQ8, which has no institution answer; TX2-21 (split from TX2-20) answers OQ7, which G-24 no longer lists
     expect(by("reits").open.some((o) => o.institutionAnswer)).toBe(false);
@@ -23,7 +23,7 @@ describe("graduation status", () => {
       { closedOn: "2026-10-26", ruleIds: ["TXA-30"] },
       { closedOn: "2026-10-26", ruleIds: ["TXA-19"] },
     ]);
-    // an answered question is deleted from the rule base (2026-11-08): a closure carries no question code
+    // an answered question is deleted from the rule base: a closure carries no question code
     expect(all.flatMap((s) => s.closed).every((c) => !("code" in c))).toBe(true);
     expect(by("amendment-190-deposits").open.map((o) => o.code)).toEqual(["TXA OQ14"]);
   });

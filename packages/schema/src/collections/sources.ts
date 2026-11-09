@@ -23,11 +23,11 @@ export const documentRow = z.strictObject({
   kind: sourceKind,
   official_url: z.string().min(1).nullable(),
   /**
-   * Optional: the hosts (without "www.") whose links the row may label (2026-10-26). A row that names where a copy is hosted ("נוסח
+   * Optional: the hosts (without "www.") whose links the row may label. A row that names where a copy is hosted ("נוסח
    * משולב באתר המוסד לביטוח לאומי") is limited to that host, so another copy of the same document keeps its own host's label.
    */
   hosts: z.array(z.string().min(1)).min(1).optional(),
-  /** A company's own terms for the law and terms browser (2026-10-31): its row in the document library and what kind of document it is. */
+  /** A company's own terms for the law and terms browser: its row in the document library and what kind of document it is. */
   library_id: z.string().regex(/^[0-9a-f]{16}$/).optional(),
   doc_kind: z.enum(["terms", "regulations", "prospectus", "notice", "leaflet", "terms-hub", "tariff", "agreement"]).optional(),
   /** The institution whose term this is (`institutions.json`); a company's term is shown under its name and never as a fact about a product (D30). */
@@ -69,7 +69,7 @@ export const institutionRow = z.strictObject({
   /**
    * The hosts of its own sites, without "www." (a subdomain counts; a group's site serves each of its companies). A source there is the
    * company's own document, so a record that cites it is listed in the company's section; a record about the company that cites none
-   * of its documents is not (review, 2026-10-26). Empty when no document of the company is collected.
+   * of its documents is not. Empty when no document of the company is collected.
    */
   own_hosts: z.array(z.string().regex(/^[a-z0-9-]+(\.[a-z0-9-]+)+$/)),
   /** The names its filings on a filing host (Maya) open with: "הראל" for "הראל, דוח שנתי …". A fund manager's documents are filings. */
@@ -81,7 +81,7 @@ export const institutionRow = z.strictObject({
 export const institutionsTable = z.array(institutionRow);
 
 /**
- * One row of `brands.json` (founder, 2026-10-26, D33): the companies of one group the site shows as one company, under the name
+ * One row of `brands.json` (D33): the companies of one group the site shows as one company, under the name
  * people know it by. Its page holds every product of every member (provident and study funds, the brokerage account, the funds it
  * manages), each under its own heading; every member's old address shows the same page.
  */
@@ -100,7 +100,7 @@ export const brandRow = z.strictObject({
 export const brandsTable = z.array(brandRow);
 
 /**
- * One row of `fragments.json` (founder, 2026-11-07): the words a link to a cited web page opens at, by text fragment (`#:~:text=`).
+ * One row of `fragments.json`: the words a link to a cited web page opens at, by text fragment (`#:~:text=`).
  * `url` and `words` are exactly a record's link and its quoted words (`quote`, or an advertising entry's `claim_he` or `binding_he`);
  * `text` holds the fragment's terms as the page prints them, kept only where they were found there and land on the quoted words first;
  * `seen` is the day the page was read. Written by tools/quote-fragments.mjs, never by hand; a PDF has no row (its link

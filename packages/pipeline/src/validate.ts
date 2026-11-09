@@ -25,6 +25,7 @@ import {
   wrapperRecord,
   type SeriesRecord,
   sourcesFile,
+  israelToday,
 } from "@finance-tool/schema";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
@@ -155,7 +156,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       }
     }
     if (collection === "fees" && result.success) {
-      // S1 (2026-10-25): a foreign broker is regulated abroad and says by whom; the schema refine checks the pair
+      // S1: a foreign broker is regulated abroad and says by whom; the schema refine checks the pair
       // regulator/regulator_foreign, this checks the class too, and that availability does not name a class twice.
       const snap = parsed.value as { provider: { class: string; regulator: string }; availability?: { applies_to: string[] }[] };
       if ((snap.provider.class === "foreign_broker") !== (snap.provider.regulator === "foreign"))
@@ -171,7 +172,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       const isLatest = !files.some((f) => { const n = f.split(/[\\/]/).pop()!; return n.startsWith(`${name.split("@")[0]}@`) && n > name; });
       if (isLatest) for (const message of checkPricePremises(parsed.value as PremiseSnapshot)) report(file, message);
       if (isLatest) for (const message of checkLinesUnderCap(parsed.value as DiscountSnapshot, feeCaps)) report(file, message);
-      // a house that is part of another (D43 amended 2026-11-04) names one that has a record, and not itself
+      // a house that is part of another (D43) names one that has a record, and not itself
       const partOf = (parsed.value as { provider: { part_of?: string } }).provider.part_of;
       if (partOf && (partOf === name.split("@")[0] || !files.some((f) => f.split(/[\\/]/).pop()!.startsWith(`${partOf}@`))))
         report(file, `provider.part_of: ${partOf} is no other house with a record under data/fees/`);
@@ -196,6 +197,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
+  checkDepositAmounts(files, ctx.dataDir, report);
   checkTermNames(files, ctx.dataDir, report);
   checkOpenQuestions(files, ctx, report, warn);
   // who each rule applies to and where it may appear (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
@@ -233,11 +235,11 @@ export function checkFundDistribution(record: Pick<FundRecord, "distribution_pol
 export const GROSS_INDEX_RULE: Record<string, string> = { "index-ta125": "ETF-42", "index-ta35": "ETF-44", "index-ta90": "ETF-45" };
 
 /**
- * data-schema §3.5 and §4 item 17 (recheck 3 of the indices data, 2026-11-07). A tracking record holds every full calendar year its
+ * data-schema §3.5 and §4 item 17. A tracking record holds every full calendar year its
  * report prints, no fewer and no more: `years` against `years_printed`, each year once. A `gross` benchmark is admitted only on an index
  * the method names (TA-125, TA-35, TA-90), with the document that says so (its own source, or the report's page) and that index's own
- * rule; another rule id fails. An Israeli record carries the fees charged in each of its years and the page that prints them (F-92 (b),
- * pass 5, 2026-11-07: every Israeli annual report prints them in "הוצאות שנפרעו מנכסי הקרן"); fees charged without their page fail anywhere.
+ * rule; another rule id fails. An Israeli record carries the fees charged in each of its years and the page that prints them (F-92 (b): every Israeli annual
+ * report prints them in "הוצאות שנפרעו מנכסי הקרן"); fees charged without their page fail anywhere.
  */
 export function checkTrackingRecord(record: Pick<FundRecord, "exposure_id" | "tracking_record"> & { domicile?: string; fees?: Pick<FundRecord["fees"], "variable_management"> }): string[] {
   const t = record.tracking_record;
@@ -256,7 +258,7 @@ export function checkTrackingRecord(record: Pick<FundRecord, "exposure_id" | "tr
   if (record.domicile === "IL") {
     const bare = t.years.filter((y) => !y.fees_charged).map((y) => y.year);
     if (bare.length) out.push(`tracking_record.years: ${bare.join(", ")} ${bare.length > 1 ? "have" : "has"} no fees_charged; an Israeli annual report prints them in "הוצאות שנפרעו מנכסי הקרן" (F-92 (b))`);
-    // F-92 (b), pass 6: the variable fee counted forward rests on the years charged at today's rate, which the report's table of changes dates
+    // F-92 (b): the variable fee counted forward rests on the years charged at today's rate, which the report's table of changes dates
     if (t.fees_page && (t.variable_rate_since === undefined || !t.changes_page)) out.push('tracking_record: an Israeli record with fees_page names changes_page and variable_rate_since (null when its table "שינויים במאפייני הקרן" prints no change of the variable fee) (F-92 (b))');
   }
   if ((t.variable_rate_since !== undefined || t.variable_positive_only) && !charged.length) out.push("tracking_record: variable_rate_since and variable_positive_only speak of the fees charged, which the record does not hold");
@@ -284,7 +286,7 @@ export function checkTrackingRecord(record: Pick<FundRecord, "exposure_id" | "tr
 export const firstFullYear = (since: string): number => Number(since.slice(0, 4)) + (since.slice(5) === "01-01" ? 0 : 1);
 
 /** A name's brackets close in order, and no Hebrew letter is glued to the outside of one: names read off a report's PDF came out as
- * "MTF סל (S&P 500 (4D" and "מור סל (4D)י S&P 500", and the page showed them so (2026-11-05). */
+ * "MTF סל (S&P 500 (4D" and "מור סל (4D)י S&P 500", and the page showed them so. */
 export function checkFundNames(record: Pick<FundRecord, "names">): string[] {
   const out: string[] = [];
   for (const name of [...record.names.he, ...record.names.en]) {
@@ -302,7 +304,7 @@ export function checkFundNames(record: Pick<FundRecord, "names">): string[] {
 /**
  * A document's title that quotes a fund's name broken by the right-to-left copy: a bracket that does not close in order ("MTF מחקה (Nasdaq
  * 100 (4D" for "MTF מחקה (4D) Nasdaq 100"), or a class mark glued to a Hebrew letter ("(4D)י"). Rule records' titles, their figures' too,
- * and the rule base's source lines (lens review S3: the fund records were checked, the titles that quote them were not).
+ * and the rule base's source lines (the fund records were checked, the titles that quote them were not).
  */
 export function checkTitleBrackets(title: string): string[] {
   let depth = 0;
@@ -323,7 +325,7 @@ function titlesOf(o: unknown, at = ""): [string, string][] {
   return Object.entries(o).flatMap(([k, v]) => ((k === "title" || k === "title_he") && typeof v === "string" ? [[`${at}.${k}`, v] as [string, string]] : titlesOf(v, `${at}.${k}`)));
 }
 
-/** The words of a reading note, not of a document's name (2026-11-03: a 1,321-character note stood as a bank's tariff name on its page). */
+/** The words of a reading note, not of a document's name (a 1, 321-character note stood as a bank's tariff name on its page). */
 const READING_NOTE = /https?:\/\/|Chrome|curl|founder|pdf\.js|script|סקריפט|מטא-נתוני|אינו נושא תאריך|אינו מודפס/;
 /** A tariff's title is the document's name, which the site shows as the source; the notes on how it was read go in `tariff.notes`. */
 export function checkTariffTitle(title: string): string[] {
@@ -338,7 +340,7 @@ interface TariffDateSnapshot {
   tariff: { published: string | null; printed?: { kind: string; date?: string | null; as_printed?: string } };
 }
 /**
- * A collected price list's date line says what the document prints (2026-11-07, founder: a bare "ללא תאריך פרסום" taught nothing): a
+ * A collected price list's date line says what the document prints (a bare "ללא תאריך פרסום" taught nothing): a
  * latest record with no `published` says in `tariff.printed` whether the document dates each part, prints a version, or prints nothing,
  * and one with `published` carries no `printed`. A part's date is the date it prints: a misprint is `null`, never a guess.
  */
@@ -359,7 +361,7 @@ export function checkTariffDate(snap: TariffDateSnapshot): string[] {
 
 /**
  * A figure's source title is the document's name and its section, shown on the page; one cut off inside a bracket is a copy of the
- * reading notes trimmed to a length (2026-11-07, independent check: seven latest records showed "... כפי שמודפס, כנראה" and "אין תאריך
+ * reading notes trimmed to a length (seven latest records showed "... כפי שמודפס, כנראה" and "אין תאריך
  * כולל, כל חלק נושא 'מעודכ" under "מה אפשר לקנות כאן").
  */
 export function checkCutSourceTitles(snap: unknown): string[] {
@@ -378,7 +380,7 @@ export function checkCutSourceTitles(snap: unknown): string[] {
   return out;
 }
 
-/** The words a document must use before a house ranks on a kind of holding (founder, 2026-10-31: no price from analogy). */
+/** The words a document must use before a house ranks on a kind of holding (no price from analogy). */
 const NAMES_CLASS: Record<string, RegExp> = {
   mutual_fund_units: /קרן מחקה|קרנות מחקות|קרנות נאמנות|נאמנות וסל/,
   etf_units: /קרן סל|קרנות סל|תעודו?ת סל|ETF|קרן מחקה|קרנות מחקות|נאמנות וסל/,
@@ -491,11 +493,11 @@ const feeBefore = (text: string): "custody" | "trade" => {
 };
 
 /**
- * The sub-row's short words (D43 amended 2026-11-04): each restates its entry's long words with no new fact. Every number in the who
+ * The sub-row's short words (D43): each restates its entry's long words with no new fact. Every number in the who
  * and until-when words stands in the long ones; every number in what is cheaper stands in the entry's prices, except an ordinary price
  * after "במקום", which must be a rate on a line of the same fee in this record and above the group's. Entries with the same prices
  * share their words (they are one sub-row), unless one is priced (a price carries a value) and the other not priced, and entries that
- * share words name the same fees and are all priced or all not priced, since the words are what joins them into one sub-row (re-check F3:
+ * share words name the same fees and are all priced or all not priced, since the words are what joins them into one sub-row (
  * the key kept the two apart by prices only, and two entries of the same words were still joined). An entry that is not priced is the
  * bank's advertising (D56) or a binding document whose price is not modelled (altshuler-trade, excellence, hapoalim's students,
  * meitav-trade, pepper, yahav).
@@ -560,7 +562,7 @@ const ILS_WORD = /₪|שקל|ש״ח|ש"ח/;
 const USD_WORD = /דולר|\$/;
 
 /**
- * A group price's `value` states what the price's words state and nothing more (2026-11-04, F-101): every number is a number of the price's
+ * A group price's `value` states what the price's words state and nothing more (F-101): every number is a number of the price's
  * words or of the quote it rests on, a rate says the period the words give it, an amount's currency is the one the words print, an exemption
  * is a word of the price, and the months a price holds are the months its words say or its entry's printed end says (`ends_printed`).
  */
@@ -609,7 +611,7 @@ interface DiscountSnapshot {
   lines: { id: string; rate: { value?: number | null }; reverts_to?: { value?: number | null }; discount_months?: unknown; offer_he?: string; level?: string; base?: string; applies_to?: string[] }[];
 }
 /**
- * A-19 and D56 (2026-11-07): a discounted line reverts to a rate no lower than its own and says how long it lasts (`value: null` when
+ * A-19 and D56: a discounted line reverts to a rate no lower than its own and says how long it lasts (`value: null` when
  * nothing is printed); an offer names the rate it is priced at, so `offer_he` needs `reverts_to`.
  */
 export function checkDiscountLines(snap: DiscountSnapshot): string[] {
@@ -623,7 +625,7 @@ export function checkDiscountLines(snap: DiscountSnapshot): string[] {
     if (l.discount_months === undefined) out.push(`${l.id}: reverts_to without discount_months; a period not printed is value null (A-19)`);
   }
   // the page states one discount period for a wrapper's balance and deposit lines (the terms block, the fee page's rows): two discounted
-  // list lines of the same wrapper print the same period, or the page would state one line's period for the other (2026-11-07)
+  // list lines of the same wrapper print the same period, or the page would state one line's period for the other
   const months = (l: DiscountSnapshot["lines"][number]) => { const v = (l.discount_months as { value?: unknown } | undefined)?.value; return typeof v === "number" ? v : null; };
   const discounted = snap.lines.filter((l) => l.level === "list" && (l.base === "balance" || l.base === "deposit") && l.reverts_to && !l.offer_he && typeof l.rate.value === "number" && typeof l.reverts_to.value === "number" && l.reverts_to.value > l.rate.value);
   for (const a of discounted) for (const b of discounted) {
@@ -655,7 +657,7 @@ function readFeeCaps(files: string[], dataDir: string): FeeCaps {
 }
 
 /**
- * A-19, D83 (re-check 2, 2026-11-07): a provident list line printed below its wrapper's legal cap is a discount the company may end, so it
+ * A-19, D83: a provident list line printed below its wrapper's legal cap is a discount the company may end, so it
  * carries `reverts_to` (or is an offer, which carries it too); without it the line would run flat for the whole run and could win the
  * site's pick (`providentPick`). Read on a provider's latest record only.
  */
@@ -663,7 +665,7 @@ export function checkLinesUnderCap(snap: DiscountSnapshot, caps: FeeCaps): strin
   const out: string[] = [];
   for (const l of snap.lines) {
     if (l.level !== "list" || (l.base !== "balance" && l.base !== "deposit")) continue;
-    // the rate a discount reverts to is what the binding documents allow, never above the regulations' cap (2026-11-07)
+    // the rate a discount reverts to is what the binding documents allow, never above the regulations' cap
     const to = l.reverts_to?.value;
     const over = typeof to === "number" ? (l.applies_to ?? []).filter((w) => caps[w]?.[l.base as "balance" | "deposit"] !== undefined && to > caps[w]![l.base as "balance" | "deposit"]! + 1e-9) : [];
     if (over.length) out.push(`${l.id}: reverts_to ${to}% is above the cap of ${over.join(", ")} (${caps[over[0]!]![l.base as "balance" | "deposit"]}%); the run never charges above the cap (PF-02 to PF-06)`);
@@ -704,7 +706,7 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
         if (!ca) out.push(`groups: ${e.name_he}: current_account on a record that prices no current account (D64)`);
         if (!e.ends_printed || !monthsIn(e.ends_he ?? "").includes(gca.for_months)) out.push(`groups: ${e.name_he}: current_account.for_months ${gca.for_months} is not the entry's printed end`);
         if (!/פטור/.test(gca.source.quote) || !/פטור/.test(gca.price_he)) out.push(`groups: ${e.name_he}: current_account is exempt, and its words and quote say "פטור"`);
-        // the quote names the minimum itself: a free teller action is not a free minimum (lens review M2, D56)
+        // the quote names the minimum itself: a free teller action is not a free minimum (D56)
         if (!/מינימום/.test(gca.source.quote)) out.push(`groups: ${e.name_he}: current_account's quote does not name the minimum ("מינימום"); an exemption read from other rows is not recorded (D56)`);
       }
     }
@@ -721,7 +723,7 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   }
   for (const a of entries) {
     if (a.available === "unknown" && !a.reason_he) out.push(`availability: ${a.applies_to.join(", ")} is unknown and gives no reason_he for the row`);
-    // 2026-11-08: "by phone only" is said of a kind a person can buy there, in the house's words; its exchanges only for a fund bought abroad
+    // "by phone only" is said of a kind a person can buy there, in the house's words; its exchanges only for a fund bought abroad
     const phone = a.phone_only;
     if (phone) {
       if (a.available !== true) out.push(`availability: ${a.applies_to.join(", ")} is bought by phone only, on an entry that does not say it can be bought`);
@@ -767,7 +769,7 @@ export interface RuleLike {
 
 const STRENGTH_RANK: Record<string, number> = { primary: 2, institution: 1, secondary: 0 };
 /**
- * Copies kept on an official host, named by path because the rest of the host is official (2026-11-07):
+ * Copies kept on an official host, named by path because the rest of the host is official:
  * National Insurance's Laws1 folder holds its own consolidated copies of laws and regulations it does not publish
  * (the Income Tax Ordinance, the 2002 and 2005 withholding regulations, its own law), while its other pages are the
  * regulator's. A copy is a lead; the official text is the Tax Authority's (gov.il) or Reshumot and the Knesset.
@@ -785,7 +787,7 @@ export function isCopyPath(url: string): boolean {
 }
 
 /**
- * Hosts that only copy official texts (glossary sweep, 2026-11-07): Wikisource, Nevo, Olaw, Capitax and Funder's file host. A
+ * Hosts that only copy official texts (glossary sweep): Wikisource, Nevo, Olaw, Capitax and Funder's file host. A
  * source on one of them is a copy whatever strength it was given, so it fails: a copy is a lead, never a source (CLAUDE.md).
  */
 const COPY_HOSTS = ["he.wikisource.org", "nevo.co.il", "olaw.org.il", "olaw.co.il", "capitax.co.il", "funder.co.il"];
@@ -797,7 +799,7 @@ export function isCopySource(url: string): boolean {
 }
 
 /**
- * The publishers a `primary` source may sit on (independent check of the glossary sweep, 2026-11-07): the State's own sites (every
+ * The publishers a `primary` source may sit on: the State's own sites (every
  * gov.il host: gov.il, the Knesset, Reshumot and the Ministry of Justice's services, the Tax Authority, the Capital Market Authority,
  * the Securities Authority, National Insurance outside its Laws1 copies), the Bank of Israel, the Tel Aviv Stock Exchange (its own
  * rules, guidelines and lists; an issuer's filing on Maya is the issuer's, isIssuerFiling), the SEC (for an issuer's own filings there), and foreign regulators and statutory
@@ -813,7 +815,7 @@ const OWN_STANDARD_HOSTS = ["spglobal.com", "msci.com", "indexes.nasdaqomx.com",
 const onHost = (host: string, list: readonly string[]) => list.some((h) => host === h || host.endsWith(`.${h}`));
 
 /**
- * An issuer's filing on Maya, the exchange's disclosure system (glossary round 2, 2026-11-07): a report, prospectus or notice that a
+ * An issuer's filing on Maya, the exchange's disclosure system: a report, prospectus or notice that a
  * company files about itself, served from mayafiles.tase.co.il or under maya.tase.co.il's reports. The host is the exchange's, the
  * paper is the company's, so it is `institution` (data-schema 3.1), never `primary`; the exchange's own lists on Maya (its fund list)
  * and its rules and guidelines on content.tase.co.il stay primary.
@@ -851,7 +853,7 @@ function hostOf(url: string): string {
 function isPdfUrl(url: string): boolean {
   try {
     const u = new URL(url);
-    // the Reshumot gazette service serves PDFs at a document key with no `.pdf` (2026-10-25)
+    // the Reshumot gazette service serves PDFs at a document key with no `.pdf`
     return /\.pdf$/i.test(u.pathname) || u.pathname.includes("BlobFolder") || (u.host === "free-justice.openapi.gov.il" && u.pathname.includes("/Documents/")) || (u.host === "api.justice.gov.il" && u.pathname === "/reshumot/resolver");
   } catch {
     return false;
@@ -861,7 +863,7 @@ function isPdfUrl(url: string): boolean {
 /** Every record of data/rules/ by id (those that parse). */
 /**
  * A product value left unknown (`value: null`) whose rules were checked again after it was: the research may have
- * answered it since (2026-11-07: child savings' switch tax stayed "unknown" two weeks after TXK-23 settled it).
+ * answered it since (child savings' switch tax stayed "unknown" two weeks after TXK-23 settled it).
  * A warning, listed by file and field, so each is re-read against today's rule base.
  */
 export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): string[] {
@@ -883,7 +885,7 @@ export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): st
 }
 
 /**
- * CLAUDE.md "General sources first" (founder, 2026-11-07): cite only official publications. A source whose strength
+ * CLAUDE.md "General sources first": cite only official publications. A source whose strength
  * is `secondary`, whose host data/sources/publishers.json calls an `article`, or whose address is a
  * copy (COPY_HOSTS such as Wikisource, Nevo and Olaw, or COPY_PATHS: National Insurance's Laws1 folder), or that is marked
  * `primary` on a host no official publisher uses (isUnlistedPrimary), fails, unless it is
@@ -966,7 +968,7 @@ function taxYears(node: unknown): number[] {
  */
 function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<string, RuleLike>, warn: (category: string, id: string) => void): string[] {
   const out: string[] = [];
-  const today = ctx.today ?? new Date().toISOString().slice(0, 10);
+  const today = ctx.today ?? israelToday();
   const extractionLanded = [...all.values()].some((r) => r.sources !== undefined || r.sources_missing_reason !== undefined);
   const sources = rule.sources ?? [];
   if (sources.length === 0 && !rule.sources_missing_reason) {
@@ -1068,7 +1070,28 @@ function checkHomeGuideDoor(files: string[], dataDir: string, report: (file: str
 }
 
 /**
- * Glossary records that share a Hebrew name (data-schema §4 item 16, 2026-11-03). A page keys its term cards by the Hebrew name, so
+ * P-11 (`data/parameters/deposit-amounts.json`): the deposits page's amounts are whole shekels, rising, and P-05's amount now is one of
+ * them, since the page starts there (F-108).
+ */
+function checkDepositAmounts(files: string[], dataDir: string, report: (file: string, message: string) => void) {
+  const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
+  const file = files.find((f) => at(f) === "parameters/deposit-amounts.json");
+  if (!file) return;
+  const rec = parseJson(readFileSync(file, "utf8")).value as { steps?: { value?: unknown; unit?: unknown }[] } | undefined;
+  const steps = rec?.steps;
+  if (!Array.isArray(steps) || steps.length === 0) return report(file, "deposit-amounts: `steps` must be a non-empty list of value objects in NIS");
+  const values = steps.map((s) => s?.value);
+  steps.forEach((s, i) => {
+    if (s?.unit !== "nis" || typeof s.value !== "number" || !Number.isInteger(s.value) || s.value <= 0) report(file, `deposit-amounts: step ${i} must be a whole positive number of NIS`);
+    else if (i > 0 && typeof values[i - 1] === "number" && s.value <= (values[i - 1] as number)) report(file, `deposit-amounts: step ${i} (${s.value}) must be above the one before it`);
+  });
+  const p05 = files.find((f) => at(f) === "parameters/illustrative-scenario.json");
+  const start = p05 ? (parseJson(readFileSync(p05, "utf8")).value as { inputs?: { amount_now?: { value?: unknown } } } | undefined)?.inputs?.amount_now?.value : undefined;
+  if (typeof start !== "number" || !values.includes(start)) report(file, `deposit-amounts: P-05's amount now (${String(start)}) must be one of the steps, since the deposits page starts there`);
+}
+
+/**
+ * Glossary records that share a Hebrew name (data-schema §4 item 16). A page keys its term cards by the Hebrew name, so
  * where two records of one name both belong to a page (a shared wrapper or exposure id) one wins silently, and two records of "קרן
  * מחקה" said opposite things. Two records of one name may stand only for different products; the pairs below are the leftovers,
  * each as "<id> <id>" in file order, and the list only shrinks.
@@ -1102,8 +1125,8 @@ function checkTermNames(files: string[], dataDir: string, report: (file: string,
 
 /**
  * data-schema §3.15 and §4 item 13: `data/open-questions.json` against the rule base, and every question the repository names.
- * Fails: a struck item left in a rule base's open questions (an answered question is deleted once its answer is in a rule, founder
- * 2026-11-08); a code (`TXI OQ19`, `TXI-OQ19`) in any text of data/ or of `ctx.citing`, or a question a rule-base file names in words
+ * Fails: a struck item left in a rule base's open questions (an answered question is deleted once its answer is in a rule);
+ * a code (`TXI OQ19`, `TXI-OQ19`) in any text of data/ or of `ctx.citing`, or a question a rule-base file names in words
  * ("open question 7"), that is not a question of the rule base; a guide record that marks a dimension a bare `blocked`, or blocks one
  * on a question its `open_questions` does not list. Warns when the file is behind the markdown (an id missing or extra).
  */
@@ -1143,13 +1166,13 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
     const oq = (rec as { open_questions?: unknown } | undefined)?.open_questions;
     const listed = new Set(Array.isArray(oq) ? oq.filter((x): x is string => typeof x === "string") : []);
     for (const [dim, mark] of Object.entries(marks)) {
-      // a blocked mark names the question that blocks it, and the record lists that question (third check, 2026-11-07: two
+      // a blocked mark names the question that blocks it, and the record lists that question (two
       // records marked loss offset a bare "blocked" with no question opened, and a page showed "חסום" with nothing to open)
       if (mark === "blocked" || mark === "blocked:") report(f, `dimensions.${dim}: a bare "blocked" names no open question; open one in il-finance and mark blocked:<id>`);
       else if (typeof mark === "string" && mark.startsWith("blocked:") && !listed.has(mark.slice("blocked:".length)))
         report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} blocks it but is not in the record's open_questions`);
     }
-    // a dimension still marked open while the record's own value for it is known (child savings, 2026-11-07)
+    // a dimension still marked open while the record's own value for it is known (child savings)
     const switchKnown = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
     const sw = marks["switching-tax-event"];
     if (switchKnown !== undefined && switchKnown !== null && typeof sw === "string" && sw.startsWith("blocked:"))

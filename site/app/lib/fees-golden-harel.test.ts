@@ -12,7 +12,7 @@ const KGL = "kupat-gemel-lehashkaa";
 const bundle = compareBundle();
 const data = buildFeesData();
 const inputs = feeInputs(bundle, null, { entered: {}, age: null, employment: null });
-const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL, from: "guide" } as never, inputs);
+const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL }, inputs);
 if (r.kind !== "ok") throw new Error(`fee page did not run: ${JSON.stringify(r)}`);
 const an = r.analysis;
 const line = (l: "deposit" | "balance") => an.lines.find((x) => x.line === l)!;

@@ -1,4 +1,4 @@
-// How a chart answers the pointer (2026-11-01). A year chart reads the year under the pointer; a click or a tap keeps that year;
+// How a chart answers the pointer. A year chart reads the year under the pointer; a click or a tap keeps that year;
 // on a mouse, a drag across the plot zooms to the years it covers, and ctrl with the wheel (a pinch on a touchpad) zooms around the
 // pointer, so plain scrolling still moves the page. A phone keeps its scrolling: no zoom there, and a tap does not need hover. A legend's
 // item, a bar or a row picks its series with `useChartPick`: a mouse previews it, a click or a tap keeps it. Nothing here moves the layout.
@@ -253,7 +253,7 @@ export const pickDim = (active: string | null | undefined, id: string) => cx("tr
  * A small box of values at a point of a chart, over the chart, so nothing under it moves. The parent is positioned, reads left to right and
  * is `width` px wide; `x` is the point's px from the parent's left. The box stands beside the point, to its left past `width / 2`, and is
  * then held inside the parent: it wraps its lines at the parent's width (at most 20rem), and it is moved along so no edge leaves the parent
- * (2026-11-08: one line of two long fund names was 575 px; on a phone it widened the page, at 1440 the right-hand year put it off the left
+ * (one line of two long fund names was 575 px; on a phone it widened the page, at 1440 the right-hand year put it off the left
  * edge). Measured before paint, so it never shows in the wrong place.
  */
 export function ChartTip({ x, top = 0, width, children }: { x: number; top?: number; width: number; children: ReactNode }) {

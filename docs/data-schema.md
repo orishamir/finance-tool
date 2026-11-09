@@ -43,7 +43,7 @@ Field rules:
 | `source.title` | yes | document and section or page |
 | `source.publisher` | yes | who published it |
 | `source.strength` | yes | `primary`, `institution`, `secondary`, `open`, `entered` (below) |
-| `checked` | yes | date the source was read, `YYYY-MM-DD` |
+| `checked` | yes | date the source was read, `YYYY-MM-DD`, on Israel's calendar (`israelToday` in `packages/schema`, `tools/israel-date.mjs` for the tools), never the UTC date |
 | `effective_from` | yes | first date the value applies; `null` if unknown |
 | `effective_to` | yes | last date, or `null` while current; the engine refuses a value past this date (method §13) |
 | `tax_year` | when the value is a tax figure | the tax year it belongs to (TXG-01); optional and nullable in the schema |
@@ -269,6 +269,7 @@ A security, in the site's model, is what a person buys inside a wrapper and that
 - `one_line_he` (optional) is the one Hebrew line on what the money is invested in, shown under the page's h1 and on the guide list.
 - `constituents_israeli` (optional boolean, S5): `true` when the index is made of Israeli companies (TA-35, TA-90, TA-125), `false` when it is not (S&P 500, NASDAQ-100, MSCI World, MSCI ACWI). Left out for the cash and bond exposures and the general track, where the question has no meaning. The indices page reads it to decide which ways of owning the index exist (an Israeli index has only Israeli funds).
 - `other_currencies` (optional boolean): `true` when the index holds shares priced in currencies other than `currency` (MSCI World and ACWI: 23 or 47 countries, ETF-48). A fund that neutralises `currency` keeps the others, against it; the labels say so. Left out for a one-currency index.
+- `us_dividends` (optional, F-107): the index's US shares, as an Irish fund that holds them meets them. `yield` is a value object, the dividend yield of those shares in `pct_per_year`; `weight` (optional value object, `pct`) is their share of the index, left out when the index is made of US companies only. Both come from the index provider's own factsheet: the S&P 500's, or MSCI USA's yield with the country weights of MSCI World or ACWI. Left out where the provider prints no dividend yield (NASDAQ-100). The engine counts F-107 from it for an Irish fund that holds the shares (A-11).
 - `variants` lists the funds that have a `data/funds/` record; a `fund:<id>` entry must be the `id` of a record under `data/funds/` (validator). It is not the candidate set: for Israeli funds and foreign funds traded on TASE the workbench takes every fund in the latest list in `data/fund-lists/` that matches the exposure (§3.14, method F-65, product D17), and a fund with no record here is shown as not evaluated.
 
 ### 3.5 `data/funds/` — hand-collected fund details (dependency 6, N4)
@@ -290,7 +291,7 @@ One record per fund whose details have been collected. The set of Israeli funds 
     "trustee": null, "variable_management": null,
     "tracking_difference_12m": { "value": null, "unit": "pct_per_year", "...": "value object" },
     "median_spread": { "value": null, "unit": "pct_of_trade", "...": "value object" },
-    "fund_level_withholding_drag": { "value": 0.23, "unit": "pct_per_year", "state": "computed", "computed_from": { "formula": "A-11", "inputs": { "us_dividend_yield": "...", "us_ie_treaty_rate": "TXF-16" } } }
+    "fund_level_withholding_drag": null
   },
   "dimensions": { "foreign-withholding-domicile": "covered", "tax-during": "blocked:TXF-OQ1", "estate-situs": "covered:TXF-27" },
   "prospectus": { "url": "...", "date": "2025-..." },
@@ -300,6 +301,7 @@ One record per fund whose details have been collected. The set of Israeli funds 
 
 - **Schema.** `fundRecord` (strict). `id` is lowercase ASCII, digits and hyphens, without a prefix; an exposure's `variants` names the record as `fund:<id>`, and the file is `funds/<id>@<snapshot>.json`. `distribution_policy` is `accumulating`, `distributing` or `null`; `tax_status.il_fund_tax_track` is `exempt`, `taxable` or `null`; `tax_status.tase_foreign_fund_90pct_test` is a value object or `null`; `trading_currency_on_tase` and `prospectus.date` may be `null`. `dimensions` marks use the wrapper format (`covered`, `blocked:<OQ>`).
 - **Fees.** Each entry of `fees` is a value object, `null`, or left out. On a fund whose `domicile` is not `IL`, `fees.variable_management` and `fees.trustee` hold `null`: the fund does not have these lines, because they belong to Israeli fund law (ETF-14, MF-20), which does not apply to it (ETF-71). The site writes "אין". On any other field, or on an Israeli fund, a missing fee is not collected, and a value object with `value: null` always is; the site writes "לא נאסף".
+- **Withholding** (`fees.fund_level_withholding_drag`, A-11): the tax withheld inside the fund, in `pct_per_year`, where a document of the fund gives it; it replaces F-107. Left null, an Irish fund that holds its index's shares takes F-107 from its exposure's `us_dividends`.
 - **The load** (`fees.load`, optional, MF-21): the load on purchase (הוספה) as a value object in `pct_of_trade`, from the fund's own document, with the page in `source.url` (`#page=`) and the document's words in `source.title`; `update_rule` is `provider-set`, `rule_ids` holds `MF-21`. `0` means a document was read and says zero; left out means not read, so a missing value is never shown as zero. ETFs and foreign funds leave it out: they print no such line. It stands apart from `creation_redemption_fee_category`, a different cost paid by a different person, and from a distributor's commission, which is a tariff line. The reports state the load as a share of the unit price (`ממחיר היחידה`); `pct_of_trade` is the nearest unit. A load above zero fails the validator (§4 item 15) because the page does not price one yet. The redemption deduction (MF-22) has not been read and has no field.
 - **Distribution** (`distribution`, optional, A-10): `{ yield, per_year }`. `yield` is a value object in `pct_per_year` from the fund's own factsheet or the manager's page, with the document's words and date in `source.title` and `effective_from` the date the figure is as of; `update_rule` is `provider-set`. `per_year` is the payments a year the same source prints (1, 2, 3, 4, 6 or 12). The validator fails it on a fund that does not distribute. Left out, not estimated, when it was not read: a distributing fund without it has no price.
 - **How the fund is built** (S4), three optional fields, all left out when the record does not say:
@@ -435,6 +437,7 @@ One file per bank per product per snapshot. The folder `terms/deposits/` is matc
   "rate_type": "variable",
   "anchor": "prime", "spread": { "value": -1.5, "unit": "pct_per_year", "...": "value object" },
   "rate_offered": { "value": 3.25, "unit": "pct_per_year", "notes": "nominal annual, before tax (BANK-13)", "...": "value object" },
+  "rate_effective": "optional: value object, the bank's own one-figure rate where rate_offered is not one number",
   "linkage": "none",
   "tax_bucket": { "value": "unlinked_15", "rule_ids": ["TXI-03", "TXI-04"], "...": "value object" },
   "amount_range": { "min": { "...": "value object" }, "max": null },
@@ -442,7 +445,7 @@ One file per bank per product per snapshot. The folder `terms/deposits/` is matc
   "exit_points": { "exists": false, "every_months": null },
   "auto_renew": { "value": true, "max_renewals": null },
   "conditions_he": "optional: a short plain-Hebrew summary of the conditions the bank prints for the rate",
-  "variant": "optional: [\"campaign\" | \"closed_system\" | \"interest_during_term\" | \"best_of\"], absent on a plain deposit",
+  "variant": "optional: [\"campaign\" | \"closed_system\" | \"new_customers\" | \"interest_during_term\" | \"best_of\"], absent on a plain deposit",
   "doubt_he": "optional: one sentence on an open doubt about the record",
   "snapshot": "2026-10-22",
   "source": { "url": "...", "title": "Discount 447 concentrated publication", "publisher": "Discount Bank", "strength": "institution" }
@@ -452,7 +455,8 @@ One file per bank per product per snapshot. The folder `terms/deposits/` is matc
 - The schema is `depositTerms` (strict). Enums: `rate_type` is `fixed` or `variable`; `linkage` is `none`, `cpi` or `fx`; `break.penalty` is `none`, `with_penalty` or `not_allowed`, and `break.allowed` is false exactly when `break.penalty` is `not_allowed` (the schema fails a record where they disagree). `anchor` and `spread` are `null` or absent for a fixed rate. `exit_points.every_months` and `auto_renew.max_renewals` are numbers or `null`.
 - `tax_bucket.value` (an enum, `taxBucket` in the schema) says which tax the deposit's interest bears: `unlinked_15`, 15% fixed on the whole nominal interest (TXI-03), for any deposit not fully linked to the index, a prime-linked one included (TXI-04); `linked_25`, a deposit fully linked to the consumer price index: the linkage is exempt and the interest above it is taxed at up to 25% (TXI-02, TXI-05), at a lower bracket from age 60 (TXI-19). It is `null` with `source.strength` `open` while no rule covers the deposit (a best-of deposit, BPN-09); the page then shows the open question with its lock, never a rate. The engine reads no `tax_bucket` today.
 - `conditions_he` (optional, plain Hebrew) summarises the conditions the bank prints for the rate (who gets it, on what balance, how often it is paid); it is faithful to the printed text quoted in the notes of `rate_offered` and adds nothing that is not printed. A bank that pays nothing gets the sentence it prints ("לא מוצעת ריבית…").
-- `variant` (optional, added 2026-11-06) says what sets a deposit apart from the bank's plain deposit of its term and kind, from the bank's own table or terms: `campaign` (the bank calls it a campaign product), `closed_system` (only for people with no account at the bank; the money comes from and returns to an account at another bank), `interest_during_term` (interest paid during the term, not at its end), `best_of` (a choice at the end between two returns). It is absent on a plain deposit; exit points and linkage have their own fields. F-86 reads one plain deposit per bank by it.
+- `variant` (optional, added 2026-11-06) says what sets a deposit apart from the bank's plain deposit of its term and kind, from the bank's own table or terms: `campaign` (the bank calls it a campaign product), `closed_system` (a deposit through a closed-system account: the money comes only from and returns only to the person's account at another bank, BANK-21; who may open one is the bank's own term), `new_customers` (only people who join the bank may open it, until a date the bank prints, which `conditions_he` says), `interest_during_term` (interest paid during the term, not at its end), `best_of` (a choice at the end between two returns). It is absent on a plain deposit; exit points and linkage have their own fields. F-86 reads one plain deposit per bank by it.
+- `rate_effective` (optional, a value object in `pct_per_year`) is the rate the bank prints in a column of its own beside the offered rate ("ריבית אפקטיבית" in Mizrahi-Tefahot's table), recorded only where `rate_offered` is not one number because the table prints a rate for each period between exit points. A page shows it, as the bank's figure, where it would show `rate_offered`; the engine does not read it. The bank defines the column only in some product terms (an average rate where the rate is not uniform over the term), so the record's `doubt_he` says what the figure is.
 - `doubt_he` (optional, plain Hebrew) is one sentence on an open doubt the researcher found (the printed rate and its conditions disagree, a stated end date has passed); the page shows it beside the figure with the caution mark, and the doubt stays out of the rate itself.
 - **The current account.** A current-account record with `amount_range.max` is read as the balance that earns the rate (BANK-09, F-26). The page of the current account reads every `wrapper_id: "current-account"` record: the most common `rate_offered` among them is the default (F-85).
 

@@ -1,14 +1,15 @@
 // The graph card of a guide page (design-spec 2, "מה זה"): headline, real/nominal switch, legend, chart,
 // assumption chips (phone), readout, table, rules used; the values sheet (phone) or panel (PC) beside it.
-import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
-import type { P05Input } from "@finance-tool/engine";
+import { useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
 import { buttons, computedInputs as ci, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
-import { p05Number, p05Range, p05Value, p05Units, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
+import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
-import { asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { lumpSumEntered } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
@@ -24,17 +25,22 @@ export interface TimelineProps {
   ageMarker?: { ruleId: string; figure: string } | null;
   /** When the money becomes free (flows 6.5): the lock-up's years, or the age of an `at_age` exit (drawn once an age is entered). */
   lock?: { years: SiteValue | null; age: SiteValue | null } | null;
-  /** The page has a part that changes with employment (the study fund's deposit tax); elsewhere the switch changed nothing (2026-10-25). */
+  /** The page has a part that changes with employment (the study fund's deposit tax); elsewhere the switch changed nothing. */
   employment?: boolean;
   /**
-   * A cash-like page (2026-10-25, guide-page sweep): the run rests on a rate, not on A-01, so the field reads "ריבית בשנה" and edits the rate the run
+   * A cash-like page (guide-page sweep): the run rests on a rate, not on A-01, so the field reads "ריבית בשנה" and edits the rate the run
    * uses, kept on this device per page (the own-rates store, goal id "guide"). A rate the person enters applies to the whole balance (F-26, no ceiling).
    */
-  cash?: { id: string; published: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account, 2026-10-25). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
+  cash?: { id: string; published: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
+  /**
+   * The run is one amount put in today, with no monthly deposit (`lumpSumIds`): the monthly field, its chip and its words are left out,
+   * a monthly deposit entered on another page does not reach this run, and `note` says where money paid in every month goes instead.
+   */
+  lumpSum?: { note: ReactNode } | null;
 }
 
-export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null }: TimelineProps) {
-  const { state, ready, setEntered, setAge, setEmployment, resetAll: resetInputs } = useInputs();
+export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null }: TimelineProps) {
+  const { state, ready, resetAll: resetInputs } = useInputs();
   const [ownRates, setOwnRate] = useOwnRates("guide");
   const ownRate = cash ? ownRates[cash.id] : undefined;
   // the published balance ceiling belongs to the published rate: a rate the person enters applies to the whole balance (F-26)
@@ -45,10 +51,11 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     return { ...pageBundle, terms: { ...pageBundle.terms, deposit }, feeValues };
   }, [pageBundle, ownRate]);
   const runEntered = useMemo(() => {
-    if (!cash) return state.entered;
-    const { "A-01": _return, cash_rate: _rate, ...rest } = state.entered;
+    const entered = lumpSum ? { ...state.entered, ...lumpSumEntered } : state.entered;
+    if (!cash) return entered;
+    const { "A-01": _return, cash_rate: _rate, ...rest } = entered;
     return ownRate === undefined ? rest : { ...rest, cash_rate: ownRate };
-  }, [cash, state.entered, ownRate]);
+  }, [cash, lumpSum, state.entered, ownRate]);
   const resetAll = () => {
     resetInputs();
     if (cash) setOwnRate(cash.id, undefined);
@@ -69,7 +76,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
 
   // ---- value objects for every figure on the card
   const inputValue = (key: P05Input): SiteValue => {
-    // a field's value, its default or what the reader typed: a plain number wherever it shows (founder, 2026-11-08); its reset is the field's
+    // a field's value, its default or what the reader typed: a plain number wherever it shows; its reset is the field's
     const own = enteredOf(key);
     if (own === undefined) return asField({ ...p05Value(bundle.p05, key), about: labelOf(key) });
     return asField(enteredValue(own, p05Units[key], today, labelOf(key)));
@@ -87,7 +94,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     if (timeline.kind !== "ok") return null;
     const inputs: Record<string, SiteValue> = {
       [ci.amountNow]: inputValue("amount_now"),
-      [ci.monthly]: inputValue("monthly_deposit"),
+      ...(lumpSum ? {} : { [ci.monthly]: inputValue("monthly_deposit") }),
       [ci.years]: inputValue("horizon_years"),
       [returnLabel]: inputValue(returnKey),
       [ci.inflation]: inputValue("A-02"),
@@ -96,16 +103,20 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     // a provident list names its fees by their own labels below (in the discount period and after it), so they are not listed twice
     if (bundle.feeValues.balance && !bundle.feeValues.listBalance && !bundle.feeValues.discountBalance) feeInputs[ci.balanceFee] = bundle.feeValues.balance;
     if (bundle.feeValues.deposit && !bundle.feeValues.listDeposit && !bundle.feeValues.discountDeposit) feeInputs[ci.depositFee] = bundle.feeValues.deposit;
-    for (const [key, label] of Object.entries(guideBlocks.terms.labels)) if (bundle.feeValues[key] && typeof bundle.feeValues[key]!.value === "number") feeInputs[feeLabel(label, feeYear(bundle.feeValues[key]!))] = bundle.feeValues[key]!;
+    for (const [key, label] of Object.entries(guideBlocks.terms.labels)) if (bundle.feeValues[key] && typeof bundle.feeValues[key]!.value === "number") feeInputs[feeLabel(termLabel(bundle, key, label), feeYear(bundle.feeValues[key]!))] = bundle.feeValues[key]!;
     const rules = rulesUsed(timeline);
     const taxRate = feeRule("TXK-07", "rate");
     const yearValues = (p: YearPoint, m: Mode) => {
       const div = m === "real" ? p.index : 1;
       const yearText = p.year === 0 ? copy.readout.today : `${copy.readout.year} ${p.year}`;
       // what was paid in: in nominal shekels each deposit rises with the inflation (A-04, F-05); in today's money each is deflated at its
-      // own month (F-06), which gives back the deposit as entered, so that figure reads no inflation (founder, 2026-11-08: "סך ההפקדות")
-      const paid = { [ci.amountNow]: inputs[ci.amountNow]!, [ci.monthly]: inputs[ci.monthly]! };
-      const contributions = m === "real" ? computed(p.paidInReal, "nis", "F-06", paid, { today, about: `${ci.about.contributions} ${p.year}` }) : computed(p.paidIn, "nis", "F-05", { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
+      // own month (F-06), which gives back the deposit as entered, so that figure reads no inflation: F-106's sum in each year the run took
+      // every deposit as entered, else (a ceiling took part of one, and the ceiling is in shekels of its year) the run's own sum, F-06,
+      // which rests on the inflation too
+      const paid: Record<string, SiteValue> = { [ci.amountNow]: inputs[ci.amountNow]!, ...(lumpSum ? {} : { [ci.monthly]: inputs[ci.monthly]! }), [ci.years]: enteredValue(p.year, "years", today) };
+      const asEntered = paidInAsEntered(Number(paid[ci.amountNow]!.value), lumpSum ? 0 : Number(paid[ci.monthly]!.value), p.year);
+      const whole = Math.abs(p.paidInReal - asEntered) < 0.5;
+      const contributions = m === "real" ? computed(p.paidInReal, "nis", whole ? "F-106" : "F-06", whole ? paid : { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` }) : computed(p.paidIn, "nis", "F-05", { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
       // the fees by type over the years are a series of the run (F-67): a balance fee is a share of a balance the whole plan grows
       const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...inputs, ...feeInputs }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${ci.about.fees} ${p.year}` });
       const gross = computed(p.grossBalance / div, "nis", "F-08", { ...inputs, ...feeInputs }, { today, rules, about: `${ci.grossBalance}, ${copy.readout.year} ${p.year}` });
@@ -120,7 +131,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
       // a cash-like page taxes the interest as it is paid (F-21, F-24, F-26): the tax rests on the amount, the deposits, the years and the
       // rate, and on the inflation only for a CPI-linked deposit, whose real interest is taxed
       if (cash && Object.keys(taxInputs).length === 0) {
-        Object.assign(taxInputs, { [ci.amountNow]: inputs[ci.amountNow]!, [ci.monthly]: inputs[ci.monthly]!, [ci.years]: inputs[ci.years]!, [returnLabel]: inputs[returnLabel]! });
+        Object.assign(taxInputs, { [ci.amountNow]: inputs[ci.amountNow]!, ...(lumpSum ? {} : { [ci.monthly]: inputs[ci.monthly]! }), [ci.years]: inputs[ci.years]!, [returnLabel]: inputs[returnLabel]! });
         if (bundle.terms.deposit?.linkage === "cpi") taxInputs[ci.inflation] = inputs[ci.inflation]!;
       }
       const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", bundle.record.tax_at_exit.formula, taxInputs, { today, rules: rules.filter((r) => r.id.startsWith("TX")), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), about: `${ci.about.tax} ${p.year}` });
@@ -128,7 +139,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
       return { yearText, contributions, fees, tax, net };
     };
     return { inputs, yearValues };
-  }, [timeline, state.entered, ownRate, mode, bundle, today, horizonYears]);
+  }, [timeline, state.entered, ownRate, mode, bundle, today, horizonYears, lumpSum]);
 
   const points = useMemo<ChartPoint[]>(() => {
     if (timeline.kind !== "ok") return [];
@@ -136,7 +147,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     return [{ year: 0, net: amountNow, tax: 0, fees: 0, contributions: amountNow }, ...timeline.years.map((p) => ({ year: p.year, net: (mode === "real" ? p.real : p.nominal), tax: mode === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, fees: mode === "real" ? p.feesReal : p.fees, contributions: mode === "real" ? p.paidInReal : p.paidIn }))];
   }, [timeline, mode, state.entered.amount_now, bundle.p05]);
 
-  // founder 2026-10-26: a part the run does not have (no fee on a current account, no tax when nothing is earned) is not drawn, listed
+  // a part the run does not have (no fee on a current account, no tax when nothing is earned) is not drawn, listed
   // or named in the sentence; it comes back when an input makes it real (a rate entered on the current account brings the tax)
   const hasFees = points.some((p) => p.fees > 0.005);
   const hasTax = points.some((p) => p.tax > 0.005);
@@ -154,8 +165,11 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
   const readout = values && readoutPoint ? values.yearValues(readoutPoint, mode) : null;
   const headline = values && timeline.kind === "ok" ? values.yearValues(timeline.years[timeline.years.length - 1]!, mode).net : null;
 
+  // an unlinked deposit's interest is taxed at its 15% at any age: TXG-04's brackets from 60 reach only a maximum rate (TXG-04, TXI-03),
+  // and a CPI-linked deposit's 25% is one (the ledger's F-42 path); so the age changes no figure there, and neither its field nor its marker shows
+  const ageReachesRun = !(bundle.terms.deposit && bundle.terms.deposit.linkage !== "cpi") || !!lock?.age;
   const markers: Marker[] = [];
-  if (ageMarker && state.age !== null && timeline.kind === "ok") {
+  if (ageMarker && ageReachesRun && state.age !== null && timeline.kind === "ok") {
     const fig = feeRule(ageMarker.ruleId, ageMarker.figure);
     if (fig && typeof fig.value === "number") {
       const year = fig.value - state.age;
@@ -176,14 +190,15 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     setSheetOpen(true);
   };
   // a number the reader sets, in the example sentence: plain, at its own width; the fields beside the graph (on a phone, the chips under
-  // it) are where it changes (founder, 2026-11-08)
+  // it) are where it changes
   const slot = (_field: P05Input, value: ReactNode) => <InputSlot>{value}</InputSlot>;
-  const anyEntered = Object.keys(state.entered).length > 0 || ownRate !== undefined;
+  // a monthly deposit entered on another page is not part of a lump-sum run, so it alone does not bring the reset button
+  const anyEntered = Object.keys(state.entered).some((k) => !(lumpSum && k === "monthly_deposit")) || ownRate !== undefined;
   const horizonValue = inputValue("horizon_years");
   // the age changes a run only through a rule that turns on it (the tax at 60, TXG-04; a lock-up to an age): with no tax and no such
-  // lock it changes nothing, so the field is left out unless an age is already entered (founder, 2026-10-26)
-  const ageMatters = hasTax || !!lock?.age || state.age !== null;
-  const panel = <ValuesPanel bundle={bundle} focusField={focusField} employment={employment} showAge={ageMatters} cash={cash} ownRate={ownRate} setOwnRate={(n) => cash && setOwnRate(cash.id, n ?? undefined)} />;
+  // lock it changes nothing, so the field is left out unless an age is already entered
+  const ageMatters = ageReachesRun && (hasTax || !!lock?.age || state.age !== null);
+  const panel = <ValuesPanel bundle={bundle} focusField={focusField} employment={employment} showAge={ageMatters} cash={cash} lumpSum={!!lumpSum} ownRate={ownRate} setOwnRate={(n) => cash && setOwnRate(cash.id, n ?? undefined)} />;
 
   const tableCard =
     timeline.kind === "ok" && values ? (
@@ -220,11 +235,20 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               {copy.graphTitle}
             </h3>
             <span className="text-sm text-muted-foreground max-w-measure">
-              {/* audit A45: it says it is an example and names the inputs, so it does not read as a promise */}
+              {/* it says it is an example and names the inputs, so it does not read as a promise */}
               {values ? (
                 <>
-                  {/* founder 2026-10-26: each number the reader sets is a fixed-width blank, so the line does not jump as it changes */}
-                  {copy.headlineExample.lead} {slot("amount_now", <Num value={values.inputs[ci.amountNow]!} />)} {copy.headlineExample.plus} {slot("monthly_deposit", <Num value={values.inputs[ci.monthly]!} />)} {cash ? copy.headlineExample.perMonthCash : copy.headlineExample.perMonth} {slot(returnKey, <Num value={values.inputs[returnLabel]!} />)} {copy.headlineExample.perYear} {slot("horizon_years", <Num value={horizonValue} display={fmt.years(horizonYears)} />)}, {tail}
+                  {/* each number the reader sets is a fixed-width blank, so the line does not jump as it changes */}
+                  {copy.headlineExample.lead} {slot("amount_now", <Num value={values.inputs[ci.amountNow]!} />)}
+                  {lumpSum ? (
+                    <>, {cash ? copy.headlineExample.lumpCash : copy.headlineExample.lump}</>
+                  ) : (
+                    <>
+                      {" "}
+                      {copy.headlineExample.plus} {slot("monthly_deposit", <Num value={values.inputs[ci.monthly]!} />)} {cash ? copy.headlineExample.perMonthCash : copy.headlineExample.perMonth}
+                    </>
+                  )}{" "}
+                  {slot(returnKey, <Num value={values.inputs[returnLabel]!} />)} {copy.headlineExample.perYear} {slot("horizon_years", <Num value={horizonValue} display={fmt.years(horizonYears)} />)}, {tail}
                 </>
               ) : (
                 <>
@@ -232,6 +256,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
                 </>
               )}
             </span>
+            {lumpSum?.note ? <span className="text-sm text-muted-foreground max-w-measure">{lumpSum.note}</span> : null}
             <div className="flex items-center gap-3 flex-wrap">
               {headline ? (
                 <span className="figure" ref={headlineRef} style={{ scrollMarginTop: "124px" }}>
@@ -250,19 +275,19 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
         {values && timeline.kind === "ok" ? (
           <p className="text-sm text-muted-foreground max-w-measure min-h-[6rem] lg:min-h-[3lh]">
             {copy.modeNote[mode].before} <Num value={values.yearValues(timeline.years[timeline.years.length - 1]!, mode === "real" ? "nominal" : "real").net} /> {copy.modeNote[mode].after}
-            {(state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0 ? ` ${copy.modeNote.deposits}` : ""}
+            {!lumpSum && (state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0 ? ` ${copy.modeNote.deposits}` : ""}
           </p>
         ) : null}
 
         {timeline.kind === "ok" ? (
           <>
             <div className="lg:hidden -mx-4 px-4 overflow-x-auto flex gap-2 pb-1 scrollbar-none">
-              {(["amount_now", "monthly_deposit", "horizon_years", returnKey, "A-02"] as P05Input[]).map((key) => {
+              {(["amount_now", ...(lumpSum ? [] : ["monthly_deposit"]), "horizon_years", returnKey, "A-02"] as P05Input[]).map((key) => {
                 const own = enteredOf(key);
                 const n = own ?? p05Number(bundle.p05, key);
                 const text = key === "horizon_years" ? fmt.years(n) : key.startsWith("A-") || key === "cash_rate" ? fmt.pct(n) : nisShown(n, own !== undefined ? "entered" : undefined, own === undefined);
                 return (
-                  // what the reader typed looks the same as the default (founder, 2026-11-08)
+                  // what the reader typed looks the same as the default
                   <button key={key} type="button" onClick={() => openSheet(key)} className="a-chip">
                     <span className="text-muted-foreground">{(copy.chips as Record<string, string>)[key]}</span>
                     <bdi dir="ltr" className="font-medium">{text}</bdi>
@@ -278,7 +303,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               pick={legendPick}
               items={[
                 { id: "net", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.legend.net },
-                // audit A79: no swatch for an area that is not drawn (no tax in this run)
+                // no swatch for an area that is not drawn (no tax in this run)
                 ...(hasTax ? [{ id: "tax", swatch: <Swatch shape="box" className="bg-chart-tax" />, label: copy.legend.tax }] : []),
                 ...(hasFees ? [{ id: "fees", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: copy.legend.fees }] : []),
                 { id: "contributions", swatch: <Swatch className="bg-chart-contributions" />, label: copy.legend.contributions },
@@ -350,6 +375,11 @@ function ResetAll({ onReset }: { onReset: () => void }) {
   );
 }
 
+/** A product-term row's label: a deposit's term is "תקופת הפיקדון", since "תקופה" on the same card is the years the chart runs. */
+function termLabel(bundle: Bundle, key: string, label: string): string {
+  return key === "term" && bundle.terms.deposit ? guideBlocks.terms.depositTerm : label;
+}
+
 function labelOf(key: P05Input): string {
   return (valuesCopy.fields as Record<string, string>)[key] ?? key;
 }
@@ -370,8 +400,9 @@ function TermsList({ bundle }: { bundle: Bundle }) {
   };
   // D31: the company whose terms the example runs on is named here, so its figures are its own
   const owners = [...new Set(Object.values(bundle.feeValues).map((v) => v.own).filter((n): n is string => !!n))];
-  const unitWord = (v: SiteValue) => (v.unit === "years" ? "" : ((provCopy.unit as Record<string, string>)[v.unit] ?? ""));
-  // folded (independent check, 2026-11-07): open, the provident fund's terms made the PC aside about 1,770 px beside a 970 px chart card,
+  // years and months print their own word through fmt ("12 חודשים"), so no unit word follows them
+  const unitWord = (v: SiteValue) => (v.unit === "years" || v.unit === "months" ? "" : ((provCopy.unit as Record<string, string>)[v.unit] ?? ""));
+  // folded: open, the provident fund's terms made the PC aside about 1,770 px beside a 970 px chart card,
   // and the page about 1,000 px longer; a block that replaces nothing starts folded (former ground rule 1)
   return (
     <FoldGroup title={guideBlocks.terms.title} level={4} className="border-t border-border pt-2 mt-1">
@@ -379,7 +410,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
         <p className="text-xs text-muted-foreground">{guideBlocks.terms.line}</p>
         {owners.length > 0 && (
           <p className="text-sm">
-            {bundle.pick?.kind === "manager" ? guideBlocks.terms.whoseManager : guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>
+            {bundle.pick?.kind === "manager" ? guideBlocks.terms.whoseManager : bundle.terms.deposit && !bundle.terms.tariff ? guideBlocks.terms.whoseDeposit : guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>.
           </p>
         )}
         {bundle.pick && (
@@ -404,7 +435,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
                     <MixedName>{name}</MixedName>{" "}
                   </span>
                 ))}
-                {/* a manager tie has no threshold figure: the comma goes with the figure, so no ", ," is left (Hebrew editor, 2026-11-07) */}
+                {/* a manager tie has no threshold figure: the comma goes with the figure, so no ", ," is left */}
                 {tiedCopy.tie}
                 {bundle.pick.tied.theta && (
                   <>
@@ -429,7 +460,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
             const v = bundle.feeValues[key]!;
             return (
               <div key={key} className="readout-row">
-                <dt>{feeLabel(label, feeYear(v))}</dt>
+                <dt>{feeLabel(termLabel(bundle, key, label), feeYear(v))}</dt>
                 <dd>
                   <Num value={v} display={show(key, v)} /> {unitWord(v)}
                 </dd>
@@ -451,7 +482,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
 }
 
 /** The fields, in the order of design-spec 4; used both in the phone sheet and the PC panel. */
-function ValuesPanel({ bundle, focusField, employment, showAge, cash, ownRate, setOwnRate }: { bundle: Bundle; focusField: P05Input | "all"; employment: boolean; showAge: boolean; cash: TimelineProps["cash"]; ownRate: number | undefined; setOwnRate: (n: number | null) => void }) {
+function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, ownRate, setOwnRate }: { bundle: Bundle; focusField: P05Input | "all"; employment: boolean; showAge: boolean; cash: TimelineProps["cash"]; lumpSum: boolean; ownRate: number | undefined; setOwnRate: (n: number | null) => void }) {
   const { state, ready, setEntered, setAge, setEmployment } = useInputs();
   const p05 = bundle.p05;
   const monthly = p05Range(p05, "sliders", "monthly_deposit");
@@ -494,9 +525,11 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, ownRate, s
       <div data-field="amount_now" className="contents">
         <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} start={p05Number(p05, "amount_now")} isEntered={isEntered("amount_now")} validate={nonNegative} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
       </div>
+      {!lumpSum && (
       <div data-field="monthly_deposit" className="contents">
         <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} start={p05Number(p05, "monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
       </div>
+      )}
       <div data-field="horizon_years" className="contents">
         <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} start={p05Number(p05, "horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
       </div>

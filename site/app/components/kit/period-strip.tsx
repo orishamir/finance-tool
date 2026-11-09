@@ -1,4 +1,4 @@
-// The plan's years as one strip, each stretch in its own hue with what holds in it written on it (founder, 2026-11-04, an account on a
+// The plan's years as one strip, each stretch in its own hue with what holds in it written on it (an account on a
 // group's price: "the years at the group's price, then the years at the price list"). Time runs left to right, as in every chart; the
 // words inside a stretch run right to left. The ends of the stretches are written under the strip. Not a control: nothing in it is pressed.
 import { cx } from "./cx";

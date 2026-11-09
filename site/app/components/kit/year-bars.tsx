@@ -1,4 +1,4 @@
-// A value for each year as a bar from zero (2026-10-29, the index page: the dollar's change against the shekel each year): years left to
+// A value for each year as a bar from zero (the index page: the dollar's change against the shekel each year): years left to
 // right, the value axis at the left edge, each bar's figure at its end. One neutral hue: the bars are one series. Own SVG. Pointing at or
 // tapping a year reads it; on a computer a drag zooms to the years it covers, and a zoomed bar has room for its figure.
 import { useId, useState } from "react";
@@ -9,7 +9,7 @@ import { useWidth } from "./marker";
 
 const H = 220;
 const TOP = 16;
-// room under the plot for the years: at 13 px, 22 px put the axis's lowest figure on the first year (2026-11-08)
+// room under the plot for the years: at 13 px, 22 px put the axis's lowest figure on the first year
 const BOTTOM = 28;
 const LEFT = 40;
 

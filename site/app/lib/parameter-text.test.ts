@@ -1,6 +1,5 @@
-// What a site parameter's sheet says (2026-10-25). The founder clicked the yearly inflation on a guide page and got the whole parameter
-// file's one line: every input, the test scenarios, a fund swap and "chosen by Claude; the founder has not approved". Now every number
-// has its own short line, the sheet shows it first, and no parameter's reader text carries the working history.
+// What a site parameter's sheet says: every number has its own short line, the sheet shows it first, and no parameter's reader text
+// carries the working history.
 import { readdirSync, readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";

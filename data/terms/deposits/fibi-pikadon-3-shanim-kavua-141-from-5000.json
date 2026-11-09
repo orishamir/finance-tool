@@ -1,0 +1,148 @@
+{
+  "id": "fibi-pikadon-3-shanim-kavua-141-from-5000",
+  "bank": "fibi",
+  "names": {
+    "447": [
+      "איילון - פיקדון שיקלי בריבית קבועה לשלוש שנים ומעלה",
+      "איילון"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון ל-3 שנים",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 36,
+    "unit": "months",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'איילון - פיקדון שיקלי בריבית קבועה לשלוש שנים ומעלה' (פיקדון ל-3 שנים), 'סוג המוצר (לפי תקופה)'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "Printed as product type 'פיקדון ל-3 שנים' (row 'איילון - פיקדון שיקלי בריבית קבועה לשלוש שנים ומעלה'); recorded as 36 months, the period of a three-year deposit (directive 447 Annex A, BANK-14)."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.95,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'איילון - פיקדון שיקלי בריבית קבועה לשלוש שנים ומעלה' (פיקדון ל-3 שנים), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Printed '1.95%' in the offered nominal rate; rate type 'קבועה', linkage 'לא צמוד'; adjusted '1.9500%', common '1.95%'; exit points 'לא קיימת' (stations: no); break 'אין אפשרות שבירה'; renewal 'לא קיים' / 'לא מתחדש'. Account type 318, product 141. Amount tiers merged into this record (each as printed): 5,000-9,999: nominal '1.95%', adjusted '1.9500%', common '1.95%'; 10,000-99,999: nominal '1.95%', adjusted '1.9500%', common '3.30%'; 100,000-249,999: nominal '1.95%', adjusted '1.9500%', common '3.73%'. Read 2026-11-09 from the data the page loads (https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31, 'effectiveDate' 2026-11-09, 'prime' 4.75); the 447 row is in the family 'פיקדונות מקובלים'."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 5000.0,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+        "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'איילון - פיקדון שיקלי בריבית קבועה לשלוש שנים ומעלה' (פיקדון ל-3 שנים), 'טווח סכום להפקדה'",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-09",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed minimum 5,000 ('minSum')."
+    },
+    "max": {
+      "value": 249999.0,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+        "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'איילון - פיקדון שיקלי בריבית קבועה לשלוש שנים ומעלה' (פיקדון ל-3 שנים), 'טווח סכום להפקדה'",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-09",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed maximum 249,999 ('maxSum')."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות שבירה' (447 table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-11-09",
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+    "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים'",
+    "publisher": "First International Bank of Israel Ltd.",
+    "strength": "institution"
+  }
+}

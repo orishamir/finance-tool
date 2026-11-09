@@ -11,8 +11,10 @@ import {
   CircleAlert,
   Clock,
   Copy,
+  Download,
   ExternalLink,
   FileText,
+  FileUp,
   Info,
   Lock,
   Menu,
@@ -20,8 +22,10 @@ import {
   Pencil,
   RotateCcw,
   Search,
+  Share2,
   X,
   type LucideProps,
+  Layers,
 } from "lucide-react";
 
 type IconProps = Omit<LucideProps, "ref"> & { size?: 16 | 20 | 24 | 14 | 18 };
@@ -49,7 +53,11 @@ export const IconMinus = base(Minus);
 export const IconPencil = base(Pencil);
 export const IconCalculator = base(Calculator);
 export const IconFile = base(FileText);
+export const IconAll = base(Layers);
 export const IconReset = base(RotateCcw);
 export const IconInfo = base(Info);
 export const IconCalendar = base(CalendarDays);
 export const IconCopy = base(Copy);
+export const IconDownload = base(Download);
+export const IconShare = base(Share2);
+export const IconFileUp = base(FileUp);

@@ -1,6 +1,5 @@
-// The "not covered yet" page lists only what the site truly lacks, in words (docs/copy.md section 7). Founder, 2026-11-07:
-// "we dont know עמלת חליפין?" — the page listed the exchange fee as unknown while the securities account guide explains it,
-// showed a bare rule code where a question should be, and closed with fragments. These guards fail when an entry listed
+// The "not covered yet" page lists only what the site truly lacks, in words (docs/copy.md section 7): never a term a
+// guide explains (the exchange fee), a bare rule code where a question should be, or fragments. These guards fail when an entry listed
 // there is covered elsewhere, when a card is not a kind of holding of product D2, or when a blocker or closure would show
 // as a code.
 import { readFileSync, readdirSync } from "node:fs";
@@ -19,7 +18,7 @@ const covered = terms.filter((t) => (t.wrapper_ids?.length ?? 0) + (t.exposure_i
 const coveredNames = new Map<string, string>();
 for (const t of covered) for (const n of [t.he, ...(t.variants ?? [])]) coveredNames.set(n.trim(), t.id);
 // a product or exposure with a page of its own is covered by its every name, even one no glossary row carries ("גמל IRA",
-// "מזומן בשקלים"): independent check of glossary round 2, 2026-11-07
+// "מזומן בשקלים")
 for (const dir of ["wrappers", "securities", "exposures"])
   for (const f of readdirSync(join(root, "data/instruments", dir)).filter((x) => x.endsWith(".json"))) {
     const rec = JSON.parse(readFileSync(join(root, "data/instruments", dir, f), "utf8")) as { id: string; names?: { he?: string[] } };
@@ -60,8 +59,8 @@ describe("the not-covered page lists only what the site lacks", () => {
     expect(bad).toEqual([]);
   });
 
-  // a fresh reader, 2026-11-07: "שאלה נסגרה ב־24.10.2026, לפי" named no question. Every closure is named by its entry in
-  // closureTopics (by the card and the closure's rules: an answered question is deleted from the rule base, 2026-11-08), and an
+  // "שאלה נסגרה ב־24.10.2026, לפי" named no question. Every closure is named by its entry in
+  // closureTopics (by the card and the closure's rules: an answered question is deleted from the rule base), and an
   // entry no closure uses goes
   it("names every closure in words, and keeps no topic it does not use", () => {
     const topics = r5.graduation.closureTopics;

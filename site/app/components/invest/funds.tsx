@@ -17,7 +17,7 @@ const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" 
 /**
  * The three fees, each with its word; one the fund does not have, or one not collected, says so (also the index page's fund slot).
  * `priced`: the variable fee the site prices where it is not the listed rate (F-92 (b)), named beside it with its years, so the card shows
- * the figure the costs rest on (pass 7: Kesem 5139696 showed 0.3%, priced at −0.215%).
+ * the figure the costs rest on (Kesem 5139696 showed 0.3%, priced at −0.215%).
  */
 export function Fees({ rec, inline, priced }: { rec: FundRecord; inline?: boolean; priced?: { value: SiteValue; years: number[] } | null }) {
   // a foreign fund the person typed has one yearly charge, and nothing "not collected" beside it (D44)

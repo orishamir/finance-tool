@@ -1,5 +1,5 @@
-// Pure helpers of the guide pages: how /guide groups its product pages (audit A44) and which section of /rules a guide's
-// "all the rules of X" link lands on (audit A27). No I/O, so both are unit-tested.
+// Pure helpers of the guide pages: how /guide groups its product pages and which section of /rules a guide's
+// "all the rules of X" link lands on. No I/O, so both are unit-tested.
 
 import { guide as guideCopy } from "../copy";
 
@@ -8,7 +8,7 @@ export const sectionTitle = (wrapperId: string, sectionId: string): string =>
   guideCopy.sectionTitles[wrapperId]?.[sectionId] ?? guideCopy.sections.find((x) => x.id === sectionId)!.title;
 
 /**
- * The guide list by purpose, everyday to advanced inside each group (audit A44). The ids are the wrapper ids; the group
+ * The guide list by purpose, everyday to advanced inside each group. The ids are the wrapper ids; the group
  * titles are in copy (`guideIndex.purposeGroups`). A wrapper this table does not name still shows, in a last group, so a new
  * product never disappears from the list.
  */
@@ -21,7 +21,7 @@ export const guideLayout: { id: string; ids: readonly string[] }[] = [
 ];
 
 /**
- * D6 (amended 2026-10-27): a security is what the money is invested in, not where it is held, so the guide lists it under
+ * D6: a security is what the money is invested in, not where it is held, so the guide lists it under
  * "במה הכסף מושקע". An exposure that one security held directly *is* (makam, a government bond) has no page of its own:
  * the security's page is its page. Returns that security's id, or null when the exposure keeps its own page.
  */
@@ -30,10 +30,10 @@ export function exposureFoldedInto(holderIds: readonly string[], products: reado
   return null;
 }
 
-/** The sections a product guide leaves out (founder: one template does not fit every guide). Unlisted guides keep them all. */
+/** The sections a product guide leaves out (one template does not fit every guide). Unlisted guides keep them all. */
 const omittedSections: Record<string, readonly string[]> = {
   "current-account": ["who", "inout", "cost", "tax"],
-  // a section of one row that says nothing the page does not (2026-11-02): "by the provider's tariff", "withdraw on any trading day"
+  // a section of one row that says nothing the page does not: "by the provider's tariff", "withdraw on any trading day"
   "bank-deposit": ["inout", "cost"],
   "savings-plan": ["inout", "cost"],
   "child-savings-bank": ["inout", "cost"],
@@ -42,7 +42,7 @@ const omittedSections: Record<string, readonly string[]> = {
   "money-market-fund-daily": ["inout"],
   "money-market-fund-renewable": ["inout"],
   "brokerage-account": ["inout"],
-  // founder, 2026-11-02: the page's links move up to "what it is"
+  // the page's links move up to "what it is"
   "keren-hishtalmut": ["use"],
 };
 export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
@@ -74,7 +74,7 @@ const sharedFiles = new Set(["regulators-and-protection.md", "provident-family-c
 const isTaxFile = (file: string) => file.startsWith("tax-");
 
 /**
- * The /rules anchor (without "#") for "all the rules of this product" (audit A27): the topic file most of the page's own
+ * The /rules anchor (without "#") for "all the rules of this product": the topic file most of the page's own
  * rules come from, preferring a product file to a tax file and a tax file to a shared one; ties go to the file met first.
  * With no rules at all, or none with a file, the anchor is empty.
  */

@@ -1,5 +1,5 @@
 // Guide prose for חשבון ניירות ערך (architecture 3.5: prose lives in content files; every figure is a Num).
-// Written 2026-10-23 from the rule base (BRK, REG, TXS, TXF, TXG, SW, ETF, KGL, TXK); each block ends with
+// Written from the rule base (BRK, REG, TXS, TXF, TXG, SW, ETF, KGL, TXK); each block ends with
 // the rules it rests on. Same shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to
 // review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
@@ -13,7 +13,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          חשבון בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, שבו קונים, מוכרים ומחזיקים <Term id="נייר ערך">ניירות ערך</Term>: <Term id="קרן סל">קרנות סל</Term> <Term prefix="ו" id="קרן מחקה">קרנות מחקות</Term> ישראליות, <Term id="קרן חוץ">קרנות חוץ</Term> שנסחרות בתל אביב, <Term id={'מק"מ'}>מק״מ</Term> <Term prefix="ו" id="איגרות חוב ממשלתיות">איגרות חוב ממשלתיות</Term>. דרך <Term id="ברוקר זר">ברוקר זר</Term> אפשר לקנות גם <Term id="קרן זרה">קרנות זרות</Term> בבורסות בחו״ל.
+          בחשבון בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term> אפשר להחזיק <Term id="נייר ערך">ניירות ערך</Term> כמו <Term id="קרן סל">קרנות סל</Term> <Term prefix="ו" id="קרן מחקה">קרנות מחקות</Term> ישראליות, <Term id="קרן חוץ">קרנות חוץ</Term> שנסחרות בתל אביב, <Term id={'מק"מ'}>מק״מ</Term> <Term prefix="ו" id="איגרות חוב ממשלתיות">איגרות חוב ממשלתיות</Term>. דרך <Term id="ברוקר זר">ברוקר זר</Term> אפשר לקנות גם <Term id="קרן זרה">קרנות זרות</Term> בבורסות בחו״ל.
         </p>
         <p className="max-w-measure">אין <Term id="תקרת הפקדה">תקרת הפקדה</Term> ואין נעילה: מוכרים בכל יום מסחר, <Term prefix="וה" id="בורסה">בורסה</Term> פתוחה מיום שני עד יום שישי.</p>
         <Sentence measure>
@@ -113,7 +113,7 @@ export const content: GuideContent = {
           על דיבידנד מחברה אמריקאית יש גם מס בארצות הברית: עד {usTreaty ? <Num value={usTreaty} /> : null} למי שמסר <Term prefix="ל" id="ברוקר">ברוקר</Term> <Term id="טופס W-8BEN">טופס W-8BEN</Term>, ובלי הטופס הניכוי עשוי להיות {usNoForm ? <Num value={usNoForm} /> : null}. את המס הזה מקזזים מהמס בישראל, עד גובה המס הישראלי על אותה הכנסה.
         </Sentence>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">קרן זרה צוברת, שלא מחלקת דיבידנד.</span> חלק מהקרנות האלה מדווחות בנספח <Term prefix="ל" id="תשקיף">תשקיף</Term> הישראלי שלהן שקיבלו החלטת מיסוי <Term prefix="מ" id="רשות המסים">רשות המסים</Term>: מס רק במכירה ובחלוקה. קרן כזו האתר מחשב לפי ההחלטה ומדרג. על <Term id="קרן שאינה מחלקת">קרן צוברת</Term> בלי החלטה כזו שום מקור רשמי לא אומר זאת במפורש: האתר מניח שמשלמים עליה מס רק במכירה, מסמן זאת ״מקור משני״ ואינו מדרג אותה. שאלה פתוחה <IdRef id="TXF OQ1" end="." />
+          <span className="font-medium">קרן זרה צוברת, שלא מחלקת דיבידנד.</span> חלק מהקרנות האלה מדווחות בנספח <Term prefix="ל" id="תשקיף">תשקיף</Term> הישראלי שלהן שקיבלו החלטת מיסוי <Term prefix="מ" id="רשות המסים">רשות המסים</Term>: מס רק במכירה ובחלוקה. קרן כזו האתר מחשב לפי ההחלטה ומדרג. על <Term id="קרן שאינה מחלקת">קרן צוברת</Term> בלי החלטה כזו שום מקור רשמי לא אומר זאת במפורש: האתר מניח שמשלמים עליה מס רק במכירה, מסמן זאת ״מקור משני״ ולא מדרג אותה. שאלה פתוחה <IdRef id="TXF OQ1" end="." />
         </Callout>
         <RulesLine ids={["TXS-03", "TXI-12", "TXS-17", "TXS-18", "TXS-19", "TXG-17", "TXF-22", "TXG-20", "TXF-12", "TXF-13", "TXF-18", "TXF-11"]} />
       </>
@@ -139,7 +139,7 @@ export const content: GuideContent = {
           אצל ברוקר אמריקאי שחבר ב־<Term id="SIPC">SIPC</Term>, הגוף הזה מפצה עד תקרה אם הברוקר קורס, אבל לא על ירידת ערך. ההגנה לא חלה על חברות לא אמריקאיות באותה קבוצה.
         </Sentence>
         <Sentence measure>
-          מניות של חברה אמריקאית, כולל קרן סל שהתאגדה בארצות הברית, נחשבות נכס אמריקאי. אם הנכסים האלה עולים על {estate ? <><Num value={estate} /> דולר</> : "סף נמוך"} במות המחזיק, מנהל העיזבון חייב להגיש דוח מס ירושה אמריקאי, כי לישראל אין אמנה בנושא. מניות של קרן אירית הן נכס שמחוץ לארצות הברית. אם קרן אמריקאית שמאוגדת כנאמנות נספרת, ומהם שיעורי המס, לא נבדק.
+          מניות של חברה אמריקאית, כולל קרן סל שהתאגדה בארצות הברית, נחשבות נכס אמריקאי. אם הנכסים האלה עולים על {estate ? <Num value={estate} display={fmt.usdWhole(Number(estate.value))} /> : "סף נמוך"} במות המחזיק, מנהל העיזבון חייב להגיש דוח מס ירושה אמריקאי, כי לישראל אין אמנה בנושא. מניות של קרן אירית הן נכס שמחוץ לארצות הברית. אם קרן אמריקאית שמאוגדת כנאמנות נספרת, ומהם שיעורי המס, לא נבדק.
         </Sentence>
         <RulesLine ids={["BRK-07", "BRK-08", "BRK-10", "BRK-58", "REG-15", "REG-16", "REG-34", "REG-35", "REG-04", "REG-27", "TXF-27", "ETF-10"]} />
       </>
@@ -150,9 +150,9 @@ export const content: GuideContent = {
       <p className="max-w-measure">
         כסף שרוצים להשקיע בקרן על מדד בלי תקרה ובלי נעילה. זה מתאים במיוחד כשעוברים את תקרת ההפקדה השנתית של <Term id="קופת גמל להשקעה">קופת גמל להשקעה</Term>, או כשמתכוונים לקנות קרן אחת ולהחזיק אותה שנים. משלמים עמלות על פעולות ועל ההחזקה לפי התעריפון, ודמי הניהול של קרן סל או קרן מחקה נמוכים בממוצע מהתקרה של <Term id="קופת גמל">קופת גמל</Term>.
       </p>
-      {/* audit A84: the costs in the example chart above, from the records the example reads (P-05's fund 5139282; the tariff is the site's pick, F-80, named in the terms block, 2026-10-31) */}
+      {/* the costs in the example chart above, from the records the example reads (P-05's fund 5139282; the tariff is the site's pick, F-80, named in the terms block) */}
       <p className="max-w-measure text-sm text-muted-foreground">
-        ההוצאות בדוגמה שלמעלה הן שתיים. האחת היא העלות בתוך הקרן שנבחרה לדוגמה, <bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi>: <bdi>0.02%</bdi> בשנה, כולה <Term id="שכר נאמן">שכר נאמן</Term>, <Term prefix="ו" id="דמי ניהול">דמי ניהול</Term> של <bdi>0%</bdi>, לפי רשומת הקרן והדוח השנתי של <Term id="מנהל קרן">מנהל הקרן</Term>. אפשר להחליף אותה בקרן אחרת בכרטיס ההשוואה. השנייה היא העמלות על קנייה, מכירה והחזקה, לפי התעריפון שהאתר בחר, ששמו מופיע בתנאי המוצר בדוגמה. בבנק או בבית השקעות אחר העמלות שונות. בקופת גמל אין להן שורה מקבילה בדמי הניהול, כי עלויות המסחר שם נכנסות להוצאות הישירות.
+        ההוצאות בדוגמה שלמעלה הן שתיים. האחת היא העלות בתוך הקרן שנבחרה לדוגמה, <bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi>, לפי רשומת הקרן והדוח השנתי של <Term id="מנהל קרן">מנהל הקרן</Term>. אפשר להחליף אותה בקרן אחרת בכרטיס ההשוואה. השנייה היא העמלות על קנייה, מכירה והחזקה, לפי התעריפון שהאתר בחר, ששמו מופיע בתנאי המוצר בדוגמה. בבנק או בבית השקעות אחר העמלות שונות. בקופת גמל אין להן שורה מקבילה בדמי הניהול, כי עלויות המסחר שם נכנסות להוצאות הישירות.
       </p>
       <p className="max-w-measure">
         קופת גמל להשקעה עדיפה כשצפויים להחליף השקעה בדרך: שם <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא נחשב מכירה, וכאן כל החלפת קרן ממוסה ומקטינה את הצבירה. היא עדיפה גם למי שרוצה את האפשרות, <Term prefix="מ" id="גיל פרישה מוקדמת">גיל פרישה מוקדמת</Term>, להעביר את הכסף <Term prefix="ל" id="קצבה">קצבה</Term> פטורה ממס.

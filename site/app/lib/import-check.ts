@@ -1,4 +1,4 @@
-// The per-field check of an import file (audit 2026-10-24, A33): a goal, a holding, a saved comparison or a guide input
+// The per-field check of an import file: a goal, a holding, a saved comparison or a guide input
 // that fails the form's own rules is left out of the load and reported with its field, so a hand-edited file can never
 // put "NaN שנים" or a negative amount on a page. Pure; the words are in copy.ts `r3transfer.rejected`.
 import { valueObject } from "@finance-tool/schema";

@@ -1,6 +1,6 @@
 // Folds (design-system 3.9). Native details/summary, so they work before the scripts; the label and the chevron follow the fold's own
 // open state, kept in React. The earlier CSS `group-open:` variant matched any open ancestor, so a fold inside an open fold read as
-// open while closed (2026-10-25); no fold in the site may use it (a test guards that).
+// open while closed; no fold in the site may use it (a test guards that).
 import { useState, type ReactNode, type Ref } from "react";
 import { IconChevronDown } from "../icons";
 import { fmt } from "../../lib/format";
@@ -127,27 +127,5 @@ export function FoldGroup({ title, count, level = 3, defaultOpen, open, onOpenCh
     >
       {children}
     </Disclosure>
-  );
-}
-
-/**
- * The coverage card: a lead sentence (the counts), a "show / hide the list" line with a chevron, and the list under a rule. Used where
- * every option must be accounted for once (compare, idle cash, the workbenches, the exposure page).
- */
-export function CoverageFold({ lead, openLabel, closeLabel, children, defaultOpen, pad = "default", bodyPad = "default", bodyClassName, className }: { lead: ReactNode; openLabel: ReactNode; closeLabel: ReactNode; children: ReactNode; defaultOpen?: boolean; /** `default` p-4 md:p-6, `snug` p-4 md:p-5. */ pad?: "default" | "snug"; /** Space between the rule and the list: `default` 16 px, `snug` 12 px. */ bodyPad?: "default" | "snug"; bodyClassName?: string; className?: string }) {
-  const [open, setOpen] = useState(!!defaultOpen);
-  return (
-    <details className={cx("bg-card border border-border rounded-lg", pad === "snug" ? "p-4 md:p-5" : "p-4 md:p-6", className)} open={open} onToggle={(e) => setOpen(e.currentTarget.open)}>
-      <summary className={cx("flex items-start", SUMMARY_BASE)}>
-        <span className="flex flex-col gap-1">
-          <span>{lead}</span>
-          <span className="text-sm text-link flex items-center gap-1 min-h-target">
-            {open ? closeLabel : openLabel}
-            <IconChevronDown size={16} className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
-          </span>
-        </span>
-      </summary>
-      <div className={cx("mt-4 border-t border-border", bodyPad === "snug" ? "pt-3" : "pt-4", bodyClassName)}>{children}</div>
-    </details>
   );
 }

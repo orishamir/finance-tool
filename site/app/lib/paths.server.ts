@@ -5,10 +5,9 @@ import { trackProductIds } from "./track-browser.server";
 import { institutionIds } from "./institutions.server";
 import { loadBrands } from "./brands.server";
 import { INDICES_PATH, indexPath } from "./invest";
-import { providerWrapperIds } from "./providers.server";
 
 export function prerenderPaths(): string[] {
-  const paths = ["/", "/guide", "/companies", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/companies.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/goal", "/goal/compare", "/idle-cash", "/compare-bundle.json"];
+  const paths = ["/", "/guide", "/companies", "/company-figures.json", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/companies.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/compare-bundle.json"];
   paths.push("/guide/limited-bond-fund", "/guide/mutual-funds");
   for (const w of loadProducts()) paths.push(`/guide/${w.id}`);
   const folds = exposureFolds();
@@ -16,22 +15,21 @@ export function prerenderPaths(): string[] {
   const cma = loadCma();
   for (const c of cma.companies) paths.push(`/companies/${c.id}`);
   for (const t of cma.tracks) paths.push(`/companies/${t.companyId}/${t.fundId}`);
-  // the track browser (D54): /tracks shows the default product, /tracks/<id> each of the six; the old address of each is a redirect
+  // the track browser (D54): /tracks shows the default product, /tracks/<id> each of the six
   paths.push("/tracks");
   for (const w of trackProductIds) paths.push(`/tracks/${w}`);
-  for (const w of trackProductIds) paths.push(`/workbench/tracks/${w}`);
+  // every bank's deposits side by side (D92)
+  paths.push("/deposits");
   paths.push("/fees", "/fees-data.json");
-  paths.push("/holdings", "/holdings-bundle.json", "/transfer");
-  // the index page (D28; at /indices since 2026-10-26): one page per equity index, /indices/<x> for index-<x>; a custom index opens client-side at /indices?custom=<id>
+  paths.push("/transfer");
+  // the index page (D28; at /indices): one page per equity index, /indices/<x> for index-<x>; a custom index opens client-side at /indices?custom=<id>
   paths.push(INDICES_PATH);
   for (const e of loadExposures()) if (e.kind === "equity_index") paths.push(indexPath(e.id));
   // banks and brokers (release 4): one page per snapshot provider and per bank with deposit records
   for (const id of institutionIds()) if (!cma.companies.some((c) => c.id === id)) paths.push(`/companies/${id}`);
   // the brands (D33): every address of a brand shows its one page (a fund manager or a foreign broker has no other page)
   for (const b of loadBrands()) for (const id of b.pageIds) if (!paths.includes(`/companies/${id}`)) paths.push(`/companies/${id}`);
-  // the provider workbench (release 4): the subject is in the address, read in the browser
-  for (const w of providerWrapperIds()) paths.push(`/workbench/providers/${w}`);
-  paths.push("/workbench-bundle.json");
+  paths.push("/indices-bundle.json");
   // the component gallery: for builders, noindex, in no menu and no search
   paths.push("/kit");
   return paths;

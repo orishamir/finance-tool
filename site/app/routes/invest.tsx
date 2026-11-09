@@ -28,13 +28,14 @@ import { useSettled } from "../lib/settled";
 import { useInputs } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
 import { buildInvest, chargesCurrentAccount, hasKinds, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
-import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
+import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
 import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
+import { useHydrated } from "../lib/hooks";
 
-/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
-export const links = () => bundleLinks("workbench-bundle.json", "compare-bundle.json");
+/** The data files this page fetches after it starts, requested with the HTML. */
+export const links = () => bundleLinks("indices-bundle.json", "compare-bundle.json");
 
 /** Every index is one route (`indices/:slug?`) whose data is the same for each: moving between indices, or to a custom one,
  * keeps the loaded data and fetches nothing, so a click on a phone does not wait for the network. The index comes from the address. */
@@ -76,11 +77,11 @@ type Data = Awaited<ReturnType<typeof loader>>;
 
 export default function Invest() {
   const data = useLoaderData<typeof loader>();
-  const [wb, setWb] = useState<WorkbenchBundle | null>(null);
+  const [wb, setWb] = useState<IndicesBundle | null>(null);
   const [compare, setCompare] = useState<CompareBundle | null>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
-    Promise.all([loadBundle(), loadWorkbenchBundle()])
+    Promise.all([loadBundle(), loadIndicesBundle()])
       .then(([b, w]) => {
         setCompare(b);
         setWb(w);
@@ -107,12 +108,11 @@ function Head() {
   );
 }
 
-function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compare: CompareBundle | null; failed: boolean; data: Data }) {
+function Page({ wb, compare, failed, data }: { wb: IndicesBundle | null; compare: CompareBundle | null; failed: boolean; data: Data }) {
   const { ready } = useInputs();
   const { search } = useLocation();
   // The pre-rendered page has no address to read and no saved state: the first client render matches it, then they are read.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
   const frame = (body: React.ReactNode) => (
     <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
       <Head />
@@ -125,21 +125,21 @@ function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compa
 }
 
 /** The bank the person marked as theirs (D64), while a bank whose current account costs something has that id; else none. */
-const ownBankOf = (wb: WorkbenchBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && chargesCurrentAccount(s)) ? id : null);
+const ownBankOf = (wb: IndicesBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && chargesCurrentAccount(s)) ? id : null);
 
-function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: CompareBundle; data: Data; search: string }) {
+function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
   const released = useInputs();
   const invest = useInvestState();
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05); never the saved goal
-  // (founder, 2026-10-28: only the goal page speaks of a goal).
+  // (only the goal page speaks of a goal).
   const fi = useMemo(() => feeInputs(compare, null, released.state), [compare, released.state]);
   const ownBank = ownBankOf(wb, invest.bank);
   const currentAccounts = useMemo(() => ({ own: ownBank }), [ownBank]);
   const livePlan: WorkbenchInputs = useMemo(
     () => ({
-      // the whole amount today: what stays available is the comparison's question, not this page's (founder, 2026-10-28)
+      // the whole amount today: what stays available is the comparison's question, not this page's
       amountNow: fi.g.amountNow,
       monthly: fi.g.monthly,
       years: fi.g.horizonYears,
@@ -156,9 +156,9 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     [fi, currentAccounts],
   );
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider live; the two lists price every
-  // account and fund (about 200 ms) and wait until the slider rests (founder, 2026-10-28: "sliding the sliders is very laggy"). A bank
+  // account and fund (about 200 ms) and wait until the slider rests. A bank
   // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
-  // re-sort right after the pick rather than a moment later, when the hand may be on the list (2026-11-06 check: 0.6 to 1 s).
+  // re-sort right after the pick rather than a moment later, when the hand may be on the list (0.6 to 1 s).
   const settledPlan = useSettled(livePlan, 250);
   const merged = useRef<WorkbenchInputs | null>(null);
   const plan = useMemo(() => {
@@ -178,7 +178,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known: IndexRef[] = data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
 
-  // the person compares their own account by picking it in the account list (founder, 2026-10-27: the separate "החשבון שלכם" field was redundant)
+  // the person compares their own account by picking it in the account list (the separate "החשבון שלכם" field was redundant)
   const yourBroker: string | null = null;
   const view = useMemo(() => (index ? buildInvest({ bundle, index, plan, yourBroker }) : null), [bundle, index, plan, yourBroker]);
 
@@ -197,17 +197,17 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   }, [search, pathname, navigate]);
   const headId = useId();
 
-  // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
+  // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way
   const world = useMemo(() => (index && view ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs]);
   const [labelFilter, setLabelFilter] = useState<string | null>(null);
   // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
-  // the pick lives in the address (`?house=` and `?fund=`, founder 2026-11-04), so a link opens the same pair: a house's page sends `house`
+  // the pick lives in the address (`?house=` and `?fund=`), so a link opens the same pair: a house's page sends `house`
   // alone, which opens on its cheapest way on the index; a fund alone opens at the house where it leaves the most
   const houseParam = new URLSearchParams(search).get("house");
   const fundParam = new URLSearchParams(search).get("fund");
-  // a house's group picked in its fold (`?group=<n>`, 2026-11-04): kept only where the page offers that group for the fund
+  // a house's group picked in its fold: kept only where the page offers that group for the fund
   const groupNumber = new URLSearchParams(search).get("group");
   const groupParam = groupNumber && /^\d+$/.test(groupNumber) ? `group:${groupNumber}` : null;
   const fromAddress = ((): Pick | null => {
@@ -232,7 +232,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const picks = own !== null;
   // a pick replaces the address in place: the back button leaves the page rather than stepping through every pick, and the page keeps its scroll
   // the picked group's account, priced at its prices beside its house (lib/group-pick): only that house and the account are priced again
-  // the radio answers at once and the group's figures follow after the paint (2026-11-04: pricing the group in the tap's own render took
+  // the radio answers at once and the group's figures follow after the paint (pricing the group in the tap's own render took
   // it past 100 ms; a navigation is a transition, so a deferred value did not defer it)
   const groupHouse = own?.group ? own.house : null;
   const groupKey = own?.group ?? null;
@@ -248,7 +248,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const shownView = picked?.view ?? view;
   const shownBundle = picked?.bundle ?? bundle;
   const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
-  // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick (2026-11-05)
+  // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick
   const [moved, setMoved] = useState<Moved | null>(null);
   const onPick = (p: Pick, m?: Moved) => {
     // the way back puts back the address as it was before the tap: no pick (the page's own pair, never made the person's), or the pick
@@ -279,7 +279,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
   // on a foreign index, the rules behind the "?" beside a foreign fund's fees ("אין" by a line of the Israeli law for funds), cited here
-  // since that "?" opens a text of its own (it was a note under the fund list with its rules, 2026-11-08)
+  // since that "?" opens a text of its own
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22", ...(index && !index.israeli ? ["ETF-71", "ETF-14", "MF-20"] : [])].filter((id) => wb.rules.some((r) => r.id === id));
 
   // another index replaces what lies below the pills, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
@@ -317,7 +317,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   return (
     <LabelSheetHost>
       <CustomEntriesHost index={index} brokers={invest.customBrokers} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveBroker={invest.saveBroker} onRemoveBroker={invest.removeBroker} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world} opening={opening} onOpened={onOpened}>
-      {/* tighter than a page's sections: the sliders and the result they move stay in one view (founder, 2026-10-31) */}
+      {/* tighter than a page's sections: the sliders and the result they move stay in one view */}
       <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
         <div className="flex flex-col gap-4">
           <Head />
@@ -331,7 +331,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           <>
             <IndexHeader view={view} others={knownIndices(wb)} />
             {/* the knobs write the same current goal the fees page and the panel write: a value set here is the value there; they sit
-                right above the result so it moves in view (founder, 2026-10-28) */}
+                right above the result so it moves in view */}
             {planBlock}
             {pick && shown && shownView ? (
               <>
@@ -345,7 +345,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 </div>
               </>
             ) : (
-              // the same two lists as every index, the result card set aside until a fund is added (founder, 2026-11-04)
+              // the same two lists as every index, the result card set aside until a fund is added
               <>
                 <NoFundCall view={view} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
@@ -357,13 +357,13 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 </div>
               </>
             )}
-            {/* what the advertising says against the price lists stands on each house's page, which the house's name opens (founder,
-                2026-11-05: the page's own block of it is gone) */}
-            {/* what moves the result most: every number changed by the same share, at the bottom (founder, 2026-10-28) */}
+            {/* what the advertising says against the price lists stands on each house's page, which the house's name opens (the page's own block of it is gone)
+ */}
+            {/* what moves the result most: every number changed by the same share, at the bottom */}
             <PlanChanges plan={plan} share={data.form.share} bundle={shownBundle} view={shownView ?? view} pick={shown} />
-            {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
+            {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom */}
             {shown && shownView && hasKinds(view) && wb.dollarRange && <DollarSection view={shownView} bundle={shownBundle} plan={plan} pick={shown} />}
-            {/* the stairs: which single change leaves more, one step at a time; appended last (founder, 2026-11-01) */}
+            {/* the stairs: which single change leaves more, one step at a time; appended last */}
             {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} example={!picks} />}
             <RulesLine ids={rules} />
           </>

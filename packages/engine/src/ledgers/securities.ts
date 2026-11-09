@@ -2,6 +2,7 @@
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
 import { buyWithCash, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
 import { RecordInputError, ruleBook } from "../resolver.ts";
@@ -22,7 +23,18 @@ export interface Fund {
     | "tase-foreign-fund"
     | "foreign-fund";
   /** F-10 drag, annual fractions: A-06 fixed fee, A-09 variable fee, trustee, A-07 tracking, A-11 withholding. */
-  drag?: { management?: number; variable?: number; trustee?: number; tracking?: number; foreignWithholding?: number };
+  drag?: {
+    management?: number;
+    variable?: number;
+    trustee?: number;
+    tracking?: number;
+    foreignWithholding?: number;
+    /**
+     * A-11 by F-107, for an Irish fund that holds the index's US shares: their dividend yield and their share of the index, as fractions.
+     * The run reads TXF-16's rate and adds the product to the drag; `foreignWithholding`, where the record holds one, replaces it.
+     */
+    usDividends?: { yield: number; weight: number };
+  };
   /** A-08 half-spread on exchange trades. */
   halfSpread?: number;
   /** A-10 distribution yield and payments a year; none for an accumulating fund. */
@@ -39,7 +51,7 @@ export interface Fund {
   fixedDatesEveryMonths?: number;
   /**
    * An accumulating foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling naming a sale and a distribution as the
-   * only taxed events (TXF-11, 2026-11-04): taxed at sale on that ruling, not on the reading by implication, and ranked rather than listed (G-18).
+   * only taxed events (TXF-11): taxed at sale on that ruling, not on the reading by implication, and ranked rather than listed (G-18).
    */
   saleOnlyRuling?: boolean;
 }
@@ -47,10 +59,10 @@ export interface Fund {
 /** The lines of a securities account's price list that the run charges (F-12 to F-14, F-17). */
 export type SecuritiesTariff = {
   buy?: Commission;
-  /** F-12 (2026-10-31): the price of a monthly purchase by standing order, where the tariff prints one; `buy` otherwise. */
+  /** F-12: the price of a monthly purchase by standing order, where the tariff prints one; `buy` otherwise. */
   buyStanding?: Commission;
   sell?: Commission;
-  /** F-24 (2026-10-31): the tariff's own line for a redemption, where it names one. Only the makam run reads it. */
+  /** F-24: the tariff's own line for a redemption, where it names one. Only the makam run reads it. */
   redeem?: Commission;
   custody?: Custody;
   /** F-17 monthly account fee in NIS. */
@@ -68,10 +80,10 @@ export type SecuritiesTariff = {
    * currency (`in: "instrument"`), converted at the rate of the trade.
    */
   fx?: number | Commission;
-  /** F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; `fx` otherwise, and always on a lump sum and at exit. */
+  /** F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; `fx` otherwise, and always on a lump sum and at exit. */
   fxStanding?: number | Commission;
   /**
-   * F-13 (D65, 2026-11-06): the conversion spread the price list limits, at its ceiling, a fraction of each conversion's amount. Its own field, so
+   * F-13 (D65): the conversion spread the price list limits, at its ceiling, a fraction of each conversion's amount. Its own field, so
    * that no conversion price replaces it unseen: it is charged on every conversion beside whichever conversion fee applies (a lump sum, a monthly
    * purchase on a standing order or a recurring plan, the sale), and a conversion price the person or a group sets leaves it in place.
    */
@@ -79,17 +91,17 @@ export type SecuritiesTariff = {
   /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
   currency?: { code: string; startRate: number };
   /**
-   * F-12 (2026-11-04, own account): the group or the person set the regular trade price over the house's standing-order price. A monthly purchase
+   * F-12 (own account): the group or the person set the regular trade price over the house's standing-order price. A monthly purchase
    * may then be placed the regular way, and the order pays the cheaper whole order (see `buy` in the securities ledger). Unset, `buyStanding`
    * replaces `buy` for a monthly purchase as always.
    */
   cheaperOfStandingTrade?: boolean;
-  /** F-13 (2026-11-04, own account): the same for the conversion; set only where the group or the person set the regular conversion price. */
+  /** F-13 (own account): the same for the conversion; set only where the group or the person set the regular conversion price. */
   cheaperOfStandingFx?: boolean;
 };
 
 /**
- * F-101 (2026-11-04): a sequence of tariffs. The tariff applies to the run's months 1 to `until.months`, `until.then` to the months after
+ * F-101 A sequence of tariffs. The tariff applies to the run's months 1 to `until.months`, `until.then` to the months after
  * them, and `then` may carry a period of its own (its `months` counted from the start of the run, not from the end of the one before).
  */
 export type TariffSequence = SecuritiesTariff & { until?: { months: number; then: TariffSequence } };
@@ -130,7 +142,7 @@ export interface SecuritiesInput {
   /** Where the account is: an Israeli bank or member withholds; a foreign broker does not (TXF-21, TXF-22). */
   broker?: "israeli" | "foreign";
   /**
-   * F-14 (2026-10-26): whether an Israeli account is at a bank or at a TASE member that is not a bank. A bank may not charge
+   * F-14: whether an Israeli account is at a bank or at a TASE member that is not a bank. A bank may not charge
    * custody on money-market fund units (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on them, so there the
    * tariff's line applies (BRK-52: the distribution-fee regulations leave out an investment marketer, MF-26). Default
    * `bank`, the case every money-market guide and comparison assumes.
@@ -167,7 +179,7 @@ export class NotEvaluatedError extends Error {
 }
 
 /**
- * F-14 (2026-10-26): a provider class as `memberKind`. Only a bank is a bank: a broker (a TASE member that is not a bank)
+ * F-14: a provider class as `memberKind`. Only a bank is a bank: a broker (a TASE member that is not a bank)
  * and a foreign broker are not bound by the banks' custody ban on money-market units (BRK-17, BANK-18; BRK-52), so their
  * tariff's custody line applies. Every caller that prices a run on a provider's snapshot passes this.
  */
@@ -230,7 +242,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
   // The tax index: the exchange rate for a foreign-currency security held directly (TXF-03), the CPI otherwise. A TASE foreign fund
-  // takes TXF-04's index, open since 2026-11-07 (its only source, a copy of the Tax Authority's 2019 letter, is no longer cited): with
+  // takes TXF-04's index, open (its only source, a copy of the Tax Authority's 2019 letter, is no longer cited): with
   // the 90% test the run stops on it (BlockedError); without it the run still takes the CPI, which no rule now supports (method F-04:
   // blocking it waits on how the indices page shows a fund whose tax is open).
   const fxIndexed = fund.kind === "foreign-fund" || (fund.kind === "tase-foreign-fund" && fund.ninetyPercentTest === true);
@@ -241,7 +253,15 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const annual = market.returnIn === "instrument" ? (1 + market.grossReturn) * (1 + (market.fxChange ?? 0)) - 1 : market.grossReturn;
   const g = annualToMonthly(annual);
   const d = fund.drag ?? {};
-  const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + (d.foreignWithholding ?? 0);
+  // A-11: the record's figure, else F-107 for an Irish fund that holds US shares (TXF-16's rate on their dividends)
+  let withheld = d.foreignWithholding ?? 0;
+  if (d.foreignWithholding === undefined && d.usDividends) {
+    withheld = irishFundUsWithholding(book.rate("TXF-16", "irish_fund_us_dividend_treaty_rate"), d.usDividends.yield, d.usDividends.weight);
+    formulas.push("F-107");
+    // whether the fund obtains the treaty rate (its limitation-on-benefits article) is TXF open question 7 (method G-33)
+    tally.flag("TXF-OQ7");
+  }
+  const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + withheld;
   const spread = fund.halfSpread ?? 0;
   if (spread > 0) book.cite("ETF-06");
 
@@ -310,7 +330,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
         foreignWithholding = fund.w8ben ? book.rate("TXF-12", "us_withholding") : book.rate("TXF-13", "us_withholding_without_form");
       } else if (fund.domicile === "ireland") {
         // An Irish ETF's distribution reaches an Israeli resident without Irish tax: units in a recognised clearing
-        // system, or a non-resident declaration (TXF-28; G-05 closed 2026-10-26), so the foreign withholding stays 0.
+        // system, or a non-resident declaration (TXF-28; G-05 closed), so the foreign withholding stays 0.
         book.cite("TXF-28");
       } else {
         // F-20 knows the foreign withholding of a US and an Irish fund only; the callers stop a distributing fund of any other
@@ -324,7 +344,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   } else if (isForeign) {
     // An accumulating foreign fund is taxed only at sale under TXF-11, which the law supports by implication (no deemed-distribution
     // rule reaches a non-controlling holder; no sentence says it): computed, labelled a reading, and listed, not ranked (F-65, G-18);
-    // unless its own annex reports a ruling that says so (2026-11-04). No secondary source is cited since 2026-11-07.
+    // unless its own annex reports a ruling that says so. No secondary source is cited.
     if (fund.saleOnlyRuling) book.cite("TXF-11");
     else book.label("reading", "TXF-11");
   }
@@ -341,8 +361,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   // actions, lower for 0 to 2 actions than the minimum a bank's row counts. How the amended rules count an action is not in the rule base,
   // so the run keeps the price list's minimum for the whole plan and flags the first month, from the cap's start on, whose stretch charges a
   // minimum above the lower cap (an exempt stretch charges nothing): the account's cost may be too high from then on (method F-102).
-  // The cap is looked at without citing it, and cited only where it flags: a row it changes nothing on does not list it among its rules
-  // (lens review M1, 2026-11-07). A record without the figure is cited at once, so the run fails as any missing rule does.
+  // The cap is looked at without citing it, and cited only where it flags: a row it changes nothing on does not list it among its rules.
+  // A record without the figure is cited at once, so the run fails as any missing rule does.
   if (tariff.currentAccount !== undefined) {
     const cap = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { value?: unknown; effective_from?: string | null } | undefined;
     if (typeof cap?.value !== "number") book.amount("BANK-35", "account_fee_up_to_2_actions");
@@ -454,11 +474,10 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 
   const cost = lots.reduce((s, l) => s + l.basis, 0);
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
-  // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09, 2026-10-26). With the exchange
+  // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09). With the exchange
   // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
-  // directly, TXF-04 for a TASE foreign fund (TXF-03 says its own test does not answer for such a fund; TXF-04 is open since
-  // 2026-11-07). The exit year's fees are
-  // deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
+  // directly, TXF-04 for a TASE foreign fund (TXF-03 says its own test does not answer for such a fund; TXF-04 is open). The exit
+  // year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
   const adjusted = indexedCost(lots, J[T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;

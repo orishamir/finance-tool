@@ -1,4 +1,4 @@
-// A tag a source stands behind (2026-11-08): a short fact about a company in its own words, which changes no figure ("בטלפון בלבד"
+// A tag a source stands behind: a short fact about a company in its own words, which changes no figure ("בטלפון בלבד"
 // beside a house that sells a kind of fund only by phone). A tap opens its source in the sheet every value opens, so nothing hangs on
 // hover; the 44 px target lies around the tag (tap-area) without making its line taller. The word carries the sourced underline, the
 // site's sign that a tap shows where it comes from.

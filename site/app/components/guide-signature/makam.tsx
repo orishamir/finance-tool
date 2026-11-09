@@ -30,7 +30,7 @@ export function MakamVisual({ data, today }: VisualProps) {
   // the tariff the run reads is the site's pick (F-80), named beside the commission (D31)
   const house = bundle.feeValues.tradeRate?.own;
   // a house that may charge custody on makam (not a bank, BRK-52) and whose tariff does: the fees line says how much of it is custody and
-  // why the banks' ban does not reach it (a fresh reader, 2026-11-07, read the fees as trading only and the ban as broken)
+  // why the banks' ban does not reach it (read the fees as trading only and the ban as broken)
   const custodyHouse = bundle.terms.memberKind === "non-bank" && !!bundle.terms.tariff?.custody;
   // custody falls at the end of each charging period (F-14), so the line says how often: 6.07 at six months and 9.14 at twelve read as unexplained
   const custodyEvery = bundle.terms.tariff?.custody?.everyMonths ?? 1;
@@ -201,7 +201,7 @@ export function MakamVisual({ data, today }: VisualProps) {
             </LongestCase>
           )}
           {/* the custody clause comes with the quarter's charge (none in the first two months): one height with it or without. The line
-              shows for every amount, 0 included, so nothing under it moves when the amount is typed (independent check, 2026-11-07) */}
+              shows for every amount, 0 included, so nothing under it moves when the amount is typed */}
           <LongestCase cases={custodyHouse ? [feesLine(true), feesLine(false)] : [feesLine(false)]}>{feesLine(custodyHouse && model.custody > 0)}</LongestCase>
           {/* its own line, outside the block that reflows with the custody clause: it holds for every month and every amount, since it
               rests on the house charging custody, not on what this amount pays */}
@@ -227,8 +227,8 @@ export function MakamVisual({ data, today }: VisualProps) {
         {depositLo && depositHi && depositCount && noExit && (
           <p>
             {copy.makam.altDeposit.before}{" "}
-            <span dir="ltr" className="inline-block">
-              <Num value={depositLo} />–<Num value={depositHi} />
+            <span className="inline-block">
+              <Num value={depositLo} /> {copy.common.rangeTo} <Num value={depositHi} />
             </span>{" "}
             {Number(noExit.value) === Number(depositCount.value) ? (
               copy.makam.altDeposit.all

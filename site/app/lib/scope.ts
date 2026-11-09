@@ -1,7 +1,7 @@
 // Who a rule applies to, on the site (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4). Pure helpers, safe in the browser:
 // the record carries its scope and the companies it names (extracted from the rule base), and the root loader gives every page the
 // link of each company (`ProvenanceData.companies`) and, per record that is not general, the companies whose own document it cites
-// (`ProvenanceData.ownDocs`): only those list it in their section (review, 2026-10-26).
+// (`ProvenanceData.ownDocs`): only those list it in their section.
 import { isOwnDocument, listedAt, notRules, type OwnDocumentKeys, type RuleRecord } from "@finance-tool/schema";
 import { scopeWords } from "../copy";
 
@@ -13,7 +13,7 @@ export interface CompanyLink {
   href: string;
   /** False when the site has no page of its own for the company (a fund manager, an index provider, a foreign broker): `href` is then its group on /companies. */
   hasPage: boolean;
-  /** Where its own documents live (the registry's `own_hosts`, `filing_names`): a rule card drops "לפי החברה" only on a source there (D31; review, 2026-10-26). */
+  /** Where its own documents live (the registry's `own_hosts`, `filing_names`): a rule card drops "לפי החברה" only on a source there (D31). */
   docs?: OwnDocumentKeys;
 }
 
@@ -51,7 +51,7 @@ export function ownDocCompanies(rule: Pick<RuleRecord, "id" | "scope_institution
 }
 
 /**
- * The companies whose section lists a record (spec §4; review, 2026-10-26): those whose own document it cites, never for a not-rule
+ * The companies whose section lists a record (spec §4): those whose own document it cites, never for a not-rule
  * (`listedAt` in the schema, which the validator shares). A record about a company that cites none of its documents is not that company's.
  */
 export function listedCompanies(rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
@@ -61,7 +61,7 @@ export function listedCompanies(rule: Pick<RuleRecord, "id" | "scope" | "scope_i
 
 /** The link of each company: the page's own map first, then the company's group on /companies. */
 export function companyLinksOf(list: readonly { id: string; name_he: string }[], companies: Record<string, CompanyLink> | undefined): (CompanyLink & { id: string })[] {
-  return list.map((c) => ({ id: c.id, name: c.name_he, href: companies?.[c.id]?.href ?? `/companies#${noPageAnchor(c.id)}`, hasPage: companies?.[c.id]?.hasPage ?? false }));
+  return list.map((c) => ({ id: c.id, name: c.name_he, href: companies?.[c.id]?.href ?? `/documents#${noPageAnchor(c.id)}`, hasPage: companies?.[c.id]?.hasPage ?? false }));
 }
 
 /**
@@ -72,12 +72,12 @@ export function companyTermsHref(rule: Pick<RuleRecord, "id" | "scope" | "scope_
   const links = companyLinksOf(listedCompanies(rule, ownDocs), companies);
   const page = links.find((l) => l.hasPage);
   if (page) return `${page.href}#${rule.id}`;
-  return links[0]?.href ?? `/companies#${noCompanyAnchor}`;
+  return links[0]?.href ?? `/documents#${noCompanyAnchor}`;
 }
 
 /**
  * The companies a record is shown as from (its chip, its tag, its card's line): those whose own documents it cites; a record that cites
- * none of their documents (a regulator's announcement about them) is shown as about every company it names (review, 2026-10-26: PEN-37 names
+ * none of their documents (a regulator's announcement about them) is shown as about every company it names (PEN-37 names
  * Meitav, but cites no document of Meitav, so neither its chip nor its card counts Meitav).
  */
 export function shownCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
@@ -94,7 +94,7 @@ export function isOwnSourceOf(rule: Pick<RuleRecord, "id" | "scope_institutions"
 }
 
 /**
- * A record as a company's page shows it (D30; founder, 2026-10-27: PEN-44 under "מה כתוב במסמכים של אלטשולר שחם" showed Mor's and
+ * A record as a company's page shows it (D30; PEN-44 under "מה כתוב במסמכים של אלטשולר שחם" showed Mor's and
  * Analyst's documents and figures): only the page's companies, their own documents and the sources of no company (the law, the
  * regulator), and no figure read from another company's document. A general record, or one that names none of the page's companies
  * (opened from a chip), is returned whole.
@@ -124,7 +124,7 @@ export function sourceCompany(rule: Pick<RuleRecord, "scope_institutions">, sour
 }
 
 /**
- * A record's sources on a company's page (D30; founder, 2026-10-27, PEN-44 on Altshuler Shaham's page led with Mor's bylaws): the
+ * A record's sources on a company's page (D30; PEN-44 on Altshuler Shaham's page led with Mor's bylaws): the
  * page's own companies' documents first, then the sources of no company (the law, the regulator), then other companies' documents.
  * The order within each part is kept.
  */
@@ -144,7 +144,7 @@ export function sourcesForPage<S extends { url: string; title: string; title_he?
 export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
   const list = shownCompanies(rule, ownDocs);
   if (list.length === 0) return null;
-  // on the page of a company the record names, the chip names that company alone (D30; founder, 2026-10-27)
+  // on the page of a company the record names, the chip names that company alone (D30)
   const here = list.find((c) => c.id === current);
   if (here) return here.name_he;
   return list.length === 1 ? list[0]!.name_he : `${list[0]!.name_he} ${more(list.length - 1)}`;
@@ -158,7 +158,7 @@ export function joinNames(names: readonly string[]): string {
   return `${names.slice(0, -1).join(", ")} ${/^[\u05D0-\u05EA]/.test(last) ? scopeWords.and.hebrew : scopeWords.and.latin}${last}`;
 }
 
-/** The rule ids a record's figures cite: each figure on the card opens a value sheet that shows them as chips (review, 2026-10-26). */
+/** The rule ids a record's figures cite: each figure on the card opens a value sheet that shows them as chips. */
 export function figureRuleIds(rule: Pick<RuleRecord, "figures">): string[] {
   const out: string[] = [];
   for (const f of Object.values(rule.figures ?? {})) {

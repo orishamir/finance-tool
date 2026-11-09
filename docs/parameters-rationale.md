@@ -1,6 +1,6 @@
 # Site parameters: the founder's rationale
 
-Each site parameter (`docs/method.md` §2.3, stored in `data/parameters/`) is a judgement, not a rule. This file records the current value of each and why it was chosen, so the page can show it under "site parameter". There are ten, P-01 to P-10, one file each.
+Each site parameter (`docs/method.md` §2.3, stored in `data/parameters/`) is a judgement, not a rule. This file records the current value of each and why it was chosen, so the page can show it under "site parameter". There are eleven, P-01 to P-11, one file each.
 
 The founder set P-01 and chose P-10 himself. He asked Claude to choose the others ("do whatever you think fits"); each of those files records who chose it in `chosen_by`. Parameters are Claude's to decide and carry no sign-off (guidelines/working-with-the-founder.md; founder, 2026-11-08). Any value can be changed at any time.
 
@@ -37,8 +37,6 @@ P-03, `data/parameters/fee-verdict-thresholds.json`.
 **Why:** below about 1,000 NIS over several years, a phone call is not worth the time. A call is worth what it can win, so the negotiate threshold is read on the worth of the cut a call asks for, not on the fee's cost (D90 revised, 2026-11-07; chosen by Claude at the lead's request, reusing the same 1,000 NIS since the reason above is about what the call wins): fresh readers read "worth negotiating" beside a 3,911 NIS cost as advice to call while the cut to the average was worth 187 NIS. Removing a fee is worth its whole cost, so the avoid threshold stays on the cost.
 
 **On the fee page:** "worth avoiding" needs something better to pick: an option without the fee, or with a lower one, that ranks above the product on the comparison the fee page runs on its own numbers (ties share a place, so a tied option is not above). A product ranked first therefore never reads "avoid", and the softened "יקר יחסית לחלופות בלי עמלה" it used to get is gone (D90 revised the same day: readers saw "avoid" on the option ranked first). Under "avoid" the card names the options above it. The fee page also shows a ranked sentence under its legend, and the "if they lower it" row says it does not change the ranking. The verdict, the thresholds and the reason line are the ones above.
-
-**On the idle-cash page:** the negotiate threshold is read as 1,000 NIS over one year of holding, not over the horizon, in two places. (1) The yearly gap, after tax, between a bank's offer (on its own term) and the daily money-market fund: a gap below 1,000 NIS a year is "not worth a phone call", a gap at or above it is worth checking. (2) The "small sum" line: when the whole sum's yearly cost of staying in the current account (the headline's monthly cost over twelve months) is below 1,000 NIS, the page says the sum is too small for the difference to matter. Both are site judgements of the same kind as the fee verdict, shown as a site parameter beside their reason; they are not rules and not forecasts.
 
 ## Classification fit
 
@@ -201,3 +199,11 @@ P-10, `data/parameters/home-guide-door.json`. Chosen by the founder (option A of
 **Value:** the six kinds of saving the first page's guide door names as pills, in order, each opening its own guide page: keren-hishtalmut, kupat-gemel-lehashkaa, money-market-fund-daily, bank-deposit, brokerage-account, child-savings-provident. The rest are one link away in the guide list.
 
 **Why:** the kinds most people in the audience hold or are offered first (popular first), from the everyday short-term ones to the tax-benefit ones.
+
+## Deposit amounts
+
+P-11, `data/parameters/deposit-amounts.json`. Chosen by Claude with the drawing of the deposits page the founder approved (2026-11-09); revisable.
+
+**Values:** 250, 1,000, 10,000, 100,000, 250,000 and 500,000 NIS, offered on the deposits page as "מפקידים לפחות", one at a time. The page starts at P-05's amount now, 10,000 NIS, the site's example; the validator fails if that amount is not one of the steps.
+
+**Why:** an amount opens an offer when it is within the offer's printed range (F-108), so the steps that change the page are the minimums the banks print. On the standard tables read on 2026-11-09 the minimums fall mostly at 50 to 250, 1,000, 10,000, 100,000 and 250,000 NIS, with a few at 250,001 and 500,000; 250 opens almost every short deposit, 1,000 most of the longer ones, 10,000 is the example, and 100,000, 250,000 and 500,000 open the large tiers. Amounts between two steps open the same offers as the step below, except for the few ranges that end between them. Not an average and not a recommendation.

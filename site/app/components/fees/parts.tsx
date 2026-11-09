@@ -22,18 +22,8 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
     </bdi>
   );
   let body;
-  let back: string;
-  if (subject.from === "compare") {
-    body = (
-      <>
-        {s.compare}
-        <bdi>{gershayim(subject.productName)}</bdi>
-        {s.compareRecord}
-        {record}
-      </>
-    );
-    back = s.backCompare;
-  } else if (subject.from === "track" && subject.track) {
+  let back: string | null;
+  if (subject.from === "track" && subject.track) {
     body = (
       <>
         {s.track}
@@ -43,14 +33,6 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
       </>
     );
     back = s.backTrack;
-  } else if (subject.from === "holding") {
-    body = (
-      <>
-        {s.holding}
-        {record}
-      </>
-    );
-    back = s.backHolding;
   } else {
     body = (
       <>
@@ -71,9 +53,11 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
             {otherRecords.label}
           </Link>
         )}
-        <Link to={subject.fromHref} className="text-link hover:underline tap-area">
-          {back}
-        </Link>
+        {subject.fromHref && back && (
+          <Link to={subject.fromHref} className="text-link hover:underline tap-area">
+            {back}
+          </Link>
+        )}
       </span>
     </Card>
   );
@@ -81,14 +65,14 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
 
 // ---------------------------------------------------------------- headline
 
-/** A value the engine read a rule into as an inference (the "reading" label, e.g. TXK-07 when the CPI fell): marked as the site's reading (audit 2026-10-24, A2; 2026-11-07: no longer as a secondary source, which it is not). */
+/** A value the engine read a rule into as an inference (the "reading" label, e.g. TXK-07 when the CPI fell): marked as the site's reading (not as a secondary source, which it is not). */
 export const hasReading = (v: SiteValue) => !!v.labels?.some((l) => l.code === "reading");
 
 export function ReadingMark({ value }: { value: SiteValue }) {
   return hasReading(value) ? <ReadingTag /> : null;
 }
 
-/** A plain-Hebrew reason first, the code after it in a chip (audit 2026-10-24, A2): never the code inside the sentence. */
+/** A plain-Hebrew reason first, the code after it in a chip: never the code inside the sentence. */
 export function ReasonWithCode({ message, code }: { message: string; code?: string }) {
   const isId = !!code && /^[A-Z]{1,4}-\d+$/.test(code);
   return (
@@ -150,7 +134,7 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
       <LeadTail lead={h.in} text={fmt.years(overYears)}>{fmt.years(overYears)}</LeadTail>
       {h.after}
       {/* from md the state tag follows the sentence inline; on a phone it sits under the sentence's held room (UX fix 31), so a
-          longer figure that wraps the sentence onto another line no longer moves it (box check, 2026-11-07: 29 px at 390) */}
+          longer figure that wraps the sentence onto another line no longer moves it (29 px at 390) */}
       <span className="hidden md:ms-2 md:inline-flex md:flex-wrap md:items-center md:gap-2">{totalTags(value)}</span>
     </Sentence>
   );
@@ -177,9 +161,9 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
     <header className="flex flex-col gap-3">
       <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
       <NumberLegend canEnter institution={anyWeak([total, withFees, withoutFees])} />
-      {/* the one plain sentence first (audit 2026-10-24, A18): what bringing the fee to the average is worth, from the figure of the "אם יורידו ל־" field */}
+      {/* the one plain sentence first: what bringing the fee to the average is worth, from the figure of the "אם יורידו ל־" field */}
       {/* the first line is always there: with no average of similar tracks it says so, and the header kept growing by a line at 390 px
-          when an average came and went (box check, 2026-11-07) */}
+          when an average came and went */}
       <LongestCase cases={[gapLine(big, 40), <p key="less" className="text-lg font-medium">{g.less}</p>, <p key="after" className="text-lg font-medium">{g.after}</p>, <p key="none" className="text-lg font-medium">{g.none}</p>]}>
         {gap?.kind === "more" ? gapLine(gap.worth, years) : <p className="text-lg font-medium">{gap ? g[gap.kind] : g.none}</p>}
       </LongestCase>
@@ -230,7 +214,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
     );
   const r = r3fees.reason;
   // D90: when the discount ends and what the fee can rise to, which is when to check again; each maqaf lead is bound to its figure, and the
-  // colon to the rate before it, so neither starts or ends a line alone (390 px, 2026-11-07)
+  // colon to the rate before it, so neither starts or ends a line alone (390 px)
   const ends = (rate: SiteValue | null, a: NonNullable<LineView["after"]>) => {
     const n = Number(a.period.value);
     return (
@@ -250,7 +234,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
       </>
     );
   };
-  // fresh readers, 2026-11-07: "the page never says what would push the 108 ₪ above 1,000 ₪": one plain line after a "not worth it" reason
+  // "the page never says what would push the 108 ₪ above 1,000 ₪": one plain line after a "not worth it" reason
   const reachLine = (x: FeeReach | undefined, l: LineView) => {
     if (!x || !mk || (x.amountNow === undefined && x.horizonYears === undefined)) return null;
     const rr = r3fees.reach;
@@ -261,7 +245,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
       ...(l.reference.cma ? { [rr.toName]: l.reference.cma.mean } : {}),
       ...(l.rate ? { [r3fees.names[l.line]!]: l.rate } : {}),
     };
-    // the 1,000 ₪ the cut reaches, in the same line (fresh reader, 2026-11-07); the maqaf lead is bound to its figure, the colon after it
+    // the 1,000 ₪ the cut reaches, in the same line; the maqaf lead is bound to its figure, the colon after it
     return (
       <>
         <LeadTail lead={`${rr.lead}${rr.to}`}>
@@ -316,7 +300,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
         );
       case "avoid":
         // a discount that ends within the period: the card says when the fee rises, whatever the verdict (D90 revised). The products above
-        // follow in the same line, named (fresh readers, 2026-11-07: "avoid what, the fund?"); held apart, the reason's room left a gap
+        // follow in the same line, named; held apart, the reason's room left a gap
         // of three lines at 390 px between the cost and the names
         return (
           <>
@@ -343,7 +327,7 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
         return r3fees.review.refNotBelow;
     }
   };
-  // every reason a slider can bring is laid out unseen: "העלות נמוכה מ־1,000 ₪." took one line at 390 px where the others took two (box check, 2026-11-07)
+  // every reason a slider can bring is laid out unseen: "העלות נמוכה מ־1,000 ₪." took one line at 390 px where the others took two
   // the reach line comes after the sensitivity's search: its room is held by a case with the longest sum and horizon it can say
   const longReach: FeeReach = { amountNow: REACH_LIMITS.amountNow, horizonYears: REACH_LIMITS.years - 1 };
   const casesOf = (l: LineView): [LineView["reason"], LineView, FeeReach?][] => [
@@ -363,10 +347,10 @@ export function VerdictTag({ line, thresholds, reach, mk }: { line: LineView; th
         ] as [LineView["reason"], LineView, FeeReach?][])
       : []),
   ];
-  // the cards keep their order (fix pass 8: an earlier note said they re-sort; they never did), so a card holds only its own reasons
+  // the cards keep their order, so a card holds only its own reasons
   const cases = casesOf(line);
   // when the discount ends comes first, on its own line, the same under every verdict: inside the reason it followed words that change
-  // with the verdict, and at a 40-year horizon at 390 px it rose a line with its three figures (box check, fix pass 8, 2026-11-07)
+  // with the verdict, and at a 40-year horizon at 390 px it rose a line with its three figures
   const endsShown = (kind: LineView["reason"], l: LineView) => kind === "negotiate-ends" || kind === "check-after" || (kind === "avoid" && l.judgedFraction !== undefined);
   return (
     <div className="flex flex-col gap-1">
@@ -433,7 +417,7 @@ function LinkOutA({ link, label }: { link: { href: string }; label: string }) {
 
 const linkLabel = (reason: NoRefReason) => (reason === "D20" ? r3fees.linkOuts.boi : reason === "isa-unconfirmed" ? r3fees.linkOuts.isa : reason === "tase-uncollected" ? r3fees.linkOuts.tase : "");
 
-/** `noAverageSaid`: the verdict's reason above already says there is no average, so the line gives only why (lead, 2026-11-07: the deposit card said "אין ממוצע להשוואה" twice). */
+/** `noAverageSaid`: the verdict's reason above already says there is no average, so the line gives only why (the deposit card said "אין ממוצע להשוואה" twice). */
 export function ReferenceLine({ reference, noAverageSaid = false }: { reference: ReferenceView; noAverageSaid?: boolean }) {
   const r = r3fees.referenceLine;
   const cma = reference.cma;
@@ -466,7 +450,7 @@ export function ReferenceLine({ reference, noAverageSaid = false }: { reference:
             </Sentence>
           )}
           {/* the class comes from a track the site chose, not from the record the run prices: said plainly, and that the average is of no
-              one fund (2026-11-07: a reader asked "which fund is this?" beside a strip that names another company) */}
+              one fund, beside a strip that names another company */}
           {reference.bySite && (
             <Sentence tone="muted">
               {r3fees.bySite[0]}
@@ -497,7 +481,7 @@ export function ReferenceLine({ reference, noAverageSaid = false }: { reference:
           {r3fees.review.official[0]}
           <bdi dir="ltr">{reference.official.year}</bdi>
           {r3fees.review.official[1]} <Num value={reference.official.value} />. {r3fees.review.officialNotUsed}{" "}
-          {/* the rule chip's words, not the bare code (fresh readers, 2026-11-07: "PF-39" said nothing), last in its line as the cap line's */}
+          {/* the rule chip's words, not the bare code ("PF-39" said nothing), last in its line as the cap line's */}
           <RulesChip ids={["PF-39"]} />
         </Sentence>
       )}
@@ -546,7 +530,7 @@ export function CapLine({ cap }: { cap: CapView }) {
 // ---------------------------------------------------------------- remainder and thresholds
 
 export function RemainderLine({ value }: { value: SiteValue }) {
-  // an engine-speak line with nothing in it is not shown (audit 2026-10-24, A63)
+  // an engine-speak line with nothing in it is not shown
   if (typeof value.value === "number" && Math.abs(value.value) < 0.5) return null;
   return (
     <div className="flex flex-col gap-1">

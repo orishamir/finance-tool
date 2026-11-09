@@ -1,28 +1,14 @@
-// The first page (flows 6.1, amended 2026-10-24): the site name, one line, the question card (a saved goal replaces it with the
-// strip), the search field, four doors and a small link. A phone shows the question first and the doors on the second screen;
-// from xl the question stands at the start and the search and doors at the end.
-import { lazy, Suspense } from "react";
+// The first page (flows 6.1): the site name, one line, the search field, two doors and a small link. From xl the name stands at the
+// start and the search and doors at the end.
 import { Link, useLoaderData } from "react-router";
-import type { Route } from "./+types/home";
-import { home as copy, knowledgeEntry, r3workbench, site } from "../copy";
+import { home as copy, knowledgeEntry, site } from "../copy";
 import { IconDrillIn } from "../components/icons";
 import { PageSearchField, PageShell } from "../components/shell";
-import { QuickGoalCard } from "../components/compare/quick-goal";
-import { Card, ChipList, Disclosure } from "../components/kit";
-import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
-import type { Range } from "../components/compare/goal-form";
-import { useHoldings } from "../lib/state";
-import { shown } from "../lib/review";
-
-// The strip (and the comparison code behind it) is fetched only when a goal is saved on the device (audit 2026-10-24, A52).
-const SavedGoalStrip = lazy(() => import("../components/compare/strip").then((m) => ({ default: m.SavedGoalStrip })));
+import { Card, ChipList } from "../components/kit";
 
 export async function loader() {
-  const { goalContext, goalFormData } = await import("../lib/compare.server");
-  const { loadHomeGuideDoor } = await import("../lib/data.server");
-  const { form } = goalFormData();
-  // the question card validates with the goal form's ranges (P-07 horizon, P-05 monthly)
-  return { ...goalContext(), form: { horizon: form.horizon, monthly: form.monthly }, guideTypes: loadHomeGuideDoor() };
+  const { loadHomeGuideDoor, today } = await import("../lib/data.server");
+  return { today: today(), guideTypes: loadHomeGuideDoor() };
 }
 
 export function meta() {
@@ -30,30 +16,27 @@ export function meta() {
 }
 
 export default function Home() {
-  const { today, presets, meta, form, guideTypes } = useLoaderData<typeof loader>();
+  const { today, guideTypes } = useLoaderData<typeof loader>();
   return (
-    <GoalsProvider presets={presets as Presets}>
-      <PageShell current="home" data={{ rules: {}, terms: {}, dimensions: {}, today }}>
-        <HomeBody presets={presets as Presets} meta={meta} today={today} bounds={form} guideTypes={guideTypes} />
-      </PageShell>
-    </GoalsProvider>
+    <PageShell current="home" data={{ rules: {}, terms: {}, dimensions: {}, today }}>
+      <HomeBody guideTypes={guideTypes} />
+    </PageShell>
   );
 }
 
-function DoorCard({ title, line, extra }: { title: string; line: string; extra?: string | null }) {
+function DoorCard({ title, line }: { title: string; line: string }) {
   return (
     <Card className="h-full !p-5 flex items-start gap-3 hover:bg-accent/70 hover:border-primary/40 transition-colors duration-[var(--duration-fast)]">
       <span className="flex flex-col gap-1 flex-1 min-w-0">
         <span className="text-lg font-semibold">{title}</span>
         <span className="text-sm text-muted-foreground">{line}</span>
-        {extra && <span className="text-sm text-foreground">{extra}</span>}
       </span>
       <IconDrillIn size={24} className="text-foreground/70 shrink-0 mt-0.5 transition-transform group-hover:-translate-x-1" />
     </Card>
   );
 }
 
-/** The guide door (founder 2026-10-26, option A): not a link to the list but the kinds themselves (P-10), each pill opening its own
+/** The guide door: not a link to the list but the kinds themselves (P-10), each pill opening its own
  * guide page, and a link to the whole list. The card keeps the other doors' title and line; the pills are the kit's ChipList. */
 function GuideDoor({ types }: { types: { id: string; name: string }[] }) {
   return (
@@ -78,34 +61,7 @@ function GuideDoor({ types }: { types: { id: string; name: string }[] }) {
   );
 }
 
-type Bounds = { horizon: Range; monthly: Range };
-
-/** The question, which the comparison and the holdings depend on (docs/design-system.md 6.9). The pre-rendered page and the first client render show
- * the card; a saved goal replaces it with the strip (in a box of at least the strip's height) and the card waits closed as "מטרה נוספת" (D12). */
-function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; meta: { rationale: string; rationaleHe?: string | null }; today: string; bounds: Bounds }) {
-  const { status, goals } = useGoals();
-  // any goal holding something: the rows list them all, the blank ones too (2026-10-25)
-  const has = status === "old-version" || (status === "ok" && goals.some((g) => !isBlank(g)));
-  const wide = "lg:w-[calc(100%+8rem)] lg:-mx-16 xl:w-auto xl:mx-0";
-  if (!has) return <QuickGoalCard mode="current" bounds={bounds} presets={presets} meta={meta} today={today} className={wide} />;
-  return (
-    <div className={`min-h-[5.5rem] flex flex-col gap-3 ${wide}`}>
-      <Suspense fallback={<div className="h-14 rounded-lg bg-card border border-border" aria-hidden="true" />}>
-        <SavedGoalStrip presets={presets} meta={meta} today={today} all />
-      </Suspense>
-      {status === "ok" && (
-        <Disclosure label={<span className="font-medium">{copy.quick.another}</span>} summaryClassName="bg-card border border-border rounded-lg px-4">
-          <QuickGoalCard mode="new" bounds={bounds} presets={presets} meta={meta} today={today} className="mt-3" />
-        </Disclosure>
-      )}
-    </div>
-  );
-}
-
-function HomeBody({ presets, meta, today, bounds, guideTypes }: { guideTypes: { id: string; name: string }[]; presets: Presets; meta: { rationale: string; rationaleHe?: string | null }; today: string; bounds: Bounds }) {
-  const { ready, holdings } = useHoldings();
-  const names = holdings.map((h) => h.track?.name ?? h.typedName ?? h.company.name);
-  const holdingsLine = ready && holdings.length > 0 ? (holdings.length === 1 ? copy.holdingsSaved.one : copy.holdingsSaved.many).replace("{n}", String(holdings.length)).replace("{names}", names.slice(0, 2).join(", ") + (names.length > 2 ? "…" : "")) : null;
+function HomeBody({ guideTypes }: { guideTypes: { id: string; name: string }[] }) {
   return (
     <div className="mx-auto max-w-measure xl:max-w-none flex flex-col gap-8 pt-6 lg:pt-20 xl:grid xl:grid-cols-12 xl:gap-x-12 xl:items-start">
       <div className="flex flex-col gap-8 xl:col-span-7">
@@ -114,8 +70,6 @@ function HomeBody({ presets, meta, today, bounds, guideTypes }: { guideTypes: { 
           <p className="text-lg text-muted-foreground">{site.tagline}</p>
           <p className="text-sm text-muted-foreground">{site.footerNote}</p>
         </header>
-        {/* the question card leads only to the goal comparison, held for review with it (lib/review.ts) */}
-        {shown("/goal/compare") && <QuestionBlock presets={presets} meta={meta} today={today} bounds={bounds} />}
       </div>
       <div className="flex flex-col gap-8 xl:col-span-5">
         <div className="flex flex-col gap-2">
@@ -124,15 +78,11 @@ function HomeBody({ presets, meta, today, bounds, guideTypes }: { guideTypes: { 
           </label>
           <PageSearchField inputId="home-search" />
         </div>
-        {/* NEW: the third door (design-system 6.9) was added after the founder approved the first page with two doors;
-            the fourth (design-system 7.9, flows 12.5, "chosen 2026-10-23, revisable") is for his review the same way */}
         <div className="grid gap-4 md:grid-cols-2 lg:w-[calc(100%+8rem)] lg:-mx-16 xl:w-auto xl:mx-0 xl:grid-cols-1">
           <GuideDoor types={guideTypes} />
-          {[copy.door2, copy.door3, r3workbench.entry.holdings].filter((door) => shown(door.href)).map((door) => (
-            <Link key={door.href} to={door.href} className="block group">
-              <DoorCard title={door.title} line={door.line} extra={door.href === r3workbench.entry.holdings.href ? holdingsLine : null} />
-            </Link>
-          ))}
+          <Link to={copy.door2.href} className="block group">
+            <DoorCard title={copy.door2.title} line={copy.door2.line} />
+          </Link>
         </div>
         <Link to={site.notCovered.href} className="text-sm text-link min-h-target inline-flex items-center hover:underline self-start">
           {site.notCovered.label}

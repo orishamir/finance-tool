@@ -1,4 +1,4 @@
-// The arithmetic of a chart's glide (founder, 2026-11-01: sliding a number made the graphs jump). Pure: no React, no DOM.
+// The arithmetic of a chart's glide (sliding a number made the graphs jump). Pure: no React, no DOM.
 
 export interface GlidePoint {
   year: number;

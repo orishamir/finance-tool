@@ -27,7 +27,7 @@ export interface OpenQuestionItem {
   file: string;
   /**
    * The item starts struck (`~~…`): an answered question kept in the old way. An answered question is deleted once its answer is in a
-   * rule (founder, 2026-11-08), so the validator fails a struck item and the generator refuses to run.
+   * rule, so the validator fails a struck item and the generator refuses to run.
    */
   struck: boolean;
 }

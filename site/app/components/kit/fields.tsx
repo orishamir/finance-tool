@@ -1,5 +1,5 @@
 // The inputs behind the graph (design-spec 4, design-system 3.3): number field, range field (slider and number), percent field, and the
-// reset each field carries on its label line (founder, 2026-11-08).
+// reset each field carries on its label line.
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
@@ -18,7 +18,7 @@ export interface FieldProps {
   unit: string;
   /** The value the engine currently uses (P-05 or entered). */
   value: number | null;
-  /** The reader typed the value (it is not the start value). It changes nothing in the field's look (founder, 2026-11-08): what the reader types looks the same as the default. */
+  /** The reader typed the value (it is not the start value). It changes nothing in the field's look: what the reader types looks the same as the default. */
   isEntered: boolean;
   /**
    * The value the field starts at, its default: the reset on the label line says "חזרה ל־{start}" and shows while the value differs from
@@ -38,7 +38,7 @@ export interface FieldProps {
   /** An empty field is allowed and clears the value (optional fields such as age); without a `start` it has no reset. */
   optional?: boolean;
   inputMode?: "decimal" | "numeric";
-  /** A price that may have agorot (a fee from a price list, "9.90 ₪"). Without it, a shekel field takes whole shekels only (founder, 2026-11-08). */
+  /** A price that may have agorot (a fee from a price list, "9.90 ₪"). Without it, a shekel field takes whole shekels only. */
   agorot?: boolean;
   autoFocus?: boolean;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
@@ -67,7 +67,7 @@ function resetShown({ value, isEntered, start, optional, disabled }: Pick<FieldP
 }
 
 /**
- * The reset at the far end of a field's label line (founder, 2026-11-08): small and muted, "↺ חזרה ל־10". It holds its place while it is
+ * The reset at the far end of a field's label line: small and muted, "↺ חזרה ל־10". It holds its place while it is
  * hidden (`invisible` also takes it out of the tab order and what a screen reader reads), so nothing moves when it comes or goes; its tap
  * area reaches 44 px past its small text.
  */
@@ -126,7 +126,7 @@ export function NumberField(props: FieldProps) {
   const flushRef = useRef(flush);
   flushRef.current = flush;
   useEffect(() => () => flushRef.current(), []);
-  // audit A19: text typed before the script arrived sits in the pre-rendered input; take it in at the first commit instead of
+  // text typed before the script arrived sits in the pre-rendered input; take it in at the first commit instead of
   // letting the first re-render with the field's own (empty) state wipe it
   const inputRef = useRef<HTMLInputElement>(null);
   const adopted = useRef(false);
@@ -210,7 +210,7 @@ export function NumberField(props: FieldProps) {
     );
   }
   // the label line (the label, and its reset at the far end), then one body with the box and what follows it: a field in a `.field-row` is a
-  // two-row subgrid (app.css). The reset keeps its place while hidden, so the label never rewraps when it comes (founder, 2026-11-08)
+  // two-row subgrid (app.css). The reset keeps its place while hidden, so the label never rewraps when it comes
   return (
     <div className="field">
       <div className="field-label flex flex-wrap items-end justify-between gap-x-3">
@@ -239,7 +239,7 @@ export function NumberField(props: FieldProps) {
 /**
  * A reset for a group of typed values on a line of its own, under them (a table cell of several small boxes with no label line, such as an
  * own account's prices): a quiet "חזרה לערך ההתחלתי" while something is typed, "loading" while the fields wait. No "you entered" tag
- * (founder, 2026-11-08). The line keeps its height either way, so nothing under it moves (founder, 2026-10-26). A field with a label line
+ * . The line keeps its height either way, so nothing under it moves. A field with a label line
  * carries its own reset there instead (`NumberField`, `RangeField`).
  */
 export function FieldState({ entered, onReset, disabled, canReset = true }: { entered: boolean; onReset: () => void; disabled?: boolean; canReset?: boolean }) {
@@ -267,7 +267,7 @@ export interface RangeFieldProps extends FieldProps {
 /**
  * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them. For a quantity with a
  * natural range (years, a monthly deposit). The reset sits at the far end of the label, beside the box, and keeps its place while hidden;
- * where the row is too narrow for both it takes a second line in the same row, so nothing moves when it comes (founder, 2026-11-08). The
+ * where the row is too narrow for both it takes a second line in the same row, so nothing moves when it comes. The
  * box's error takes the reset's place while it lasts, so no line opens under the box.
  */
 export function RangeField(props: RangeFieldProps) {
@@ -322,12 +322,12 @@ export function PercentField({ unit = "pct_per_year", range, validate, ...rest }
 }
 
 /** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
-/** The one large field a page leads with (the rules page's claim, 2026-11-01): a whole sentence fits, and × empties it. Its words are the caller's. */
-export function AskField({ value, onChange, onFocus, label, placeholder, clearLabel }: { value: string; onChange: (value: string) => void; onFocus?: () => void; label: string; placeholder: string; clearLabel: string }) {
+/** The one large field a page leads with (the rules page's claim): a whole sentence fits, and × empties it. Its words are the caller's. */
+export function AskField({ value, onChange, onFocus, label, placeholder, clearLabel, compact }: { value: string; onChange: (value: string) => void; onFocus?: () => void; label: string; placeholder: string; clearLabel: string; /** Keeps the phone's height on a computer too (a page whose list must start high). */ compact?: boolean }) {
   const id = useId();
   const input = useRef<HTMLInputElement>(null);
   return (
-    <div className="field-box !h-14 lg:!h-16 border-primary bg-card text-muted-foreground text-base lg:text-lg">
+    <div className={cx("field-box !h-14 border-primary bg-card text-muted-foreground text-base lg:text-lg", !compact && "lg:!h-16")}>
       <IconSearch size={20} />
       <label htmlFor={id} className="sr-only">
         {label}
@@ -396,8 +396,31 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
   );
 }
 
+/**
+ * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
+ * select, no field box. `all` is the first option, chosen when `value` is null.
+ */
+export function InlineSelect({ label, all, options, value, onChange }: { label: string; all: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void }) {
+  const id = useId();
+  return (
+    <span className="inline-flex items-center gap-1 text-sm">
+      <label htmlFor={id} className="text-muted-foreground">
+        {label}:
+      </label>
+      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="min-h-target max-w-48 truncate bg-transparent font-medium text-foreground rounded-md px-1 hover:bg-accent/50 cursor-pointer">
+        <option value="">{all}</option>
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.name}
+          </option>
+        ))}
+      </select>
+    </span>
+  );
+}
+
 /** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */
-export function SelectField({ label, options, value, onChange, none, help, mark, wide, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; /** A `HelpMark` after the label, outside it, so the field's spoken name stays the label alone: what the choice does, said once in its "?" (founder, 2026-11-08). */ mark?: ReactNode; /** The list fills the width, as a text field beside it does (a phone's controls over a list). */ wide?: boolean; className?: string }) {
+export function SelectField({ label, options, value, onChange, none, help, mark, wide, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; /** A `HelpMark` after the label, outside it, so the field's spoken name stays the label alone: what the choice does, said once in its "?". */ mark?: ReactNode; /** The list fills the width, as a text field beside it does (a phone's controls over a list). */ wide?: boolean; className?: string }) {
   const id = useId();
   return (
     <div className={cx("flex flex-col gap-1", wide ? null : "max-w-measure", className)}>

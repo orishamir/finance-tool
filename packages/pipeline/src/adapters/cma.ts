@@ -38,7 +38,7 @@ export const DATASETS: DatasetConfig[] = [
 
 /**
  * The dataset page. data.gov.il's new portal addresses a dataset as /he/datasets/<organization>/<name>; the old
- * /dataset/<name> now ends on a "page not found" (found 2026-10-25). Both datasets belong to the CMA (the `organization.name`
+ * /dataset/<name> now ends on a "page not found" (found). Both datasets belong to the CMA (the `organization.name`
  * of the portal's package_show answer).
  */
 export const datasetPageUrl = (c: DatasetConfig): string => `https://data.gov.il/he/datasets/cma/${c.dataset}`;
@@ -53,14 +53,14 @@ export const USER_AGENT =
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
 /**
- * A track closed to joiners, left out with those companies (founder, 2026-11-03): the regulator marks it as for workers of
+ * A track closed to joiners, left out with those companies: the regulator marks it as for workers of
  * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
  * of investment tracks).
  */
 export const closedTrack = (population: string, name: string): boolean => population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name);
 
 /**
- * Managing companies left out of the data, by legal id (founder, 2026-11-03, 43 companies): their funds serve one
+ * Managing companies left out of the data, by legal id (43 companies): their funds serve one
  * profession, employer or municipality, or are otherwise not relevant to the site's readers. A refresh skips their rows, and they
  * are not to be collected or researched. docs/product.md D51.
  */
@@ -127,13 +127,13 @@ export const REQUIRED_COLUMNS = [
 export const GEMEL_ONLY_COLUMNS = ["TARGET_POPULATION", "SPECIALIZATION", "SUB_SPECIALIZATION"] as const;
 
 /**
- * Amount columns kept when the file has them (D34, 2026-10-26: the company page's exposure rings, F-87 and F-88). Not required: a file
+ * Amount columns kept when the file has them (D34, the company page's exposure rings, F-87 and F-88). Not required: a file
  * without them still writes, and its funds carry no `holdings`. NIS millions at the period end (CAT-03, research note).
  */
 export const HOLDINGS_COLUMNS = ["TOTAL_ASSETS", "STOCK_MARKET_EXPOSURE", "FOREIGN_CURRENCY_EXPOSURE"] as const;
 
 /**
- * Further columns kept as received in `raw_fields`, for later use (founder, 2026-10-26): no page reads them and none has a value
+ * Further columns kept as received in `raw_fields`, for later use: no page reads them and none has a value
  * object yet; a page that shows one first gives it a value object as `buildHoldings` does. Past returns among them are history,
  * never a ranking key (product.md section 2). Pension-net names its monthly deposits MONTHLY_DEPOSITS.
  */
@@ -277,7 +277,7 @@ export function buildFees(
     let notes: string;
     let ruleIdsHere = ruleIds;
     if (value === null && f.key === "avg_deposit_fee" && file.dataset === "gemelnet" && balanceFeeOnly(fund)) {
-      // the rule is in rule_ids, which the sheet shows as a chip; an id inside the Hebrew sentence broke across lines (2026-10-27)
+      // the rule is in rule_ids, which the sheet shows as a chip; an id inside the Hebrew sentence broke across lines
       notes = "אין דמי ניהול מהפקדה בסוג הקופה הזה: התקנות מתירות דמי ניהול מהיתרה בלבד, ולכן השדה ריק גם בנתוני רשות שוק ההון.";
       ruleIdsHere = [...ruleIds, "PF-06"];
     } else if (value === null) {

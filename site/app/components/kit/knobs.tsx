@@ -7,8 +7,8 @@ export interface Knob extends RangeFieldProps {
 }
 
 /**
- * The plan's numbers as sliders that stay on screen, for a page meant to be played with (the indices page, founder 2026-10-28):
- * one row on a wide computer, two columns on a smaller one, one on a phone (tightened 2026-10-31). The result across a range is `ResultCurves`.
+ * The plan's numbers as sliders that stay on screen, for a page meant to be played with (the indices page):
+ * one row on a wide computer, two columns on a smaller one, one on a phone (tightened). The result across a range is `ResultCurves`.
  */
 export function KnobStrip({ knobs, lead }: { knobs: Knob[]; lead?: ReactNode }) {
   return (
@@ -16,7 +16,7 @@ export function KnobStrip({ knobs, lead }: { knobs: Knob[]; lead?: ReactNode }) 
       {lead && <p className="text-sm text-muted-foreground">{lead}</p>}
       <div className={cx("grid gap-x-6 gap-y-1 md:grid-cols-2", knobs.length === 4 && "xl:grid-cols-4")}>
         {knobs.map(({ id, ...field }) => (
-          // no line under a slider: the reset sits beside its label, so a number becoming the person's own moves nothing (2026-10-31)
+          // no line under a slider: the reset sits beside its label, so a number becoming the person's own moves nothing
           <RangeField key={id} {...field} footer={false} />
         ))}
       </div>

@@ -19,7 +19,7 @@ type Shown = { side: "lo" | "hi" } | null;
 /** A maqaf lead before a value: a holding period said in words ("שנה", "שנתיים") takes the letter on the word, "משנה" (copy.md 10.4). */
 const leadFor = (row: FeeSensRow, written: string, v: number, at: Shown) => (row.unit === "years" ? joinLead(written, fmt.years(at ? shownAt(row, v, at, "years") : Number(v.toFixed(2)))) : written);
 
-/** A rounded flip point held inside the range the search tested (finance review, 2026-11-07: a 0.364% point read "0.3%", below P-02's half of 0.7%). */
+/** A rounded flip point held inside the range the search tested (a 0.364% point read "0.3%", below P-02's half of 0.7%). */
 const within = (row: FeeSensRow, r: number, side: "lo" | "hi") => (side === "lo" ? Math.max(r, row.lo) : Math.min(r, row.hi));
 const shownAt = (row: FeeSensRow, v: number, at: { side: "lo" | "hi" }, unit: "years" | "pct") =>
   unit === "years" ? within(row, readerRound(v, at.side, "years"), at.side) : within(row, readerRound(v * 100, at.side, "pct") / 100, at.side) * 100;
@@ -66,7 +66,7 @@ function Row({ row, an, onOpen, p02, wordOf }: { row: FeeSensRow; an: Analysis; 
   const flip = row.flip;
   let text: React.ReactNode;
   // the row's heading names what moves; the sentence says where it lands and what then changes, with no verb that must agree with the
-  // heading's noun ("דמי ניהול … תעבור" was wrong, 2026-11-07): "ב־0.42% במקום 0.7%, המסקנה על דמי ניהול מחיסכון עוברת מ״…״ ל״…״"
+  // heading's noun ("דמי ניהול … תעבור" was wrong): "ב־0.42% במקום 0.7%, המסקנה על דמי ניהול מחיסכון עוברת מ״…״ ל״…״"
   if (flip && flip.kind === "verdict") {
     text = (
       <>
@@ -123,7 +123,7 @@ function Row({ row, an, onOpen, p02, wordOf }: { row: FeeSensRow; an: Analysis; 
     const suggested = row.field === "horizonYears" ? (flip.side === "hi" ? Math.ceil(flip.to) : Math.floor(flip.to)) : Number(shownAt(row, flip.to, flip, "pct").toFixed(4));
     return (
       <li className={cls}>
-        {/* a div, not a button: the row holds number buttons (provenance), and a button inside a button is invalid HTML (audit 2026-10-24 (sweep)) */}
+        {/* a div, not a button: the row holds number buttons (provenance), and a button inside a button is invalid HTML */}
         <div
           role="button"
           tabIndex={0}

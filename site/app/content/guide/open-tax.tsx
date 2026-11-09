@@ -1,11 +1,11 @@
-// Open tax questions several guides share (2026-11-02): until the guides' checklist left, it alone told them.
+// Open tax questions several guides share: until the guides' checklist left, it alone told them.
 import { IdRef, RuleRef } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 /**
  * A provident fund for investing, and child savings held in one, whose balance is not above what was deposited in it. What is settled
  * comes first, as plain prose: no income tax and nothing withheld (TXK-30, the site's reading; a partial withdrawal is split pro rata,
- * TXK-13, which TXK-30 cites and which has no site record, so it carries no gain either). Its condition is the balance, never the amount taken out (checker, 2026-11-07). The open
+ * TXK-13, which TXK-30 cites and which has no site record, so it carries no gain either). Its condition is the balance, never the amount taken out (checker). The open
  * question, whether the shortfall offsets other gains (TXK OQ10), follows in its own blocked callout. TXK-30 is the provident fund for
  * investing's rule, so no other guide shows this.
  */

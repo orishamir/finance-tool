@@ -4,6 +4,7 @@
 // This file is pure (it runs in the browser); fx.server.ts reads the series file.
 import { crossRate } from "@finance-tool/engine";
 import { computed, type SiteValue } from "./value";
+import { signatureFacts } from "../copy";
 
 /** The ECB series as the pages carry it: the reference day, every currency per one euro, and the source. */
 export interface FxSnapshot {
@@ -20,8 +21,9 @@ export interface FxSnapshot {
   sourceUrl: string;
 }
 
-const ILS = ["ILS", "NIS"];
-const norm = (code: string) => (ILS.includes(code) ? "ILS" : code.toUpperCase());
+/** The shekel's code, which records write either way. */
+export const isShekel = (code: string): boolean => code === "ILS" || code === "NIS";
+const norm = (code: string) => (isShekel(code) ? "ILS" : code.toUpperCase());
 
 /** Whole days between two YYYY-MM-DD dates. */
 const daysBetween = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86400000);
@@ -40,7 +42,7 @@ export function nisPerNumber(fx: FxSnapshot, code: string): number | null {
   return crossRate(fx.perEur, norm(code));
 }
 
-/** The engine's `fx` run input (F-63, 2026-10-25): shekels per one unit of every currency the ECB quotes, for tariff lines set in dollars or pounds. */
+/** The engine's `fx` run input (F-63): shekels per one unit of every currency the ECB quotes, for tariff lines set in dollars or pounds. */
 export function fxRunInput(fx: FxSnapshot): Record<string, number> {
   const out: Record<string, number> = {};
   for (const code of ["EUR", ...Object.keys(fx.perEur)]) {
@@ -74,8 +76,8 @@ export function nisPer(fx: FxSnapshot, code: string, today: string): SiteValue |
     update_rule: "market",
     state: "sourced",
   });
-  const inputs: Record<string, SiteValue> = { [`ILS לאירו`]: source("ILS") };
-  if (c !== "EUR") inputs[`${c} לאירו`] = source(c);
+  const inputs: Record<string, SiteValue> = { [signatureFacts.perEur("ILS")]: source("ILS") };
+  if (c !== "EUR") inputs[signatureFacts.perEur(c)] = source(c);
   const v = computed(n, "nis", "F-84", inputs, { today, about: fxLabel(fx), notes: fx.attribution });
   const stale = daysBetween(fx.date, today) > fx.staleAfterDays ? { since: fx.date, cadence: "daily" as const } : null;
   return { ...v, stale };
@@ -93,8 +95,30 @@ export function nisPerQuoted(fx: FxSnapshot, code: string): { per: 1 | 100; valu
 
 /** The ECB's month-end rates as shekels per dollar, oldest first (F-93; data/series/ecb-fx-month-end.json). */
 export interface FxHistory {
-  points: { date: string; rate: number }[];
+  /** Each month end: shekels per dollar (`rate`, F-84's cross rate) and the two ECB rates it is computed from, units per one euro. */
+  points: { date: string; rate: number; ils: number; usd: number }[];
   checked: string;
   attribution: string;
   sourceUrl: string;
+  /** The series' source, as each of its observations carries it. */
+  source: SiteValue["source"];
+}
+
+/**
+ * Shekels per dollar at one month end of the history (F-84's cross rate), as the site's computed value: the ECB's two end-of-month rates,
+ * dated as the series dates them, are its inputs, each with the series' source, so a change computed from it (F-93) traces to the ECB's
+ * figures. `about` names the month.
+ */
+export function monthEndRate(history: FxHistory, point: FxHistory["points"][number], today: string, about: string): SiteValue {
+  const ecb = (value: number): SiteValue => ({
+    value,
+    unit: "fx_per_eur" as never,
+    source: history.source,
+    checked: history.checked,
+    effective_from: point.date,
+    effective_to: point.date,
+    update_rule: "market",
+    state: "sourced",
+  });
+  return computed(point.rate, "nis", "F-84", { [signatureFacts.perEur("ILS")]: ecb(point.ils), [signatureFacts.perEur("USD")]: ecb(point.usd) }, { today, about, notes: history.attribution });
 }

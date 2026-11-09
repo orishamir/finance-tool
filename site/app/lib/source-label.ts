@@ -1,6 +1,6 @@
 import { provenance } from "../copy";
 
-// How a source is named on screen (audit 2026-10-24 A21). The data's titles are mostly English working titles; the
+// How a source is named on screen. The data's titles are mostly English working titles; the
 // page shows a title that is written in Hebrew, otherwise the link's host, with the English title in a collapsed line.
 
 const hebrew = /[֐-׿]/g;

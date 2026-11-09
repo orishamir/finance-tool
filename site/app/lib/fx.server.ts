@@ -44,7 +44,7 @@ export function loadFxHistory(): FxHistory | null {
   if (cachedHistory) return cachedHistory;
   const p = join(root, "data/series/ecb-fx-month-end.json");
   if (!existsSync(p)) return null;
-  const rec = readJsonCached(p) as { observations: { key?: string; date: string; value: unknown; checked: string; source: { url: string } }[]; terms_of_use: { attribution?: string } };
+  const rec = readJsonCached(p) as { observations: { key?: string; date: string; value: unknown; checked: string; source: FxHistory["source"] }[]; terms_of_use: { attribution?: string } };
   const by = new Map<string, Record<string, number>>();
   let checked = "";
   for (const o of rec.observations) {
@@ -52,7 +52,8 @@ export function loadFxHistory(): FxHistory | null {
     by.set(o.date, { ...by.get(o.date), [o.key]: o.value });
     if (o.checked > checked) checked = o.checked;
   }
-  const points = [...by.entries()].filter(([, r]) => r.ILS && r.USD).sort(([a], [b]) => a.localeCompare(b)).map(([date, r]) => ({ date, rate: r.ILS! / r.USD! }));
-  cachedHistory = { points, checked, attribution: rec.terms_of_use.attribution ?? "", sourceUrl: rec.observations[0]?.source.url ?? "" };
+  const points = [...by.entries()].filter(([, r]) => r.ILS && r.USD).sort(([a], [b]) => a.localeCompare(b)).map(([date, r]) => ({ date, rate: r.ILS! / r.USD!, ils: r.ILS!, usd: r.USD! }));
+  const first = rec.observations[0]?.source;
+  cachedHistory = { points, checked, attribution: rec.terms_of_use.attribution ?? "", sourceUrl: first?.url ?? "", source: first ?? { url: "", title: "", publisher: "", strength: "primary" } };
   return cachedHistory;
 }

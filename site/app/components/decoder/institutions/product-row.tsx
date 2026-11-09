@@ -5,7 +5,7 @@ import { r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn } from "../../icons";
 import { Num, RuleRef, RulesLine } from "../../provenance";
-import { Card, Disclosure, DoubtNote, LabelRow, PrintedText, Tag, When } from "../../kit";
+import { Card, Disclosure, DoubtNote, LabelRow, MixedName, PrintedText, Tag, When } from "../../kit";
 import { depositLabels, exitWords } from "../../../lib/deposit-kind";
 import type { ProductRowData } from "./types";
 
@@ -39,7 +39,7 @@ function SpreadWords({ spread }: { spread: NonNullable<ProductRowData["spread"]>
 
 export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; known: ReadonlySet<string>; wrapperName: string }) {
   const l = copy.labels;
-  // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (2026-11-06, WIN WIN)
+  // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (WIN WIN)
   const bucket = p.taxBucket.value;
   const taxWord = bucket === "unlinked_15" ? copy.tax.unlinked : bucket === "linked_25" ? copy.tax.linked : undefined;
   const months = typeof p.term.value === "number" ? p.term.value : null;
@@ -47,14 +47,14 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
     <Card as="article" id={`product-${p.id}`} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px] target:outline-2 target:outline-ring target:outline-offset-2">
       <header className="flex flex-col gap-1.5">
         <h3 className="text-lg font-semibold max-w-measure">
-          <bdi>{p.name}</bdi>
+          <MixedName>{p.name}</MixedName>
         </h3>
         {p.model && (
           <p className="text-sm text-muted-foreground">
             {copy.modelLine} <bdi dir="ltr" className="num-id">{p.model}</bdi>
           </p>
         )}
-        {/* what sets the deposit apart (2026-11-07): its kind as labels, then the conditions the bank prints; a current account's
+        {/* what sets the deposit apart: its kind as labels, then the conditions the bank prints; a current account's
             conditions are long and stay folded below */}
         <LabelRow labels={depositLabels(p.variant, known, p.table)} />
         {!p.currentAccount && p.conditions && (
@@ -67,7 +67,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
             <span>{copy.alsoCalled}</span>
             {p.alsoCalled.map((n) => (
               <Tag key={n} wrap>
-                <bdi>{n}</bdi>
+                <MixedName>{n}</MixedName>
               </Tag>
             ))}
           </p>
@@ -84,7 +84,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
       )}
       <dl className="flex flex-col">
           <Item id="type" label={l.type447} known={known} rules={["BANK-13"]}>
-            <bdi>{p.type447}</bdi>
+            <MixedName>{p.type447}</MixedName>
           </Item>
           <Item id="term" label={l.term} known={known} rules={p.term.rule_ids ?? []}>
             {p.currentAccount || months === null ? copy.term.none : <Num value={p.term} display={fmt.months(months)} />}
@@ -92,7 +92,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
           <Item id="rateType" label={l.rateType} known={known}>
             {p.rateType === "variable" ? (
               <>
-                {copy.rateType.variable} {p.anchor === "prime" ? copy.rateType.prime : p.anchor && <bdi>{p.anchor}</bdi>}{" "}
+                {copy.rateType.variable} {p.anchor === "prime" ? copy.rateType.prime : p.anchor && <MixedName>{p.anchor}</MixedName>}{" "}
                 {p.spread && <SpreadWords spread={p.spread} />}
               </>
             ) : (
@@ -154,7 +154,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
             {p.breakTerms.penalty === "not_allowed" && p.exitPoints.exists ? copy.breakAtExits : copy.breakWord[p.breakTerms.penalty]}
           </Item>
           <Item id="exits" label={l.exits} known={known}>
-            {/* exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing, fresh readers 2026-11-07) */}
+            {/* exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing) */}
             {p.exitPoints.exists && !p.exitPoints.everyMonths && p.conditions ? copy.exits.someCard : exitWords(p.exitPoints.exists, p.exitPoints.everyMonths)}
           </Item>
           <Item id="renew" label={l.autoRenew} known={known}>

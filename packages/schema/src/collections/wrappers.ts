@@ -1,4 +1,4 @@
-// data/instruments/wrappers/: one record per wrapper; data/instruments/securities/: one record per security (D6, amended 2026-10-26).
+// data/instruments/wrappers/: one record per wrapper; data/instruments/securities/: one record per security (D6).
 // docs/data-schema.md §3.3. Strict at every level: a field the doc does not name is an error, so a typo cannot pass as data.
 import { z } from "zod";
 import { feeBase, securityId, isoDate, productId, valueObject, wrapperId } from "../value.ts";
@@ -44,7 +44,7 @@ const productFields = {
    * `unsettled` records that hold the companies' own terms. The guide says "תלוי בחברה" there and links to those companies' pages;
    * the records are never cited as the product's (they are not `rule_ids`, so they mark no dimension). An entry is a record id (every
    * company whose section lists it), or `{ rule, companies }` when the record states the property for only some of its companies
-   * (BRK-28 gives a minimum for Meitav Trade, not for Leumi or Psagot: review, 2026-10-26).
+   * (BRK-28 gives a minimum for Meitav Trade, not for Leumi or Psagot).
    */
   company_terms: z.record(z.string(), z.array(companyTermRef).min(1)).optional(),
   tier: z.union([z.literal(1), z.literal(2)]),
@@ -60,7 +60,7 @@ export const wrapperRecord = z.strictObject({ id: wrapperId, ...productFields })
 export type WrapperRecord = z.infer<typeof wrapperRecord>;
 
 /**
- * A security (D6, amended 2026-10-26): what a person buys inside a wrapper, held directly (makam, a government bond) or as fund units, and carrying rules of its own (tax
+ * A security (D6): what a person buys inside a wrapper, held directly (makam, a government bond) or as fund units, and carrying rules of its own (tax
  * in a taxable account, its own liquidity, the issuer behind it, a fee rule by security type). `held_in` names the wrappers that can
  * hold it, the first being the one its guide page and its comparison option run in; what that wrapper decides (who may open it,
  * who supervises it, how client assets are kept) is read from that wrapper's record, not copied here.

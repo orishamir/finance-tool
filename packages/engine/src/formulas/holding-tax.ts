@@ -47,7 +47,7 @@ export function bondCoupon(couponRate: number, face: number, indexRatio: number)
 }
 
 /**
- * F-25 Price of a government bond after a change in rates (2026-10-25, the guide page's "if rates move" drawing). Per 100 of
+ * F-25 Price of a government bond after a change in rates (the guide page's "if rates move" drawing). Per 100 of
  * face value, a bond that pays `couponRate` a year in `perYear` equal coupons and redeems at 100 after `years` years is worth
  * the present value of what is left at the new yield `yieldRate`: `P = Σ (100 c / f) / (1 + i)^k + 100 / (1 + i)^n`, with
  * `f = perYear`, `i = (1 + y)^(1/f) − 1`, `n = years × f` and `k = 1 … n`. At `y = c` the price is 100 (a bond sold at par).
@@ -73,7 +73,7 @@ export function currentAccountInterest(balance: number, monthlyRate: number): nu
 /**
  * F-28 National Insurance and health contributions: zero on everything the engine models (TXG-27, TXG-28,
  * TXG-34, and the kupat gemel lehashkaa lump sum's gains, TXK-27); kept as a formula so the zero is explicit and the
- * G-27 flag has a home. G-11 was answered for the lump sum on 2026-10-26; it stays open only for a recognized annuity,
+ * G-27 flag has a home. G-11 is answered for the lump sum; it stays open only for a recognized annuity,
  * which the engine does not model.
  */
 export function socialContributions(): number {

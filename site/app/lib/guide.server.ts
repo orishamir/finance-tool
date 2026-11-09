@@ -6,17 +6,18 @@ import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, ty
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
 import { shortName } from "./providers";
-import { guideBlocks, guideSignature, r4catalogue } from "../copy";
-import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
+import { guideBlocks, guideSignature, r4catalogue, signatureFacts } from "../copy";
+import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
 import { loadDepositTerms } from "./instruments.server";
 import { loadInstitutionRegistry } from "./institutions.server";
 import { exitWords } from "./deposit-kind";
-import type { BreakTerms, SignatureData } from "./guide-signature";
-import { cmaFeeValue, computed, ownBy, ruleFigure, weaker, type SiteValue, type Strength } from "./value";
+import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
+import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
+import { heCollator } from "./format";
 
 export interface GuidePageData {
   record: ProductRecord;
@@ -31,9 +32,9 @@ export interface GuidePageData {
   termsById: Record<string, TermRow>;
   dimensionNames: Record<string, string>;
   companies: { id: string; name: string }[];
-  /** The exposures whose record lists this wrapper among those that can hold them (audit A43), each with its page (D6 as amended 2026-10-27). */
+  /** The exposures whose record lists this wrapper among those that can hold them, each with its page (D6). */
   exposures: { id: string; name: string; href: string }[];
-  /** Rule ids the record's exit sentence cites that have a Hebrew text, in the order the sentence names them (audit A22). */
+  /** Rule ids the record's exit sentence cites that have a Hebrew text, in the order the sentence names them. */
   exitTextRules: string[];
   /** The data of this page's "what makes it different" visual (D29), or null when the wrapper has none and its timeline stays open. */
   signature: SignatureData | null;
@@ -50,11 +51,11 @@ export interface GuidePageData {
    */
   listRange: Partial<Record<"balance" | "deposit", ListRange>> | null;
   /**
-   * A security's wrapper (D6, amended 2026-10-26): the first of its record's `held_in`, the account its run and its page sit in, with
+   * A security's wrapper (D6): the first of its record's `held_in`, the account its run and its page sit in, with
    * the rules that say it is held there. Null for a wrapper.
    */
   heldIn: { id: string; name: string; ruleIds: string[] } | null;
-  /** On a wrapper's page, the securities whose record names it in `held_in` (D6, 2026-10-26), each with its own page. */
+  /** On a wrapper's page, the securities whose record names it in `held_in` (D6), each with its own page. */
   securities: { href: string; label: string }[];
   today: string;
 }
@@ -67,7 +68,7 @@ export interface ListRange {
   /**
    * What the lowest printed rate is, as the run prices it (A-19, D83, D56): a discount for PF-13's period at one manager at least, an offer
    * (conditional on a document not published) at every manager that prints it, or a plain rate that holds for the whole run at one at
-   * least. The page says "during the discount" only for a discount (independent check, 2026-11-07).
+   * least. The page says "during the discount" only for a discount.
    */
   lowKind: "discount" | "offer" | "plain";
   /** The shortest a discount may last (PF-13), said under the table when a lowest rate is a discount. */
@@ -112,14 +113,14 @@ function exitInput(r: DepositTerms, name: string): SiteValue {
   const value = exitWords(r.exit_points.exists, r.exit_points.every_months);
   // the record's source and date, but not the break column's rules, and its conditions only on a deposit with exits, where they say how the
   // money comes out at them (Hapoalim Sprint, Mizrahi-Tefahot 287); on one with none they are about something else, such as where it is
-  // opened (code review, 2026-11-07: Discount 0122's "אין" carried "פותחים רק בסניף או בטלבנק")
+  // opened (Discount 0122's "אין" carried "פותחים רק בסניף או בטלבנק")
   const when = r.exit_points.exists ? r.conditions_he ?? "" : "";
   return ownBy({ ...breakFact(r), value, rule_ids: [], notes: when }, name);
 }
 
 /**
  * The sheet's name of each deposit: the bank, the deposit's name in its table, and, where the name repeats at the bank, its code or else
- * its kind (rate, linkage, exit points), so that every deposit counted stands on its own line (2026-11-06: six of Discount's one-year rows
+ * its kind (rate, linkage, exit points), so that every deposit counted stands on its own line (six of Discount's one-year rows
  * share "פקדון לשנה", three of Hapoalim's "פיקדון לשנה").
  */
 export function depositSheetNames(records: DepositTerms[]): Map<string, string> {
@@ -160,7 +161,7 @@ export function depositBreakTerms(t: string): BreakTerms | null {
   const breaks = inputsOf(records, breakInput);
   const about = guideSignature.deposit.breakAbout;
   const make = (value: number, words: string, inputs = breaks) => computed(value, "count", "F-104", inputs, { today: t, about: words });
-  // the bank's full name ("בנק דיסקונט", not "דיסקונט", which a reader took for Mercantile Discount too: fresh readers, 2026-11-06)
+  // the bank's full name (not "דיסקונט", which also reads as Mercantile Discount)
   const registry = new Map(loadInstitutionRegistry().map((i) => [i.id, i.name_he]));
   const nameOf = (id: string) => registry.get(id) ?? shortName(id, id);
   return {
@@ -194,16 +195,6 @@ function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): str
   return [...found];
 }
 
-function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
-  if (Array.isArray(node)) node.forEach((n) => collectRuleIds(n, out));
-  else if (node && typeof node === "object") {
-    for (const [k, v] of Object.entries(node)) {
-      if (k === "rule_ids" && Array.isArray(v)) v.forEach((id) => typeof id === "string" && out.add(id));
-      else collectRuleIds(v, out);
-    }
-  }
-  return out;
-}
 
 /** The lowest and highest fee the regulator reports on the wrapper's tracks, without self-directed tracks, which have a guide of their own (F-64). */
 function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
@@ -216,7 +207,11 @@ function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
     })
     .sort((a, b) => (a.value as number) - (b.value as number));
   if (reported.length < 2) return null;
-  return { low: reported[0]!, high: reported.at(-1)!, tracks: computed(reported.length, "count", "F-64", {}, { today: t, about: "כמה מסלולים, בלי מסלולים בניהול אישי, דיווחה הרשות בתקופה האחרונה עם דמי ניהול" }) };
+  // the count rests on the regulator's monthly file the fees come from: its month, with the file's link and the day it was read
+  const cma = loadCma();
+  const file = cma.files.find((f) => f.source.url === reported[0]!.source.url);
+  const report: SiteValue = file ? { ...cma.periodValue, value: file.period, source: file.source, checked: file.checked, effective_from: null, stale: staleCma(file.period, t) } : cma.periodValue;
+  return { low: reported[0]!, high: reported.at(-1)!, tracks: computed(reported.length, "count", "F-64", { [signatureFacts.cmaFile]: report }, { today: t, about: signatureFacts.trackCount }) };
 }
 
 export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {
@@ -259,7 +254,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
           console.log(`[guide] ${id}: no timeline: the run stops (${probe.message})`);
         } else {
           const touched = rulesTouched(draft);
-          // F-80 (2026-11-07): with several managers' lists collected the terms block names the pick and how many were compared
+          // F-80: with several managers' lists collected the terms block names the pick and how many were compared
           const lists = r.pick ? providentLists(id, loadFees()) : [];
           const inputs = Object.fromEntries(lists.map((l) => [shortName(l.snap.id, l.snap.provider.name_he), ownBy({ ...l.balance } as SiteValue, shortName(l.snap.id, l.snap.provider.name_he))]));
           const nameOf = (pid: string) => { const l = lists.find((x) => x.snap.id === pid); return l ? shortName(l.snap.id, l.snap.provider.name_he) : pid; };
@@ -275,12 +270,12 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     bundle = r.bundle;
   } else console.log(`[guide] ${id}: no timeline: no run for this wrapper`);
   const signature = buildSignatureData(id, bundle);
-  const initial = bundle ? runTimeline(bundle, { entered: {}, age: null }) : null;
+  const initial = bundle ? runTimeline(bundle, { entered: lumpSumIds.includes(id) ? { ...lumpSumEntered } : {}, age: null }) : null;
   if (initial?.kind === "failed") console.log(`[guide] ${id}: the first run stops (${initial.message})`);
 
   // ---- rules the page cites: the record's, the run's, the content's
   const cited = collectRuleIds(record);
-  // the rules the exit sentence names: their Hebrew texts stand in for its English wording (audit A22)
+  // the rules the exit sentence names: their Hebrew texts stand in for its English wording
   const exitTextRules = [...new Set(record.lawful_exit.text?.match(/\b[A-Z0-9]{2,6}-[A-Z0-9]{1,5}\b/g) ?? [])].filter((r) => !!allRules[r]?.text_he);
   exitTextRules.forEach((r) => cited.add(r));
   extraRuleIds.forEach((r) => cited.add(r));
@@ -310,8 +305,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const cma = loadCma();
   const seen = new Map<string, string>();
   for (const track of cma.tracks) if (track.wrapperId === id && !seen.has(track.companyId)) seen.set(track.companyId, track.companyName);
-  const collator = new Intl.Collator("he");
-  const companies = [...seen.entries()].map(([cid, name]) => ({ id: cid, name })).sort((a, b) => collator.compare(a.name, b.name));
+  const companies = [...seen.entries()].map(([cid, name]) => ({ id: cid, name })).sort((a, b) => heCollator.compare(a.name, b.name));
   const folds = exposureFolds();
   const exposuresHeld = loadExposures()
     .filter((e) => (e.wrapper_ids ?? []).includes(record.id))
@@ -373,7 +367,7 @@ export interface ExposurePageData {
   termsById: Record<string, TermRow>;
   /**
    * Wrappers that can hold this exposure. `blockedBy` are the wrapper's own exit-tax blockers (its record's
-   * `tax_at_exit.blocked_by`): only these make the card say the tax is unclear (audit A85). `openQuestions` are the open
+   * `tax_at_exit.blocked_by`): only these make the card say the tax is unclear. `openQuestions` are the open
    * questions the wrapper and the exposure both carry and the wrapper does not list as exit-tax blockers: some are tax questions that
    * do not block the run (TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8), so the card shows them in a neutral tag.
    */

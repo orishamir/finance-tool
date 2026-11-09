@@ -1856,36 +1856,6 @@
     "id": "amlvt-brvkraz"
   },
   {
-    "term_he": "דמי משמרת",
-    "term_source": {
-      "title": "Meitav, brokerage letter and annexes, Meitav Trade 2.606.1.4.26T",
-      "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf#page=4"
-    },
-    "variants_he": [
-      "דמי שמירה"
-    ],
-    "explain_he": "תשלום על החזקה ושמירה של ניירות הערך שבחשבון",
-    "rule_ids": [
-      "IRA-16",
-      "IRA-22"
-    ],
-    "source": {
-      "title": "קובץ התקנות 7819 (29.5.2017): תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017, עמוד 4, תקנה 7א(2)",
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=",
-      "checked": "2026-11-07",
-      "strength": "primary",
-      "publisher": "Reshumot (Ministry of Justice)"
-    },
-    "where": [
-      "provider-site",
-      "statement",
-      "guide:ira-hishtalmut",
-      "guide:ira-provident"
-    ],
-    "notes": "In an IRA they may not exceed what the same manager's regular funds pay (IRA-16). Meitav Trade charges none in IRA accounts (IRA-22).",
-    "id": "dmy-mshmrt"
-  },
-  {
     "term_he": "תשלומים פטורים",
     "term_source": {
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 49",

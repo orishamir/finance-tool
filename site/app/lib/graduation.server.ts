@@ -3,7 +3,7 @@
 // G-24's open questions (the table in compare.server.ts); never typed by hand. The `data/instruments/tier2/` files the
 // design spec proposes do not exist, so a closure is a struck-through item with "closed <date>" in a status section, and
 // an instrument with none says so. A closure names the rules that answered it, never a question: an answered question is
-// deleted from the rule base (founder, 2026-11-08). Server-only.
+// deleted from the rule base. Server-only.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { loadNotCovered, loadRules, root, type NotCoveredRow } from "./data.server";
@@ -48,12 +48,12 @@ const sources: Record<string, { file: string; block: RegExp | null }> = {
   "managed-portfolios": { file: "managed-and-robo-portfolios.md", block: null },
   reits: { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli REIT shares/ },
   "gold-via-funds": { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli gold funds/ },
-  // added 2026-10-26: without it the Amendment 190 closures (ruling 6849/15, TXA-30; circular 2/2013, TXA-19) never reached the page
+  // without it the Amendment 190 closures (ruling 6849/15, TXA-30; circular 2/2013, TXA-19) never reached the page
   "amendment-190-deposits": { file: "tax-insurance-and-amendment-190.md", block: /^- \*\*Amendment 190 deposits/ },
 };
 
 /** Where an institution's statement is the only answer to a blocking question (r5-tier2.md, D23; a REIT's TX2-21 answers TX2 OQ7, which G-24 no longer lists as blocking, so it is not a blocker line): checked against the rule record at build.
- * Empty since 2026-10-25: TXA OQ1's base is now answered by the law (TXA-28, general; tax-bases research), and its remaining rate question has no insurer answer. */
+ * Empty: TXA OQ1's base is now answered by the law (TXA-28, general; tax-bases research), and its remaining rate question has no insurer answer. */
 const institutionAnswers: { instrument: string; code: string; ruleId: string }[] = [];
 
 function statusSection(file: string): string[] {
@@ -85,7 +85,7 @@ function closuresOf(lines: string[]): GraduationClosed[] {
       const rest = m[2]!;
       const date = /[Cc]losed[^\d]{0,12}(\d{4}-\d{2}-\d{2})/.exec(rest)?.[1];
       if (!/closed/i.test(rest) && !date) continue;
-      // the struck text itself is the rule base's English note, never shown (2026-10-26: "tax treatment in `tax-tier2-other.md`…"
+      // the struck text itself is the rule base's English note, never shown ("tax treatment in `tax-tier2-other.md`…"
       // reached the page); the closure is the rules that answered it
       out.push({ ...(date ? { closedOn: date } : {}), ruleIds: ruleIdsIn(rest) });
     }
@@ -135,7 +135,7 @@ export function graduationRuleIds(list: GraduationStatusView[]): string[] {
  * The cards of the "not covered yet" page: one per tier-2 kind of holding (product D2, `tier2Table`), each with its
  * glossary row from docs/glossary.md section 3 joined by name. The list comes from what the site lacks, never from the
  * glossary section: its other rows (fees, roles, labels, events of those holdings) stay terms, and a term the site
- * explains on a covered page never lands here (founder, 2026-11-07: "we dont know עמלת חליפין?"). Throws when a kind has
+ * explains on a covered page never lands here. Throws when a kind has
  * no row, so a renamed row fails the build instead of dropping a card.
  */
 export function notCoveredCards(list: GraduationStatusView[] = graduationStatuses()): { status: GraduationStatusView; row: NotCoveredRow }[] {
@@ -152,7 +152,7 @@ export function notCoveredCards(list: GraduationStatusView[] = graduationStatuse
 
 /**
  * The source link of each row of docs/glossary.md section 3, by the row's Hebrew name, read with balanced
- * parentheses (audit A28). `loadNotCovered` (data.server.ts) still cuts a url at its first ")"; the page prefers this.
+ * parentheses. `loadNotCovered` (data.server.ts) still cuts a url at its first ")"; the page prefers this.
  */
 export function notCoveredSources(): Map<string, { title: string; url: string }> {
   const doc = readTextCached(join(root, "docs/glossary.md"));

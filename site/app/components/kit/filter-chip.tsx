@@ -1,4 +1,4 @@
-// A filter that is on or off, with the number of rows it would show (the rules page's filters, 2026-11-01). The number has a fixed
+// A filter that is on or off, with the number of rows it would show (the rules page's filters). The number has a fixed
 // slot, so nothing moves when it changes; a chip that would show nothing dims and stays where it is.
 import type { ReactNode } from "react";
 import { fmt } from "../../lib/format";

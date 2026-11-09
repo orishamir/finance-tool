@@ -3,23 +3,22 @@ import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, scopeWords, site } from "../copy";
-import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
-import { IdRef, Num, NumberLegend, ReadingTag, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
-import { Breadcrumb, PageShell } from "../components/shell";
+import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
+import { IdRef, Num, NumberLegend, ReadingTag, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
+import { PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
-import { hasSignatureVisual, SignatureFrame, signatureTitle, useReviewMode } from "../components/guide-signature";
-import { heldSignatures } from "../lib/review";
+import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../components/guide-signature";
 import { accountWorthRow } from "../components/guide-signature/current-account";
-import { cashLikeIds } from "../lib/guide-signature";
-import { Disclosure, Sentence } from "../components/kit";
+import { cashLikeIds, lumpSumIds } from "../lib/guide-signature";
+import { gershayim, Sentence } from "../components/kit";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
 import { omitsSection, sectionTitle, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { exitRateLines, exitStepMark, type ExitRate } from "../lib/exit-step";
 import { guideContent } from "../content/guide";
-import { anyWeak, type SiteValue } from "../lib/value";
+import { anyDoubt, anyWeak, ruleFigure, type SiteValue } from "../lib/value";
 import { generalOnly, isGeneral } from "../lib/scope";
 
 const providentIds = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
@@ -37,14 +36,14 @@ export async function loader({ params }: Route.LoaderArgs) {
   const rules = { ...data.rules };
   for (const id of [...worthIds, ...withdrawalRules(params.id)]) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
   // the records the cards point at, the pinned facts' too, travel beside the page's own rules (only chips and cards read them)
-  // the fee page is linked only where it can answer: a product with no fee terms ends there in "no record" (2026-11-07)
+  // the fee page is linked only where it can answer: a product with no fee terms ends there in "no record"
   const { compareBundle } = await import("../lib/compare.server");
   const { feePageAnswers } = await import("../lib/fees");
   return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds, feePage: feePageAnswers(compareBundle(), params.id) };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.name ?? guideIndex.title} · ${site.name}` }];
+  return [{ title: `${data?.name ? gershayim(data.name) : guideIndex.title} · ${site.name}` }];
 }
 
 export default function GuidePage() {
@@ -53,17 +52,9 @@ export default function GuidePage() {
   const content = guideContent[record.id];
   const current = useCurrentSection(copy.sections.map((s) => s.id));
   const { state: inputsState } = useInputs();
-  const review = useReviewMode();
   const title = (id: string) => sectionTitle(record.id, id);
   const omitted = (id: string) => omitsSection(record.id, id);
-  const figure = (ruleId: string, name: string): SiteValue | null => {
-    const r = rules[ruleId];
-    if (!r) return null;
-    const f = r.figures?.[name];
-    if (!f || Array.isArray(f)) return null;
-    const v = "by_tax_year" in f ? f.by_tax_year[today.slice(0, 4)] ?? Object.values(f.by_tax_year).at(-1) : f;
-    return v ? { ...v, rule_ids: v.rule_ids ?? [ruleId] } : null;
-  };
+  const figure = (ruleId: string, name: string): SiteValue | null => (rules[ruleId] ? ruleFigure(rules[ruleId]!, name, today) : null);
   // a guide is a product context (D30): every list of rules on it holds general rules only; a company's own term is on its page
   const gen = (ids: readonly string[]) => generalOnly(ids, rules);
   const strengthOfRules = (ids: readonly string[]) => (ids.map((id) => rules[id]?.strength).some((s) => s === "institution") ? "institution" : ids.map((id) => rules[id]?.strength).some((s) => s === "secondary") ? "secondary" : null);
@@ -137,7 +128,7 @@ export default function GuidePage() {
   if (!lockUp) inout.push(exitItem());
   if (exit.payout_business_days) {
     const days = exit.payout_business_days as SiteValue;
-    // D30 (2026-10-25): a payout time that is one company's own (its rule is that company's record) is shown named, never as the product's
+    // D30: a payout time that is one company's own (its rule is that company's record) is shown named, never as the product's
     const dayRule = days.rule_ids?.[0] ? (rules[days.rule_ids[0]] as { strength?: string; sources?: { url: string; publisher_he?: string }[] } | undefined) : undefined;
     const onlyAt = days.source.strength === "institution" && dayRule?.strength === "institution" ? dayRule.sources?.find((s) => s.url === days.source.url)?.publisher_he : undefined;
     inout.push({
@@ -180,8 +171,8 @@ export default function GuidePage() {
 
   // F-105: on a provident guide with several managers' lists collected, each fee says how many write only the cap (under the cap), and the
   // note under the table says once, for both fees, the lowest rates the others write, what kind they are and how long a discount lasts
-  // (independent check, 2026-11-07: the same paragraph under each fee read as copy-pasted; D83)
-  // the same count on both fees is said once, in the note (fresh readers, round 4: the line under each fee read as repeated)
+  // (the same paragraph under each fee read as copy-pasted; D83)
+  // the same count on both fees is said once, in the note (the line under each fee read as repeated)
   const sameCount = !!data.listRange?.balance && !!data.listRange?.deposit && data.listRange.balance.atCap.value === data.listRange.deposit.atCap.value && data.listRange.balance.managers.value === data.listRange.deposit.managers.value;
   const listRangeLine = (base: string): ReactNode => {
     const r = data.listRange?.[base as "balance" | "deposit"];
@@ -269,7 +260,7 @@ export default function GuidePage() {
     });
   }
   if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
-  // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag (scope pass 2026-10-25)
+  // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag
   if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]) });
 
 
@@ -287,7 +278,7 @@ export default function GuidePage() {
         )}
       </>
     ) : null;
-  // a formula with no sentence of its own shows its Hebrew name, the code after it (audit A42)
+  // a formula with no sentence of its own shows its Hebrew name, the code after it
   const formulaHeadline = (formula: string): ReactNode => (
     <>
       {formulaNames[formula] ?? formulaNames._other} <bdi dir="ltr" className="text-xs text-muted-foreground">{formula}</bdi>
@@ -313,7 +304,7 @@ export default function GuidePage() {
   // the step's mark: a cited rule's own strength, or a rate the step shows whose source is weaker than its rule; else a rate that is
   // the site's reading (the child-savings bank route's rates are the Ordinance's, but no official text says they reach it, TXK-29)
   const exitMark = exitStepMark(strengthOfRules(record.tax_at_exit.rule_ids), rateLines);
-  // audit A46: the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
+  // the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
   // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05)
   const hd = copy.hishtalmutDeposit;
   const deductionPct = figure("TXH-05", "deduction_pct");
@@ -382,18 +373,16 @@ export default function GuidePage() {
   for (const st of steps) st.rules = gen(st.rules);
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
-  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
-  // a visual held for review (lib/review.ts) shows only with ?review in the address; the page then keeps its timeline open, as one without a visual
-  const held = heldSignatures.includes(record.id);
-  const signature = hasSignatureVisual(record.id, data.signature) && (!held || review) ? data.signature : null;
+  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter: the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
+  const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
   const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;
   const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), common } : null;
-  // a fact the site computes from the collected records, listed with the pinned rules (2026-10-25)
+  // a fact the site computes from the collected records, listed with the pinned rules
   const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
   const timelineNode =
     data.bundle && data.initial ? (
-      <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} />
+      <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} lumpSum={lumpSumIds.includes(record.id) ? { note: content?.lumpNote ?? null } : null} />
     ) : null;
 
   const links = (
@@ -406,115 +395,110 @@ export default function GuidePage() {
 
   return (
     <PageShell current="guide" data={provenance}>
-      <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current} />
-        <div className="flex-1 min-w-0 flex flex-col gap-section">
-          <header className="flex flex-col gap-3">
-            <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
-            <h1 className="text-2xl lg:text-3xl font-semibold">{data.name}</h1>
-            {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
-            {data.heldIn && (
-              <div className="flex flex-col gap-1 max-w-measure">
-                <Sentence
-                  tone="muted"
-                  t={copy.heldIn}
-                  vars={{
-                    account: (
-                      <Link to={`/guide/${data.heldIn.id}`} className="text-link hover:underline">
-                        {data.heldIn.name}
-                      </Link>
-                    ),
-                  }}
-                />
-                <RulesLine ids={gen(data.heldIn.ruleIds)} />
-              </div>
-            )}
-            <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} />
-          </header>
-
-          <GuideSection id="what" title={title("what")}>
-            {content?.what(cp)}
-            {/* D29: a page with a visual folds the timeline under it; without one it stays here */}
-            {!signature && timelineNode}
-            {omitted("use") && links}
-          </GuideSection>
-
-          {/* audit A42: who it is for sits directly under what it is */}
-          {!omitted("use") && (
-            <GuideSection id="use" title={title("use")}>
-              {content?.use?.(cp)}
-              {links}
-            </GuideSection>
-          )}
-
-          {signature && (
-            <GuideSection id="different" title={copy.sectionTitles[record.id]?.different ?? signatureTitle(record.id)}>
-              <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} held={held} />
-            </GuideSection>
-          )}
-
-          <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
-
-          {!omitted("who") && (
-            <GuideSection id="who" title={title("who")}>
-              {content?.who?.(cp) ?? (
-                <p className="max-w-measure">
-                  {regulatorName}. {copy.whoLine}
-                </p>
-              )}
-              {companyTerms().length > 0 && <KeyValueList items={companyTerms()} />}
-              <InstitutionChips companies={data.companies} open={content?.companiesOpen} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
-            </GuideSection>
-          )}
-
-          {!omitted("inout") && (
-            <GuideSection id="inout" title={title("inout")}>
-              <KeyValueList items={inout} />
-            </GuideSection>
-          )}
-
-          {!omitted("cost") && (
-            <GuideSection id="cost" title={title("cost")}>
-              <FeeTable
-                fees={fees}
-                feePage={data.feePage}
-                note={
-                  data.feeRange ? (
-                    <>
-                      {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
-                    </>
-                  ) : data.listRange ? (
-                    listRangeNote()
-                  ) : provident ? (
-                    copy.feeNote
-                  ) : (
-                    copy.feeNoteOther
-                  )
-                }
+      <GuideFrame sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current}>
+        <GuideHeader title={gershayim(data.name)}>
+          {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{gershayim(data.lede)}</p>}
+          {data.heldIn && (
+            <div className="flex flex-col gap-1 max-w-measure">
+              <Sentence
+                tone="muted"
+                t={copy.heldIn}
+                vars={{
+                  account: (
+                    <Link to={`/guide/${data.heldIn.id}`} className="text-link hover:underline">
+                      {data.heldIn.name}
+                    </Link>
+                  ),
+                }}
               />
-            </GuideSection>
+              <RulesLine ids={gen(data.heldIn.ruleIds)} />
+            </div>
           )}
+          <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} doubt={anyDoubt((signature?.banks ?? []).map((b) => b.rate))} />
+        </GuideHeader>
 
-          {!omitted("tax") && (
-            <GuideSection id="tax" title={title("tax")}>
-              <TaxSteps steps={steps} />
-              {content?.afterTax?.(cp)}
-            </GuideSection>
-          )}
+        <GuideSection id="what" title={title("what")}>
+          {content?.what(cp)}
+          {/* D29: a page with a visual folds the timeline under it; without one it stays here */}
+          {!signature && timelineNode}
+          {omitted("use") && links}
+        </GuideSection>
 
-          <GuideSection id="risk" title={title("risk")}>
-            {content?.risks(cp) ?? (
-              <>
-                <p className="max-w-measure">
-                  <bdi dir="ltr">{record.protection.text}</bdi>
-                </p>
-                <RulesLine ids={gen(record.protection.rule_ids)} />
-              </>
-            )}
+        {/* who it is for sits directly under what it is */}
+        {!omitted("use") && (
+          <GuideSection id="use" title={title("use")}>
+            {content?.use?.(cp)}
+            {links}
           </GuideSection>
+        )}
 
-        </div>
-      </div>
+        {signature && (
+          <GuideSection id="different" title={copy.sectionTitles[record.id]?.different ?? signatureTitle(record.id)}>
+            <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} />
+          </GuideSection>
+        )}
+
+        <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
+
+        {!omitted("who") && (
+          <GuideSection id="who" title={title("who")}>
+            {content?.who?.(cp) ?? (
+              <p className="max-w-measure">
+                {regulatorName}. {copy.whoLine}
+              </p>
+            )}
+            {companyTerms().length > 0 && <KeyValueList items={companyTerms()} />}
+            <InstitutionChips companies={data.companies} open={content?.companiesOpen} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
+          </GuideSection>
+        )}
+
+        {!omitted("inout") && (
+          <GuideSection id="inout" title={title("inout")}>
+            <KeyValueList items={inout} />
+          </GuideSection>
+        )}
+
+        {!omitted("cost") && (
+          <GuideSection id="cost" title={title("cost")}>
+            <FeeTable
+              fees={fees}
+              feePage={data.feePage}
+              note={
+                data.feeRange ? (
+                  <>
+                    {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
+                  </>
+                ) : data.listRange ? (
+                  listRangeNote()
+                ) : provident ? (
+                  copy.feeNote
+                ) : (
+                  copy.feeNoteOther
+                )
+              }
+            />
+          </GuideSection>
+        )}
+
+        {!omitted("tax") && (
+          <GuideSection id="tax" title={title("tax")}>
+            <TaxSteps steps={steps} />
+            {content?.afterTax?.(cp)}
+          </GuideSection>
+        )}
+
+        <GuideSection id="risk" title={title("risk")}>
+          {content?.risks(cp) ?? (
+            <>
+              <p className="max-w-measure">
+                <bdi dir="ltr">{record.protection.text}</bdi>
+              </p>
+              <RulesLine ids={gen(record.protection.rule_ids)} />
+            </>
+          )}
+        </GuideSection>
+
+      </GuideFrame>
     </PageShell>
   );
 }

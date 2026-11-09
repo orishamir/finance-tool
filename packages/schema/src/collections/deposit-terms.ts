@@ -41,6 +41,12 @@ export const depositTerms = z.strictObject({
   anchor: z.string().min(1).nullable().optional(),
   spread: valueObject.nullable().optional(),
   rate_offered: valueObject,
+  /**
+   * The rate the bank prints in a column of its own beside the offered rate ("ריבית אפקטיבית", Mizrahi-Tefahot's table), recorded only where
+   * the offered rate is not one number (a rate for each period between exit points), so a page has the bank's one figure to show. The bank
+   * defines the column only in some product terms, as an average where the rate is not uniform over the term. Absent otherwise.
+   */
+  rate_effective: valueObject.optional(),
   linkage: z.enum(["none", "cpi", "fx"]),
   // null only with an open source: a null bucket at another strength would read "not found in the source", not the open question and its lock
   tax_bucket: valueObject.and(z.object({ value: taxBucket.nullable() })).refine((t) => t.value !== null || t.source.strength === "open", {
@@ -52,17 +58,18 @@ export const depositTerms = z.strictObject({
   exit_points: z.strictObject({ exists: z.boolean(), every_months: z.number().nullable() }),
   auto_renew: z.strictObject({ value: z.boolean(), max_renewals: z.number().int().nullable() }),
   /**
-   * A short plain-Hebrew summary of the conditions the bank prints for the rate (2026-10-25, guide page of the current account). Faithful to the
+   * A short plain-Hebrew summary of the conditions the bank prints for the rate (guide page of the current account). Faithful to the
    * printed text quoted in the notes of `rate_offered`; it adds nothing that is not printed. Absent when the page has no summary yet.
    */
   conditions_he: z.string().min(1).optional(),
   /**
-   * What sets the deposit apart from the bank's plain deposit of its term and kind, as the bank's own table or terms print it (2026-11-06,
-   * F-86 reads one plain deposit per bank): a campaign product, a deposit only for people with no account at the bank (closed system),
-   * interest paid during the term instead of at its end, or a choice at the end between two returns. Absent on a plain deposit. Exit points
+   * What sets the deposit apart from the bank's plain deposit of its term and kind, as the bank's own table or terms print it (F-86 reads
+   * one plain deposit per bank): a campaign product, a deposit through a closed-system account (the money comes only from and returns only
+   * to the person's account at another bank, BANK-21; who may open one is the bank's own term), a deposit only for people who join the bank, until a date it prints, interest paid during the term instead of at
+   * its end, or a choice at the end between two returns. Absent on a plain deposit. Exit points
    * and linkage have fields of their own.
    */
-  variant: z.array(z.enum(["campaign", "closed_system", "interest_during_term", "best_of"])).min(1).optional(),
+  variant: z.array(z.enum(["campaign", "closed_system", "new_customers", "interest_during_term", "best_of"])).min(1).optional(),
   /** One plain-Hebrew sentence on an open doubt about the record (the printed rate and its conditions disagree, a stated end date has passed). The page shows it beside the figure. Absent when there is none. */
   doubt_he: z.string().min(1).optional(),
   snapshot: isoDate,

@@ -1,36 +1,30 @@
 // The "what makes it different" block of a guide page (D29): the frame (title, the one question, the visual, the nearest alternative,
 // the old illustrative timeline folded below) and the registry from wrapper id to its visual. A wrapper not in the registry has no
-// block and keeps its timeline open where it was (brokerage account, child savings, IRA study fund, IRA provident). A page whose visual
-// already answers what the timeline would, with more of the person's money in it, has no fold (`NO_TIMELINE`, founder 2026-11-02, D50).
+// block and keeps its timeline open where it was (bank deposit, money-market fund with a renewable term, investment provident fund,
+// brokerage account, child savings, IRA study fund, IRA provident). A page whose visual
+// already answers what the timeline would, with more of the person's money in it, has no fold (D50).
 // Builder G2 adds its visuals to `signatureRegistry` (and its data builders to `builders` in lib/guide-signature.server.ts).
-import { useEffect, useState, type ComponentType, type ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { Link } from "react-router";
-import { guideSignature as copy, site } from "../../copy";
-import { reviewParam } from "../../lib/review";
+import { guideSignature as copy } from "../../copy";
 import type { SignatureData } from "../../lib/guide-signature";
-import { Callout, Card, Disclosure } from "../kit";
-import { BankDepositVisual } from "./bank-deposit";
+import { Card, Disclosure } from "../kit";
 import { CurrentAccountVisual } from "./current-account";
 import { GovernmentBondVisual } from "./government-bond";
 import { KerenHishtalmutVisual } from "./keren-hishtalmut";
-import { KupatGemelLehashkaaVisual } from "./kupat-gemel-lehashkaa";
 import { PensionVisual } from "./pension";
 import type { VisualProps } from "./kit";
 import { MakamVisual } from "./makam";
 import { MoneyMarketDailyVisual } from "./money-market-daily";
-import { MoneyMarketRenewableVisual } from "./money-market-renewable";
 import { SavingsPlanVisual } from "./savings-plan";
 
 export const signatureRegistry: Record<string, ComponentType<VisualProps>> = {
   "current-account": CurrentAccountVisual,
-  "bank-deposit": BankDepositVisual,
   "savings-plan": SavingsPlanVisual,
   "money-market-fund-daily": MoneyMarketDailyVisual,
-  "money-market-fund-renewable": MoneyMarketRenewableVisual,
   makam: MakamVisual,
   "government-bond": GovernmentBondVisual,
   "keren-hishtalmut": KerenHishtalmutVisual,
-  "kupat-gemel-lehashkaa": KupatGemelLehashkaaVisual,
   "pension-comprehensive": PensionVisual,
   "pension-general": PensionVisual,
   "provident-for-annuity": PensionVisual,
@@ -41,29 +35,14 @@ const NO_TIMELINE = new Set(["keren-hishtalmut"]);
 
 export const hasSignatureVisual = (id: string, data: SignatureData | null): data is SignatureData => !!data && id in signatureRegistry && id in copy.pages;
 
-/**
- * Whether the address asks for the visuals held for review (`?review`, lib/review.ts). Read after the first render: the page is
- * pre-rendered without a query, so reading it during render would not match the HTML.
- */
-export function useReviewMode(): boolean {
-  const [review, setReview] = useState(false);
-  useEffect(() => setReview(new URLSearchParams(window.location.search).has(reviewParam)), []);
-  return review;
-}
-
 /** Title of the section, "מה מייחד …". */
 export const signatureTitle = (id: string) => `${copy.titleBefore} ${copy.pages[id]!.name}`;
 
-export function SignatureFrame({ id, data, today, timeline, held }: { id: string; data: SignatureData; today: string; timeline: ReactNode; held?: boolean }) {
+export function SignatureFrame({ id, data, today, timeline }: { id: string; data: SignatureData; today: string; timeline: ReactNode }) {
   const Visual = signatureRegistry[id]!;
   const page = copy.pages[id]!;
   return (
     <>
-      {held && (
-        <Callout tone="caution" title={site.held.title}>
-          {site.held.signature}
-        </Callout>
-      )}
       {/* the question is the card's title: outside the card it read as a second heading under the section's on a phone */}
       <Card className="flex flex-col gap-4">
         <p className="text-lg font-semibold max-w-measure">{page.question}</p>
@@ -77,7 +56,7 @@ export function SignatureFrame({ id, data, today, timeline, held }: { id: string
           </Link>
         </p>
       ) : (
-        // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line; none on the study fund (founder, 2026-11-08)
+        // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line; none on the study fund
         page.altLine && <p className="text-sm max-w-measure">{page.altLine}</p>
       )}
       {timeline && !NO_TIMELINE.has(id) && (

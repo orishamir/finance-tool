@@ -1,8 +1,8 @@
 {
   "id": "BANK-38",
-  "title": "Eight banks' savings plans: 47 monthly standing-order plans, and how their deposits, rates and withdrawals work",
-  "title_he": "שמונה בנקים: 47 תוכניות חיסכון בהוראת קבע חודשית, ואיך עובדות בהן ההפקדות, הריבית והמשיכה",
-  "text_he": "בשמונה בנקים נמצאו 47 תוכניות חיסכון שמפקידים אליהן בהוראת קבע חודשית: בבינלאומי 14, במרכנתיל 7, בדיסקונט 6, בבנק הפועלים 5, במזרחי טפחות 5, בלאומי 4, במסד 4 ובבנק יהב 2, ועוד אחת בלוח הריביות של יהב. כל בנק קובע בעצמו איך התוכנית עובדת: בבנק יהב הריבית בחיסכון חרמון נקבעת לפי מועד כל הפקדה, במזרחי טפחות אפשר למשוך חלק בתחנת יציאה ולהשאיר בתוכנית את ההפקדות האחרונות, ובמרכנתיל הריבית יורדת כשההפקדות לא רצופות. במסמכים שנקראו אין תנאי גיל או השתייכות לתוכניות האלה; בבינלאומי צריך לפתוח חשבון בבנק. לאומי מציע גם חיסכון באפליקציה, עם כמה הפקדות ביום.",
+  "title": "Ten banks' savings plans: 52 monthly standing-order plans, and how their deposits, rates and withdrawals work",
+  "title_he": "עשרה בנקים: 52 תוכניות חיסכון בהוראת קבע חודשית, ואיך עובדות בהן ההפקדות, הריבית והמשיכה",
+  "text_he": "בעשרה בנקים נמצאו 52 תוכניות חיסכון שמפקידים אליהן בהוראת קבע חודשית: בבינלאומי 14, במרכנתיל 8, בדיסקונט 6, בבנק הפועלים 5, במזרחי טפחות 5, בלאומי 4, במסד 4, בבנק יהב 3, בבנק ירושלים 2 ובוואן זירו 1. כל בנק קובע בעצמו איך התוכנית עובדת: בבנק יהב הריבית בחיסכון חרמון נקבעת לפי מועד כל הפקדה, במזרחי טפחות אפשר למשוך חלק בתחנת יציאה ולהשאיר בתוכנית את ההפקדות האחרונות, ובמרכנתיל הריבית יורדת כשההפקדות לא רצופות. במסמכים שנקראו אין תנאי גיל או השתייכות לתוכניות האלה; בבינלאומי צריך לפתוח חשבון בבנק, ובבנק ירושלים התוכניות פתוחות גם ללקוחות של בנקים אחרים. לאומי מציע גם חיסכון באפליקציה, עם כמה הפקדות ביום.",
   "figure_names_he": {
     "yahav_flexible_min_monthly": "הפקדה חודשית מינימלית בחיסכון הגמיש (יהב)",
     "leumi_touch_daily_min": "סכום מינימלי ליום בחיסכון בנגיעה (לאומי)",
@@ -114,6 +114,14 @@
     {
       "id": "mizrahi-tefahot",
       "name_he": "בנק מזרחי טפחות"
+    },
+    {
+      "id": "jerusalem",
+      "name_he": "בנק ירושלים"
+    },
+    {
+      "id": "one-zero",
+      "name_he": "וואן זירו"
     }
   ],
   "sources": [
@@ -183,6 +191,60 @@
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/media/7047/pikdonot-20102026-nagish.pdf#page=2",
+      "title": "בנק ירושלים: שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים, בתוקף החל מה-20.10.2026",
+      "title_he": "בנק ירושלים: שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים, בתוקף החל מה-20.10.2026",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "פיקדונות נוספים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/media/1159/%D7%91%D7%A7%D7%A9%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A4%D7%99%D7%A7%D7%93%D7%95%D7%9F-%D7%91%D7%94%D7%A4%D7%A7%D7%93%D7%94-%D7%97%D7%95%D7%93%D7%A9%D7%99%D7%AA-%D7%9C-5-%D7%A9%D7%A0%D7%99%D7%9D.pdf#page=1",
+      "title": "בנק ירושלים: בקשת הצטרפות לפיקדון בהפקדה חודשית ל-5 שנים (08/16)",
+      "title_he": "בנק ירושלים: בקשת הצטרפות לפיקדון בהפקדה חודשית ל-5 שנים (08/16)",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1 s.1",
+      "locator_he": "עמוד 1 סעיף 1",
+      "page": 1,
+      "quote": "שיעור המרווח הקבוע יקבע במועד ההפקדה הראשונה בפיקדון",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/media/1159/%D7%91%D7%A7%D7%A9%D7%AA-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A4%D7%99%D7%A7%D7%93%D7%95%D7%9F-%D7%91%D7%94%D7%A4%D7%A7%D7%93%D7%94-%D7%97%D7%95%D7%93%D7%A9%D7%99%D7%AA-%D7%9C-5-%D7%A9%D7%A0%D7%99%D7%9D.pdf#page=1",
+      "title": "בנק ירושלים: בקשת הצטרפות לפיקדון בהפקדה חודשית ל-5 שנים (08/16)",
+      "title_he": "בנק ירושלים: בקשת הצטרפות לפיקדון בהפקדה חודשית ל-5 שנים (08/16)",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2 s.5ב, s.8א, s.8ב",
+      "locator_he": "עמוד 2 סעיף 5ב, סעיף 8א, סעיף 8ב",
+      "page": 2,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf#page=1",
+      "title": "ONE ZERO: חיסכון חודשי, תנאי הפיקדון v11",
+      "title_he": "וואן זירו: חיסכון חודשי, תנאי הפיקדון (גרסה 11)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1 s.3.6, s.4.1, s.4.4; p.2 s.7.3; p.3 s.12, s.14.1, s.14.2",
+      "locator_he": "עמוד 1 סעיף 3.6, סעיף 4.1, סעיף 4.4; עמוד 2 סעיף 7.3; עמוד 3 סעיף 12, סעיף 14.1, סעיף 14.2",
+      "page": 1,
       "checked": "2026-11-07"
     },
     {
@@ -305,6 +367,39 @@
       "kind": "institution_doc",
       "strength": "institution",
       "quote": "מסלול - הפקדה חודשית בהוראת קבע",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/investments/deposits/",
+      "title": "בנק יהב: פיקדונות",
+      "title_he": "בנק יהב: פיקדונות",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פיקדונות בהוראות קבע",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/deposits-savings/monthly-deposit-savings-plan",
+      "title": "בנק ירושלים: ירח, תוכנית חיסכון בהפקדה חודשית",
+      "title_he": "בנק ירושלים: ירח, תוכנית חיסכון בהפקדה חודשית",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "ללקוחות כל הבנקים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO: פיקדונות, טבלת תנאי הפיקדונות",
+      "title_he": "וואן זירו: פיקדונות, טבלת תנאי הפיקדונות",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "חיסכון חודשי (לתקופה של שנה)",
       "checked": "2026-11-07"
     },
     {

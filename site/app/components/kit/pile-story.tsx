@@ -1,4 +1,4 @@
-// The money's story (founder, 2026-11-02; reworked 2026-11-08 for the one choice it serves, withdraw before the lock or wait). `PileYears`
+// The money's story (reworked for the one choice it serves, withdraw before the lock or wait). `PileYears`
 // is the main chart: a bar a year, each the money at a withdrawal after that year, its net above it, the year picked and the one it is set
 // against at full strength. `PileBar` is the year picked as one bar from the left: what went in and what the return added, and cut from the
 // far end what the fees and the tax took, with what is left bracketed under it. Own SVG; the bar's figures are HTML, so they go through `Num`.
@@ -91,7 +91,7 @@ export function PileYears({
   after: ReactNode;
   /** The years' axis name, under them. */
   axis: string;
-  /** What the amounts are, written up the value axis at the chart's left (founder, 2026-11-08). */
+  /** What the amounts are, written up the value axis at the chart's left. */
   valueAxis?: string;
   /** Words pointing at `compare`'s column. */
   note?: ReactNode;
@@ -232,7 +232,7 @@ const BAR_H = 40;
 /**
  * The year picked as one bar growing from the right (the page is RTL), its parts in the story's order (what went in, what another hand
  * added, the return before fees). What a loss, the fees and the tax took is hatched in its own colour over the bar's far end, so the part
- * under it still shows, and a bracket under the rest says what is left (`left`) (founder, 2026-11-08). A figure sits inside the part's
+ * under it still shows, and a bracket under the rest says what is left (`left`). A figure sits inside the part's
  * unhatched length when it fits with room on both sides, else above it with a thin line; a cut's figure sits under it. `other`
  * draws what the same money would leave elsewhere as a second bar on the same scale. `gap` takes the bar's place when the year has no figure.
  */

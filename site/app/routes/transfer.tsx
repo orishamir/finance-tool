@@ -1,13 +1,12 @@
-// Screen 12 by link: the export and import sheet as a page (design-spec 15, flow 26): `/transfer` is the link the founder
-// sends to a friend. From the holdings page, the saved-goal strip and the footer the same panel opens as a sheet.
+// Screen 12 by link: the export and import panel as a page (design-spec 15, flow 26): `/transfer` is the link the founder
+// sends to a friend.
 import { useLoaderData } from "react-router";
 import { r3transfer as copy, site } from "../copy";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { TransferPanel } from "../components/transfer/panel";
 
 export async function loader() {
-  const { exportSiteInfo } = await import("../lib/holdings.server");
-  const { today } = await import("../lib/data.server");
+  const { exportSiteInfo, today } = await import("../lib/data.server");
   return { site: exportSiteInfo(), today: today() };
 }
 
@@ -21,7 +20,7 @@ export default function TransferPage() {
     <PageShell current="other" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-6 pt-2 lg:pt-8">
         <Breadcrumb parent={{ href: "/", label: site.name }} current={copy.title} />
-        <TransferPanel site={data.site} page />
+        <TransferPanel site={data.site} />
       </div>
     </PageShell>
   );

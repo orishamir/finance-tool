@@ -1,6 +1,6 @@
 // A fee row (design-system 7.2, design-spec 11.3): name, rate, cost, verdict, the three quiet lines, the reduction
 // field and the negotiation text.
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState } from "react";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r3fees } from "../../copy";
 import { reducible, reductionWorth, type Analysis, type FeeReach, type LineView, type SubjectView } from "../../lib/fees";
@@ -64,7 +64,7 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
             }}
           />
         </div>
-        {/* the field starts at the average, said in plain words; once changed, the same place holds "↺ חזרה ל־…" (founder, 2026-11-08).
+        {/* the field starts at the average, said in plain words; once changed, the same place holds "↺ חזרה ל־…".
             Both keep their room in one cell, so nothing moves when one gives way to the other */}
         {line.suggestion !== null && (
           <span className="grid items-center">
@@ -91,7 +91,7 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
           {notReduction || !worth ? (
             <span className="text-muted-foreground font-normal">{r3fees.reduction.notReduction}</span>
           ) : (
-            // one inline sentence: as direct children of the flex column, each piece took its own line (founder's screenshot, 2026-10-25)
+            // one inline sentence: as direct children of the flex column, each piece took its own line
             <span>
               {r3fees.reduction.worthBefore}
               <Num value={worth} animate /> <LeadTail lead={r3fees.reduction.worthIn} text={fmt.years(years)}>{fmt.years(years)}</LeadTail>
@@ -117,27 +117,26 @@ const Segs = ({ segs }: { segs: Seg[] }) => (
 );
 
 function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; an: Analysis; subject: SubjectView; toPct: number | null; rules: Map<string, RuleRecord> }) {
-  // a holding is an account of the person's; a wrapper or a track page is not, so the script asks for an offer (A94)
-  const hasAccount = subject.kind === "holding";
+  // the person has no account in the product the page is about (a wrapper or a track), so the script asks for an offer (A94)
   const [copied, setCopied] = useState(false);
   const [fallback, setFallback] = useState(false);
   const cma = line.reference.cma!;
   const n = r3fees.negotiation;
-  // nothing typed, the script asks for the regulator's average: the figure is that average, not one the person entered (2026-11-03)
-  // what the reader typed in the field above is a field's value: plain in the script too (founder, 2026-11-08)
+  // nothing typed, the script asks for the regulator's average: the figure is that average, not one the person entered
+  // what the reader typed in the field above is a field's value: plain in the script too
   const toV = toPct === null ? cma.mean : asField(enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם"));
   const cls = cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification;
   const dataset = n.datasets[cma.dataset] ?? cma.dataset;
   const segs: Seg[] = [
-    { t: `${n.p1[0]}${n.from[line.line] ?? n.from.balance}${(hasAccount ? n.p1 : n.p1Offer)[1]}${gershayim(subject.productName)}${n.p1[2]}` },
+    { t: `${n.p1[0]}${n.from[line.line] ?? n.from.balance}${n.p1[1]}${gershayim(subject.productName)}${n.p1[2]}` },
     ...(line.rate ? ([{ n: line.rate }] as Seg[]) : []),
     { t: `${n.p1[3]}${dataset} של ${n.authority}${n.p2[0]}${cma.year?.value ?? ""}${n.p2[1]}${cls}${n.p2[2]}` },
     { n: cma.mean },
     { t: n.p2[3] },
     { n: cma.count },
-    { t: hasAccount ? n.p2[4] : n.p2Offer },
+    { t: n.p2Offer },
     { n: toV },
-    { t: hasAccount ? n.p2[5] : n.offerEnd },
+    { t: n.offerEnd },
   ];
   const own: Seg[] | null = line.reference.ownAverage ? [{ t: n.own[0] }, { n: line.reference.ownAverage }, { t: n.own[1] }] : null;
   const source = `${n.source[0]}${dataset}${n.source[1]}${n.authority}${n.source[2]}${fmt.period(cma.period)}${n.source[3]}`;
@@ -222,7 +221,7 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
           </Sentence>
         </div>
         {/* the cost column keeps the width of its widest figure: as the sliders moved it, the name and the rate beside it took the
-            rest of the row and re-wrapped (box check, 2026-11-07) */}
+            rest of the row and re-wrapped */}
         <LongestCase
           className="shrink-0"
           cases={[

@@ -38,7 +38,7 @@ describe("groupDocuments", () => {
     expect(c.key).toMatch(/^doc-[0-9a-f]{8}$/);
     expect(c.rules).toHaveLength(2);
     expect(c.section).toBe("regulators");
-    expect(/[א-ת]/.test(c.title)).toBe(true); // never an English working title: the kind's word stands in (QA 2026-10-24, F4)
+    expect(/[א-ת]/.test(c.title)).toBe(true); // never an English working title: the kind's word stands in
   });
 });
 

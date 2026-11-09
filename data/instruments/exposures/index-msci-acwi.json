@@ -55,5 +55,41 @@
   ],
   "constituents_israeli": false,
   "other_currencies": true,
+  "us_dividends": {
+    "yield": {
+      "value": 1.13,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.msci.com/documents/10199/1e6851ab-03b8-4504-b9f3-b8cb91509ede",
+        "title": "MSCI USA Index (USD), Fundamentals (Oct 30, 2026), Div Yld (%)",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 1
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-10-30",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "The dividend yield of MSCI USA, the US shares an MSCI World or ACWI fund holds, as MSCI prints it for 30.10.2026 (library 5e151f36332b8999). F-107 multiplies it by the US weight and TXF-16's rate."
+    },
+    "weight": {
+      "value": 64.63,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/documents/10199/8d97d244-4685-4200-a24c-3e2942e3adeb",
+        "title": "MSCI ACWI Index (USD), Country weights (Oct 30, 2026): United States",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 2
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-10-30",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "The United States' share of MSCI ACWI, from MSCI's country weights for 30.10.2026 (library 2b87ca0aecd3fa26)."
+    }
+  },
   "checked": "2026-10-25"
 }

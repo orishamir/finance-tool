@@ -10,7 +10,7 @@ describe("parseMdLink", () => {
     const url = "https://www.gov.il/BlobFolder/x/תקנות_(קופות_גמל)_(דמי_ניהול).pdf";
     expect(parseMdLink(`[תקנות (קופות גמל)](${url}) · 2026-10-22 · מקור ראשי`)?.url).toBe(url);
   });
-  // independent check of glossary round 2 (2026-11-07): the not-covered card of the REIT showed "נוסח חדש], נוסח משולב…" as its source
+  // the not-covered card of the REIT showed "נוסח חדש], נוסח משולב…" as its source
   it("keeps balanced brackets in the text (the Income Tax Ordinance's title)", () => {
     const url = "https://www.gov.il/x.pdf#page=103";
     expect(parseMdLink(`TX2-21 · [פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 103](${url})`)).toMatchObject({ text: "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 103", url });

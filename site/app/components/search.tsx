@@ -1,5 +1,5 @@
 // The search (flows 6.3, architecture 3.5): on a phone a bottom sheet with its own field; on a PC the field in the header
-// or on the first page is itself the field, and the results open under it (audit 2026-10-24, A5). One body for both.
+// or on the first page is itself the field, and the results open under it. One body for both.
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { buttons, search as searchCopy, searchMore, site } from "../copy";
@@ -328,7 +328,7 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
  * The search field that is on the page (the header, the first page). On a PC it is the field itself and the results
  * open under it; Escape, the X and a click elsewhere close them. On a phone it only opens the bottom sheet.
  * In the header from 80rem, where the menu shares the line, it rests as an icon and widens while in use, and the menu
- * fades out meanwhile (2026-10-25, the founder: the full field ran over the last menu item).
+ * fades out meanwhile (the full field ran over the last menu item).
  */
 export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: string; variant: "header" | "home"; ready: boolean; onSheet: (el: HTMLElement | null, text: string, via: "focus" | "tap") => void }) {
   const desktop = useDesktop();

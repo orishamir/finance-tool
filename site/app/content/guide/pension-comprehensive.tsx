@@ -4,7 +4,7 @@
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/kit";
+import { Callout, When } from "../../components/kit";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -29,12 +29,12 @@ export const content: GuideContent = {
         <Term id="חברה מנהלת">חברות מנהלות</Term> של <Term id="קרן פנסיה">קרנות פנסיה</Term>, בפיקוח <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון, ביטוח וחיסכון</Term>. מי שלא בוחר קרן מצורף לאחת מארבע <Term prefix="ה" id="קרן נבחרת">קרנות הנבחרות</Term>, <Term prefix="ב" id="דמי ניהול">דמי ניהול</Term> של <N v={figure("PEN-23", "selected_deposit_fee")} /> מההפקדה ו־<N v={figure("PEN-23", "selected_balance_fee")} /> מהחיסכון, שמובטחים לפחות <N v={figure("PEN-23", "guarantee_years")} /> שנים. מעסיק יכול גם לבחור קרן <Term prefix="ב" id="הליך תחרותי">הליך תחרותי</Term> משלו.
       </p>
       <p className="max-w-measure">
-        מ־<bdi>1.6.2025</bdi> עד <bdi>31.10.2028</bdi> הקרן הנבחרת נקבעת לפי ספרת הביקורת בתעודת הזהות: <bdi>7, 8, 9</bdi> אינפיניטי; <bdi>4, 5, 6</bdi> מור; <bdi>2, 3</bdi> אלטשולר שחם; <bdi>0, 1</bdi> מיטב.
+        <When iso="2025-06-01" lead="מ־" /> עד <When iso="2028-10-31" /> הקרן הנבחרת נקבעת לפי ספרת הביקורת בתעודת הזהות: <bdi>7, 8, 9</bdi> אינפיניטי; <bdi>4, 5, 6</bdi> מור; <bdi>2, 3</bdi> אלטשולר שחם; <bdi>0, 1</bdi> מיטב.
       </p>
       <RulesLine ids={["REG-17", "PEN-06", "PEN-23"]} />
     </>
   ),
-  switchLine: "בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. במעבר חודשי הביטוח נספרים, חוץ מחריגים",
+  switchLine: "בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. במעבר חודשי הביטוח נספרים, חוץ מחריגים.",
   switchRules: ["PEN-17", "PF-23", "SW-22", "SW-12", "PF-28"],
   termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קרן נבחרת", "קופת גמל לקצבה", "קרן פנסיה", "צמוד למדד המחירים לצרכן", "עמית", "גיל הפרישה", "הליך תחרותי", "דמי ניהול", "רשות שוק ההון ביטוח וחיסכון", "חברה מנהלת", "משיכה", "הפקדות המעסיק", "השלמת תשואה", "קצבה", "השכר הממוצע במשק", "אינפלציה"],
   afterTax: ({ figure }) => (

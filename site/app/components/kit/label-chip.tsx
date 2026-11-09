@@ -1,8 +1,8 @@
-// A fund's labels (design-system 2.8; in the kit since 2026-10-27, when the company page's fund table became their second page):
+// A fund's labels (design-system 2.8; in the kit because the company page's fund table is their second page):
 // a chip of an icon and two or three words, a row of them, and the one sheet per page that a tap opens with the label's meaning
 // and its rules. The words and the rules come from lib/labels.ts.
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
-import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, type LucideProps } from "lucide-react";
+import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, UserPlus, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
 import type { Label, LabelIconKey } from "../../lib/labels";
 import { RuleRef } from "../provenance";
@@ -42,6 +42,7 @@ const icons: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
   fileSignature: FileSignature,
   ban: Ban,
   megaphone: Megaphone,
+  userPlus: UserPlus,
   building: Building2,
   coins: Coins,
   scale: Scale,
@@ -95,7 +96,7 @@ const toneClass: Record<Exclude<Label["tone"], "neutral">, string> = {
   open: "bg-blocked-subtle text-blocked-foreground border-blocked/40",
 };
 
-/** A neutral label takes its family's colour (founder, 2026-10-27): the icon and words in it, a faint fill and edge of it. */
+/** A neutral label takes its family's colour: the icon and words in it, a faint fill and edge of it. */
 const familyClass: Partial<Record<Label["family"], string>> = {
   held: "text-label-held bg-label-held/10 border-label-held/35",
   trade: "text-label-trade bg-label-trade/12 border-label-trade/40",
@@ -109,7 +110,7 @@ const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[lab
 const chipShape = "inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 min-h-6 whitespace-nowrap";
 
 /** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
- *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height (2026-11-03). */
+ *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height. */
 export function LabelChip({ label, still = false }: { label: Label; /** Drawn only, not a button: inside a control of its own (a tile of TileChoice), where a tap is the control's. */ still?: boolean }) {
   const open = useContext(OpenCtx);
   if (still)
@@ -128,7 +129,7 @@ export function LabelChip({ label, still = false }: { label: Label; /** Drawn on
 }
 
 /**
- * Filter a list by one label (founder, 2026-10-27): each label that splits the list, with how many rows carry it; a tap keeps only
+ * Filter a list by one label: each label that splits the list, with how many rows carry it; a tap keeps only
  * those rows, a second tap or "all" shows every row again. Only offer labels that some rows have and some do not.
  */
 export function LabelFilter({ options, value, onChange, lead, allLabel }: { options: { label: Label; count: number }[]; value: string | null; onChange: (id: string | null) => void; lead: ReactNode; allLabel: string }) {

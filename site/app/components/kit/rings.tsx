@@ -1,4 +1,4 @@
-// Concentric rings, each its own share from 0 to 100% (D34, 2026-10-26: a track's stock and currency exposure in the company page's
+// Concentric rings, each its own share from 0 to 100% (D34, a track's stock and currency exposure in the company page's
 // table). A ring is not a slice: the measures overlap, so they never share one circle. The numbers beside the rings carry the meaning;
 // the drawing is decoration for the eye and hidden from screen readers.
 import { cx } from "./cx";

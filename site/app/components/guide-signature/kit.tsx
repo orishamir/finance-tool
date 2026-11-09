@@ -1,12 +1,12 @@
 // The parts that belong to the "what makes it different" visuals alone (D29): the guide inputs they start from (rule 9 of the spec), the
 // run date and what a visual receives, and the lines that look their copy up (a gap, a common rate). The parts any
 // page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
-import type { P05Input, RunResult } from "@finance-tool/engine";
+import type { P05Input } from "@finance-tool/engine";
 import { computedInputs as ci, guideBlocks, guideSignature as copy } from "../../copy";
-import { p05Number, p05Range, p05Units, p05Value, type Bundle } from "../../lib/engine";
+import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
-import { asField, computed, entered as enteredValue, feeLabel, feeYear, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, type SiteValue, type Strength } from "../../lib/value";
 import { GapNote } from "../kit";
 import { IdText, Num } from "../provenance";
 
@@ -29,7 +29,7 @@ export interface SigInputs {
 
 /**
  * The amount, the monthly deposit and the years a visual starts from (D29 rule 9): what the person typed in the guide's own
- * fields, else P-05's; never the saved goal (founder, 2026-10-28: only the goal page speaks of a goal). Editing a control writes the guide's field, the same one the timeline reads.
+ * fields, else P-05's; never the saved goal (only the goal page speaks of a goal). Editing a control writes the guide's field, the same one the timeline reads.
  */
 export function useSigInputs(bundle: Bundle): SigInputs {
   const { state, ready, setEntered } = useInputs();
@@ -57,27 +57,18 @@ export function figure(value: number, unit: SiteValue["unit"], formula: string, 
 }
 
 /**
- * A figure that is one engine run's own number (2026-10-26 review): it carries the rules that run read, each at the weakest strength
+ * A figure that is one engine run's own number: it carries the rules that run read, each at the weakest strength
  * it carried, and the run's flags and labels, so its sheet shows what that run rested on, not every rule the bundle holds. `keepFlag`
  * leaves out the flags that are about another figure of the run (a tax figure drops the fee flags, as the timeline does).
  */
 export const notFeeFlag = (code: string) => code !== "G-14" && code !== "PF-13";
-export function runFigure(value: number, unit: SiteValue["unit"], formula: string, inputs: Record<string, SiteValue>, today: string, about: string, run: RunResult, keepFlag: (code: string) => boolean = () => true): SiteValue {
-  return computed(value, unit, formula, inputs, {
-    today,
-    about,
-    rules: run.rules.map((u) => ({ id: u.id, strength: u.figures.reduce<Strength>((w, f) => weaker(w, f.strength as Strength) ?? w, u.strength as Strength) })),
-    flags: [...new Set(run.flags.map((f) => f.code))].filter(keepFlag),
-    labels: run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })),
-  });
-}
 
 /**
  * What a bundle's run reads from its terms: each fee line, the term and every other number the guide's terms block names, under that
  * block's name (a regulator's average with its year), as the timeline lists them, and the direct expenses. A figure from the run lists
  * these beside the plan it ran on, so its sheet holds the lines of that run and of no other: a page that runs another bundle (the
- * brokerage account at the best tariff) names that bundle's lines, not its own fund's (founder, 2026-11-08: "make sure the chip displayed
- * is correct ... make less mistakes"). A provident fee shown under its list or regulator label is not listed again as the plain fee.
+ * brokerage account at the best tariff) names that bundle's lines, not its own fund's. A provident fee shown under its list or regulator
+ * label is not listed again as the plain fee.
  */
 export function termInputs(bundle: Bundle): Record<string, SiteValue> {
   const fv = bundle.feeValues;
@@ -102,7 +93,7 @@ export function termOf(bundle: Bundle | undefined): Record<string, SiteValue> {
 export const rulesOfBundle = (b: Bundle): { id: string; strength: Strength }[] => b.rules.map((r) => ({ id: r.id, strength: r.strength as Strength }));
 
 /**
- * A guide input as a value object: P-05's own when untouched, else an entered one. Either way it is a field's value (founder, 2026-11-08):
+ * A guide input as a value object: P-05's own when untouched, else an entered one. Either way it is a field's value:
  * a plain number in the sentence and in a calculation sheet, with no site-parameter tag and no "you entered" mark.
  */
 export function inputSite(bundle: Bundle, key: P05Input, n: number, source: InputSource, today: string, about: string): SiteValue {
@@ -121,7 +112,7 @@ export interface VisualProps {
 }
 
 /** The rate most of the collected banks pay on a current account (F-85), in one sentence: the current-account page and the notes under the
- *  daily money-market fund's table say it in the same words (2026-10-26). */
+ *  daily money-market fund's table say it in the same words. */
 export function CommonRateLine({ rate, count, of }: { rate: SiteValue; count: SiteValue; of: SiteValue }) {
   return (
     <>

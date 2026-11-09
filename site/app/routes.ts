@@ -8,6 +8,7 @@ export default [
   route("guide/:id", "routes/guide.tsx"),
   route("exposure/:id", "routes/exposure.tsx"),
   route("companies", "routes/companies.tsx"),
+  route("company-figures.json", "routes/company-figures.ts"),
   route("companies/:id", "routes/company.tsx"),
   route("companies/:id/:fund", "routes/track.tsx"),
   route("rules", "routes/rules.tsx"),
@@ -18,23 +19,16 @@ export default [
   route("not-covered", "routes/not-covered.tsx"),
   route("search-index.json", "routes/search-index.ts"),
   route("search-texts.json", "routes/search-texts.ts"),
-  route("idle-cash", "routes/idle-cash.tsx"),
-  route("goal", "routes/goal.tsx"),
-  route("goal/compare", "routes/goal-compare.tsx"),
   route("compare-bundle.json", "routes/compare-bundle.ts"),
   // one route for /tracks and every /tracks/<product>: choosing another product keeps the page and fetches nothing (routes/tracks.tsx)
   route("tracks/:product?", "routes/tracks.tsx"),
-  // the old address of a product's tracks, sent on to the new one
-  route("workbench/tracks/:wrapper", "routes/workbench-tracks.tsx"),
+  route("deposits", "routes/deposits.tsx"),
   route("fees", "routes/fees.tsx"),
   route("fees-data.json", "routes/fees-data.ts"),
-  route("holdings", "routes/holdings.tsx"),
-  route("holdings-bundle.json", "routes/holdings-bundle.ts"),
   route("transfer", "routes/transfer.tsx"),
   // one route for /indices and every /indices/<x>: choosing another index keeps the page and fetches nothing (routes/invest.tsx)
   route("indices/:slug?", "routes/invest.tsx"),
-  route("workbench/providers/:wrapper", "routes/workbench-providers.tsx"),
-  route("workbench-bundle.json", "routes/workbench-bundle.ts"),
+  route("indices-bundle.json", "routes/indices-bundle.ts"),
   route("kit", "routes/kit.tsx"),
   route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;

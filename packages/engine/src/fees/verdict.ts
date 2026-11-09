@@ -4,7 +4,7 @@ import { RecordInputError } from "../resolver.ts";
 
 /**
  * P-03 as numbers: NIS thresholds over the horizon, real (negotiate on the worth of bringing the fee to its reference, avoid on the fee's
- * cost, D90 revised 2026-11-07), and the share of the total drag as a fraction.
+ * cost, D90 revised), and the share of the total drag as a fraction.
  */
 export interface FeeThresholds {
   negotiateNis: number;
@@ -47,8 +47,8 @@ export interface FeeCost {
   nis: number;
   /**
    * F-61's value of a stated reduction to the reference rate (`valueOfReduction` at `reference.rate`), real NIS over the same horizon: what
-   * asking for the reference is worth. The negotiate test reads it, not the cost (D90 revised, 2026-11-07: fresh readers read "worth
-   * negotiating" beside a cost of 3,911 NIS as advice to call, while the cut was worth 187 NIS). Absent, or zero, when there is nothing to
+   * asking for the reference is worth. The negotiate test reads it, not the cost (D90 revised: "worth
+   * negotiating" beside a cost of 3,911 NIS reads as advice to call, while the cut is worth 187 NIS). Absent, or zero, when there is nothing to
    * bring down now (the reference is not below the rate charged now, or the line is at 0% during a discount).
    */
   worthNis?: number;
@@ -61,7 +61,7 @@ export interface FeeCost {
   totalDrag?: number;
   /**
    * Whether an option in the same comparison that charges no such fee, or a lower rate of it, ranks above the subject (the caller knows the
-   * comparison and the places; D90 revised the same day, 2026-11-07: "avoid" only when there is something better to pick).
+   * comparison and the places; D90 revised the same day, "avoid" only when there is something better to pick).
    */
   removedByAlternative?: boolean;
 }
@@ -96,8 +96,8 @@ export interface FeeVerdict {
 export function feeVerdict(cost: FeeCost, reference: FeeReference | null, thresholds: unknown): FeeVerdict {
   const t = isParsed(thresholds) ? thresholds : feeThresholds(thresholds);
   const reasons: FeeVerdict["reasons"] = [];
-  // D90 revised (2026-11-07): what a call is worth is what the reduction it asks for is worth, not what the fee costs
-  // nothing to bring down is never worth negotiating, whatever the threshold (finance review, 2026-11-07)
+  // D90 revised: what a call is worth is what the reduction it asks for is worth, not what the fee costs
+  // nothing to bring down is never worth negotiating, whatever the threshold
   const worthHigh = (cost.worthNis ?? 0) > 0 && (cost.worthNis ?? 0) >= t.negotiateNis;
   if (!worthHigh) reasons.push("worth-below-negotiate-threshold");
   let refBelow = false;

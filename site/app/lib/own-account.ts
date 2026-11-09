@@ -1,4 +1,4 @@
-// An account on your own terms, started from a house (founder, 2026-11-04; F-101). The pure part: the starting points a house offers (its price
+// An account on your own terms, started from a house (F-101). The pure part: the starting points a house offers (its price
 // list, each group or joining offer that states numbers), the group's prices copied into the person's entry, and the tariff the engine runs,
 // built in layers: the house's own list tariff (which the provider workbench reads with its `buildTariff` at level list, so no second reading of a
 // price list exists), then the group's values on the lines they name, then the person's own. A group's price ends at its own `for_months` and
@@ -8,7 +8,7 @@
 import type { Commission, Custody, EnteredTariff, LayeredRun, LayeredUnusable, SecuritiesTariff } from "@finance-tool/engine";
 import type { FeesSnapshot, GroupEntry, GroupPrice, GroupPriceValue, ValueObject } from "@finance-tool/schema";
 import type { CustomBroker } from "./custom-entries";
-import type { SiteValue } from "./value";
+import { numberOf, type SiteValue } from "./value";
 
 // ---------------------------------------------------------------- what the entry keeps of a group
 
@@ -28,7 +28,7 @@ export interface GroupCopy {
   adopted?: GroupFee[];
   /** F-102: the group's own current-account price where its annex prints one (the record's `current_account` of the entry): exempt for
    *  `exemptMonths` from joining, with where the annex prints it. Read only where the bank's row counts its current account. A copy saved
-   *  before it existed has none; one saved before its source was kept (2026-11-06) has no `source`. */
+   *  before it existed has none; one saved before its source was kept has no `source`. */
   currentAccount?: { exemptMonths: number; source?: { url: string; title: string; page?: number } };
 }
 
@@ -172,7 +172,7 @@ const RATE_SHAPE = ["flatUpTo", "perShare", "perShareAbove", "perCurrencyUnit"] 
 /**
  * A group's price over a trade commission: replaces what the price states, keeps what it does not (silence is not zero). A stated rate replaces
  * the commission's whole rate shape (a flat price, a price per share), keeping its minimum and maximum unless the price states its own
- * (finance review 2026-11-04).
+ * .
  */
 export function groupTrade(c: Commission | undefined, v: GroupPriceValue, run: LayeredRun): Commission {
   if (v.exempt) return { rate: 0 };
@@ -277,7 +277,6 @@ export const applyGroup = (list: SecuritiesTariff, g: GroupCopy | null | undefin
 
 /** The numbers the person typed in an account built on a house: the draft's own fields, null meaning "as the base". */
 type Own = Pick<CustomBroker, "tradePct" | "tradeMin" | "custodyPct" | "custodyMin" | "fxPct" | "monthlyFee">;
-const num = (v: ValueObject | null): number | null => (v && typeof v.value === "number" ? v.value : null);
 
 /**
  * The person's own values over a tariff: each fee type they typed replaces that part of the line; one they left empty is the base's. `list` is the
@@ -287,8 +286,8 @@ const num = (v: ValueObject | null): number | null => (v && typeof v.value === "
  */
 export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTariff = base): SecuritiesTariff {
   const out: SecuritiesTariff = { ...base };
-  const pct = num(own.tradePct);
-  const min = num(own.tradeMin);
+  const pct = numberOf(own.tradePct);
+  const min = numberOf(own.tradeMin);
   if (pct !== null || min !== null) {
     const line = (c: Commission | undefined): Commission => {
       let next: Commission = { ...(c ?? { rate: 0 }) };
@@ -305,8 +304,8 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
     out.sell = line(base.sell);
     if (base.buyStanding) out.cheaperOfStandingTrade = true;
   }
-  const cPct = num(own.custodyPct);
-  const cMin = num(own.custodyMin);
+  const cPct = numberOf(own.custodyPct);
+  const cMin = numberOf(own.custodyMin);
   if (cPct !== null || cMin !== null) {
     const every = base.custody?.everyMonths ?? list.custody?.everyMonths ?? 1;
     // the list's bound is printed for the list's period; per month it is the same in every period (F-14)
@@ -319,12 +318,12 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
     if (cMin !== null) next.min = cMin * every;
     out.custody = next;
   }
-  const fx = num(own.fxPct);
+  const fx = numberOf(own.fxPct);
   if (fx !== null) {
     out.fx = typeof base.fx === "object" ? { ...without(base.fx, "perCurrencyUnit"), rate: fx / 100 } : fx / 100;
     if (base.fxStanding !== undefined) out.cheaperOfStandingFx = true;
   }
-  const monthly = num(own.monthlyFee);
+  const monthly = numberOf(own.monthlyFee);
   if (monthly !== null) out.monthlyFee = monthly;
   return out;
 }

@@ -210,8 +210,8 @@
   }
   .num-computed {
     text-decoration: underline dotted;
-    text-decoration-color: var(--computed);
-    text-decoration-thickness: var(--num-dotted-thickness);
+    text-decoration-color: var(--computed-line);
+    text-decoration-thickness: var(--num-underline-thickness);
   }
   .num-entered {
     color: var(--entered);
@@ -222,13 +222,9 @@
   .num-unknown {
     color: var(--muted-foreground);
   }
-  /* a figure the record itself doubts (SiteValue.doubt): a light amber tint behind it, the caution icon before it, its sheet says why
-     (founder, 2026-11-08: "make it a bit yellow and the warning inside it") */
+  /* a figure the record itself doubts (SiteValue.doubt): amber text and the caution icon beside it, no tint behind it; its sheet says why */
   .num-doubt {
-    background: var(--caution-subtle);
     color: var(--caution-foreground);
-    padding-inline: 0.15em;
-    border-radius: 2px;
   }
   .num:focus-visible {
     outline: 2px solid var(--ring);
@@ -915,6 +911,28 @@
   .grp-line {
     font-size: var(--text-sm);
     color: var(--muted-foreground);
+  }
+
+  /* A row the page scrolled to from elsewhere on it (ProductTable `lit`, the deposits page's grid): it lights and fades, so the eye finds it. */
+  @keyframes row-lit {
+    from {
+      background-color: color-mix(in oklch, var(--primary) 28%, transparent);
+    }
+    to {
+      background-color: transparent;
+    }
+  }
+  .row-lit > td,
+  .track.row-lit {
+    animation: row-lit 1.8s var(--ease-standard, ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .row-lit > td,
+    .track.row-lit {
+      animation: none;
+      outline: 2px solid var(--ring);
+      outline-offset: -2px;
+    }
   }
 
   /* ---- company page tracks */

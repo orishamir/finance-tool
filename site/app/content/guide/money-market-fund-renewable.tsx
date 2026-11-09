@@ -1,6 +1,6 @@
 // Guide prose for קרן כספית מתחדשת (the fixed-date, renewable money-market fund). Same shape as
 // kupat-gemel-lehashkaa.tsx: every figure is a Num over a rule figure, every block ends with the rules it rests on
-// (il-finance MF, TXS, TXI, BANK, BRK, REG, read 2026-10-23). NEW copy for the founder to review.
+// (il-finance MF, TXS, TXI, BANK, BRK, REG). NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
@@ -14,7 +14,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <Term id="קרן כספית">קרן כספית</Term> שבוחרים בה תקופה מראש, למשל שבוע, חודש או רבעון, והכסף נעול עד המועד הקבוע הבא. בסוף התקופה הכסף מושקע מחדש אוטומטית לתקופה הבאה, אלא אם ביקשתם <Term prefix="ל" id="פדיון">פדות</Term>.
+          התקופה יכולה להיות, למשל, שבוע, חודש או רבעון, והכסף נעול עד המועד הקבוע הבא. בסוף התקופה הכסף מושקע מחדש אוטומטית לתקופה הבאה, אלא אם ביקשתם <Term prefix="ל" id="פדיון">פדות</Term>.
         </p>
         <Sentence measure>
           בניגוד <Term prefix="ל" id="קרנות כספיות יומיות">קרן כספית יומית</Term>, <Term id="מנהל קרן">מנהל הקרן</Term> יכול לפרסם <Term id="תשואה צפויה">תשואה צפויה</Term>, בתנאי שלכל היותר {maxBeyond ? <Num value={maxBeyond} /> : null} מהנכסים נפרעים אחרי המועד הקבוע הבא. היא מוצגת במונחים שנתיים, אחרי <Term id="דמי ניהול">דמי הניהול</Term> ושכר <Term prefix="ה" id="נאמן">נאמן</Term> ולפני מס. זו הערכה של מנהל הקרן, לא התחייבות.
@@ -41,7 +41,7 @@ export const content: GuideContent = {
           דמי הניהול ושכר הנאמן כבר מופחתים מהתשואה הצפויה שמוצגת. רשות ניירות ערך מפרסמת ממוצע שנתי לקטגוריה; הוא מופיע בקישור שבכרטיס של המספר שלמטה.
         </p>
         <Sentence measure>
-          בבנק: מתוך דמי הניהול מנהל הקרן משלם לבנק <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. כשיש הסכם הפצה כזה, הבנק לא יכול לגבות מכם <Term id="עמלה">עמלה</Term> על קנייה, החזקה או פדיון של קרן כספית. בלי הסכם, הוא יכול לגבות מכם עד גובה עמלת ההפצה. <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> על קרן כספית בנק לא יכול לגבות בשום מקרה.
+          בבנק: מתוך דמי הניהול מנהל הקרן משלם לבנק <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. כשיש הסכם הפצה כזה, הבנק לא יכול לגבות מכם <Term id="עמלה">עמלה</Term> על קנייה, החזקה או פדיון של <Term id="קרן כספית">קרן כספית</Term>. בלי הסכם, הוא יכול לגבות מכם עד גובה עמלת ההפצה. <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> על קרן כספית בנק לא יכול לגבות בשום מקרה.
         </Sentence>
         <p className="max-w-measure">
           רוב בתי ההשקעות הם משווקי השקעות, ואצלם לא נמצא כלל שמגביל את העמלות, והן לפי התעריפון. בית השקעות שהוא לא משווק השקעות כפוף לאותם כללים כמו הבנק.

@@ -83,7 +83,7 @@ export type RunPlan =
 
 type Family = "provident" | "pension" | "deposit" | "securities" | "makam" | "bond";
 
-/** The run each product uses (a wrapper, or a security run in the account that holds it: D6, 2026-10-26), and the instrument terms it takes. */
+/** The run each product uses (a wrapper, or a security run in the account that holds it: D6), and the instrument terms it takes. */
 const runOf: Partial<Record<ProductId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
   "keren-hishtalmut": "provident",

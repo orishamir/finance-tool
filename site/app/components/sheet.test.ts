@@ -1,4 +1,4 @@
-// The shared sheet says when more of it lies below its edge (independent check of pass 5: a gap sheet's third year sat under the edge with
+// The shared sheet says when more of it lies below its edge (a gap sheet's third year sat under the edge with
 // nothing saying more followed).
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
@@ -87,7 +87,7 @@ describe("the sign follows the sheet while it is open (pass 7: it was measured a
     const src = readFileSync(join(__dirname, "Sheet.tsx"), "utf8");
     expect(src).toMatch(/return watchMoreBelow\(body\.current, setMore\);\s*\}, \[open\]\);/);
     expect(src).toMatch(/if \(\(!wasOpen\.current \|\| lastView\.current !== view\) && body\.current\) body\.current\.scrollTop = 0;/);
-    // the provenance sheet shows one figure after another in one open sheet: each drill-in and back is a new view (independent check of pass 7)
+    // the provenance sheet shows one figure after another in one open sheet: each drill-in and back is a new view
     expect(readFileSync(join(__dirname, "provenance.tsx"), "utf8")).toMatch(/<Sheet [^>]*view=\{stack\.length\}/);
     expect(src).not.toMatch(/onScroll=/);
   });

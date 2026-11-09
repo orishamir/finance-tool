@@ -99,7 +99,7 @@ describe("staleCmaFee waits for the January rows that carry the next year's aver
   });
 });
 
-describe("differenceOf and sumOf (founder, 2026-11-08: a figure's inputs are what its value is worked out from)", () => {
+describe("differenceOf and sumOf", () => {
   const today = "2026-11-08";
   const a = entered(500, "nis", today);
   const b = entered(200, "nis", today);

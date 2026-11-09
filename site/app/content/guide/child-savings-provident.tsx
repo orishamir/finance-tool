@@ -1,5 +1,5 @@
 // Guide prose for חיסכון לכל ילד in a provident fund (architecture 3.5: prose lives in content files; every
-// figure is a Num). Written 2026-10-23 from the rule base (CS, TXK, REG); each block ends with the rules it
+// figure is a Num). Written from the rule base (CS, TXK, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
@@ -19,7 +19,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          <Term id="חיסכון לכל ילד">חיסכון</Term> <Term prefix="ש" id="הביטוח הלאומי">הביטוח הלאומי</Term> פותח לכל ילד שמשולמת עבורו קצבת ילדים. בכל חודש מופקדים {monthly ? <Num value={monthly} /> : null} עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), ואפשר להורות להכפיל אותם מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
+          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> מפקיד בכל חודש {monthly ? <Num value={monthly} /> : null} עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), ואפשר להורות להכפיל אותם מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
         </Sentence>
         <Sentence measure>
           בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>. ילדים שנולדו מאז תחילת התוכנית מקבלים {grantYoung ? <Num value={grantYoung} /> : null} בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה. ילדים שנולדו לפני כן מקבלים מענק אחד <Term prefix="ב" id="גיל הפדיון">גיל הפדיון</Term>. כולם מקבלים עוד {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null}, אבל רק אם לא משכו כלום קודם: גם <Term id="משיכה חלקית">משיכה חלקית</Term> מבטלת את המענק הזה.
@@ -42,7 +42,7 @@ export const content: GuideContent = {
       <RulesLine ids={["CS-08", "CS-06", "CS-11", "REG-23"]} />
     </>
   ),
-  switchLine: "בלי מס הכנסה, בכל עת: מסלול אחר, או קופה אחרת מהרשימה; לא לבנק. אחרי גיל הפדיון אפשר לעבור לכל קופת גמל להשקעה",
+  switchLine: "בלי מס הכנסה, בכל עת: מסלול אחר, או קופה אחרת מהרשימה; לא לבנק. אחרי גיל הפדיון אפשר לעבור לכל קופת גמל להשקעה.",
   switchRules: ["CS-11", "CS-16", "TXK-22", "TXK-04"],
   termIds: ["חיסכון לכל ילד", "סכום החיסכון הבסיסי", "סכום החיסכון הנוסף", "מענק", "מסלול השקעה", "מסלול ברירת מחדל", "חוסכים המעדיפים סיכון מוגבר", "חברה מנהלת", "משיכה", "גיל הפדיון", "קצבה", "דמי ניהול", "מס רווחי הון", "הבטחת קרן", "רשות שוק ההון ביטוח וחיסכון", "קופת גמל להשקעה", "קופת גמל", "משיכה חלקית"],
   afterTax: ({ figure }) => {
@@ -50,7 +50,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <span className="font-medium">במשיכה משלמים מס הכנסה כמו במשיכה מקופת גמל להשקעה.</span> החוק מחזיק את הכסף בקופת גמל להשקעה, ורשות שוק ההון, ביטוח וחיסכון ומשרד האוצר קובעים שחלים עליה כל הכללים של קופה כזאת. <Term id="רשות המסים">רשות המסים</Term> לא כתבה זאת על חיסכון לכל ילד. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי לומר על איזה רווח.
+          <span className="font-medium">במשיכה משלמים מס הכנסה כמו במשיכה מקופת גמל להשקעה.</span> החוק מחזיק את הכסף בקופת גמל להשקעה, ורשות שוק ההון, ביטוח וחיסכון ומשרד האוצר קובעים שחלים עליה כל הכללים של קופה כזאת. <Term id="רשות המסים">רשות המסים</Term> לא כתבה זאת על <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי לומר על איזה רווח.
         </p>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.

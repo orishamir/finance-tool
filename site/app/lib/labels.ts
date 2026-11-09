@@ -1,14 +1,15 @@
 // The label system of "השקעה במדד" (spec §3, facts 10.1): each label has an id, an icon, a tone and two or three words, and
 // is computed from records, never typed per row. The words and explanations are in copy.ts (`invest.labels`). A label states
 // a sourced fact or an open rule; it never praises. A label shows on every row it is true of, even when every row has it
-// (founder, 2026-10-27); its colour is its family's (the kit's LabelChip).
+// ; its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
 import { invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
+import { isShekel } from "./fx";
 
 export type LabelTone = "neutral" | "caution" | "open";
-/** What each icon draws (2026-11-05 sweep): each says what its label is about, and labels about different things never share one.
+/** What each icon draws: each says what its label is about, and labels about different things never share one.
  *  "sign" is the currency's own sign, chosen by the label's currency (`signOf`). */
 export type LabelIconKey =
   | "home" | "landmark" | "globe"
@@ -18,7 +19,7 @@ export type LabelIconKey =
   | "trendUpDown" | "badgePercent" | "percent" | "lock" | "gavel"
   | "piggy" | "handCoins"
   | "filePen" | "receipt" | "scroll" | "eyeOff" | "fileSignature" | "ban"
-  | "megaphone" | "building" | "coins" | "scale";
+  | "megaphone" | "building" | "coins" | "scale" | "userPlus";
 type IconDef = LabelIconKey | "sign";
 
 export type LabelId =
@@ -92,7 +93,7 @@ const signOf = (code: string | undefined): LabelIconKey =>
   ({ USD: "dollar", EUR: "euro", GBP: "pound", JPY: "yen", CHF: "franc" } as Record<string, LabelIconKey>)[code ?? ""] ?? "currency";
 
 /** A bank deposit's kind (`variant` in its record), labelled on the bank page (lib/deposit-kind.ts); not one of the index page's labels. */
-export type DepositLabelId = "deposit-campaign" | "deposit-closed-system" | "deposit-interest-during-term" | "deposit-best-of";
+export type DepositLabelId = "deposit-campaign" | "deposit-closed-system" | "deposit-new-customers" | "deposit-interest-during-term" | "deposit-best-of";
 
 export interface Label {
   id: LabelId | DepositLabelId;
@@ -139,7 +140,6 @@ const familyOf: Record<LabelId, Label["family"]> = {
   unavailable: "availability",
 };
 
-const isIls = (code: string) => code === "NIS" || code === "ILS";
 
 /** The currency's Hebrew name for the label ("חשיפה לדולר"), else its ISO code. */
 const currencyName = (code: string) => (c.currencies as Record<string, string>)[code] ?? code;
@@ -179,21 +179,21 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   const out: Label[] = [];
   const method = rec.replication?.method;
   if (method) out.push(label(method === "physical" ? "follow-physical" : method === "swap" ? "follow-swap" : method === "futures" ? "follow-futures" : "follow-mixed"));
-  // what it does with dividends and interest (founder, 2026-10-27): the label says it; the tax that follows is a label of its own
+  // what it does with dividends and interest: the label says it; the tax that follows is a label of its own
   if (rec.distribution_policy === "accumulating") out.push(label("pays-accumulating"));
   else if (rec.distribution_policy === "distributing") out.push(label("pays-distributing"));
   const indexCurrency = index.exposure?.currency;
-  // an index priced in several currencies (ETF-48): a hedge removes only its own currency, and the unhedged fund carries them all (2026-10-29)
+  // an index priced in several currencies (ETF-48): a hedge removes only its own currency, and the unhedged fund carries them all
   const many = index.exposure?.other_currencies === true;
-  if (rec.hedged === true) out.push(label(many ? "hedged-many" : "hedged", indexCurrency && !isIls(indexCurrency) ? indexCurrency : index.custom ? c.indexCurrency : undefined));
-  else if (indexCurrency && !isIls(indexCurrency)) out.push(label(many ? "currency-many" : "currency", indexCurrency));
-  // an index the person added: the site does not know its currency, so the label names none (founder, 2026-11-05)
+  if (rec.hedged === true) out.push(label(many ? "hedged-many" : "hedged", indexCurrency && !isShekel(indexCurrency) ? indexCurrency : index.custom ? c.indexCurrency : undefined));
+  else if (indexCurrency && !isShekel(indexCurrency)) out.push(label(many ? "currency-many" : "currency", indexCurrency));
+  // an index the person added: the site does not know its currency, so the label names none
   else if (!index.exposure && !index.israeli) out.push(label(index.custom ? "currency-foreign" : "currency", rec.currency));
   // tax: an Israeli fund on a foreign index is taxed on the currency move too (TXS-09); an Irish fund pays tax inside on dividends (TXF-16)
   if (rec.domicile === "IL" && !index.israeli && rec.hedged !== true) out.push(label("tax-currency"));
   if (rec.domicile === "IE") out.push(label("tax-fund-dividend"));
   if (rec.distribution_policy === "distributing") out.push(label("tax-distribution"));
-  // an accumulating foreign fund: taxed only at sale on the ruling its own annex reports, else an open question (TXF-11, 2026-11-05);
+  // an accumulating foreign fund: taxed only at sale on the ruling its own annex reports, else an open question (TXF-11);
   // the same test the engine ranks it by (instruments.server.ts, saleOnlyRuling)
   else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
     out.push(rec.tax_ruling ? { ...label("tax-on-sale-ruling"), doc: { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title } } : label("tax-on-sale-open"));

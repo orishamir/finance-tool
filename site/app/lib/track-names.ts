@@ -1,4 +1,4 @@
-// A track's short name in the track browser (D54, 2026-11-03, the founder: "this is repeated a lot of times"). Every track of a company in
+// A track's short name in the track browser (D54). Every track of a company in
 // one product begins with the same words, the company and the product ("הראל גמל להשקעה - אשראי ואג"ח"): the group's heading says them,
 // so the row keeps only what tells it from its neighbours. The full name as the company writes it stays on the track page and in the
 // search. Pure: no React, no storage.

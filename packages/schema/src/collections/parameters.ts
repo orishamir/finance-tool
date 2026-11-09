@@ -27,7 +27,7 @@ export const instrumentSpec = z.strictObject({
    * one, the run prices that list (F-80, D56) and the track only names the class whose averages the fee page compares with (F-68, D88).
    */
   track: z.number().int().positive().optional(),
-  /** Who chose this instrument when it was not chosen with the record (2026-11-07, D88: the provident fund for investing's track). */
+  /** Who chose this instrument when it was not chosen with the record (D88: the provident fund for investing's track). */
   chosen_by: z.string().min(1).optional(),
   /** `keren-hishtalmut` only: the employment type the illustrative run uses (an employee's salary would come from the person's entered profile). */
   employment: z.enum(["self-employed", "employee"]).optional(),

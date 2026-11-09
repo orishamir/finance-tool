@@ -1,5 +1,5 @@
-// Company page components (design-spec 5 as redrawn on 2026-10-23, flows 6.11): the paste card. The track list that stood here gave way
-// on 2026-11-03 to the tracks page's list over the company (components/tracks/company-browser.tsx).
+// Company page components (design-spec 5, flows 6.11): the paste card. A company's tracks are the tracks page's
+// list over the company (components/tracks/company-browser.tsx).
 import { useId } from "react";
 import { company as copy } from "../../copy";
 import { IconSearch } from "../icons";

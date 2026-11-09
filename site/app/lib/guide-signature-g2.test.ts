@@ -4,20 +4,19 @@ import { describe, expect, it } from "vitest";
 import { runInputs, runPlanned } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
-import { paidInToday } from "./engine";
 import { entered as enteredValue } from "./value";
-import { hishtalmutTerms, pensionModel, providentModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock } from "./guide-signature-g2";
+import { hishtalmutTerms, pensionModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
 import { guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
-import { buildWorkbenchBundle } from "./providers.server";
+import { buildIndicesBundle } from "./providers.server";
 
 const page = (id: string) => buildGuidePage(id)!;
 const entered = (amount_now: number, monthly_deposit: number) => ({ amount_now, monthly_deposit });
 
 describe("the pages have their visuals", () => {
   it("registers each page with its copy", () => {
-    for (const id of ["keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]) {
+    for (const id of ["keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"]) {
       expect(signatureRegistry[id], id).toBeDefined();
       expect(copy.pages[id], id).toBeDefined();
       expect(page(id).signature, id).not.toBeNull();
@@ -155,80 +154,22 @@ describe("study fund", () => {
 });
 
 describe("the guides' securities-account range and the indices page", () => {
-  const bundle = buildWorkbenchBundle();
+  const bundle = buildIndicesBundle();
   const t = bundle.today;
   const money = (n: number) => enteredValue(n, "nis", t);
   const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: money(10000), monthly: enteredValue(500, "nis_per_month", t), years: enteredValue(10, "years", t), returnV: enteredValue(7, "pct_per_year", t), inflation: enteredValue(2, "pct_per_year", t) }, fromGoal: false, returnFromParameter: false };
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === "5139282" && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
-  for (const id of ["keren-hishtalmut", "kupat-gemel-lehashkaa"]) {
-    it(`${id}: counts the same houses and names the same pick`, () => {
-      const d = page(id).signature!;
-      expect(fact(d, "brokerCount")!.value).toBe(onFund.length);
-      const best = String(fact(d, "brokerBestName")!.value);
-      expect(onFund[0]!.id).toBe("psagot");
-      expect(best).toContain("פסגות");
-    });
-  }
+  it("keren-hishtalmut: counts the same houses and names the same pick", () => {
+    const d = page("keren-hishtalmut").signature!;
+    expect(fact(d, "brokerCount")!.value).toBe(onFund.length);
+    const best = String(fact(d, "brokerBestName")!.value);
+    expect(onFund[0]!.id).toBe("psagot");
+    expect(best).toContain("פסגות");
+  });
   it("prices the pick the same on both pages", () => {
     const run = runWith(page("keren-hishtalmut").signature!.bundles["brokerage-best"]!, entered(10000, 500), 120)!;
     expect(Math.abs(run.real - onFund[0]!.value) / onFund[0]!.value).toBeLessThan(0.001);
-  });
-});
-
-describe("provident fund for investing", () => {
-  const d = page("kupat-gemel-lehashkaa").signature!;
-  it("holds the manager's track on the same index", () => {
-    // 2026-11-07 (F-80): the run is on Harel, the collected manager whose list fees are the lowest on both bases (0.7% and 0%); its
-    // S&P 500 track is found among the regulator's by Harel's company name (the catalogue maps only Meitav's tracks)
-    expect(fact(d, "trackNumber")!.value).toBe("13414");
-    expect(String(fact(d, "trackName")!.value)).toBe("הראל גמל להשקעה עוקב מדד s&p 500");
-    // D89: the run is priced on Harel's binding documents, as the ranking prices it: 0.7% and 0% for five years, then 1.05% and 4%; the
-    // regulator's average for the track (0.56%, an average charged) is no price and is not shown as one
-    expect(fact(d, "trackFee")).toBeUndefined();
-    const f = d.bundles["kupat-gemel-lehashkaa"]!.terms.fees!;
-    expect(f.balance).toBeCloseTo(0.007, 12);
-    expect(f).toMatchObject({ deposit: 0, direct: 0, discount: { months: 60, listRate: 0.0105 }, depositDiscount: { months: 60, listRate: 0.04 } });
-    expect([fact(d, "list_balance")!.value, fact(d, "list_afterBalance")!.value, fact(d, "list_deposit")!.value, fact(d, "list_afterDeposit")!.value]).toEqual([0.7, 1.05, 0, 4]);
-  });
-  it("ranges the managers over their binding documents, each priced as in the ranking (D89)", () => {
-    expect(d.bundles["kgl-manager-best"] && d.bundles["kgl-manager-worst"]).toBeTruthy();
-    expect(fact(d, "managerCount")!.value as number).toBeGreaterThanOrEqual(2);
-    expect(fact(d, "rangeMin")).toBeUndefined();
-    const m = providentModel(d, { amount: 10000, monthly: 500, years: 10, age: 30 });
-    expect(m.range.manager!.low).toBeLessThanOrEqual(m.diff!);
-    expect(m.range.manager!.high).toBeGreaterThanOrEqual(m.diff!);
-    expect(m.range.manager!.high).toBeGreaterThan(m.range.manager!.low);
-  });
-  it("takes a lump sum at 25% of the real gain at any age (TXK-05 to TXK-07) and opens the annuity from the early retirement age (TXK-10)", () => {
-    const m = providentModel(d, { amount: 10000, monthly: 500, years: 10, age: 30 });
-    expect(m.lump!.tax).toBeCloseTo(0.25 * m.realGain!, 6);
-    expect(m.lump!.net).toBeGreaterThan(0);
-    expect(m.annuityOpen).toBe(false);
-    expect(m.ageAtExit).toBe(40);
-    expect(providentModel(d, { amount: 10000, monthly: 500, years: 30, age: 30 }).annuityOpen).toBe(true);
-    expect(providentModel(d, { amount: 10000, monthly: 500, years: 10, age: null }).annuityOpen).toBeNull();
-    // 2026-10-26 (F-44 with F-42, TXK-06): from 60 the reduced brackets apply first, so at 65 the same lump sum pays less tax than at 40;
-    // the brokerage side gets the same profile, so both sides carry the relief
-    const old = providentModel(d, { amount: 10000, monthly: 500, years: 10, age: 55 });
-    expect(old.lump!.tax).toBeLessThan(0.25 * old.realGain! - 1e-6);
-    expect(old.lump!.net).toBeGreaterThan(m.lump!.net);
-    expect(old.broker!.tax).toBeLessThan(m.broker!.tax);
-    // the visual reads the age-60 case off the run itself, and the figures carry that run's rules and flags (review 2026-10-26)
-    expect(old.lump!.run.formulas).toContain("F-42");
-    expect(m.lump!.run.formulas).not.toContain("F-42");
-    expect(old.lump!.run.rules.map((r) => r.id)).toEqual(expect.arrayContaining(["TXG-04", "TXG-07", "TXK-26"]));
-    expect(old.lump!.run.flags.map((f) => f.code)).toContain("TXK-26");
-    expect(old.lump!.run.flags.map((f) => f.code)).not.toContain("G-21");
-    // the balance that moves to an annuity fund is the gross balance, before the lump-sum tax
-    expect(m.transfer!).toBeGreaterThan(m.lump!.net);
-    expect(m.diff).toBeCloseTo(m.lump!.gain - m.broker!.gain, 9);
-    expect(m.range.broker!.high).toBeGreaterThan(m.range.broker!.low);
-    expect(d.gaps).toContain("annuityFactors");
-  });
-  it("notes deposits above the yearly ceiling (KGL-03)", () => {
-    expect(providentModel(d, { amount: 10000, monthly: 500, years: 5, age: null }).overCeiling).toBe(false);
-    expect(providentModel(d, { amount: 10000, monthly: 9000, years: 5, age: null }).overCeiling).toBe(true);
   });
 });
 

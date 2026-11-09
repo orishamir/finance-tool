@@ -1,13 +1,8 @@
-// The index page's top sections: the index header, and the headline card an index with no fund records still uses (the linked lists, components/invest/pair.tsx, replaced the rest on 2026-10-27).
+// The index page's top sections: the index header, and the headline card an index with no fund records still uses (the linked lists, components/invest/pair.tsx, replaced the rest on).
 import { Link } from "react-router";
 import { invest as c } from "../../copy";
-import { brokeragePagePath, type Bar, type IndexRef, type InvestView, type OptionView, type ProviderInfo } from "../../lib/invest";
-import { optionLabels } from "../../lib/labels";
-import type { SiteValue } from "../../lib/value";
-import { IconLock } from "../icons";
-import { Num } from "../provenance";
-import { Callout, Card, cx, KeyValue, LabelRow, Sentence, Tag, Tpl } from "../kit";
-import { OptionTag } from "./parts";
+import { brokeragePagePath, type IndexRef, type InvestView, type ProviderInfo } from "../../lib/invest";
+import { cx, Tag } from "../kit";
 
 export const providerName = (view: InvestView, id: string): ProviderInfo | undefined => view.providers.find((p) => p.id === id);
 
@@ -15,7 +10,7 @@ export const providerName = (view: InvestView, id: string): ProviderInfo | undef
 export function ProviderLink({ p, className, short }: { p: ProviderInfo; className?: string; short?: boolean }) {
   const name = short ? p.short : p.name;
   return p.hasPage ? (
-    // on this page a house is a securities account: its name opens its company page at that account (founder, 2026-11-05)
+    // on this page a house is a securities account: its name opens its company page at that account
     <Link to={brokeragePagePath(p.id)} className={cx("text-link hover:underline", className)}>
       {name}
     </Link>
@@ -28,7 +23,7 @@ export function ProviderLink({ p, className, short }: { p: ProviderInfo; classNa
 
 /** What the index is and how it is held: the lines under its name. */
 function IndexBlurb({ index }: { index: IndexRef }) {
-  // an index the person added says nothing of how it is held: each fund on it says whether the index is in shekels (2026-11-05)
+  // an index the person added says nothing of how it is held: each fund on it says whether the index is in shekels
   if (index.custom)
     return (
       <div className="flex flex-col gap-2">
@@ -45,7 +40,7 @@ function IndexBlurb({ index }: { index: IndexRef }) {
 
 /**
  * The chosen index's name and lines. `others`: the indices one pill away; their lines are laid out unseen in the same place, so the
- * block is as tall as the longest at any width and a switch of index never moves the page (founder, 2026-10-28: "make the index
+ * block is as tall as the longest at any width and a switch of index never moves the page ("make the index
  * description after choosing an index fixed size").
  */
 export function IndexHeader({ view, others = [] }: { view: InvestView; others?: IndexRef[] }) {

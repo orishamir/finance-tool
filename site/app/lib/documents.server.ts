@@ -14,6 +14,7 @@ import { companyLinks, ownDocuments } from "./institutions.server";
 import { companyTermsHref } from "./scope";
 import { readJsonCached } from "./read-cache.server";
 import { tariffDated, type TariffDated } from "./tariff-date";
+import { heCollator } from "./format";
 
 export type SectionId = "laws" | "regulators" | "exchange" | "institutions";
 export const sectionOrder: SectionId[] = ["laws", "regulators", "exchange", "institutions"];
@@ -85,7 +86,7 @@ function slugOf(url: string): string {
 /**
  * The key of a document the table does not name: the url without its fragment, and without its query when the path names a
  * file (a viewer's `?page=` does not make another document). A script's query is kept, because there it names the document:
- * every booklet on Reshumot's resolver shares one path and differs only in `?path=` (2026-11-07: they had merged into one).
+ * every booklet on Reshumot's resolver shares one path and differs only in `?path=` (they had merged into one).
  */
 export function stripUrl(url: string): string {
   try {
@@ -169,7 +170,7 @@ function sectionOf(kind: string, strength: Strength, host: string, publisherKind
 export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => `/rules#${id}`): DocumentCard[] {
   const groups = new Map<string, { doc: TableDoc | null; entries: Entry[] }>();
   const all = entriesOf(rules);
-  // the same address is the same document whatever a link called it ("[1](url)"): the table match found by any entry of an address serves them all (QA 2026-10-24, F4)
+  // the same address is the same document whatever a link called it ("[1](url)"): the table match found by any entry of an address serves them all
   const docByUrl = new Map<string, TableDoc>();
   for (const e of all) {
     const d = tableMatch(e, table);
@@ -191,7 +192,7 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const titleHe = doc?.title_he ?? mostCommon(entries.filter((e) => hebrewDocTitle(e.title_he ?? e.title)).map((e) => e.title_he ?? e.title));
     const url0 = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
-    // never an English working title: the kind's word stands in (QA 2026-10-24, F4)
+    // never an English working title: the kind's word stands in
     const title = titleHe ?? (kind0 ? (documentsCopy.kinds as Record<string, string>)[kind0] : undefined) ?? hostOf(url0);
     const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => pub(e)?.publisher_he ?? e.publisher_he).filter((x): x is string => !!x)) ?? mostCommon(entries.map((e) => e.publisher).filter((x): x is string => !!x)) ?? hosts[0] ?? "";
     const kind = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x)) ?? pub(entries[0]!)?.kind ?? "other";
@@ -201,7 +202,7 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const checked = entries.map((e) => e.checked ?? "").sort().at(-1) ?? "";
     const ids = [...new Set(entries.map((e) => e.ruleId))].sort();
     const cardRules = ids.map((id) => ({ id, title: ruleTitle(rules[id]!).text, href: hrefOf(id) }));
-    // a card for a document the table names or that several rules rest on; the long tail of single-rule pages and articles is a row (lead, 2026-10-24)
+    // a card for a document the table names or that several rules rest on; the long tail of single-rule pages and articles is a row
     const featured = !!doc || ids.length >= 3;
     const section = sectionOf(kind, strength, hostOf(url), doc ? undefined : pub(entries[0]!)?.kind);
     cards.push({ key, title, titleEnglish: !titleHe && !(kind0 && (documentsCopy.kinds as Record<string, string>)[kind0]), publisher, kind, url, strength, checked, rules: cardRules, section, featured });
@@ -254,7 +255,6 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const indexIds = new Set(loadExposures().filter((e) => e.kind === "equity_index").map((e) => e.id));
   const fundHref = (exposureId: string) => (indexIds.has(exposureId) ? indexPath(exposureId) : exposureHref(exposureId));
   const { latestSnapshots, companyLinks } = await import("./providers.server");
-  const collator = new Intl.Collator("he");
   const snaps = latestSnapshots();
   const institutions = new Set(institutionIds());
   const { providerCompany } = companyLinks(snaps);
@@ -268,10 +268,10 @@ export async function loadDocumentData(): Promise<DocumentData> {
       // banks and brokers have their own page; a manager has its company page when the regulator's data names it; else the fees page
       href: institutions.has(s.id) ? `/companies/${s.id}` : providerCompany[s.id] ? `/companies/${providerCompany[s.id]}` : "/fees",
     }))
-    .sort((a, b) => collator.compare(a.title, b.title));
+    .sort((a, b) => heCollator.compare(a.title, b.title));
   const funds = loadFunds()
     .map((f) => ({ key: f.id, title: f.names.he[0] ?? f.names.en[0] ?? f.id, line: f.manager, href: fundHref(f.exposure_id) }))
-    .sort((a, b) => collator.compare(a.title, b.title));
+    .sort((a, b) => heCollator.compare(a.title, b.title));
   const deposits = loadDepositTerms().map((d) => ({ key: d.id, title: d.names["447"]?.[0] ?? d.type_447, line: d.bank, href: `/companies/${d.bank}`, bank: d.bank }));
   const { institutionRows } = await import("./institutions.server");
   const bankName = new Map(institutionRows().map((r) => [r.id, r.name]));
@@ -295,7 +295,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   return { tariffs, funds, deposits: depositCards, series, datasetsHref: "/companies" };
 }
 
-/** The rows of data/sources/documents.json read for where each topic sits: the rules page leads a claim to their pages (2026-11-01). */
+/** The rows of data/sources/documents.json read for where each topic sits: the rules page leads a claim to their pages. */
 export function loadCompanyDocRows(): { id: string; publisher_he: string; title_he: string; version?: string; official_url: string; doc_kind?: string; topics: { topic: string; page: number }[] }[] {
   const rows = readJsonCached(join(dataServer.root, "data/sources/documents.json")) as { id: string; publisher_he: string; title_he: string; version?: string; official_url: string; doc_kind?: string; topics?: { topic: string; page: number }[] }[];
   return rows.filter((d): d is typeof d & { topics: { topic: string; page: number }[] } => (d.topics?.length ?? 0) > 0);

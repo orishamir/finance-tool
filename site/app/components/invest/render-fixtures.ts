@@ -4,13 +4,13 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { invest } from "../../copy";
-import { buildWorkbenchBundle } from "../../lib/providers.server";
+import { buildIndicesBundle } from "../../lib/providers.server";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { LabelSheetHost } from "../kit";
 import { ProvenanceProvider } from "../provenance";
 
-export const bundle = buildWorkbenchBundle();
+export const bundle = buildIndicesBundle();
 export const t = bundle.today;
 export const plan: WorkbenchInputs = {
   amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,

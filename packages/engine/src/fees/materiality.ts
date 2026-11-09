@@ -118,7 +118,7 @@ export function heldRevertRate(plan: RunPlan, line: FeeLine): number | undefined
 }
 
 /**
- * F-62 with A-19 (D88, 2026-11-07): the rate the verdict judges a provident or pension line by, when it is not the rate charged now. A
+ * F-62 with A-19 (D88): the rate the verdict judges a provident or pension line by, when it is not the rate charged now. A
  * discounted line whose discount ends within the run (at its period, never before PF-13's minimum, or after PF-14's six months on a plan with no
  * deposit after the first, PF OQ18's cautious reading, D87) is judged by the rate after it: the
  * rate charged during the discount (0% on a deposit fee) says nothing about what the fee costs. Null when the line has no discount or it
@@ -135,7 +135,7 @@ export function rateAfterDiscount(plan: RunPlan, line: FeeLine, exitMonth: numbe
   const endsBy = stopMonths !== undefined && exitMonth > stopMonths ? stopMonths : undefined;
   if (discountEnd(d, minDiscountMonthsOf(ctx), endsBy) >= exitMonth) return null;
   // the run charges no more than the regulated cap (F-11, F-15): a rate after the discount scaled past it (F-81's sensitivity) is judged at the cap;
-  // a study fund has no deposit fee at all (PF-06 has no deposit item), and its ledger charges none (finance review, 2026-11-07)
+  // a study fund has no deposit fee at all (PF-06 has no deposit item), and its ledger charges none
   const cap = plan.run === "runProvident" && plan.input.wrapper === "keren-hishtalmut" && line === "deposit" ? 0 : feeCap(plan, line, ctx)?.rate;
   return cap === undefined ? d.listRate : Math.min(d.listRate, cap);
 }
@@ -324,7 +324,7 @@ export interface FeeCap {
   figure: string;
   /** The cap as a fraction. */
   rate: number;
-  /** Every rule the method names for this cap, the figure's own among them (additive, 2026-10-24). */
+  /** Every rule the method names for this cap, the figure's own among them (additive). */
   ruleIds?: string[];
 }
 
@@ -475,7 +475,7 @@ export interface FeeMaterialitySeries {
   exitMonth: number;
   points: FeeSeriesPoint[];
   /**
-   * What the exit takes out of the last point (B6, 2026-10-24): the last point is before exit costs and exit tax, F-61's
+   * What the exit takes out of the last point (B6): the last point is before exit costs and exit tax, F-61's
    * figure is after them, and the two runs pay different tax (the run without fees has the larger gain). For the total and
    * for each line, `last point − exitEffect = F-61's figure`, to the rounding of floating point.
    */
@@ -483,7 +483,7 @@ export interface FeeMaterialitySeries {
 }
 
 /**
- * F-61 at every month (method note, 2026-10-24): the same re-runs as `feeMateriality`, read month by month from
+ * F-61 at every month (method note): the same re-runs as `feeMateriality`, read month by month from
  * each run's series. `V_t^real` is the balance at the end of month `t` divided by the CPI index `I_t`, before exit
  * costs and exit tax; so the last point equals F-61's figure at the horizon only when a run has neither. The gap is
  * the exit effect: the run without the fee line pays more exit tax on its larger gain (a kupat gemel lehashkaa takes a

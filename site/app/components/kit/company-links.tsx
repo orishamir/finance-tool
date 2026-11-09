@@ -1,4 +1,4 @@
-// A lead and the companies it is about, each a link to its page (D30, 2026-10-26): "תלוי בחברה: הראל, אלטשולר שחם" where a property
+// A lead and the companies it is about, each a link to its page (D30): "תלוי בחברה: הראל, אלטשולר שחם" where a property
 // is each company's own, "לכל מה שמצאנו אצל: …" under a company's term. Inline, so it can close a sentence or stand as its own line.
 import type { ReactNode } from "react";
 import { Link } from "react-router";
@@ -14,9 +14,9 @@ export interface CompanyLinkItem {
 
 /**
  * The lead, a colon, then the companies as links separated by commas. `size` picks the text size of the surrounding line (`sm` under
- * a paragraph, `xs` in a checklist row or a card's foot). Nothing renders without companies.
+ * a paragraph, `xs` in a checklist row or a card's foot). `end` closes a line that is a sentence ("."). Nothing renders without companies.
  */
-export function CompanyLinks({ lead, items, size = "sm", className }: { lead: ReactNode; items: readonly CompanyLinkItem[]; size?: "sm" | "xs"; className?: string }) {
+export function CompanyLinks({ lead, items, size = "sm", end, className }: { lead: ReactNode; items: readonly CompanyLinkItem[]; size?: "sm" | "xs"; end?: string; className?: string }) {
   if (items.length === 0) return null;
   return (
     <span className={cx(size === "xs" ? "text-xs" : "text-sm", "text-muted-foreground", className)}>
@@ -30,6 +30,7 @@ export function CompanyLinks({ lead, items, size = "sm", className }: { lead: Re
           </Link>
         </span>
       ))}
+      {end}
     </span>
   );
 }

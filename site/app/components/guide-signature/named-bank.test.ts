@@ -1,74 +1,47 @@
 // D30/D31 on the cash pages: a row or sentence that quotes one bank's own rate names that bank in the same row or sentence,
-// never in a note beside it (founder, 2026-10-26: the ladder's "פיקדון לשנה" showed Leumi's 1.8% as the deposit's rate).
+// never in a note beside it (the ladder's "פיקדון לשנה" showed Leumi's 1.8% as the deposit's rate).
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { GoalsProvider } from "../../lib/goal";
 import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
-import { heldSignatures } from "../../lib/review";
 import { ProvenanceProvider } from "../provenance";
-import { BankDepositVisual } from "./bank-deposit";
 import { MakamVisual } from "./makam";
 import { MoneyMarketDailyVisual } from "./money-market-daily";
 import { SavingsPlanVisual } from "./savings-plan";
 
 const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-10-26" };
 const render = (el: ReturnType<typeof createElement>) =>
-  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(GoalsProvider, { presets: {}, children: createElement(ProvenanceProvider, { data, children: el }) }) })));
+  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(ProvenanceProvider, { data, children: el }) })));
 const text = (html: string) => html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
 
 describe("one bank's rate is named where it is quoted", () => {
-  // 2026-10-26 (founder): the money-market page names no bank at all; its deposit row is the range across the collected banks (F-86),
-  // linked to the bank-deposit page, where each bank's rate stands on the line that names it
-  it("the ladder's deposit row is the range across the banks, names none and links to each bank's rate", () => {
+  // the money-market page names no bank at all; its deposit row is the range across the collected banks (F-86), linked to the
+  // bank-deposit page
+  it("the ladder's deposit row is the range across the banks, names none and links to the bank-deposit page", () => {
     const sig = buildGuidePage("money-market-fund-daily")!.signature!;
     const html = render(createElement(MoneyMarketDailyVisual, { data: sig, today: "2026-10-26" }));
     const raw = [...html.matchAll(/<tr[\s\S]*?<\/tr>/g)].map((m) => m[0]).find((r) => text(r).includes("פיקדון לשנה"));
     expect(raw).toBeDefined();
     const row = text(raw!);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(row).not.toContain(bank);
-    expect(row).toMatch(/1\.55%\s*–\s*2\.25%/);
-    expect(row).toMatch(/טווח ב־\s*4\s*פיקדונות רגילים שנאספו/);
+    expect(row).toMatch(/1\.05%\s*עד\s*3\.25%/);
+    expect(row).toMatch(/טווח ב־\s*9\s*פיקדונות רגילים שנאספו/);
     expect(raw).toContain('href="/guide/bank-deposit"');
-    // the note under the table: how many of the collected deposits cannot be left early, naming none, and the link to each bank's rate
+    // the note under the table: how many of the collected deposits cannot be left early, naming none
     const notes = [...html.matchAll(/<ul[\s\S]*?<\/ul>/g)].map((m) => text(m[0])).find((t) => t.includes("פיקדון לשנה:"))!;
-    expect(notes).toMatch(/ב־\s*3\s*מתוך\s*4\s*הפיקדונות הרגילים שנאספו אי אפשר למשוך/);
+    expect(notes).toMatch(/ב־\s*7\s*מתוך\s*9\s*הפיקדונות הרגילים שנאספו אי אפשר למשוך/);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(notes).not.toContain(bank);
-    // the link to each bank's rate leads into the bank-deposit visual: shown only while that visual is not held (lib/review.ts, 2026-11-07)
-    if (heldSignatures.includes("bank-deposit")) expect(html).not.toContain("#deposit-banks");
-    else expect(html).toContain('href="/guide/bank-deposit#deposit-banks"');
-  });
-  it("the bank-deposit page lists each bank's one-year deposit at the anchor the ladder links to", () => {
-    const sig = buildGuidePage("bank-deposit")!.signature!;
-    const html = render(createElement(BankDepositVisual, { data: sig, today: "2026-10-26" }));
-    const list = /<section id="deposit-banks"[\s\S]*?<\/section>/.exec(html);
-    expect(list).not.toBeNull();
-    const t = text(list![0]);
-    for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(t).toContain(bank);
-  });
-  it("the bank-deposit page stands on no one bank presented as general: the example and the ends are named, the lock is a count, and no rate is called the market's highest or a pick", () => {
-    const sig = buildGuidePage("bank-deposit")!.signature!;
-    const t = text(render(createElement(BankDepositVisual, { data: sig, today: "2026-10-26" })));
-    expect(t).not.toContain("עוד לא נאספו");
-    expect(t).toContain("פיקדון של הפועלים");
-    expect(t).toContain("מזרחי");
-    expect(t).toContain("דיסקונט");
-    expect(t).toMatch(/מבין\s*4\s*הפיקדונות הרגילים לשנה שנאספו/);
-    expect(t).toMatch(/ב־\s*3\s*מתוך\s*4\s*הפיקדונות/);
-    expect(t).not.toContain("הבחירה של האתר");
-    expect(t).not.toContain("הגבוהה בבנקים");
-    expect(t.replace(/<section[\s\S]*$/, "").split("לאומי").length).toBe(2); // only the line of the list that names it
   });
   it("the makam page names the house of its commission, names no tie, and sets the deposit as a range", () => {
     const sig = buildGuidePage("makam")!.signature!;
     const t = text(render(createElement(MakamVisual, { data: sig, today: "2026-10-26" })));
     expect(t).not.toContain("לאומי");
     expect(t).not.toContain("עוד לא נאספו");
-    expect(t).toMatch(/1\.55%\s*–\s*2\.25%/);
+    expect(t).toMatch(/1\.05%\s*עד\s*3\.25%/);
     expect(t).toMatch(/לפי התעריפון של\s*(<[^>]*>)?\s*פסגות/);
-    // until 2026-11-04 PEPPER tied with Psagot; PEPPER Invest moved into Leumi Trade (founder), so it is no house of its own
+    // PEPPER Invest is part of Leumi Trade, so it is no house of its own
     expect(t).not.toContain("הוא שקול לתעריפון של");
     expect(t).not.toContain("פפר");
     // with no tie the page crowns its pick (F-80), as the other guide pages do

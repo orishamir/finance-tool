@@ -1,0 +1,171 @@
+{
+  "id": "one-zero-hisachon-yomi-12m",
+  "bank": "one-zero",
+  "names": {
+    "447": [
+      "חיסכון יומי – חכם בנזילות בכל יום עסקים (לתקופה של שנה)",
+      "חיסכון יומי"
+    ],
+    "app": [],
+    "ad": [
+      "פיקדון יומי"
+    ],
+    "abbrev": []
+  },
+  "type_447": "פיקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון יומי – חכם בנזילות בכל יום עסקים (לתקופה של שנה)', 'סוג המוצר'",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "The table prints no period column; the product's name says '(לתקופה של שנה)', recorded as 12 months, the period of a one-year deposit (directive 447 Annex A, BANK-14). The deposits page (https://www.onezerobank.com/special/5612, extract library 04dc49f603cd5b82): 'פיקדון יומי 0.75% בריבית משתנה ... לתקופה של שנה. P-4.00%, מתואמת 0.75%'. Read 2026-11-07 in the founder's Chrome with pdf.js (the host answers scripts with 403, so no copy of the file was kept); extract library 28d76b01099bce80. The table is one page, file created 28.10.2026, undated in its text, so effective_from is null. The same table was read in Chrome on 2026-10-31 (research/2026-10-31-night/chrome-notes.md) with the same figures. Refused again on 2026-11-09 to curl and to WebFetch (403, Cloudflare 'Just a moment'), so not re-read that day."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -4.0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון יומי – חכם בנזילות בכל יום עסקים (לתקופה של שנה)', 'סוג הריבית'",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'ריבית משתנה (Prime - 4.00%)': spread from prime -4.00 percentage points. The deposits page: 'P-4.00%'."
+  },
+  "rate_offered": {
+    "value": 0.75,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון יומי – חכם בנזילות בכל יום עסקים (לתקופה של שנה)', 'שיעור הריבית הממוצעת (נומינלי שנתי)'",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax printed '0.75%', and '0.75%' under 'שיעור ריבית מתואמת'. Row as printed: rate type 'ריבית משתנה (Prime - 4.00%)', linkage 'לא צמוד למדד המחירים לצרכן', amount 'מינימום - 10 ₪, מקסימום - 1 מיליון ₪', break 'קיימת בכל יום עסקים ללא קנס שבירה', renewal 'לא קיימת' / 'לא רלוונטי', exit points 'קיימת' / 'בכל יום עסקים'. Columns printed: 'סוג המוצר' | 'סוג הריבית' | 'סוג הצמדה' | 'טווח סכום להפקדה' | 'אפשרות לשבירת החיסכון' | 'תנאי חידוש: אפשרות חידוש אוטומטי בתום תקופת החיסכון, מספר תקופות החידוש האפשריות' | 'תחנות יציאה: אפשרות לתחנות יציאה, תדירות תחנת היציאה' | 'שיעור הריבית הממוצעת (נומינלי שנתי)' | 'שיעור ריבית מתואמת'. The rate column is headed 'הממוצעת' (average), where directive 447 Annex A heads it 'שיעור הריבית המוצעת' (offered, BANK-14); the printed rate equals prime less the printed spread at prime 4.75%. The deposits page adds: 'ניתן להגדיר חיסכון אוטומטי לפי אחוז מהמשכורת או סכום פנוי בעו״ש'. Read 2026-11-07 in the founder's Chrome with pdf.js (the host answers scripts with 403, so no copy of the file was kept); extract library 28d76b01099bce80. The table is one page, file created 28.10.2026, undated in its text, so effective_from is null. The same table was read in Chrome on 2026-10-31 (research/2026-10-31-night/chrome-notes.md) with the same figures. Refused again on 2026-11-09 to curl and to WebFetch (403, Cloudflare 'Just a moment'), so not re-read that day. Re-read 2026-11-09 in the founder's Chrome (pdf.js in the PDF's own tab; the same file, modified 28.10.2026): unchanged."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit (the table's linkage column: 'לא צמוד למדד המחירים לצרכן'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 10,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+        "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון יומי – חכם בנזילות בכל יום עסקים (לתקופה של שנה)', 'טווח סכום להפקדה'",
+        "publisher": "One Zero Digital Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'מינימום - 10 ₪, מקסימום - 1 מיליון ₪'."
+    },
+    "max": {
+      "value": 1000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+        "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון יומי – חכם בנזילות בכל יום עסקים (לתקופה של שנה)', 'טווח סכום להפקדה'",
+        "publisher": "One Zero Digital Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'מקסימום - 1 מיליון ₪'; the table does not say whether it bounds each deposit or the balance."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "none",
+    "mechanism_text": "'אפשרות לשבירת החיסכון: קיימת בכל יום עסקים ללא קנס שבירה' (table column); exit points 'קיימת', 'בכל יום עסקים'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14",
+      "BANK-49"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "אפשר למשוך את הכסף בכל יום עסקים, בלי קנס שבירה.",
+  "snapshot": "2026-11-09",
+  "source": {
+    "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+    "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות')",
+    "publisher": "One Zero Digital Bank Ltd.",
+    "strength": "institution"
+  }
+}

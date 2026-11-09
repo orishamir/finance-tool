@@ -1,5 +1,5 @@
 // Guide prose for חיסכון לכל ילד at a bank (architecture 3.5: prose lives in content files; every figure is
-// a Num). Written 2026-10-23 from the rule base (CS, TXK, REG); each block ends with the rules it rests on.
+// a Num). Written from the rule base (CS, TXK, REG); each block ends with the rules it rests on.
 // NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
@@ -17,19 +17,19 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          אותו <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>, כשההורים בחרו בבנק במקום <Term prefix="ב" id="קופת גמל">קופת גמל</Term>. <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> מפקיד {monthly ? <Num value={monthly} /> : null} בחודש עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), ואפשר להכפיל את הסכום מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null} למי שלא משך כלום קודם.
+          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> מפקיד {monthly ? <Num value={monthly} /> : null} בחודש עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), ואפשר להכפיל את הסכום מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null} למי שלא משך כלום קודם.
         </Sentence>
         <Sentence measure>
           הכסף פנוי כשהילד מגיע לגיל {until ? <Num value={until} /> : null}. לפני כן מושכים רק למימון צרכים רפואיים של הילד, כשמצב רפואי מסכן את חייו, גופו או נפשו ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד מושך לבד. כסף שלא נמשך נשאר בבנק, ואי אפשר להוסיף אליו כסף חדש. העלות של שבירת תקופה נקבעת בהסכם של כל בנק.
         </Sentence>
         <Sentence measure>
-          בבנק הכסף נכנס <Term prefix="ל" id="תכנית חיסכון">תוכנית חיסכון</Term> באחד משלושה מסלולים: <Term id="ריבית קבועה לא צמודה">ריבית קבועה לא צמודה</Term>, <Term id="ריבית משתנה (פריים)">ריבית משתנה (פריים)</Term> או <Term id="ריבית קבועה צמודה">ריבית קבועה צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>. כל אחד מהם בא בלי <Term id="תחנת יציאה">תחנות יציאה</Term> עד <Term id="גיל הפדיון">גיל הפדיון</Term>, או עם תחנת יציאה כל {station ? <Num value={station} /> : null} שנים.
+          בבנק הכסף נכנס <Term prefix="ל" id="תוכנית חיסכון">תוכנית חיסכון</Term> באחד משלושה מסלולים: <Term id="ריבית קבועה לא צמודה">ריבית קבועה לא צמודה</Term>, <Term id="ריבית משתנה (פריים)">ריבית משתנה (פריים)</Term> או <Term id="ריבית קבועה צמודה">ריבית קבועה צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>. כל אחד מהם בא בלי <Term id="תחנת יציאה">תחנות יציאה</Term> עד <Term id="גיל הפדיון">גיל הפדיון</Term>, או עם תחנת יציאה כל {station ? <Num value={station} /> : null} שנים.
         </Sentence>
         <p className="max-w-measure">
           <Term prefix="ה" id="ריבית">ריבית</Term> ידועה מראש לפי המסלול שנבחר. איך כל בנק קובע אותה כתוב בהסכם שלו.
         </p>
         <Sentence measure>
-          את הבנק צריך לבחור בפועל בתוך {months ? <Num value={months} /> : null} חודשים מהלידה. בלי בחירה הכסף הולך לקופת גמל.
+          את הבנק צריך לבחור בפועל בתוך {months ? <Num value={months} /> : null} חודשים מהלידה. בלי בחירה הכסף הולך <Term prefix="ל" id="קופת גמל">קופת גמל</Term>.
         </Sentence>
         <RulesLine ids={["CS-02", "CS-03", "CS-04", "CS-13", "CS-14", "CS-15", "CS-16", "CS-10", "CS-06", "CS-07"]} />
       </>
@@ -46,13 +46,13 @@ export const content: GuideContent = {
       </>
     );
   },
-  termIds: ["חיסכון לכל ילד", "סכום החיסכון הבסיסי", "סכום החיסכון הנוסף", "מענק", "ריבית קבועה לא צמודה", "ריבית משתנה (פריים)", "ריבית קבועה צמודה", "תחנת יציאה", "משיכה", "גיל הפדיון", "מס רווחי הון", "הגוף החוסך", "ביטוח פיקדונות", "פיקדון", "ריבית", "תכנית חיסכון", "קופת גמל", "מדד"],
+  termIds: ["חיסכון לכל ילד", "סכום החיסכון הבסיסי", "סכום החיסכון הנוסף", "מענק", "ריבית קבועה לא צמודה", "ריבית משתנה (פריים)", "ריבית קבועה צמודה", "תחנת יציאה", "משיכה", "גיל הפדיון", "מס רווחי הון", "הגוף החוסך", "ביטוח פיקדונות", "פיקדון", "ריבית", "תוכנית חיסכון", "קופת גמל", "מדד"],
   afterTax: ({ figure }) => {
     const niiRate = figure("TXK-20", "nii_circular_rate");
     return (
       <>
         <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">שיעור המס במשיכה לא מופיע בשום טקסט של <Term id="רשות המסים">רשות המסים</Term>.</span> הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי להבחין בין המסלולים. לפי הכללים הרגילים של פקודת מס הכנסה לריבית <Term prefix="מ" id="פיקדון">פיקדון</Term>, במסלולים שאינם צמודים למדד השיעור נמוך יותר. האתר מחשב לפי הכללים האלה, אבל שהם חלים על חיסכון לכל ילד זו קריאה של האתר, לא נוסח רשמי. שאלה פתוחה <IdRef id="TXK OQ1" end="." />
+          <span className="font-medium">שיעור המס במשיכה לא מופיע בשום טקסט של <Term id="רשות המסים">רשות המסים</Term>.</span> הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי להבחין בין המסלולים. לפי הכללים הרגילים של פקודת מס הכנסה לריבית <Term prefix="מ" id="פיקדון">פיקדון</Term>, במסלולים שלא צמודים למדד השיעור נמוך יותר. האתר מחשב לפי הכללים האלה, אבל שהם חלים על <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term> זו קריאה של האתר, לא נוסח רשמי. שאלה פתוחה <IdRef id="TXK OQ1" end="." />
         </Callout>
         <RulesLine ids={["TXK-20", "TXK-29", "TXI-02", "TXI-03"]} />
       </>

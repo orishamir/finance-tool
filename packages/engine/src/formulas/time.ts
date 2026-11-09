@@ -63,7 +63,7 @@ export function cpiPath(annualInflation: number, months: number): number[] {
 
 /**
  * F-04 Exchange-rate path. `X_0 = 1`; `X_m = X_{m−1} × (1 + f)^(1/12)` (A-03). For a foreign-currency
- * security held directly it replaces `I` as the tax index (TXF-03); for a TASE foreign fund the index is TXF-04's, open since 2026-11-07.
+ * security held directly it replaces `I` as the tax index (TXF-03); for a TASE foreign fund the index is TXF-04's, open.
  */
 export function fxPath(annualChange: number, months: number): number[] {
   const step = Math.pow(1 + annualChange, 1 / 12);
@@ -97,6 +97,14 @@ export function contributions(goal: Goal, index: readonly number[]): number[] {
     out.push(goal.contributions === "nominal" ? goal.monthly : goal.monthly * index[m]!);
   }
   return out;
+}
+
+/**
+ * F-106 What was paid in, in today's money, with deposits constant in today's money: `P = C_0 + 12 × n × C`, since each deposit
+ * `C × I_m` (F-05) at its own month's index (F-06) is `C`. Only where the run takes every deposit as entered.
+ */
+export function paidInAsEntered(amountNow: number, monthly: number, years: number): number {
+  return amountNow + 12 * years * monthly;
 }
 
 /**

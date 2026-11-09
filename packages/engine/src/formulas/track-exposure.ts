@@ -1,4 +1,4 @@
-// What a provident track holds in shares and in foreign currency, from the regulator's own monthly figures (D34, 2026-10-26: the
+// What a provident track holds in shares and in foreign currency, from the regulator's own monthly figures (D34, the
 // company page's exposure rings). Pure functions over two published amounts each; the page supplies the CMA fields.
 
 /**

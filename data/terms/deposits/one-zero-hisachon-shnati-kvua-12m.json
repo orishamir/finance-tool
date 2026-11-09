@@ -1,0 +1,153 @@
+{
+  "id": "one-zero-hisachon-shnati-kvua-12m",
+  "bank": "one-zero",
+  "names": {
+    "447": [
+      "חיסכון שנתי בריבית קבועה (לתקופה של שנה)",
+      "חיסכון שנתי בריבית קבועה"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון שנתי בריבית קבועה * (לתקופה של שנה)', 'סוג המוצר'",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "The table prints no period column; the product's name says '(לתקופה של שנה)', recorded as 12 months, the period of a one-year deposit (directive 447 Annex A, BANK-14)."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 3,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון שנתי בריבית קבועה * (לתקופה של שנה)', 'שיעור הריבית הממוצעת (נומינלי שנתי)'",
+      "publisher": "One Zero Digital Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax printed '3%', and '3%' under 'שיעור ריבית מתואמת'. Row as printed (read 2026-11-09 in the founder's Chrome, pdf.js in the PDF's own tab, file modified 28.10.2026): product 'חיסכון שנתי בריבית קבועה * (לתקופה של שנה)', rate type 'ריבית קבועה', linkage 'לא צמוד למדד המחירים לצרכן', amount 'מינימום - 100 ₪, מקסימום - 100 אלף ₪', break 'קיימת עם קנס שבירה (הלקוח מקבל 10% מהריבית הצבורה עד למועד השבירה בפועל)', automatic renewal 'לא קיימת', number of renewals 'לא רלוונטי', exit points 'לא קיימת', frequency 'לא רלוונטי'. The asterisk's footnote: '* למצטרפים חדשים עד 31.12.26, עד 100,000 ₪ פיקדון בריבית בסיס שנתית ומתואמת 3% + הטבה 3% נוספים, ככל שיעמדו בתנאים המצטברים הבאים בכל חודש במהלך 9 מתוך 12 חודשים ממועד פתיחת הפיקדון: (1) יעבירו משכורת במס\"ב בגובה 10,000 ש\"ח נטו לפחות (2) יבצעו עסקאות בכרטיס אשראי של הבנק ב2000 ש\"ח לפחות. והכל בהתאם לתקנון.' The 3% recorded is the base rate; the further 3% is conditional and stays out of it (guidelines/research.md). The footnote dates the joining ('למצטרפים חדשים עד 31.12.26'), not the opening of the deposit or the end of the rate, so effective_to stays null and the date is in conditions_he."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit (the table's linkage column: 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+        "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון שנתי בריבית קבועה * (לתקופה של שנה)', 'טווח סכום להפקדה'",
+        "publisher": "One Zero Digital Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'מינימום - 100 ₪'; the row's maximum is 'מקסימום - 100 אלף ₪' (amount_range.max)."
+    },
+    "max": {
+      "value": 100000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+        "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות'), שורת 'חיסכון שנתי בריבית קבועה * (לתקופה של שנה)', 'טווח סכום להפקדה'",
+        "publisher": "One Zero Digital Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'מקסימום - 100 אלף ₪'; the footnote: 'עד 100,000 ₪'."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת החיסכון: קיימת עם קנס שבירה (הלקוח מקבל 10% מהריבית הצבורה עד למועד השבירה בפועל)' (table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14",
+      "BANK-49"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "רק למי שמצטרף לבנק עד 31.12.2026, ועד 100,000 ₪. לפי התקנון, הבנק מוסיף עוד 3% למי שבכל חודש, ב־9 מתוך 12 החודשים מפתיחת הפיקדון, מעביר משכורת של 10,000 ₪ נטו לפחות בהעברה בנקאית (מס״ב) ומשלם בכרטיס האשראי של הבנק 2,000 ₪ לפחות. אפשר לשבור את הפיקדון לפני הזמן עם קנס: מקבלים 10% מהריבית שנצברה עד השבירה.",
+  "variant": [
+    "new_customers"
+  ],
+  "snapshot": "2026-11-09",
+  "source": {
+    "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+    "title": "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות, 'תנאי פקדונות')",
+    "publisher": "One Zero Digital Bank Ltd.",
+    "strength": "institution"
+  }
+}

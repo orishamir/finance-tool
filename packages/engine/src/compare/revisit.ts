@@ -132,7 +132,7 @@ export function assumptionVersions(
 const descriptive = new Set(["id", "method_id", "rationale", "rationale_he", "shown_as"]);
 
 /**
- * A parameter's value without the reader's prose: the per-number `rationale_he` lines (2026-10-25) sit inside the value
+ * A parameter's value without the reader's prose: the per-number `rationale_he` lines sit inside the value
  * objects, so a line added or reworded must not read as a changed parameter on a comparison saved before it.
  */
 function withoutProse(node: unknown): unknown {

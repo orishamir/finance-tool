@@ -1,4 +1,4 @@
-// The words a cited web page opens at (2026-11-07, the founder): data/sources/fragments.json, written by
+// The words a cited web page opens at: data/sources/fragments.json, written by
 // tools/quote-fragments.mjs, keeps a text fragment for each url and quoted words found on the page as it prints them.
 // Every record read from data/ passes through `withFragments` before it is frozen: an object with `url` and `quote`, and a place named
 // `<x>_source` whose words stand beside it as `<x>_he`, gains `fragment` where the file has a row for exactly that url and those words. `sourceHref` in sources.ts turns it into the link; nothing else reads it. Server-only.

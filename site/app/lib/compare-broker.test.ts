@@ -1,13 +1,13 @@
-// The broker the person chooses for the brokerage account (2026-10-24): its tariff replaces the representative's in the run.
+// The broker the person chooses for the brokerage account: its tariff replaces the representative's in the run.
 import { describe, expect, it } from "vitest";
-import { applyOwnProviders, applyProviders, buildView, evaluate, feeShieldPair, providerOutcomes, type RunGoal } from "./compare";
+import { applyOwnProviders, applyProviders, evaluate, type RunGoal } from "./compare";
 import { compareBundle } from "./compare.server";
 import { parseOwnRates, splitOwnTerms, termsOfGoal } from "./own-rate";
 import { readSideFile } from "./side-stores";
 
 const bundle = compareBundle();
 const BRK = "brokerage-account";
-// 29 years old, 22,000 a month, 40,000 now, 3,000 a month for 20 years, 7 % return, 2.5 % inflation (the long-term case of the scenario audit)
+// 29 years old, 22,000 a month, 40,000 now, 3,000 a month for 20 years, 7 % return, 2.5 % inflation (the long-term case)
 const goal: RunGoal = { horizonYears: 20, amountNow: 40_000, monthly: 3_000, available: 0, anytime: false, returnPct: 7, inflationPct: 2.5, age: 29, employment: "employee", salary: 22_000, pensionEmployee: 6, pensionEmployer: 6.5, insurancePct: 0.3, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
 const real = (b: typeof bundle, id: string, g: RunGoal = goal) => evaluate(b, g).candidates.find((c) => c.id === id)?.run?.real ?? NaN;
 const wrapper = bundle.wrappers.find((w) => w.id === BRK)!;
@@ -17,9 +17,9 @@ describe("the providers the brokerage wrapper carries", () => {
     const ids = Object.keys(wrapper.providers ?? {});
     for (const id of ["psagot", "ibi"]) expect(ids).toContain(id);
     expect(ids).toContain("meitav-trade"); // priced at its price list since 2026-11-04 (D56): custody 0.15% a quarter, at least 270 NIS, and a handling fee up to 90 NIS a month
-    // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26, 2026-10-25)
+    // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26)
     expect(ids).not.toContain("interactive-brokers");
-    for (const id of ["one-zero", "leumi"]) expect(ids).toContain(id); // their TASE lines cover tracking funds by footnote (MF-27; snapshot 2026-10-31)
+    for (const id of ["one-zero", "leumi"]) expect(ids).toContain(id); // their TASE lines cover tracking funds by footnote (MF-27; snapshot)
     for (const p of Object.values(wrapper.providers!)) {
       expect(p.name.length).toBeGreaterThan(2);
       expect(p.tariff.buy).toBeDefined();
@@ -51,36 +51,17 @@ describe("applyOwnProviders", () => {
 });
 
 describe("the 20-year case on the cheapest collected broker", () => {
-  const all = providerOutcomes(bundle, goal, BRK);
-  const outcomes = all.providers;
-  const best = outcomes[0]!;
-  it("ranks the providers by what the option ends at; the cheapest is the one the workbench's lines make cheapest", () => {
-    expect(outcomes.length).toBe(Object.keys(wrapper.providers!).length);
-    for (let i = 1; i < outcomes.length; i++) expect(outcomes[i - 1]!.real).toBeGreaterThanOrEqual(outcomes[i]!.real);
-    // 2026-11-08: IBI on its account agreement's fee annex (D56, now): no custody fee, 0.08% a trade, at least 5 NIS for a tracking fund, and
-    // 15 NIS a month charged in full (the offset against the month's trading fees is not modelled); One Zero, with no custody fee and its TASE
-    // line covering tracking funds by footnote (MF-27, snapshot 2026-10-31), is second
-    expect(best.id).toBe("ibi");
-    expect(outcomes[1]!.id).toBe("one-zero");
-    expect(outcomes[2]!.id).toBe("psagot");
-    expect(outcomes.at(-1)!.id).toBe("excellence");
-  });
-  it("marks the card's own run (P-05's Leumi tariff) on its row, on the direct channel, with no second row for it", () => {
-    expect(all.site).toBeNull();
-    expect(outcomes.find((o) => o.id === "leumi")).toMatchObject({ current: true, channel: "direct" });
-    expect(outcomes.find((o) => o.id === "leumi")!.real).toBeCloseTo(real(bundle, BRK), 4);
-    expect(wrapper.terms!.tariff!.buy!.rate).toBeCloseTo(0.004, 8); // Leumi's direct channel, not the branch line's 0.65 %
-    expect(wrapper.representative?.channel).toBe("direct");
-    // once the person chose, the card's run is theirs and there is no site row
-    expect(providerOutcomes(applyOwnProviders(bundle, { ownProviders: { [BRK]: "psagot" } }), goal, BRK).site).toBeNull();
-  });
+  // IBI on its account agreement's fee annex (D56, now): no custody fee, 0.08% a trade, at least 5 NIS for a tracking fund, and
+  // 15 NIS a month charged in full (the offset against the month's trading fees is not modelled)
+  const best = "ibi";
   it("lands above the kupat gemel on the best broker, and so does the unpicked default (Leumi, its monthly purchases on the standing-order line, D41) once Harel's discount ends, and the figures are these", () => {
     const kgl = real(bundle, "kupat-gemel-lehashkaa");
     const dflt = real(bundle, BRK);
-    const chosen = applyOwnProviders(bundle, { ownProviders: { [BRK]: best.id } });
-    const cheapest = real(chosen, BRK, { ...goal, ownProviders: { [BRK]: best.id } });
-    expect(cheapest).toBeCloseTo(best.real, 4);
-    // 2026-11-07 (F-80, A-19, D56): the gemel runs on Harel, the lowest of the managers' fees, at its printed 0.7% and 0% for PF-13's five years
+    const chosen = applyOwnProviders(bundle, { ownProviders: { [BRK]: best } });
+    const cheapest = real(chosen, BRK, { ...goal, ownProviders: { [BRK]: best } });
+    expect(wrapper.terms!.tariff!.buy!.rate).toBeCloseTo(0.004, 8); // Leumi's direct channel, not the branch line's 0.65 %
+    expect(wrapper.representative?.channel).toBe("direct");
+    // F-80, A-19, D56: the gemel runs on Harel, the lowest of the managers' fees, at its printed 0.7% and 0% for PF-13's five years
     // and then at the most its bylaws allow, 1.05% and 4% (KGL-16). On Meitav's 0.8% alone it ended at 1,032,222, at Harel's 0.7% for all
     // twenty years at 1,041,892; the 4% on fifteen years of 3,000 deposits and the higher balance fee bring it below Leumi's default
     expect(dflt).toBeGreaterThan(kgl);
@@ -130,53 +111,29 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
     }
   });
   it("puts the securities account further ahead of the gemel for that goal than Leumi's list tariff did", () => {
-    const before = buildView(bundle, doron);
-    const after = buildView(applyProviders(bundle, doron), doron);
-    if (before.kind !== "ok" || after.kind !== "ok") throw new Error("not ok");
+    const before = evaluate(bundle, doron).ranking;
+    const after = evaluate(applyProviders(bundle, doron), doron).ranking;
     // one deposit and none after it: Harel's 0.7% holds for six months and 1.05% is charged from month 7, the cautious reading of
-    // PF OQ18 (D87, guidelines/research.md step 6, 2026-11-08), so the gemel ends at 84,619 and Leumi's account (85,507) is already
-    // ahead by more than the tie threshold. Until 2026-11-08 the run kept 0.7% for five years (85,697) and the two tied, the gemel first.
-    expect(before.headline).toBe("winner");
-    expect(before.ranked[0]!.id).toBe(BRK);
-    expect(before.ranked[1]!.id).toBe("kupat-gemel-lehashkaa");
-    expect(Math.round(before.ranked[1]!.real)).toBe(84_619);
-    expect(Math.round(before.ranked[0]!.real)).toBe(85_507);
-    expect(after.headline).toBe("winner");
-    expect(after.ranked[0]!.id).toBe(BRK);
-    expect(after.ranked[1]!.id).toBe("kupat-gemel-lehashkaa");
-    expect(after.ranked[0]!.real - after.ranked[1]!.real).toBeGreaterThan(3_000);
-  });
-  it("ranks per goal: with a monthly deposit the 2 NIS minimum beats the 30 NIS one", () => {
-    const rank = (g: RunGoal) => providerOutcomes(bundle, g, BRK).providers.map((p) => p.id);
-    expect(rank(doron).indexOf("one-zero")).toBeLessThan(rank(doron).indexOf("psagot"));
-    const monthly = rank({ ...doron, monthly: 1_200 });
-    expect(monthly.indexOf("psagot")).toBeLessThan(monthly.indexOf("one-zero"));
+    // PF OQ18 (D87, guidelines/research.md step 6), so the gemel ends at 84,619 and Leumi's account (85,507) is already
+    // ahead by more than the tie threshold.
+    expect(before.tieSet).toEqual([BRK]);
+    expect(before.entries[0]!.id).toBe(BRK);
+    expect(before.entries[1]!.id).toBe("kupat-gemel-lehashkaa");
+    expect(Math.round(real(bundle, "kupat-gemel-lehashkaa", doron))).toBe(84_619);
+    expect(Math.round(real(bundle, BRK, doron))).toBe(85_507);
+    expect(after.tieSet).toEqual([BRK]);
+    expect(after.entries[0]!.id).toBe(BRK);
+    expect(after.entries[1]!.id).toBe("kupat-gemel-lehashkaa");
+    const b = applyProviders(bundle, doron);
+    expect(real(b, BRK, doron) - real(b, "kupat-gemel-lehashkaa", doron)).toBeGreaterThan(3_000);
   });
   it("keeps the person's own choice, and P-05's tariff when the run cannot be made", () => {
     const own = applyProviders(bundle, { ...doron, ownProviders: { [BRK]: "ibi" } });
     const w = own.wrappers.find((x) => x.id === BRK)!;
     expect(w.representative).toMatchObject({ providerId: "ibi", chosen: true });
     expect(w.representative!.pickedBy).toBeUndefined();
-    // the account's entry is P-05's (makam and the bond, securities held in the account since D6 2026-10-26, need no return and are picked)
+    // the account's entry is P-05's (makam and the bond, securities held in the account since D6, need no return and are picked)
     const noReturn = applyProviders(bundle, { ...doron, returnPct: null });
     expect(noReturn.wrappers.find((x) => x.id === BRK)).toBe(bundle.wrappers.find((x) => x.id === BRK));
-  });
-  it("marks the pick in the picker instead of adding the site's row", () => {
-    const b = applyProviders(bundle, doron);
-    const out = providerOutcomes(b, doron, BRK);
-    expect(out.site).toBeNull();
-    expect(out.providers.find((p) => p.current)?.id).toBe("one-zero");
-    expect(out.providers[0]!.id).toBe("one-zero");
-  });
-  it("names the pair behind a tax gap that is a fee effect, and not a pair without custody fees", () => {
-    const v = buildView(bundle, doron);
-    if (v.kind !== "ok") throw new Error("not ok");
-    const gemel = v.ranked.find((o) => o.id === "kupat-gemel-lehashkaa")!;
-    const brk = v.ranked.find((o) => o.id === BRK)!;
-    expect(feeShieldPair(bundle, gemel, brk)).toEqual({ provident: gemel.name, securities: brk.name });
-    expect(feeShieldPair(bundle, brk, gemel)).toEqual({ provident: gemel.name, securities: brk.name });
-    const mmf = v.ranked.find((o) => o.id === "money-market-fund-daily")!;
-    expect(feeShieldPair(bundle, gemel, mmf)).toBeNull(); // bought through a bank with a distribution agreement: no custody fee (MF-26, BANK-18)
-    expect(feeShieldPair(bundle, brk, mmf)).toBeNull();
   });
 });

@@ -1,4 +1,4 @@
-// An account on your own terms, started from a house (F-101, founder 2026-11-04): the starting points a house offers, the tariff built in layers
+// An account on your own terms, started from a house (F-101): the starting points a house offers, the tariff built in layers
 // (the house's list tariff, the group's values, the person's), a price for a time through the page's own run, the saved entry and the numbers
 // the panel shows. The expected figures are printed by tests/golden/expected_own_account.py from the data files and the fee formulas alone.
 import { buildTariff, providerWorkbench, type ComparedProvider, type SecuritiesInput } from "@finance-tool/engine";
@@ -8,12 +8,12 @@ import { brokerDraftOf, brokerFromDraft, tariffOfBroker, validCustomBrokers, wit
 import { buildInvest, listReading, indexById } from "./invest";
 import { baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
 import { FEE_TYPES, layersOf, ownAccountResult, withoutGroupLine } from "./own-account-view";
-import { buildWorkbenchBundle } from "./providers.server";
+import { buildIndicesBundle } from "./providers.server";
 import { ruleContext, type WorkbenchInputs } from "./providers";
 import { buildStateFile, ensureLoaded, flush, getSnapshot, readImport, removeCustomBroker, resetStore, saveCustomBroker, stateFileText } from "./state";
 import { entered } from "./value";
 
-const bundle = buildWorkbenchBundle();
+const bundle = buildIndicesBundle();
 const t = bundle.today;
 const house = (id: string) => bundle.snapshots.find((s) => s.id === id)!;
 const mercantile = house("mercantile");
@@ -161,7 +161,6 @@ const rowAt = (snap: typeof mercantile, b: CustomBroker | null) => {
   const p = b ? [{ snapshot: snap, level: "entered" as const, layered: layeredOf(b) }] : [{ snapshot: snap, level: "list" as const }];
   return providerWorkbench(workbenchInput(p), ruleContext(bundle)).rows[0] as ComparedProvider;
 };
-const rowOf = (b: CustomBroker | null) => rowAt(mercantile, b);
 const figures = (r: ComparedProvider) => ({ trade: r.run.fees.trade, custody: r.run.fees.custody, left: r.run.nominal });
 const expectFigures = (r: ComparedProvider, e: { trade: number; custody: number; left: number }) => {
   expect(r.run.fees.trade).toBeCloseTo(e.trade, 6);

@@ -1,7 +1,7 @@
 // ECB adapter: the daily euro reference rates (decision D26: the site gives exchange rates itself; the person never types
 // one) and the month-end rates of the dollar and the shekel (F-93). Run: npm run refresh -- ecb-fx ecb-fx-month-end
 // The daily file keeps the latest reference day only, one observation per currency (`key` = ISO code, value = units of
-// that currency per one euro). Terms: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html (read 2026-10-25):
+// that currency per one euro). Terms: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html (read):
 // free use if the information appears accurately, the ECB is cited, and any modification is stated.
 import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, type Downloaded } from "./cma.ts";

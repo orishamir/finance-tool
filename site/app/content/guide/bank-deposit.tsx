@@ -1,15 +1,13 @@
 // Guide prose for פיקדון (architecture 3.5: prose lives in content files; every figure is a Num).
-// Written 2026-10-23 from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
+// Written from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { ReactNode } from "react";
 import type { GuideContent } from "./types";
 import type { BreakTerms } from "../../lib/guide-signature";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Link } from "react-router";
+import { depositBrowser } from "../../copy";
 import { Callout, MixedName, Sentence } from "../../components/kit";
-import { shown } from "../../lib/review";
-import { useReviewMode } from "../../components/guide-signature";
-import { guideSignature } from "../../copy";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -17,11 +15,11 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          כסף שמפקידים בבנק לתקופה קצובה, מיום אחד ועד כמה שנים, והבנק משלם עליו <Term id="ריבית">ריבית</Term>. הריבית <Term id="ריבית קבועה">קבועה</Term> וידועה מראש, או <Term id="ריבית משתנה">משתנה</Term>, כלומר <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש. בסוף התקופה הכסף חוזר <Term prefix="ל" id="חשבון עובר ושב">עו״ש</Term> או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, לפי מה שבחרתם.
+          התקופה יכולה להיות מיום אחד ועד כמה שנים. <Term prefix="ה" id="ריבית">ריבית</Term> <Term id="ריבית קבועה">קבועה</Term> וידועה מראש, או <Term id="ריבית משתנה">משתנה</Term>, כלומר <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש. בסוף התקופה הכסף חוזר <Term prefix="ל" id="חשבון עובר ושב">עו״ש</Term> או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, לפי מה שבחרתם.
         </p>
-        {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, nine banks) */}
+        {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, ten banks) */}
         <p className="max-w-measure">
-          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק קובע אותה בעצמו</>} />
+          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem", "one-zero"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק מגדיר אותה בתנאים שלו</>} end="." />
         </p>
         <p className="max-w-measure">
           פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו. פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי <Term prefix="ה" id="מדד">מדד</Term>, והריבית באה בנוסף. אם המדד יורד, מה שקורה לקרן תלוי בתנאי המוצר (<Term id="הבטחת קרן">הבטחת קרן</Term>); החוק לא קובע זאת.
@@ -39,6 +37,12 @@ export const content: GuideContent = {
       <>
         <p className="max-w-measure">
           כל הבנקים שברשימת <Term id="בנק ישראל">בנק ישראל</Term>, בפיקוח <Term id="המפקח על הבנקים">המפקח על הבנקים</Term>. בנק לא יכול לסרב לקבל פיקדון בלי סיבה סבירה.
+        </p>
+        {/* D92: the comparison of the banks' deposits is a page of its own; the guide links to it where it names the banks */}
+        <p className="max-w-measure">
+          <Link to="/deposits" className="text-link hover:underline">
+            {depositBrowser.guideLink}
+          </Link>
         </p>
         <Sentence measure>
           {since ? <>מאז <Num value={since} /> </> : null}אפשר לפתוח פיקדון שקלי גם בבנק אחר, בלי לפתוח בו עו״ש, דרך <Term id="חשבון במערכת סגורה">חשבון במערכת סגורה</Term>: הכסף מגיע רק מהחשבון שלכם בבנק אחר וחוזר רק אליו. החובה לאפשר זאת לא חלה על בנקים קטנים וזעירים.
@@ -82,7 +86,17 @@ export const content: GuideContent = {
     "ריבית",
     "מדד",
     "הצמדה",
+    "תוכנית חיסכון",
   ],
+  // the chart runs one amount (lumpSumIds): a deposit is opened with one sum, and periodic deposits are a savings plan's (BANK-28)
+  lumpNote: (
+    <>
+      להפקדה חודשית בבנק יש מוצר משלה, <Term id="תוכנית חיסכון">תוכנית חיסכון</Term>.{" "}
+      <Link to="/guide/savings-plan" className="text-link hover:underline">
+        לעמוד המדריך על תוכנית חיסכון
+      </Link>
+    </>
+  ),
   afterTax: ({ figure, breakTerms }) => {
     const ceiling = figure("TXI-20", "favoured_ceiling");
     const deduction = figure("TXI-20", "deduction");
@@ -97,7 +111,7 @@ export const content: GuideContent = {
         </Sentence>
         <RulesLine ids={["TXI-17"]} />
         <Sentence measure>
-          פיקדון צמוד פריים ממוסה כפיקדון לא צמוד, על כל הריבית: בחוק ״מדד״ הוא <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term> או שער מטבע, והפריים לא אחד מהם <RuleRef id="TXI-04" end="." />
+          פיקדון בריבית משתנה לפי הפריים ממוסה כפיקדון לא צמוד, על כל הריבית: בחוק ״מדד״ הוא <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term> או שער מטבע, והפריים לא אחד מהם <RuleRef id="TXI-04" end="." />
         </Sentence>
         {breakTerms ? <BreakLine b={breakTerms} /> : null}
         <Callout tone="blocked" className="max-w-measure" title={<>מס הכנסה או <Term id="מס רווחי הון">מס רווחי הון</Term> כששבירה פוגעת בסכום שהופקד: שאלה פתוחה</>}>
@@ -132,17 +146,6 @@ export const content: GuideContent = {
         פיקדון עדיף על <Term id="קרנות כספיות יומיות">קרן כספית יומית</Term> כשרוצים לדעת את הריבית ביום ההפקדה: בפיקדון בריבית קבועה היא ננעלת לכל התקופה, ובקרן היומית <Term prefix="ה" id="תשואה">תשואה</Term> לא ידועה מראש וזזה עם <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>.
       </p>
       <RulesLine ids={["BANK-15", "BANK-25", "MF-34", "MF-41"]} />
-      {/* NEW 2026-10-24 (scenario audit 7): the door from the guide to the page that checks a bank's offer; hidden while that
-          page is held for review (lib/review.ts) */}
-      {shown("/idle-cash") && (
-        <p className="max-w-measure">
-          קיבלתם הצעה מהבנק?{" "}
-          <Link to="/idle-cash" className="text-link hover:underline">
-            בדקו אותה בעמוד כסף שיושב בעו״ש
-          </Link>
-          .
-        </p>
-      )}
     </>
   ),
 };
@@ -150,16 +153,21 @@ export const content: GuideContent = {
 // F-104: what the collected one-year deposits say about breaking them, counted over the banks (former ground rule 2: a bank whose rows were
 // collected in larger number does not weigh more). The count of the banks where none can be broken names none of them (D30); the banks
 // whose deposits can be broken are named, because the penalty is each bank's own term, and stand as links to their pages, where their
-// terms are (VariesByCompany). No penalty in shekels: no collected term gives it as a formula over published figures (method F-104).
-// What each bank's own terms say about the penalty, from the rule base (BANK-33 for Discount: approval, the day's borrowers' rate table,
-// no partial break in the first year); a bank with none here gets the general line.
-// Each line is that bank's term only (D30): "a break can wipe out the interest and part of the deposit" is BANK-33's, Discount's, so it
-// stands in Discount's line and never reads as true of every bank (independent check 2, 2026-11-07).
-/** A bank's break terms worded from its own documents (Discount's: BANK-33, which its records cite in their break column). */
-const ownTerms: Record<string, (name: string) => ReactNode> = {
-  discount: (name) => (
+// terms are (VariesByCompany). No penalty in shekels (method F-104): Discount's is set on the day of the break, and One Zero's is a share of
+// the interest accrued to that day. What a bank's own terms say about the penalty, from the rule base (BANK-33 for Discount: approval, the
+// day's borrowers' rate table, no partial break in the first year; BANK-49 for One Zero: 10% of the accrued interest). They stand on that bank's line, right after its count and under its name, so no other bank's
+// line reads them as its own (D30): "a break can wipe out the interest and part of the deposit" is Discount's term, not every bank's.
+// A bank the rule base holds no break terms for (Mercantile, whose records cite only the general BANK-06 and BANK-14) has its count alone.
+/** A bank's break terms worded from its own documents (Discount's: BANK-33, One Zero's: BANK-49, which their records cite in their break column). */
+const ownTerms: Record<string, ReactNode> = {
+  discount: (
     <>
-      : ב<MixedName>{name}</MixedName> שבירה צריכה אישור של הבנק, ופיקדון לשנה אפשר לשבור רק כולו, לא חלק ממנו. הקנס נקבע רק ביום השבירה, לפי ״טבלת ריבית לווים״ של הבנק, שמתעדכנת כל יום לפי סוג הפיקדון והתקופה שנשארה לו, ולכן הסכום שלו לא ידוע מראש. בתנאי הבנק, שבירה יכולה למחוק את הריבית ואף חלק מהסכום שהופקד.{" "}
+      השבירה צריכה אישור של הבנק, ופיקדון לשנה אפשר לשבור רק כולו, לא חלק ממנו. הקנס נקבע רק ביום השבירה, לפי ״טבלת ריבית לווים״ של הבנק, שמתעדכנת כל יום לפי סוג הפיקדון והתקופה שנשארה לו, ולכן הסכום שלו לא ידוע מראש. בתנאי הבנק, שבירה יכולה למחוק את הריבית ואף חלק מהסכום שהופקד.
+    </>
+  ),
+  "one-zero": (
+    <>
+      בטבלת התנאים של הבנק, מי ששובר חיסכון שנתי מקבל ״10% מהריבית הצבורה עד למועד השבירה בפועל״. הטבלה לא אומרת מה קורה בשבירה לסכום שהופקד.
     </>
   ),
 };
@@ -184,6 +192,7 @@ function BankBreakLine({ b }: { b: BreakTerms["breakable"][number] }) {
           בלי קנס, <Num value={b.free} /> מתוך <Num value={b.deposits} /> הפיקדונות לשנה שנאספו.
         </>
       )}
+      {pen > 0 && ownTerms[b.id] ? <> {ownTerms[b.id]}</> : null}
     </>
   );
 }
@@ -192,13 +201,8 @@ function BreakLine({ b }: { b: BreakTerms }) {
   const locked = Number(b.lockedBanks.value);
   const all = locked === Number(b.banks.value);
   const penalty = b.breakable.filter((x) => Number(x.withPenalty.value) > 0);
-  const terms = penalty.length === 1 ? ownTerms[penalty[0]!.id] : undefined;
-  // each bank under the break rules its own records cite; a general rule among them names no company, so it adds no link (code review,
-  // 2026-11-07: every bank with a penalty was put under Discount's BANK-33)
+  // each bank under the break rules its own records cite; a general rule among them names no company, so it adds no link
   const refs = penalty.flatMap((x) => x.rules.map((rule) => ({ rule, companies: [x.id] })));
-  // the list of the banks stands in the bank-deposit visual: while that is held (lib/review.ts) the link would lead nowhere
-  const review = useReviewMode();
-  const listHref = `#${guideSignature.ladder.range.anchorId}`;
   return (
     <>
       <Sentence measure>
@@ -207,7 +211,7 @@ function BreakLine({ b }: { b: BreakTerms }) {
           <>
             {/* a sentence opens on a word, not a number (docs/copy.md 10.4) */}
             {all ? <>בכל </> : <>מתוך </>}
-            <Num value={b.banks} /> הבנקים שהאתר אסף מהם פיקדונות לשנה{shown(listHref, review) ? <> (<a href={listHref} className="text-link hover:underline">הרשימה</a>)</> : null}
+            <Num value={b.banks} /> הבנקים שהאתר אסף מהם פיקדונות לשנה
             {all ? " " : <>, ב־<Num value={b.lockedBanks} /> </>}אי אפשר לשבור אף פיקדון לשנה שנאסף: הכסף חוזר רק בסוף התקופה
             {Number(b.lockedBanksWithExits.value) > 0 ? (
               <>
@@ -224,8 +228,8 @@ function BreakLine({ b }: { b: BreakTerms }) {
       </Sentence>
       {penalty.length > 0 && (
         <Sentence measure>
-          האתר לא מציג את הקנס בשקלים{terms ? terms(penalty[0]!.name) : ". "}
-          <VariesByCompany ids={refs} lead="תנאי השבירה בעמוד הבנק" />
+          האתר לא מציג את הקנס בשקלים.{" "}
+          <VariesByCompany ids={refs} lead="תנאי השבירה בעמוד הבנק" end="." />
         </Sentence>
       )}
     </>

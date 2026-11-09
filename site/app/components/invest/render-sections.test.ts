@@ -28,7 +28,7 @@ describe("the index page's sections render", () => {
       createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
       createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true })));
     expect(out).toContain("הפקדתם");
-    // a dollar index with funds of both kinds shows each kind across the dollar (F-94, 2026-10-29)
+    // a dollar index with funds of both kinds shows each kind across the dollar (F-94)
     expect(out).toContain("בלי נטרול מט״ח");
     expect(out).toContain("עם נטרול מט״ח");
     // the shekel column's "?" says the amounts hold the rate still; the line under the list says what orders each kind
@@ -162,7 +162,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       // a foreign fund's years are in its own currency, from its issuer's documents
       expect(sheet(id)!.lead, id).toContain(invest.kinds.currencyIn.USD);
     }
-    // the kind is said once, in the column's head and the note: never under every figure (re-check F1, F5)
+    // the kind is said once, in the column's head and the note: never under every figure
     expect(cell("1159250")).not.toContain(invest.kinds.gapHead.net);
     // the issuer's own factsheet names the net index as the benchmark: its statement about its own product, accepted for which index the fund
     // measures against (F-92 (d), D31), since no prospectus of these six is in the library
@@ -179,10 +179,10 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(rec("1144385").tracking_record!.benchmark).toMatchObject({ name: "S&P 500 - NTR", dividends: "net", page: 2 });
     expect(cell("1144385")).toContain(invest.kinds.gapYears(rec("1144385").tracking_record!.years.length));
     expect(sheet("1144385")!.lead).toContain(invest.kinds.currencyIn.ILS);
-    // the sheet heads with the definition and the figure's sign (re-check F4)
+    // the sheet heads with the definition and the figure's sign
     expect(sheet("1144385")!.signed).toBe(true);
     expect(sheet("1144385")!.about).toBe(invest.kinds.gapHead.net);
-    // the sheet says the fund's return is after its costs and a lead is not a gain (pass 3 readers)
+    // the sheet says the fund's return is after its costs and a lead is not a gain
     expect(sheet("1144385")!.lead).toContain("אחרי כל העלויות");
     expect(sheet("1144385")!.lead).toContain("לא נספרת כרווח");
     // Tel Aviv's indices are gross total return by TASE's own guidelines (ETF-42, ETF-44, ETF-45), at the index page the report links to
@@ -193,7 +193,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     for (const f of telAviv) expect(f.tracking_record!.benchmark.dividends, f.id).toBe("gross");
     // an exempt Israeli fund's Israeli income is exempt (TXS-08), and every fund on its list measures against the same gross index:
     // its gap stands against the gross index (F-92 (d))
-    // one year is named, not called a yearly mean (pass 3 readers); three years are a yearly mean over the three the report prints (pass 4)
+    // one year is named, not called a yearly mean; three years are a yearly mean over the three the report prints
     for (const [id, n] of [["1209444", 1], ["1143783", 3]] as const) {
       expect(rec(id).tracking_record!.years, id).toHaveLength(n);
       expect(cell(id), id).toContain(invest.kinds.gapYears(n, rec(id).tracking_record!.years[0]!.year));
@@ -232,7 +232,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     // S&P 500: net gaps and three funds whose index is of no stated kind
     expect(noteOf(sp)).toContain("מדד נטו");
     expect(noteOf(sp)).toContain("״לא מושווה״");
-    // why the shekels are not the gap is the shekel column's "?", said only where the list has a gap column (2026-11-08)
+    // why the shekels are not the gap is the shekel column's "?", said only where the list has a gap column
     expect(invest.funds.diffHelp(true, true)).toContain("לא נספרת כרווח");
     expect(invest.funds.diffHelp(true, false)).not.toContain("לא נספרת כרווח");
     // TA-125: every gap against the gross index, nothing "not compared", so no sentence for it
@@ -241,7 +241,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(noteOf(ta)).not.toContain("מדד נטו");
     // none compared: the column is left out and the note says so once
     expect(noteOf(["unstated", "none"])).toContain("אין עמודה כזאת");
-    // "אין שנה מלאה" is explained where an Israeli fund shows it, "עוד לא נאסף" where a foreign one does, and neither otherwise (pass 3 readers)
+    // "אין שנה מלאה" is explained where an Israeli fund shows it, "עוד לא נאסף" where a foreign one does, and neither otherwise
     expect(noteOf(["gross", "none"])).toContain("״אין שנה מלאה״");
     expect(noteOf(["gross", "gross"])).not.toContain("״אין שנה מלאה״");
     expect(gapNoteOf([rec("ie00b5bmr087"), rec("ie00bfmxxd54")], ["net", "none"])).toContain("״עוד לא נאסף״");
@@ -260,17 +260,17 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a fund in Tel Aviv and abroad: each of its rows names the other, and the group's head counts nothing (founder, 2026-11-08)", () => {
+  it("a fund in Tel Aviv and abroad: each of its rows names the other, and the group's head counts nothing", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
     const out = html(createElement(FundColumn, { view: sp, bundle, plan, today: t, pick: pickOfHeadline(sp)!, onPick: () => undefined, filter: null, onFilter: () => undefined })).replace(/<!-- -->/g, "");
-    // the head counts nothing: it names the group and what all its funds share (founder, 2026-11-08: "remove the fund count")
+    // the head counts nothing: it names the group and what all its funds share
     expect(out).toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.allOf}`);
     expect(out).not.toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.groupCount(distinct)}`);
     expect(out).not.toContain("בשתי שורות");
-    // each row of the fund listed twice names the other, so the rows and the count agree visibly (independent check of pass 5)
+    // each row of the fund listed twice names the other, so the rows and the count agree visibly
     expect(out).toContain(invest.pair.sameFundAs("IE00B5BMR087", true));
     expect(out).toContain(invest.pair.sameFundAs("1159250", false));
     expect(out.split("ולכן שתיהן נספרות כקרן אחת").length - 1).toBe(2 * (funds.length - distinct));
@@ -392,14 +392,14 @@ describe("a gap's sheet says its unit as its row does, in full (recheck 3 M2, co
       if (!v) continue;
       const head = headOf(v), row = rowOf(html(createElement(GapCell, { rec: f, today: t, list })));
       expect(head, f.id).not.toBe("");
-      // the head carries the row's full words (pass 5 readers): "בשנה · 3 שנים", not "בשנה"
+      // the head carries the row's full words: "בשנה · 3 שנים", not "בשנה"
       expect(head, `${f.id}: head "${head}", row "${row}"`).toBe(row);
       const sheet = html(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }));
       if (f.tracking_record!.years.length === 1) {
         one++;
         expect(head, f.id).toBe(`ב־${f.tracking_record!.years[0]!.year}`);
         expect(head, f.id).not.toContain("בשנה");
-        // a one-year figure is no mean, and its sheet does not speak of one (independent check of pass 5)
+        // a one-year figure is no mean, and its sheet does not speak of one
         expect(sheet, f.id).not.toContain("הממוצע");
       } else {
         many++;

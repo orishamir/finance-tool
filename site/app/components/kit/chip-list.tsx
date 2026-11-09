@@ -1,5 +1,5 @@
 // A list of things the person can choose among, add to, rename, delete or put in order (design-system 11): the goals board's
-// pills, moved here whole (2026-10-25). The chosen pill is light on dark; it carries a pencil (rename in place) and a bin
+// pills, moved here whole. The chosen pill is light on dark; it carries a pencil (rename in place) and a bin
 // (delete, after a "are you sure" popover) when the item is editable; a pill is dragged sideways to reorder; the last pill
 // adds one (dashed). A pill with `href` is a link (a page per item), otherwise a button calling `onSelect`.
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
@@ -42,7 +42,7 @@ export interface ChipListProps {
   /** Beside the heading, smaller and muted; wraps under it when the line is full. */
   note?: ReactNode;
   items: ChipItem[];
-  /** The heading names the list for a screen reader only, when the card around the list already shows its title (the first page's guide door, 2026-10-26). */
+  /** The heading names the list for a screen reader only, when the card around the list already shows its title (the first page's guide door). */
   headingHidden?: boolean;
   /** The chosen pill's id. */
   value: string | null;

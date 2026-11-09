@@ -22,7 +22,7 @@ export function GapNote({ reason, label = copy.common.notComputed, className }: 
   );
 }
 
-/** Points inside the body text of a guide (2026-11-02): body size, one point each, for a sentence that ends "..., אבל אז משלמים:". Notes under a visual are NoteList. */
+/** Points inside the body text of a guide: body size, one point each, for a sentence that ends "..., אבל אז משלמים:". Notes under a visual are NoteList. */
 export function ProseList({ items, className }: { items: ReactNode[]; className?: string }) {
   return (
     <ul className={cx("flex flex-col gap-1 max-w-measure list-disc ps-5 marker:text-chart-axis", className)}>
@@ -33,7 +33,7 @@ export function ProseList({ items, className }: { items: ReactNode[]; className?
   );
 }
 
-/** The notes under a visual, one point each (2026-10-26): what a figure leaves out, where a rate comes from. Never one long sentence. */
+/** The notes under a visual, one point each: what a figure leaves out, where a rate comes from. Never one long sentence. */
 export function NoteList({ items, className }: { items: ReactNode[]; className?: string }) {
   return (
     <ul className={cx("flex flex-col gap-1 text-sm text-muted-foreground max-w-measure list-disc ps-5 marker:text-chart-axis", className)}>
@@ -49,7 +49,7 @@ const NUMBER = /\d+(?:[.,]\d+)*(?:\s?(?:₪|%))?/g;
 /**
  * Hebrew prose that carries figures, as a record prints it (a bank's conditions: "3,000 ₪", "31.03.2026", "2%"): each figure is isolated
  * left to right, so the shekel sign and the digits keep one order beside Hebrew words, as in a `Num`. The figures stay the document's own,
- * not site figures. In the kit since 2026-11-07 (the current account's visual and the bank page's cards).
+ * not site figures. In the kit (the current account's visual and the bank page's cards).
  */
 export function PrintedText({ text }: { text: string }) {
   const parts: ReactNode[] = [];

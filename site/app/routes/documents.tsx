@@ -5,7 +5,8 @@ import { documents as copy, site } from "../copy";
 import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure, Sentence, TariffDate, When } from "../components/kit";
+import { NoPageCompanyTerms } from "../components/decoder/company-terms";
+import { Card, cx, Disclosure, MixedName, Sentence, TariffDate, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, SectionId } from "../lib/documents.server";
 import { isPdfUrl, sourceHref } from "../lib/sources";
@@ -14,11 +15,16 @@ import { isPdfUrl, sourceHref } from "../lib/sources";
 const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions"] as const;
 
 export async function loader() {
-  const { today } = await import("../lib/data.server");
+  const { today, loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
   const { loadDocuments, loadDocumentData } = await import("../lib/documents.server");
-  // the rule links open the rule on its shelf page, so the page carries no rule records (the chips of 500 rules made it 2 MB)
+  const { noPageCompanyTerms } = await import("../lib/institutions.server");
+  // the rule links open the rule on its shelf page, so the page carries no rule records (the chips of 500 rules made it 2 MB), except the
+  // cards of what the documents of companies with no page of their own say, and of what the site keeps that is not a rule
   const docs = loadDocuments();
-  return { docs, data: await loadDocumentData(), today: today() };
+  const all = loadRules();
+  const noPage = noPageCompanyTerms(all);
+  const rules = Object.fromEntries([...noPage.companies.flatMap((c) => c.ids), ...noPage.none].map((id) => [id, all[id]!]));
+  return { docs, data: await loadDocumentData(), today: today(), noPage, rules, pointed: pointedRecords(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 
 export function meta() {
@@ -97,8 +103,8 @@ function DataLink({ href }: { href: string | null }) {
 }
 
 export default function Documents() {
-  const { docs, data, today } = useLoaderData<typeof loader>();
-  const pd = { rules: {}, terms: {}, dimensions: {}, today };
+  const { docs, data, today, noPage, rules, pointed, dimensions } = useLoaderData<typeof loader>();
+  const pd = { rules, pointed, terms: {}, dimensions, today };
   const d = copy.data;
   return (
     <PageShell current="other" data={pd}>
@@ -155,6 +161,10 @@ export default function Documents() {
           })}
         </div>
 
+        <div className="pt-4">
+          <NoPageCompanyTerms companies={noPage.companies} none={noPage.none} />
+        </div>
+
         <header className="flex flex-col gap-2 pt-4">
           <h2 className="text-xl lg:text-2xl font-semibold">{d.title}</h2>
           <p className="text-base text-muted-foreground max-w-measure">{d.lede}</p>
@@ -190,8 +200,8 @@ export default function Documents() {
             <ul className="grid gap-4 lg:grid-cols-2 pt-2">
               {data.deposits.map((x) => (
                 <Card as="li" key={x.key} className="flex flex-col gap-1 min-w-0">
-                  <h3 className="text-lg font-semibold"><bdi>{x.title}</bdi></h3>
-                  <p className="text-sm text-muted-foreground"><bdi>{x.line}</bdi></p>
+                  <h3 className="text-lg font-semibold"><MixedName>{x.title}</MixedName></h3>
+                  <p className="text-sm text-muted-foreground"><MixedName>{x.line ?? ""}</MixedName></p>
                   <DataLink href={x.href} />
                 </Card>
               ))}

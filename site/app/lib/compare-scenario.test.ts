@@ -1,11 +1,15 @@
-// Scenario fixes of 2026-10-24 (sc-compare): the fit-table demotion, the limitation-first headline, the parameter-rate disclosure,
-// the flip target that never names the current leader, the pooled coverage mark and the real-terms figure.
+// The fit-table demotion (P-04): an accepted fall below an option's row keeps it from the ranking, read from the option's own row.
 import { describe, expect, it } from "vitest";
-import { blockedMarks, buildView, equityFit, evaluate, fitDropOf, fitDropReason, limitationFirst, parameterRateLead, realOfIdle, type RunGoal } from "./compare";
+import type { Reason } from "@finance-tool/engine";
+import { equityFit, evaluate, fitDropReason, type RunGoal } from "./compare";
 import { compareBundle } from "./compare.server";
-import { flipTargets } from "../components/compare/sensitivity";
 
 const bundle = compareBundle();
+/** The P-04 fall of a `fitDropReason`, or null for any other reason. */
+const fitDropOf = (r: Pick<Reason, "code" | "detail">): number | null => {
+  const m = r.code === "rule-open" && r.detail ? /^fit-drop:(.+)$/.exec(r.detail) : null;
+  return m ? Number(m[1]) : null;
+};
 // the inheritance case: 250,000 now, 10 years, a return of 7 %, an accepted drop of 0
 const base: RunGoal = { horizonYears: 10, amountNow: 250_000, monthly: 0, available: 0, anytime: false, returnPct: 7, inflationPct: null, age: 40, employment: "employee", salary: 15_000, pensionEmployee: null, pensionEmployer: null, insurancePct: 0.3, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
 
@@ -51,57 +55,5 @@ describe("the fit demotion reads the option's own P-04 row (review fix 2026-10-2
     const w = { ...get("brokerage-account") };
     delete w.fitBasis;
     expect(fitDropReason(bundle, w, { acceptedFall: 0 })).toBeNull();
-  });
-});
-
-describe("headline lines", () => {
-  const long: RunGoal = { ...base, returnPct: null, horizonYears: 8, amountNow: 67_000 };
-  it("leads with the limitation at or above the equity minimum with no return, not below it", () => {
-    const min = equityFit(bundle)!.minYears.value as number;
-    for (const [years, expected] of [[min, true], [min - 1, false]] as const) {
-      const out = buildView(bundle, { ...long, horizonYears: years });
-      expect(out.kind).toBe("ok");
-      if (out.kind === "ok") expect(limitationFirst(out, { horizonYears: years }, bundle)).toBe(expected);
-    }
-  });
-  it("discloses the site's cash rate when the leader runs on it and a rival's rate is published", () => {
-    const out = buildView(bundle, { ...long, horizonYears: 1 });
-    if (out.kind !== "ok") throw new Error("not ok");
-    const lead = parameterRateLead(out, bundle, { ...long, horizonYears: 1 });
-    // either the leader runs on a published rate (no line) or on P-05's (the line names it)
-    if (lead) expect(lead.rate.parameter).toBeDefined();
-  });
-});
-
-describe("a flip never names the current leader", () => {
-  it("names the newcomers, or the members left of a tie", () => {
-    expect(flipTargets("b", new Set(["a"]))).toEqual({ ids: ["b"], alongside: false });
-    expect(flipTargets("a|b", new Set(["a"]))).toEqual({ ids: ["b"], alongside: true });
-    expect(flipTargets("a", new Set(["a", "b"]))).toEqual({ ids: ["a"], alongside: false });
-  });
-});
-
-describe("pooled coverage", () => {
-  it("shows the options blocked on a dimension even when another option covers it", () => {
-    const out = buildView(bundle, { ...base, horizonYears: 20, monthly: 3_000, amountNow: 40_000, inflationPct: 2.5 });
-    if (out.kind !== "ok") throw new Error("not ok");
-    const mixed = out.marks.filter((m) => m.mark === "covered" && m.blockedGroups);
-    for (const m of mixed) for (const g of m.blockedGroups!) expect(g.options.length).toBeGreaterThan(0);
-  });
-  it("groups the blocked options by the question their own record names, never one option's question for another's", () => {
-    const marks = blockedMarks([
-      { id: "kgl", dimensions: { "loss-offset": "blocked:TXK-OQ10" } },
-      { id: "ira", dimensions: { "loss-offset": "blocked" } },
-      { id: "csp", dimensions: { "loss-offset": "blocked:TXK-OQ10", minimum: "blocked:GOV-OQ7" } },
-    ]);
-    expect(marks.get("loss-offset")).toEqual({ options: ["kgl", "csp", "ira"], groups: [{ code: "TXK-OQ10", options: ["kgl", "csp"] }, { code: "", options: ["ira"] }] });
-    expect(marks.get("minimum")).toEqual({ code: "GOV-OQ7", options: ["csp"], groups: [{ code: "GOV-OQ7", options: ["csp"] }] });
-  });
-});
-
-describe("real terms", () => {
-  it("is the amount over the inflation index of the years", () => {
-    expect(realOfIdle(67_000, 2, 8)).toBeCloseTo(67_000 / 1.02 ** 8, 6);
-    expect(realOfIdle(100, 0, 10)).toBe(100);
   });
 });

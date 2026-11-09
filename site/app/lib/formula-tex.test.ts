@@ -1,4 +1,4 @@
-// A formula's sheet shows the math docs/method.md writes for it, with the Hebrew key to its symbols from copy.ts (founder, 2026-11-08).
+// A formula's sheet shows the math docs/method.md writes for it, with the Hebrew key to its symbols from copy.ts.
 // The two live in different files, so this keeps them in step: every formula written as math has a key, every key a formula, every
 // symbol the key explains is in the formula, a formula of several lines names each, and KaTeX reads every line without an error.
 import katex from "katex";

@@ -29,7 +29,6 @@ import {
   type VariantExposure,
   type WorkbenchInput,
 } from "../../src/index.ts";
-import { RecordInputError } from "../../src/index.ts";
 import { context, golden, loadRules } from "./harness.ts";
 import { r4Expected as x } from "./expected.ts";
 

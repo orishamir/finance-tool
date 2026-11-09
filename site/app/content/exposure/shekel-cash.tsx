@@ -1,4 +1,4 @@
-// Exposure prose for מזומן שקלי (flows 6.6). Written 2026-10-23 from the rule base (BANK, TXI, MF, REG, CAT,
+// Exposure prose for מזומן שקלי (flows 6.6). Written from the rule base (BANK, TXI, MF, REG, CAT,
 // BRK); each block ends with the rules it rests on. NEW copy for the founder to review.
 import { Link } from "react-router";
 import type { ExposureContent } from "../guide/types";
@@ -11,12 +11,12 @@ export const content: ExposureContent = {
     return (
       <>
         <p className="max-w-measure">
-          הכסף נשאר בשקלים ומקבל <Term id="ריבית">ריבית</Term>: <Term prefix="ב" id="חשבון עובר ושב">עו"ש</Term>, <Term prefix="ב" id="פיקדון">פיקדון</Term> לתקופה או <Term prefix="ב" id="תכנית חיסכון">תכנית חיסכון</Term>. הוא אינו מושקע במניות ואינו צמוד למטבע, ולכן בשקלים הוא לא יורד; מה שמשתנה הוא הריבית, שעוקבת אחרי <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>.
+          הכסף נשאר בשקלים ומקבל <Term id="ריבית">ריבית</Term>: <Term prefix="ב" id="חשבון עובר ושב">עו"ש</Term>, <Term prefix="ב" id="פיקדון">פיקדון</Term> לתקופה או <Term prefix="ב" id="תוכנית חיסכון">תכנית חיסכון</Term>. הוא אינו מושקע במניות ואינו צמוד למטבע, ולכן בשקלים הוא לא יורד; מה שמשתנה הוא הריבית, שעוקבת אחרי <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>.
         </p>
         <Sentence measure>
           כל בנק חייב לפרסם טבלה אחידה של סוגי הפיקדונות והריבית עליהם, <Term prefix="ו" id="בנק ישראל">בנק ישראל</Term> מפרסם כל חודש את הריבית ששילם כל בנק בפועל. על ריבית מפיקדון <Term prefix="ש" id="לא צמוד">אינו צמוד למדד</Term> משלמים מס של {unlinked ? <Num value={unlinked} /> : null} מכל הריבית, והבנק מנכה אותו בתשלום.
         </Sentence>
-        {/* D6 (amended 2026-10-27): a money-market fund holds more than cash, so it has its own entry and page */}
+        {/* D6: a money-market fund holds more than cash, so it has its own entry and page */}
         <p className="max-w-measure">
           <Link to="/guide/money-market-fund-daily" className="text-link hover:underline">קרן כספית</Link> היא דרך אחרת להחזיק כסף לטווח קצר, אבל היא לא מזומן: לפי החוק היא מחזיקה גם <Link to="/guide/makam" className="text-link hover:underline">מק״מ</Link> <Term prefix="ו" id={'אג"ח ממשלתית קצרה'}>איגרות חוב קצרות</Term> בדירוג גבוה, לצד פיקדונות ומזומן, והמס בה נגבה אחרת. לכל אחת מהן עמוד משלה.
         </p>
@@ -43,5 +43,5 @@ export const content: ExposureContent = {
       <RulesLine ids={["TXI-25", "BANK-27", "BANK-06", "REG-04", "REG-06", "TXI-20"]} />
     </>
   ),
-  termIds: ["ריבית", "חשבון עובר ושב", "פיקדון", "ריבית בנק ישראל", "מסלול השקעה", "תחנת יציאה", "יתרת זכות בחשבון", "קרן כספית", "מוצרי שוק הכסף", "ביטוח פיקדונות", "קופת גמל בניהול אישי", "כספי (שקלי)", "חשבון ניירות ערך", 'אג"ח ממשלתית קצרה', "לא צמוד", "תכנית חיסכון", 'חש"ב', "קופת גמל להשקעה", "קרן השתלמות", "רשות שוק ההון ביטוח וחיסכון", "איגרת חוב"],
+  termIds: ["ריבית", "חשבון עובר ושב", "פיקדון", "ריבית בנק ישראל", "מסלול השקעה", "תחנת יציאה", "יתרת זכות בחשבון", "קרן כספית", "מוצרי שוק הכסף", "ביטוח פיקדונות", "קופת גמל בניהול אישי", "כספי (שקלי)", "חשבון ניירות ערך", 'אג"ח ממשלתית קצרה', "לא צמוד", "תוכנית חיסכון", 'חש"ב', "קופת גמל להשקעה", "קרן השתלמות", "רשות שוק ההון ביטוח וחיסכון", "איגרת חוב"],
 };

@@ -1,4 +1,4 @@
-// Government bonds held directly in a securities account (a security, not a wrapper: D6 amended 2026-10-26): F-25 with F-12 commissions, F-14
+// Government bonds held directly in a securities account (a security, not a wrapper: D6): F-25 with F-12 commissions, F-14
 // custody, the account's F-17 monthly fee and the F-40 exit.
 import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { bondCoupon } from "../formulas/holding-tax.ts";

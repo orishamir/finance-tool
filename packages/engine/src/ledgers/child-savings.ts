@@ -46,7 +46,7 @@ export type ChildSavingsResult = RunResult & {
  * doubled if the parent adds (CS-04), from birth to 18 (CS-02); grants at 3, 12 or 13, and 21 by cohort,
  * updated the same way (CS-13); no fees until 21 (NII pays, CS-18), then on the provident route the yearly fee on the
  * balance at CS-18's legal cap, an upper bound ("עד"), or at the rate the person enters from their manager's bylaw, bounded
- * by the cap (2026-10-26; CS-30's 0.23% is two companies' own rate, a named example only). No deposits after 18, so the
+ * by the cap (CS-30's 0.23% is two companies' own rate, a named example only). No deposits after 18, so the
  * cap on deposits does not bite. Deposits and grants are principal (TXK-19). Exit tax per F-50.
  */
 export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): ChildSavingsResult {

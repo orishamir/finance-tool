@@ -1,5 +1,5 @@
 // Every bank product row says what each of its values is: a figure, a word, "unknown", or an open question with its lock, never the
-// record's own "null" (2026-11-06: Hapoalim's WIN WIN printed "null" as its tax, a best-of deposit no tax rule covers yet).
+// record's own "null" (Hapoalim's WIN WIN printed "null" as its tax, a best-of deposit no tax rule covers yet).
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
@@ -18,7 +18,7 @@ const text = (html: string) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " "
 
 describe("bank product rows", () => {
   const banks = [...new Set(loadDepositTerms().map((d) => d.bank))];
-  // each row with the rules its own page loads, as the page renders it (2026-11-07 code review: an empty set hid a missing BANK-21)
+  // each row with the rules its own page loads, as the page renders it (an empty set hid a missing BANK-21)
   const rows = banks.flatMap((id) => {
     const page = buildInstitution(id);
     const known = new Set(Object.keys(page?.rules ?? {}));
@@ -36,7 +36,7 @@ describe("bank product rows", () => {
   it("show a tax no rule covers as an open question", () => {
     const winWin = rows.find((r) => r.p.id === "hapoalim-win-win-leshana")!;
     expect(text(render(winWin))).toContain(strength.open.label);
-    // 2026-11-07 (independent check 2): the value names its question, and neither its sheet nor its label calls it sourced
+    // the value names its question, and neither its sheet nor its label calls it sourced
     expect(openQuestionOf(winWin.p.taxBucket)).toBe("TXI OQ19");
     expect(render(winWin)).not.toMatch(new RegExp(`aria-label="${strength.open.label}, ${numbers.legend.sourced}`));
     const sheet = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(ValueSheet, { value: winWin.p.taxBucket, exact: false, data, headId: "h", descId: "d" }) })));
@@ -44,7 +44,7 @@ describe("bank product rows", () => {
     expect(text(sheet)).toContain(strength.open.line);
   });
 
-  // 2026-11-07 (independent check 2): Mizrahi-Tefahot 287 can be left any day after its first week, and its card said "אין"
+  // Mizrahi-Tefahot 287 can be left any day after its first week, and its card said "אין"
   it("say a deposit's exit points as its record has them", () => {
     const daily = rows.find((r) => r.p.id === "mizrahi-tefahot-rimonim-yomi-prime-shana-287")!;
     expect(daily.p.exitPoints).toEqual({ exists: true, everyMonths: null });
@@ -52,14 +52,14 @@ describe("bank product rows", () => {
     expect(exits(daily)).toBe(r4catalogue.exits.someCard);
     const said = (r: (typeof rows)[number]) => (r.p.exitPoints.exists && !r.p.exitPoints.everyMonths && r.p.conditions ? r4catalogue.exits.someCard : exitWords(r.p.exitPoints.exists, r.p.exitPoints.everyMonths));
     for (const r of rows) expect(exits(r), r.p.id).toBe(said(r));
-    // a deposit that cannot be broken but has exits says where the money comes out (fresh readers, 2026-11-07)
+    // a deposit that cannot be broken but has exits says where the money comes out
     const breakWord = (r: (typeof rows)[number]) => /שבירה\s*<\/dt>\s*<dd[^>]*>\s*<span[^>]*>([^<]*)</.exec(render(r))?.[1]?.trim();
     expect(breakWord(daily)).toBe(r4catalogue.breakAtExits);
     expect(exitWords(true, 1)).toBe("כל חודש");
     expect(exitWords(true, 3)).toBe("כל 3 חודשים");
   });
 
-  // 2026-11-07 (independent check 2): the cards did not say what sets a deposit apart
+  // the cards did not say what sets a deposit apart
   it("label a deposit's kind and print the bank's conditions and doubt, never its English notes", () => {
     for (const r of rows) {
       const html = render(r);
@@ -72,7 +72,7 @@ describe("bank product rows", () => {
     }
     const closed = rows.find((r) => r.p.id === "discount-shana-kvua-kol-habankim-0513")!;
     expect(text(render(closed))).toContain("רק למי שאין לו חשבון עו״ש בדיסקונט");
-    // the label's sheet gives its rule: the page loads the rules its labels cite (2026-11-07 code review, BANK-21 was missing)
+    // the label's sheet gives its rule: the page loads the rules its labels cite (BANK-21 was missing)
     expect(depositLabels(closed.p.variant, closed.known, closed.p.table).find((l) => l.id === "deposit-closed-system")?.rules).toEqual(["BANK-21"]);
     for (const r of rows) for (const id of depositKindRules(r.p.variant).filter((id) => allRules[id])) expect(r.known.has(id), `${r.p.id} ${id}`).toBe(true);
     expect(rows.find((r) => r.p.id === "discount-kvua-leshana-mivtza-0183")!.p.variant).toContain("campaign");

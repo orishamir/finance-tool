@@ -1,7 +1,7 @@
 // "שווה לדעת" (synthesis 3.7): two or three pinned facts per wrapper guide page, each the rule's Hebrew title,
 // its first figure, the rule chip and the weak-strength tag. Nothing renders when no row can be shown.
 //
-// 2026-10-25 (current-account page): a row can also be a fact computed from the published records, not a rule
+// current-account page: a row can also be a fact computed from the published records, not a rule
 // (`WorthFactRow`): it carries its own content, every figure in it through `Num`, and is listed after the rule rows.
 import type { ReactNode } from "react";
 import type { RuleRecord } from "@finance-tool/schema";
@@ -15,7 +15,7 @@ export interface WorthRow {
   id: string;
   title: string;
   figure: SiteValue | null;
-  /** The figure is a legal cap (its name holds `cap`, as `balance_cap`): shown with "עד" so it never reads as the rate charged (2026-10-26). */
+  /** The figure is a legal cap (its name holds `cap`, as `balance_cap`): shown with "עד" so it never reads as the rate charged. */
   upTo?: boolean;
   weak: "institution" | "secondary" | null;
 }
@@ -29,12 +29,12 @@ export interface WorthFactRow {
 
 /** The rows for one wrapper: pinned ids whose record is loaded and has a Hebrew title, at most three. */
 /**
- * A figure name that is a legal cap, shown with "עד" (2026-10-26): its name holds `cap` as a word (`balance_cap`, `deposit_cap_after_21`),
+ * A figure name that is a legal cap, shown with "עד": its name holds `cap` as a word (`balance_cap`, `deposit_cap_after_21`),
  * but not a minimum (`min_market_cap_usd`) nor a market capitalisation (`market_cap_coverage`), which are no ceiling on what is charged.
  */
 export const isCapName = (name: string) => /(^|_)cap(_|$)/.test(name) && !/(^|_)min(_|$)/.test(name) && !/(^|_)market_cap(_|$)/.test(name);
 
-/** A figure name that is the amount written in the law before indexation (`base_ceiling`, KGL-02): never the amount in force, so a row does not show it (2026-11-02). */
+/** A figure name that is the amount written in the law before indexation (`base_ceiling`, KGL-02): never the amount in force, so a row does not show it. */
 export const isBaseName = (name: string) => name.startsWith("base_");
 
 export function worthRows(ids: readonly string[] | undefined, rules: Record<string, RuleRecord>, today: string): WorthRow[] {

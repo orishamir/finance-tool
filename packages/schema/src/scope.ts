@@ -7,7 +7,7 @@ import { z } from "zod";
 export const ruleScope = z.enum(["general", "institution", "unsettled"]);
 export type RuleScope = z.infer<typeof ruleScope>;
 
-/** A company's name as the site shows it: no note in brackets beside it (founder, 2026-11-05: "remove the ()"); a note goes in the text. */
+/** A company's name as the site shows it: no note in brackets beside it; a note goes in the text. */
 export const companyName = z.string().min(1).regex(/^[^()]*$/, "a company's name carries no note in brackets");
 
 /** A company a scope names: its id in `data/sources/institutions.json` and the Hebrew name the site shows. */
@@ -26,8 +26,8 @@ export const generalSourceKinds: ReadonlySet<string> = new Set(["law", "regulati
 
 /**
  * Records the rule base keeps that are not rules (8dd1f013:research/knowledge/2026-10-25-scope/requests.md §4, a judgement call: listed,
- * not moved). The lead's brief of 2026-10-26: leave them where they are for now. Each entry that is not general names every file
- * that cites it today (reviews, 2026-10-26): a data file whose `rule_ids` hold it (the validator checks every file under data/ but
+ * not moved). Each entry that is not general names every file
+ * that cites it today: a data file whose `rule_ids` hold it (the validator checks every file under data/ but
  * data/rules and data/sources) and a site source file that quotes it (the site test `site/app/lib/scope.test.ts` checks every file
  * under site/app). A use in a file the entry does not name fails, and so does a named file that is gone or no longer cites it: the
  * lists only shrink. A general one may stand anywhere (D30), so its `files` stay empty. Each still carries its scope, and its card
@@ -81,15 +81,15 @@ export const notRuleAllowedIn = (id: string, file: string): boolean => Object.ha
 
 /**
  * An index page is the index provider's own context (D31; requests.md §5: "ETF-37 to ETF-40 may stay on index-sp500"): the
- * provider's rulebook about its own index may be cited there. Exposure id → the records it may cite, by name (review, 2026-10-26:
- * not every record of the provider), each the provider's own (the validator checks the record names only that provider).
+ * provider's rulebook about its own index may be cited there. Exposure id → the records it may cite, by name (not every record of the provider),
+ * each the provider's own (the validator checks the record names only that provider).
  */
 export const ownContextExposures: Readonly<Record<string, readonly string[]>> = {
   "index-sp500": ["ETF-37", "ETF-38", "ETF-39", "ETF-40"],
 };
 
 /**
- * A guide whose subject has no general source for its terms (2026-11-02): no law or regulator lists these funds or their fees, so the
+ * A guide whose subject has no general source for its terms: no law or regulator lists these funds or their fees, so the
  * page shows each company's own documents, every one under that company's name. The list names the records; it only grows with a new company's document.
  */
 export const ownContextGuides: Readonly<Record<string, readonly string[]>> = {
@@ -98,7 +98,7 @@ export const ownContextGuides: Readonly<Record<string, readonly string[]>> = {
   "mutual-funds": ["ETF-61"],
 };
 
-// ---------------------------------------------------------------- a company's own document (review, 2026-10-26)
+// ---------------------------------------------------------------- a company's own document
 
 /** Hosts whose files others file: a Maya filing is its filer's own document, never the exchange's. */
 export const filingHosts: ReadonlySet<string> = new Set(["mayafiles.tase.co.il"]);
@@ -140,7 +140,7 @@ export function ownDocumentCompanies(rule: { scope_institutions?: readonly { id:
 }
 
 /**
- * The companies whose section lists a record (spec §4, "מה כתוב במסמכים של {company}"; review, 2026-10-26): each company it names
+ * The companies whose section lists a record (spec §4): each company it names
  * whose own document it cites (`own`, from `ownDocumentCompanies`); none for a general rule or a not-rule. A record about a company
  * that cites none of its documents is never listed as that company's.
  */

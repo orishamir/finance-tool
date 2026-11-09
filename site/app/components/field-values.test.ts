@@ -1,4 +1,4 @@
-// A chart field's value is a plain number (founder, 2026-11-08, guidelines/charts.md): its default and what the reader types look alike,
+// A chart field's value is a plain number (guidelines/charts.md): its default and what the reader types look alike,
 // with no site-parameter tag, no "you entered" mark and nothing that opens; a calculation sheet lists it plainly; the site's real
 // parameters keep their tag; each field carries "↺ חזרה ל־{start}" on its label line, kept in place while hidden.
 import { createElement } from "react";

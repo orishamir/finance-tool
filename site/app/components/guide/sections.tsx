@@ -2,10 +2,11 @@
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router";
-import { guide as copy, r3fees, scopeWords, trackBrowser } from "../../copy";
+import { guide as copy, guideIndex, r3fees, trackBrowser } from "../../copy";
 import type { Strength } from "../../lib/value";
-import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
+import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
 import { IdRef, RulesLine, StrengthLabel } from "../provenance";
+import { Breadcrumb } from "../shell";
 import { Card, cx, Disclosure, gershayim, KeyValueList as KitKeyValueList, Section, TableCols } from "../kit";
 
 export interface SectionDef {
@@ -63,6 +64,27 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
   );
 }
 
+/** A guide page's columns: the section index beside the page's header and sections. */
+export function GuideFrame({ sections, current, children }: { sections: readonly SectionDef[]; current: string; children: ReactNode }) {
+  return (
+    <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
+      <SectionIndex sections={sections} current={current} />
+      <div className="flex-1 min-w-0 flex flex-col gap-section">{children}</div>
+    </div>
+  );
+}
+
+/** A guide page's header: the way back to the guide, the title, then what the page adds under it. */
+export function GuideHeader({ title, children }: { title: string; children?: ReactNode }) {
+  return (
+    <header className="flex flex-col gap-3">
+      <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={title} />
+      <h1 className="text-2xl lg:text-3xl font-semibold">{title}</h1>
+      {children}
+    </header>
+  );
+}
+
 /** A section of a guide page. */
 export function GuideSection({ id, title, children, className }: { id: string; title: string; children: ReactNode; className?: string }) {
   return (
@@ -100,7 +122,7 @@ export interface FeeRow {
   range?: ReactNode;
 }
 
-/** `feePage`: the fee page has an answer for this guide's product; without one the guide does not send the reader there (2026-11-07). */
+/** `feePage`: the fee page has an answer for this guide's product; without one the guide does not send the reader there. */
 export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactNode; feePage: boolean }) {
   const { id } = useParams();
   return (
@@ -248,7 +270,7 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
           {gershayim(r.explanation)}
           {r.mark === "blocked" && !endsSentence && "."}
         </span>
-        {/* audit A90: the status sentence is its own line, not glued to the question */}
+        {/* the status sentence is its own line, not glued to the question */}
         {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
         {r.rules.length > 0 && (
           <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-target justify-start gap-1 [&>svg]:size-4">
@@ -261,7 +283,7 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
 }
 
 /**
- * What the site took into account for this product (audit A42): the open questions first, as rows, and the full list
+ * What the site took into account for this product: the open questions first, as rows, and the full list
  * (every question the site asks of every product) one tap away. It is the site's coverage, not a to-do list for the person.
  */
 export function DimensionChecklist({ rows }: { rows: ChecklistRowView[] }) {
@@ -300,14 +322,14 @@ export function RelatedProducts({ items, label = copy.related }: { items: { href
       <span>{label}</span>
       {items.map((it) => (
         <Link key={it.href} to={it.href} className="a-chip">
-          {it.label}
+          {gershayim(it.label)}
         </Link>
       ))}
     </p>
   );
 }
 
-/** The links to the exposures a product can hold (audit A43). */
+/** The links to the exposures a product can hold. */
 export function ExposureLinks({ items }: { items: { id: string; name: string; href: string }[] }) {
   if (items.length === 0) return null;
   return (
@@ -336,7 +358,7 @@ function CompanyLinks({ companies }: { companies: { id: string; name: string }[]
   );
 }
 
-/** The companies that offer the product, behind one toggle (audit A42), or shown open (`open`); the "all companies" link stays outside. */
+/** The companies that offer the product, behind one toggle, or shown open (`open`); the "all companies" link stays outside. */
 export function InstitutionChips({ companies, allHref, tracks, open }: { companies: { id: string; name: string }[]; allHref: string; /** The product's track browser (`/tracks/<id>`) and the product's name, for the link to every company's tracks of it. */ tracks?: { href: string; name: string }; /** The list shows with no toggle. */ open?: boolean }) {
   return (
     <div className="flex flex-col gap-1">

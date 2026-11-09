@@ -1,4 +1,4 @@
-// The page tabs and the sortable head (2026-11-03): the current tab is marked and is a link, the head says its sort state, and a column
+// The page tabs and the sortable head: the current tab is marked and is a link, the head says its sort state, and a column
 // that sorts carries aria-sort on its head cell.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";

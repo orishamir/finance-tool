@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ruleRecord, valueObject } from "../src/index.ts";
+import { israelToday, ruleRecord, valueObject } from "../src/index.ts";
 
 const sourced = {
   value: 1.05,
@@ -75,5 +75,23 @@ describe("rule record (data-schema §3.1)", () => {
     expect(ruleRecord.safeParse({ ...rule, scope: "unsettled", scope_settle: "a CMA circular", scope_institutions: harel }).success).toBe(true);
     expect(ruleRecord.safeParse({ ...rule, scope_institutions: harel }).success).toBe(false);
     expect(ruleRecord.safeParse({ ...rule, scope_settle: "x" }).success).toBe(false);
+  });
+});
+
+describe("israelToday: the date on Israel's calendar, whatever the machine's clock zone", () => {
+  // 01:29 in Israel on 9 November is 23:29 UTC on the 8th: a UTC stamp dates the night's work a day early
+  const cases: [string, string][] = [
+    ["2026-11-08T23:29:00Z", "2026-11-09"], // winter, UTC+2
+    ["2026-11-08T21:59:00Z", "2026-11-08"],
+    ["2026-07-01T21:30:00Z", "2026-07-02"], // summer, UTC+3
+    ["2026-07-01T20:59:00Z", "2026-07-01"],
+    ["2026-12-31T22:00:00Z", "2027-01-01"],
+  ];
+  it("for the packages and for the tools alike", async () => {
+    const { israelToday: forTools } = await import("../../../tools/israel-date.mjs");
+    for (const [utc, day] of cases) {
+      expect(israelToday(new Date(utc)), utc).toBe(day);
+      expect(forTools(new Date(utc)), utc).toBe(day);
+    }
   });
 });

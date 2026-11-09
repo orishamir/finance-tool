@@ -18,7 +18,7 @@ export interface DepositInput {
     /** A-16: unlinked, CPI-linked, or prime-linked (taxed as unlinked, TXI-04). */
     linkage: "unlinked" | "cpi" | "prime";
     /**
-     * F-26 (2026-10-25): the largest balance of a current account that earns the rate (the record's `amount_range.max`,
+     * F-26: the largest balance of a current account that earns the rate (the record's `amount_range.max`,
      * BANK-09); interest is on min(balance, ceiling). Read for a current account only; a deposit's amount range is a
      * condition of the offer, not a cap on what the ladder holds.
      */
@@ -64,7 +64,7 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
     book.cite("BANK-26");
   } else {
     rate = book.rate("TXI-03", "rate");
-    // a prime-linked deposit is unlinked: the statutory index is the CPI or an exchange rate (TXI-04, a statement since 2026-10-26, no longer a reading)
+    // a prime-linked deposit is unlinked: the statutory index is the CPI or an exchange rate (TXI-04, a statement, not a reading)
     if (deposit.linkage === "prime") book.cite("TXI-04");
   }
 

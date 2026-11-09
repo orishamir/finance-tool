@@ -993,13 +993,13 @@
     "id": "mvtzry-shvk-hksp"
   },
   {
-    "term_he": "תכנית חיסכון",
+    "term_he": "תוכנית חיסכון",
     "term_source": {
       "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
       "url": "https://boi.org.il/media/rvzi1ngd/151.pdf"
     },
     "variants_he": [
-      "תוכנית חיסכון",
+      "תכנית חיסכון",
       "חיסכון"
     ],
     "explain_he": "חיסכון בבנק שאליו מפקידים סכומים מדי פעם, למשל כל חודש בהוראת קבע, לתקופה מוסכמת בריבית",
@@ -1021,7 +1021,7 @@
       "statement",
       "guide:savings-plan"
     ],
-    "notes": "Spelling differs: the Income Tax Ordinance (s.125D(a)) writes 'תכנית חיסכון'; banks (Massad, Leumi) and the heading of the 2025 Tax Authority guide write 'תוכנית/תוכניות חיסכון'. Whether each monthly instalment has its own lock-up and exit points is open (BANK OQ12). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
+    "notes": "Spelling: the site writes the full spelling 'תוכנית' (copy.md 10), as banks (Massad, Leumi) and the heading of the 2025 Tax Authority guide do; the Income Tax Ordinance (s.125D(a)) writes 'תכנית חיסכון', kept as a variant. Whether each monthly instalment has its own lock-up and exit points is open (BANK OQ12). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "tknyt-chyskvn"
   },
   {
@@ -1388,7 +1388,8 @@
       "דמי משמרת",
       "דמי משמורת",
       "דמי ניהול/טיפול פקדון ני\"ע",
-      "דמי ניהול פקדון ני\"ע"
+      "דמי ניהול פקדון ני\"ע",
+      "דמי שמירה"
     ],
     "explain_he": "עמלה שהבנק או בית ההשקעות גובים מדי תקופה על החזקת ניירות ערך בחשבון, ולא דמי הניהול של הקרן. בנק לא רשאי לגבות אותה על מק״מ ועל קרן כספית.",
     "rule_ids": [
@@ -1398,7 +1399,9 @@
       "BRK-17",
       "BRK-24",
       "BRK-33",
-      "TXS-06"
+      "TXS-06",
+      "IRA-16",
+      "IRA-22"
     ],
     "source": {
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
@@ -1413,9 +1416,12 @@
       "guide:brokerage-account",
       "guide:makam",
       "guide:money-market-fund-daily",
-      "guide:money-market-fund-renewable"
+      "guide:money-market-fund-renewable",
+      "provider-site",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident"
     ],
-    "notes": "Buy, sell and redemption commissions still apply to makam (BANK-18). 'דמי משמרת' is the ISA guide and broker wording (MF Terms).",
+    "notes": "Buy, sell and redemption commissions still apply to makam (BANK-18). 'דמי משמרת' is the ISA guide and broker wording (MF Terms). In a personally managed (IRA) fund the same fee may not exceed what the same manager's regular funds pay (IRA-16, regulation 7א(2), Reshumot 7819); Meitav Trade charges none in IRA accounts (IRA-22). The IRA row 'דמי משמרת' was merged here: it named the same charge.",
     "id": "dmy-nyhvl-pykdvn-nyyrvt-ark-a"
   },
   {

@@ -1,4 +1,4 @@
-// Fresh readers, 2026-11-07: "8.17 שנים" in "what would change the conclusion" read as oddly precise. Checked on the rendered panel of the
+// "8.17 שנים" in "what would change the conclusion" read as oddly precise. Checked on the rendered panel of the
 // fee page over several plans: every point where the conclusion changes is said as a reader means it (readerRound), and its sheet keeps the
 // exact point.
 import { createElement } from "react";
@@ -21,7 +21,7 @@ function sentences() {
   for (const entered of plans) {
     const inputs = feeInputs(bundle, null, { entered, age: null, employment: null });
     for (const id of ["kupat-gemel-lehashkaa", "keren-hishtalmut", "brokerage-account"]) {
-      const r: FeesResult = buildFees(bundle, data, { kind: "wrapper", wrapperId: id, from: "guide" } as never, inputs);
+      const r: FeesResult = buildFees(bundle, data, { kind: "wrapper", wrapperId: id }, inputs);
       if (r.kind !== "ok") continue;
       const view = feeSensitivity(r.args, r.analysis, r.args.runBundle);
       const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(FeeSensitivityPanel, { view, an: r.analysis, bundle, onOpen: () => {}, wordOf: verdictWord })));

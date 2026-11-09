@@ -1,4 +1,4 @@
-// "הידעת?": short facts from the rule base, each with its source and a way to the whole rule (the rules page, 2026-11-01; meant for the
+// "הידעת?": short facts from the rule base, each with its source and a way to the whole rule (the rules page; meant for the
 // guides too). Three at a time on a computer, a third fewer on a short screen, one on a phone; the next press brings the next ones, and
 // every card keeps one height, sized for the longest fact.
 import { useEffect, useRef, useState, type ReactNode } from "react";

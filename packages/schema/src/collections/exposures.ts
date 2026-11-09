@@ -1,7 +1,7 @@
 // data/instruments/exposures/: one record per exposure type. docs/data-schema.md §3.4.
 // Strict: a field the doc does not name is an error.
 import { z } from "zod";
-import { isoDate, productId } from "../value.ts";
+import { isoDate, productId, valueObject } from "../value.ts";
 
 /** data-schema §3.4, `kind`. */
 export const exposureKind = z.enum(["equity_index", "bond_index", "cash_like", "mixed", "commodity", "other"]);
@@ -9,7 +9,7 @@ export const exposureKind = z.enum(["equity_index", "bond_index", "cash_like", "
 export const exposureRecord = z.strictObject({
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "id is lowercase ASCII, digits and single hyphens"),
   names: z.strictObject({ he: z.array(z.string().min(1)), en: z.array(z.string().min(1)) }),
-  /** One Hebrew line on what the money is invested in (flows 6.6), shown under the h1 and on the guide list (added 2026-10-23). */
+  /** One Hebrew line on what the money is invested in (flows 6.6), shown under the h1 and on the guide list. */
   one_line_he: z.string().min(1).optional(),
   kind: exposureKind,
   /** ISO 4217 code, e.g. "USD", "ILS". */
@@ -22,11 +22,17 @@ export const exposureRecord = z.strictObject({
   wrapper_ids: z.array(productId).optional(),
   rule_ids: z.array(z.string().min(1)).optional(),
   open_questions: z.array(z.string().min(1)).optional(),
-  /** S5 (2026-10-25): true when the index is made of Israeli companies. Left out for cash, bond and general tracks. */
+  /** S5: true when the index is made of Israeli companies. Left out for cash, bond and general tracks. */
   constituents_israeli: z.boolean().optional(),
-  /** 2026-10-29: true when the index holds shares priced in currencies other than `currency` (ETF-48: MSCI World's 23 countries). A
+  /** true when the index holds shares priced in currencies other than `currency` (ETF-48: MSCI World's 23 countries). A
    * fund that neutralises `currency` keeps the others, against it. Left out for a one-currency index. */
   other_currencies: z.boolean().optional(),
+  /**
+   * F-107: the index's US shares as an Irish fund that holds them meets them, from the index provider's own factsheet. `yield` is the
+   * dividend yield of those shares (`pct_per_year`); `weight` is their share of the index (`pct`), left out when the index is made of US
+   * companies only. Left out where the provider prints no dividend yield.
+   */
+  us_dividends: z.strictObject({ yield: valueObject, weight: valueObject.optional() }).optional(),
   checked: isoDate,
 });
 

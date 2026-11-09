@@ -15,7 +15,7 @@ import type { Goal } from "./goal";
 import type { CustomIndex } from "./invest";
 import { validCustomBrokers, validCustomFunds, type CustomBroker, type CustomFund } from "./custom-entries";
 import { todayLocal } from "./today";
-import { entered as enteredValue } from "./value";
+import { entered as enteredValue, p05Units } from "./value";
 import { sanitizeRawState, type Rejected } from "./import-check";
 import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
 
@@ -54,7 +54,7 @@ export interface Holding {
   bars?: Partial<Record<TransferBar, boolean>>;
   /** `YYYY-MM-DD`, a study fund's first deposit (TXH-09). */
   firstDeposit?: ValueObject;
-  /** A study fund: the first deposit was more than six years ago, so the fund is liquid (TXH-09); entered boolean true, in place of an exact date (scenario fix 2026-10-24). */
+  /** A study fund: the first deposit was more than six years ago, so the fund is liquid (TXH-09); entered boolean true, in place of an exact date. */
   firstDepositOverSix?: ValueObject;
   /** `YYYY-MM-DD`, the date the statement is correct to. */
   statementDate: ValueObject;
@@ -126,7 +126,7 @@ export interface StateV3 extends Omit<StateV2, "version"> {
   version: 3;
   /** One per goal and mode. A record this release cannot read is kept as it is (see `isReadableSaved`). */
   savedComparisons: SavedComparisonRecord[];
-  /** "השקעה במדד" (D28, 2026-10-25): the indices the person added, kept on the device and in the export file; an older document has none. */
+  /** "השקעה במדד" (D28): the indices the person added, kept on the device and in the export file; an older document has none. */
   customIndices?: CustomIndex[];
   /** The index page's own: a broker and a fund the person typed (D44), on the device and in the export file; an older document has none. */
   customBrokers?: CustomBroker[];
@@ -143,7 +143,7 @@ export interface StateFile {
   state: StateV3;
   /**
    * The entered offers, the variant assumptions and the playbook ticks, which live in their own device keys until the
-   * founder approves their merge into the document (audit 2026-10-24, A32). Absent in a file from before; the version stays 3.
+   * founder approves their merge into the document. Absent in a file from before; the version stays 3.
    */
   sideStores?: SideStores;
 }
@@ -167,20 +167,10 @@ export interface InputsLike {
   insurance?: number | null;
 }
 
-const inputUnits: Record<string, ValueObject["unit"]> = {
-  amount_now: "nis",
-  monthly_deposit: "nis_per_month",
-  horizon_years: "years",
-  "A-01": "pct_per_year",
-  "A-02": "pct_per_year",
-  cash_rate: "pct_per_year",
-  annual_income: "nis",
-};
-
 /** The release 1 inputs as the v2 document keeps them: every number a value object in state `entered`. */
 export function inputsToRecord(i: InputsLike, today = isoToday()): Record<string, ValueObject> {
   const out: Record<string, ValueObject> = {};
-  for (const [k, v] of Object.entries(i.entered)) if (Number.isFinite(v)) out[k] = enteredValue(v, inputUnits[k] ?? "count", today);
+  for (const [k, v] of Object.entries(i.entered)) if (Number.isFinite(v)) out[k] = enteredValue(v, (p05Units as Record<string, ValueObject["unit"]>)[k] ?? "count", today);
   if (i.age !== null) out.age = enteredValue(i.age, "years", today);
   if (i.employment !== null) out.employment = { ...enteredValue(0, "text", today), value: i.employment };
   if (typeof i.insurance === "number" && Number.isFinite(i.insurance)) out.insurance = enteredValue(i.insurance, "pct", today);
@@ -657,30 +647,9 @@ export function saveHolding(h: Holding): void {
   });
 }
 
-export function removeHolding(id: string): void {
-  updateState((s) => ({ ...s, holdings: s.holdings.filter((h) => h.id !== id) }));
-}
-
-export function moveHolding(id: string, delta: -1 | 1): void {
-  updateState((s) => {
-    const sorted = sortedHoldings(s.holdings);
-    const i = sorted.findIndex((h) => h.id === id);
-    const j = i + delta;
-    if (i < 0 || j < 0 || j >= sorted.length) return s;
-    const a = sorted[i]!;
-    const b = sorted[j]!;
-    return { ...s, holdings: s.holdings.map((h) => (h.id === a.id ? { ...h, order: b.order } : h.id === b.id ? { ...h, order: a.order } : h)) };
-  });
-}
-
 /** A name from a statement the site could not match (flow 6, 22), kept once. */
 export function rememberName(name: string, context?: string): void {
   updateState((s) => (s.uncatalogued.some((u) => u.name === name) ? s : { ...s, uncatalogued: [...s.uncatalogued, { name, seen: isoToday(), ...(context ? { context } : {}) }] }));
-}
-
-export function useHoldings() {
-  const snapshot = useStateStore();
-  return { ready: snapshot.ready, status: snapshot.status, saved: snapshot.saved, holdings: sortedHoldings(snapshot.state.holdings), save: saveHolding, remove: removeHolding, move: moveHolding };
 }
 
 // ---------------------------------------------------------------- the index page's own state (D28)
@@ -758,7 +727,7 @@ export function setOwnBank(id: string | null): void {
   });
 }
 
-/** One empty list for every render: a new `[]` each time made the index page price every account and fund again on any change (2026-10-28). */
+/** One empty list for every render: a new `[]` each time made the index page price every account and fund again on any change. */
 const NO_CUSTOM: CustomIndex[] = [];
 const NO_BROKERS: CustomBroker[] = [];
 const NO_FUNDS: CustomFund[] = [];
@@ -775,22 +744,6 @@ const sameSlot = (c: unknown, goalId: string, mode: CompareMode) => isObj(c) && 
 /** The saved comparison of a goal and mode as the device holds it; it may be a record this release cannot read (`isReadableSaved`). */
 export function savedFor(s: StateV3, goalId: string, mode: CompareMode): SavedComparisonRecord | undefined {
   return s.savedComparisons.find((c) => sameSlot(c, goalId, mode));
-}
-
-/** Saves (or, with the person's confirm, replaces) the comparison of its goal and mode, at once. Returns whether the device kept it. */
-export function saveComparisonRecord(rec: SavedComparisonRecord): boolean {
-  updateState((s) => ({ ...s, savedComparisons: [...s.savedComparisons.filter((c) => !sameSlot(c, rec.goalId, rec.mode)), rec] }));
-  return flush(true);
-}
-
-export function deleteSavedComparison(goalId: string, mode: CompareMode): void {
-  updateState((s) => ({ ...s, savedComparisons: s.savedComparisons.filter((c) => !sameSlot(c, goalId, mode)) }));
-  flush(true);
-}
-
-export function useSavedComparisons(): { ready: boolean; saved: boolean; status: StoreStatus; list: SavedComparisonRecord[] } {
-  const snapshot = useStateStore();
-  return { ready: snapshot.ready, saved: snapshot.saved, status: snapshot.status, list: snapshot.state.savedComparisons };
 }
 
 // ---------------------------------------------------------------- imported items
@@ -954,8 +907,6 @@ export interface ImportResult {
   state: StateV3;
   added: { goals: number; holdings: number; names: number; comparisons: number };
   skipped: number;
-  /** "Add": the first goal this import added, so the page can offer to switch to it (A69). */
-  firstAddedGoalId?: string;
 }
 
 /**
@@ -1009,7 +960,6 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
   const top = current.goals.length === 0 ? -1 : Math.max(...current.goals.map((g) => g.order));
   let k = 0;
   goals = goals.map((g) => (g.importedAt === today && !haveGoalIds.has(g.id) ? { ...g, order: top + 1 + k++ } : g));
-  const firstAddedGoalId = goals.find((g) => g.importedAt === today && !haveGoalIds.has(g.id))?.id;
   const haveHoldingIds = new Set(current.holdings.map((h) => h.id));
   const topH = current.holdings.length === 0 ? -1 : Math.max(...current.holdings.map((h) => h.order));
   let kh = 0;
@@ -1055,13 +1005,7 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
     })(),
     imports: [...current.imports, { at: today, mode, goals: added.goals, holdings: added.holdings, names: added.names, skipped }],
   };
-  return { state, added, skipped, ...(firstAddedGoalId ? { firstAddedGoalId } : {}) };
-}
-
-/** The current goal becomes this one (A69, "לעבור למטרה שיובאה"). */
-export function switchToGoal(id: string): void {
-  updateState((s) => (s.goals.some((g) => g.id === id) ? { ...s, currentId: id } : s));
-  flush(true);
+  return { state, added, skipped };
 }
 
 /** Merges a file's side stores into the device's and writes them. Returns what was added and skipped. */

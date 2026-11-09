@@ -1,8 +1,8 @@
-// Guide prose for funds of every kind (D55, 2026-11-03): what a fund is under the law, its kinds, how units change hands, its fees, who holds
+// Guide prose for funds of every kind (D55): what a fund is under the law, its kinds, how units change hands, its fees, who holds
 // the money and a short tax note. A page of its own and not a product id, so it stays out of the comparison. Every figure is a Num over a rule
-// figure, every block ends with the rules it rests on (il-finance MF, ETF, REG, TXS, BANK, BRK, read 2026-11-03); only general rules, and one
-// record seen only in two companies' fund names (ETF-61), stated as those companies' names. Cut to about half on 2026-11-03 (review in
-// 8dd1f013:research/specs/2026-11-03-funds-guide/review.md): no risks or documents section, no creation route, no distribution fee, no ETN history.
+// figure, every block ends with the rules it rests on (il-finance MF, ETF, REG, TXS, BANK, BRK); only general rules, and one
+// record seen only in two companies' fund names (ETF-61), stated as those companies' names. Kept short
+// (8dd1f013:research/specs/2026-11-03-funds-guide/review.md): no risks or documents section, no creation route, no distribution fee, no ETN history.
 import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import { Num, RulesLine, Term } from "../../components/provenance";
@@ -19,7 +19,7 @@ export function What() {
   return (
     <>
       <Sentence measure>
-        <Term id="קרן נאמנות">קרן נאמנות</Term> היא כסף של משקיעים רבים שמושקע יחד. היא קמה בהסכם בין שני גופים <Term prefix="ש" id="רשות ניירות ערך">רשות ניירות ערך</Term> אישרה: <Term id="מנהל קרן">מנהל הקרן</Term>, שמנהל את ההשקעות, ו<Term id="נאמן">נאמן</Term>, שמחזיק את הנכסים בשביל המשקיעים.
+        <Term id="קרן נאמנות">קרן נאמנות</Term> היא כסף של משקיעים רבים שמושקע יחד. היא קמה בהסכם בין <Term id="מנהל קרן">מנהל הקרן</Term> <Term prefix="ל" id="נאמן">נאמן</Term>, שני גופים <Term prefix="ש" id="רשות ניירות ערך">רשות ניירות ערך</Term> אישרה.
       </Sentence>
       <Sentence measure>
         הקרן מחולקת ל<Term id="יחידה">יחידות</Term>, וכל יחידה נותנת זכות שווה בקרן. יחידות מוצעות לציבור רק לפי <Term id="תשקיף">תשקיף</Term> שהרשות התירה לפרסם.
@@ -130,7 +130,7 @@ export function Cost({ figure }: ContentProps) {
             בקנייה ובמכירה: בקרן פתוחה המנהל רשאי לגבות בקנייה תוספת למחיר (<Term id="הוספה">הוספה</Term>), שהולכת אליו ולא לקרן, ולפי רשות ניירות ערך רוב הקרנות לא גובות אותה. בקרן סל משלמים בבורסה את הפער בין מחיר הקנייה למחיר המכירה (<Term id="מרווח ציטוט של פקודות קנייה ומכירה">מרווח</Term>).
           </>,
           <>
-            אצל הבנק או בית ההשקעות: בבנק אין <Term id="עמלת קנייה ומכירה">עמלת קנייה ומכירה</Term> על קרן פתוחה שאינה מחקה, אבל יש על קרן מחקה ועל קרן שנסחרת בבורסה, והבנק רשאי לגבות <Term id="דמי ניהול פיקדון ניירות ערך">דמי משמרת</Term> על יחידות, חוץ מקרן כספית. לפי דוח משותף של הרגולטורים, רוב חברי הבורסה שאינם בנקים גובים עמלות קנייה ומכירה גם על יחידות, ולפי רשות ניירות ערך בתי השקעות בדרך כלל לא גובים <Term id="דמי משמרת">דמי משמרת</Term> על יחידות.
+            אצל הבנק או בית ההשקעות: בבנק אין <Term id="עמלת קנייה ומכירה">עמלת קנייה ומכירה</Term> על קרן פתוחה שלא מחקה, אבל יש על קרן מחקה ועל קרן שנסחרת בבורסה, והבנק רשאי לגבות <Term id="דמי ניהול פיקדון ניירות ערך">דמי משמרת</Term> על יחידות, חוץ מקרן כספית. לפי דוח משותף של הרגולטורים, רוב חברי הבורסה שהם לא בנקים גובים עמלות קנייה ומכירה גם על יחידות, ולפי רשות ניירות ערך בתי השקעות בדרך כלל לא גובים דמי משמרת על יחידות.
           </>,
         ]}
       />
@@ -179,7 +179,7 @@ export function Tax({ figure }: ContentProps) {
         לכל קרן נאמנות ישראלית, מחקה או לא, יש אחד משני מסלולי מס: <Term id="קרן נאמנות פטורה">קרן פטורה</Term> או <Term id="קרן נאמנות חייבת">קרן חייבת</Term>. המסלול כתוב בהסכם הקרן או בתשקיף שלה, והבורסה מפרסמת אותו באתר הדיווחים שלה, מאיה.
       </Sentence>
       <Sentence measure>
-        בקרן פטורה, מי שמוכר או פודה יחידה משלם עד {n(figure("TXS-09", "rate"))} מ<Term id="רווח הון ריאלי">הרווח הריאלי</Term>, והבנק או חבר הבורסה מנכה את המס במקור; מגיל 60 השיעור יכול להיות נמוך יותר. בקרן חייבת המס משולם בתוך הקרן על ההכנסות שלה, ומי שמוכר או פודה יחידות לא משלם מס.
+        בקרן פטורה, מי שמוכר או פודה יחידה משלם עד {n(figure("TXS-09", "rate"))} מ<Term id="רווח הון ריאלי">הרווח הריאלי</Term>, והבנק או חבר הבורסה מנכה את המס במקור; מגיל {n(figure("TXG-04", "age"))} השיעור יכול להיות נמוך יותר. בקרן חייבת המס משולם בתוך הקרן על ההכנסות שלה, ומי שמוכר או פודה יחידות לא משלם מס.
       </Sentence>
       <Sentence measure>מעבר מקרן לקרן הוא <Term id="מכירה">מכירה</Term>: המס מנוכה במקור גם אם הכסף לא יוצא מהחשבון.</Sentence>
       <RulesLine ids={["TXS-07", "TXS-13", "TXS-24", "TXS-09", "TXS-11", "TXS-22", "TXS-21"]} />
@@ -220,7 +220,6 @@ export const termIds = [
   "רווח הון ריאלי",
   "בעלי היחידות",
   "קרן סגורה",
-  "דמי משמרת",
   "עמלת קנייה ומכירה",
   "מחיר קנייה",
   "איגרת חוב",

@@ -139,7 +139,7 @@ export interface ScopeCounts {
  *    kind (law, regulation, circular, regulator page, official PDF, exchange rule, dataset) nor another official text of strength
  *    primary (a court ruling, a government form, a foreign regulator's page: kinds `other` and `form`);
  *  - a `general` rule derives from (`derived_from`) a rule that is not general, or names as an example (`examples`) one that is
- *    (review, 2026-10-26: a company's term a general rule's Source line mentions is an example, never a derivation);
+ *    (a company's term a general rule's Source line mentions is an example, never a derivation);
  *  - a record that is not general, and not a not-rule, cites no own document of any company it names (the registry's `own_hosts` and
  *    `filing_names`): a company's section lists only records from that company's own documents, so it would be listed nowhere;
  *  - the questions page rows and the "שווה לדעת" blocks (P-09) hold a rule that is not general;
@@ -268,7 +268,7 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
         if (!r) report(file, `company_terms.${dim}: ${id} has no record under data/rules/`);
         else if (r.scope === "general") report(file, `company_terms.${dim}: ${id} is general; cite it in rule_ids, company_terms holds companies' own terms`);
         else if (!(r.dimensions ?? []).includes(dim)) report(file, `company_terms.${dim}: ${id} does not carry the dimension ${dim}`);
-        // a record that names several companies rarely states the property for all of them: the entry names those it does (review, 2026-10-26)
+        // a record that names several companies rarely states the property for all of them: the entry names those it does
         else if (typeof ref === "string" && (r.scope_institutions ?? []).length > 1) report(file, `company_terms.${dim}: ${id} names ${(r.scope_institutions ?? []).length} companies; write { "rule": "${id}", "companies": [...] } with only those whose own term on ${dim} the record states`);
         else if (typeof ref !== "string" && registry.length > 0) {
           // the companies an entry names are among those whose section lists the record (their own documents say it)

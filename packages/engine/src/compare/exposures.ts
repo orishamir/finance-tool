@@ -125,7 +125,7 @@ export function compareExposures(input: ExposureCompareInput, ctx: RunContext): 
     const own: ComparisonGoal = { ...goal, grossReturnPct: gr.value as number };
     // The exposure's return goes in as the run's cash rate as well as A-01: a cash-like exposure, a government bond
     // (the bond run's coupon) and a money-market fund read the cash rate, not A-01, so without it an entered bond
-    // return would be labelled but never used (release 5, 2026-10-24). A run that reads A-01 ignores the cash rate.
+    // return would be labelled but never used (release 5). A run that reads A-01 ignores the cash rate.
     const c: CandidateInput = { record: h.wrapper, ...(h.terms ? { terms: h.terms } : {}), cashRate: gr };
     const entered = enteredGoal(own, amountNow, goal.monthly, ctx.runDate);
     const ev = evaluate(c, w, parameters, entered, own, profile, months, ctx);

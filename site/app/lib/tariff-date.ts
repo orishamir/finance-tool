@@ -1,4 +1,4 @@
-// What a price list's date line can say (2026-11-07, founder: three rows said only "ללא תאריך פרסום", a warning that taught nothing).
+// What a price list's date line can say (three rows said only "ללא תאריך פרסום", a warning that taught nothing).
 // A line says what the document does print: its date, the date of the part the site reads, a version, or that it prints none, and then
 // the day the site last checked it. The kit's TariffDate writes it; every page that dates a price list builds it here.
 import type { FeesSnapshot } from "@finance-tool/schema";

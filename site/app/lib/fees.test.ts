@@ -23,7 +23,7 @@ describe("the fee page's ranked sentence (A9)", () => {
     expect(rankedFor(set, "zzz")).toBeNull();
     expect(rankedFor(null, "a")).toBeNull();
   });
-  // D90 revised the same day (2026-11-07): "avoid" only with an option that ranks above the subject
+  // D90 revised the same day: "avoid" only with an option that ranks above the subject
   it("counts an alternative only where it ranks above the subject: never for the first place, never for a shared place, always for a subject with no place", () => {
     const alt = (id: string) => ({ id, name: id, lower: false });
     const all = [alt("a"), alt("b"), alt("c"), alt("d"), alt("unranked")];

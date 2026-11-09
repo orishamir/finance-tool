@@ -1,4 +1,4 @@
-// A price list's date line (2026-11-07): what the document itself prints, in plain colour. A document with one date shows it; one that
+// A price list's date line: what the document itself prints, in plain colour. A document with one date shows it; one that
 // dates each part shows the part the site reads; a misprinted date is shown as printed and marked as the source's; a version says so;
 // a document that prints nothing says that and then the day the site collected it. Never a bare warning that something is missing (copy.md 3, "Say what the source gives").
 import type { ReactNode } from "react";

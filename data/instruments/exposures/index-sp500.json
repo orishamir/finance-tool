@@ -97,5 +97,24 @@
     "TXF-OQ7"
   ],
   "constituents_israeli": false,
+  "us_dividends": {
+    "yield": {
+      "value": 1.13,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/idsenhancedfactsheet/file.pdf?calcFrequency=M&force_download=true&hostIdentifier=48190c8c-42c4-46af-8d1a-0cd5db894797&languageId=1&indexId=340",
+        "title": "S&P 500, Fundamentals: Indicated Div Yield (as of October 30, 2026)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "institution",
+        "page": 3
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-10-30",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "S&P's indicated dividend yield of the S&P 500, 'P/E (Projected) and Dividend Yield are as of October 30, 2026' (factsheet p.3). The host refuses scripts: read in the founder's Chrome with pdf.js, library 3bd1b1244035678d. No weight: the index is of US companies ('the best single gauge of large-cap U.S. equities', p.1)."
+    }
+  },
   "checked": "2026-10-24"
 }

@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, r2, scnCompare, trackBrowser } from "../../copy";
+import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { BlockedGroups, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, DoubtNote, PrintedText, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoiceTray, ChooseRow, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -245,24 +245,18 @@ function Folds() {
           </State>
         </Grid>
       </Demo>
-      <Demo name="CoverageFold" use={g.uses.CoverageFold}>
-        <Grid>
-          <State label={g.states.closed}>
-            <CoverageFold lead={g.sample.cover} openLabel={g.sample.coverOpen} closeLabel={g.sample.coverClose}>
-              <p>{g.sample.body}</p>
-            </CoverageFold>
-          </State>
-          <State label={`${g.states.open}, pad=snug`}>
-            <CoverageFold lead={g.sample.cover} openLabel={g.sample.coverOpen} closeLabel={g.sample.coverClose} defaultOpen pad="snug" bodyPad="snug" bodyClassName="flex flex-col gap-1">
-              <FoldGroup title={g.sample.group} count={2} defaultOpen>
-                <p className="pb-2">{g.sample.rowA}</p>
-              </FoldGroup>
-              <FoldGroup title={g.sample.group} count={1}>
-                <p className="pb-2">{g.sample.rowB}</p>
-              </FoldGroup>
-            </CoverageFold>
-          </State>
-        </Grid>
+      <Demo name="PhoneFold" use={g.uses.PhoneFold}>
+        <State label="below md: one line says what is chosen and opens the controls; from md the controls stand open and the line is gone (narrow the window to see it fold)" wide>
+          <PhoneFold summary={g.sample.phoneFold.summary} more={g.sample.phoneFold.more} less={g.sample.phoneFold.less}>
+            <div className="flex flex-wrap gap-2">
+              {g.sample.phoneFold.chips.map((c, i) => (
+                <FilterChip key={c} on={i === 0} count={i + 2} onClick={() => {}}>
+                  {c}
+                </FilterChip>
+              ))}
+            </div>
+          </PhoneFold>
+        </State>
       </Demo>
     </>
   );
@@ -326,9 +320,17 @@ function Choices() {
         <State label={`wrap, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap />
         </State>
+        <State label={`counts, line, ${g.states.interactive}`}>
+          <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} line counts={{ "0": 32, "1": 15, "2": 12, "3": 1 }} bleed="" />
+        </State>
         <State label={`other, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={own} onChange={(id) => setOwn((k) => (k === id ? null : id))} ariaLabel={g.sample.title} wrap other={{ label: g.sample.other, open: own === "other", onToggle: () => setOwn((k) => (k === "other" ? null : "other")) }} />
           {own === "other" && <NumberField label={g.sample.otherField} unit="months" value={null} isEntered={false} validate={() => null} onCommit={() => {}} onReset={() => {}} optional inputMode="numeric" />}
+        </State>
+      </Demo>
+      <Demo name="ChoiceTray" use={g.uses.ChoiceTray}>
+        <State label={`the hint, then a row of choices, ${g.states.interactive}`} wide>
+          <ChoiceTrayDemo />
         </State>
       </Demo>
     </>
@@ -374,20 +376,6 @@ function Chips() {
           <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
         </State>
       </Demo>
-      <Demo name="PlanChips" use={g.uses.PlanChips}>
-        <State label={`${g.states.filled}, ${g.states.entered}, fixed`}>
-          <PlanChips
-            allLabel={g.sample.plan.all}
-            onOpen={() => undefined}
-            items={[
-              { field: "amountNow", label: g.sample.plan.amount, text: "10,000 ₪" },
-              { field: "monthly", label: g.sample.plan.monthly, text: "1,000 ₪" },
-              { field: "horizonYears", label: g.sample.plan.years, text: "10" },
-              { field: "return", label: g.sample.plan.ret, text: "5%", fixed: true },
-            ]}
-          />
-        </State>
-      </Demo>
     </>
   );
 }
@@ -415,13 +403,6 @@ function Words({ today }: { today: string }) {
           <State label="ReadingTag: the engine's reading label, never secondary"><div><ReadingTag /></div></State>
           <State label="ReadingTag held, not shown: its place kept empty on a line that is always there (a card that may come to rest on a reading)"><div className="flex items-center gap-2 text-xs text-muted-foreground"><span>אינפלציה 2%</span><ReadingTag held shown={false} /></div></State>
           <State label="ReadingTag held, shown: the same box, so nothing moves"><div className="flex items-center gap-2 text-xs text-muted-foreground"><span>אינפלציה −1%</span><ReadingTag held /></div></State>
-        </Grid>
-      </Demo>
-      <Demo name="BlockedGroups" use={g.uses.BlockedGroups}>
-        <Grid>
-          <State label="a blocked row, each group with its own record's question"><div><BlockedGroups lead={scnCompare.blockedFor} groups={[{ code: "TXK-OQ10", options: ["kgl"] }, { code: "TXH-OQ16", options: ["kh", "ira"] }]} names={g.sample.blocked.names} /></div></State>
-          <State label="an eligibility row: the one question is in the row's head, so no chip"><div><BlockedGroups lead={r2.result.checklistBlocks} groups={[{ code: "GOV-OQ7", options: ["makam"] }]} names={g.sample.blocked.names} chips={false} /></div></State>
-          <State label="under a covered row: blocked tone"><div><BlockedGroups lead={scnCompare.blockedFor} groups={[{ code: "TXH-OQ16", options: ["kh"] }]} names={g.sample.blocked.names} tone="blocked" /></div></State>
         </Grid>
       </Demo>
       <Demo name="MixedName" use={g.uses.MixedName}>
@@ -569,16 +550,6 @@ function Words({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
-      <Demo name="HeadlineFigure" use={g.uses.HeadlineFigure}>
-        <HeadlineFigure value={s.comp} caption={g.sample.headCaption} />
-      </Demo>
-      <Demo name="RankBadge" use={g.uses.RankBadge}>
-        <div className="flex items-center gap-3">
-          <RankBadge rank={1} label="1" />
-          <RankBadge rank={2} label="2" />
-          <RankBadge rank={3} label="3" flush />
-        </div>
-      </Demo>
       <Demo name="CompanyLinks" use={g.uses.CompanyLinks}>
         <Grid>
           <State label="size=sm, two companies">
@@ -644,7 +615,6 @@ function Fields() {
   const [pct, setPct] = useState<number | null>(5);
   const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
-  const [count, setCount] = useState(1);
   const [typed, setTyped] = useState("");
   const [ticked, setTicked] = useState(true);
   return (
@@ -667,18 +637,6 @@ function Fields() {
             <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
         </div>
-      </Demo>
-      <Demo name="StepButtons" use={g.uses.StepButtons}>
-        <Grid>
-          <State label={g.states.interactive}>
-            <div className="flex items-end gap-2">
-              <div className="flex-1 min-w-0">
-                <NumberField label={g.sample.count} unit="count" value={count} isEntered={count !== 1} validate={(n) => (n < 1 || n > 9 ? g.sample.error : null)} onCommit={(n) => setCount(n)} onReset={() => setCount(1)} optional />
-              </div>
-              <StepButtons downLabel={g.sample.stepDown} upLabel={g.sample.stepUp} downDisabled={count <= 1} upDisabled={count >= 9} onDown={() => setCount(count - 1)} onUp={() => setCount(count + 1)} />
-            </div>
-          </State>
-        </Grid>
       </Demo>
       <Demo name="FieldState" use={g.uses.FieldState}>
         <Grid>
@@ -1049,6 +1007,39 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
   );
 }
 
+/** A group whose fold the page holds (`fold`), folded at first, and a press that opens it and lights a row (`rowOf`, `lit`), as the deposits
+ * page does when a grid cell leads to a row inside the folded group. */
+function PageFoldTable({ row }: { row: (key: string, name: string, n: string, rate: number, withLabels: boolean) => { key: string; cells: ReactNode[]; phone: ReactNode } }) {
+  const p = g.sample.products;
+  const [open, setOpen] = useState(false);
+  const [lit, setLit] = useState(false);
+  const go = () => {
+    setOpen(true);
+    setLit(true);
+    setTimeout(() => setLit(false), 1800);
+  };
+  return (
+    <div className="flex flex-col gap-3">
+      <Button variant="secondary" onClick={go}>
+        {p.c}
+      </Button>
+      <ProductTable
+        foldable
+        columns={[
+          { id: "name", head: p.name },
+          { id: "number", head: p.number, width: 7.5 },
+          { id: "link", head: p.link, width: 6 },
+          { id: "figure", head: p.figure, width: 10 },
+        ]}
+        groups={[
+          { key: "g1", rows: [row("a", p.a, "1148808", 0.35, false)] },
+          { key: "g2", heading: { title: p.b }, fold: { open, onToggle: () => setOpen((x) => !x) }, rows: open ? [{ ...row("c", p.c, "1148162", 0.8, false), rowOf: "c", lit }] : [] },
+        ]}
+      />
+    </div>
+  );
+}
+
 /** Three groups of a made-up house: the first two share a price (one sub-row, two ends), the third names funds. */
 /** The fold with the first group pickable, as the index page offers it. */
 function GroupChoiceDemo() {
@@ -1141,10 +1132,35 @@ function Lists({ today }: { today: string }) {
             ]}
           />
         </State>
+        <State label="a product on two terms under one name (lines): the figure column takes a line for each, the other cells span them once" wide>
+          <ProductTable
+            columns={[
+              { id: "name", head: p.name },
+              { id: "number", head: p.number, width: 7.5 },
+              { id: "link", head: p.link, width: 6 },
+              { id: "figure", head: p.figure, width: 8 },
+            ]}
+            groups={[
+              {
+                key: "lines",
+                rows: [
+                  {
+                    ...row("d", p.a, "1148808", 0.35, false),
+                    lines: { columns: ["figure"], rows: [0.35, 0.2].map((r) => ({ key: String(r), cells: [<ProductFigures key="f" items={[{ id: "a", figure: <Num value={{ ...s.rate, value: r }} size="cell" />, word: p.figure }]} />] })) },
+                  },
+                  row("e", p.b, "1209444", 0.1, false),
+                ],
+              },
+            ]}
+          />
+        </State>
       </Demo>
       <Demo name="ProductTable (headings, folding, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
         <State label="groups with a heading (a title, then a line of figures); a press on a heading's strip or its chevron folds the group; the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card; a sort slides each row to its new place (useFlip)" wide>
           <SortableTable row={row} />
+        </State>
+        <State label="a group whose fold the page holds (fold: open, onToggle), folded at first; the button opens it and lights its row for a moment (rowOf marks the row data-row-of for a page that scrolls to it, lit lights it; an outline under reduced motion), as the deposits page does from its grid" wide>
+          <PageFoldTable row={row} />
         </State>
       </Demo>
       <Demo name="GroupPriceFold, GroupPriceRows" use={g.uses.GroupPrices}>
@@ -1301,6 +1317,26 @@ function Lists({ today }: { today: string }) {
               { key: "b", label: trackBrowser.tabs.byProduct, href: "#kit" },
             ]}
           />
+        </State>
+      </Demo>
+      <Demo name="TabStrip" use={g.uses.TabStrip}>
+        <State label="tabs inside a page, each with how many rows it holds; the arrow keys move between them, and a narrow screen scrolls the strip" wide>
+          <TabStripDemo />
+        </State>
+      </Demo>
+      <Demo name="InlineSelect" use={g.uses.InlineSelect}>
+        <State label="a choice in a line of other controls: the label and the chosen name, no field box" wide>
+          <InlineSelectDemo />
+        </State>
+      </Demo>
+      <Demo name="GroupHead, ListRow, RowList" use={g.uses.ListRow}>
+        <State label="rows in one box: a plain row, the chosen one, one with chips and a muted line" wide>
+          <ListRowDemo />
+        </State>
+      </Demo>
+      <Demo name="ChooseRow" use={g.uses.ChooseRow}>
+        <State label="a chosen row, a plain one and a dimmed one, each with its arrow" wide>
+          <ChooseRowDemo />
         </State>
       </Demo>
       <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
@@ -1638,4 +1674,65 @@ function GlideDemo() {
       </div>
     </div>
   );
+}
+
+function TabStripDemo() {
+  const [on, setOn] = useState("state");
+  const shelves = rulesFront.shelves;
+  return <TabStrip idBase="kit-tabs" ariaLabel={rulesFront.questions} current={on} onChange={setOn} tabs={Object.keys(shelves).map((k, i) => ({ key: k, label: shelves[k]!.name, count: 12 - i * 2 }))} />;
+}
+
+function ListRowDemo() {
+  const [on, setOn] = useState(1);
+  const shelves = Object.values(rulesFront.shelves);
+  return (
+    <div className="flex flex-col gap-2 max-w-xl">
+    <GroupHead count="3">{rulesFront.questions}</GroupHead>
+    <RowList>
+      {shelves.slice(0, 3).map((sh, i) => (
+        <ListRow
+          key={sh.name}
+          title={sh.name}
+          lead={sh.line}
+          end={<bdi dir="ltr">{`KIT-0${i + 1}`}</bdi>}
+          chips={i === 2 ? <Tag tone="neutral">{g.sample.foldLabel}</Tag> : undefined}
+          meta={i > 0 ? g.sampleSource : undefined}
+          selected={on === i}
+          onSelect={() => setOn(i)}
+        />
+      ))}
+    </RowList>
+    </div>
+  );
+}
+
+function ChoiceTrayDemo() {
+  const [kind, setKind] = useState<string>("all");
+  const [item, setItem] = useState<string | null>(null);
+  const kinds: Record<string, string> = { all: companyFocus.types.all, savings: companyFocus.types.savings, funds: companyFocus.types.funds };
+  const items: Record<string, string> = { a: g.sample.option[0], b: g.sample.option[1], c: g.sample.option[2] };
+  return (
+    <div className="flex flex-col gap-1 max-w-xl">
+      <ChoiceChips ids={["all", "savings", "funds"]} labels={kinds} value={kind} onChange={(k) => (setKind(k), setItem(null))} ariaLabel={companyFocus.typeLabel} counts={{ all: 32, savings: 15, funds: 9 }} wrap />
+      <ChoiceTray label={companyFocus.productLabel} hint={companyFocus.trayHint}>
+        {kind === "all" ? null : <ChoiceChips ids={["a", "b", "c"]} labels={items} value={item} onChange={(id) => setItem((x) => (x === id ? null : id))} ariaLabel={companyFocus.productLabel} line bleed="" />}
+      </ChoiceTray>
+    </div>
+  );
+}
+
+function ChooseRowDemo() {
+  const [on, setOn] = useState<number | null>(0);
+  return (
+    <RowList className="max-w-xl">
+      {[0, 1, 2].map((i) => (
+        <ChooseRow key={i} title={g.sample.option[i]} end={`${i + 3} ${companyFocus.units.tracks.many}`} line={g.sampleSource} chosen={on === i} dim={on !== null && on !== i && i === 2} onChoose={() => setOn((x) => (x === i ? null : i))} label={g.sample.option[i] ?? ""} link={{ to: "/kit", label: g.sample.option[i] ?? "" }} />
+      ))}
+    </RowList>
+  );
+}
+
+function InlineSelectDemo() {
+  const [on, setOn] = useState<string | null>(null);
+  return <InlineSelect label={rulesFront.claim.question} all={rulesFront.claim.all} value={on} onChange={setOn} options={Object.entries(rulesFront.shelves).map(([id, sh]) => ({ id, name: sh.name }))} />;
 }

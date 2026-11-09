@@ -19,7 +19,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "CoverageFold", "SegmentedControl", "ChoiceChips", "ChipList", "PlanChips", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "KeyValue, KeyValueList", "HeadlineFigure", "RankBadge", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "StepButtons", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -60,7 +60,7 @@ describe("the stairs chart's text", () => {
   it("isolates a number among Hebrew words, and leaves a number inside a Latin name to the name", () => {
     expect(isoNumbers("נשארים 79,176 ₪")).toBe("נשארים ⁦79,176 ₪⁩");
     expect(isoNumbers("+2,345 ₪ יותר")).toBe("⁦+2,345 ₪⁩ יותר");
-    // isolated alone, the 4 and the 500 stepped out of the name: "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05)
+    // isolated alone, the 4 and the 500 stepped out of the name: "S&P 500 (4D)" read "(D4) 500 S&P"
     expect(isoNumbers("ילין לפידות מחקה (4D) S&P 500")).toBe("ילין לפידות מחקה (4D) S&P 500");
     expect(isoNumbers("הראל מחקה (4D) NASDAQ 100")).toBe("הראל מחקה (4D) NASDAQ 100");
   });
@@ -130,7 +130,7 @@ describe("keepTitleWhole (fresh readers, round 3, 2026-11-07)", () => {
   });
 });
 
-// 2026-11-07 (independent check of the glossary sweep): a card's "נקרא גם" names showed the data's straight quote (ני"ע, אג"ח).
+// a card's "נקרא גם" names showed the data's straight quote (ני"ע, אג"ח).
 describe("a glossary card writes every abbreviation with its gershayim (copy 10.4)", () => {
   it("gershayim turns a quote between two Hebrew letters into ״ and leaves other quotes alone", () => {
     expect(gershayim('ני"ע')).toBe("ני״ע");

@@ -1,6 +1,6 @@
-// Screen 4: the company page (design-spec 5 as redrawn 2026-10-23; flows 6.11): every track the company
+// Screen 4: the company page (design-spec 5 as redrawn; flows 6.11): every track the company
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
-// Since 2026-11-03 (founder: "a more similar UI to the one we have in /tracks") what the company offers is the tracks page's list over
+// What the company offers is the tracks page's list over
 // this company alone (components/tracks/company-browser.tsx): its products, funds and securities account are chips, "כל המוצרים" first.
 import { useLoaderData, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
@@ -19,15 +19,15 @@ import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 
 /**
- * The order of a company page's products, by how often a reader comes for them (founder, 2026-10-27): its tracks' products in
- * `classificationOrder`, then its funds and securities account in `extraOrder` (since 2026-11-03 the tracks are one list, so they come
+ * The order of a company page's products, by how often a reader comes for them: its tracks' products in
+ * `classificationOrder`, then its funds and securities account in `extraOrder` (since the tracks are one list, so they come
  * first); a product not named comes after those named.
  */
 const extraOrder = ["funds-tracking", "brokerage", "funds-money-market"];
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
 /**
- * What a house's page says beside its prices (D57 amended 2026-11-04): its advertising against its binding documents and its group
+ * What a house's page says beside its prices (D57): its advertising against its binding documents and its group
  * prices. Read here, for the page alone: the site's calculations never read them (site/app/lib stays blind to both). The groups the index
  * page offers as radios are named here too, so each links to that page with it picked (D43 amended (5)).
  */
@@ -120,7 +120,7 @@ export function meta({ loaderData: data }: Route.MetaArgs) {
 
 export default function Company() {
   const data = useLoaderData<typeof loader>();
-  // a page about one company: its own figures carry no "לפי החברה" (founder, 2026-11-08)
+  // a page about one company: its own figures carry no "לפי החברה"
   return <OwnCompanyPage>{data.kind === "institution" ? <InstitutionPage data={data.institution} notes={data.notes} /> : <ManagerCompany data={data} />}</OwnCompanyPage>;
 }
 
@@ -218,7 +218,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             </section>
           )}
           <CompanyTerms name={data.companyTerms.name} groups={data.companyTerms.groups} />
-          {/* the fallback search comes after everything the page lists, at every width (founder, 2026-10-26: above the list it was in the way) */}
+          {/* the fallback search comes after everything the page lists, at every width (above the list it was in the way) */}
           {company && <PasteCard className="lg:w-1/2" />}
         </div>
 

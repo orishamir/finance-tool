@@ -1,18 +1,22 @@
-// D6 as amended 2026-10-26: makam and a government bond are securities held in the securities account, so the account's choice of
+// D6: makam and a government bond are securities held in the securities account, so the account's choice of
 // provider (F-80) prices them too, on the lines for their own class, with the member's kind deciding custody on makam (F-14).
 import { describe, expect, it } from "vitest";
-import { applyOwnProviders, applyProviders, evaluate, providerOutcomes, type RunGoal } from "./compare";
+import { applyOwnProviders, applyProviders, evaluate, type RunGoal } from "./compare";
 import { isTie } from "@finance-tool/engine";
 import { compareBundle } from "./compare.server";
 import { loadParameters, loadProducts, loadRules, today } from "./data.server";
 import { accountRuns } from "./guide-signature-bundle.server";
-import { shortName } from "./providers";
 import { buildGuidePage } from "./guide.server";
 
 const bundle = compareBundle();
 // a year of idle cash: 100,000 now, nothing monthly, the makam yield entered as the cash rate the guides use
 const goal: RunGoal = { horizonYears: 2, amountNow: 100_000, monthly: 0, available: 0, anytime: true, returnPct: null, inflationPct: 2.5, age: 35, employment: "employee", salary: 15_000, pensionEmployee: 6, pensionEmployer: 6.5, insurancePct: 0.3, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
 const entry = (id: string) => bundle.wrappers.find((w) => w.id === id)!;
+/** The wrapper run once on each provider it carries, best first by the real value. */
+const providerRuns = (g: RunGoal, id: string) =>
+  Object.keys(entry(id).providers ?? {})
+    .map((pid) => ({ id: pid, real: evaluate(applyOwnProviders(bundle, { ownProviders: { [id]: pid } }), g, { only: new Set([id]) }).candidates.find((c) => c.id === id)!.run!.real }))
+    .sort((x, y) => y.real - x.real);
 
 describe("makam is priced like the account that holds it", () => {
   const makam = entry("makam");
@@ -38,7 +42,7 @@ describe("makam is priced like the account that holds it", () => {
   it("the site picks the provider that leaves the goal the most, and says so", () => {
     const picked = applyProviders(bundle, goal).wrappers.find((w) => w.id === "makam")!;
     expect(picked.representative).toMatchObject({ pickedBy: "site", compared: Object.keys(makam.providers!).length });
-    const rows = providerOutcomes(bundle, goal, "makam").providers;
+    const rows = providerRuns(goal, "makam");
     expect(picked.representative!.providerId).toBe(rows[0]!.id);
     for (let i = 1; i < rows.length; i++) expect(rows[i - 1]!.real).toBeGreaterThanOrEqual(rows[i]!.real);
   });
@@ -65,7 +69,7 @@ describe("the guides price an account and its securities on the comparison's pic
   for (const id of ["makam", "government-bond"]) {
     it(`${id}: the same house out of the same count`, () => {
       const own = buildGuidePage(id)!.bundle!;
-      const rows = providerOutcomes(bundle, plan, id).providers;
+      const rows = providerRuns(plan, id);
       expect(own.pick!.id).toBe(rows[0]!.id);
       expect(own.pick!.count.value).toBe(Object.keys(entry(id).providers!).length);
       expect(own.feeValues.tradeRate?.own).toBeTruthy();
@@ -102,7 +106,7 @@ describe("the guides price an account and its securities on the comparison's pic
   it("makam: a redemption is priced by the house's line that names it, on both paths (F-24)", () => {
     const makam = entry("makam");
     for (const p of Object.values(makam.providers!)) expect(p.tariff.redeem).toBeDefined();
-    // PEPPER is part of Leumi since 2026-11-04 (its own tariff's redemption line, flat 4 NIS up to 30,000, is no longer a house here)
+    // PEPPER is part of Leumi (its own tariff's redemption line, flat 4 NIS up to 30,000, is no longer a house here)
     expect(makam.providers!.pepper).toBeUndefined();
     expect(makam.providers!.psagot!.tariff.redeem).toMatchObject({ rate: 0.0005, min: 2 });
     // the reduced price of an order placed online is not the redemption's
@@ -113,9 +117,9 @@ describe("the guides price an account and its securities on the comparison's pic
     expect(own.feeValues.redeemRate?.own).toBe(own.feeValues.tradeRate?.own);
   });
   it("makam: Psagot alone on top once PEPPER is part of Leumi, and the page names no tie (F-80, P-01)", () => {
-    // until 2026-11-04 Psagot and PEPPER tied within P-01; PEPPER Invest moved into Leumi Trade (founder), so it is no house of its own
+    // PEPPER Invest is part of Leumi Trade, so it is no house of its own
     const own = buildGuidePage("makam")!.bundle!;
-    const rows = providerOutcomes(bundle, plan, "makam").providers;
+    const rows = providerRuns(plan, "makam");
     const tied = rows.filter((r) => isTie(rows[0]!.real, r.real, 0.005));
     expect(tied.map((r) => r.id)).toEqual(["psagot"]);
     expect(own.pick!.id).toBe("psagot");

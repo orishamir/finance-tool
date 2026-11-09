@@ -1,8 +1,7 @@
 // Shared pieces of the index page: the type tag, the "what do the labels mean" list, and the sentence for a cell the engine
-// could not price. The label chip, its row and its sheet are in the kit (2026-10-27).
-import type { RuleRecord } from "@finance-tool/schema";
+// could not price. The label chip, its row and its sheet are in the kit.
 import { invest as c, r4workbench } from "../../copy";
-import { allLabels, label, optionLabels, type Label } from "../../lib/labels";
+import { allLabels, optionLabels, type Label } from "../../lib/labels";
 import type { OptionId } from "../../lib/invest";
 import type { Reason } from "../../lib/invest";
 import type { NotComparable } from "../../lib/providers";
@@ -11,7 +10,7 @@ import { Disclosure, LabelChip } from "../kit";
 // ---------------------------------------------------------------- labels
 
 /**
- * The type tag of a fund (the founder, 2026-10-26: the type is a byproduct of the cheapest way, not a choice): one short tag from the
+ * The type tag of a fund (the type is a byproduct of the cheapest way, not a choice): one short tag from the
  * option, opening what the option's two labels say (where it is held, how it trades) with their rules.
  */
 export function OptionTag({ option }: { option: OptionId }) {

@@ -5,7 +5,7 @@ import { Link, useSearchParams } from "react-router";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { buttons, catalogue, companies as companiesCopy, r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
-import { IconAlert, IconDrillIn, IconExternal } from "../../icons";
+import { IconDrillIn, IconExternal } from "../../icons";
 import { NumAfter, NumberLegend } from "../../provenance";
 import { Breadcrumb, PageShell } from "../../shell";
 import { Button, Callout, Card, Disclosure, LabelSheetHost, When } from "../../kit";
@@ -14,7 +14,6 @@ import { BrokerageGroupCard } from "./brokerage-card";
 import { CompanyTerms } from "../company-terms";
 import { BankProductRow } from "./product-row";
 import type { InstitutionPageData } from "./types";
-import { shown } from "../../../lib/review";
 import { withoutLtd } from "../../../lib/company-name";
 
 function countLine(n: number) {
@@ -54,7 +53,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
   const wrapperName = (id: string) => data.groups.find((g) => g.wrapperId === id)?.wrapperName ?? "";
   const brokerage = <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} linked={notes?.linked} />;
   // "?product=brokerage" (a link from the indices page) opens the securities account and brings it into view, once the page is in
-  // the browser, as the company pages read their product (D57 amended 2026-11-04)
+  // the browser, as the company pages read their product (D57)
   const [search] = useSearchParams();
   const asked = search.get("product") === "brokerage";
   const [accountOpen, setAccountOpen] = useState(!data.hasDeposits);
@@ -66,7 +65,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
   }, [asked]);
   return (
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}), pageCompanies: data.terms.pageCompanies }}>
-      {/* one column, as the company page: the price list's table takes the page's width (2026-11-05), the paste card comes at the end */}
+      {/* one column, as the company page: the price list's table takes the page's width, the paste card comes at the end */}
       <div className="pt-2 lg:pt-8">
         <div className="min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
@@ -150,15 +149,6 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
                     {copy.groupLink} {g.wrapperName}
                     <IconDrillIn size={16} />
                   </Link>
-                  {g.wrapperId === "bank-deposit" && g.products.length === 1 && shown("/idle-cash") && (
-                    <p className="text-sm text-muted-foreground max-w-measure px-1">
-                      {copy.oneTariff.before}
-                      <Link to="/idle-cash" className="text-link hover:underline">
-                        {copy.oneTariff.link}
-                      </Link>
-                      {copy.oneTariff.after}
-                    </p>
-                  )}
                   <div className="flex flex-col gap-3">
                     {g.products.map((p) => (
                       <BankProductRow key={p.id} p={p} known={known} wrapperName={wrapperName(p.wrapperId)} />
@@ -167,7 +157,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
                 </Disclosure>
               ))}
               </LabelSheetHost>
-              {/* in the page's column at every width since the card holds the account's details (D57 amended 2026-11-04) */}
+              {/* in the page's column at every width since the card holds the account's details (D57) */}
               <div ref={account} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
                 <Disclosure
                   className="flex flex-col gap-2"

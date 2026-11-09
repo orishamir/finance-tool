@@ -1,4 +1,4 @@
-// The real / nominal switch ("בשקלים של היום" or "של העתיד"), remembered on this device (audit 2026-10-24 A79): it was
+// The real / nominal switch ("בשקלים של היום" or "של העתיד"), remembered on this device: it was
 // back on "real" after every reload. One side store like the workbench's (device-store.ts), shared by every page that
 // has the switch, so the choice on one page is the choice on the next. Reads after hydration: the pre-rendered page and
 // the first client render show "real".

@@ -87,10 +87,10 @@ const counted = all.reduce((a, c) => a + c.stats.colours, 0);
 console.log(`\n${failed ? `${failed} failed` : "all passed"}: ${paths.length} pages at ${WIDTHS.join(", ")} px, ${charts.length} svg chart views and ${html.length} HTML chart views; ${zeroed} bars, steps and parts checked against their zero line, colours counted in ${counted} views; ${((Date.now() - t0) / 1000).toFixed(0)} s`);
 process.exit(failed ? 1 : 0);
 
-/** Every guide page, every index page and the kit page of the build: the pages whose charts show without anything entered. */
+/** Every guide page, every index page, the deposits page's grid and the kit page of the build: the pages whose charts show without anything entered. */
 function defaultPages() {
   const under = (dir) => readdirSync(join(build, dir)).filter((d) => statSync(join(build, dir, d)).isDirectory() && existsSync(join(build, dir, d, "index.html"))).map((d) => `/${dir}/${d}`);
-  return [...under("guide"), ...under("indices"), "/kit"];
+  return [...under("guide"), ...under("indices"), "/deposits", "/kit"];
 }
 
 /**

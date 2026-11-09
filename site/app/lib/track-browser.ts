@@ -1,4 +1,4 @@
-// The track browser (D54, 2026-11-03): every company's tracks of one product, grouped by company or by what the money is
+// The track browser (D54): every company's tracks of one product, grouped by company or by what the money is
 // invested in, with a filter, a search and a sort. The loader ships each product's tracks compactly (`TbData`, built by
 // `track-browser.server.ts`); this expands one product into the value objects the page shows, then filters, sorts and groups them.
 // Pure: no React, no storage. Nothing here ranks a track: the sort is the person's action on a sourced column, and the order of the
@@ -8,8 +8,9 @@ import { trackBrowser as t } from "../copy";
 import { exposureShares, type CompactHoldings, type ExposureShares, type HoldingsTemplate } from "./track-exposure";
 import { trackLabels, youngerThanYears } from "./track-labels";
 import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
-import { fmt } from "./format";
-import { computed, depositFeeNoneByRule, expandFee, type CompactFee, type SiteValue } from "./value";
+import { fmt, heCollator } from "./format";
+import type { ListSort } from "./list-sort";
+import { computed, depositFeeNoneByRule, expandFee, numberOf, type CompactFee, type SiteValue } from "./value";
 
 /** The six products with tracks of the regulator's, in the order of the chips; the first one the page opens with is `defaultProduct`. */
 export const trackProductIds: readonly string[] = ["provident-for-annuity", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "child-savings-provident"];
@@ -136,8 +137,6 @@ export interface ProductView {
   kinds: TbKind[];
 }
 
-const collator = new Intl.Collator("he");
-const shareOf = (v: SiteValue | null | undefined): number | null => (v && typeof v.value === "number" ? v.value : null);
 
 export function buildProductView(data: TbData, productId: string): ProductView | null {
   const p = data.products.find((x) => x.id === productId);
@@ -167,7 +166,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
       young3: youngerThanYears(r.inc, p.period, 3),
       young5: youngerThanYears(r.inc, p.period, 5),
       selfManaged: r.s === 1,
-      stock: shareOf(exposure?.stock),
+      stock: numberOf(exposure?.stock),
       twin: false,
       href: `/companies/${co.id}/${r.f}`,
     };
@@ -180,14 +179,14 @@ export function buildProductView(data: TbData, productId: string): ProductView |
     const m = spellings.get(normName(x.sub)) ?? new Map<string, number>();
     spellings.set(normName(x.sub), m.set(x.sub, (m.get(x.sub) ?? 0) + 1));
   }
-  for (const x of tracks) if (x.sub) x.sub = [...spellings.get(normName(x.sub))!.entries()].sort((a, b) => b[1] - a[1] || collator.compare(a[0], b[0]))[0]![0];
+  for (const x of tracks) if (x.sub) x.sub = [...spellings.get(normName(x.sub))!.entries()].sort((a, b) => b[1] - a[1] || heCollator.compare(a[0], b[0]))[0]![0];
   const bySub = new Map<string, TbTrack[]>();
   for (const x of tracks) if (x.sub) bySub.set(x.sub, [...(bySub.get(x.sub) ?? []), x]);
   for (const list of bySub.values()) for (const x of list) x.twin = list.some((y) => y !== x && y.company === x.company);
   // F-100: the kinds from the highest median stock share to the lowest, ties by the number of tracks, a kind with no share last
   const kinds: TbKind[] = [...bySub.entries()]
     .map(([sub, list]) => ({ sub, kind: list[0]!.kind, count: list.length, median: kindStockMedian(list.map((x) => x.stock)) }))
-    .sort((a, b) => (b.median ?? -1) - (a.median ?? -1) || b.count - a.count || collator.compare(a.sub, b.sub));
+    .sort((a, b) => (b.median ?? -1) - (a.median ?? -1) || b.count - a.count || heCollator.compare(a.sub, b.sub));
 
   const kindWords = kindWordSet(kinds.map((k) => k.sub));
   const byCompany = new Map<number, TbTrack[]>();
@@ -196,12 +195,12 @@ export function buildProductView(data: TbData, productId: string): ProductView |
     const co = data.companies[index]!;
     const short = shortTrackNames(co.name, list.map((x) => ({ key: x.id, name: x.fullName })), kindWords);
     for (const x of list) x.short = short.get(x.id) ?? x.fullName;
-    const sum = companyAssets(list.map((x) => shareOf(x.assets)));
+    const sum = companyAssets(list.map((x) => numberOf(x.assets)));
     const inputs = Object.fromEntries(list.filter((x) => x.assets).map((x) => [`${x.fullName} (${x.id})`, x.assets!]));
     return { index, id: co.id, name: co.name, fullName: co.fullName, tracks: list, assets: computed(sum, "nis_millions", "F-99", inputs, { today: data.today, about: `${t.about.assets} ${p.name}` }) };
   });
   // F-99: the company with the most assets in this product first, ties by name
-  companies.sort((a, b) => (shareOf(b.assets) ?? -1) - (shareOf(a.assets) ?? -1) || collator.compare(a.name, b.name));
+  companies.sort((a, b) => (numberOf(b.assets) ?? -1) - (numberOf(a.assets) ?? -1) || heCollator.compare(a.name, b.name));
   return { id: p.id, name: p.name, ...(p.noPage ? { noPage: p.noPage } : {}), dataset: p.dataset, hasKinds, tracks, companies, kinds };
 }
 
@@ -215,7 +214,7 @@ export const HELP_TERMS = {
 
 // ---------------------------------------------------------------- filter, sort, group
 
-/** "company": the tracks under their companies' headings; "kind": one kind chosen, its tracks of every company in one list (2026-11-03). */
+/** "company": the tracks under their companies' headings; "kind": one kind chosen, its tracks of every company in one list. */
 export type GroupBy = "company" | "kind";
 export type SortId = "name" | "fee" | "dep" | "stock" | "assets";
 
@@ -228,28 +227,21 @@ export const SORTS: Record<SortId, { natural: 1 | -1 }> = {
   assets: { natural: -1 },
 };
 
-export interface SortState {
-  id: SortId;
-  /** 1: the natural order of the column; -1: reversed. */
-  dir: 1 | -1;
-}
+export const SORT_IDS = Object.keys(SORTS) as SortId[];
+
+export type SortState = ListSort<SortId>;
 
 export const defaultSort: SortState = { id: "fee", dir: 1 };
-
-/** A press on a column head: another column starts in its natural order; the same column again reverses it. */
-export function pressSort(s: SortState, id: SortId): SortState {
-  return s.id === id ? { id, dir: s.dir === 1 ? -1 : 1 } : { id, dir: 1 };
-}
 
 /** Whether the column's values run from small to large in the current order (the arrow's direction). */
 export const ascending = (s: SortState): boolean => s.dir * SORTS[s.id].natural === 1;
 
 const keyOf = (x: TbTrack, id: SortId): number | null => {
-  if (id === "fee") return shareOf(x.fee);
+  if (id === "fee") return numberOf(x.fee);
   // a fee from deposits the rule says the product has none of (PF-06) is 0, as the calculations take it; one not reported stays empty
-  if (id === "dep") return depositFeeNoneByRule(x.deposit) ? 0 : shareOf(x.deposit);
+  if (id === "dep") return depositFeeNoneByRule(x.deposit) ? 0 : numberOf(x.deposit);
   if (id === "stock") return x.stock;
-  if (id === "assets") return shareOf(x.assets);
+  if (id === "assets") return numberOf(x.assets);
   return null;
 };
 
@@ -259,10 +251,10 @@ const keyOf = (x: TbTrack, id: SortId): number | null => {
  */
 export function sortTracks(list: readonly TbTrack[], s: SortState, by: GroupBy): TbTrack[] {
   const d = s.dir * SORTS[s.id].natural;
-  const tie = (a: TbTrack, b: TbTrack) => (shareOf(a.fee) ?? 1e9) - (shareOf(b.fee) ?? 1e9) || collator.compare(a.companyName, b.companyName) || collator.compare(a.short, b.short) || a.id - b.id;
+  const tie = (a: TbTrack, b: TbTrack) => (numberOf(a.fee) ?? 1e9) - (numberOf(b.fee) ?? 1e9) || heCollator.compare(a.companyName, b.companyName) || heCollator.compare(a.short, b.short) || a.id - b.id;
   if (s.id === "name") {
     const label = (x: TbTrack) => (by === "company" ? x.short : x.companyName);
-    return [...list].sort((a, b) => d * collator.compare(label(a), label(b)) || tie(a, b));
+    return [...list].sort((a, b) => d * heCollator.compare(label(a), label(b)) || tie(a, b));
   }
   return [...list].sort((a, b) => {
     const x = keyOf(a, s.id);
@@ -274,9 +266,9 @@ export function sortTracks(list: readonly TbTrack[], s: SortState, by: GroupBy):
 
 /**
  * The columns whose head sorts in this grouping: those whose figure differs between the tracks of at least one group, since the sort
- * acts inside each group (founder, 2026-11-03: "sorting by דמי ניהול doesnt work" on the pension products, whose fee is the fund's
+ * acts inside each group ("sorting by דמי ניהול doesnt work" on the pension products, whose fee is the fund's
  * own, one for all its tracks; and no study fund has a fee from deposits). The name always sorts. A chosen kind is one of the groups by
- * kind; the heads do not change with it, so a column whose figures are equal in that kind still sorts (nothing moves, 2026-11-03).
+ * kind; the heads do not change with it, so a column whose figures are equal in that kind still sorts (nothing moves).
  */
 export function sortableIn(view: ProductView, by: GroupBy): ReadonlySet<SortId> {
   const groups = new Map<string | number, TbTrack[]>();
@@ -330,9 +322,9 @@ export interface TbGroup {
 
 /** F-100's fee range of a group's shown tracks as two computed values over the fees it read. `about`: the sheets' headers, the group's by default. */
 export function feeRangeOf(list: readonly TbTrack[], today: string, about: { low: string; high: string } = { low: t.about.feeLow, high: t.about.feeHigh }): TbGroup["fees"] {
-  const range = groupFeeRange(list.map((x) => shareOf(x.fee)));
+  const range = groupFeeRange(list.map((x) => numberOf(x.fee)));
   if (!range) return null;
-  const inputs = Object.fromEntries(list.filter((x) => shareOf(x.fee) !== null).map((x) => [`${x.companyName}: ${x.fullName} (${x.id})`, x.fee]));
+  const inputs = Object.fromEntries(list.filter((x) => numberOf(x.fee) !== null).map((x) => [`${x.companyName}: ${x.fullName} (${x.id})`, x.fee]));
   const make = (value: number, header: string) => computed(value, "pct_per_year", "F-100", inputs, { today, about: header });
   return { low: make(range.low, about.low), high: make(range.high, about.high) };
 }
@@ -357,10 +349,10 @@ export function buildGroups(view: ProductView, sorted: readonly TbTrack[], by: G
 export const showsKindChip = (x: TbTrack): boolean => !!x.sub && !nameSaysKind(x.short, x.sub);
 
 /** Whether a row in the one list of a kind shows its short name under the company: only to tell apart two tracks of one company in
- *  that kind (founder, 2026-11-03: a name that only says the kind again, "עוקב S&P 500" under the S&P 500 kind, is not wanted). */
+ *  that kind (a name that only says the kind again, "עוקב S&P 500" under the S&P 500 kind, is not wanted). */
 export const showsShortName = (x: TbTrack): boolean => x.twin && nameAddsToKind(x.short, x.sub);
 
-/** The yield's empty word: "אין" for a track younger than the window, written beside the window ("אין 3 שנים"; founder, 2026-11-08: shorter than "פחות מ־3 שנים"), else "not reported". */
+/** The yield's empty word: "אין" for a track younger than the window, written beside the window (shorter than "פחות מ־3 שנים"), else "not reported". */
 export function missingYield(x: TbTrack, years: 3 | 5): string {
   if (x.selfManaged) return t.yield.selfManaged;
   return (years === 3 ? x.young3 : x.young5) ? t.yield.young : t.yield.missing;

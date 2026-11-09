@@ -1,4 +1,4 @@
-// The account panel's own logic that is not drawing (founder, 2026-11-04): the draft it starts from, the starting point a draft is on, and the
+// The account panel's own logic that is not drawing: the draft it starts from, the starting point a draft is on, and the
 // stretches of the plan the year strip shows. Pure: nothing here prices anything (own-account.ts and own-account-view.ts do).
 import type { FeesSnapshot } from "@finance-tool/schema";
 import { brokerDraftOf, type BrokerDraft, type CustomBroker } from "./custom-entries";

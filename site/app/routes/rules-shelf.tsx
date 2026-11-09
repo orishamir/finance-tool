@@ -35,7 +35,7 @@ export default function RulesShelf() {
       <div className="pt-2 lg:pt-8 flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.shelves[shelf]?.name}</h1>
         <Link to={target} replace className="text-link min-h-target inline-flex items-center hover:underline self-start">
-          {copy.filters.presetAll}
+          {copy.presetAll}
         </Link>
       </div>
     </PageShell>

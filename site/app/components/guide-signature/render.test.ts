@@ -5,14 +5,13 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
-import { GoalsProvider } from "../../lib/goal";
 import { ProvenanceProvider } from "../provenance";
 import { WorthKnowing, worthRows } from "../guide/worth-knowing";
 import { accountWorthRow } from "./current-account";
 import { SignatureFrame, signatureRegistry } from "./index";
 
 const inProviders = (p: NonNullable<ReturnType<typeof buildGuidePage>>, child: ReactNode) =>
-  createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(GoalsProvider, { presets: {}, children: createElement(ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: child }) }) }));
+  createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: child }) }));
 
 describe("signature visuals render", () => {
   for (const id of Object.keys(signatureRegistry)) {

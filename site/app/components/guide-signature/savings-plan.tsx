@@ -129,7 +129,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
           </svg>
           <Marker min={0} max={last} step={1} value={m} onChange={setMonth} label={copy.plan.marker} valueText={`${m} ${copy.plan.unit}`} left={0} top={TOP - 12} width={plotW} height={height - AXIS - TOP + 14} />
         </div>
-        {/* under the month numbers, not on their line: on a phone it covered "24" and "36" (2026-10-26) */}
+        {/* under the month numbers, not on their line: on a phone it covered "24" and "36" */}
         <span className="block text-xs text-chart-text -mt-1.5">{copy.plan.unit}</span>
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
       </div>
@@ -149,9 +149,9 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         <p>
           {copy.plan.lockLine.before} <Num value={termFact} display={fmt.months(term)} /> {copy.plan.lockLine.middle} <Num value={rate} /> {copy.plan.lockLine.after}
         </p>
-        {lumpTerm && lumpRate && lastUnlock && (
+        {lumpTerm && lumpRate && (
           <p>
-            {copy.plan.alt.before}{lumpRate.own && <> {copy.plan.alt.ofBank} <bdi>{lumpRate.own}</bdi></>} {copy.plan.alt.forTerm} <Num value={lumpTerm} display={fmt.months(Number(lumpTerm.value))} /> ({copy.plan.alt.rate} <Num value={lumpRate} />) {copy.plan.alt.middle} <Num value={lastUnlock} />.
+            {copy.plan.alt.before}{lumpRate.own && <> {copy.plan.alt.ofBank} <bdi>{lumpRate.own}</bdi></>} {copy.plan.alt.forTerm} <Num value={lumpTerm} display={fmt.months(Number(lumpTerm.value))} /> ({copy.plan.alt.rate} <Num value={lumpRate} />) {copy.plan.alt.middle}
           </p>
         )}
         <p className="text-muted-foreground">{copy.plan.onlyCollected}</p>

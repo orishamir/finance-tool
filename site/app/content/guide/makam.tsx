@@ -1,5 +1,5 @@
 // Guide prose for מק״מ (architecture 3.5: prose lives in content files; every figure is a Num). Written
-// 2026-10-23 from the rule base (GOV, TXI, TXS, BANK, BRK, REG); each block ends with the rules it rests
+// from the rule base (GOV, TXI, TXS, BANK, BRK, REG); each block ends with the rules it rests
 // on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import { Link } from "react-router";
 import type { GuideContent } from "./types";
@@ -13,7 +13,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          הלוואה קצרה למדינה, לתקופה של עד שנה, <Term prefix="ש" id="בנק ישראל">בנק ישראל</Term> מוכר לציבור. המק״מ לא משלם <Term id="ריבית">ריבית</Term> ולא <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>, ובמועד <Term prefix="ה" id="פדיון">פדיון</Term> המדינה משלמת את השווי הנקוב במלואו. ההפרש הוא הרווח שלכם, ובמס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, כלומר ריבית.
+          המק״מ לא משלם <Term id="ריבית">ריבית</Term> ולא <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>, ובמועד <Term prefix="ה" id="פדיון">פדיון</Term> המדינה משלמת את השווי הנקוב במלואו. ההפרש הוא הרווח שלכם, ובמס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, כלומר ריבית.
         </p>
         <Sentence measure>
           בכל חודש מונפקת סדרה חדשה לכשנה, ולכן בכל רגע יש {series ? <Num value={series} /> : null} סדרות בשוק, עם מועדי פדיון שונים. מי שמחזיק עד הסוף יודע כבר ביום הקנייה מה <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term> שלו.
@@ -34,7 +34,7 @@ export const content: GuideContent = {
           בבורסה, במסחר הרציף, פקודה היא של {minOrder ? <Num value={minOrder} display={fmt.nisWhole(Number(minOrder.value))} /> : null} שווי נקוב לפחות. בשלבים אחרים של יום המסחר, כמו לפני הפתיחה ולפני הנעילה, הכללים מאפשרים פקודה של יחידת מסחר אחת, אבל גודל היחידה של המק״מ לא כתוב במדריך המסחר. שאלה פתוחה <IdRef id="GOV OQ7" end="." /> הבנק או בית ההשקעות יכולים לקבוע בתעריפון מינימום משלהם. יום המסחר האחרון בסדרה הוא {lastDays ? <Num value={lastDays} /> : null} ימי מסחר לפני הפדיון.
         </Sentence>
         <p className="max-w-measure">
-          <Term prefix="ה" id="מנפיק">מנפיק</Term> של המק״מ הוא בנק ישראל, והוא גם מנהל אותו. במכרז עצמו מציעים ישירות רק חברי <Term id="מסלקת הבורסה">מסלקת הבורסה</Term>. איך הזמנה של אדם פרטי מגיעה אליו, באיזה סכום מינימלי ובאיזו עמלה, עוד לא מתועד. שאלה פתוחה <IdRef id="GOV OQ2" end="." />
+          <Term prefix="ה" id="מנפיק">מנפיק</Term> של המק״מ הוא <Term id="בנק ישראל">בנק ישראל</Term>, והוא גם מנהל אותו. במכרז עצמו מציעים ישירות רק חברי <Term id="מסלקת הבורסה">מסלקת הבורסה</Term>. איך הזמנה של אדם פרטי מגיעה אליו, באיזה סכום מינימלי ובאיזו עמלה, עוד לא מתועד. שאלה פתוחה <IdRef id="GOV OQ2" end="." />
         </p>
         <RulesLine ids={["GOV-22", "GOV-05", "GOV-24", "BANK-15", "BRK-32"]} />
       </>
@@ -77,7 +77,7 @@ export const content: GuideContent = {
         מי שמוכר קודם מקבל את מחיר השוק של אותו יום, שיכול להיות נמוך ממחיר הקנייה. והמק״מ לא צמוד למדד: אם המחירים עולים יותר מהתשואה, הכסף שווה פחות בסוף.
       </p>
       <p className="max-w-measure">
-        {/* D6 (2026-10-26): how the account keeps the paper is the account's, said once on its page, not copied here */}
+        {/* D6: how the account keeps the paper is the account's, said once on its page, not copied here */}
         הנייר מוחזק בחשבון ניירות ערך. איך החשבון שומר על נכסי הלקוחות, ומה קורה אם הבנק או בית ההשקעות קורסים, מוסבר בעמוד של <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
       <RulesLine ids={["GOV-02", "GOV-22", "GOV-17", "GOV-03"]} />
@@ -103,7 +103,7 @@ export const content: GuideContent = {
         <Term id="עמלת קנייה ומכירה">עמלות הקנייה והמכירה</Term>, <Term prefix="ו" id="דמי חשבון קבועים">דמי חשבון קבועים</Term> אם החברה גובה אותם, נקבעים בתעריפון של כל חברה. ראו במדריך: <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
       <RulesLine ids={["TXI-03", "TXI-11", "BANK-18", "BRK-16", "BRK-17", "BANK-15", "MF-26", "MF-35", "TXS-12", "GOV-15", "GOV-17"]} />
-      {/* D6 (amended 2026-10-27): makam's exposure page folded into this one; what it said about holding makam without buying it */}
+      {/* D6: makam's exposure page folded into this one; what it said about holding makam without buying it */}
       <Sentence measure>
         אפשר להחזיק מק״מ גם בעקיפין: <Link to="/guide/money-market-fund-daily" className="text-link hover:underline">קרן כספית</Link> יכולה להחזיק מק״מ שנותרו לו עד {makamMonths ? <Num value={makamMonths} /> : null} חודשים לפדיון, לצד איגרות חוב קצרות, פיקדונות ומזומן. בחשבון <Term prefix="ב" id="קופת גמל בניהול אישי">ניהול אישי</Term> קונים אותו ישירות, כמו בחשבון ניירות ערך.
       </Sentence>

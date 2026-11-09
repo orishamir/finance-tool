@@ -1,4 +1,5 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
+import type { P05Input } from "@finance-tool/engine";
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -23,7 +24,7 @@ export interface SiteValue extends ValueObject {
   own?: string;
   /**
    * A doubt the record itself holds about this very figure, in Hebrew (a bank's `doubt_he`): the figure shows on an amber tint with the
-   * caution icon, and its sheet says the doubt. It is the value's own, so every place that shows the figure warns (founder, 2026-11-08).
+   * caution icon, and its sheet says the doubt. It is the value's own, so every place that shows the figure warns.
    */
   doubt?: string;
   /** For a site parameter: its rationale (copy 3.8). */
@@ -36,7 +37,7 @@ export interface SiteValue extends ValueObject {
   flags?: string[];
   /** What the value is, in one line, for the sheet header. */
   about?: string;
-  /** What the figure means, said first in its sheet, under the header (fresh readers, 2026-11-07: a definition at the sheet's end sat below the popover's edge). */
+  /** What the figure means, said first in its sheet, under the header (a definition at the sheet's end sat below the popover's edge). */
   lead?: string;
   /** The figure was shown with its sign ("+0.37%"): the sheet's head shows it the same way. */
   signed?: boolean;
@@ -46,7 +47,7 @@ export interface SiteValue extends ValueObject {
   replaces?: SiteValue;
   resetKey?: string;
   /**
-   * A field's value: the default a chart's field starts at, or what the reader typed in it (founder, 2026-11-08, charts.md). It shows as
+   * A field's value: the default a chart's field starts at, or what the reader typed in it (charts.md). It shows as
    * a plain number wherever it appears (the sentence that repeats it, a calculation sheet's input row): no site-parameter tag, no "you
    * entered" mark, nothing that opens. The field beside it is where it changes. Its record still traces to data/parameters.
    */
@@ -57,6 +58,20 @@ export interface SiteValue extends ValueObject {
 export function asField<T extends SiteValue>(v: T): T {
   return { ...v, field: true };
 }
+
+/** The unit of each P-05 input a reader can enter. */
+export const p05Units: Record<P05Input, ValueObject["unit"]> = {
+  amount_now: "nis",
+  monthly_deposit: "nis_per_month",
+  horizon_years: "years",
+  "A-01": "pct_per_year",
+  "A-02": "pct_per_year",
+  cash_rate: "pct_per_year",
+  annual_income: "nis",
+};
+
+/** A value's number, or null when it holds none (empty, text, a flag). */
+export const numberOf = (v: { value: unknown } | null | undefined): number | null => (v && typeof v.value === "number" ? v.value : null);
 
 const order: Record<Strength, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
 
@@ -94,6 +109,9 @@ export function ownBy<T extends SiteValue | ValueObject>(v: T, company: string):
 export function ownEach(values: Record<string, SiteValue>, company: string, pick: (key: string) => boolean = () => true): Record<string, SiteValue> {
   return Object.fromEntries(Object.entries(values).map(([k, v]) => [k, pick(k) ? ownBy(v, company) : v]));
 }
+
+/** Whether any of the figures is one its record doubts (`doubt`): what decides if a page's legend lists the doubt item. */
+export const anyDoubt = (values: Iterable<SiteValue | null | undefined>): boolean => [...values].some((v) => !!v?.doubt);
 
 /** Whether any of the figures, or any input a computed one rests on, carries the caution (D31): what decides if a page's legend lists the company item. */
 export function anyWeak(values: Iterable<SiteValue | null | undefined>): boolean {
@@ -169,9 +187,8 @@ export type ComputedOptions = Parameters<typeof computed>[4];
 
 /**
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
- * the two, and its inputs are the two, each opening its own sheet, so the sheet cannot list what the value does not rest on (founder,
- * 2026-11-08: "go through all calculations make sure the chip displayed is correct ... share more code make less mistakes"). Null when
- * either is not a number. `round` shapes the result (a whole shekel).
+ * the two, and its inputs are the two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either
+ * is not a number. `round` shapes the result (a whole shekel).
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
@@ -200,8 +217,8 @@ export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteV
 export function staleCma(reportPeriod: string, today: string): Staleness | null {
   // Flow 9 and product §6: the flag is for a refresh that failed, not for the regulator's publication lag. A month's figures
   // appear about three weeks after it ends (September's were on data.gov.il by 23 October), so the next period is due in the
-  // month after next; the stored one counts as stale only once that month has passed without it (2026-11-03, was: from the
-  // first day of the month after next, which flagged current data for most of every month).
+  // month after next; the stored one counts as stale only once that month has passed without it (counting from
+  // the first day of the month after next would flag current data for most of every month).
   const [y, m] = reportPeriod.split("-").map(Number) as [number, number];
   const limit = new Date(Date.UTC(y, m - 1 + 3, 1)).toISOString().slice(0, 10);
   return today >= limit ? { since: reportPeriod, cadence: "monthly" } : null;
@@ -210,7 +227,7 @@ export function staleCma(reportPeriod: string, today: string): Staleness | null 
 /**
  * A CMA fee average belongs to a calendar year (CAT-36). The next year's average arrives with the January rows of the
  * year after it, which carry the same publication lag as any month (`staleCma`), so the average is stale once those
- * rows are overdue: from 1 March two years after its own year (2026-11-03, was: from 1 January, before they could exist).
+ * rows are overdue: from 1 March two years after its own year (not 1 January, before they can exist).
  * `effectiveTo` is the fee's `effective_to` (YYYY-12-31), `today` is YYYY-MM-DD.
  */
 export function staleCmaFee(effectiveTo: string | null, today: string): Staleness | null {
@@ -226,7 +243,7 @@ export function cmaFeeValue(v: ValueObject, today: string): SiteValue {
 
 /**
  * The day a sourced figure takes effect (its `effective_from`) as a value of its own, with the figure's source, so prose shows
- * the date through `Num` instead of typing it (BANK-35's two dates, 2026-10-26). `about` says what the date is. Null without a date.
+ * the date through `Num` instead of typing it (BANK-35's two dates). `about` says what the date is. Null without a date.
  */
 export function effectiveFromValue(v: SiteValue | null, about: string): SiteValue | null {
   if (!v?.effective_from) return null;

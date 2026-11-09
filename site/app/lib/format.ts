@@ -2,9 +2,13 @@
 import { numbers, values as valuesCopy } from "../copy";
 
 const he = "he-IL";
+
+/** Hebrew alphabetical order, for sorting names. */
+export const heCollator = new Intl.Collator("he");
 const currency = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const currencyWhole = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", maximumFractionDigits: 0 });
 const dollars = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const dollarsWhole = new Intl.NumberFormat(he, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 const euros = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pounds = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 // a price per share is a fraction of a cent (0.0035 $): up to four decimals
@@ -12,6 +16,8 @@ const dollarsFine = new Intl.NumberFormat(he, { style: "currency", currency: "US
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
 const plain = new Intl.NumberFormat(he, { maximumFractionDigits: 2 });
+/** An ECB reference rate, to the four decimals the ECB publishes it with. */
+const ecbRate = new Intl.NumberFormat(he, { maximumFractionDigits: 4 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
 const compactFormat = (v: number) => withMinus(compactNumber.format(v));
 const date = new Intl.DateTimeFormat(he, { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -20,7 +26,7 @@ const plural = new Intl.PluralRules("he");
 
 /**
  * Intl's he-IL currency text carries a right-to-left mark and a no-break space around the sign. Copied into a note or a
- * spreadsheet they travel as invisible characters (audit A37); the number is isolated by its own element on the page
+ * spreadsheet they travel as invisible characters; the number is isolated by its own element on the page
  * (`<bdi dir="ltr">`, `unicode-bidi: isolate`), so the right-to-left mark is dropped and the space is an ordinary one (the left-to-right mark before a minus sign stays).
  */
 const plainMarks = (text: string) => text.replace(/\u200f/g, "").replace(/[\u00a0\u202f]/g, " ");
@@ -45,7 +51,7 @@ function compactNisParts(v: number): { num: string; word: string | null } {
 
 /**
  * A billion or more in its short form, always with two decimals (`2.30 מיליארד ₪`, `1,250.00 מיליארד ₪`): a figure with one decimal beside
- * one with two read as different precisions (fresh readers, round 3, 2026-11-07: "'1.6' has one decimal place while the rest have two").
+ * one with two read as different precisions.
  */
 const billions = new Intl.NumberFormat(he, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const nisBillions = (v: number) => `${billions.format(Math.abs(v) / 1e9)} ${numbers.billion} ₪`;
@@ -58,9 +64,9 @@ export const SHORT_IN_ROW = 1e8;
 
 /**
  * A figure's text with every shekel amount of `from` or more ("2,296,540,223 ₪", "+2,296,540,223 ₪") in its short form, or null when it
- * has none. A phone shows it from a billion, so a typed plan's figure is never cut by its fixed column (lens review S2); a computer from a
+ * has none. A phone shows it from a billion, so a typed plan's figure is never cut by its fixed column; a computer from a
  * thousand billion. A row that writes one of its figures short passes `SHORT_IN_ROW`, so its figures read in one form: "758,833,521 ₪"
- * beside "1.57 מיליארד ₪" read as the larger of the two (fresh readers, round 3).
+ * beside "1.57 מיליארד ₪" read as the larger of the two.
  */
 export function shortBillions(text: string, from = 1e9): string | null {
   let hit = false;
@@ -75,12 +81,14 @@ export function shortBillions(text: string, from = 1e9): string | null {
 
 export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
-  // a whole amount never shows agorot: "10 ₪", not "10.00 ₪" (founder, 2026-11-08)
+  // a whole amount never shows agorot: "10 ₪", not "10.00 ₪"
   nis: (v: number) => withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? currencyWhole : currency).format(v))),
   nisWhole: (v: number) => withMinus(plainMarks(currencyWhole.format(v))),
-  /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (2026-11-04: until then a bare "2"). */
+  /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (until then a bare "2"). */
   usd: (v: number) => withMinus(plainMarks(dollars.format(v))),
-  /** `25.00 €` and `5.00 £`: a bound a price list prints in euros or pounds, for trades abroad (2026-11-05: until then a bare "25"). */
+  /** `60,000 $`: a whole amount a law sets in dollars, with no cents. */
+  usdWhole: (v: number) => withMinus(plainMarks(dollarsWhole.format(v))),
+  /** `25.00 €` and `5.00 £`: a bound a price list prints in euros or pounds, for trades abroad (until then a bare "25"). */
   eur: (v: number) => withMinus(plainMarks(euros.format(v))),
   gbp: (v: number) => withMinus(plainMarks(pounds.format(v))),
   /** `0.0035 $`: a price per share. */
@@ -98,7 +106,7 @@ export const fmt = {
   },
   number: (v: number) => withMinus(plain.format(v)),
   /**
-   * `22.10.2026` from `2026-10-22`. A document that prints only a month is dated `2025-11` (fees schema, 2026-11-07); it is said as the
+   * `22.10.2026` from `2026-10-22`. A document that prints only a month is dated `2025-11` (fees schema); it is said as the
    * month, `נובמבר 2025`, never with an invented first day.
    */
   date: (iso: string) => (/^\d{4}-\d{2}$/.test(iso) ? period.format(new Date(iso + "-01T00:00:00")) : date.format(new Date(iso + "T00:00:00"))),
@@ -111,7 +119,7 @@ export const fmt = {
   },
   /**
    * The same mark for an SVG `<text>`, spelled in visual left-to-right order inside a left-to-right isolate:
-   * `₪ אלף 200`. WebKit reorders mixed Hebrew and digits in SVG text on its own and drew "100₪אלף" (audit A62);
+   * `₪ אלף 200`. WebKit reorders mixed Hebrew and digits in SVG text on its own and drew "100₪אלף";
    * a text that is already in visual order and isolated is drawn the same way by every engine.
    */
   compactNisAxis: (v: number) => {
@@ -129,18 +137,17 @@ export const fmt = {
 };
 
 /**
- * Display rounding (audit 2026-10-24 A13; method §13 unchanged, this is display only). A computed, entered or
- * parameter shekel amount of 10 ₪ or more shows whole shekels (founder, 2026-11-08: by the kind of value, not its size); a whole-number amount of any size shows no agorot
- * ("10,000 ₪", "0 ₪"), per month and per trade as well. A sourced amount of 1,000 ₪ or more shows no ".00" either ("83,641 ₪", the
- * provident fund's ceiling: fresh readers, 2026-11-08, read "83,641.00 ₪" as false precision), and keeps the agorot its source prints
- * ("5,645.29 ₪"). A whole amount never shows agorot, sourced ones included ("27 ₪"; founder, 2026-11-08, "floating point numbers for
- * whole numbers"); every figure under 1,000 ₪ that has agorot keeps them. Table cells follow the same rule. The values themselves are never
+ * Display rounding (method §13 unchanged, this is display only). A computed, entered or
+ * parameter shekel amount of 10 ₪ or more shows whole shekels (by the kind of value, not its size); a whole-number amount of any size shows no agorot
+ * ("10,000 ₪", "0 ₪"), per month and per trade as well. A sourced amount of 1,000 ₪ or more shows no ".00" either ("83,641 ₪",
+ * the provident fund's ceiling: "83,641.00 ₪" reads as false precision), and keeps the agorot its source prints ("5,645.29 ₪").
+ * A whole amount never shows agorot, sourced ones included ("27 ₪"); every figure under 1,000 ₪ that has agorot keeps them. Table cells follow the same rule. The values themselves are never
  * rounded.
  */
 export function nisShown(v: number, state?: "sourced" | "computed" | "entered", parameter = false): string {
   const derived = state === "computed" || state === "entered" || parameter;
   // what the site calculates (or the person entered) shows whole shekels, except a cost of a few shekels, where rounding changes the meaning;
-  // a figure set by law or a price list keeps the agorot it prints (founder, 2026-11-08)
+  // a figure set by law or a price list keeps the agorot it prints
   if (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) return fmt.nisWhole(v);
   if (Math.abs(v) >= 1000 && Number.isInteger(v)) return fmt.nisWhole(v);
   return fmt.nis(v);
@@ -192,6 +199,8 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return `${fmt.number(value)} ${numbers.nisMillions}`;
     case "nis_per_usd":
       return `${fmt.number(value * 100)} ${numbers.agorotPerDollar}`;
+    case "fx_per_eur":
+      return withMinus(ecbRate.format(value));
     case "pct":
     case "pct_per_year":
     case "pct_of_deposit":
@@ -204,7 +213,7 @@ export function formatValue(value: number | string | boolean | null, unit: strin
 }
 
 /**
- * What a reader means by a point where the conclusion changes (fresh readers, 2026-11-07: "8.17 שנים" read as oddly precise): years whole,
+ * What a reader means by a point where the conclusion changes ("8.17 שנים" read as oddly precise): years whole,
  * or halves under 3; a return or inflation in percent whole from 3, halves from 1, tenths below; a fee's rate in tenths of a percent, hundredths
  * under 0.1% (fees run 0.1% to 4%, where halves would carry a 1.17% point to 1.5%). It rounds away from the value now, toward
  * the side the conclusion has already changed on, so the value shown still changes it; the sheet that opens on it keeps the exact point.
@@ -213,7 +222,7 @@ export function readerRound(x: number, side: "lo" | "hi", unit: "years" | "pct" 
   const a = Math.abs(x);
   const step = unit === "years" ? (a >= 3 ? 1 : 0.5) : unit === "fee" ? (a >= 0.1 ? 0.1 : 0.01) : a >= 3 ? 1 : a >= 1 ? 0.5 : a >= 0.1 ? 0.1 : 0.01;
   const r = side === "lo" ? Math.floor(x / step + 1e-9) * step : Math.ceil(x / step - 1e-9) * step;
-  // never rounded down to nothing, nor up across the point (finance review, 2026-11-07): a point under one step rounds down in a finer step
+  // never rounded down to nothing, nor up across the point: a point under one step rounds down in a finer step
   if (side === "lo" && r <= 0 && x > 0) {
     for (let fine = step / 10; fine >= 1e-4; fine /= 10) {
       const f = Math.floor(x / fine + 1e-9) * fine;
@@ -233,7 +242,7 @@ export function unitWord(unit: string): string {
 }
 
 /**
- * The one parser for every number a person types (audit A6). Strips spaces (also no-break and thin), ₪, % and bidi
+ * The one parser for every number a person types. Strips spaces (also no-break and thin), ₪, % and bidi
  * marks; a minus sign in any dash form. Decimal point or comma: a single "," followed by one or two digits and no other
  * separator is a decimal point ("2,5" is 2.5, "4,25" is 4.25); a comma followed by exactly three digits is a thousands
  * separator ("12,000" is 12000, "1,234,567" is 1234567); "1.234,5" and "1,234.5" read the last separator as the

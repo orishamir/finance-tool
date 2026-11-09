@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { IconCheck } from "../icons";
 import { cx } from "./cx";
 import { gershayim } from "./name";
+import { fmt } from "../../lib/format";
 
 export interface SegmentOption<T extends string> {
   value: T;
@@ -34,7 +35,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
           onClick={() => onChange(o.value)}
           className={cx(
             "flex-1 inline-flex items-center justify-center gap-1.5 min-h-target lg:min-h-10 lg:tap-area px-3 rounded-[5px] text-sm transition-colors duration-[var(--duration-fast)] disabled:text-muted-foreground disabled:cursor-not-allowed",
-            value === o.value ? "bg-primary font-medium text-primary-foreground shadow-sm" : "text-foreground hover:bg-accent/60", // audit 2026-10-24 (A41): a clear pressed state
+            value === o.value ? "bg-primary font-medium text-primary-foreground shadow-sm" : "text-foreground hover:bg-accent/60", // a clear pressed state
           )}
         >
           {value === o.value && <IconCheck size={16} />}
@@ -45,13 +46,35 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
   );
 }
 
-/** Four or more options, or longer labels: a row of chips, one chosen at a time; scrolls sideways on a phone and wraps from md (or wraps always with `wrap`). A chip never submits. `value` may be null (nothing chosen). */
-export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, other }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways (the goal form's preset row, scenario fix 2026-10-24). */ wrap?: boolean; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then (2026-10-26). */ other?: { label: string; open: boolean; onToggle: () => void } }) {
+/**
+ * Four or more options, or longer labels: a row of chips, one chosen at a time; scrolls sideways on a phone and wraps from md (or wraps
+ * always with `wrap`, or stays one line at every width with `line`). A chip never submits. `value` may be null (nothing chosen).
+ * `counts` puts a number in a fixed slot after each label (how many a choice would show), and a chip then keeps one width whether it is
+ * chosen or not (its label holds room for the chosen chip's weight), so choosing moves nothing.
+ */
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, other }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
+  const steady = !!counts || !!line;
+  const layout = wrap ? "flex flex-wrap gap-2" : line ? cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto pb-1 scrollbar-none") : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none");
   return (
-    <div role="radiogroup" aria-label={ariaLabel} className={wrap ? "flex flex-wrap gap-2" : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none")}>
+    <div role="radiogroup" aria-label={ariaLabel} className={layout}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
-          {labels[id]}
+        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
+          {steady ? (
+            // the label laid out twice in one cell, once at the chosen weight and unseen: the chip is as wide chosen or not
+            <span className="inline-grid *:[grid-area:1/1]">
+              <span aria-hidden="true" className="invisible font-medium">
+                {labels[id]}
+              </span>
+              <span>{labels[id]}</span>
+            </span>
+          ) : (
+            labels[id]
+          )}
+          {counts && (
+            <bdi dir="ltr" className="inline-block min-w-[3ch] text-end tabular-nums font-normal opacity-70">
+              {counts[id] !== undefined ? fmt.number(counts[id]) : ""}
+            </bdi>
+          )}
         </button>
       ))}
       {other && <OtherChip label={other.label} expanded={other.open} onClick={other.onToggle} />}
@@ -59,7 +82,29 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
   );
 }
 
-/** The pill that opens the person's own value: "אחר" after a row of choices, or the add pill closing a `ChipList`. Dashed, no fill, a plus; tinted while what it opens is open (2026-10-26: one look for "אחר" on every page). */
+/**
+ * A tray of one line and one height under a row of choices, always there: while nothing above opens it, a muted hint of what will appear
+ * here; then its label and its own row of choices, which scrolls sideways rather than wrap (the companies page's products under the kind of
+ * product). Its height never changes, so what stands below it never moves.
+ */
+export function ChoiceTray({ label, hint, children, labelId }: { label: string; /** Shown while the tray holds no choices. */ hint: ReactNode; children?: ReactNode; /** The label's element id (the row inside names itself by it). */ labelId?: string }) {
+  return (
+    <div className="h-16 md:h-12 flex items-center gap-3 min-w-0 overflow-hidden">
+      {children ? (
+        <>
+          <span id={labelId} className="shrink-0 text-sm font-medium">
+            {label}
+          </span>
+          <div className="flex-1 min-w-0">{children}</div>
+        </>
+      ) : (
+        <p className="min-w-0 line-clamp-2 md:line-clamp-none md:truncate text-sm text-muted-foreground">{hint}</p>
+      )}
+    </div>
+  );
+}
+
+/** The pill that opens the person's own value: "אחר" after a row of choices, or the add pill closing a `ChipList`. Dashed, no fill, a plus; tinted while what it opens is open (one look for "אחר" on every page). */
 export function OtherChip({ label, expanded, onClick }: { label: string; expanded?: boolean; onClick: () => void }) {
   return (
     <button type="button" aria-expanded={expanded} onClick={onClick} className="sec-chip-add gap-1.5 shrink-0">
@@ -77,7 +122,7 @@ export interface Tile<T extends string> {
 }
 
 /**
- * Two to five answers to one question, each a tile that shows what the answer brings (2026-11-05, the own fund's panel: each answer shows the
+ * Two to five answers to one question, each a tile that shows what the answer brings (the own fund's panel: each answer shows the
  * labels it adds to the fund's row). A radio group: arrow keys move between tiles; `value` may be null (nothing chosen yet). The tiles of a
  * row share one height, so a longer body never moves the row below. What is inside a tile is never a control of its own.
  */
@@ -133,8 +178,8 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
 const LIFT_INNER = "[&_:is(a,button,[role=button]):not([data-pick-card])]:relative [&_:is(a,button,[role=button]):not([data-pick-card])]:z-10";
 
 /**
- * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by tapping the option
- * itself"; founder, 2026-11-08), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
+ * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by
+ * tapping the option itself"), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
  * figure that opens its source, a fund number that opens its page): they lie above the card's button. The chosen option is not a PickCard;
  * it is marked by an outline and a word. The button is stretched over the card, last inside it; `label` names it for a screen reader.
  */
