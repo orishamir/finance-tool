@@ -56,6 +56,24 @@
     "state": "sourced",
     "notes": "Not one number: the table prints '1.50% / 1.51% / 1.52% / 1.53%' (effective '1.52%'), one rate for each exit period. Row '189 - ליצ'י קבועה שנה': period '12 חודשים', rate type 'קבועה', linkage 'אין', first amount tier (upper bound, 'לא כולל') 100000, break 'לא ניתן לשבור', renewal 'לא מתחדש' / 'לא מתחדש', exit points 'יש' 'תחנת יציאה ראשונה לאחר 3 חודשים ולאחר מכן תחנת יציאה מדי 3 חודשים', anchor 'לא רלוונטי', spread 'לא רלוונטי', offered '1.50% / 1.51% / 1.52% / 1.53%', common '', effective '1.52%'; further tiers (bound / [spread] / offered / [common] / effective): 250000 / 1.50% / 1.51% / 1.52% / 1.53% / 3.00% / 3.00% / 3.00% / 3.00% / 1.52%; 1000000 / 1.50% / 1.51% / 1.52% / 1.53% / 4.00% / 4.00% / 4.00% / 4.00% / 1.52%; 1000000< / 1.50% / 1.51% / 1.52% / 1.53% / 1.52%; deposit options 'בנקאי'. Read 2026-11-06 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed), 'כל המידע המוצג נכון לתאריך ושעה' 06/11/2026 08:30:52. Terms document (https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_150_189.pdf): 'שיעור הריבית הנומינלית השנתית שישולם ייקבע מראש לכל תקופה ובמשיכה/פירעון כל תקופה תצבור את הריבית השנתית שנקבעה לתקופה', 'ניתן לבצע משיכה מלאה או חלקית במועדי התחנות', 'סכום מזערי למשיכה ₪ 500', 'סכום מזערי להשארה במשיכה חלקית ₪ 1,000'. Which of the four rates a deposit held for the whole year earns is not printed in words, so no number is recorded. The common-deposit column prints '3.00% / 3.00% / 3.00% / 3.00%' and '4.00% / 4.00% / 4.00% / 4.00%' on the second and third amount tiers, above the offered rates; not explained, not used."
   },
+  "rate_effective": {
+    "value": 1.52,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '189 - ליצ'י קבועה שנה', 'ריבית אפקטיבית'",
+      "publisher": "Mizrahi Tefahot Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-06",
+    "effective_from": "2026-11-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [],
+    "state": "sourced",
+    "notes": "הבנק מדפיס לפיקדון הזה ארבעה שיעורי ריבית, אחד לכל שלושה חודשים: 1.50%, 1.51%, 1.52% ו־1.53%. ״הריבית האפקטיבית״ שהוא מדפיס לצדם היא 1.52% בכל טווחי הסכום."
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",
@@ -138,7 +156,7 @@
     "max_renewals": null
   },
   "conditions_he": "אפשר למשוך את הכסף, כולו או חלק ממנו, בתחנת יציאה כל 3 חודשים.",
-  "doubt_he": "הבנק מפרסם 4 שיעורי ריבית, אחד לכל תקופה של 3 חודשים, ולא שיעור אחד לשנה.",
+  "doubt_he": "הבנק מפרסם ארבעה שיעורי ריבית, אחד לכל שלושה חודשים, והמספר כאן הוא ״הריבית האפקטיבית״ שהוא מדפיס לצדם בלי להסביר לפיקדון הזה איך חישב אותה.",
   "snapshot": "2026-11-06",
   "source": {
     "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",

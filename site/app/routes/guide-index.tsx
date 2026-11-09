@@ -1,6 +1,5 @@
 // The guide list (flows 6.4): where the money is held, what it is invested in, and the not-covered card.
 import { Link, useLoaderData } from "react-router";
-import type { Route } from "./+types/guide-index";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
 import { PageShell } from "../components/shell";
 import { Card, ChipList, gershayim, RowArrow } from "../components/kit";
@@ -13,8 +12,8 @@ export async function loader() {
   const terms = loadTerms();
   const line = (name: string) => terms.find((t) => t.he === name)?.explanation ?? null;
   const products = loadProducts();
-  // D6 (amended 2026-10-27): "איפה הכסף מוחזק" lists only wrappers; a security (makam, a bond, a money-market fund) is what the money is invested in
-  // a name that must be decoded also shows the plain name the product's own record carries (audit A44)
+  // D6: "איפה הכסף מוחזק" lists only wrappers; a security (makam, a bond, a money-market fund) is what the money is invested in
+  // a name that must be decoded also shows the plain name the product's own record carries
   const wrappers = products.filter((w) => !isSecurity(w)).map((w) => ({ id: w.id, name: w.names.he[0]!, line: line(w.names.he[0]!), plain: (copy.plainSubtitleFor as readonly string[]).includes(w.id) ? (w.names.he[1] ?? null) : null }));
   const securities = products.filter(isSecurity);
   const folds = exposureFolds();

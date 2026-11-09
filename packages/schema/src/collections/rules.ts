@@ -61,7 +61,7 @@ export const ruleRecord = z
     recheck_date: isoDate.nullable().optional(),
     figures: z.record(z.string(), figure).optional(),
     /** 2-4 sentences of plain Hebrew shown on the rule card; `title` (English) stays the key the rules page falls back to. */
-    /** Hebrew title for lists and cards (added 2026-10-23); the English `title` stays the fallback. */
+    /** Hebrew title for lists and cards; the English `title` stays the fallback. */
     title_he: z.string().min(1).optional(),
     text_he: z.string().min(1).optional(),
     /** Figure key to Hebrew name, for the rule card. */
@@ -80,7 +80,7 @@ export const ruleRecord = z
     derived_from: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
     /**
      * A general rule's pointers to companies' terms (its Source line names them beside the general source): named examples of how a
-     * company applies it (spec §1), never a derivation. The card shows them under "לדוגמה" (review, 2026-10-26).
+     * company applies it (spec §1), never a derivation. The card shows them under "לדוגמה".
      */
     examples: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
     il_finance_file: z.string().regex(/\.md$/),

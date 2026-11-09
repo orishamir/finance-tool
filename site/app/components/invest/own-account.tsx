@@ -1,4 +1,4 @@
-// An account on your own terms, started from a house (founder, 2026-11-04, option א of 8dd1f013:research/specs/2026-11-04-own-broker/mockups.html):
+// An account on your own terms, started from a house (option א of 8dd1f013:research/specs/2026-11-04-own-broker/mockups.html):
 // the panel that starts from a house's price list, or from one of its groups' prices, and lets the person change only what they got; the
 // buttons that open it; and the line a person's row carries in the comparison. Typing stays in the panel: the page changes when the person adds
 // the account (guidelines/design.md). The prices are the library's (own-account.ts, own-account-view.ts); nothing here prices anything.
@@ -14,7 +14,7 @@ import { FEE_LINE, FEE_TYPES, layersOf, ownAccountResult, type FeeLayers, type F
 import { customersPaid } from "../../lib/customers-paid";
 import { useAfterRender, useSettled } from "../../lib/settled";
 import { isoToday } from "../../lib/state";
-import { entered, type SiteValue } from "../../lib/value";
+import { entered, numberOf, type SiteValue } from "../../lib/value";
 import { withCustomEntries } from "../../lib/custom-entries";
 import { Num, StateTag } from "../provenance";
 import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, useChartPick, cx, type CostPart } from "../kit";
@@ -181,7 +181,7 @@ function ListCell({ layer }: { layer: FeeLayers }) {
 function costParts(pc: PairCosts, lines: readonly string[], source: (line: string) => ReactNode): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
   const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: fixedName(line, pc.account.some((l) => l.line === "account")) ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
-  // the account's fees on each other first, as on every bar of the page (pass 7)
+  // the account's fees on each other first, as on every bar of the page
   return [{ id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }, ...parts];
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
@@ -215,7 +215,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   const form = useRef<HTMLDivElement>(null);
   const [errors, setErrors] = useState<EntryError[]>([]);
   const { draft, now, set, setMany } = useDraft<BrokerDraft>(() => {
-    if (broker) return { name: broker.name, tradePct: num(broker.tradePct), tradeMin: num(broker.tradeMin), custodyPct: num(broker.custodyPct), custodyMin: num(broker.custodyMin), fxPct: num(broker.fxPct), monthlyFee: num(broker.monthlyFee), sellsIsraeli: broker.sells.israeli, sellsAbroad: broker.sells.abroad, base: broker.base, untilYears: broker.untilYears ?? null };
+    if (broker) return { name: broker.name, tradePct: numberOf(broker.tradePct), tradeMin: numberOf(broker.tradeMin), custodyPct: numberOf(broker.custodyPct), custodyMin: numberOf(broker.custodyMin), fxPct: numberOf(broker.fxPct), monthlyFee: numberOf(broker.monthlyFee), sellsIsraeli: broker.sells.israeli, sellsAbroad: broker.sells.abroad, base: broker.base, untilYears: broker.untilYears ?? null };
     const point = points.find((x) => x.key === from) ?? points[0]!;
     const base = p.nameDefault(short);
     let name = base;
@@ -263,7 +263,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
 
   // the bars: the house's price list against the account, one scale, every fee type in both so a part that falls to zero shrinks in its place
   const withCurrentAccount = !!result && [...result.yours.account, ...(result.list?.account ?? [])].some((l) => l.line === "account");
-  // in the index page's order (pair.tsx `byLegend`), whatever the price list's own, so the bars and the legend agree (2026-11-08)
+  // in the index page's order (pair.tsx `byLegend`), whatever the price list's own, so the bars and the legend agree
   const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))].sort((a, b) => lineRank(a) - lineRank(b) || (a < b ? -1 : a > b ? 1 : 0)) : [];
   const layerOf = (line: string) => layers?.find((l) => l.fee === FEE_OF_LINE[line]);
   const sourceYours = (line: string): ReactNode => {
@@ -277,7 +277,6 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   const barLabels = { list: p.costs.total(p.costs.list), yours: p.costs.total(p.costs.yours) };
   const legendLines = ["remainder", ...lineIds.filter((l) => l !== "remainder")];
 
-  const noWay = !option || (answer !== null && !result);
   const nameError = errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null;
   const tase = world.wb.links.tase?.href ?? null;
 
@@ -404,7 +403,6 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   );
 }
 
-const num = (v: { value: unknown } | null): number | null => (v && typeof v.value === "number" ? v.value : null);
 
 // ---------------------------------------------------------------- the buttons and the row
 

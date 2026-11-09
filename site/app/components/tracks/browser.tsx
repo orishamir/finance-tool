@@ -1,23 +1,21 @@
-// The track browser (D54, 2026-11-03): the controls and the list for one product. The product is in the address
+// The track browser (D54): the controls and the list for one product. The product is in the address
 // (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are the person's state on the page.
-// No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list (founder, 2026-11-03). The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
+// No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list. The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
 // The controls stand in the order they narrow the list (product, search, kind); the count and the order are said right over the list.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { HELP_TERMS, SORTS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
+import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
+import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
+import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
 import { FilterChip, LongestCase, SelectField, TextField, useFlip } from "../kit";
 import { Term } from "../provenance";
 import { TrackList } from "./list";
 
-const ids = Object.keys(SORTS) as SortId[];
-
 /** The rows drawn at once when the list is new (a product, a kind): the first screens. The rest are drawn the moment after, in a transition, so a click is answered at once. */
 const FIRST_ROWS = 12;
-
-const EMPTY_PARAMS = new URLSearchParams();
 
 /** The address's query for another product: the sort carries over, the kind does not (each product has its own). */
 function keepFor(search: URLSearchParams): string {
@@ -27,7 +25,7 @@ function keepFor(search: URLSearchParams): string {
   return s ? `?${s}` : "";
 }
 
-/** "143 מסלולים של 12 חברות (מתוך 143)." No fee range: the table's cells show the fees (founder, 2026-11-08). */
+/** "143 מסלולים של 12 חברות (מתוך 143)." No fee range: the table's cells show the fees. */
 function CountLine({ view, shown, companies }: { view: ProductView; shown: number; companies: number }) {
   const total = view.tracks.length;
   return (
@@ -48,28 +46,16 @@ export function TrackBrowser({ data }: { data: TbData }) {
   // every product's view is built once: a switch of product then only redraws
   const views = useMemo(() => data.products.map((p) => buildProductView(data, p.id)!), [data]);
   const view = views.find((v) => v.id === productId)!;
-  // the kind and the sort live in the address (founder, 2026-11-03), so a link opens the same list:
+  // the kind and the sort live in the address, so a link opens the same list:
   // ?kind=מניות&sort=assets&order=reverse; the defaults are left out. The page is pre-rendered without them, so they are
   // read once the page is in the browser (reading them while hydrating would not match the pre-rendered page).
-  const [search, setSearch] = useSearchParams();
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
-  const sp = hydrated ? search : EMPTY_PARAMS;
+  const { params: sp, update, hydrated } = useAddressParams();
   // an address written before a kind's spelling was mended ("s&p" for "S&P") still opens it
   const kindParam = normName(sp.get("kind") ?? "");
   const kind = (kindParam && view.kinds.find((k) => normName(k.sub) === kindParam)?.sub) || "";
-  const sortParam = sp.get("sort");
-  const sortSet: SortState = sortParam && sortParam in SORTS ? { id: sortParam as SortId, dir: sp.get("order") === "reverse" ? -1 : 1 } : defaultSort;
-  const update = (changes: Record<string, string | null>) => {
-    const next = new URLSearchParams(search);
-    for (const [k, v] of Object.entries(changes)) {
-      if (v) next.set(k, v);
-      else next.delete(k);
-    }
-    setSearch(next, { replace: true, preventScrollReset: true });
-  };
+  const sortSet = sortFromParams(sp, SORT_IDS) ?? defaultSort;
   const setKind = (sub: string) => update({ kind: sub || null });
-  const setSort = (s: SortState) => update({ sort: s.id === defaultSort.id && s.dir === 1 ? null : s.id, order: s.dir === -1 ? "reverse" : null });
+  const setSort = (s: SortState) => update(sortParams(s, defaultSort));
   const [q, setQ] = useState("");
   const dq = useDeferredValue(q);
   // a kind holds at most one track of most companies, so under the companies' headings its sort would move nothing: it is one list
@@ -97,7 +83,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
     if (el && el.getBoundingClientRect().top < parseFloat(getComputedStyle(el).scrollMarginTop)) el.scrollIntoView({ block: "start", behavior: "instant" });
   };
 
-  const longestOrder = ids.flatMap((id) => ([1, -1] as const).flatMap((dir) => (["company", "kind"] as const).map((mode) => orderLine({ id, dir }, mode))));
+  const longestOrder = SORT_IDS.flatMap((id) => ([1, -1] as const).flatMap((dir) => (["company", "kind"] as const).map((mode) => orderLine({ id, dir }, mode))));
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
@@ -106,7 +92,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
         </span>
         <div role="group" aria-labelledby="tb-product" className="flex flex-wrap gap-2">
           {data.products.map((p) => (
-            <FilterChip key={p.id} on={p.id === productId} count={p.rows.length} onClick={() => p.id !== productId && navigate(`/tracks/${p.id}${keepFor(search)}`, { preventScrollReset: true })}>
+            <FilterChip key={p.id} on={p.id === productId} count={p.rows.length} onClick={() => p.id !== productId && navigate(`/tracks/${p.id}${keepFor(sp)}`, { preventScrollReset: true })}>
               {p.name}
             </FilterChip>
           ))}
@@ -158,7 +144,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
         className="md:hidden"
         wide
         label={t.controls.sort}
-        options={ids.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
+        options={SORT_IDS.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
         value={sort.id}
         onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
       />

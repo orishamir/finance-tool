@@ -13,9 +13,8 @@
 // The second argument picks the widths: phone (390), pc (1280), desk (1440), wide (1920). `--sheet` first opens a guide's values sheet
 // (the last chip of its example line), so the sliders that live only in the phone's sheet are moved too (2026-11-07: at 390 the check
 // found 0 sliders and tested nothing). `--pick=<text>` first clicks the visible element with that
-// text (a list's row that shows more once picked). `--tables` opens every closed fold first, so the tables behind them are measured too. `--goal` saves a goal on the device first (on the goal page's form when the home page has no quick form; GOAL_PURPOSE and GOAL_INFLATION shape it).
+// text (a list's row that shows more once picked). `--tables` opens every closed fold first, so the tables behind them are measured too.
 // After its own checks it runs hit-check.mjs --checks (every guide page and both fee pages at 390 and 1280; `--no-hit` skips it).
-// `--seed=<file.json>` writes the file's {key: value} pairs to localStorage before the page loads (a holding saved on the device for /holdings).
 // SEED_STORAGE=<file.json> puts {key: value} in the device's storage before the first page loads.
 // `--whole` measures the whole page instead of the screen, as the check did before D63 (to find every block that changes, seen or not).
 // `--plans` types whole plans into the slider rows' boxes, past the sliders' ends too, then text that fails the
@@ -46,13 +45,11 @@ const flags = args.filter((a) => a.startsWith("--"));
 const [paths = "/indices/sp500", widths = "phone,pc"] = args.filter((a) => !a.startsWith("--"));
 const pick = flags.find((f) => f.startsWith("--pick="))?.slice(7);
 const openFolds = flags.includes("--tables");
-const seedGoal = flags.includes("--goal");
 const WHOLE = flags.includes("--whole");
 const typePlans = flags.includes("--plans");
 const switchIndex = flags.includes("--switch");
 const tapRows = flags.includes("--rows");
 const openSheet = flags.includes("--sheet");
-const seedFile = flags.find((f) => f.startsWith("--seed="))?.slice(7);
 const PLACES = WHOLE || flags.includes("--one-pass") ? ["in view"] : ["in view", "at top"];
 // the plans a reader can make: the sliders' far ends, a large plan, a plan typed past the ends, then text the boxes refuse
 const PLANS = [
@@ -202,9 +199,6 @@ let drawn = 0; // figures cut, spilling past their cell or drawn over each other
 for (const path of paths.split(",")) {
   for (const w of widths.split(",")) {
     const ctx = await browser.newContext({ viewport: { width: VIEW[w].width, height: VIEW[w].height }, hasTouch: !!VIEW[w].hasTouch, locale: "he-IL" });
-    // --seed=<file.json>: {key: value} written to the device's storage before the page's first script, once per context, so a page that
-    // reads the saved state (the holdings page) has something to show (independent check of the kgl prices, 2026-11-07)
-    if (seedFile) await ctx.addInitScript((s) => { if (sessionStorage.getItem("box-check-seeded")) return; for (const [k, v] of Object.entries(JSON.parse(s))) localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); sessionStorage.setItem("box-check-seeded", "1"); }, readFileSync(seedFile, "utf8"));
     // SEED_STORAGE=<file.json>, {key: value}: what the device holds before the page loads (entered fields a page needs before it has a
     // result, such as a pension fund's age, employment and insurance share on the fee page)
     if (process.env.SEED_STORAGE) {
@@ -216,29 +210,8 @@ for (const path of paths.split(",")) {
       }, seed);
     }
     const page = await ctx.newPage();
-    if (seedGoal) {
-      // the page shows its result with a goal saved on the device: the first page's form saves one
-      await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
-      await page.waitForTimeout(700);
-      for (const [field, value] of [["amount", "50000"], ["monthly", "1000"], ["years", "12"]]) await page.locator(`[data-quick="${field}"] input`).first().fill(value).catch(() => {});
-      if (await page.locator("[data-quick]").count()) await page.locator('form button[type="submit"]').first().click();
-      else {
-        // the home page no longer carries the quick form (guides first, D68): the goal page's form saves one. GOAL_PURPOSE picks its
-        // starting tile (default the long-term one), GOAL_INFLATION types an inflation (a falling index brings the readings in, TXK-07)
-        await page.goto(`${BASE}/goal`, { waitUntil: "networkidle" });
-        await page.waitForTimeout(700);
-        await page.locator(`button:has-text("${process.env.GOAL_PURPOSE ?? "הון לטווח ארוך"}")`).first().click();
-        await page.waitForTimeout(400);
-        for (const [label, value] of [["סכום היום", "50000"], ["הפקדה חודשית", "500"], ["תשואה שנתית על החלק המושקע", "5"], ["אינפלציה בשנה", process.env.GOAL_INFLATION]])
-          if (value) await page.getByLabel(label).first().fill(value).catch(() => {});
-        await page.keyboard.press("Tab");
-        await page.waitForTimeout(400);
-        await page.locator('button[type="submit"]').first().click();
-      }
-      await page.waitForTimeout(2500);
-    }
     await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
-    await page.waitForTimeout(seedGoal ? 2500 : 700);
+    await page.waitForTimeout(700);
     if (pick) {
       await page.locator(":visible", { hasText: pick }).last().dispatchEvent("click");
       await page.waitForTimeout(500);

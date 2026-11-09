@@ -1,14 +1,14 @@
 // The graph card of a guide page (design-spec 2, "מה זה"): headline, real/nominal switch, legend, chart,
 // assumption chips (phone), readout, table, rules used; the values sheet (phone) or panel (PC) beside it.
-import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
 import { buttons, computedInputs as ci, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
-import { p05Number, p05Range, p05Value, p05Units, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
+import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
-import { asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
 import { lumpSumEntered } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
@@ -25,13 +25,13 @@ export interface TimelineProps {
   ageMarker?: { ruleId: string; figure: string } | null;
   /** When the money becomes free (flows 6.5): the lock-up's years, or the age of an `at_age` exit (drawn once an age is entered). */
   lock?: { years: SiteValue | null; age: SiteValue | null } | null;
-  /** The page has a part that changes with employment (the study fund's deposit tax); elsewhere the switch changed nothing (2026-10-25). */
+  /** The page has a part that changes with employment (the study fund's deposit tax); elsewhere the switch changed nothing. */
   employment?: boolean;
   /**
-   * A cash-like page (2026-10-25, guide-page sweep): the run rests on a rate, not on A-01, so the field reads "ריבית בשנה" and edits the rate the run
+   * A cash-like page (guide-page sweep): the run rests on a rate, not on A-01, so the field reads "ריבית בשנה" and edits the rate the run
    * uses, kept on this device per page (the own-rates store, goal id "guide"). A rate the person enters applies to the whole balance (F-26, no ceiling).
    */
-  cash?: { id: string; published: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account, 2026-10-25). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
+  cash?: { id: string; published: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
   /**
    * The run is one amount put in today, with no monthly deposit (`lumpSumIds`): the monthly field, its chip and its words are left out,
    * a monthly deposit entered on another page does not reach this run, and `note` says where money paid in every month goes instead.
@@ -40,7 +40,7 @@ export interface TimelineProps {
 }
 
 export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null }: TimelineProps) {
-  const { state, ready, setEntered, setAge, setEmployment, resetAll: resetInputs } = useInputs();
+  const { state, ready, resetAll: resetInputs } = useInputs();
   const [ownRates, setOwnRate] = useOwnRates("guide");
   const ownRate = cash ? ownRates[cash.id] : undefined;
   // the published balance ceiling belongs to the published rate: a rate the person enters applies to the whole balance (F-26)
@@ -76,7 +76,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
 
   // ---- value objects for every figure on the card
   const inputValue = (key: P05Input): SiteValue => {
-    // a field's value, its default or what the reader typed: a plain number wherever it shows (founder, 2026-11-08); its reset is the field's
+    // a field's value, its default or what the reader typed: a plain number wherever it shows; its reset is the field's
     const own = enteredOf(key);
     if (own === undefined) return asField({ ...p05Value(bundle.p05, key), about: labelOf(key) });
     return asField(enteredValue(own, p05Units[key], today, labelOf(key)));
@@ -147,7 +147,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     return [{ year: 0, net: amountNow, tax: 0, fees: 0, contributions: amountNow }, ...timeline.years.map((p) => ({ year: p.year, net: (mode === "real" ? p.real : p.nominal), tax: mode === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, fees: mode === "real" ? p.feesReal : p.fees, contributions: mode === "real" ? p.paidInReal : p.paidIn }))];
   }, [timeline, mode, state.entered.amount_now, bundle.p05]);
 
-  // founder 2026-10-26: a part the run does not have (no fee on a current account, no tax when nothing is earned) is not drawn, listed
+  // a part the run does not have (no fee on a current account, no tax when nothing is earned) is not drawn, listed
   // or named in the sentence; it comes back when an input makes it real (a rate entered on the current account brings the tax)
   const hasFees = points.some((p) => p.fees > 0.005);
   const hasTax = points.some((p) => p.tax > 0.005);
@@ -190,13 +190,13 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     setSheetOpen(true);
   };
   // a number the reader sets, in the example sentence: plain, at its own width; the fields beside the graph (on a phone, the chips under
-  // it) are where it changes (founder, 2026-11-08)
+  // it) are where it changes
   const slot = (_field: P05Input, value: ReactNode) => <InputSlot>{value}</InputSlot>;
   // a monthly deposit entered on another page is not part of a lump-sum run, so it alone does not bring the reset button
   const anyEntered = Object.keys(state.entered).some((k) => !(lumpSum && k === "monthly_deposit")) || ownRate !== undefined;
   const horizonValue = inputValue("horizon_years");
   // the age changes a run only through a rule that turns on it (the tax at 60, TXG-04; a lock-up to an age): with no tax and no such
-  // lock it changes nothing, so the field is left out unless an age is already entered (founder, 2026-10-26)
+  // lock it changes nothing, so the field is left out unless an age is already entered
   const ageMatters = ageReachesRun && (hasTax || !!lock?.age || state.age !== null);
   const panel = <ValuesPanel bundle={bundle} focusField={focusField} employment={employment} showAge={ageMatters} cash={cash} lumpSum={!!lumpSum} ownRate={ownRate} setOwnRate={(n) => cash && setOwnRate(cash.id, n ?? undefined)} />;
 
@@ -235,10 +235,10 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               {copy.graphTitle}
             </h3>
             <span className="text-sm text-muted-foreground max-w-measure">
-              {/* audit A45: it says it is an example and names the inputs, so it does not read as a promise */}
+              {/* it says it is an example and names the inputs, so it does not read as a promise */}
               {values ? (
                 <>
-                  {/* founder 2026-10-26: each number the reader sets is a fixed-width blank, so the line does not jump as it changes */}
+                  {/* each number the reader sets is a fixed-width blank, so the line does not jump as it changes */}
                   {copy.headlineExample.lead} {slot("amount_now", <Num value={values.inputs[ci.amountNow]!} />)}
                   {lumpSum ? (
                     <>, {cash ? copy.headlineExample.lumpCash : copy.headlineExample.lump}</>
@@ -287,7 +287,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
                 const n = own ?? p05Number(bundle.p05, key);
                 const text = key === "horizon_years" ? fmt.years(n) : key.startsWith("A-") || key === "cash_rate" ? fmt.pct(n) : nisShown(n, own !== undefined ? "entered" : undefined, own === undefined);
                 return (
-                  // what the reader typed looks the same as the default (founder, 2026-11-08)
+                  // what the reader typed looks the same as the default
                   <button key={key} type="button" onClick={() => openSheet(key)} className="a-chip">
                     <span className="text-muted-foreground">{(copy.chips as Record<string, string>)[key]}</span>
                     <bdi dir="ltr" className="font-medium">{text}</bdi>
@@ -303,7 +303,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               pick={legendPick}
               items={[
                 { id: "net", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.legend.net },
-                // audit A79: no swatch for an area that is not drawn (no tax in this run)
+                // no swatch for an area that is not drawn (no tax in this run)
                 ...(hasTax ? [{ id: "tax", swatch: <Swatch shape="box" className="bg-chart-tax" />, label: copy.legend.tax }] : []),
                 ...(hasFees ? [{ id: "fees", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: copy.legend.fees }] : []),
                 { id: "contributions", swatch: <Swatch className="bg-chart-contributions" />, label: copy.legend.contributions },
@@ -402,7 +402,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
   const owners = [...new Set(Object.values(bundle.feeValues).map((v) => v.own).filter((n): n is string => !!n))];
   // years and months print their own word through fmt ("12 חודשים"), so no unit word follows them
   const unitWord = (v: SiteValue) => (v.unit === "years" || v.unit === "months" ? "" : ((provCopy.unit as Record<string, string>)[v.unit] ?? ""));
-  // folded (independent check, 2026-11-07): open, the provident fund's terms made the PC aside about 1,770 px beside a 970 px chart card,
+  // folded: open, the provident fund's terms made the PC aside about 1,770 px beside a 970 px chart card,
   // and the page about 1,000 px longer; a block that replaces nothing starts folded (former ground rule 1)
   return (
     <FoldGroup title={guideBlocks.terms.title} level={4} className="border-t border-border pt-2 mt-1">
@@ -435,7 +435,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
                     <MixedName>{name}</MixedName>{" "}
                   </span>
                 ))}
-                {/* a manager tie has no threshold figure: the comma goes with the figure, so no ", ," is left (Hebrew editor, 2026-11-07) */}
+                {/* a manager tie has no threshold figure: the comma goes with the figure, so no ", ," is left */}
                 {tiedCopy.tie}
                 {bundle.pick.tied.theta && (
                   <>

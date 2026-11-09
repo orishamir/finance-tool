@@ -1,7 +1,7 @@
-// A "?" beside a column head or a label (founder, 2026-11-03: "add some (?) tooltips ... only add tooltips when they actually add
+// A "?" beside a column head or a label ("add some (?) tooltips ... only add tooltips when they actually add
 // anything"). A tap opens the glossary card of one term, with its source, in the sheet every number opens: nothing hangs on hover,
 // and the hit area is the 44 px target around a small mark. Use it only where the card says what the label leaves out.
-// Without a term it opens a short text of its own, titled with what it explains (founder, 2026-11-08, guidelines/design.md "Tables":
+// Without a term it opens a short text of its own, titled with what it explains (guidelines/design.md "Tables":
 // a column's longer explanation goes in its "?", not in a sentence around the table).
 import { help as copy } from "../../copy";
 import { useOpen } from "../provenance";

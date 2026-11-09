@@ -1,4 +1,4 @@
-// "Hedged or not: what happened" (F-95; founder 2026-10-31, option A of 8dd1f013:research/specs/2026-10-31-hedged): what the dollar did each year
+// "Hedged or not: what happened" (F-95; option A of 8dd1f013:research/specs/2026-10-31-hedged): what the dollar did each year
 // and what each kind of fund did in the same years, from the funds' own reports, and one sentence on the plan. No forecast, no ranking.
 import { useMemo } from "react";
 import { comparedYears, kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread, type Stretch } from "@finance-tool/engine";
@@ -6,7 +6,7 @@ import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import { monthEndRate, type FxHistory } from "../../lib/fx";
 import { gapListFor, kindMoney, kindOf, planInputs, reportFigure, reportsInShekels, type InvestView } from "../../lib/invest";
-import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
+import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
 import { MixedName, Card, ChartLegend, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, Tpl, YearBars, gershayim, useChartPick, useHeldHeight } from "../kit";
@@ -21,7 +21,7 @@ const bare = (x: number) => `⁦${one.format(Math.abs(x))}%⁩`;
 const points = (x: number) => `⁦${x > 0 ? "+" : x < 0 ? "−" : ""}${one.format(Math.abs(x))}⁩`;
 const barLabel = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`;
 
-export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; pick: Pick }) {
+export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick }) {
   const today = bundle.today;
   const funds = allFunds(view);
   const history = bundle.fxHistory;
@@ -48,7 +48,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const gaps = { unhedged: rec.gaps.unhedged, hedged: rec.gaps.hedged };
 
   const hedgedFunds = reporting.filter((f) => kindOf(f.rec) === "hedged" && f.rec.tracking_record!.years.some((y) => rec.years.some((r) => r.year === y.year)));
-  // the sentence beside the gap range counts only the reports the range rests on, those F-92 (d) compares, and names their years (recheck 3 S5)
+  // the sentence beside the gap range counts only the reports the range rests on, those F-92 (d) compares, and names their years
   const gapFunds = hedgedFunds.filter((f) => comparedYears(f.rec.tracking_record, gapListFor(bundle, f.rec)) !== null);
   const gapYears = [...new Set(gapFunds.flatMap((f) => f.rec.tracking_record!.years.map((y) => y.year)).filter((y) => rec.years.some((r) => r.year === y)))].sort((a, b) => a - b);
   const single = gapFunds.length === 1 ? gapFunds[0]! : null;

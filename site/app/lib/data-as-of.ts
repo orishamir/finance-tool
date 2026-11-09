@@ -1,5 +1,5 @@
 // The newest `checked` date under a data folder. Plain node, no imports from the app, so vite.config.ts can read it
-// at build and bake it into the page (audit 2026-10-24, A29); `dataAsOf()` in data.server.ts is the same over the repo's data/.
+// at build and bake it into the page; `dataAsOf()` in data.server.ts is the same over the repo's data/.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { readTextCached } from "./read-cache.server";

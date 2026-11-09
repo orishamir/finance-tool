@@ -1,4 +1,4 @@
-// A claim of a house's advertising set against its binding documents (D56, D57; 2026-11-04): the fee it is about and the verdict in
+// A claim of a house's advertising set against its binding documents (D56, D57): the fee it is about and the verdict in
 // words, then both sides in their own words, each with a link to where it stands. The advert's side is the page it was seen on; the
 // binding side is the price list, the account terms, the fee annex or the promotion's terms. Never a figure of a ranking. Each link opens at
 // the quoted words (a web page, by text fragment) or at the page (a PDF): `sourceHref`.

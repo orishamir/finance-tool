@@ -11,14 +11,14 @@ import { ProvenanceProvider } from "../components/provenance";
 import { baseOf } from "./own-account";
 import { brokerDraftOf, brokerErrors, brokerFromDraft, fundDraftOf, fundErrors, fundFromDraft, tariffOfBroker, unknownLines, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
 import { fundLabels } from "./labels";
-import { buildInvest, cheapestWay, indexById, indexSeenBy, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
-import { buildWorkbenchBundle } from "./providers.server";
+import { buildInvest, indexById, indexSeenBy, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
+import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { applyImport, buildStateFile, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomBroker, removeCustomFund, removeCustomIndex, resetStore, saveCustomBroker, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
 import { gridOf } from "./stairs";
 import { entered, type SiteValue } from "./value";
 
-const bundle = buildWorkbenchBundle();
+const bundle = buildIndicesBundle();
 const t = bundle.today;
 const plan: WorkbenchInputs = {
   amountNow: 6000,
@@ -34,15 +34,15 @@ const plan: WorkbenchInputs = {
 };
 
 // the terms of tests/golden/expected_custom_entries.py
-// every line typed, a fee not charged as 0 (2026-11-05: a line left empty is a price not known, and the account is not ranked); the golden
+// every line typed, a fee not charged as 0 (a line left empty is a price not known, and the account is not ranked); the golden
 // script's figures are for the same zeros
 // a minimum not charged is typed as 0 too (a blank minimum was charged as none); a minimum of 0 is no minimum, as in the golden script
 const cheap = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה זולה", tradePct: 0.05, tradeMin: 1, custodyPct: 0.02, custodyMin: 0, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-cheap", t);
 const dear = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה יקרה", tradePct: 0.5, tradeMin: 30, custodyPct: 0.4, custodyMin: 10, fxPct: 1, monthlyFee: 20 }, "custom-broker-dear", t);
 const zeros = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה ריקה", tradePct: 0, tradeMin: 0, custodyPct: 0, custodyMin: 0, fxPct: 0, monthlyFee: 0 }, "custom-broker-zeros", t);
-/** Only the commission it was offered, the rest left empty (the review of 2026-11-05: it took the star with every blank as zero). */
+/** Only the commission it was offered, the rest left empty (it took the star with every blank as zero). */
 const partial = brokerFromDraft({ ...brokerDraftOf(null), name: "רק עמלה", tradePct: 0.08 }, "custom-broker-partial", t);
-/** A fund draft that says it accumulates and is unhedged, as the golden script prices it (since 2026-11-05 a payout not said has no price). */
+/** A fund draft that says it accumulates and is unhedged, as the golden script prices it (since a payout not said has no price). */
 const said = (kind: Parameters<typeof fundDraftOf>[1]) => ({ ...fundDraftOf(null, kind), payout: "accumulating" as const, hedged: false });
 const fund = fundFromDraft({ ...said("il-tracking"), name: "קרן שלי", fixed: 0.2, variable: 0.05, trustee: 0.02 }, "custom-fund-mine", "index-ta125", t);
 const abroad = fundFromDraft({ ...said("abroad"), name: "קרן בחו״ל שלי", fixed: 0.1 }, "custom-fund-abroad", "index-sp500", t);
@@ -104,7 +104,7 @@ describe("a broker the person types ranks with the others (D44)", () => {
   });
 
   it("a minimum left empty is a price not known too: the account is not ranked, and the dialog's own words hold", () => {
-    // the review's case: commission, custody and conversion typed, both minimums left empty; it was ranked first
+    // commission, custody and conversion typed, both minimums left empty; it was ranked first
     const noMins = brokerFromDraft({ ...brokerDraftOf(null), name: "הבנק שלי", tradePct: 0.08, custodyPct: 0.1, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-nomins", t);
     expect(unknownLines(noMins)).toHaveLength(2);
     const b2 = withCustomEntries(bundle, [noMins], []);
@@ -112,7 +112,7 @@ describe("a broker the person types ranks with the others (D44)", () => {
     const v2 = buildInvest({ bundle: b2, index: sp, plan });
     for (const f of allFunds(v2)) expect(priced(f.byHouse[noMins.id])).toBe(false);
     expect(v2.headline!.providerId).not.toBe(noMins.id);
-    // the review's other case: a minimum typed and its percent left empty
+    // a minimum typed and its percent left empty
     const minOnly = brokerFromDraft({ ...brokerDraftOf(null), name: "רק מינימום", tradeMin: 5, custodyPct: 0.1, custodyMin: 0, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-minonly", t);
     expect(withCustomEntries(bundle, [minOnly], []).entered!.tariffs[minOnly.id]).toBeUndefined();
   });
@@ -171,7 +171,6 @@ describe("a broker the person types ranks with the others (D44)", () => {
     const after = buildInvest({ bundle: withCustomEntries(bundle, [], []), index: ta125, plan });
     expect(after.headline!.providerId).toBe(before.headline!.providerId);
     expect(after.providers.length).toBe(before.providers.length);
-    expect(cheapestWay(bundle, ta125, plan)!.providerId).not.toBe(zeros.id);
   });
 
   it("what it does not sell is a row saying so, not a price", () => {

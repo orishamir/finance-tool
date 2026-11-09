@@ -1,11 +1,10 @@
-// The rules page (founder, 2026-10-24 evening; rebuilt 2026-11-01): a field that takes what a person was told or read, and every rule
+// The rules page (rebuilt): a field that takes what a person was told or read, and every rule
 // under /rules, one list, with filters. Nothing typed: the filters, the groups and the "הידעת?" block. A claim typed: what the law and
 // the rules say, then what each company wrote, named. All state lives in the address (?shelf=&product=&prefix=&changing=1&ids=&q=), so
 // a link can preset it. Light on purpose: the page ships a light list of all rules; the full records and their uses come per shelf from
 // /rules-data/<shelf>.json, fetched when a group opens, a filter or a claim shows cards, or the address names a rule.
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
-import type { Route } from "./+types/rules";
 import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName } from "../copy";
 import { NumberLegend, RuleCard, SlottedText, type RuleUses } from "../components/provenance";
 import { useSearchIndex } from "../components/search";

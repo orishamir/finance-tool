@@ -1,11 +1,11 @@
 // A discount that ends (A-19, F-16, D83) on the fee page and in every place that replaces or scales a fee line: the provident fund
-// for investing runs on Harel's 0.7% and 0% for five years, then up to 1.05% and 4% (recheck 2 of the kgl prices, must-fix 1).
+// for investing runs on Harel's 0.7% and 0% for five years, then up to 1.05% and 4%.
 import { describe, expect, it } from "vitest";
 import type { RunPlan } from "@finance-tool/engine";
 import { compareBundle } from "./compare.server";
 import { buildFeesData } from "./fees.server";
 import { buildFees, feeInputs, feeSensitivity, headlineGap, reductionWorth, subjectRun } from "./fees";
-import { feeKinds, withOwnFee } from "./compare";
+import { withOwnFee } from "./compare";
 import { withBalanceFee } from "./guide-signature-g2";
 import { bandsOf } from "../components/fees/FeeDragChart";
 
@@ -17,7 +17,7 @@ const fees = (p: RunPlan) => (p.run === "runProvident" ? p.input.fees : null);
 
 describe("a discount that ends, outside the run", () => {
   const inputs = feeInputs(bundle, null, { entered: {}, age: null, employment: null });
-  const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL, from: "guide" } as never, inputs);
+  const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL }, inputs);
   if (r.kind !== "ok") throw new Error(`fee page did not run: ${JSON.stringify(r)}`);
   const lines = r.analysis.lines;
 
@@ -37,7 +37,7 @@ describe("a discount that ends, outside the run", () => {
     const bal = lines.find((l) => l.line === "balance")!;
     const dep = lines.find((l) => l.line === "deposit")!;
     // the balance fee: the cut to the 0.62% average is worth 108.03 NIS, under the 1,000 NIS threshold, so it is not worth negotiating; its
-    // 3,902 NIS cost, with an option on the page that charges no such fee, is F-62's other half, "worth avoiding" (fresh readers, 2026-11-07)
+    // 3,902 NIS cost, with an option on the page that charges no such fee, is F-62's other half, "worth avoiding"
     expect([bal.verdict, bal.reason, bal.judgedFraction]).toEqual(["avoid", "avoid", 0.0105]);
     expect(bal.worthNis).toBeCloseTo(108.03, 1);
     // the deposit fee: 0% now, so nothing to ask for; it can rise to 4%, above the 0% average, when the discount ends: check again then
@@ -55,7 +55,7 @@ describe("a discount that ends, outside the run", () => {
     const an = { ...r.analysis, lines: r.analysis.lines.map((l) => (l.line === "balance" ? { ...l, suggestion: null, reason: "not-below" as const } : l)) };
     expect(an.lines.find((l) => l.line === "deposit")!.reason).toBe("check-after");
     expect(headlineGap(an)).toEqual({ kind: "after" });
-    // keyed on the line, not its reason: a balance fee "worth avoiding" whose discount ends above the average counts too (finance review, 2026-11-07)
+    // keyed on the line, not its reason: a balance fee "worth avoiding" whose discount ends above the average counts too
     const avoidOnly = { ...an, lines: an.lines.map((l) => (l.line === "deposit" ? { ...l, risesAbove: false, reason: "not-below" as const } : { ...l, reason: "avoid" as const, risesAbove: true })) };
     expect(headlineGap(avoidOnly)).toEqual({ kind: "after" });
     // with no fee that can rise above the average, it is the plain "not above"
@@ -71,7 +71,7 @@ describe("a discount that ends, outside the run", () => {
   });
 
   it("within a horizon that ends inside the discount the verdict judges the rate charged now, in plain words", () => {
-    const short = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL, from: "guide" } as never, { ...inputs, g: { ...inputs.g, horizonYears: 5 } });
+    const short = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL }, { ...inputs, g: { ...inputs.g, horizonYears: 5 } });
     if (short.kind !== "ok") throw new Error("no run");
     for (const l of short.analysis.lines) {
       expect(l.judgedFraction).toBeUndefined();
@@ -89,7 +89,7 @@ describe("a discount that ends, outside the run", () => {
     expect(bal.flip!.to).toBeLessThan(0.66);
     expect(s.rows.some((x) => x.flip?.newVerdict === "negotiate")).toBe(false);
     // the holding period's axis never goes below a year
-    const at2 = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL, from: "guide" } as never, { ...inputs, g: { ...inputs.g, horizonYears: 2 } });
+    const at2 = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL }, { ...inputs, g: { ...inputs.g, horizonYears: 2 } });
     if (at2.kind !== "ok") throw new Error("no run");
     expect(feeSensitivity(at2.args, at2.analysis, at2.args.runBundle)!.rows.find((x) => x.key === "horizon")!.lo).toBe(1);
   });
@@ -108,10 +108,6 @@ describe("a discount that ends, outside the run", () => {
     expect(bal.label).not.toContain("אחרי תקופת ההנחה");
   });
 
-  it("a 0% fee whose discount reverts to 4% is a fee kind the comparison's sensitivity moves", () => {
-    expect(feeKinds(w.terms)).toEqual(["balance", "deposit"]);
-  });
-
   it("a fee the person enters below the record's holds for PF-13's five years, then returns to the rate after the discount (D86); the deposit fee keeps the record's discount", () => {
     const t = withOwnFee(w, w.terms!, { ownFees: { [KGL]: 0.5 } });
     expect(t.fees).toEqual({ deposit: 0, balance: 0.005, direct: 0, discount: { months: 60, listRate: 0.0105 }, depositDiscount: { months: 60, listRate: 0.04 } });
@@ -128,7 +124,7 @@ describe("a discount that ends, outside the run", () => {
   });
 
   it("inside the discount the deposit fee costs nothing yet and keeps its band, so the chart's legend and table hold (D63)", () => {
-    const short = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL, from: "guide" } as never, { ...inputs, g: { ...inputs.g, horizonYears: 1 } });
+    const short = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL }, { ...inputs, g: { ...inputs.g, horizonYears: 1 } });
     if (short.kind !== "ok") throw new Error("no run");
     expect(short.analysis.lines.find((l) => l.line === "deposit")!.costNis).toBe(0);
     expect(bandsOf(short.analysis).map((b) => b.id).sort()).toEqual(bandsOf(r.analysis).map((b) => b.id).sort());
@@ -148,7 +144,7 @@ describe("a discount that ends, outside the run", () => {
 describe("a cut on a line with no discount of its own is held, and the card says so once (D90, extended the same day)", () => {
   const KH = "keren-hishtalmut";
   const inputs = feeInputs(bundle, null, { entered: {}, age: null, employment: null });
-  const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: KH, from: "guide" } as never, inputs);
+  const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: KH }, inputs);
   if (r.kind !== "ok") throw new Error(`fee page did not run: ${JSON.stringify(r)}`);
 
   it("the study fund's balance fee: the held five years are said by the reduction field, which names the rate that returns, not again in the reason", () => {

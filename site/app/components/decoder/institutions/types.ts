@@ -89,7 +89,7 @@ export interface TariffLineRow {
   period: "month" | "quarter" | "year" | null;
   min: SiteValue | null;
   max: SiteValue | null;
-  /** Where the rate stands (D57 amended 2026-11-04): its document, the page of a PDF, the quoted words of a web page; `tariff` when it is the record's own price list. */
+  /** Where the rate stands (D57): its document, the page of a PDF, the quoted words of a web page; `tariff` when it is the record's own price list. */
   where: { url: string; title: string; page?: number; fragment?: TextFragment; tariff: boolean } | null;
   /** A conversion's spread: printed ("עד 0.7%"), or not limited by the documents (D56: never zero); null when the line has none. */
   spread: SiteValue | "not_limited" | null;
@@ -114,17 +114,17 @@ export interface TariffCardData {
   published: SiteValue | null;
   snapshot: SiteValue;
   stale: boolean;
-  /** Every line of the price list, in its order (2026-11-05). */
+  /** Every line of the price list, in its order. */
   lines: TariffLineRow[];
   minimum: SiteValue | null;
   regulator: "BoI" | "ISA" | "CMA" | "foreign";
-  /** S1 (2026-10-25): a foreign broker's regulator in Hebrew. */
+  /** S1: a foreign broker's regulator in Hebrew. */
   foreignRegulator?: string;
   tase: boolean;
   protection: { id: string; title: string }[];
   notice: string[];
   providerName: string;
-  /** Who pays the card's prices (a bank's or broker's record says so, 2026-10-31). */
+  /** Who pays the card's prices (a bank's or broker's record says so). */
   priceFor: string | null;
   availability: AvailabilityRow[];
 }

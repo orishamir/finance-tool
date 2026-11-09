@@ -1,6 +1,6 @@
 // Guide prose for a bond fund with a limited period (the market's "קרן בולט"). A page of its own and not a product id, so it
 // stays out of the comparison until the founder decides otherwise. Every figure, year and date is a Num over a rule figure (a fund's id is not a
-// figure), every block ends with the rules it rests on (il-finance MF-59 to MF-66, TXS-33 to TXS-37, read 2026-11-01 and 2026-11-02). A company's term appears under that company's name.
+// figure), every block ends with the rules it rests on (il-finance MF-59 to MF-66, TXS-33 to TXS-37, read and). A company's term appears under that company's name.
 import { Fragment, type ReactNode } from "react";
 import { Num, RulesLine, Term } from "../../components/provenance";
 import { ownBy } from "../../lib/value";

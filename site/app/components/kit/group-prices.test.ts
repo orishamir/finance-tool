@@ -1,10 +1,10 @@
-// The closed line under a house's row names who gets another price; the young with the ages their groups print (readers, 2026-11-06:
-// "none of them says what age counts as young"). Read over every house's latest record, so a new group's words are checked too.
+// The closed line under a house's row names who gets another price; the young with the ages their groups print.
+// Read over every house's latest record, so a new group's words are checked too.
 import { describe, expect, it } from "vitest";
-import { buildWorkbenchBundle } from "../../lib/providers.server";
+import { buildIndicesBundle } from "../../lib/providers.server";
 import { groupBlocks, groupLineWho, youngAges, type GroupEntry } from "./group-prices";
 
-const bundle = buildWorkbenchBundle();
+const bundle = buildIndicesBundle();
 const entries = (id: string) => (bundle.snapshots.find((s) => s.id === id)!.groups?.entries ?? []) as GroupEntry[];
 const young = (who: string, priced = true): GroupEntry => ({ kind: "young", who_short_he: who, prices: [{ value: priced ? { exempt: true } : undefined }] }) as GroupEntry;
 
@@ -16,7 +16,7 @@ describe("the young on a house's closed line", () => {
     expect(groupLineWho(entries("discount"))[0]).toBe("צעירים בגילאי 14 עד 21");
     // Leumi's 18+ runs to 21 or the end of army service, whichever is later, and its academic reserve to 25: no upper bound is printed,
     // so the line never tells a 22-year-old soldier the price is not theirs, and it says the top age differs by group, since "מגיל 14" alone read
-    // as no upper age (re-check F2)
+    // as no upper age
     expect(groupLineWho(entries("leumi"))[0]).toBe("צעירים מגיל 14 (עד גיל שונה בכל קבוצה)");
   });
   it("give an age on every house whose record has a young group, and the words alone where one group prints none", () => {

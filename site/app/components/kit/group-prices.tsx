@@ -1,4 +1,4 @@
-// Group prices (D43, amended 2026-11-04): who pays less than the ordinary customer, stated beside a ranking and never in it. Under a
+// Group prices (D43): who pays less than the ordinary customer, stated beside a ranking and never in it. Under a
 // house's row one closed line names who gets another price and opens to one sub-row per price, in three columns: who, what is cheaper,
 // until when. Entries whose short words for what is cheaper are the same are one sub-row (the data check makes entries with the same
 // prices share those words). On a house's own page the same rows also say where each one's words stand.
@@ -35,7 +35,7 @@ const priced = (e: GroupEntry) => e.prices.some((p) => p.value != null);
 
 /**
  * The sub-rows, in the order the record lists its entries: one per short words for what is cheaper, a priced entry never with one not
- * priced (re-check F3; the data check fails such a pair, checkGroupWords).
+ * priced (the data check fails such a pair, checkGroupWords).
  */
 export function groupBlocks(entries: readonly GroupEntry[]): GroupBlock[] {
   const out: GroupBlock[] = [];
@@ -60,7 +60,7 @@ export function groupBlocks(entries: readonly GroupEntry[]): GroupBlock[] {
  * oldest over them. An entry that is not priced (no price carries a value: the bank's advertising, D56, or a binding price not modelled) is not read. A bound one entry
  * leaves out is left out of the line too, so the line never tells someone in a group that the price is not theirs (Leumi's 18+ runs to 21
  * or the end of army service, whichever is later, which its short words do not try to say); null where an entry prints no age at all. The
- * data check holds every number of `who_short_he` to the entry's long words, so these are the documents' ages (readers, 2026-11-06: "none
+ * data check holds every number of `who_short_he` to the entry's long words, so these are the documents' ages ("none
  * of them says what age counts as young").
  */
 export function youngAges(entries: readonly GroupEntry[]): { from: string | null; to: string | null; /** Some groups print a top age and others none: the line says the top age differs by group (re-check F2: "מגיל 14" read as no upper age). */ topVaries?: true } | null {
@@ -144,7 +144,7 @@ function SourceLinks({ entries }: { entries: readonly GroupEntry[] }) {
  * one "what is cheaper" (one "until when" too when they all end alike). `sources`: a line under each sub-row with where its words stand
  * (a house's own page). A note under the rows says what "names no fund" means, when a sub-row carries it.
  */
-export function GroupPriceRows({ entries, sources, className, own, choice }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** The caller's link under a sub-row: it gets the key of the sub-row's first group it can link (`group:<n>`, its place in the house's record); a house's page sends it to the index page with that group picked (2026-11-04). */ own?: GroupLink; /** A radio before each group the person can pick (`group:<n>`), the picked one checked (founder, 2026-11-04: opening the fold shows more choices). */ choice?: GroupChoice }) {
+export function GroupPriceRows({ entries, sources, className, own, choice }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** The caller's link under a sub-row: it gets the key of the sub-row's first group it can link (`group:<n>`, its place in the house's record); a house's page sends it to the index page with that group picked. */ own?: GroupLink; /** A radio before each group the person can pick (`group:<n>`), the picked one checked (opening the fold shows more choices). */ choice?: GroupChoice }) {
   const blocks = groupBlocks(entries);
   // the sub-row's first entry that states a price in numbers: the one the account panel starts from
   const startOf = (b: GroupBlock) => {

@@ -3,7 +3,6 @@
 // (routes/search-texts.ts) holds the raw texts of rules, terms and parameters and only re-ranks and answers questions.
 import { aliasRows, wordFamilies } from "./search-aliases";
 import { parseNumber } from "./format";
-import { shown } from "./review";
 
 // ------------------------------------------------------------------------------------------------ normalisation
 
@@ -98,11 +97,6 @@ export function highlightRanges(name: string, query: string): [number, number][]
   return merged;
 }
 
-/** Phrases people type that name a task, not a product, with the page that does the task (scenario audit 2026-10-24, 7): shown as pages. */
-export const pageAliases: { href: string; line: string; names: string[] }[] = [
-  { href: "/idle-cash", line: "כסף שיושב בעו״ש · בדיקת הצעה מהבנק", names: ["לחדש פיקדון", "פיקדון מסתיים", "הצעה מהבנק", "הצעה לחידוש פיקדון", "כסף שיושב בעו״ש"] },
-].filter((a) => shown(a.href)); // a page held for review is not a result (lib/review.ts)
-
 // ------------------------------------------------------------------------------------------------ entries
 
 export type SearchKind = "product" | "track" | "term" | "guide" | "bank" | "company" | "notcovered" | "rule" | "companyRule" | "parameter" | "document";
@@ -144,7 +138,7 @@ export type SearchTexts = Record<string, string>;
 export interface SearchHit {
   entry: SearchEntry;
   score: number;
-  /** Other names of the same page that matched (audit 2026-10-24, A92). */
+  /** Other names of the same page that matched. */
   also: string[];
   /** The figure that matched, when the query was a number. */
   fig?: SearchFig;
@@ -532,7 +526,7 @@ function scoreFull(entry: SearchEntry, a: Analysis, docs: Map<string, TextDoc> |
     const key = entry.key ?? "";
     const id = idForms(key);
     if (id.forms.includes(a.q)) return { score: -2 };
-    // "bank", "bank-" and "bank-1" list the family (the last: the ids whose number starts with 1); a trailing hyphen found nothing before (2026-10-25)
+    // "bank", "bank-" and "bank-1" list the family (the last: the ids whose number starts with 1); a trailing hyphen found nothing before
     const qq = a.q.replace(/[-\s]+$/, "");
     if (qq.length >= 2 && id.prefix && qq.startsWith(id.prefix)) {
       const rest = qq.slice(id.prefix.length).replace(/^[-\s]/, "").replace(/^0+(?=\d)/, "");
@@ -614,7 +608,7 @@ export function searchEntries(index: SearchEntry[], q: string, texts?: SearchTex
       prev.also.push(entry.name);
     }
   }
-  // a claim of two words or more (founder, 2026-11-01): the rules come in the order of `claimHits`, one search across the site
+  // a claim of two words or more: the rules come in the order of `claimHits`, one search across the site
   if (a.type === "number" || isRuleIdShape(a.q) || a.content.length < 2) return hits;
   const claimed = claimHits(index, texts, q);
   const first = hits.findIndex((h) => isRuleKind(h.entry.kind));

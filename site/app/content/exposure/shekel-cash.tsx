@@ -1,4 +1,4 @@
-// Exposure prose for מזומן שקלי (flows 6.6). Written 2026-10-23 from the rule base (BANK, TXI, MF, REG, CAT,
+// Exposure prose for מזומן שקלי (flows 6.6). Written from the rule base (BANK, TXI, MF, REG, CAT,
 // BRK); each block ends with the rules it rests on. NEW copy for the founder to review.
 import { Link } from "react-router";
 import type { ExposureContent } from "../guide/types";
@@ -16,7 +16,7 @@ export const content: ExposureContent = {
         <Sentence measure>
           כל בנק חייב לפרסם טבלה אחידה של סוגי הפיקדונות והריבית עליהם, <Term prefix="ו" id="בנק ישראל">בנק ישראל</Term> מפרסם כל חודש את הריבית ששילם כל בנק בפועל. על ריבית מפיקדון <Term prefix="ש" id="לא צמוד">אינו צמוד למדד</Term> משלמים מס של {unlinked ? <Num value={unlinked} /> : null} מכל הריבית, והבנק מנכה אותו בתשלום.
         </Sentence>
-        {/* D6 (amended 2026-10-27): a money-market fund holds more than cash, so it has its own entry and page */}
+        {/* D6: a money-market fund holds more than cash, so it has its own entry and page */}
         <p className="max-w-measure">
           <Link to="/guide/money-market-fund-daily" className="text-link hover:underline">קרן כספית</Link> היא דרך אחרת להחזיק כסף לטווח קצר, אבל היא לא מזומן: לפי החוק היא מחזיקה גם <Link to="/guide/makam" className="text-link hover:underline">מק״מ</Link> <Term prefix="ו" id={'אג"ח ממשלתית קצרה'}>איגרות חוב קצרות</Term> בדירוג גבוה, לצד פיקדונות ומזומן, והמס בה נגבה אחרת. לכל אחת מהן עמוד משלה.
         </p>

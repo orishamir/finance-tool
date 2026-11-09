@@ -1,5 +1,5 @@
 // Guide prose for תוכנית חיסכון (architecture 3.5: prose lives in content files; every figure is a Num).
-// Written 2026-10-23 from the il-finance rules cited under each block (BANK, BPN, TXI, REG, SW, MF); same
+// Written from the il-finance rules cited under each block (BANK, BPN, TXI, REG, SW, MF); same
 // shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";

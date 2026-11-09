@@ -19,10 +19,9 @@ and family make saving and investing decisions in Israel.
 
 ## What exists
 
-- **The site.** Switching between providers is not on the site; it is to
-  be built again. Pages and visuals held for the founder's
-  review are off the site's links but still at their addresses; the list is
-  in `site/app/lib/review.ts`.
+- **The site.** Switching between providers, the goal comparison, idle cash
+  and holdings are not on the site; they are to be designed again. Nothing
+  is held for review: a page is on the site, with links to it, or not built.
 - **The product.** `docs/product.md` describes the site: who it is for, what
   it does, and its numbered choices as they stand. Don't assume a feature, page, data source or scope that isn't
   there. If a task needs a product choice nobody has made, say so instead of

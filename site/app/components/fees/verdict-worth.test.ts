@@ -1,6 +1,6 @@
-// D90 revised (lead, 2026-11-07): a fee card's verdict follows what bringing the fee to the average is worth, the figure under its
-// reduction field, not what the fee costs. Both fresh readers saw "שווה להתקשר" beside a cut worth 108 or 187 NIS over ten years, and one
-// decided not to call. Checked on the rendered words of every fee card the fee page draws, over several plans: "worth negotiating" never
+// D90 revised: a fee card's verdict follows what bringing the fee to the average is worth, the figure under its
+// reduction field, not what the fee costs: "שווה להתקשר" beside a cut worth 108 or 187 NIS over ten years reads as advice to call.
+// Checked on the rendered words of every fee card the fee page draws, over several plans: "worth negotiating" never
 // sits beside a worth below the threshold, and a card that says "not now" says when the discount ends.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -30,7 +30,7 @@ function cards() {
   for (const entered of plans) {
     const inputs = feeInputs(bundle, null, { entered, age: null, employment: null });
     for (const id of wrappers) {
-      const r: FeesResult = buildFees(bundle, data, { kind: "wrapper", wrapperId: id, from: "guide" } as never, inputs);
+      const r: FeesResult = buildFees(bundle, data, { kind: "wrapper", wrapperId: id }, inputs);
       if (r.kind !== "ok") continue;
       for (const line of r.analysis.lines) {
         const html = renderToStaticMarkup(
@@ -91,8 +91,7 @@ describe("a fee card's verdict follows the worth beside it (D90 revised)", () =>
   });
 });
 
-// D90 revised the same day (lead, 2026-11-07): both fresh readers asked how "worth avoiding" fits a product ranked first or second among
-// every option. A card says "avoid" only when an option without the fee, or with a lower one, ranks above the product on the page's own
+// D90 revised: "worth avoiding" does not fit a product ranked first or second among every option. A card says "avoid" only when an option without the fee, or with a lower one, ranks above the product on the page's own
 // comparison for the same plan; otherwise it gives the negotiate verdict alone. Checked on the rendered words of every card.
 describe("a fee card says 'avoid' only with something better to pick (D90 revised the same day)", () => {
   const all = cards();
@@ -118,7 +117,7 @@ describe("a fee card says 'avoid' only with something better to pick (D90 revise
   });
 });
 
-// lead, 2026-11-07: company names from the data showed בע"מ with an ASCII quote. The fee page draws in the browser, so the built-pages
+// company names from the data showed בע"מ with an ASCII quote. The fee page draws in the browser, so the built-pages
 // guard (scripts/hebrew-quotes.mjs) never sees it: its cards and its strip are checked here, as rendered.
 describe("the fee page writes an abbreviation with its gershayim", () => {
   it("no card and no strip shows an ASCII quote between two Hebrew letters", async () => {
@@ -126,7 +125,7 @@ describe("the fee page writes an abbreviation with its gershayim", () => {
     for (const c of cards()) expect(c.text, c.page).not.toMatch(/[א-ת]"[א-ת]/);
     const inputs = feeInputs(bundle, null, { entered: {}, age: null, employment: null });
     for (const id of wrappers) {
-      const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: id, from: "guide" } as never, inputs);
+      const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: id }, inputs);
       if (r.kind !== "ok") continue;
       const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(SubjectStrip, { subject: { ...r.subject, record: 'מיטב גמל ופנסיה בע"מ' }, publisherNames: {} })));
       expect(html.replace(/<[^>]+>/g, "").replace(/&quot;/g, '"'), id).not.toMatch(/[א-ת]"[א-ת]/);
@@ -134,7 +133,7 @@ describe("the fee page writes an abbreviation with its gershayim", () => {
   });
 });
 
-// fresh readers, 2026-11-07: "what would push the 187 ₪ past 1,000 ₪?". The card's line names an amount today and a number of years;
+// "what would push the 187 ₪ past 1,000 ₪?". The card's line names an amount today and a number of years;
 // each is checked here by building the page again at that value, as a reader who types it would: the cut must then be worth the threshold,
 // and a year fewer must not be (the fewest years, not just enough).
 describe("the 'worth negotiating when' line states values that really reach the threshold", () => {
@@ -144,7 +143,7 @@ describe("the 'worth negotiating when' line states values that really reach the 
     for (const entered of [{}, { amount_now: 60_000, monthly_deposit: 0, horizon_years: 10 }, { horizon_years: 3 }] as Record<string, number>[]) {
       for (const id of ["kupat-gemel-lehashkaa", "keren-hishtalmut"]) {
         const at = (e: Record<string, number>) => {
-          const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: id, from: "guide" } as never, feeInputs(bundle, null, { entered: e, age: null, employment: null }));
+          const r = buildFees(bundle, data, { kind: "wrapper", wrapperId: id }, feeInputs(bundle, null, { entered: e, age: null, employment: null }));
           if (r.kind !== "ok") throw new Error(`${id} ${r.kind}`);
           return r;
         };

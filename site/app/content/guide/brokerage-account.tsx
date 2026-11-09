@@ -1,5 +1,5 @@
 // Guide prose for חשבון ניירות ערך (architecture 3.5: prose lives in content files; every figure is a Num).
-// Written 2026-10-23 from the rule base (BRK, REG, TXS, TXF, TXG, SW, ETF, KGL, TXK); each block ends with
+// Written from the rule base (BRK, REG, TXS, TXF, TXG, SW, ETF, KGL, TXK); each block ends with
 // the rules it rests on. Same shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to
 // review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
@@ -150,7 +150,7 @@ export const content: GuideContent = {
       <p className="max-w-measure">
         כסף שרוצים להשקיע בקרן על מדד בלי תקרה ובלי נעילה. זה מתאים במיוחד כשעוברים את תקרת ההפקדה השנתית של <Term id="קופת גמל להשקעה">קופת גמל להשקעה</Term>, או כשמתכוונים לקנות קרן אחת ולהחזיק אותה שנים. משלמים עמלות על פעולות ועל ההחזקה לפי התעריפון, ודמי הניהול של קרן סל או קרן מחקה נמוכים בממוצע מהתקרה של <Term id="קופת גמל">קופת גמל</Term>.
       </p>
-      {/* audit A84: the costs in the example chart above, from the records the example reads (P-05's fund 5139282; the tariff is the site's pick, F-80, named in the terms block, 2026-10-31) */}
+      {/* the costs in the example chart above, from the records the example reads (P-05's fund 5139282; the tariff is the site's pick, F-80, named in the terms block) */}
       <p className="max-w-measure text-sm text-muted-foreground">
         ההוצאות בדוגמה שלמעלה הן שתיים. האחת היא העלות בתוך הקרן שנבחרה לדוגמה, <bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi>, לפי רשומת הקרן והדוח השנתי של <Term id="מנהל קרן">מנהל הקרן</Term>. אפשר להחליף אותה בקרן אחרת בכרטיס ההשוואה. השנייה היא העמלות על קנייה, מכירה והחזקה, לפי התעריפון שהאתר בחר, ששמו מופיע בתנאי המוצר בדוגמה. בבנק או בבית השקעות אחר העמלות שונות. בקופת גמל אין להן שורה מקבילה בדמי הניהול, כי עלויות המסחר שם נכנסות להוצאות הישירות.
       </p>

@@ -1,4 +1,4 @@
-// A brand's funds (D33) as the company page's product table (founder, 2026-10-27; design-system 11 "Lists of products"): the
+// A brand's funds (D33) as the company page's product table (design-system 11 "Lists of products"): the
 // name with the fund's labels, the number as the link to Maya, the index it follows, and the manager's own three fees (D31).
 // Only collected records: the full list is the manager's, on Maya (CAT-43).
 import { Link } from "react-router";

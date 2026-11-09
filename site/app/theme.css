@@ -180,7 +180,9 @@
 
   /* The three number states (D7) */
   --sourced: var(--palette-neutral-500); /* solid hairline under a sourced number */
-  --computed: var(--palette-violet-400); /* dotted underline and mark of a computed number */
+  --computed: var(--palette-violet-400); /* mark of a computed number (its tag's ink) */
+  --computed-line: var(--palette-violet-600); /* dotted underline under a computed number: a step darker than the mark, so the line
+                                                 stays quiet under running text */
   --computed-subtle: var(--palette-violet-950);
   /* A value the person entered outside a chart's fields (an offer, a custom entry). A chart field's value, its default or what the
      reader typed, is a plain number with no blue (founder, 2026-11-08, guidelines/charts.md). */
@@ -318,8 +320,7 @@
   --word-spacing-hebrew: 0.05em;
 
   /* Provenance marks under numbers (D7) */
-  --num-underline-thickness: 1px; /* sourced: solid */
-  --num-dotted-thickness: 2px; /* computed: dotted needs the extra weight to read as dots */
+  --num-underline-thickness: 1px; /* sourced solid, computed dotted */
   --num-underline-offset: 0.3em;
 
   /* Motion. Set to zero when the device asks for reduced motion. */

@@ -1,5 +1,5 @@
 // A render smoke test of the index page's sections on the collected data: every section produces its words and numbers, no section throws.
-// Split in four files so the test workers share it (2026-11-08: one file was most of `npm test`'s time): this one, render-pair-bars,
+// Split in four files so the test workers share it (one file was most of `npm test`'s time): this one, render-pair-bars,
 // render-sections and render-tiles; the data and helpers they share are in render-fixtures.ts.
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
@@ -45,8 +45,8 @@ describe("every cost bar's written amounts add up to its written total, on every
       expect(out).toMatch(/inline-block size-2 rounded-\[2px\] bg-chart-cost-other/);
     });
   }
-  // the account, fund and tax differences under the two pair bars are the bars' own figures subtracted (pass 6 readers: "החשבון: 1 ₪
-  // יותר" beside account parts of 699 + 2 and 698 + 3, "הקרן: 58 ₪ פחות" beside 116 and 173). Read from what the reader sees (pass 7): the
+  // the account, fund and tax differences under the two pair bars are the bars' own figures subtracted ("החשבון: 1 ₪
+  // יותר" beside account parts of 699 + 2 and 698 + 3, "הקרן: 58 ₪ פחות" beside 116 and 173). Read from what the reader sees: the
   // amounts written under each bar, each by its colour (rendered with no width, every amount is written under its bar), and the three
   // figures written under the bars, by their labels; no part's place in the bar is assumed
   const short: WorkbenchInputs = { ...plan, amountNow: 10000, monthly: 500, years: 10, values: { ...plan.values, amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t) } };
@@ -64,7 +64,7 @@ describe("every cost bar's written amounts add up to its written total, on every
       expect(written, `${index.id}: ${JSON.stringify(written)}`).toEqual({ account: bars[0]!.account - bars[1]!.account, fund: bars[0]!.fund - bars[1]!.fund, tax: bars[0]!.tax - bars[1]!.tax });
     });
   }
-  // the account list's figure and the pair bar's account parts are one quantity and say one figure (pass 7: 1,043 against
+  // the account list's figure and the pair bar's account parts are one quantity and say one figure (1,043 against
   // 689 + 352 + 3 = 1,044 on the MSCI ACWI), on every index and two plans
   for (const p of [plan, short]) for (const index of knownIndices(bundle)) {
     it(`the account list's figure is the sum of the pair bar's written account parts: ${index.id}, ${p.years} years`, () => {
@@ -76,7 +76,7 @@ describe("every cost bar's written amounts add up to its written total, on every
       const row = list.slice(list.indexOf(`data-pick-key="${pick.house}"`));
       const cost = /whitespace-nowrap" style="width:[^"]*">([\s\S]*?)<\/span><\/span>/.exec(row)?.[1] ?? "";
       expect(nisIn(cost), `${index.id}: the list's "${shown(cost)}" against ${bar.account} in the bar`).toBe(bar.account);
-      // the remainder, the account's fees on each other, is the first amount written under the bar, away from the fund's (pass 7)
+      // the remainder, the account's fees on each other, is the first amount written under the bar, away from the fund's
       expect(bar.order[0], index.id).toBe("bg-chart-cost-other");
     });
   }

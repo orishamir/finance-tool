@@ -1,4 +1,4 @@
-// A provident wrapper with several managers' list fees collected (2026-11-07): the guide shows the range over all of them (F-105)
+// A provident wrapper with several managers' list fees collected: the guide shows the range over all of them (F-105)
 // and runs its example on one, chosen by F-80, never one manager's list standing for the product.
 import { describe, expect, it } from "vitest";
 import type { FeesSnapshot } from "@finance-tool/schema";
@@ -29,7 +29,7 @@ describe("the provident fund for investing's list fees", () => {
     const r = providentTerms(KGL, fees, undefined, rules, "2026-11-07");
     expect(r.missing).toEqual([]);
     expect(r.pick?.id).toBe("harel");
-    // A-19, D56 (2026-11-07): the printed rate is a discount under the bylaws' s.36.1, kept at least PF-13's five years, then 1.05% and 4%
+    // A-19, D56: the printed rate is a discount under the bylaws' s.36.1, kept at least PF-13's five years, then 1.05% and 4%
     expect(r.terms!.fees!.balance).toBeCloseTo(0.007, 10);
     expect(r.terms!.fees!.deposit).toBe(0);
     expect(r.terms!.fees!.discount).toEqual({ months: 60, listRate: 0.0105 });
@@ -89,7 +89,7 @@ describe("the guide page", () => {
   const page = buildGuidePage(KGL)!;
   it("shows each fee over every collected manager, with how many print the legal cap", () => {
     const r = page.listRange!;
-    // 2026-11-07: Meitav's binding documents print no rate (joining request blank, bylaws up to the maximum), so it moved from its
+    // Meitav's binding documents print no rate (joining request blank, bylaws up to the maximum), so it moved from its
     // product page's 0.8% and 0% to the cap, 1.05% and 4% (D56): at the cap 7 -> 8 on each base. Ayalon, the twelfth manager (bylaws
     // edition 07.2026, s.35.1, up to the legal maximum; joining form 102 leaves the rates blank), at the cap: 11 -> 12, 8 -> 9
     expect([r.balance!.low.value, r.balance!.managers.value, r.balance!.atCap.value]).toEqual([0.7, 12, 9]);

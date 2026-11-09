@@ -1,6 +1,6 @@
 // Guide prose for קרן כספית (the daily money-market fund). Same shape as kupat-gemel-lehashkaa.tsx: every figure
 // is a Num over a rule figure, every block ends with the rules it rests on (il-finance MF, TXS, TXI, BANK, BRK,
-// REG, read 2026-10-23). NEW copy for the founder to review (docs/copy.md holds only labels).
+// REG). NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";

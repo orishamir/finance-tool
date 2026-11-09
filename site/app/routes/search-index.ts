@@ -5,7 +5,7 @@ import type { SearchEntry } from "../lib/search";
 export async function loader() {
   const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
   const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
-  const { normalize, pageAliases, ruleFigs } = await import("../lib/search");
+  const { normalize, ruleFigs } = await import("../lib/search");
   const { limitedBondFund, mutualFunds, search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
   const wrappers = loadProducts();
@@ -14,17 +14,16 @@ export async function loader() {
   }
   for (const name of limitedBondFund.searchNames) entries.push({ kind: "guide", name, line: search.groups.guide, href: "/guide/limited-bond-fund", norm: normalize(name) });
   for (const name of mutualFunds.searchNames) entries.push({ kind: "guide", name, line: search.groups.guide, href: "/guide/mutual-funds", norm: normalize(name) });
-  // audit 2026-10-24 (A4): the fund and track numbers are searchable, and the row says which number it is
+  // the fund and track numbers are searchable, and the row says which number it is
   const idLine = (n: number | string) => `${search.fundWord} ${n}`;
   const cma = loadCma();
   for (const t of cma.tracks) entries.push({ kind: "track", name: t.name, line: `${t.companyName} · ${t.classification} · ${idLine(t.fundId)}`, href: `/companies/${t.companyId}/${t.fundId}`, norm: normalize(t.name), ids: [String(t.fundId)] });
-  // audit 2026-10-24 (A92): the managing companies are results, by name and by company number
+  // the managing companies are results, by name and by company number
   for (const c of cma.companies) entries.push({ kind: "company", name: c.name, line: search.groups.company, href: `/companies/${c.id}`, norm: normalize(c.name), ids: [c.id] });
   // D33: a brand is a result by the name the site shows and by its fund managers' names; each leads to the brand's one page
   const { loadBrands } = await import("../lib/brands.server");
   const { brands: brandWords } = await import("../copy");
   for (const b of loadBrands()) for (const name of [b.name, ...b.fundManagers]) entries.push({ kind: "company", name, line: brandWords.searchLine, href: `/companies/${b.page}`, norm: normalize(name) });
-  for (const a of pageAliases) for (const name of a.names) entries.push({ kind: "guide", name, line: a.line, href: a.href, norm: normalize(name) });
   const exposures = loadExposures();
   for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push({ kind: "guide", name, line: search.groups.guide, href: exposureHref(e.id), norm: normalize(name) });
   // every name the catalogue records: the track when it names one, else the company page, else the product's guide page
@@ -37,7 +36,7 @@ export async function loader() {
     const ids = c.maps_to.track_ids.length === 1 ? c.maps_to.track_ids.map(String) : [];
     for (const name of c.names.he) entries.push({ kind: "product", name, line, href, norm: normalize(name), ...(ids.length > 0 ? { ids } : {}) });
   }
-  // audit 2026-10-24 (A4): the funds the site holds a record of, by name and by TASE number: an index fund on its index's page,
+  // the funds the site holds a record of, by name and by TASE number: an index fund on its index's page,
   // any other on its holding's page (the funds page is gone)
   const { loadFunds } = await import("../lib/instruments.server");
   const { indexPath } = await import("../lib/invest");
@@ -48,7 +47,7 @@ export async function loader() {
     const line = [exposure?.names.he[0], num ? `${search.securityWord} ${num}` : ""].filter(Boolean).join(" · ");
     for (const name of [...f.names.he, ...f.names.en]) entries.push({ kind: "track", name, line, href: exposure?.kind === "equity_index" ? indexPath(exposure.id) : exposureHref(f.exposure_id), norm: normalize(name), ids });
   }
-  // audit 2026-10-24 (A92): what the site does not cover yet is a result too, pointing at the page that says so
+  // what the site does not cover yet is a result too, pointing at the page that says so
   const { graduationStatuses } = await import("../lib/graduation.server");
   const { loadNotCovered } = await import("../lib/data.server");
   const notCovered = loadNotCovered();
@@ -61,7 +60,7 @@ export async function loader() {
     const exposure = guide ? undefined : term.exposureIds.find((id) => exposures.some((e) => e.id === id));
     if (!guide && !exposure) continue;
     const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;
-    // the term's card opens on its page (TermFromAddress): the pages' terms list is gone (founder, 2026-11-08)
+    // the term's card opens on its page (TermFromAddress): the pages' terms list is gone
     const href = `${guide ? `/guide/${guide}` : exposureHref(exposure!)}#term=${encodeURIComponent(term.he)}`;
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
@@ -78,7 +77,7 @@ export async function loader() {
     const title = ruleTitle(rule).text;
     const topic = topicName(rule.il_finance_file);
     if (rule.scope !== "general") {
-      // the row names the companies whose sections list it (review, 2026-10-26); a not-rule, which none lists, says "לא נכלל ככלל",
+      // the row names the companies whose sections list it; a not-rule, which none lists, says "לא נכלל ככלל",
       // after the companies whose documents it was read from, if any, and leads to that section of /companies; every company it
       // names still finds it
       const listed = listedCompanies(rule, ownDocs);
@@ -134,5 +133,8 @@ export async function loader() {
   for (const e of institutionSearchEntries({ bank: r4catalogue.classWord.bank, broker: r4catalogue.classWord.broker })) {
     entries.push({ kind: "bank", name: e.name, line: e.line, href: e.href, norm: normalize(e.extra ? `${e.name} ${e.extra}` : e.name), ...(e.extra && /^\d+$/.test(e.extra) ? { ids: [e.extra] } : {}) });
   }
+  // the deposits page (D92): found by what it is, among the bank results
+  const { depositBrowser } = await import("../copy");
+  for (const name of depositBrowser.search.names) entries.push({ kind: "bank", name, line: depositBrowser.search.line, href: "/deposits", norm: normalize(name) });
   return Response.json(entries);
 }

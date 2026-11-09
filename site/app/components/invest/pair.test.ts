@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { buildInvest, knownIndices } from "../../lib/invest";
 import type { WorkbenchInputs } from "../../lib/providers";
-import { buildWorkbenchBundle } from "../../lib/providers.server";
+import { buildIndicesBundle } from "../../lib/providers.server";
 import { entered } from "../../lib/value";
 import { allFunds, pickOfHeadline, repick } from "./pair";
 import { wholeParts } from "../kit";
@@ -56,17 +56,17 @@ describe("wholeParts refuses a target a part away (independent check of pass 6: 
     expect(() => wholeParts([693.4, 354.3, 719.3, 5553.4].map((x) => x - 500), 7323)).toThrow();
     // only the parts that take the rounding give room: one written part of three
     expect(() => wholeParts([10.2, 3, 4], 18, [true, false, false])).not.toThrow();
-    // the MSCI ACWI hedged pair of pass 7: 1.46 off with one written part, the target made of three rounded figures
+    // the MSCI ACWI hedged pair: 1.46 off with one written part, the target made of three rounded figures
     expect(() => wholeParts([10.2, 3, 4], 18.66, [true, false, false])).not.toThrow();
     expect(() => wholeParts([10.2, 3, 4], 20, [true, false, false])).toThrow();
-    // a figure near 10^18 is held to the double's precision, not to a shekel (independent check of pass 7: 512 ₪ off at 2.66e18)
+    // a figure near 10^18 is held to the double's precision, not to a shekel (512 ₪ off at 2.66e18)
     expect(() => wholeParts([2.66e18, 3e15], 2.66e18 + 3e15 + 512)).not.toThrow();
     expect(() => wholeParts([2.66e18, 3e15], 2.66e18 + 3e15 + 1e8)).toThrow();
   });
 });
 
 describe("a click on a house moves to a way it has (founder, 2026-10-31)", () => {
-  const bundle = buildWorkbenchBundle();
+  const bundle = buildIndicesBundle();
   const t = bundle.today;
   const plan: WorkbenchInputs = { amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null, fromGoal: false, returnFromParameter: false,
     values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) } };
@@ -86,7 +86,7 @@ describe("a click on a house moves to a way it has (founder, 2026-10-31)", () =>
 
   it("Interactive Brokers on the S&P 500 moves from the Israeli fund the page opens on to the accumulating iShares", () => {
     const view = buildInvest({ bundle, index: knownIndices(bundle).find((i) => i.id === "index-sp500")!, plan });
-    // since 2026-11-04 the accumulating CSPX is ranked (its own annex reports the Tax Authority's ruling, TXF-11) and leaves more there than IUSA
+    // the accumulating CSPX is ranked (its own annex reports the Tax Authority's ruling, TXF-11) and leaves more there than IUSA
     expect(repick(view, pickOfHeadline(view)!, { house: "interactive-brokers" }).fund).toBe("ie00b5bmr087");
   });
 });

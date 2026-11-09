@@ -1,5 +1,5 @@
 // Guide prose for מק״מ (architecture 3.5: prose lives in content files; every figure is a Num). Written
-// 2026-10-23 from the rule base (GOV, TXI, TXS, BANK, BRK, REG); each block ends with the rules it rests
+// from the rule base (GOV, TXI, TXS, BANK, BRK, REG); each block ends with the rules it rests
 // on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import { Link } from "react-router";
 import type { GuideContent } from "./types";
@@ -77,7 +77,7 @@ export const content: GuideContent = {
         מי שמוכר קודם מקבל את מחיר השוק של אותו יום, שיכול להיות נמוך ממחיר הקנייה. והמק״מ לא צמוד למדד: אם המחירים עולים יותר מהתשואה, הכסף שווה פחות בסוף.
       </p>
       <p className="max-w-measure">
-        {/* D6 (2026-10-26): how the account keeps the paper is the account's, said once on its page, not copied here */}
+        {/* D6: how the account keeps the paper is the account's, said once on its page, not copied here */}
         הנייר מוחזק בחשבון ניירות ערך. איך החשבון שומר על נכסי הלקוחות, ומה קורה אם הבנק או בית ההשקעות קורסים, מוסבר בעמוד של <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
       <RulesLine ids={["GOV-02", "GOV-22", "GOV-17", "GOV-03"]} />
@@ -103,7 +103,7 @@ export const content: GuideContent = {
         <Term id="עמלת קנייה ומכירה">עמלות הקנייה והמכירה</Term>, <Term prefix="ו" id="דמי חשבון קבועים">דמי חשבון קבועים</Term> אם החברה גובה אותם, נקבעים בתעריפון של כל חברה. ראו במדריך: <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
       <RulesLine ids={["TXI-03", "TXI-11", "BANK-18", "BRK-16", "BRK-17", "BANK-15", "MF-26", "MF-35", "TXS-12", "GOV-15", "GOV-17"]} />
-      {/* D6 (amended 2026-10-27): makam's exposure page folded into this one; what it said about holding makam without buying it */}
+      {/* D6: makam's exposure page folded into this one; what it said about holding makam without buying it */}
       <Sentence measure>
         אפשר להחזיק מק״מ גם בעקיפין: <Link to="/guide/money-market-fund-daily" className="text-link hover:underline">קרן כספית</Link> יכולה להחזיק מק״מ שנותרו לו עד {makamMonths ? <Num value={makamMonths} /> : null} חודשים לפדיון, לצד איגרות חוב קצרות, פיקדונות ומזומן. בחשבון <Term prefix="ב" id="קופת גמל בניהול אישי">ניהול אישי</Term> קונים אותו ישירות, כמו בחשבון ניירות ערך.
       </Sentence>

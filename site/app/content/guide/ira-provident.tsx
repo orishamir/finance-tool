@@ -1,5 +1,5 @@
 // Guide prose for קופת גמל בניהול אישי, the provident fund for tagmulim (architecture 3.5: prose lives in
-// content files; every figure is a Num). Written 2026-10-23 from the rule base (IRA, PEN, TXP, TXK, PF, REG);
+// content files; every figure is a Num). Written from the rule base (IRA, PEN, TXP, TXK, PF, REG);
 // each block ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";

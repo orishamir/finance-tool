@@ -1,19 +1,19 @@
-// What the index page's entry panels share (D44, 2026-11-04): the one panel's state and the world it prices in, reached by the buttons and the rows
+// What the index page's entry panels share (D44): the one panel's state and the world it prices in, reached by the buttons and the rows
 // under it through a context. Kept apart from the panels so the rows can read it without importing them.
 import { createContext, useContext, useRef, useState } from "react";
 import { invest as root } from "../../copy";
 import { Button } from "../kit";
 import type { CustomBroker, CustomFund } from "../../lib/custom-entries";
 import type { CustomIndex, IndexRef, InvestView } from "../../lib/invest";
-import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
+import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 
 export type Editing = { kind: "broker"; id: string | null } | { kind: "fund"; id: string | null } | { kind: "own"; houseId: string; from: string };
 
 /** What the account panel prices on: the page's own data, plan and view. */
 export interface PanelWorld {
   /** The bundle without the person's entries, and the one with them. */
-  wb: WorkbenchBundle;
-  bundle: WorkbenchBundle;
+  wb: IndicesBundle;
+  bundle: IndicesBundle;
   index: IndexRef;
   /** The plan the page's lists are priced on (settled). */
   plan: WorkbenchInputs;

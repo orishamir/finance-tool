@@ -1,4 +1,4 @@
-// What sets a bank's deposit apart, from its record (2026-11-07, independent check 2 of the deposit branch): its exit points in words,
+// What sets a bank's deposit apart, from its record: its exit points in words,
 // one function for every reader (the bank page's card printed "אין" for a deposit with daily exits, Mizrahi-Tefahot 287), and its kind
 // (`variant`) as a label chip that opens its meaning. Pure: no React, no I/O.
 import type { DepositTerms } from "@finance-tool/schema";
@@ -13,17 +13,26 @@ export function exitWords(exists: boolean, everyMonths: number | null): string {
   return everyMonths ? `${copy.exits.every} ${fmt.months(everyMonths)}` : copy.exits.some;
 }
 
+/**
+ * The rate a page shows for a deposit: the offered rate, or, where the bank's table prints no one offered rate (a rate for each period between
+ * exit points), the one figure it prints beside it (`rate_effective`, the bank's own). The engine reads only the offered rate.
+ */
+export function shownRate(d: Pick<DepositTerms, "rate_offered" | "rate_effective">): DepositTerms["rate_offered"] {
+  return typeof d.rate_offered.value !== "number" && d.rate_effective ? d.rate_effective : d.rate_offered;
+}
+
 /** A deposit's kind, from the schema: a new kind there fails the typecheck at `kinds` until it has a label. */
 export type DepositVariant = NonNullable<DepositTerms["variant"]>[number];
 
 const kinds: Record<DepositVariant, { id: DepositLabelId; icon: LabelIconKey; rules: string[] }> = {
   campaign: { id: "deposit-campaign", icon: "megaphone", rules: [] },
   closed_system: { id: "deposit-closed-system", icon: "building", rules: ["BANK-21"] },
+  new_customers: { id: "deposit-new-customers", icon: "userPlus", rules: [] },
   interest_during_term: { id: "deposit-interest-during-term", icon: "coins", rules: [] },
   best_of: { id: "deposit-best-of", icon: "scale", rules: ["BPN-09"] },
 };
 
-/** The rules a deposit's kinds cite, so a page that shows the label loads them (2026-11-07: Discount's closed-system sheet had no BANK-21). */
+/** The rules a deposit's kinds cite, so a page that shows the label loads them (Discount's closed-system sheet had no BANK-21). */
 export function depositKindRules(variant: readonly DepositVariant[] | undefined): string[] {
   return (variant ?? []).flatMap((v) => kinds[v].rules);
 }
@@ -42,7 +51,7 @@ export function depositLabels(variant: readonly DepositVariant[] | undefined, kn
 
 /**
  * The bank's own words in a record's working text: each quoted Hebrew passage of four words or more, as printed. The rest of the text is the
- * collector's English note and never reaches a page (2026-11-07: the bank card's "הבנק כותב:" showed "Current account: money is available at
+ * collector's English note and never reaches a page (the bank card's "הבנק כותב:" showed "Current account: money is available at
  * any time…", and a break sheet "(447 table column)"). Short quoted labels ("טבלת ריבית לווים") stay with the note they belong to.
  */
 export function printedQuotes(text: string | null | undefined): string[] {

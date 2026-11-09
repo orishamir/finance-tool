@@ -1,5 +1,5 @@
 // Guide prose for חיסכון לכל ילד at a bank (architecture 3.5: prose lives in content files; every figure is
-// a Num). Written 2026-10-23 from the rule base (CS, TXK, REG); each block ends with the rules it rests on.
+// a Num). Written from the rule base (CS, TXK, REG); each block ends with the rules it rests on.
 // NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";

@@ -129,7 +129,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
           </svg>
           <Marker min={0} max={last} step={1} value={m} onChange={setMonth} label={copy.plan.marker} valueText={`${m} ${copy.plan.unit}`} left={0} top={TOP - 12} width={plotW} height={height - AXIS - TOP + 14} />
         </div>
-        {/* under the month numbers, not on their line: on a phone it covered "24" and "36" (2026-10-26) */}
+        {/* under the month numbers, not on their line: on a phone it covered "24" and "36" */}
         <span className="block text-xs text-chart-text -mt-1.5">{copy.plan.unit}</span>
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
       </div>

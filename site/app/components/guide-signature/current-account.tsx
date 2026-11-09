@@ -1,8 +1,7 @@
 // Current account (D29): what money costs while it sits there. The page leads with the answer most people live with: the bank pays
 // nothing, so the balance loses value at the pace of inflation (the rate most of the collected banks publish, F-85). Two lines in
 // today's money, the account and a daily money-market fund, the gap between them filled, bracketed and named. The few banks that do
-// pay a small rate, with conditions and on a small balance, are a folded table (spec section 7; the bank picker that redrew the line at
-// one bank's rate was removed, founder 2026-11-08). Figures come from engine runs of the two bundles (guide-signature.ts `currentAccountModel`).
+// pay a small rate, with conditions and on a small balance, are a folded table (spec section 7). Figures come from engine runs of the two bundles (guide-signature.ts `currentAccountModel`).
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
@@ -88,7 +87,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const everyBank = [...paying, ...silent];
   const commonIsZero = commonRate ? Number(commonRate.value) === 0 : false;
   const f = copy.account.fold;
-  // the rate's head opens where the rates come from (it was a sentence above the table, founder 2026-11-08)
+  // the rate's head opens where the rates come from (it was a sentence above the table)
   const rateHelp = <HelpMark term={["בנק ישראל"]} about={f.columns.rate} lead={f.rateHelp} className="ms-1" />;
   const maxHead = (
     <>
@@ -174,10 +173,10 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
         <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border scroll-mt-24" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
           <div className="flex flex-col gap-4 px-4 pb-4">
             {/* each column says what it holds in its head: the last one with the balance the person entered, the rate with a "?" for where the
-                rates come from; no sentence around the table explains a column (founder, 2026-11-08, guidelines/design.md "Tables"). The tax
+                rates come from; no sentence around the table explains a column (guidelines/design.md "Tables"). The tax
                 and the bank's ceiling open from each figure. */}
             {!tax && <Gap id="rule:TXI-03" />}
-            {/* how many banks pay nothing, said with the banks themselves (founder, 2026-11-08), not under the headline */}
+            {/* how many banks pay nothing, said with the banks themselves, not under the headline */}
             {commonRate && commonCount && bankCount && (
               <Sentence size="sm" tone="muted">
                 <CommonRateLine rate={commonRate} count={commonCount} of={bankCount} />
@@ -260,7 +259,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
 }
 
 /**
- * "Worth knowing" (the founder, 2026-10-25): how many of the collected banks pay interest on a current-account balance, on what terms, and
+ * "Worth knowing": how many of the collected banks pay interest on a current-account balance, on what terms, and
  * the most. Computed from the published records, not a rule; every figure goes through `Num`, and a link opens the folded table.
  */
 function AccountWorthFact({ data }: { data: SignatureData }) {
@@ -352,7 +351,7 @@ function AccountChart({ points, start, amount, years, cost, accountFigure, fundF
               <path d={fnd(pts) ?? ""} fill="none" className={cx("stroke-chart-alt", pickDim(legendPick.active, "fund"))} strokeWidth="2.5" strokeLinejoin="round" />
               <path d={acct(pts) ?? ""} fill="none" className={cx("stroke-chart-net", pickDim(legendPick.active, "account"))} strokeWidth="2.5" strokeLinejoin="round" />
             </g>
-            {/* after the lines and the dashed start, with the card-colour halo: the start line ran through "50 אלף ₪" (2026-10-26) */}
+            {/* after the lines and the dashed start, with the card-colour halo: the start line ran through "50 אלף ₪" */}
             <AxisLabels ticks={ticks} y={y} />
             {last && !zoom.view && Math.abs(y(last.fund) - y(last.account)) > 12 && (
               // the gap as a difference: a bracket between the two ends, its number beside it (D29 rule 6)
@@ -368,7 +367,7 @@ function AccountChart({ points, start, amount, years, cost, accountFigure, fundF
             )}
             <ZoomBrush brush={zoom.brush} left={LEFT} top={TOP} bottom={HEIGHT - BOTTOM} />
           </svg>
-          {/* the words over the plot let a tap through to the year under them (2026-11-08: a tap on them read nothing); the cost's figure
+          {/* the words over the plot let a tap through to the year under them (a tap on them read nothing); the cost's figure
               opens its source from the figures above the chart */}
           {last && (
             <>

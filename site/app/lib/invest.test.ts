@@ -1,12 +1,12 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { accountSum, buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
-import { buildWorkbenchBundle } from "./providers.server";
+import { accountSum, buildInvest, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
 import { invest as words } from "../copy";
 
-const bundle = buildWorkbenchBundle();
+const bundle = buildIndicesBundle();
 const t = bundle.today;
 const plan = (over: Partial<WorkbenchInputs> = {}, ret = 7): WorkbenchInputs => ({
   amountNow: 6000,
@@ -82,10 +82,10 @@ describe("invest page computation", () => {
     expect(abroad.cells.length).toBe(view.providers.length);
     for (const c of abroad.cells) expect(c.kind === "cost" ? typeof c.costN === "number" : c.kind === "unavailable" || !!c.reason).toBe(true);
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
-    // 2026-11-04: One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
-    // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. 2026-11-05: Altshuler answered in writing that it
+    // One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
+    // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. Altshuler answered in writing that it
     // trades only on the Israeli and US exchanges, so it is priced on its US line for a fund that trades in the US, as One Zero is.
-    // 2026-11-08: IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
+    // IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
     expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
     expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["psagot"]);
     expect(abroad.cells.find((c) => c.providerId === "ibi")?.kind).toBe("cost");
@@ -159,14 +159,6 @@ describe("invest page computation", () => {
     expect(matchKnownIndex(bundle, "ניקיי 225")).toBeNull();
   });
 
-  it("the API: the cheapest way for an index, and the range over the known indices", () => {
-    const w = cheapestWay(bundle, sp, plan());
-    expect(w?.providerId).toBe("psagot");
-    const r = rangeOverKnownIndices(bundle, plan())!;
-    expect(r.low.valueN).toBeLessThanOrEqual(r.high.valueN);
-    expect(r.perIndex.length).toBeGreaterThan(3);
-  });
-
   it("the houses: ranked by what is left, the headline's own house first, each gap measured from the headline", () => {
     const il = view.houses.filter((h) => h.group === "il" && h.best);
     expect(il[0]!.provider.id).toBe(view.headline!.providerId);
@@ -193,15 +185,13 @@ describe("invest page computation", () => {
     const funds = v.options.flatMap((o) => o.funds);
     const hedged = funds.filter((f) => f.rec.hedged === true && f.best);
     expect(hedged.length).toBeGreaterThan(0);
-    // 2026-10-29 (F-92): a hedged fund's shortfall beyond its fees is counted, so none leaves more than the headline on a steady dollar;
+    // F-92: a hedged fund's shortfall beyond its fees is counted, so none leaves more than the headline on a steady dollar;
     // the one with no full year in its report is listed with its reason, not priced
     expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeLessThan(v.headline!.valueN);
     expect(funds.find((f) => f.rec.id === "5140165")!.reason).toEqual({ code: "no-hedge-record" });
     expect(v.headline!.fund.rec.hedged).not.toBe(true);
     const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best && !f.best.open);
     expect(v.headline!.valueN).toBe(Math.max(...unhedged.map((f) => f.best!.valueN)));
-    // the goal comparison's cheapest way for the index is the same pair
-    expect(cheapestWay(bundle, world, plan())!.fundRecordId).toBe(v.headline!.fund.rec.id);
   });
 
   it("a hedged fund whose years F-92 (d) does not compare falls back to the hedged rule: listed with its reason, never priced at A-07 = 0 (finance review F3)", () => {

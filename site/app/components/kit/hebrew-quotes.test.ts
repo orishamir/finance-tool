@@ -1,6 +1,5 @@
 // The built-pages guard (site/scripts/hebrew-quotes.mjs, run after the build) and the kit's gershayim: an ASCII double quote between two
-// Hebrew letters in what a page shows fails, and a company name from the data drawn through the kit shows the gershayim (lead, 2026-11-07:
-// "בע"מ with an ASCII quote").
+// Hebrew letters in what a page shows fails, and a company name from the data drawn through the kit shows the gershayim (never "בע"מ" with an ASCII quote).
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";

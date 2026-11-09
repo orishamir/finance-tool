@@ -1,9 +1,9 @@
-// The index pills (the kit's ChipList; nothing preselected, D27), the "אחר" flow for a custom index, and the plan (the kit's PlanChips) with the dollar rate (D26).
+// The index pills (the kit's ChipList; nothing preselected, D27), the "אחר" flow for a custom index, and the plan with the dollar rate (D26).
 import { useId, useMemo, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
-import type { WorkbenchBundle } from "../../lib/providers";
+import type { IndicesBundle } from "../../lib/providers";
 import { LeadTail, Num } from "../provenance";
 import type { SiteValue } from "../../lib/value";
 import { Button, Card, ChipList, HelpMark, LongestCase, Sentence, Tag, type ChipItem } from "../kit";
@@ -11,7 +11,7 @@ import { Button, Card, ChipList, HelpMark, LongestCase, Sentence, Tag, type Chip
 /** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
 
-export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRename, onSave, onGo }: { known: IndexRef[]; customs: CustomIndex[]; selectedId: string | null; bundle: Pick<WorkbenchBundle, "exposures"> | null; onRemove: (id: string) => void; onRename: (id: string, name: string) => void; onSave: (c: CustomIndex) => void; onGo: (path: string) => void }) {
+export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRename, onSave, onGo }: { known: IndexRef[]; customs: CustomIndex[]; selectedId: string | null; bundle: Pick<IndicesBundle, "exposures"> | null; onRemove: (id: string) => void; onRename: (id: string, name: string) => void; onSave: (c: CustomIndex) => void; onGo: (path: string) => void }) {
   const [adding, setAdding] = useState(false);
   const items: ChipItem[] = [
     ...known.map((i) => ({ id: i.id, label: pillName(i.name), href: indexPath(i.id) })),
@@ -35,7 +35,7 @@ export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRen
   );
 }
 
-function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: Pick<WorkbenchBundle, "exposures">; customs: CustomIndex[]; onCancel: () => void; onSave: (c: CustomIndex) => void; onKnown: (id: string) => void }) {
+function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: Pick<IndicesBundle, "exposures">; customs: CustomIndex[]; onCancel: () => void; onSave: (c: CustomIndex) => void; onKnown: (id: string) => void }) {
   const id = useId();
   const [name, setName] = useState("");
   const [note, setNote] = useState<string | null>(null);
@@ -49,7 +49,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
       return;
     }
     if (customs.some((x) => x.id === customIdOf(typed))) return setNote(c.custom.nameTaken);
-    // only the name (founder, 2026-11-05): whether the index is in shekels is asked of each fund added on it
+    // only the name: whether the index is in shekels is asked of each fund added on it
     onSave({ id: customIdOf(typed), name: typed, added: new Date().toISOString().slice(0, 10) });
   };
   return (
@@ -78,9 +78,9 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 
 // ---------------------------------------------------------------- the plan
 
-/** The plan the page runs on: the knob strip (founder, 2026-10-28), the rest of the assumptions behind a button, and the dollar rate on the same line. */
+/** The plan the page runs on: the knob strip, the rest of the assumptions behind a button, and the dollar rate on the same line. */
 /** `example`: no number entered yet, so every one is the site's example; once one is entered each slider marks its own. */
-/** `dollar`: an index priced in shekels reads no exchange rate, so it shows none (founder, 2026-10-31); the line keeps its height either way. */
+/** `dollar`: an index priced in shekels reads no exchange rate, so it shows none; the line keeps its height either way. */
 export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation, returnHelp }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean; /** The inflation the page runs on, said beside the button that changes it, through the figure's own sheet (its source, or entered). */ inflation?: SiteValue; /** What the return is and whether the lists' order holds at another (`returnHelpOf`): the "?" beside the return. */ returnHelp?: string }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   // held at the words' longest case, the site's example included: on a phone, entering a first number dropped "לדוגמה של האתר" and

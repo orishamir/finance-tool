@@ -262,7 +262,7 @@ describe("import", () => {
 });
 
 
-// ---------------------------------------------------------------- audit 2026-10-24 (A33, A69): the same file twice, hand-edited files
+// ---------------------------------------------------------------- the same file twice, hand-edited files
 
 describe("import twice in add mode (A33, A69)", () => {
   const file = (state: unknown, extra: Record<string, unknown> = {}) => JSON.stringify({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site, state, ...extra });
@@ -283,12 +283,10 @@ describe("import twice in add mode (A33, A69)", () => {
     const incoming = theirs();
     const first = applyImport(mine(), incoming, "add", day);
     expect(first.added).toEqual({ goals: 1, holdings: 1, names: 1, comparisons: 1 });
-    expect(first.firstAddedGoalId).toBe("theirs");
     expect(first.state.currentId).toBe("mine");
     const second = applyImport(first.state, incoming, "add", day);
     expect(second.added).toEqual({ goals: 0, holdings: 0, names: 0, comparisons: 0 });
     expect(second.skipped).toBe(4);
-    expect(second.firstAddedGoalId).toBeUndefined();
     expect(second.state.goals).toHaveLength(2);
     expect(second.state.holdings).toHaveLength(2);
     expect(second.state.savedComparisons).toHaveLength(1);
@@ -379,7 +377,7 @@ describe("import twice in add mode (A33, A69)", () => {
   });
 });
 
-// ---------------------------------------------------------------- audit 2026-10-24 (A32): the side stores in the file
+// ---------------------------------------------------------------- the side stores in the file
 
 describe("side stores in the export file (A32)", () => {
   const offer = { providerId: "p1", lines: { trade: { rate: entered(0.1, "pct", day) } }, savedAt: day };

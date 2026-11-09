@@ -1,41 +1,38 @@
 // Screen 9: the fee materiality page (design-spec 12, flows 20, 21, 27). What each fee costs over the horizon, which
 // is worth negotiating, avoiding or ignoring, with the reference and the words to say. The subject is in the address
-// (?wrapper=, ?track=, ?holding=, &from=compare); the numbers come from the saved goal, or from the scenario P-05
-// holds. Not pre-rendered beyond the shell: the engine runs here, on the bundles fetched once.
+// (?wrapper=, ?track=); the numbers are what the person entered on this device, and the site's example (P-05) for the
+// rest. Not pre-rendered beyond the shell: the engine runs here, on the bundles fetched once.
 import { useEffect, useId, useMemo, useState } from "react";
 import { Link, useLoaderData, useLocation } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, r3fees, r3holdings, site } from "../copy";
-import type { FormData } from "../components/compare/goal-form";
+import { r2, r3fees, site } from "../copy";
 import type { KnobRanges } from "../components/invest/knobs";
 
-/** The goal form's ranges this page reads, with the plan sliders' (P-05). */
-type FeeForm = FormData & { knobs: KnobRanges };
+/** The ranges this page's fields read (P-05): the shares in percent, the age, and the plan sliders. */
+type FeeForm = { pct: { min: number; max: number }; age: { min: number; max: number }; knobs: KnobRanges };
 import { OtherAssumptions, PlanKnobs } from "../components/invest/knobs";
 import { ChartLegend, ChartReadout, ChartTable, FeeDragChart } from "../components/fees/FeeDragChart";
 import { FeeRow, NotReportedRow } from "../components/fees/FeeRow";
 import { FeeHeadline, ReasonWithCode, RemainderLine, SubjectStrip, ThresholdsLine, verdictWord } from "../components/fees/parts";
 import { FeeSensitivityPanel } from "../components/fees/sensitivity";
-import { IconLock } from "../components/icons";
-import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance";
+import { Num, NumberLegend, RulesLine } from "../components/provenance";
 import { anyWeak } from "../lib/value";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Button, Callout, Card, LongestCase, Sentence, useChartPick } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
-import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, pageFields, parseSubject, subjectWrapperId, rankedFor, ruleMap, type FeeSensitivity, type FeesData, type FeesResult, type NeedField, type PlanError, type SubjectSpec } from "../lib/fees";
+import { buildFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, pageFields, parseSubject, subjectWrapperId, rankedFor, ruleMap, type FeeSensitivity, type FeesData, type FeesResult, type NeedField, type PlanError, type SubjectSpec } from "../lib/fees";
 import type { FieldKey } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { useAfterRender, useSettled } from "../lib/settled";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
-import { holdingName, useHolding } from "../lib/holdings";
 import { bundleLinks } from "../lib/bundle";
 import { recordsById } from "../lib/scope";
-import { shown } from "../lib/review";
+import { useHydrated } from "../lib/hooks";
 
-/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
+/** The data files this page fetches after it starts, requested with the HTML. */
 export const links = () => bundleLinks("fees-data.json", "compare-bundle.json");
 
 export async function loader() {
@@ -88,10 +85,9 @@ function Page({ bundle, fees, failed, form, publisherNames }: { bundle: CompareB
   const { search } = useLocation();
   const subject = useMemo(() => parseSubject(search), [search]);
   // The pre-rendered page has no address to read: the first client render matches it, then the subject is read.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
   // a body without its own heading (loading, nothing chosen, a failure) gets the page's: `/fees` with no subject showed a callout and
-  // no heading at all (2026-10-26)
+  // no heading at all
   const frame = (body: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => (
     <div className="flex flex-col gap-6 pt-2 lg:pt-8">
       <Breadcrumb parent={back ?? { href: "/guide", label: site.menuItems[0].label }} current={r3fees.title} />
@@ -112,18 +108,13 @@ function Page({ bundle, fees, failed, form, publisherNames }: { bundle: CompareB
   return <Body bundle={bundle} fees={fees} form={form} publisherNames={publisherNames} subject={subject} frame={frame} />;
 }
 
-/** Where to go from a page with nothing to show: the two links on their own line under the message, not run into its last line. */
+/** Where to go from a page with nothing to show: the link on its own line under the message, not run into its last line. */
 function NotFoundLinks() {
   return (
     <span className="flex flex-wrap gap-x-4 mt-1">
       <Link to="/guide" className="text-link hover:underline min-h-target inline-flex items-center">
         {r3fees.notFoundLinks.guide}
       </Link>
-      {shown("/holdings") && (
-        <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
-          {r3fees.notFoundLinks.holdings}
-        </Link>
-      )}
     </span>
   );
 }
@@ -141,15 +132,6 @@ function errorText(e: PlanError, wrapperId: string, missing: NeedField[] = []): 
       return (
         <>
           {r3fees.review.noTerms}
-          {shown("/holdings") && (
-            <>
-              {" "}
-              {r3fees.review.noTermsHoldings}{" "}
-              <Link to="/holdings" className="text-link hover:underline">
-                {r3fees.notFoundLinks.holdings}
-              </Link>
-            </>
-          )}
         </>
       );
     case "need-input": {
@@ -164,16 +146,6 @@ function errorText(e: PlanError, wrapperId: string, missing: NeedField[] = []): 
       return <ReasonWithCode message={r3fees.review.monthlyNotRun} code={e.code} />;
     case "no-fee":
       return r3fees.review.notReportedRow;
-    case "needs-pf36":
-      return (
-        <span className="inline-flex flex-wrap items-center gap-x-1.5">
-          <IconLock size={16} className="text-blocked shrink-0" />
-          <span>{r3holdings.feeNeedsPf36}</span>
-          <RuleRef id="PF-36" />
-        </span>
-      );
-    case "needs-first-deposit":
-      return r3holdings.feeNeedsFirstDeposit;
     default:
       // an engine message never reaches the page: the plain Hebrew reason first, the rule or gap id after it in a chip (A2)
       return <ReasonWithCode message={("messageHe" in e && e.messageHe) || r3fees.review.genericFail} code={e.code} />;
@@ -182,19 +154,17 @@ function errorText(e: PlanError, wrapperId: string, missing: NeedField[] = []): 
 
 function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FeeForm; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => React.ReactNode }) {
   const released = useInputs();
-  const holding = useHolding(subject.kind === "holding" ? subject.holdingId : null);
   // The page's own numbers: what the person entered on this device, the site's example (P-05) for the rest; never the saved goal
-  // (founder, 2026-10-28). The sliders follow the hand; the run, with the comparison behind "avoid", waits until it rests.
+  // . The sliders follow the hand; the run, with the comparison behind "avoid", waits until it rests.
   const live = useMemo(() => feeInputs(bundle, null, released.state), [bundle, released.state]);
   const inputs = useSettled(live, 250);
   const result: FeesResult | null = useMemo(() => {
     try {
-      if (subject.kind === "holding") return holding.holding ? buildHoldingFees(bundle, fees, holding.holding, inputs) : null;
       return buildFees(bundle, fees, subject, inputs);
     } catch {
       return { kind: "error", error: { kind: "no-run", code: "failed" } } as FeesResult;
     }
-  }, [bundle, fees, subject, inputs, holding.holding]);
+  }, [bundle, fees, subject, inputs]);
   const [hover, setHover] = useState<number | null>(null);
   const legendPick = useChartPick();
   const sens = useAfterRender<FeeSensitivity>(result?.kind === "ok" ? () => feeSensitivity(result.args, result.analysis, result.args.runBundle) : null, [result]);
@@ -209,14 +179,13 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
     setSuggestion({ field, value: suggested });
     setPanelOpen(true);
   };
-  const wrapperId = subjectWrapperId(subject, fees, holding.holding?.wrapperId ?? null);
-  const fields = pageFields(bundle, wrapperId, subject.kind === "holding");
+  const wrapperId = subjectWrapperId(subject, fees);
+  const fields = pageFields(bundle, wrapperId);
   const st = released.state;
   const allRequired: NeedField[] = [...(fields.age === "required" ? ["age" as const] : []), ...(fields.employment === "required" ? ["employment" as const] : []), ...(fields.insurance === "required" ? ["insurance" as const] : [])];
   const missingRequired: NeedField[] = [...(fields.age === "required" && st.age === null ? ["age" as const] : []), ...(fields.employment === "required" && st.employment === null ? ["employment" as const] : []), ...(fields.insurance === "required" && typeof st.insurance !== "number" ? ["insurance" as const] : [])];
-  // a holding's amount and monthly deposit are its own (the statement's), so only the years and the return move it
   const plan = (
-    <FeePlan fi={live} form={form} holding={subject.kind === "holding"} onOpen={() => {
+    <FeePlan fi={live} form={form} onOpen={() => {
       setSuggestion(null);
       setPanelOpen(true);
     }} />
@@ -241,8 +210,6 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
     </Sheet>
   );
 
-  if (subject.kind === "holding" && !holding.ready) return frame(<p className="text-muted-foreground">{r3fees.loading}</p>);
-  if (subject.kind === "holding" && !holding.holding) return frame(<Callout tone="info">{errorText({ kind: "no-wrapper" }, "")}</Callout>, { href: "/holdings", label: r3fees.notFoundLinks.holdings });
   if (!result) return frame(<p className="text-muted-foreground">{r3fees.loading}</p>);
   if (result.kind === "blocked")
     return frame(
@@ -252,20 +219,13 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
     );
   if (result.kind === "error") {
     // the page keeps its shell: the heading, the reason in plain words and the way back (B2)
-    const own = subject.kind === "holding";
     return frame(
       <>
         <header className="flex flex-col gap-3">
           <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
           <NumberLegend canEnter institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
-          {own && holding.holding && (
-            <p className="text-lg">
-              {r3fees.strip.holding}
-              <bdi className="font-medium">{holdingName(holding.holding)}</bdi>
-            </p>
-          )}
         </header>
-        <Callout tone={result.error.kind === "needs-pf36" ? "blocked" : "caution"}>{result.error.kind === "need-input" ? (
+        <Callout tone="caution">{result.error.kind === "need-input" ? (
             // the line keeps the room of its longest case (every required field missing) while the fields are filled in behind it
             <LongestCase cases={[errorText({ ...result.error, field: null }, "", allRequired)]}>{errorText(result.error, "", missingRequired)}</LongestCase>
           ) : (
@@ -278,13 +238,8 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
             {sheet}
           </>
         )}
-        {own && (
-          <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center self-start">
-            {r3fees.strip.backHolding}
-          </Link>
-        )}
       </>,
-      own ? { href: "/holdings", label: r3fees.notFoundLinks.holdings } : undefined,
+      undefined,
       true,
     );
   }
@@ -293,7 +248,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
   const years = inputs.g.horizonYears;
   const rules = ruleMap(bundle, fees);
   const staleLine = an.lines.find((l) => l.reference.stale)?.reference.stale;
-  const back = { href: sv.fromHref, label: sv.from === "compare" ? r3fees.strip.backCompare : sv.from === "track" ? r3fees.strip.backTrack : sv.from === "holding" ? r3fees.strip.backHolding : r3fees.strip.backGuide };
+  const back = sv.fromHref ? { href: sv.fromHref, label: sv.from === "track" ? r3fees.strip.backTrack : r3fees.strip.backGuide } : undefined;
   const hasChart = an.series !== null && an.lines.length > 0;
   const workbench = fees.wrapperTrack[sv.wrapperId] !== undefined || ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(sv.wrapperId);
   const grossNote = hasChart && Math.abs((an.series!.points.at(-1)?.total ?? 0) - (an.fm.total.value as number)) > 1;
@@ -341,7 +296,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
               {omitted.includes("deposit") && <NotReportedRow name={r3fees.names.deposit!} />}
             </ol>
             {/* the remainder line comes and goes with the amounts (none while a discount still keeps a fee at 0%); with two lines or
-                more its room stays, or the page below it moves (D63, 2026-11-07) */}
+                more its room stays, or the page below it moves (D63) */}
             {an.lines.length > 1 ? (
               <LongestCase cases={[<RemainderLine key="room" value={{ ...an.remainder, value: 99_999.99 }} />]}>
                 <RemainderLine value={an.remainder} />
@@ -373,16 +328,6 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         <Link to={sv.kind === "track" ? `/guide/${sv.wrapperId}` : `/guide/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
           {r3fees.linkGuide}
         </Link>
-        {sv.kind === "holding" && (
-          <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
-            {r3fees.strip.backHolding}
-          </Link>
-        )}
-        {sv.from === "compare" && shown("/goal/compare") && (
-          <Link to="/goal/compare" className="text-link hover:underline min-h-target inline-flex items-center">
-            {r3fees.strip.backCompare}
-          </Link>
-        )}
       </nav>
       <RulesLine ids={[...new Set([...an.rulesUsed, "PF-13", "PF-39"].filter((id) => rules.has(id)))]} />
       {sheet}
@@ -403,13 +348,13 @@ function GrossNote({ gap }: { gap: SiteValue }) {
   );
 }
 
-/** The page's numbers (founder, 2026-10-28): the plan sliders, as on the indices page, and the rest behind a button. */
-function FeePlan({ fi, form, holding, onOpen }: { fi: FeeInputs; form: FeeForm; holding: boolean; onOpen: () => void }) {
+/** The page's numbers: the plan sliders, as on the indices page, and the rest behind a button. */
+function FeePlan({ fi, form, onOpen }: { fi: FeeInputs; form: FeeForm; onOpen: () => void }) {
   const entered = fi.values;
   const example = [entered.amount, entered.monthly, entered.years, entered.returnV].every((v) => v.state !== "entered");
   return (
     <section className="flex flex-col gap-3" aria-label={r3fees.assumptionsTitle}>
-      <PlanKnobs fi={fi} ranges={form.knobs} pct={form.pct} only={holding ? ["years", "ret"] : undefined} />
+      <PlanKnobs fi={fi} ranges={form.knobs} pct={form.pct} />
       <p className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
         <Button variant="secondary" className="!h-target px-3 text-sm" onClick={onOpen}>
           {r3fees.othersButton}

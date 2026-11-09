@@ -124,7 +124,7 @@ export interface TableRowData {
 /**
  * A table always in view with a fixed width per column, so nothing moves when a number changes: a header on every column, row heads at
  * the start, `strong` for a closing row, and `hideOnPhone` for a column the phone can do without. `measure` caps it at the prose width
- * (38 rem), for a table of words inside guide prose (2026-11-03): on a PC it no longer runs wider than the text around it.
+ * (38 rem), for a table of words inside guide prose: on a PC it no longer runs wider than the text around it.
  */
 export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: ReactNode; columns: { id: string; head: ReactNode; hideOnPhone?: boolean }[]; rows: { key: string; head: ReactNode; cells: ReactNode[]; strong?: boolean }[]; measure?: boolean }) {
   return (

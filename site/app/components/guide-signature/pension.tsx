@@ -27,7 +27,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const id = data.id;
   const inputs = useSigInputs(bundle);
   const { state } = useInputs();
-  // the page's own values and the site's example, never the saved goal (founder, 2026-10-28)
+  // the page's own values and the site's example, never the saved goal
   const employment = state.employment ?? "employee";
   const [salaryPick, setSalaryPick] = useState<number | null>(null);
   const p05Salary = p05Number(bundle.p05, "annual_income") / 12;
@@ -51,7 +51,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   if (!model) return <G2Gap id="bundle" />;
 
   // ---- value objects
-  // the salary field's default, like what the reader types in it, is a plain number (founder, 2026-11-08)
+  // the salary field's default, like what the reader types in it, is a plain number
   const salaryIn: SiteValue = salarySource === "p05" ? asField(figure(salary, "nis", "F-67", { [copy.pension.salaryAnnual]: p05Value(bundle.p05, "annual_income") }, today, copy.pension.salaryAbout)) : typed(salary, "nis", today, copy.pension.salaryAbout);
   const yearsIn = inputSite(bundle, "horizon_years", years, inputs.source.years, today, copy.common.inputNames.years);
   const insuranceIn: SiteValue | null = insurancePct !== null ? typed(insurancePct, "pct", today, copy.pension.insuranceAbout) : null;
@@ -161,7 +161,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           {parts.map((p) => (
             <div key={p.key} className="min-w-0 flex flex-col gap-0.5 transition-[width] duration-[var(--duration-chart)]" style={{ width: share(p.n) }}>
               {/* a term keeps to one line elsewhere; here it may wrap, as the other labels do: at 320 px the severance label ran 17 px past its
-                  part's column and the chart's edge (2026-11-08, the chart check) */}
+                  part's column and the chart's edge */}
               <span className="text-xs text-muted-foreground leading-tight [&_.term]:whitespace-normal">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
               <span className="font-semibold">
                 <Num value={p.value} />

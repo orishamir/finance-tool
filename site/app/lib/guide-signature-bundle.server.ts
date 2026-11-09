@@ -1,13 +1,13 @@
 // The engine bundle of a cash-like or securities-family guide page, shared by the page's own timeline (guide.server.ts) and by
 // the signature visuals (guide-signature.server.ts), which run other wrappers' bundles beside their own. Server-only.
 //
-// 2026-10-25 (guide-page sweep, finding 2 and 3): a deposit-family wrapper runs on the published rate of the deposit-terms record
+// guide-page sweep, finding 2 and 3: a deposit-family wrapper runs on the published rate of the deposit-terms record
 // P-05 names (A-21, A-25), not on P-05's `cash_rate`; the current account also carries its balance ceiling (F-26, BANK-09).
 //
-// 2026-10-25 (current-account page, G3): the current account's illustrative run starts from the rate most of the collected banks
+// current-account page, G3: the current account's illustrative run starts from the rate most of the collected banks
 // publish (F-85), not from one bank's rate; `commonAccountRate` makes that value and the page's counts from the bank records.
 //
-// 2026-10-26 (founder: a general page names no single bank's rate): the one-year deposit on the money-market ladder is the range
+// a general page names no single bank's rate: the one-year deposit on the money-market ladder is the range
 // across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
 import { breakTermOf, isTie, middleIndex, mostCommonRate, plainOneYearDeposits, rateRange, tieThreshold } from "@finance-tool/engine";
 import { guideBlocks, guideSignature, r4catalogue } from "../copy";
@@ -70,9 +70,16 @@ export function currentAccountRecords(deposits: DepositTerms[]): DepositTerms[] 
   return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
 }
 
-/** One record per bank of its plain one-year deposit at a fixed rate with no linkage (F-86), the engine's pick (`plainOneYearDeposits`). */
+/** The amount F-86's pick is read at: P-05's amount now, the site's example (F-108 picks the highest rate it opens). */
+export function exampleAmount(): number {
+  const p05 = loadParameters().find((p) => p.method_id === "P-05");
+  if (!p05) throw new Error("data/parameters: P-05 is missing, so F-86 has no amount to pick at");
+  return p05Number(p05, "amount_now");
+}
+
+/** One record per bank of its plain one-year deposit at a fixed rate with no linkage (F-86): the one with the highest rate P-05's amount opens (F-108), the engine's pick (`plainOneYearDeposits`). */
 export function oneYearDepositRecords(deposits: DepositTerms[]): DepositTerms[] {
-  return plainOneYearDeposits(deposits);
+  return plainOneYearDeposits(deposits, exampleAmount());
 }
 
 /** The records as the page reads them: the printed rate and ceiling as sourced figures, with the record's own Hebrew text. A record whose rate is not a number is left out. */
@@ -82,7 +89,7 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
     if (typeof r.rate_offered.value !== "number" || r.rate_offered.unit !== "pct_per_year") continue;
     const max = r.amount_range.max;
     // the record's doubt is the number's own (SiteValue.doubt): wherever the rate shows, it shows tinted and its sheet says the doubt
-    // (founder, 2026-11-08); the record's English notes stay in the data
+    // ; the record's English notes stay in the data
     // D31: each rate and ceiling is the bank's own, shown on the line that names the bank
     const name = shortName(r.bank, r.bank);
     const rate = ownBy({ ...r.rate_offered, ...(r.doubt_he ? { doubt: r.doubt_he } : {}) } as SiteValue, name);
@@ -197,7 +204,7 @@ export function buildInstrumentBundle(
     return { bundle: null, published: null };
   }
   const published = family === "deposit" ? publishedDeposit(record.id, spec, deposits) : null;
-  // the current account starts from the rate most banks pay (F-85, 2026-10-25), not from the one bank P-05 names
+  // the current account starts from the rate most banks pay (F-85), not from the one bank P-05 names
   const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(deposits)), allRules, t) : null;
   // D31: the guide page's terms block names the company each figure belongs to, so the figure is that company's own: the fund's figures
   // its manager's, the tariff's lines its provider's, the deposit's terms its bank's (the source's host would name Maya for a fund report)
@@ -212,7 +219,7 @@ export function buildInstrumentBundle(
   const runP05 = rate ? withPublishedRate(p05, rate) : p05;
   const terms = ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling.value as number } } : built.terms;
   // the current account runs on no single bank (F-85): the record P-05 names lends it nothing to show, so its linkage line, which only
-  // named that bank ("התנאים והתעריף בדוגמה הם של לאומי") and said a balance is not linked, is left out (founder, 2026-10-26)
+  // named that bank ("התנאים והתעריף בדוגמה הם של לאומי") and said a balance is not linked, is left out
   const shown = common ? Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k !== "linkage")) : built.feeValues;
   // a common ceiling is already the bank's that prints it (accountBanks), not the bank P-05 names
   const feeValues = { ...Object.fromEntries(Object.entries(shown).map(([k, v]) => [k, ownOf(v, k)])), ...(ceiling ? { balanceCeiling: common ? ceiling : ownOf(ceiling, "balanceCeiling") } : {}) };
@@ -258,7 +265,7 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
   const all = loadFees();
   for (const id of new Set(all.map((f) => f.id))) {
     const latest = all.filter((x) => x.id === id).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1)!;
-    // a house that is part of another (PEPPER of Leumi, 2026-11-04) is not a house of its own, as in providersOf
+    // a house that is part of another (PEPPER of Leumi) is not a house of its own, as in providersOf
     if (latest.missing || latest.provider.part_of) continue;
     if (record.id !== "brokerage-account" && latest.provider.class === "foreign_broker") continue;
     if (!onlyWhatCanBeDone(latest).lines.some((l) => l.base === "trade" && l.applies_to.some((a) => classes.includes(a)))) continue;
@@ -288,26 +295,6 @@ export function documentInputs(rows: readonly { id: string; name: string; source
   );
 }
 
-/**
- * The documents a fee record's lines for one product cite beyond its own price list (a line's discount length or the cap it reverts to,
- * cited from the bylaws), each once by its link, titled without the clause the line points at. Lines for the house's other products are
- * not read: their documents do not price this one.
- */
-export function citedDocuments(lines: readonly { applies_to: readonly string[] }[], own: string, product: string): { url: string; title: string }[] {
-  const out = new Map<string, string>();
-  const walk = (x: unknown) => {
-    if (Array.isArray(x)) x.forEach(walk);
-    else if (x && typeof x === "object") {
-      const o = x as Record<string, unknown>;
-      const s = o.source as { url?: unknown; title?: unknown } | undefined;
-      if (s && typeof s.url === "string" && typeof s.title === "string" && s.url !== own && !out.has(s.url)) out.set(s.url, s.title.replace(/,\s*(?:סעיף|סעיפים|עמוד)\s.*$/, ""));
-      Object.values(o).forEach(walk);
-    }
-  };
-  walk(lines.filter((l) => l.applies_to.includes(product)));
-  return [...out].map(([url, title]) => ({ url, title }));
-}
-
 /** A deposit's 447 break column as a sourced value: `not_allowed`, `with_penalty` or `none`, with the bank's words in its notes. */
 export function breakFact(rec: DepositTerms): SiteValue {
   const b = rec.break;
@@ -335,16 +322,8 @@ export function breakInput(rec: DepositTerms, name: string): SiteValue {
   return ownBy({ ...f, value: r4catalogue.breakWord[f.value as keyof typeof r4catalogue.breakWord] ?? f.value }, name);
 }
 
-/** The highest and the lowest rate of the banks' one-year deposits (F-86): the records themselves. */
-export function depositEnds(deposits: DepositTerms[]): { top: DepositTerms; bottom: DepositTerms; count: number } | null {
-  const records = oneYearDepositRecords(deposits).filter((r) => typeof r.rate_offered.value === "number");
-  if (records.length === 0) return null;
-  const sorted = [...records].sort((a, b) => Number(a.rate_offered.value) - Number(b.rate_offered.value));
-  return { top: sorted[sorted.length - 1]!, bottom: sorted[0]!, count: records.length };
-}
-
 /**
- * The deposit the guide's example runs on (F-86, 2026-10-31): the middle rate among the collected one-year deposits that cannot be broken,
+ * The deposit the guide's example runs on (F-86): the middle rate among the collected one-year deposits that cannot be broken,
  * the kind most of them are, so that like is compared with like. Not the highest: a deposit that can be broken and opens only at a branch
  * is another product, and the collected deposits are not the whole market, so no rate here is called the market's highest or the site's pick.
  */

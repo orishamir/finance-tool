@@ -22,7 +22,7 @@ export function shortCompanyName(id: string, legalName: string): string {
   return withoutLtd(legalName);
 }
 
-/** `companyId`: one company's tracks only (its page, 2026-11-03); the figures' templates are then built over its tracks, and its
+/** `companyId`: one company's tracks only (its page); the figures' templates are then built over its tracks, and its
  *  tracks of a type the site has no product page for (מרכזית לפיצויים, מטרה אחרת) are products too, named by the regulator's type. */
 export function buildTrackBrowser(companyId?: string): TbData {
   const cma = loadCma();

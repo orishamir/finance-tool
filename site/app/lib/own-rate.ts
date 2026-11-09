@@ -1,11 +1,11 @@
 // The terms the person enters for a wrapper in one goal: the rate of a deposit whose published rate was read for another
-// amount (audit 2026-10-24, A8) and the fee level of the representative instrument (D4, 2026-10-24: an entered fee replaces
+// amount and the fee level of the representative instrument (D4, an entered fee replaces
 // the instrument's fee in the ranking). Entered, so shown in blue wherever used; kept on this device under one key per goal
 // until the saved state takes it in (see device-store.ts). The key and the file shape keep the old name "own-rates":
 // a stored number is a rate (the form before fees existed), a stored object holds `{ rate?, fee? }`.
 import { deviceStore } from "./device-store";
 
-/** One wrapper's entered terms: `rate` and `fee` in % a year; `provider` is the id of the broker whose tariff the brokerage option runs on (2026-10-24, the person's choice among the providers the workbench ranks). */
+/** One wrapper's entered terms: `rate` and `fee` in % a year; `provider` is the id of the broker whose tariff the brokerage option runs on (the person's choice among the providers the workbench ranks). */
 export interface OwnTerms {
   rate?: number;
   fee?: number;

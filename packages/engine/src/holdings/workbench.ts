@@ -21,7 +21,7 @@ export interface WorkbenchGoal {
 }
 
 /**
- * F-83 read for F-64 (method, 2026-10-24): the workbench ranks nothing, so each track has exactly one of three outcomes.
+ * F-83 read for F-64 (method): the workbench ranks nothing, so each track has exactly one of three outcomes.
  * Not evaluated comes first (no goal given, or the track has no classification in the data), then shown without a rule (the fit table has no row), else shown
  * with the mark.
  */
@@ -48,7 +48,7 @@ export interface TrackRow {
   fit: ClassificationFit | null;
   /** The near-duplicate group this track belongs to (same name within a company), if any. */
   groupId: string | null;
-  /** The F-83 outcome of the track (additive, 2026-10-24). */
+  /** The F-83 outcome of the track (additive). */
   outcome: TrackOutcome;
 }
 

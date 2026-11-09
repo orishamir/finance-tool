@@ -23,12 +23,12 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
     expect(out).toContain("15.3%");
     expect(out).toContain("השורה התחתונה");
   });
-  // 1146471's report prints 2022 to 2025 and its record holds them since pass 4: eight funds without hedging report 2022
+  // 1146471's report prints 2022 to 2025 and its record holds them: eight funds without hedging report 2022
   it("draws on the eight funds of 2022 and the eleven of 2025", () => {
     expect(out).toContain("8 קרנות");
     expect(out).toContain("11 קרנות");
   });
-  // recheck 3 S5: a hedged report F-92 (d) does not compare gives no gap, and the sentence beside the range does not count it
+  // a hedged report F-92 (d) does not compare gives no gap, and the sentence beside the range does not count it
   it("leaves a report it does not compare out of the gap range and out of the count beside it", () => {
     // the costs tile's figure, each end a computed figure that opens its sheet: "⁦1.8⁩ עד ⁦2.7⁩ נקודות בשנה"
     const tile = (o: string) => shown(o).match(new RegExp(`⁦[-−0-9.]+⁩ עד ⁦[-−0-9.]+⁩ ${invest.dollar.pointsAYear}`))?.[0] ?? "";
@@ -68,7 +68,7 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
 });
 
 describe("the tie set of F-80 in the tiles", () => {
-  // the review's plan: 10,000 now, 500 a month, 10 years, 7%; on the S&P 500 two pairs are within the threshold of the top, both at Psagot
+  // the plan: 10,000 now, 500 a month, 10 years, 7%; on the S&P 500 two pairs are within the threshold of the top, both at Psagot
   const base: WorkbenchInputs = {
     ...plan, amountNow: 10000, monthly: 500, years: 10,
     values: { ...plan.values, amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t) },
@@ -98,7 +98,7 @@ describe("the tie set of F-80 in the tiles", () => {
     const line = out.slice(out.indexOf(invest.pair.tieWhy(3)));
     expect(line).toContain(`${invest.pair.tieThird} פסגות ${invest.pair.tieWith} iShares NASDAQ 100 UCITS ETF USD (Acc)`);
     expect(line).toContain("1159243");
-    // what makes a tie is said where the tie is named, with P-01 read from data/parameters (pass 7 readers)
+    // what makes a tie is said where the tie is named, with P-01 read from data/parameters
     const rule = line.slice(line.indexOf(invest.pair.tieRule.before.trim()));
     expect(rule.replace(/[\u2066-\u2069\u200e\u200f]/g, "")).toContain(`${invest.pair.tieRule.before.trim()}${fmt.pct((bundle.p01.value as { value: number }).value)}${invest.pair.tieRule.after}`);
   });
@@ -218,9 +218,9 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
   it("names the houses whose price lists limit the spread, from their records, on an index with funds bought abroad", () => {
     const out = card(sp, null);
     expect(out).toContain(invest.pair.abroadSpread(["אי.בי.אי", "אלטשולר טרייד", "מיטב טרייד"]));
-    // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so (independent check 2, should-fix 5)
+    // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so
     expect(out).toContain(invest.pair.abroadOthers);
-    // why One Zero's charge is counted while other written ceilings are not, and on which funds (fresh readers, round 3, 2026-11-07)
+    // why One Zero's charge is counted while other written ceilings are not, and on which funds
     const [before, between, after] = invest.pair.abroadPerDividend.replace("{name}", "וואן זירו").split("{amount}");
     expect(out).toContain(before);
     expect(out).toContain(between);
@@ -240,7 +240,7 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     // the page's pair sits beside the cheapest, which may be a bank; the legend names the current account only when one of the two bars has it
     const out = result({ house: atHouse!, fund });
     const bankShown = [atHouse!, view.headline?.providerId].some((h) => !!bundle.snapshots.find((s) => s.id === h)?.current_account);
-    // on the default plan the page opens on a house's pair beside a house's (2026-11-06: the legend promised a current account there)
+    // on the default plan the page opens on a house's pair beside a house's (the legend promised a current account there)
     expect(bankShown).toBe(false);
     expect(out.includes(invest.pair.legendAccount)).toBe(bankShown);
     expect(out).toContain(invest.pair.legendSecurities);
@@ -254,7 +254,7 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
   });
 
   it("offers every bank whose current account costs something, under the list, with what it does in its \"?\"", () => {
-    // the bank whose current account is free is named, so its row reads as a bank's (fresh readers, round 3)
+    // the bank whose current account is free is named, so its row reads as a bank's
     expect(ownBankHelp(buildInvest({ bundle, index: sp, plan }), bundle)).toBe(invest.pair.ownBank.counted(["וואן זירו"]));
     const raw = html(createElement(AccountColumn, { view: buildInvest({ bundle, index: sp, plan }), bundle, years: 20, pick: pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, onPick: () => undefined, ownBank: { value: null, onChange: () => undefined } }));
     // at the bottom of the card, under the list it changes, its words in the "?" and not in a line under it

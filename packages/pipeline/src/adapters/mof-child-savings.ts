@@ -1,6 +1,6 @@
 // Ministry of Finance adapter: bank rates for the child-savings programme, data.gov.il package
 // savingsplaninterest, resource a737b311-.... The datastore API of that resource is stale; the CSV file is current
-// (il-finance CS-23, corrected 2026-10-23), so this reads the file (Windows-1255).
+// (il-finance CS-23, corrected), so this reads the file (Windows-1255).
 // Terms: data.gov.il licence, status confirmed (the source must be named; data/series/mof-child-savings-rates.json carries it).
 // Pure functions (normalise, thin, sanityCheck, diffSeries) do no I/O.
 import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";

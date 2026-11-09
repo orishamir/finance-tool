@@ -73,7 +73,7 @@ export const aliasRows: AliasRow[] = [
 ];
 
 /**
- * Word families for claims typed in plain words (founder, 2026-11-01): Hebrew verbs and their nouns share no stem the light stemmer
+ * Word families for claims typed in plain words: Hebrew verbs and their nouns share no stem the light stemmer
  * can see (לשנות, שינוי), and a person says "פושט רגל" where the law says "חדלות פירעון". Any member, a word or a phrase, finds every
  * other. Equivalences of words only, not finance facts. A failing claim in `search-claims.ts` is fixed here or in `claimHits`.
  */
@@ -155,7 +155,7 @@ export const wordFamilies: string[][] = [
 
 /**
  * The topics read in the companies' documents (`topics` in data/sources/documents.json), and the words of a claim that point at each
- * (founder, 2026-11-01): the claim names a topic when, in every row of `all`, one of the words appears. The word has to sit in the
+ * : the claim names a topic when, in every row of `all`, one of the words appears. The word has to sit in the
  * claim as written, or with a one-letter prefix.
  */
 export const documentTopicWords: { topic: string; all: string[][] }[] = [

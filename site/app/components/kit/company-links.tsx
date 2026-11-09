@@ -1,4 +1,4 @@
-// A lead and the companies it is about, each a link to its page (D30, 2026-10-26): "תלוי בחברה: הראל, אלטשולר שחם" where a property
+// A lead and the companies it is about, each a link to its page (D30): "תלוי בחברה: הראל, אלטשולר שחם" where a property
 // is each company's own, "לכל מה שמצאנו אצל: …" under a company's term. Inline, so it can close a sentence or stand as its own line.
 import type { ReactNode } from "react";
 import { Link } from "react-router";

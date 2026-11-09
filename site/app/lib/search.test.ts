@@ -1,4 +1,4 @@
-// The search ranking and number matching (audit 2026-10-24, A4, A92): numbers find tracks, pages come before catalogue
+// The search ranking and number matching: numbers find tracks, pages come before catalogue
 // rows, one row per page, exact beats partial.
 import { describe, expect, it } from "vitest";
 import { groupHits, normalize, scoreEntry, searchEntries, type SearchEntry, isRuleKind, claimConcepts } from "./search";
@@ -176,7 +176,7 @@ describe("the nineteen queries (top href)", () => {
   it.each(cases.map((c, i) => [i + 1, ...c] as const))("%i: %s", (_i, query, href) => {
     expect(top(query)[0]?.entry.href).toBe(href);
   });
-  // two rules answer it, for every provident product and for a study fund; both lead, either first (claims, 2026-11-01)
+  // two rules answer it, for every provident product and for a study fund; both lead, either first (claims)
   it("האם אפשר להחליף מסלול בלי מס", () => {
     const first = top("האם אפשר להחליף מסלול בלי מס").slice(0, 2).map((h) => h.entry.href);
     expect(first).toContain("/rules#TXH-17");
@@ -221,7 +221,7 @@ describe("rules in groups and the negatives", () => {
   it("still returns nothing for a loan or a partner", () => {
     expect(search("הלוואה")).toHaveLength(0);
     expect(search("בן זוג")).toHaveLength(0);
-    // the real rule base has rules about a spouse, and since 2026-10-26 the survivors' pension term names "בן או בת הזוג"
+    // the real rule base has rules about a spouse, and the survivors' pension term names "בן או בת הזוג"
     // (its explanation now follows the CMA's standard bylaw): only rules and terms answer, nothing in the catalogue
     expect(top("בן זוג").every((h) => isRuleKind(h.entry.kind) || h.entry.kind === "term")).toBe(true);
     // the real rule base does have rules about loans against a fund, so "הלוואה" now finds those and nothing in the catalogue

@@ -20,10 +20,10 @@ import {
   type RunResult,
 } from "@finance-tool/engine";
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
-import { p05Units, paidInToday, type Bundle } from "./engine";
+import { paidInToday, type Bundle } from "./engine";
 import type { SignatureData } from "./guide-signature";
 import { factNumber } from "./guide-signature";
-import { entered as enteredValue } from "./value";
+import { entered as enteredValue, p05Units } from "./value";
 
 export type Employment = "employee" | "self-employed";
 
@@ -102,15 +102,6 @@ export function hishtalmutTerms(bundle: Bundle, c: { employment: Employment; inc
 export function withBalanceFee(terms: InstrumentTerms, feePct: number): InstrumentTerms {
   return terms.fees ? { ...terms, fees: withFee(terms.fees, "balance", feePct / 100) } : terms;
 }
-
-/** The lowest and the highest of the differences, each with the bundle it ran on. */
-const rangeOf = (diffs: [bundle: string, diff: number | null][]): DiffRange | null => {
-  const v = diffs.filter((x): x is [string, number] => x[1] !== null);
-  if (v.length < 2) return null;
-  const low = v.reduce((a, b) => (b[1] < a[1] ? b : a));
-  const high = v.reduce((a, b) => (b[1] > a[1] ? b : a));
-  return { low: low[1], high: high[1], lowOf: low[0], highOf: high[0] };
-};
 
 /** The plan the study fund's drawing runs. An employee's two deposits are a share of the salary; a self-employed person has one deposit, the net outlay. */
 export interface StudyStoryCase {
@@ -217,85 +208,6 @@ export function studyRange(d: SignatureData, c: StudyStoryCase, year: number): S
 
 // ---------------------------------------------------------------- provident fund for investing
 
-export interface ProvidentCase {
-  amount: number;
-  monthly: number;
-  /** Years until the money is taken out. */
-  years: number;
-  /** The person's age today, when known. */
-  age: number | null;
-}
-
-export interface ProvidentModel {
-  years: number;
-  /** The age at the marker (age today plus the years); null when the age is not known. */
-  ageAtExit: number | null;
-  /** From the early retirement age the money can move to an annuity fund (TXK-10); null when the age is not known. */
-  annuityOpen: boolean | null;
-  lump: Side | null;
-  broker: Side | null;
-  /** Provident less brokerage account, after fees and tax. */
-  diff: number | null;
-  /** Rule 3: how far the difference moves with the bank or broker and with the fund manager. */
-  range: { broker: DiffRange | null; manager: DiffRange | null };
-  /** The balance that would move to an annuity fund at the marker, in today's money, before any tax (F-45). */
-  transfer: number | null;
-  /** The lump sum's real gain, in today's money. */
-  realGain: number | null;
-  /** The first year's deposits (amount now and twelve months) above the yearly ceiling (KGL-02, KGL-03); the engine routes the excess elsewhere. */
-  overCeiling: boolean;
-}
-
-export function providentModel(d: SignatureData, c: ProvidentCase): ProvidentModel {
-  const earlyAge = factNumber(d, "earlyAge");
-  const ceiling = factNumber(d, "ceiling");
-  const kgl = d.bundles["kupat-gemel-lehashkaa"];
-  const entered = { amount_now: c.amount, monthly_deposit: c.monthly };
-  const months = c.years * 12;
-  const profile = c.age === null ? {} : { ageAtStart: c.age };
-  const lumpRun = (bundle: Bundle | undefined = kgl) => {
-    if (!bundle) return null;
-    const run = runWith(bundle, entered, months, { profile });
-    return run && settled(run) ? run : null;
-  };
-  // The same profile on both sides (2026-10-26): from 60 the reduced brackets apply to the fund's lump sum (F-44 with F-42) and to the
-  // brokerage account's gain alike, so the comparison sets like against like.
-  const brokerSide = (key: string): Side | null => {
-    const b = d.bundles[key];
-    const run = b ? runWith(b, entered, months, { profile }) : null;
-    return run && settled(run) ? sideOf(run, c.amount) : null;
-  };
-  const main = lumpRun();
-  const lump = main ? sideOf(main, c.amount) : null;
-  const broker = brokerSide("brokerage-account");
-  const diff = lump && broker ? lump.gain - broker.gain : null;
-  const diffWith = (s: Side | null, b: Side | null) => (s && b ? s.gain - b.gain : null);
-  // D89: each end of the managers' range is that manager's binding documents, run on this plan, as the ranking prices them
-  const managerSide = (key: string) => {
-    const b = d.bundles[key];
-    const run = b ? lumpRun(b) : null;
-    return run ? sideOf(run, c.amount) : null;
-  };
-  const range = {
-    broker: lump ? rangeOf([["brokerage-account", diff], ["brokerage-best", diffWith(lump, brokerSide("brokerage-best"))], ["brokerage-worst", diffWith(lump, brokerSide("brokerage-worst"))]]) : null,
-    manager: broker && d.bundles["kgl-manager-best"] && d.bundles["kgl-manager-worst"] ? rangeOf([["kupat-gemel-lehashkaa", diff], ["kgl-manager-best", diffWith(managerSide("kgl-manager-best"), broker)], ["kgl-manager-worst", diffWith(managerSide("kgl-manager-worst"), broker)]]) : null,
-  };
-  const index = main ? main.series[main.series.length - 1]!.index : 1;
-  const ageAtExit = c.age === null ? null : c.age + c.years;
-  return {
-    years: c.years,
-    ageAtExit,
-    annuityOpen: ageAtExit === null || earlyAge === null ? null : ageAtExit >= earlyAge,
-    lump,
-    broker,
-    diff,
-    range,
-    transfer: main && main.detail.grossBalance !== undefined ? main.detail.grossBalance / index : null,
-    realGain: main && main.detail.realGain !== undefined ? main.detail.realGain / index : null,
-    overCeiling: ceiling !== null && c.amount + 12 * c.monthly > ceiling,
-  };
-}
-
 // ---------------------------------------------------------------- pension
 
 export interface PensionCase {
@@ -373,7 +285,7 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
         });
         if (plan.run !== "runPension") balanceGap = "no-run";
         else {
-          // a salary-based deposit stays the same in nominal terms, as the employer's line does (F-52); the holdings review runs pensions the same way
+          // a salary-based deposit stays the same in nominal terms, as the employer's line does (F-52)
           plan.input.goal.contributions = "nominal";
           const ctx = { rules: bundle.rules, runDate: bundle.runDate };
           const own = runPlanned(plan, ctx);

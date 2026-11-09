@@ -1,4 +1,4 @@
-// Study fund (D29, founder 2026-11-02, D50): the money's story. A strip of twelve years, and under it the year picked, step by step: what the
+// Study fund (D29, D50): the money's story. A strip of twelve years, and under it the year picked, step by step: what the
 // person deposited, what the employer added (a self-employed person: the tax back), what the return added after fees, what tax took, what is left.
 // An employee's fund stands alone, since no other place receives the employer's money (B2); a self-employed person's stands beside the same outlay
 // in a securities account, which is a choice they really have. Every figure is an engine run on the person's own values (F-96).
@@ -35,7 +35,7 @@ const signed = (plus: string, compact: boolean) => (v: number) => {
 function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const inputs = useSigInputs(base);
   const { state, setEmployment } = useInputs();
-  // the page's own values and the site's example, never the saved goal (founder, 2026-10-28)
+  // the page's own values and the site's example, never the saved goal
   const employment: Employment = state.employment ?? "employee";
   const isEmployee = employment === "employee";
 
@@ -78,7 +78,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const overLimit = taxedAfterLock(years, lock);
 
   // ---- value objects
-  // a field's default, like what the reader types in it, is a plain number (founder, 2026-11-08)
+  // a field's default, like what the reader types in it, is a plain number
   const returnIn: SiteValue = returnPick !== null ? typed(returnPick, "pct_per_year", today, story.fields.ret) : asField(p05Value(base.p05, "A-01"));
   const incomeIn: SiteValue = incomePick !== null ? typed(income, "nis", today, copy.hishtalmut.incomeAbout) : asField(figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout));
   const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : typed(value, "pct", today, about));
@@ -185,7 +185,6 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     </>
   );
 
-  const big: SiteValue = { ...monthlyIn, value: 9_999_999 };
   const brokerCount = fact(data, "brokerCount");
   const trackName = text(data, "trackName");
   const trackNumber = text(data, "trackNumber");
@@ -199,7 +198,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       {story.hints.fee.before} <Term id="דמי ניהול">{story.hints.fee.fee}</Term> {story.hints.fee.middle} ״{trackCompany ? <Link to={`/companies/${trackCompany}/${trackNumber}`} className="text-link hover:underline"><MixedName>{trackName}</MixedName></Link> : <MixedName>{trackName}</MixedName>}״ ({story.hints.fee.number} <bdi dir="ltr">{trackNumber}</bdi>){story.hints.fee.after}
     </>
   );
-  // ---- the reader's own values, not the rule: that is in the guide's text above (founder, 2026-11-02)
+  // ---- the reader's own values, not the rule: that is in the guide's text above
   const lockWords = lockYears && <Num value={lockYears} display={fmt.years(lock)} />;
   // F-97 stands the deposits against the limit: an employee's share of the salary up to the ceiling (TXH-02, which counts only above it),
   // a self-employed person's yearly benefited amount (TXH-08); the year a deposit crosses it also rests on inflation, since the deposits
@@ -348,7 +347,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       <RulesLine ids={data.ruleIds} />
     </div>
   );
-  // the notes follow one another and only the card keeps its size (founder, 2026-11-03): its room is the longest notes of either kind of work, so what is under the card stays where it is
+  // the notes follow one another and only the card keeps its size: its room is the longest notes of either kind of work, so what is under the card stays where it is
   const longest = (employee: boolean, over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: over.map(() => 0), per: employee ? "month" : "year", firstOverYear, grows: employee });
   // the height the notes hold while the year is dragged: only the employment shown, so an employee's card keeps no room for a self-employed line
   const notesCases = [isEmployee].flatMap((employee) =>

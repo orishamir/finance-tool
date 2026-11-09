@@ -21,8 +21,9 @@ export interface FxSnapshot {
   sourceUrl: string;
 }
 
-const ILS = ["ILS", "NIS"];
-const norm = (code: string) => (ILS.includes(code) ? "ILS" : code.toUpperCase());
+/** The shekel's code, which records write either way. */
+export const isShekel = (code: string): boolean => code === "ILS" || code === "NIS";
+const norm = (code: string) => (isShekel(code) ? "ILS" : code.toUpperCase());
 
 /** Whole days between two YYYY-MM-DD dates. */
 const daysBetween = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86400000);
@@ -41,7 +42,7 @@ export function nisPerNumber(fx: FxSnapshot, code: string): number | null {
   return crossRate(fx.perEur, norm(code));
 }
 
-/** The engine's `fx` run input (F-63, 2026-10-25): shekels per one unit of every currency the ECB quotes, for tariff lines set in dollars or pounds. */
+/** The engine's `fx` run input (F-63): shekels per one unit of every currency the ECB quotes, for tariff lines set in dollars or pounds. */
 export function fxRunInput(fx: FxSnapshot): Record<string, number> {
   const out: Record<string, number> = {};
   for (const code of ["EUR", ...Object.keys(fx.perEur)]) {

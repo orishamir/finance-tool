@@ -28,14 +28,14 @@ export async function loader({ params }: Route.LoaderArgs) {
   const others = cma.tracks.filter((t) => t.companyId === track.companyId && t.name === track.name && t.fundId !== track.fundId);
   const wrapper = loadWrappers().find((w) => w.id === track.wrapperId) ?? null;
   const rules = loadRules();
-  // the fund's company (D30; founder, 2026-10-27): its fund's page lists the general rules and this company's terms, never another
+  // the fund's company (D30): its fund's page lists the general rules and this company's terms, never another
   // company's, and a record that names several companies shows this one's part
   const { registryIdsOfPage } = await import("../lib/institutions.server");
   const companyIds = registryIdsOfPage(track.companyId);
   const ours = (r: (typeof rules)[string]) => r.scope === "general" || (r.scope_institutions ?? []).some((c) => companyIds.includes(c.id));
   // the rules the wrapper's record names anywhere in it (a key or a whole string value equal to the rule's id), in the rule base's order:
   // its strings gathered once per page (searching the serialised record for every checklist row and every rule was most of the build's
-  // prerender time, 2026-11-08)
+  // prerender time)
   const strings = new Set<string>();
   const gather = (v: unknown): void => {
     if (typeof v === "string") strings.add(v);
@@ -70,7 +70,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     stale: cma.periodValue.stale,
     notes,
   });
-  // and the rule the stock and currency shares' sheets name, so their chip carries its title and source (founder, 2026-11-08)
+  // and the rule the stock and currency shares' sheets name, so their chip carries its title and source
   const { EXPOSURE_RULE_IDS } = await import("../lib/track-exposure");
   const citedRules = Object.fromEntries([...cited, ...EXPOSURE_RULE_IDS.flatMap((id) => (rules[id] ? [rules[id]] : []))].map((r) => [r.id, r]));
   // names the catalogue gives this track alone (a fund-level or programme-level name is not this track's name)
@@ -79,7 +79,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const names = catalog
     .filter((c) => c.maps_to.track_ids.length === 1 && c.maps_to.track_ids[0] === track.fundId && owner.get(c.institution) === track.companyId)
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
-  // the fee page is linked only where it can answer for the track's wrapper (2026-11-07: a child savings track ended in "no terms")
+  // the fee page is linked only where it can answer for the track's wrapper (a child savings track ended in "no terms")
   const { compareBundle } = await import("../lib/compare.server");
   const { feePageAnswers } = await import("../lib/fees");
   const feePage = !!track.wrapperId && feePageAnswers(compareBundle(), track.wrapperId);
@@ -123,7 +123,7 @@ export default function TrackPage() {
   );
   // pension fees belong to the fund, not to the track (CAT-39)
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
-  // a page about one company's track: its own figures carry no "לפי החברה" (founder, 2026-11-08)
+  // a page about one company's track: its own figures carry no "לפי החברה"
   return (
     <OwnCompanyPage>
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>

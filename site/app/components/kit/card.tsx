@@ -43,7 +43,7 @@ export function Section({ id, title, lead, level = "page", action, children, cla
         </h2>
         {action}
       </div>
-      {/* no word alone on the lead's last line (founder, 2026-11-03: a mark alone on a line) */}
+      {/* no word alone on the lead's last line (a mark alone on a line) */}
       {lead && <p className="text-muted-foreground max-w-measure text-pretty">{lead}</p>}
       {children}
     </Wrapper>

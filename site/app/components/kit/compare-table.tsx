@@ -1,4 +1,4 @@
-// A table of a few options with a small graph inside its cells (2026-10-26, the daily money-market guide): labelled columns say what is
+// A table of a few options with a small graph inside its cells (the daily money-market guide): labelled columns say what is
 // compared, a bar in a cell lets the eye compare before reading. On a phone each row's name takes its own line and the cells sit under it.
 import type { CSSProperties, ReactNode } from "react";
 import { cx } from "./cx";

@@ -1,4 +1,4 @@
-// The brands (founder, 2026-10-26, D33): the companies of one group shown as one company under the name people know it by. One page
+// The brands (D33): the companies of one group shown as one company under the name people know it by. One page
 // holds every product of every member (the managing company's tracks, the brokerage account, the funds its fund manager runs), each
 // under its own heading, and every member's old address shows that page. Server-only; the table is data/sources/brands.json.
 import { mayaFundHref } from "./sources";
@@ -13,6 +13,7 @@ import { loadCma, root } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
 import { ownBy, type SiteValue } from "./value";
 import { readParsedCached, readJsonCached } from "./read-cache.server";
+import { heCollator } from "./format";
 
 export interface Brand {
   id: string;
@@ -93,9 +94,9 @@ export interface BrandFundRow {
   id: string;
   name: string;
   number: string | null;
-  /** The index the fund follows (its short name, linking to its page under /exposure; founder, 2026-10-26: not the index comparison), or a money-market fund's kind (linking to its guide). */
+  /** The index the fund follows (its short name, linking to its page under /exposure; not the index comparison), or a money-market fund's kind (linking to its guide). */
   follows: { kind: "index" | "money-market"; name: string; href: string } | null;
-  /** Maya's page of the fund: the fund's number links to it (founder, 2026-10-27). */
+  /** Maya's page of the fund: the fund's number links to it. */
   mayaHref: string | null;
   /** What the fund is and does, from the index page's label set (fundLabels); an index fund only. */
   labels: Label[];
@@ -112,7 +113,6 @@ export interface BrandFundGroup {
   funds: BrandFundRow[];
 }
 
-const collator = new Intl.Collator("he");
 const indexWordAtStart = new RegExp(`^${brandsCopy.funds.indexWord}\\s+`);
 
 export function brandFunds(brand: Brand): BrandFundGroup[] {
@@ -121,7 +121,7 @@ export function brandFunds(brand: Brand): BrandFundGroup[] {
   const recs = loadFunds().filter((f) => brand.fundManagers.includes(f.manager));
   const rows = recs.map((rec) => ({ kind: fundKindOf(rec), row: fundRow(rec, exposures.get(rec.exposure_id ?? "") ?? null) }));
   return kindOrder
-    .map((kind) => ({ kind, funds: rows.filter((r) => r.kind === kind).map((r) => r.row).sort((a, b) => collator.compare(a.name, b.name)) }))
+    .map((kind) => ({ kind, funds: rows.filter((r) => r.kind === kind).map((r) => r.row).sort((a, b) => heCollator.compare(a.name, b.name)) }))
     .filter((g) => g.funds.length > 0);
 }
 
@@ -135,7 +135,7 @@ function fundRow(rec: FundRecord, exposure: ExposureRecord | null): BrandFundRow
   const number = rec.identifiers.tase_number;
   const mayaHref = rec.domicile === "IL" && number ? mayaFundHref(number) : null;
   const index = exposure && exposure.id.startsWith("index-") ? exposure : null;
-  // the column's head carries the word "index", so the cell holds the index's name without it (founder, 2026-10-27)
+  // the column's head carries the word "index", so the cell holds the index's name without it
   const follows: BrandFundRow["follows"] = index
     ? { kind: "index", name: (index.names.he[0] ?? index.id).replace(indexWordAtStart, ""), href: `/exposure/${index.id}` }
     : kind === "money-market"

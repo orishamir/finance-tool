@@ -1,4 +1,4 @@
-// The guide's exit step: the rates it shows and the mark beside it. Pure, so the mark has a test of its own (2026-11-07: a guard on
+// The guide's exit step: the rates it shows and the mark beside it. Pure, so the mark has a test of its own (a guard on
 // the literal `strength="secondary"` could not see a dynamic strength rendered ahead of the reading branch).
 import type { Strength } from "./value";
 

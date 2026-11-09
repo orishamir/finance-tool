@@ -45,9 +45,9 @@
 ## 5. Land it
 
 - Merge to `main` and push. Never open a pull request. Large work is built
-  on a branch of its own, goes live in slices with the unfinished parts held
-  off the links (`site/app/lib/review.ts`), and also lands on `main` without
-  a pull request.
+  on a branch of its own and goes live in finished slices, also on `main`
+  without a pull request. Nothing is held off the links for review: what is
+  not finished stays on its branch.
 - If the working tree holds another session's uncommitted work, commit it
   separately, with its own message, before your own, and say so.
 - Remove the worktree and branch after merging.

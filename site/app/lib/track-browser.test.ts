@@ -1,7 +1,8 @@
 // The track browser's pure logic over the real September 2026 tracks (data/cma/): the order of the groups (F-99, F-100), the filter, the
 // search, the sort and its missing figures, and the group headings' figures.
 import { describe, expect, it } from "vitest";
-import { SORTS, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, pressSort, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
+import { SORTS, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
+import { pressSort } from "./list-sort";
 import { buildTrackBrowser, defaultProduct, trackProductIds } from "./track-browser.server";
 
 const data: TbData = buildTrackBrowser();
@@ -159,7 +160,7 @@ describe("groups", () => {
   });
 
   it("a chosen kind is one list of every company's track, and the sort orders it across the companies", () => {
-    // founder, 2026-11-03: "sorting by דמי ניהול doesnt work" with a kind chosen, when each company held one row under its own heading
+    // "sorting by דמי ניהול doesnt work" with a kind chosen, when each company held one row under its own heading
     const kind = "עוקב מדדי מניות";
     const shown = filterTracks(gemel, { kind, q: "" });
     expect(sortableIn(gemel, "kind")).toEqual(sortableIn(gemel, "company"));

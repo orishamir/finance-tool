@@ -1,4 +1,4 @@
-// How a chart moves when its numbers change (founder, 2026-11-01; design-system V7). Every line, scale and axis follows its goal from
+// How a chart moves when its numbers change (design-system V7). Every line, scale and axis follows its goal from
 // wherever it stands now, so a slider that keeps moving never makes a chart restart or snap back; the rounded ends of an axis move, not
 // the numbers under them, and its labels fade in and out. Only marks move: nothing here touches the layout. No motion for someone who asked
 // for none (--duration-chart is 0 there).
@@ -148,8 +148,8 @@ function flipPlaces(root: HTMLElement): Map<FlipKey, number> {
 const sliding = new WeakMap<Element, Animation>();
 
 /**
- * Rows slide to their new places when the order changes, and a row new to the list fades in, rather than the list snapping (founder,
- * 2026-11-03: "even when clicking sorting by something it redraws everything"). The rows are each `[data-flip]` with an id, and the
+ * Rows slide to their new places when the order changes, and a row new to the list fades in, rather than the list snapping
+ * (a sort that redraws everything loses the reader's place). The rows are each `[data-flip]` with an id, and the
  * children of a `[data-flip-list]` (ProductTable's body and its phone card); the ref goes on the block around them. Where each row stands is
  * read while the new order renders, before it is written to the page, so a fold, a resize or a scroll since the last change moves nothing;
  * a change during a slide carries on from where the row stands. `held()` names a row the page keeps in place on the screen (a tapped row):

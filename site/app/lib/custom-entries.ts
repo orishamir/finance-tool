@@ -1,4 +1,4 @@
-// A broker and a fund the person types on the index page (D44, founder 2026-10-31: "a deal by arguing with some broker"). Kept in the saved
+// A broker and a fund the person types on the index page (D44). Kept in the saved
 // state, every figure an entered value object. In memory they become what the page already prices: a broker a fee snapshot with no lines
 // and an entered tariff (F-63, level "entered"), a fund a `FundRecord` of its kind (F-65), so no second calculation exists.
 // `withCustomEntries` adds them to one copy of the bundle, which only the index page uses.
@@ -9,8 +9,9 @@ import type { EnteredTariff, ProviderInput } from "@finance-tool/engine";
 import { invest as copy } from "../copy";
 import type { CustomIndex, OptionId } from "./invest";
 import { groupInputs, layeredOf, type BrokerBase, type GroupCopy } from "./own-account";
-import type { WorkbenchBundle } from "./providers";
-import { entered, type SiteValue } from "./value";
+import type { IndicesBundle } from "./providers";
+import { entered, numberOf, type SiteValue } from "./value";
+import { isShekel } from "./fx";
 
 const c = copy.customEntries;
 
@@ -39,7 +40,7 @@ export interface CustomBroker {
   monthlyFee: ValueObject | null;
   sells: { israeli: boolean; abroad: boolean };
   /**
-   * 2026-11-04: the house this account is built on and, when it started from one, the group or offer whose prices were copied in. Absent in an
+   * the house this account is built on and, when it started from one, the group or offer whose prices were copied in. Absent in an
    * entry typed from scratch, which is read exactly as before.
    */
   base?: BrokerBase;
@@ -60,7 +61,7 @@ export interface CustomFund {
   variable: ValueObject | null;
   trustee: ValueObject | null;
   hedged: boolean;
-  /** On an index the person added: they said the index is in shekels, so the fund moves with no foreign currency (founder, 2026-11-05: the
+  /** On an index the person added: they said the index is in shekels, so the fund moves with no foreign currency (the
    *  question moved from the index to the fund). Never with a hedge. */
   shekelIndex?: true;
   /** What it does with dividends and interest, as the person said; null: not said, and the fund is listed without a price. */
@@ -188,7 +189,7 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     const trustee = figure(f.trustee, "pct_per_year", 100);
     if (fixed === undefined || variable === undefined || trustee === undefined) continue;
     const foreign = isForeignKind(kind);
-    // a fund saved before these were asked has none of them: each reads as not said (2026-11-05)
+    // a fund saved before these were asked has none of them: each reads as not said
     const payout = PAYOUTS.includes(f.payout as FundPayout) ? (f.payout as FundPayout) : null;
     const yieldPct = payout === "distributing" ? figure(f.yield, "pct_per_year", 100) : null;
     if (yieldPct === undefined) continue;
@@ -236,18 +237,17 @@ export interface FundDraft {
   tracking: FundTracking | null;
 }
 
-const num = (v: ValueObject | null | undefined): number | null => (v && typeof v.value === "number" ? v.value : null);
 const norm = (s: string) => s.trim().replace(/\s+/g, " ");
 
 export const brokerDraftOf = (b: CustomBroker | null): BrokerDraft =>
   b
-    ? { name: b.name, tradePct: num(b.tradePct), tradeMin: num(b.tradeMin), custodyPct: num(b.custodyPct), custodyMin: num(b.custodyMin), fxPct: num(b.fxPct), monthlyFee: num(b.monthlyFee), sellsIsraeli: b.sells.israeli, sellsAbroad: b.sells.abroad, ...(b.base ? { base: b.base, untilYears: b.untilYears ?? null } : {}) }
+    ? { name: b.name, tradePct: numberOf(b.tradePct), tradeMin: numberOf(b.tradeMin), custodyPct: numberOf(b.custodyPct), custodyMin: numberOf(b.custodyMin), fxPct: numberOf(b.fxPct), monthlyFee: numberOf(b.monthlyFee), sellsIsraeli: b.sells.israeli, sellsAbroad: b.sells.abroad, ...(b.base ? { base: b.base, untilYears: b.untilYears ?? null } : {}) }
     : { name: "", tradePct: null, tradeMin: null, custodyPct: null, custodyMin: null, fxPct: null, monthlyFee: null, sellsIsraeli: true, sellsAbroad: true };
 
 /** `israeliIndex`: a fund on an Israeli index has no currency to neutralise, so it starts and stays unhedged. */
 export const fundDraftOf = (f: CustomFund | null, kind: OptionId, israeliIndex = false): FundDraft =>
   f
-    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: num(f.fixed), variable: num(f.variable), trustee: num(f.trustee), hedged: f.hedged, shekelIndex: f.shekelIndex === true, payout: f.payout, yield: num(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking }
+    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: numberOf(f.fixed), variable: numberOf(f.variable), trustee: numberOf(f.trustee), hedged: f.hedged, shekelIndex: f.shekelIndex === true, payout: f.payout, yield: numberOf(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking }
     : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, shekelIndex: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null };
 
 export type EntryError = "name-empty" | "name-taken" | "sells-none" | "hedged-none";
@@ -343,7 +343,7 @@ export function brokerTerms(b: CustomBroker): { shown: EntryTerm[]; empty: strin
 }
 
 /**
- * The fields of an account typed from scratch that the person left empty (2026-11-05, the founder's rule that silence is not zero, D56):
+ * The fields of an account typed from scratch that the person left empty (the founder's rule that silence is not zero, D56):
  * each is a price not known, a minimum as much as a percent (a blank minimum was charged as none, and the account took first place).
  * `fx`: the conversion, asked of an account that sells abroad. An account built on a house has none: what is left empty there is the
  * house's price list.
@@ -404,7 +404,7 @@ export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSna
     const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
     return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut] };
   }
-  // a field left empty is not known: the account has no price, and its row says so (2026-11-05); the conversion alone leaves it priced
+  // a field left empty is not known: the account has no price, and its row says so; the conversion alone leaves it priced
   // for every fund that does not convert, and without a price for a fund bought abroad, with the reason on that row
   const unknown = unpricedEverywhere(b, false);
   const fxOpen = fxUnknown(b, false) ? [{ applies_to: [...ABROAD_CLASSES], available: "unknown" as const, reason_he: c.fxUnknown, source: { url: "local", title: c.tariffTitle, checked: b.added } }] : [];
@@ -431,22 +431,21 @@ export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSna
  * a twelfth of the year's percent, with the minimum as typed (F-14).
  */
 export function tariffOfBroker(b: CustomBroker): EnteredTariff {
-  const trade = { rate: (num(b.tradePct) ?? 0) / 100, ...(num(b.tradeMin) ? { min: num(b.tradeMin)! } : {}) };
+  const trade = { rate: (numberOf(b.tradePct) ?? 0) / 100, ...(numberOf(b.tradeMin) ? { min: numberOf(b.tradeMin)! } : {}) };
   return {
     buy: trade,
     sell: { ...trade },
-    custody: { rate: (num(b.custodyPct) ?? 0) / 100 / 12, everyMonths: 1, ...(num(b.custodyMin) ? { min: num(b.custodyMin)! } : {}) },
-    fx: (num(b.fxPct) ?? 0) / 100,
-    monthlyFee: num(b.monthlyFee) ?? 0,
+    custody: { rate: (numberOf(b.custodyPct) ?? 0) / 100 / 12, everyMonths: 1, ...(numberOf(b.custodyMin) ? { min: numberOf(b.custodyMin)! } : {}) },
+    fx: (numberOf(b.fxPct) ?? 0) / 100,
+    monthlyFee: numberOf(b.monthlyFee) ?? 0,
   };
 }
 
-const isIls = (code: string) => code === "ILS" || code === "NIS";
 /** No domicile is typed: a foreign fund's own country is not known, so no rule that reads one applies to it. */
 const UNKNOWN_DOMICILE = "unknown";
 
 /**
- * A fund as the record of its kind, with what the person said of it and nothing more (2026-11-05: it used to be taken as accumulating): a
+ * A fund as the record of its kind, with what the person said of it and nothing more (it used to be taken as accumulating): a
  * payout not said is null, and the page lists the fund without a price. A foreign fund is in its index's currency, in dollars where the index
  * is in shekels or is a custom one (as the page's generic fund abroad). An empty fee stays empty: a fee not known, so the fund has no price
  * (`customFundGap`; #190, it was taken as zero and a fund with no fees typed went to the top).
@@ -462,7 +461,7 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     // instrumentClassOf reads the two Israeli kinds from these words
     legal_form: foreign ? c.kinds[f.kind]! : copy.typeTags[f.kind]!,
     exposure_id: f.indexId,
-    currency: foreign ? (currencyOfIndex && !isIls(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS",
+    currency: foreign ? (currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS",
     trading_currency_on_tase: f.kind === "abroad" ? null : "NIS",
     distribution_policy: f.payout,
     tax_status: { il_fund_tax_track: foreign ? null : "exempt", tase_foreign_fund_90pct_test: null },
@@ -515,9 +514,9 @@ export interface EnteredInBundle {
 }
 
 /** The bundle with the person's entries in it. Nothing entered: the same object, so the page prices nothing again. */
-export function withCustomEntries(bundle: WorkbenchBundle, brokers: readonly CustomBroker[], funds: readonly CustomFund[], indices: readonly CustomIndex[] = []): WorkbenchBundle {
+export function withCustomEntries(bundle: IndicesBundle, brokers: readonly CustomBroker[], funds: readonly CustomFund[], indices: readonly CustomIndex[] = []): IndicesBundle {
   if (brokers.length === 0 && funds.length === 0) return bundle;
-  // an index the person added says nothing of its currency (2026-11-05): a foreign one in dollars, as the page's generic fund abroad; a fund
+  // an index the person added says nothing of its currency: a foreign one in dollars, as the page's generic fund abroad; a fund
   // whose index they said is in shekels runs on a shekel index of its own (shekelFunds, read by fundSpec)
   const exposures: EnteredInBundle["exposures"] = Object.fromEntries(indices.map((i) => [i.id, { cash_like: false, currency: "USD" }]));
   const currencyOf = (f: CustomFund) => bundle.exposures.find((e) => e.id === f.indexId)?.currency ?? exposures[f.indexId]?.currency ?? null;

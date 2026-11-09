@@ -1,5 +1,5 @@
-// A fund's gap to its index from its own reports, and the dollar against the shekel from the ECB's month-end rates (2026-10-29,
-// founder: the index page's hedged and unhedged funds). Pure functions; the page supplies the records.
+// A fund's gap to its index from its own reports, and the dollar against the shekel from the ECB's month-end rates (the index page's hedged and unhedged funds).
+// Pure functions; the page supplies the records.
 
 export interface GapYear {
   year: number;
@@ -95,7 +95,7 @@ export function gapToIndex(years: readonly GapYear[]): number | null {
 }
 
 /**
- * F-92 (b) A-07 from the reports (the site's convention, chosen by the lead on 2026-11-07): what the fund fell short of its index beyond the
+ * F-92 (b) A-07 from the reports (the site's convention): what the fund fell short of its index beyond the
  * fees it charged, as an annual fraction, each year set against that year's own fees: `A-07 = max(0, mean_y(−(u_y − t_y)/100 − c_y))`.
  * `c_y` is the year's `fees_charged` (fixed, variable and trustee), and `fees`, the fund's listed fees today as a fraction, stands in for a
  * year without them (a foreign fund's document prints one year's fee). Forward, the fund costs today's listed fixed and trustee fees, the
@@ -117,7 +117,7 @@ export const firstFullYear = (since: string): number => Number(since.slice(0, 4)
  * A-07 is measured against the fees charged each year, the variable fee among them, so counting the listed rate in full on top counts it
  * twice (Kesem 5139696, paid back 0.215% in 2025 at a 0.3% rate, was 2.635% a year forward against a 2.12-point shortfall). The fee is paid
  * back to the fund on a day its gap is negative, at the published rate (ETF-14); how the positive fee is charged each prospectus says for
- * its own funds (ETF-14 open question 8). Counting only the years at today's rate is the site's convention (the lead, 2026-11-07, pass 6):
+ * its own funds (ETF-14 open question 8). Counting only the years at today's rate is the site's convention:
  * Meitav 5124573 charged 0% from 2022 to 2025 at a 0% rate and is at 0.3% from 1.1.2026.
  * `since` is the day today's rate came into force, as the report's table "שינויים במאפייני הקרן" prints it (`variable_rate_since`): null
  * when it prints no change of the variable fee, and every year counts; else the years from the first whole calendar year at that rate.

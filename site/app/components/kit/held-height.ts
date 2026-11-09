@@ -1,4 +1,4 @@
-// A block whose rows can differ from one choice to the next (founder, 2026-10-28, "nothing moves when a number changes"): the tallest
+// A block whose rows can differ from one choice to the next: the tallest
 // height it has had stays its least height, so what stands below it never moves back and forth. `key` starts over (another index).
 import { useLayoutEffect, useRef } from "react";
 
