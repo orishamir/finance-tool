@@ -1,48 +1,47 @@
-// Guards of the kit (2026-10-25, after two layout bugs in a day): the fold, the sentence and the gallery cannot silently come back.
+// Guards of the kit (after two layout bugs in a day): the fold, the sentence and the gallery cannot silently come back.
 //  1. no <details> outside the kit: a fold is the kit's Disclosure, which keeps its label and chevron in React;
 //  2. no `group-open:` anywhere: the CSS variant matches any open ancestor, so a closed fold inside an open one read as open;
 //  3. a <p>, or a <span> with words of its own, that holds a <Num> is flowed text: never a flex or grid container, whose children
 //     (each piece of text, each number) become separate items and lines (the fees page's "שווה … ב־8 שנים." sentence);
 //  4. the gallery at /kit stays out of the menu and the search;
-//  5. every open question the site names is in data/open-questions.json: an answered one is deleted from the rule base (2026-11-08);
-//  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26);
-//  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31);
+//  5. every open question the site names is in data/open-questions.json: an answered one is deleted from the rule base;
+//  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip;
+//  7. every <table> is fixed with a width per column (design-system 2.5a);
 //  8. a year chart's pointer is the kit's useYearZoom: a chart that clears its reading when the pointer lifts lost the year on a phone;
-//  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider (2026-11-01);
-// 11. the arrow at the end of a row that opens a page is the kit's RowArrow, in the link's colour (founder, 2026-11-03), never a grey one.
+//  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider;
+// 11. the arrow at the end of a row that opens a page is the kit's RowArrow, in the link's colour, never a grey one.
 // 12. a rule chip in a list of rules says the rule's title beside its id.
 // 13. Hebrew is never addressed to one gender (copy.md 1 and 10.2).
 // 14. a figure's sheet never prints a record's raw English value ("none", "unlinked_15"): a word value heads its sheet with the word it
-//     was shown as, and every such value in the data reads in Hebrew without one (independent check 3, 2026-11-07).
-// 15. a record's printed conditions or doubt go through the kit's PrintedText or DoubtNote, which isolate their figures (code review,
-//     2026-11-07: the bank-deposit visual still printed `conditions` raw).
+//     was shown as, and every such value in the data reads in Hebrew without one.
+// 15. a record's printed conditions or doubt go through the kit's PrintedText or DoubtNote, which isolate their figures (the
+//     bank-deposit visual printed `conditions` raw).
 // 16. a figure the engine labels "reading" is the site's reading, never a secondary source: no file that reads the "reading" label
-//     renders StrengthLabel strength="secondary"; it renders ReadingTag (2026-11-07, the fees page showed a reading as "מקור משני").
-//     A file that picks "secondary-source" labels out of a run for display picks "reading" too (2026-11-07, the goal comparison
+//     renders StrengthLabel strength="secondary"; it renders ReadingTag (the fees page showed a reading as "מקור משני").
+//     A file that picks "secondary-source" labels out of a run for display picks "reading" too (the goal comparison
 //     dropped readings). A figure's sheet shows ReadingTag for a value with the label, and every figure that carries a run's flags
-//     carries its labels, checked per figure (leftover files by name; third and fourth checks, 2026-11-07: guide visuals and holdings
-//     carried labels nothing showed, and a file with one figure carrying them hid another that dropped them).
-// 17. a price list's date line is the kit's TariffDate, and no copy string says only that a date is missing (founder, 2026-11-07:
-//     "ללא תאריך פרסום" on three rows, where the documents date each part or print nothing).
-// 18. a fee cap the site names is the fee regulations' ("התקרה שבתקנות"), never "שבחוק" (copy.md 3; a repeat, 2026-11-07).
-// 19. a figure's and a term's tap area is at least 44 px, and its own box sits above every other figure's area (re-check 2, 2026-11-07).
+//     carries its labels, checked per figure (leftover files by name; a file with one figure carrying
+//     them can hide another that drops them).
+// 17. a price list's date line is the kit's TariffDate, and no copy string says only that a date is missing ("ללא תאריך פרסום" on three rows, where the documents date each part or print nothing).
+// 18. a fee cap the site names is the fee regulations' ("התקרה שבתקנות"), never "שבחוק" (copy.md 3; a repeat).
+// 19. a figure's and a term's tap area is at least 44 px, and its own box sits above every other figure's area.
 //     No rule at any depth (inside @layer, @media, @supports or a nested rule) turns the area off (content, display or pointer-events
 //     none, visibility hidden or collapse) or shrinks, moves or re-stacks it, but on .num-static and .num-sample, figures that are not
-//     buttons (re-check 3, 2026-11-07: the scan read top-level rules only and never looked for an area turned off).
+//     buttons (the scan read top-level rules only and never looked for an area turned off).
 // 20. a sentence that ends on a chip holds its full stop, comma, colon or semicolon in the chip's `end`, drawn close to the frame, and a
-//     chip in text takes no brackets: "פרטים ." and "( פרטים )." read as stray marks (reader round 5, 2026-11-07; round 3 the same).
+//     chip in text takes no brackets: "פרטים ." and "( פרטים )." read as stray marks.
 //     The scan reads the mark after the chip across spaces and lines and in a string ({"."}), and props with any braces; a chip in JS
-//     (a ternary's branch, an array, a call, after return) is left alone (re-check 3, 2026-11-07: "<IdRef/> ." and {"."} got through).
-// 21. a date in a page's text is the kit's When (2026-11-07, independent check: "תעריפון מ־נובמבר 2025"; a repeat of copy.md 10): a month
+//     (a ternary's branch, an array, a call, after return) is left alone ("<IdRef/> ." and {"."} got through).
+// 21. a date in a page's text is the kit's When (a repeat of copy.md 10): a month
 //     a document prints alone is said in words in the text's direction, never padded with an invented "-01" or isolated left to right,
 //     and the words before a date go in its `lead`, where a maqaf lead writes its letter on a month ("מנובמבר 2025"). A figure's own
 //     lead (NumAfter, LeadTail with `text`) does the same before a figure said in words ("בשנה").
-// 22. a control is at least 44 px tall at every width (guidelines/design.md; 2026-11-07, "הנחות נוספות" and "לתעריפון (PDF)" were 36 px, and
+// 22. a control is at least 44 px tall at every width (guidelines/design.md; "הנחות נוספות" and "לתעריפון (PDF)" were 36 px, and
 //     thirty other buttons, links and fold summaries with them): no `min-h-9` or `!h-9` on an unprefixed class; a control is `min-h-target`.
 //     Any fixed height under 44 px on a control fails, not only 36 px, unless `min-h-target` or the kit's `tap-area` brings its tap area to
-//     44 (lead, 2026-11-07: a `<button className="h-8">` passed); leftovers by name, a list that only shrinks.
-// 23. a link to a cited source is built by sourceHref, never from a raw address (2026-11-07, the founder: open at the quoted words).
-// 24. a key never shows a made-up figure (fresh readers, 2026-11-08: the number key's "123 ממקור 123 מחושב" read as a placeholder left
+//     44 (a `<button className="h-8">` passed); leftovers by name, a list that only shrinks.
+// 23. a link to a cited source is built by sourceHref, never from a raw address (open at the quoted words).
+// 24. a key never shows a made-up figure (the number key's "123 ממקור 123 מחושב" read as a placeholder left
 //     in the page): no `num-sample` element holds digits; a key draws each style on its own word, after a lead that says what it keys.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -67,7 +66,7 @@ const read = (f: string) => readFileSync(f, "utf8");
 /** Source without block comments and whole-line `//` comments, so a rule named in a comment is not a use of it. */
 const code = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
 
-/** Files that may still hold a plain <details>: the kit itself, and the source sheet in provenance.tsx (owned by another builder on 2026-10-25; move its two footnote folds to `<Disclosure plain>` when that file is next opened, then delete this line). */
+/** Files that may still hold a plain <details>: the kit itself, and the source sheet in provenance.tsx (owned by another builder on; move its two footnote folds to `<Disclosure plain>` when that file is next opened, then delete this line). */
 const DETAILS_ALLOWED = new Set(["components/provenance.tsx"]);
 
 describe("no fold outside the kit", () => {
@@ -124,7 +123,7 @@ describe("the gallery is not on the site's surface", () => {
   });
 });
 
-// 2026-10-26: one chip for every id (IdRef in provenance.tsx). A formula, parameter or open-question id is never plain text.
+// one chip for every id (IdRef in provenance.tsx). A formula, parameter or open-question id is never plain text.
 describe("ids go through IdRef", () => {
   it("no rule-chip-static anywhere", () => {
     expect(files.filter((f) => /rule-chip-static/.test(code(read(f)))).map(rel)).toEqual([]);
@@ -148,11 +147,11 @@ describe("ids go through IdRef", () => {
   });
 });
 
-// 2026-10-26, changed 2026-11-08: every question the site names is a question of the rule base. data/open-questions.json lists them
-// (generated from the rule base's markdown), and an answered question is deleted from the markdown once its answer is in a rule
-// (founder, 2026-11-08), so a source that names one the file lacks points at nothing: in an IdRef, in a string that IdText turns into
+// Every question the site names is a question of the rule base. data/open-questions.json lists them
+// (generated from the rule base's markdown), and an answered question is deleted from the markdown once its answer is in a rule,
+// so a source that names one the file lacks points at nothing: in an IdRef, in a string that IdText turns into
 // chips, typed bare in JSX text, or in a comment. The scanner does not pair quotes: a gershayim in Hebrew text (עו"ש, אג"ח) broke
-// the first version's string pairing and hid the IdRef that followed it (review, 2026-10-26).
+// the first version's string pairing and hid the IdRef that followed it.
 describe("every open question the site names exists", () => {
   const questions = JSON.parse(readFileSync(join(root, "../../data/open-questions.json"), "utf8")) as { id: string }[];
   const ids = new Set(questions.map((q) => q.id));
@@ -204,7 +203,7 @@ describe("\"אחר\" is the kit's OtherChip", () => {
   });
 });
 
-// 2026-10-31 (design-system 2.5a): nothing moves when a number changes, so a table's columns do not follow its content.
+// design-system 2.5a: nothing moves when a number changes, so a table's columns do not follow its content.
 describe("every table has fixed columns", () => {
   const unfixed = (src: string): string[] =>
     findElements(src, ["table"]).flatMap((el) => {
@@ -244,7 +243,7 @@ describe("a chart's motion is the kit's", () => {
   });
 });
 
-// 10. the stairs and the rows of single changes (2026-11-01): a gain is green and a loss red through the roles, never a literal colour, and a
+// 10. the stairs and the rows of single changes: a gain is green and a loss red through the roles, never a literal colour, and a
 //     row is a stretched button with its figures above it, never a button that holds a figure (a figure is itself a button).
 describe("the stairs and the difference rows", () => {
   const stairs = code(read(join(root, "components/kit/stairs-chart.tsx")));
@@ -391,9 +390,9 @@ describe("the shared stylesheet", () => {
     const css = readFileSync(join(root, "app.css"), "utf8");
     expect(css).toMatch(/button:not\(:disabled\),\s*\[role="button"\]:not\(\[aria-disabled="true"\]\),\s*summary \{\s*cursor: pointer;/);
   });
-  // 19. A figure's and a term's tap area (guidelines/design.md). Lone, it reaches 11 px above and below and never less than 44 px (re-check 2,
-  //     2026-11-07: an area that grew only sideways took 44 px from about 1,200 lone figures on a phone). In running text its own box sits
-  //     above every other figure's area, so the figure on the next line never takes its click (independent check, 2026-11-07: "0.7%"
+  // 19. A figure's and a term's tap area (guidelines/design.md). Lone, it reaches 11 px above and below and never less than 44 px (an
+  //     area that grew only sideways took 44 px from about 1,200 lone figures on a phone). In running text its own box sits
+  //     above every other figure's area, so the figure on the next line never takes its click ("0.7%"
   //     opened the "5 שנים" sheet of the figure under it).
   it("a figure's and a term's tap area is at least 44 px tall, and its own box sits above every other figure's area", () => {
     const rules = cssRules(readFileSync(join(root, "app.css"), "utf8"));
@@ -555,7 +554,7 @@ describe("a list of products sorted or filtered again", () => {
 });
 
 describe("the page frame", () => {
-  // founder, 2026-11-04: some pages used the room of a large screen and others did not. PageShell sets one frame for every page; a page
+  // some pages used the room of a large screen and others did not. PageShell sets one frame for every page; a page
   // never narrows its whole content to the old 72rem frame again (prose keeps max-w-measure, a form may keep its own field widths).
   it("is the shell's alone: no page sets max-w-page or a wide prop", () => {
     const hits = files.filter((f) => /\.tsx$/.test(f) && (/\bmax-w-page\b/.test(code(read(f))) || /<PageShell[^>]*\bwide\b/.test(code(read(f)))));
@@ -574,7 +573,7 @@ describe("a rule chip in a list of rules", () => {
   });
 });
 
-// 13. Hebrew addressed to one gender (copy.md 1 and 10.2; founder, 2026-10-31, on wording addressed to one reader): the site speaks in
+// 13. Hebrew addressed to one gender (copy.md 1 and 10.2; on wording addressed to one reader): the site speaks in
 //     the plural or impersonally. A scan of the copy, the guide and exposure prose and the Hebrew fields of the records for the words
 //     that can only address one person ("אתה", "שלך", "לך", "עליך", "אליך", "ממך", "הזן"). Words that also have a third-person sense
 //     ("בחר": the site chose; "תוכל": she will be able) are left to the Hebrew editor.
@@ -606,8 +605,7 @@ describe("Hebrew is never addressed to one gender", () => {
 
 // 18. A fee cap the site names (1.05% and 4% in a provident fund, 0.5% and 6% in a pension fund, 2% in a study fund, the lost-contact
 //     cap) is set in the fee regulations of 2012 (PF-02 to PF-08), so it is "התקרה שבתקנות", never "התקרה שבחוק" or "התקרה בחוק"
-//     (copy.md 3). Written in copy.md before the provident-fund-for-investing guide said "שבחוק" four times (Hebrew editor and
-//     independent check, 2026-11-07): a repeat, so a scan. "אין תקרה בחוק" (no cap at all) and "תקרה בחוק" without the article are
+//     (copy.md 3). Written in copy.md before the provident-fund-for-investing guide said "שבחוק" four times: a repeat, so a scan. "אין תקרה בחוק" (no cap at all) and "תקרה בחוק" without the article are
 //     not a cap's name and stay.
 describe("a fee cap is the regulations'", () => {
   const LAW_CAP = /התקר(?:ה|ות)\s+ש?בחוק/g;
@@ -637,7 +635,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
     expect(readers.length).toBeGreaterThan(2);
     for (const f of readers) expect(read(f), rel(f)).toMatch(/ReadingTag/);
   });
-  // 2026-11-07 (second check): the goal comparison collected only "secondary-source" labels, so a run resting on a reading showed no
+  // the goal comparison collected only "secondary-source" labels, so a run resting on a reading showed no
   // mark there while the fees page showed one. Any file that picks the secondary-source labels out of a run for display picks the
   // reading labels too.
   const PICKS_SECONDARY = /code\s*===\s*["']secondary-source["']/;
@@ -654,7 +652,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
     expect(offenders([{ name: "x.tsx", text: 'hasReading(v) ? <StrengthLabel strength="secondary" /> : null' }])).toEqual(["x.tsx"]);
     expect(offenders([{ name: "y.tsx", text: "hasReading(v) ? <ReadingTag /> : null" }])).toEqual([]);
   });
-  // 2026-11-07 (third check): the guide visuals and the holdings page put the run's reading label on a figure and nothing showed it.
+  // the guide visuals and the holdings page put the run's reading label on a figure and nothing showed it.
   // The figure's sheet shows ReadingTag for any value that carries the label, so a label carried is a label seen.
   it("a figure's sheet shows the reading tag when the value carries the reading label", () => {
     const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-07" };
@@ -668,7 +666,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
   const CARRIES_FLAGS = /flags:\s*(?:\[\.\.\.new Set\()?[\w.?]*\bflags\b/;
   const CARRIES_LABELS = /labels:\s*[\w.?]*\blabels\b/;
   const LABEL_LEFTOVERS = ["components/timeline/Timeline.tsx"];
-  /** The object literal around position `i`: from the nearest unmatched "{" before it to the "}" that closes it. Per figure, not per file (fourth check, 2026-11-07). */
+  /** The object literal around position `i`: from the nearest unmatched "{" before it to the "}" that closes it. Per figure, not per file. */
   const enclosing = (text: string, i: number): string => {
     let a = i;
     for (let depth = 0; a > 0; a--) {
@@ -702,7 +700,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
 });
 
 describe("a figure's sheet never prints a record's raw English value", () => {
-  // 2026-11-07 (independent check 3): the linkage and tax sheets on every deposit card headed with "none", "unlinked_15", "linked_25",
+  // the linkage and tax sheets on every deposit card headed with "none", "unlinked_15", "linked_25",
   // because the card's word reached the sheet only for an empty value
   const word = (value: string | boolean | null): SiteValue => ({ value, unit: "text", state: "sourced", source: { url: "https://www.gov.il/", title: "מקור" }, checked: "2026-11-07", effective_from: null, effective_to: null, update_rule: "provider-set" }) as unknown as SiteValue;
   const rawToken = /^[a-z][a-z0-9]*(_[a-z0-9]+)*$/;
@@ -740,8 +738,7 @@ describe("a figure's sheet never prints a record's raw English value", () => {
 });
 
 describe("a record's printed words go through PrintedText", () => {
-  // 2026-11-07 (code review of the deposit branch): PrintedText was promoted so a bank's "10,000 ₪" keeps its order inside Hebrew, but two
-  // places in the bank-deposit visual still rendered `conditions` as a bare expression
+  // PrintedText keeps a bank's "10,000 ₪" in its order inside Hebrew, so `conditions` or `doubt` rendered as a bare expression fails
   const BARE = /(^|[^=\w])\{\s*(\w+)((?:\??\.\w+)*)\??\.(conditions|doubt)\s*\}/g;
   /** The names a file gives to the copy (`import { x as copy } from "../copy"`, `const c = copy.part`): their `conditions` is a heading, not a record's words. */
   const copyNames = (src: string): Set<string> => {
@@ -765,12 +762,12 @@ describe("a record's printed words go through PrintedText", () => {
   it("the scan sees a bare record field and not a heading from the copy or a prop", () => {
     expect([..."<>; {ends.top.conditions}</>".matchAll(BARE)].length).toBe(1);
     expect([..."<PrintedText text={b.conditions} />".matchAll(BARE)].length).toBe(0);
-    expect(copyNames('import { r3holdings as copy } from "../../copy";\nconst c = copy.consolidation;')).toEqual(new Set(["copy", "c"]));
+    expect(copyNames('import { r3transfer as copy } from "../../copy";\nconst c = copy.consolidation;')).toEqual(new Set(["copy", "c"]));
   });
 });
 
 describe("a link to a cited source goes through sourceHref", () => {
-  // 2026-11-07 (the founder: Psagot's price list opened at its top, not at the quoted words): every link to a source is built by
+  // Psagot's price list opened at its top, not at the quoted words: every link to a source is built by
   // sourceHref (lib/sources.ts), which opens a PDF at its page and a web page at the quoted words; a raw address in an href skips both
   const RAW = [
     /href=\{\s*[\w.?!]*(?:\.url|\b\w*[uU]rl)\s*(?:\}|\?\?|\|\|)/g, // href={doc.url}, href={history.sourceUrl}, href={doc.url ?? ""}
@@ -790,7 +787,7 @@ describe("a link to a cited source goes through sourceHref", () => {
 });
 
 describe("a price list's date line says what the document prints", () => {
-  // 2026-11-07 (founder): three rows of the companies list read "ללא תאריך פרסום" in a warning colour, though their price lists date each
+  // three rows of the companies list read "ללא תאריך פרסום" in a warning colour, though their price lists date each
   // part or print no date at all; four pages each wrote their own line. Now the date reaches the screen only through the kit's TariffDate.
   it("every file that reads a price list's published date writes it with TariffDate", () => {
     const bad = files
@@ -811,7 +808,7 @@ describe("a date in a page's text is the kit's When", () => {
   const BDI_DATE = /<bdi[^>]*>\s*\{[^}]*\bfmt\.(?:date|period)\(/g;
   const PADDED = /\$\{[^}]*\}-01`/g;
   const LEAD_OUTSIDE = /\{[\w.[\]`$ ]+\}\s*<When\b/g;
-  // a maqaf written straight before a month said in words: "מ־{fmt.period(d)}" printed "מ־נובמבר 2025", the symptom itself (independent check, 2026-11-07)
+  // a maqaf written straight before a month said in words: "מ־{fmt.period(d)}" printed "מ־נובמבר 2025", the symptom itself
   const MAQAF_MONTH = /־(?:\s|\$|\{)*fmt\.period\(/g;
   it("no page isolates a formatted date by hand, pads a month with a first day, or writes the words before a date outside its lead", () => {
     const bad = files
@@ -871,7 +868,7 @@ function shortControls(src: string): string[] {
       }
     }
     // a wider screen's own height may draw a control shorter (`lg:min-h-0`), and then its tap area is the kit's at that width too
-    // (2026-11-07: the breadcrumb's link was 24 px at 1280): any `tap-area` on the element covers it
+    // (the breadcrumb's link was 24 px at 1280): any `tap-area` on the element covers it
     if (!all.some((t) => t === "tap-area" || t.endsWith(":tap-area"))) {
       for (const t of all.filter((x) => x.includes(":") && !x.startsWith("max-") && !/^(?:after|before|hover|focus|group|peer|aria|data)/.test(x))) {
         const bare = t.slice(t.lastIndexOf(":") + 1);
@@ -897,7 +894,7 @@ describe("a control is at least 44 px tall", () => {
     expect('className="min-h-[44px] md:min-h-9"'.match(SHORT)).toBeNull();
     expect('className="min-h-target"'.match(SHORT)).toBeNull();
   });
-  // Any fixed height under 44 px on a control, not only 36 px (lead, 2026-11-07: a `<button className="h-8">` passed): a button, a link,
+  // Any fixed height under 44 px on a control, not only 36 px (a `<button className="h-8">` passed): a button, a link,
   // a fold's summary or a field whose unprefixed classes set `h-`, `min-h-` or `size-` under 44 px and nothing that brings its tap area to
   // 44 (min-h-target or a larger min-h, or the kit's `tap-area`). Today's leftovers are listed by name; the list only shrinks. The rendered
   // check of what a finger hits, pseudo-element areas included, is tools/hit-check.mjs.

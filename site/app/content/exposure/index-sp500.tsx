@@ -1,6 +1,6 @@
-// Exposure prose for מדד S&P 500 (flows 6.6). Written 2026-10-23 from the rule base (ETF, TXS, TXF, CAT, IRA,
+// Exposure prose for מדד S&P 500 (flows 6.6). Written from the rule base (ETF, TXS, TXF, CAT, IRA,
 // BRK). The index itself is explained from S&P Dow Jones Indices' own index page and methodology (ETF-37 to
-// ETF-40, read in the founder's Chrome the same day; product.md D18). Each block ends with the rules it rests
+// ETF-40; product.md D18). Each block ends with the rules it rests
 // on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";

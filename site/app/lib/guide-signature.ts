@@ -4,8 +4,9 @@
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
 import { bondPrice, currentAccountYearlyInterest, makamPrice, runInputs, runPlanned, type P05Input, type RunResult } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
-import { p05Number, p05Units, runTimeline, type Bundle } from "./engine";
-import { entered as enteredValue, type SiteValue } from "./value";
+import { p05Number, runTimeline, type Bundle } from "./engine";
+import { p05Units, entered as enteredValue, type SiteValue } from "./value";
+import { heCollator } from "./format";
 
 /** What the loader ships for a page with a visual. Plain data: bundles to run, sourced figures by name, and what is missing. */
 export interface SignatureData {
@@ -16,7 +17,7 @@ export interface SignatureData {
   facts: Record<string, SiteValue>;
   /** The banks whose current-account record the site holds, one each (the current-account page and the ladder read them). */
   banks?: AccountBank[];
-  /** The banks whose one-year fixed-rate deposit the site holds, one each (F-86: the ladder's range, the bank-deposit page's list). */
+  /** The banks whose one-year fixed-rate deposit the site holds, one each (F-86: the range on the ladder and the makam page). */
   depositBanks?: AccountBank[];
   /** Things the visual needs that the data does not hold yet: each shows "עוד לא חושב" with its reason (copy `guideSignature.gaps`). */
   gaps: string[];
@@ -26,6 +27,12 @@ export interface SignatureData {
 
 /** The wrappers whose illustrative run rests on a cash rate, not on A-01 (the timeline edits "ריבית בשנה" for them). */
 export const cashLikeIds = ["current-account", "bank-deposit", "savings-plan", "money-market-fund-daily", "money-market-fund-renewable", "makam", "government-bond"];
+
+/** The wrappers whose timeline runs one amount put in today, with no monthly deposit: a deposit is opened with one sum, and money paid in every month goes to a savings plan (BANK-28). */
+export const lumpSumIds = ["bank-deposit"];
+
+/** The values a lump-sum timeline runs on whatever the reader entered on other pages: no monthly deposit. */
+export const lumpSumEntered = { monthly_deposit: 0 } as const;
 
 export const fact = (d: SignatureData, key: string): SiteValue | undefined => d.facts[key];
 export const factNumber = (d: SignatureData, key: string): number | null => {
@@ -50,7 +57,7 @@ const totalFees = (r: RunResult) => Object.values(r.fees).reduce((a, b) => a + b
 
 // ---------------------------------------------------------------- current account
 
-/** One bank's current-account record as the page reads it (2026-10-25): what it prints, as sourced figures, and the plain-Hebrew text the record carries. */
+/** One bank's current-account record as the page reads it: what it prints, as sourced figures, and the plain-Hebrew text the record carries. */
 export interface AccountBank {
   /** The deposit-terms record id. */
   id: string;
@@ -72,12 +79,11 @@ export interface AccountBank {
 }
 
 const rateOf = (b: AccountBank) => Number(b.rate.value);
-const collator = new Intl.Collator("he");
 
 /** The banks that print a rate above 0, the highest first. */
-export const payingBanks = (d: SignatureData): AccountBank[] => (d.banks ?? []).filter((b) => rateOf(b) > 0).sort((a, b) => rateOf(b) - rateOf(a) || collator.compare(a.name, b.name));
+export const payingBanks = (d: SignatureData): AccountBank[] => (d.banks ?? []).filter((b) => rateOf(b) > 0).sort((a, b) => rateOf(b) - rateOf(a) || heCollator.compare(a.name, b.name));
 /** The banks that print no interest (rate 0), by name. */
-export const silentBanks = (d: SignatureData): AccountBank[] => (d.banks ?? []).filter((b) => !(rateOf(b) > 0)).sort((a, b) => collator.compare(a.name, b.name));
+export const silentBanks = (d: SignatureData): AccountBank[] => (d.banks ?? []).filter((b) => !(rateOf(b) > 0)).sort((a, b) => heCollator.compare(a.name, b.name));
 /** The bank with the highest printed rate (the first of equals, in the order of `payingBanks`), or null when none pays. */
 export const topPayer = (d: SignatureData): AccountBank | null => payingBanks(d)[0] ?? null;
 /** The largest ceiling among the paying banks: that bank's own sourced figure, or null when none prints one. */
@@ -195,44 +201,6 @@ export function breakKindOf(v: SiteValue | undefined): BreakKind {
   return v.value === "none" ? "free" : "other";
 }
 
-export interface DepositModel {
-  term: number;
-  /** Net amount of the deposit at the end of its term (F-21 with the bank's withholding), nominal: the example, the middle of the collected deposits that cannot be broken (F-86). */
-  atTerm: number;
-  /** The same at the lowest rate of the collected deposits, when the data holds one. */
-  atTermLo: number | null;
-  /** The same at the highest rate of the collected deposits, when the data holds one. */
-  atTermHi: number | null;
-  /** Net amount of the daily fund if the money is taken out after `month` months, nominal. */
-  fundAt: (month: number) => number | null;
-  fundAtTerm: number;
-  /** The gap at the end of the term: fund less deposit (negative when the deposit pays more). */
-  gap: number;
-}
-
-export function depositModel(d: SignatureData, c: { amount: number }): DepositModel | null {
-  const dep = d.bundles["bank-deposit"];
-  const fund = d.bundles["money-market-fund-daily"];
-  const term = factNumber(d, "term");
-  if (!dep || !fund || term === null) return null;
-  const base = { amount_now: c.amount, monthly_deposit: 0 };
-  const end = runAtMonths(dep, base, term);
-  const fundEnd = runAtMonths(fund, base, term);
-  if (!end || !fundEnd) return null;
-  const fundAt = (month: number) => (month <= 0 ? c.amount : (runAtMonths(fund, base, month)?.nominal ?? null));
-  const low = d.bundles["bank-deposit-lo"];
-  const endLo = low ? runAtMonths(low, base, term) : null;
-  const high = d.bundles["bank-deposit-hi"];
-  const endHi = high ? runAtMonths(high, base, term) : null;
-  return { term, atTerm: end.nominal, atTermLo: endLo?.nominal ?? null, atTermHi: endHi?.nominal ?? null, fundAt, fundAtTerm: fundEnd.nominal, gap: fundEnd.nominal - end.nominal };
-}
-
-/** The banks at the two ends of the collected one-year deposits' rates (F-86): the ones the sentence under the bars stands on. */
-export function depositEndBanks(d: SignatureData): { top: AccountBank; bottom: AccountBank } | null {
-  const banks = [...(d.depositBanks ?? [])].sort((a, b) => rateOf(a) - rateOf(b));
-  return banks.length ? { top: banks[banks.length - 1]!, bottom: banks[0]! } : null;
-}
-
 // ---------------------------------------------------------------- savings plan
 
 export interface PlanRow {
@@ -326,40 +294,6 @@ export function slowerPayNoMore(rows: LadderRow[], id: string): boolean {
   const own = Number(rows[at]!.rate.value);
   const slower = rows.filter((r) => speedOrder.indexOf(r.speed) > speedOrder.indexOf(rows[at]!.speed));
   return slower.length > 0 && slower.every((r) => Number(r.rate.value) <= own);
-}
-
-// ---------------------------------------------------------------- renewable money-market fund
-
-export interface FixedDateModel {
-  /** ISO date of the series' fixed redemption date (read from the fund record's name), when it is still ahead. */
-  known: string | null;
-  /** ISO date of the latest the date after it can be (MF-08: at most `maxInterval` months between adjacent fixed dates). */
-  latestAfter: string | null;
-  /** Days from `needOn` to the first fixed date on or after it; null when `needOn` is after the known date. */
-  waitDays: number | null;
-}
-
-const MS = 86_400_000;
-export const isoOf = (t: number) => new Date(t).toISOString().slice(0, 10);
-export const dayOf = (iso: string) => Date.parse(iso + "T00:00:00Z");
-export const addDays = (iso: string, n: number) => isoOf(dayOf(iso) + n * MS);
-export const daysBetween = (a: string, b: string) => Math.round((dayOf(b) - dayOf(a)) / MS);
-
-export function addMonthsIso(iso: string, months: number): string {
-  const d = new Date(dayOf(iso));
-  const day = d.getUTCDate();
-  d.setUTCMonth(d.getUTCMonth() + months);
-  if (d.getUTCDate() !== day) d.setUTCDate(0); // 31 Jan + 1 month stays inside February
-  return isoOf(d.getTime());
-}
-
-export function fixedDateModel(d: SignatureData, c: { today: string; needOn: string }): FixedDateModel {
-  const series = fact(d, "seriesDate");
-  const max = factNumber(d, "maxInterval");
-  const known = series && typeof series.value === "string" && series.value >= c.today ? series.value : null;
-  const latestAfter = known && max !== null ? addMonthsIso(known, max) : null;
-  const waitDays = known && c.needOn <= known ? daysBetween(c.needOn, known) : null;
-  return { known, latestAfter, waitDays };
 }
 
 // ---------------------------------------------------------------- makam
@@ -465,6 +399,6 @@ export interface BreakTerms {
   banks: SiteValue;
   lockedBanks: SiteValue;
   lockedBanksWithExits: SiteValue;
-  /** `rules`: the break rules of the bank's counted records, so a bank whose break terms the prose does not word links its own (code review, 2026-11-07). */
+  /** `rules`: the break rules of the bank's counted records, so a bank whose break terms the prose does not word links its own. */
   breakable: { id: string; name: string; deposits: SiteValue; withPenalty: SiteValue; free: SiteValue; rules: string[] }[];
 }

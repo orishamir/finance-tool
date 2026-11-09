@@ -1,5 +1,5 @@
 // Guide prose for איגרות חוב ממשלתיות (architecture 3.5: prose lives in content files; every figure is a
-// Num). Written 2026-10-23 from the rule base (GOV, TXI, TXS, BRK, REG); each block ends with the rules it
+// Num). Written from the rule base (GOV, TXI, TXS, BRK, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import { Link } from "react-router";
 import type { GuideContent } from "./types";
@@ -13,7 +13,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          הלוואה שנותנים למדינה, וקונים ומוכרים אותה <Term prefix="ב" id="בורסה">בורסה</Term>. המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> במועד <Term prefix="ה" id="פדיון">פדיון</Term>, ובדרך משלמת <Term id="קופון">קופון</Term>: <Term id="ריבית">ריבית</Term> במועדים קבועים.
+          המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> במועד <Term prefix="ה" id="פדיון">פדיון</Term>, ובדרך משלמת <Term id="קופון">קופון</Term>: <Term id="ריבית">ריבית</Term> במועדים קבועים.
         </p>
         <Sentence measure>
           יש שלושה סוגים עיקריים. <Term id={'אג"ח בריבית קבועה'}>בריבית קבועה</Term>: <Term id="לא צמוד">לא צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>, עם קופון קבוע שמשולם פעם בשנה <RuleRef id="GOV-13" end="." /> <Term id={'אג"ח ממשלתית צמודה'}>צמודה למדד</Term>: הקרן והריבית עולות ויורדות עם <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>. <Term id={'אג"ח בריבית משתנה'}>בריבית משתנה</Term>: לא צמודה, והריבית מתעדכנת כל {floatingEvery ? <Num value={floatingEvery} /> : null} חודשים לפי תשואת <Term prefix="ה" id={'מק"מ'}>מק״מ</Term>, בלי <Term id="מרווח">מרווח</Term> ובלי רצפה <RuleRef id="GOV-14" end="." />
@@ -34,7 +34,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          המנפיקה היא המדינה, דרך יחידת ניהול החוב הממשלתי במשרד האוצר, במכרזים שבועיים. אתם קונים דרך חשבון ניירות ערך בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, בבורסה בתל אביב, שבפיקוח <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>.
+          המנפיקה היא המדינה, דרך יחידת ניהול החוב הממשלתי במשרד האוצר, במכרזים שבועיים. אתם קונים דרך חשבון ניירות ערך בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, <Term prefix="ב" id="בורסה">בורסה</Term> בתל אביב, שבפיקוח <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>.
         </p>
         <Sentence measure>
           בבורסה, במסחר הרציף, פקודה היא של {minOrder ? <Num value={minOrder} display={fmt.nisWhole(Number(minOrder.value))} /> : null} לפחות. בשלבים אחרים של יום המסחר, כמו לפני הפתיחה ולפני הנעילה, אפשר גם יחידת מסחר אחת, {unit ? <Num value={unit} display={fmt.nisWhole(Number(unit.value))} /> : null} שווי נקוב. הבנק או בית ההשקעות יכולים לקבוע בתעריפון מינימום משלהם.
@@ -87,7 +87,7 @@ export const content: GuideContent = {
         המדינה יכולה לפדות סדרה מוקדם, <Term prefix="ב" id="הליך תחרותי">הליך תחרותי</Term> ושוויוני שהיא מפרסמת. זו זכות שלה, לא שלכם: מי שרוצה לצאת לפני הפדיון מוכר בבורסה.
       </p>
       <p className="max-w-measure">
-        {/* D6 (2026-10-26): how the account keeps the paper is the account's, said once on its page, not copied here */}
+        {/* D6: how the account keeps the paper is the account's, said once on its page, not copied here */}
         הנייר מוחזק בחשבון ניירות ערך. איך החשבון שומר על נכסי הלקוחות, ומה קורה אם הבנק או בית ההשקעות קורסים, מוסבר בעמוד של <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
       <p className="max-w-measure">
@@ -108,7 +108,7 @@ export const content: GuideContent = {
         עמלות הקנייה והמכירה, <Term prefix="ו" id="דמי חשבון קבועים">דמי חשבון קבועים</Term> אם החברה גובה אותם, נקבעים בתעריפון של כל חברה. ראו במדריך: <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
       <RulesLine ids={["GOV-11", "GOV-13", "GOV-14", "GOV-15", "GOV-17", "BANK-18", "BRK-16"]} />
-      {/* D6 (amended 2026-10-27): the two government-bond exposure pages folded into this one; what they said about holding bonds without buying them */}
+      {/* D6: the two government-bond exposure pages folded into this one; what they said about holding bonds without buying them */}
       <p className="max-w-measure">
         אפשר להחזיק איגרות חוב ממשלתיות גם בעקיפין. <Link to="/guide/money-market-fund-daily" className="text-link hover:underline">קרן כספית</Link> יכולה להחזיק איגרות לא צמודות עם פחות משנה לפדיון, אבל לא איגרות צמודות למדד. <Term prefix="ב" id="קופת גמל להשקעה">קופת גמל להשקעה</Term> <Term prefix="וב" id="קרן השתלמות">קרן השתלמות</Term> יש מסלולים שמתמחים באג״ח ממשלתית ובאג״ח צמודה למדד, ומסלול ״<Term id="כספי (שקלי)">כספי (שקלי)</Term>״ שלפי רשימת <Term id="מסלול השקעה">מסלולי ההשקעה</Term> של <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון</Term> מחזיק גם מלוות ממשלה בשקלים. בחשבון <Term prefix="ב" id="קופת גמל בניהול אישי">ניהול אישי</Term> קונים אותן ישירות, כמו בחשבון ניירות ערך.
       </p>

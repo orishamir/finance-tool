@@ -1,4 +1,4 @@
-// Every chip on a rule card opens its record (reviews, 2026-10-26): on /guide/brokerage-account BRK-35's "לדוגמה" chip opened an
+// Every chip on a rule card opens its record: on /guide/brokerage-account BRK-35's "לדוגמה" chip opened an
 // empty card, because BRK-51 was not in the page's data; then a probe found 24 figure chips (TXG-04's figures cite TXG-02 and TXG-03)
 // that did the same. A card's chips are its record's `derived_from` and `examples`, and every `rule_ids` inside its figures (each
 // figure opens a value sheet that shows them); each page that shows cards passes the records they point at as `pointed`
@@ -11,14 +11,12 @@ import { buildExposurePage, buildGuidePage } from "./guide.server";
 import { buildInstitution, institutionIds } from "./institutions.server";
 import { loadExposures } from "./instruments.server";
 import { compareBundle, goalFormData } from "./compare.server";
-import { workbenchBundle } from "./providers.server";
-import { buildHoldingsBundle } from "./holdings.server";
+import { indicesBundle } from "./providers.server";
 import { buildFeesData } from "./fees.server";
 import { loader as guideLoader } from "../routes/guide";
 import { loader as companiesLoader } from "../routes/companies";
 import { loader as companyLoader } from "../routes/company";
 import { loader as notCoveredLoader } from "../routes/not-covered";
-import { loader as idleLoader } from "../routes/idle-cash";
 import { shelfBundle } from "./rule-uses.server";
 import { shelfIds } from "./rule-shelves";
 
@@ -86,19 +84,17 @@ describe("every chip on a page's rule cards opens its record", () => {
     expect(bad).toEqual([]);
   }, 300000);
 
-  it("the rules shelves, the not-covered page, idle cash and the goal form", async () => {
+  it("the rules shelves, the not-covered page and the goal form the fee page reads", async () => {
     const n = (await notCoveredLoader()) as { rules: Map_; pointed: Map_ };
-    const i = (await idleLoader()) as { rules: Map_; pointed: Map_ };
     const g = goalFormData();
     const shelves = shelfIds.flatMap((s) => unopened(shelfBundle(s).rules, {}).map((x) => `${s}: ${x}`));
-    expect([...unopened(n.rules, n.pointed), ...unopened(i.rules, i.pointed), ...unopened(g.rules as Map_, g.pointed as Map_), ...shelves]).toEqual([]);
+    expect([...unopened(n.rules, n.pointed), ...unopened(g.rules as Map_, g.pointed as Map_), ...shelves]).toEqual([]);
   }, 120000);
 
-  it("the bundles the comparison, the workbenches, holdings and fees read", () => {
+  it("the bundles the comparison, the workbenches and fees read", () => {
     const c = compareBundle();
-    const w = workbenchBundle();
-    const h = buildHoldingsBundle();
+    const w = indicesBundle();
     const f = buildFeesData();
-    expect([...unopened(c.rules, c.pointed), ...unopened(w.rules, w.pointed), ...unopened(h.rules, h.pointed), ...unopened(f.rules, f.pointed)]).toEqual([]);
+    expect([...unopened(c.rules, c.pointed), ...unopened(w.rules, w.pointed), ...unopened(f.rules, f.pointed)]).toEqual([]);
   }, 300000);
 });

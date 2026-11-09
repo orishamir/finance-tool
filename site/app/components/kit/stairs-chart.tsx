@@ -1,4 +1,4 @@
-// The stairs (founder, 2026-11-01, the indices page): money left at the end on the vertical axis, the order of the steps from left to right.
+// The stairs (the indices page): money left at the end on the vertical axis, the order of the steps from left to right.
 // The first column is the start (grey, with a break mark because the axis does not begin at zero); every other column floats from the level
 // before it to its own, in the hue of what changed (the account, the kind of fund, the fund) and red when it loses money. A step taken is
 // solid; the largest one still ahead is lighter and outlined; one that rests on an open rule is hollow. A dashed line marks the most any
@@ -43,7 +43,7 @@ export const STAIR_SWATCH: Record<StairHue | "loss", string> = { start: "bg-char
 /**
  * Isolates every number that stands among Hebrew words, so it keeps its sign and order there ("+2,345 ₪"). A number inside a Latin
  * name ("S&P 500", "(4D)", "NASDAQ 100") is left to the name: isolated alone, it stepped out of the name's order, and
- * "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05).
+ * "S&P 500 (4D)" read "(D4) 500 S&P".
  */
 export const isoNumbers = (s: string) => s.replace(/(?<![A-Za-z&][ ]?)(?<![\d,.])[−+]?\d[\d,.]*%?(?: ₪)?(?![A-Za-z])/g, (m) => `\u2066${m}\u2069`);
 
@@ -97,7 +97,7 @@ export function StairsChart({
   const compact = W < 860;
   const H = compact ? 300 : 340;
   const { lo, hi } = axis;
-  // no value axis: every column carries its amount, and up to about twelve marks the amounts replace the axis (charts.md, 2026-11-08)
+  // no value axis: every column carries its amount, and up to about twelve marks the amounts replace the axis (charts.md)
   const m = compact ? { l: 6, r: 6, t: 40, b: 6 } : { l: W * STAIRS_MARGIN.left, r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
   const cw = (W - m.l - m.r) / STAIRS_SLOTS;
   const y = (v: number) => m.t + (1 - (v - lo) / (hi - lo || 1)) * (H - m.t - m.b);
@@ -105,7 +105,7 @@ export function StairsChart({
   const bx = (i: number) => m.l + i * cw + cw * 0.1;
   const bw = cw * 0.8;
   // the figure over each column, and the "now" words over the current one: centred on the column, kept clear of the chart's left edge and
-  // the chart's right edge, and raised above the one before where they would meet it (2026-11-08: at 13 px, five columns on a phone are
+  // the chart's right edge, and raised above the one before where they would meet it (at 13 px, five columns on a phone are
   // narrower than their figures, and "+4,875 ₪" ran into "−2,148 ₪")
   const topPx = compact ? CHART_TEXT_PX : 15;
   const place = () => {
@@ -118,7 +118,7 @@ export function StairsChart({
       const lift = c.current ? 27 + CHART_TEXT_PX : topPx;
       const box = (base: number) => ({ x1: x - w / 2, x2: x + w / 2, y1: base - lift, y2: base + topPx * 0.3 });
       let base = top - 7;
-      // a figure wider than its column clears the columns beside it that it reaches over (2026-11-08: at 320 px "78,038 ₪" ran over the
+      // a figure wider than its column clears the columns beside it that it reaches over (at 320 px "78,038 ₪" ran over the
       // next step's edge)
       for (const j of [i - 1, i + 1]) {
         const n = columns[j];
@@ -176,7 +176,7 @@ export function StairsChart({
               {first ? (
                 <>
                   <rect x={x} y={y(c.level)} width={bw} height={floor - y(c.level)} rx={3} className={FILL.start} data-mark="bar" />
-                  {/* never a negative height: a plan with no money puts the first bar on the floor (independent check of pass 7: "-2" in the console) */}
+                  {/* never a negative height: a plan with no money puts the first bar on the floor ("-2" in the console) */}
                   {c.open && <rect x={x + 1} y={y(c.level) + 1} width={bw - 2} height={Math.max(0, floor - y(c.level) - 2)} rx={3} className="fill-card stroke-chart-marker" strokeWidth={1.5} />}
                   {/* the axis does not begin at zero: a break mark across the foot of the bar */}
                   <path d={`M${x} ${floor - 12}l${bw / 6} -5l${bw / 3} 10l${bw / 3} -10l${bw / 6} 5`} fill="none" className="stroke-card" strokeWidth={3} />

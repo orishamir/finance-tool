@@ -1,5 +1,5 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, useLocation, useNavigationType, useRouteError } from "react-router";
-import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import "./app.css";
 import interLatin from "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import heeboHebrew from "../../node_modules/@fontsource-variable/heebo/files/heebo-hebrew-wght-normal.woff2?url";
@@ -7,12 +7,13 @@ import { InputsProvider } from "./lib/inputs";
 import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
 import { system } from "./copy";
+import { useIsoLayoutEffect } from "./lib/hooks";
 
 /**
  * What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to,
- * the Hebrew name of each source host, the open questions' status and Hebrew lines from data/open-questions.json (2026-10-26), and
+ * the Hebrew name of each source host, the open questions' status and Hebrew lines from data/open-questions.json, and
  * where each company's terms are listed (a rule card that names a company links there, D30), and per record that is not general the
- * companies whose own document it cites (only those list it, review 2026-10-26). PageShell reads it.
+ * companies whose own document it cites (only those list it). PageShell reads it.
  */
 export async function loader() {
   const { rootData } = await import("./lib/root.server");
@@ -22,14 +23,13 @@ export async function loader() {
 export function links() {
   return [
     { rel: "icon", type: "image/svg+xml", href: `${import.meta.env.BASE_URL}favicon.svg` },
-    // the two fonts every page uses, fetched with the HTML instead of after the CSS (audit 2026-10-24, A49)
+    // the two fonts every page uses, fetched with the HTML instead of after the CSS
     { rel: "preload", as: "font", type: "font/woff2", href: heeboHebrew, crossOrigin: "anonymous" as const },
     { rel: "preload", as: "font", type: "font/woff2", href: interLatin, crossOrigin: "anonymous" as const },
   ];
 }
 
 const SCROLL_KEY = "mekor.scroll";
-const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 const positions: Record<string, number> = {};
 try {
   if (typeof window !== "undefined") Object.assign(positions, JSON.parse(window.sessionStorage.getItem(SCROLL_KEY) ?? "{}"));
@@ -49,16 +49,16 @@ const persist = () => {
 /**
  * The key a scroll position is kept under: the history entry and its address. Every page loaded fresh in a tab (a typed
  * address, a bookmark, a reload) has the entry key "default", so the key alone brought one page's position to another
- * page (2026-10-25, found by tools/jump-check.mjs: a guide page typed after scrolling another opened 2,900 px down).
+ * page (found by tools/jump-check.mjs: a guide page typed after scrolling another opened 2, 900 px down).
  */
 const entryKey = (l: { key: string; pathname: string; search: string }) => `${l.key}:${l.pathname}${l.search}`;
 
 /**
- * Scroll position per history entry (audit 2026-10-24, A51). Back and forward bring the page to where it was, waiting for
+ * Scroll position per history entry. Back and forward bring the page to where it was, waiting for
  * the page to be tall enough and turning off the smooth scrolling meanwhile (it made the jump arrive after the check);
  * a new page opens at the top, or at its `#` target. Replaces the router's ScrollRestoration. A change of the query on the
- * same page (a filter or a switch that keeps its state in the address, passing `preventScrollReset`) keeps the place: until
- * 2026-10-25 it went to the top, so pressing such a control moved the page under the pointer (tools/jump-check.mjs).
+ * same page (a filter or a switch that keeps its state in the address, passing `preventScrollReset`) keeps the place, so
+ * pressing such a control never moves the page under the pointer (tools/jump-check.mjs).
  */
 function RestoreScroll() {
   const location = useLocation();

@@ -1,4 +1,4 @@
-// A date inside Hebrew text (2026-11-07): a day is isolated left to right (`22.10.2026`); a month a document prints alone is said in words,
+// A date inside Hebrew text: a day is isolated left to right (`22.10.2026`); a month a document prints alone is said in words,
 // in the text's own direction (`נובמבר 2025`), never with an invented first day. Every date a page writes in its text goes through it.
 import { fmt, joinLead } from "../../lib/format";
 import { LeadTail } from "../provenance";

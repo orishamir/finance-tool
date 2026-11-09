@@ -1,5 +1,5 @@
-// How wide a chart's words and figures are, so a chart places them by their size instead of a guess (2026-11-08, charts.md: "measure it;
-// never cut a label off"). The advances are the chart font's own (Inter with tabular figures, then Heebo for Hebrew), measured in the
+// How wide a chart's words and figures are, so a chart places them by their size instead of a guess (charts.md: "measure it; never cut a label off").
+// The advances are the chart font's own (Inter with tabular figures, then Heebo for Hebrew), measured in the
 // browser with getComputedTextLength at weights 400 and 600, the wider of the two kept. Computed, not read from the page, so the server's
 // render and the first one in the browser agree and nothing jumps when the font arrives.
 

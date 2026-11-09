@@ -1,5 +1,5 @@
 // The fee-drag chart (design-spec 11.4, design-system 7.3): each fee's cost over time as stacked bands, the total
-// drag as a neutral line on top (2026-10-24 evening: in orange it matched the largest band's legend swatch), real values,
+// drag as a neutral line on top (in orange it matched the largest band's legend swatch), real values,
 // time left to right, direct labels in a strip at the right. Our own SVG on D3
 // scales, sharing the comparison chart's grid, axis, crosshair, readout and table view.
 import { useId } from "react";
@@ -14,9 +14,9 @@ import { AxisLabels, yearTicksIn } from "../chart/TimelineChart";
 import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, YearLabels, ZoomBar, ZoomBrush, cx, pickDim, tickFade, useFadingTicks, useGlidingNumbers, useGlidingRows, useYearZoom, type ChartPick, useBox, ticksOn } from "../kit";
 
 const STRIP = 104;
-const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
+const TOP = 20; // room for the top axis label above its gridline
 const BOTTOM = 26;
-const LABEL_H = 38; // one short name over its figure (2026-10-24 evening: two-line names overlapped the next label)
+const LABEL_H = 38; // one short name over its figure (two-line names overlapped the next label)
 
 interface Band {
   id: string;
@@ -26,7 +26,7 @@ interface Band {
   lines: FeeLine[];
 }
 
-// One fee hue per band in stack order (design-system 2.3, 2026-10-24 evening): orange, gold, teal, magenta.
+// One fee hue per band in stack order (design-system 2.3): orange, gold, teal, magenta.
 const hues = [
   { fill: "fill-chart-fee-1", bg: "bg-chart-fee-1" },
   { fill: "fill-chart-fee-2", bg: "bg-chart-fee-2" },
@@ -36,9 +36,9 @@ const hues = [
 
 /** The three largest fees as bands, every further one in a single "rest" band (design-spec 11.4). A fee that costs nothing over
  *  the horizon (an FX line with no foreign trade, a fee reduced to zero) has no band, so no legend item, label or row either
- *  (design-system 3.4: a legend item only for an area that is drawn; 2026-10-24 evening). A line whose discount ends (A-19, F-16)
+ *  (design-system 3.4: a legend item only for an area that is drawn). A line whose discount ends (A-19, F-16)
  *  keeps its band while the horizon is still inside the discount and it costs nothing yet: it is charged later on the same plan,
- *  and a legend item, a label and a table column that came and went with the years slider moved the page (D63, 2026-11-07). */
+ *  and a legend item, a label and a table column that came and went with the years slider moved the page (D63). */
 export function bandsOf(an: Analysis): Band[] {
   const order = [...an.lines].filter((l) => l.costNis >= 0.005 || l.after !== undefined).sort((a, b) => b.costNis - a.costNis).map((l) => l.line);
   if (order.length <= 4) return order.map((l, i) => ({ id: l, name: r3fees.names[l]!, ...hues[i]!, lines: [l] }));
@@ -69,7 +69,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, dimmed, highlig
   const [box, size] = useBox(240, 180);
   const bands = bandsOf(an);
   // whole years and the exit month, as the readout and the table: drawn month by month, each band's edge rose and fell between charges
-  // and every boundary showed as a saw (2026-10-26)
+  // and every boundary showed as a saw
   const goal = points(an, bands);
   const keys = [...bands.map((b) => b.id), "total"];
   const flat = goal.map((p) => ({ year: p.year, total: p.total, ...Object.fromEntries(bands.map((b, i) => [b.id, p.parts[i]!])) })) as ({ year: number } & Record<string, number>)[];
@@ -106,7 +106,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, dimmed, highlig
   const labels: { id: string; name: string; value: number; y: number; band?: Band }[] = [];
   if (last) {
     bands.forEach((b, i) => labels.push({ id: b.id, name: r3fees.chart.short[b.id] ?? b.name, value: last.parts[i]!, y: y(((lastDrawn?.edges[i] ?? 0) + (lastDrawn?.edges[i - 1] ?? 0)) / 2), band: b }));
-    // audit A79: when one band is the whole total, the second label would repeat it; the band's own label stays
+    // when one band is the whole total, the second label would repeat it; the band's own label stays
     if (!labels.some((l) => Math.abs(l.value - last.total) < 0.005)) labels.push({ id: "total", name: r3fees.chart.total, value: last.total, y: y(lastDrawn?.total ?? 0) });
   }
   labels.sort((a, b) => a.y - b.y);
@@ -148,7 +148,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, dimmed, highlig
           </g>
           <path d={totalLine(pts) ?? ""} fill="none" className={cx("stroke-chart-fee-total", pickDim(highlight, "total"))} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
         </g>
-        {/* after the total line, with the card-colour halo (2026-10-26) */}
+        {/* after the total line, with the card-colour halo */}
         <AxisLabels ticks={ticks} y={y} />
         {endSeen && <line x1={endX} x2={endX} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />}
         <YearLabels ticks={yearTicks} x={x} y={height - 8} left={0} right={plotW} word={(yr) => (yr === 0 ? guideCopy.readout.today : String(yr))} />
@@ -194,8 +194,8 @@ export function ChartLegend({ an, pick }: { an: Analysis; pick?: ChartPick<strin
 
 /**
  * The exit point of a run whose exit takes nothing (no exit tax, no exit cost: a study fund held past its sixth year, within the ceiling):
- * there the chart's figure is F-61's, the one the cards and the headline call "after tax". A fresh reader (2026-11-07) saw the study
- * fund's 3,911 ₪ "after tax" on its card and "before tax" in the readout, and wrote that one number cannot be both.
+ * there the chart's figure is F-61's, the one the cards and the headline call "after tax", so the readout
+ * never calls the same number "before tax".
  */
 function afterTaxAt(an: Analysis, year: number): boolean {
   const s = an.series;

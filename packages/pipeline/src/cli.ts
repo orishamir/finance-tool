@@ -1,6 +1,7 @@
 import { appendFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { israelToday } from "@finance-tool/schema";
 import { refreshCbsCpi } from "./adapters/cbs-cpi.ts";
 import { refreshCma } from "./adapters/cma.ts";
 import { refreshEcbFx, refreshEcbMonthEnd } from "./adapters/ecb-fx.ts";
@@ -16,7 +17,7 @@ const [command, ...rest] = process.argv.slice(2);
  * Refresh sources. They run in the order given.
  * Gated, no adapter on purpose: the Bank of Israel series (policy rate A-20, per-bank deposit averages A-21,
  * makam yields A-22). Its terms of use forbid copying and publishing without the Bank's prior written
- * consent and no data.gov.il copy exists (research report r2-series, finding 1, 2026-10-23), so under the terms
+ * consent and no data.gov.il copy exists (research report r2-series, finding 1), so under the terms
  * gate (docs/architecture.md 3.3) they are not fetched into data/. Revisit if the Bank consents in writing.
  */
 const SOURCES = ["cma", "cbs-cpi", "mof-child-savings", "ecb-fx", "ecb-fx-month-end"] as const;
@@ -33,7 +34,7 @@ async function refresh(args: string[]): Promise<number> {
   }
   const opts = {
     dataDir: `${root}data`,
-    runDate: new Date().toISOString().slice(0, 10),
+    runDate: israelToday(),
     dryRun: flags.includes("--dry-run"),
     archive: !flags.includes("--no-archive"),
     force: flags.includes("--force"),

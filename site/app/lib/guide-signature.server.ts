@@ -2,33 +2,22 @@
 // the sourced figures it shows by name, and what the data does not hold yet. One builder per wrapper id; builder G2 adds its own
 // entries to `builders`. Server-only. Nothing here types a rate or a date: every figure is a record's value object, a rule's
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
-import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
+import type { DepositTerms } from "@finance-tool/schema";
 import { loadParameters, loadRules, loadProducts, today } from "./data.server";
 import { guideSignature } from "../copy";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
-import { accountBanks, breakFact, breakInput, commonAccountRate, currentAccountRecords, depositBundleOf, depositEnds, depositExample, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+import { accountBanks, breakFact, breakInput, commonAccountRate, currentAccountRecords, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 // the break column moved beside the deposit example that counts by it; the guide loader still takes it from here
 export { breakFact, breakInput };
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
-import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
-import { computed, ownBy, ruleFigure, type SiteValue } from "./value";
+import { emptyData, figureOf, withRules, type SignatureCtx } from "./guide-signature-ctx.server";
+import { buildPension, buildStudyFund } from "./guide-signature-g2.server";
+import { computed, ownBy, type SiteValue } from "./value";
 import { shortName } from "./providers";
 
-interface Ctx {
-  p05: ParameterRecord;
-  allRules: Record<string, RuleRecord>;
-  wrappers: ProductRecord[];
-  deposits: DepositTerms[];
-  funds: FundRecord[];
-  t: string;
-  /** The page's own bundle, when it has one (already built by the page). */
-  own: Bundle | null;
-  id: string;
-}
-
-type Builder = (c: Ctx) => SignatureData;
+type Builder = (c: SignatureCtx) => SignatureData;
 
 /** The wrapper ids that have a visual built here. A page with an id not in this map keeps its timeline open (guide.tsx). */
 export const builders: Record<string, Builder> = {};
@@ -48,7 +37,7 @@ export function buildSignatureData(id: string, own: Bundle | null): SignatureDat
 
 // ---------------------------------------------------------------- helpers
 
-function bundleOf(c: Ctx, wrapperId: string): Bundle | null {
+function bundleOf(c: SignatureCtx, wrapperId: string): Bundle | null {
   if (wrapperId === c.id && c.own) return c.own;
   const record = c.wrappers.find((w) => w.id === wrapperId);
   const family = familyOf(wrapperId as never);
@@ -56,25 +45,14 @@ function bundleOf(c: Ctx, wrapperId: string): Bundle | null {
   return guideInstrumentBundle(record, family as InstrumentFamily, c.p05, c.allRules, c.t).bundle;
 }
 
-const figureOf = (c: Ctx, rule: string, name: string): SiteValue | undefined => {
-  const r = c.allRules[rule];
-  return r ? (ruleFigure(r, name, c.t) ?? undefined) : undefined;
-};
-
-const withRules = (d: SignatureData, ...ids: string[]): SignatureData => ({ ...d, ruleIds: [...new Set([...d.ruleIds, ...ids])] });
-
-function emptyData(id: string): SignatureData {
-  return { id, bundles: {}, facts: {}, gaps: [], ruleIds: [] };
-}
-
-function addBundle(d: SignatureData, c: Ctx, wrapperId: string): Bundle | null {
+function addBundle(d: SignatureData, c: SignatureCtx, wrapperId: string): Bundle | null {
   const b = bundleOf(c, wrapperId);
   if (b) d.bundles[wrapperId] = b;
   else d.gaps.push(`bundle:${wrapperId}`);
   return b;
 }
 
-function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, spec: { deposit_terms?: string } | undefined = c.p05.instruments?.[wrapperId]): { rate?: SiteValue; rec?: DepositTerms } {
+function depositFacts(d: SignatureData, c: SignatureCtx, wrapperId: string, spec: { deposit_terms?: string } | undefined = c.p05.instruments?.[wrapperId]): { rate?: SiteValue; rec?: DepositTerms } {
   const pub = publishedDeposit(wrapperId, spec, c.deposits);
   if (!pub) {
     d.gaps.push(`deposit:${wrapperId}`);
@@ -96,8 +74,8 @@ function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, spec: { depos
   return { rate, rec: pub.record };
 }
 
-/** The banks' one-year fixed-rate deposits and their range (F-86), on `d`: the ladder's deposit row and the bank-deposit page's list. */
-function addDepositBanks(d: SignatureData, c: Ctx): ReturnType<typeof depositRange> {
+/** The banks' one-year fixed-rate deposits and their range (F-86), on `d`: the deposit row of the ladder and of the makam page. */
+function addDepositBanks(d: SignatureData, c: SignatureCtx): ReturnType<typeof depositRange> {
   const records = oneYearDepositRecords(c.deposits);
   // each bank's own break terms, on the line that names the bank (D31)
   const banks = accountBanks(records).map((b) => ({ ...b, exit: ownBy(breakFact(records.find((r) => r.id === b.id)!), b.name) }));
@@ -121,7 +99,7 @@ function addDepositBanks(d: SignatureData, c: Ctx): ReturnType<typeof depositRan
 // ---------------------------------------------------------------- current account
 
 /** The banks' current-account records and the rate most of them pay (F-85), on `d`: the data both the account page and the ladder read. */
-function addAccountBanks(d: SignatureData, c: Ctx): { common: ReturnType<typeof commonAccountRate> } {
+function addAccountBanks(d: SignatureData, c: SignatureCtx): { common: ReturnType<typeof commonAccountRate> } {
   const banks = accountBanks(currentAccountRecords(c.deposits));
   d.banks = banks;
   const common = commonAccountRate(banks, c.allRules, c.t);
@@ -146,32 +124,6 @@ builders["current-account"] = (c) => {
   if (tax) d.facts.taxRate = tax;
   else d.gaps.push("rule:TXI-03");
   return withRules(d, "BANK-09", "BANK-13", "TXI-03", "TXI-08");
-};
-
-// ---------------------------------------------------------------- bank deposit
-
-builders["bank-deposit"] = (c) => {
-  const d = emptyData(c.id);
-  addBundle(d, c, "bank-deposit");
-  addBundle(d, c, "money-market-fund-daily");
-  // the run stands on the middle of the collected deposits that cannot be broken, and the sentence under the bars on the two ends of all of them (F-86), each bank named
-  const ends = depositEnds(c.deposits);
-  const example = depositExample(c.deposits);
-  const record = c.wrappers.find((w) => w.id === "bank-deposit");
-  if (ends && example && record) {
-    depositFacts(d, c, "bank-deposit", { deposit_terms: example.record.id });
-    const low = depositBundleOf(record, ends.bottom, c.p05, c.allRules, c.t).bundle;
-    if (low) d.bundles["bank-deposit-lo"] = low;
-    const high = depositBundleOf(record, ends.top, c.p05, c.allRules, c.t).bundle;
-    if (high) d.bundles["bank-deposit-hi"] = high;
-  } else d.gaps.push("deposit:bank-deposit");
-  // whether the money is locked is a count over the banks, not the terms of the one bank the run stands on
-  delete d.facts.break;
-  // the list the money-market ladder links to: each collected bank's one-year fixed-rate deposit (F-86)
-  addDepositBanks(d, c);
-  d.facts.cashRate = p05Value(c.p05, "cash_rate");
-  if (Number(d.facts.depositNoExitCount?.value ?? 0) === 0) d.gaps.push("depositBreak");
-  return withRules(d, "BANK-06", "BANK-13", "BANK-27", "TXI-03", "TXI-08");
 };
 
 // ---------------------------------------------------------------- savings plan
@@ -201,7 +153,7 @@ builders["money-market-fund-daily"] = (c) => {
   addBundle(d, c, "money-market-fund-daily");
   // the current-account row is the rate most of the collected banks publish (F-85), with the best a bank pays beside it
   const { common } = addAccountBanks(d, c);
-  // the one-year deposit row is the range across the collected banks (F-86), never one bank's rate (founder, 2026-10-26)
+  // the one-year deposit row is the range across the collected banks (F-86), never one bank's rate
   addDepositBanks(d, c);
   // names the ladder reads
   if (common) {
@@ -215,51 +167,8 @@ builders["money-market-fund-daily"] = (c) => {
   if (max) d.facts.maxInterval = max;
   else d.gaps.push("maxInterval");
   // MF-10, MF-11 (prices regulations reg. 15): an order before the fund's set hour is redeemed that day and the distributor pays the same day
-  // (MF-11, 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
+  // (MF-11); MF-35: the renewable fund's dates are chosen when buying
   return withRules(d, "MF-08", "MF-10", "MF-11", "MF-34", "MF-35", "BANK-06", "BANK-09", "BANK-13");
-};
-
-// ---------------------------------------------------------------- renewable money-market fund
-
-builders["money-market-fund-renewable"] = (c) => {
-  const d = emptyData(c.id);
-  const spec = c.p05.instruments?.[c.id];
-  const fund = spec?.fund !== undefined ? c.funds.find((f) => f.id === String(spec.fund)) : undefined;
-  const name = fund?.names.he[0] ?? "";
-  const m = /לפדיון (\d{2})\/(\d{2})\/(\d{4})/.exec(name);
-  if (fund && m) {
-    const src = fund.fees.fixed_management?.source ?? fund.fees.trustee?.source;
-    if (src) {
-      // D31: the date is written in the fund's own name, so it is that series' own fact; the visual names the series beside it
-      d.facts.seriesDate = ownBy(
-        {
-          value: `${m[3]}-${m[2]}-${m[1]}`,
-          unit: "text",
-          source: src,
-          checked: fund.snapshot,
-          effective_from: null,
-          effective_to: null,
-          update_rule: "provider-set",
-          state: "sourced",
-          rule_ids: ["MF-35"],
-          notes: `תאריך הפדיון של הסדרה, כפי שהוא כתוב בשם הקרן (${name}). המספר בבורסה שייך לסדרה הזאת בלבד; הסדרה הבאה מקבלת מספר משלה.`,
-        } as SiteValue,
-        fund.manager,
-      );
-      d.facts.seriesName = ownBy(
-        { value: name, unit: "text", source: src, checked: fund.snapshot, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", about: "שם הסדרה, כפי שהמנהל מפרסם אותו" } as SiteValue,
-        fund.manager,
-      );
-    } else d.gaps.push("seriesDate");
-  } else d.gaps.push("seriesDate");
-  const max = figureOf(c, "MF-08", "max_interval_months");
-  if (max) d.facts.maxInterval = max;
-  else d.gaps.push("maxInterval");
-  const abs = figureOf(c, "MF-08", "absolute_max_interval_months");
-  if (abs) d.facts.absoluteMax = abs;
-  // the dates after the series' own: the fund agreement and the prospectus (Maya, Magna) block scripts and are not collected
-  d.gaps.push("renewableDates");
-  return withRules(d, "MF-08", "MF-35", "MF-38");
 };
 
 // ---------------------------------------------------------------- makam
@@ -299,11 +208,10 @@ builders["government-bond"] = (c) => {
   return withRules(d, c.p05.instruments?.[c.id]?.series_rule ?? "GOV-11", "GOV-12", "GOV-16", "GOV-17", "TXI-14", "TXI-25");
 };
 
-// ---------------------------------------------------------------- builder G2: study fund, provident fund for investing, pensions
+// ---------------------------------------------------------------- builder G2: study fund, pensions
 // (the builders live in guide-signature-g2.server.ts)
 
 builders["keren-hishtalmut"] = buildStudyFund;
-builders["kupat-gemel-lehashkaa"] = buildProvident;
 builders["pension-comprehensive"] = buildPension;
 builders["pension-general"] = buildPension;
 builders["provident-for-annuity"] = buildPension;

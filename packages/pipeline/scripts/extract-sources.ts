@@ -263,7 +263,6 @@ export function findQuote(segment: string): string | undefined {
 // ---------------------------------------------------------------- kind, rank
 
 function kindOf(url: string, host: string, title: string, locator: string, strength: SourceStrength, publisherKind?: SourceKind): SourceKind {
-  const text = `${title} ${locator}`;
   if (/\/Odata\//i.test(url) || /api\/3\/action/.test(url)) return "dataset";
   if (host === "fs.knesset.gov.il" && isPdf(url)) return /\bbill\b|הצעת חוק|explanatory/i.test(title) ? "official_pdf" : "law";
   if (host === "mayafiles.tase.co.il" || host === "maya.tase.co.il") return "institution_doc";

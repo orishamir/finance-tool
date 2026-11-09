@@ -37,13 +37,14 @@ export function serveBuild(folder, { port = 0, base = "/finance-tool/" } = {}) {
   const hits = { n: 0 };
   const server = http.createServer((req, res) => {
     hits.n += 1;
-    const path = decodeURIComponent(req.url.split("?")[0]);
+    const [rawPath, query] = req.url.split("?");
+    const path = decodeURIComponent(rawPath);
     if (!path.startsWith(base)) return res.writeHead(404).end();
     const rel = path.slice(base.length);
     let f = join(root, rel);
     if (!f.startsWith(root)) return res.writeHead(403).end();
     if (existsSync(f) && statSync(f).isDirectory()) {
-      if (!path.endsWith("/")) return res.writeHead(301, { location: path + "/" }).end();
+      if (!path.endsWith("/")) return res.writeHead(301, { location: `${rawPath}/${query === undefined ? "" : `?${query}`}` }).end();
       f = join(f, "index.html");
     }
     if (!existsSync(f) || statSync(f).isDirectory()) {

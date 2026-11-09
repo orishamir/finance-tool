@@ -1,4 +1,4 @@
-// The yearly-returns chart's figures never touch (2026-11-08): at 390 px "+24.8" and "+21.9" of 2024 overlapped by about 4 px. Every chart
+// The yearly-returns chart's figures never touch: at 390 px "+24.8" and "+21.9" of 2024 overlapped by about 4 px. Every chart
 // width a page can give it, from a 320 px phone to a computer, with years whose bars are nearly equal, far apart and on both sides of zero.
 import { describe, expect, it } from "vitest";
 import { pairFigures, pairGeometry, pairPads, pairScale, type PairBarYear } from "./pair-bars";

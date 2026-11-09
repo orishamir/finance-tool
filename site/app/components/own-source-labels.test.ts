@@ -1,4 +1,4 @@
-// D31 on a rule card's source lines (review, 2026-10-26): a company's own document on its own term drops "לפי החברה", and only that.
+// D31 on a rule card's source lines: a company's own document on its own term drops "לפי החברה", and only that.
 // A secondary source keeps "מקור משני" (D7), even on a company's term.
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
@@ -33,7 +33,7 @@ describe("the source lines of a company's own term", () => {
     expect(html).not.toContain("נמצא במסמכים של");
     expect(html).toContain("המקורות כאן אינם מסמכים של סלייס");
   });
-  // review round 3, 2026-10-26: the card's own data (the root loader's company links and own documents), as every page has them
+  // the card's own data (the root loader's company links and own documents), as every page has them
   const real = async () => {
     const { loadRules } = await import("../lib/data.server");
     const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
@@ -53,7 +53,7 @@ describe("the source lines of a company's own term", () => {
     expect(html).toContain(scopeWords.allNoCompany);
     expect(html).not.toContain("בחברות אחרות זה יכול להיות אחרת");
   });
-  // founder, 2026-10-27: PEN-44 under "מה כתוב במסמכים של אלטשולר שחם" showed Mor's and Analyst's documents and figures
+  // PEN-44 under "מה כתוב במסמכים של אלטשולר שחם" showed Mor's and Analyst's documents and figures
   it("on a company's page a record shows only that company's documents, figures and name, with the law and the regulator", async () => {
     const data = { ...(await real()), company: "altshuler-shaham", pageCompanies: ["altshuler-shaham"] };
     const html = render(createElement(RuleCard, { id: "PEN-44", data, inline: true }), data);

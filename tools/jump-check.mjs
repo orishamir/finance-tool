@@ -22,7 +22,7 @@ const phone = vpName === "phone";
 const SEL = "button[aria-pressed], [role=switch], [role=radio], [role=tab], input[type=checkbox], input[type=radio], button[aria-expanded], summary";
 const MAX_PER_PAGE = 80;
 
-let pages = ["/", "/goal", "/goal/compare", "/idle-cash", "/holdings", "/transfer", "/fees", "/rules", "/questions", "/parameters", "/documents", "/guide", "/guide/kupat-gemel-lehashkaa", "/guide/keren-hishtalmut", "/exposure/index-sp500", "/companies", "/workbench/tracks/kupat-gemel-lehashkaa", "/indices/sp500", "/not-covered"];
+let pages = ["/", "/transfer", "/fees", "/rules", "/questions", "/parameters", "/documents", "/guide", "/guide/kupat-gemel-lehashkaa", "/guide/keren-hishtalmut", "/exposure/index-sp500", "/companies", "/indices/sp500", "/not-covered"];
 if (process.argv[3]) pages = process.argv[3].split(",");
 
 const browser = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
@@ -34,19 +34,7 @@ await ctx.addInitScript(() => document.addEventListener("DOMContentLoaded", () =
 const page = await ctx.newPage();
 
 const out = [];
-// The first page and the goal form are checked twice: on a new device (the question card), then with a goal saved.
-const fresh = pages.filter((p) => p === "/" || p === "/goal");
-let seeded = false;
-for (const [k, path] of [...fresh.map((p) => [0, p]), ...pages.map((p) => [1, p])]) {
-  if (k === 1 && !seeded) {
-    // A goal on the device, so the goal pages show their full content.
-    await page.goto(`${BASE}/goal`);
-    await page.waitForTimeout(1200);
-    await page.getByLabel(/שם המטרה/).first().fill("בדיקה");
-    await page.getByLabel(/^סכום היום|יש לכם היום/).first().fill("50000").catch(() => {});
-    await page.waitForTimeout(500);
-    seeded = true;
-  }
+for (const path of pages) {
   await page.goto(`${BASE}${path}`);
   await page.waitForTimeout(1200);
   const n = Math.min(await page.locator(SEL).count(), MAX_PER_PAGE);
@@ -78,9 +66,9 @@ for (const [k, path] of [...fresh.map((p) => [0, p]), ...pages.map((p) => [1, p]
     const still = (await page.evaluate(() => document.body.innerText)) === textBefore;
     // "wide": after the press the page is wider than the screen (a table that pushed its column out, 2026-10-25)
     const wide = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
-    if (!after || Math.abs(dy) > 2 || Math.abs(dx) > 2 || still || wide) out.push({ wide, path: k === 0 ? `${path} (new device)` : path, i, label, dy, dx, gone: !after, moved: !after || Math.abs(dy) > 2 || Math.abs(dx) > 2, still });
+    if (!after || Math.abs(dy) > 2 || Math.abs(dx) > 2 || still || wide) out.push({ wide, path, i, label, dy, dx, gone: !after, moved: !after || Math.abs(dy) > 2 || Math.abs(dx) > 2, still });
   }
-  console.log(k === 0 ? `${path} (new device)` : path, "controls:", n);
+  console.log(path, "controls:", n);
 }
 writeFileSync(process.env.OUT_JSON ?? `jumps-${vpName}.json`, JSON.stringify(out, null, 1));
 console.log("moved:", out.filter((x) => x.moved).length, "| changed no text:", out.filter((x) => x.still).length, "| wider than the screen:", out.filter((x) => x.wide).length);

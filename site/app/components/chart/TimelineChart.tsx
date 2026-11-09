@@ -39,7 +39,7 @@ export interface TimelineChartProps {
 
 /** Right padding after the horizon; the value axis sits at the plot's start edge (see AxisLabels), not in a strip. */
 const STRIP = 12;
-const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
+const TOP = 20; // room for the top axis label above its gridline
 const BOTTOM = 26;
 
 /**
@@ -147,7 +147,7 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
           <path d={contribLine(shown) ?? ""} fill="none" className={cx("stroke-chart-contributions", pickDim(highlight, "contributions"))} strokeWidth="1.5" />
           <path d={netLine(shown) ?? ""} fill="none" className={cx(enteredReturn ? "stroke-chart-entered" : "stroke-chart-net", pickDim(highlight, "net"))} strokeWidth="2" strokeDasharray={enteredReturn ? "6 4" : undefined} />
         </g>
-        {/* after the lines, with the card-colour halo, so no line runs through a value label (2026-10-26) */}
+        {/* after the lines, with the card-colour halo, so no line runs through a value label */}
         <AxisLabels ticks={ticks} y={y} />
         {blocked && (
           <g clipPath={`url(#${clip})`}>

@@ -1,6 +1,6 @@
 // A product's or company's name inside a Hebrew line. A name with Hebrew in it is laid out right to left whatever letter it starts with:
 // a plain <bdi> takes its direction from the first letter, so "MTF סל (4D) S&P 500" was laid out left to right and read
-// "S&P 500 (4D) סל MTF" from the right (2026-11-05). A name with no Hebrew keeps its own direction.
+// "S&P 500 (4D) סל MTF" from the right. A name with no Hebrew keeps its own direction.
 import { cx } from "./cx";
 import { GERSHAYIM, gershayim } from "../../lib/format";
 export { gershayim };
@@ -14,10 +14,10 @@ const LATIN_NUMBER = /([A-Za-z&]+) (\d)/g;
 export const keepIndexWhole = (name: string) => name.replace(LATIN_NUMBER, "$1\u00a0$2");
 
 // A Latin run inside a Hebrew line ("MSCI AC World (4A) ETF") broken at a line's end is drawn with its end at the start of the next line
-// and its start at the end of the one before: readers took "ETF" for a word of the next line (fresh readers, round 3, 2026-11-07).
+// and its start at the end of the one before: else "ETF" reads as a word of the next line.
 const LATIN_RUN = /[A-Za-z][\w&.'()-]*(?: [\w&.'()-]+)+/g;
 // a fund's name quoted in a Hebrew title is laid out right to left on its own: its closing quote after a number ("ת״א 35") was drawn before
-// the number, so the name read "35 KTF (4A) ת״א" with the "35" thrown to its far end (fresh readers, round 3, 2026-11-07)
+// the number, so the name read "35 KTF (4A) ת״א" with the "35" thrown to its far end
 const QUOTED = /"([^"]+)"/g;
 /** A document's Hebrew title as drawn: each Latin run, up to 40 characters, on one line, a gershayim written as one, and a quoted name isolated. */
 export const keepTitleWhole = (title: string) =>

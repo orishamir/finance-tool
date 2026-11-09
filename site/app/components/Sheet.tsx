@@ -1,10 +1,11 @@
 // A native <dialog>: a bottom sheet below lg (grab handle, overlay, slides up), and at lg either a card
 // beside its anchor (provenance, rule and term cards) or a centred dialog (design-system 3.9, spec 3).
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { site } from "../copy";
 import { IconArrowBack, IconChevronDown, IconClose } from "./icons";
 import { Button, cx } from "./ui";
 import { cssMs } from "./kit/chart-glide-math";
+import { useIsoLayoutEffect } from "../lib/hooks";
 
 export interface SheetProps {
   open: boolean;
@@ -19,7 +20,7 @@ export interface SheetProps {
   onBack?: () => void;
   /**
    * What the sheet shows, where one open sheet shows one thing after another (the provenance sheet's drill-in and back): a new value starts
-   * at the top too (independent check of pass 7: a figure opened from inside a sheet opened at the scroll of the one before, its head hidden).
+   * at the top too (a figure opened from inside a sheet opened at the scroll of the one before, its head hidden).
    */
   view?: string | number;
   children: ReactNode;
@@ -27,7 +28,7 @@ export interface SheetProps {
 }
 
 /**
- * More of the body lies below what the sheet shows (independent check of pass 5: a gap sheet's third year sat under the edge with nothing
+ * More of the body lies below what the sheet shows (a gap sheet's third year sat under the edge with nothing
  * saying more followed). A pixel's slack for a fractional scroll position.
  */
 export const moreBelow = (el: { scrollHeight: number; scrollTop: number; clientHeight: number }) => el.scrollHeight - el.scrollTop - el.clientHeight > 1;
@@ -41,7 +42,7 @@ type Body = { scrollHeight: number; scrollTop: number; clientHeight: number; chi
 
 /**
  * Keeps the sign that more lies below up to date for as long as the sheet is open: on its scroll, on a change of its size or of any block
- * in it (a fold opening inside the sheet; pass 7: the sign was measured after renders only), and on blocks added or removed. Returns the
+ * in it (a fold opening inside the sheet; the sign was measured after renders only), and on blocks added or removed. Returns the
  * cleanup.
  */
 export function watchMoreBelow(body: Body, set: (more: boolean) => void, env: MoreEnv = globalThis as MoreEnv): () => void {
@@ -72,7 +73,6 @@ function unlockScroll() {
   if (--locks === 0) document.documentElement.style.overflow = "";
 }
 
-const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, view, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -89,7 +89,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
     const dialog = ref.current;
     if (!dialog) return;
     if (open) {
-      // every opening starts at the top: the body kept the last sheet's scroll, and a second sheet opened at the first one's end (pass 7)
+      // every opening starts at the top: the body kept the last sheet's scroll, and a second sheet opened at the first one's end
       if ((!wasOpen.current || lastView.current !== view) && body.current) body.current.scrollTop = 0;
       if (closing.current) {
         window.clearTimeout(closing.current);
@@ -119,7 +119,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
     return () => window.removeEventListener("resize", onResize);
   }, [open, anchor, pc]);
 
-  // The page behind an open sheet does not scroll (audit 2026-10-24, A99); a count, since sheets can stack.
+  // The page behind an open sheet does not scroll; a count, since sheets can stack.
   useEffect(() => {
     if (!open) return;
     lockScroll();
@@ -167,7 +167,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         <span />
       </div>
       <div className="sheet-body" ref={body}>
-        {/* floats in the top corner beside the first line, and stays there while the body scrolls (2026-10-25: it had a row
+        {/* floats in the top corner beside the first line, and stays there while the body scrolls (it had a row
             of its own above the content) */}
         <div className="sheet-head" data-back={onBack ? "" : undefined}>
           {onBack ? (
@@ -185,7 +185,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
       </div>
       {/* a strip of its own under the scrolling body, always there at one height: never covers a line, never moves one, empty at the end */}
       <div className="sheet-more" data-more={more ? "" : undefined} aria-hidden="true">
-        {/* words with the arrow: a fade alone read as the sheet cut off in a still shot (pass 7) */}
+        {/* words with the arrow: a fade alone read as the sheet cut off in a still shot */}
         <span className="sheet-more-cue">
           {site.moreBelow}
           <IconChevronDown size={16} />

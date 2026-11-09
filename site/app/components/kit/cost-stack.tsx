@@ -1,13 +1,13 @@
-// A cost split into its parts as one horizontal bar (founder, 2026-10-27, the index page): the parts in their own hues side by side,
+// A cost split into its parts as one horizontal bar (the index page): the parts in their own hues side by side,
 // the bar's length the total on a scale shared by every bar it is compared with. Bars that compare are drawn one above the other
 // ("10x easier to comprehend when the bars are above each other"). A total beyond the scale is drawn to the edge with a break mark.
 //
-// It moves and answers (founder, 2026-11-04): when a figure changes, every part's width and the amount written in it glide to the new value
+// It moves and answers: when a figure changes, every part's width and the amount written in it glide to the new value
 // (the chart glide of chart-glide.tsx, so one that keeps changing never restarts), and a part that falls to zero shrinks to nothing, keeping its
 // place, rather than vanishing. Pointing at a part, or tapping it, shows a box with every part's name and amount and the total, the part
 // pointed at with its share, what it is when the name does not say, and where its price comes from.
 //
-// Every part that holds shekels writes its amount (pass 6, the lead: the "fees on fees" remainder was a 0.3 px sliver with no amount, and
+// Every part that holds shekels writes its amount (the "fees on fees" remainder was a 0.3 px sliver with no amount, and
 // the amounts beside it fell 2 to 75 ₪ short of the total): inside the part where it fits, else, on a `md` bar, under the bar at the part's
 // place, with its colour; and always in the box. The rounding that makes the amounts add up to the total never goes to a part whose amount
 // is not written.
@@ -46,9 +46,9 @@ export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) =>
   const ok = (i: number) => !can || !!can[i];
   // rounding moves each part by less than a shekel, and a target made of rounded figures (a bar's total is the rounded value without costs
   // less the rounded value left, less a group's rounded figure) is up to a shekel and a half from its exact sum: a target further off than
-  // both is a part missing from the sum, never rounding (independent check of pass 6: with the remainder dropped, its shekels went to the
-  // other parts and every sum still matched; pass 7: a hedged pair on MSCI ACWI was 1.46 off with one written part, and the page fell over)
-  // plus the float's own precision on a huge total (independent check of pass 7: a plan typed at 1,000 billion ₪ for 40 years at 50% gives
+  // both is a part missing from the sum, never rounding (with the remainder dropped, its shekels went to the
+  // other parts and every sum still matched; a hedged pair on MSCI ACWI was 1.46 off with one written part, and the page fell over)
+  // plus the float's own precision on a huge total (a plan typed at 1,000 billion ₪ for 40 years at 50% gives
   // figures near 10^18, whose last 512 ₪ a double cannot hold; the guard fired on every bar there)
   const room = Math.max(1, xs.filter((_, i) => ok(i)).length) + 1.5 + Math.abs(target) * 1e-12;
   const off = target - xs.reduce((a, x) => a + x, 0);
@@ -72,7 +72,7 @@ const writesOf = (parts: readonly CostPart[]) => parts.map((p) => p.value > 0 &&
 
 /**
  * The whole shekels of each part: a group with a figure of its own written elsewhere (`groups`, "the account charges 1,043 ₪") first gets
- * that figure, shared among its parts, and the other parts share what is left of the total (pass 7: the account list said 1,043 and the
+ * that figure, shared among its parts, and the other parts share what is left of the total (the account list said 1,043 and the
  * bar's account parts added up to 1,044, the bar's rounding having handed a shekel to an account part).
  */
 function wholesOf(parts: readonly CostPart[], total: number, written: readonly boolean[], groups?: Readonly<Record<string, number>>): number[] {
@@ -92,7 +92,7 @@ function wholesOf(parts: readonly CostPart[], total: number, written: readonly b
 /**
  * The whole-shekel amount a bar writes for each part, as CostStack writes it, adding up to `total` (else the parts' rounded sum); 0 for a
  * part it does not write. Figures beside the bars that speak of their parts (a difference between two bars) are made from these, so they
- * agree with what the bars write (pass 6 readers: "החשבון: 1 ₪ יותר" beside two bars whose account parts both came to 1,057).
+ * agree with what the bars write ("החשבון: 1 ₪ יותר" beside two bars whose account parts both came to 1,057).
  */
 export function writtenAmounts(parts: readonly CostPart[], total?: number, groups?: Readonly<Record<string, number>>): number[] {
   const w = writesOf(parts);
@@ -114,7 +114,7 @@ export function placeLabels(at: readonly number[], widths: readonly number[], ro
 }
 
 /** The part colours on which an amount inside reads better in light ink. */
-// the tax's rose too (2026-11-08): near-black on it read at 3.55:1, white at 4.73:1
+// the tax's rose too: near-black on it read at 3.55:1, white at 4.73:1
 const DARK_FILLS: ReadonlySet<string> = new Set(["bg-chart-cost-other", "bg-chart-tax"]);
 
 /** A part's width is at least a sliver while its bar has anything, and a part this thin has no edge of its own. */
@@ -126,9 +126,9 @@ const SLIVER = 0.01;
  * `scale`: the total that fills the whole width. `size`: `sm` for a list row, `md` for a figure of its own. `label` is the bar's spoken
  * summary; the figures beside it are the caller's. `highlight`: the legend item set apart, on every bar it is compared with.
  * A `sm` bar sits in a row that picks the row on a tap: a mouse's click is left to the row (pointing shows the box), and a finger's tap
- * shows the part's box and still picks the row (2026-11-08: on a phone a tap showed nothing of the part). A part of the bar that is not in `parts` any more
+ * shows the part's box and still picks the row (on a phone a tap showed nothing of the part). A part of the bar that is not in `parts` any more
  * keeps its place and shrinks to nothing. `total`: the whole-shekel total the caller writes beside the bar; the amounts written in the parts,
- * under the bar and in its box are whole shekels that add up to it (pass 5 readers: 693 + 354 + 719 + 5,555 = 7,321 beside 7,323). Without
+ * under the bar and in its box are whole shekels that add up to it (693 + 354 + 719 + 5,555 = 7,321 beside 7,323). Without
  * it, to the parts' own rounded sum. A `md` bar keeps a line under it, at one height, for the amounts too narrow to write inside; the root
  * carries the total and the amounts written (`data-total`, `data-amounts`), which a render test holds together on the pages. The chart
  * check (site/scripts/chart-check) finds it by `data-chart` and reads the bar's start (`data-zero`) and its parts (`data-mark`).
@@ -184,7 +184,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   const under = size === "md" ? list.map((p, i) => i).filter((i) => list[i]!.inside === true && shows(i) && !fits[i]) : [];
   const underText = under.map((i) => amountOf(list[i]!, i).toLocaleString("he-IL"));
   // where the amounts with their air don't fit side by side under the bar, they give up the air: placed with it, the last ones were pushed
-  // back over each other (2026-11-08, the chart check: at 320 px the kit's "693" ran its colour mark into "3")
+  // back over each other (the chart check: at 320 px the kit's "693" ran its colour mark into "3")
   const underAir = underText.reduce((a, t) => a + labelPx(t) + 4, -4) <= px ? 8 : 0;
   const underAt = placeLabels(under.map((i) => (starts[i]! + widths[i]! / 2) * px), underText.map((t) => labelPx(t, underAir)), px);
 
@@ -215,7 +215,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
               {...(named ? pick.bind(p.id, size === "md" ? true : "touch") : {})}
               className={cx(
                 "relative flex shrink-0 items-center justify-center text-xs font-semibold tabular-nums whitespace-nowrap",
-                // the remainder's grey is dark (pass 7: re-picked through the palette validator) and the tax's rose mid-dark: their amounts are written in light ink
+                // the remainder's grey is dark (re-picked through the palette validator) and the tax's rose mid-dark: their amounts are written in light ink
                 DARK_FILLS.has(p.className) ? "text-foreground" : "text-background",
                 live[i] && i !== lastLive && "border-e border-card",
                 i === firstLive && "rounded-s-sm",
@@ -265,7 +265,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
 
 /**
  * The box of a bar as a whole: every part's name and amount, the one pointed at with its share, what it is and its source, then the total.
- * It stands from one end of the bar and is moved along, before paint, so it stays on the screen (2026-11-08: a list row's bar on a 320 px
+ * It stands from one end of the bar and is moved along, before paint, so it stays on the screen (a list row's bar on a 320 px
  * phone is narrower than the box, which ran 65 px past the screen's edge once a tap showed it).
  */
 function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; /** Whole shekels, of the parts that add up to the total. */ amount: number }[]; active: string; share: number; total: number; toStart: boolean }) {

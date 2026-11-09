@@ -3,6 +3,16 @@ import { z } from "zod";
 
 export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "date must be YYYY-MM-DD");
 
+/**
+ * The calendar date in Israel, `YYYY-MM-DD`, whatever the machine's clock zone: `toISOString().slice(0, 10)` is the UTC date, a day behind
+ * Israel's for two or three hours after midnight, and GitHub's runners keep UTC. The run date of the pipeline, the data check and the site
+ * build. The same function for the tools is tools/israel-date.mjs.
+ */
+export function israelToday(now: Date = new Date()): string {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Jerusalem", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now).map((p) => [p.type, p.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
 /** data-schema §2, units. */
 export const unit = z.enum([
   "nis",
@@ -68,7 +78,7 @@ export const updateRule = z.union([
 ]);
 
 /**
- * The words a link to a cited web page opens at (`#:~:text=`; founder, 2026-11-07). Never written in a record under data/: the site
+ * The words a link to a cited web page opens at. Never written in a record under data/: the site
  * attaches it when it reads the record, from data/sources/fragments.json (the validator fails a record file that carries one). Declared
  * on the places that can carry it so a record the site checks again after reading keeps it.
  */
@@ -148,8 +158,8 @@ export const feeBase = z.enum([
 ]);
 
 /**
- * data-schema §2, wrapper IDs (`data/instruments/wrappers/`): the containers whose rules apply to whatever they hold (D6, amended
- * 2026-10-26). Makam, government bonds and the money-market funds are securities held in a wrapper, not wrappers (`securityId`).
+ * data-schema §2, wrapper IDs (`data/instruments/wrappers/`): the containers whose rules apply to whatever they hold (D6).
+ * Makam, government bonds and the money-market funds are securities held in a wrapper, not wrappers (`securityId`).
  */
 export const wrapperId = z.enum([
   "current-account",
@@ -171,14 +181,14 @@ export type WrapperId = z.infer<typeof wrapperId>;
 
 /**
  * data-schema §2, security IDs (`data/instruments/securities/`): what a person buys inside a wrapper and that carries rules of its own,
- * a security held directly or a fund (D6, amended 2026-10-26). Each is held in a securities account (`held_in`).
+ * a security held directly or a fund (D6). Each is held in a securities account (`held_in`).
  */
 export const securityId = z.enum(["makam", "government-bond", "money-market-fund-daily", "money-market-fund-renewable"]);
 
 export type SecurityId = z.infer<typeof securityId>;
 
 /**
- * data-schema §2, product IDs: what a person chooses between, a wrapper or a security held in one (D6, 2026-10-26). A guide page, a comparison
+ * data-schema §2, product IDs: what a person chooses between, a wrapper or a security held in one (D6). A guide page, a comparison
  * option and a term's `wrapper_ids` are named by product id; the wrapper a security sits in is its record's `held_in`.
  */
 export const productId = z.union([wrapperId, securityId]);

@@ -4,6 +4,7 @@
 import { balanceFee, corporateEventFee, currentAccountFee, custodyFee, depositFee, feeForMonth, fixedFee, navBought, tradeCommission } from "./formulas/fees.ts";
 import { earlySettlement, limitStanding, moneyStory } from "./formulas/study-story.ts";
 import { kindRecord, stretchRange, trackingBeyondFees } from "./formulas/fund-gap.ts";
+import { irishFundUsWithholding } from "./formulas/fund-withholding.ts";
 import {
   bracketTaxOnTopSlice,
   capitalGainsTax,
@@ -20,11 +21,11 @@ import {
   makamPrice,
   socialContributions,
 } from "./formulas/holding-tax.ts";
-import { breakCount, listFeeRange, mostCommonRate, rateRange } from "./formulas/account-interest.ts";
+import { bestOpenOffer, breakCount, listFeeRange, mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { currencyExposureShare, stockExposureShare } from "./formulas/track-exposure.ts";
 import { companyAssets, groupFeeRange } from "./formulas/track-groups.ts";
 import { changeEffect, sweep } from "./formulas/step-effect.ts";
-import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, realValue, taxYearOf } from "./formulas/time.ts";
+import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, paidInAsEntered, realValue, taxYearOf } from "./formulas/time.ts";
 import { runBond } from "./ledgers/bond.ts";
 import { runChildSavings } from "./ledgers/child-savings.ts";
 import { runDeposit } from "./ledgers/deposit.ts";
@@ -61,6 +62,8 @@ export const formulas = {
   "F-04": fxPath,
   "F-05": contributions,
   "F-06": realValue,
+  "F-106": paidInAsEntered,
+  "F-107": irishFundUsWithholding,
   "F-07": annualToMonthly,
   "F-08": runSecurities,
   "F-09": runSecurities,
@@ -138,6 +141,7 @@ export const formulas = {
   "F-102": currentAccountFee,
   "F-103": corporateEventFee,
   "F-105": listFeeRange,
+  "F-108": bestOpenOffer,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

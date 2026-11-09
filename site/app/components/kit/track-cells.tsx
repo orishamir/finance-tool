@@ -1,4 +1,4 @@
-// What a track's cells hold, for every list of tracks (2026-11-03, with the track browser: the company page's table and the browser's
+// What a track's cells hold, for every list of tracks (with the track browser: the company page's table and the browser's
 // both draw them, so they live here): the regulator's two fee averages, the stock and currency exposure with its rings, and the labels
 // beside a track's name. Each number goes through the provenance component; an empty one says why in its words and sheet.
 import { r3workbench, company as copy, track as trackCopy } from "../../copy";
@@ -13,7 +13,7 @@ import { ShareRings } from "./rings";
 import { Swatch } from "./chart-parts";
 import { Tag } from "./tag";
 
-/** The track's page on the regulator's Gemel-Net (read in a browser 2026-11-03: idGuf is the fund number, OCHLUSIYA=1 the general
+/** The track's page on the regulator's Gemel-Net (idGuf is the fund number, OCHLUSIYA=1 the general
  * population, which every listed track is). Pensia-Net is a search form with no page per fund: a pension track has no link. */
 export function gemelNetUrl(dataset: string, fundId: number | string): string | null {
   return dataset === "gemelnet" ? `https://gemelnet.cma.gov.il/views/perutHodshi.aspx?idGuf=${fundId}&OCHLUSIYA=1` : null;
@@ -36,7 +36,7 @@ export function GemelNetLink({ fundId, dataset }: { fundId: number | string; dat
   );
 }
 
-/** A regulator fee average: the number, "אין" for a deposit fee the product's regulation does not have (PF-06), "—" for an empty one (its sheet heads "עוד לא דווח"; no caution mark, founder 2026-11-08), and the caution mark for a negative one. Nothing here ranks a track. */
+/** A regulator fee average: the number, "אין" for a deposit fee the product's regulation does not have (PF-06), "—" for an empty one (its sheet heads "עוד לא דווח"; no caution mark), and the caution mark for a negative one. Nothing here ranks a track. */
 export function FeeNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
   const none = depositFeeNoneByRule(value);
   const missing = value.value === null && !none;

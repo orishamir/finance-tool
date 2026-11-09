@@ -4,6 +4,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
   cmaPeriodFile,
+  israelToday,
   dimensionId,
   dimensionRecord,
   feesSnapshot,
@@ -29,6 +30,8 @@ import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
 import { pointedIds } from "./scope";
 import { readJsonCached, readParsedCached, readTextCached } from "./read-cache.server";
+import { sourceHref, type RefLink } from "./sources";
+import { heCollator } from "./format";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -41,28 +44,27 @@ function findRoot(): string {
 
 export const root = findRoot();
 
-/** The run date (D3, architecture 3.4: the engine never reads a clock; the site passes the date in). */
+/** The run date (D3, architecture 3.4: the engine never reads a clock; the site passes the date in), on Israel's calendar. */
 export function today(): string {
-  return new Date().toISOString().slice(0, 10);
+  return israelToday();
 }
 
-/** The newest `checked` date on any record under data/ (audit 2026-10-24, A29): what "data as of" in the footer says. */
+/** The newest `checked` date on any record under data/: what "data as of" in the footer says. */
 export function dataAsOf(): string {
   return newestChecked(join(root, "data"));
 }
 
-function readJson<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
-  return readParsedCached(path, schema);
-}
-
-function readDir<T extends z.ZodType>(sub: string, schema: T): z.infer<T>[] {
+/** Every JSON record in a folder under the repository root, parsed by `schema`, in file-name order, with its file name. */
+export function readDirFiles<T extends z.ZodType>(sub: string, schema: T): { file: string; record: z.infer<T> }[] {
   const dir = join(root, sub);
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
     .sort()
-    .map((f) => readJson(join(dir, f), schema));
+    .map((f) => ({ file: f, record: readParsedCached(join(dir, f), schema) }));
 }
+
+const readDir = <T extends z.ZodType>(sub: string, schema: T): z.infer<T>[] => readDirFiles(sub, schema).map((x) => x.record);
 
 export function loadRules(): Record<string, RuleRecord> {
   return Object.fromEntries(readDir("data/rules", ruleRecord).map((r) => [r.id, r]));
@@ -71,8 +73,8 @@ export function loadRules(): Record<string, RuleRecord> {
 /**
  * The records a page's rule cards point at (`derived_from`, a general rule's `examples`, and the rules its figures cite, which a
  * figure's sheet shows as chips), and the ones those point at in turn, that the page does not hold itself: a page passes them as
- * `ProvenanceData.pointed`, so every chip on a card opens its record (reviews, 2026-10-26: BRK-35's "לדוגמה" chip, then TXG-04's
- * figure chips TXG-02 and TXG-03, opened empty cards). They never join the page's own rules, which its checklist and its runs read.
+ * `ProvenanceData.pointed`, so every chip on a card opens its record (BRK-35's "לדוגמה" chip, TXG-04's figure
+ * chips TXG-02 and TXG-03). They never join the page's own rules, which its checklist and its runs read.
  */
 export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
   const own = new Set(Array.isArray(have) ? have.map((r) => r.id) : Object.keys(have));
@@ -98,7 +100,7 @@ export function loadWrappers(): WrapperRecord[] {
   return readDir("data/instruments/wrappers", wrapperRecord);
 }
 
-/** The securities (D6, amended 2026-10-26): makam, government bonds and the money-market funds, each held in a securities account. */
+/** The securities (D6): makam, government bonds and the money-market funds, each held in a securities account. */
 export function loadSecurities(): SecurityRecord[] {
   return readDir("data/instruments/securities", securityRecord);
 }
@@ -159,7 +161,6 @@ export interface CmaData {
   periodValue: SiteValue;
 }
 
-const collator = new Intl.Collator("he");
 
 function latestCmaFiles(): Map<string, CmaPeriodFile> {
   const files = readDir("data/cma", cmaPeriodFile);
@@ -219,7 +220,7 @@ export function loadCma(): CmaData {
       byCompany.set(companyId, c);
     }
   }
-  const companies = [...byCompany.values()].sort((a, b) => collator.compare(a.name, b.name));
+  const companies = [...byCompany.values()].sort((a, b) => heCollator.compare(a.name, b.name));
   const newest = [...latest.values()].sort((a, b) => (a.report_period < b.report_period ? 1 : -1))[0]!;
   const t = today();
   const periodValue: SiteValue = {
@@ -282,7 +283,7 @@ export interface TermRow {
 /**
  * The glossary rows (docs/glossary.md section 1), read from data/terms/ (generated from research/glossary
  * by packages/pipeline/scripts/gen-terms.ts, which keeps the strongest source per spelling). Sorted with the
- * Hebrew collator.
+ * Hebrew heCollator.
  */
 export function loadTerms(): TermRow[] {
   return readDir("data/terms", termRecord)
@@ -296,7 +297,19 @@ export function loadTerms(): TermRow[] {
       wrapperIds: t.wrapper_ids,
       exposureIds: t.exposure_ids ?? [],
     }))
-    .sort((a, b) => collator.compare(a.he, b.he));
+    .sort((a, b) => heCollator.compare(a.he, b.he));
+}
+
+/**
+ * The glossary cards for some words, by word. A word with senses in several products (תחנת יציאה: a deposit's exit point, a child
+ * savings track's switch date) takes its sense in `product`, else the first in glossary order.
+ */
+export function termsFor(words: Iterable<string>, product: string): Record<string, TermRow> {
+  const wanted = new Set(words);
+  const own = (t: TermRow) => Number(t.wrapperIds.includes(product));
+  const out: Record<string, TermRow> = {};
+  for (const t of loadTerms().filter((x) => wanted.has(x.he)).sort((a, b) => own(b) - own(a))) if (!out[t.he]) out[t.he] = t;
+  return out;
 }
 
 export interface NotCoveredRow {
@@ -344,7 +357,7 @@ export function loadFormulaParameters(): Record<string, string[]> {
   return out;
 }
 
-/** docs/method.md: per formula, the math its entry writes ($`…`$, GitHub's inline math), in order: what the formula's sheet shows (founder, 2026-11-08). */
+/** docs/method.md: per formula, the math its entry writes ($`…`$, GitHub's inline math), in order: what the formula's sheet shows. */
 export function loadFormulaTex(): Record<string, string[]> {
   const doc = readTextCached(join(root, "docs/method.md"));
   const out: Record<string, string[]> = {};
@@ -355,7 +368,7 @@ export function loadFormulaTex(): Record<string, string[]> {
   return out;
 }
 
-/** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one (founder, 2026-10-26). */
+/** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one. */
 export function loadPublishersHe(): Record<string, string> {
   const rows = readJsonCached(join(root, "data/sources/publishers.json")) as Record<string, { publisher_he?: string }>;
   return Object.fromEntries(Object.entries(rows).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
@@ -365,13 +378,13 @@ export function loadPublishersHe(): Record<string, string> {
 export type OpenQuestionView = { status: "open" | "narrowed"; title_he?: string; blocks_he?: string };
 
 /**
- * data/open-questions.json (data-schema 3.15) for every page's sheets, through the root loader (2026-10-26). Only the questions a
+ * data/open-questions.json (data-schema 3.15) for every page's sheets, through the root loader. Only the questions a
  * sheet has something to say about: one with Hebrew lines (every question the site names). Any other code opens the sheet's general
- * lines, which are true of an open question. An answered question is deleted from the rule base (2026-11-08), so none is closed.
+ * lines, which are true of an open question. An answered question is deleted from the rule base, so none is closed.
  */
 export function loadOpenQuestions(): Record<string, OpenQuestionView> {
   const out: Record<string, OpenQuestionView> = {};
-  for (const q of readJson(join(root, "data/open-questions.json"), openQuestionsFile)) {
+  for (const q of readParsedCached(join(root, "data/open-questions.json"), openQuestionsFile)) {
     if (!q.title_he && !q.blocks_he) continue;
     out[q.id] = { status: q.status, ...(q.title_he ? { title_he: q.title_he } : {}), ...(q.blocks_he ? { blocks_he: q.blocks_he } : {}) };
   }
@@ -399,7 +412,7 @@ export function loadParameterAnchors(): Record<string, string> {
 
 export interface PinnedRules {
   rows: { ids: string[]; question_he: string; answer_he?: string }[];
-  /** The "הידעת?" block of the rules page (founder, 2026-11-01): a sentence per rule, its figures in {ID:figure} slots, most interesting first. */
+  /** The "הידעת?" block of the rules page: a sentence per rule, its figures in {ID:figure} slots, most interesting first. */
   facts: { id: string; text_he: string }[];
   /** Wrapper id → two or three rule ids for its guide page's "worth knowing" block. */
   guide_blocks: Record<string, string[]>;
@@ -416,4 +429,37 @@ export function loadHomeGuideDoor(): { id: string; name: string }[] {
 /** data/parameters/pinned-rules.json (P-09): the questions at the top of the rules page and the facts per guide page. A site judgement, not a rule. */
 export function loadPinnedRules(): PinnedRules {
   return readJsonCached(join(root, "data/parameters/pinned-rules.json")) as PinnedRules;
+}
+
+/** The site and data ids the export file carries (the transfer page's loader): the run date, and the regulator's period and newest check. */
+export function exportSiteInfo(): { version: string; data: string } {
+  const t = today();
+  const cma = loadCma();
+  const checked = cma.files.map((f) => f.checked).sort().at(-1) ?? t;
+  return { version: `r3-${t}`, data: `cma-${String(cma.periodValue.value)}@${checked}` };
+}
+
+/** A link written in an il-finance reference under a rule's heading, found by its link text or address. */
+export function refLink(file: string, heading: string, match: RegExp): RefLink | null {
+  const path = join(root, ".claude/skills/il-finance/references", file);
+  if (!existsSync(path)) return null;
+  const doc = readTextCached(path);
+  const start = doc.indexOf(`### ${heading}`);
+  if (start < 0) return null;
+  const end = doc.indexOf("\n### ", start + 5);
+  const section = doc.slice(start, end < 0 ? undefined : end);
+  for (const m of section.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g)) if (match.test(m[1]!) || match.test(m[2]!)) return { href: sourceHref({ url: m[2]! }), title: m[1]!, ruleId: heading.split(" ")[0]! };
+  return null;
+}
+
+/** Every rule id a record cites under any of `keys`, at any depth. */
+export function collectRuleIds(node: unknown, keys: readonly string[] = ["rule_ids"], out = new Set<string>()): Set<string> {
+  if (Array.isArray(node)) node.forEach((n) => collectRuleIds(n, keys, out));
+  else if (node && typeof node === "object") {
+    for (const [k, v] of Object.entries(node)) {
+      if (keys.includes(k) && Array.isArray(v)) v.forEach((id) => typeof id === "string" && out.add(id));
+      else collectRuleIds(v, keys, out);
+    }
+  }
+  return out;
 }

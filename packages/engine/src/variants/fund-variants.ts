@@ -37,7 +37,7 @@ export interface VariantExposure {
     /** The provider's tariff, the same for every variant. */
     tariff: SecuritiesInput["tariff"];
     broker?: SecuritiesInput["broker"];
-    /** F-14 (2026-10-26): the provider whose tariff this is, bank or not (`memberKindOf`): a money-market unit pays custody only at a non-bank. */
+    /** F-14: the provider whose tariff this is, bank or not (`memberKindOf`): a money-market unit pays custody only at a non-bank. */
     memberKind?: SecuritiesInput["memberKind"];
     profile: Profile;
     /** W-8BEN on file (TXF-13), the person's own fact. */
@@ -72,7 +72,7 @@ export interface VariantRow {
   run?: RunResult;
   labels: Label[];
   rank?: number;
-  /** E4 (2026-10-25): the fund's currency differs from its exposure's; the return is the exposure's, not converted between the two. */
+  /** E4: the fund's currency differs from its exposure's; the return is the exposure's, not converted between the two. */
   currencyMismatch?: { fund: string; exposure: string };
 }
 
@@ -138,7 +138,7 @@ export function sumFees(rec: FundRecord): number {
   return v(rec.fees.fixed_management) + v(rec.fees.variable_management) + v(rec.fees.trustee);
 }
 
-/** A-10 as the record holds it (2026-10-31): the yield as a fraction and the payments a year; undefined when the record has none. */
+/** A-10 as the record holds it: the yield as a fraction and the payments a year; undefined when the record has none. */
 export function recordDistribution(rec: Pick<FundRecord, "id" | "distribution">): { yield: number; perYear: number } | undefined {
   if (!rec.distribution) return undefined;
   const y = fraction(rec.distribution.yield, "pct_per_year", `fund ${rec.id} distribution.yield`);
@@ -146,10 +146,23 @@ export function recordDistribution(rec: Pick<FundRecord, "id" | "distribution">)
 }
 
 /**
- * The fund the engine runs for a record, and the fee fields the record leaves empty (exported 2026-10-24 so the provider workbench builds
- * its fund the same way). `list`: the list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years.
+ * F-107's inputs from the fund's exposure (`us_dividends`), as fractions: the dividend yield of the index's US shares and their share of
+ * the index (1 when the record gives no weight: an index of US companies). Undefined when the exposure has no yield.
  */
-export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined, list?: GapList) {
+export function usDividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividends"> | undefined): { yield: number; weight: number } | undefined {
+  const u = exposure?.us_dividends;
+  const y = fraction(u?.yield, "pct_per_year", `exposure ${exposure?.id} us_dividends.yield`);
+  if (y === undefined) return undefined;
+  const w = u?.weight ? fraction(u.weight, "pct", `exposure ${exposure?.id} us_dividends.weight`) : 1;
+  return w === undefined ? undefined : { yield: y, weight: w };
+}
+
+/**
+ * The fund the engine runs for a record, and the fee fields the record leaves empty (exported so the provider workbench builds
+ * its fund the same way). `list`: the list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years.
+ * `usDividends`: the exposure's F-107 inputs (`usDividendsOf`), read for an Irish fund that holds the shares.
+ */
+export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined, list?: GapList, usDividends?: { yield: number; weight: number }) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {
@@ -164,7 +177,7 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   const published = fraction(f.tracking_difference_12m, "pct_per_year", `fund ${rec.id} fees.tracking_difference_12m`);
   const years = comparedYears(rec.tracking_record, list);
   const fromReports = published === undefined && years ? trackingBeyondFees(years, sumFees(rec)) : null;
-  // F-92 (b), 2026-11-07: where A-07 comes from the reports, measured against the fees charged, the variable fee counted forward is the mean
+  // F-92 (b): where A-07 comes from the reports, measured against the fees charged, the variable fee counted forward is the mean
   // charged in the record's years at today's rate; a record without such years (a foreign one, or a rate new this year) keeps the listed rate
   const charged = fromReports !== null && rec.tracking_record ? variableForward(rec.tracking_record.years, rec.tracking_record.variable_rate_since) : null;
   const variable = charged ?? listedVariable;
@@ -178,6 +191,13 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   if (variable !== undefined) drag.variable = variable;
   if (tracking !== undefined) drag.tracking = tracking;
   if (withholding !== undefined) drag.foreignWithholding = withholding;
+  // A-11 by F-107: an Irish fund that holds the shares, with no figure of its own and no published 12-month gap (which could hold the tax
+  // already); an A-07 from its years stands against a net index (F-92 (d)), where its own withholding does not show as a shortfall
+  const usWithholding = withholding === undefined && published === undefined && rec.domicile === "IE" && rec.replication?.method === "physical" && usDividends !== undefined;
+  if (usWithholding) {
+    drag.usDividends = usDividends;
+    notCollected.splice(notCollected.indexOf("fund_level_withholding_drag"), 1);
+  }
   const fund: Fund = { kind, drag };
   // A-08: half of the published median bid-ask spread.
   if (spread !== undefined) fund.halfSpread = spread / 2;
@@ -185,7 +205,7 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   const domicile = rec.domicile === "US" ? "us" : rec.domicile === "IE" ? "ireland" : undefined;
   if (domicile) fund.domicile = domicile;
   if (w8ben !== undefined) fund.w8ben = w8ben;
-  // E1 (2026-10-25): the price of one unit, in the unit's currency, for per-share commissions.
+  // E1: the price of one unit, in the unit's currency, for per-share commissions.
   const price = rec.share_price;
   if (price && typeof price.value === "number") {
     const unitCode = { nis: "ILS", usd: "USD", eur: "EUR" }[price.unit as string];
@@ -193,7 +213,7 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
     fund.sharePrice = price.value;
   }
   if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
-  // TXF-11 (2026-11-04): the fund's own annex reports a ruling that taxes it at sale and on distributions only.
+  // TXF-11: the fund's own annex reports a ruling that taxes it at sale and on distributions only.
   if (rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   return { fund, notCollected, hasManagement: management !== undefined };
 }
@@ -237,15 +257,15 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext, onList: r
 
   const list = gapListOf(rec, exposure.record, onList);
   // F-92 (c): a hedged fund's cost is mostly beyond its fees; with no year F-92 (d) compares and no published 12-month figure it is listed
-  // with its reason, never priced at A-07 = 0 (finance review: 5140165 was ranked here at A-07 = 0)
+  // with its reason, never priced at A-07 = 0 (5140165 was ranked here at A-07 = 0)
   if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") {
     return notEvaluated({ code: "missing-record", ruleIds: [], gapIds: [], detail: "a hedged fund with no compared year in its report and no published 12-month tracking figure (F-92 (c))" });
   }
-  const built = fundOf(rec, kind, policy === "distributing" ? dist : undefined, x.w8ben, list);
+  const built = fundOf(rec, kind, policy === "distributing" ? dist : undefined, x.w8ben, list, usDividendsOf(exposure.record));
   if (!built.hasManagement) return { ...base, notCollected: built.notCollected, kind: "not-evaluated", reasons: [{ code: "missing-record", ruleIds: [], gapIds: [], detail: "details not collected: fees.fixed_management" }] };
 
   // F-04: a fund in a foreign currency earns A-01 in that currency with A-03 on top; a shekel fund on a foreign exposure earns the same in
-  // shekels, unless it neutralises the exposure's currency (`hedged`, 2026-10-29): then A-03 does not move it.
+  // shekels, unless it neutralises the exposure's currency: then A-03 does not move it.
   const exposureCurrency = exposure.record.currency;
   const fundCurrency = isIls(rec.currency) ? "ILS" : rec.currency;
   const f = x.fxChange ?? 0;
@@ -255,7 +275,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext, onList: r
   if (fundCurrency === "ILS") {
     if (!isIls(exposureCurrency) && rec.hedged !== true) market.grossReturn = (1 + x.grossReturn) * (1 + f) - 1;
   } else {
-    // E4 (2026-10-25, index page): a fund in another currency than its exposure runs. A-01 stays in the exposure's currency and A-03
+    // E4 (index page): a fund in another currency than its exposure runs. A-01 stays in the exposure's currency and A-03
     // moves the fund's currency against the shekel; the FX line (F-13) and the tax index (TXF-03) are the fund's trading currency's.
     // The change of the fund's currency against the exposure's currency is not modelled, and the row says so (`currencyMismatch`).
     if (fundCurrency !== exposureCurrency) currencyMismatch = { fund: fundCurrency, exposure: isIls(exposureCurrency) ? "ILS" : exposureCurrency };
@@ -339,7 +359,7 @@ export function fundVariants(exposure: VariantExposure, lists: readonly FundList
   for (const e of ranking.entries) rows.find((r) => r.id === e.id)!.rank = e.rank;
 
   const group: VariantGroupLine = { id: "group:foreign-traded-abroad", gapId: "G-29", held: mine.filter((r) => r.domicile !== "IL" && r.trading_currency_on_tase === null).length };
-  // G-29 counts only foreign-domiciled funds traded abroad; a foreign fund traded on TASE is a candidate row of its own (review 2026-10-24).
+  // G-29 counts only foreign-domiciled funds traded abroad; a foreign fund traded on TASE is a candidate row of its own.
   const coverage = coverageLine(
     [
       ...rows.map((r) => ({ id: r.id, name: r.name, kind: r.kind, reasons: r.reasons })),

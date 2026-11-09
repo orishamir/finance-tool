@@ -1,6 +1,6 @@
-// The plan controls of the indices and fee pages (founder, 2026-10-28): the four plan numbers as plain sliders, the rest behind a
+// The plan controls of the indices and fee pages: the four plan numbers as plain sliders, the rest behind a
 // button; they write the values the person entered on this device (lib/inputs.tsx, the guide pages' own), never the saved goal
-// (founder, 2026-10-28: only the goal page speaks of a goal). At the bottom of the indices page, what each number changed by the
+// (only the goal page speaks of a goal). At the bottom of the indices page, what each number changed by the
 // same share does to the result (F-89, F-90).
 import { useMemo, useState } from "react";
 import { changedByShare, sweep } from "@finance-tool/engine";
@@ -12,7 +12,7 @@ import { pctBoundsFor } from "../../lib/goal";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
 import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/invest";
-import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
+import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
 import { ChangeChart, KnobStrip, NumberField, SegmentedControl, percentCheck, type Knob } from "../kit";
@@ -32,7 +32,7 @@ const k = c.plan.knobs;
 const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
 
 /** The pair the page prices, with the value left as a function of the plan (F-63's `L`): the figure with its provenance for the plan itself, the number alone for each run of a sweep. Null when the page prices no pair. */
-function usePairLeft(bundle: WorkbenchBundle, view: InvestView | null, pick: Pair) {
+function usePairLeft(bundle: IndicesBundle, view: InvestView | null, pick: Pair) {
   const house = pick?.house;
   const fund = pick?.fund;
   const index = view?.index;
@@ -60,8 +60,7 @@ const valueOf = (fi: FeeInputs, id: Id) => {
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-/** `only`: the knobs a page reads (a holding's amounts are its own statement's, so the fee page shows only years and return for it). */
-export function PlanKnobs({ fi, ranges, pct, only }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number }; only?: Id[] }) {
+export function PlanKnobs({ fi, ranges, pct }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number } }) {
   const setKnob = useSetKnob();
   const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
   const field = (id: Id) => {
@@ -75,12 +74,12 @@ export function PlanKnobs({ fi, ranges, pct, only }: { fi: FeeInputs; ranges: Kn
     { ...field("years"), unit: "years", ...span(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
     { ...field("ret"), unit: "pct_per_year", ...span(ranges["A-01"]), validate: percentCheck(pct) },
   ];
-  return <KnobStrip knobs={only ? knobs.filter((x) => only.includes(x.id as Id)) : knobs} />;
+  return <KnobStrip knobs={knobs} />;
 }
 
 /** F-89 and F-90: every plan number changed by the same share, on one chart with a marker and a table, at the bottom of the page.
  * 4 lines of 21 runs, the page's heaviest work, so it waits for the charts above to finish moving. */
-export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan: WorkbenchInputs; share: { min: number; max: number; step: number; start: number }; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
+export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan: WorkbenchInputs; share: { min: number; max: number; step: number; start: number }; bundle: IndicesBundle; view: InvestView | null; pick: Pair }) {
   const plan = useSettled(resting, 400);
   const left = usePairLeft(bundle, view, pick);
   const [at, setAt] = useState(share.start);
@@ -158,7 +157,7 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
         choicesLabel={ch.choices}
         head={[...ch.cols]}
         // on a phone the plan's number and the changed one share a column, one under the other: four figures side by side left each 63 px,
-        // and a typed plan's "50,000,000 ₪" ran over its neighbours (fresh readers, round 3, 2026-11-07)
+        // and a typed plan's "50,000,000 ₪" ran over its neighbours
         widths={[
           { pc: "24%", phone: "27%" },
           { pc: "18%", phone: "37%" },
@@ -173,7 +172,7 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
           const short = shortRow(...(l.id === "amount" || l.id === "monthly" ? [planValue[l.id].value as number, to.value as number] : []), diff?.value as number);
           const cells = [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? (
               // on a phone the word goes under the figure, on every row, so the column holds a nine-digit figure at the sliders' far ends with the
-              // largest share (independent check 2, should-fix 8: "7,369,509 ₪ יותר" was cut at 390 px)
+              // largest share ("7,369,509 ₪ יותר" was cut at 390 px)
               <span key="d" className="font-semibold">
                 <Num value={diff} display={fmt.nisWhole(Math.abs(diff.value as number))} /> <span className="whitespace-nowrap max-md:block">{(diff.value as number) >= 0 ? ch.more : ch.less}</span>
               </span>
@@ -198,18 +197,18 @@ const CHOICES = [-20, -10, 10, 20, 50];
 
 /**
  * What the button beside the sliders opens: inflation, and where the page's product needs them, employment and age; written to the
- * same entered values. The page leaves out what it never reads (founder 2026-10-28, every control earns its place).
+ * same entered values. The page leaves out what it never reads (every control earns its place).
  */
 export function OtherAssumptions({ inflation, inflationStart, pct, employment, age, need, insurance }: { inflation: SiteValue; /** The inflation field's start value (P-05): its reset says "חזרה ל־2.5%". */ inflationStart?: number; pct: { min: number; max: number }; employment?: boolean; age?: { min: number; max: number }; need?: { age?: FieldNeed; employment?: FieldNeed }; insurance?: FieldNeed }) {
   const { state, ready, setEntered, setAge, setEmployment, setInsurance } = useInputs();
   const ageCheck = (r: { min: number; max: number }) => (n: number) => (!Number.isInteger(n) ? valuesCopy.errors.nan : n < r.min || n > r.max ? `${valuesCopy.errors.age[0]} ${fmt.number(r.min)} ${valuesCopy.errors.age[1]}${fmt.number(r.max)}.` : null);
-  // a field the run cannot go without says "required" and why; the others stay "not required" (2026-11-07, independent check)
+  // a field the run cannot go without says "required" and why; the others stay "not required"
   // on a page whose run reads them (the fee page), an optional field says it changes the result, not what it marks on a graph
   const mark = (required: boolean | undefined) => <span className="text-muted-foreground font-normal">{required ? valuesCopy.required : valuesCopy.optional}</span>;
   const h = valuesCopy.hints;
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
-      {/* the hint is the field's own, under its box (2026-11-07, a fresh reader) */}
+      {/* the hint is the field's own, under its box */}
       <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} start={inflationStart} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
       {employment && (
         <div className="field">

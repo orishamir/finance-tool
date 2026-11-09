@@ -1,4 +1,4 @@
-// The yardstick of the rules page's search (founder, 2026-11-01: "make sure the search is good"): claims as a person would type
+// The yardstick of the rules page's search: claims as a person would type
 // them, each with the rules that answer it. A claim passes when one of its rules is in the first three results. A failing claim is
 // fixed in the search or its word table, never by dropping the claim. The rules were chosen by reading their records.
 export const claims: { claim: string; rules: string[] }[] = [
@@ -84,7 +84,7 @@ export const unseenClaims: { claim: string; rules: string[] }[] = [
   { claim: "פיקדון צמוד למדד הפסיד ועדיין שילמתי מס", rules: ["TXI-25"] },
 ];
 
-/** Claims an independent reviewer wrote from the records, without seeing the search or its word tables (2026-11-01): the fairest of the three lists. */
+/** Claims an independent reviewer wrote from the records, without seeing the search or its word tables: the fairest of the three lists. */
 export const reviewerClaims: { claim: string; rules: string[] }[] = [
   { claim: "אם אני מעביר את קרן ההשתלמות לחברה אחרת מתחילים לי את השש שנים מחדש", rules: ["SW-39", "TXH-19", "KH-14", "SW-20"] },
   { claim: "אחרי שש שנים כל מה שיש בקרן השתלמות פטור ממס, גם מה שהפקדתי מעל התקרה", rules: ["TXH-09", "TXH-08", "TXH-11", "KH-07"] },
@@ -103,7 +103,7 @@ export const reviewerClaims: { claim: string; rules: string[] }[] = [
   { claim: "אם קונים דרך ברוקר בחו״ל לא צריך לדווח למס הכנסה", rules: ["BRK-45", "TXG-20", "TXF-22", "TXF-01"] },
 ];
 
-/** Claims written last by someone who never saw the search, after its tuning ended (2026-11-01); nothing was tuned on them. They chose among their drafts after reading the records, so these lean toward the records' words. */
+/** Claims written last by someone who never saw the search, after its tuning ended; nothing was tuned on them. They chose among their drafts after reading the records, so these lean toward the records' words. */
 export const lastClaims: { claim: string; rules: string[] }[] = [
   { claim: "הפיקדונות בבנק מבוטחים על ידי המדינה", rules: ["REG-04", "REG-06"] },
   { claim: "קרן כספית זה בלי סיכון", rules: ["MF-41", "MF-07"] },

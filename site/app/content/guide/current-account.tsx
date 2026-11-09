@@ -1,5 +1,5 @@
 // Guide prose for חשבון עובר ושב (architecture 3.5: prose lives in content files; every figure is a Num).
-// Written 2026-10-23 from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
+// Written from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
@@ -22,9 +22,6 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <Term id="חשבון עובר ושב">חשבון הבנק השוטף</Term>: המשכורת נכנסת אליו וההוצאות יוצאות ממנו.
-        </p>
-        <p className="max-w-measure">
           לא כל בנק משלם <Term id="ריבית על יתרת זכות">ריבית על יתרת זכות</Term>. בנק שמשלם חייב להציג את התנאים, ובנק שלא משלם חייב לכתוב זאת בטבלת הריביות שלו. <Term prefix="מ" id="ריבית">ריבית</Term> שכן משולמת הבנק מנכה מס.
         </p>
         <Sentence measure>
@@ -32,7 +29,7 @@ export const content: GuideContent = {
           {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="וה" id="מסלול מורחב">מסלול המורחב</Term>{" "}
           {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי מוגבל בצו{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null} <RuleRef id="BANK-17" end="." />
         </Sentence>
-        {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark (founder, 2026-11-08) */}
+        {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark */}
         <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
           <Sentence size="sm">
             צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו מבטל את המסלולים וקובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null} <RuleRef id="BANK-35" end="." />
@@ -67,7 +64,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          העו״ש הוא המקום לכסף שצריך להיות זמין באותו יום: המשכורת, ההוצאות של החודש והתשלומים הקרובים. <Term id="יחידה">יחידות</Term> של <Term id="קרן כספית">קרן כספית</Term> נפדות רק ביום מסחר, <Term prefix="ו" id="פיקדון">פיקדון</Term> נפתח לתקופה, ולכן כסף שעשוי לצאת היום נשאר בעו״ש.
+          <Term prefix="ה" id="חשבון עובר ושב">עו״ש</Term> הוא המקום לכסף שצריך להיות זמין באותו יום: המשכורת, ההוצאות של החודש והתשלומים הקרובים. <Term id="יחידה">יחידות</Term> של <Term id="קרן כספית">קרן כספית</Term> נפדות רק ביום מסחר, <Term prefix="ו" id="פיקדון">פיקדון</Term> נפתח לתקופה, ולכן כסף שעשוי לצאת היום נשאר בעו״ש.
         </p>
         <Sentence measure>
           כסף שלא צריכים באותו יום לא חייב לשבת שם. אם <Term prefix="ה" id="יתרת זכות בחשבון">יתרה</Term> נשארת {threshold ? <>מעל <Num value={threshold} /> </> : "מעל הסף שקבוע בחוק "}במשך רבעון שלם, החוק מחייב את הבנק לשלוח הודעה שמפנה לחלופות.

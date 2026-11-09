@@ -31,6 +31,8 @@ export interface GuideContent {
   relatedIds?: string[];
   /** Glossary terms the prose opens with <Term>, so their cards ship with the page. */
   termIds: string[];
+  /** On a guide whose chart runs one amount (`lumpSumIds`), the line under the chart's example that says where money paid in every month goes. */
+  lumpNote?: ReactNode;
   /** Anything after the tax steps (a blocked route, a note). */
   afterTax?: (p: ContentProps) => ReactNode;
   risks: (p: ContentProps) => ReactNode;

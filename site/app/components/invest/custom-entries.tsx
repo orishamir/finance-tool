@@ -119,7 +119,7 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
 // ---------------------------------------------------------------- the buttons and the rows
 
 /** The quiet button under a list. Outside the host (a test of a list alone) it is not drawn. */
-/** `primary`: the one thing a page with no fund asks for (a custom index, 2026-11-04); quiet under a list otherwise. */
+/** `primary`: the one thing a page with no fund asks for (a custom index); quiet under a list otherwise. */
 export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fund"; primary?: boolean }) {
   const e = useEditors();
   if (!e) return null;
@@ -173,7 +173,7 @@ export function FundTerms({ id }: { id: string }) {
 
 const pctCheck = percentCheck();
 
-/** The choice a new account starts from: a collected house's price list, or a house the site has not collected (2026-11-05). */
+/** The choice a new account starts from: a collected house's price list, or a house the site has not collected. */
 const NOT_LISTED = "not-listed";
 
 function BrokerPanel({ headId, broker, houses, onHouse, others, writable, onSave, onCancel, onRemove }: { headId: string; broker: CustomBroker | null; /** The collected houses a new account can start from. */ houses: { id: string; name: string }[]; onHouse: (houseId: string) => void; others: readonly CustomBroker[]; writable: boolean; onSave: (b: CustomBroker) => void; onCancel: () => void; onRemove: (id: string) => void }) {
@@ -270,7 +270,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
         </h2>
         <p className="text-sm text-muted-foreground">{c.fundSub}</p>
       </div>
-      {/* on a computer the panel is wide (2026-11-05, founder: "the screen is tiny"): the fund and its fees side by side */}
+      {/* on a computer the panel is wide: the fund and its fees side by side */}
       <div className="@container">
         <div className="grid gap-5 @xl:grid-cols-2 @xl:gap-8">
           <FieldGroup title={c.fundParts.fund}>
@@ -317,7 +317,7 @@ const seenBy = (d: FundDraft, index: IndexRef): IndexRef => (index.custom && d.s
 /** Everything the fund's row shows: where it is held, then the fund's own labels (as `fundLabels` on the page). */
 function rowLabels(d: FundDraft, index: IndexRef): Label[] {
   const all = [...optionLabels(d.kind), ...fundLabels(draftRecord(d, index), seenBy(d, index), d.kind)];
-  // a hedge not chosen yet says nothing of the currency (founder, 2026-11-05: "who said it's חשיפה לדולר?")
+  // a hedge not chosen yet says nothing of the currency
   return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
 const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-foreign", "hedged", "hedged-many", "tax-currency"]);
@@ -354,7 +354,7 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
   const trackingTiles = tilesOf(draft, index, [...TRACKINGS.map((t) => ({ value: t as string, as: { tracking: t } })), { value: UNKNOWN, as: { tracking: null }, title: c.unknown }]);
   const domicileTiles = tilesOf(draft, index, [...DOMICILES.map((x) => ({ value: x as string, as: { domicile: x }, title: c.domicileNames[x]! })), { value: UNKNOWN, as: { domicile: null }, title: c.domicileNames.other!, empty: draft.payout === "distributing" ? c.noPrice : c.noLabel }]);
   // a hedged fund the person typed has no price (its gap to the index is not known): the tile says so beside its label. On an index the
-  // person added a third answer says the index is in shekels (founder, 2026-11-05: asked of the fund, not of the index)
+  // person added a third answer says the index is in shekels (asked of the fund, not of the index)
   const hedgedTiles = tilesOf(draft, index, [
     { value: "no", as: { hedged: false, shekelIndex: false } },
     { value: "yes", as: { hedged: true, shekelIndex: false } },

@@ -1,4 +1,4 @@
-// 2026-11-07 (independent check): the fee page asked a pension fund for a field it did not have, named "one of the values" when
+// the fee page asked a pension fund for a field it did not have, named "one of the values" when
 // employment was missing, and the guides linked to fee pages that could only say "no record" or "check what you entered" to someone
 // who had entered nothing. Every wrapper the fee page answers for is run with no inputs, with typical ones and with each field it
 // requires left out: the page ends in a result, or names a field it offers, or says what would make a result; never a generic line.
@@ -12,7 +12,7 @@ import type { InputsState } from "./inputs";
 
 const bundle = compareBundle();
 const data = feesData();
-const run = (id: string, state: InputsState): FeesResult => buildFees(bundle, data, { kind: "wrapper", wrapperId: id, from: "guide" }, feeInputs(bundle, null, state));
+const run = (id: string, state: InputsState): FeesResult => buildFees(bundle, data, { kind: "wrapper", wrapperId: id }, feeInputs(bundle, null, state));
 const none: InputsState = { entered: {}, age: null, employment: null, insurance: null };
 // a person's typical entries: every field the page offers filled (the insurance share is entered, A-17 has no default)
 const typical: InputsState = { entered: {}, age: 40, employment: "employee", insurance: 0.3 };
@@ -76,7 +76,7 @@ describe("a guide links to the fee page only where it answers", () => {
 });
 
 describe("a track's fee page offers the fields its run asks for", () => {
-  // the sheet's fields come from the track's wrapper even when the run stops (2026-11-07, independent check: a pension track's page
+  // the sheet's fields come from the track's wrapper even when the run stops (a pension track's page
   // named the insurance share, and its sheet showed inflation alone); the track page links here only where the wrapper has terms
   for (const id of answered) {
     const tracks = data.tracks.filter((t) => t.wrapperId === id && t.b.value !== null && t.b.value >= 0).slice(0, 2);
@@ -84,15 +84,12 @@ describe("a track's fee page offers the fields its run asks for", () => {
     it(`${id}: its tracks, with no inputs and typical ones`, () => {
       for (const t of tracks) {
         const subject = { kind: "track" as const, trackId: t.id };
-        const f = pageFields(bundle, subjectWrapperId(subject, data, null));
+        const f = pageFields(bundle, subjectWrapperId(subject, data));
         expect(f, `track ${t.id}`).toEqual(pageFields(bundle, id));
         for (const [label, s] of [["no inputs", none], ["typical", typical]] as const) expectAnswer(`${id} track ${t.id}`, buildFees(bundle, data, subject, feeInputs(bundle, null, s)), f, label);
       }
     });
   }
-  it("a holding's page asks for nothing its run does without", () => {
-    for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) expect(Object.values(pageFields(bundle, id, true))).not.toContain("required");
-  });
 });
 
 describe("every field the page offers changes what it shows (guidelines/design.md)", () => {

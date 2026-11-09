@@ -1,4 +1,4 @@
-// A house's group price picked on the index page (founder, 2026-11-04): the radios in a house's fold of group prices. A pick is a choice
+// A house's group price picked on the index page: the radios in a house's fold of group prices. A pick is a choice
 // the person makes, never a question the page asks (D43 amended (4)); its figures stand beside the ranking and never in it (D43): the house's
 // row keeps its price-list figure and place, and the picked group is priced as an account built on the house (F-101), held only for the
 // page, never saved. A group is offered only where it changes a figure and its end is known: a price whose own words name fund units

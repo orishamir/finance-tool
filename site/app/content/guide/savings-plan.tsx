@@ -1,5 +1,5 @@
-// Guide prose for תכנית חיסכון (architecture 3.5: prose lives in content files; every figure is a Num).
-// Written 2026-10-23 from the il-finance rules cited under each block (BANK, BPN, TXI, REG, SW, MF); same
+// Guide prose for תוכנית חיסכון (architecture 3.5: prose lives in content files; every figure is a Num).
+// Written from the il-finance rules cited under each block (BANK, BPN, TXI, REG, SW, MF); same
 // shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
@@ -9,7 +9,7 @@ export const content: GuideContent = {
   what: () => (
     <>
       <p className="max-w-measure">
-        <Term id="תכנית חיסכון">תוכנית חיסכון</Term> היא <Term id="פיקדון">פיקדון</Term> שמפקידים אליו מדי פעם, לרוב סכום קבוע כל חודש <Term prefix="ב" id="פיקדון בהוראת קבע">הוראת קבע</Term>, לתקופה של יותר משנה.
+        <Term id="תוכנית חיסכון">תוכנית חיסכון</Term> היא <Term id="פיקדון">פיקדון</Term> לתקופה של יותר משנה, ולרוב מפקידים אליה סכום קבוע כל חודש <Term prefix="ב" id="פיקדון בהוראת קבע">הוראת קבע</Term>.
       </p>
       <p className="max-w-measure">
         ההסכם חייב לקבוע את לוח ההפקדות, את הגבולות על הסכומים והמועדים ואת <Term prefix="ה" id="ריבית">ריבית</Term>. <Term prefix="ה" id="ריבית קבועה">ריבית קבועה</Term> או <Term id="ריבית משתנה">משתנה</Term>, כלומר <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש, והיא לא צמודה או <Term id="צמוד למדד המחירים לצרכן">צמודה למדד</Term>.
@@ -19,7 +19,7 @@ export const content: GuideContent = {
       </p>
       {/* D30: the anchor (BANK-34) and the exit points (BPN-10) are each bank's own terms; the guide names no bank's as the product's */}
       <div className="max-w-measure flex flex-col gap-1">
-        <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק קובע אותה בעצמו</>} />
+        <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק מגדיר אותה בתנאים שלו</>} end="." />
         <VariesByCompany ids={["BPN-10"]} lead="תחנות היציאה תלויות בבנק" />
       </div>
       <RulesLine ids={["BANK-28", "BANK-27", "BANK-25", "BANK-46", "BANK-26"]} />
@@ -33,7 +33,7 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-01", "REG-03", "BANK-01", "BANK-28"]} />
     </>
   ),
-  termIds: ["תכנית חיסכון", "פיקדון בהוראת קבע", "ריבית משתנה", "ריבית הפריים", "צמוד למדד המחירים לצרכן", "תחנת יציאה", "שבירת פיקדון", "פטור למעוט הכנסה", "תיאום מס", "מנהל מורשה", "ביטוח פיקדונות", "דיבידנד", "רווח הון", "נייר ערך", "חשבון עובר ושב", "המפקח על הבנקים", "ריבית בנק ישראל", "קרנות כספיות יומיות", "מרווח", "ריבית עוגן", "ריבית קבועה", "ריבית", "פיקדון"],
+  termIds: ["תוכנית חיסכון", "פיקדון בהוראת קבע", "ריבית משתנה", "ריבית הפריים", "צמוד למדד המחירים לצרכן", "תחנת יציאה", "שבירת פיקדון", "פטור למעוט הכנסה", "תיאום מס", "מנהל מורשה", "ביטוח פיקדונות", "דיבידנד", "רווח הון", "נייר ערך", "חשבון עובר ושב", "המפקח על הבנקים", "ריבית בנק ישראל", "קרנות כספיות יומיות", "מרווח", "ריבית עוגן", "ריבית קבועה", "ריבית", "פיקדון"],
   afterTax: ({ figure }) => {
     const ceiling = figure("TXI-20", "favoured_ceiling");
     const deduction = figure("TXI-20", "deduction");

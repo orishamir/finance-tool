@@ -1,7 +1,7 @@
-// The stairs' selection logic (founder, 2026-11-01): rows, climb, ceiling, scale and the start, on a small grid and on the engine's own numbers.
+// The stairs' selection logic: rows, climb, ceiling, scale and the start, on a small grid and on the engine's own numbers.
 import { describe, expect, it } from "vitest";
 import { buildInvest, indexById } from "./invest";
-import { buildWorkbenchBundle } from "./providers.server";
+import { buildIndicesBundle } from "./providers.server";
 import { chainOf, ceilingOf, climbFrom, gridOf, laneCases, LANES, middleStart, rowsAt, unitOf, type Grid } from "./stairs";
 import { entered } from "./value";
 
@@ -58,18 +58,18 @@ describe("unitOf", () => {
 describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 7%, 2%)", () => {
   // The rates of 23.10.2026: the refresh changes the real file every working day, and these sums must not move with it.
   const fx = { date: "2026-10-23", checked: "2026-10-25", perEur: { USD: 1.1193, ILS: 3.4939, JPY: 175.51, GBP: 0.83728 }, attribution: "", staleAfterDays: 5, sourceUrl: "" };
-  const bundle = { ...buildWorkbenchBundle(), fx };
+  const bundle = { ...buildIndicesBundle(), fx };
   const t = bundle.today;
   const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) }, fromGoal: false, returnFromParameter: false };
   const grid = gridOf(buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan }), bundle.snapshots);
   const steps = (a: string, f: string) => chainOf(grid, { start: { a, f }, taken: [] })!.chain.map((s) => [Math.round(s.v), s.d]);
   it("Hapoalim with the MTF fund", () => expect(steps("hapoalim", "1150333")).toEqual([[79273, null], [84148, 4875], [86492, 2344]]));
-  // since 2026-11-04 the accumulating iShares is ranked (TXF-11: its own annex reports the ruling), so the climb stays on it: to Interactive Israel, then no single change improves
-  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[59435, null], [84198, 24763]]));
-  it("Interactive Israel with the same iShares: no single change improves, the top is 2,294 away", () => {
+  // the accumulating iShares is ranked (TXF-11: its own annex reports the ruling), so the climb stays on it: to Interactive Israel, then no single change improves
+  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[58916, null], [83481, 24565]]));
+  it("Interactive Israel with the same iShares: no single change improves, the top is 3,011 away", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
     expect(c.chain).toHaveLength(1);
-    expect(Math.round(c.ceiling.v) - Math.round(c.chain[0]!.v)).toBe(2294);
+    expect(Math.round(c.ceiling.v) - Math.round(c.chain[0]!.v)).toBe(3011);
   });
   // the lanes' held heights are measured from these cases: every lane any start shows has a case with each of its rows, in the
   // same state, so no start draws a lane taller than its hold

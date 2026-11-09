@@ -1,4 +1,4 @@
-// The arithmetic of a year chart's zoom (2026-11-01): which years a pointer stands on, and which years a drag or a wheel turn
+// The arithmetic of a year chart's zoom: which years a pointer stands on, and which years a drag or a wheel turn
 // leaves in view. Pure: no React, no DOM. A view is whole years, `lo` to `hi`; `band` charts (a bar per year) draw half a year around each.
 
 export interface YearView {

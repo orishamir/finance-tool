@@ -1,10 +1,12 @@
-// "Hedged or not: what happened" (F-95; founder 2026-10-31, option A of 8dd1f013:research/specs/2026-10-31-hedged): what the dollar did each year
+// "Hedged or not: what happened" (F-95; option A of 8dd1f013:research/specs/2026-10-31-hedged): what the dollar did each year
 // and what each kind of fund did in the same years, from the funds' own reports, and one sentence on the plan. No forecast, no ranking.
 import { useMemo } from "react";
-import { comparedYears, kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread } from "@finance-tool/engine";
+import { comparedYears, kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread, type Stretch } from "@finance-tool/engine";
 import { invest as c } from "../../copy";
-import { gapListFor, kindMoney, kindOf, reportFigure, reportsInShekels, type InvestView } from "../../lib/invest";
-import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
+import { fmt } from "../../lib/format";
+import { monthEndRate, type FxHistory } from "../../lib/fx";
+import { gapListFor, kindMoney, kindOf, planInputs, reportFigure, reportsInShekels, type InvestView } from "../../lib/invest";
+import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
 import { MixedName, Card, ChartLegend, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, Tpl, YearBars, gershayim, useChartPick, useHeldHeight } from "../kit";
@@ -19,7 +21,7 @@ const bare = (x: number) => `⁦${one.format(Math.abs(x))}%⁩`;
 const points = (x: number) => `⁦${x > 0 ? "+" : x < 0 ? "−" : ""}${one.format(Math.abs(x))}⁩`;
 const barLabel = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`;
 
-export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; pick: Pick }) {
+export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick }) {
   const today = bundle.today;
   const funds = allFunds(view);
   const history = bundle.fxHistory;
@@ -46,12 +48,13 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const gaps = { unhedged: rec.gaps.unhedged, hedged: rec.gaps.hedged };
 
   const hedgedFunds = reporting.filter((f) => kindOf(f.rec) === "hedged" && f.rec.tracking_record!.years.some((y) => rec.years.some((r) => r.year === y.year)));
-  // the sentence beside the gap range counts only the reports the range rests on, those F-92 (d) compares, and names their years (recheck 3 S5)
+  // the sentence beside the gap range counts only the reports the range rests on, those F-92 (d) compares, and names their years
   const gapFunds = hedgedFunds.filter((f) => comparedYears(f.rec.tracking_record, gapListFor(bundle, f.rec)) !== null);
   const gapYears = [...new Set(gapFunds.flatMap((f) => f.rec.tracking_record!.years.map((y) => y.year)).filter((y) => rec.years.some((r) => r.year === y)))].sort((a, b) => a - b);
   const single = gapFunds.length === 1 ? gapFunds[0]! : null;
   const first = gapYears[0] ?? rec.years[0]!.year, last = gapYears[gapYears.length - 1] ?? rec.years[rec.years.length - 1]!.year;
   const lo = Math.min(...years.map((y) => y.pct)), hi = Math.max(...years.map((y) => y.pct));
+  const loYear = years.find((y) => y.pct === lo)!.year, hiYear = years.find((y) => y.pct === hi)!.year;
   const from = years[0]?.year ?? 0, to = years[years.length - 1]?.year ?? 0;
   const many = view.index.exposure?.other_currencies === true;
 
@@ -73,11 +76,22 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
     const y = t?.years.find((x) => x.year === year);
     return f && t && y ? { [c.kinds.gapInputBenchmark(t.benchmark.name, year)]: reportFigure(f.rec, y.tracking_pct, t.page) } : {};
   };
-  const fig = (x: number, about: string, formula = "F-95", inputs: Record<string, SiteValue> = {}) => computed(Math.round(x * 100) / 100, "pct", formula, inputs, { today, about });
-  const num = (x: number, about: string, formula = "F-95", inputs: Record<string, SiteValue> = {}) => <Num value={fig(x, about, formula, inputs)} display={signed(x)} />;
-  // each year's dollar (F-93: the ECB's month-end rates, which the bundle holds as numbers, not as sourced figures) and index; the years
-  // together compound them (F-95), so their sheet lists each year's
-  const yearFigs = new Map(rec.years.map((y) => [y.year, { dollar: fig(y.dollar, c.dollar.colDollar, "F-93"), index: fig(y.index, c.dollar.colIndex, "F-95", indexInputs(y.year)) }]));
+  const fig = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => computed(Math.round(x * 100) / 100, "pct", formula, inputs, { today, about });
+  const num = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => <Num value={fig(x, about, formula, inputs)} display={signed(x)} />;
+  // a change of the dollar (F-93) is computed from shekels per dollar at two month ends, each from the ECB's two end-of-month rates (F-84)
+  const rateInput = (p: FxHistory["points"][number]): [string, SiteValue] => {
+    const label = c.dollar.inputRate(fmt.period(p.date.slice(0, 7)));
+    return [label, monthEndRate(history, p, today, label)];
+  };
+  const december = (year: number) => history.points.find((p) => p.date.startsWith(`${year}-12`));
+  const yearInputs = (year: number): Record<string, SiteValue> => {
+    const a = december(year - 1), b = december(year);
+    return a && b ? Object.fromEntries([rateInput(a), rateInput(b)]) : {};
+  };
+  const dollarOf = (year: number, pct: number) => fig(pct, c.dollar.inputDollar(year), "F-93", yearInputs(year));
+  const stretchInputs = (s: Stretch<FxHistory["points"][number]>): Record<string, SiteValue> => ({ ...Object.fromEntries([rateInput(s.start), rateInput(s.end)]), ...planInputs(plan, ["years"]) });
+  // each year's dollar and index; the years together compound them (F-95), so their sheet lists each year's
+  const yearFigs = new Map(rec.years.map((y) => [y.year, { dollar: dollarOf(y.year, y.dollar), index: fig(y.index, c.dollar.colIndex, "F-95", indexInputs(y.year)) }]));
   const range = (s: Spread, about: string, inputs: Record<string, SiteValue>, note?: string) => (
     <>
       {num(s.low, about, "F-95", inputs)}
@@ -222,14 +236,14 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
             <span className="max-lg:min-h-[4lh]">
               {c.dollar.cancelsNote(from, to)}{" "}
               {stretch ? (
-                <Tpl t={c.dollar.cancelsStretch(h)} vars={{ lo: num(stretch.low, c.dollar.stretchAbout(h), "F-93"), hi: num(stretch.high, c.dollar.stretchAbout(h), "F-93") }} />
+                <Tpl t={c.dollar.cancelsStretch(h)} vars={{ lo: num(stretch.low, c.dollar.stretchAbout(h), "F-93", stretchInputs(stretch.lowAt)), hi: num(stretch.high, c.dollar.stretchAbout(h), "F-93", stretchInputs(stretch.highAt)) }} />
               ) : (
                 c.dollar.cancelsNoStretch(h)
               )}
             </span>
           }
         >
-          {num(lo, c.dollar.colDollar, "F-93")} <span className="text-base font-medium">{c.dollar.to}</span> {num(hi, c.dollar.colDollar, "F-93")}
+          <Num value={dollarOf(loYear, lo)} display={signed(lo)} /> <span className="text-base font-medium">{c.dollar.to}</span> <Num value={dollarOf(hiYear, hi)} display={signed(hi)} />
         </StatTile>
         <StatTile
           label={c.dollar.costsLabel}

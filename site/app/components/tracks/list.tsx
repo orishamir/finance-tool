@@ -1,4 +1,4 @@
-// The track browser's list (D54, 2026-11-03): one table on a computer, one row per track on a phone, built on the kit's ProductTable.
+// The track browser's list (D54): one table on a computer, one row per track on a phone, built on the kit's ProductTable.
 // Under a company's heading the row says the short name and, when the name leaves it out, the kind; in the one list of a chosen kind
 // (no heading) it says the company first. The column heads sort. Every figure goes through the provenance component. On a company's page
 // the groups are its products (`fixed`: one product, no heading over it), and a track a new member joins by default says so.
@@ -12,13 +12,13 @@ import { Num } from "../provenance";
 import { ExposureCell, gershayim, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
-/** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word (founder, 2026-11-08); a note with a reason stays. */
+/** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
 const sayEmpty = (value: SiteValue, sentence: string): SiteValue => (!value.notes || value.notes.trim() === `${t.yield.missing}.` ? { ...value, notes: sentence } : value);
 
 /** A figure of the regulator's that may be empty: its number, or its words ("לא דווח", "אין") on the same button, so the sheet says why. */
 function YieldFigure({ value, track, years, size }: { value: SiteValue | null; track: TbTrack; years: 3 | 5; size: "inline" | "cell" }) {
   if (!value) return <span className={mutedWord}>{missingYield(track, years)}</span>;
-  // not reported: a short mark, the sheet heads with the words (founder, 2026-11-08); a young track's "אין" is short already
+  // not reported: a short mark, the sheet heads with the words; a young track's "אין" is short already
   if (value.value === null) return (years === 3 ? track.young3 : track.young5) ? <Num value={value} size={size} display={missingYield(track, years)} /> : <Num value={sayEmpty(value, `${t.yield.emptyNote.before}${years}${t.yield.emptyNote.after}`)} size={size} display={trackCopy.emptyMark} fullWord={missingYield(track, years)} />;
   return <Num value={value} size={size} />;
 }
@@ -76,7 +76,7 @@ function GroupLine({ g }: { g: TbGroup }) {
   const count = `${tracksPhrase(g.tracks.length)}${filtered ? ` ${t.count.outOf} ${fmt.number(g.total)}` : ""}`;
   return (
     <>
-      {/* no fee range: the rows show each track's fees (founder, 2026-11-08) */}
+      {/* no fee range: the rows show each track's fees */}
       <CompanySize count={count} assets={g.assets} />
     </>
   );

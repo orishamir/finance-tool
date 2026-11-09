@@ -49,7 +49,7 @@ export const content: GuideContent = {
   relatedIds: ["kupat-gemel-lehashkaa", "ira-hishtalmut"],
   switchLine: ({ figure }) => (
     <>
-      בלי <Term id="עמלה">עמלה</Term>. בין מסלולים בתוך הקרן: תוך <N v={figure("PF-23", "switch_business_days")} /> ימי עסקים. לקרן השתלמות אחרת: כל היתרה, תוך <N v={figure("PF-19", "transfer_business_days")} /> ימי עסקים מהיום שהקרן הישנה מקבלת בקשה מלאה וחתומה
+      בלי <Term id="עמלה">עמלה</Term>. בין מסלולים בתוך הקרן: תוך <N v={figure("PF-23", "switch_business_days")} /> ימי עסקים. לקרן השתלמות אחרת: כל היתרה, תוך <N v={figure("PF-19", "transfer_business_days")} /> ימי עסקים מהיום שהקרן הישנה מקבלת בקשה מלאה וחתומה.
     </>
   ),
   switchRules: ["PF-23", "KH-18", "KH-17", "PF-19"],

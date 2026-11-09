@@ -45,9 +45,9 @@
 ## 5. Land it
 
 - Merge to `main` and push. Never open a pull request. Large work is built
-  on a branch of its own, goes live in slices with the unfinished parts held
-  off the links (`site/app/lib/review.ts`), and also lands on `main` without
-  a pull request.
+  on a branch of its own and goes live in finished slices, also on `main`
+  without a pull request. Nothing is held off the links for review: what is
+  not finished stays on its branch.
 - If the working tree holds another session's uncommitted work, commit it
   separately, with its own message, before your own, and say so.
 - Remove the worktree and branch after merging.
@@ -68,8 +68,8 @@
 
 ## Issues
 
-- There are no GitHub issues, milestones, labels or project board: the
-  founder had them all deleted on 2026-11-08. Don't create them. What waits
+- There are no GitHub issues, milestones, labels or project board. Don't
+  create them. What waits
   on him or comes later goes in the report.
 
 ## Budget

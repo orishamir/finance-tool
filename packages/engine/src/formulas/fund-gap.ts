@@ -1,5 +1,5 @@
-// A fund's gap to its index from its own reports, and the dollar against the shekel from the ECB's month-end rates (2026-10-29,
-// founder: the index page's hedged and unhedged funds). Pure functions; the page supplies the records.
+// A fund's gap to its index from its own reports, and the dollar against the shekel from the ECB's month-end rates (the index page's hedged and unhedged funds).
+// Pure functions; the page supplies the records.
 
 export interface GapYear {
   year: number;
@@ -95,7 +95,7 @@ export function gapToIndex(years: readonly GapYear[]): number | null {
 }
 
 /**
- * F-92 (b) A-07 from the reports (the site's convention, chosen by the lead on 2026-11-07): what the fund fell short of its index beyond the
+ * F-92 (b) A-07 from the reports (the site's convention): what the fund fell short of its index beyond the
  * fees it charged, as an annual fraction, each year set against that year's own fees: `A-07 = max(0, mean_y(−(u_y − t_y)/100 − c_y))`.
  * `c_y` is the year's `fees_charged` (fixed, variable and trustee), and `fees`, the fund's listed fees today as a fraction, stands in for a
  * year without them (a foreign fund's document prints one year's fee). Forward, the fund costs today's listed fixed and trustee fees, the
@@ -117,7 +117,7 @@ export const firstFullYear = (since: string): number => Number(since.slice(0, 4)
  * A-07 is measured against the fees charged each year, the variable fee among them, so counting the listed rate in full on top counts it
  * twice (Kesem 5139696, paid back 0.215% in 2025 at a 0.3% rate, was 2.635% a year forward against a 2.12-point shortfall). The fee is paid
  * back to the fund on a day its gap is negative, at the published rate (ETF-14); how the positive fee is charged each prospectus says for
- * its own funds (ETF-14 open question 8). Counting only the years at today's rate is the site's convention (the lead, 2026-11-07, pass 6):
+ * its own funds (ETF-14 open question 8). Counting only the years at today's rate is the site's convention:
  * Meitav 5124573 charged 0% from 2022 to 2025 at a 0% rate and is at 0.3% from 1.1.2026.
  * `since` is the day today's rate came into force, as the report's table "שינויים במאפייני הקרן" prints it (`variable_rate_since`): null
  * when it prints no change of the variable fee, and every year counts; else the years from the first whole calendar year at that rate.
@@ -143,7 +143,7 @@ export function trackingBeyondFeesRange(years: readonly GapYear[], fees: number)
 }
 
 export interface RatePoint {
-  /** The month's last reference day, YYYY-MM-DD. */
+  /** The month end, YYYY-MM-DD, as the series dates it. */
   date: string;
   /** Shekels per one dollar on that day (F-84's cross rate). */
   rate: number;
@@ -167,18 +167,25 @@ export function yearlyChanges(points: readonly RatePoint[]): { year: number; pct
  * F-93 (b) The average yearly change over every stretch of `years` whole years that starts at a month end: `(r_{t+12H} / r_t)^(1/H) − 1`,
  * in percent; the lowest, the highest and how many stretches. Null when the series is shorter than one stretch.
  */
-export function stretchRange(points: readonly RatePoint[], years: number): { low: number; high: number; count: number; from: string; to: string } | null {
+export function stretchRange<P extends RatePoint>(points: readonly P[], years: number): { low: number; high: number; count: number; from: string; to: string; lowAt: Stretch<P>; highAt: Stretch<P> } | null {
   const h = Math.round(years);
   if (h < 1) return null;
   const k = 12 * h;
-  let low = Infinity, high = -Infinity, count = 0;
+  let low = Infinity, high = -Infinity, count = 0, lowI = 0, highI = 0;
   for (let i = 0; i + k < points.length; i++) {
     const c = (Math.pow(points[i + k]!.rate / points[i]!.rate, 1 / h) - 1) * 100;
-    low = Math.min(low, c);
-    high = Math.max(high, c);
+    if (c < low) [low, lowI] = [c, i];
+    if (c > high) [high, highI] = [c, i];
     count++;
   }
-  return count === 0 ? null : { low, high, count, from: points[0]!.date, to: points[points.length - 1]!.date };
+  const at = (i: number): Stretch<P> => ({ start: points[i]!, end: points[i + k]! });
+  return count === 0 ? null : { low, high, count, from: points[0]!.date, to: points[points.length - 1]!.date, lowAt: at(lowI), highAt: at(highI) };
+}
+
+/** The month ends a stretch's change is measured between: `r_t` and `r_{t+12H}`. */
+export interface Stretch<P extends RatePoint = RatePoint> {
+  start: P;
+  end: P;
 }
 
 export interface KindFund {

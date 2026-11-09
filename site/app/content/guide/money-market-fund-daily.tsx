@@ -1,6 +1,6 @@
 // Guide prose for קרן כספית (the daily money-market fund). Same shape as kupat-gemel-lehashkaa.tsx: every figure
 // is a Num over a rule figure, every block ends with the rules it rests on (il-finance MF, TXS, TXI, BANK, BRK,
-// REG, read 2026-10-23). NEW copy for the founder to review (docs/copy.md holds only labels).
+// REG). NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
@@ -13,7 +13,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          <Term id="קרן נאמנות">קרן נאמנות</Term> שמחזיקה רק נכסים קצרים ובטוחים יחסית: <Term id={'מק"מ'}>מק״מ</Term>, <Term id="איגרת חוב">איגרות חוב</Term> בדירוג גבוה שנפרעות בתוך שנה, <Term id="פיקדון">פיקדונות</Term> בבנקים ומזומן. משך החיים הממוצע של הנכסים הוא עד {life ? <Num value={life} /> : null} ימים.
+          היא מחזיקה רק <Term id={'מק"מ'}>מק״מ</Term>, <Term id="איגרת חוב">איגרות חוב</Term> בדירוג גבוה שנפרעות בתוך שנה, <Term id="פיקדון">פיקדונות</Term> בבנקים ומזומן. משך החיים הממוצע של הנכסים הוא עד {life ? <Num value={life} /> : null} ימים.
         </Sentence>
         <p className="max-w-measure">
           <Term prefix="ב" id="קרנות כספיות יומיות">קרן כספית יומית</Term> אין <Term id="תשואה">תשואה</Term> מובטחת ואין <Term id="תשואה צפויה">תשואה צפויה</Term>: התשואה נעה בעקבות <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>, פחות העלויות של הקרן. את הנכסים מחזיק <Term id="נאמן">נאמן</Term>, גוף נפרד <Term prefix="מ" id="מנהל קרן">מנהל הקרן</Term> שמשקיע אותם.
@@ -49,7 +49,7 @@ export const content: GuideContent = {
   who: () => (
     <>
       <p className="max-w-measure">
-        מנהלי קרנות נאמנות שקיבלו אישור מרשות ניירות ערך. היא מפקחת עליהם, על הנאמנים ועל הקרנות לפי חוק השקעות משותפות בנאמנות, ויחידות מוצעות לציבור רק לפי <Term id="תשקיף">תשקיף</Term> שהיא התירה.
+        מנהלי <Term id="קרן נאמנות">קרנות נאמנות</Term> שקיבלו אישור מרשות ניירות ערך. היא מפקחת עליהם, על הנאמנים ועל הקרנות לפי חוק השקעות משותפות בנאמנות, ויחידות מוצעות לציבור רק לפי <Term id="תשקיף">תשקיף</Term> שהיא התירה.
       </p>
       <p className="max-w-measure">
         את הקרנות עצמן קונים דרך הבנקים ובתי ההשקעות. בנק חייב להציג אותן ליד הפיקדונות והמק״מ, תחת הכותרת <Term id="מוצרי שוק הכסף">מוצרי שוק הכסף</Term>, בלי להעדיף אף מוצר.

@@ -1,4 +1,4 @@
-// The words a cited web page opens at reach the records the site reads (2026-11-07, the founder), and every kept row still names a
+// The words a cited web page opens at reach the records the site reads, and every kept row still names a
 // quote the data cites, so data/sources/fragments.json never carries words for a link the site no longer shows.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";

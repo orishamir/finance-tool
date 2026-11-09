@@ -1,6 +1,5 @@
 // The parameters page (flows 6.15): the site's own judgement calls, each value a Num with its rationale.
 import { useLoaderData } from "react-router";
-import type { Route } from "./+types/parameters";
 import { parametersPage as copy, provenance as provCopy, site } from "../copy";
 import { IdRef, IdText, Num } from "../components/provenance";
 import { PageShell } from "../components/shell";

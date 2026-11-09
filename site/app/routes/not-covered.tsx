@@ -1,7 +1,6 @@
 // The "not covered yet" page (flows 6.13, product D2): the tier-2 kinds of holding, what is known and what still blocks
-// each. The cards are the D2 list (`notCoveredCards`), never every row of the glossary's section 3 (2026-11-07).
+// each. The cards are the D2 list (`notCoveredCards`), never every row of the glossary's section 3.
 import { useLoaderData } from "react-router";
-import type { Route } from "./+types/not-covered";
 import { notCovered as copy, r5, site } from "../copy";
 import { IconExternal, IconLock, IconCheck } from "../components/icons";
 import { IconDashed } from "../components/compare/icons";
@@ -20,7 +19,7 @@ export async function loader() {
   const { graduationStatuses, graduationRuleIds, notCoveredCards } = await import("../lib/graduation.server");
   const rules = loadRules();
   const statuses = graduationStatuses();
-  // one card per kind of holding the site lacks (product D2), never a glossary section's every row (2026-11-07)
+  // one card per kind of holding the site lacks (product D2), never a glossary section's every row
   const cards = notCoveredCards(statuses).filter((c) => c.status.status !== "graduated");
   const cited = new Set([...cards.flatMap((c) => c.row.ruleIds), ...graduationRuleIds(statuses)]);
   const mine = Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r]));
@@ -33,8 +32,8 @@ export function meta() {
 
 const dateNode = (d: string) => <When iso={d} />;
 
-/** "מה חסר כדי שהאתר יחשב את זה" (flow 37): the status line with its icon, what blocks, what closed. Computed from the rule base, never typed. The fixed
- * "when it closes" sentence went on 2026-11-07: the same promise on every card said more than the site would do for each. */
+/** "מה חסר כדי שהאתר יחשב את זה" (flow 37): the status line with its icon, what blocks, what closed. Computed from the rule base, never typed. No fixed
+ * "when it closes" sentence: the same promise on every card would say more than the site does for each. */
 function GraduationStatus({ s }: { s: GraduationStatusView }) {
   const g = r5.graduation;
   const line =
@@ -68,7 +67,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
               </span>
               {o.narrowedOn && o.narrowedBy && (
                 <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
-                  {/* the narrowing rule as the rules chip, never its bare code (2026-11-07) */}
+                  {/* the narrowing rule as the rules chip, never its bare code */}
                   <Tpl t={g.narrowed} vars={{ date: dateNode(o.narrowedOn) }} />
                   <RulesChip ids={[o.narrowedBy]} />
                 </span>
@@ -90,8 +89,8 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
           <ul className="flex flex-col gap-1">
             {s.closed.map((c, i) => (
               <li key={`${c.ruleIds.join(" ")}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
-                {/* a closure is said in words, not struck: a struck date and a bare count read as a fragment (2026-11-07). It names the
-                    rules that answered it, never a question: an answered question is deleted from the rule base (2026-11-08) */}
+                {/* a closure is said in words, not struck: a struck date and a bare count read as a fragment. It names the
+                    rules that answered it, never a question: an answered question is deleted from the rule base */}
                 <span>
                   <Tpl t={c.closedOn ? g.closure : g.closureNoDate} vars={{ date: c.closedOn ? dateNode(c.closedOn) : "", topic: g.closureTopics[s.id]?.[c.ruleIds.join(" ")] ?? "" }} />
                 </span>
@@ -120,7 +119,7 @@ export default function NotCovered() {
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-          {/* what the site does cover, so the page is not only a list of gaps (a fresh reader, 2026-11-07) */}
+          {/* what the site does cover, so the page is not only a list of gaps */}
           <p className="max-w-measure flex flex-wrap items-center gap-x-3 gap-y-2">
             <span>{copy.covered.line}</span>
             <LinkButton to="/guide">{copy.covered.link}</LinkButton>
@@ -156,7 +155,7 @@ export default function NotCovered() {
                           const label = sourceLabel(r.source, provenance.sourced.localFile);
                           return (
                             <a href={sourceHref(r.source)} target="_blank" rel="noopener noreferrer" className="text-link hover:underline" title={label.english ?? undefined}>
-                              {/* the arrow is held to the title's last word: alone, it stood on a line under a long title (2026-11-03) */}
+                              {/* the arrow is held to the title's last word: alone, it stood on a line under a long title */}
                               {label.host ? (
                                 <span className="whitespace-nowrap">
                                   <bdi dir="ltr">{label.text}</bdi>

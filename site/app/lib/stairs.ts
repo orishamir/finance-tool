@@ -1,4 +1,4 @@
-// The stairs on the indices page (founder, 2026-11-01, drawing A of 8dd1f013:research/specs/2026-11-01-indices-general/stairs.html): start from one
+// The stairs on the indices page (drawing A of 8dd1f013:research/specs/2026-11-01-indices-general/stairs.html): start from one
 // account and one fund, see which single change leaves more at the end, take it, and see what the next single change adds.
 // This module is the selection logic only: rows, climb, ceiling, scale. It reads a grid of account x fund prices (the page's
 // `buildInvest` output, `gridOf`) and writes no figure of its own beyond differences between two of them (F-91: the gap in what is

@@ -11,8 +11,10 @@ import {
   CircleAlert,
   Clock,
   Copy,
+  Download,
   ExternalLink,
   FileText,
+  FileUp,
   Info,
   Lock,
   Menu,
@@ -20,6 +22,7 @@ import {
   Pencil,
   RotateCcw,
   Search,
+  Share2,
   X,
   type LucideProps,
 } from "lucide-react";
@@ -53,3 +56,6 @@ export const IconReset = base(RotateCcw);
 export const IconInfo = base(Info);
 export const IconCalendar = base(CalendarDays);
 export const IconCopy = base(Copy);
+export const IconDownload = base(Download);
+export const IconShare = base(Share2);
+export const IconFileUp = base(FileUp);

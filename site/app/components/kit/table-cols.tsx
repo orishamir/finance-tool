@@ -1,4 +1,4 @@
-// The widths of a table's columns (founder, 2026-10-28, design-system 2.5a): every table of the site is `table-layout: fixed` with one
+// The widths of a table's columns (design-system 2.5a): every table of the site is `table-layout: fixed` with one
 // of these, so no figure that changes moves a column. A width in rem for a column whose longest real content is known, "auto" for the
 // columns that share the rest, "0" on a phone for a column the phone leaves out. A guard in guards.test.ts holds every <table> to it.
 // A column left out on a phone leaves the table's grid, its <col> with its cells (`PHONE_GONE` on each): a <col> kept at width 0 while

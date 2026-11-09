@@ -1,4 +1,4 @@
-// A sentence that carries numbers and links (the 2026-10-25 what-if bug). Plain inline text: no layout prop exists, so it cannot be
+// A sentence that carries numbers and links (the what-if bug). Plain inline text: no layout prop exists, so it cannot be
 // turned into a flex or grid container whose children (each text piece, each Num) would become separate lines.
 import { Fragment, type ReactNode } from "react";
 import { cx } from "./cx";
@@ -28,9 +28,9 @@ export function fill(t: string, vars: Record<string, string | number>): string {
 }
 
 /**
- * A number in a sentence that the reader sets. The number inside is plain (founder, 2026-11-08: a field's default and what the reader
+ * A number in a sentence that the reader sets. The number inside is plain (a field's default and what the reader
  * types look alike, nothing opens, no blue, no tap-me line); the field beside the sentence is where it changes. It takes the number's own
- * width: a fixed room (2026-10-26) showed as a blank gap once the slot lost its mark, and a small shift beats a blank gap (design.md).
+ * width: a fixed room showed as a blank gap once the slot lost its mark, and a small shift beats a blank gap (design.md).
  */
 export function InputSlot({ children }: { children: ReactNode }) {
   return <span className="input-slot">{children}</span>;

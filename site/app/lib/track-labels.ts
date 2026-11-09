@@ -1,4 +1,4 @@
-// The labels beside a track's name on the company page and the track page (D34, founder 2026-10-26: "in any case use labels"). Each is a
+// The labels beside a track's name on the company page and the track page (D34). Each is a
 // fact from the regulator's data about this track alone: no threshold the site chooses and no comparison with other companies (D35).
 // The default track's label comes from the catalogue and is drawn apart. Pure: no React, no storage.
 

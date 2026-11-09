@@ -1,5 +1,5 @@
 // A figure the engine labels "reading" rests on the site's own reading of official texts, not on a press article or a forum
-// post: its mark says "קריאה של האתר", never "מקור משני" (2026-11-07; the guides' exit step already did).
+// post: its mark says "קריאה של האתר", never "מקור משני" (the guides' exit step already did).
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";

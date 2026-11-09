@@ -4,7 +4,7 @@ import { cx } from "./cx";
 
 /**
  * A short label with a tone: a state, a kind, a flag. One to three words; the tone never carries the meaning alone, so give it an icon or a word.
- * `wrap` lets a label that holds a name (a company's) break onto a second line instead of running past the edge of a phone (2026-10-26).
+ * `wrap` lets a label that holds a name (a company's) break onto a second line instead of running past the edge of a phone.
  */
 export function Tag({ tone = "neutral", icon, children, className, wrap }: { tone?: "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter"; icon?: ReactNode; children: ReactNode; className?: string; wrap?: boolean }) {
   const styles = {
@@ -25,8 +25,8 @@ export function Tag({ tone = "neutral", icon, children, className, wrap }: { ton
 }
 
 /**
- * A tag on an ordered scale (2026-10-26): how soon the money is back, from step 1 (at any moment) to step 4 (at the end of the term). A
- * grey tag with the word; only the icon takes the step's colour, teal to red (founder, 2026-10-26), so the tag stays calm beside the
+ * A tag on an ordered scale: how soon the money is back, from step 1 (at any moment) to step 4 (at the end of the term). A
+ * grey tag with the word; only the icon takes the step's colour, teal to red, so the tag stays calm beside the
  * figures and is not read as a flag. Never without the icon and the word.
  */
 export function StepTag({ step, icon, children }: { step: 1 | 2 | 3 | 4; icon: ReactNode; children: ReactNode }) {

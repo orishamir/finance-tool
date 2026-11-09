@@ -1,16 +1,14 @@
 // The securities data in the browser and at build: the bundle of every bank and broker snapshot, fund and exposure record
-// the index page and the funds page read, how one fund runs through the engine, and the provident wrappers' listing. The
-// page that ranked the houses on one fund was removed; the index page ranks them. No fee, rate or rule figure
+// the index page and the funds page read, and how one fund runs through the engine. The index page ranks the houses. No fee, rate or rule figure
 // is written here: tariffs come from the snapshots in the bundle, and every number leaves as a value object with its
 // state. Pure: no storage; the bundle is fetched once.
-import { fundOf, lineClasses, recordDistribution, type GapList, type RunContext } from "@finance-tool/engine";
-import { datedDay, tariffDated, type TariffDated } from "./tariff-date";
+import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
-import { flags as flagCopy, formulaNames, guideBlocks, kit as kitCopy } from "../copy";
-import { nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
+import { flags as flagCopy, formulaNames } from "../copy";
+import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import type { EnteredInBundle } from "./custom-entries";
-import { computed, ownBy, ruleFigure, type SiteValue, type Staleness } from "./value";
-import { sourceHref } from "./sources";
+import { type SiteValue } from "./value";
+import type { RefLink } from "./sources";
 
 // Names the number sheet shows for the formulas and gaps of this release (copy.md 3.8 style: the code stays beside the words).
 Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות", "F-65": "השוואת קרנות לאותה חשיפה", "F-83": "ספירת כל מה שנבדק" });
@@ -22,15 +20,10 @@ Object.assign(flagCopy, {
 
 // ---------------------------------------------------------------- the data (providers.server.ts)
 
-export interface RefLink {
-  href: string;
-  title: string;
-  ruleId: string;
-}
 
 const PRICED_ON_PREMISE = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "foreign_securities"];
 /**
- * A bank's or broker's lines for ranking (founder, 2026-10-31): a kind of holding keeps its price only where the record's
+ * A bank's or broker's lines for ranking: a kind of holding keeps its price only where the record's
  * `availability` quotes the document saying a person can do it. Pages that show a tariff as printed read the record itself.
  */
 export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
@@ -45,7 +38,7 @@ export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
   return { ...s, lines };
 }
 
-export interface WorkbenchBundle {
+export interface IndicesBundle {
   today: string;
   /** The latest snapshot of each provider in `data/fees/`. */
   snapshots: FeesSnapshot[];
@@ -55,7 +48,7 @@ export interface WorkbenchBundle {
   fundLists: FundListFile[];
   /** The rule records a run may read, the protection rules and the rules the pages quote. */
   rules: RuleRecord[];
-  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them (review, 2026-10-26). */
+  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them. */
   pointed?: RuleRecord[];
   /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
@@ -77,23 +70,14 @@ export interface WorkbenchBundle {
 
 export const BROKERAGE = "brokerage-account";
 
-let bundlePromise: Promise<WorkbenchBundle> | null = null;
-/** The provider and fund data (`/workbench-bundle.json`), fetched once per visit and shared by the two workbench pages. */
-export function loadWorkbenchBundle(): Promise<WorkbenchBundle> {
-  if (!bundlePromise) bundlePromise = fetch(`${import.meta.env.BASE_URL}workbench-bundle.json`).then((r) => r.json() as Promise<WorkbenchBundle>);
+let bundlePromise: Promise<IndicesBundle> | null = null;
+/** The provider and fund data (`/indices-bundle.json`), fetched once per visit by the indices page. */
+export function loadIndicesBundle(): Promise<IndicesBundle> {
+  if (!bundlePromise) bundlePromise = fetch(`${import.meta.env.BASE_URL}indices-bundle.json`).then((r) => r.json() as Promise<IndicesBundle>);
   return bundlePromise;
 }
 
-/** Wrappers whose providers are a sourced listing of managers' list fees, not a ranking (flows 15.5). */
-export const PROVIDENT_WRAPPERS = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"] as const;
-
 // ---------------------------------------------------------------- small facts
-
-/** D3 and product §6: a tariff snapshot older than three months is flagged (flow 33; the schema's `staleTariff`, 90 days). */
-export function staleTariff(snapshot: string, today: string): boolean {
-  const days = (Date.parse(today + "T00:00:00Z") - Date.parse(snapshot + "T00:00:00Z")) / 86_400_000;
-  return days > 90;
-}
 
 const SHORT_NAMES: Record<string, string> = {
   ibi: "אי.בי.אי",
@@ -141,9 +125,6 @@ export function a28Value(value: number, about: string, today: string): SiteValue
   };
 }
 
-/** D31: a tariff figure of a provider, shown on that provider's row, is the provider's own. */
-const withStale = (v: ValueObject, stale: Staleness | null, owner: string): SiteValue => ownBy({ ...v, stale } as SiteValue, owner);
-
 // ---------------------------------------------------------------- the subject fund
 
 interface SubjectFund {
@@ -168,12 +149,12 @@ export function instrumentClassOf(rec: FundRecord, exposure: ExposureRecord | un
   if (exposure?.cash_like) return "money_market_units";
   const israeli = rec.domicile === "IL";
   if (!israeli) return rec.trading_currency_on_tase ? "tase_foreign_fund_units" : "foreign_securities";
-  // an open tracking fund's legal form says "not traded on the exchange, ETF-04": the rule id must not read as an ETF (2026-10-25)
+  // an open tracking fund's legal form says "not traded on the exchange, ETF-04": the rule id must not read as an ETF
   const lf = rec.legal_form;
   return /קרן סל/.test(lf) || (!/קרן מחקה/.test(lf) && /\bETF\b/i.test(lf)) ? "etf_units" : "mutual_fund_units";
 }
 
-export function subjectOf(bundle: WorkbenchBundle, recordId: string | null): SubjectFund | null {
+export function subjectOf(bundle: IndicesBundle, recordId: string | null): SubjectFund | null {
   const p05 = (bundle.p05.instruments ?? {})[BROKERAGE];
   const id = recordId ?? p05?.fund ?? null;
   if (!id) return null;
@@ -201,14 +182,13 @@ export interface FundAssumptions {
   distributions?: Record<string, { yield: number; perYear: number }>;
 }
 
-const isIls = (c: string) => c === "NIS" || c === "ILS";
 
 type RunSpecError = { kind: "fund-type" } | { kind: "need-rate"; currency: string } | { kind: "need-yield" } | { kind: "other-currency"; fund: string; exposure: string };
 
 /** The run inputs a fund fixes: its kind and drag (the same builder as F-65), the currency and how the return is quoted (F-04). */
 export function fundRun(
   s: SubjectFund,
-  exposure: Pick<ExposureRecord, "cash_like" | "currency"> | undefined,
+  exposure: Pick<ExposureRecord, "cash_like" | "currency"> & Partial<Pick<ExposureRecord, "id" | "us_dividends">> | undefined,
   grossReturn: number,
   assumptions: FundAssumptions,
   fx?: FxSnapshot,
@@ -226,22 +206,22 @@ export function fundRun(
   const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
   if (rec.distribution_policy === "distributing" && !dist) return { kind: "need-yield" };
   if (rec.distribution_policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") return { kind: "fund-type" };
-  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben, list);
+  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben, list, exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined);
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;
   const market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number } = { grossReturn };
-  const fundCurrency = isIls(rec.currency) ? "ILS" : rec.currency;
+  const fundCurrency = isShekel(rec.currency) ? "ILS" : rec.currency;
   if (fundCurrency === "ILS") {
-    // a fund that neutralises the exposure's currency is not moved by A-03 (F-04, 2026-10-29)
-    if (!isIls(exposure.currency) && rec.hedged !== true) market.grossReturn = (1 + grossReturn) * (1 + f) - 1;
+    // a fund that neutralises the exposure's currency is not moved by A-03 (F-04)
+    if (!isShekel(exposure.currency) && rec.hedged !== true) market.grossReturn = (1 + grossReturn) * (1 + f) - 1;
     return { fund: built.fund, market };
   }
-  // E4 (2026-10-25): a fund in another currency than its index runs; A-01 stays in the index's currency, A-03 moves the fund's currency
+  // E4: a fund in another currency than its index runs; A-01 stays in the index's currency, A-03 moves the fund's currency
   // against the shekel, and the FX line and the tax index are the fund's trading currency's (the fund-against-index move is not modelled).
   market.returnIn = "instrument";
   market.fxChange = f;
   const quote = rec.trading_currency_on_tase;
-  if (quote === null || !isIls(quote)) {
+  if (quote === null || !isShekel(quote)) {
     const rate = fx ? nisPerNumber(fx, fundCurrency) : null;
     if (rate === null) return { kind: "need-rate", currency: fundCurrency };
     return { fund: built.fund, market, currency: { code: fundCurrency, startRate: rate } };
@@ -274,145 +254,24 @@ export interface WorkbenchInputs {
 
 // ---------------------------------------------------------------- the view
 
-export interface RowTariff {
-  title: string;
-  href: string;
-  /** What the price list prints as its date (kit TariffDate); `published` is that date as a figure where it prints one. */
-  dated: TariffDated;
-  published: SiteValue | null;
-  snapshot: SiteValue;
-  format: "pdf" | "html" | "xlsx";
-  stale: boolean;
-}
-
 export type NotComparable =
   | { code: "data-missing"; recorded: string | null }
   | { code: "no-applicable-line"; detail: string }
   | { code: "no-average"; detail: string }
   | { code: "line-without-value"; detail: string; lineName: string | null }
-  /** 2026-10-25 (engine E1, E2, E5): a per-share line and no share price; a line in a foreign currency and no rate; a record the engine cannot read. */
+  /** E2, E5: a per-share line and no share price; a line in a foreign currency and no rate; a record the engine cannot read. */
   | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
-  /** 2026-11-04: the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
+  /** the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
   | { code: "other-venue"; venue: "us" | "europe" };
 
-const FORMATS = ["pdf", "html", "xlsx"] as const;
-
-function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; stale: Staleness | null } {
-  const stale = staleTariff(s.snapshot, today);
-  const dated = tariffDated(s.tariff, s.snapshot);
-  const day = datedDay(dated);
-  const staleness: Staleness | null = stale ? { since: s.snapshot, cadence: "quarterly" } : null;
-  const source = { url: s.tariff.url, title: s.tariff.title, publisher: s.provider.name_he, strength: "institution" as const };
-  const date = (value: string, about: string, from: string | null): SiteValue => ownBy({
-    value,
-    unit: "text",
-    source,
-    checked: s.snapshot,
-    effective_from: from,
-    effective_to: null,
-    update_rule: "provider-set",
-    state: "sourced",
-    about,
-    stale: staleness,
-    notes: "",
-  } as SiteValue, s.provider.name_he);
-  return {
-    stale: staleness,
-    tariff: {
-      title: s.tariff.title,
-      href: sourceHref(s.tariff),
-      dated,
-      published: day ? date(day, dated.kind === "part" ? kitCopy.tariffDate.aboutPart.replace("{part}", dated.part) : kitCopy.tariffDate.aboutWhole, day) : null,
-      snapshot: date(s.snapshot, "התאריך שבו האתר שמר עותק של התעריפון", null),
-      format: (FORMATS as readonly string[]).includes(s.tariff.format) ? s.tariff.format : "pdf",
-      stale,
-    },
-  };
-}
-
-/** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined 2026-10-25 so the brokers page, the funds page and "השקעה במדד" list the same providers). */
-export function providersOf(bundle: Pick<WorkbenchBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {
+/** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
+export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {
   if (wrapperId !== BROKERAGE) return [];
-  // a house that is part of another (PEPPER of Leumi, founder 2026-11-04: PEPPER Invest moved into Leumi Trade) is not a house of its own
+  // a house that is part of another (PEPPER of Leumi, PEPPER Invest moved into Leumi Trade) is not a house of its own
   return bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.provider.part_of).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 }
 
-export function ruleContext(bundle: WorkbenchBundle): RunContext {
+export function ruleContext(bundle: IndicesBundle): RunContext {
   return { rules: bundle.rules, runDate: bundle.today };
-}
-
-// ---------------------------------------------------------------- provident wrappers: a sourced listing
-
-interface ListingLine {
-  id: string;
-  line: string;
-  base: string;
-  rate: SiteValue;
-  /** A-19: the most the bylaws allow, when the printed rate is a discount under it. */
-  revertsTo?: SiteValue;
-  /** D56: the document's own words that make the printed rate an offer. */
-  offer?: string;
-}
-
-/** One company's card: its lines of the tariff (one fee base each), the company id its page is addressed by. */
-interface ListingCard {
-  provider: string;
-  providerName: string;
-  /** The regulator's company id, or null when the data holds no company of that name (then the name is not a link). */
-  companyId: string | null;
-  lines: ListingLine[];
-  tariff: RowTariff;
-  /**
-   * A-19, F-16: when a line is a discount, how long it lasts, said once a card: the company's own printed period when it is longer than
-   * PF-13's minimum (`own`), else PF-13's years. Absent when no line is a discount.
-   */
-  discount?: { period: SiteValue; own: boolean };
-}
-
-export interface Listing {
-  cards: ListingCard[];
-  /** Managing companies the regulator's data holds for this wrapper (0 when the bundle does not say). */
-  companies: number;
-  ruleIds: string[];
-}
-
-/** The page address of a provider's company: the regulator's id, never the snapshot slug (that route does not exist). */
-export function companyHref(card: Pick<ListingCard, "companyId">): string | null {
-  return card.companyId ? `/companies/${card.companyId}` : null;
-}
-
-/** For a provident wrapper the providers are managers whose list fees the snapshots hold; nothing is ranked (flows 15.5). One card per company. */
-export function buildProvidentListing(bundle: WorkbenchBundle, wrapperId: string): Listing {
-  const cards: ListingCard[] = [];
-  const pf13 = bundle.rules.find((r) => r.id === "PF-13");
-  const minYears = pf13 ? ruleFigure(pf13, "min_discount_years", bundle.today) : null;
-  for (const s of bundle.snapshots) {
-    if (s.missing || s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") continue;
-    const { tariff, stale } = snapshotValues(s, bundle.today);
-    const lines: ListingLine[] = [];
-    for (const l of s.lines) {
-      if (l.level !== "list" || !l.applies_to.includes(wrapperId) || (l.base !== "balance" && l.base !== "deposit" && l.base !== "direct_expenses")) continue;
-      const discounted = typeof l.reverts_to?.value === "number" && typeof l.rate.value === "number" && l.reverts_to.value > l.rate.value;
-      lines.push({
-        id: l.id,
-        base: l.base,
-        rate: withStale(l.rate, stale, s.provider.name_he),
-        line: l.names.tariff[0] ?? (guideBlocks.fees as Record<string, { name: string }>)[l.base]?.name ?? l.base,
-        ...(discounted ? { revertsTo: withStale(l.reverts_to as SiteValue, stale, s.provider.name_he) } : {}),
-        ...(l.offer_he ? { offer: l.offer_he } : {}),
-      });
-    }
-    if (!lines.length) continue;
-    // the period is said once a card: the company's own printed months when longer than PF-13's minimum, else PF-13's years
-    let discount: ListingCard["discount"];
-    if (lines.some((l) => l.revertsTo && !l.offer)) {
-      // one period for both lines: the data check fails a balance and a deposit discount of one wrapper that print different periods (validate.ts, checkDiscountLines)
-      const own = s.lines.find((l) => l.applies_to.includes(wrapperId) && typeof l.discount_months?.value === "number" && minYears !== null && (l.discount_months.value as number) > 12 * (minYears.value as number));
-      if (own) discount = { period: withStale(own.discount_months as SiteValue, stale, s.provider.name_he), own: true };
-      else if (minYears) discount = { period: minYears, own: false };
-    }
-    cards.push({ provider: s.id, providerName: s.provider.name_he, companyId: bundle.providerCompany?.[s.id] ?? null, lines, tariff, ...(discount ? { discount } : {}) });
-  }
-  return { cards, companies: bundle.wrapperCompanies?.[wrapperId] ?? 0, ruleIds: [] };
 }

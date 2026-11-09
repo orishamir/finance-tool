@@ -1,7 +1,7 @@
 // A formula in math type, with a key to its symbols: a formula's sheet shows the math docs/method.md writes for it, in place of a link
-// to the document (founder, 2026-11-08). KaTeX and its stylesheet load the first time a formula shows, not with every page; once loaded,
+// to the document. KaTeX and its stylesheet load the first time a formula shows, not with every page; once loaded,
 // a formula draws in its first render, so a sheet opened again does not shift. Drawn only, with no hidden MathML copy for screen readers
-// (founder, 2026-11-08: "disable special cases we have for screen readers").
+// .
 import { useEffect, useState } from "react";
 import { cx } from "./cx";
 

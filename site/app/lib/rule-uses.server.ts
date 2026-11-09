@@ -5,11 +5,10 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { guideIndex, idle, invest, limitedBondFund, mutualFunds, r2, r3fees, r3holdings, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
+import { guideIndex, invest, limitedBondFund, mutualFunds, r3fees, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
-import { shown } from "./review";
 import { readTextCached } from "./read-cache.server";
 
 export interface RuleUsePage {
@@ -29,17 +28,6 @@ export interface RuleUse {
 export type RuleUsesSlim = Record<string, { pages: RuleUsePage[]; engine: boolean }>;
 
 const empty: RuleUse = { pages: [], engine: false, collections: {}, score: 0 };
-
-/** Rule-base files of the products the site does not cover yet (tier 2): they do not get the tier-1 point. */
-const tier2Files = new Set([
-  "tax-insurance-and-amendment-190.md",
-  "tax-tier2-other.md",
-  "savings-policies-and-executive-insurance.md",
-  "corporate-bonds.md",
-  "fx-and-structured-deposits.md",
-  "managed-and-robo-portfolios.md",
-  "reits-and-gold-funds.md",
-]);
 
 const quoted = /["'`]([A-Z][A-Z0-9]*-[A-Z0-9]+)["'`]/g;
 const bare = /\b([A-Z][A-Z0-9]*-[A-Z0-9]+)\b/g;
@@ -63,11 +51,7 @@ function idsIn(text: string, re: RegExp, known: Set<string>): Set<string> {
 /** The pages a rule can be used on: the address and the label of each. */
 function pageTable(): Record<string, RuleUsePage> {
   const t: Record<string, RuleUsePage> = {
-    idle: { href: "/idle-cash", label: idle.title },
     fees: { href: "/fees", label: r3fees.title },
-    holdings: { href: "/holdings", label: r3holdings.title },
-    compare: { href: "/goal/compare", label: r2.result.title },
-    goal: { href: "/goal", label: r2.form.title },
     transfer: { href: "/transfer", label: r3transfer.title },
     companies: { href: "/companies", label: companiesCopy.title },
     guide: { href: "/guide", label: guideIndex.title },
@@ -78,19 +62,18 @@ function pageTable(): Record<string, RuleUsePage> {
   return t;
 }
 
-/** routes/<name>.tsx → a key of `pageTable`; a route not listed (home, rules, documents, search, parameters …) is not a use. */
+/**
+ * routes/<name>.tsx → a key of `pageTable`; a route not listed (home, rules, documents, search, parameters …) is not a use. `shared`
+ * (here and below) is code several pages share, such as the comparison code of the indices, fee and exposure pages: it counts towards a
+ * rule's score but names no page.
+ */
 const routeKey: Record<string, string> = {
-  "idle-cash": "idle",
   fees: "fees",
   "fees-data": "fees",
-  holdings: "holdings",
-  "holdings-bundle": "holdings",
-  "goal-compare": "compare",
-  "compare-bundle": "compare",
-  goal: "goal",
+  "compare-bundle": "shared",
   invest: "indices",
   tracks: "tracks",
-  "workbench-bundle": "indices",
+  "indices-bundle": "indices",
   transfer: "transfer",
   companies: "companies",
   company: "companies",
@@ -99,26 +82,21 @@ const routeKey: Record<string, string> = {
 
 /** components/<dir>/ → the page that renders it. */
 const componentKey: Record<string, string> = {
-  compare: "compare",
+  compare: "shared",
   fees: "fees",
-  holdings: "holdings",
   tracks: "tracks",
   invest: "indices",
-  "exposure-mode": "compare",
-  revisit: "compare",
+  "exposure-mode": "shared",
   transfer: "transfer",
   decoder: "companies",
-  idle: "idle",
 };
 
 /** lib/<file> → page, by file-name prefix (the pages' own logic lives there: the fee tables …). */
 const libPrefixes: [string, string][] = [
-  ["compare", "compare"],
-  ["exposure-mode", "compare"],
-  ["revisit", "compare"],
-  ["goal", "compare"],
-  ["holdings", "holdings"],
-  ["idle", "idle"],
+  ["compare", "shared"],
+  ["exposure-mode", "shared"],
+  ["goal", "shared"],
+  ["holdings", "shared"],
   ["fees", "fees"],
   ["track-browser", "tracks"],
   ["track-names", "tracks"],
@@ -164,6 +142,7 @@ function build(): Scan {
     const rel = relative(appDir, file).split(sep);
     const base = rel[rel.length - 1]!.replace(/\.tsx?$/, "").replace(/\.server$/, "");
     let page: RuleUsePage | null = null;
+    let key: string | undefined;
     if (rel[0] === "content" && rel[1] === "guide") {
       if (base === "index" || base === "types") continue;
       page = { href: `/guide/${base}`, label: base === "limited-bond-fund" ? limitedBondFund.title : base === "mutual-funds" ? mutualFunds.title : (wrapperName.get(base) ?? base) };
@@ -171,19 +150,17 @@ function build(): Scan {
       const e = loadExposures().find((x) => x.id === base);
       page = { href: exposureHref(base), label: e?.names?.he?.[0] ?? base };
     } else if (rel[0] === "routes") {
-      const k = routeKey[base];
-      page = k ? table[k] ?? null : null;
+      key = routeKey[base];
     } else if (rel[0] === "components" && rel.length > 2) {
-      const k = componentKey[rel[1]!];
-      page = k ? table[k] ?? null : null;
+      key = componentKey[rel[1]!];
     } else if (rel[0] === "lib") {
-      const k = libPrefixes.find(([p]) => base.startsWith(p))?.[1];
-      page = k ? table[k] ?? null : null;
+      key = libPrefixes.find(([p]) => base.startsWith(p))?.[1];
     }
-    if (!page) continue;
+    if (key) page = table[key] ?? null;
+    if (!page && !key) continue;
     const found = idsIn(readTextCached(file), quoted, known);
     for (const id of found) {
-      if (shown(page.href)) addPage(id, page); // a page held for review is not linked from a rule card (lib/review.ts)
+      if (page) addPage(id, page);
       bump(siteFiles, id);
     }
   }
@@ -233,7 +210,7 @@ export function scoreOf(rule: Pick<RuleRecord, "figures" | "il_finance_file" | "
     siteFiles +
     collectionRefs +
     (rule.figures && Object.keys(rule.figures).length > 0 ? 2 : 0) +
-    (tier2Files.has(rule.il_finance_file) ? 0 : 1) +
+    (tier2RuleFiles.has(rule.il_finance_file) ? 0 : 1) +
     (rule.strength === "primary" ? 1 : 0) +
     (rule.likely_to_change === "yes" ? 1 : 0)
   );

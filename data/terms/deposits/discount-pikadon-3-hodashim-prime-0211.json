@@ -1,0 +1,150 @@
+{
+  "id": "discount-pikadon-3-hodashim-prime-0211",
+  "bank": "discount",
+  "names": {
+    "447": [
+      "פקדון ל-3 חודשים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פקדון ל-3 חודשים",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 3,
+    "unit": "months",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון ל-3 חודשים' (קוד 0211), 'סוג המוצר (לפי תקופה)'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-08",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "Printed as '3 חודשים' (row 'פקדון ל-3 חודשים', code 0211); recorded as 3 months, the period of a three-month deposit (directive 447 Annex A, BANK-14)."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -3.25,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון ל-3 חודשים' (קוד 0211), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-08",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'p-3.25': spread from prime -3.25 percentage points."
+  },
+  "rate_offered": {
+    "value": 1.5,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון ל-3 חודשים' (קוד 0211), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-08",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax: offered column printed 'p-3.25' with 1.5 beside it; code 0211 'פקדון ל-3 חודשים', period '3 חודשים', interest type 'משתנה', linkage 'לא צמוד', exit points 'ללא תחנות יציאה' לא קיים; renewal 'ללא אפשרות חידוש' (max renewals 0); break 'קיימת עם קנס שבירה'; 'שיעור הריבית לפיקדון שכיח' empty; deposit channels 'סניף,טלבנק,משוב'; remarks ''. This row as printed: 'החל מ-250 שח': 'p-3.25' with 1.5 beside it, common empty. Read 2026-11-09 from the data the page loads (https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-11-08T18:00:00, prime 4.75%); column titles from the page's own table definition."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 250.0,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+        "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון ל-3 חודשים' (קוד 0211), 'טווח סכום להפקדה'",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-08",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-250 שח'."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column); the page's 'מנגנון קנס השבירה': the penalty is set on the day of the break from the bank's 'טבלת ריבית לווים', is never less than the deposit rate plus a 'מרווח שבירה', and a deposit of a year or more cannot be partly broken in its first year; 'ייתכן ובמסגרת הקנס לא ישולמו ללקוח ריבית ... ואף תיתכן פגיעה בקרן הפיקדון'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14",
+      "BANK-33"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": 0
+  },
+  "snapshot": "2026-11-09",
+  "source": {
+    "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+    "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון'",
+    "publisher": "Israel Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

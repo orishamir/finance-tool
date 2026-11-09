@@ -14,8 +14,6 @@ import {
   sensitivityAxes,
   valueOfReduction,
   BlockedError,
-  MissingRuleError,
-  RecordInputError,
   type Candidate,
   type Discount,
   type FeeLine,
@@ -32,22 +30,16 @@ import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/sch
 import { computedInputs as ci, formulaNames, r3fees } from "../copy";
 import { asParameter, evaluate, fundCostOf, goalValueObjects, horizonFloorOf, nothingToCompare, parameterOf, placeGroups, runInputs, type CompareBundle, type FeeKind, type PlanValues, type RunGoal, type WrapperEntry } from "./compare";
 import { fmt } from "./format";
-import { holdingName, holdingPlan } from "./holdings";
-import { blockedHe, failureHe } from "./failure-he";
-import type { Holding } from "./state";
+import { blockedHe } from "./failure-he";
 import type { InputsState } from "./inputs";
 import type { FieldKey } from "./goal";
 import { asField, computed, depositFeeNoneByRule, entered as enteredValue, expandFee, ruleFigure, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
+import type { RefLink } from "./sources";
 
 Object.assign(formulaNames, { "F-62": "פסק דין על עמלה", "F-68": "ממוצע הרשות למסלולי הסיווג", "F-61": "עלות דמי הניהול" });
 
 // ---------------------------------------------------------------- the data (fees.server.ts)
 
-export interface LinkOut {
-  href: string;
-  title: string;
-  ruleId: string;
-}
 
 export interface TrackLite {
   id: number;
@@ -67,7 +59,7 @@ export interface FeesData {
   today: string;
   p03: ParameterRecord;
   rules: RuleRecord[];
-  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them (review, 2026-10-26). */
+  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them. */
   pointed?: RuleRecord[];
   /** F-68 for every provident-family class, by `classKey`. */
   references: Record<string, RegulatorReference>;
@@ -78,23 +70,21 @@ export interface FeesData {
   wrapperTrack: Record<string, number>;
   /** The class of the provider whose tariff a securities wrapper uses (`bank`, ...). */
   tariffClass: Record<string, string>;
-  links: { boi: LinkOut | null; isa: LinkOut | null; tase: LinkOut | null };
+  links: { boi: RefLink | null; isa: RefLink | null; tase: RefLink | null };
 }
 
 export const classKey = (classification: string, specialization: string) => `${classification.trim()}|${specialization.trim()}`;
 
 // ---------------------------------------------------------------- the subject
 
-export type SubjectSpec = { kind: "wrapper"; wrapperId: string; from: "compare" | "guide" } | { kind: "track"; trackId: number } | { kind: "holding"; holdingId: string };
+export type SubjectSpec = { kind: "wrapper"; wrapperId: string } | { kind: "track"; trackId: number };
 
 export function parseSubject(search: string): SubjectSpec | null {
   const q = new URLSearchParams(search);
   const wrapper = q.get("wrapper");
   const track = q.get("track");
-  const holding = q.get("holding");
-  if (wrapper) return { kind: "wrapper", wrapperId: wrapper, from: q.get("from") === "compare" ? "compare" : "guide" };
+  if (wrapper) return { kind: "wrapper", wrapperId: wrapper };
   if (track && /^\d+$/.test(track)) return { kind: "track", trackId: Number(track) };
-  if (holding) return { kind: "holding", holdingId: holding };
   return null;
 }
 
@@ -108,8 +98,6 @@ export interface FeeInputs {
   returnFromParameter: boolean;
   /** The goal as saved, for the comparison (a return it does not hold stays missing, D9). */
   goalG: RunGoal | null;
-  /** Fields whose value comes from the subject and not the goal (a holding's balance and deposits): shown, not editable here. */
-  fixed?: ("amountNow" | "monthly")[];
   values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; inflation: SiteValue; returnV: SiteValue; insurance?: SiteValue; available?: SiteValue; income?: { name: string; value: SiteValue } };
   /** The values the plan's fields start at (P-05's scenario): what each field's reset goes back to, "חזרה ל־10". */
   starts?: { amount: number; monthly: number; years: number; inflation: number; returnV: number };
@@ -132,7 +120,7 @@ export function feeInputs(bundle: CompareBundle, goalG: RunGoal | null, released
     return { g, fromGoal: true, returnFromParameter, goalG, starts, values: { amount: gv.amountNow, monthly: gv.monthly, years: gv.horizon, inflation: gv.inflation, returnV: gv.returnV ?? param("A-01"), available: gv.available } };
   }
   const e = released.entered;
-  // each is a field's value on the page, its default or what the reader typed: a plain number wherever it shows (founder, 2026-11-08)
+  // each is a field's value on the page, its default or what the reader typed: a plain number wherever it shows
   const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) => asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : param(key));
   const amount = val("amount_now", "nis", ci.amountNow);
   const monthly = val("monthly_deposit", "nis_per_month", ci.monthly);
@@ -173,7 +161,7 @@ export type Factory = ReturnType<typeof factory>;
 
 /**
  * The fee page's figures, each listing what the run of the subject reads (`runInputs`, the comparison's one helper): the plan's money,
- * the return or, for a cash-like product, its own rate, and the profile only where the run reads it (founder, 2026-11-08). `goal` is the
+ * the return or, for a cash-like product, its own rate, and the profile only where the run reads it. `goal` is the
  * page's fields as values: an assumption's value now is the field itself (F-81 moves from it).
  */
 export function factory(bundle: CompareBundle, inputs: FeeInputs, wrapper?: WrapperEntry) {
@@ -211,7 +199,8 @@ function lift(v: ValueObject, stale: SiteValue["stale"], today: string, src?: Va
     const texts = src ? classTexts(v.computed_from.inputs as Record<string, unknown>, src) : {};
     for (const [label, raw] of Object.entries(v.computed_from.inputs)) {
       const isNum = typeof raw === "number";
-      inputs[label] = texts[label] ?? { ...computed(isNum ? raw : null, isNum ? "count" : "text", v.computed_from.formula, {}, { today, about: label }), ...(isNum ? {} : { value: String(raw) }) };
+      // a count over the file (F-68's tracks of one class in one period) lists that class and period, as the count beside the average does
+      inputs[label] = texts[label] ?? { ...computed(isNum ? raw : null, isNum ? "count" : "text", v.computed_from.formula, isNum ? texts : {}, { today, about: label }), ...(isNum ? {} : { value: String(raw) }) };
     }
   }
   return { ...v, computed_from: v.computed_from ? { formula: v.computed_from.formula, inputs } : undefined, weakest: v.source.strength, stale: stale ?? null, rulesUsed: (v.rule_ids ?? []).map((id) => ({ id, strength: v.source.strength })) } as SiteValue;
@@ -226,12 +215,7 @@ export type PlanError =
   /** G-30: monthly deposits into a renewable money-market fund have no run yet; with no monthly deposit the page has a result. */
   | { kind: "monthly-not-run"; code: string }
   | { kind: "no-run"; code: string; messageHe?: string }
-  | { kind: "needs-pf36" }
-  | { kind: "needs-first-deposit" }
   | { kind: "no-fee"; detail: string };
-
-/** The rule or gap id an engine message names, or "failed": the page shows ids, never the English message (B3). */
-export const codeOfMessage = (message: string | undefined): string => (message ? /\b(?:G|PF|OQ|TXH|TXK|KH|KGL|SW|PEN)-\d+\b/.exec(message)?.[0] ?? "failed" : "failed");
 
 export interface SubjectRun {
   plan: RunPlan;
@@ -254,8 +238,7 @@ export type NeedField = "age" | "employment" | "insurance" | "salary" | "return"
 
 /**
  * The field a missing input is, from the comparison's own reading (`evaluate`'s fields, which knows which pension or study-fund term
- * was not built) and else from the engine's detail, so the page always names the field and never "one of the values" (2026-11-07:
- * "instrument.pension is missing" matched none of the names).
+ * was not built) and else from the engine's detail, so the page always names the field and never "one of the values" ("instrument.pension is missing" matched none of the names).
  */
 export function needFieldOf(detail: string, inferred?: FieldKey): NeedField | null {
   if (inferred === "age" || inferred === "employment" || inferred === "insurance" || inferred === "salary" || inferred === "return") return inferred;
@@ -283,16 +266,12 @@ export interface PageFields {
 const AGE_WRAPPERS = new Set(["kupat-gemel-lehashkaa", "ira-provident"]);
 const STUDY_WRAPPERS = new Set(["keren-hishtalmut", "ira-hishtalmut"]);
 
-/**
- * A holding's run (lib/holdings holdingPlan) does not stop for them: it reads the age when there is one, takes an employee when no
- * employment is entered and no insurance when none is, so on a holding's page each is optional, the insurance hint saying so.
- */
-export function pageFields(bundle: CompareBundle, wrapperId: string | null, holding = false): PageFields {
+export function pageFields(bundle: CompareBundle, wrapperId: string | null): PageFields {
   const w = wrapperId ? bundle.wrappers.find((x) => x.id === wrapperId) : undefined;
   if (!w) return { age: null, employment: null, insurance: null };
   const exitAge = w.record.lawful_exit?.kind === "at_age" && typeof w.record.lawful_exit.age?.value === "number";
   const pension = w.family === "pension";
-  const need = (required: boolean, optional: boolean): FieldNeed => (required ? (holding ? "optional" : "required") : optional ? "optional" : null);
+  const need = (required: boolean, optional: boolean): FieldNeed => (required ? "required" : optional ? "optional" : null);
   return {
     age: need(exitAge, AGE_WRAPPERS.has(w.id)),
     employment: need(pension, STUDY_WRAPPERS.has(w.id)),
@@ -300,10 +279,9 @@ export function pageFields(bundle: CompareBundle, wrapperId: string | null, hold
   };
 }
 
-/** The wrapper whose fields the page offers: the subject's own, a track's from its record even when its run stops (2026-11-07, independent check: a pension track asked for fields its sheet did not have). */
-export function subjectWrapperId(subject: SubjectSpec, data: FeesData, holdingWrapper: string | null): string | null {
+/** The wrapper whose fields the page offers: the subject's own, a track's from its record even when its run stops (a pension track asked for fields its sheet did not have). */
+export function subjectWrapperId(subject: SubjectSpec, data: FeesData): string | null {
   if (subject.kind === "wrapper") return subject.wrapperId;
-  if (subject.kind === "holding") return holdingWrapper;
   return data.tracks.find((t) => t.id === subject.trackId)?.wrapperId ?? null;
 }
 
@@ -468,10 +446,10 @@ export interface ReferenceView {
   official?: { value: SiteValue; year: string };
   /**
    * The class comes from a track the site chose (P-05) that is not the record the run prices (a company's list): the page says so plainly,
-   * and the track's own average is not "this track's" (2026-11-07: the provident fund for investing's track 7978, chosen by Claude).
+   * and the track's own average is not "this track's" (the provident fund for investing's track 7978, chosen by Claude).
    */
   bySite?: { trackId: number; companyId: string; name: string; company: string };
-  none?: { reason: NoRefReason; linkOut: LinkOut | null };
+  none?: { reason: NoRefReason; linkOut: RefLink | null };
   stale: SiteValue["stale"];
 }
 
@@ -482,7 +460,7 @@ interface RefContext {
   today: string;
   rules: Map<string, RuleRecord>;
   mk: Factory;
-  /** The run prices the track P-05 names (its regulator averages), not another record such as a company's list or a holding's statement. */
+  /** The run prices the track P-05 names (its regulator averages), not another record such as a company's list. */
   recordIsTrack: boolean;
 }
 
@@ -521,7 +499,7 @@ function referenceFor(c: RefContext, line: FeeLine, rate: SiteValue | null): Ref
 
 function referenceBase(c: RefContext, line: FeeLine, rate: SiteValue | null): ReferenceView {
   const links = c.data.links;
-  const none = (reason: NoRefReason, linkOut: LinkOut | null = null): ReferenceView => ({ none: { reason, linkOut }, stale: null });
+  const none = (reason: NoRefReason, linkOut: RefLink | null = null): ReferenceView => ({ none: { reason, linkOut }, stale: null });
   if (line === "direct") return none("G-14");
   if (line === "balance" || line === "deposit") {
     if (!capWrappers.has(c.wrapperId) && c.wrapperId !== "child-savings-provident") return none("D20", links.boi);
@@ -566,7 +544,7 @@ function referenceBase(c: RefContext, line: FeeLine, rate: SiteValue | null): Re
 // ---------------------------------------------------------------- the analysis
 
 /**
- * Why a line has its verdict (D90 revised, 2026-11-07: the negotiate half judges what the cut to the average is worth). `negotiate-ends`: worth
+ * Why a line has its verdict (D90 revised, the negotiate half judges what the cut to the average is worth). `negotiate-ends`: worth
  * negotiating now, and the discount ends within the horizon; `check-after`: not worth it now, but the discount ends within the horizon and
  * the fee can rise above the average then, so that is when to check again; `below`: the cut to the average is worth less than the threshold.
  */
@@ -597,7 +575,7 @@ export interface LineView {
   /**
    * The room of the line that names them: every option of the comparison that could be one, whatever the plan, those without the fee and
    * the rest as if lower. The alternatives change with the sliders (a renewing money-market fund runs only with no monthly deposit), and
-   * at 390 px one more name moved the card by a line (box check, 2026-11-07).
+   * at 390 px one more name moved the card by a line.
    */
   alternativesRoom: Alternative[];
   reference: ReferenceView;
@@ -683,7 +661,7 @@ export function headlineGap(an: Analysis): { kind: "more"; line: FeeLine; worth:
     if (!l.reference.cma || l.rateFraction === undefined || !reducible(l.line)) continue;
     anyReference = true;
     // a fee whose discount ends within the period and can rise above the average then (D88, D90): "not above average" alone would contradict its card
-    // keyed on the line, not its reason: a line "worth avoiding" can rise above the average too (finance review, 2026-11-07)
+    // keyed on the line, not its reason: a line "worth avoiding" can rise above the average too
     if (l.risesAbove) after = true;
     // the average is not below the rate charged now: nothing to bring down (D90)
     if (l.suggestion === null) continue;
@@ -705,7 +683,7 @@ export function alternativesOf(set: ComparisonSet | null, subjectId: string, lin
   for (const c of set.candidates) {
     if (c.tier !== 1 || c.id === subjectId || !c.plan || !c.run || (c.kind !== "ranked" && c.kind !== "listed-not-ranked")) continue;
     const without = !feeLines(c.plan).includes(line);
-    // on the same footing as the subject's (finance review, 2026-11-07): the rate after a discount that ends within the horizon, not the 0% during it
+    // on the same footing as the subject's: the rate after a discount that ends within the horizon, not the 0% during it
     const theirs = without ? undefined : rateOf(c.plan);
     const lower = !without && subjectRate !== undefined && theirs !== undefined && theirs < subjectRate - 1e-12;
     if (without || lower) out.push({ id: c.id, name: names[c.id] ?? c.id, lower });
@@ -727,7 +705,7 @@ export function alternativesRoomOf(set: ComparisonSet | null, subjectId: string,
 }
 
 /**
- * D90 revised the same day (lead, 2026-11-07): "worth avoiding" only when there is something better to pick. Of the alternatives, those
+ * D90 revised the same day: "worth avoiding" only when there is something better to pick. Of the alternatives, those
  * that rank above the subject on the page's own comparison for the same plan: a better place, never a shared one. A subject the comparison
  * lists without a place is below every ranked option. Readers saw "avoid" on the option ranked first and asked what to pick instead.
  */
@@ -756,7 +734,7 @@ function verdictOf(args: { costNis: number; worthNis: number; rate: number | und
 }
 
 /**
- * The reference the verdict, the reduction field and the words all use (one measure, 2026-11-07): the F-68 class mean as the page shows
+ * The reference the verdict, the reduction field and the words all use (one measure): the F-68 class mean as the page shows
  * it, in percent. The card showed a median beside the mean, and a study fund's median equal to its fee read as "the fee is normal" while
  * the verdict compared with the mean.
  */
@@ -785,12 +763,6 @@ export interface AnalyseArgs {
   comparison: ComparisonSet | null;
   names: Record<string, string>;
   withSeries: boolean;
-  /** Rates the person entered (a holding's statement), which replace the record's. */
-  rates?: Partial<Record<FeeLine, SiteValue>>;
-  /** Re-plans the subject for another goal (F-81); absent: the wrapper's plan is rebuilt from the bundle. */
-  replan?: (goal: RunGoal) => RunPlan | null;
-  /** No fee axes in the sensitivity (a holding's plan cannot scale a fee). */
-  noFeeAxes?: boolean;
 }
 
 export function analyse(a: AnalyseArgs): Analysis {
@@ -803,16 +775,16 @@ export function analyse(a: AnalyseArgs): Analysis {
   const today = a.runBundle.runDate;
   const run = { rules: fm.run.rules, flags: fm.run.flags, labels: fm.run.labels };
   const refW = a.runBundle.wrappers.find((x) => x.id === a.wrapper.id) ?? a.wrapper;
-  const refCtx: RefContext = { data: a.data, wrapperId: a.wrapper.id, track: a.track, today, rules, mk, recordIsTrack: a.rates === undefined && refW.feeValues.regBalance !== undefined };
+  const refCtx: RefContext = { data: a.data, wrapperId: a.wrapper.id, track: a.track, today, rules, mk, recordIsTrack: refW.feeValues.regBalance !== undefined };
   const lines: LineView[] = fm.lines.map((l): LineView => {
     const w = a.runBundle.wrappers.find((x) => x.id === a.wrapper.id) ?? a.wrapper;
-    const rate = a.rates?.[l.line] ?? rateValue(w, l.line, today);
+    const rate = rateValue(w, l.line, today);
     const afterW = afterOf(w, a.plan, l.line);
     const frac = lineRate(a.plan, l.line);
     const reference = referenceFor(refCtx, l.line, rate);
     const refShown = meanShown(reference);
     const refFraction = refShown !== null ? refShown / 100 : null;
-    // the field's figure: the verdict judges what bringing the fee to the average is worth, not what the fee costs (D90 revised, 2026-11-07)
+    // the field's figure: the verdict judges what bringing the fee to the average is worth, not what the fee costs (D90 revised)
     const suggestion = suggestionOf(l.line, refShown, frac);
     const worthNis = worthOf(a.plan, l.line, suggestion, ctx);
     const costNis = l.cost.value as number;
@@ -901,7 +873,7 @@ export function reductionWorth(an: Analysis, line: FeeLine, toPct: number): Site
   if (!l || l.rateFraction === undefined || !(toPct >= 0) || toPct / 100 >= l.rateFraction) return null;
   const r = valueOfReduction(an.plan, line, toPct / 100, an.ctx);
   const to = enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם");
-  // the changed run's flags too: a held rate can give a plan a discount, and with it PF OQ18's open reading (D87; finance review, 2026-11-07)
+  // the changed run's flags too: a held rate can give a plan a discount, and with it PF OQ18's open reading (D87)
   const flags = [...an.fm.run.flags, ...r.flags.filter((f) => !an.fm.run.flags.some((g) => g.code === f.code))];
   const labels = [...an.fm.run.labels, ...r.labels.filter((x) => !an.fm.run.labels.some((y) => y.code === x.code && y.ruleId === x.ruleId))];
   return an.mk.nis(r.value.value as number, "F-61", `${r3fees.names[line]}: ${r3fees.reduction.label}`, { rules: an.fm.run.rules, flags, labels }, { [r3fees.reduction.label.trim()]: to, ...(l.rate ? { [r3fees.names[line]!]: l.rate } : {}) });
@@ -934,7 +906,7 @@ export interface FeeSensitivity {
 }
 
 /**
- * What would make a cut worth negotiating (fresh readers, 2026-11-07: "the page never says what would push the 108 ₪ above 1,000 ₪"): the
+ * What would make a cut worth negotiating: the
  * smallest amount today, in a round sum, and the fewest whole years, each with every other number as it is, at which F-61's value of
  * bringing the fee to the average reaches the negotiate threshold. Absent where none is found within the bounds searched.
  */
@@ -972,7 +944,7 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
   const g = a.inputs.g;
   const wrapperId = a.wrapper.id;
   // a line at 0% whose discount reverts to a positive rate moves too: the multiplier scales both of its periods (A-19)
-  const scalable = a.noFeeAxes ? [] : base.lines.filter((l) => feeKindOf[l.line] && l.rateFraction !== undefined && (l.rateFraction > 0 || l.after !== undefined));
+  const scalable = base.lines.filter((l) => feeKindOf[l.line] && l.rateFraction !== undefined && (l.rateFraction > 0 || l.after !== undefined));
   const p05 = parameterOf(runBundle, "P-05");
   const inflationNow = g.inflationPct ?? ((p05 as unknown as { inputs: Record<string, ValueObject> }).inputs["A-02"]!.value as number);
   const floor = horizonFloorOf(runBundle);
@@ -996,17 +968,8 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
       const kind = feeKindOf[key.slice(4) as FeeLine];
       scale = { [`${wrapperId}:${kind}`]: value };
     }
-    let plan: RunPlan;
-    if (a.replan) {
-      const p = a.replan(goal);
-      if (!p) return "";
-      plan = p;
-    } else {
-      const r = subjectRun(runBundle, wrapperId, goal, scale);
-      if ("kind" in r) return "";
-      plan = r.plan;
-    }
-    const r = { plan };
+    const r = subjectRun(runBundle, wrapperId, goal, scale);
+    if ("kind" in r) return "";
     const fm = feeMateriality(r.plan, base.ctx);
     const rows = fm.lines.map((l) => {
       const costNis = l.cost.value as number;
@@ -1067,7 +1030,7 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
 
 /**
  * F-61 searched (`FeeReach`): for each line not worth negotiating now with a cut to ask for, the amount today at which the cut is worth
- * the threshold, from two runs (the worth grows in a straight line with the amount; a holding's balance is its own, so it is not moved),
+ * the threshold, from two runs (the worth grows in a straight line with the amount),
  * then checked on the round sum; and the fewest whole years up to `REACH_LIMITS.years` by halving, the worth growing with the years.
  */
 export function reachOf(a: AnalyseArgs, base: Analysis, runBundle: CompareBundle): Partial<Record<FeeLine, FeeReach>> {
@@ -1077,7 +1040,6 @@ export function reachOf(a: AnalyseArgs, base: Analysis, runBundle: CompareBundle
   if (targets.length === 0) return {};
   const planFor = (goal: RunGoal): RunPlan | null => {
     try {
-      if (a.replan) return a.replan(goal);
       const r = subjectRun(runBundle, a.wrapper.id, goal);
       return "kind" in r ? null : r.plan;
     } catch {
@@ -1095,7 +1057,7 @@ export function reachOf(a: AnalyseArgs, base: Analysis, runBundle: CompareBundle
   const out: Partial<Record<FeeLine, FeeReach>> = {};
   for (const l of targets) out[l.line] = {};
   // the amount today: a straight line through two runs, then the round sum checked, and raised a tenth at a time up to three times
-  if (!a.inputs.fixed?.includes("amountNow") && g.amountNow !== null) {
+  if (g.amountNow !== null) {
     const a0 = g.amountNow;
     const a1 = a0 > 0 ? a0 * 2 : 50_000;
     const p1 = planFor({ ...g, amountNow: a1 });
@@ -1140,8 +1102,8 @@ export type FeesResult =
   | { kind: "blocked"; ruleId: string; messageHe: string };
 
 export interface SubjectView {
-  kind: "wrapper" | "track" | "holding";
-  from: "compare" | "guide" | "track" | "holding";
+  kind: "wrapper" | "track";
+  from: "guide" | "track";
   wrapperId: string;
   productName: string;
   record: string;
@@ -1149,84 +1111,12 @@ export interface SubjectView {
   track: TrackLite | null;
   /** The calendar year of the CMA fee averages the set rests on (a track subject). */
   feeYear: string | null;
-  fromHref: string;
-}
-
-export function holdingSubject(h: Holding, wrapper: WrapperEntry, data: FeesData): { subject: SubjectView; track: TrackLite | null } {
-  const track = h.track ? data.tracks.find((t) => t.id === h.track!.fundId) ?? null : null;
-  return {
-    track,
-    subject: { kind: "holding", from: "holding", wrapperId: h.wrapperId, productName: holdingName(h), record: holdingName(h), recordSource: null, track, feeYear: null, fromHref: "/holdings" },
-  };
-}
-
-/** A holding under review (method F-61: the balance as it stands, the statement's fees); needs the pension ledger, as the holdings page does. */
-/** The run's amount is the holding's balance and its monthly money the statement's own and employer deposits, not the goal's (B5). */
-function holdingInputs(inputs: FeeInputs, h: Holding): FeeInputs {
-  const num = (v: ValueObject | undefined) => (typeof v?.value === "number" ? v.value : 0);
-  const monthly = num(h.monthlyOwn) + (h.wrapperId === "keren-hishtalmut" ? num(h.monthlyEmployer) : 0);
-  const monthlyValue = h.monthlyOwn || h.monthlyEmployer ? enteredValue(monthly, "nis_per_month", inputs.values.monthly.checked, ci.monthly) : enteredValue(0, "nis_per_month", inputs.values.monthly.checked, ci.monthly);
-  return {
-    ...inputs,
-    g: { ...inputs.g, amountNow: num(h.balance), monthly },
-    values: { ...inputs.values, amount: h.balance as SiteValue, monthly: monthlyValue },
-    fixed: ["amountNow", "monthly"],
-  };
-}
-
-export function buildHoldingFees(bundle: CompareBundle, data: FeesData, h: Holding, inputs: FeeInputs, goalName = ""): FeesResult {
-  const wrapper = bundle.wrappers.find((w) => w.id === h.wrapperId);
-  if (!wrapper) return { kind: "error", error: { kind: "no-wrapper" } };
-  const rules = ruleMap(bundle, data);
-  const rulesRecord = Object.fromEntries(rules);
-  const goal = { years: inputs.g.horizonYears, name: goalName, run: inputs.g };
-  inputs = holdingInputs(inputs, h);
-  const hp = holdingPlan(h, bundle, goal, rulesRecord);
-  if (!hp.ok)
-    return {
-      kind: "error",
-      error: hp.reason === "unsupported" ? { kind: "no-terms" } : hp.reason === "needs-pf36" ? { kind: "needs-pf36" } : hp.reason === "needs-first-deposit" ? { kind: "needs-first-deposit" } : { kind: "no-run", code: codeOfMessage(hp.message), messageHe: failureHe(hp.message) },
-    };
-  const { subject, track } = holdingSubject(h, wrapper, data);
-  const names: Record<string, string> = Object.fromEntries(bundle.wrappers.map((w) => [w.id, w.name]));
-  const comparison = comparisonFor(bundle, inputs.goalG ?? inputs.g, goalName);
-  const rates: AnalyseArgs["rates"] = {};
-  if (h.feeBalance) rates.balance = h.feeBalance as SiteValue;
-  if (h.feeDeposit) rates.deposit = h.feeDeposit as SiteValue;
-  if (h.directExpenses) rates.direct = h.directExpenses as SiteValue;
-  const args: AnalyseArgs = {
-    plan: hp.plan,
-    runBundle: bundle,
-    wrapper,
-    inputs,
-    data,
-    track,
-    comparison,
-    names,
-    withSeries: true,
-    rates,
-    noFeeAxes: true,
-    replan: (g) => {
-      const r = holdingPlan(h, bundle, { years: g.horizonYears, name: goalName, run: g }, rulesRecord);
-      return r.ok ? r.plan : null;
-    },
-  };
-  try {
-    const analysis = analyse(args);
-    const o = analysis.fm.run.outcome;
-    return { kind: "ok", subject, analysis, args, inputs, comparison, preTax: o.code === "listed-not-ranked" && o.reason ? [o.reason] : [], omitted: [] };
-  } catch (e) {
-    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, messageHe: blockedHe };
-    // a study fund still inside its lock: the run asks for the detailed statement's tax layers (PF-36), as the holdings card says (B2)
-    const message = e instanceof Error ? e.message : String(e);
-    if (/PF-36/.test(message) && h.wrapperId === "keren-hishtalmut") return { kind: "error", error: { kind: "needs-pf36" } };
-    if (e instanceof RecordInputError || e instanceof MissingRuleError) return { kind: "error", error: { kind: "no-run", code: codeOfMessage(message), messageHe: failureHe(message) } };
-    throw e;
-  }
+  /** The page the subject came from. */
+  fromHref: string | null;
 }
 
 /**
- * `inputs` with no saved goal (the fee page, founder 2026-10-28): the comparison behind "avoid" runs on the page's own numbers,
+ * `inputs` with no saved goal (the fee page): the comparison behind "avoid" runs on the page's own numbers,
  * every option at once, so the verdict is evaluated without a goal.
  */
 export function buildFees(bundle: CompareBundle, data: FeesData, subject: SubjectSpec, inputs: FeeInputs, goalName = ""): FeesResult {
@@ -1243,14 +1133,13 @@ export function buildFees(bundle: CompareBundle, data: FeesData, subject: Subjec
     if ("kind" in r) return { kind: "error", error: r };
     runBundle = r.bundle;
     omitted = r.missing;
-  } else if (subject.kind === "wrapper") wrapperId = subject.wrapperId;
-  else return { kind: "error", error: { kind: "no-wrapper" } };
+  } else wrapperId = subject.wrapperId;
   // No saved goal: the run is the entered values or P-05's, and a study fund with no employment entered takes the one its `instruments` entry names, as the guide page does (B3).
   if (!inputs.fromGoal && inputs.g.employment === null) {
     const spec = (parameterOf(bundle, "P-05") as unknown as { instruments?: Record<string, { employment?: "employee" | "self-employed" }> }).instruments?.[wrapperId];
     if (spec?.employment) inputs = { ...inputs, g: { ...inputs.g, employment: spec.employment } };
   }
-  // a track runs at its own fees in the comparison too (finance review, 2026-11-07): its place, and so "is anything better above it", is its own,
+  // a track runs at its own fees in the comparison too: its place, and so "is anything better above it", is its own,
   // not the place of the site's sample track for the product
   const comparison = comparisonFor(runBundle, inputs.goalG ?? inputs.g, goalName);
 
@@ -1266,14 +1155,14 @@ export function buildFees(bundle: CompareBundle, data: FeesData, subject: Subjec
   const record = recordOf(run.wrapper, wrapperId, track, data);
   const sv: SubjectView = {
     kind: subject.kind,
-    from: subject.kind === "track" ? "track" : subject.kind === "wrapper" ? subject.from : "guide",
+    from: subject.kind === "track" ? "track" : "guide",
     wrapperId,
     productName: run.wrapper.name,
     record: record.name,
     recordSource: record.source,
     track,
     feeYear: track ? (data.templates[track.dataset]?.balance.effective_from ?? "").slice(0, 4) || null : null,
-    fromHref: subject.kind === "track" ? `/companies/${track!.companyId}/${track!.id}` : subject.from === "compare" ? "/goal/compare" : `/guide/${wrapperId}`,
+    fromHref: subject.kind === "track" ? `/companies/${track!.companyId}/${track!.id}` : `/guide/${wrapperId}`,
   };
   const args: AnalyseArgs = { plan: run.plan, runBundle, wrapper: run.wrapper, inputs, data, track, comparison, names, withSeries: true };
   try {

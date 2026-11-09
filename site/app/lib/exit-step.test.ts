@@ -1,4 +1,4 @@
-// The guide's exit step mark (2026-11-07, second check): a rate that is the site's reading is tagged ReadingTag, never "מקור משני",
+// The guide's exit step mark: a rate that is the site's reading is tagged ReadingTag, never "מקור משני",
 // whatever strength reaches the step; guard 16's regex sees only a literal strength="secondary", so the decision is tested here.
 import { describe, expect, it } from "vitest";
 import { exitRateLines, exitStepMark } from "./exit-step";

@@ -1,4 +1,4 @@
-// How the track browser's groups are summed and ordered (D54, 2026-11-03): a company's assets in one product, a group's fee range and the
+// How the track browser's groups are summed and ordered (D54): a company's assets in one product, a group's fee range and the
 // median stock share that orders the kinds. Pure functions over the regulator's published figures; the page supplies them and shows each
 // result as a computed value. Nothing here ranks a track or a company as better: the order is a way to read the list, not a verdict.
 

@@ -19,14 +19,11 @@ and family make saving and investing decisions in Israel.
 
 ## What exists
 
-- **The site.** All five releases of the first roadmap are built (record:
-  `8dd1f013:research/2026-10-23-release-1/roadmap.md`). Switching between providers
-  was removed, to be built again. Pages and visuals held for the founder's
-  review are off the site's links but still at their addresses; the list is
-  in `site/app/lib/review.ts`.
+- **The site.** Switching between providers, the goal comparison, idle cash
+  and holdings are not on the site; they are to be designed again. Nothing
+  is held for review: a page is on the site, with links to it, or not built.
 - **The product.** `docs/product.md` describes the site: who it is for, what
-  it does, and the choices made along the way (a numbered history, not
-  rules). Don't assume a feature, page, data source or scope that isn't
+  it does, and its numbered choices as they stand. Don't assume a feature, page, data source or scope that isn't
   there. If a task needs a product choice nobody has made, say so instead of
   inventing one. When something changes, update the text that describes it.
   `docs/discovery.md` holds the founder interview and the research behind it.
@@ -37,6 +34,13 @@ and family make saving and investing decisions in Israel.
   assumptions, playbook ticks and entered rates are four separate stores on
   the device. The export file carries them; they aren't yet merged into the
   state document.
+
+## Comments and docs
+
+- A code comment or a doc says what something is and why, as it stands
+  now. No history: not who asked for it or said it, not when, not which
+  review or reader found it, not what it was before. Git history holds
+  that.
 
 ## Repository layout
 
@@ -64,9 +68,8 @@ and family make saving and investing decisions in Israel.
   the price records cite as evidence (the dated files and folders at its
   top), the glossary's source rows (`glossary/terms/`, which `npm run
   gen:terms` turns into `docs/glossary.md` and `data/terms/`), the user lab
-  (`user-lab/`) and the library (below). The process records (specs,
-  audits, release 1's records, the knowledge-layer build notes, plans and
-  logs) left the tree on 2026-11-08, since what they settled is in the docs,
+  (`user-lab/`) and the library (below). Process records (specs,
+  audits, plans and logs) are not kept: what they settled is in the docs,
   the rule base and the code. A pointer written `8dd1f013:research/...`, or
   any path into `research/` that is no longer there, opens with
   `git show 8dd1f013:<path>`.

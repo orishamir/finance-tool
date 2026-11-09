@@ -1,11 +1,8 @@
-// The transfer sheet's content (design-system 7.8, flow 26): export the saved state as a file, and load a file from
-// another device. The same panel is the sheet (from the holdings page, the strip and the footer) and the page at
-// /transfer. Nothing leaves the device unless the person sends the file; the import changes nothing until "לטעון".
+// The transfer page's content (design-system 7.8, flow 26): export the saved state as a file, and load a file from
+// another device, at /transfer. Nothing leaves the device unless the person sends the file; the import changes nothing until "לטעון".
 import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Link } from "react-router";
-import { r3transfer as copy, r5 } from "../../copy";
+import { r3transfer as copy } from "../../copy";
 import { Tpl } from "../exposure-mode/tpl";
-import { loadHoldingsBundle } from "../../lib/holdings";
 
 import { todayLocal } from "../../lib/today";
 import {
@@ -25,7 +22,6 @@ import {
   readImport,
   replaceState,
   stateFileText,
-  switchToGoal,
   useStateStore,
   type ImportPreviewData,
   type Refusal,
@@ -33,21 +29,18 @@ import {
 import { emptySide, type SideStores } from "../../lib/side-stores";
 import type { Rejected } from "../../lib/import-check";
 import { entered } from "../../lib/value";
-import { IconAlert, IconCopy } from "../icons";
-import { IconDownload, IconFileUp, IconShare } from "../holdings/icons";
+import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
 import { Button, Callout, Card, cx, SegmentedControl, Sentence, When } from "../kit";
-import { shown } from "../../lib/review";
 
 type Site = { version: string; data: string };
 
 // a count of what the person saved (goals, holdings, names, duplicates in a file): their own entries, not a calculation of the site
-// (F-83 until 2026-11-08, the comparison's candidate count; founder: "fix the wrong formulas")
 const count = (n: number, about: string) => entered(n, "count", isoToday(), about);
 
 type Forms = { readonly one: string; readonly two: string; readonly many: string };
 
-/** One count in its Hebrew form (audit 2026-10-24, A91): "מטרה אחת", "שתי מטרות", "{n} מטרות"; the digit goes through `Num`. */
+/** One count in its Hebrew form: "מטרה אחת", "שתי מטרות", "{n} מטרות"; the digit goes through `Num`. */
 function CountForm({ n, forms }: { n: number; forms: Forms }) {
   if (n === 1) return <>{forms.one}</>;
   if (n === 2) return <>{forms.two}</>;
@@ -73,7 +66,7 @@ function CountList({ items, sep = "·" }: { items: { n: number; forms: Forms }[]
   );
 }
 
-/** A rejection: the plain alert icon, not the red lock of an open rule (audit 2026-10-24, A72). */
+/** A rejection: the plain alert icon, not the red lock of an open rule. */
 function ErrorNote({ children }: { children: ReactNode }) {
   return (
     <div role="alert" className="flex gap-2.5 text-sm rounded-md px-3.5 py-3 bg-blocked-subtle text-blocked-foreground">
@@ -94,31 +87,25 @@ const countItems = (c: { goals: number; holdings: number; names: number; compari
   { n: c.ownRates, forms: copy.forms.ownRates },
 ];
 
-export function TransferPanel({ site, headingId, page }: { site?: Site; headingId?: string; /** The page at /transfer: the title is the page's h1. */ page?: boolean }) {
+export function TransferPanel({ site }: { site: Site }) {
   const snap = useStateStore();
-  const [siteInfo, setSiteInfo] = useState<Site | null>(site ?? null);
   useEffect(() => {
     ensureLoaded();
-    if (!site) loadHoldingsBundle().then((b) => setSiteInfo(b.site)).catch(() => setSiteInfo({ version: "r3", data: "unknown" }));
-  }, [site]);
+  }, []);
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-2">
-        {page ? (
-          <h1 id={headingId} className="text-2xl font-semibold">{copy.title}</h1>
-        ) : (
-          <h2 id={headingId} className="text-xl font-semibold">{copy.title}</h2>
-        )}
+        <h1 className="text-2xl font-semibold">{copy.title}</h1>
         <p className="text-muted-foreground max-w-measure">{copy.lede}</p>
         <p className="text-sm text-muted-foreground max-w-measure">
           {copy.onePerDevice} {copy.erasedNote}
         </p>
         {!snap.saved && snap.ready && <Callout tone="caution">{copy.unavailable}</Callout>}
       </header>
-      {/* on the page, from a computer up, the two halves stand side by side and use the frame's room (2026-11-04) */}
-      <div className={cx("flex flex-col gap-6", page && "lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start")}>
-        <ExportHalf site={siteInfo} />
-        <hr className={cx("border-border", page && "lg:hidden")} />
+      {/* from a computer up, the two halves stand side by side and use the frame's room */}
+      <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start">
+        <ExportHalf site={site} />
+        <hr className="border-border lg:hidden" />
         <ImportHalf />
       </div>
     </div>
@@ -127,7 +114,7 @@ export function TransferPanel({ site, headingId, page }: { site?: Site; headingI
 
 // ---------------------------------------------------------------- export
 
-function ExportHalf({ site }: { site: Site | null }) {
+function ExportHalf({ site }: { site: Site }) {
   const snap = useStateStore();
   const state = snap.state;
   // the three side stores live in their own device keys; read after hydration and whenever one changes
@@ -153,10 +140,10 @@ function ExportHalf({ site }: { site: Site | null }) {
       setCanShare(false);
     }
   }, []);
-  /** `makesFile`: a file (download, share) uses the next name; a copy to the clipboard does not (audit 2026-10-24, A72). */
+  /** `makesFile`: a file (download, share) uses the next name; a copy to the clipboard does not. */
   const build = (makesFile: boolean) => {
     const fileName = nextExportName(isoToday(), makesFile);
-    const text = stateFileText(buildStateFile(state, site ?? { version: "r3", data: "unknown" }, new Date(), currentSideStores()));
+    const text = stateFileText(buildStateFile(state, site, new Date(), currentSideStores()));
     if (makesFile) setName(peekExportName());
     return { fileName, text };
   };
@@ -270,8 +257,7 @@ function ImportHalf() {
   const [unreadable, setUnreadable] = useState(false);
   const [mode, setMode] = useState<"add" | "replace">("add");
   const [confirm, setConfirm] = useState(false);
-  const [done, setDone] = useState<{ mode: "add" | "replace"; added: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number }; skipped: number; date: string; goalId?: string; sideFailed: boolean } | null>(null);
-  const [switched, setSwitched] = useState(false);
+  const [done, setDone] = useState<{ mode: "add" | "replace"; added: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number }; skipped: number; date: string; sideFailed: boolean } | null>(null);
   const [drag, setDrag] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleted, setDeleted] = useState(false);
@@ -301,8 +287,7 @@ function ImportHalf() {
     const r = applyImport(snap.state, read.preview.state, mode, date);
     replaceState(r.state);
     const side = applySideImport(read.preview.side, mode);
-    setSwitched(false);
-    setDone({ mode, added: { ...r.added, ...side.added }, skipped: r.skipped + side.skipped, date, ...(r.firstAddedGoalId ? { goalId: r.firstAddedGoalId } : {}), sideFailed: !side.written });
+    setDone({ mode, added: { ...r.added, ...side.added }, skipped: r.skipped + side.skipped, date, sideFailed: !side.written });
     setPasted("");
     setFileText(null);
     setConfirm(false);
@@ -393,31 +378,6 @@ function ImportHalf() {
             </Sentence>
           )}
           {done.sideFailed && <p className="text-sm text-caution-foreground">{copy.sideFailed}</p>}
-          {done.goalId && snap.state.currentId !== done.goalId && !switched && (
-            <Button
-              variant="secondary"
-              className="self-start"
-              onClick={() => {
-                switchToGoal(done.goalId!);
-                setSwitched(true);
-              }}
-            >
-              {copy.switchGoal}
-            </Button>
-          )}
-          {switched && <p className="text-sm text-muted-foreground">{copy.switched}</p>}
-          <p className="flex flex-wrap gap-x-4">
-            {shown("/holdings") && (
-              <Link to="/holdings" className="text-link min-h-target inline-flex items-center hover:underline">
-                {copy.afterLinks.holdings}
-              </Link>
-            )}
-            {shown("/goal/compare") && (
-              <Link to="/goal/compare" className="text-link min-h-target inline-flex items-center hover:underline">
-                {copy.afterLinks.result}
-              </Link>
-            )}
-          </p>
         </Card>
       )}
 

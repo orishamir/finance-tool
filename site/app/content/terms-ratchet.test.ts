@@ -1,9 +1,9 @@
-// Ratchets of the glossary (2026-11-06): a financial term the site names has a row in data/terms, the rows the
+// Ratchets of the glossary: a financial term the site names has a row in data/terms, the rows the
 // glossary generator writes (docs/glossary.md, "Where the rows come from"). Two checks, both listing today's leftovers by name
 // so the lists only shrink (the pattern of components/kit/ratchets.test.ts):
 //  1. every term id the site opens (`<Term id>`, `<HelpMark term>`, a page's `termIds`) is the Hebrew name of a row;
 //  2. no page names, outside a `<Term>`, a financial term that has no row: every file under site/app/content and every
-//     `export const` block of site/app/copy.ts (glossary sweep, 2026-11-07; before it, guide and exposure pages only).
+//     `export const` block of site/app/copy.ts (glossary sweep; before it, guide and exposure pages only).
 // The second check reads its vocabulary from the "Terms" tables of the rule base (.claude/skills/il-finance/references), keeping
 // only phrases of two words or more and abbreviations (a word with ״): single words there are mostly everyday Hebrew (חדש,
 // תקופה, נכסים) and matched on every page. SITE_VOCABULARY adds the financial terms the site uses that the rule base has no
@@ -20,6 +20,7 @@ import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import { brands, guideSignature } from "../copy";
 import { HELP_TERMS } from "../lib/track-browser";
+import { HELP_TERMS as DEPOSIT_TERMS, KIND_TERMS } from "../lib/deposit-browser";
 
 const app = fileURLToPath(new URL("../", import.meta.url));
 const repo = fileURLToPath(new URL("../../../", import.meta.url));
@@ -59,8 +60,13 @@ const BY_EXPRESSION: Record<string, readonly string[]> = {
   "{HELP_TERMS.fee}": [HELP_TERMS.fee],
   "{HELP_TERMS.exposure}": [HELP_TERMS.exposure],
   "{HELP_TERMS.assets}": [HELP_TERMS.assets],
+  "{HELP_TERMS.rate}": [DEPOSIT_TERMS.rate],
+  "{HELP_TERMS.exits}": [DEPOSIT_TERMS.exits],
+  "{HELP_TERMS.break}": [DEPOSIT_TERMS.break],
+  "{HELP_TERMS.linked}": [DEPOSIT_TERMS.linked],
+  "{KIND_TERMS}": KIND_TERMS,
 };
-// Today's leftovers (2026-11-06): ids that open no row. None.
+// Today's leftovers: ids that open no row. None.
 const UNRESOLVED: Record<string, readonly string[]> = {};
 
 describe("every term id the site opens has a row", () => {
@@ -106,8 +112,8 @@ const ruleBaseTerms = (): Map<string, string> => {
 const HE = "א-ת";
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 /**
- * The phrase as a whole word, with up to four of the one-letter prefixes (ו ה ב ל מ ש כ). Four, not three (independent check,
- * 2026-11-07): וכשהעמלה is ו, כש and ה before עמלה, and the scan read past it.
+ * The phrase as a whole word, with up to four of the one-letter prefixes (ו ה ב ל מ ש כ). Four, not three:
+ * וכשהעמלה is ו, כש and ה before עמלה, and the scan read past it.
  */
 const named = (phrase: string) => new RegExp(`(?<![${HE}])[והבלמשכ]{0,4}${esc(phrase)}(?![${HE}])`, "g");
 
@@ -154,7 +160,7 @@ const ratchetReport = (got: Record<string, readonly string[]>, want: Record<stri
 };
 
 /**
- * Financial terms the site uses that no Terms table of the rule base lists (glossary sweep, 2026-11-07, from a count over the
+ * Financial terms the site uses that no Terms table of the rule base lists (glossary sweep, from a count over the
  * built pages). Those with a row pass; those without are the leftovers below, each a row to write once an official text
  * defines it (docs/glossary.md section 4 keeps the ones no official text defines yet).
  */
@@ -216,7 +222,6 @@ const NOT_A_TERM: Record<string, string> = {
   "שם קרן": "everyday words: a fund's name",
   "חוק השקעות משותפות בנאמנות": "the name of a law, cited as a source, not a term",
   "רשימת מסלולי ההשקעה": "the name of a regulator's document, cited as a source, not a term",
-  // glossary round 2 (2026-11-07)
   "ברירת מחדל": "everyday words: a default; where a page means the default track it marks the row מסלול ברירת מחדל",
   "אין אפשרות שבירה": "everyday words: a deposit that cannot be broken; the row is שבירת פיקדון",
   "מועד קבוע": "everyday words: a fixed date",
@@ -229,8 +234,7 @@ const NOT_A_TERM: Record<string, string> = {
 
 // Today's leftovers: page -> financial terms it names with no row and no <Term>. Each is a row to write once an official text
 // defines it (or, where a row exists under another form, a variant or a FORMS entry to add), or a mark to put on the page.
-// Glossary round 2 (2026-11-07) wrote the rows for 18 of them (תשואה, אינפלציה, ברוקר, בית השקעות, בנק ישראל, רשות המסים, הביטוח
-// הלאומי and the rest) and set eight aside as names or everyday words (NOT_A_TERM); 48 pages and 138 page-term pairs became one.
+// Names and everyday words are set aside in NOT_A_TERM.
 // כספים הוניים is one company's split of provident money (the rule base, IRA-07): no official text defines it yet.
 const NAMED_WITHOUT_ROW: Record<string, readonly string[]> = {
   "guide/ira-provident": ["כספים הוניים"],
@@ -298,7 +302,7 @@ describe("no page names a financial term that has no row", () => {
 
 // ---------------------------------------------------------------- the first use on a page is marked
 
-// 2026-11-07 (independent check of the glossary sweep): on the securities account's page קרנות סל, קרנות מחקות, מק״מ and איגרות חוב
+// on the securities account's page קרנות סל, קרנות מחקות, מק״מ and איגרות חוב
 // ממשלתיות had rows but no mark where the page first names them, and on the government bond's page the mark of איגרת חוב sat on a later
 // use. The rule (docs/copy.md 1, "Financial terms"; docs/design-system.md 11, "Term") is written: the first time a glossary term appears on
 // a page it opens its card, and later uses are plain. This check holds every guide and exposure page to it.
@@ -308,11 +312,9 @@ describe("no page names a financial term that has no row", () => {
 // and so is a <Link> whose words are the row's (it leads to the row's own page). A string the reader sees (a callout's title, a table's
 // head or cell, a row's value, words in quotes inside the prose) counts like any other text: every such prop takes a ReactNode, so the
 // mark goes there. Only strings that name things are left out (id, key, prefix, className, figure and rule ids, imports). The lede under
-// a page's title is the page's own one-line definition (copy.ts or the term's row) and carries no marks. Until the check's second
-// pass the strings were skipped, and that hid 27 first uses on 8 pages (קרן סל in a callout's title, מפיץ in a table cell, a track's
-// name in quotes). The independent check of 2026-11-07 found one more: the words before a company list (`<VariesByCompany lead>`) were
-// blanked as a name, and that hid ריבית הפריים, named there and nowhere else on the deposit and savings-plan pages; `lead` is text now
-// and takes a ReactNode. The four AMBIGUOUS rows are left to the page's hand, so a check by eye is still owed there: מכירה in its tax
+// a page's title is the page's own one-line definition (copy.ts or the term's row) and carries no marks. Strings are read too (a
+// callout's title, a table cell, a track's name in quotes), and so are the words before a company list (`<VariesByCompany lead>`,
+// text that takes a ReactNode). The four AMBIGUOUS rows are left to the page's hand, so a check by eye is still owed there: מכירה in its tax
 // sense sat unmarked on four pages.
 
 /** The page's own subject: its title is the row, and the page explains it at length, so it does not open its own card. */
@@ -331,7 +333,7 @@ const OWN_SUBJECT: Record<string, readonly string[]> = {
   "guide/mutual-funds": ["קרן נאמנות"],
   "guide/pension-comprehensive": ["קרן חדשה מקיפה"],
   "guide/provident-for-annuity": ["תגמולים ואישית לפיצויים"],
-  "guide/savings-plan": ["תכנית חיסכון"],
+  "guide/savings-plan": ["תוכנית חיסכון"],
   "exposure/general-track": ["מסלול כללי"],
   "exposure/index-sp500": ["S&P 500"],
 };
@@ -354,19 +356,17 @@ const OTHER_SENSE: Record<string, readonly string[]> = {
   "guide/makam": ["גודל היחידה" /* a trading unit */, "מחיר הקנייה" /* the price paid for a makam (the page and its visual's chart) */, "מדמי ניהול הפיקדון" /* part of a custody fee's name */],
 };
 /**
- * A row's plural in construct counts as the row without a FORMS line (independent check, 2026-11-07): קרנות חוץ on three pages and עמלות
+ * A row's plural in construct counts as the row without a FORMS line: קרנות חוץ on three pages and עמלות
  * קנייה ומכירה on one were first uses no scan saw, because only the forms FORMS names were matched.
  */
 const PLURAL_HEADS: readonly (readonly [string, string])[] = [["קרן ", "קרנות "], ["קופת ", "קופות "], ["איגרת ", "איגרות "], ["חשבון ", "חשבונות "], ["פיקדון ", "פיקדונות "], ["עמלת ", "עמלות "], ["תעודת ", "תעודות "], ["מסלול ", "מסלולי "], ["נייר ", "ניירות "]];
 /** A content file that is a piece of other pages, not a page. */
 const FRAGMENTS = ["guide/open-tax"];
-// Today's leftovers: page -> rows whose first use there is unmarked. The content files had none after the sweep (2026-11-07); these
+// Today's leftovers: page -> rows whose first use there is unmarked. The content files had none after the sweep; these
 // are the visuals' (components/guide-signature), found when the scan began to read them the same day: each is a row the visual names
 // before the page's mark (or with no mark on the page), to be marked in the visual (copy split into before/term/after, as in
-// pension.tsx), or a false hit to put in OTHER_SENSE. The makam, government bond and renewable fund pages were cleared in the same
-// change; the independent check of that pass (2026-11-07) read the other 31 one by one: four were a figure's input names (sheet text,
-// now skipped), 17 were real first uses, marked in the visuals, and ten were left. Nine of those were real first uses, marked in the
-// visuals the same day; the one left is the column name "אותו כסף בחשבון ניירות ערך", split across two copy strings (names, fine).
+// pension.tsx), or a false hit to put in OTHER_SENSE. A figure's input names are sheet text and skipped. The one left is the column
+// name "אותו כסף בחשבון ניירות ערך", split across two copy strings (names, fine).
 const FIRST_USE_UNMARKED: Record<string, readonly string[]> = {
 };
 
@@ -396,7 +396,7 @@ const usesOf = (src: string, rowOf: ReadonlyMap<string, string>, otherSense: rea
     for (const id of termIdsIn(m)) uses.push({ at, row: id, marked: true });
     return blankOut(m);
   });
-  // a "?" opens its terms' cards, with its own words over them (2026-11-08: the banks table's rate head): the words are a marked use
+  // a "?" opens its terms' cards, with its own words over them (the banks table's rate head): the words are a marked use
   s = s.replace(/<HelpMark\b[^>]*?\/>/g, (m, at: number) => {
     for (const id of termIdsIn(m)) uses.push({ at, row: id, marked: true });
     return blankOut(m);
@@ -439,7 +439,7 @@ const pageUses = (src: string, visual: string | undefined, rowOf: ReadonlyMap<st
   return [...main.filter((u) => u.rank < cut), ...usesOf(visual, rowOf, otherSense), ...main.filter((u) => u.rank >= cut)];
 };
 
-// 2026-11-07 (independent check of glossary round 2): on the government bond's page עמלה was first met in the visual's note ("לפני עמלה
+// on the government bond's page עמלה was first met in the visual's note ("לפני עמלה
 // ומס") while its mark sat lower, in "who"; the scan read only the page's content file. A guide's visual (components/guide-signature)
 // sits under its "use" section, and its words are copy.ts strings, so the scan reads the visual's source with each `copy.x.y` replaced
 // by that string's words (an object's strings joined; an index such as copy.pages[id] is left blank).
@@ -474,11 +474,11 @@ const visualText = (file: string): string => {
     src = src.replace(new RegExp(`(?<![\\w.$])${name}((?:\\.[\\w$]+)+)`, "g"), (_m, rest: string) => `copy${path}${rest}`);
   }
   // the names of a figure's inputs (`{ [copy.x.y]: value }`) and an entered value's `about` (its fourth argument) are its sheet too
-  // (independent check, 2026-11-07: 17 of the 31 leftovers were input names such as "האינפלציה שהאתר מניח")
+  // (17 of the 31 leftovers were input names such as "האינפלציה שהאתר מניח")
   src = src.replace(/\[\s*(?:copy(?:\.[\w$]+)+|`[^`]*`)\s*\]\s*:/g, blankOut);
-  // and so are the names of a gap's two figures (`differenceOf([copy.x.y, a], [copy.x.y, b], …)`, lib/value.ts; 2026-11-08)
+  // and so are the names of a gap's two figures (`differenceOf([copy.x.y, a], [copy.x.y, b], …)`, lib/value.ts)
   src = src.replace(/(differenceOf\(\s*\[)(\s*copy(?:\.[\w$]+)+)([^\]]*\]\s*,\s*\[)(\s*copy(?:\.[\w$]+)+)/g, (_m, a: string, n1: string, b: string, n2: string) => a + blankOut(n1) + b + blankOut(n2));
-  // (`typed`, the visuals' own entered value, a field's: 2026-11-08)
+  // (the visuals' own entered value, a field's)
   src = src.replace(/(\b(?:enteredValue|typed)\([^()]*?,[^()]*?,[^()]*?,\s*)copy(?:\.[\w$]+)+(?=\s*\))/g, (_m, head: string) => head + " ");
   // an `about` text is a figure's sheet, opened by a tap, not the page's text where the figure is declared
   return src.replace(/\bcopy((?:\.[\w$]+)+)(\[)?/g, (_m, p: string, index?: string) => (index || /\.about\b/.test(p) ? " " : ` ${copyWords(p)} `));
@@ -500,7 +500,7 @@ describe("the first use of a term on a page opens its card", () => {
   const visuals = Object.fromEntries(Object.entries(signatureFiles()).map(([p, f]) => [p, visualText(f)]));
   it("every guide and exposure page is read, and every guide's visual", () => {
     expect(pages.length).toBeGreaterThan(20);
-    expect(Object.keys(visuals).length).toBeGreaterThan(10);
+    expect(Object.keys(visuals).length).toBeGreaterThan(7);
     expect(Object.keys(visuals).filter((p) => !pages.some(([q]) => q === p))).toEqual([]);
     expect(visuals["guide/government-bond"]).toContain(guideSignature.bond.note.before);
   });

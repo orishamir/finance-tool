@@ -1,4 +1,4 @@
-// A markdown link `[text](url)` whose url may hold balanced parentheses (audit 2026-10-24 A28): Wikisource titles such as
+// A markdown link `[text](url)` whose url may hold balanced parentheses: Wikisource titles such as
 // `.../תקנות_(קופות_גמל)_(דמי_ניהול)` were cut at the first ")" by a lazy pattern, and the cut address is a 404.
 
 export interface MdLink {

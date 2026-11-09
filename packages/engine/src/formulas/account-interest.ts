@@ -1,5 +1,5 @@
-// What banks pay on a current account (guide page of the current account, 2026-10-25): the rate most of them pay, and the most one
-// of them pays in a year on a given balance; and the range of a one-year deposit's rate across the banks (2026-10-26). Pure functions over published figures; the page supplies the bank records.
+// What banks pay on a current account (guide page of the current account): the rate most of them pay, and the most one
+// of them pays in a year on a given balance; and the range of a one-year deposit's rate across the banks. Pure functions over published figures; the page supplies the bank records.
 import type { DepositTerms } from "@finance-tool/schema";
 
 /** The answer of F-85: the rate, how many of the banks pay it, how many banks were collected, and how many of them pay anything. */
@@ -72,7 +72,7 @@ export function listFeeRange(fees: readonly number[], cap: number | null): ListF
 }
 
 /**
- * F-86 (2026-10-31): the index of the middle rate among rates of one kind, in their ascending order; of an even count, the lower of the two
+ * F-86: the index of the middle rate among rates of one kind, in their ascending order; of an even count, the lower of the two
  * middle ones. The guide's example, so that it rests on neither the top nor the bottom of what was collected.
  */
 export function middleIndex(count: number): number | null {
@@ -97,7 +97,40 @@ export type BreakTerm = "not_allowed" | "with_penalty" | "none";
 export type BreakRecord = Pick<DepositTerms, "bank" | "wrapper_id" | "term_months" | "break" | "exit_points">;
 
 /** The fields of a collected deposit record F-86's per-bank pick reads. */
-export type PlainDepositRecord = Pick<DepositTerms, "id" | "bank" | "wrapper_id" | "term_months" | "rate_type" | "linkage" | "exit_points" | "variant" | "snapshot">;
+export type PlainDepositRecord = Pick<DepositTerms, "id" | "bank" | "wrapper_id" | "term_months" | "rate_type" | "linkage" | "exit_points" | "variant" | "snapshot"> & OfferRecord;
+
+/** The fields of a deposit record F-108 reads: its id, its printed rate and the amounts it takes. */
+export type OfferRecord = Pick<DepositTerms, "id" | "rate_offered" | "amount_range">;
+
+/**
+ * F-108's test of one offer: an amount opens it when it is at or above the offer's minimum and at or below its maximum. No maximum
+ * (`max` null) is no upper limit. A bound that is recorded but not a number is unknown, not open: an unknown minimum opens no amount,
+ * and an unknown maximum opens only the minimum itself, the one amount the bank's row surely covers (Yahav's one-year fixed deposit
+ * from 50,000 ₪, whose table prints its maximum short of a digit).
+ */
+export function amountOpens(r: Pick<DepositTerms, "amount_range">, amount: number): boolean {
+  const min = r.amount_range.min.value;
+  const max = r.amount_range.max;
+  if (typeof min !== "number" || amount < min) return false;
+  if (max === null) return true;
+  return typeof max.value === "number" ? amount <= max.value : amount === min;
+}
+
+/**
+ * F-108 The best offer an amount opens. Among the offers given (the caller's set: one bank's deposits of one term and kind of rate),
+ * those the amount opens (`amountOpens`) whose printed rate is a number; of them the highest rate, and of two at that rate the smaller
+ * `id`, so the pick never rests on the order the files are read in. Null when the amount opens none.
+ */
+export function bestOpenOffer<T extends OfferRecord>(records: readonly T[], amount: number): T | null {
+  let best: T | null = null;
+  for (const r of records) {
+    const rate = r.rate_offered.value;
+    if (typeof rate !== "number" || !amountOpens(r, amount)) continue;
+    const top = best ? (best.rate_offered.value as number) : -Infinity;
+    if (!best || rate > top || (rate === top && r.id < best.id)) best = r;
+  }
+  return best;
+}
 
 /** A record's break column as F-104 reads it: `break.allowed` false is "cannot be broken"; otherwise its `break.penalty`. */
 export function breakTermOf(b: BreakRecord["break"]): BreakTerm {
@@ -114,18 +147,25 @@ export function oneYearDeposits<T extends BreakRecord>(records: readonly T[]): T
 
 /**
  * F-86's records: each bank's plain one-year deposit, at a fixed rate with no linkage, no exit points and no `variant` (a campaign, a
- * closed-system deposit, interest paid during the term, a best-of choice), the latest by snapshot, two of one snapshot by the smaller id
- * (so the pick never rests on the order the files are read in); one per bank, sorted by bank.
+ * closed-system deposit, one only for people who join the bank, interest paid during the term, a best-of choice), read on the bank's latest snapshot; of those, the one F-108
+ * picks for `amount` (P-05's amount now): the highest rate the amount opens, then the smaller id. A bank whose plain deposits the amount
+ * opens none of is left out. One per bank, sorted by bank.
  */
-export function plainOneYearDeposits<T extends PlainDepositRecord>(records: readonly T[]): T[] {
-  const latest = new Map<string, T>();
+export function plainOneYearDeposits<T extends PlainDepositRecord>(records: readonly T[], amount: number): T[] {
+  const byBank = new Map<string, T[]>();
   for (const d of records) {
     if (d.wrapper_id !== "bank-deposit" || d.rate_type !== "fixed" || d.linkage !== "none" || d.term_months.value !== 12) continue;
     if (d.exit_points.exists || d.variant) continue;
-    const prev = latest.get(d.bank);
-    if (!prev || d.snapshot > prev.snapshot || (d.snapshot === prev.snapshot && d.id < prev.id)) latest.set(d.bank, d);
+    const mine = byBank.get(d.bank);
+    if (!mine || d.snapshot > mine[0]!.snapshot) byBank.set(d.bank, [d]);
+    else if (d.snapshot === mine[0]!.snapshot) mine.push(d);
   }
-  return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : a.bank > b.bank ? 1 : 0));
+  const out: T[] = [];
+  for (const mine of byBank.values()) {
+    const pick = bestOpenOffer(mine, amount);
+    if (pick) out.push(pick);
+  }
+  return out.sort((a, b) => (a.bank < b.bank ? -1 : a.bank > b.bank ? 1 : 0));
 }
 
 /** One bank with a deposit that can be broken, as F-104 gives it: its deposits collected, and how many can be broken with a penalty and without one. */

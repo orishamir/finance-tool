@@ -1,13 +1,15 @@
-// A company's page (founder, 2026-11-03: "a more similar UI to the one we have in /tracks"): the track browser's list over one company.
+// A company's page: the track browser's list over one company.
 // What the company offers is the chips: "כל המוצרים" first, which shows every product's tracks under the product's heading, then each
 // product, then its funds and its securities account, each of which is its own list. No kind filter (a company has one or two tracks of
-// a kind; the founder: "its always 1") and no search (at most about twenty tracks of a product). The product and the order are in the
+// a kind) and no search (at most about twenty tracks of a product). The product and the order are in the
 // address (`?product=`, `?sort=`), read once the page is in the browser, as on the tracks page.
 import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Link } from "react-router";
 import { trackBrowser as t } from "../../copy";
+import { useAddressParams } from "../../lib/hooks";
+import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
 import { fmt } from "../../lib/format";
-import { HELP_TERMS, SORTS, buildProductView, defaultSort, feeRangeOf, inProductsPhrase, pressSort, sortInForce, sortTracks, sortableIn, tracksPhrase, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
+import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, inProductsPhrase, sortInForce, sortTracks, sortableIn, tracksPhrase, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
 import { FilterChip, LongestCase, SelectField, useFlip } from "../kit";
 import { Term } from "../provenance";
 import { TrackList } from "./list";
@@ -23,12 +25,10 @@ export interface CompanyExtra {
 }
 
 const ALL = "";
-const ids = Object.keys(SORTS) as SortId[];
 /** As on the tracks page: the first rows at once, the rest the moment after. */
 const FIRST_ROWS = 12;
-const EMPTY_PARAMS = new URLSearchParams();
 
-/** One product: "16 מסלולים."; every product: "112 מסלולים ב־8 מוצרים." No fee range and no line on the order: the table shows both (founder, 2026-11-08). */
+/** One product: "16 מסלולים."; every product: "112 מסלולים ב־8 מוצרים." No fee range and no line on the order: the table shows both. */
 function CountLine({ view, products }: { view: ProductView | null; products: readonly ProductView[] }) {
   if (!view) {
     const n = products.reduce((k, v) => k + v.tracks.length, 0);
@@ -41,26 +41,14 @@ export function CompanyTracks({ data, extras, defaults, foot }: { data: TbData; 
   const views = useMemo(() => data.products.map((p) => buildProductView(data, p.id)!), [data]);
   // every product's tracks as one view, for the list of "כל המוצרים": its rows' cells are built once
   const all = useMemo<ProductView>(() => ({ id: ALL, name: t.company.all, dataset: views[0]?.dataset ?? "gemelnet", hasKinds: false, tracks: views.flatMap((v) => v.tracks), companies: [], kinds: [] }), [views]);
-  const [search, setSearch] = useSearchParams();
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
-  const sp = hydrated ? search : EMPTY_PARAMS;
+  const { params: sp, update, hydrated } = useAddressParams();
   const asked = sp.get("product") ?? ALL;
   const view = views.find((v) => v.id === asked) ?? null;
   const extra = view ? null : (extras.find((e) => e.id === asked) ?? null);
   const productId = view?.id ?? extra?.id ?? ALL;
   const isAll = productId === ALL;
-  const sortParam = sp.get("sort");
-  const sortSet: SortState = sortParam && sortParam in SORTS ? { id: sortParam as SortId, dir: sp.get("order") === "reverse" ? -1 : 1 } : defaultSort;
-  const update = (changes: Record<string, string | null>) => {
-    const next = new URLSearchParams(search);
-    for (const [k, v] of Object.entries(changes)) {
-      if (v) next.set(k, v);
-      else next.delete(k);
-    }
-    setSearch(next, { replace: true, preventScrollReset: true });
-  };
-  const setSort = (s: SortState) => update({ sort: s.id === defaultSort.id && s.dir === 1 ? null : s.id, order: s.dir === -1 ? "reverse" : null });
+  const sortSet = sortFromParams(sp, SORT_IDS) ?? defaultSort;
+  const setSort = (s: SortState) => update(sortParams(s, defaultSort));
   // a column sorts where it orders the tracks of some product shown
   const sortable = useMemo(() => {
     const out = new Set<SortId>();
@@ -143,7 +131,7 @@ export function CompanyTracks({ data, extras, defaults, foot }: { data: TbData; 
             className="md:hidden"
             wide
             label={t.controls.sort}
-            options={ids.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
+            options={SORT_IDS.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
             value={sort.id}
             onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
           />

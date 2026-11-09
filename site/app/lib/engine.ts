@@ -16,17 +16,7 @@ import {
 } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { blockedHe, failureHe, figureNotUpdatedHe } from "./failure-he";
-import { entered as enteredValue, type SiteValue } from "./value";
-
-export const p05Units: Record<P05Input, ValueObject["unit"]> = {
-  amount_now: "nis",
-  monthly_deposit: "nis_per_month",
-  horizon_years: "years",
-  "A-01": "pct_per_year",
-  "A-02": "pct_per_year",
-  cash_rate: "pct_per_year",
-  annual_income: "nis",
-};
+import { entered as enteredValue, p05Units, type SiteValue } from "./value";
 
 export interface Bundle {
   record: ProductRecord;
@@ -85,16 +75,16 @@ export interface TimelineInputs {
 }
 
 /**
- * F-06 applied to the money paid in (2026-10-25): what was paid in, in today's money, is each deposit divided by the index of the
+ * F-06 applied to the money paid in: what was paid in, in today's money, is each deposit divided by the index of the
  * month it was paid, `C_0 / I_0 + Σ C_m / I_m` (F-03: an event in month m uses `I_m`, the amount now `I_0 = 1`). The ledgers add the
- * amount now inside month 1, so it is taken back out of that month and counted at `I_0`. The chart used to divide the whole sum by
- * the last month's index, which shrank every deposit by all the inflation of the horizon and drew idle cash as a gain (finding 6 of
+ * amount now inside month 1, so it is taken back out of that month and counted at `I_0`. Dividing the whole sum by the last month's
+ * index would shrink every deposit by all the inflation of the horizon and draw idle cash as a gain (finding 6 of
  * 8dd1f013:research/discovery/2026-10-25-guide-pages-sweep.md).
  */
 /**
  * A run's running total (its fees, or the tax it paid along the way) in today's money: each month's part at that month's price level
  * (F-06), and what the run adds at the exit at the horizon's; never the total divided by the end's index, the shortcut F-06 forbids for
- * what was paid in (founder, 2026-11-08: "fix the wrong formulas").
+ * what was paid in.
  */
 export function totalToday<P extends { index: number }>(series: readonly P[], at: (point: P) => number, total: number): number {
   let sum = 0;
@@ -172,7 +162,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
 /** P-05's own value of an input, as the parameter file holds it (with its rationale for the sheet). */
 export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
   const inputs = (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs;
-  // an input a guide page replaced with a record's own value (a bank's published rate, 2026-10-25) is that record's number, not a site parameter
+  // an input a guide page replaced with a record's own value (a bank's published rate) is that record's number, not a site parameter
   if (inputs[key].update_rule !== "founder") return { ...inputs[key] };
   return {
     ...inputs[key],

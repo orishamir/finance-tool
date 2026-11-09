@@ -2,7 +2,6 @@
 // regulator's data and every other bank and broker, with a filter.
 import { useState } from "react";
 import { Link, useLoaderData } from "react-router";
-import type { Route } from "./+types/companies";
 import { brands as brandsCopy, companies as copy, r4catalogue as r4, site } from "../copy";
 import { IconSearch } from "../components/icons";
 import { PageShell, useOpenSearch } from "../components/shell";

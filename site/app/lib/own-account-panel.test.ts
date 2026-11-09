@@ -6,10 +6,10 @@ import { startingPointsOf, withAdopted } from "./own-account";
 import { pointOfBroker, startDraft, stretchesOf } from "./own-account-panel";
 import { layersOf } from "./own-account-view";
 import type { WorkbenchInputs } from "./providers";
-import { buildWorkbenchBundle } from "./providers.server";
+import { buildIndicesBundle } from "./providers.server";
 import { entered } from "./value";
 
-const bundle = buildWorkbenchBundle();
+const bundle = buildIndicesBundle();
 const t = bundle.today;
 // the worked example of a price for a time is Leumi's opening offer as the 2026-11-04 record held it (see own-account.test.ts)
 const leumi = JSON.parse(readFileSync(new URL("../../../data/fees/leumi@2026-11-04.json", import.meta.url), "utf8")) as (typeof bundle.snapshots)[number];

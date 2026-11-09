@@ -23,12 +23,12 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
     expect(out).toContain("15.3%");
     expect(out).toContain("השורה התחתונה");
   });
-  // 1146471's report prints 2022 to 2025 and its record holds them since pass 4: eight funds without hedging report 2022
+  // 1146471's report prints 2022 to 2025 and its record holds them: eight funds without hedging report 2022
   it("draws on the eight funds of 2022 and the eleven of 2025", () => {
     expect(out).toContain("8 קרנות");
     expect(out).toContain("11 קרנות");
   });
-  // recheck 3 S5: a hedged report F-92 (d) does not compare gives no gap, and the sentence beside the range does not count it
+  // a hedged report F-92 (d) does not compare gives no gap, and the sentence beside the range does not count it
   it("leaves a report it does not compare out of the gap range and out of the count beside it", () => {
     // the costs tile's figure, each end a computed figure that opens its sheet: "⁦1.8⁩ עד ⁦2.7⁩ נקודות בשנה"
     const tile = (o: string) => shown(o).match(new RegExp(`⁦[-−0-9.]+⁩ עד ⁦[-−0-9.]+⁩ ${invest.dollar.pointsAYear}`))?.[0] ?? "";
@@ -68,7 +68,7 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
 });
 
 describe("the tie set of F-80 in the tiles", () => {
-  // the review's plan: 10,000 now, 500 a month, 10 years, 7%; on the S&P 500 three pairs are within the threshold of the top
+  // the plan: 10,000 now, 500 a month, 10 years, 7%; on the S&P 500 two pairs are within the threshold of the top, both at Psagot
   const base: WorkbenchInputs = {
     ...plan, amountNow: 10000, monthly: 500, years: 10,
     values: { ...plan.values, amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t) },
@@ -76,29 +76,42 @@ describe("the tie set of F-80 in the tiles", () => {
   const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: base });
   const theta = tieShareOf(bundle);
   const head = pickOfHeadline(sp)!;
+  // the same over 30 years: three pairs within the threshold, two funds, one of them at two houses
+  const long: WorkbenchInputs = { ...base, years: 30, values: { ...base.values, years: entered(30, "years", t) } };
+  const sp3 = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: long });
+  const head3 = pickOfHeadline(sp3)!;
   it("counts every pair within the threshold of the top, and crowns none", () => {
-    expect(tieCount(sp, head, theta)).toBe(3);
+    expect(tieCount(sp, head, theta)).toBe(2);
     expect(crowned(sp, head, theta)).toBe(false);
+    expect(tieCount(sp3, head3, theta)).toBe(3);
+    expect(tieFunds(sp3, head3, theta)).toHaveLength(2);
+    expect(crowned(sp3, head3, theta)).toBe(false);
   });
   it("the tied pair in neither tile is named under them, with its number where another fund has its name (fourth pass)", () => {
-    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }))).replace(/\u00a0/g, " ");
+    // NASDAQ-100, 5,000 now, 500 a month, five years: three pairs within the threshold, the third iShares in Tel Aviv, whose name the
+    // same fund abroad has too (scanned over 6 x 5 x 7 plans on every index)
+    const short: WorkbenchInputs = { ...base, amountNow: 5000, monthly: 500, years: 5, values: { ...base.values, amount: entered(5000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(5, "years", t) } };
+    const nq = buildInvest({ bundle, index: indexById(bundle, "index-nasdaq100")!, plan: short });
+    const h = pickOfHeadline(nq)!;
+    expect(tieCount(nq, h, theta)).toBe(3);
+    const out = shown(html(createElement(PairResult, { view: nq, bundle, plan: short, pick: h, chosen: false, onPick: () => undefined }))).replace(/\u00a0/g, " ");
     const line = out.slice(out.indexOf(invest.pair.tieWhy(3)));
-    expect(line).toContain(`${invest.pair.tieThird} פסגות ${invest.pair.tieWith} iShares Core S&P 500 UCITS ETF USD (Accumulating)`);
-    expect(line).toContain("1159250");
-    // what makes a tie is said where the tie is named, with P-01 read from data/parameters (pass 7 readers)
+    expect(line).toContain(`${invest.pair.tieThird} פסגות ${invest.pair.tieWith} iShares NASDAQ 100 UCITS ETF USD (Acc)`);
+    expect(line).toContain("1159243");
+    // what makes a tie is said where the tie is named, with P-01 read from data/parameters
     const rule = line.slice(line.indexOf(invest.pair.tieRule.before.trim()));
     expect(rule.replace(/[\u2066-\u2069\u200e\u200f]/g, "")).toContain(`${invest.pair.tieRule.before.trim()}${fmt.pct((bundle.p01.value as { value: number }).value)}${invest.pair.tieRule.after}`);
   });
   it("before any pick, the fund list calls the page's own fund one of the tied, not the site's pick (pass 5 readers)", () => {
-    const out = shown(html(createElement(FundColumn, { view: sp, bundle, plan: base, today: t, pick: head, chosen: false, onPick: () => undefined, filter: null, onFilter: () => undefined })));
-    expect(out).toContain(invest.pair.markedTie(3));
+    const out = shown(html(createElement(FundColumn, { view: sp3, bundle, plan: long, today: t, pick: head3, chosen: false, onPick: () => undefined, filter: null, onFilter: () => undefined })));
+    expect(out).toContain(invest.pair.markedTie(2));
     // the column head names where the page's fund stands ("לעומת הקרן שבראש הכרטיס"), the row's tag must not
     expect(out.replaceAll(invest.pair.colDiffMarked, "")).not.toContain(invest.pair.marked);
   });
   it("every tied fund's row in the fund list says it is one of the tied, in the same words, and no other row does (independent check of pass 5)", () => {
-    const out = html(createElement(FundColumn, { view: sp, bundle, plan: base, today: t, pick: head, chosen: false, onPick: () => undefined, filter: null, onFilter: () => undefined }));
-    const tied = tieFunds(sp, head, theta);
-    for (const f of allFunds(sp)) expect(fundRow(out, f.rec.id).includes(invest.pair.markedTie(3)), f.rec.id).toBe(tied.includes(f.rec.id));
+    const out = html(createElement(FundColumn, { view: sp3, bundle, plan: long, today: t, pick: head3, chosen: false, onPick: () => undefined, filter: null, onFilter: () => undefined }));
+    const tied = tieFunds(sp3, head3, theta);
+    for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.markedTie(2)), f.rec.id).toBe(tied.includes(f.rec.id));
   });
   it("the fund list counts tied funds, not pairs: one fund tied at two houses is one (independent check of pass 5)", () => {
     // MSCI World, 10,000 now, nothing a month, one year: five pairs within the threshold, three funds (scanned over 4 x 3 x 4 plans on every index)
@@ -114,23 +127,24 @@ describe("the tie set of F-80 in the tiles", () => {
     for (const id of tied) expect(fundRow(out, id), id).toContain(invest.pair.markedTie(3));
   });
   it("before any pick, the tile says how many pairs share the top, and no pair is called first or next", () => {
-    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined })));
-    expect(out).toContain(invest.pair.tieTop(3));
+    const out = shown(html(createElement(PairResult, { view: sp3, bundle, plan: long, pick: head3, chosen: false, onPick: () => undefined })));
+    expect(out).toContain(invest.pair.tieTop(3, 2));
     expect(out).toContain(invest.pair.tieOther);
     expect(out).toContain(invest.pair.tieWhy(3));
     expect(out).not.toContain(invest.pair.next);
     expect(out).not.toContain("★");
   });
   it("with the person's own pick far from the best pair, the best pair's tile is not crowned either (the account list's test)", () => {
-    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: { house: "leumi", fund: head.fund }, chosen: true, onPick: () => undefined })));
+    const out = shown(html(createElement(PairResult, { view: sp3, bundle, plan: long, pick: { house: "leumi", fund: head3.fund }, chosen: true, onPick: () => undefined })));
     expect(out).not.toContain(invest.pair.cheapestStar);
-    expect(out).toContain(invest.pair.tieTop(3));
+    expect(out).toContain(invest.pair.tieTop(3, 2));
   });
   it("a pick inside the tie set: the other pair is not called the cheap one, and the tie is counted as the title counts", () => {
     const tiedPick = { house: "psagot", fund: "5139100" };
-    expect(tieCount(sp, head, theta)).toBe(3);
-    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: tiedPick, chosen: true, onPick: () => undefined })));
-    expect(out).toContain(invest.pair.tieTop(3));
+    expect(tieCount(sp3, head3, theta)).toBe(3);
+    expect(tieFunds(sp3, head3, theta)).toContain(tiedPick.fund);
+    const out = shown(html(createElement(PairResult, { view: sp3, bundle, plan: long, pick: tiedPick, chosen: true, onPick: () => undefined })));
+    expect(out).toContain(invest.pair.tieTop(3, 2));
     expect(out).toContain(invest.pair.tieWhy(3));
     expect(out).not.toContain(invest.pair.tieWhy(2));
     expect(out).not.toContain(invest.pair.moreIfCheapest);
@@ -143,7 +157,7 @@ describe("the tie set of F-80 in the tiles", () => {
     expect(head.house).toBe("psagot");
     expect(out).toContain(invest.pair.cheapestTag);
     // and not with a fund outside the set, nor when another house is in it (the tiles' R1 case keeps no star there)
-    const far = allFunds(sp).find((f) => f.rec.id !== head.fund && "valueN" in (f.byHouse.psagot ?? {}) && !["5139100", "1159250"].includes(f.rec.id))!;
+    const far = allFunds(sp).find((f) => f.rec.id !== head.fund && "valueN" in (f.byHouse.psagot ?? {}) && !tieFunds(sp, head, theta).includes(f.rec.id))!;
     const farOut = rowOf(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: { house: "psagot", fund: far.rec.id }, onPick: () => undefined })), "psagot");
     expect(farOut).not.toContain(invest.pair.cheapestTag);
   });
@@ -204,9 +218,9 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
   it("names the houses whose price lists limit the spread, from their records, on an index with funds bought abroad", () => {
     const out = card(sp, null);
     expect(out).toContain(invest.pair.abroadSpread(["אי.בי.אי", "אלטשולר טרייד", "מיטב טרייד"]));
-    // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so (independent check 2, should-fix 5)
+    // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so
     expect(out).toContain(invest.pair.abroadOthers);
-    // why One Zero's charge is counted while other written ceilings are not, and on which funds (fresh readers, round 3, 2026-11-07)
+    // why One Zero's charge is counted while other written ceilings are not, and on which funds
     const [before, between, after] = invest.pair.abroadPerDividend.replace("{name}", "וואן זירו").split("{amount}");
     expect(out).toContain(before);
     expect(out).toContain(between);
@@ -226,7 +240,7 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     // the page's pair sits beside the cheapest, which may be a bank; the legend names the current account only when one of the two bars has it
     const out = result({ house: atHouse!, fund });
     const bankShown = [atHouse!, view.headline?.providerId].some((h) => !!bundle.snapshots.find((s) => s.id === h)?.current_account);
-    // on the default plan the page opens on a house's pair beside a house's (2026-11-06: the legend promised a current account there)
+    // on the default plan the page opens on a house's pair beside a house's (the legend promised a current account there)
     expect(bankShown).toBe(false);
     expect(out.includes(invest.pair.legendAccount)).toBe(bankShown);
     expect(out).toContain(invest.pair.legendSecurities);
@@ -240,10 +254,10 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
   });
 
   it("offers every bank whose current account costs something, under the list, with what it does in its \"?\"", () => {
-    // the bank whose current account is free is named, so its row reads as a bank's (fresh readers, round 3)
+    // the bank whose current account is free is named, so its row reads as a bank's
     expect(ownBankHelp(buildInvest({ bundle, index: sp, plan }), bundle)).toBe(invest.pair.ownBank.counted(["וואן זירו"]));
     const raw = html(createElement(AccountColumn, { view: buildInvest({ bundle, index: sp, plan }), bundle, years: 20, pick: pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, onPick: () => undefined, ownBank: { value: null, onChange: () => undefined } }));
-    // at the bottom of the card, under the list it changes (founder, 2026-11-08), its words in the "?" and not in a line under it
+    // at the bottom of the card, under the list it changes, its words in the "?" and not in a line under it
     expect(raw.indexOf(invest.pair.ownBank.label)).toBeGreaterThan(raw.indexOf(invest.pair.listLabelAccounts));
     expect(shown(raw)).not.toContain(invest.pair.ownBank.counted(["וואן זירו"]));
     for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]) expect(raw).toContain(`value="${id}"`);

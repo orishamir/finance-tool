@@ -46,8 +46,8 @@ export interface LegendItem {
  * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps.
  */
 export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
-  // a group's name ("הקרן:") goes on one line with its first item: in a narrow legend it ended a line apart from its items, and read as the
-  // last item of the group before it (indices page at 390 px, 2026-11-08)
+  // a group's name ("הקרן:") goes on one line with its first item: in a narrow legend, left at a line's end apart from its items, it would
+  // read as the last item of the group before it
   const rows: { head?: LegendItem; it: LegendItem }[] = [];
   for (let i = 0; i < items.length; i++) {
     const it = items[i]!;
@@ -124,7 +124,7 @@ export interface TableRowData {
 /**
  * A table always in view with a fixed width per column, so nothing moves when a number changes: a header on every column, row heads at
  * the start, `strong` for a closing row, and `hideOnPhone` for a column the phone can do without. `measure` caps it at the prose width
- * (38 rem), for a table of words inside guide prose (2026-11-03): on a PC it no longer runs wider than the text around it.
+ * (38 rem), for a table of words inside guide prose: on a PC it no longer runs wider than the text around it.
  */
 export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: ReactNode; columns: { id: string; head: ReactNode; hideOnPhone?: boolean }[]; rows: { key: string; head: ReactNode; cells: ReactNode[]; strong?: boolean }[]; measure?: boolean }) {
   return (

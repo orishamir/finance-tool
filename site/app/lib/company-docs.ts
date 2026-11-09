@@ -1,4 +1,4 @@
-// "מה כתוב אצל החברות" on the rules page (founder, 2026-11-01): which company documents speak of what a claim is about. A company's
+// "מה כתוב אצל החברות" on the rules page: which company documents speak of what a claim is about. A company's
 // document is never general (D30): each row names its company, leads to the page in the document, and the site does not sum it up.
 import { documentTopicWords } from "./search-aliases";
 import { isPdfUrl, sourceHref } from "./sources";

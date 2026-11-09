@@ -1,11 +1,11 @@
-// An index with no fund the page can price (a custom index, founder 2026-11-04): the same page as every index, the result card set
+// An index with no fund the page can price (a custom index): the same page as every index, the result card set
 // aside. Above the lists, one request to add the fund; the account list is the pair page's, ranked by what each account charges for
 // the cheapest kind of fund at it; the fund column says there is no fund yet. Once a fund is added the page is the pair page.
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
 import { firstCount, phoneOnlyValue, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
 import type { SiteValue } from "../../lib/value";
-import type { WorkbenchBundle } from "../../lib/providers";
+import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
@@ -40,7 +40,7 @@ function ordered(view: InvestView) {
   return { rows, ok, missing };
 }
 
-/** Under a house's name: the kind of fund its cost is for, the cheapest mark, the standing-order price, and "by phone only" (2026-11-08). */
+/** Under a house's name: the kind of fund its cost is for, the cheapest mark, the standing-order price, and "by phone only". */
 function SubLine({ kind, cheapest, standing, phone = null }: { kind: OptionId | null; cheapest: boolean; standing: boolean; /** The house sells that kind of fund only by phone: its words, which the tag opens. */ phone?: SiteValue | null }) {
   return (
     <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
@@ -52,7 +52,7 @@ function SubLine({ kind, cheapest, standing, phone = null }: { kind: OptionId | 
   );
 }
 
-export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick, ownBank }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void; /** The bank where the person already has a current account, and its setter (D64). */ ownBank?: { value: string | null; onChange: (id: string | null) => void } }) {
+export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick, ownBank }: { view: InvestView; bundle: IndicesBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void; /** The bank where the person already has a current account, and its setter (D64). */ ownBank?: { value: string | null; onChange: (id: string | null) => void } }) {
   const legendPick = useChartPick();
   const { rows, ok, missing } = ordered(view);
   const heldKey = `${view.index.id}:${rows.length}`;
@@ -78,16 +78,16 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const saved = bundle.snapshots.filter((s) => rows.some((h) => h.provider.id === s.id && !h.provider.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((h) => h.standing).length;
   const kinds = view.options.filter((o) => o.exists).map((o) => o.id);
-  // equal costs share a place, and a first place shared by two crowns neither (2026-11-05); the tie threshold is for what is left, not for costs
+  // equal costs share a place, and a first place shared by two crowns neither; the tie threshold is for what is left, not for costs
   const places = placesOf(ok.map((h) => h.generic.costN!), 0);
   const crown = firstCount(places) === 1;
   const snapOf = (id: string) => bundle.snapshots.find((s) => s.id === id);
-  // the tag's room on a house that sells a kind of fund only by phone on some exchange, whichever the plan makes cheapest (2026-11-08)
+  // the tag's room on a house that sells a kind of fund only by phone on some exchange, whichever the plan makes cheapest
   const phoneAny = (id: string, short: string, k: OptionId) => phoneOnlyValue(snapOf(id), k, "europe", short) ?? phoneOnlyValue(snapOf(id), k, "us", short);
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
-    // the account's fees on each other first, as on every bar of the page (pass 7)
+    // the account's fees on each other first, as on every bar of the page
     const parts: CostPart[] = [
       { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
       ...byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),

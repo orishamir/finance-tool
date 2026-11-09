@@ -1,4 +1,4 @@
-// Makam held directly in a securities account (a security, not a wrapper: D6 amended 2026-10-26), bought at issue and rolled: F-24, with F-12
+// Makam held directly in a securities account (a security, not a wrapper: D6), bought at issue and rolled: F-24, with F-12
 // commissions, F-14 custody where the account's member may charge it, and the F-40 exit for a sale before redemption.
 import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { makamPrice } from "../formulas/holding-tax.ts";
@@ -13,13 +13,13 @@ export interface MakamInput {
   /** A-22 yield to redemption; series term in months (12 for the yearly series, GOV-22, GOV-23). */
   makam: { yield: number; termMonths?: number };
   /**
-   * Buy and sell lines for makam (F-12). `redeem` is the tariff's own line for a redemption where it names one (F-24, 2026-10-31); with
+   * Buy and sell lines for makam (F-12). `redeem` is the tariff's own line for a redemption where it names one (F-24); with
    * none, a redemption costs nothing. The custody line, if the tariff has one for makam (F-14), and the account's F-17 monthly fee in NIS,
    * which the account charges whatever it holds.
    */
   tariff: { buy?: Commission; sell?: Commission; redeem?: Commission; custody?: Custody; monthlyFee?: number };
   /**
-   * F-14 (2026-10-26): a bank may not charge custody on makam (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on
+   * F-14: a bank may not charge custody on makam (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on
    * it (BRK-52), so there the tariff's custody line applies. Default `bank`, the case P-05's tariff (a bank's) is.
    */
   memberKind?: "bank" | "non-bank";
@@ -166,7 +166,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
     const gains = g + (year === exitYear && held.length > 0 ? saleGain : 0);
     deductedFees += Math.min(feesByYear.get(year) ?? 0, Math.max(0, gains));
   }
-  // the figures rest on these rules whenever a slice was sold, a sale or not (finance review, 2026-11-07)
+  // the figures rest on these rules whenever a slice was sold, a sale or not
   if (sliceGain > 0) book.cite("TXI-12");
   if (deductedFees > 0) book.cite("TXS-06");
 

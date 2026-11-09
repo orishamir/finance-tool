@@ -1,0 +1,149 @@
+{
+  "id": "fibi-pikadon-yomi-prime-911",
+  "bank": "fibi",
+  "names": {
+    "447": [
+      "יומי מתחדש בריבית משתנה ל 6 חודשים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון יומי",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 1,
+    "unit": "days",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'יומי מתחדש בריבית משתנה ל 6 חודשים' (פיקדון יומי), 'סוג המוצר (לפי תקופה)'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "Printed as product type 'פיקדון יומי' (row 'יומי מתחדש בריבית משתנה ל 6 חודשים'); recorded as 1 days, the period of a daily deposit (directive 447 Annex A, BANK-14)."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -4.7,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'יומי מתחדש בריבית משתנה ל 6 חודשים' (פיקדון יומי), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '(0.05%)P-4.7%': spread from prime -4.7 percentage points."
+  },
+  "rate_offered": {
+    "value": 0.05,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'יומי מתחדש בריבית משתנה ל 6 חודשים' (פיקדון יומי), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-34"
+    ],
+    "state": "sourced",
+    "notes": "Printed '(0.05%)P-4.7%' in the offered nominal rate; rate type 'משתנה', linkage 'לא צמוד'; adjusted '0.0500%', common 'P-4.7%'; exit points 'בכל יום' (stations: yes); break 'אין אפשרות שבירה'; renewal 'לא קיים' / 'לא מתחדש'. Account type 224, product 911. This row as printed: 200-: nominal '(0.05%)P-4.7%', adjusted '0.0500%', common 'P-4.7%'. Read 2026-11-09 from the data the page loads (https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31, 'effectiveDate' 2026-11-09, 'prime' 4.75); the 447 row is in the family 'פיקדונות מקובלים'."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 200.0,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+        "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים', שורת 'יומי מתחדש בריבית משתנה ל 6 חודשים' (פיקדון יומי), 'טווח סכום להפקדה'",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-09",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed minimum 200 ('minSum')."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות שבירה' (447 table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-11-09",
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+    "title": "הבנק הבינלאומי, 'ריביות על פיקדונות', 'פיקדונות מקובלים'",
+    "publisher": "First International Bank of Israel Ltd.",
+    "strength": "institution"
+  }
+}

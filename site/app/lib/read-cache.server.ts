@@ -15,8 +15,8 @@ interface Entry<T> {
 
 /**
  * Whether a file can change while this process runs: in the dev server and the tests, so a read checks the file's time; not in a
- * production build, whose prerender reads every file once (checking two file times on every read was a fifth of the prerender's time,
- * 2026-11-08). Plain node (vite.config.ts reading data-as-of.ts) has no import.meta.env, and checks.
+ * production build, whose prerender reads every file once (checking two file times on every read was a fifth of the prerender's time).
+ * Plain node (vite.config.ts reading data-as-of.ts) has no import.meta.env, and checks.
  */
 export const watching = import.meta.env?.DEV !== false;
 

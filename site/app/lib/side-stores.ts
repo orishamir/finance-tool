@@ -1,4 +1,4 @@
-// The four side stores the export file carries beside the state document (audit 2026-10-24, A32): the entered offers
+// The four side stores the export file carries beside the state document: the entered offers
 // (`mekor.v2.offers`; the house-ranking page that wrote them is gone, and they stay on the device), the variant
 // assumptions (`mekor.v2.variants`; the funds page that wrote them is gone, and they stay on the device) and the
 // switching checklist's ticks (`mekor.v2.playbook-ticks`; the switching page is gone, D38, and the ticks stay on the device).
@@ -7,7 +7,7 @@
 //
 // File shape (`StateFile.sideStores`, optional: a file from before this carries none):
 //   { offers: EnteredOffer[], variantAssumptions: { [exposureId]: FundAssumptions }, playbookTicks: { [key]: string[] },
-//     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider? } } } }  (an object form holds an entered fee, 2026-10-24, and the provider id chosen for the brokerage wrapper, 2026-10-24; an unknown provider id is read and ignored)   (ownRates added 2026-10-24 (sweep); a file without it reads as none;
+//     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider? } } } } (an object form holds an entered fee, and the provider id chosen for the brokerage wrapper; an unknown provider id is read and ignored) (ownRates (sweep); a file without it reads as none;
 //   a tick key of the old `wrapper|from|to` shape is folded into the wrapper's key on import)
 // Keys of the stores are kept verbatim (a tick key is a product id, or an old `wrapper|from|to` key, folded on import).
 import { valueObject } from "@finance-tool/schema";
@@ -319,7 +319,7 @@ export function writeSideStores(s: Storage | null, side: SideStores): boolean {
 
 /**
  * A ticks key written by the old keying (`wrapper|from|to`) folds into its wrapper's key, as a union of the ids. The ticks were the
- * switching guide's checklist; the guide is gone (founder, 2026-10-28), and the ticks stay on the device and in the transfer file.
+ * switching guide's checklist; the guide is gone, and the ticks stay on the device and in the transfer file.
  */
 export function migrateTickKeys(byKey: Record<string, string[]>): Record<string, string[]> {
   const out: Record<string, string[]> = {};

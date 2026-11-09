@@ -1,5 +1,5 @@
-// A bank's or broker's securities account (design-system 8.7), as the company page shows its other products (founder, 2026-11-04:
-// "there should be some standard way to present it"): the price list as the account's name and quiet line, then parts with a heading
+// A bank's or broker's securities account (design-system 8.7), as the company page shows its other products:
+// the price list as the account's name and quiet line, then parts with a heading
 // each: every fee of the price list as the table of products, grouped by kind (one row per line, one under the next on a phone), what can be bought there, the
 // advertising against the documents, the group prices, and the minimum and the supervisor as the kit's fact cards; the two links last.
 // Its missing form is one card: the reason, the price list's page, the comparison.
@@ -11,7 +11,7 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
-import { LeadTail, Num, NumAfter, RuleRef, RulesChip, RulesLine } from "../../provenance";
+import { Num, NumAfter, RuleRef, RulesChip, RulesLine } from "../../provenance";
 import { Card, ClaimList, Disclosure, DocLink, GroupPriceRows, TariffDate, KeyValueList, LinkButton, ProductPhoneRow, ProductTable, ProductFigures, Section, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
@@ -31,7 +31,7 @@ const priceWord = (l: TariffLineRow) => (l.period ? copy.card.period[l.period] :
 /** The page of a PDF the line stands on; a web page has none. */
 const pdfPage = (w: NonNullable<TariffLineRow["where"]>) => (isPdfUrl(w.url) && !w.url.includes("#") ? w.page : undefined);
 
-/** Where a fact stands, in full: the price list and its page, or another document by its name (D57 amended 2026-11-04). */
+/** Where a fact stands, in full: the price list and its page, or another document by its name (D57). */
 function WhereLink({ w }: { w: NonNullable<TariffLineRow["where"]> }) {
   const page = pdfPage(w);
   return (
@@ -43,7 +43,7 @@ function WhereLink({ w }: { w: NonNullable<TariffLineRow["where"]> }) {
 
 /**
  * The same in the table's own column, short: "עמוד 30 ↗" (the page is the link, as a fund's number is). A line from a document
- * other than the price list says so under the link, and the link opens that document; its long title stays out of the row (2026-11-05).
+ * other than the price list says so under the link, and the link opens that document; its long title stays out of the row.
  */
 function WhereCell({ w }: { w: TariffLineRow["where"] }) {
   if (!w) return <span className="text-sm text-muted-foreground">—</span>;
@@ -137,7 +137,7 @@ const kindOrder = ["trade", "custody", "fx", "fixed_period", "transfer_out", "di
 const kindOf = (l: TariffLineRow) => (l.distribution ? "distribution" : l.base);
 
 /**
- * Every line of the price list (founder, 2026-11-05: "show all lines but without cluttering the view") as the site's table of products,
+ * Every line of the price list as the site's table of products,
  * grouped by kind under a strip with the fee's name, so a row says only what sets it apart: what it is charged on, the channel, the plan.
  * Where each line stands is its own short column ("עמוד 30 ↗"). On a phone the strips stay, each line is one row, and the link ends the price's line.
  */
@@ -356,7 +356,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         <LinkButton to={compareHref} variant="primary" className="self-start">
           {copy.card.compare}
         </LinkButton>
-        {/* the index page opens with the panel on this house's price list (2026-11-04) */}
+        {/* the index page opens with the panel on this house's price list */}
         <LinkButton to={ownAccountPath(id)} variant="secondary" className="self-start">
           {investCopy.ownAccount.open(gershayim(tariff.providerName))}
         </LinkButton>

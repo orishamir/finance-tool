@@ -1,4 +1,4 @@
-// A list to choose one row from (founder, 2026-10-27, the index page's two linked lists): every row is a radio, the chosen one is
+// A list to choose one row from (the index page's two linked lists): every row is a radio, the chosen one is
 // tinted with a bar at its start; the rows' cells are the caller's, on a grid the caller names, and a head row can name the columns.
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useFlip } from "./chart-glide";
@@ -14,7 +14,7 @@ export interface PickRow {
   cells: ReactNode;
   /** A row that cannot be chosen as it is is still a row, muted (it is never left out). */
   muted?: boolean;
-  /** A group's heading, shown above this row (2026-10-29, the index page's two kinds of fund); not a row, never chosen. */
+  /** A group's heading, shown above this row (the index page's two kinds of fund); not a row, never chosen. */
   heading?: ReactNode;
   /** Never folded on a phone (the person's own row, D44). */
   keep?: boolean;
@@ -22,8 +22,10 @@ export interface PickRow {
    * The cells the row takes in each of the list's states (`states`), by key, the one it shows now (`caseKey`) included: a house priced or
    * not, with each reason it can give. Laid out unseen and out of the flow, to be measured; every state is measured from its cases, so
    * the held height is the same whichever state the page opened in. A case's plain cells carry every tag that can stand on many rows at
-   * once; a tag that stands on one row at a time (the cheapest's star, the way back after a tap) is a mark, in a case of its own with
-   * `marks`, and counts on the one row where it adds the most (third pass: a case with every tag at once held 122 px too many).
+   * once; a tag that stands on one row at a time (the cheapest's star) is a mark, in a case of its own with `marks`, and counts on the
+   * one row where it adds the most (third pass: a case with every tag at once held 122 px too many). A line a row shows only for a moment
+   * (the way back after a tap) is no case: wrapped in an element with `data-unheld`, it grows the list while it shows, and the height the
+   * list keeps for later (`holdKey`) is never one measured with it.
    */
   cases?: { key: string; cells: ReactNode; marks?: string[] }[];
   caseKey?: string;
@@ -54,15 +56,15 @@ export interface PickRow {
 export const figureFit = (v: number, kind: "list" | "tile" = "list") => {
   const a = Math.abs(v);
   if (kind === "tile") return a >= 1e11 ? "max-md:text-base" : a >= 1e9 ? "max-md:text-lg" : a >= 1e7 ? "max-md:text-xl" : "";
-  // on a phone a billion or more reads in its short form (`Num`, lens review S2), which a size down holds at any plan
+  // on a phone a billion or more reads in its short form (`Num`), which a size down holds at any plan
   // a thousand billion and more is 12 px on a phone too: its short form has two decimals now ("2,542.21 מיליארד ₪"), and at 14 px it ran
-  // 4 px past the fund list's 8.5rem column (fresh readers, round 3, 2026-11-07)
+  // 4 px past the fund list's 8.5rem column
   return a >= 1e12 ? "text-xs" : a >= 1e9 ? "text-sm" : a >= 1e8 ? "max-md:text-sm" : "";
 };
 
-/** A click on a control inside a row (a figure's sheet, a link, a label) is that control's, not a pick (founder, 2026-10-27). */
+/** A click on a control inside a row (a figure's sheet, a link, a label) is that control's, not a pick. */
 const inControl = (target: EventTarget, row: HTMLElement) => {
-  // a fold under a row (a house's group prices, 2026-11-04): its line opens it and a tap on what it shows is reading, not a pick
+  // a fold under a row (a house's group prices): its line opens it and a tap on what it shows is reading, not a pick
   const hit = (target as Element).closest?.("a, button, input, select, textarea, summary, details, [role=button], [role=link]");
   return !!hit && hit !== row && row.contains(hit);
 };
@@ -90,12 +92,11 @@ export function holdOnPick(key: string, el: HTMLElement) {
 
 export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders, holdKey }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[]; /** What the list's hold lasts for (an index): the list also keeps the tallest it has held for it at this width, because `orders` and the rows' cases are those of the plan on the screen, and another plan sorts other rows into the fold or words a row longer (14 px at the sliders' ends). */ holdKey?: string }) {
   const [open, setOpen] = useState(false);
-  // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
+  // a pick re-prices what is above the list: keep the tapped row where it
   // was on the screen, wherever the list now puts it
   const anchor = useRef<Hold | null>(null);
   // when the order changes the rows slide to their new places, and the tapped row is the one that stands still
-  // only a hold still running: a stale one made the row picked seconds before jump to its new place while the others slid (2026-11-06,
-  // a bank marked as the person's own re-sorted the account list)
+  // only a hold still running: a stale one made the row picked seconds before jump to its new place while the others slid (a bank marked as the person's own re-sorted the account list)
   const live = (h: Hold | null) => (h && performance.now() <= h.until ? h.key : undefined);
   const root = useFlip<HTMLDivElement>(rows.map((r) => r.key).join(), () => live(anchor.current) ?? live(pending));
   // the person's own scroll ends a hold: a render after it must not take the page back (a key is not watched: Enter on a row starts one)
@@ -143,7 +144,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   // a row that opens a group stays, so a group's heading is never hidden behind the fold, and the person's own rows stay
   const shownInFold = folds ? foldShown(rows.map((r) => ({ heading: !!r.heading, keep: !!r.keep, selected: r.selected })), phoneLimit!) : new Set<number>();
   const folded = (i: number) => folds && !shownInFold.has(i);
-  // what the button counts: the things behind the fold, each once, and none already shown above it (pass 7: "עוד 15 קרנות" counted rows, the
+  // what the button counts: the things behind the fold, each once, and none already shown above it ("עוד 15 קרנות" counted rows, the
   // same fund in Tel Aviv and abroad twice)
   const unit = (r: PickRow) => r.countAs ?? r.key;
   const above = new Set(rows.filter((_, i) => !folded(i)).map(unit));
@@ -190,7 +191,8 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         // component started over and shrank (14 px at the sliders' start)
         const k = `${label}|${holdKey}|${window.innerWidth}`;
         held = Math.max(held, h(list), keptHeights.get(k) ?? 0);
-        keptHeights.set(k, held);
+        // a line no hold keeps (`data-unheld`) stands in the list only for a moment: the height kept for later is one measured without it
+        if (!list.querySelector(":scope > [data-pick-key] [data-unheld]")) keptHeights.set(k, held);
       }
       if (held > 0) list.style.minHeight = `${held}px`;
     };

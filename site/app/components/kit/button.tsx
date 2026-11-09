@@ -11,7 +11,7 @@ export function Button({ variant = "secondary", className, children, type = "but
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
     secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 lg:tap-area px-5 rounded-md hover:bg-accent",
     quiet: "text-link min-h-target px-2 rounded-md hover:underline",
-    // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet (2026-10-24).
+    // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
     destructive: "text-destructive min-h-target px-2 rounded-md hover:underline",
     icon: "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
   }[variant];
@@ -25,7 +25,7 @@ export function Button({ variant = "secondary", className, children, type = "but
 /**
  * A link that looks like a button. Use for navigation; use `Button` for an action. Its words often carry a name (a house, a product),
  * so they may wrap on a phone: the height is a minimum, one line keeps the field's height and two lines grow the button rather than
- * spill out of it, balanced so no word stands alone on the second (2026-11-04, a house's page at 390 px).
+ * spill out of it, balanced so no word stands alone on the second (a house's page at 390 px).
  */
 export function LinkButton({ to, children, className, variant = "secondary", onClick }: { to: string; children: ReactNode; className?: string; variant?: "primary" | "secondary"; onClick?: () => void }) {
   const styles = variant === "primary" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent";

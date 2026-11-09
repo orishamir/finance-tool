@@ -123,7 +123,7 @@ function defaultPages() {
           .filter((d) => statSync(join(build, dir, d)).isDirectory() && existsSync(join(build, dir, d, "index.html")))
           .map((d) => `/${dir}/${d}`)
       : [];
-  const top = ["/", "/guide", "/indices", "/companies", "/rules", "/parameters", "/fees", "/goal", "/holdings", "/idle-cash", "/not-covered", "/tracks", "/transfer", "/documents", "/kit"];
+  const top = ["/", "/guide", "/indices", "/companies", "/rules", "/parameters", "/fees", "/not-covered", "/tracks", "/deposits", "/transfer", "/documents", "/kit"];
   return [...top.filter((p) => p === "/" || existsSync(join(build, p, "index.html"))), ...under("guide"), ...under("exposure"), ...under("indices"), ...under("companies")];
 }
 

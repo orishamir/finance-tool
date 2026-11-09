@@ -12,7 +12,7 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        <Term id="קרן פנסיה">קרן פנסיה</Term> שמקבלת את ההפקדות שמעל התקרה החודשית של הקרן המקיפה, <N v={figure("PEN-08", "monthly_deposit_ceiling")} /> בחודש. העודף עובר אליה אוטומטית, אצל אותה <Term id="חברה מנהלת">חברה מנהלת</Term>.
+        התקרה החודשית של הקרן המקיפה היא <N v={figure("PEN-08", "monthly_deposit_ceiling")} />. העודף עובר לקרן הכללית אוטומטית, אצל אותה <Term id="חברה מנהלת">חברה מנהלת</Term>.
       </p>
       <p className="max-w-measure">
         כללי <Term prefix="ה" id="קצבה">קצבה</Term> והמס הם כמו במקיפה, אבל אין <Term id="השלמת תשואה">הבטחת תשואה</Term> של המדינה. תקרת דמי הניהול מהחיסכון גבוהה יותר, <N v={figure("PF-05", "balance_cap")} /> מול <N v={figure("PF-04", "balance_cap")} />, ותקרת דמי הניהול מההפקדה נמוכה יותר, <N v={figure("PF-05", "deposit_cap")} /> מול <N v={figure("PF-04", "deposit_cap")} />.
@@ -28,7 +28,7 @@ export const content: GuideContent = {
   ),
   switchLine: (
     <>
-      בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. לקרן המקיפה אפשר לחזור רק כשאתם לא <Term id="עמית">עמיתים</Term> פעילים בקרן הכללית
+      בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. לקרן המקיפה אפשר לחזור רק כשאתם לא <Term id="עמית">עמיתים</Term> פעילים בקרן הכללית.
     </>
   ),
   switchRules: ["PEN-17", "PF-23", "SW-22"],

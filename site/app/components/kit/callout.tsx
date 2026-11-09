@@ -13,12 +13,12 @@ export function useAheadSaid(): boolean {
 
 /**
  * A boxed note under a result: `caution` for stale or weak, `blocked` for an open rule, `info` for a neutral remark, `upcoming` for rules
- * that are about to change (founder, 2026-11-08: the info colours with a calendar; `tag` is the date beside the title). Short; one to
+ * that are about to change (the info colours with a calendar; `tag` is the date beside the title). Short; one to
  * three sentences.
  */
 export function Callout({ tone, title, tag, children, className }: { tone: "caution" | "blocked" | "info" | "upcoming"; title?: ReactNode; tag?: ReactNode; children: ReactNode; className?: string }) {
   const styles = {
-    // one shape for the tones (founder, 2026-10-27): a thin frame, a 4 px edge at the start, the fill tells a warning from a note
+    // one shape for the tones: a thin frame, a 4 px edge at the start, the fill tells a warning from a note
     caution: "bg-caution-subtle text-caution-foreground border border-caution-border border-s-4 border-s-caution",
     blocked: "bg-blocked-subtle text-blocked-foreground border border-blocked-border border-s-4 border-s-blocked",
     info: "bg-card text-foreground border border-info-border border-s-4 border-s-info",

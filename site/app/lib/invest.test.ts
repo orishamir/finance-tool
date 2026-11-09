@@ -1,12 +1,12 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { accountSum, buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
-import { buildWorkbenchBundle } from "./providers.server";
+import { accountSum, buildInvest, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
 import { invest as words } from "../copy";
 
-const bundle = buildWorkbenchBundle();
+const bundle = buildIndicesBundle();
 const t = bundle.today;
 const plan = (over: Partial<WorkbenchInputs> = {}, ret = 7): WorkbenchInputs => ({
   amountNow: 6000,
@@ -82,10 +82,10 @@ describe("invest page computation", () => {
     expect(abroad.cells.length).toBe(view.providers.length);
     for (const c of abroad.cells) expect(c.kind === "cost" ? typeof c.costN === "number" : c.kind === "unavailable" || !!c.reason).toBe(true);
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
-    // 2026-11-04: One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
-    // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. 2026-11-05: Altshuler answered in writing that it
+    // One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
+    // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. Altshuler answered in writing that it
     // trades only on the Israeli and US exchanges, so it is priced on its US line for a fund that trades in the US, as One Zero is.
-    // 2026-11-08: IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
+    // IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
     expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
     expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["psagot"]);
     expect(abroad.cells.find((c) => c.providerId === "ibi")?.kind).toBe("cost");
@@ -159,14 +159,6 @@ describe("invest page computation", () => {
     expect(matchKnownIndex(bundle, "ניקיי 225")).toBeNull();
   });
 
-  it("the API: the cheapest way for an index, and the range over the known indices", () => {
-    const w = cheapestWay(bundle, sp, plan());
-    expect(w?.providerId).toBe("psagot");
-    const r = rangeOverKnownIndices(bundle, plan())!;
-    expect(r.low.valueN).toBeLessThanOrEqual(r.high.valueN);
-    expect(r.perIndex.length).toBeGreaterThan(3);
-  });
-
   it("the houses: ranked by what is left, the headline's own house first, each gap measured from the headline", () => {
     const il = view.houses.filter((h) => h.group === "il" && h.best);
     expect(il[0]!.provider.id).toBe(view.headline!.providerId);
@@ -193,15 +185,13 @@ describe("invest page computation", () => {
     const funds = v.options.flatMap((o) => o.funds);
     const hedged = funds.filter((f) => f.rec.hedged === true && f.best);
     expect(hedged.length).toBeGreaterThan(0);
-    // 2026-10-29 (F-92): a hedged fund's shortfall beyond its fees is counted, so none leaves more than the headline on a steady dollar;
+    // F-92: a hedged fund's shortfall beyond its fees is counted, so none leaves more than the headline on a steady dollar;
     // the one with no full year in its report is listed with its reason, not priced
     expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeLessThan(v.headline!.valueN);
     expect(funds.find((f) => f.rec.id === "5140165")!.reason).toEqual({ code: "no-hedge-record" });
     expect(v.headline!.fund.rec.hedged).not.toBe(true);
     const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best && !f.best.open);
     expect(v.headline!.valueN).toBe(Math.max(...unhedged.map((f) => f.best!.valueN)));
-    // the goal comparison's cheapest way for the index is the same pair
-    expect(cheapestWay(bundle, world, plan())!.fundRecordId).toBe(v.headline!.fund.rec.id);
   });
 
   it("a hedged fund whose years F-92 (d) does not compare falls back to the hedged rule: listed with its reason, never priced at A-07 = 0 (finance review F3)", () => {
@@ -249,6 +239,7 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
   it("the pair: the same value left as the list, the account's lines, the fund's fee and the tax", () => {
     expect(num(pc.left)).toBeCloseTo(w.valueN, 6);
     expect(num(pc.paidIn)).toBeCloseTo(6000 + 400 * 240, 6);
+    expect(pc.paidIn.computed_from!.formula).toBe("F-106");
     expect(pc.account.length).toBeGreaterThan(0);
     expect(num(pc.tax)).toBeGreaterThan(0);
     expect(num(pc.fund)).toBeGreaterThanOrEqual(0);
@@ -405,7 +396,7 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
   });
 });
 
-describe("what each figure's sheet lists (founder, 2026-11-08: \"make sure the chip displayed is correct\")", () => {
+describe("what each figure's sheet lists", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
   const inputs = (v: SiteValue) => v.computed_from!.inputs as Record<string, SiteValue>;
   const abroad = view.options.find((o) => o.id === "abroad")!;
@@ -421,6 +412,24 @@ describe("what each figure's sheet lists (founder, 2026-11-08: \"make sure the c
     expect(inputs(abroad.bestCell!.cost!)[dollar]).toBeDefined();
     expect(inputs(israeli.best!.value)[dollar]).toBeUndefined();
     expect(inputs(israeli.best!.value)[words.pair.fundInputs.payout]).toBeUndefined();
+  });
+
+  it("an Irish fund that holds the US shares lists the US tax on their dividends (F-107, A-11); a swap fund and an Israeli fund list none", () => {
+    const tax = inputs(irish.best!.value)[words.pair.fundInputs.usWithholding]!;
+    expect(tax.computed_from!.formula).toBe("F-107");
+    // whether the fund obtains the treaty rate is open (TXF OQ7): the figure and the value it costs both say so
+    expect(tax.flags).toContain("TXF-OQ7");
+    expect(irish.best!.value.flags).toContain("TXF-OQ7");
+    const of = inputs(tax);
+    expect(of[words.pair.fundInputs.usRate]!.value).toBe(15);
+    expect(of[words.pair.fundInputs.usYield]!.value).toBe(bundle.exposures.find((e) => e.id === "index-sp500")!.us_dividends!.yield.value);
+    // the S&P 500 is made of US companies: no weight to list
+    expect(of[words.pair.fundInputs.usWeight]).toBeUndefined();
+    expect(tax.value).toBeCloseTo(0.15 * (of[words.pair.fundInputs.usYield]!.value as number), 3);
+    const swap = view.options.flatMap((o) => o.funds).find((f) => f.best && f.rec.domicile === "IE" && f.rec.replication?.method === "swap");
+    expect(swap).toBeDefined();
+    expect(inputs(swap!.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
+    expect(inputs(israeli.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
   });
 
   it("A-07 from a report that prints no fees charged lists the fees listed today, which F-92 (b) measures those years against", () => {

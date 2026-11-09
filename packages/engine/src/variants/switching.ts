@@ -61,7 +61,7 @@ export interface BrokerageSwitch {
   /** What opens B's lot: A's value at s after the sale's commission, spread and tax, nominal NIS. */
   netProceeds: number;
   runs: { noSwitch: RunResult; legA: RunResult; legB: RunResult };
-  /** A real loss realised by the sale at `s` (G-07) and what became of it in leg B (2026-10-24); absent when A's sale had a gain. */
+  /** A real loss realised by the sale at `s` (G-07) and what became of it in leg B; absent when A's sale had a gain. */
   loss?: {
     /** The real loss at month s, nominal NIS, as a positive number. */
     amount: number;
@@ -88,7 +88,7 @@ export interface ProvidentSwitch {
   cost: ValueObject;
   ruleIds: string[];
   outcome: Outcome;
-  /** `fund-transfer` when two funds of the same kind are involved (additive, 2026-10-24). */
+  /** `fund-transfer` when two funds of the same kind are involved (additive). */
   move: "track-switch" | "fund-transfer";
   /** The labels the rules read carry; the tax neutrality of every provident switch or transfer is the site's reading: `reading` on TXK-04, TXP-32, or for a study fund TXH-17 (track switch) and TXH-19 (transfer). */
   labels: Label[];
@@ -136,7 +136,7 @@ function providentSwitch(from: SwitchFrom, to: SwitchTo, ctx: RunContext): Switc
   // A transfer between two funds of the same kind: a track switch keeps the ids the wrapper record gives (TXK-04, TXH-17,
   // TXP-32, PF-23, ...); a fund transfer adds the rules of its pair (`transferRules`).
   const transferIds = move === "fund-transfer" && from.wrapper === to.wrapper ? transferRules(from.wrapper) : [];
-  // The rule that holds the reading of the tax neutrality, for a track switch and a transfer alike (finance review, 2026-11-07)
+  // The rule that holds the reading of the tax neutrality, for a track switch and a transfer alike
   const taxRule = from.wrapper === to.wrapper ? readingRule(from.wrapper, move) : undefined;
   // Between two annuity kinds the refusal names the rules its reasons rest on: TXP-32 (not taxed, but the severance exception),
   // SW-40 (reg. 2(ד)(1)'s cap into a comprehensive fund) and SW-22 (reg. 4(8): no move into a comprehensive fund while active elsewhere).
@@ -160,8 +160,8 @@ function providentSwitch(from: SwitchFrom, to: SwitchTo, ctx: RunContext): Switc
     if (move === "fund-transfer" && from.wrapper === "kupat-gemel-lehashkaa") ["TXK-05", "TXK-07"].forEach((id) => book.cite(id));
     // No official text says in those words that a provident switch or transfer is not a tax event: TXK-04 and TXP-32 hold that
     // reading, and for a study fund TXH-19 (reg. 3(ב)(1) keeps the payment dates, TXH open question 11 is only narrowed) and TXH-17
-    // (the Chief Economist's non-binding paper), so each carries the "reading" label, not "secondary-source" (checker and finance
-    // reviews, 2026-11-07). Every such rule cited is labelled, whichever the caller passed.
+    // (the Chief Economist's non-binding paper), so each carries the "reading" label, not "secondary-source".
+    // Every such rule cited is labelled, whichever the caller passed.
     const readings = new Set([readingRule(from.wrapper, "track-switch"), readingRule(from.wrapper, "fund-transfer")]);
     for (const id of ids) if (readings.has(id)) book.label("reading", id);
   } catch (e) {
@@ -182,7 +182,7 @@ function providentSwitch(from: SwitchFrom, to: SwitchTo, ctx: RunContext): Switc
   if (move === "fund-transfer" && from.wrapper === "pension-comprehensive") flags.push({ code: "SW-40" });
   if (move === "fund-transfer" && from.wrapper === "provident-for-annuity") flags.push({ code: "TXP-32" });
   // F-66's cost is V_T(no switch) − V_T(switch), after exit tax: while the payment dates are open the later exit tax may differ
-  // (TXK-07's linkage runs from each deposit's date), so the 0 is the tax at the move only, shown and not ranked (finance review, 2026-11-07)
+  // (TXK-07's linkage runs from each deposit's date), so the 0 is the tax at the move only, shown and not ranked
   const outcome: Outcome = openDates ? { code: "listed-not-ranked", reason: "SW-OQ17" } : { code: "eligible" };
   return { formula: "F-66", kind: "provident", wrapper: from.wrapper, cost, ruleIds: ids, outcome, move, labels: book.labels(), flags };
 }

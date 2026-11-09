@@ -1,4 +1,4 @@
-// The footer's "data as of" date (audit 2026-10-24, A29): the newest `checked` anywhere under data/.
+// The footer's "data as of" date: the newest `checked` anywhere under data/.
 import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";

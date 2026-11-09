@@ -1,34 +1,29 @@
 // The app shell: header, menu sheet, search, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
 import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Link, useLocation, useRouteLoaderData } from "react-router";
-import { companies as companiesCopy, formulaNames, home as homeCopy, knowledgeEntry, r3workbench, site } from "../copy";
-
-import { isHeld, shown } from "../lib/review";
+import { companies as companiesCopy, formulaNames, knowledgeEntry, r3workbench, site } from "../copy";
 import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, TermFromAddress, type ProvenanceData } from "./provenance";
 import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
-import { Button, Callout, CountingFigures, cx, gershayim, When } from "./kit";
+import { Button, CountingFigures, cx, gershayim, When } from "./kit";
+import { useHydrated } from "../lib/hooks";
 
-export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
+export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "other";
 
 /** The newest `checked` date across data/, fixed at build (vite.config.ts `define`, from `dataAsOf()` in lib/data.server.ts). */
 declare const __DATA_AS_OF__: string;
 const dataAsOf: string = typeof __DATA_AS_OF__ === "string" ? __DATA_AS_OF__ : "";
 
-const goalItem = site.menuItems.find((m) => m.href === "/goal")!;
 const byHref = (href: string) => site.menuItems.find((m) => m.href === href)!;
 type NavItem = { href: string; label: string; current?: Current };
-/** The doors, in the order the first page gives them (audit 2026-10-24, A54): what the person came to do. */
+/** The doors, in the order the first page gives them: what the person came to do. */
 const doorItems: NavItem[] = [
   byHref("/guide"),
   byHref("/companies"),
   byHref("/indices"),
-  byHref("/rules"), // the header order the founder set (2026-11-04): guide, companies, indices, rules
-  goalItem,
-  { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current },
-  { href: homeCopy.door3.href, label: homeCopy.door3.title },
-].filter((i) => shown(i.href)); // a page held for review has no menu item (lib/review.ts)
+  byHref("/rules"), // the header order the founder set: guide, companies, indices, rules
+];
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
 const documentsItem: NavItem = { href: "/documents", label: knowledgeEntry.menuDocuments, current: "documents" };
 const behindItems: NavItem[] = [documentsItem, byHref("/parameters"), { href: site.notCovered.href, label: site.notCovered.label }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
@@ -36,7 +31,7 @@ const behindItems: NavItem[] = [documentsItem, byHref("/parameters"), { href: si
 /** The footer links: the same pages, destinations first, then the reference pages, then the tool. */
 const footerLinks = (() => {
   const by = (href: string) => site.footer.find((f) => f.href === href)!;
-  return [by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }].filter((i) => shown(i.href));
+  return [{ href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
 })();
 
 /** A page is the current one when the address is under the item's, or the page says it belongs to the item. */
@@ -59,24 +54,23 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
     const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters), ...Object.keys(method.formulaTex)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [], tex: method.formulaTex[f] }]));
     return { ...pageData, formulas, parameters: pageData.parameters ?? method.parameterAnchors, publishersHe: pageData.publishersHe ?? method.publishersHe, openQuestions: pageData.openQuestions ?? method.openQuestions, companies: pageData.companies ?? method.companies, ownDocs: pageData.ownDocs ?? method.ownDocs };
   }, [pageData, method]);
-  // One frame for every page (founder, 2026-11-04: some pages used the room of a large screen and others did not): the header, the page and
+  // One frame for every page (some pages used the room of a large screen and others did not): the header, the page and
   // the footer share it, so their edges stay put from page to page; prose keeps its own measure inside it.
   const width = "max-w-wide";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchAnchor, setSearchAnchor] = useState<HTMLElement | null>(null);
   const [seed, setSeed] = useState("");
-  // The menu and the search do nothing before the page is interactive; until then they look disabled (audit A52).
-  const [ready, setReady] = useState(false);
+  // The menu and the search do nothing before the page is interactive; until then they look disabled.
+  const ready = useHydrated();
   const closedAt = useRef(0);
   const location = useLocation();
-  useEffect(() => setReady(true), []);
   useEffect(() => {
     setMenuOpen(false);
     setSearchOpen(false);
   }, [location.pathname]);
   const openSearch: OpenSearch = (el, text = "", via = "tap") => {
-    // Closing a sheet returns focus to the field it opened from; that must not open it again (audit A5).
+    // Closing a sheet returns focus to the field it opened from; that must not open it again.
     if (via === "focus" && Date.now() - closedAt.current < 600) return;
     setSeed(text);
     setSearchAnchor(el);
@@ -89,11 +83,6 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
         <div className="min-h-dvh flex flex-col">
           <Header width={width} current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
           <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", width)}>
-            {isHeld(location.pathname) && (
-              <Callout tone="caution" title={site.held.title} className="mt-4">
-                {site.held.page}
-              </Callout>
-            )}
             <CountingFigures>{children}</CountingFigures>
           </main>
           <Footer width={width} />
@@ -117,8 +106,7 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
 /** The first-page field and the header field are the same component; this is the page's. */
 export function PageSearchField({ inputId }: { inputId: string }) {
   const open = useOpenSearch();
-  const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
+  const ready = useHydrated();
   return <SearchCombo inputId={inputId} variant="home" ready={ready} onSheet={open} />;
 }
 
@@ -126,7 +114,7 @@ export function PageSearchField({ inputId }: { inputId: string }) {
 const HEADER_REST = 32 + 16 + 40 + 8;
 
 /**
- * Whether the menu fits on the header's line beside the name and the resting search icon (2026-10-25, the founder: the
+ * Whether the menu fits on the header's line beside the name and the resting search icon (the
  * search field ran over the last menu item; each item added since release 1 had narrowed the room). When it doesn't,
  * the menu folds into the menu button, at any width and with any number of items.
  */
@@ -219,7 +207,7 @@ function Footer({ width }: { width: string }) {
   );
 }
 
-/** A small "back to the top" after a screen or so of scrolling (audit 2026-10-24, A96). */
+/** A small "back to the top" after a screen or so of scrolling, at the left: in right-to-left pages the names a row starts with sit at the right, and the button covered them. */
 function ToTop() {
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -234,7 +222,7 @@ function ToTop() {
       type="button"
       aria-label={site.toTop}
       onClick={() => window.scrollTo({ top: 0 })}
-      className="fixed bottom-20 md:bottom-6 start-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent"
+      className="fixed bottom-20 md:bottom-6 end-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent"
     >
       <span aria-hidden="true" className="-rotate-90 inline-flex">
         <IconBack size={20} />
@@ -275,7 +263,7 @@ function MenuSheet({ open, onClose, current }: { open: boolean; onClose: () => v
 
 /** Phone: the parent as a back link with a chevron pointing right. PC: parent › current (design-system 3.1). */
 export function Breadcrumb({ parent, current }: { parent: { href: string; label: string }; current: string }) {
-  // the first page is "ראשי", not the site's name (audit 2026-10-24, A54)
+  // the first page is "ראשי", not the site's name
   if (parent.href === "/") parent = { href: "/", label: site.homeCrumb };
   return (
     <nav aria-label="מיקום" className="text-sm text-muted-foreground">

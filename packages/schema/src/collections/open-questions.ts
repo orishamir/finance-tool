@@ -1,7 +1,7 @@
-// data/open-questions.json: one entry per numbered open question of the rule base (docs/data-schema.md §3.15, 2026-10-26).
+// data/open-questions.json: one entry per numbered open question of the rule base (docs/data-schema.md §3.15).
 // `id` and `status` are generated from the markdown (packages/pipeline/scripts/gen-open-questions.ts); `title_he` and `blocks_he`
 // are written by hand and kept when the script runs again. An answered question is deleted from the markdown once its answer is in a
-// rule (founder, 2026-11-08), so the file lists only open and narrowed questions. Strict.
+// rule, so the file lists only open and narrowed questions. Strict.
 import { z } from "zod";
 
 /** `TX2 OQ6`: the prefix of the rule-base file, then the item's number. */

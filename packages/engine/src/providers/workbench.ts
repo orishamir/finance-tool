@@ -42,7 +42,7 @@ export interface EnteredTariff {
   cheaperOfStandingTrade?: boolean;
   cheaperOfStandingFx?: boolean;
   /**
-   * F-101 (2026-11-04): a price for a time, as a sequence. These lines apply to the run's months 1 to `months`; `then` is the tariff after
+   * F-101: a price for a time, as a sequence. These lines apply to the run's months 1 to `months`; `then` is the tariff after
    * them (the provider's own list lines under whatever `then` names), and may carry a period of its own, counted from the start of the run.
    */
   until?: { months: number; then: EnteredTariff };
@@ -70,12 +70,12 @@ export interface ProviderInput {
   /** When a line has averages for several bands, the band to use (the snapshot's own text). */
   averageBand?: string;
   /**
-   * F-63 (2026-10-24): the plan the person is on, as the snapshot's `band` text names it (for example "מסלול ONE"); a plan line is read only when asked for here.
-   * 2026-10-25: several texts may be given, one per base the snapshot splits by band (a trade band and an FX band); a line is asked for when its band contains any of them.
+   * F-63: the plan the person is on, as the snapshot's `band` text names it (for example "מסלול ONE"); a plan line is read only when asked for here.
+   * several texts may be given, one per base the snapshot splits by band (a trade band and an FX band); a line is asked for when its band contains any of them.
    */
   band?: string | readonly string[];
   /**
-   * F-101 (2026-11-04): an account the person builds on this provider. With level `entered`, the provider's own list tariff for this fund
+   * F-101: an account the person builds on this provider. With level `entered`, the provider's own list tariff for this fund
    * and channel is built first (the same `buildTariff` at level `list`, so no second reading of a price list exists) and handed to this
    * function, whose result is the entered tariff. A list tariff that cannot be built makes this provider's row "not comparable" as its own
    * list row would be.
@@ -118,7 +118,7 @@ export interface WorkbenchInput {
   /** Set when the fund is quoted in a foreign currency: the FX line then applies (F-13). */
   currency?: { code: string; startRate: number };
   /**
-   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "EUR", "GBP"), for the tariff lines set in
+   * F-63 (index page): shekels per one unit of a currency, by ISO code ("USD", "EUR", "GBP"), for the tariff lines set in
    * dollars, euros or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
    * whose line needs a currency this does not hold is "not comparable" (`needs-fx-rate`).
    */
@@ -157,11 +157,11 @@ export type NotComparableReason =
   | { code: "no-applicable-line"; detail: string }
   | { code: "no-average"; detail: string }
   | { code: "line-without-value"; detail: string }
-  /** 2026-10-25: a per-share line and the fund record has no `share_price`. */
+  /** a per-share line and the fund record has no `share_price`. */
   | { code: "needs-share-price"; detail: string }
-  /** 2026-10-25: a line in a foreign currency and `fx` holds no rate for it. */
+  /** a line in a foreign currency and `fx` holds no rate for it. */
   | { code: "needs-fx-rate"; detail: string }
-  /** 2026-10-25: the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
+  /** the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
   | { code: "record-error"; detail: string };
 
 export interface ProviderBase {
@@ -182,7 +182,7 @@ export interface ComparedProvider extends ProviderBase {
   feeState: "sourced" | "entered";
   tariff: SecuritiesInput["tariff"];
   linesUsed: string[];
-  /** Level and source of the rate each line used (additive, 2026-10-24). */
+  /** Level and source of the rate each line used (additive). */
   lineSources: TariffBuild["lineSources"];
   noLine: ("trade" | "custody")[];
   notModelled: NotModelled[];
@@ -199,7 +199,7 @@ export interface ComparedProvider extends ProviderBase {
   interaction: number;
   /** Real value at the horizon with this provider's fees. */
   real: number;
-  /** `B(∅) − B(F_p)`, the horizon cost before the tax it saves, real NIS (F-91's account part; additive, 2026-10-28). */
+  /** `B(∅) − B(F_p)`, the horizon cost before the tax it saves, real NIS (F-91's account part; additive). */
   horizonCostBeforeTax: number;
   /** The tax of this run (during and at exit) divided by `I_T` (F-91 helper). */
   taxReal: number;
@@ -269,7 +269,7 @@ const USD_UNITS = new Set(["usd", "usd_per_trade"]);
 /** The currency a fixed amount of a tariff line is printed in, by its unit (F-12): one table, so a bound in any of them is converted the same way (F-84). */
 const CURRENCY_OF_UNIT: Partial<Record<ValueObject["unit"], string>> = { usd: "USD", usd_per_trade: "USD", eur: "EUR", gbp_per_trade: "GBP" };
 
-/** Shekels per unit of a currency from the run's `fx` input; a provider that needs a rate the run lacks is "not comparable" (2026-10-25). */
+/** Shekels per unit of a currency from the run's `fx` input; a provider that needs a rate the run lacks is "not comparable". */
 function rateOf(fx: WorkbenchInput["fx"], code: string, what: string): number {
   const r = fx?.[code];
   if (typeof r !== "number" || !(r > 0)) throw new Unusable("needs-fx-rate", `${what}: no ${code} exchange rate in the run`);
@@ -288,11 +288,11 @@ type SnapLine = FeesSnapshot["lines"][number];
  * its rate by an `averages` row (a percentage with no minimum or maximum, Q16); lines with no average stay at the list price.
  * `entered` takes the person's lines over the list lines. Quarterly or yearly fixed fees are spread evenly over their months.
  */
-/** The band of a trade line that prices a purchase by standing order (F-12, 2026-10-31). Never the line of a sale, a lump sum or a reinvested distribution. */
+/** The band of a trade line that prices a purchase by standing order (F-12). Never the line of a sale, a lump sum or a reinvested distribution. */
 export const STANDING_ORDER_BAND = "הוראת קבע";
-/** The band of a conversion line that prices the conversion of a monthly purchase on a recurring plan (F-13, 2026-10-31). Never a lump sum's or a sale's: Interactive Israel's tariff, p.6, charges those by the table. */
+/** The band of a conversion line that prices the conversion of a monthly purchase on a recurring plan (F-13). Never a lump sum's or a sale's: Interactive Israel's tariff, p.6, charges those by the table. */
 export const STANDING_CONVERSION_BAND = "השקעה קבועה אוטומטית";
-/** The band of a trade line that prices a redemption of makam (F-24, 2026-10-31): the tariff's line that names redemption, never the reduced price of an order placed online. */
+/** The band of a trade line that prices a redemption of makam (F-24): the tariff's line that names redemption, never the reduced price of an order placed online. */
 export const REDEMPTION_BAND = "פדיון";
 
 const standingLines = (snapshot: FeesSnapshot, base: "trade" | "fx") => snapshot.lines.filter((l) => l.base === base && l.level === "list" && l.band === (base === "trade" ? STANDING_ORDER_BAND : STANDING_CONVERSION_BAND));
@@ -329,7 +329,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
     let found = all.filter((l) => l.channel === null || l.channel === input.channel);
-    // F-13 (2026-10-31): a conversion line printed for one currency prices a fund in it, and the line with no currency prices the others.
+    // F-13: a conversion line printed for one currency prices a fund in it, and the line with no currency prices the others.
     if (base === "fx" && input.currency) {
       const own = found.filter((l) => l.conversion_currency === input.currency!.code);
       found = own.length > 0 ? own : found.filter((l) => !l.conversion_currency);
@@ -338,7 +338,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (exact.length > 0 && exact.length < found.length && classes.length > 1) found = exact;
     const ambiguous = (ls: SnapLine[]) =>
       new RecordInputError(`provider ${snapshot.id}: ${ls.length} ${base} lines apply (${ls.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
-    // F-63 (2026-10-24): a plan line (a `band` the person names in `p.band`) wins when asked for; otherwise the standard line (`band: null`)
+    // F-63: a plan line (a `band` the person names in `p.band`) wins when asked for; otherwise the standard line (`band: null`)
     // wins over every banded line. A fixed fee that only a plan has is the plan's price, not the standard tariff's.
     if (p.band !== undefined) {
       const wanted = typeof p.band === "string" ? [p.band] : p.band;
@@ -392,7 +392,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   } else {
     const r = resolve("trade");
     if (r) {
-      // E1 (2026-10-25): a dollar rate per share is charged on the share count, which needs the fund's price.
+      // E1: a dollar rate per share is charged on the share count, which needs the fund's price.
       const commission = (l: { line: SnapLine; rate: ValueObject; min: ValueObject | null | undefined; max: ValueObject | null | undefined; cap: ValueObject | null | undefined }): Commission => {
         const c: Commission = { rate: 0 };
         if (l.rate.unit === "usd_per_share") {
@@ -412,7 +412,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         if (hasBound(l.max)) c.max = bound(l.max, `${l.line.id} max`);
         // E3: the cap is a share of the trade value and wins over the minimum.
         if (hasBound(l.cap)) c.cap = pct(l.cap, "pct_of_trade", `${l.line.id} cap`);
-        // F-12 (2026-10-31): a flat price for an order up to a sum (BRK-54).
+        // F-12: a flat price for an order up to a sum (BRK-54).
         if (l.line.flat_up_to) c.flatUpTo = { amount: bound(l.line.flat_up_to.amount, `${l.line.id} flat amount`), upTo: bound(l.line.flat_up_to.up_to, `${l.line.id} flat up to`) };
         return c;
       };
@@ -420,7 +420,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       out.tariff.buy = c;
       out.tariff.sell = { ...c };
       used(r.line, r.rate, r.min, r.max, r.cap);
-      // F-12 (2026-10-31): a monthly purchase by standing order, where the tariff prints a price for one; a list price only, never over an average.
+      // F-12: a monthly purchase by standing order, where the tariff prints a price for one; a list price only, never over an average.
       if (r.rate === r.line.rate && r.line.level === "list") {
         const standing = standingLines(snapshot, "trade").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
         if (standing.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${standing.length} standing-order lines apply (${standing.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
@@ -429,7 +429,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           out.tariff.buyStanding = commission({ line: l, rate: l.rate, min: l.min, max: l.max, cap: l.cap });
           used(l, l.rate, l.min, l.max, l.cap);
         }
-        // F-24 (2026-10-31): a redemption, where the tariff names it; it follows no channel, because no order is placed
+        // F-24: a redemption, where the tariff names it; it follows no channel, because no order is placed
         const redemption = snapshot.lines.filter((l) => l.base === "trade" && l.level === "list" && l.band === REDEMPTION_BAND && applicable(l));
         if (redemption.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${redemption.length} redemption lines apply (${redemption.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
         const paid = redemption[0];
@@ -488,7 +488,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       const r = resolve("fx");
       if (r) {
         const c: Commission = { rate: 0 };
-        // F-13 (2026-10-31): a conversion priced in shekels a dollar, not as a share of the amount.
+        // F-13: a conversion priced in shekels a dollar, not as a share of the amount.
         if (r.rate.unit === "nis_per_usd") {
           if (input.currency!.code !== "USD") throw new RecordInputError(`${r.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
           if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
@@ -504,7 +504,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (s > 0) out.tariff.fxSpread = s;
         }
         if (hasBound(r.min) || hasBound(r.max)) {
-          // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13, 2026-10-24).
+          // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13).
           const bounds = [r.min, r.max].filter(hasBound);
           const units = new Set(bounds.map((b) => b.unit));
           if (units.size > 1) throw new RecordInputError(`${r.line.id}: min and max are in different units (${[...units].join(", ")})`);
@@ -523,7 +523,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         }
         out.tariff.fx = hasBound(r.min) || hasBound(r.max) || c.perCurrencyUnit ? c : c.rate;
         used(r.line, r.rate, r.min, r.max, spread && typeof spread.value === "number" ? spread : null);
-        // F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
+        // F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
         if (r.rate === r.line.rate && r.line.level === "list") {
           const plan = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
           if (plan.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${plan.length} recurring-plan conversion lines apply (${plan.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
@@ -562,7 +562,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     const own = level === "entered" ? entered?.currentAccount : undefined;
     out.tariff.currentAccount = own ?? m.value;
     // a stretch that charges the price list's minimum rests on the price list, whether the minimum came from the record or was copied into
-    // the stretch (the site's account built on a bank copies it into every stretch, own-account `enteredOf`; lens review S4)
+    // the stretch (the site's account built on a bank copies it into every stretch, own-account `enteredOf`)
     if (own === undefined || own === m.value) {
       out.lineSources.push({ lineId: CURRENT_ACCOUNT_LINE, level: "list", url: m.source.url, publisher: m.source.publisher, strength: m.source.strength });
       out.strengths.push(m.source.strength);
@@ -719,7 +719,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
         notComparable({ code: e.code, detail: e.message });
         continue;
       }
-      // E5 (2026-10-25): one provider's unreadable record is that provider's row, not a failure of the whole run.
+      // E5: one provider's unreadable record is that provider's row, not a failure of the whole run.
       if (e instanceof RecordInputError) {
         notComparable({ code: "record-error", detail: e.message });
         continue;
@@ -848,7 +848,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
   return { formula: "F-63", realWithoutProviderFees: noneT.real, beforeTaxWithoutProviderFees: beforeTax(noneT), rows, ranking, coverage };
 }
 
-/** One month of the cumulative-fees series (F-63, chart note 2026-10-24). */
+/** One month of the cumulative-fees series (F-63, chart note). */
 export interface CumulativeFeePoint {
   month: number;
   /** Provider fees paid up to the end of the month: trade commissions, custody, FX and the fixed fee, nominal NIS. */
@@ -858,7 +858,7 @@ export interface CumulativeFeePoint {
 }
 
 /**
- * The cumulative provider fees per month for the chart (method F-63, 2026-10-24): `fees paid up to month t`, the
+ * The cumulative provider fees per month for the chart (method F-63): `fees paid up to month t`, the
  * provider's own four lines only (not the fund's drag or the spread), in nominal and real shekels. The run's series
  * ends before the sale, so the last point adds the exit commission and FX fee and equals the run's four fee totals.
  * Read from the run the row already holds; nothing is recomputed.

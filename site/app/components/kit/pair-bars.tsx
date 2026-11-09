@@ -1,8 +1,8 @@
-// Two bars for each year, from zero (2026-10-31, the index page: what each kind of fund did in the same years): years left to right, each
+// Two bars for each year, from zero (the index page: what each kind of fund did in the same years): years left to right, each
 // bar's figure at its end. Own SVG. The two hues are the caller's, with a legend beside the chart. Each bar already has its figure and the
 // years are few, so no zoom: pointing at or tapping a year sets it apart and names its two bars.
 //
-// No value axis (2026-11-08, charts.md: amounts written on the marks replace it): the zero line stays, and the width it held goes to the bars.
+// No value axis (charts.md: amounts written on the marks replace it): the zero line stays, and the width it held goes to the bars.
 // The figures are 13 px and placed by their measured width (chart-text.ts), so none touches another at any width: the two bars of a year sit
 // as far apart as two figures side by side need, when the year's room allows; where it does not (a phone), a figure that would meet its
 // neighbour or run over the other bar of its year moves away from zero, above it, the larger figure further out.

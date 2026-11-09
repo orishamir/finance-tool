@@ -1,4 +1,4 @@
-// The stairs (founder, 2026-11-01; drawing A of 8dd1f013:research/specs/2026-11-01-indices-general/stairs.html): from one account and one fund, which
+// The stairs (drawing A of 8dd1f013:research/specs/2026-11-01-indices-general/stairs.html): from one account and one fund, which
 // single change leaves more at the end and by how much, taken one step at a time. Appended after the page's other sections and reading
 // the same view: the start is the person's pick; every figure is the engine's (`buildInvest` for the rows, `pairCosts` for the stairs shown
 // only), every difference a computation of F-91. The selection logic is `lib/stairs.ts`; the chart and the rows are the kit's.
@@ -7,7 +7,7 @@ import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
 import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
-import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
+import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
@@ -18,7 +18,7 @@ import { ProviderLink, providerName } from "./sections";
 
 /** A signed whole-shekel figure isolated for a Hebrew line: "+4,875 ₪", "−1,524 ₪", "0 ₪". */
 const signedNis = (n: number) => (Math.round(n) === 0 ? fmt.nisWhole(0) : `⁦${n > 0 ? "+" : "−"}${fmt.nisWhole(Math.abs(n))}⁩`);
-/** The lock after a name, held to its last word by `LeadTail` so it never stands alone on a line (2026-11-03). */
+/** The lock after a name, held to its last word by `LeadTail` so it never stands alone on a line. */
 const lockIcon = (label: string) => <IconLock size={14} aria-label={label} className="inline-block align-[-1px] mx-0.5 text-blocked" />;
 const NONE: Taken[] = [];
 const hueOf = (lane: Lane | null): StairHue => lane ?? "start";
@@ -46,7 +46,7 @@ function JumpLink({ children, onClick }: { children: ReactNode; onClick?: () => 
   );
 }
 
-export const StairsSection = memo(function StairsSection({ view, bundle, plan, startHouse, startFund, example }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; startHouse: string | null; startFund: string | null; /** Nothing is picked: the start is the page's example, never called "now" (2026-11-05). */ example: boolean }) {
+export const StairsSection = memo(function StairsSection({ view, bundle, plan, startHouse, startFund, example }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; startHouse: string | null; startFund: string | null; /** Nothing is picked: the start is the page's example, never called "now". */ example: boolean }) {
   const today = bundle.today;
   const t = c.stairs;
   // the two cards hold the tallest height they have had on this index: another start drew fewer stairs, or shorter lists under them,
@@ -61,7 +61,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const [done, setDone] = useState<{ key: string; start: Pos | null; taken: Taken[] }>({ key: "", start: null, taken: [] });
   const current = done.key === baseKey ? done : { key: baseKey, start: null, taken: NONE };
   const start = current.start ?? base;
-  // where the person stands is the page's example until they take a step or jump: it is not called "now" (2026-11-05)
+  // where the person stands is the page's example until they take a step or jump: it is not called "now"
   const atExample = example && current.start === null && current.taken.length === 0;
   const chain = useMemo(() => (start ? (chainOf(g, { start, taken: current.taken }) ?? (base && base !== start ? chainOf(g, { start: base, taken: [] }) : null)) : null), [g, start, current.taken, base]);
 
@@ -306,8 +306,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       </div>
     );
   };
-  // each list takes its own height: held at the tallest list any step could bring, the card kept up to 340 px blank under the lists
-  // (founder, 2026-11-08: "remove unused space ... resize the container"); the card still holds the tallest it has been (useHeldHeight)
+  // each list takes its own height, not the tallest any step could bring, which would leave up to 340 px blank under the lists; the card
+  // still holds the tallest it has been (useHeldHeight)
   const heldLane = (lane: Lane) => laneBlock(lane);
 
   // ---------------------------------------------------------------- what is true where the climb stopped

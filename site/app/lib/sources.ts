@@ -9,6 +9,13 @@ import { ruleTitle } from "./rule-title";
 
 export type SourceStrength = "primary" | "institution" | "secondary";
 
+/** A link written in an il-finance reference under a rule's heading. */
+export interface RefLink {
+  href: string;
+  title: string;
+  ruleId: string;
+}
+
 /** One entry of a rule record's `sources` (synthesis 3.2). */
 export interface RuleSource {
   url: string;
@@ -87,7 +94,7 @@ export function pickSources(rule: Pick<SourcedRule, "sources" | "figures">): Rul
 
 /**
  * True when the link opens a PDF: a `.pdf` path, a gov.il blob folder file, or a gazette file from the Ministry of Justice's
- * Reshumot service (its addresses end in a document key, not `.pdf`; added 2026-10-25 when the source check moved the
+ * Reshumot service (its addresses end in a document key, not `.pdf`; when the source check moved the
  * regulations onto it).
  */
 export const isPdfUrl = (url: string): boolean =>
@@ -123,7 +130,7 @@ export function textDirective(f: TextFragment): string {
 }
 
 /**
- * The one way the site links to a source (2026-11-07, the founder: a link opens at the cited words). A PDF opens at its page
+ * The one way the site links to a source (a link opens at the cited words). A PDF opens at its page
  * (`#page=N`; Chrome's PDF viewer does not follow a text fragment); a web page at its anchor and at the quoted words
  * (`#anchor:~:text=…`). An address that already carries a `#` keeps it, and gains only the words.
  */
@@ -139,7 +146,7 @@ export function sourceHref(source: CitedPlace): string {
 }
 
 /**
- * A company's written answer is cited at a file of the repository, `docs/company-answers.md#<company>-<date>` (2026-11-08), and
+ * A company's written answer is cited at a file of the repository, `docs/company-answers.md#<company>-<date>`, and
  * opens at that file's public page; any other address stays as it is (a parameter's rationale keeps its plain label).
  */
 export function publicUrl(url: string): string {
@@ -159,17 +166,17 @@ export function sourceLabel2(source: RuleSource): SourceNames {
   return {
     publisher: source.publisher_he ?? source.publisher,
     title: source.title_he ?? source.title,
-    // only a Hebrew locator is shown; the raw English one ("p.5 and FAQ pp.21–22") is a working note (QA 2026-10-24, F2)
+    // only a Hebrew locator is shown; the raw English one ("p.5 and FAQ pp.21–22") is a working note
     locator: source.locator_he ?? null,
     pdf: isPdfUrl(source.url),
   };
 }
 
-/** Maya's page of a fund listed in Israel. An ETF sits under the same address as any other fund; "etfs" does not exist there (47 of 47 checked, 2026-10-31). */
+/** Maya's page of a fund listed in Israel. An ETF sits under the same address as any other fund; "etfs" does not exist there (47 of 47 checked). */
 export const mayaFundHref = (number: string) => `https://maya.tase.co.il/he/funds/mutual-funds/${number}`;
 
 /** The title as shown, in this order: a Hebrew title as it is; the document kind's word
- * ("מסמך של החברה", "עמוד של הרשות"); the link's host. The English working title is never shown (QA 2026-10-24, F1 and F4). */
+ * ("מסמך של החברה", "עמוד של הרשות"); the link's host. The English working title is never shown (F1 and F4). */
 export function shownTitle(title: string, url: string, kind?: string): { text: string; host: boolean } {
   if (isHebrewTitle(title)) return { text: hebrewCitation(title), host: false };
   const word = kind ? (documentsCopy.kinds as Record<string, string>)[kind] : undefined;
@@ -181,7 +188,7 @@ export function shownTitle(title: string, url: string, kind?: string): { text: s
  * What a source line shows, each name once: who published it, the document's title as shown (`shownTitle`), its place in it. The publisher
  * is left out when the title opens with it ("בנק לאומי, 'שיעורי הריבית…'"); the title is left out when it is only the link's host and
  * the publisher's name holds that host already: "מאגר המידע הממשלתי (data.gov.il)", not "מאגר המידע הממשלתי (data.gov.il) · data.gov.il"
- * (founder, 2026-11-08: "shorten all these kinds of source where the data.gov.il is repeated twice").
+ * .
  */
 export function sourceParts(source: RuleSource): { publisher: string | null; title: { text: string; host: boolean } | null; locator: string | null; pdf: boolean } {
   const n = sourceLabel2(source);
@@ -207,7 +214,7 @@ function monthsBefore(iso: string, months: number): string {
 }
 
 /** The "it may have changed since" line shows when the rule's recheck date has passed, or the source was read more than six months ago
- * (lead, 2026-10-24: a rule that is likely to change but whose recheck date is still ahead shows that date instead; the line is for a read that is past its time, not a forecast). */
+ * (a rule that is likely to change but whose recheck date is still ahead shows that date instead; the line is for a read that is past its time, not a forecast). */
 export function mayHaveChanged(rule: Pick<SourcedRule, "likely_to_change" | "recheck_date">, source: Pick<RuleSource, "checked">, today: string): boolean {
   if (rule.recheck_date && rule.recheck_date < today) return true;
   return !!today && source.checked < monthsBefore(today, SOURCE_AGE_WARNING_MONTHS);

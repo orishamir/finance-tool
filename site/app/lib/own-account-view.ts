@@ -1,4 +1,4 @@
-// An account on your own terms, started from a house (founder, 2026-11-04; F-101): what the panel shows. The prices by fee type in their three
+// An account on your own terms, started from a house (F-101): what the panel shows. The prices by fee type in their three
 // layers (the house's price list, the group's, the person's), each figure with its provenance, and the account's result on the page's plan:
 // what is left at the horizon, its place among the compared rows, the difference against the house's own price-list row, and the cost by
 // fee type of both. Nothing here prices anything itself: the run is the page's own (`buildInvest`, `pairCosts`) on the bundle that holds the entry.
@@ -8,7 +8,7 @@ import { invest as copy } from "../copy";
 import type { CustomBroker } from "./custom-entries";
 import { buildInvest, planInputs, WHOLE_PLAN, listReading, pairCosts, type InvestArgs, type InvestView, type OptionId, type PairCosts } from "./invest";
 import { groupFigure, groupValues, type FigurePart, type GroupCopy } from "./own-account";
-import type { WorkbenchBundle, WorkbenchInputs } from "./providers";
+import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import { computed, differenceOf, ownBy, type SiteValue } from "./value";
 
 // ---------------------------------------------------------------- the layers by fee type
@@ -77,7 +77,7 @@ const SIDE = (cls: string) => (cls === "foreign_securities" ? "abroad" : "israel
  * very values of the record's line the comparison reads; the group's are sourced to the group's document; the person's are entered.
  * Null when the house's tariff has no reading for the kind of holding.
  */
-export function layersOf(bundle: WorkbenchBundle, plan: WorkbenchInputs, b: CustomBroker, house: FeesSnapshot, option: OptionId): FeeLayers[] | null {
+export function layersOf(bundle: IndicesBundle, plan: WorkbenchInputs, b: CustomBroker, house: FeesSnapshot, option: OptionId): FeeLayers[] | null {
   const reading = listReading(bundle, house, option, plan);
   if (!reading) return null;
   const { built, run, line } = reading;

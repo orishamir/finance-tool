@@ -1,4 +1,4 @@
-// A row of single changes (founder, 2026-11-01, the indices page's stairs): what changes, what is left after it, and a bar from "as it is now"
+// A row of single changes (the indices page's stairs): what changes, what is left after it, and a bar from "as it is now"
 // that goes right and green for more money left, left and red for less, with the difference in words and figures ("עוד 4,875 ₪",
 // "פחות 1,524 ₪", "אותו סכום"). One unit for all the rows on screen; a longer bar is cut with a mark and its figure gives the full size.
 // Tapping a row takes it, so the row is a box with a button stretched over it and its figures above the button: a figure opens its own

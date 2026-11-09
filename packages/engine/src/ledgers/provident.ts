@@ -348,7 +348,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   let taxAtExit: number;
 
   if (kgl) {
-    // F-44: 25% of the real gain (TXK-07, primary since 2026-10-25); TXK-06 is the up-to-25% rate on the deemed interest.
+    // F-44: 25% of the real gain (TXK-07, primary); TXK-06 is the up-to-25% rate on the deemed interest.
     book.cite("TXK-05");
     if (exitTaxUnknown) tally.flag("PF-36");
     const realRate = book.rate("TXK-07", "rate");
@@ -356,15 +356,15 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const real = realGain(benefited);
     if (fellFor(benefited)) book.label("reading", "TXK-07");
     const flatTax = kglExitTax(real, realRate);
-    // F-42 at this exit (2026-10-26): from 60 the reduced brackets apply first to this deemed interest, since s.125C(b) is a
+    // F-42 at this exit: from 60 the reduced brackets apply first to this deemed interest, since s.125C(b) is a
     // maximum rate and s.121(ב)(1) gives the reduced brackets to all taxable income of an individual aged 60 or over; the
     // gains are the top slice above the other income Y, each part at min(bracket, 25%) (TXK-06, TXG-04, TXG-07). The manager
     // withholds 25% of the gains with no age rule, and nothing from the principal with its linkage (TXK-26, the Tax Authority's
-    // file 856, read 2026-11-06; reg. 3(א)'s text reads 20%, and which provision sets 25% is open, TXK OQ3). The final tax is
+    // file 856; reg. 3(א)'s text reads 20%, and which provision sets 25% is open, TXK OQ3). The final tax is
     // settled against it in the annual return: money comes back on a part whose bracket is below 25% (TXK-26). The run flags
     // that settlement (TXK-26), not G-21, whose evidence is a bank's or TASE member's withholding. With the refund not claimed
     // (A-14 off) the run keeps the flat 25% and flags the relief it leaves out (TXK-06); with a 25% withholding that is the tax
-    // withheld (until 2026-11-06 the record read 20% and this figure was called an upper bound; golden S51 is unchanged).
+    // withheld (until the record read 20% and this figure was called an upper bound; golden S51 is unchanged).
     let incomeTax = flatTax;
     if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) {
       book.cite("TXG-07");
@@ -382,9 +382,9 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const s = surtaxOn(book, profile, real);
     taxAtExit = exitTaxUnknown ? 0 : incomeTax + s.general + s.onCapital;
     detail.realGain = real;
-    // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum 2026-10-26).
+    // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum).
     book.cite("TXK-27");
-    // G-02 (the exit base) is answered by law, so no flag since 2026-11-07: the base is TXK-07's, cited above.
+    // G-02 (the exit base) is answered by law, so no flag: the base is TXK-07's, cited above.
     if (exitTaxUnknown) for (const k of ["realGain", "fullRateTax"]) delete detail[k];
   } else {
     // F-46: benefited money is exempt (TXH-09); gains on the excess are taxed at 25% of their real gain

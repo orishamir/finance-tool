@@ -5,7 +5,7 @@ import { documents as copy, site } from "../copy";
 import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure, Sentence, TariffDate, When } from "../components/kit";
+import { Card, cx, Disclosure, MixedName, Sentence, TariffDate, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, SectionId } from "../lib/documents.server";
 import { isPdfUrl, sourceHref } from "../lib/sources";
@@ -190,8 +190,8 @@ export default function Documents() {
             <ul className="grid gap-4 lg:grid-cols-2 pt-2">
               {data.deposits.map((x) => (
                 <Card as="li" key={x.key} className="flex flex-col gap-1 min-w-0">
-                  <h3 className="text-lg font-semibold"><bdi>{x.title}</bdi></h3>
-                  <p className="text-sm text-muted-foreground"><bdi>{x.line}</bdi></p>
+                  <h3 className="text-lg font-semibold"><MixedName>{x.title}</MixedName></h3>
+                  <p className="text-sm text-muted-foreground"><MixedName>{x.line ?? ""}</MixedName></p>
                   <DataLink href={x.href} />
                 </Card>
               ))}
