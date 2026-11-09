@@ -8,6 +8,7 @@ export default [
   route("guide/:id", "routes/guide.tsx"),
   route("exposure/:id", "routes/exposure.tsx"),
   route("companies", "routes/companies.tsx"),
+  route("company-figures.json", "routes/company-figures.ts"),
   route("companies/:id", "routes/company.tsx"),
   route("companies/:id/:fund", "routes/track.tsx"),
   route("rules", "routes/rules.tsx"),

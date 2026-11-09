@@ -5,6 +5,7 @@ import { documents as copy, site } from "../copy";
 import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
+import { NoPageCompanyTerms } from "../components/decoder/company-terms";
 import { Card, cx, Disclosure, MixedName, Sentence, TariffDate, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, SectionId } from "../lib/documents.server";
@@ -14,11 +15,16 @@ import { isPdfUrl, sourceHref } from "../lib/sources";
 const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions"] as const;
 
 export async function loader() {
-  const { today } = await import("../lib/data.server");
+  const { today, loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
   const { loadDocuments, loadDocumentData } = await import("../lib/documents.server");
-  // the rule links open the rule on its shelf page, so the page carries no rule records (the chips of 500 rules made it 2 MB)
+  const { noPageCompanyTerms } = await import("../lib/institutions.server");
+  // the rule links open the rule on its shelf page, so the page carries no rule records (the chips of 500 rules made it 2 MB), except the
+  // cards of what the documents of companies with no page of their own say, and of what the site keeps that is not a rule
   const docs = loadDocuments();
-  return { docs, data: await loadDocumentData(), today: today() };
+  const all = loadRules();
+  const noPage = noPageCompanyTerms(all);
+  const rules = Object.fromEntries([...noPage.companies.flatMap((c) => c.ids), ...noPage.none].map((id) => [id, all[id]!]));
+  return { docs, data: await loadDocumentData(), today: today(), noPage, rules, pointed: pointedRecords(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 
 export function meta() {
@@ -97,8 +103,8 @@ function DataLink({ href }: { href: string | null }) {
 }
 
 export default function Documents() {
-  const { docs, data, today } = useLoaderData<typeof loader>();
-  const pd = { rules: {}, terms: {}, dimensions: {}, today };
+  const { docs, data, today, noPage, rules, pointed, dimensions } = useLoaderData<typeof loader>();
+  const pd = { rules, pointed, terms: {}, dimensions, today };
   const d = copy.data;
   return (
     <PageShell current="other" data={pd}>
@@ -153,6 +159,10 @@ export default function Documents() {
               </Group>
             );
           })}
+        </div>
+
+        <div className="pt-4">
+          <NoPageCompanyTerms companies={noPage.companies} none={noPage.none} />
         </div>
 
         <header className="flex flex-col gap-2 pt-4">

@@ -124,7 +124,6 @@ patterns["a button styled by hand as a link"] = {
     "components/invest/stairs.tsx": 1,
     "components/search.tsx": 2,
     "root.tsx": 1,
-    "routes/companies.tsx": 1,
     "routes/not-found.tsx": 1,
   },
 };

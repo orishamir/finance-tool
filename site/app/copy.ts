@@ -517,10 +517,60 @@ export const parametersPage = {
 
 export const companies = {
   title: "מה חברה מציעה לי",
-  filter: "חיפוש חברה",
-  noMatch: "אין חברה בשם הזה.",
-  searchAll: "לחיפוש בכל האתר",
   back: "חברות ומסלולים",
+} as const;
+
+/** The companies page (lib/company-focus.ts): every company beside one in focus, filtered by a kind of product, a product and a name. */
+export const companyFocus = {
+  search: "חיפוש חברה",
+  typeLabel: "סוג מוצר",
+  productLabel: "מוצר",
+  /** The four kinds of product, the designer's grouping. */
+  types: { all: "הכול", savings: "גמל, השתלמות ופנסיה", funds: "קרנות", trade: "מסחר בניירות ערך", bank: "פיקדונות" },
+  trayHint: "בחירת סוג מוצר פותחת כאן את המוצרים שלו. אפשר גם ללחוץ על מוצר אצל החברה שבפוקוס.",
+  groups: { houses: "בתי השקעות", managers: "חברות מנהלות", banks: "בנקים" },
+  /** A group head's count while a filter or a search is on: "9 מ־13". */
+  of: (shown: string, total: string) => `${shown} מ־${total}`,
+  companies: { one: "חברה אחת", two: "שתי חברות", many: "חברות" },
+  status: {
+    tap: "לחיצה על שם מציגה מה יש לחברה.",
+    offersOne: "מציעה",
+    offersMany: "מציעות",
+    beside: "ליד כל שם:",
+    unit: { tracks: "מספר המסלולים", funds: "מספר הקרנות", deposits: "מספר הפיקדונות", plans: "מספר התוכניות" },
+    searchOne: "מתאימה לחיפוש.",
+    searchMany: "מתאימות לחיפוש.",
+    searchNone: "אין חברה שמתאימה לחיפוש.",
+  },
+  units: {
+    tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },
+    funds: { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" },
+    deposits: { one: "פיקדון אחד", two: "שני פיקדונות", many: "פיקדונות" },
+    plans: { one: "תוכנית אחת", two: "שתי תוכניות", many: "תוכניות" },
+  },
+  has: "יש",
+  fullPage: "לעמוד המלא",
+  productsOnSite: { one: "מוצר אחד באתר", two: "שני מוצרים באתר", many: "מוצרים באתר" },
+  members: "כולל:",
+  tariffAt: "התעריפון נאסף ב־",
+  paneHint: "לחיצה על מוצר מראה ברשימה מי עוד מציע אותו. החץ פותח את המוצר בעמוד של החברה.",
+  assets: "כסף מנוהל",
+  fees: "דמי ניהול מהחיסכון",
+  to: "עד",
+  tariffGroups: "בתעריפון:",
+  asOf: "לפי פרסום הבנק, נכון ל־",
+  more: "עוד בעמוד המלא",
+  terms: "מה כתוב במסמכים",
+  /** The products the site has none of at this company: the site may not have collected one the company offers. */
+  notHere: "אין באתר:",
+  /** The arrow's spoken name. */
+  open: (product: string, company: string) => `${product} בעמוד של ${company}`,
+  /** The pane's name on a phone, where it opens over the list. */
+  close: "סגירה",
+  documents: "למסמכים של גופים שאין להם עמוד כאן",
+  /** The phone's folded filters: what is chosen, and its words; the search in it as typed. */
+  fold: { more: "שינוי", less: "סגירה" },
+  quoted: (q: string) => `״${q}״`,
 } as const;
 
 export const company = {
@@ -938,6 +988,7 @@ export const guideBlocks = {
     spread: { name: "מרווח קנייה ומכירה", base: "בכל קנייה ומכירה בבורסה, כחלק מהמחיר" },
     creation_redemption: { name: "עמלת יצירה ופדיון", base: "כשההזמנה עוברת למנהל הקרן ולא לבורסה" },
     transfer_out: { name: "העברה החוצה", base: "כשמעבירים את הכסף למוסד אחר" },
+    corporate_event: { name: "עלות לכל אירוע חברה", base: "על כל אירוע חברה, כמו דיבידנד, בנייר ערך שמוחזק בחו״ל" },
     load: { name: "הוספה", base: "נוסף על מחיר היחידה בקנייה, והולך למנהל הקרן ולא לקרן" },
     redemption_deduction: { name: "ניכוי בפדיון", base: "ממחיר הפדיון, רק אם הסכם הקרן קובע ניכוי כזה" },
     variable_management: { name: "דמי ניהול משתנים", base: "לפי הפער בין הקרן למדד, נוסף על דמי הניהול הקבועים; כשהקרן מפגרת אחרי המדד, המנהל משלם לה" },
@@ -1657,7 +1708,6 @@ export const r3transfer = {
  */
 /** D33: a group's companies shown as one company, under the name people know it by; copy.md 8.7. */
 export const brands = {
-  heading: "בתי השקעות",
   searchLine: "בית השקעות",
   members: "כולל את החברות:",
   listHeading: "כל המוצרים של",
@@ -1682,10 +1732,8 @@ export const brands = {
 } as const;
 
 export const r4catalogue = {
-  headings: { companies: "חברות מנהלות", institutions: "בנקים ובתי השקעות נוספים", fundManagers: "מנהלי קרנות" },
+  headings: { fundManagers: "מנהלי קרנות" },
   classWord: { bank: "בנק", broker: "בית השקעות" },
-  /** Row line: `{סוג}` · the price list's date line (kit TariffDate) · or "התעריפון לא נאסף" in caution. */
-  rowLine: { missing: "התעריפון לא נאסף" },
   fundManagerCount: "קרנות",
   ledeIntro: "כל מה שהבנק מציע, עם הסבר לכל מוצר.",
   ledeDeposits: "הפיקדונות לפי פרסום הבנק, נכון ל־",
@@ -2086,31 +2134,56 @@ export const ruleCardMore = {
   citationLabel: "מראה מקום",
 } as const;
 
-/** The rules front page and the five shelves (synthesis §3.4). */
+/** The rules page's whole rule, opened from its row (`RuleDetail`). */
+export const rulesDetail = {
+  sourcesHead: "מקורות",
+} as const;
+
+/** The rules page: a field, the products, the five questions and every rule as a row; a rule's detail beside the list or on its own. */
 export const rulesFront = {
   title: "חוקים וכללים",
   lede: "אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את זה כאן, ותראו מה כתוב על זה, ואיפה.",
-  // the claim field: what a person was told, checked against the law and against what each company wrote
+  // the claim field: what a person was told, checked against the law and against what each company wrote; a rule's id opens that rule
   ask: {
-    label: "מה אמרו לכם, או מה קראתם בתנאים",
-    placeholder: "כתבו מה אמרו לכם, או מה קראתם בתנאים",
+    label: "מה אמרו לכם, מה קראתם בתנאים, או מספר של חוק או כלל",
+    placeholder: "מה אמרו לכם, או מספר כלל כמו TXH-09",
     clear: "ניקוי",
     examplesLead: "למשל:",
     examples: ["מותר לבנק לשנות עמלה בלי להודיע", "אפשר למשוך קרן השתלמות אחרי 3 שנים", "אם הברוקר פושט רגל, הכסף אובד"],
   },
   facts: { title: "הידעת?", more: "עוד עובדות", toRule: "לפירוט המלא" },
+  /** The product list: on a computer beside the rules, on a phone a button that opens it. */
+  nav: {
+    label: "מוצר",
+    title: "בחירת מוצר",
+    groups: { bank: "בבנק", market: "בשוק ההון", provident: "גמל והשתלמות", pension: "פנסיה", other: "אחר" } as Record<string, string>,
+    count: "{n} חוקים וכללים",
+    countOne: "חוק או כלל אחד",
+  },
+  changingOnly: "רק מה שעומד להשתנות",
+  questions: "לפי השאלה",
+  none: "אין חוק או כלל שעומד להשתנות במוצר הזה.",
+  row: { sources: "{n} מקורות", sourceOne: "מקור אחד", recheck: "ייבדק שוב", more: "ועוד {n}" },
+  detail: {
+    back: "לרשימה",
+    empty: "בחרו חוק או כלל מהרשימה, והנוסח המלא והמקורות שלו יופיעו כאן.",
+    companies: "מה כתוב על זה בתקנונים של חברות",
+    companiesDocs: "{n} מסמכים",
+    companiesDocOne: "מסמך אחד",
+  },
   claim: {
-    filters: "סינון התוצאות",
-    found: "נמצאו {n} חוקים וכללים",
-    foundOne: "נמצא חוק או כלל אחד",
-    foundNone: "לא נמצא חוק או כלל",
-    atCompanies: " · {c} אצל חברות",
-    near: "לא נמצאה התאמה מלאה; הכי קרובים: ",
-    nothing: "לא נמצא שום דבר. אפשר לנסות במילים אחרות, או לעיין לפי הסינון.",
-    lawTitle: "מה כתוב בחוק ובכללים",
+    tabs: { law: "בחוק ובכללים", companies: "אצל חברות" },
+    product: "מוצר",
+    question: "שאלה",
+    all: "הכול",
+    filter: "סינון",
+    top: "ההתאמה הקרובה ביותר",
+    more: "עוד {n} חוקים וכללים",
+    moreOne: "עוד חוק או כלל אחד",
+    near: "לא נמצאה התאמה מלאה; אלה הכי קרובים.",
+    nothing: "לא נמצא שום דבר. אפשר לנסות במילים אחרות, או לבחור אחת הדוגמאות.",
     lawNone: "אין כאן חוק או כלל שמתאימים למה שכתבתם ולסינון יחד.",
     lawAll: "לכל ה־{n}",
-    companiesTitle: "מה כתוב אצל החברות",
     companiesLine: "כל מסמך חל רק על החברה שלו. הקישור פותח את העמוד במסמך שבו הנושא מופיע; האתר לא מסכם מה כתוב שם.",
     companiesNone: "במסמכי החברות שהאתר קרא אין כרגע נושא שמתאים למה שכתבתם.",
     groups: { bank: "בנקים", fund: "קופות גמל וקרנות השתלמות", other: "ברוקרים ובתי השקעות" },
@@ -2119,8 +2192,6 @@ export const rulesFront = {
     noEdition: "לא צוינה",
     companyRead: "מה שהאתר כבר קרא בתנאים של חברות",
   },
-  pinned: { title: "השאלות שכולם שואלים" }, // no tag and no provisional note
-  changing: { title: "מה עומד להשתנות", line: "מה שיש לו תאריך בדיקה חוזרת, לפי חודש.", month: "ב{month}" },
   shelves: {
     state: { name: "מה המדינה לוקחת", line: "מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח" },
     costs: { name: "מה הבנק או בית ההשקעות לוקחים", line: "דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום" },
@@ -2141,20 +2212,8 @@ export const rulesFront = {
     "tax-tier2-other.md": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר)",
   } as Record<string, string>,
   products: { all: "כל המוצרים", common: "משותף לכל הקופות", tier2: "עוד לא באתר" },
-  // one page with filters: the shelves, the products, the prefixes and "what will change" are filters on /rules
-  filters: {
-    all: "הכול",
-    shelfLabel: "לפי השאלה",
-    productLabel: "לפי מוצר",
-    changing: "עומד להשתנות",
-    prefixLabel: "לפי מספר",
-    clear: "ניקוי הסינון",
-    showing: "מוצגים {n} מתוך {total}", // no noun: the set is "חוקים וכללים" and a single record has no noun
-    showingOne: "מוצג אחד מתוך {total}",
-    none: "שום דבר לא מתאים לסינון הזה.",
-    preset: "החוקים והכללים שעונים על השאלה",
-    presetAll: "לכל החוקים והכללים",
-  },
+  /** `/rules/<shelf>`, the old addresses of the five questions: the line that leads on to the page. */
+  presetAll: "לכל החוקים והכללים",
 } as const;
 
 /** The documents page (synthesis §3.5). */
@@ -3658,7 +3717,8 @@ export const kit = {
       DiffRow: "שורה של שינוי אחד: מה משתנה, מה נשאר בסוף, וסרגל מקו האמצע: ימינה וירוק לעוד כסף, שמאלה ואדום לפחות. יחידה אחת לכל השורות; סרגל ארוך נחתך בסימן והמספר אומר את הגודל המלא. לחיצה על השורה לוקחת אותה.",
       PickCard: "כרטיס שכולו כפתור: לחיצה בכל מקום עליו בוחרת בו, בלי קישור ״בחרו״ בתוכו. מספרים וקישורים שבתוכו נשארים לחיצים בפני עצמם. הכרטיס שכבר נבחר אינו PickCard.",
       TileChoice: "תשובות לשאלה אחת, כל אחת אריח שמראה מה היא מביאה (התוויות שהיא מוסיפה, או שורה קצרה). אפשר שלא תהיה בחירה עדיין. מה שבתוך אריח לא לחיץ בפני עצמו.",
-      ChoiceChips: "ארבע אפשרויות ומעלה או תוויות ארוכות, אחת נבחרת. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
+      ChoiceChips: "ארבע אפשרויות ומעלה או תוויות ארוכות, אחת נבחרת. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון, ועם line נשאר שורה אחת בכל רוחב. counts שם מספר במקום קבוע אחרי כל תווית, והגלולה הנבחרת ברוחב של האחרות. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
+      ChoiceTray: "מגש בשורה אחת ובגובה קבוע מתחת לשורת בחירה: כל עוד לא נבחר בה כלום יש בו רמז עמום, ואחר כך תווית ושורת בחירה משלו שגוללת הצידה. מה שמתחתיו לא זז.",
       LongestCase: "גוש שתוכנו משתנה לפי בחירה: תמיד בגובה המקרה הארוך ביותר, בכל רוחב מסך, כדי ששום דבר מתחתיו לא יזוז.",
       HoldTallest: "כמו LongestCase, כשהמקרים רבים מכדי להישאר בעמוד: הם נפרשים פעם אחת בלי שייראו, נמדדים ויורדים, והגוש נשאר בגובה הארוך שבהם עד שמשתנים המדד או רוחב המסך.",
       InputSlot: "מספר שהקוראים קובעים, בתוך משפט: מספר רגיל ברווח ברוחב קבוע, כדי שהמשפט לא יקפוץ כשהמספר משתנה. הוא לא נפתח: השדה שליד המשפט משנה אותו.",
@@ -3692,6 +3752,10 @@ export const kit = {
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
       Formula: "נוסחה בכתב מתמטי, עם מקרא שאומר מה כל סימן בה: בכרטיס של נוסחה שמסמך שיטת החישוב כותב כך, במקום קישור למסמך.",
       HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור, או הסבר קצר משלו: רק במקום שהוא מוסיף משהו שהכותרת לא אומרת.",
+      TabStrip: "לשוניות בתוך עמוד שמחליפות מה שחלק אחד שלו מראה, בלי לעזוב אותו (השאלות בעמוד החוקים והכללים): כל לשונית היא כפתור עם מספר השורות שבה, והחצים במקלדת עוברים ביניהן.",
+      InlineSelect: "בחירה שיושבת בשורה של פקדים אחרים (הסינון בסוף שורת הלשוניות בחיפוש): התווית והבחירה בתוך רשימה נפתחת אחת, בלי מסגרת של שדה.",
+      ListRow: "שורה קומפקטית ברשימה שכל פריט בה נפתח במלואו לידה או במסך משלו: כותרת, שורה עמומה שנשמטת בטלפון, תגיות, מקור ומזהה בסוף. כל השורה היא כפתור, והנבחרת מסומנת ברקע ובפס בתחילתה.",
+      ChooseRow: "שורה שבוחרת משהו בעמוד (מסנן) ונגמרת בחץ שמוביל למקום אחר. כל השורה היא כפתור שנלחץ ושוב משחרר, והמספרים בשורה העמומה והחץ שומרים על הלחיצה שלהם. הנבחרת ברקע ובפס בתחילתה, ושורה מעומעמת נשארת במקומה.",
       PageTabs: "לשוניות בראש עמוד שהוא אחת מכמה תצוגות של אותו נושא (לפי חברה, לפי מוצר): כל לשונית היא עמוד משלה, ולכן קישור; הנוכחית מסומנת בקו תחתון וב־aria-current.",
       TrackCells: "מה שהתאים של מסלול מכילים, לכל רשימת מסלולים: שני ממוצעי דמי הניהול של הרשות (TrackFeeLines, FeeNum; תא ריק מסביר את עצמו כשלוחצים עליו), החשיפה למניות ולמט״ח עם הטבעות (ExposureCell) והתוויות שליד השם (TrackLabels). כל מספר עובר דרך רכיב המקור.",
       ProductTable: "רשימה של מוצרים מאותו סוג (מסלולים, קרנות): טבלה אחת במחשב ושורה לכל מוצר בטלפון, אף פעם לא ערימה של כרטיסים. הכותרת נושאת את המילים והתא את הערך; fit לעמודה ברוחב התוכן שלה (מספר, קישור, דמי ניהול), והשם מקבל את השאר. banner: שורת זהירות מעל שורות ששייכות יחד. ProductPhoneRow: שורה של מוצר בטלפון. ProductIdLink: המזהה הוא הקישור החוצה (מספר הקרן למאיה), עם אייקון קישור חיצוני. ProductFigures: מספרים, כל אחד עם המילה שלו, אחד מתחת לשני בתא ובשורה אחת בטלפון.",

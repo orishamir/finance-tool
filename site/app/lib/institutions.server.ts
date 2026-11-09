@@ -400,7 +400,7 @@ export function companyLinks(): Record<string, CompanyLink> {
     const page = brand ? brand.page : r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
     // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31)
     const docs = { own_hosts: r.own_hosts, ...(r.filing_names ? { filing_names: r.filing_names } : {}) };
-    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false, docs };
+    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/documents#${noPageAnchor(r.id)}`, hasPage: false, docs };
   }
   return out;
 }

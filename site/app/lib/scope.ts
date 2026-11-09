@@ -61,7 +61,7 @@ export function listedCompanies(rule: Pick<RuleRecord, "id" | "scope" | "scope_i
 
 /** The link of each company: the page's own map first, then the company's group on /companies. */
 export function companyLinksOf(list: readonly { id: string; name_he: string }[], companies: Record<string, CompanyLink> | undefined): (CompanyLink & { id: string })[] {
-  return list.map((c) => ({ id: c.id, name: c.name_he, href: companies?.[c.id]?.href ?? `/companies#${noPageAnchor(c.id)}`, hasPage: companies?.[c.id]?.hasPage ?? false }));
+  return list.map((c) => ({ id: c.id, name: c.name_he, href: companies?.[c.id]?.href ?? `/documents#${noPageAnchor(c.id)}`, hasPage: companies?.[c.id]?.hasPage ?? false }));
 }
 
 /**
@@ -72,7 +72,7 @@ export function companyTermsHref(rule: Pick<RuleRecord, "id" | "scope" | "scope_
   const links = companyLinksOf(listedCompanies(rule, ownDocs), companies);
   const page = links.find((l) => l.hasPage);
   if (page) return `${page.href}#${rule.id}`;
-  return links[0]?.href ?? `/companies#${noCompanyAnchor}`;
+  return links[0]?.href ?? `/documents#${noCompanyAnchor}`;
 }
 
 /**

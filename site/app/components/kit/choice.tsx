@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { IconCheck } from "../icons";
 import { cx } from "./cx";
 import { gershayim } from "./name";
+import { fmt } from "../../lib/format";
 
 export interface SegmentOption<T extends string> {
   value: T;
@@ -45,16 +46,60 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
   );
 }
 
-/** Four or more options, or longer labels: a row of chips, one chosen at a time; scrolls sideways on a phone and wraps from md (or wraps always with `wrap`). A chip never submits. `value` may be null (nothing chosen). */
-export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, other }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
+/**
+ * Four or more options, or longer labels: a row of chips, one chosen at a time; scrolls sideways on a phone and wraps from md (or wraps
+ * always with `wrap`, or stays one line at every width with `line`). A chip never submits. `value` may be null (nothing chosen).
+ * `counts` puts a number in a fixed slot after each label (how many a choice would show), and a chip then keeps one width whether it is
+ * chosen or not (its label holds room for the chosen chip's weight), so choosing moves nothing.
+ */
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, other }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
+  const steady = !!counts || !!line;
+  const layout = wrap ? "flex flex-wrap gap-2" : line ? cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto pb-1 scrollbar-none") : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none");
   return (
-    <div role="radiogroup" aria-label={ariaLabel} className={wrap ? "flex flex-wrap gap-2" : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none")}>
+    <div role="radiogroup" aria-label={ariaLabel} className={layout}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
-          {labels[id]}
+        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
+          {steady ? (
+            // the label laid out twice in one cell, once at the chosen weight and unseen: the chip is as wide chosen or not
+            <span className="inline-grid *:[grid-area:1/1]">
+              <span aria-hidden="true" className="invisible font-medium">
+                {labels[id]}
+              </span>
+              <span>{labels[id]}</span>
+            </span>
+          ) : (
+            labels[id]
+          )}
+          {counts && (
+            <bdi dir="ltr" className="inline-block min-w-[3ch] text-end tabular-nums font-normal opacity-70">
+              {counts[id] !== undefined ? fmt.number(counts[id]) : ""}
+            </bdi>
+          )}
         </button>
       ))}
       {other && <OtherChip label={other.label} expanded={other.open} onClick={other.onToggle} />}
+    </div>
+  );
+}
+
+/**
+ * A tray of one line and one height under a row of choices, always there: while nothing above opens it, a muted hint of what will appear
+ * here; then its label and its own row of choices, which scrolls sideways rather than wrap (the companies page's products under the kind of
+ * product). Its height never changes, so what stands below it never moves.
+ */
+export function ChoiceTray({ label, hint, children, labelId }: { label: string; /** Shown while the tray holds no choices. */ hint: ReactNode; children?: ReactNode; /** The label's element id (the row inside names itself by it). */ labelId?: string }) {
+  return (
+    <div className="h-16 md:h-12 flex items-center gap-3 min-w-0 overflow-hidden">
+      {children ? (
+        <>
+          <span id={labelId} className="shrink-0 text-sm font-medium">
+            {label}
+          </span>
+          <div className="flex-1 min-w-0">{children}</div>
+        </>
+      ) : (
+        <p className="min-w-0 line-clamp-2 md:line-clamp-none md:truncate text-sm text-muted-foreground">{hint}</p>
+      )}
     </div>
   );
 }
