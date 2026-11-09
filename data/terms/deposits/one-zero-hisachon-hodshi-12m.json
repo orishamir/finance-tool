@@ -154,7 +154,8 @@
     "rule_ids": [
       "BANK-06",
       "BANK-28",
-      "BANK-48"
+      "BANK-48",
+      "BANK-49"
     ]
   },
   "exit_points": {

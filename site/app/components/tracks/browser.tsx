@@ -1,7 +1,8 @@
 // The track browser (D54): the controls and the list for one product. The product is in the address
 // (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are the person's state on the page.
 // No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list. The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
-// The controls stand in the order they narrow the list (product, search, kind); the count and the order are said right over the list.
+// The product, the kind and the sort stand first; on a phone they fold into one line that says what is chosen (`PhoneFold`), and the
+// search stays open under them. The count and the order are said right over the list.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
@@ -10,7 +11,7 @@ import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProduc
 import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
 import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
-import { FilterChip, LongestCase, SelectField, TextField, useFlip } from "../kit";
+import { FilterChip, LongestCase, PhoneFold, SelectField, TextField, useFlip } from "../kit";
 import { Term } from "../provenance";
 import { TrackList } from "./list";
 
@@ -84,70 +85,80 @@ export function TrackBrowser({ data }: { data: TbData }) {
   };
 
   const longestOrder = SORT_IDS.flatMap((id) => ([1, -1] as const).flatMap((dir) => (["company", "kind"] as const).map((mode) => orderLine({ id, dir }, mode))));
+  // the phone's folded controls: "קרן השתלמות · מניות · מיון לפי דמי ניהול"
+  const summary = (
+    <>
+      {product.name}
+      {view.hasKinds && ` · ${kind || t.fold.kindAll}`} · {t.fold.sort}
+      {t.sorts[sort.id].label}
+    </>
+  );
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium" id="tb-product">
-          {t.controls.product}
-        </span>
-        <div role="group" aria-labelledby="tb-product" className="flex flex-wrap gap-2">
-          {data.products.map((p) => (
-            <FilterChip key={p.id} on={p.id === productId} count={p.rows.length} onClick={() => p.id !== productId && navigate(`/tracks/${p.id}${keepFor(sp)}`, { preventScrollReset: true })}>
-              {p.name}
-            </FilterChip>
-          ))}
+      <PhoneFold summary={summary} more={t.fold.more} less={t.fold.less}>
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium" id="tb-product">
+            {t.controls.product}
+          </span>
+          <div role="group" aria-labelledby="tb-product" className="flex flex-wrap gap-2">
+            {data.products.map((p) => (
+              <FilterChip key={p.id} on={p.id === productId} count={p.rows.length} onClick={() => p.id !== productId && navigate(`/tracks/${p.id}${keepFor(sp)}`, { preventScrollReset: true })}>
+                {p.name}
+              </FilterChip>
+            ))}
+          </div>
+          <Link to={`/guide/${view.id}`} className="self-start -mb-2 text-sm text-link hover:underline inline-flex items-center min-h-target">
+            {t.count.whatIs} {view.name}
+          </Link>
         </div>
-        <Link to={`/guide/${view.id}`} className="self-start -mb-2 text-sm text-link hover:underline inline-flex items-center min-h-target">
-          {t.count.whatIs} {view.name}
-        </Link>
-      </div>
+
+        {view.hasKinds ? (
+          <>
+            <div className="hidden md:flex flex-col gap-1.5">
+              <span className="text-sm font-medium" id="tb-kind">
+                {t.controls.kind}
+              </span>
+              <div role="group" aria-labelledby="tb-kind" className="flex flex-wrap gap-2">
+                <FilterChip on={kind === ""} count={view.tracks.length} onClick={() => setKind("")}>
+                  {t.controls.kindAll}
+                </FilterChip>
+                {view.kinds.map((k) => (
+                  <FilterChip key={k.sub} on={kind === k.sub} count={k.count} onClick={() => setKind(k.sub)}>
+                    {k.sub}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+            <SelectField
+              className="md:hidden"
+              wide
+              label={t.controls.kind}
+              none={`${t.controls.kindAll} (${fmt.number(view.tracks.length)})`}
+              options={view.kinds.map((k) => ({ id: k.sub, name: `${k.sub} (${fmt.number(k.count)})` }))}
+              value={kind || null}
+              onChange={(v) => setKind(v ?? "")}
+            />
+          </>
+        ) : (
+          // the place of the kinds says why there are none, so the control is not just gone
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium">{t.controls.kind}</span>
+            <p className="text-sm text-muted-foreground max-w-measure">{t.controls.noKinds}</p>
+          </div>
+        )}
+        <SelectField
+          className="md:hidden"
+          wide
+          label={t.controls.sort}
+          options={SORT_IDS.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
+          value={sort.id}
+          onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
+        />
+      </PhoneFold>
 
       <div className="grid md:grid-cols-[minmax(0,22rem)]">
         <TextField label={t.controls.search} value={q} onChange={setQ} placeholder={t.controls.searchPlaceholder} />
       </div>
-
-      {view.hasKinds ? (
-        <>
-          <div className="hidden md:flex flex-col gap-1.5">
-            <span className="text-sm font-medium" id="tb-kind">
-              {t.controls.kind}
-            </span>
-            <div role="group" aria-labelledby="tb-kind" className="flex flex-wrap gap-2">
-              <FilterChip on={kind === ""} count={view.tracks.length} onClick={() => setKind("")}>
-                {t.controls.kindAll}
-              </FilterChip>
-              {view.kinds.map((k) => (
-                <FilterChip key={k.sub} on={kind === k.sub} count={k.count} onClick={() => setKind(k.sub)}>
-                  {k.sub}
-                </FilterChip>
-              ))}
-            </div>
-          </div>
-          <SelectField
-            className="md:hidden"
-            wide
-            label={t.controls.kind}
-            none={`${t.controls.kindAll} (${fmt.number(view.tracks.length)})`}
-            options={view.kinds.map((k) => ({ id: k.sub, name: `${k.sub} (${fmt.number(k.count)})` }))}
-            value={kind || null}
-            onChange={(v) => setKind(v ?? "")}
-          />
-        </>
-      ) : (
-        // the place of the kinds says why there are none, so the control is not just gone
-        <div className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium">{t.controls.kind}</span>
-          <p className="text-sm text-muted-foreground max-w-measure">{t.controls.noKinds}</p>
-        </div>
-      )}
-      <SelectField
-        className="md:hidden"
-        wide
-        label={t.controls.sort}
-        options={SORT_IDS.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
-        value={sort.id}
-        onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
-      />
 
       <div className="flex flex-col gap-1 pt-1">
         <LongestCase cases={[<CountLine key="a" view={view} shown={view.tracks.length} companies={view.companies.length} />, <CountLine key="b" view={view} shown={view.tracks.length - 1} companies={view.companies.length} />]}>

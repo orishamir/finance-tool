@@ -1,0 +1,53 @@
+{
+  "id": "BANK-49",
+  "title": "One Zero: breaking its deposits and its monthly savings plan",
+  "title_he": "וואן זירו: שבירת הפיקדונות ותוכנית החיסכון החודשית",
+  "text_he": "בטבלת התנאים של וואן זירו, את ״חיסכון יומי״ אפשר לשבור בכל יום עסקים בלי קנס. את ״חיסכון חודשי״ ואת שני החיסכונות השנתיים אפשר לשבור עם קנס: ״הלקוח מקבל 10% מהריבית הצבורה עד למועד השבירה בפועל״. בתנאים של החיסכון החודשי השבירה תלויה בהחלטת הבנק, והיא סוגרת את החיסכון. הטבלה לא אומרת מה קורה בשבירה לסכום שהופקד, ואת התנאים של החיסכונות השנתיים האתר לא קרא.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-09",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-09",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "one-zero",
+      "name_he": "וואן זירו"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf#page=2",
+      "title": "ONE ZERO: חיסכון חודשי, תנאי הפיקדון v11",
+      "title_he": "וואן זירו: חיסכון חודשי, תנאי הפיקדון (גרסה 11)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, s.8.1, s.8.3",
+      "locator_he": "עמוד 2, סעיף 8.1, סעיף 8.3",
+      "page": 2,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO: פיקדונות, טבלת תנאי הפיקדונות",
+      "title_he": "וואן זירו: פיקדונות, טבלת תנאי הפיקדונות",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "אפשרות לשבירת החיסכון",
+      "checked": "2026-11-09"
+    }
+  ],
+  "derived_from": [
+    "BANK-06",
+    "BANK-14",
+    "BANK-28"
+  ]
+}

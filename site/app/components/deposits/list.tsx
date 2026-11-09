@@ -210,12 +210,12 @@ function tableRow(row: DbRow, bank: DbBank | undefined, part: ListPart, all: boo
   };
 }
 
-export function DepositList({ parts, all, sort, sortable, onSort, banks, lit, limit }: { parts: ListPart[]; all: boolean; sort: SortState; sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; banks: DbBank[]; /** The bank whose rows light for a moment. */ lit: string | null; /** The rows drawn (a row of several offers counts once). */ limit: number }) {
+export function DepositList({ parts, all, sort, sortable, onSort, banks, lit, limit, count }: { parts: ListPart[]; all: boolean; /** The offers the amount opens, beside the first column's head ("הבנק והפיקדון (24)"). */ count: number; sort: SortState; sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; banks: DbBank[]; /** The bank whose rows light for a moment. */ lit: string | null; /** The rows drawn (a row of several offers counts once). */ limit: number }) {
   const state = (id: SortId) => (sort.id === id ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string) => (sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} /> : <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>);
   const plain = (label: string) => <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>;
   const columns: ProductColumn[] = [
-    { id: "name", head: head("bank", all ? t.columns.deposit : t.columns.bank), sort: sortable.has("bank") ? state("bank") : undefined },
+    { id: "name", head: head("bank", `${all ? t.columns.deposit : t.columns.bank} (${fmt.number(count)})`), sort: sortable.has("bank") ? state("bank") : undefined },
     ...(all ? [{ id: "term", head: head("term", t.columns.term), width: 7, sort: state("term") }] : []),
     {
       id: "rate",

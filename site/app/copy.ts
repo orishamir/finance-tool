@@ -1181,6 +1181,8 @@ export const trackBrowser = {
     noKinds: "הרשות לא מסווגת את המסלולים של המוצר הזה לפי סוג ההשקעה.",
     sort: "מיון",
   },
+  /** The phone's folded controls: "קרן השתלמות · מניות · מיון לפי דמי ניהול". */
+  fold: { kindAll: "כל סוגי ההשקעה", sort: "מיון לפי ", more: "שינוי", less: "סגירה" },
   /** The count line over the list: "143 מסלולים של 12 חברות (מתוך 143) · דמי ניהול מהחיסכון: מ־0.10% עד 0.90%"; the guide link is under the products. */
   count: {
     tracksNone: "אין מסלולים",
