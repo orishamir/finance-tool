@@ -143,7 +143,7 @@ export function trackingBeyondFeesRange(years: readonly GapYear[], fees: number)
 }
 
 export interface RatePoint {
-  /** The month's last reference day, YYYY-MM-DD. */
+  /** The month end, YYYY-MM-DD, as the series dates it. */
   date: string;
   /** Shekels per one dollar on that day (F-84's cross rate). */
   rate: number;
@@ -167,18 +167,25 @@ export function yearlyChanges(points: readonly RatePoint[]): { year: number; pct
  * F-93 (b) The average yearly change over every stretch of `years` whole years that starts at a month end: `(r_{t+12H} / r_t)^(1/H) − 1`,
  * in percent; the lowest, the highest and how many stretches. Null when the series is shorter than one stretch.
  */
-export function stretchRange(points: readonly RatePoint[], years: number): { low: number; high: number; count: number; from: string; to: string } | null {
+export function stretchRange<P extends RatePoint>(points: readonly P[], years: number): { low: number; high: number; count: number; from: string; to: string; lowAt: Stretch<P>; highAt: Stretch<P> } | null {
   const h = Math.round(years);
   if (h < 1) return null;
   const k = 12 * h;
-  let low = Infinity, high = -Infinity, count = 0;
+  let low = Infinity, high = -Infinity, count = 0, lowI = 0, highI = 0;
   for (let i = 0; i + k < points.length; i++) {
     const c = (Math.pow(points[i + k]!.rate / points[i]!.rate, 1 / h) - 1) * 100;
-    low = Math.min(low, c);
-    high = Math.max(high, c);
+    if (c < low) [low, lowI] = [c, i];
+    if (c > high) [high, highI] = [c, i];
     count++;
   }
-  return count === 0 ? null : { low, high, count, from: points[0]!.date, to: points[points.length - 1]!.date };
+  const at = (i: number): Stretch<P> => ({ start: points[i]!, end: points[i + k]! });
+  return count === 0 ? null : { low, high, count, from: points[0]!.date, to: points[points.length - 1]!.date, lowAt: at(lowI), highAt: at(highI) };
+}
+
+/** The month ends a stretch's change is measured between: `r_t` and `r_{t+12H}`. */
+export interface Stretch<P extends RatePoint = RatePoint> {
+  start: P;
+  end: P;
 }
 
 export interface KindFund {

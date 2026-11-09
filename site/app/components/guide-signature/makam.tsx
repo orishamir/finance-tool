@@ -227,8 +227,8 @@ export function MakamVisual({ data, today }: VisualProps) {
         {depositLo && depositHi && depositCount && noExit && (
           <p>
             {copy.makam.altDeposit.before}{" "}
-            <span dir="ltr" className="inline-block">
-              <Num value={depositLo} />–<Num value={depositHi} />
+            <span className="inline-block">
+              <Num value={depositLo} /> {copy.common.rangeTo} <Num value={depositHi} />
             </span>{" "}
             {Number(noExit.value) === Number(depositCount.value) ? (
               copy.makam.altDeposit.all

@@ -13,7 +13,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          הלוואה שנותנים למדינה, וקונים ומוכרים אותה <Term prefix="ב" id="בורסה">בורסה</Term>. המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> במועד <Term prefix="ה" id="פדיון">פדיון</Term>, ובדרך משלמת <Term id="קופון">קופון</Term>: <Term id="ריבית">ריבית</Term> במועדים קבועים.
+          המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> במועד <Term prefix="ה" id="פדיון">פדיון</Term>, ובדרך משלמת <Term id="קופון">קופון</Term>: <Term id="ריבית">ריבית</Term> במועדים קבועים.
         </p>
         <Sentence measure>
           יש שלושה סוגים עיקריים. <Term id={'אג"ח בריבית קבועה'}>בריבית קבועה</Term>: <Term id="לא צמוד">לא צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>, עם קופון קבוע שמשולם פעם בשנה <RuleRef id="GOV-13" end="." /> <Term id={'אג"ח ממשלתית צמודה'}>צמודה למדד</Term>: הקרן והריבית עולות ויורדות עם <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>. <Term id={'אג"ח בריבית משתנה'}>בריבית משתנה</Term>: לא צמודה, והריבית מתעדכנת כל {floatingEvery ? <Num value={floatingEvery} /> : null} חודשים לפי תשואת <Term prefix="ה" id={'מק"מ'}>מק״מ</Term>, בלי <Term id="מרווח">מרווח</Term> ובלי רצפה <RuleRef id="GOV-14" end="." />
@@ -34,7 +34,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          המנפיקה היא המדינה, דרך יחידת ניהול החוב הממשלתי במשרד האוצר, במכרזים שבועיים. אתם קונים דרך חשבון ניירות ערך בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, בבורסה בתל אביב, שבפיקוח <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>.
+          המנפיקה היא המדינה, דרך יחידת ניהול החוב הממשלתי במשרד האוצר, במכרזים שבועיים. אתם קונים דרך חשבון ניירות ערך בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, <Term prefix="ב" id="בורסה">בורסה</Term> בתל אביב, שבפיקוח <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>.
         </p>
         <Sentence measure>
           בבורסה, במסחר הרציף, פקודה היא של {minOrder ? <Num value={minOrder} display={fmt.nisWhole(Number(minOrder.value))} /> : null} לפחות. בשלבים אחרים של יום המסחר, כמו לפני הפתיחה ולפני הנעילה, אפשר גם יחידת מסחר אחת, {unit ? <Num value={unit} display={fmt.nisWhole(Number(unit.value))} /> : null} שווי נקוב. הבנק או בית ההשקעות יכולים לקבוע בתעריפון מינימום משלהם.

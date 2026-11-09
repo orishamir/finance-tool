@@ -2,6 +2,7 @@
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
 import { buyWithCash, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
 import { RecordInputError, ruleBook } from "../resolver.ts";
@@ -22,7 +23,18 @@ export interface Fund {
     | "tase-foreign-fund"
     | "foreign-fund";
   /** F-10 drag, annual fractions: A-06 fixed fee, A-09 variable fee, trustee, A-07 tracking, A-11 withholding. */
-  drag?: { management?: number; variable?: number; trustee?: number; tracking?: number; foreignWithholding?: number };
+  drag?: {
+    management?: number;
+    variable?: number;
+    trustee?: number;
+    tracking?: number;
+    foreignWithholding?: number;
+    /**
+     * A-11 by F-107, for an Irish fund that holds the index's US shares: their dividend yield and their share of the index, as fractions.
+     * The run reads TXF-16's rate and adds the product to the drag; `foreignWithholding`, where the record holds one, replaces it.
+     */
+    usDividends?: { yield: number; weight: number };
+  };
   /** A-08 half-spread on exchange trades. */
   halfSpread?: number;
   /** A-10 distribution yield and payments a year; none for an accumulating fund. */
@@ -241,7 +253,15 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const annual = market.returnIn === "instrument" ? (1 + market.grossReturn) * (1 + (market.fxChange ?? 0)) - 1 : market.grossReturn;
   const g = annualToMonthly(annual);
   const d = fund.drag ?? {};
-  const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + (d.foreignWithholding ?? 0);
+  // A-11: the record's figure, else F-107 for an Irish fund that holds US shares (TXF-16's rate on their dividends)
+  let withheld = d.foreignWithholding ?? 0;
+  if (d.foreignWithholding === undefined && d.usDividends) {
+    withheld = irishFundUsWithholding(book.rate("TXF-16", "irish_fund_us_dividend_treaty_rate"), d.usDividends.yield, d.usDividends.weight);
+    formulas.push("F-107");
+    // whether the fund obtains the treaty rate (its limitation-on-benefits article) is TXF open question 7 (method G-33)
+    tally.flag("TXF-OQ7");
+  }
+  const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + withheld;
   const spread = fund.halfSpread ?? 0;
   if (spread > 0) book.cite("ETF-06");
 

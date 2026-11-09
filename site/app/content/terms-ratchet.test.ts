@@ -331,7 +331,7 @@ const OWN_SUBJECT: Record<string, readonly string[]> = {
   "guide/mutual-funds": ["קרן נאמנות"],
   "guide/pension-comprehensive": ["קרן חדשה מקיפה"],
   "guide/provident-for-annuity": ["תגמולים ואישית לפיצויים"],
-  "guide/savings-plan": ["תכנית חיסכון"],
+  "guide/savings-plan": ["תוכנית חיסכון"],
   "exposure/general-track": ["מסלול כללי"],
   "exposure/index-sp500": ["S&P 500"],
 };
@@ -476,7 +476,7 @@ const visualText = (file: string): string => {
   // the names of a figure's inputs (`{ [copy.x.y]: value }`) and an entered value's `about` (its fourth argument) are its sheet too
   // (independent check, 2026-11-07: 17 of the 31 leftovers were input names such as "האינפלציה שהאתר מניח")
   src = src.replace(/\[\s*(?:copy(?:\.[\w$]+)+|`[^`]*`)\s*\]\s*:/g, blankOut);
-  // and so are the names of a gap's two figures (`differenceOf([copy.x.y, a], [copy.x.y, b], …)`, lib/value.ts; 2026-11-08)
+  // and so are the names of a gap's two figures (`differenceOf([copy.x.y, a], [copy.x.y, b], …)`, lib/value.ts)
   src = src.replace(/(differenceOf\(\s*\[)(\s*copy(?:\.[\w$]+)+)([^\]]*\]\s*,\s*\[)(\s*copy(?:\.[\w$]+)+)/g, (_m, a: string, n1: string, b: string, n2: string) => a + blankOut(n1) + b + blankOut(n2));
   // (`typed`, the visuals' own entered value, a field's: 2026-11-08)
   src = src.replace(/(\b(?:enteredValue|typed)\([^()]*?,[^()]*?,[^()]*?,\s*)copy(?:\.[\w$]+)+(?=\s*\))/g, (_m, head: string) => head + " ");

@@ -6,7 +6,7 @@ import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, ty
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
 import { shortName } from "./providers";
-import { guideBlocks, guideSignature, r4catalogue } from "../copy";
+import { guideBlocks, guideSignature, r4catalogue, signatureFacts } from "../copy";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
@@ -14,8 +14,8 @@ import { breakFact, breakInput, buildSignatureData } from "./guide-signature.ser
 import { loadDepositTerms } from "./instruments.server";
 import { loadInstitutionRegistry } from "./institutions.server";
 import { exitWords } from "./deposit-kind";
-import type { BreakTerms, SignatureData } from "./guide-signature";
-import { cmaFeeValue, computed, ownBy, ruleFigure, weaker, type SiteValue, type Strength } from "./value";
+import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
+import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
 
 export interface GuidePageData {
@@ -216,7 +216,11 @@ function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
     })
     .sort((a, b) => (a.value as number) - (b.value as number));
   if (reported.length < 2) return null;
-  return { low: reported[0]!, high: reported.at(-1)!, tracks: computed(reported.length, "count", "F-64", {}, { today: t, about: "כמה מסלולים, בלי מסלולים בניהול אישי, דיווחה הרשות בתקופה האחרונה עם דמי ניהול" }) };
+  // the count rests on the regulator's monthly file the fees come from: its month, with the file's link and the day it was read
+  const cma = loadCma();
+  const file = cma.files.find((f) => f.source.url === reported[0]!.source.url);
+  const report: SiteValue = file ? { ...cma.periodValue, value: file.period, source: file.source, checked: file.checked, effective_from: null, stale: staleCma(file.period, t) } : cma.periodValue;
+  return { low: reported[0]!, high: reported.at(-1)!, tracks: computed(reported.length, "count", "F-64", { [signatureFacts.cmaFile]: report }, { today: t, about: signatureFacts.trackCount }) };
 }
 
 export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {
@@ -275,7 +279,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     bundle = r.bundle;
   } else console.log(`[guide] ${id}: no timeline: no run for this wrapper`);
   const signature = buildSignatureData(id, bundle);
-  const initial = bundle ? runTimeline(bundle, { entered: {}, age: null }) : null;
+  const initial = bundle ? runTimeline(bundle, { entered: lumpSumIds.includes(id) ? { ...lumpSumEntered } : {}, age: null }) : null;
   if (initial?.kind === "failed") console.log(`[guide] ${id}: the first run stops (${initial.message})`);
 
   // ---- rules the page cites: the record's, the run's, the content's

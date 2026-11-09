@@ -47,7 +47,7 @@ describe("the sheet", () => {
   it("an out-of-context figure keeps the amber block", () => {
     expect(sheet(fee())).toContain("לפי החברה");
   });
-  // founder, 2026-11-08: each input opens its own sheet with its source, so a computed figure's sheet prints none under its inputs
+  // each input opens its own sheet with its source, so a computed figure's sheet prints none under its inputs
   it("names no input's source: each input is a figure that opens its own sheet", () => {
     const other = fee({ own: "הראל", source: { url: "https://example.org/other.pdf", title: "מסמך אחר", publisher: "הראל", strength: "institution" } });
     const html = sheet(computed(0.37, "pct_per_year", "F-92", { a: fee({ own: "הראל" }), b: other }, { today: "2026-11-07", lead: "מה המספר אומר", signed: true }));

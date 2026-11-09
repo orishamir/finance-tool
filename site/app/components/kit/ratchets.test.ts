@@ -326,7 +326,6 @@ describe("ratchet: process words in what a reader sees", () => {
 const IN_ANOTHER_SENSE = new Set(["מחירון", "תעריף", "פתוח", "נעילה", "מההפקדות", "מצבירה", "מהצבירה", "טרם"]);
 const REPLACED_LEFT: Record<string, number> = {
   "site/app/copy.ts": 3,
-  "site/app/content/guide/provident-for-annuity.tsx": 1,
 };
 const replacedWords = (md: string): string[] => {
   const table = md.split("### 10.3")[1]?.split("### 10.4")[0] ?? "";

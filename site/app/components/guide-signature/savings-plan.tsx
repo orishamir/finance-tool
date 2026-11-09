@@ -149,9 +149,9 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         <p>
           {copy.plan.lockLine.before} <Num value={termFact} display={fmt.months(term)} /> {copy.plan.lockLine.middle} <Num value={rate} /> {copy.plan.lockLine.after}
         </p>
-        {lumpTerm && lumpRate && lastUnlock && (
+        {lumpTerm && lumpRate && (
           <p>
-            {copy.plan.alt.before}{lumpRate.own && <> {copy.plan.alt.ofBank} <bdi>{lumpRate.own}</bdi></>} {copy.plan.alt.forTerm} <Num value={lumpTerm} display={fmt.months(Number(lumpTerm.value))} /> ({copy.plan.alt.rate} <Num value={lumpRate} />) {copy.plan.alt.middle} <Num value={lastUnlock} />.
+            {copy.plan.alt.before}{lumpRate.own && <> {copy.plan.alt.ofBank} <bdi>{lumpRate.own}</bdi></>} {copy.plan.alt.forTerm} <Num value={lumpTerm} display={fmt.months(Number(lumpTerm.value))} /> ({copy.plan.alt.rate} <Num value={lumpRate} />) {copy.plan.alt.middle}
           </p>
         )}
         <p className="text-muted-foreground">{copy.plan.onlyCollected}</p>

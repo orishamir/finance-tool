@@ -3,6 +3,7 @@ export * from "./formulas/account-interest.ts";
 export * from "./formulas/track-exposure.ts";
 export * from "./formulas/track-groups.ts";
 export * from "./formulas/fund-gap.ts";
+export * from "./formulas/fund-withholding.ts";
 export * from "./formulas/study-story.ts";
 export * from "./formulas/step-effect.ts";
 export * from "./formulas/fees.ts";

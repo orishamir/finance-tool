@@ -3,6 +3,16 @@ import { z } from "zod";
 
 export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "date must be YYYY-MM-DD");
 
+/**
+ * The calendar date in Israel, `YYYY-MM-DD`, whatever the machine's clock zone: `toISOString().slice(0, 10)` is the UTC date, a day behind
+ * Israel's for two or three hours after midnight, and GitHub's runners keep UTC. The run date of the pipeline, the data check and the site
+ * build. The same function for the tools is tools/israel-date.mjs.
+ */
+export function israelToday(now: Date = new Date()): string {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Jerusalem", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now).map((p) => [p.type, p.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
 /** data-schema §2, units. */
 export const unit = z.enum([
   "nis",

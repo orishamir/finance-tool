@@ -29,9 +29,8 @@ one and specifies every component.
 What goes on a page is his call. When he asks for a change, build it this way:
 
 - **Every field and control changes something the reader can see.** A field
-  that changes nothing on the page is left out, however correct it is. This
-  has happened (a tax credit points field, an account fee that changed no
-  figure), and `site/app/lib/fees-dead-ends.test.ts` guards it.
+  that changes nothing on the page is left out, however correct it is;
+  `site/app/lib/fees-dead-ends.test.ts` guards it.
 - **Fast.** A slider or field answers in under 100 ms; work that takes longer
   waits until the hand rests. Measure it.
 - **Little movement.** When a number changes, the page shifts as little as it

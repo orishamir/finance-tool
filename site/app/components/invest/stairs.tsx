@@ -306,8 +306,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       </div>
     );
   };
-  // each list takes its own height: held at the tallest list any step could bring, the card kept up to 340 px blank under the lists
-  // (founder, 2026-11-08: "remove unused space ... resize the container"); the card still holds the tallest it has been (useHeldHeight)
+  // each list takes its own height, not the tallest any step could bring, which would leave up to 340 px blank under the lists; the card
+  // still holds the tallest it has been (useHeldHeight)
   const heldLane = (lane: Lane) => laneBlock(lane);
 
   // ---------------------------------------------------------------- what is true where the climb stopped

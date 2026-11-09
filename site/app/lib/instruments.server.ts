@@ -366,7 +366,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   if (kind !== "money-market-renewable") {
     const drag: NonNullable<Fund["drag"]> = {};
     const notCollected: string[] = [];
-    const take = (field: keyof FundRecord["fees"], key: keyof typeof drag, label: string) => {
+    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends">, label: string) => {
       const v = rec.fees[field];
       if (!v || v.value === null) {
         if (!feeAbsent(rec, field)) notCollected.push(field);
@@ -381,6 +381,10 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     take("trustee", "trustee", "fundTrustee");
     take("tracking_difference_12m", "tracking", "fundTracking");
     take("fund_level_withholding_drag", "foreignWithholding", "fundWithholding");
+    // A-11 by F-107 is read where the exposure is (fundOf, the indices page): an Irish fund that holds the shares, with no figure of its own
+    // and no published 12-month gap, is not run here at A-11 = 0
+    if (rec.domicile.toUpperCase() === "IE" && rec.replication?.method === "physical" && drag.foreignWithholding === undefined && drag.tracking === undefined)
+      missing.push(`${wrapperId}: fund "${rec.id}" is Irish and holds its index's shares; the guides do not compute F-107 (A-11)`);
     // F-92 (b), pass 6: the variable fee counted forward as the invest page's engine counts it (fundOf), the mean charged in the years at
     // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it
     const exposure = (rec as { exposure_id?: string }).exposure_id;

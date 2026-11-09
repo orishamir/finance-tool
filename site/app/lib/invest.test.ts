@@ -249,6 +249,7 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
   it("the pair: the same value left as the list, the account's lines, the fund's fee and the tax", () => {
     expect(num(pc.left)).toBeCloseTo(w.valueN, 6);
     expect(num(pc.paidIn)).toBeCloseTo(6000 + 400 * 240, 6);
+    expect(pc.paidIn.computed_from!.formula).toBe("F-106");
     expect(pc.account.length).toBeGreaterThan(0);
     expect(num(pc.tax)).toBeGreaterThan(0);
     expect(num(pc.fund)).toBeGreaterThanOrEqual(0);
@@ -405,7 +406,7 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
   });
 });
 
-describe("what each figure's sheet lists (founder, 2026-11-08: \"make sure the chip displayed is correct\")", () => {
+describe("what each figure's sheet lists", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
   const inputs = (v: SiteValue) => v.computed_from!.inputs as Record<string, SiteValue>;
   const abroad = view.options.find((o) => o.id === "abroad")!;
@@ -421,6 +422,24 @@ describe("what each figure's sheet lists (founder, 2026-11-08: \"make sure the c
     expect(inputs(abroad.bestCell!.cost!)[dollar]).toBeDefined();
     expect(inputs(israeli.best!.value)[dollar]).toBeUndefined();
     expect(inputs(israeli.best!.value)[words.pair.fundInputs.payout]).toBeUndefined();
+  });
+
+  it("an Irish fund that holds the US shares lists the US tax on their dividends (F-107, A-11); a swap fund and an Israeli fund list none", () => {
+    const tax = inputs(irish.best!.value)[words.pair.fundInputs.usWithholding]!;
+    expect(tax.computed_from!.formula).toBe("F-107");
+    // whether the fund obtains the treaty rate is open (TXF OQ7): the figure and the value it costs both say so
+    expect(tax.flags).toContain("TXF-OQ7");
+    expect(irish.best!.value.flags).toContain("TXF-OQ7");
+    const of = inputs(tax);
+    expect(of[words.pair.fundInputs.usRate]!.value).toBe(15);
+    expect(of[words.pair.fundInputs.usYield]!.value).toBe(bundle.exposures.find((e) => e.id === "index-sp500")!.us_dividends!.yield.value);
+    // the S&P 500 is made of US companies: no weight to list
+    expect(of[words.pair.fundInputs.usWeight]).toBeUndefined();
+    expect(tax.value).toBeCloseTo(0.15 * (of[words.pair.fundInputs.usYield]!.value as number), 3);
+    const swap = view.options.flatMap((o) => o.funds).find((f) => f.best && f.rec.domicile === "IE" && f.rec.replication?.method === "swap");
+    expect(swap).toBeDefined();
+    expect(inputs(swap!.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
+    expect(inputs(israeli.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
   });
 
   it("A-07 from a report that prints no fees charged lists the fees listed today, which F-92 (b) measures those years against", () => {

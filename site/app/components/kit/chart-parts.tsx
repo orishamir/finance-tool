@@ -46,8 +46,8 @@ export interface LegendItem {
  * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps.
  */
 export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
-  // a group's name ("הקרן:") goes on one line with its first item: in a narrow legend it ended a line apart from its items, and read as the
-  // last item of the group before it (indices page at 390 px, 2026-11-08)
+  // a group's name ("הקרן:") goes on one line with its first item: in a narrow legend, left at a line's end apart from its items, it would
+  // read as the last item of the group before it
   const rows: { head?: LegendItem; it: LegendItem }[] = [];
   for (let i = 0; i < items.length; i++) {
     const it = items[i]!;

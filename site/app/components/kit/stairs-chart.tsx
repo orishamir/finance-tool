@@ -97,7 +97,7 @@ export function StairsChart({
   const compact = W < 860;
   const H = compact ? 300 : 340;
   const { lo, hi } = axis;
-  // no value axis: every column carries its amount, and up to about twelve marks the amounts replace the axis (charts.md, 2026-11-08)
+  // no value axis: every column carries its amount, and up to about twelve marks the amounts replace the axis (charts.md)
   const m = compact ? { l: 6, r: 6, t: 40, b: 6 } : { l: W * STAIRS_MARGIN.left, r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
   const cw = (W - m.l - m.r) / STAIRS_SLOTS;
   const y = (v: number) => m.t + (1 - (v - lo) / (hi - lo || 1)) * (H - m.t - m.b);

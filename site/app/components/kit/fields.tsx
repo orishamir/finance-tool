@@ -397,7 +397,7 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
 }
 
 /** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */
-export function SelectField({ label, options, value, onChange, none, help, mark, wide, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; /** A `HelpMark` after the label, outside it, so the field's spoken name stays the label alone: what the choice does, said once in its "?" (founder, 2026-11-08). */ mark?: ReactNode; /** The list fills the width, as a text field beside it does (a phone's controls over a list). */ wide?: boolean; className?: string }) {
+export function SelectField({ label, options, value, onChange, none, help, mark, wide, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; /** A `HelpMark` after the label, outside it, so the field's spoken name stays the label alone: what the choice does, said once in its "?". */ mark?: ReactNode; /** The list fills the width, as a text field beside it does (a phone's controls over a list). */ wide?: boolean; className?: string }) {
   const id = useId();
   return (
     <div className={cx("flex flex-col gap-1", wide ? null : "max-w-measure", className)}>

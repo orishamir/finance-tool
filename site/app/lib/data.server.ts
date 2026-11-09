@@ -4,6 +4,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
   cmaPeriodFile,
+  israelToday,
   dimensionId,
   dimensionRecord,
   feesSnapshot,
@@ -41,9 +42,9 @@ function findRoot(): string {
 
 export const root = findRoot();
 
-/** The run date (D3, architecture 3.4: the engine never reads a clock; the site passes the date in). */
+/** The run date (D3, architecture 3.4: the engine never reads a clock; the site passes the date in), on Israel's calendar. */
 export function today(): string {
-  return new Date().toISOString().slice(0, 10);
+  return israelToday();
 }
 
 /** The newest `checked` date on any record under data/ (audit 2026-10-24, A29): what "data as of" in the footer says. */

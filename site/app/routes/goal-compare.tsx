@@ -452,7 +452,7 @@ function FallEcho({ ctx }: { ctx: ResultCtx }) {
   if (!fall || fall <= 0 || start <= 0) return null;
   const drop = (start * Math.min(fall, 100)) / 100;
   // F-71 over the amount compared today, the amount now less what stays available, and the fall the person accepts (A-29): no deposit,
-  // years, inflation or return moves either (founder, 2026-11-08: a figure lists only what it uses)
+  // years, inflation or return moves either
   const fallV = entered(fall, "pct", isoToday(), r2.result.fallBand);
   const startV = g.available > 0 ? differenceOf([ci.amountNow, mk.goal.amountNow], [ci.names.keep!, mk.goal.available], "F-71", { today: ctx.bundle.runDate, about: r2.result.fallBand }) : mk.goal.amountNow;
   const dropInputs = { [ci.amountNow]: mk.goal.amountNow, ...(g.available > 0 ? { [ci.names.keep!]: mk.goal.available } : {}), [r2.result.fallBand]: fallV };

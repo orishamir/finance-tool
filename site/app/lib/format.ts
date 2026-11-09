@@ -5,6 +5,7 @@ const he = "he-IL";
 const currency = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const currencyWhole = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", maximumFractionDigits: 0 });
 const dollars = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const dollarsWhole = new Intl.NumberFormat(he, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 const euros = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pounds = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 // a price per share is a fraction of a cent (0.0035 $): up to four decimals
@@ -12,6 +13,8 @@ const dollarsFine = new Intl.NumberFormat(he, { style: "currency", currency: "US
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
 const plain = new Intl.NumberFormat(he, { maximumFractionDigits: 2 });
+/** An ECB reference rate, to the four decimals the ECB publishes it with. */
+const ecbRate = new Intl.NumberFormat(he, { maximumFractionDigits: 4 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
 const compactFormat = (v: number) => withMinus(compactNumber.format(v));
 const date = new Intl.DateTimeFormat(he, { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -80,6 +83,8 @@ export const fmt = {
   nisWhole: (v: number) => withMinus(plainMarks(currencyWhole.format(v))),
   /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (2026-11-04: until then a bare "2"). */
   usd: (v: number) => withMinus(plainMarks(dollars.format(v))),
+  /** `60,000 $`: a whole amount a law sets in dollars, with no cents. */
+  usdWhole: (v: number) => withMinus(plainMarks(dollarsWhole.format(v))),
   /** `25.00 €` and `5.00 £`: a bound a price list prints in euros or pounds, for trades abroad (2026-11-05: until then a bare "25"). */
   eur: (v: number) => withMinus(plainMarks(euros.format(v))),
   gbp: (v: number) => withMinus(plainMarks(pounds.format(v))),
@@ -192,6 +197,8 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return `${fmt.number(value)} ${numbers.nisMillions}`;
     case "nis_per_usd":
       return `${fmt.number(value * 100)} ${numbers.agorotPerDollar}`;
+    case "fx_per_eur":
+      return withMinus(ecbRate.format(value));
     case "pct":
     case "pct_per_year":
     case "pct_of_deposit":

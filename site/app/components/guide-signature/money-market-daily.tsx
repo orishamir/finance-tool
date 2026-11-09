@@ -59,8 +59,9 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                 key="rate"
                 value={
                   r.range ? (
-                    <span dir="ltr" className="inline-block">
-                      <Num value={r.range.lo} />–<Num value={r.rate} />
+                    // a range may wrap at "עד": at 320 px "1.55% עד 2.25%" is wider than its cell, and the figure's slot does not break
+                    <span className="inline-block whitespace-normal">
+                      <Num value={r.range.lo} /> {copy.common.rangeTo} <Num value={r.rate} />
                     </span>
                   ) : (
                     <Num value={r.rate} />

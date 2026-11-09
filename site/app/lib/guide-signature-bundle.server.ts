@@ -271,6 +271,43 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
   return rows.sort((a, b) => a.gain - b.gain);
 }
 
+/**
+ * What a count of houses priced on their own documents rests on (F-80): each house by name, with the title of the document the site
+ * read for it, its link and the day it was read; a house priced on more documents (a provident manager's bylaws cap, A-19) lists each
+ * after the first under its name. The house's own documents about its own product (D31).
+ */
+export function documentInputs(rows: readonly { id: string; name: string; source: { url: string; title: string }; checked: string; more?: readonly { url: string; title: string }[] }[]): Record<string, SiteValue> {
+  const doc = (r: (typeof rows)[number], d: { url: string; title: string }): SiteValue =>
+    ownBy({ value: d.title, unit: "text", source: { url: d.url, title: d.title, publisher: r.name, strength: "institution" }, checked: r.checked, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced" } as SiteValue, r.name);
+  return Object.fromEntries(
+    rows.flatMap((r) => {
+      const name = shortName(r.id, r.name);
+      const more = r.more ?? [];
+      return [[name, doc(r, r.source)], ...more.map((d, i) => [guideBlocks.terms.pick.moreDocument(name, more.length > 1 ? i + 1 : null), doc(r, d)] as const)];
+    }),
+  );
+}
+
+/**
+ * The documents a fee record's lines for one product cite beyond its own price list (a line's discount length or the cap it reverts to,
+ * cited from the bylaws), each once by its link, titled without the clause the line points at. Lines for the house's other products are
+ * not read: their documents do not price this one.
+ */
+export function citedDocuments(lines: readonly { applies_to: readonly string[] }[], own: string, product: string): { url: string; title: string }[] {
+  const out = new Map<string, string>();
+  const walk = (x: unknown) => {
+    if (Array.isArray(x)) x.forEach(walk);
+    else if (x && typeof x === "object") {
+      const o = x as Record<string, unknown>;
+      const s = o.source as { url?: unknown; title?: unknown } | undefined;
+      if (s && typeof s.url === "string" && typeof s.title === "string" && s.url !== own && !out.has(s.url)) out.set(s.url, s.title.replace(/,\s*(?:סעיף|סעיפים|עמוד)\s.*$/, ""));
+      Object.values(o).forEach(walk);
+    }
+  };
+  walk(lines.filter((l) => l.applies_to.includes(product)));
+  return [...out].map(([url, title]) => ({ url, title }));
+}
+
 /** A deposit's 447 break column as a sourced value: `not_allowed`, `with_penalty` or `none`, with the bank's words in its notes. */
 export function breakFact(rec: DepositTerms): SiteValue {
   const b = rec.break;
@@ -284,7 +321,7 @@ export function breakFact(rec: DepositTerms): SiteValue {
     update_rule: "provider-set",
     state: "sourced",
     rule_ids: b.rule_ids,
-    // the bank's own quoted words only: the rest is the collector's English note (2026-11-07)
+    // the bank's own quoted words only: the rest is the collector's English note
     notes: printedLine(b.mechanism_text),
   };
 }
@@ -344,7 +381,7 @@ export function guideInstrumentBundle(record: ProductRecord, family: InstrumentF
     const rows = accountRuns(record, family, p05, allRules, t);
     const best = rows.at(-1);
     if (best) {
-      const count = computed(rows.length, "count", "F-80", {}, { today: t, about: guideBlocks.terms.pick.accountCount });
+      const count = computed(rows.length, "count", "F-80", documentInputs(rows), { today: t, about: guideBlocks.terms.pick.accountCount });
       // F-80: every tariff within P-01 of the top is a tie, compared with the top; the page says so and crowns none
       const parameters = loadParameters();
       const others = rows.slice(0, -1).reverse().filter((r) => isTie(best.real, r.real, tieThreshold(parameters)));

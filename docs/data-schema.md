@@ -43,7 +43,7 @@ Field rules:
 | `source.title` | yes | document and section or page |
 | `source.publisher` | yes | who published it |
 | `source.strength` | yes | `primary`, `institution`, `secondary`, `open`, `entered` (below) |
-| `checked` | yes | date the source was read, `YYYY-MM-DD` |
+| `checked` | yes | date the source was read, `YYYY-MM-DD`, on Israel's calendar (`israelToday` in `packages/schema`, `tools/israel-date.mjs` for the tools), never the UTC date |
 | `effective_from` | yes | first date the value applies; `null` if unknown |
 | `effective_to` | yes | last date, or `null` while current; the engine refuses a value past this date (method §13) |
 | `tax_year` | when the value is a tax figure | the tax year it belongs to (TXG-01); optional and nullable in the schema |
@@ -269,6 +269,7 @@ A security, in the site's model, is what a person buys inside a wrapper and that
 - `one_line_he` (optional) is the one Hebrew line on what the money is invested in, shown under the page's h1 and on the guide list.
 - `constituents_israeli` (optional boolean, S5): `true` when the index is made of Israeli companies (TA-35, TA-90, TA-125), `false` when it is not (S&P 500, NASDAQ-100, MSCI World, MSCI ACWI). Left out for the cash and bond exposures and the general track, where the question has no meaning. The indices page reads it to decide which ways of owning the index exist (an Israeli index has only Israeli funds).
 - `other_currencies` (optional boolean): `true` when the index holds shares priced in currencies other than `currency` (MSCI World and ACWI: 23 or 47 countries, ETF-48). A fund that neutralises `currency` keeps the others, against it; the labels say so. Left out for a one-currency index.
+- `us_dividends` (optional, F-107): the index's US shares, as an Irish fund that holds them meets them. `yield` is a value object, the dividend yield of those shares in `pct_per_year`; `weight` (optional value object, `pct`) is their share of the index, left out when the index is made of US companies only. Both come from the index provider's own factsheet: the S&P 500's, or MSCI USA's yield with the country weights of MSCI World or ACWI. Left out where the provider prints no dividend yield (NASDAQ-100). The engine counts F-107 from it for an Irish fund that holds the shares (A-11).
 - `variants` lists the funds that have a `data/funds/` record; a `fund:<id>` entry must be the `id` of a record under `data/funds/` (validator). It is not the candidate set: for Israeli funds and foreign funds traded on TASE the workbench takes every fund in the latest list in `data/fund-lists/` that matches the exposure (§3.14, method F-65, product D17), and a fund with no record here is shown as not evaluated.
 
 ### 3.5 `data/funds/` — hand-collected fund details (dependency 6, N4)
@@ -290,7 +291,7 @@ One record per fund whose details have been collected. The set of Israeli funds 
     "trustee": null, "variable_management": null,
     "tracking_difference_12m": { "value": null, "unit": "pct_per_year", "...": "value object" },
     "median_spread": { "value": null, "unit": "pct_of_trade", "...": "value object" },
-    "fund_level_withholding_drag": { "value": 0.23, "unit": "pct_per_year", "state": "computed", "computed_from": { "formula": "A-11", "inputs": { "us_dividend_yield": "...", "us_ie_treaty_rate": "TXF-16" } } }
+    "fund_level_withholding_drag": null
   },
   "dimensions": { "foreign-withholding-domicile": "covered", "tax-during": "blocked:TXF-OQ1", "estate-situs": "covered:TXF-27" },
   "prospectus": { "url": "...", "date": "2025-..." },
@@ -300,6 +301,7 @@ One record per fund whose details have been collected. The set of Israeli funds 
 
 - **Schema.** `fundRecord` (strict). `id` is lowercase ASCII, digits and hyphens, without a prefix; an exposure's `variants` names the record as `fund:<id>`, and the file is `funds/<id>@<snapshot>.json`. `distribution_policy` is `accumulating`, `distributing` or `null`; `tax_status.il_fund_tax_track` is `exempt`, `taxable` or `null`; `tax_status.tase_foreign_fund_90pct_test` is a value object or `null`; `trading_currency_on_tase` and `prospectus.date` may be `null`. `dimensions` marks use the wrapper format (`covered`, `blocked:<OQ>`).
 - **Fees.** Each entry of `fees` is a value object, `null`, or left out. On a fund whose `domicile` is not `IL`, `fees.variable_management` and `fees.trustee` hold `null`: the fund does not have these lines, because they belong to Israeli fund law (ETF-14, MF-20), which does not apply to it (ETF-71). The site writes "אין". On any other field, or on an Israeli fund, a missing fee is not collected, and a value object with `value: null` always is; the site writes "לא נאסף".
+- **Withholding** (`fees.fund_level_withholding_drag`, A-11): the tax withheld inside the fund, in `pct_per_year`, where a document of the fund gives it; it replaces F-107. Left null, an Irish fund that holds its index's shares takes F-107 from its exposure's `us_dividends`.
 - **The load** (`fees.load`, optional, MF-21): the load on purchase (הוספה) as a value object in `pct_of_trade`, from the fund's own document, with the page in `source.url` (`#page=`) and the document's words in `source.title`; `update_rule` is `provider-set`, `rule_ids` holds `MF-21`. `0` means a document was read and says zero; left out means not read, so a missing value is never shown as zero. ETFs and foreign funds leave it out: they print no such line. It stands apart from `creation_redemption_fee_category`, a different cost paid by a different person, and from a distributor's commission, which is a tariff line. The reports state the load as a share of the unit price (`ממחיר היחידה`); `pct_of_trade` is the nearest unit. A load above zero fails the validator (§4 item 15) because the page does not price one yet. The redemption deduction (MF-22) has not been read and has no field.
 - **Distribution** (`distribution`, optional, A-10): `{ yield, per_year }`. `yield` is a value object in `pct_per_year` from the fund's own factsheet or the manager's page, with the document's words and date in `source.title` and `effective_from` the date the figure is as of; `update_rule` is `provider-set`. `per_year` is the payments a year the same source prints (1, 2, 3, 4, 6 or 12). The validator fails it on a fund that does not distribute. Left out, not estimated, when it was not read: a distributing fund without it has no price.
 - **How the fund is built** (S4), three optional fields, all left out when the record does not say:

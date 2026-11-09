@@ -232,7 +232,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     // S&P 500: net gaps and three funds whose index is of no stated kind
     expect(noteOf(sp)).toContain("מדד נטו");
     expect(noteOf(sp)).toContain("״לא מושווה״");
-    // why the shekels are not the gap is the shekel column's "?", said only where the list has a gap column (2026-11-08)
+    // why the shekels are not the gap is the shekel column's "?", said only where the list has a gap column
     expect(invest.funds.diffHelp(true, true)).toContain("לא נספרת כרווח");
     expect(invest.funds.diffHelp(true, false)).not.toContain("לא נספרת כרווח");
     // TA-125: every gap against the gross index, nothing "not compared", so no sentence for it
@@ -260,13 +260,13 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a fund in Tel Aviv and abroad: each of its rows names the other, and the group's head counts nothing (founder, 2026-11-08)", () => {
+  it("a fund in Tel Aviv and abroad: each of its rows names the other, and the group's head counts nothing", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
     const out = html(createElement(FundColumn, { view: sp, bundle, plan, today: t, pick: pickOfHeadline(sp)!, onPick: () => undefined, filter: null, onFilter: () => undefined })).replace(/<!-- -->/g, "");
-    // the head counts nothing: it names the group and what all its funds share (founder, 2026-11-08: "remove the fund count")
+    // the head counts nothing: it names the group and what all its funds share
     expect(out).toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.allOf}`);
     expect(out).not.toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.groupCount(distinct)}`);
     expect(out).not.toContain("בשתי שורות");

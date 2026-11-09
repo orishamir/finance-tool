@@ -22,7 +22,7 @@ export function useHeldHeight<T extends HTMLElement>(key: string) {
       }
     };
     // a fresh hold waits a frame: the first layout comes before a child measures itself (a chart drawn at its default width, scaled to the
-    // card's), and holding it left 106 px blank under the steps chart (founder, 2026-11-08: "remove unused space in the bottom of the charts")
+    // card's), and holding that would leave a blank under the chart
     if (!fresh) return hold();
     const frame = requestAnimationFrame(hold);
     return () => cancelAnimationFrame(frame);

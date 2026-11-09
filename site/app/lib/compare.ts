@@ -347,7 +347,7 @@ export const fundCostKeys = ["fundManagement", "fundVariable", "fundTrustee"] as
 /**
  * A fund's own cost lines added up as a run takes them, % a year (F-10's δ: the management, variable and trustee fees, and where the run
  * reads them the tracking gap and the foreign withholding), each line an input in the reader's words. Undefined when no line is stated.
- * One helper for every page that shows the sum, so none labels it with another formula (founder, 2026-11-08: the chip said A-06).
+ * One helper for every page that shows the sum, so none labels it with another formula.
  */
 export function fundCostOf(feeValues: Record<string, SiteValue>, keys: readonly string[], about: string, today: string): SiteValue | undefined {
   const parts = keys.filter((k) => typeof feeValues[k]?.value === "number");
@@ -553,7 +553,7 @@ export function feeKinds(terms: InstrumentTerms | undefined): FeeKind[] {
   if (terms.fees && feeCharged(terms.fees, "deposit")) out.push("deposit");
   if (terms.fees && feeCharged(terms.fees, "direct")) out.push("direct");
   const drag = terms.fund?.drag;
-  if (drag && Object.entries(drag).some(([k, v]) => (k === "management" || k === "variable" || k === "trustee") && (v ?? 0) > 0)) out.push("fund");
+  if (drag && Object.entries(drag).some(([k, v]) => (k === "management" || k === "variable" || k === "trustee") && typeof v === "number" && v > 0)) out.push("fund");
   const t = terms.tariff;
   if ((t?.buy?.rate ?? 0) > 0 || (t?.sell?.rate ?? 0) > 0) out.push("trade");
   if ((t?.custody?.rate ?? 0) > 0) out.push("custody");
@@ -1305,8 +1305,8 @@ function profileInputs(g: RunGoal, w: WrapperEntry | undefined, used: readonly U
 }
 
 /**
- * What one candidate's run reads, each as the value its sheet opens, so a figure of that run lists only what it rests on (founder,
- * 2026-11-08: "סך ההפקדות" listed the return and the inflation): the goal's money (`planMoney`); the return for a run that rests on one,
+ * What one candidate's run reads, each as the value its sheet opens, so a figure of that run lists only what it rests on: the
+ * goal's money (`planMoney`); the return for a run that rests on one,
  * or the option's own rate for a cash-like one (method 2.4, F-67), with the current account's balance ceiling when it bites (F-26); and
  * the person's profile where the run reads it. `rate` is the return the run took when it is the run's own (an exposure's, F-71).
  * The one helper behind every figure of a run: the comparison's (`makeValues`), exposure mode's and the fee page's (`factory`).
@@ -1407,7 +1407,7 @@ const EXITS = new Set(["F-40", "F-41", "F-42", "F-44", "F-45", "F-46", "F-47", "
  * The formula that gives a run's value at the horizon before inflation (V_T, `run.nominal`; F-06 then shows it in today's money). Where
  * the exit is taxed as a security's (F-40: a brokerage account, a bond, a makam), V_T is F-09's: the sale, its costs, then the tax. Every
  * other wrapper ends by its own exit (method section 7: a deposit F-41, a provident fund F-44 or F-46, child savings F-50): the record's
- * `tax_at_exit`, or the exit the run says it applied. Every wrapper was labelled F-09 until 2026-11-08 (founder: "fix the wrong formulas").
+ * `tax_at_exit`, or the exit the run says it applied.
  */
 export function nominalFormula(run: { formulas?: readonly string[] } | undefined, record?: Pick<ProductRecord, "tax_at_exit"> | null): string {
   const exit = record?.tax_at_exit.formula ?? run?.formulas?.find((f) => EXITS.has(f));

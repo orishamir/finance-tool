@@ -18,7 +18,7 @@ const ownFigure = (figure: ContentProps["figure"], company: string) => (id: stri
 export function What() {
   return (
     <>
-      <Sentence measure><Term id="קרן נאמנות">קרן נאמנות</Term> שנקבעה לה מראש תקופת קיום. בסוף התקופה הקרן מתפרקת: <Term id="מנהל קרן">מנהל הקרן</Term> פודה את <Term prefix="ה" id="יחידה">יחידות</Term>, והכסף חוזר למי שעדיין מחזיק בהן.</Sentence>
+      <Sentence measure>בסוף התקופה <Term id="מנהל קרן">מנהל הקרן</Term> פודה את <Term prefix="ה" id="יחידה">יחידות</Term>, והכסף חוזר למי שעדיין מחזיק בהן.</Sentence>
       <RulesLine ids={["MF-59", "MF-60"]} />
       <Sentence measure>בקרנות שנמצאו, הקרן עוקבת אחרי מדד של <Term id="איגרת חוב">איגרות חוב</Term> שנפרעות בערך באותה שנה. אצל ילין לפידות, ככל שהן נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, ואחרי סוף השנה למזומן.</Sentence>
       <RulesLine ids={["MF-61", "MF-62", "MF-63"]} />
@@ -50,7 +50,7 @@ export function Compare() {
           { key: "issuers", head: "כמה מנפיקים", cells: ["אחד", "כמה, ויכולים להישאר פחות קרוב לסוף", "תלוי בקרן"] },
           { key: "cost", head: "עלות שוטפת", cells: [
               <Fragment key="bond">
-                בלי <Term id="דמי ניהול">דמי ניהול</Term>; יש עמלות <Term prefix="ו" id="דמי משמרת">דמי משמרת</Term>
+                בלי <Term id="דמי ניהול">דמי ניהול</Term>; יש עמלות <Term prefix="ו" id="דמי ניהול פיקדון ניירות ערך">דמי משמרת</Term>
               </Fragment>,
               <Fragment key="limited">
                 דמי ניהול <Term prefix="ו" id="שכר נאמן">שכר נאמן</Term>
@@ -218,7 +218,7 @@ export const termIds = [
   "מנהל קרן",
   "קרן נאמנות",
   "דמי ניהול",
-  "דמי משמרת",
+  "דמי ניהול פיקדון ניירות ערך",
   "שכר נאמן",
   "ריבית",
 ];

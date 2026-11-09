@@ -279,7 +279,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
   // on a foreign index, the rules behind the "?" beside a foreign fund's fees ("אין" by a line of the Israeli law for funds), cited here
-  // since that "?" opens a text of its own (it was a note under the fund list with its rules, 2026-11-08)
+  // since that "?" opens a text of its own
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22", ...(index && !index.israeli ? ["ETF-71", "ETF-14", "MF-20"] : [])].filter((id) => wb.rules.some((r) => r.id === id));
 
   // another index replaces what lies below the pills, and on a phone it may move it (D62): it dims on the tap and fades in where it lands

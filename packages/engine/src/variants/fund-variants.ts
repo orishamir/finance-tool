@@ -146,10 +146,23 @@ export function recordDistribution(rec: Pick<FundRecord, "id" | "distribution">)
 }
 
 /**
+ * F-107's inputs from the fund's exposure (`us_dividends`), as fractions: the dividend yield of the index's US shares and their share of
+ * the index (1 when the record gives no weight: an index of US companies). Undefined when the exposure has no yield.
+ */
+export function usDividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividends"> | undefined): { yield: number; weight: number } | undefined {
+  const u = exposure?.us_dividends;
+  const y = fraction(u?.yield, "pct_per_year", `exposure ${exposure?.id} us_dividends.yield`);
+  if (y === undefined) return undefined;
+  const w = u?.weight ? fraction(u.weight, "pct", `exposure ${exposure?.id} us_dividends.weight`) : 1;
+  return w === undefined ? undefined : { yield: y, weight: w };
+}
+
+/**
  * The fund the engine runs for a record, and the fee fields the record leaves empty (exported 2026-10-24 so the provider workbench builds
  * its fund the same way). `list`: the list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years.
+ * `usDividends`: the exposure's F-107 inputs (`usDividendsOf`), read for an Irish fund that holds the shares.
  */
-export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined, list?: GapList) {
+export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined, list?: GapList, usDividends?: { yield: number; weight: number }) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {
@@ -178,6 +191,13 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   if (variable !== undefined) drag.variable = variable;
   if (tracking !== undefined) drag.tracking = tracking;
   if (withholding !== undefined) drag.foreignWithholding = withholding;
+  // A-11 by F-107: an Irish fund that holds the shares, with no figure of its own and no published 12-month gap (which could hold the tax
+  // already); an A-07 from its years stands against a net index (F-92 (d)), where its own withholding does not show as a shortfall
+  const usWithholding = withholding === undefined && published === undefined && rec.domicile === "IE" && rec.replication?.method === "physical" && usDividends !== undefined;
+  if (usWithholding) {
+    drag.usDividends = usDividends;
+    notCollected.splice(notCollected.indexOf("fund_level_withholding_drag"), 1);
+  }
   const fund: Fund = { kind, drag };
   // A-08: half of the published median bid-ask spread.
   if (spread !== undefined) fund.halfSpread = spread / 2;
@@ -241,7 +261,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext, onList: r
   if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") {
     return notEvaluated({ code: "missing-record", ruleIds: [], gapIds: [], detail: "a hedged fund with no compared year in its report and no published 12-month tracking figure (F-92 (c))" });
   }
-  const built = fundOf(rec, kind, policy === "distributing" ? dist : undefined, x.w8ben, list);
+  const built = fundOf(rec, kind, policy === "distributing" ? dist : undefined, x.w8ben, list, usDividendsOf(exposure.record));
   if (!built.hasManagement) return { ...base, notCollected: built.notCollected, kind: "not-evaluated", reasons: [{ code: "missing-record", ruleIds: [], gapIds: [], detail: "details not collected: fees.fixed_management" }] };
 
   // F-04: a fund in a foreign currency earns A-01 in that currency with A-03 on top; a shekel fund on a foreign exposure earns the same in

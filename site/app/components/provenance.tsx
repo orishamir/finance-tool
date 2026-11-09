@@ -599,7 +599,7 @@ function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined, short?: { comp
  * whose sections list them (their own documents say it), in order, once each. `lead` replaces "תלוי בחברה" ("תלוי בבנק"). Nothing
  * renders when none of the records is on the page.
  */
-export function VariesByCompany({ ids, lead = scopeWords.varies, size, className }: { ids: readonly CompanyTermRef[]; /** A ReactNode, so a glossary term it names first on its page carries its mark. */ lead?: ReactNode; size?: "sm" | "xs"; className?: string }) {
+export function VariesByCompany({ ids, lead = scopeWords.varies, size, end, className }: { ids: readonly CompanyTermRef[]; /** A ReactNode, so a glossary term it names first on its page carries its mark. */ lead?: ReactNode; size?: "sm" | "xs"; /** Closes a line that is a sentence ("."). */ end?: string; className?: string }) {
   const data = useContext(DataCtx);
   const seen = new Set<string>();
   const items = ids
@@ -610,7 +610,7 @@ export function VariesByCompany({ ids, lead = scopeWords.varies, size, className
       return companyLinksOf(typeof ref === "string" ? listed : listed.filter((c) => ref.companies.includes(c.id)), data?.companies);
     })
     .filter((c) => !seen.has(c.id) && seen.add(c.id));
-  return <CompanyLinks lead={lead} items={items} size={size} className={className} />;
+  return <CompanyLinks lead={lead} items={items} size={size} end={end} className={className} />;
 }
 
 /**
@@ -1244,11 +1244,12 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
               <IdRef id={value.computed_from.formula} />
             </Row>
           </dl>
+          {/* a figure computed from no value (a count of a comparison's own options) has no inputs to list, and no heading over nothing */}
+          {Object.keys(value.computed_from.inputs).length > 0 && (
           <div className="flex flex-col gap-1.5">
             <span className="text-sm text-muted-foreground">{copy.computed.inputs}</span>
             <dl className="readout">
-              {/* each input is a figure that opens its own sheet, with its source: the sheet names no source of its own under it (founder,
-                  2026-11-08: "you dont need to supply the source in that card because someone can simply click the 0% and see the source") */}
+              {/* each input is a figure that opens its own sheet, with its source: the sheet names no source of its own under it */}
               {Object.entries(value.computed_from.inputs as Record<string, SiteValue>).map(([label, input]) => (
                 <div key={label} className="readout-row">
                   <dt>{inputName(label)}</dt>
@@ -1261,12 +1262,13 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
               ))}
             </dl>
           </div>
+          )}
           {value.rulesUsed && value.rulesUsed.length > 0 && (
             <div className="flex flex-col gap-1.5">
               <span className="text-sm text-muted-foreground">{copy.computed.rules}</span>
               <div className="flex flex-col gap-2">
                 {/* each rule is a chip that opens its card, with its source; beside it only a source weaker than primary, which the reader
-                    must see here (founder, 2026-11-08: the source is a tap away) */}
+                    must see here */}
                 {value.rulesUsed.map((r) => (
                   <span key={r.id} className="flex flex-wrap items-center gap-1.5 min-w-0">
                     <RuleRef id={r.id} titled />

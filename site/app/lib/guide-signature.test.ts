@@ -224,7 +224,7 @@ describe("bank deposit", () => {
     expect(b.breakable.map((x) => [x.id, x.deposits.value, x.withPenalty.value, x.free.value])).toEqual([["discount", 10, 10, 0]]);
     const lines = (v: { computed_from?: { inputs?: Record<string, unknown> } }) => Object.keys(v.computed_from?.inputs ?? {}).length;
     expect(lines(b.deposits as never)).toBe(24);
-    // the banks with exits among those that lock every deposit read both columns of each deposit (founder, 2026-11-08)
+    // the banks with exits among those that lock every deposit read both columns of each deposit
     expect(lines(b.lockedBanksWithExits as never)).toBe(48);
     expect(lines(b.breakable[0]!.deposits as never)).toBe(10);
     // a sheet name still taken gets a number that replaces the last one, never a stack of them (code review, 2026-11-07)

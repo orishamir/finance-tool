@@ -439,7 +439,7 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
  * What `holdingPlan` put into a holding's run, as the inputs of a figure from it (F-61): the holding's own figures (`own`: the balance, the
  * fees the run charges, the deposits it takes, a study fund's first deposit, the gain already in a provident fund) and the goal's (`goal`:
  * the years, the return, inflation, and the salary, age and insurance the run reads). Built from the plan's own choices, so a figure cannot
- * name a deposit fee the run leaves out or miss the deposits it takes (founder, 2026-11-08: "make sure the chip displayed is correct").
+ * name a deposit fee the run leaves out or miss the deposits it takes.
  */
 function runInputsOf(h: Holding, reads: PlanReads, ctx: HoldingsCtx): { own: Record<string, SiteValue>; goal: Record<string, SiteValue> } {
   const g = ctx.goal!.run;

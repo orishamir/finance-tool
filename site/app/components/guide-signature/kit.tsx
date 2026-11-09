@@ -76,8 +76,8 @@ export function runFigure(value: number, unit: SiteValue["unit"], formula: strin
  * What a bundle's run reads from its terms: each fee line, the term and every other number the guide's terms block names, under that
  * block's name (a regulator's average with its year), as the timeline lists them, and the direct expenses. A figure from the run lists
  * these beside the plan it ran on, so its sheet holds the lines of that run and of no other: a page that runs another bundle (the
- * brokerage account at the best tariff) names that bundle's lines, not its own fund's (founder, 2026-11-08: "make sure the chip displayed
- * is correct ... make less mistakes"). A provident fee shown under its list or regulator label is not listed again as the plain fee.
+ * brokerage account at the best tariff) names that bundle's lines, not its own fund's. A provident fee shown under its list or regulator
+ * label is not listed again as the plain fee.
  */
 export function termInputs(bundle: Bundle): Record<string, SiteValue> {
   const fv = bundle.feeValues;

@@ -1,7 +1,7 @@
 // data/instruments/exposures/: one record per exposure type. docs/data-schema.md §3.4.
 // Strict: a field the doc does not name is an error.
 import { z } from "zod";
-import { isoDate, productId } from "../value.ts";
+import { isoDate, productId, valueObject } from "../value.ts";
 
 /** data-schema §3.4, `kind`. */
 export const exposureKind = z.enum(["equity_index", "bond_index", "cash_like", "mixed", "commodity", "other"]);
@@ -27,6 +27,12 @@ export const exposureRecord = z.strictObject({
   /** 2026-10-29: true when the index holds shares priced in currencies other than `currency` (ETF-48: MSCI World's 23 countries). A
    * fund that neutralises `currency` keeps the others, against it. Left out for a one-currency index. */
   other_currencies: z.boolean().optional(),
+  /**
+   * F-107: the index's US shares as an Irish fund that holds them meets them, from the index provider's own factsheet. `yield` is the
+   * dividend yield of those shares (`pct_per_year`); `weight` is their share of the index (`pct`), left out when the index is made of US
+   * companies only. Left out where the provider prints no dividend yield.
+   */
+  us_dividends: z.strictObject({ yield: valueObject, weight: valueObject.optional() }).optional(),
   checked: isoDate,
 });
 

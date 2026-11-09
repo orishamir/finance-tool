@@ -326,6 +326,17 @@ describe("what the person says the fund does (2026-11-05): nothing is filled in 
     expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE" }, "custom-fund-ie", "index-sp500", t))).toContain("tax-fund-dividend");
   });
 
+  it("an Irish fund said to hold the shares runs with the US tax on their dividends (F-107), and its figure's sheet lists it", () => {
+    const words = invest.pair.fundInputs;
+    const held = priceOf(fundFromDraft({ ...abroadDraft, payout: "accumulating", domicile: "IE", tracking: "physical" }, "custom-fund-held", "index-sp500", t));
+    const swapped = priceOf(fundFromDraft({ ...abroadDraft, payout: "accumulating", domicile: "IE", tracking: "swap" }, "custom-fund-swapped", "index-sp500", t));
+    const tax = (held.best!.value.computed_from!.inputs as Record<string, SiteValue>)[words.usWithholding];
+    expect(tax?.computed_from?.formula).toBe("F-107");
+    expect((swapped.best!.value.computed_from!.inputs as Record<string, SiteValue>)[words.usWithholding]).toBeUndefined();
+    // the same fees typed: the fund that holds the shares keeps less
+    expect(held.best!.valueN).toBeLessThan(swapped.best!.valueN);
+  });
+
   it("all of it is kept through a save and a reload", () => {
     const f = fundFromDraft({ ...abroadDraft, payout: "distributing", domicile: "IE", yield: 1.2, perYear: 4, tracking: "physical" }, "custom-fund-kept", "index-sp500", t);
     const [back] = validCustomFunds([JSON.parse(JSON.stringify(f))]);

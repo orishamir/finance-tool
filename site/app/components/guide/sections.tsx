@@ -300,7 +300,7 @@ export function RelatedProducts({ items, label = copy.related }: { items: { href
       <span>{label}</span>
       {items.map((it) => (
         <Link key={it.href} to={it.href} className="a-chip">
-          {it.label}
+          {gershayim(it.label)}
         </Link>
       ))}
     </p>

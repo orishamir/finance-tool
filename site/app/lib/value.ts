@@ -169,9 +169,8 @@ export type ComputedOptions = Parameters<typeof computed>[4];
 
 /**
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
- * the two, and its inputs are the two, each opening its own sheet, so the sheet cannot list what the value does not rest on (founder,
- * 2026-11-08: "go through all calculations make sure the chip displayed is correct ... share more code make less mistakes"). Null when
- * either is not a number. `round` shapes the result (a whole shekel).
+ * the two, and its inputs are the two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either
+ * is not a number. `round` shapes the result (a whole shekel).
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;

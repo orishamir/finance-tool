@@ -4,14 +4,14 @@
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, nisPer } from "./fx";
 import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
-import { computed, differenceOf, ownBy, sumOf, type SiteValue, type Strength } from "./value";
+import { computed, differenceOf, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
 
@@ -684,7 +684,7 @@ export type PlanInput = keyof typeof copy.planInputs;
 export const WHOLE_PLAN: readonly PlanInput[] = ["amount", "monthly", "years", "return", "inflation"];
 /**
  * The plan's inputs a figure rests on, each named by the caller, so a figure lists only what its formula uses: what was paid in rests on
- * the amount, the deposit and the years, not on the return (founder, 2026-11-08: "סך ההפקדות" listed the return and the inflation).
+ * the amount, the deposit and the years, not on the return.
  */
 export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<string, SiteValue> {
   const v = plan.values;
@@ -744,7 +744,7 @@ function ratesOfRun(ctx: Ctx, r: RunReads): Record<string, SiteValue> {
  * priced at (F-84), the fund's own costs and payout yield (`fundInputs`), and, on a run of something the person typed, what they typed. A
  * bank's row that counts a current account lists the bank's monthly minimum too, its current-account price list the source, so the figure
  * that cost adds is one the sheet opens (F-102; lens review S5: the minimum was counted and shown nowhere). The one place that says what a
- * run reads, so no figure's sheet lists by hand (founder, 2026-11-08: "make sure the chip displayed is correct").
+ * run reads, so no figure's sheet lists by hand.
  */
 const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const snap = r.house ? ctx.bundle.snapshots.find((s) => s.id === r.house) : undefined;
@@ -755,8 +755,27 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const fundId = r.costsOff ? undefined : r.fund;
   const fund = fundId ? ctx.bundle.funds.find((f) => f.id === fundId) : undefined;
   const typed = [r.house, fundId].flatMap((id) => (id ? [ctx.bundle.entered?.inputs[id] ?? {}] : []));
-  return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), ratesOfRun(ctx, r), minimum, fund && !isCustomFund(fund) ? fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today) : {}, ...typed);
+  // a typed fund's costs are what was typed (below); F-107 comes from what was said of it (Ireland, holds the shares) and the index
+  const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today)), ...usWithholdingInput(ctx, r, fund) } : {};
+  return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), ratesOfRun(ctx, r), minimum, own, ...typed);
 };
+
+/**
+ * A-11 by F-107 where the fund's run takes it (`fundOf` puts the inputs in the drag: an Irish fund that holds the index's US shares): TXF-16's
+ * rate on the dividends of those shares, with the index provider's yield and weight it multiplies, so the sheet shows the cost in the fund.
+ */
+function usWithholdingInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, SiteValue> {
+  const u = r.spec?.fund.drag?.usDividends;
+  const us = u ? ctx.bundle.exposures.find((e) => e.id === rec.exposure_id)?.us_dividends : undefined;
+  const rule = us ? ctx.bundle.rules.find((x) => x.id === "TXF-16") : undefined;
+  const rate = rule ? ruleFigure(rule, "irish_fund_us_dividend_treaty_rate", ctx.bundle.today) : null;
+  if (!u || !us || !rule || !rate || typeof rate.value !== "number") return {};
+  const w = copy.pair.fundInputs;
+  const inputs: Record<string, SiteValue> = { [w.usRate]: rate, [w.usYield]: us.yield as SiteValue };
+  if (us.weight) inputs[w.usWeight] = us.weight as SiteValue;
+  const value = irishFundUsWithholding(rate.value / 100, u.yield, u.weight) * 100;
+  return { [w.usWithholding]: computed(Math.round(value * 1000) / 1000, "pct_per_year", "F-107", inputs, { today: ctx.bundle.today, rules: [{ id: rule.id, strength: rule.strength as Strength }], flags: ["TXF-OQ7"], about: w.usWithholdingAbout }) };
+}
 
 /** A figure of a fund's annual report (a year's return, its index's, a fee it charged), from the report at its page: the fund's own document (D31). */
 export function reportFigure(rec: FundRecord, value: number, page: number | null | undefined): SiteValue {
@@ -1257,13 +1276,12 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   const at = (n: number, formula: string, about: string, from = inputs) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row), about });
   const lines = row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
   const interaction = row.horizonCostBeforeTax - row.byType.reduce((t, x) => t + x.costBeforeTax, 0);
-  const paidInReal = ctx.plan.amountNow + ctx.plan.monthly * 12 * ctx.plan.years;
+  const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
   return {
     providerId: s.id,
     fundId: rec.id,
-    // what was paid in, in today's money: F-05's sum of the deposits as entered, each rising with the index that takes it back (A-04
-    // "constant real"); the amount, the deposit and the years, and nothing else (founder, 2026-11-08: "the chip for F-05 which the 70,000 uses")
-    paidIn: computed(paidInReal, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
+    // what was paid in, in today's money (F-106): the amount, the deposit and the years, and nothing else
+    paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
     interaction,

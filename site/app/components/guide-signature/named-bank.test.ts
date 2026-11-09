@@ -29,7 +29,7 @@ describe("one bank's rate is named where it is quoted", () => {
     expect(raw).toBeDefined();
     const row = text(raw!);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(row).not.toContain(bank);
-    expect(row).toMatch(/1\.55%\s*–\s*2\.25%/);
+    expect(row).toMatch(/1\.55%\s*עד\s*2\.25%/);
     expect(row).toMatch(/טווח ב־\s*4\s*פיקדונות רגילים שנאספו/);
     expect(raw).toContain('href="/guide/bank-deposit"');
     // the note under the table: how many of the collected deposits cannot be left early, naming none, and the link to each bank's rate
@@ -66,7 +66,7 @@ describe("one bank's rate is named where it is quoted", () => {
     const t = text(render(createElement(MakamVisual, { data: sig, today: "2026-10-26" })));
     expect(t).not.toContain("לאומי");
     expect(t).not.toContain("עוד לא נאספו");
-    expect(t).toMatch(/1\.55%\s*–\s*2\.25%/);
+    expect(t).toMatch(/1\.55%\s*עד\s*2\.25%/);
     expect(t).toMatch(/לפי התעריפון של\s*(<[^>]*>)?\s*פסגות/);
     // until 2026-11-04 PEPPER tied with Psagot; PEPPER Invest moved into Leumi Trade (founder), so it is no house of its own
     expect(t).not.toContain("הוא שקול לתעריפון של");

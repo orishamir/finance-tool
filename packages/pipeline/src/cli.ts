@@ -1,6 +1,7 @@
 import { appendFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { israelToday } from "@finance-tool/schema";
 import { refreshCbsCpi } from "./adapters/cbs-cpi.ts";
 import { refreshCma } from "./adapters/cma.ts";
 import { refreshEcbFx, refreshEcbMonthEnd } from "./adapters/ecb-fx.ts";
@@ -33,7 +34,7 @@ async function refresh(args: string[]): Promise<number> {
   }
   const opts = {
     dataDir: `${root}data`,
-    runDate: new Date().toISOString().slice(0, 10),
+    runDate: israelToday(),
     dryRun: flags.includes("--dry-run"),
     archive: !flags.includes("--no-archive"),
     force: flags.includes("--force"),

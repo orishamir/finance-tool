@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide-index";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
 import { PageShell } from "../components/shell";
-import { Card, ChipList, RowArrow } from "../components/kit";
+import { Card, ChipList, gershayim, RowArrow } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
@@ -61,13 +61,13 @@ function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name
       <Link to={href} className="block h-full">
         <Card className={`h-full flex items-start justify-between gap-4 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)] ${quiet ? "bg-background" : ""}`}>
           <span className="flex flex-col gap-1">
-            <span className="text-lg font-semibold">{name}</span>
+            <span className="text-lg font-semibold">{gershayim(name)}</span>
             {plain && (
               <span className="text-sm">
-                {copy.alsoCalled} <bdi>{plain}</bdi>
+                {copy.alsoCalled} <bdi>{gershayim(plain)}</bdi>
               </span>
             )}
-            {line && <span className="text-sm text-muted-foreground">{line}</span>}
+            {line && <span className="text-sm text-muted-foreground">{gershayim(line)}</span>}
           </span>
           <RowArrow className="mt-1" />
         </Card>
@@ -118,11 +118,11 @@ export default function GuideIndex() {
                   <li key={e.key}>
                     <Card className="h-full flex flex-col gap-2">
                       <Link to={e.href} className="flex items-start justify-between gap-4 hover:underline">
-                        <span className="text-lg font-semibold">{e.name}</span>
+                        <span className="text-lg font-semibold">{gershayim(e.name)}</span>
                         <RowArrow className="mt-1" />
                       </Link>
-                      {e.line && <span className="text-sm text-muted-foreground">{e.line}</span>}
-                      <ChipList heading={`${e.name} ${copy.fundKindsLine}`} headingHidden items={e.kinds.map((k) => ({ id: k.href, label: k.label, href: k.href }))} value={null} />
+                      {e.line && <span className="text-sm text-muted-foreground">{gershayim(e.line)}</span>}
+                      <ChipList heading={`${gershayim(e.name)} ${copy.fundKindsLine}`} headingHidden items={e.kinds.map((k) => ({ id: k.href, label: gershayim(k.label), href: k.href }))} value={null} />
                     </Card>
                   </li>
                 ) : (

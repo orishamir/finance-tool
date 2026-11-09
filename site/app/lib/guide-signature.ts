@@ -27,6 +27,12 @@ export interface SignatureData {
 /** The wrappers whose illustrative run rests on a cash rate, not on A-01 (the timeline edits "ריבית בשנה" for them). */
 export const cashLikeIds = ["current-account", "bank-deposit", "savings-plan", "money-market-fund-daily", "money-market-fund-renewable", "makam", "government-bond"];
 
+/** The wrappers whose timeline runs one amount put in today, with no monthly deposit: a deposit is opened with one sum, and money paid in every month goes to a savings plan (BANK-28). */
+export const lumpSumIds = ["bank-deposit"];
+
+/** The values a lump-sum timeline runs on whatever the reader entered on other pages: no monthly deposit. */
+export const lumpSumEntered = { monthly_deposit: 0 } as const;
+
 export const fact = (d: SignatureData, key: string): SiteValue | undefined => d.facts[key];
 export const factNumber = (d: SignatureData, key: string): number | null => {
   const v = d.facts[key]?.value;

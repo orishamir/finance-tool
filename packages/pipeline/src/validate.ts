@@ -25,6 +25,7 @@ import {
   wrapperRecord,
   type SeriesRecord,
   sourcesFile,
+  israelToday,
 } from "@finance-tool/schema";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
@@ -966,7 +967,7 @@ function taxYears(node: unknown): number[] {
  */
 function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<string, RuleLike>, warn: (category: string, id: string) => void): string[] {
   const out: string[] = [];
-  const today = ctx.today ?? new Date().toISOString().slice(0, 10);
+  const today = ctx.today ?? israelToday();
   const extractionLanded = [...all.values()].some((r) => r.sources !== undefined || r.sources_missing_reason !== undefined);
   const sources = rule.sources ?? [];
   if (sources.length === 0 && !rule.sources_missing_reason) {

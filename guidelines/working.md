@@ -68,8 +68,8 @@
 
 ## Issues
 
-- There are no GitHub issues, milestones, labels or project board: the
-  founder had them all deleted on 2026-11-08. Don't create them. What waits
+- There are no GitHub issues, milestones, labels or project board. Don't
+  create them. What waits
   on him or comes later goes in the report.
 
 ## Budget

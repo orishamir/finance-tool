@@ -8,7 +8,7 @@ import { providentLists, providentPick, providentTerms } from "./compare.server"
 import type { Bundle } from "./engine";
 import { p05Number, p05Value } from "./engine";
 import type { SignatureData } from "./guide-signature";
-import { accountRuns, buildInstrumentBundle } from "./guide-signature-bundle.server";
+import { accountRuns, buildInstrumentBundle, citedDocuments, documentInputs } from "./guide-signature-bundle.server";
 import { hishtalmutTerms, pensionModel, rulesRead, runWith, sideOf, type Employment } from "./guide-signature-g2";
 import { loadCatalog, loadExposures, regulatorAverageFees } from "./instruments.server";
 import { cmaFeeValue, computed, ownBy, ruleFigure, type SiteValue } from "./value";
@@ -129,7 +129,10 @@ function addHoldings(d: SignatureData, c: G2Ctx, holding: { fund: FundRecord; ex
     d.facts.rangeMin = sorted[0]!.fee!;
     d.facts.rangeMax = sorted[sorted.length - 1]!.fee!;
     // F-67's rule 3: the range is shown with the number of tracks it is over
-    d.facts.rangeCount = computed(all.length, "count", "F-67", {}, { today: c.t, about: "כמה מסלולים על המדד הזה דיווחה הרשות בתקופה האחרונה, עם דמי ניהול" });
+    // its inputs are the tracks it counts, each with the fee the regulator reports for it (a name two tracks share takes the track's number)
+    const named = new Map<string, SiteValue>();
+    for (const t of all) named.set(named.has(t.name) || all.filter((x) => x.name === t.name).length > 1 ? `${t.name}, ${t.id}` : t.name, t.fee!);
+    d.facts.rangeCount = computed(all.length, "count", "F-67", Object.fromEntries(named), { today: c.t, about: signatureFacts.indexTrackCount });
     d.facts.rangeMinName = textFact(sorted[0]!.name, { source: sorted[0]!.fee!.source, checked: c.t }, sorted[0]!.company);
     d.facts.rangeMaxName = textFact(sorted[sorted.length - 1]!.name, { source: sorted[sorted.length - 1]!.fee!.source, checked: c.t }, sorted[sorted.length - 1]!.company);
   }
@@ -167,7 +170,7 @@ function addManagerRange(d: SignatureData, c: G2Ctx) {
       const b = listBundle(c, c.id, l.snap.id);
       // the ranking run reads every rule; the shipped bundle keeps only those its runs read (`widen`)
       const run = b ? runWith({ ...b.bundle, rules: Object.values(c.allRules) }, plan, months) : null;
-      return b && run && run.outcome.code === "eligible" ? { id: l.snap.id, name: l.snap.provider.name_he, gain: sideOf(run, plan.amount_now).gain, bundle: b.bundle, source: { url: l.snap.tariff.url, title: l.snap.tariff.title }, checked: l.snap.snapshot } : null;
+      return b && run && run.outcome.code === "eligible" ? { id: l.snap.id, name: l.snap.provider.name_he, gain: sideOf(run, plan.amount_now).gain, bundle: b.bundle, source: { url: l.snap.tariff.url, title: l.snap.tariff.title }, checked: l.snap.snapshot, more: citedDocuments(l.snap.lines, l.snap.tariff.url, c.id) } : null;
     })
     .filter((x) => x !== null)
     .sort((a, b) => a.gain - b.gain);
@@ -178,7 +181,7 @@ function addManagerRange(d: SignatureData, c: G2Ctx) {
   d.bundles["kgl-manager-best"] = widen(best.bundle, c, variants);
   d.facts.managerWorstName = ownBy(textFact(worst.name, { source: { ...worst.source, publisher: worst.name, strength: "institution" }, checked: worst.checked }, signatureFacts.managerWorst), worst.name);
   d.facts.managerBestName = ownBy(textFact(best.name, { source: { ...best.source, publisher: best.name, strength: "institution" }, checked: best.checked }, signatureFacts.managerBest), best.name);
-  d.facts.managerCount = computed(rows.length, "count", "F-80", {}, { today: c.t, about: signatureFacts.managerCount });
+  d.facts.managerCount = computed(rows.length, "count", "F-80", documentInputs(rows), { today: c.t, about: signatureFacts.managerCount });
 }
 
 /** The bundle with the rules its runs may read, found by running the variants the visual can ask for (a bigger amount, an age of 65, a high salary). */
@@ -220,7 +223,7 @@ function addBrokerRange(d: SignatureData, c: G2Ctx) {
   d.facts.brokerWorstName = ownBy(textFact(worst.name, worst, signatureFacts.brokerWorst), worst.name);
   d.facts.brokerBestName = ownBy(textFact(best.name, best, signatureFacts.brokerBest), best.name);
   // F-80 on the guide pages: the pick is named with how many tariffs were compared
-  d.facts.brokerCount = computed(rows.length, "count", "F-80", {}, { today: c.t, about: signatureFacts.brokerCount });
+  d.facts.brokerCount = computed(rows.length, "count", "F-80", documentInputs(rows), { today: c.t, about: signatureFacts.brokerCount });
   const own = loadFees().filter((x) => x.id === c.p05.instruments?.["brokerage-account"]?.tariff).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1);
   if (own) d.facts.brokerName = ownBy(textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך"), own.provider.name_he);
 }

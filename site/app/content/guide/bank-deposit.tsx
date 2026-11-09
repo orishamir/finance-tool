@@ -17,11 +17,11 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          כסף שמפקידים בבנק לתקופה קצובה, מיום אחד ועד כמה שנים, והבנק משלם עליו <Term id="ריבית">ריבית</Term>. הריבית <Term id="ריבית קבועה">קבועה</Term> וידועה מראש, או <Term id="ריבית משתנה">משתנה</Term>, כלומר <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש. בסוף התקופה הכסף חוזר <Term prefix="ל" id="חשבון עובר ושב">עו״ש</Term> או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, לפי מה שבחרתם.
+          התקופה יכולה להיות מיום אחד ועד כמה שנים. <Term prefix="ה" id="ריבית">ריבית</Term> <Term id="ריבית קבועה">קבועה</Term> וידועה מראש, או <Term id="ריבית משתנה">משתנה</Term>, כלומר <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש. בסוף התקופה הכסף חוזר <Term prefix="ל" id="חשבון עובר ושב">עו״ש</Term> או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, לפי מה שבחרתם.
         </p>
         {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, nine banks) */}
         <p className="max-w-measure">
-          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק קובע אותה בעצמו</>} />
+          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק מגדיר אותה בתנאים שלו</>} end="." />
         </p>
         <p className="max-w-measure">
           פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו. פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי <Term prefix="ה" id="מדד">מדד</Term>, והריבית באה בנוסף. אם המדד יורד, מה שקורה לקרן תלוי בתנאי המוצר (<Term id="הבטחת קרן">הבטחת קרן</Term>); החוק לא קובע זאת.
@@ -82,7 +82,17 @@ export const content: GuideContent = {
     "ריבית",
     "מדד",
     "הצמדה",
+    "תוכנית חיסכון",
   ],
+  // the chart runs one amount (lumpSumIds): a deposit is opened with one sum, and periodic deposits are a savings plan's (BANK-28)
+  lumpNote: (
+    <>
+      להפקדה חודשית בבנק יש מוצר משלה, <Term id="תוכנית חיסכון">תוכנית חיסכון</Term>.{" "}
+      <Link to="/guide/savings-plan" className="text-link hover:underline">
+        לעמוד המדריך על תוכנית חיסכון
+      </Link>
+    </>
+  ),
   afterTax: ({ figure, breakTerms }) => {
     const ceiling = figure("TXI-20", "favoured_ceiling");
     const deduction = figure("TXI-20", "deduction");
@@ -97,7 +107,7 @@ export const content: GuideContent = {
         </Sentence>
         <RulesLine ids={["TXI-17"]} />
         <Sentence measure>
-          פיקדון צמוד פריים ממוסה כפיקדון לא צמוד, על כל הריבית: בחוק ״מדד״ הוא <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term> או שער מטבע, והפריים לא אחד מהם <RuleRef id="TXI-04" end="." />
+          פיקדון בריבית משתנה לפי הפריים ממוסה כפיקדון לא צמוד, על כל הריבית: בחוק ״מדד״ הוא <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term> או שער מטבע, והפריים לא אחד מהם <RuleRef id="TXI-04" end="." />
         </Sentence>
         {breakTerms ? <BreakLine b={breakTerms} /> : null}
         <Callout tone="blocked" className="max-w-measure" title={<>מס הכנסה או <Term id="מס רווחי הון">מס רווחי הון</Term> כששבירה פוגעת בסכום שהופקד: שאלה פתוחה</>}>
@@ -225,7 +235,7 @@ function BreakLine({ b }: { b: BreakTerms }) {
       {penalty.length > 0 && (
         <Sentence measure>
           האתר לא מציג את הקנס בשקלים{terms ? terms(penalty[0]!.name) : ". "}
-          <VariesByCompany ids={refs} lead="תנאי השבירה בעמוד הבנק" />
+          <VariesByCompany ids={refs} lead="תנאי השבירה בעמוד הבנק" end="." />
         </Sentence>
       )}
     </>

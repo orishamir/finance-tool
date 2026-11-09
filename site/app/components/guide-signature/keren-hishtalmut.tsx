@@ -100,14 +100,15 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const common: Record<string, SiteValue> = { ...runIn, ...yearEntry };
   // the same runs stopped at the end of the lock (TXH-09), or a year before it: the year is the rule's, not the one picked
   const lockIn: Record<string, SiteValue> = { ...runIn, ...(lockYears ? { [copy.hishtalmut.inputNames.lockYears]: lockYears } : {}) };
-  // what was paid in, each deposit in today's money (F-96, A-04): the monthly deposit, twelve times a year, with no return and no fee in it;
-  // a self-employed person's tax back is the deduction on that deposit, at the income (reliefToday)
+  // what was paid in, each deposit in today's money (F-106, A-04): the monthly deposit, twelve times a year, with no return and no fee in
+  // it; a self-employed person's tax back is the deduction on that deposit, at the income (reliefToday, F-96)
   const ownIn: Record<string, SiteValue> = { ...(isEmployee ? { ...incomeEntry, ...ownShareEntry } : monthlyEntry), ...yearEntry };
   const extraIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : monthlyEntry), ...yearEntry };
   // the tax paid from the salary on the employer's money above the limit: the limit stays while the salary follows prices (F-96)
   const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : {}), ...inflationEntry, ...yearEntry };
   const rules = rulesOfBundle(base);
   const nis = (value: number, about: string, inputs: Record<string, SiteValue> = common) => figure(value, "nis", "F-96", inputs, today, about, rules);
+  const paidValue = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-106", inputs, today, about, rules);
   // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
   const ranValue = (value: number, about: string, isTax: boolean, formula = "F-96", inputs = common) => {
     const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(isTax ? notFeeFlag : () => true);
@@ -124,7 +125,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     const before = r(slice.net) + fees + salary + taxAtExit - r(slice.own) - r(slice.extra);
     const value = { own: r(slice.own), extra: r(slice.extra), gain: before, loss: -before, fees, salary, tax: taxAtExit }[part];
     const about = { own: story.about.own, extra: isEmployee ? story.about.extra : story.about.extraSelf, gain: story.about.gain, loss: story.about.gain, fees: story.about.fee, salary: story.about.taxSalary, tax: slice.taxFromSalary > 1 ? story.about.taxWithdrawal : story.about.tax }[part];
-    if (part === "own" || part === "extra") return nis(value, about, part === "own" ? ownIn : extraIn);
+    if (part === "own" || (part === "extra" && isEmployee)) return paidValue(value, about, part === "own" ? ownIn : extraIn);
+    if (part === "extra") return nis(value, about, extraIn);
     if (part === "salary") return ranValue(value, about, true, "F-96", salaryTaxIn);
     return ranValue(value, about, part === "tax");
   };
@@ -134,7 +136,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     return v && <Num value={v} display={signed(SIGN[part], compact)} />;
   };
   const leftValue = slice ? ranValue(slice.net, story.about.left, false) : null;
-  const ownValue = slice ? nis(slice.own, story.about.own, ownIn) : null;
+  const ownValue = slice ? paidValue(slice.own, story.about.own, ownIn) : null;
 
   // the choice the drawing is for: the year picked against the lock year (or, from the lock on, against the year before it)
   const yearAt = (y: number) => (y >= 1 && y <= YEARS ? (years[y - 1]?.slice ?? null) : null);

@@ -94,7 +94,7 @@ export interface TimelineInputs {
 /**
  * A run's running total (its fees, or the tax it paid along the way) in today's money: each month's part at that month's price level
  * (F-06), and what the run adds at the exit at the horizon's; never the total divided by the end's index, the shortcut F-06 forbids for
- * what was paid in (founder, 2026-11-08: "fix the wrong formulas").
+ * what was paid in.
  */
 export function totalToday<P extends { index: number }>(series: readonly P[], at: (point: P) => number, total: number): number {
   let sum = 0;

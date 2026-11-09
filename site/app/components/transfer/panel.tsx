@@ -42,7 +42,6 @@ import { shown } from "../../lib/review";
 type Site = { version: string; data: string };
 
 // a count of what the person saved (goals, holdings, names, duplicates in a file): their own entries, not a calculation of the site
-// (F-83 until 2026-11-08, the comparison's candidate count; founder: "fix the wrong formulas")
 const count = (n: number, about: string) => entered(n, "count", isoToday(), about);
 
 type Forms = { readonly one: string; readonly two: string; readonly many: string };

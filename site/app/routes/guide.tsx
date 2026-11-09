@@ -11,8 +11,8 @@ import { Timeline } from "../components/timeline/Timeline";
 import { hasSignatureVisual, SignatureFrame, signatureTitle, useReviewMode } from "../components/guide-signature";
 import { heldSignatures } from "../lib/review";
 import { accountWorthRow } from "../components/guide-signature/current-account";
-import { cashLikeIds } from "../lib/guide-signature";
-import { Disclosure, Sentence } from "../components/kit";
+import { cashLikeIds, lumpSumIds } from "../lib/guide-signature";
+import { Disclosure, gershayim, Sentence } from "../components/kit";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
 import { omitsSection, sectionTitle, withdrawalRules } from "../lib/guide-nav";
@@ -44,7 +44,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.name ?? guideIndex.title} · ${site.name}` }];
+  return [{ title: `${data?.name ? gershayim(data.name) : guideIndex.title} · ${site.name}` }];
 }
 
 export default function GuidePage() {
@@ -393,7 +393,7 @@ export default function GuidePage() {
   const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
   const timelineNode =
     data.bundle && data.initial ? (
-      <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} />
+      <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} lumpSum={lumpSumIds.includes(record.id) ? { note: content?.lumpNote ?? null } : null} />
     ) : null;
 
   const links = (
@@ -410,9 +410,9 @@ export default function GuidePage() {
         <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
-            <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
-            <h1 className="text-2xl lg:text-3xl font-semibold">{data.name}</h1>
-            {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
+            <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={gershayim(data.name)} />
+            <h1 className="text-2xl lg:text-3xl font-semibold">{gershayim(data.name)}</h1>
+            {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{gershayim(data.lede)}</p>}
             {data.heldIn && (
               <div className="flex flex-col gap-1 max-w-measure">
                 <Sentence

@@ -173,7 +173,7 @@ export type Factory = ReturnType<typeof factory>;
 
 /**
  * The fee page's figures, each listing what the run of the subject reads (`runInputs`, the comparison's one helper): the plan's money,
- * the return or, for a cash-like product, its own rate, and the profile only where the run reads it (founder, 2026-11-08). `goal` is the
+ * the return or, for a cash-like product, its own rate, and the profile only where the run reads it. `goal` is the
  * page's fields as values: an assumption's value now is the field itself (F-81 moves from it).
  */
 export function factory(bundle: CompareBundle, inputs: FeeInputs, wrapper?: WrapperEntry) {
@@ -211,7 +211,8 @@ function lift(v: ValueObject, stale: SiteValue["stale"], today: string, src?: Va
     const texts = src ? classTexts(v.computed_from.inputs as Record<string, unknown>, src) : {};
     for (const [label, raw] of Object.entries(v.computed_from.inputs)) {
       const isNum = typeof raw === "number";
-      inputs[label] = texts[label] ?? { ...computed(isNum ? raw : null, isNum ? "count" : "text", v.computed_from.formula, {}, { today, about: label }), ...(isNum ? {} : { value: String(raw) }) };
+      // a count over the file (F-68's tracks of one class in one period) lists that class and period, as the count beside the average does
+      inputs[label] = texts[label] ?? { ...computed(isNum ? raw : null, isNum ? "count" : "text", v.computed_from.formula, isNum ? texts : {}, { today, about: label }), ...(isNum ? {} : { value: String(raw) }) };
     }
   }
   return { ...v, computed_from: v.computed_from ? { formula: v.computed_from.formula, inputs } : undefined, weakest: v.source.strength, stale: stale ?? null, rulesUsed: (v.rule_ids ?? []).map((id) => ({ id, strength: v.source.strength })) } as SiteValue;

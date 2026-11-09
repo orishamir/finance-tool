@@ -4,11 +4,14 @@
   "en": null,
   "meaning": "עמלה שהבנק או בית ההשקעות גובים מדי תקופה על החזקת ניירות ערך בחשבון, ולא דמי הניהול של הקרן. בנק לא רשאי לגבות אותה על מק״מ ועל קרן כספית.",
   "where": [
+    "provider-site",
     "statement",
     "tariff"
   ],
   "wrapper_ids": [
     "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident",
     "makam",
     "money-market-fund-daily",
     "money-market-fund-renewable"
@@ -17,7 +20,8 @@
     "דמי משמרת",
     "דמי משמורת",
     "דמי ניהול/טיפול פקדון ני\"ע",
-    "דמי ניהול פקדון ני\"ע"
+    "דמי ניהול פקדון ני\"ע",
+    "דמי שמירה"
   ],
   "rule_ids": [
     "BANK-18",
@@ -25,6 +29,8 @@
     "BRK-17",
     "BRK-24",
     "BRK-33",
+    "IRA-16",
+    "IRA-22",
     "MF-27",
     "TXS-06"
   ],

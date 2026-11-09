@@ -3,7 +3,7 @@
 // page that ranked the houses on one fund was removed; the index page ranks them. No fee, rate or rule figure
 // is written here: tariffs come from the snapshots in the bundle, and every number leaves as a value object with its
 // state. Pure: no storage; the bundle is fetched once.
-import { fundOf, lineClasses, recordDistribution, type GapList, type RunContext } from "@finance-tool/engine";
+import { fundOf, lineClasses, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import { datedDay, tariffDated, type TariffDated } from "./tariff-date";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames, guideBlocks, kit as kitCopy } from "../copy";
@@ -208,7 +208,7 @@ type RunSpecError = { kind: "fund-type" } | { kind: "need-rate"; currency: strin
 /** The run inputs a fund fixes: its kind and drag (the same builder as F-65), the currency and how the return is quoted (F-04). */
 export function fundRun(
   s: SubjectFund,
-  exposure: Pick<ExposureRecord, "cash_like" | "currency"> | undefined,
+  exposure: Pick<ExposureRecord, "cash_like" | "currency"> & Partial<Pick<ExposureRecord, "id" | "us_dividends">> | undefined,
   grossReturn: number,
   assumptions: FundAssumptions,
   fx?: FxSnapshot,
@@ -226,7 +226,7 @@ export function fundRun(
   const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
   if (rec.distribution_policy === "distributing" && !dist) return { kind: "need-yield" };
   if (rec.distribution_policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") return { kind: "fund-type" };
-  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben, list);
+  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben, list, exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined);
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;
   const market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number } = { grossReturn };

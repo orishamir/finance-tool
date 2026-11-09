@@ -100,6 +100,14 @@ export function contributions(goal: Goal, index: readonly number[]): number[] {
 }
 
 /**
+ * F-106 What was paid in, in today's money, with deposits constant in today's money: `P = C_0 + 12 × n × C`, since each deposit
+ * `C × I_m` (F-05) at its own month's index (F-06) is `C`. Only where the run takes every deposit as entered.
+ */
+export function paidInAsEntered(amountNow: number, monthly: number, years: number): number {
+  return amountNow + 12 * years * monthly;
+}
+
+/**
  * F-06 Real value. A nominal amount `V` at month `m` is shown as `V / I_m`.
  */
 export function realValue(nominal: number, index: readonly number[], month: number): number {

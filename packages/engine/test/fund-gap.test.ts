@@ -116,6 +116,18 @@ describe("F-93 the dollar against the shekel", () => {
     expect(r.high).toBeCloseTo(r.low, 8);
     expect(stretchRange(m, 3)).toBeNull();
   });
+  it("names the month ends of the lowest and the highest stretch", () => {
+    // yearly points: 3.0, 3.6 (+20%), 3.24 (−10%), 3.564 (+10%)
+    const y = [3, 3.6, 3.24, 3.564].map((rate, i) => ({ date: `${2020 + i}-12-31`, rate }));
+    // each step is 12 points apart: pad the months between with the year's rate
+    const m = y.flatMap((p, i) => (i === 0 ? [p] : Array.from({ length: 12 }, (_, j) => (j === 11 ? p : { date: `${2020 + i}-${String(j + 1).padStart(2, "0")}-28`, rate: y[i - 1]!.rate }))));
+    const r = stretchRange(m, 1)!;
+    expect(r.low).toBeCloseTo(-10, 8);
+    expect(r.high).toBeCloseTo(20, 8);
+    expect([r.lowAt.start.date, r.lowAt.end.date]).toEqual(["2021-12-31", "2022-12-31"]);
+    expect([r.highAt.start.date, r.highAt.end.date]).toEqual(["2020-12-31", "2021-12-31"]);
+    expect(r.highAt.end.rate / r.highAt.start.rate - 1).toBeCloseTo(0.2, 10);
+  });
 });
 
 describe("F-94 where two results meet", () => {

@@ -112,7 +112,7 @@ export function whyNoPrice(bundle: { snapshots: WorkbenchBundle["snapshots"] }, 
   return at && "reason" in at ? reasonText(at.reason, optionClass[fund.option]) : c.funds.cannot;
 }
 
-/** The short line in a fund's last cell when the house gives it no price, naming the house, in `whyNoPrice`'s order (founder, 2026-11-08). */
+/** The short line in a fund's last cell when the house gives it no price, naming the house, in `whyNoPrice`'s order. */
 export function noPriceLine(bundle: { snapshots: WorkbenchBundle["snapshots"] }, houseId: string, fund: FundWay, house: string): string {
   const snap = bundle.snapshots.find((s) => s.id === houseId);
   const at = fund.byHouse[houseId];
@@ -430,7 +430,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         </span>
         <span className="flex max-md:flex-col md:items-baseline md:gap-2 min-w-0">
           {/* on a phone the whole name wraps, held at the index's longest (guidelines/design.md: nothing cut off at 390 px; a cut
-              "אלטשולר שחם מחקה (4D)…" lost the index, 2026-11-08); the held names are laid out on a phone only, so a computer's line keeps its width */}
+              "אלטשולר שחם מחקה (4D)…" lost the index); the held names are laid out on a phone only, so a computer's line keeps its width */}
           <LongestCase className="md:flex-initial min-w-0" cases={fundNames.map((n) => <span key={n} className="block md:hidden"><NameLine>{n}</NameLine></span>)}>
             <NameLine className="md:truncate">{fundOf(p)}</NameLine>
           </LongestCase>
@@ -590,7 +590,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
           <p>{whyTie}</p>
         </LongestCase>
         {/* the exposure codes, (4D) and the like, said once, where a fund name first carries one, for every code on the page (readers: the
-            tiles showed "(4D)" with nothing to say what it is; the list said it again far below, 2026-11-08) */}
+            tiles showed "(4D)" with nothing to say what it is; the list said it again far below) */}
         <p className="text-xs text-muted-foreground md:basis-full empty:hidden">
           <ProfileNote names={allFunds(view).map((f) => f.name)} />
         </p>
@@ -709,8 +709,8 @@ export const LONGEST_YEARS = 40;
 /**
  * The bank where the person already has a current account (D64): that bank's row leaves its current account out, every other bank's row
  * counts it (F-102). The banks are those whose current account costs something a month. The field sits at the bottom of the accounts card,
- * under the list it changes, and what it does is said in its label's "?" (founder, 2026-11-08: "move the your bank to the bottom of the banks
- * section", the line under it "should be a tooltip"). A pick re-sorts the list above with its rows sliding (design-system 2.5a); the list
+ * under the list it changes, and what it does is said in its label's "?". A pick re-sorts the list above with its rows sliding
+ * (design-system 2.5a); the list
  * keeps its rows and their heights, so the field under it stays where the hand is.
  */
 /** What the own-bank field does, for its "?". A bank whose price list charges nothing for its current account is not in the box: the text
@@ -784,7 +784,10 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const onWhy = (id: string, open: boolean) => setOpenWhys((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
   // the note on what a price abroad leaves out opens at a tap too
   const [abroadOpen, setAbroadOpen] = useState(false);
-  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${openWhys.join()}:${abroadOpen}`);
+  // the way back after a tap that changed the fund too, on the account tapped: the card's held height starts over when it comes and when it
+  // goes, so the card grows while it shows and gives the room back after
+  const backHere = moved?.half === "fund" && !!moved.back;
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${openWhys.join()}:${abroadOpen}:${backHere}`);
   // the rows' cases, laid out unseen, hold heights a plan does not change: kept over a slider's moves, so they are not laid out again on
   // every key (the cases of every state cost about 8 ms a key)
   const casesKept = useRef<{ key: string; byRow: Map<string, NonNullable<PickRow["cases"]>> } | null>(null);
@@ -862,8 +865,6 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   ];
   const snapshot = bundle.snapshots.find((s) => s.id === baseHouse);
   const at = fund.byHouse[pick.house];
-  // the way back names the account it goes back to: held at the longest name a row can carry
-  const longestShort = providers.map((p) => p.short).sort((a, b) => b.length - a.length)[0] ?? "";
   type Prov = (typeof providers)[number];
   // a house that sells a fund at a standing-order price keeps the tag's room whichever fund and plan (a monthly 0 and back moves nothing)
   const standingSomewhere = (id: string) => allFunds(view).some((f) => { const a = f.byHouse[id]; return priced(a) && a.standing; });
@@ -871,9 +872,11 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const phoneSomewhere = (id: string) => allFunds(view).map((f) => phoneOf(view, bundle, { house: id, fund: f.rec.id })).find((v) => v) ?? null;
   /**
    * A priced row's cells; `unseen`: one of the row's cases, laid out to hold its height (PickList): every tag that can stand on many rows
-   * at once (the tie, on a computer), and the one-per-list marks it is laid out with: the cheapest's star, the way back after a tap.
+   * at once (the tie, on a computer), and the one-per-list mark it is laid out with: the cheapest's star. The way back after a tap is not
+   * held: it shows only after a tap on a grey row, and a blank kept for it under the list every time costs more than the list growing
+   * while it shows.
    */
-  const pricedCells = (p: Prov, wp: WayPrice, unseen?: { crown: boolean; back: boolean; tie: boolean }) => {
+  const pricedCells = (p: Prov, wp: WayPrice, unseen?: { crown: boolean; tie: boolean }) => {
     const parts: CostPart[] = [remainderPart(wp.interaction), ...byLegend(wp.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) }))];
     const isYours = p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
@@ -893,9 +896,13 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
             {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
             {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line */}
             {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
-            {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
-            {/* unseen, it is held too, on one row at a time: the row a tap turns from grey to priced is the one that carries it */}
-            {unseen ? unseen.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBackTo(longestShort)} onBack={() => undefined} /> : p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBackTo(providerName(view, moved.prev.house)?.short ?? moved.prev.house)} onBack={backFrom(moved, p.id)} />}
+            {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height);
+                no hold keeps its room (`data-unheld`), so the list grows while it shows and gives the room back when it goes */}
+            {!unseen && backHere && p.id === baseHouse && (
+              <span data-unheld className="contents">
+                <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBackTo(providerName(view, moved!.prev.house)?.short ?? moved!.prev.house)} onBack={backFrom(moved!, p.id)} />
+              </span>
+            )}
             {(unseen ? standingSomewhere(p.id) : wp.standing && monthly > 0) && <span>{c.pair.standingTag}</span>}
             {phone && <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag>}
           </span>
@@ -971,10 +978,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   // over the funds that can be picked (a fund priced nowhere for its own reason has no row to pick: its state never comes); the fund on
   // the screen first, so a state's case is laid out with it where it can be
   const pickable = [fund, ...allFunds(view).filter((f) => f !== fund && Object.keys(f.byHouse).length > 0)];
-  // a house's grey rows: a tap on one moves the fund too, and the row tapped carries the way back in the state it brings
-  const greySomewhere = (id: string) => pickable.some((f) => !priced(f.byHouse[id])) && otherWay(view, id) !== null;
-  // every state of the row, the one on the screen included, each measured the same way (PickList): a priced state plain, and with each
-  // mark that can come to it: the star where the house can rank (any plan can make it the cheapest), the way back where a tap can bring it
+  // every state of the row, the one on the screen included, each measured the same way (PickList): a priced state plain, and with the
+  // star where the house can rank (any plan can make it the cheapest)
   const casesOf = (p: Prov): NonNullable<PickRow["cases"]> => {
     const out: NonNullable<PickRow["cases"]> = [];
     const seen = new Set<string>();
@@ -989,11 +994,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
       const ways = pickable.flatMap((x) => { const a = x.byHouse[p.id]; return priced(a) ? [a] : []; });
       const way = ways[0]!;
       const crown = ways.some((a) => !a.open && !isGroupPrice(a));
-      const back = greySomewhere(p.id);
-      for (const [cr, bk] of [[false, false], [true, false], [false, true], [true, true]] as const) {
-        if ((cr && !crown) || (bk && !back)) continue;
-        out.push({ key: k, cells: pricedCells(p, way, { crown: cr, back: bk, tie: crown }), marks: [...(cr ? ["crown"] : []), ...(bk ? ["back"] : [])] });
-      }
+      for (const cr of crown ? [false, true] : [false]) out.push({ key: k, cells: pricedCells(p, way, { crown: cr, tie: crown }), marks: cr ? ["crown"] : [] });
     }
     return out;
   };
@@ -1087,7 +1088,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
               </LeadTail>
             </span>
             <span className="text-end col-end-[-1] row-start-1">
-              {/* the "?" holds to the head's last word: on a computer's narrow column it fell onto a line of its own (layout check, 2026-11-08) */}
+              {/* the "?" holds to the head's last word, so on a computer's narrow column it never stands on a line of its own */}
               <LeadTail lead={`${c.pair.colLeftHead(years)} `}>
                 <HelpMark about={c.pair.colLeftHead(years)} text={c.pair.colLeftHelp} />
               </LeadTail>
@@ -1420,7 +1421,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
     const heading = opensGroup(shown, i) ? (
       <span className="flex flex-wrap items-center gap-1.5">
         <Swatch shape="box" className={k === "hedged" ? "bg-chart-kind-hedged" : "bg-chart-kind-unhedged"} />
-        {/* no count: the rows are in view (founder, 2026-11-08: "remove the fund count"); the chips are what every fund of the group shares */}
+        {/* no count: the rows are in view; the chips are what every fund of the group shares */}
         {names[k]}
         {(groupShared.get(k) ?? []).length > 0 && <> · {c.kinds.allOf}</>}
         {(groupShared.get(k) ?? []).map((l) => (

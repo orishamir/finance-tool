@@ -22,8 +22,10 @@ export interface PickRow {
    * The cells the row takes in each of the list's states (`states`), by key, the one it shows now (`caseKey`) included: a house priced or
    * not, with each reason it can give. Laid out unseen and out of the flow, to be measured; every state is measured from its cases, so
    * the held height is the same whichever state the page opened in. A case's plain cells carry every tag that can stand on many rows at
-   * once; a tag that stands on one row at a time (the cheapest's star, the way back after a tap) is a mark, in a case of its own with
-   * `marks`, and counts on the one row where it adds the most (third pass: a case with every tag at once held 122 px too many).
+   * once; a tag that stands on one row at a time (the cheapest's star) is a mark, in a case of its own with `marks`, and counts on the
+   * one row where it adds the most (third pass: a case with every tag at once held 122 px too many). A line a row shows only for a moment
+   * (the way back after a tap) is no case: wrapped in an element with `data-unheld`, it grows the list while it shows, and the height the
+   * list keeps for later (`holdKey`) is never one measured with it.
    */
   cases?: { key: string; cells: ReactNode; marks?: string[] }[];
   caseKey?: string;
@@ -190,7 +192,8 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         // component started over and shrank (14 px at the sliders' start)
         const k = `${label}|${holdKey}|${window.innerWidth}`;
         held = Math.max(held, h(list), keptHeights.get(k) ?? 0);
-        keptHeights.set(k, held);
+        // a line no hold keeps (`data-unheld`) stands in the list only for a moment: the height kept for later is one measured without it
+        if (!list.querySelector(":scope > [data-pick-key] [data-unheld]")) keptHeights.set(k, held);
       }
       if (held > 0) list.style.minHeight = `${held}px`;
     };
