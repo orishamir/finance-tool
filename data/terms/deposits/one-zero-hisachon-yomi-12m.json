@@ -148,7 +148,8 @@
     "mechanism_text": "'אפשרות לשבירת החיסכון: קיימת בכל יום עסקים ללא קנס שבירה' (table column); exit points 'קיימת', 'בכל יום עסקים'.",
     "rule_ids": [
       "BANK-06",
-      "BANK-14"
+      "BANK-14",
+      "BANK-49"
     ]
   },
   "exit_points": {

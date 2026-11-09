@@ -4,8 +4,9 @@
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
-import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
+import { ownFigures } from "../lib/rule-row";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
@@ -16,7 +17,7 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, FormulaBlock, LongestCase, PrintedText, When, useAheadSaid, countsByItself, gershayim, keepTitleWhole, useCounting, useGlidingNumbers, useUnseen } from "./kit";
+import { Card, CompanyLinks, FormulaBlock, GroupHead, LongestCase, PrintedText, StatRow, When, useAheadSaid, countsByItself, gershayim, keepTitleWhole, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
@@ -1356,6 +1357,89 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
 
 // ---------------------------------------------------------------- rule card
 
+/** A figure's Hebrew name when the record has one; else its key as written. */
+function figureLabel(rule: RuleRecord, name: string, className = "text-xs"): ReactNode {
+  return rule.figure_names_he?.[name] ? <span className={className}>{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className={className}>{name}</bdi>;
+}
+
+const unitSuffix = (unit: string, className = "text-sm text-muted-foreground") => (suffixUnits.has(unit) ? <span className={className}> {unitWordOf(unit)}</span> : null);
+
+/** "לשנת המס 2026 · קבוע בחוק": the tax year the figure is for (when its label does not say) and how it is updated. */
+function FigureNote({ v, labelYear, className = "block text-xs text-muted-foreground font-normal" }: { v: { tax_year?: number | null; update_rule: string }; labelYear: string | null; className?: string }) {
+  const bits: ReactNode[] = [];
+  if (v.tax_year && String(v.tax_year) !== labelYear)
+    bits.push(
+      <span key="y">
+        {ruleCardMore.forTaxYear} <bdi dir="ltr">{v.tax_year}</bdi>
+      </span>,
+    );
+  const frozen = /^frozen (\d{4})-(\d{4})$/.exec(v.update_rule);
+  const word = frozen ? updateRules.frozen : (updateRules as Record<string, string>)[v.update_rule];
+  if (word) {
+    const [before, after] = word.split("{years}");
+    bits.push(
+      <span key="u">
+        {before}
+        {frozen && (
+          <bdi dir="ltr">
+            {frozen[1]}–{frozen[2]}
+          </bdi>
+        )}
+        {after}
+      </span>,
+    );
+  }
+  if (bits.length === 0) return null;
+  return <span className={className}>{bits.flatMap((b, i) => (i ? [" · ", b] : [b]))}</span>;
+}
+
+/** The rule's "המספרים" block: every figure of the record, by tax year and by bracket, each a Num. */
+function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecord; id: string; pageValue?: (v: SiteValue) => SiteValue; /** In place of the plain muted "המספרים". */ head?: ReactNode }) {
+  const figures = Object.entries(rule.figures ?? {});
+  if (figures.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-1.5">
+      {head ?? <span className="text-sm text-muted-foreground">{ruleCopy.figures}</span>}
+      <dl className="readout">
+        {figures.flatMap(([name, f]) => {
+          if (Array.isArray(f))
+            return f.map((b, i) => (
+              <div key={`${name}-${i}`} className="readout-row">
+                <dt>
+                  {figureLabel(rule, name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] })} />}
+                  {i === 0 && <FigureNote v={b.rate} labelYear={null} />}
+                </dt>
+                <dd>
+                  <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] })} />
+                  {unitSuffix(b.rate.unit)}
+                </dd>
+              </div>
+            ));
+          const byYear = "by_tax_year" in f ? Object.entries(f.by_tax_year) : [[null, f] as const];
+          return byYear.map(([year, v]) => (
+            <div key={`${name}-${year ?? ""}`} className="readout-row">
+              <dt>
+                {figureLabel(rule, name)}
+                {year && (
+                  <>
+                    {" "}
+                    <bdi dir="ltr">{year}</bdi>
+                  </>
+                )}
+                <FigureNote v={v} labelYear={year} />
+              </dt>
+              <dd>
+                <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id] })} />
+                {unitSuffix(v.unit)}
+              </dd>
+            </div>
+          ));
+        })}
+      </dl>
+    </div>
+  );
+}
+
 function ShownRuleTitle({ rule }: { rule: RuleRecord }) {
   const t = ruleTitle(rule);
   return t.english ? <bdi dir="ltr">{t.text}</bdi> : <>{t.text}</>;
@@ -1378,7 +1462,6 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   const page = data.pageCompanies ?? (data.company ? [data.company] : []);
   const rule = pageView(record, page, data.companies);
   const open = rule.strength === "open";
-  const figures = Object.entries(rule.figures ?? {});
   const sourced = asSourced(rule);
   const sources = page.length ? sourcesForPage(rule, pickSources(sourced), page, data.companies) : pickSources(sourced);
   /** A company's figure on its own term, on its own page, is its own (D31): no "לפי החברה". */
@@ -1387,43 +1470,6 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
     return c && page.includes(c.id) && rule.scope === "institution" ? ownBy(v, c.id) : v;
   };
   const uses = data.ruleUses?.[id];
-  const derived = sourced.derived_from ?? [];
-  const examples = rule.examples ?? [];
-  // the figure's Hebrew name when the record has one; else its key as written
-  const figureLabel = (name: string) => (rule.figure_names_he?.[name] ? <span className="text-xs">{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className="text-xs">{name}</bdi>);
-  const unitSuffix = (unit: string) => (suffixUnits.has(unit) ? <span className="text-sm text-muted-foreground"> {unitWordOf(unit)}</span> : null);
-  /** "לשנת המס 2026 · קבוע בחוק": the tax year the figure is for (when its label does not say) and how it is updated. */
-  const figureNote = (v: { tax_year?: number | null; update_rule: string }, labelYear: string | null) => {
-    const bits: ReactNode[] = [];
-    if (v.tax_year && String(v.tax_year) !== labelYear)
-      bits.push(
-        <span key="y">
-          {ruleCardMore.forTaxYear} <bdi dir="ltr">{v.tax_year}</bdi>
-        </span>,
-      );
-    const frozen = /^frozen (\d{4})-(\d{4})$/.exec(v.update_rule);
-    const word = frozen ? updateRules.frozen : (updateRules as Record<string, string>)[v.update_rule];
-    if (word) {
-      const [before, after] = word.split("{years}");
-      bits.push(
-        <span key="u">
-          {before}
-          {frozen && (
-            <bdi dir="ltr">
-              {frozen[1]}–{frozen[2]}
-            </bdi>
-          )}
-          {after}
-        </span>,
-      );
-    }
-    if (bits.length === 0) return null;
-    return (
-      <span className="block text-xs text-muted-foreground font-normal">
-        {bits.flatMap((b, i) => (i ? [" · ", b] : [b]))}
-      </span>
-    );
-  };
   return (
     <div className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
       <header className="flex flex-col gap-1.5">
@@ -1454,22 +1500,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
       {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs)}</p>}
-      {derived.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span>{ruleCardMore.derivedFrom}</span>
-            {derived.map((d) => <RuleRef key={d} id={d} titled />)}
-          </p>
-          <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
-        </div>
-      )}
-      {/* a general rule's pointers to companies' terms: named examples (spec §1), never "נגזר מ־" */}
-      {examples.length > 0 && (
-        <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span>{ruleCardMore.examples}</span>
-          {examples.map((d) => <RuleRef key={d} id={d} titled />)}
-        </p>
-      )}
+      <RulePointers rule={rule} />
       {sources.length > 0 ? (
         // a company's term read from that company's own document is its own context (D31): the source line carries no "לפי החברה"
         <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} own={rule.scope === "institution" ? (s) => isOwnSourceOf(rule, s, data.ownDocs, data.companies) : false} />
@@ -1477,47 +1508,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         // rule records without a source link are shown as such, not hidden
         <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>
       )}
-      {figures.length > 0 && (
-        <div className="flex flex-col gap-1.5">
-          <span className="text-sm text-muted-foreground">{ruleCopy.figures}</span>
-          <dl className="readout">
-            {figures.flatMap(([name, f]) => {
-              if (Array.isArray(f))
-                return f.map((b, i) => (
-                  <div key={`${name}-${i}`} className="readout-row">
-                    <dt>
-                      {figureLabel(name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] })} />}
-                      {i === 0 && figureNote(b.rate, null)}
-                    </dt>
-                    <dd>
-                      <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] })} />
-                      {unitSuffix(b.rate.unit)}
-                    </dd>
-                  </div>
-                ));
-              const byYear = "by_tax_year" in f ? Object.entries(f.by_tax_year) : [[null, f] as const];
-              return byYear.map(([year, v]) => (
-                <div key={`${name}-${year ?? ""}`} className="readout-row">
-                  <dt>
-                    {figureLabel(name)}
-                    {year && (
-                      <>
-                        {" "}
-                        <bdi dir="ltr">{year}</bdi>
-                      </>
-                    )}
-                    {figureNote(v, year)}
-                  </dt>
-                  <dd>
-                    <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id] })} />
-                    {unitSuffix(v.unit)}
-                  </dd>
-                </div>
-              ));
-            })}
-          </dl>
-        </div>
-      )}
+      <RuleFigures rule={rule} id={id} pageValue={pageValue} />
       <dl className="sheet-dl">
         <Row label={ruleCopy.checked}>
           <When iso={rule.checked} />
@@ -1563,6 +1554,270 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   );
 }
 
+// ---------------------------------------------------------------- the rules page's detail and top match
+
+/** "נגזר מ־" and the rules a conclusion rests on; "לדוגמה:" and a general rule's named examples at companies (never a derivation). */
+function RulePointers({ rule }: { rule: RuleRecord }) {
+  const derived = asSourced(rule).derived_from ?? [];
+  const examples = rule.examples ?? [];
+  return (
+    <>
+      {derived.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span>{ruleCardMore.derivedFrom}</span>
+            {derived.map((d) => <RuleRef key={d} id={d} titled />)}
+          </p>
+          <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
+        </div>
+      )}
+      {examples.length > 0 && (
+        <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{ruleCardMore.examples}</span>
+          {examples.map((d) => <RuleRef key={d} id={d} titled />)}
+        </p>
+      )}
+    </>
+  );
+}
+
+
+/** A document's citation copied by a press: the citation box's line for each place cited in it, behind a small button with the box's words. Its 44 px reach spills into the block's padding, so the line stays as tall as the date beside it. */
+function CopyCitation({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // no clipboard permission: nothing is written, nothing is claimed
+    }
+  };
+  return (
+    <Button variant="quiet" className="!px-0 -my-3 ms-auto text-xs gap-1" onClick={() => void copy()} aria-live="polite">
+      {copied ? <IconCheck size={14} className="text-positive" /> : <IconCopy size={14} />}
+      <span className={copied ? "text-positive" : undefined}>{copied ? sourceCopy.citation.copied : ruleCardMore.copyCitation}</span>
+    </Button>
+  );
+}
+
+/** A rule's sources by document: one block per address (its names, its PDF tag), each cited place in it on its own line with its quoted words, then when it was read and the document's copy button. */
+function SourcesByDocument({ sources, rule, today }: { sources: readonly RuleSource[]; rule: SourcedRule; today: string }) {
+  const publishersHe = useContext(DataCtx)?.publishersHe;
+  const docs: RuleSource[][] = [];
+  const at = new Map<string, number>();
+  for (const s of sources) {
+    const key = publicUrl(s.url).split("#")[0]!;
+    if (!at.has(key)) {
+      at.set(key, docs.length);
+      docs.push([]);
+    }
+    docs[at.get(key)!]!.push(s);
+  }
+  const w = rulesDetail;
+  return (
+    <section className="flex flex-col gap-3" aria-label={w.sourcesHead}>
+      <GroupHead>{w.sourcesHead}</GroupHead>
+      {docs.map((list) => {
+        const first = list[0]!;
+        const host = hostOf(first.url);
+        const he = first.publisher_he ?? (host ? publishersHe?.[host] : undefined);
+        const named = he ? { ...first, publisher_he: he } : first;
+        const parts = sourceParts(named);
+        const n = sourceLabel2(named);
+        const dates = [...new Set(list.map((s) => s.checked))];
+        return (
+          <div key={first.url} className="flex flex-col gap-1.5 rounded-md border border-border p-3">
+            <a href={sourceHref(list.length === 1 ? first : { url: first.url })} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline font-medium">
+              <span className="min-w-0 [overflow-wrap:anywhere]">
+                <SourceNames parts={parts} hebrewTitle={isHebrewTitle(n.title)} />
+              </span>
+              {n.pdf && <span className="shrink-0 mt-1 text-xs leading-none rounded-sm border border-border px-1 py-0.5 text-muted-foreground font-normal">{sourceCopy.pdfTag}</span>}
+              <IconExternal size={16} className="shrink-0 mt-1" />
+            </a>
+            <ul className="flex flex-col gap-1.5">
+              {list.map((s, i) => {
+                const loc = sourceLabel2(s).locator;
+                const weak = s.strength !== "primary" ? sourceCopy.weak[s.strength] : null;
+                const changed = mayHaveChanged(rule, s, today);
+                return (
+                  <li key={`${i}:${s.locator ?? ""}`} className="flex flex-col gap-0.5 border-s-2 border-border ps-2.5">
+                    {loc && (
+                      <a href={sourceHref(s)} target="_blank" rel="noopener noreferrer" className="text-link text-sm hover:underline w-fit [overflow-wrap:anywhere]">
+                        <Iso>{loc}</Iso>
+                      </a>
+                    )}
+                    {s.quote && <p className="text-sm text-muted-foreground">״{s.quote}״</p>}
+                    {(weak || changed || dates.length > 1) && (
+                      <p className={cx("text-xs", changed ? "text-caution-foreground" : "text-muted-foreground")}>
+                        {dates.length > 1 && (
+                          <>
+                            {sourceCopy.checked} <Iso ltr>{fmt.date(s.checked)}</Iso>
+                          </>
+                        )}
+                        {weak && `${dates.length > 1 ? " · " : ""}${weak}`}
+                        {changed && `${dates.length > 1 || weak ? " · " : ""}${sourceCopy.mayHaveChanged}`}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="flex items-center gap-3">
+              {dates.length === 1 && (
+                <p className="text-xs text-muted-foreground">
+                  {sourceCopy.checked} <Iso ltr>{fmt.date(dates[0]!)}</Iso>
+                </p>
+              )}
+              <CopyCitation text={list.map((s) => citationText(rule, s, s.checked)).join("\n")} />
+            </div>
+          </div>
+        );
+      })}
+    </section>
+  );
+}
+
+/**
+ * The rules page's whole rule, opened from its row: everything the rule card holds, in the order a reader checks it. Its id; the title and the products it applies to; the text; its numbers; its sources by document; then what it touches,
+ * what it changes on the site, and when it was read. `after` is the search's line to the companies' documents.
+ */
+export function RuleDetail({ id, data, products, headId, after }: { id: string; data: ProvenanceData; products: readonly string[]; headId?: string; after?: ReactNode }) {
+  const rule = ruleOf(data, id);
+  if (!rule) return <RuleCard id={id} data={data} headId={headId} inline />;
+  const open = rule.strength === "open";
+  const sourced = asSourced(rule);
+  const sources = pickSources(sourced);
+  const uses = data.ruleUses?.[id];
+  const dims = rule.dimensions.filter((d) => data.dimensions[d]);
+  const usesSome = !!uses && (uses.pages.length > 0 || uses.engine);
+  return (
+    <article className={cx("flex flex-col gap-5 min-w-0 [overflow-wrap:anywhere]", open && "rule-open")}>
+      <p className="text-[13px] text-muted-foreground">
+        <bdi dir="ltr" className="tabular-nums slashed-zero">{id}</bdi>
+      </p>
+      <header className="flex flex-col gap-2 -mt-3">
+        <h2 id={headId} tabIndex={-1} className="text-xl font-semibold leading-snug outline-none">
+          {open && <>{ruleCopy.open.title} </>}
+          <ShownRuleTitle rule={rule} />
+        </h2>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {products.map((p) => (
+            <Tag key={p} tone="neutral">{gershayim(p)}</Tag>
+          ))}
+          {/* who it applies to: shown only when it is not every case (D30) */}
+          {!isGeneral(rule) && <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs)}</Tag>}
+          {isNotRule(id) && !isGeneral(rule) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
+          {(rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
+        </div>
+      </header>
+      {open ? (
+        <Callout tone="blocked">
+          <span className="block">{ruleCopy.open.last}</span>
+        </Callout>
+      ) : rule.text_he ? (
+        <p className="text-base leading-relaxed">{rule.text_he}</p>
+      ) : (
+        <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
+      )}
+      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs)}</p>}
+      <RulePointers rule={rule} />
+      <RuleFigures rule={rule} id={id} head={<GroupHead>{ruleCopy.figures}</GroupHead>} />
+      {sources.length > 0 ? <SourcesByDocument sources={sources} rule={sourced} today={data.today} /> : <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>}
+      <dl className="sheet-dl border-t border-border pt-3">
+        {dims.length > 0 && (
+          <Row label={ruleCopy.dimensions}>
+            <span className="flex flex-wrap gap-1.5">
+              {dims.map((d) => (
+                <Tag key={d} tone="neutral">
+                  {data.dimensions[d]}
+                </Tag>
+              ))}
+            </span>
+          </Row>
+        )}
+        {uses && (
+          <Row label={ruleCardMore.usesLead}>
+            {usesSome ? (
+              <span className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
+                {uses.pages.map((u) => (
+                  <Link key={u.href} to={u.href} className="text-link hover:underline">
+                    {u.label}
+                  </Link>
+                ))}
+                {uses.engine && <span>{ruleCardMore.usesEngine}</span>}
+              </span>
+            ) : (
+              <span className="text-sm text-muted-foreground">{ruleCardMore.usesNone}</span>
+            )}
+          </Row>
+        )}
+        <Row label={ruleCopy.checked}>
+          <span className="text-sm flex flex-wrap gap-x-2">
+            <When iso={rule.checked} />
+            {rule.recheck_date ? (
+              <span className="text-caution-foreground">
+                · <When iso={rule.recheck_date} lead={`${ruleCopy.recheck} `} />
+              </span>
+            ) : rule.likely_to_change === "no" ? (
+              <span className="text-muted-foreground">· {ruleCardMore.stable}</span>
+            ) : null}
+          </span>
+        </Row>
+      </dl>
+      {after}
+    </article>
+  );
+}
+
+/**
+ * The search's closest match, drawn larger: its title, then its own numbers as headline figures (each with its unit, its name under it
+ * and how it is updated), or its first sentence when it has none, then its first source and when it was read. Only what the record
+ * holds: no verdict, no answer written for the search.
+ */
+export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: ProvenanceData; label: string; lead: string; onOpen: () => void }) {
+  const rule = ruleOf(data, id);
+  if (!rule) return null;
+  const figures = ownFigures(rule, Number(data.today.slice(0, 4))).slice(0, 2);
+  const sources = pickSources(asSourced(rule));
+  const first = sources[0];
+  const parts = first ? sourceParts(first) : null;
+  return (
+    <Card edge="accent" pad="tight" className="flex flex-col gap-3">
+      <span className="text-[13px] font-medium text-primary">{label}</span>
+      <h3 className="text-lg font-semibold leading-snug -mt-1">
+        <button type="button" onClick={onOpen} className="text-start hover:underline">
+          <ShownRuleTitle rule={rule} />
+        </button>
+      </h3>
+      {figures.length > 0 ? (
+        <StatRow cols={2}>
+          {figures.map(({ key, value }) => (
+            <div key={key} className="flex flex-col gap-0.5 min-w-0">
+              <dd className="order-1 flex items-baseline gap-1.5">
+                <span className="figure">
+                  <Num value={{ ...value, rule_ids: value.rule_ids ?? [id] }} size="figure" />
+                </span>
+                {unitSuffix(value.unit, "text-lg text-muted-foreground")}
+              </dd>
+              <dt className="order-2 text-sm text-muted-foreground">{figureLabel(rule, key, "text-sm")}</dt>
+              <FigureNote v={value} labelYear={null} className="order-3 text-xs text-muted-foreground" />
+            </div>
+          ))}
+        </StatRow>
+      ) : (
+        lead && <p className="text-base">{lead}</p>
+      )}
+      {first && parts && (
+        <p className="text-[13px] text-muted-foreground">
+          <SourceNames parts={parts} hebrewTitle={isHebrewTitle(sourceLabel2(first).title)} /> · {sourceCopy.checked} <Iso ltr>{fmt.date(first.checked)}</Iso>
+        </p>
+      )}
+    </Card>
+  );
+}
+
 /**
  * "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת." for a company's term, naming only the companies whose own documents it cites;
  * the unsettled line for a rule not shown to hold everywhere; "המקורות כאן אינם מסמכים של …" for a record about companies that cites
@@ -1588,7 +1843,7 @@ function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
     return data.rulesOf ? <LinkButton to={`${data.rulesOf.href}#${rule.id}`} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={`/rules#${rule.id}`} onClick={close}>{ruleCopy.all}</LinkButton>;
   }
   const links = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
-  if (links.length === 0) return <LinkButton to={`/companies#${noCompanyAnchor}`} onClick={close}>{scopeWords.allNoCompany}</LinkButton>;
+  if (links.length === 0) return <LinkButton to={`/documents#${noCompanyAnchor}`} onClick={close}>{scopeWords.allNoCompany}</LinkButton>;
   if (links.length === 1) return <LinkButton to={links[0]!.href} onClick={close}>{scopeWords.allAt.replace("{name}", links[0]!.name)}</LinkButton>;
   return (
     <span onClick={close}>

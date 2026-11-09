@@ -222,13 +222,9 @@
   .num-unknown {
     color: var(--muted-foreground);
   }
-  /* a figure the record itself doubts (SiteValue.doubt): a light amber tint behind it, the caution icon before it, its sheet says why
-     (founder, 2026-11-08: "make it a bit yellow and the warning inside it") */
+  /* a figure the record itself doubts (SiteValue.doubt): amber text and the caution icon beside it, no tint behind it; its sheet says why */
   .num-doubt {
-    background: var(--caution-subtle);
     color: var(--caution-foreground);
-    padding-inline: 0.15em;
-    border-radius: 2px;
   }
   .num:focus-visible {
     outline: 2px solid var(--ring);

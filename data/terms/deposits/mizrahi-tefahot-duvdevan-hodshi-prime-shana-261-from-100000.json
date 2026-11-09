@@ -75,7 +75,7 @@
       "BANK-34"
     ],
     "state": "sourced",
-    "notes": "Nominal annual rate before tax printed '1.97%'. Row '261 - דובדבן-חודשי פריים שנה': period '12 חודשים', rate type 'משתנה', linkage 'אין', break 'לא ניתן לשבור', automatic renewal 'לא מתחדש', number of renewals 'לא מתחדש', exit points 'אין' 'אין', anchor 'P=4.75%', deposit options 'כיצד להפקיד'. Amount tiers merged into this record (each as printed): '250000' / 'P-2.78%' / '1.97%' / common '' / effective '1.99%'; '1000000' / 'P-2.78%' / '1.97%' / common '' / effective '1.99%'; '1000000<' / 'P-2.78%' / '1.97%' / common '' / effective '1.99%'. Read 2026-11-09 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=500&currencyCode=), 'כל המידע המוצג נכון לתאריך ושעה' 09/11/2026 08:31:13; amount tiers are printed as upper bounds under 'טווח סכום להפקדה (לא כולל)'."
+    "notes": "Nominal annual rate before tax printed '1.97%'. Row '261 - דובדבן-חודשי פריים שנה': period '12 חודשים', rate type 'משתנה', linkage 'אין', break 'לא ניתן לשבור', automatic renewal 'לא מתחדש', number of renewals 'לא מתחדש', exit points 'אין' 'אין', anchor 'P=4.75%', deposit options 'כיצד להפקיד'. Amount tiers merged into this record (each as printed): '250000' / 'P-2.78%' / '1.97%' / common '' / effective '1.99%'; '1000000' / 'P-2.78%' / '1.97%' / common '' / effective '1.99%'; '1000000<' / 'P-2.78%' / '1.97%' / common '' / effective '1.99%'. Read 2026-11-09 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=500&currencyCode=), 'כל המידע המוצג נכון לתאריך ושעה' 09/11/2026 08:31:13; amount tiers are printed as upper bounds under 'טווח סכום להפקדה (לא כולל)'. Terms document (https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_150_261.pdf, one for the product, no amount tiers), 'תיאור הפיקדון': 'פיקדון שקלי בריבית ניידת כמרווח קבוע מריבית הפריים לתקופה של שנה, המשלם ריבית חודשית'; the 447 table prints no interest-payment column and prints every column but amount, spread and rates once for all four tiers."
   },
   "linkage": "none",
   "tax_bucket": {
@@ -119,14 +119,14 @@
         "BANK-27"
       ],
       "state": "sourced",
-      "notes": "The 447 table prints tier bounds only; the previous tier ends at '100,000' ('לא כולל'), so this tier starts there. Terms document's maximum: 'ללא מגבלה'."
+      "notes": "The 447 table prints tier bounds only; the previous tier ends at '100000' (header 'טווח סכום להפקדה (לא כולל)'), so this tier starts there. Terms document's maximum: 'ללא מגבלה'."
     },
     "max": null
   },
   "break": {
     "allowed": false,
     "penalty": "not_allowed",
-    "mechanism_text": "447 table: 'לא ניתן לשבור'; terms document: 'לא ניתן למשוך את הפיקדון לפני מועד פירעונו'.",
+    "mechanism_text": "447 table: 'לא ניתן לשבור'; terms document: 'לא ניתן למשוך את הפיקדון לפני מועד פירעונו המוסכם'.",
     "rule_ids": [
       "BANK-06",
       "BANK-14"
@@ -140,6 +140,10 @@
     "value": false,
     "max_renewals": null
   },
+  "conditions_he": "הריבית משולמת בכל חודש.",
+  "variant": [
+    "interest_during_term"
+  ],
   "snapshot": "2026-11-09",
   "source": {
     "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",

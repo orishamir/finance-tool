@@ -148,7 +148,8 @@
     "mechanism_text": "'אפשרות לשבירת החיסכון: קיימת עם קנס שבירה (הלקוח מקבל 10% מהריבית הצבורה עד למועד השבירה בפועל)' (table column, read whole 2026-11-09; the earlier reading caught only '(10% מהריבית הצבורה)').",
     "rule_ids": [
       "BANK-06",
-      "BANK-14"
+      "BANK-14",
+      "BANK-49"
     ]
   },
   "exit_points": {

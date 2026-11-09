@@ -127,14 +127,14 @@ describe("scope helpers", () => {
     expect(generalOnly(["A-1", "B-2", "C-3"], { "A-1": { scope: "general" }, "B-2": { scope: "institution" } })).toEqual(["A-1", "C-3"]);
   });
   it("sends a company's term to its card on the first listing company's page, else its group, else the not-rules' group", () => {
-    const companies = { harel: { name: "הראל", href: "/companies/512267592", hasPage: true }, msci: { name: "MSCI", href: "/companies#terms-msci", hasPage: false } };
+    const companies = { harel: { name: "הראל", href: "/companies/512267592", hasPage: true }, msci: { name: "MSCI", href: "/documents#terms-msci", hasPage: false } };
     const own = { "CS-30": ["harel"], "ETF-48": ["msci"], "IRA-28": [] };
     expect(companyTermsHref({ id: "CS-30", scope: "institution", scope_institutions: [harel] }, companies, own)).toBe("/companies/512267592#CS-30");
-    expect(companyTermsHref({ id: "ETF-48", scope: "institution", scope_institutions: [{ id: "msci", name_he: "MSCI" }] }, companies, own)).toBe("/companies#terms-msci");
-    expect(companyTermsHref({ id: "SW-34", scope: "unsettled" }, companies, own)).toBe("/companies#terms-none");
+    expect(companyTermsHref({ id: "ETF-48", scope: "institution", scope_institutions: [{ id: "msci", name_he: "MSCI" }] }, companies, own)).toBe("/documents#terms-msci");
+    expect(companyTermsHref({ id: "SW-34", scope: "unsettled" }, companies, own)).toBe("/documents#terms-none");
     // a press report about a company is not its own document, and a not-rule is never listed: both go to the not-rules' group
-    expect(companyTermsHref({ id: "IRA-28", scope: "institution", scope_institutions: [harel] }, companies, own)).toBe("/companies#terms-none");
-    expect(companyTermsHref({ id: "MKT-01", scope: "institution", scope_institutions: [harel] }, companies, { "MKT-01": ["harel"] })).toBe("/companies#terms-none");
+    expect(companyTermsHref({ id: "IRA-28", scope: "institution", scope_institutions: [harel] }, companies, own)).toBe("/documents#terms-none");
+    expect(companyTermsHref({ id: "MKT-01", scope: "institution", scope_institutions: [harel] }, companies, { "MKT-01": ["harel"] })).toBe("/documents#terms-none");
   });
   it("names only the companies whose own documents a record cites", () => {
     const own = { "PEN-37": ["harel"] };

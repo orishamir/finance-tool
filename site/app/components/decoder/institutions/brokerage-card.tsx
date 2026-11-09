@@ -16,8 +16,8 @@ import { Card, ClaimList, Disclosure, DocLink, GroupPriceRows, TariffDate, KeyVa
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 import { isPdfUrl, sourceHref, type CitedPlace } from "../../../lib/sources";
+import { accountSectionIds, feeKindName, feeKindOf, feeKinds } from "./sections";
 
-const baseName = (b: string) => (guideBlocks.fees as Record<string, { name: string }>)[b]?.name ?? b;
 /** What a kind of fee is charged on, in the guides' words ("מכל המרה של שקלים למטבע זר או חזרה"). */
 const baseDesc = (b: string) => (guideBlocks.fees as Record<string, { base?: string }>)[b]?.base ?? null;
 const classWord = (c: string) => (copy.instrumentClasses as Record<string, string>)[c] ?? null;
@@ -132,10 +132,6 @@ function Spread({ l }: { l: TariffLineRow }) {
   );
 }
 
-/** The kinds in the order a reader looks for them; a kind not named here comes after, in the price list's order. */
-const kindOrder = ["trade", "custody", "fx", "fixed_period", "transfer_out", "distribution"];
-const kindOf = (l: TariffLineRow) => (l.distribution ? "distribution" : l.base);
-
 /**
  * Every line of the price list as the site's table of products,
  * grouped by kind under a strip with the fee's name, so a row says only what sets it apart: what it is charged on, the channel, the plan.
@@ -149,7 +145,7 @@ function FeeTable({ lines, kind }: { lines: TariffLineRow[]; kind: InstitutionKi
     { id: "max", head: copy.card.bounds.max, width: 10.5 },
     { id: "where", head: copy.card.cols.where, width: 7 },
   ];
-  const kinds = [...new Set(lines.map(kindOf))].sort((a, b) => (kindOrder.indexOf(a) + 1 || 99) - (kindOrder.indexOf(b) + 1 || 99));
+  const kinds = feeKinds(lines);
   return (
     <ProductTable
       columns={columns}
@@ -167,9 +163,9 @@ function FeeTable({ lines, kind }: { lines: TariffLineRow[]; kind: InstitutionKi
                   </span>
                 ),
               }
-            : { title: baseName(k) },
+            : { title: feeKindName(k) },
         rows: lines
-          .filter((l) => kindOf(l) === k)
+          .filter((l) => feeKindOf(l) === k)
           .map((l) => ({
             key: l.id,
             cells: [<Covers l={l} />, figure("price", l.rate, priceWord(l)), <Bound l={l} side="min" />, <Bound l={l} side="max" />, <WhereCell w={l.where} />],
@@ -200,7 +196,7 @@ function FeeTable({ lines, kind }: { lines: TariffLineRow[]; kind: InstitutionKi
 function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
   if (rows.length === 0) return null;
   return (
-    <Section level="card" title={copy.card.canBuy.title}>
+    <Section level="card" id={accountSectionIds.canBuy} title={copy.card.canBuy.title}>
       <Card as="ul" pad="none" className="flex flex-col divide-y divide-border">
         {rows.map((a) => (
           <li key={a.classes.join()} className="flex flex-col items-start gap-1 px-4 pt-3 pb-1 md:px-5">
@@ -221,7 +217,7 @@ function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
 function Claims({ entries }: { entries: readonly AdvertisingEntry[] }) {
   if (entries.length === 0) return null;
   return (
-    <Section level="card" title={copy.card.claims.title} lead={copy.card.claims.lead}>
+    <Section level="card" id={accountSectionIds.claims} title={copy.card.claims.title} lead={copy.card.claims.lead}>
       <Card pad="snug">
         <ClaimList entries={entries} />
       </Card>
@@ -232,9 +228,9 @@ function Claims({ entries }: { entries: readonly AdvertisingEntry[] }) {
 /** Group prices and offers, beside the comparison and never in it (D43): the sub-rows with where each stands, or why there are none. */
 function Groups({ groups, houseId, linked }: { groups: FeesSnapshot["groups"] | null; houseId: string; linked: readonly string[] }) {
   if (!groups) return null;
-  if (groups.state !== "prices") return <Section level="card" title={copy.card.groupsTitle} lead={groupWords.states[groups.state]}>{null}</Section>;
+  if (groups.state !== "prices") return <Section level="card" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={groupWords.states[groups.state]}>{null}</Section>;
   return (
-    <Section level="card" title={copy.card.groupsTitle} lead={copy.card.groupsLead}>
+    <Section level="card" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={copy.card.groupsLead}>
       <Card pad="snug">
         <GroupPriceRows entries={groups.entries} sources own={{ can: (key) => linked.includes(key), link: (key) => <Link to={groupPath(houseId, key)} className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWords.ownAccount}</Link> }} />
       </Card>
@@ -276,7 +272,7 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
     },
   ];
   return (
-    <Section level="card" title={copy.card.factsTitle}>
+    <Section level="card" id={accountSectionIds.facts} title={copy.card.factsTitle}>
       <KeyValueList items={items} />
     </Section>
   );
@@ -344,7 +340,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         )}
       </div>
       {tariff.lines.length > 0 && (
-        <Section level="card" title={copy.card.linesTitle}>
+        <Section level="card" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeTable lines={tariff.lines} kind={kind} />
         </Section>
       )}

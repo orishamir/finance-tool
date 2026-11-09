@@ -323,11 +323,11 @@ export function PercentField({ unit = "pct_per_year", range, validate, ...rest }
 
 /** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
 /** The one large field a page leads with (the rules page's claim): a whole sentence fits, and × empties it. Its words are the caller's. */
-export function AskField({ value, onChange, onFocus, label, placeholder, clearLabel }: { value: string; onChange: (value: string) => void; onFocus?: () => void; label: string; placeholder: string; clearLabel: string }) {
+export function AskField({ value, onChange, onFocus, label, placeholder, clearLabel, compact }: { value: string; onChange: (value: string) => void; onFocus?: () => void; label: string; placeholder: string; clearLabel: string; /** Keeps the phone's height on a computer too (a page whose list must start high). */ compact?: boolean }) {
   const id = useId();
   const input = useRef<HTMLInputElement>(null);
   return (
-    <div className="field-box !h-14 lg:!h-16 border-primary bg-card text-muted-foreground text-base lg:text-lg">
+    <div className={cx("field-box !h-14 border-primary bg-card text-muted-foreground text-base lg:text-lg", !compact && "lg:!h-16")}>
       <IconSearch size={20} />
       <label htmlFor={id} className="sr-only">
         {label}
@@ -393,6 +393,29 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
       {children}
       {note}
     </fieldset>
+  );
+}
+
+/**
+ * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
+ * select, no field box. `all` is the first option, chosen when `value` is null.
+ */
+export function InlineSelect({ label, all, options, value, onChange }: { label: string; all: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void }) {
+  const id = useId();
+  return (
+    <span className="inline-flex items-center gap-1 text-sm">
+      <label htmlFor={id} className="text-muted-foreground">
+        {label}:
+      </label>
+      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="min-h-target max-w-48 truncate bg-transparent font-medium text-foreground rounded-md px-1 hover:bg-accent/50 cursor-pointer">
+        <option value="">{all}</option>
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.name}
+          </option>
+        ))}
+      </select>
+    </span>
   );
 }
 

@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, trackBrowser } from "../../copy";
+import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoiceTray, ChooseRow, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -320,9 +320,17 @@ function Choices() {
         <State label={`wrap, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap />
         </State>
+        <State label={`counts, line, ${g.states.interactive}`}>
+          <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} line counts={{ "0": 32, "1": 15, "2": 12, "3": 1 }} bleed="" />
+        </State>
         <State label={`other, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={own} onChange={(id) => setOwn((k) => (k === id ? null : id))} ariaLabel={g.sample.title} wrap other={{ label: g.sample.other, open: own === "other", onToggle: () => setOwn((k) => (k === "other" ? null : "other")) }} />
           {own === "other" && <NumberField label={g.sample.otherField} unit="months" value={null} isEntered={false} validate={() => null} onCommit={() => {}} onReset={() => {}} optional inputMode="numeric" />}
+        </State>
+      </Demo>
+      <Demo name="ChoiceTray" use={g.uses.ChoiceTray}>
+        <State label={`the hint, then a row of choices, ${g.states.interactive}`} wide>
+          <ChoiceTrayDemo />
         </State>
       </Demo>
     </>
@@ -1311,6 +1319,26 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
+      <Demo name="TabStrip" use={g.uses.TabStrip}>
+        <State label="tabs inside a page, each with how many rows it holds; the arrow keys move between them, and a narrow screen scrolls the strip" wide>
+          <TabStripDemo />
+        </State>
+      </Demo>
+      <Demo name="InlineSelect" use={g.uses.InlineSelect}>
+        <State label="a choice in a line of other controls: the label and the chosen name, no field box" wide>
+          <InlineSelectDemo />
+        </State>
+      </Demo>
+      <Demo name="GroupHead, ListRow, RowList" use={g.uses.ListRow}>
+        <State label="rows in one box: a plain row, the chosen one, one with chips and a muted line" wide>
+          <ListRowDemo />
+        </State>
+      </Demo>
+      <Demo name="ChooseRow" use={g.uses.ChooseRow}>
+        <State label="a chosen row, a plain one and a dimmed one, each with its arrow" wide>
+          <ChooseRowDemo />
+        </State>
+      </Demo>
       <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
         <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure with its rings, the labels" wide>
           <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
@@ -1646,4 +1674,65 @@ function GlideDemo() {
       </div>
     </div>
   );
+}
+
+function TabStripDemo() {
+  const [on, setOn] = useState("state");
+  const shelves = rulesFront.shelves;
+  return <TabStrip idBase="kit-tabs" ariaLabel={rulesFront.questions} current={on} onChange={setOn} tabs={Object.keys(shelves).map((k, i) => ({ key: k, label: shelves[k]!.name, count: 12 - i * 2 }))} />;
+}
+
+function ListRowDemo() {
+  const [on, setOn] = useState(1);
+  const shelves = Object.values(rulesFront.shelves);
+  return (
+    <div className="flex flex-col gap-2 max-w-xl">
+    <GroupHead count="3">{rulesFront.questions}</GroupHead>
+    <RowList>
+      {shelves.slice(0, 3).map((sh, i) => (
+        <ListRow
+          key={sh.name}
+          title={sh.name}
+          lead={sh.line}
+          end={<bdi dir="ltr">{`KIT-0${i + 1}`}</bdi>}
+          chips={i === 2 ? <Tag tone="neutral">{g.sample.foldLabel}</Tag> : undefined}
+          meta={i > 0 ? g.sampleSource : undefined}
+          selected={on === i}
+          onSelect={() => setOn(i)}
+        />
+      ))}
+    </RowList>
+    </div>
+  );
+}
+
+function ChoiceTrayDemo() {
+  const [kind, setKind] = useState<string>("all");
+  const [item, setItem] = useState<string | null>(null);
+  const kinds: Record<string, string> = { all: companyFocus.types.all, savings: companyFocus.types.savings, funds: companyFocus.types.funds };
+  const items: Record<string, string> = { a: g.sample.option[0], b: g.sample.option[1], c: g.sample.option[2] };
+  return (
+    <div className="flex flex-col gap-1 max-w-xl">
+      <ChoiceChips ids={["all", "savings", "funds"]} labels={kinds} value={kind} onChange={(k) => (setKind(k), setItem(null))} ariaLabel={companyFocus.typeLabel} counts={{ all: 32, savings: 15, funds: 9 }} wrap />
+      <ChoiceTray label={companyFocus.productLabel} hint={companyFocus.trayHint}>
+        {kind === "all" ? null : <ChoiceChips ids={["a", "b", "c"]} labels={items} value={item} onChange={(id) => setItem((x) => (x === id ? null : id))} ariaLabel={companyFocus.productLabel} line bleed="" />}
+      </ChoiceTray>
+    </div>
+  );
+}
+
+function ChooseRowDemo() {
+  const [on, setOn] = useState<number | null>(0);
+  return (
+    <RowList className="max-w-xl">
+      {[0, 1, 2].map((i) => (
+        <ChooseRow key={i} title={g.sample.option[i]} end={`${i + 3} ${companyFocus.units.tracks.many}`} line={g.sampleSource} chosen={on === i} dim={on !== null && on !== i && i === 2} onChoose={() => setOn((x) => (x === i ? null : i))} label={g.sample.option[i] ?? ""} link={{ to: "/kit", label: g.sample.option[i] ?? "" }} />
+      ))}
+    </RowList>
+  );
+}
+
+function InlineSelectDemo() {
+  const [on, setOn] = useState<string | null>(null);
+  return <InlineSelect label={rulesFront.claim.question} all={rulesFront.claim.all} value={on} onChange={setOn} options={Object.entries(rulesFront.shelves).map(([id, sh]) => ({ id, name: sh.name }))} />;
 }

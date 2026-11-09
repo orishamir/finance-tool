@@ -17,9 +17,9 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           התקופה יכולה להיות מיום אחד ועד כמה שנים. <Term prefix="ה" id="ריבית">ריבית</Term> <Term id="ריבית קבועה">קבועה</Term> וידועה מראש, או <Term id="ריבית משתנה">משתנה</Term>, כלומר <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש. בסוף התקופה הכסף חוזר <Term prefix="ל" id="חשבון עובר ושב">עו״ש</Term> או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, לפי מה שבחרתם.
         </p>
-        {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, nine banks) */}
+        {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, ten banks) */}
         <p className="max-w-measure">
-          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק מגדיר אותה בתנאים שלו</>} end="." />
+          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem", "one-zero"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק מגדיר אותה בתנאים שלו</>} end="." />
         </p>
         <p className="max-w-measure">
           פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו. פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי <Term prefix="ה" id="מדד">מדד</Term>, והריבית באה בנוסף. אם המדד יורד, מה שקורה לקרן תלוי בתנאי המוצר (<Term id="הבטחת קרן">הבטחת קרן</Term>); החוק לא קובע זאת.
@@ -153,16 +153,21 @@ export const content: GuideContent = {
 // F-104: what the collected one-year deposits say about breaking them, counted over the banks (former ground rule 2: a bank whose rows were
 // collected in larger number does not weigh more). The count of the banks where none can be broken names none of them (D30); the banks
 // whose deposits can be broken are named, because the penalty is each bank's own term, and stand as links to their pages, where their
-// terms are (VariesByCompany). No penalty in shekels: no collected term gives it as a formula over published figures (method F-104).
-// What a bank's own terms say about the penalty, from the rule base (BANK-33 for Discount: approval, the day's borrowers' rate table,
-// no partial break in the first year). They stand on that bank's line, right after its count and under its name, so no other bank's
+// terms are (VariesByCompany). No penalty in shekels (method F-104): Discount's is set on the day of the break, and One Zero's is a share of
+// the interest accrued to that day. What a bank's own terms say about the penalty, from the rule base (BANK-33 for Discount: approval, the
+// day's borrowers' rate table, no partial break in the first year; BANK-49 for One Zero: 10% of the accrued interest). They stand on that bank's line, right after its count and under its name, so no other bank's
 // line reads them as its own (D30): "a break can wipe out the interest and part of the deposit" is Discount's term, not every bank's.
 // A bank the rule base holds no break terms for (Mercantile, whose records cite only the general BANK-06 and BANK-14) has its count alone.
-/** A bank's break terms worded from its own documents (Discount's: BANK-33, which its records cite in their break column). */
+/** A bank's break terms worded from its own documents (Discount's: BANK-33, One Zero's: BANK-49, which their records cite in their break column). */
 const ownTerms: Record<string, ReactNode> = {
   discount: (
     <>
       השבירה צריכה אישור של הבנק, ופיקדון לשנה אפשר לשבור רק כולו, לא חלק ממנו. הקנס נקבע רק ביום השבירה, לפי ״טבלת ריבית לווים״ של הבנק, שמתעדכנת כל יום לפי סוג הפיקדון והתקופה שנשארה לו, ולכן הסכום שלו לא ידוע מראש. בתנאי הבנק, שבירה יכולה למחוק את הריבית ואף חלק מהסכום שהופקד.
+    </>
+  ),
+  "one-zero": (
+    <>
+      בטבלת התנאים של הבנק, מי ששובר חיסכון שנתי מקבל ״10% מהריבית הצבורה עד למועד השבירה בפועל״. הטבלה לא אומרת מה קורה בשבירה לסכום שהופקד.
     </>
   ),
 };

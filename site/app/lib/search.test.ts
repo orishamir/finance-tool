@@ -204,7 +204,8 @@ describe("rules in groups and the negatives", () => {
     expect(general?.items.length).toBeGreaterThan(0);
     expect(company?.items.length).toBeGreaterThan(0);
     expect(general!.items.every((h) => h.entry.href.startsWith("/rules#"))).toBe(true);
-    expect(company!.items.every((h) => h.entry.href.startsWith("/companies"))).toBe(true);
+    // a company with a page of its own: its page; one without: the documents page, where its terms are listed
+    expect(company!.items.every((h) => h.entry.href.startsWith("/companies/") || h.entry.href.startsWith("/documents#terms-"))).toBe(true);
     const cs30 = real.find((e) => e.key === "CS-30")!;
     expect(cs30.kind).toBe("companyRule");
     expect(cs30.line).toMatch(/^הראל, אלטשולר שחם ובנק יהב · /);

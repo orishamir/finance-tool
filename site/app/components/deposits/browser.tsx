@@ -149,9 +149,11 @@ export function DepositBrowser({ data }: { data: DbData }) {
       </PhoneFold>
 
       <div className="flex flex-col gap-1 pt-1">
-        <LongestCase cases={[<p key="a" className="text-sm">{count(shown.length, data.banks.length)}</p>, <p key="b" className="text-sm">{count(0, 0)}</p>]}>
+        {/* from md the number of offers stands beside the first column's head; a phone's rows have no heads, so it is said here */}
+        <LongestCase className="md:hidden" cases={[<p key="a" className="text-sm">{count(shown.length, data.banks.length)}</p>, <p key="b" className="text-sm">{count(0, 0)}</p>]}>
           <p className="text-sm">{count(open.length, banksOpen)}</p>
         </LongestCase>
+        <p className="hidden md:block text-sm">{t.count.notAnOffer}</p>
         <LongestCase cases={longestOrder.map((line, i) => <p key={i} className="text-sm">{line}</p>)}>
           <p className="text-sm text-muted-foreground">{orderLine(sort, all)}</p>
         </LongestCase>
@@ -161,7 +163,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
         {t.help.phoneLead} <Term id={HELP_TERMS.rate}>{t.help.rate}</Term> · <Term id={HELP_TERMS.exits}>{t.help.exits}</Term> · <Term id={HELP_TERMS.break}>{t.help.break}</Term>
       </p>
       <div className="scroll-mt-14 lg:scroll-mt-16">
-        <DepositList parts={parts} all={all} sort={sort} sortable={sortable} onSort={(id) => setSort(pressSort(sort, id))} banks={data.banks} lit={lit} limit={limit} />
+        <DepositList parts={parts} all={all} sort={sort} sortable={sortable} onSort={(id) => setSort(pressSort(sort, id))} banks={data.banks} lit={lit} limit={limit} count={open.length} />
       </div>
       <DepositGrid data={data} kind={kind} amount={amount} amountText={amountWords} term={term} onTerm={(x) => setTerm(x)} onCell={pickCell} />
     </div>
