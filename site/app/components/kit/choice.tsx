@@ -13,7 +13,7 @@ export interface SegmentOption<T extends string> {
 }
 
 /** Two to four short options of equal weight, one always chosen (real or nominal, a count). role="group" with aria-pressed buttons; arrow keys move between options. */
-export function SegmentedControl<T extends string>({ label, options, value, onChange, className, labelledBy }: { label?: string; options: SegmentOption<T>[]; value: T | null; onChange: (v: T) => void; className?: string; labelledBy?: string }) {
+export function SegmentedControl<T extends string>({ label, options, value, onChange, className, labelledBy, check = true, fit }: { label?: string; options: SegmentOption<T>[]; value: T | null; onChange: (v: T) => void; className?: string; labelledBy?: string; /** As wide as its options from 640 px, not the full width. */ fit?: boolean; /** The check on the pressed option; a company page's controls go without it, the fill alone (the designer's mocks). */ check?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
@@ -25,7 +25,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
     ref.current?.querySelectorAll("button")[options.indexOf(enabled[next]!)]?.focus();
   };
   return (
-    <div ref={ref} role="group" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("inline-flex w-full rounded-md bg-muted p-[3px] gap-[3px]", className)}>
+    <div ref={ref} role="group" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("inline-flex w-full rounded-md bg-muted p-[3px] gap-[3px]", fit && "sm:w-fit", className)}>
       {options.map((o) => (
         <button
           key={o.value}
@@ -38,7 +38,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
             value === o.value ? "bg-primary font-medium text-primary-foreground shadow-sm" : "text-foreground hover:bg-accent/60", // a clear pressed state
           )}
         >
-          {value === o.value && <IconCheck size={16} />}
+          {check && value === o.value && <IconCheck size={16} />}
           {typeof o.label === "string" ? gershayim(o.label) : o.label}
         </button>
       ))}
@@ -47,29 +47,25 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
 }
 
 /**
- * Four or more options, or longer labels: a row of chips, one chosen at a time; scrolls sideways on a phone and wraps from md (or wraps
- * always with `wrap`, or stays one line at every width with `line`). A chip never submits. `value` may be null (nothing chosen).
- * `counts` puts a number in a fixed slot after each label (how many a choice would show), and a chip then keeps one width whether it is
- * chosen or not (its label holds room for the chosen chip's weight), so choosing moves nothing.
+ * A row of chips, one chosen at a time: one of many values narrowing a list (with `counts`), or preset answers to a question (without,
+ * and `other` for the reader's own value); docs/design-system.md 11, "Which choice control". Scrolls sideways on a phone and wraps from md
+ * (or wraps always with `wrap`, or stays one line at every width with `line`). A chip never submits. `value` may be null (nothing chosen).
+ * A chip keeps one width whether it is chosen or not (its label holds room for the chosen chip's weight), so choosing moves nothing.
+ * `counts` puts a number in a fixed slot after each label (how many rows a choice would show); a chip that would show none dims in place.
  */
-export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, other }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
-  const steady = !!counts || !!line;
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, other }: { ids: readonly T[]; /** Words, or a node where a label needs its own direction (an amount isolated left to right). */ labels: Record<string, ReactNode>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
   const layout = wrap ? "flex flex-wrap gap-2" : line ? cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto pb-1 scrollbar-none") : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none");
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={layout}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
-          {steady ? (
-            // the label laid out twice in one cell, once at the chosen weight and unseen: the chip is as wide chosen or not
-            <span className="inline-grid *:[grid-area:1/1]">
-              <span aria-hidden="true" className="invisible font-medium">
-                {labels[id]}
-              </span>
-              <span>{labels[id]}</span>
+        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent", counts?.[id] === 0 && value !== id && "opacity-45")}>
+          {/* the label laid out twice in one cell, once at the chosen weight and unseen: the chip is as wide chosen or not */}
+          <span className="inline-grid *:[grid-area:1/1]">
+            <span aria-hidden="true" className="invisible font-medium">
+              {labels[id]}
             </span>
-          ) : (
-            labels[id]
-          )}
+            <span>{labels[id]}</span>
+          </span>
           {counts && (
             <bdi dir="ltr" className="inline-block min-w-[3ch] text-end tabular-nums font-normal opacity-70">
               {counts[id] !== undefined ? fmt.number(counts[id]) : ""}
@@ -100,6 +96,30 @@ export function ChoiceTray({ label, hint, children, labelId }: { label: string; 
       ) : (
         <p className="min-w-0 line-clamp-2 md:line-clamp-none md:truncate text-sm text-muted-foreground">{hint}</p>
       )}
+    </div>
+  );
+}
+
+/**
+ * Two levels of one choice (the companies page's kind of product, then a product; the tracks page's product, then the kind of track): the
+ * first as a row of chips with counts, the second in a `ChoiceTray` under it, one line of one height that scrolls sideways, so choosing at
+ * either level moves nothing below. While the first level opens nothing, the tray holds `child.hint`. `start` stands before the first row
+ * on its line from md (a search field); `under` is a line under it (a link about the choice).
+ */
+export function ChoicePair<P extends string, C extends string>({ parent, child, start, under }: { parent: { label: string; ids: readonly P[]; labels: Record<string, string>; value: P; counts?: Partial<Record<P, number>>; onChange: (id: P) => void }; child: { label: string; ids: readonly C[]; labels: Record<string, string>; value: C | null; counts?: Partial<Record<C, number>>; onChange: (id: C) => void; /** Shown while there is nothing to choose at this level. */ hint: ReactNode }; start?: ReactNode; under?: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex flex-col md:flex-row md:items-end gap-4 md:gap-6">
+        {start}
+        <div className="flex flex-col gap-2 min-w-0">
+          <span className="text-sm font-medium">{parent.label}</span>
+          <ChoiceChips ids={parent.ids} labels={parent.labels} value={parent.value} counts={parent.counts} onChange={parent.onChange} ariaLabel={parent.label} />
+        </div>
+      </div>
+      {under}
+      <ChoiceTray label={child.label} hint={child.hint}>
+        {child.ids.length > 0 && <ChoiceChips ids={child.ids} labels={child.labels} value={child.value} counts={child.counts} onChange={child.onChange} ariaLabel={child.label} line bleed="" />}
+      </ChoiceTray>
     </div>
   );
 }

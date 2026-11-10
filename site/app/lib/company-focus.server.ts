@@ -2,7 +2,8 @@
 // product (the same product ids and figures as its page's list, F-99 and F-100), a brand's funds and securities account, a bank's deposits,
 // savings plans and current account, and the sections its page has. The page's loader ships the light list; the sourced values behind its
 // figures are /company-figures.json (routes/company-figures.ts). Server-only.
-import { brands as brandsCopy, r4catalogue, topicName } from "../copy";
+import { brands as brandsCopy, companyFocus as focusCopy, r4catalogue, topicName } from "../copy";
+import { shortName } from "./providers";
 import { loadCma, loadRules } from "./data.server";
 import { brandFunds, loadBrands, type Brand } from "./brands.server";
 import { buildTrackBrowser, shortCompanyName } from "./track-browser.server";
@@ -11,7 +12,9 @@ import { brokeragePart, buildInstitution, companyTermGroups, institutionRows, re
 import type { TariffCardData } from "../components/decoder/institutions/types";
 import { feeKindName, feeKinds } from "../components/decoder/institutions/sections";
 import { heCollator } from "./format";
+import { depositCount } from "./bank-table";
 import { withoutLtd } from "./company-name";
+import { addressId } from "./company-page";
 import type { FocusCompany, FocusData, FocusFigures, FocusLine, FocusProduct, FocusProductKind } from "./company-focus";
 import type { SiteValue } from "./value";
 
@@ -36,7 +39,7 @@ function savingsProducts(tb: TbData, href: string): Built[] {
     const fees = feeRangeOf(view.tracks, tb.today);
     return {
       kind: { id: p.id, name: p.name, type: "savings", unit: "tracks" },
-      product: { id: p.id, count: view.tracks.length, assets: num(assets), fees: fees ? { low: num(fees.low)!, high: num(fees.high)! } : null, href: `${href}?product=${encodeURIComponent(p.id)}` },
+      product: { id: p.id, count: view.tracks.length, assets: num(assets), fees: fees ? { low: num(fees.low)!, high: num(fees.high)! } : null, href: `${href}?product=${encodeURIComponent(addressId(p.id))}` },
       figures: { assets, fees },
     };
   });
@@ -64,7 +67,7 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
   const cma = loadCma();
   const rules = loadRules();
   const kinds = new Map<string, FocusProductKind>();
-  const companies: FocusCompany[] = [];
+  const companies: Omit<FocusCompany, "short">[] = [];
   const figures: FocusFigures = {};
   const accounts: Record<string, AccountParts> = {};
   const account = (id: string, t: TariffCardData | null | undefined, house: string | null) => {
@@ -83,7 +86,7 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
   // the brands, as the investment houses (D33), and the managing companies that belong to none
   const brands = loadBrands();
   const inBrand = new Set(brands.flatMap((b) => b.pageIds));
-  const brandEntry = (b: Brand): FocusCompany => {
+  const brandEntry = (b: Brand): Omit<FocusCompany, "short"> => {
     const href = `/companies/${b.page}`;
     const company = b.cmaId ? cma.companies.find((c) => c.id === b.cmaId) : undefined;
     const tb = company ? buildTrackBrowser(company.id) : null;
@@ -125,7 +128,7 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
     const deposits: Built[] = bankProducts.flatMap((p) => {
       const g = inst.groups.find((x) => x.wrapperId === p.id);
       if (!g || g.products.length === 0) return [];
-      return [{ kind: { id: p.id, name: p.name, type: "bank" as const, unit: p.unit }, product: { id: p.id, count: p.unit === "has" ? null : g.products.length, asOf: asOf ? String(asOf.value) : null, href }, figures: { asOf } }];
+      return [{ kind: { id: p.id, name: p.name, type: "bank" as const, unit: p.unit }, product: { id: p.id, count: p.unit === "has" ? null : depositCount(g.products), asOf: asOf ? String(asOf.value) : null, href: `${href}?product=${p.id}` }, figures: { asOf } }];
     });
     const tariff = inst.tariff && !inst.tariff.missing ? inst.tariff : null;
     const line: FocusLine | null = bank ? (tariff ? { kind: "tariff", at: String(tariff.snapshot.value) } : null) : { kind: "class", text: r4catalogue.brokerClassLine };
@@ -154,7 +157,9 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
   const kindList = [...kinds.values()].sort((a, b) => typeRank[a.type] - typeRank[b.type] || rank(a) - rank(b));
   const order = new Map(kindList.map((k, i) => [k.id, i]));
   for (const c of companies) c.products.sort((a, b) => order.get(a.id)! - order.get(b.id)!);
-  companies.sort((a, b) => heCollator.compare(a.name, b.name));
-  cache = { data: { kinds: kindList, companies }, figures, accounts };
+  // the list's names, and its order by them
+  const listed: FocusCompany[] = companies.map((c) => ({ ...c, short: focusCopy.shortNames[c.id] ?? shortName(c.id, c.name) }));
+  listed.sort((a, b) => heCollator.compare(a.short, b.short));
+  cache = { data: { kinds: kindList, companies: listed }, figures, accounts };
   return cache;
 }

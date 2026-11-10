@@ -2,21 +2,25 @@
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
 // What the company offers is the tracks page's list over
 // this company alone (components/tracks/company-browser.tsx): its products, funds and securities account are chips, "כל המוצרים" first.
-import { useLoaderData, type ShouldRevalidateFunctionArgs } from "react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useLoaderData, useLocation, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
-import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, r4catalogue, site } from "../copy";
-import { PasteCard } from "../components/decoder/tracks";
+import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, companyPage as w, r4catalogue, site } from "../copy";
 import { InstitutionPage } from "../components/decoder/institutions/page";
-import { CompanyTerms } from "../components/decoder/company-terms";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
-import { IdRef, Num, NumAfter, NumberLegend, OwnCompanyPage, StaleSaid } from "../components/provenance";
-import { Breadcrumb, PageShell } from "../components/shell";
-import { CompanyTracks, type CompanyExtra } from "../components/tracks/company-browser";
-import type { TbData } from "../lib/track-browser";
-import { Callout, Card, FeeWordsNote, When, gershayim } from "../components/kit";
+import { IdRef, Num, NumAfter, OwnCompanyPage, StaleSaid } from "../components/provenance";
+import { PageShell } from "../components/shell";
+import { CompanyTracks } from "../components/tracks/company-browser";
+import { assetsText, buildProductView, feeRangeOf, tracksPhrase, type ProductView, type TbData } from "../lib/track-browser";
+import { Callout, Card, Disclosure, FeeWordsNote, TariffDate, When, gershayim } from "../components/kit";
+import { CompanyTemplate, type CompanyPart } from "../components/company/template";
+import { Overview, OverviewTable, type OverviewTableRow } from "../components/company/overview";
+import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
+import { accountSections } from "../components/decoder/institutions/sections";
+import { addressId, entryIds, splitDocGroups } from "../lib/company-page";
+import { companyTermsAnchor } from "../lib/scope";
 import type { SiteValue } from "../lib/value";
-import { fmt } from "../lib/format";
 
 /**
  * The order of a company page's products, by how often a reader comes for them: its tracks' products in
@@ -105,7 +109,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
   const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff, ...(await houseNotes(brand.brokerId)) } : null;
-  return { kind: "company" as const, name, company: company ?? null, browser, caps, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, unassigned, today: t, companyTerms };
+  return { kind: "company" as const, pageId, name, company: company ?? null, browser, caps, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, unassigned, today: t, companyTerms };
 }
 
 /** The product, the kind and the order are in the query: changing them keeps the page's data (it is all loaded). */
@@ -126,104 +130,210 @@ export default function Company() {
 
 type CompanyData = Extract<ReturnType<typeof useLoaderData<typeof loader>>, { kind: "company" }>;
 
-function fundCountLine(n: number) {
-  if (n === 1) return brandsCopy.funds.count.one;
-  if (n === 2) return brandsCopy.funds.count.two;
-  return `${fmt.number(n)} ${brandsCopy.funds.count.many}`;
-}
-
 function ManagerCompany({ data }: { data: CompanyData }) {
   const company = data.company;
   const browser = data.browser;
-  // the funds and the securities account are chips after the tracks, in the founder's order (extraOrder)
-  const extras: CompanyExtra[] = [
-    ...data.funds.map((g) => ({
-      id: `funds-${g.kind}`,
-      name: brandsCopy.funds.groups[g.kind],
+  const path = `/companies/${data.pageId}`;
+  const views = useMemo(() => browser.products.map((p) => buildProductView(browser, p.id)!), [browser]);
+  const fundIds = data.funds.map((g) => `funds-${g.kind}`);
+  const docs = splitDocGroups(data.companyTerms.groups, [...views.map((v) => v.id), ...fundIds, ...(data.brokerage ? ["brokerage"] : [])]);
+  const b = data.brokerage;
+  const sections = b && !b.tariff.missing ? accountSections({ fees: b.tariff.lines.length > 0, canBuy: b.tariff.availability.length > 0, claims: b.advertising.length > 0, groups: !!b.groups }) : [];
+  const many = views.length + data.funds.length + (b ? 1 : 0) > 4;
+  const tracksPart = (v: ProductView): CompanyPart => ({
+    id: addressId(v.id),
+    label: v.name,
+    count: v.tracks.length,
+    ...(many ? { group: "savings" } : {}),
+    anchors: entryIds(docs.byProduct[v.id]),
+    body: (
+      <>
+        <StaleSaid on={!!data.period.stale}>
+          <CompanyTracks data={browser} product={v.id} defaults={data.defaultIds} foot={<FeeFoot caps={data.caps[v.id] ?? null} />} />
+        </StaleSaid>
+        <ProductDocs product={v.name} groups={docs.byProduct[v.id] ?? []} />
+      </>
+    ),
+  });
+  // the funds and the securities account come after the tracks, in the founder's order (extraOrder)
+  const fundParts: CompanyPart[] = data.funds.map((g) => {
+    const id = `funds-${g.kind}`;
+    const name = brandsCopy.funds.groups[g.kind];
+    return {
+      id,
+      label: name,
       count: g.funds.length,
-      countText: fundCountLine(g.funds.length),
-      content: (
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-muted-foreground max-w-measure">{brandsCopy.funds.collected}</p>
-          {g.funds.some((f) => f.noVariable || f.noTrustee) && <FeeWordsNote />}
-          <BrandFundList funds={g.funds} kind={g.kind} />
-        </div>
+      ...(many ? { group: "funds" } : {}),
+      anchors: entryIds(docs.byProduct[id]),
+      body: (
+        <>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm text-muted-foreground max-w-measure">{brandsCopy.funds.collected}</p>
+            {g.funds.some((f) => f.noVariable || f.noTrustee) && <FeeWordsNote />}
+            <BrandFundList funds={g.funds} kind={g.kind} />
+          </div>
+          <ProductDocs product={name} groups={docs.byProduct[id] ?? []} />
+        </>
       ),
-    })),
-    ...(data.brokerage ? [{ id: "brokerage", name: r4catalogue.groups.brokerage, content: <BrokerageGroupCard id={data.brokerage.id} tariff={data.brokerage.tariff} kind={data.brokerage.kind} advertising={data.brokerage.advertising} groups={data.brokerage.groups} linked={data.brokerage.linked} /> }] : []),
-  ]
+    };
+  });
+  const brokerageDocs = docCount(docs.byProduct.brokerage ?? [], (x) => !!data.companyTerms.rules[x]);
+  const brokeragePart: CompanyPart[] = b
+    ? [
+        {
+          id: "brokerage",
+          label: r4catalogue.groups.brokerage,
+          ...(many ? { group: "trade" } : {}),
+          parts: [...sections.map((s) => ({ id: s.id, label: s.title })), ...(brokerageDocs ? [{ id: "brokerage-docs", label: w.docs.part(brokerageDocs) }] : [])],
+          anchors: [...sections.map((s) => s.id), "brokerage-docs", ...entryIds(docs.byProduct.brokerage)],
+          body: (
+            <BrokerageGroupCard id={b.id} tariff={b.tariff} kind={b.kind} advertising={b.advertising} groups={b.groups} linked={b.linked} docs={<ProductDocs product={r4catalogue.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id="brokerage-docs" />} />
+          ),
+        },
+      ]
+    : [];
+  const extraParts = [...fundParts, ...brokeragePart]
     .map((e, i) => ({ e, i, rank: extraOrder.indexOf(e.id) === -1 ? extraOrder.length : extraOrder.indexOf(e.id) }))
-    .sort((a, b) => a.rank - b.rank || a.i - b.i)
+    .sort((a, c) => a.rank - c.rank || a.i - c.i)
     .map((x) => x.e);
+  // grouped, the list stands in its groups' order, and the overview in the list's
+  const groupRank = (p: CompanyPart) => ["savings", "funds", "trade"].indexOf(p.group ?? "savings");
+  const parts = [...views.map(tracksPart), ...extraParts].map((p, i) => ({ p, i })).sort((a, c) => groupRank(a.p) - groupRank(c.p) || a.i - c.i).map((x) => x.p);
+
+  // the overview's table: a provident product's tracks, managed money (a thin bar against the company's largest product) and its fee range;
+  // a group of funds' count; the securities account's price list; under the list's groups when it has them
+  const assetsOf = (v: ProductView) => v.companies[0]?.assets ?? null;
+  const top = Math.max(0, ...views.map((v) => (typeof assetsOf(v)?.value === "number" ? (assetsOf(v)!.value as number) : 0)));
+  const to = (id: string) => `${path}?product=${encodeURIComponent(id)}`;
+  const tableRow = (p: CompanyPart): OverviewTableRow => {
+    const v = views.find((x) => addressId(x.id) === p.id);
+    const base = { id: p.id, title: p.label, to: to(p.id) };
+    if (v) {
+      const assets = assetsOf(v);
+      const fees = feeRangeOf(v.tracks, browser.today);
+      return {
+        ...base,
+        count: tracksPhrase(v.tracks.length),
+        assets: assets ? { figure: typeof assets.value === "number" ? <Num value={assets} display={assetsText(assets.value)} /> : <Num value={assets} />, frac: typeof assets.value === "number" && top > 0 ? assets.value / top : null } : null,
+        fees: fees ? (
+          <span className="whitespace-nowrap">
+            <Num value={fees.low} />
+            {fees.high.value !== fees.low.value && (
+              <>
+                {" "}
+                {w.overviewLine.to} <Num value={fees.high} />
+              </>
+            )}
+          </span>
+        ) : (
+          "—"
+        ),
+      };
+    }
+    const g = data.funds.find((x) => `funds-${x.kind}` === p.id);
+    if (g) return { ...base, count: w.units.funds(g.funds.length), assets: null, fees: <span className="text-muted-foreground">{w.overviewTable.fundsFees(g.funds.length)}</span> };
+    return {
+      ...base,
+      assets: null,
+      fees:
+        b && !b.tariff.missing ? (
+          <span className="text-muted-foreground">
+            {w.overviewTable.tariff}
+            {", "}
+            <TariffDate dated={b.tariff.dated} checked={false} {...(b.tariff.published ? { date: (lead: string) => <NumAfter lead={lead} value={b.tariff.published!} /> } : {})} />
+          </span>
+        ) : (
+          <span className="text-muted-foreground">{r4catalogue.missingTariff}</span>
+        ),
+    };
+  };
+  const listGroups = [
+    { key: "savings", label: w.groups.savings },
+    { key: "funds", label: w.groups.funds },
+    { key: "trade", label: w.groups.trade },
+  ];
+  const tableGroups = many ? listGroups.map((g) => ({ key: g.key, label: g.label, rows: parts.filter((p) => p.group === g.key).map(tableRow) })).filter((g) => g.rows.length > 0) : [{ key: "all", rows: parts.map(tableRow) }];
+  const tableNote =
+    views.length > 0 ? (
+      <>
+        {w.overviewTable.note.fees} <NumAfter lead={w.overviewTable.note.assets} value={data.period} />
+        {top > 0 && w.overviewTable.note.bar(data.name)}
+      </>
+    ) : null;
+
+  // the names not yet matched, folded behind one link-like line at the overview's end (the designer's mock); an address `#unassigned` opens it
+  const unassigned = data.unassigned.length > 0 ? <Unassigned rows={data.unassigned} /> : null;
+  const after = (
+    <>
+      <MoreDocs company={data.companyTerms.name} whose={data.name} groups={docs.rest} id={companyTermsAnchor} />
+      {unassigned}
+    </>
+  );
   return (
     <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
-      <div className="pt-2 lg:pt-8">
-        <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
-          <header className="flex flex-col gap-3">
-            <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={gershayim(data.name)} />
-            <h1 className="text-2xl lg:text-3xl font-semibold">
-              <bdi>{gershayim(data.name)}</bdi>
-            </h1>
-            {data.members.length > 1 && (
-              <p className="text-sm text-muted-foreground max-w-measure">
-                {brandsCopy.members}{" "}
-                {data.members.map((m, i) => (
-                  <span key={m}>
-                    {i > 0 && " · "}
-                    <bdi>{gershayim(m)}</bdi>
-                  </span>
-                ))}
-              </p>
-            )}
-            <NumberLegend />
-            {company && data.period.stale && (
-              <Callout tone="caution">
-                <When iso={String(data.period.value)} lead={`${copy.oldData} `} />.
-              </Callout>
-            )}
-          </header>
-
-          <section aria-labelledby="tr-h" className="flex flex-col gap-3.5">
-            <h2 id="tr-h" className="text-xl lg:text-2xl font-semibold">
-              {brandsCopy.listHeading} <bdi>{gershayim(data.name)}</bdi>
-            </h2>
-            <StaleSaid on={!!data.period.stale}>
-              <CompanyTracks data={browser} extras={extras} defaults={data.defaultIds} foot={(id) => <FeeFoot caps={data.caps[id] ?? null} />} />
-            </StaleSaid>
-          </section>
-          {data.unassigned.length > 0 && (
-            <section aria-labelledby="un-h" className="flex flex-col gap-3">
-              <div>
-                <h2 id="un-h" className="text-xl lg:text-2xl font-semibold">
-                  {catalogue.unassigned.title}
-                </h2>
-                <p className="text-sm text-muted-foreground max-w-measure">{catalogue.unassigned.line}</p>
-              </div>
-              <Card as="div" className="p-0 md:p-0">
-                <ul className="flex flex-col divide-y divide-border">
-                  {data.unassigned.map((u) => (
-                    <li key={u.id} className="flex flex-col gap-1 p-4">
-                      <span className="font-medium flex flex-col gap-0.5">
-                        {u.names.map((n) => (
-                          <bdi key={n}>{n}</bdi>
-                        ))}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen as SiteValue} />
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </section>
-          )}
-          <CompanyTerms name={data.companyTerms.name} groups={data.companyTerms.groups} />
-          {/* the fallback search comes after everything the page lists, at every width (above the list it was in the way) */}
-          {company && <PasteCard className="lg:w-1/2" />}
-        </div>
-
-      </div>
+      <CompanyTemplate
+        path={path}
+        name={data.name}
+        line={
+          data.members.length > 1 ? (
+            <>
+              {brandsCopy.members}{" "}
+              {data.members.map((m, i) => (
+                <span key={m}>
+                  {i > 0 && " · "}
+                  <bdi>{gershayim(m)}</bdi>
+                </span>
+              ))}
+            </>
+          ) : company ? (
+            <bdi>{gershayim(company.name)}</bdi>
+          ) : undefined
+        }
+        header={
+          company && data.period.stale ? (
+            <Callout tone="caution">
+              <When iso={String(data.period.value)} lead={`${copy.oldData} `} />.
+            </Callout>
+          ) : undefined
+        }
+        parts={parts}
+        groups={many ? listGroups : undefined}
+        overview={{ anchors: [companyTermsAnchor, "unassigned", ...entryIds(docs.rest)], body: <Overview heading={w.whatsIn(data.name)} table={parts.length > 0 ? <OverviewTable groups={tableGroups} note={tableNote} /> : null}>{after}</Overview> }}
+        single={<div className="flex flex-col gap-section pt-4">{after}</div>}
+      />
     </PageShell>
+  );
+}
+
+/** The names a company uses that are not yet matched to a track, folded; open when the address names them. */
+function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
+  const location = useLocation();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (location.hash === "#unassigned") setOpen(true);
+  }, [location.hash]);
+  return (
+    <section id="unassigned" aria-label={catalogue.unassigned.title} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
+      <Disclosure open={open} onOpenChange={setOpen} label={<span className="text-link font-medium">{catalogue.unassigned.title}</span>} className="flex flex-col gap-3">
+        <p className="text-sm text-muted-foreground max-w-measure">{catalogue.unassigned.line}</p>
+        <Card as="div" pad="none">
+          <ul className="flex flex-col divide-y divide-border">
+            {rows.map((u) => (
+              <li key={u.id} className="flex flex-col gap-1 p-4">
+                <span className="font-medium flex flex-col gap-0.5">
+                  {u.names.map((n) => (
+                    <bdi key={n}>{n}</bdi>
+                  ))}
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen as SiteValue} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </Disclosure>
+    </section>
   );
 }
 

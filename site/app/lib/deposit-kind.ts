@@ -14,6 +14,18 @@ export function exitWords(exists: boolean, everyMonths: number | null): string {
 }
 
 /**
+ * A deposit's or plan's period in words, by the unit its record holds: a weekly deposit is 7 days, never "7 חודשים". Null when the record
+ * holds no number (a current account).
+ */
+export function termWords(term: { value: unknown; unit: string }): string | null {
+  const v = term.value;
+  if (typeof v !== "number") return null;
+  if (term.unit === "days") return v === 1 ? copy.term.day : v === 2 ? copy.term.twoDays : `${fmt.number(v)} ${copy.term.days}`;
+  if (term.unit === "years") return v === 1 ? copy.term.year : v === 2 ? copy.term.twoYears : `${fmt.number(v)} ${copy.term.years}`;
+  return fmt.months(v);
+}
+
+/**
  * The rate a page shows for a deposit: the offered rate, or, where the bank's table prints no one offered rate (a rate for each period between
  * exit points), the one figure it prints beside it (`rate_effective`, the bank's own). The engine reads only the offered rate.
  */
@@ -66,3 +78,29 @@ export function printedQuotes(text: string | null | undefined): string[] {
 
 /** Those words as one line, each passage in Hebrew quotation marks. */
 export const printedLine = (text: string | null | undefined): string => printedQuotes(text).map((q) => `״${q}״`).join(" ");
+
+/**
+ * The bank's own name for a deposit. A 447 table that prints the kind first, then "דגם: 5071/5 פדיום פריים 2-90 יום" (Leumi), names it
+ * after the model number; elsewhere the first name the table prints is the bank's.
+ */
+export function ownName(names447: readonly string[], kind: string): string {
+  for (const n of names447) {
+    const rest = /^דגם:\s*[\d/]+\s*(.*)$/.exec(n)?.[1]?.trim();
+    if (rest) return rest;
+  }
+  return names447[0] ?? kind;
+}
+
+/**
+ * A name as a page shows it: a bank's table read in visual order leaves a parenthesis mirrored ("(איתן-בשקלים בריבית קבועה (לשנה ויותר",
+ * Massad's 835); one that opens the name and is never closed is put back at its end. The record keeps the name as read.
+ */
+export function shownName(name: string): string {
+  const opens = (name.match(/\(/g) ?? []).length;
+  const closes = (name.match(/\)/g) ?? []).length;
+  if (name.startsWith("(") && closes === 0 && opens === 2) return `${name.slice(1)})`;
+  return name;
+}
+
+/** A deposit's name on every page (the company page, the deposits page, the guide, the documents list): the bank's own, as shown. */
+export const depositName = (d: Pick<DepositTerms, "names" | "type_447">): string => shownName(ownName(d.names["447"] ?? [], d.type_447));

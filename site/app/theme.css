@@ -176,6 +176,7 @@
   --primary: var(--palette-teal-300);
   --primary-foreground: var(--palette-neutral-975);
   --link: var(--palette-teal-300);
+  --primary-subtle: var(--palette-teal-950); /* the chosen item's fill in a side list (designer's mocks, 2026-11-10) */
   --destructive: var(--palette-red-300);
 
   /* The three number states (D7) */
@@ -411,6 +412,7 @@
   --color-overlay: var(--overlay);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-subtle: var(--primary-subtle);
   --color-link: var(--link);
   --color-destructive: var(--destructive);
 

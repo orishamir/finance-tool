@@ -845,12 +845,18 @@
   }
   /* A row of a list of products lights under the pointer, so the eye keeps it across the columns (ProductTable). Nothing depends on it. */
   @media (hover: hover) {
-    .tbl-rows tbody tr:not(.grp-row, .dup-row) > td {
+    .tbl-rows tbody tr:not(.grp-row, .dup-row, .row-detail) > td {
       transition: background-color var(--duration-fast);
     }
-    .tbl-rows tbody tr:not(.grp-row, .dup-row):hover > td {
+    .tbl-rows tbody tr:not(.grp-row, .dup-row, .row-detail):hover > td {
       background: var(--accent);
     }
+  }
+  /* A product's details, folded open under its row (ProductTable `detail`): on the table's width, a step down from the row. */
+  .row-detail > td {
+    padding-top: 4px;
+    padding-bottom: 16px;
+    white-space: normal;
   }
   /* A group's heading over its rows (a company, a kind of money): on the table's width, and on a phone. */
   .grp-row th,
@@ -933,6 +939,20 @@
       outline: 2px solid var(--ring);
       outline-offset: -2px;
     }
+  }
+
+  /* The reader's own rows (ProductTable `mine`, the deposits page's bank they marked): a teal wash, and an accent bar at the row's start. */
+  .row-mine > td,
+  .track.row-mine {
+    background-color: color-mix(in oklch, var(--primary-subtle) 70%, transparent);
+  }
+  .row-mine > td:first-child,
+  .track.row-mine {
+    box-shadow: inset -3px 0 0 var(--primary);
+  }
+  [dir="ltr"] .row-mine > td:first-child,
+  [dir="ltr"] .track.row-mine {
+    box-shadow: inset 3px 0 0 var(--primary);
   }
 
   /* ---- company page tracks */
