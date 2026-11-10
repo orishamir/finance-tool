@@ -15,6 +15,7 @@ import { companyTermsHref } from "./scope";
 import { readJsonCached } from "./read-cache.server";
 import { tariffDated, type TariffDated } from "./tariff-date";
 import { heCollator } from "./format";
+import { depositName } from "./deposit-kind";
 
 export type SectionId = "laws" | "regulators" | "exchange" | "institutions";
 export const sectionOrder: SectionId[] = ["laws", "regulators", "exchange", "institutions"];
@@ -272,7 +273,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const funds = loadFunds()
     .map((f) => ({ key: f.id, title: f.names.he[0] ?? f.names.en[0] ?? f.id, line: f.manager, href: fundHref(f.exposure_id) }))
     .sort((a, b) => heCollator.compare(a.title, b.title));
-  const deposits = loadDepositTerms().map((d) => ({ key: d.id, title: d.names["447"]?.[0] ?? d.type_447, line: d.bank, href: `/companies/${d.bank}`, bank: d.bank }));
+  const deposits = loadDepositTerms().map((d) => ({ key: d.id, title: depositName(d), line: d.bank, href: `/companies/${d.bank}`, bank: d.bank }));
   const { institutionRows } = await import("./institutions.server");
   const bankName = new Map(institutionRows().map((r) => [r.id, r.name]));
   const depositCards: DataCard[] = deposits.map(({ bank, ...d }) => ({ ...d, line: bankName.get(bank) ?? d.line }));

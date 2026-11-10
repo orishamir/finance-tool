@@ -368,12 +368,6 @@ export function tracksPhrase(k: number): string {
   return k === 0 ? t.count.tracksNone : k === 1 ? t.count.tracksOne : k === 2 ? t.count.tracksTwo : `${fmt.number(k)} ${t.count.tracksMany}`;
 }
 
-/** "במוצר אחד", "בשני מוצרים", "ב־8 מוצרים": where a company's tracks are, on its page's count line. */
-export function inProductsPhrase(k: number): string {
-  const w = t.company.inProducts;
-  return k === 1 ? w.one : k === 2 ? w.two : `${w.many}${fmt.number(k)} ${w.manyAfter}`;
-}
-
 export function companiesPhrase(k: number): string {
   return k === 0 ? t.count.companiesNone : k === 1 ? t.count.companiesOne : k === 2 ? t.count.companiesTwo : `${fmt.number(k)} ${t.count.companiesMany}`;
 }

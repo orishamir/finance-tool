@@ -106,7 +106,7 @@
     }
   ],
   "chosen_by": "Claude, with the drawing of the deposits page the founder approved on 2026-11-09",
-  "rationale": "The amounts the deposits page offers as 'מפקידים לפחות', one chosen at a time: 250, 1,000, 10,000, 100,000, 250,000 and 500,000 NIS. They are where the minimums of the banks' standard deposit tables fall (read 2026-11-09), so each step opens offers the one below it does not. The page starts at P-05's amount now (10,000 NIS), which must be one of the steps. Not an average and not a recommendation.",
-  "rationale_he": "הסכומים שאפשר לבחור בעמוד הפיקדונות, אחד בכל פעם. הם הסכומים המינימליים שהבנקים מפרסמים בטבלאות הפיקדונות שלהם, ולכן כל סכום פותח הצעות שהסכום שלפניו לא פותח. העמוד מתחיל ב־10,000 ₪, הסכום של הדוגמה באתר.",
+  "rationale": "The quick picks beside the deposits page's amount field: 250, 1,000, 10,000, 100,000, 250,000 and 500,000 NIS. They are where the minimums of the banks' standard deposit tables fall (read 2026-11-09), so each step opens offers the one below it does not. The reader may type any whole amount; the page starts at P-05's amount now (10,000 NIS), which is one of the steps. Not an average and not a recommendation.",
+  "rationale_he": "הסכומים המוכנים ליד שדה הסכום בעמוד הפיקדונות. הם הסכומים המינימליים שהבנקים מפרסמים בטבלאות הפיקדונות שלהם, ולכן כל סכום פותח הצעות שהסכום שלפניו לא פותח. אפשר גם לכתוב כל סכום אחר. העמוד מתחיל ב־10,000 ₪, הסכום של הדוגמה באתר.",
   "shown_as": "site parameter"
 }

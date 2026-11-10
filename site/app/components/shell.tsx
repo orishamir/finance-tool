@@ -207,11 +207,23 @@ function Footer({ width }: { width: string }) {
   );
 }
 
-/** A small "back to the top" after a screen or so of scrolling, at the left: in right-to-left pages the names a row starts with sit at the right, and the button covered them. */
+/**
+ * A small "back to the top" after a screen or so of scrolling, at the left: in right-to-left pages the names a row starts with sit at the right,
+ * and the button covered them. It steps aside while it would cover a block marked `data-keep-clear` (the deposits grid's cells on a phone).
+ */
 function ToTop() {
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const on = () => setShow(window.scrollY > window.innerHeight * 1.2);
+    const on = () => {
+      const far = window.scrollY > window.innerHeight * 1.2;
+      // the button's place: 16 px from the left, 80 px (phone) or 24 px from the bottom, 44 px square
+      const bottom = window.innerHeight - (window.innerWidth < 768 ? 80 : 24);
+      const covers = [...document.querySelectorAll("[data-keep-clear]")].some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.top < bottom && r.bottom > bottom - 44 && r.left < 60;
+      });
+      setShow(far && !covers);
+    };
     on();
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
@@ -262,18 +274,32 @@ function MenuSheet({ open, onClose, current }: { open: boolean; onClose: () => v
 // ---------------------------------------------------------------- breadcrumbs
 
 /** Phone: the parent as a back link with a chevron pointing right. PC: parent › current (design-system 3.1). */
-export function Breadcrumb({ parent, current }: { parent: { href: string; label: string }; current: string }) {
+export function Breadcrumb({ parent, middle, current }: { parent: { href: string; label: string }; /** A step between the parent and this page (a company, before the product shown on its page); on a phone the back link goes to it. */ middle?: { href: string; label: string }; current: string }) {
   // the first page is "ראשי", not the site's name
   if (parent.href === "/") parent = { href: "/", label: site.homeCrumb };
+  const back = middle ?? parent;
   return (
     <nav aria-label="מיקום" className="text-sm text-muted-foreground">
-      <Link to={parent.href} className="inline-flex items-center gap-0.5 min-h-target lg:min-h-0 lg:py-0 lg:tap-area hover:underline">
-        <IconBack size={16} className="lg:hidden" />
+      <Link to={back.href} className="lg:hidden inline-flex items-center gap-0.5 min-h-target hover:underline">
+        <IconBack size={16} />
+        {gershayim(back.label)}
+      </Link>
+      <Link to={parent.href} className="hidden lg:inline-flex items-center gap-0.5 lg:tap-area hover:underline">
         {gershayim(parent.label)}
       </Link>
       <span className="hidden lg:inline" aria-hidden="true">
         {" › "}
       </span>
+      {middle && (
+        <>
+          <Link to={middle.href} className="hidden lg:inline-flex items-center lg:tap-area hover:underline">
+            {gershayim(middle.label)}
+          </Link>
+          <span className="hidden lg:inline" aria-hidden="true">
+            {" › "}
+          </span>
+        </>
+      )}
       <span className="hidden lg:inline" aria-current="page">
         {gershayim(current)}
       </span>

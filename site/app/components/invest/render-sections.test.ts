@@ -97,6 +97,25 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
   });
 });
 
+describe("a bank's standing-order price the figure leaves out is said beside its row (D41, D56)", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const tracking = view.options.find((o) => o.id === "il-tracking")!.funds[0]!;
+  const out = html(createElement(AccountColumn, { view, bundle, years: 20, pick: { house: "psagot", fund: tracking.rec.id }, onPick: () => undefined }));
+  it("each of the three banks' rows carries the 'not counted' tag, the printed price and the record's reason", () => {
+    for (const id of ["leumi", "massad", "fibi"]) {
+      const line = bundle.snapshots.find((s) => s.id === id)!.lines.find((l) => l.not_ranked && l.applies_to.includes("mutual_fund_units"))!;
+      expect(out, id).toContain(line.not_ranked!.reason_he.replace(/"/g, "&quot;"));
+    }
+    expect(out).toContain(invest.pair.asideLine.split(":")[0]!);
+  });
+  it("a custom index's account list says the same, and under its head that monthly purchases are priced on the regular line", () => {
+    const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
+    const list = html(createElement(NoFundAccountColumn, { view: v, bundle, years: 20, chosen: null, onPick: () => undefined }));
+    expect(list).toContain(invest.pair.asideNote(3, v.providers.filter((p) => !p.foreign && !p.custom).length));
+    for (const id of ["leumi", "massad", "fibi"]) expect(list, id).toContain(bundle.snapshots.find((s) => s.id === id)!.lines.find((l) => l.not_ranked)!.not_ranked!.reason_he.replace(/"/g, "&quot;"));
+  });
+});
+
 describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const ids = (id: string) => brokerLabels(view.providers.find((p) => p.id === id)!, false).map((l) => l.id);

@@ -13,7 +13,7 @@ import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
 import { loadDepositTerms } from "./instruments.server";
 import { loadInstitutionRegistry } from "./institutions.server";
-import { exitWords } from "./deposit-kind";
+import { depositName, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
 import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
@@ -125,7 +125,7 @@ function exitInput(r: DepositTerms, name: string): SiteValue {
  */
 export function depositSheetNames(records: DepositTerms[]): Map<string, string> {
   const words = r4catalogue.depositKind;
-  const base = (r: DepositTerms) => `${shortName(r.bank, r.bank)} · ${r.names["447"]?.[0] ?? r.type_447}`;
+  const base = (r: DepositTerms) => `${shortName(r.bank, r.bank)} · ${depositName(r)}`;
   const count = new Map<string, number>();
   for (const r of records) count.set(base(r), (count.get(base(r)) ?? 0) + 1);
   const out = new Map<string, string>();

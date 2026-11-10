@@ -2377,6 +2377,55 @@
             "minLength": 1,
             "maxLength": 240
           },
+          "not_ranked": {
+            "type": "object",
+            "properties": {
+              "reason_he": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "checked": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "page": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  }
+                },
+                "required": [
+                  "url",
+                  "title",
+                  "checked",
+                  "quote"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "reason_he",
+              "source"
+            ],
+            "additionalProperties": false
+          },
           "names": {
             "type": "object",
             "properties": {
@@ -3306,6 +3355,79 @@
         "required": [
           "applies_to",
           "available",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "by_amount": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "venue": {
+            "type": "string",
+            "enum": [
+              "us",
+              "europe"
+            ]
+          },
+          "orders": {
+            "type": "string",
+            "enum": [
+              "all",
+              "recurring_plan"
+            ]
+          },
+          "list_only": {
+            "type": "boolean"
+          },
+          "shares_only": {
+            "type": "boolean",
+            "const": true
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "checked": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "page": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "quote": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              }
+            },
+            "required": [
+              "url",
+              "title",
+              "checked",
+              "quote"
+            ],
+            "additionalProperties": false
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "venue",
+          "orders",
+          "list_only",
           "source"
         ],
         "additionalProperties": false

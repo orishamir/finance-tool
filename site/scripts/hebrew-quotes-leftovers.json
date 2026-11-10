@@ -1,5 +1,5 @@
 {
-  "companies/*": 512,
+  "companies/*": 25,
   "documents/index.html": 248,
   "exposure/general-track/index.html": 1,
   "exposure/index-nasdaq100/index.html": 3,
@@ -10,9 +10,8 @@
   "exposure/shekel-cash/index.html": 2,
   "kit/index.html": 2,
   "not-covered/index.html": 5,
-  "tracks/index.html": 24,
-  "tracks/keren-hishtalmut/index.html": 22,
-  "tracks/kupat-gemel-lehashkaa/index.html": 24,
-  "tracks/pension-general/index.html": 3,
-  "tracks/provident-for-annuity/index.html": 14
+  "tracks/index.html": 10,
+  "tracks/keren-hishtalmut/index.html": 8,
+  "tracks/kupat-gemel-lehashkaa/index.html": 10,
+  "tracks/provident-for-annuity/index.html": 8
 }

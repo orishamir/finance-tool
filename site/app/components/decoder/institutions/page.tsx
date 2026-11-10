@@ -1,210 +1,195 @@
-// The bank page and the broker page (flows 32, 33; design-spec 20): a bank's deposits, savings plans and current
-// account as product rows, its brokerage card, the catalogue's names, the paste card; a broker's card alone.
-import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router";
+// The bank page and the broker page (flows 32, 33), on the company pages' template (components/company/template.tsx): a bank's deposits and
+// savings plans as one table each, its current account as one card, its securities account; a broker's securities account alone, with no
+// list and no overview. The overview lists each product with its headline fact, then the documents about none of them and the catalogue's
+// names.
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
-import { buttons, catalogue, companies as companiesCopy, r4catalogue as copy } from "../../../copy";
-import { fmt } from "../../../lib/format";
-import { IconDrillIn, IconExternal } from "../../icons";
-import { NumAfter, NumberLegend } from "../../provenance";
-import { Breadcrumb, PageShell } from "../../shell";
-import { Button, Callout, Card, Disclosure, LabelSheetHost, When } from "../../kit";
-import { PasteCard } from "../tracks";
+import { catalogue, companyPage as w, r4catalogue as copy } from "../../../copy";
+import { IconExternal } from "../../icons";
+import { Num, NumAfter } from "../../provenance";
+import { PageShell } from "../../shell";
+import { Callout, Card, TariffDate, When, gershayim } from "../../kit";
 import { BrokerageGroupCard } from "./brokerage-card";
-import { CompanyTerms } from "../company-terms";
 import { BankProductRow } from "./product-row";
-import type { InstitutionPageData } from "./types";
+import type { InstitutionPageData, ProductGroup } from "./types";
 import { withoutLtd } from "../../../lib/company-name";
-
-function countLine(n: number) {
-  if (n === 1) return copy.count.one;
-  if (n === 2) return copy.count.two;
-  return `${fmt.number(n)} ${copy.count.many}`;
-}
+import { entryIds, splitDocGroups } from "../../../lib/company-page";
+import { depositCount, rateRange, termRange } from "../../../lib/bank-table";
+import { accountSections } from "./sections";
+import { CompanyTemplate, type CompanyPart } from "../../company/template";
+import { Overview, type OverviewRow } from "../../company/overview";
+import { MoreDocs, ProductDocs, docCount } from "../../company/docs";
+import { BankLinks, BankTable } from "../../company/bank-views";
+import { companyTermsAnchor } from "../../../lib/scope";
 
 const groupTitle: Record<string, string> = { "bank-deposit": copy.groups.deposits, "savings-plan": copy.groups.savings, "current-account": copy.groups.current };
 
-function CopyLine({ text }: { text: string }) {
-  const [state, setState] = useState<"idle" | "done" | "failed">("idle");
-  return (
-    <Button
-      variant="quiet"
-      className="text-sm self-start"
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(text);
-          setState("done");
-          window.setTimeout(() => setState("idle"), 2000);
-        } catch {
-          setState("failed");
-        }
-      }}
-    >
-      {state === "done" ? buttons.copied : buttons.copy}
-    </Button>
-  );
-}
+type Notes = { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null; linked: readonly string[] };
 
-export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null; linked: readonly string[] } }) {
+export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: Notes }) {
   const known = new Set(Object.keys(data.rules));
   const isBank = data.kind === "bank";
   const tariff = data.tariff;
-  const notCollected = `${copy.depositsNotCollected.before}${data.name}${copy.depositsNotCollected.after}`;
-  const wrapperName = (id: string) => data.groups.find((g) => g.wrapperId === id)?.wrapperName ?? "";
-  const brokerage = <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} linked={notes?.linked} />;
-  // "?product=brokerage" (a link from the indices page) opens the securities account and brings it into view, once the page is in
-  // the browser, as the company pages read their product (D57)
-  const [search] = useSearchParams();
-  const asked = search.get("product") === "brokerage";
-  const [accountOpen, setAccountOpen] = useState(!data.hasDeposits);
-  const account = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!asked) return;
-    setAccountOpen(true);
-    account.current?.scrollIntoView({ block: "start" });
-  }, [asked]);
+  const path = `/companies/${data.id}`;
+  const name = withoutLtd(data.name);
+  const hasAccount = !!tariff && !tariff.missing;
+  const groups = data.groups.filter((g) => g.products.length > 0);
+  const productIds = [...groups.map((g) => g.wrapperId), ...(tariff ? ["brokerage"] : [])];
+  const docs = splitDocGroups(data.terms.groups, productIds);
+  const sections = hasAccount ? accountSections({ fees: tariff.lines.length > 0, canBuy: tariff.availability.length > 0, claims: (notes?.advertising ?? []).length > 0, groups: !!notes?.groups }) : [];
+
+  const bankPart = (g: ProductGroup): CompanyPart => {
+    const label = groupTitle[g.wrapperId] ?? g.wrapperName;
+    const docGroups = docs.byProduct[g.wrapperId] ?? [];
+    const single = g.products.length === 1;
+    return {
+      id: g.wrapperId,
+      label,
+      ...(single ? {} : { count: depositCount(g.products) }),
+      anchors: [...g.products.map((p) => `product-${p.id}`), ...entryIds(docGroups)],
+      body: (
+        <>
+          {single ? (
+            <BankProductRow p={g.products[0]!} known={known} wrapperName={g.wrapperName} />
+          ) : (
+            <>
+              <BankTable kind={g.wrapperId === "bank-deposit" ? "deposits" : "savings"} products={g.products} known={known} asOf={data.depositsAsOf} />
+              <BankLinks wrapperId={g.wrapperId} wrapperName={g.wrapperName} {...(g.wrapperId === "bank-deposit" ? { compare: { to: "/deposits", label: w.deposits.compare } } : {})} />
+            </>
+          )}
+          <ProductDocs product={label} groups={docGroups} />
+        </>
+      ),
+    };
+  };
+  const docsAnchor = "brokerage-docs";
+  const brokerageDocs = docCount(docs.byProduct.brokerage ?? [], (x) => known.has(x));
+  const parts: CompanyPart[] = [
+    ...groups.map(bankPart),
+    ...(tariff
+      ? [
+          {
+            id: "brokerage",
+            label: copy.groups.brokerage,
+            parts: [...sections.map((s) => ({ id: s.id, label: s.title })), ...(brokerageDocs ? [{ id: docsAnchor, label: w.docs.part(brokerageDocs) }] : [])],
+            anchors: [...sections.map((s) => s.id), docsAnchor, ...entryIds(docs.byProduct.brokerage)],
+            body: (
+              <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} linked={notes?.linked} docs={<ProductDocs product={copy.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id={docsAnchor} />} />
+            ),
+          },
+        ]
+      : []),
+  ];
+
+  // the products' headline facts: a table's count and its lowest and highest rate over the periods it spans, the current account's rate, the
+  // account's parts and its price list's date
+  const rows: OverviewRow[] = parts.map((p) => {
+    const g = groups.find((x) => x.wrapperId === p.id);
+    const base = { id: p.id, title: p.label, to: `${path}?product=${encodeURIComponent(p.id)}`, label: p.label };
+    if (g) {
+      const range = rateRange(g.products);
+      const many = g.products.length > 1;
+      const current = g.products.every((x) => x.currentAccount);
+      return {
+        ...base,
+        end: many ? (g.wrapperId === "bank-deposit" ? w.units.deposits : w.units.plans)(depositCount(g.products)) : copy.count.one,
+        ...(range
+          ? {
+              fact: {
+                label: current ? w.overviewFact.current : w.overviewFact.rate(termRange(g.products)),
+                value:
+                  many && range.low.value !== range.high.value ? (
+                    <>
+                      <Num value={range.low} /> {w.overviewLine.to} <Num value={range.high} />
+                    </>
+                  ) : (
+                    <Num value={range.high} />
+                  ),
+              },
+            }
+          : {}),
+        date: data.depositsAsOf ? <NumAfter lead={w.overviewFact.asOf} value={data.depositsAsOf} /> : undefined,
+      };
+    }
+    return {
+      ...base,
+      fact: { label: w.overviewFact.parts, value: hasAccount ? sections.map((s) => s.title).join(", ") : copy.missingTariff, words: true },
+      date: tariff?.published ? <TariffDate dated={tariff.dated} checked={false} date={(lead) => <NumAfter lead={lead} value={tariff.published!} />} /> : tariff ? <NumAfter lead={copy.ledeTariff} value={tariff.snapshot} /> : undefined,
+    };
+  });
+  const notCollected = isBank && !data.hasDeposits ? (
+    <span className="inline-flex flex-wrap items-center gap-x-3">
+      {`${copy.depositsNotCollected.before}${data.name}${copy.depositsNotCollected.after}`}
+      {data.rateTable && (
+        <a href={data.rateTable.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target">
+          {copy.rateTableLink}
+          <IconExternal size={16} />
+        </a>
+      )}
+    </span>
+  ) : null;
+
+  const names =
+    data.catalogue.length > 0 ? (
+      <section id="inst-also" aria-labelledby="inst-also-h" className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
+        <h2 id="inst-also-h" className="text-xl lg:text-2xl font-semibold">
+          {catalogue.alsoCalled}
+        </h2>
+        <Card as="div" pad="none">
+          <ul className="flex flex-col divide-y divide-border">
+            {data.catalogue.map((u) => (
+              <li key={u.id} className="flex flex-col gap-1 p-4">
+                <span className="font-medium flex flex-col gap-0.5">
+                  {u.names.map((n) => (
+                    <bdi key={n}>{n}</bdi>
+                  ))}
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </section>
+    ) : null;
+  const after = (
+    <>
+      <MoreDocs company={data.terms.name} whose={isBank ? w.docs.bank : name} groups={docs.rest} id={companyTermsAnchor} />
+      {names}
+    </>
+  );
+
   return (
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}), pageCompanies: data.terms.pageCompanies }}>
-      {/* one column, as the company page: the price list's table takes the page's width, the paste card comes at the end */}
-      <div className="pt-2 lg:pt-8">
-        <div className="min-w-0 flex flex-col gap-6 lg:gap-8">
-          <header className="flex flex-col gap-3">
-            <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={withoutLtd(data.name)} />
-            <h1 className="text-2xl lg:text-3xl font-semibold">
-              <bdi>{withoutLtd(data.name)}</bdi>
-            </h1>
-            {isBank ? (
-              <p className="text-sm lg:text-base text-muted-foreground max-w-measure">
-                {copy.ledeIntro}
-                {(data.depositsAsOf || (tariff && !tariff.missing)) && " "}
-                {data.depositsAsOf && (
-                  <>
-                    <NumAfter lead={copy.ledeDeposits} value={data.depositsAsOf} />
-                    {tariff && !tariff.missing && "; "}
-                  </>
-                )}
-                {tariff && !tariff.missing && (
-                  <>
-                    <NumAfter lead={copy.ledeTariff} value={tariff.snapshot} />
-                  </>
-                )}
-                {(data.depositsAsOf || (tariff && !tariff.missing)) && "."}
-              </p>
-            ) : (
-              <p className="text-sm lg:text-base text-muted-foreground max-w-measure">{copy.brokerClassLine}</p>
-            )}
-            <NumberLegend />
-            {tariff && !tariff.missing && tariff.stale && (
-              <Callout tone="caution">
-                <When iso={String(tariff.snapshot.value)} lead={copy.card.stale.before} />
-                {copy.card.stale.after}
-              </Callout>
-            )}
-          </header>
-
-          {isBank && (
-            <section aria-labelledby="inst-groups" className="flex flex-col gap-3.5">
-              <h2 id="inst-groups" className="sr-only">
-                {data.name}
-              </h2>
-              {!data.hasDeposits && (
-                <Disclosure
-                  defaultOpen
-                  className="flex flex-col gap-2"
-                  summaryClassName="min-h-12 md:min-h-14"
-                  label={
-                    <span className="flex flex-col md:flex-row md:items-baseline gap-0.5 md:gap-3">
-                      <span className="text-lg lg:text-xl font-semibold">{copy.groups.deposits}</span>
-                    </span>
-                  }
-                >
-                  <Card as="div" className="flex flex-col gap-2.5">
-                    <p className="max-w-measure">{notCollected}</p>
-                    <CopyLine text={notCollected} />
-                    {data.rateTable && (
-                      <a href={data.rateTable.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target text-sm self-start">
-                        {copy.rateTableLink}
-                        <IconExternal size={16} />
-                      </a>
-                    )}
-                  </Card>
-                </Disclosure>
-              )}
-              {/* one sheet for the page's deposit-kind labels (kit LabelSheetHost) */}
-              <LabelSheetHost>
-              {data.groups.map((g, i) => (
-                <Disclosure
-                  key={g.wrapperId}
-                  defaultOpen={i === 0}
-                  className="flex flex-col gap-2"
-                  summaryClassName="min-h-12 md:min-h-14"
-                  label={
-                    <span className="flex flex-col md:flex-row md:items-baseline gap-0.5 md:gap-3">
-                      <span className="text-lg lg:text-xl font-semibold">{groupTitle[g.wrapperId] ?? g.wrapperName}</span>
-                      <span className="text-sm text-muted-foreground">{countLine(g.products.length)}</span>
-                    </span>
-                  }
-                >
-                  <Link to={`/guide/${g.wrapperId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
-                    {copy.groupLink} {g.wrapperName}
-                    <IconDrillIn size={16} />
-                  </Link>
-                  <div className="flex flex-col gap-3">
-                    {g.products.map((p) => (
-                      <BankProductRow key={p.id} p={p} known={known} wrapperName={wrapperName(p.wrapperId)} />
-                    ))}
-                  </div>
-                </Disclosure>
-              ))}
-              </LabelSheetHost>
-              {/* in the page's column at every width since the card holds the account's details (D57) */}
-              <div ref={account} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
-                <Disclosure
-                  className="flex flex-col gap-2"
-                  summaryClassName="min-h-12 md:min-h-14"
-                  open={accountOpen}
-                  onOpenChange={setAccountOpen}
-                  label={<span className="text-lg lg:text-xl font-semibold">{copy.groups.brokerage}</span>}
-                >
-                  {brokerage}
-                </Disclosure>
-              </div>
-            </section>
-          )}
-
-          {!isBank && (
-            <div ref={account} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
-              {brokerage}
-            </div>
-          )}
-
-          {data.catalogue.length > 0 && (
-            <section aria-labelledby="inst-also" className="flex flex-col gap-3">
-              <h2 id="inst-also" className="text-xl lg:text-2xl font-semibold">
-                {catalogue.alsoCalled}
-              </h2>
-              <Card as="div" className="p-0 md:p-0">
-                <ul className="flex flex-col divide-y divide-border">
-                  {data.catalogue.map((u) => (
-                    <li key={u.id} className="flex flex-col gap-1 p-4">
-                      <span className="font-medium flex flex-col gap-0.5">
-                        {u.names.map((n) => (
-                          <bdi key={n}>{n}</bdi>
-                        ))}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen} />
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </section>
-          )}
-          <CompanyTerms name={data.terms.name} groups={data.terms.groups} />
-          <PasteCard className="lg:w-1/2" />
-        </div>
-      </div>
+      <CompanyTemplate
+        path={path}
+        name={name}
+        line={isBank ? `${copy.classWord.bank} · ${gershayim(data.name)}` : copy.brokerClassLine}
+        header={
+          hasAccount && tariff.stale ? (
+            <Callout tone="caution">
+              <When iso={String(tariff.snapshot.value)} lead={copy.card.stale.before} />
+              {copy.card.stale.after}
+            </Callout>
+          ) : undefined
+        }
+        {...(isBank ? { listLabel: w.bankList } : {})}
+        parts={parts}
+        overview={{
+          anchors: [companyTermsAnchor, "inst-also", ...entryIds(docs.rest)],
+          body: (
+            <Overview heading={isBank ? w.whatsInBank : w.whatsIn(name)} rows={rows} quiet={notCollected ? [notCollected] : []}>
+              {after}
+            </Overview>
+          ),
+        }}
+        single={
+          <div className="flex flex-col gap-section pt-4">
+            {notCollected && <p className="text-sm text-muted-foreground max-w-measure">{notCollected}</p>}
+            {after}
+          </div>
+        }
+      />
     </PageShell>
   );
 }

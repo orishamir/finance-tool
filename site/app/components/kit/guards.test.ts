@@ -43,6 +43,7 @@
 // 23. a link to a cited source is built by sourceHref, never from a raw address (open at the quoted words).
 // 24. a key never shows a made-up figure (the number key's "123 ממקור 123 מחושב" read as a placeholder left
 //     in the page): no `num-sample` element holds digits; a key draws each style on its own word, after a lead that says what it keys.
+// 25. a FilterChip is an on-or-off filter: one comparing a value in `on` is one of several values, which is ChoiceChips with counts.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -932,5 +933,23 @@ describe("a key never shows a made-up figure (24)", () => {
   it("the scanner sees the broken pattern", () => {
     expect('<span className="num num-sourced num-sample" aria-hidden="true">123</span>'.match(SAMPLE_WITH_DIGITS)).toHaveLength(1);
     expect('<span className="num num-sourced num-sample whitespace-nowrap">\n  {numbers.legend.sourced}</span>'.match(SAMPLE_WITH_DIGITS)).toBeNull();
+  });
+});
+
+// 25. A choice control is picked by what the choice does (docs/design-system.md 11, "Which choice control"). The one mismatch a scan can
+//     name: a FilterChip whose `on` compares a value (`on={term === x}`) is one of several values that turn each other off, which is
+//     ChoiceChips with counts; a FilterChip is a filter that is on or off on its own (the deposits page, a company's page and the rules
+//     page's kinds of company drew one-of-N rows of FilterChips). The rest of the rule (a narrowing drawn as tabs, a calculation's question
+//     drawn as chips) depends on what the page does with the value, which a scan cannot read: it is the doc's and the review's.
+const ONE_OF_N_FILTER = /<FilterChip\b[^>]*\bon=\{[^}]*[!=]==?[^}]*\}/g;
+describe("a FilterChip is an on-or-off filter, never one of several values (25)", () => {
+  it("no FilterChip outside the kit compares a value in `on`", () => {
+    const hits = files.filter((f) => f.endsWith(".tsx") && !rel(f).startsWith("components/kit/")).flatMap((f) => (code(read(f)).match(ONE_OF_N_FILTER) ?? []).map((m) => `${rel(f)}: ${m.slice(0, 90)} (ChoiceChips with counts)`));
+    expect(hits).toEqual([]);
+  });
+  it("the scanner sees the broken pattern and leaves an on-or-off filter", () => {
+    expect('<FilterChip key={x} on={term === x} count={3} onClick={() => setTerm(x)}>'.match(ONE_OF_N_FILTER)).toHaveLength(1);
+    expect('<FilterChip\n  on={group == g}\n  onClick={f}>'.match(ONE_OF_N_FILTER)).toHaveLength(1);
+    expect('<FilterChip on={filters.changing} count={n} onClick={() => setFilters({ changing: !filters.changing })}>'.match(ONE_OF_N_FILTER)).toBeNull();
   });
 });

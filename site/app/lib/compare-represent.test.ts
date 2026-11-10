@@ -14,8 +14,9 @@ const goal: RunGoal = { horizonYears: 20, amountNow: 40_000, monthly: 3_000, ava
 const real = (g: RunGoal, id: string) => evaluate(bundle, g).candidates.find((c) => c.id === id)?.run?.real ?? NaN;
 
 describe("entered fee for the representative instrument", () => {
-  it("the record's 0.02 % tracker (5139282) ends 5 % above the kupat gemel once Harel's discount ends; IBI's old 1.115 % trails it by 5 %", () => {
-    // Leumi's whole tariff stays (custody, buy and sell commission, FX). F-80, A-19, D56: the gemel runs on Harel's 0.7 % and 0 % for
+  it("the record's 0.02 % tracker (5139282) ends 4.5 % above the kupat gemel once Harel's discount ends; IBI's old 1.115 % trails it by 5 %", () => {
+    // Leumi's whole tariff stays (custody, buy and sell commission, FX), its monthly purchases on the regular line: its standing-order line
+    // is set aside (D41). F-80, A-19, D56: the gemel runs on Harel's 0.7 % and 0 % for
     // five years, then on the bylaws' most, 1.05 % and 4 % (at 0.7 % for all twenty years the tracker ended 0.7 % below it; at Meitav's 0.8 % a free fund tied it)
     const kgl = real(goal, "kupat-gemel-lehashkaa");
     const rec = real(goal, "brokerage-account");
@@ -24,12 +25,12 @@ describe("entered fee for the representative instrument", () => {
     const free = real({ ...goal, ownFees: { "brokerage-account": 0 } }, "brokerage-account");
     expect(kgl - ibiOld).toBeGreaterThan(0.05 * kgl);
     expect(rec).toBeGreaterThan(ibiOld + 90_000);
-    expect((rec - kgl) / kgl).toBeGreaterThan(0.045);
-    expect((rec - kgl) / kgl).toBeLessThan(0.055);
+    expect((rec - kgl) / kgl).toBeGreaterThan(0.04);
+    expect((rec - kgl) / kgl).toBeLessThan(0.05);
     expect(cheap).toBeGreaterThan(kgl);
     expect(free).toBeGreaterThan(rec);
-    expect((free - kgl) / kgl).toBeGreaterThan(0.05);
-    expect((free - kgl) / kgl).toBeLessThan(0.055);
+    expect((free - kgl) / kgl).toBeGreaterThan(0.045);
+    expect((free - kgl) / kgl).toBeLessThan(0.05);
     // the entered fee reaches the ranking: on the site's pick of tariff the account leads at the fund's own fee and at IBI's old 1.115 %, and a 1.3 % fee puts the gemel first
     const picked = (g: RunGoal) => evaluate(applyProviders(bundle, g), g).ranking.entries[0]!.id;
     expect(picked(goal)).toBe("brokerage-account");

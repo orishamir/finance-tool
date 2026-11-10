@@ -25,6 +25,10 @@ export interface ProductColumn {
   cellClassName?: string;
   /** The column's sort state, when its head sorts the table (a `SortHead` inside `head`): sets `aria-sort` on the head's cell. */
   sort?: "ascending" | "descending" | "none";
+  /** Dimmed in place, head and cells, while a choice elsewhere on the page sets it aside (an amount the reader does not deposit): it never moves. */
+  dim?: boolean;
+  /** A caption over this column and the ones after it that carry the same `band` string ("ריבית בשנה, לפי סכום ההפקדה"): a row above the heads. */
+  band?: string;
 }
 
 export interface ProductRow {
@@ -37,12 +41,27 @@ export interface ProductRow {
   rowOf?: string;
   /** The row lights for a moment (`row-lit`): the rows a press elsewhere on the page scrolled to. */
   lit?: boolean;
+  /** The reader's own (a bank they marked): a tinted row with an accent bar at its start (`row-mine`); the phone row carries its own. */
+  mine?: boolean;
   /**
    * One product sold on several terms under one name (a bank's deposit with and without exit points): one line for each, under one name.
    * The columns named in `columns` take a cell on every line (`rows`, in order); every other column keeps the row's own cell, once,
    * spanning the lines. The phone row is the caller's and shows the lines its own way.
    */
   lines?: { columns: string[]; rows: { key: string; cells: ReactNode[] }[] };
+  /**
+   * What else there is to say about the product, folded under its row and closed until the reader opens it: a narrow column at the row's end
+   * holds the button. `marks` are small icons on the button for what should not hide silently (a note of the company's, a doubt); `label`
+   * is the button's spoken name. The phone row is the caller's (`RowFoldButton`).
+   */
+  detail?: { body: ReactNode; marks?: FoldMark[]; label: string };
+}
+
+/** A small icon on a row's fold button, with what it stands for. */
+export interface FoldMark {
+  key: string;
+  icon: ReactNode;
+  label: string;
 }
 
 export interface ProductGroup {
@@ -57,6 +76,22 @@ export interface ProductGroup {
 }
 
 const MIN_SHARED_REM = 11;
+const DETAIL = "__detail";
+
+/** A dimmed column fades rather than jumps. */
+const DIM = "transition-opacity duration-[var(--duration-base)]";
+
+/** The head's caption row: each run of neighbouring columns with one `band` under one cell, the others under empty cells. */
+function bandRuns(columns: readonly ProductColumn[]): { key: string; band: string | null; span: number }[] {
+  const out: { key: string; band: string | null; span: number }[] = [];
+  for (const c of columns) {
+    const band = c.band ?? null;
+    const last = out.at(-1);
+    if (last && last.band === band) last.span += 1;
+    else out.push({ key: c.id, band, span: 1 });
+  }
+  return out;
+}
 
 const WIDE = "(min-width: 48rem)";
 const subscribe = (onChange: () => void) => {
@@ -132,6 +167,12 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
   const [closed, setClosed] = useState<ReadonlySet<string>>(() => new Set());
   const foldOf = (g: ProductGroup) => (!foldable ? undefined : g.fold ? { open: g.fold.open, toggle: g.fold.onToggle } : { open: !closed.has(g.key), toggle: () => setClosed((c) => { const n = new Set(c); if (!n.delete(g.key)) n.add(g.key); return n; }) });
   const { card, fits } = useFitsWidth(!!stickyHead, place);
+  const [opened, setOpened] = useState<ReadonlySet<string>>(() => new Set());
+  const flip = (key: string) => setOpened((o) => { const n = new Set(o); if (!n.delete(key)) n.add(key); return n; });
+  // the rows' fold buttons: a column at the end, as wide as the most marks a button holds
+  const marksMost = Math.max(-1, ...groups.flatMap((g) => g.rows.map((r) => (r.detail ? (r.detail.marks?.length ?? 0) : -1))));
+  // the button: a 44 px target, wider with two marks (16 px each and their gaps, beside the 18 px chevron); 6 px on each side
+  if (marksMost >= 0) columns = [...columns, { id: DETAIL, head: <span className="sr-only">{kit.rowDetail}</span>, width: (Math.max(44, 18 + 20 * marksMost) + 12) / 16, headClassName: "!px-1.5", cellClassName: "!px-1.5" }];
   // the columns that share the rest keep a readable width: under that the table scrolls inside its card (a narrow tablet)
   const minRem = columns.reduce((sum, c) => sum + (c.width ?? MIN_SHARED_REM), 0);
   // the table's last row, if a row ends it (not a heading or a folded group)
@@ -177,9 +218,19 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
         <table className={cx("tbl tbl-rows", fits && "tbl-sticky")} style={{ minWidth: `${minRem}rem` }}>
           <TableCols widths={columns.map((c) => (c.width ? `${c.width}rem` : "auto"))} />
           <thead>
+            {columns.some((c) => c.band) && (
+              <tr className="tbl-band">
+                {bandRuns(columns).map((run) => (
+                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pb-0 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0")}>
+                    {/* a rule under the caption over its columns, so it reads as theirs */}
+                    {run.band && <span className="block pb-1.5 border-b border-border">{run.band}</span>}
+                  </th>
+                ))}
+              </tr>
+            )}
             <tr>
               {columns.map((c) => (
-                <th key={c.id} scope="col" aria-sort={c.sort} className={c.headClassName}>
+                <th key={c.id} scope="col" aria-sort={c.sort} className={cx(c.headClassName, DIM, c.dim && "opacity-45")}>
                   {c.head}
                 </th>
               ))}
@@ -212,40 +263,54 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
                   ]
                 : []),
               ...(shut ? [] : g.rows).flatMap((r) => {
-                const cellClass = (i: number) => cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width ? "whitespace-nowrap" : null, columns[i]?.cellClassName);
-                const rowClass = cx(g.banner ? "dup-row" : null, r.lit && "row-lit");
+                const open = !!r.detail && opened.has(r.key);
+                const cellClass = (i: number) => cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width ? "whitespace-nowrap" : null, columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "!border-b-0");
+                const rowClass = cx(g.banner ? "dup-row" : null, r.lit && "row-lit", r.mine && "row-mine");
                 const lines = r.lines && r.lines.rows.length > 1 ? r.lines : null;
+                const detailId = `${bannerId}-d-${r.key}`;
+                const cells = marksMost >= 0 ? [...r.cells, r.detail ? <RowFoldButton open={open} onToggle={() => flip(r.key)} marks={r.detail.marks} label={r.detail.label} controls={detailId} /> : null] : r.cells;
+                const detailRow = open
+                  ? [
+                      <tr key={`${r.key}-detail`} id={detailId} className="row-detail">
+                        <td colSpan={columns.length}>{r.detail!.body}</td>
+                      </tr>,
+                    ]
+                  : [];
                 if (!lines)
                   return [
                     <tr key={r.key} data-row-of={r.rowOf} className={rowClass}>
-                      {r.cells.map((cell, i) => (
+                      {cells.map((cell, i) => (
                         <td key={columns[i]?.id ?? i} className={cellClass(i)}>
                           {cell}
                         </td>
                       ))}
                     </tr>,
+                    ...detailRow,
                   ];
                 // a line's cells sit close to the next line's, with no rule between them: the rule is under the whole row
                 const last = lines.rows.length - 1;
-                return lines.rows.map((line, k) => (
-                  <tr key={`${r.key}-${line.key}`} data-row-of={r.rowOf} className={rowClass}>
-                    {columns.map((c, i) => {
-                      const j = lines.columns.indexOf(c.id);
-                      if (j < 0)
-                        return k === 0 ? (
-                          // the table's last row has no rule under it; a cell that spans the lines ends there too
-                          <td key={c.id} rowSpan={lines.rows.length} className={cx(cellClass(i), lastRow === r && "!border-b-0")}>
-                            {r.cells[i]}
+                return [
+                  ...lines.rows.map((line, k) => (
+                    <tr key={`${r.key}-${line.key}`} data-row-of={r.rowOf} className={rowClass}>
+                      {columns.map((c, i) => {
+                        const j = lines.columns.indexOf(c.id);
+                        if (j < 0)
+                          return k === 0 ? (
+                            // the table's last row has no rule under it; a cell that spans the lines ends there too
+                            <td key={c.id} rowSpan={lines.rows.length} className={cx(cellClass(i), lastRow === r && !open && "!border-b-0")}>
+                              {cells[i]}
+                            </td>
+                          ) : null;
+                        return (
+                          <td key={c.id} className={cx(cellClass(i), k < last && "!border-b-0 !pb-1", k > 0 && "!pt-1")}>
+                            {line.cells[j]}
                           </td>
-                        ) : null;
-                      return (
-                        <td key={c.id} className={cx(cellClass(i), k < last && "!border-b-0 !pb-1", k > 0 && "!pt-1")}>
-                          {line.cells[j]}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ));
+                        );
+                      })}
+                    </tr>
+                  )),
+                  ...detailRow,
+                ];
               }),
               ];
             })}
@@ -258,6 +323,24 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
   );
 }
 
+/**
+ * The button that folds a product's details open under its row (`ProductRow.detail`), and on a phone under the row's figures: a chevron,
+ * after the row's marks (a note of the company's, a doubt), each an icon with its name for a screen reader and on hover.
+ */
+export function RowFoldButton({ open, onToggle, marks, label, controls, className }: { open: boolean; onToggle: () => void; marks?: FoldMark[]; label: string; controls?: string; className?: string }) {
+  const named = marks && marks.length > 0 ? `${label} (${marks.map((m) => m.label).join(", ")})` : label;
+  return (
+    <button type="button" data-row-fold="" aria-expanded={open} aria-controls={controls} aria-label={named} title={named} onClick={onToggle} className={cx("inline-flex items-center justify-center gap-1 min-h-target min-w-target -my-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent cursor-pointer", className)}>
+      {marks?.map((m) => (
+        <span key={m.key} aria-hidden="true" className="inline-flex">
+          {m.icon}
+        </span>
+      ))}
+      <IconChevronDown size={18} aria-hidden="true" className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
+    </button>
+  );
+}
+
 /** The arrow at the end of a row that opens a page of the site, in the link's colour ("appear like a link to the
  *  site"). An arrow that opens a sheet on the same page is the button's own, not this. */
 export function RowArrow({ className }: { className?: string }) {
@@ -265,8 +348,8 @@ export function RowArrow({ className }: { className?: string }) {
 }
 
 /** One product on a phone: a row of the list card. `stacked` when lines (fees, figures, labels) sit under the name. */
-export function ProductPhoneRow({ stacked, className, children, rowOf, lit }: { stacked?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean }) {
-  return <div data-row-of={rowOf} className={cx("track", stacked && "!flex-col !items-stretch !gap-1", lit && "row-lit", className)}>{children}</div>;
+export function ProductPhoneRow({ stacked, className, children, rowOf, lit, mine }: { stacked?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean; /** As `ProductRow.mine`. */ mine?: boolean }) {
+  return <div data-row-of={rowOf} className={cx("track", stacked && "!flex-col !items-stretch !gap-1", lit && "row-lit", mine && "row-mine", className)}>{children}</div>;
 }
 
 /** Figures each followed by its word ("0.35% קבועים", "0.62% מהחיסכון"): one under the other in a table cell, in one line on a phone. */

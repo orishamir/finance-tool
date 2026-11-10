@@ -502,11 +502,11 @@ function buildTariff(
       // A tariff line has no buy/sell split (data-schema §3.6): one commission line applies to both orders.
       tariff.buy = c;
       tariff.sell = { ...c };
-      // F-12: monthly purchases of the account's own fund, where the tariff prints a standing-order price for its class
+      // F-12: monthly purchases of the account's own fund, where the tariff prints a standing-order price for its class, and its house shows the customer can use it (D41)
       const fundRec = src.funds.find((f) => f.id === spec.fund);
       const exposure = fundRec ? loadExposures().find((e) => e.id === fundRec.exposure_id) : undefined;
       const cls = fundRec ? instrumentClassOf(fundRec, exposure) : null;
-      const standing = cls ? snap.lines.find((l) => l.level === "list" && l.base === "trade" && l.band === STANDING_ORDER_BAND && l.applies_to.includes(cls) && (l.channel === null || l.channel === line.channel)) : undefined;
+      const standing = cls ? snap.lines.find((l) => l.level === "list" && l.base === "trade" && l.band === STANDING_ORDER_BAND && l.not_ranked === undefined && l.applies_to.includes(cls) && (l.channel === null || l.channel === line.channel)) : undefined;
       if (standing && isNum(standing.rate) && standing.rate.unit === "pct_of_trade") {
         tariff.buyStanding = commission(standing);
         feeValues.standingRate = { ...standing.rate };

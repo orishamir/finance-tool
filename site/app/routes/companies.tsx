@@ -10,7 +10,7 @@ import { PageShell } from "../components/shell";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { CompanyList, FocusPane } from "../components/companies/focus";
 import { Sheet } from "../components/Sheet";
-import { Card, ChoiceChips, ChoiceTray, HoldTallest, PhoneFold } from "../components/kit";
+import { Card, ChoicePair, HoldTallest, PhoneFold } from "../components/kit";
 import { chooseProduct, chooseType, companyGroups, productTypes, searchFocus, searchToState, stateToSearch, statusLine, toggleFromPane, typeCounts, type FocusFigures, type FocusState, type TypeChoice } from "../lib/company-focus";
 import { deviceStore } from "../lib/device-store";
 
@@ -134,8 +134,8 @@ export default function Companies() {
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
         <div className="flex flex-col gap-3">
           <PhoneFold summary={summary} more={w.fold.more} less={w.fold.less}>
-            <div className="flex flex-col gap-1">
-              <div className="flex flex-col md:flex-row md:items-end gap-4 md:gap-6">
+            <ChoicePair
+              start={
                 <div className="flex flex-col gap-2 md:w-72 shrink-0">
                   <label htmlFor="company-filter" className="text-sm font-medium">
                     {w.search}
@@ -145,17 +145,18 @@ export default function Companies() {
                     <input id="company-filter" type="search" dir="rtl" value={s.q} onChange={(e) => setQ(e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 min-w-0">
-                  <span id="type-label" className="text-sm font-medium">
-                    {w.typeLabel}
-                  </span>
-                  <ChoiceChips ids={typeIds} labels={w.types} value={s.type} counts={counts} onChange={(t) => setS((x) => ({ ...x, ...chooseType(data.kinds, t) }))} ariaLabel={w.typeLabel} />
-                </div>
-              </div>
-              <ChoiceTray label={w.productLabel} hint={w.trayHint}>
-                {typeKinds.length > 1 && <ChoiceChips ids={typeKinds.map((k) => k.id)} labels={Object.fromEntries(typeKinds.map((k) => [k.id, k.name]))} value={s.product} onChange={(id) => setS((x) => ({ ...x, ...chooseProduct(data.kinds, x, id) }))} ariaLabel={w.productLabel} line bleed="" />}
-              </ChoiceTray>
-            </div>
+              }
+              parent={{ label: w.typeLabel, ids: typeIds, labels: w.types, value: s.type, counts, onChange: (t) => setS((x) => ({ ...x, ...chooseType(data.kinds, t) })) }}
+              child={{
+                label: w.productLabel,
+                // a kind with one product has chosen it: nothing is left to choose here
+                ids: typeKinds.length > 1 ? typeKinds.map((k) => k.id) : [],
+                labels: Object.fromEntries(typeKinds.map((k) => [k.id, k.name])),
+                value: s.product,
+                onChange: (id) => setS((x) => ({ ...x, ...chooseProduct(data.kinds, x, id) })),
+                hint: w.trayHint,
+              }}
+            />
           </PhoneFold>
           {/* one line, one height: the numbers change, nothing else */}
           <p role="status" className="h-6 truncate text-sm text-muted-foreground">
@@ -163,7 +164,7 @@ export default function Companies() {
           </p>
         </div>
         <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-          <div className="lg:w-[510px] shrink-0 min-w-0">
+          <div className="lg:w-[31.875rem] shrink-0 min-w-0">
             <CompanyList data={data} state={s} onFocus={focusOn} />
           </div>
           {/* the pane holds the height of its tallest company, so focusing another moves nothing below it */}

@@ -22,7 +22,7 @@ export function CompanyList({ data, state, onFocus }: { data: FocusData; state: 
         const shown = list.filter((c) => matches(data.kinds, c, state)).length;
         return (
           <section key={g} aria-labelledby={`cg-${g}`} className="flex flex-col gap-2 min-w-0">
-            <GroupHead as="h2" id={`cg-${g}`} count={filtered ? <bdi dir="rtl">{w.of(fmt.number(shown), fmt.number(list.length))}</bdi> : fmt.number(list.length)}>
+            <GroupHead as="h2" id={`cg-${g}`} nowrap count={filtered ? <bdi dir="rtl">{w.of(fmt.number(shown), fmt.number(list.length))}</bdi> : fmt.number(list.length)}>
               {w.groups[g]}
             </GroupHead>
             <RowList>
@@ -32,7 +32,7 @@ export function CompanyList({ data, state, onFocus }: { data: FocusData; state: 
                   <ListRow
                     key={c.id}
                     rowId={`co-${c.id}`}
-                    title={<MixedName>{c.name}</MixedName>}
+                    title={<MixedName>{c.short}</MixedName>}
                     end={
                       // a fixed slot, so a count coming or going moves nothing
                       <bdi dir="ltr" className="inline-block w-[3ch] text-end tabular-nums text-sm">

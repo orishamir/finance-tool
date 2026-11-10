@@ -36,9 +36,11 @@ describe("a discount that ends, outside the run", () => {
   it("the verdict follows what the cut to the average is worth, not what the fee costs, and the card says when the discount ends (D90 revised)", () => {
     const bal = lines.find((l) => l.line === "balance")!;
     const dep = lines.find((l) => l.line === "deposit")!;
-    // the balance fee: the cut to the 0.62% average is worth 108.03 NIS, under the 1,000 NIS threshold, so it is not worth negotiating; its
-    // 3,902 NIS cost, with an option on the page that charges no such fee, is F-62's other half, "worth avoiding"
-    expect([bal.verdict, bal.reason, bal.judgedFraction]).toEqual(["avoid", "avoid", 0.0105]);
+    // the balance fee: the cut to the 0.62% average is worth 108.03 NIS, under the 1,000 NIS threshold, so it is not worth negotiating.
+    // Nothing on the page's plan ranks above the gemel (the brokerage account on Leumi's list, its monthly purchases on the regular line
+    // because its standing-order line is set aside, D41, ranks second), so its 3,902 NIS cost is not "worth avoiding" (D90 revised); the
+    // fee rises above the average when the discount ends: check again then
+    expect([bal.verdict, bal.reason, bal.judgedFraction]).toEqual(["not-worth", "check-after", 0.0105]);
     expect(bal.worthNis).toBeCloseTo(108.03, 1);
     // the deposit fee: 0% now, so nothing to ask for; it can rise to 4%, above the 0% average, when the discount ends: check again then
     expect([dep.verdict, dep.reason, dep.judgedFraction, dep.worthNis]).toEqual(["not-worth", "check-after", 0.04, 0]);
@@ -81,13 +83,20 @@ describe("a discount that ends, outside the run", () => {
 
   it("the sensitivity judges each fee as its card does, by the rate after the discount (D88, D90)", () => {
     const s = feeSensitivity(r.args, r.analysis, r.args.runBundle)!;
-    // the balance fee is worth avoiding until its cost falls under 2,500 NIS, near 0.63 times; within half to double the cut to the
-    // average never reaches 1,000 NIS, so no row says "worth negotiating" (D90 revised)
+    // on the page's plan the balance fee is not worth negotiating and nothing ranks above the gemel; within half to double the cut to the
+    // average never reaches 1,000 NIS, so its verdict holds and no row says "worth negotiating" (D90 revised)
     const bal = s.rows.find((x) => x.key === "fee:balance")!;
-    expect(bal.flip).toMatchObject({ kind: "verdict", line: "balance", newVerdict: "not-worth" });
-    expect(bal.flip!.to).toBeGreaterThan(0.6);
-    expect(bal.flip!.to).toBeLessThan(0.66);
+    expect(bal.flip).toBeUndefined();
     expect(s.rows.some((x) => x.flip?.newVerdict === "negotiate")).toBe(false);
+    // over 12 years of 1,000 a month the brokerage account ranks above the gemel: its 10,398 NIS balance fee is worth avoiding (judged at
+    // 1.05%, the rate after the discount), and from half to double it stays above 2,500 NIS while the cut never reaches 1,000 NIS
+    const longer = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL }, { ...inputs, g: { ...inputs.g, horizonYears: 12, monthly: 1_000 } });
+    if (longer.kind !== "ok") throw new Error("no run");
+    const balLonger = longer.analysis.lines.find((l) => l.line === "balance")!;
+    expect([balLonger.verdict, balLonger.reason, balLonger.judgedFraction]).toEqual(["avoid", "avoid", 0.0105]);
+    const sLonger = feeSensitivity(longer.args, longer.analysis, longer.args.runBundle)!;
+    expect(sLonger.rows.find((x) => x.key === "fee:balance")!.flip).toBeUndefined();
+    expect(sLonger.rows.some((x) => x.flip?.newVerdict === "negotiate")).toBe(false);
     // the holding period's axis never goes below a year
     const at2 = buildFees(bundle, data, { kind: "wrapper", wrapperId: KGL }, { ...inputs, g: { ...inputs.g, horizonYears: 2 } });
     if (at2.kind !== "ok") throw new Error("no run");

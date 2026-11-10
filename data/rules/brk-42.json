@@ -39,7 +39,34 @@
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
+      "checked": "2026-11-10"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/accounts/fees/LSEstkfees.php",
+      "title": "Interactive Brokers: London Stock Exchange (LSE, LSEETF, LSEIOB1) Fees",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-10"
+    },
+    {
+      "url": "https://ndcdyn.interactivebrokers.com/Universal/servlet/Registration_v2.formSampleView?formdb=3203#page=15",
+      "title": "Interactive Brokers LLC: Client Agreement, form 3203",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-10"
+    },
+    {
+      "url": "https://www.interactivebrokers.ie/Universal/servlet/Registration_v2.formSampleView?formdb=4750#page=23",
+      "title": "Interactive Brokers Ireland: Customer Agreement, form 4750",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-10"
     },
     {
       "url": "https://www.interactivebrokers.com/en/accounts/required-minimums.php",

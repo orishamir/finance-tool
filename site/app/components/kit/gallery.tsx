@@ -1,7 +1,7 @@
 // The gallery at /kit: every component of the kit in its states, with its name beside it. A page for builders and for reviewing the look
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoiceTray, ChooseRow, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -248,13 +248,7 @@ function Folds() {
       <Demo name="PhoneFold" use={g.uses.PhoneFold}>
         <State label="below md: one line says what is chosen and opens the controls; from md the controls stand open and the line is gone (narrow the window to see it fold)" wide>
           <PhoneFold summary={g.sample.phoneFold.summary} more={g.sample.phoneFold.more} less={g.sample.phoneFold.less}>
-            <div className="flex flex-wrap gap-2">
-              {g.sample.phoneFold.chips.map((c, i) => (
-                <FilterChip key={c} on={i === 0} count={i + 2} onClick={() => {}}>
-                  {c}
-                </FilterChip>
-              ))}
-            </div>
+            <PhoneFoldChips />
           </PhoneFold>
         </State>
       </Demo>
@@ -323,12 +317,15 @@ function Choices() {
         <State label={`counts, line, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} line counts={{ "0": 32, "1": 15, "2": 12, "3": 1 }} bleed="" />
         </State>
+        <State label="counts, one that would show nothing: dimmed in place">
+          <ChoiceChips ids={["0", "1", "2"]} labels={labels} value="0" onChange={() => {}} ariaLabel={g.sample.title} wrap counts={{ "0": 32, "1": 15, "2": 0 }} />
+        </State>
         <State label={`other, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={own} onChange={(id) => setOwn((k) => (k === id ? null : id))} ariaLabel={g.sample.title} wrap other={{ label: g.sample.other, open: own === "other", onToggle: () => setOwn((k) => (k === "other" ? null : "other")) }} />
           {own === "other" && <NumberField label={g.sample.otherField} unit="months" value={null} isEntered={false} validate={() => null} onCommit={() => {}} onReset={() => {}} optional inputMode="numeric" />}
         </State>
       </Demo>
-      <Demo name="ChoiceTray" use={g.uses.ChoiceTray}>
+      <Demo name="ChoicePair, ChoiceTray" use={g.uses.ChoicePair}>
         <State label={`the hint, then a row of choices, ${g.states.interactive}`} wide>
           <ChoiceTrayDemo />
         </State>
@@ -1333,10 +1330,59 @@ function Lists({ today }: { today: string }) {
         <State label="rows in one box: a plain row, the chosen one, one with chips and a muted line" wide>
           <ListRowDemo />
         </State>
+        <State label="GroupHead nowrap: in a 140 px column the name stays on one line; the hairline gives way, then the count moves under the name">
+          <div className="flex flex-col gap-3 w-[140px]">
+            {(["houses", "managers"] as const).map((k) => (
+              <GroupHead key={k} nowrap count={<bdi dir="rtl">{companyFocus.of("8", "13")}</bdi>}>
+                {companyFocus.groups[k]}
+              </GroupHead>
+            ))}
+          </div>
+        </State>
       </Demo>
       <Demo name="ChooseRow" use={g.uses.ChooseRow}>
         <State label="a chosen row, a plain one and a dimmed one, each with its arrow" wide>
           <ChooseRowDemo />
+        </State>
+      </Demo>
+      <Demo name="SideNav, SidePage" use={g.uses.SideNav}>
+        <State label="the list beside the content, one item chosen with its parts under it, items under group labels; under 1024 px, one line that opens the list" wide>
+          <SideNavDemo />
+        </State>
+      </Demo>
+      <Demo name="OpenRow" use={g.uses.OpenRow}>
+        <State label="rows that open a product: a count, a fact under its label, a date; between hairlines" wide>
+          <RowList plain className="max-w-3xl">
+            <OpenRow title={g.sample.option[0]} end={`16 ${companyFocus.units.tracks.many}`} fact={{ label: g.sampleAbout, value: <Num value={s.sourced} /> }} date={g.sampleSource} to="/kit" label={g.sample.option[0] ?? ""} />
+            <OpenRow title={g.sample.option[1]} end={`4 ${companyFocus.units.tracks.many}`} fact={{ label: g.sampleAbout, value: g.sampleSource, words: true }} to="/kit" label={g.sample.option[1] ?? ""} />
+          </RowList>
+        </State>
+      </Demo>
+      <Demo name="GoLink" use={g.uses.GoLink}>
+        <State label="a link that sends the reader on, at the end of a part">
+          <GoLink to="/kit">{g.sample.option[0]}</GoLink>
+        </State>
+      </Demo>
+      <Demo name="SharedFacts, FigureLines" use={g.uses.SharedFacts}>
+        <State label="what every row shares, said once over a table" wide>
+          <SharedFacts title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i] }))} className="max-w-xl" />
+        </State>
+        <State label="small figures one under the other, one set aside by a choice and dimmed in place">
+          <FigureLines items={[0, 1, 2].map((i) => ({ id: String(i), label: g.sample.option[i], figure: <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, dim: i === 2 }))} />
+        </State>
+      </Demo>
+      <Demo name="ProductTable: band, dim, detail (RowFoldButton)" use={g.uses.ProductTableBand}>
+        <State label="a caption over two columns, one column dimmed by a choice" wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8, dim: true }]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label="a row's details folded under it, its button marked by what they hold (a note, a doubt)" wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], width: 8 }]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow>, ...(i === 0 ? { detail: { body: <DoubtNote text={g.sample.option[2]} />, label: g.sample.option[i], marks: [{ key: "doubt", icon: <IconAlert size={16} className="text-caution" />, label: g.sample.option[2] }] } } : {}) })) }]}
+          />
         </State>
       </Demo>
       <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
@@ -1389,6 +1435,21 @@ function Lists({ today }: { today: string }) {
             <CostStack size="sm" label="500" scale={10000} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }]} />
             <CostStack size="sm" label="9,620" scale={10000} parts={[{ id: "t", value: 4300, className: "bg-chart-cost-trade" }, { id: "c", value: 4800, className: "bg-chart-cost-custody" }, { id: "f", value: 520, className: "bg-chart-cost-fixed" }]} />
             <CostStack size="sm" label="25,126" scale={10000} parts={[{ id: "t", value: 7500, className: "bg-chart-cost-trade" }, { id: "c", value: 7500, className: "bg-chart-cost-custody" }, { id: "f", value: 10126, className: "bg-chart-cost-fixed" }]} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="PeriodBars" use={g.uses.PeriodBars}>
+        <State label="five periods (the page shows eight across a phone's whole width), the year chosen, the week with no figure" wide>
+          <PeriodBarsDemo />
+        </State>
+      </Demo>
+      <Demo name="MeterBar" use={g.uses.MeterBar}>
+        <State label="the top row in the accent, a row at 70%, an offer with a condition (hollow), a linked one (muted, hollow)" wide>
+          <div className="flex flex-col gap-3 max-w-48">
+            <MeterBar share={1} tone="accent" />
+            <MeterBar share={0.7} />
+            <MeterBar share={0.9} hollow />
+            <MeterBar share={0.4} tone="muted" hollow />
           </div>
         </State>
       </Demo>
@@ -1676,6 +1737,12 @@ function GlideDemo() {
   );
 }
 
+function PhoneFoldChips() {
+  const chips = g.sample.phoneFold.chips;
+  const [on, setOn] = useState<string>(chips[0]!);
+  return <ChoiceChips wrap ids={chips} labels={Object.fromEntries(chips.map((c) => [c, c]))} value={on} onChange={setOn} counts={Object.fromEntries(chips.map((c, i) => [c, i + 2]))} ariaLabel={g.sample.phoneFold.summary} />;
+}
+
 function TabStripDemo() {
   const [on, setOn] = useState("state");
   const shelves = rulesFront.shelves;
@@ -1712,11 +1779,11 @@ function ChoiceTrayDemo() {
   const kinds: Record<string, string> = { all: companyFocus.types.all, savings: companyFocus.types.savings, funds: companyFocus.types.funds };
   const items: Record<string, string> = { a: g.sample.option[0], b: g.sample.option[1], c: g.sample.option[2] };
   return (
-    <div className="flex flex-col gap-1 max-w-xl">
-      <ChoiceChips ids={["all", "savings", "funds"]} labels={kinds} value={kind} onChange={(k) => (setKind(k), setItem(null))} ariaLabel={companyFocus.typeLabel} counts={{ all: 32, savings: 15, funds: 9 }} wrap />
-      <ChoiceTray label={companyFocus.productLabel} hint={companyFocus.trayHint}>
-        {kind === "all" ? null : <ChoiceChips ids={["a", "b", "c"]} labels={items} value={item} onChange={(id) => setItem((x) => (x === id ? null : id))} ariaLabel={companyFocus.productLabel} line bleed="" />}
-      </ChoiceTray>
+    <div className="max-w-xl">
+      <ChoicePair
+        parent={{ label: companyFocus.typeLabel, ids: ["all", "savings", "funds"], labels: kinds, value: kind, counts: { all: 32, savings: 15, funds: 9 }, onChange: (k) => (setKind(k), setItem(null)) }}
+        child={{ label: companyFocus.productLabel, ids: kind === "all" ? [] : ["a", "b", "c"], labels: items, value: item, onChange: (id) => setItem((x) => (x === id ? null : id)), hint: companyFocus.trayHint }}
+      />
     </div>
   );
 }
@@ -1732,7 +1799,44 @@ function ChooseRowDemo() {
   );
 }
 
+/** The demo's items are addresses of this page (`?side=`), as a company page's are `?product=`. */
+function SideNavDemo() {
+  const [params] = useSearchParams();
+  const on = params.get("side") ?? "";
+  const to = (id: string) => (id ? `/kit?side=${id}` : "/kit");
+  const groups = [
+    { key: "", items: [{ id: "", label: g.sample.option[0], to: to("") }] },
+    { key: "a", label: companyFocus.types.savings, items: [1, 2].map((i) => ({ id: String(i), label: g.sample.option[i], count: i * 7, to: to(String(i)), ...(i === 1 ? { parts: [{ id: "kit-part-a", label: g.sample.option[0] }, { id: "kit-part-b", label: g.sample.option[2] }] } : {}) })) },
+  ];
+  return (
+    <SidePage chosen={on} summary={g.sample.option[Number(on) || 0]} more={g.sample.phoneFold.more} less={g.sample.phoneFold.less} nav={(close) => <SideNav groups={groups} current={on} ariaLabel={g.sample.option[0] ?? ""} onPick={close} />}>
+      <Card>{g.sampleSource}</Card>
+    </SidePage>
+  );
+}
+
 function InlineSelectDemo() {
   const [on, setOn] = useState<string | null>(null);
   return <InlineSelect label={rulesFront.claim.question} all={rulesFront.claim.all} value={on} onChange={setOn} options={Object.entries(rulesFront.shelves).map(([id, sh]) => ({ id, name: sh.name }))} />;
+}
+
+function PeriodBarsDemo() {
+  const [value, setValue] = useState("y1");
+  const rates: (number | null)[] = [null, 0.35, 2.25, 2.2, 3.15, 3.25, 3.5, 2.55];
+  const names = g.sample.periods;
+  const shown = [1, 2, 4, 5, 6];
+  return (
+    <PeriodBars
+      value={value}
+      onChange={setValue}
+      empty={g.sample.periodNone}
+      label={g.sample.periodLabel}
+      chosenWord={g.sample.periodChosen}
+      bars={shown.map((i) => {
+        const n = names[i]!;
+        const rate = i === 1 ? null : rates[i]!;
+        return { id: ["day", "week", "m1", "m3", "m6", "y1", "y2", "y3"][i]!, label: n, short: g.sample.periodsShort[i], tiny: g.sample.periodsTiny[i], value: rate, figure: rate === null ? undefined : fmt.number(rate), unit: "%", note: rate === null ? g.sample.periodGap : g.sample.periodNote, spoken: n };
+      })}
+    />
+  );
 }

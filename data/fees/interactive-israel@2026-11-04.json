@@ -355,7 +355,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents (D56). The tariff prints the conversion commission ('0.002 * Trade Value', minimum 10 ILS) but not the rate the conversion is done at. 'לפי שער רציף' is the commission page's advertising, not a binding term. The account is at Interactive Brokers, whose client agreement (form 3203, s.32D) converts 'at then-current rates on the IBKR platform', with no ceiling on a difference from the market rate."
+        "notes": "Not limited by the documents (D56). The tariff prints the conversion commission ('0.002 * Trade Value', minimum 10 ILS) but not the rate the conversion is done at. 'לפי שער רציף' is the commission page's advertising, not a binding term. The account is at Interactive Brokers, whose client agreement (form 3203, s.30D) converts 'at then-current rates on the IBKR platform', with no ceiling on a difference from the market rate."
       }
     },
     {
@@ -420,7 +420,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents (D56). The tariff waives the conversion commission inside the plan (p.6) but prints no rate; the plan page says 'יומרו אוטומטית לדולר ללא עלות' and the FAQ 'אין עמלת המרת שקלים או מט\"ח כלל', with no rate either. No plan terms are published. The conversion is done in the Interactive Brokers account, and that agreement (form 3203, s.32C) says an automatic conversion's rate 'may be adjusted from the rate that otherwise would apply'; Interactive Brokers' own price list adds 'typically ... (at its discretion) 0.03%' on automatic conversions of its direct clients. Whether the plan's conversion is such an automatic conversion is the company's to say."
+        "notes": "Not limited by the documents (D56). The tariff waives the conversion commission inside the plan (p.6) but prints no rate; the plan page says 'יומרו אוטומטית לדולר ללא עלות' and the FAQ 'אין עמלת המרת שקלים או מט\"ח כלל', with no rate either. No plan terms are published. The conversion is done in the Interactive Brokers account, and that agreement (form 3203, s.30C) says an automatic conversion's rate 'may be adjusted from the rate that otherwise would apply'; Interactive Brokers' own price list adds 'typically ... (at its discretion) 0.03%' on automatic conversions of its direct clients. Whether the plan's conversion is such an automatic conversion is the company's to say."
       }
     }
   ],
@@ -491,6 +491,32 @@
         "page": 1
       },
       "note": "US-listed ETFs (SPY, QQQ) and Irish UCITS ETFs listed in Europe (CSPX, CSNDX, VUSD, IWDA) are listed as tradable (BRK-41). Open: whether an Irish-regulated account blocks US-domiciled ETFs (BRK-44)."
+    }
+  ],
+  "by_amount": [
+    {
+      "venue": "us",
+      "orders": "recurring_plan",
+      "list_only": false,
+      "source": {
+        "url": "https://www.inter-il.com/recurring-transfer/",
+        "title": "השקעה קבועה, אינטראקטיב ישראל: 'איזה ניירות ערך משתתפים בתוכנית?' ו'מהם שברי מניות'",
+        "checked": "2026-11-10",
+        "quote": "בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה ... תוכנית החיסכון תקנה לנו את הנכס המבוקש לפי הסכום שנבקש גם אם מדובר בחלק ממניה או תעודת סל"
+      },
+      "note": "The recurring plan only, as in Europe: the plan's words name 'חלק ממניה או תעודת סל'. Outside the plan the house's words name shares only: the tariff (23.09.2026, p.1) 'במסחר בשברי מניות בארה״ב ובקנדה, חישוב העמלה והמינימום לעסקה נעשה לפי מספר מניות מעוגל כלפי מעלה למניה שלמה', and the open-account page 'אפשרות למסחר בשברי מניות'; for a fund that is silence (D56), so one-off orders are whole units. Doubt as for Europe: Interactive Brokers' fact sheet excludes clients resident in Israel from fractional trading, and its eligibility list was not read."
+    },
+    {
+      "venue": "europe",
+      "orders": "recurring_plan",
+      "list_only": false,
+      "source": {
+        "url": "https://www.inter-il.com/recurring-transfer/",
+        "title": "השקעה קבועה, אינטראקטיב ישראל: 'איזה ניירות ערך משתתפים בתוכנית?' ו'מהם שברי מניות'",
+        "checked": "2026-11-10",
+        "quote": "בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה ... תוכנית החיסכון תקנה לנו את הנכס המבוקש לפי הסכום שנבקש גם אם מדובר בחלק ממניה או תעודת סל"
+      },
+      "note": "The recurring plan only: a one-off fractional order on a European listing is not stated. Whether a given London line is in the plan is not printed anywhere read. Doubt: the plan is Interactive Israel's own document and binds it, but its broker Interactive Brokers' fact sheet excludes clients resident in Israel from fractional trading ('Any client type with residency in Israel', https://www.interactivebrokers.com/en/general/about/ibkr-fact-sheet.php), IBKR keeps a per-security eligibility list that was not read, and whether CSPX or CNDX is in the plan is not confirmed."
     }
   ],
   "price_for_he": "כל לקוח",

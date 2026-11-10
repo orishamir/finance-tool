@@ -1,0 +1,107 @@
+# Buying a fund abroad by amount or in fractions, at each house (2026-11-10)
+
+The question: the indices page prices a monthly purchase of a fund bought abroad as if each month's sum buys its exact value, a fraction of a share where needed. Can a private client in Israel actually do that at each house, on US listings and on European (LSE) listings, and with what minimum per order?
+
+**Short answer.** Of the 17 houses, four say in their own documents that a client can buy US-listed securities in fractions: Excellence, Altshuler Shaham Trade, IBI and Interactive Israel. Only Interactive Israel says it on European listings too, and only for its recurring plan. Interactive Brokers excludes a client resident in Israel from fractional trading. The other twelve houses (every bank, Meitav Trade, Psagot) say nothing about it in anything read. Silence is not a yes, so they stay "not stated".
+
+Everything below was read on 2026-11-10 unless a row says otherwise. Nothing was written to `data/`, the rule base, `docs/` or code. Library ids are given for every document.
+
+## 1. Fractions or by amount, per house and listing
+
+"Fractions / by amount" means: can a monthly sum below one share's price be invested? **yes** = the house's own document says so, **no** = its document limits fractions to the other listing or excludes the client, **not stated** = nothing found in the documents read (listed per row). "Minimum per order" is the order-size minimum (shares or money) the document prints. The commission minimum is a separate thing, already in `data/fees/`. It is shown in brackets for context only.
+
+| House | Listing | Fractions / by amount | Minimum per order | Exact words | Source (URL, page) | Read |
+|---|---|---|---|---|---|---|
+| altshuler-trade | US | **yes**, by fractional quantity or by money amount | Buy quantity: up to 2 decimal places. No money minimum printed. LMT orders only, continuous session only (16:30-23:00). [commission min USD 9, track 3] | "בחלונית ביצוע ההוראה יש להפעיל את הלחצן ״מסחר בשברים״ ... ניתן להזין הוראה לפי כמות שברית של מניות או לפי סכום כספי. השירות תקף למסחר בבורסה בארה״ב בלבד." The house's article: "בעת הרכישה, ניתן להזין עד 2 ספרות לאחר הנקודה"; "מסחר בשברים מתבצע רק על ידי פקודת הגבלת שער (פקודת LMT)" | [Trade FAQ](https://www.as-invest.co.il/trade/faq/), "איך קונים שברי מניות?" (library 2aa570943fe356cc). Article "שברי מניות: המהפכה..." (as-invest.co.il trade magazine, library c1c3c1495fef0702) | 2026-11-10 |
+| altshuler-trade | Europe | **no** | n/a | "השירות תקף למסחר בבורסה בארה״ב בלבד" (same FAQ). The tariff prices US trading only (`data/fees/altshuler-trade@2026-11-05.json`) | as above | 2026-11-10 |
+| discount | US | not stated | not stated | none. Tariff silent; securities general terms (part E, library 0db5c13ebcf91370, 36453fb2c2b8e702) silent | tariff `tarifon_single-united_11026.pdf` | library copies 2026-10-31 / 2026-11-07 |
+| discount | Europe | not stated | not stated | none | as above | as above |
+| excellence | US | **yes**, by quantity (e.g. 0.3) or by money amount | **0.01 units** ("השווי הכספי נגזר משווי השוק של המניה"). [commission min USD 8, 0.3% track] | "בוחרים מניה במערכת, ואז או מזינים חלק ממנה שתרצו לרכוש (למשל 0.3) או פשוט מגדירים סכום בו תרצו לרכוש"; "המסחר בשברי מניות זמין בניירות ערך זרים הנסחרים בארה״ב בלבד, מתוך רשימה רחבה של למעלה מ־3,000 מניות עיקריות"; "ניתן לרכוש מינימום של 0.01 יחידות" | [Fractional shares page](https://www.xnes.co.il/trading/extrade-pro/fractional-shares/), FAQ block (library fa27940098c5af97) | 2026-11-10 |
+| excellence | Europe | **no** | n/a | "בארה״ב בלבד"; same page: "מסחר בשברי מניות זמין עבור משקיעים ישראלים בבורסות זרות בלבד" (general), then the FAQ limits it to US | as above | 2026-11-10 |
+| fibi | US | not stated | not stated | Tariff part 4 has a standing order for a foreign ETF ("בגין רכישה/מכירה של ETF באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינימום מופחתת בסך 4.5$", p.16 note 10), but whether it is set by amount or by units, and whether it buys fractions, is not stated | [Tariff part 4](https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf) (library 4cfbcc09992df849) | library copy 2026-10-31 |
+| fibi | Europe | not stated | not stated | none | as above | as above |
+| hapoalim | US | not stated | not stated | none | [Poalim my trade](https://www.bankhapoalim.co.il/capital-market/poalim-my-trade) (library c0a4e15b2a1e6d8b), tariff | 2026-11-10 |
+| hapoalim | Europe | not stated | not stated | none | as above | 2026-11-10 |
+| ibi | US | **yes**, fractions in selected US securities. By money amount: not stated | not stated. Fractional orders only in the continuous session. [commission USD 12 fixed per trade] | "הלקוח מאשר, כי ידוע לו שיהיה רשאי לבצע בחשבון מסחר בשברי מניות בניירות ערך נבחרים בלבד בארה"ב" (agreement s.9.1.18); "ניתן לשדר פקודות עם שברי מניות רק לשלב הרציף של המסחר (Market Hours)". The app page: "מהיום ניתן לקנות ולמכור שברי מניות במגוון ניירות ערך בארה"ב" | Account agreement, version 27.01.2026, p.12 s.9.1.18 (sent by IBI on request, no public copy; library 3bf5279377349699). [IBI SMART page](https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/) (library 5e8baa650897027d) | agreement 2026-11-08; page 2026-11-10 |
+| ibi | Europe | **no** | n/a | "בניירות ערך נבחרים בלבד בארה"ב" (s.9.1.18) | as above | 2026-11-08 |
+| interactive-brokers | US | **no** for a client resident in Israel (direct IBKR account) | n/a (for eligible clients IBKR prints 0.0001 shares or USD 1 by amount) | "Individual accounts ... are eligible for fractional shares trading permission with the exception of the following: Any client type with residency in Israel"; "Financial Advisors, Money Managers and Introducing Brokers can enable their clients on an all-or-none basis." | [IBKR Fact Sheet](https://www.interactivebrokers.com/en/general/about/ibkr-fact-sheet.php) (library 22b10808da5c589e) | 2026-11-10 |
+| interactive-brokers | Europe | **no**, same exclusion | n/a | as above. IBKR does sell fractions on European and UK listings to eligible clients: "With IBKR, you can invest as little as USD 1 in eligible U.S., Canadian, or European stocks"; commissions page prints, for UK USD-denominated shares, "Minimum per order (fractional shares) USD 1.70 USD 1.70" | Fact sheet as above. [Fractional Trading](https://www.interactivebrokers.com/en/trading/fractional-trading.php) (library 0790a3eb8375c992). [Stock commissions](https://www.interactivebrokers.com/en/pricing/commissions-stocks.php) (library 0bf0534869b59d82) | 2026-11-10 (commissions 2026-10-31) |
+| interactive-israel | US | **yes**, by money amount in the recurring plan; fractional trading also offered generally | No order-size minimum printed ("ללא מינימום הפקדה ... להשקיע כמה שנוח לכם"). Commission on a US fraction: "חישוב העמלה והמינימום לעסקה נעשה לפי מספר מניות מעוגל כלפי מעלה למניה שלמה" [min USD 2.5] | Plan FAQ: "התוכנית מאפשרת ללקוח לרכוש נכס פיננסי ... בסכום הכספי שיבחר"; "תוכנית החיסכון תקנה לנו את הנכס המבוקש לפי הסכום שנבקש גם אם מדובר בחלק ממניה או תעודת סל". Open-account page: "תוכלו להשקיע גם בשברי מניה, ולסחור בסכומים שמתאימים לכם!" | [Recurring investment page](https://www.inter-il.com/recurring-transfer/) (library 121e0bc56cfc7437, read 2026-10-31). [Q&A "האם ניתן לרכוש שברי מניות?"](https://www.inter-il.com/question-answer/%D7%94%D7%90%D7%9D-%D7%A0%D7%99%D7%AA%D7%9F-%D7%9C%D7%A8%D7%9B%D7%95%D7%A9-%D7%A9%D7%91%D7%A8%D7%99-%D7%9E%D7%A0%D7%99%D7%95%D7%AA/), dated 26/10/2025 (library 1791bedbdcfbdb82). [Tariff 23.09.2026](https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf) p.1 (library 58a938374a90ac29) | 2026-11-10 |
+| interactive-israel | Europe | **yes, in the recurring plan**: the plan buys "בארה"ב ובאירופה" and buys fractions by amount. CSPX is not named. A one-off fractional order on a European listing outside the plan is not stated separately | No order-size minimum printed. [commission 0.15% of value, min 2.5 in the trade currency. Because it is a percentage, the US round-up rule does not change it] | "בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה"ב ובאירופה"; "תעודות סל (ETF) – כולל תעודות סל על מדדי מניות מובילים כמו S&P 500 ... ותעודות רבות נוספות"; tariff p.1: "עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה" | as above | 2026-11-10 |
+| jerusalem | US | not stated | not stated | none | [Global stock markets](https://www.bankjerusalem.co.il/capital-market/global_stock_markets/) (library 238bad51f1ce3c61), [capital market page](https://www.bankjerusalem.co.il/capital-market/capital-market-at-jerusalem-bank) (library cba0ae94d16663c8), tariff | 2026-11-10 |
+| jerusalem | Europe | not stated | not stated | none | as above | 2026-11-10 |
+| leumi | US | not stated | not stated | Only on transfers: "לתשומת ליבך לא ניתן להעביר שברי ניירות ערך" (library 7af219474eb6cff6, a transfer page, not a statement that fractions can be bought) | [Leumi Trade](https://www.leumi.co.il/he/investments/leumi-trade) (library 276d8806c4ff32e2), tariff | 2026-11-10 |
+| leumi | Europe | not stated | not stated | none | as above | 2026-11-10 |
+| massad | US | not stated | not stated | Tariff has the same foreign-ETF standing order as FIBI (note 11), sizing not stated. The transfer form says "העברת שברי ניירות ערך בני"ע זרים לבנק אחר לא תתאפשר" (library b2568a3d7a973cce): fractions can exist in the account (e.g. from corporate actions), but nothing says a client can buy them | [Tariff part 4](https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf) | library copy 2026-10-31 |
+| massad | Europe | not stated | not stated | none | as above | as above |
+| meitav-trade | US | not stated | not stated | none on meitav.co.il. A press lead (Calcalist, 12.3.2025) said Meitav was expected to add fractions; not found on its site | [Trade FAQ](https://www.meitav.co.il/trade/customer-service/customer_service_common_questions/) (library 866372545ac0f960), [Wall Street](https://www.meitav.co.il/trade/wall_street/) (07e841cb5c0b434d), [trading systems](https://www.meitav.co.il/trade/wall_street/wall_street_trading_systems/) (a78802608df1b298), sitemap, tariff | 2026-11-10 |
+| meitav-trade | Europe | not stated | not stated | none | as above | 2026-11-10 |
+| mercantile | US | not stated | not stated | none | tariff `taarifon_private_full_11026.pdf` | library copy 2026-11-04 |
+| mercantile | Europe | not stated | not stated | none | as above | as above |
+| mizrahi-tefahot | US | not stated | not stated | none | tariff `smallbusinessMeugad.pdf` | library copy 2026-11-04 |
+| mizrahi-tefahot | Europe | not stated | not stated | none | as above | as above |
+| one-zero | US | not stated (site unreached) | not stated | Tariff silent. onezerobank.com answers 403 to a browser user agent | tariff (library copy) | 2026-11-10 |
+| one-zero | Europe | not stated. The tariff prices US securities only ("ניירות ערך הנסחרים בארה"ב") | not stated | none | as above | 2026-11-10 |
+| psagot | US | not stated | not stated | none | [Psagot Trade](https://www.psagot.co.il/trade_heb/) (library 65a599eb7c24a203), [tariff page](https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/), page sitemap | 2026-11-10 |
+| psagot | Europe | not stated | not stated | none | as above | 2026-11-10 |
+| yahav | US | not stated | not stated | none | [Stock market page](https://www.bank-yahav.co.il/investments/stock-market/) (library 3865416487b583aa), tariff | 2026-11-10 |
+| yahav | Europe | not stated | not stated | none | as above | 2026-11-10 |
+
+**Counts (34 rows).** US: yes 4 (Altshuler, Excellence, IBI, Interactive Israel), no 1 (IBKR direct), not stated 12. Europe: yes 1 (Interactive Israel, recurring plan), no 4 (Altshuler, Excellence, IBI, IBKR direct), not stated 12. Total: yes 5, no 5, not stated 24.
+
+**Where a reader cannot buy by amount (stated):**
+- Interactive Brokers direct: neither listing (Israeli residents excluded).
+- Excellence, Altshuler Shaham Trade and IBI: European listings (fractions are US only).
+
+At the twelve "not stated" houses, the documents say nothing either way. The cautious reading is whole shares.
+
+Points to note:
+- **Which US securities.** Excellence ("למעלה מ־3,000 מניות עיקריות") and IBI ("ניירות ערך נבחרים") limit fractions to a list. Neither says whether IVV, VOO or ACWI is on it. Altshuler states no list.
+- **By amount at IBI** is not stated: the agreement and app page speak of fractions, not of an order in money.
+- **Interactive Israel's European fractions** rest on the plan's FAQ ("בארה"ב ובאירופה" plus "גם אם מדובר בחלק ממניה או תעודת סל"). The tariff's fraction rule names only "בארה״ב ובקנדה", because it governs the per-share US commission. The European commission is a percentage of value with a 2.5 minimum, so rounding up does not arise. IBKR's own Recurring Investments page agrees that the feature buys fractions in "US, Canadian and European shares" (library 313d1b606db3b24f). IB Ireland's agreement form 4750 s.C(i) (p.9-10, library 8344401953b5e137) covers fractional "EU Shares" bought "directly or through their ... Introducing Broker". Whether CSPX in particular is eligible is not printed anywhere read. IBKR keeps a per-security eligibility list that was not opened ("IBKR can, at its discretion, remove any stock from the list of stocks eligible for fractional trading", IE fractional page, library e2bcd5950afbcc8f).
+- **Fractions cannot be transferred out** at Interactive Israel ("לא ניתן להעביר ... שברי מניות", securities-transfer page, library ae1286aa5939471a), IBI (s.9.1.18), IBKR/IBIE (form 4750 s.C(i)(b)) and Leumi (transfer page). Leaving the house means selling the fraction, which is a taxable event. That is already recorded for Interactive Israel in its fee file's `left_out`.
+
+## 2. Share prices of the funds bought abroad
+
+`data/funds/*.json` records whose domicile is not IL, latest file per id: 16 records. Six of them (1159235, 1159243, 1159250, 1183441, 1185164, 1186063) are Irish funds with a TASE number, bought on TASE in shekels, so they are not bought abroad and are not priced here. Three of them repeat an abroad ISIN: 1159235 = IE00B6R52259, 1159243 = IE00B53SZB19, 1159250 = IE00B5BMR087. The other three are Invesco funds IE00B3YCGJ38, IE00B60SX394 and IE00BNRQM384. That leaves **ten funds bought abroad**, priced below from the issuer's own product page. All values are as printed, in USD per share.
+
+| Record | Fund | Listing (ticker) | NAV per share | NAV date | Source | Library |
+|---|---|---|---|---|---|---|
+| ie00b5bmr087 | iShares Core S&P 500 UCITS ETF USD (Acc) | LSE CSPX | USD 814.90 | 09/Nov/2026 | [iShares UK 253743](https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund), "NAV as of" | b07ba93887582483 |
+| ie0031442068 | iShares Core S&P 500 UCITS ETF USD (Dist) | LSE IDUS / IUSA | USD 75.20 | 09/Nov/2026 | [iShares UK 251900](https://www.ishares.com/uk/individual/en/products/251900/ishares-sp-500-ucits-etf-inc-fund) | a10de4c7454b3604 |
+| ie00b4l5y983 | iShares Core MSCI World UCITS ETF USD (Acc) | LSE IWDA / SWDA | USD 144.15 | 09/Nov/2026 | [iShares UK 251882](https://www.ishares.com/uk/individual/en/products/251882/ishares-msci-world-ucits-etf-acc-fund) | 7450bba3b7bfd974 |
+| ie00b53szb19 | iShares NASDAQ 100 UCITS ETF USD (Acc) | LSE CNDX | USD 1,603.35 | 09/Nov/2026 | [iShares UK 253741](https://www.ishares.com/uk/individual/en/products/253741/ishares-nasdaq-100-ucits-etf) | a0dc3fef22b360b5 |
+| ie00b6r52259 | iShares MSCI ACWI UCITS ETF USD (Acc) | LSE ISAC / SSAC | USD 120.12 | 09/Nov/2026 | [iShares UK 251850](https://www.ishares.com/uk/individual/en/products/251850/ishares-msci-acwi-ucits-etf) | bf3a4d7158937125 |
+| ie00b3xxrp09 | Vanguard S&P 500 UCITS ETF (USD) Distributing | LSE VUSD / VUSA | USD 143.09 ("NAV Price (USD) US$143.09", "At closure 09 Nov 2026") | 09 Nov 2026 | [Vanguard UK 9503](https://www.vanguard.co.uk/professional/product/etf/equity/9503/sp-500-ucits-etf-usd-distributing) | ba8b85e165cbbb20 |
+| ie00bfmxxd54 | Vanguard S&P 500 UCITS ETF (USD) Accumulating | LSE VUAA | USD 146.12 ("US$146.12", "At closure 09 Nov 2026") | 09 Nov 2026 | [Vanguard UK 9694](https://www.vanguard.co.uk/professional/product/etf/equity/9694/sp-500-ucits-etf-usd-accumulating) | 0b576b086415db5f |
+| us-ivv | iShares Core S&P 500 ETF | NYSE Arca IVV | USD 756.04 | Nov 09, 2026 | [iShares US 239726](https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf) | 4f329f326e5d1eb5 |
+| us-acwi | iShares MSCI ACWI ETF | NASDAQ ACWI | USD 156.16 | Nov 09, 2026 | [iShares US 239600](https://www.ishares.com/us/products/239600/ishares-msci-acwi-etf) | b3d9648f937732b3 |
+| us-voo | Vanguard S&P 500 ETF | NYSE Arca VOO | USD 691.87 ("navPrice", "navPriceAsOfDate": "11/09/2026") | 11/09/2026 | [VOO profile page](https://investor.vanguard.com/investment-products/etfs/profile/voo). The page renders prices by script from its own declared data endpoint `https://investor.vanguard.com/irr/funds/profile/VOO`, which is what was read | 253e7361076a0afa |
+
+The iShares values come from the page's own structured data ("NAV as of", value, "unitText":"USD"). Each page carries the fund's ISIN, which was checked against the record. A market price per share differs slightly from the NAV and was not collected.
+
+## 3. Interactive Brokers: cash or margin account for a new individual client
+
+**No default is stated: the applicant chooses.** IBKR's [Account Guide](https://www.interactivebrokers.com/en/accounts/account-guide.php) (library 97264090fbcb0426; `required-minimums.php` now redirects there) has "Step 3: Choose Your Trading Type": "After selecting your account ownership structure, choose the trading type that best fits your investing or trading needs", listing Cash, Margin, IRA Margin and Portfolio Margin. Minimum equity: Cash "None", Margin "USD 2,000 (equivalent) to open margin". Clients aged 18-20: "You can trade stocks in a Cash Account only (no margin)". Under "Can I Expand Access Later?": "After your account is approved, you may: Apply for margin". It adds: "Account types, margin permissions, and trading products vary by country of residence and IBKR legal entity."
+
+IBKR's Campus lesson [How to Open an IBKR Account](https://www.interactivebrokers.com/campus/trading-lessons/how-to-open-an-ibkr-account/) (library 555a0b28a6010821) walks through the application: "Next, you'll pick between a Cash or Margin account. Margin lets you borrow against your portfolio." The lesson is written for a US applicant ("Select your state"). [IBKR Guides, Account Type](https://ibkrguides.com/advisorportal/ug/accounttype.htm) (library b98ed4fe89bf1415, Advisor Portal) says "Cash accounts can upgrade to a Margin account" once "the client must meet the eligibility requirements". The individual-accounts page (library 0e1ad62976cc17aa, 2026-10-31) gives minimum ages "Margin Account: 21 years of age, Cash Account: 18 years of age".
+
+Not found: which option the application pre-selects, if any, for an applicant resident in Israel. That would need a person going through the application screens.
+
+## 4. What stayed unreached or unsettled
+
+- **One Zero**: onezerobank.com returns 403 to curl with a browser user agent (pages, sitemap, robots.txt). Needs a person in a browser.
+- **Altshuler FAQ and article, Yahav stock-market page**: my first fetch with a browser user agent got the full pages. The library's own fetch then hit a bot check and logged them in `unreachable.jsonl`. They were filed from my downloaded copies with their URLs (2aa570943fe356cc, c1c3c1495fef0702, 3865416487b583aa).
+- **Psagot Trade**: `trade.psagot.co.il` is a script app with no readable text. Any in-app help was not reached.
+- **FIBI and Massad foreign-ETF standing order**: whether it is set by amount or by units, and whether it buys fractions, is not stated anywhere found.
+- **Excellence, IBI: which US securities.** The eligible lists were not found. Whether IVV, VOO and ACWI are on them is unknown.
+- **Interactive Israel / IBKR: whether CSPX (LSE, USD) is eligible for fractions.** No security-level list was read.
+- **IBKR's pre-selected account type** in the application, if any (section 3).
+- Leads used, not cited: Calcalist 12.3.2025 (sk25ry12ye, via WebFetch; it named Blink, IBI, Excellence, Altshuler and Interactive Israel as offering fractions, with Meitav "expected"); financa.co.il, moneyplan.co.il, tradingil.co.il, broker.co.il reviews (search snippets).
+
+Fruitless searches are logged in `research/library/tried.jsonl` (six entries dated 2026-11-10).
+
+## 5. For the rule base (not edited here)
+
+- `brokerage-account.md` open question 21 can be narrowed further. US fractions are offered by Excellence (US only, 0.01-unit minimum, by amount), Altshuler (US only, by amount, LMT, continuous session), IBI (selected US securities only, agreement s.9.1.18) and Interactive Israel (recurring plan by amount, US and Europe). Nothing is stated at the nine banks, Meitav Trade or Psagot. Still open: CSPX eligibility at Interactive Israel, and the eligible lists at Excellence and IBI.
+- The comparison's premise (every house can buy a fraction) holds, on the houses' own words, only for the four houses above on US listings and for Interactive Israel's plan on European listings.

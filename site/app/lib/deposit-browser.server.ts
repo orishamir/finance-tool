@@ -1,7 +1,7 @@
 // The deposits page's data (D92): every bank-deposit record, the latest of each id, as offers the page lists and the grid picks from
 // (F-108); P-11's amounts and P-05's amount to start at. Server-only. Each rate and amount is the record's own value object.
 import type { DepositTerms, ValueObject } from "@finance-tool/schema";
-import { depositLabels, shownRate } from "./deposit-kind";
+import { depositLabels, depositName, shownRate } from "./deposit-kind";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
 import { asParameter } from "./compare";
@@ -27,7 +27,7 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
     id: d.id,
     bank: d.bank,
     term,
-    name: d.names["447"][0] ?? d.type_447,
+    name: depositName(d),
     kind: d.rate_type,
     linkage: d.linkage,
     limited: (d.variant ?? []).some((v) => v === "closed_system" || v === "new_customers"),
@@ -49,11 +49,7 @@ export function buildDepositBrowser(): DbData {
   const read = records.reduce((m, d) => (d.rate_offered.checked > m ? d.rate_offered.checked : m), "");
   const ids = [...new Set(offers.map((o) => o.bank))];
   const banks: DbBank[] = ids
-    .map((id) => {
-      // the date the bank's table prints (every record of a bank is read from one table); a table dated before the reading says so on its rows
-      const printed = records.filter((d) => d.bank === id).reduce((m, d) => ((d.rate_offered.effective_from ?? "") > m ? d.rate_offered.effective_from ?? "" : m), "");
-      return { id, name: shortName(id, id), tableDate: printed && printed < read ? printed : null };
-    })
+    .map((id) => ({ id, name: shortName(id, id) }))
     .sort((a, b) => a.name.localeCompare(b.name, "he"));
   const parameters = loadParameters();
   const p11 = parameters.find((p) => p.method_id === "P-11");

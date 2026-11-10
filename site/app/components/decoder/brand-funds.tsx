@@ -6,7 +6,7 @@ import { brands as copy, invest } from "../../copy";
 import type { BrandFundRow, FundKind } from "../../lib/brands.server";
 import type { SiteValue } from "../../lib/value";
 import { IconDrillIn } from "../icons";
-import { FeeFigure, FundFeesHead, FundFeesPhoneHelp, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
+import { FeeFigure, FundFeesHead, FundFeesPhoneHelp, LabelRow, LabelSheetHost, MixedName, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
 
 const c = copy.funds;
 
@@ -32,7 +32,7 @@ function Follows({ f, phone }: { f: BrandFundRow; phone?: boolean }) {
   return (
     <Link to={f.follows.href} className="relative before:absolute before:inset-x-0 before:-inset-y-[9px] text-link hover:underline inline-flex items-center gap-0.5 whitespace-nowrap self-start">
       {phone && f.follows.kind === "index" && <span className="text-muted-foreground">{c.indexWord}&nbsp;</span>}
-      <bdi>{f.follows.name}</bdi>
+      <MixedName>{f.follows.name}</MixedName>
       <IconDrillIn size={16} />
     </Link>
   );
@@ -60,7 +60,7 @@ export function BrandFundList({ funds, kind }: { funds: BrandFundRow[]; kind: Fu
               phone: (
                 <ProductPhoneRow stacked>
                   <span className="font-medium">
-                    <bdi>{f.name}</bdi>
+                    <MixedName>{f.name}</MixedName>
                   </span>
                   {f.number && (
                     <span className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
@@ -77,7 +77,7 @@ export function BrandFundList({ funds, kind }: { funds: BrandFundRow[]; kind: Fu
               cells: [
                 <span className="flex flex-col items-start gap-1.5">
                   <span className="font-medium">
-                    <bdi>{f.name}</bdi>
+                    <MixedName>{f.name}</MixedName>
                   </span>
                   <LabelRow labels={f.labels} />
                 </span>,

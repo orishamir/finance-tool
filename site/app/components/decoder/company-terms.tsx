@@ -1,6 +1,5 @@
-// What the site found in a company's own documents (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4): on a managing
-// company's page and on a bank's or broker's page, "מה כתוב במסמכים של {company}", grouped by topic; and on /companies the same for
-// the companies the site has no page for, one fold per company. Each item is the rule card (inline), which names the document, the
+// What the site found in the documents of companies that have no page here (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §4):
+// on /documents, one fold per company (a company page lists its own entries by product, components/company/docs.tsx). Each item is the rule card (inline), which names the document, the
 // date it was read and, for a rule not shown to hold everywhere, "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי". A company's section
 // holds only records from its own documents; what no section lists, the not-rules, has a section of its own at
 // the end of /companies, "לא נכלל ככלל".
@@ -56,38 +55,6 @@ function Cards({ ids, company }: { ids: readonly string[]; company?: string }) {
           </Card>
         ))}
     </ul>
-  );
-}
-
-/** One company's section: its terms by topic. Nothing renders when the site found none. */
-export function CompanyTerms({ name, groups }: { name: string; groups: readonly TermGroup[] }) {
-  const hash = useHash();
-  const total = groups.reduce((n, g) => n + g.ids.length, 0);
-  // every group starts closed (legal text); the one an address names opens
-  const [opened, setOpened] = useState<Set<string>>(() => new Set());
-  const named = groups.find((g) => g.ids.includes(hash))?.key;
-  useEffect(() => {
-    if (named) setOpened((o) => (o.has(named) ? o : new Set(o).add(named)));
-  }, [named]);
-  useScrollToHash(hash, !!named && opened.has(named));
-  if (total === 0) return null;
-  return (
-    <Section id={companyTermsAnchor} title={scopeWords.section.title.replace("{name}", name)} lead={scopeWords.section.line.replace("{name}", name)}>
-      <div className="flex flex-col gap-3">
-        {groups.map((g) => (
-          <FoldGroup
-            key={g.key}
-            variant="section"
-            title={g.title}
-            count={g.ids.length}
-            open={opened.has(g.key)}
-            onOpenChange={(now) => setOpened((o) => { const n = new Set(o); if (now) n.add(g.key); else n.delete(g.key); return n; })}
-          >
-            <Cards ids={g.ids} />
-          </FoldGroup>
-        ))}
-      </div>
-    </Section>
   );
 }
 

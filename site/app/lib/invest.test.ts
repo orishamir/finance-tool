@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { accountSum, buildInvest, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, buildInvest, listReading, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
@@ -41,10 +41,37 @@ describe("invest page computation", () => {
     }
   });
 
-  it("marks the houses that print a price for monthly buying, and only them", () => {
-    // three banks print a commission for a standing order; Interactive Israel a conversion for its recurring plan (p.6 of its tariff)
+  it("marks the houses whose monthly purchases run on a price for monthly buying, and only them", () => {
+    // Interactive Israel's conversion inside its recurring plan (p.6 of its tariff); the three banks' standing-order lines are set aside (D41)
     const marked = view.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
-    expect(marked.sort()).toEqual(["fibi", "interactive-israel", "leumi", "massad"]);
+    expect(marked.sort()).toEqual(["interactive-israel"]);
+  });
+
+  it("never ranks a standing-order line the bank's documents do not show the reader can use, and shows it beside the row (D41, D56)", () => {
+    const banks = ["leumi", "massad", "fibi"];
+    // the same houses with no standing-order line at all: every Israeli fund's figure is the same to the shekel
+    const without = { ...bundle, snapshots: bundle.snapshots.map((s) => (banks.includes(s.id) ? { ...s, lines: s.lines.filter((l) => l.not_ranked === undefined) } : s)) };
+    const bare = buildInvest({ bundle: without, index: sp, plan: plan() });
+    const israeli = (v: typeof view) => v.options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds);
+    let seen = 0;
+    for (const id of banks) {
+      const setAside = bundle.snapshots.find((s) => s.id === id)!.lines.filter((l) => l.not_ranked !== undefined).map((l) => l.id);
+      expect(setAside.length, id).toBeGreaterThan(0);
+      for (const f of israeli(view)) {
+        const at = f.byHouse[id];
+        const other = israeli(bare).find((g) => g.rec.id === f.rec.id)!.byHouse[id];
+        if (!at || !("valueN" in at) || !other || !("valueN" in other)) continue;
+        seen++;
+        expect(at.valueN).toBe(other.valueN);
+        expect(at.standing).toBe(false);
+        // beside the row: the line the bank prints for this fund, with its reason
+        expect(at.aside).toHaveLength(1);
+        expect(setAside).toContain(at.aside[0]);
+        expect(other.aside).toEqual([]);
+      }
+      expect(view.houses.find((h) => h.provider.id === id)!.aside.length, id).toBeGreaterThan(0);
+    }
+    expect(seen).toBeGreaterThan(20);
   });
 
 
@@ -459,5 +486,25 @@ describe("what each figure's sheet lists", () => {
     expect(Object.keys(inputs(pc.baseValue)).sort()).toEqual(Object.values(words.planInputs).sort());
     expect(accountSum(pc, "x", t).value).toBeCloseTo(pc.accountCost, 6);
     expect(Object.keys(inputs(accountSum(pc, "x", t)))).toContain(words.pair.remainder);
+  });
+});
+
+describe("Interactive Brokers abroad: its pricing plans and ways to convert", () => {
+  // CSPX on the LSE, 2,000 a month for 10 years: Tiered (minimum USD 1.70) beats Fixed (USD 4), and a cash account's automatic conversion
+  // (no commission, a markup the documents do not limit, D65) beats a spot order (at least USD 2), as Interactive Israel's plan conversion does
+  const monthly = plan({ amountNow: 0, monthly: 2000, years: 10, values: { ...plan().values, amount: entered(0, "nis", t), monthly: entered(2000, "nis_per_month", t), years: entered(10, "years", t) } });
+  const ibkr = bundle.snapshots.find((s) => s.id === "interactive-brokers")!;
+  it("an account built on it starts from the reading the comparison prices it on", () => {
+    expect(listReading(bundle, ibkr, "abroad", monthly)!.built.linesUsed).toEqual(expect.arrayContaining(["interactive-brokers-buy-sell-lse-usd-tiered", "interactive-brokers-fx-auto-conversion"]));
+  });
+  it("charges no conversion at Interactive Brokers, and costs less there than at Interactive Israel on a unit 2,000 a month buys", () => {
+    const at = (fundId: string, providerId: string) => pairCosts({ bundle, index: sp, plan: monthly, fundId, providerId })!;
+    expect(at("ie00b5bmr087", "interactive-brokers").account.map((l) => l.line)).not.toContain("fx");
+    // F-109 (D94): VUAA's unit (USD 146) is bought every month in whole units at Interactive Brokers, and costs less there
+    expect(at("ie00bfmxxd54", "interactive-brokers").accountCost).toBeLessThan(at("ie00bfmxxd54", "interactive-israel").accountCost);
+    // CSPX's unit (USD 815) is more than 2,000 a month: at Interactive Brokers the money waits for a unit, earning nothing, while
+    // Interactive Israel's recurring plan buys each month by amount, so there it costs less
+    expect(at("ie00b5bmr087", "interactive-brokers").units).not.toBeNull();
+    expect(at("ie00b5bmr087", "interactive-israel").accountCost).toBeLessThan(at("ie00b5bmr087", "interactive-brokers").accountCost);
   });
 });

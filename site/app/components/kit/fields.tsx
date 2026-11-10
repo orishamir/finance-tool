@@ -1,6 +1,7 @@
 // The inputs behind the graph (design-spec 4, design-system 3.3): number field, range field (slider and number), percent field, and the
 // reset each field carries on its label line.
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useIsoLayoutEffect } from "../../lib/hooks";
 import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconClose, IconReset, IconSearch } from "../icons";
@@ -40,6 +41,8 @@ export interface FieldProps {
   inputMode?: "decimal" | "numeric";
   /** A price that may have agorot (a fee from a price list, "9.90 ₪"). Without it, a shekel field takes whole shekels only. */
   agorot?: boolean;
+  /** Thousands separators while the reader types ("10,000" as the last zero goes in), not only when the field is left; whole amounts only. */
+  groupAsTyped?: boolean;
   autoFocus?: boolean;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
@@ -94,7 +97,7 @@ export function ResetToStart({ shown, start, unit, onReset, describedBy, classNa
 
 /** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
-  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode: mode = "decimal", autoFocus, externalError = null, errorOut, agorot, start } = props;
+  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode: mode = "decimal", autoFocus, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
   const whole = /^nis/.test(unit) && !agorot;
   const inputMode = whole ? "numeric" : mode;
@@ -155,7 +158,25 @@ export function NumberField(props: FieldProps) {
   useEffect(() => {
     errorOutRef.current?.(shownError);
   }, [shownError]);
-  const change = (t: string) => {
+  // with `groupAsTyped`, the caret stays after the same digit once the separators move
+  const caret = useRef<number | null>(null);
+  useIsoLayoutEffect(() => {
+    const el = inputRef.current;
+    if (caret.current === null || !el) return;
+    const want = caret.current;
+    caret.current = null;
+    let seen = 0;
+    let at = 0;
+    while (at < text.length && seen < want) if (/\d/.test(text[at++]!)) seen++;
+    el.setSelectionRange(at, at);
+  }, [text]);
+  const change = (raw: string, at?: number | null) => {
+    let t = raw;
+    if (groupAsTyped && whole && /^[\d,\s]*$/.test(raw)) {
+      const digits = raw.replace(/\D/g, "");
+      t = digits === "" ? "" : formatTyped(Number(digits));
+      if (at !== undefined && at !== null) caret.current = raw.slice(0, at).replace(/\D/g, "").length;
+    }
     setText(t);
     drop();
     if (t.trim() === "" && optional) {
@@ -181,7 +202,7 @@ export function NumberField(props: FieldProps) {
         disabled={disabled}
         aria-invalid={shownError ? true : undefined}
         aria-describedby={[hint ? `${ids}-hint` : null, shownError ? `${ids}-err` : null].filter(Boolean).join(" ") || undefined}
-        onChange={(e) => change(e.target.value)}
+        onChange={(e) => change(e.target.value, e.target.selectionStart)}
         onFocus={() => setFocused(true)}
         onBlur={() => {
           flush();

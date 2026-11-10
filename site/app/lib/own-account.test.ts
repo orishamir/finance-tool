@@ -13,7 +13,12 @@ import { ruleContext, type WorkbenchInputs } from "./providers";
 import { buildStateFile, ensureLoaded, flush, getSnapshot, readImport, removeCustomBroker, resetStore, saveCustomBroker, stateFileText } from "./state";
 import { entered } from "./value";
 
-const bundle = buildIndicesBundle();
+// How a house's standing-order line is layered (F-101) is read on Leumi's list with its line ranked, as the golden script reads it: the
+// latest record sets the line aside (`not_ranked`, D41), and no house's record holds a ranked one, so the mark is taken off here to keep
+// the layering checked. The indices page's own reading of the set-aside line is in invest.test.ts.
+const read = buildIndicesBundle();
+const withRankedStanding = (s: (typeof read.snapshots)[number]) => ({ ...s, lines: s.lines.map(({ not_ranked: _, ...l }) => l) });
+const bundle = { ...read, snapshots: read.snapshots.map((s) => (s.id === "leumi" ? withRankedStanding(s) : s)) };
 const t = bundle.today;
 const house = (id: string) => bundle.snapshots.find((s) => s.id === id)!;
 const mercantile = house("mercantile");

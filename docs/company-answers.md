@@ -6,6 +6,55 @@ What may go here is in `guidelines/research.md`, "Privacy": the company's own wo
 
 One section per answer, named by the company and the day.
 
+## Psagot 2026-11-10
+
+**Who answered.** Psagot Trade (פסגות ניירות ערך בע"מ, מערך טרייד), its trade customer relations, in writing by mail on 10.11.2026, to two mails sent on 4.11 and 8.11.2026.
+
+**What was asked,** in neutral words, by a prospective self-trading customer: whether the iShares Core S&P 500 UCITS ETF (ISIN IE00B5BMR087, ticker CSPX, listed in London in dollars) can be bought there, and on which European exchanges one can trade; which line of the price list applies to it (the line for European shares and ETFs or the line for foreign funds), given the list's warning that the European fee "עשויה להשתנות"; whether "1.5 אגורות עבור כל דולר/שקל" is per dollar converted or per shekel, and whether a spread comes on top; what third parties charge on such a fund; whether it can be bought by a monthly standing order; whether a blank copy of the account agreement and fee annex a new customer signs can be had; whether every new customer signs the same annex; and what the custody fee "גבייה רבעונית 0.03%" is beside the advertised "פטור מלא מדמי ניהול ללא הגבלת זמן".
+
+### The answer
+
+In Psagot's own words, by the questions of the first mail:
+
+1. "אפשר לסחור אוטומטית בבורסות לונדון וגרמניה דרך המערכת, בבורסות אחרות אפשר לסחור דרך חדר המסחר בטלפון בשלוחה 2."
+2. "העמלה על פעולות באירופה היא 0.15% משווי העסקה עם מינימום 15 אירו לפעולה."
+3. "הכוונה ל-1.5 אגורות לכל דולר שמומר (כ-0.5% מהסכום), העלות הזאת מגולמת במרווח ההמרה."
+4. Third-party charges: "בהתאם לקרן, ניתן לשאול את חדר המסחר בטלפון על קרן ספציפית".
+5. "לא, רק קרנות שנסחרות בבורסת תל אביב בשקלים ניתן לקנות בהוראת קבע."
+
+And of the second:
+
+1. "מצורף נספח העמלות הכללי, אין אפשרות לשלוח את ההסכם המלא ריק."
+2. "יש לקוחות שמקבלים הסכם אחר לפי מבצעים/קבוצות/מועדונים שעובדים איתנו בשיתוף פעולה, ויש לקוחות שמקבלים הטבה לפי שווי תיק/כמות פעולות בחודש."
+3. "לכל הלקוחות של פסגות טרייד יש פטור מלא מדמי ניהול לכל החיים."
+
+### The attached annex
+
+"טבלת מחירים ועמלות", one page, an image (library 23bfb4e856f5db10); no printed date or version. The words the site may use:
+
+- **General fees:** "דמי שמירת ני"ע" פטור; "דמי טיפול דיבידנד וריבית" פטור; "עמלת פדיון" פטור; "דמי טיפול חשבון חודשי" פטור; "עמלת משיכת שקלים" פטור; "דמי שימוש אפליקציה" פטור; "עמלת משיכת מט"ח": "תגבה ע"י הבנק/ים בעת ביצוע העברת מט"ח ובהתאם לתעריף הבנק/ים התקף במועד הביצוע."
+- **Trading in Israel:** "מניות" 0.07%, מינ' 2 ₪; "אג"ח" 0.06%, מינ' 2 ₪; "מק"מ" 0.05%, מינ' 2 ₪; "אופציות" 2.5 ₪; "קרנות מחקות" 0.07%, מינ' 2 ₪; "קרנות נאמנות" 0.07%, מינ' 2 ₪; "עמלת משיכת ניירות ערך ישראליים" 0.07%, "מקסימום 70 ₪ להעברה". Shares' line covers "קרנות סל שחלים עליהם כללי המסחר על מניות".
+- **Trading abroad:** "מניות ו-ETF הנסחרים בבורסות ארה"ב": "1 סנט למניה, מינימום 6.5$"; "מניות ו-ETF הנסחרות בבורסות אירופה": "עמלה בגובה 0.15% מהעסקה מינימום של 15 יח'* מטבע שלמות בהתאם למטבע שבו בוצעה העסקה" (its example: a trade in Swiss francs pays at least 15 francs); "אג"ח חו"ל" 0.25%, "מינימום 50 יח' מטבע לעסקה"; "קרנות זרות" "0.25% ללא מינימום"; "בנוסף לשיעורי העמלות המפורטים, יתכן חיוב של עמלת הקורספונדנט ו/או עמלות צד שלישי".
+- **Conversion:** "עמלת המרת מט"ח" פטור, "בהתאם לשיקול דעת, פסגות עשויה לגבות עמלה נוספת (מרווח) הגלומה בשער ההמרה."
+- **Footnote:** "מובהר כי פסגות ניירות ערך בע"מ תהיה זכאית לעדכן מעת לעת ולפי שיקול דעתה את גובה או סוגי העמלות המפורטים לעיל."
+
+### Where it differs from the published price list, and from itself
+
+- Custody: the price list (read 4.11.2026) prints "דמי משמרת 0.12% גבייה רבעונית 0.03%"; the annex prints "דמי שמירת ני"ע" פטור. The answer's item 3 speaks of "דמי ניהול", which Psagot's own advertising uses for the account handling fee.
+- Conversion: the price list prints "1.5 אגורות עבור כל דולר/שקל"; the answer reads it per dollar converted, about 0.5%, taken in the rate; the annex prints no fee and a spread at Psagot's discretion, with no limit.
+- The European minimum: the answer says 15 euros; the annex says 15 units of the trade's currency, so 15 dollars on a fund bought in dollars.
+- The annex carries no date, and Psagot did not say since when it is in force.
+
+## Altshuler Trade 2026-11-09
+
+**Who answered.** Altshuler Trade, its customer service, in writing by mail on 9.11.2026.
+
+**What was asked:** whether the joining exemption from the account fee is written in the fee annex a new customer signs (annex B), so that an account with one buy a month is not charged a holding fee later, and if so, the annex's line.
+
+**The answer,** in its own words: "הפטור מדמי ניהול מופיע בכל פרסום על תנאי המבצע. כל מצטרף חדש זכאי להטבה זו". It quotes no line of the annex.
+
+**Where the site uses it.** Nowhere yet: it does not say the exemption is in the signed annex, and it does not answer the joining terms' condition of "ביצוע תדיר של עסקאות" (s.2.4).
+
 ## IBI 2026-11-08
 
 **Who answered.** IBI (שרותי בורסה והשקעות בישראל אי.בי.אי. בע"מ), its self-trading desk, in writing by mail, twice on 8.11.2026 (the second answer at 13:36).

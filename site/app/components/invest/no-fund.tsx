@@ -3,7 +3,7 @@
 // the cheapest kind of fund at it; the fund column says there is no fund yet. Once a fund is added the page is the pair page.
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import { firstCount, phoneOnlyValue, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
+import { asideLines, firstCount, phoneOnlyValue, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
 import type { SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
@@ -11,7 +11,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, SourcedTag, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
+import { AsideLine, barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -59,7 +59,10 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const [openGroups, setOpenGroups] = useState<string[]>([]);
   const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
   const [abroadOpen, setAbroadOpen] = useState(false);
-  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${abroadOpen}`);
+  // a house's left-out standing-order price shows two lines; the rest opens at a tap, and the held height starts over with it
+  const [openAsides, setOpenAsides] = useState<string[]>([]);
+  const onAside = (id: string, open: boolean) => setOpenAsides((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${abroadOpen}:${openAsides.join()}`);
   // every house the header can name, laid out unseen, so a long one moves nothing above the list
   const longest = useMemo(
     () => ({
@@ -77,6 +80,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const local = rows.filter((h) => !h.provider.foreign && !h.provider.custom);
   const saved = bundle.snapshots.filter((s) => rows.some((h) => h.provider.id === s.id && !h.provider.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((h) => h.standing).length;
+  const asideCount = local.filter((h) => h.aside.length > 0).length;
   const kinds = view.options.filter((o) => o.exists).map((o) => o.id);
   // equal costs share a place, and a first place shared by two crowns neither; the tie threshold is for what is left, not for costs
   const places = placesOf(ok.map((h) => h.generic.costN!), 0);
@@ -110,6 +114,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
           </span>
           <span className="col-end-[-1] text-end font-semibold">{g.cost && <Num animate value={g.cost} />}</span>
+          {/* the kind the cost is for, else the house's: a row keeps its line whichever kind the plan makes cheapest */}
+          <AsideLine lines={asideLines(snapOf(h.provider.id), (g.aside ?? []).length > 0 ? g.aside! : h.aside)} company={snapOf(h.provider.id)?.provider.name_he ?? h.provider.short} open={openAsides.includes(h.provider.id)} onOpen={(o) => onAside(h.provider.id, o)} />
           <GroupLine id={h.provider.id} house={h.provider.short} snapshots={bundle.snapshots} open={openGroups.includes(h.provider.id)} onOpen={onGroup} />
           {h.provider.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={h.provider.id} /></span>}
         </>
@@ -175,8 +181,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         <h3 className="font-semibold">{c.pair.accounts}</h3>
         <span className="text-sm text-muted-foreground">{n.accountsCond}</span>
         <span className="text-sm text-muted-foreground">{n.accountsHint}</span>
-        <LongestCase className="text-xs text-muted-foreground" cases={[<span key="s">{c.pair.standingNote(Math.max(standingCount, 1), local.length)}</span>, <span key="n">{c.pair.noMonthly}</span>]}>
-          <span>{monthly === 0 ? c.pair.noMonthly : standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
+        <LongestCase className="text-xs text-muted-foreground" cases={[<span key="s">{c.pair.standingNote(Math.max(standingCount, 1), local.length)}</span>, <span key="a">{c.pair.asideNote(Math.max(asideCount, 2), local.length)}</span>, <span key="n">{c.pair.noMonthly}</span>]}>
+          <span>{monthly === 0 ? c.pair.noMonthly : standingCount > 0 ? c.pair.standingNote(standingCount, local.length) : asideCount > 0 && c.pair.asideNote(asideCount, local.length)}</span>
         </LongestCase>
         <span className="text-xs text-muted-foreground">
           {c.pair.whichPrice}

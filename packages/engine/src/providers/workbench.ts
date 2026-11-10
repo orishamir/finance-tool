@@ -125,6 +125,12 @@ export interface WorkbenchInput {
   fx?: Record<string, number>;
   /** P-01 as a fraction (`tieThreshold`). */
   theta: number;
+  /**
+   * F-109 (D94): where the fund is bought, on TASE or abroad on a US or a European exchange. Where the fund has a unit price (`fund.sharePrice`),
+   * each house buys it in whole units unless its record says it sells that listing by amount (`by_amount`); a tracking fund
+   * (`mutual_fund_units`) is bought from its manager by amount. Left out, every order is bought by amount.
+   */
+  listing?: "tase" | "us" | "europe";
   /** The provider list for the wrapper (F-83); the workbench accounts for each exactly once. */
   providers: readonly ProviderInput[];
 }
@@ -150,6 +156,11 @@ export interface TariffBuild {
   /** Strengths of every line read, for the weakest-source label. */
   strengths: ValueObject["source"]["strength"][];
   flags: string[];
+  /**
+   * F-12, F-13 (D41, D56): standing-order and recurring-plan lines that apply to this purchase but that the ranked price leaves out
+   * (`not_ranked`): the monthly purchases ran on the regular line, and the page shows these beside the row with their reason.
+   */
+  standingAside: string[];
 }
 
 export type NotComparableReason =
@@ -187,6 +198,8 @@ export interface ComparedProvider extends ProviderBase {
   noLine: ("trade" | "custody")[];
   notModelled: NotModelled[];
   flags: string[];
+  /** Standing-order lines the ranked price left out (`TariffBuild.standingAside`). */
+  standingAside: string[];
   /** `V_T^real(∅) − V_T^real(F_p)`: real NIS over the horizon. */
   horizonCost: ValueObject;
   /** `V_12(∅) − V_12(F_p)`: nominal NIS, liquidation value at month 12. */
@@ -296,6 +309,8 @@ export const STANDING_CONVERSION_BAND = "השקעה קבועה אוטומטית"
 export const REDEMPTION_BAND = "פדיון";
 
 const standingLines = (snapshot: FeesSnapshot, base: "trade" | "fx") => snapshot.lines.filter((l) => l.base === base && l.level === "list" && l.band === (base === "trade" ? STANDING_ORDER_BAND : STANDING_CONVERSION_BAND));
+/** D41, D56: a line the price list prints but the house's documents do not show the ordinary customer can use: never the ranked price. */
+const ranked = (l: SnapLine) => l.not_ranked === undefined;
 
 /**
  * The classes a tariff line may name for a security of this class. A bond (`tase_bonds`) is also a `tase_shares_bonds` security, and a line
@@ -310,7 +325,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   const classes = lineClasses(input.instrumentClass);
   const applicable = (l: SnapLine) =>
     l.applies_to.some((a) => a === "all" || classes.includes(a) || a === wrapper) && !(l.excludes ?? []).some((x) => classes.includes(x));
-  const out: TariffBuild = { tariff: {}, linesUsed: [], lineSources: [], noLine: [], notModelled: [], averagesApplied: 0, strengths: [], flags: [] };
+  const out: TariffBuild = { tariff: {}, linesUsed: [], lineSources: [], noLine: [], notModelled: [], averagesApplied: 0, strengths: [], flags: [], standingAside: [] };
   /** A line the tariff reads: its id, and the strength and source of the rate actually used (an average row's, not the list line's). */
   const used = (l: SnapLine, rate: ValueObject, ...vos: (ValueObject | null | undefined)[]) => {
     out.linesUsed.push(l.id);
@@ -324,7 +339,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
 
   /** The line of a base at a level for the channel: none, one, or an error when two apply (the snapshot is ambiguous). */
   const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => {
-    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND && l.band !== REDEMPTION_BAND);
+    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && ranked(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND && l.band !== REDEMPTION_BAND);
     const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
@@ -398,6 +413,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         if (l.rate.unit === "usd_per_share") {
           if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
           if (!input.fund?.sharePrice) throw new Unusable("needs-share-price", `${l.line.id} is a fee per share and the fund record has no share_price`);
+          const priced = input.fund.sharePriceCurrency;
+          if (priced && priced !== "ILS" && priced !== (input.currency?.code ?? "ILS")) rateOf(input.fx, priced, `${l.line.id}: the fund's unit price`);
           c.perShare = l.rate.value * rateOf(input.fx, "USD", `${l.line.id} rate`);
         } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
         // E2: minimums and maximums in a foreign currency are converted at the run's rate.
@@ -421,8 +438,11 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       out.tariff.sell = { ...c };
       used(r.line, r.rate, r.min, r.max, r.cap);
       // F-12: a monthly purchase by standing order, where the tariff prints a price for one; a list price only, never over an average.
+      // A line the house's documents do not show the customer can use (D41, D56) is set aside: the regular line prices the purchase.
       if (r.rate === r.line.rate && r.line.level === "list") {
-        const standing = standingLines(snapshot, "trade").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+        const all = standingLines(snapshot, "trade").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+        out.standingAside.push(...all.filter((l) => !ranked(l)).map((l) => l.id));
+        const standing = all.filter(ranked);
         if (standing.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${standing.length} standing-order lines apply (${standing.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
         const l = standing[0];
         if (l) {
@@ -525,7 +545,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         used(r.line, r.rate, r.min, r.max, spread && typeof spread.value === "number" ? spread : null);
         // F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
         if (r.rate === r.line.rate && r.line.level === "list") {
-          const plan = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+          const every = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+          out.standingAside.push(...every.filter((l) => !ranked(l)).map((l) => l.id));
+          const plan = every.filter(ranked);
           if (plan.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${plan.length} recurring-plan conversion lines apply (${plan.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
           const l = plan[0];
           if (l) {
@@ -601,6 +623,54 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
 
 const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed", "account"];
 
+/**
+ * F-109 (D94): how a house buys the fund. In whole units at the fund's unit price, in shekels at the run's start (the record's `share_price`
+ * at the run's rate of its currency), unless the house's own record says it sells the fund's listing by amount: an entry for every order buys
+ * every order by amount; an entry for its recurring plan buys by amount the monthly purchases the plan's conversion line prices (F-13), and
+ * the rest in whole units. An entry limited to a list of securities the house does not publish (`list_only`) names none of the site's funds
+ * (D42) and changes nothing. Undefined (by amount): no listing, a tracking fund (bought from its manager by amount), or no unit price.
+ */
+export function wholeUnitsAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): SecuritiesInput["wholeUnits"] {
+  const price = unitPriceAt(input);
+  if (price === undefined) return undefined;
+  const entry = (snapshot.by_amount ?? []).find((e) => e.venue === input.listing && !e.list_only && !e.shares_only);
+  if (entry?.orders === "all") return undefined;
+  const plan = entry?.orders === "recurring_plan" && tariff.fxStanding !== undefined;
+  return { price, ...(plan ? { monthlyByAmount: true } : {}) };
+}
+
+/** F-109: the unit's price in shekels at the run's start, where the fund is bought on an exchange and has one; undefined otherwise. */
+function unitPriceAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">): number | undefined {
+  const price = input.fund.sharePrice;
+  if (!input.listing || input.instrumentClass === "mutual_fund_units" || !price) return undefined;
+  const code = input.fund.sharePriceCurrency ?? input.currency?.code ?? "ILS";
+  const rate = code === "ILS" ? 1 : code === input.currency?.code ? input.currency.startRate : rateOf(input.fx, code, "the fund's unit price");
+  return price * rate;
+}
+
+/**
+ * F-109 (D94): the ways a house can buy the fund, the first its own (`wholeUnitsAt`). A house that sells the listing by amount, for every
+ * order or on its recurring plan, can also buy whole units: both are run and the house is priced on the one that leaves more, as a monthly
+ * purchase takes the standing line or the regular one. A house that sells only whole units, and a fund with no unit price, have one way.
+ */
+export function unitWaysAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): SecuritiesInput["wholeUnits"][] {
+  const own = wholeUnitsAt(input, snapshot, tariff);
+  const price = unitPriceAt(input);
+  if (price === undefined || (own && !own.monthlyByAmount)) return [own];
+  return [own, { price }];
+}
+
+/** The fund as the run takes it: a share price printed in another currency than the instrument's carries the run's rate between them. */
+function fundForRun(input: Pick<WorkbenchInput, "fund" | "currency" | "fx">): Fund {
+  const f = input.fund;
+  const code = f.sharePriceCurrency;
+  const unit = input.currency?.code ?? "ILS";
+  if (!f.sharePrice || !code || code === unit) return f;
+  const r = code === "ILS" ? 1 : input.fx?.[code];
+  const u = unit === "ILS" ? 1 : input.currency!.startRate;
+  return typeof r === "number" && r > 0 ? { ...f, sharePriceRate: r / u } : f;
+}
+
 /** The function's result, computed at the first call. */
 function once<T>(work: () => T): () => T {
   let done: { value: T } | null = null;
@@ -670,11 +740,13 @@ export function costByWho(a: CostByWhoInput): { account: number; fund: number; s
  * is "not comparable, data missing" with the snapshot's reason. Minimums and protection pass through.
  */
 export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): ProviderWorkbench {
-  const plan = (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"]): SecuritiesInput => {
-    const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: input.fund, tariff, profile: input.profile };
+  const runFund = fundForRun(input);
+  const plan = (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], wholeUnits?: SecuritiesInput["wholeUnits"]): SecuritiesInput => {
+    const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: runFund, tariff, profile: input.profile };
     if (input.broker) p.broker = input.broker;
     if (memberKind) p.memberKind = memberKind;
     if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
+    if (wholeUnits) p.wholeUnits = wholeUnits;
     return p;
   };
   const bare: SecuritiesInput["tariff"] = input.currency ? { currency: input.currency } : {};
@@ -738,9 +810,25 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
 
     // F-14: a money-market unit pays custody at a non-bank member's or a foreign broker's tariff, never at a bank's (BRK-17, BANK-18).
     const memberKind = memberKindOf(s.provider.class);
-    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind) } as const;
-    const run = runSecurities(planF.input, ctx);
-    const run12 = runSecurities(plan(built.tariff, 12, memberKind), ctx);
+    // F-109: whole units; a house that sells the fund's listing by amount is priced on the way that leaves more
+    let ways: SecuritiesInput["wholeUnits"][];
+    try {
+      ways = unitWaysAt(input, s, built.tariff);
+    } catch (e) {
+      if (e instanceof Unusable) {
+        notComparable({ code: e.code, detail: e.message });
+        continue;
+      }
+      throw e;
+    }
+    let units = ways[0];
+    let run = runSecurities(plan(built.tariff, horizon, memberKind, units), ctx);
+    for (const w of ways.slice(1)) {
+      const other = runSecurities(plan(built.tariff, horizon, memberKind, w), ctx);
+      if (other.real > run.real) [units, run] = [w, other];
+    }
+    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units) } as const;
+    const run12 = runSecurities(plan(built.tariff, 12, memberKind, units), ctx);
     const total = noneT.real - run.real;
     // F-61's split takes a whole run per fee line, and a page that ranks every fund at every house reads it for few: run when first read.
     const split = once(() => {
@@ -770,6 +858,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       noLine: built.noLine,
       notModelled: built.notModelled,
       flags: built.flags,
+      standingAside: built.standingAside,
       horizonCost: computedValue(
         total,
         "nis",

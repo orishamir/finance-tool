@@ -902,6 +902,15 @@
       "channel": "direct",
       "band": "הוראת קבע",
       "statement_code": null,
+      "not_ranked": {
+        "reason_he": "הבנק לא כותב איפה מקימים הוראת קבע לקניית ניירות ערך ואילו קרנות אפשר לקנות בה, והמוקד הטלפוני שלו לא מקים אותה.",
+        "source": {
+          "url": "https://www.bankmassad.co.il/private/accountmngment/servicess/call/",
+          "title": "מרכז שירות בנקאי - בנק מסד",
+          "checked": "2026-11-10",
+          "quote": "הקמה/שינוי/ביטול של הוראות קבע לקרנות נאמנות (לא כולל הקמת הו\"ק במסד)"
+        }
+      },
       "names": {
         "tariff": [
           "הוראת קבע",
@@ -1016,6 +1025,15 @@
       "channel": "direct",
       "band": "הוראת קבע",
       "statement_code": null,
+      "not_ranked": {
+        "reason_he": "הבנק לא כותב איפה מקימים הוראת קבע לקניית ניירות ערך ואילו קרנות אפשר לקנות בה, והמוקד הטלפוני שלו לא מקים אותה.",
+        "source": {
+          "url": "https://www.bankmassad.co.il/private/accountmngment/servicess/call/",
+          "title": "מרכז שירות בנקאי - בנק מסד",
+          "checked": "2026-11-10",
+          "quote": "הקמה/שינוי/ביטול של הוראות קבע לקרנות נאמנות (לא כולל הקמת הו\"ק במסד)"
+        }
+      },
       "names": {
         "tariff": [
           "הוראת קבע",
@@ -1130,6 +1148,15 @@
       "channel": "branch",
       "band": "הוראת קבע",
       "statement_code": null,
+      "not_ranked": {
+        "reason_he": "הבנק לא כותב איפה מקימים הוראת קבע לקניית ניירות ערך ואילו קרנות אפשר לקנות בה, והמוקד הטלפוני שלו לא מקים אותה.",
+        "source": {
+          "url": "https://www.bankmassad.co.il/private/accountmngment/servicess/call/",
+          "title": "מרכז שירות בנקאי - בנק מסד",
+          "checked": "2026-11-10",
+          "quote": "הקמה/שינוי/ביטול של הוראות קבע לקרנות נאמנות (לא כולל הקמת הו\"ק במסד)"
+        }
+      },
       "names": {
         "tariff": [
           "הוראת קבע",
@@ -1243,6 +1270,15 @@
       "channel": "branch",
       "band": "הוראת קבע",
       "statement_code": null,
+      "not_ranked": {
+        "reason_he": "הבנק לא כותב איפה מקימים הוראת קבע לקניית ניירות ערך ואילו קרנות אפשר לקנות בה, והמוקד הטלפוני שלו לא מקים אותה.",
+        "source": {
+          "url": "https://www.bankmassad.co.il/private/accountmngment/servicess/call/",
+          "title": "מרכז שירות בנקאי - בנק מסד",
+          "checked": "2026-11-10",
+          "quote": "הקמה/שינוי/ביטול של הוראות קבע לקרנות נאמנות (לא כולל הקמת הו\"ק במסד)"
+        }
+      },
       "names": {
         "tariff": [
           "הוראת קבע",

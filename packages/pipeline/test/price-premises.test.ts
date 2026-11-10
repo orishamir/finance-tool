@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkAdvertising, checkDiscountLines, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
+import { checkAdvertising, checkByAmount, checkDiscountLines, checkSharePrice, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
 
 const dir = fileURLToPath(new URL("../../../data/fees", import.meta.url));
 type Line = { id: string; base: string; applies_to: string[]; [k: string]: unknown };
@@ -17,12 +17,7 @@ for (const f of readdirSync(dir).sort()) {
 }
 const CLASSES = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "foreign_securities"];
 const DOUBT = /not stated|not named|unconfirmed|not collected|Read as|could not be fetched|for a person to check|no document says|not confirmed/i;
-const LEFTOVERS = [
-  "interactive-brokers-buy-sell-lse-usd-tiered",
-  "leumi-tracking-fund-standing-order",
-  "massad-standing-order-tase-direct",
-  "massad-standing-order-tase-branch",
-];
+const LEFTOVERS: string[] = [];
 
 describe("what a ranked price rests on", () => {
   it("a doubt written in a note on a priced line is on the list, and the list only shrinks", () => {
@@ -34,6 +29,8 @@ describe("what a ranked price rests on", () => {
       for (const l of s.lines) {
         const kinds = l.applies_to.filter((c) => CLASSES.includes(c));
         if (kinds.length === 0 || kinds.every((c) => greyed.has(c))) continue;
+        // a line the ranked price never reads (`not_ranked`, D41) is shown beside the row with its reason, not ranked on a doubt
+        if (l.not_ranked !== undefined) continue;
         const notes = ["rate", "min", "max", "spread"].map((k) => (l[k] as { notes?: string } | null | undefined)?.notes ?? "").join(" ");
         if (DOUBT.test(notes)) found.push(l.id);
       }
@@ -275,6 +272,17 @@ describe("discounted lines (A-19, D56)", () => {
   });
 });
 
+describe("a line the ranked price leaves out (D41, D56)", () => {
+  const standing = { id: "x-standing-order", rate: { value: 0.225 }, band: "הוראת קבע", not_ranked: { reason_he: "x", source: {} } };
+  it("passes on a standing-order line, so the regular line still prices the holding", () => {
+    expect(checkDiscountLines({ lines: [standing] })).toEqual([]);
+  });
+  it("fails on a standard line and on any other banded line (the page would not list it as set aside)", () => {
+    expect(checkDiscountLines({ lines: [{ ...standing, band: null }] })[0]).toMatch(/not a standing-order or recurring-plan line/);
+    expect(checkDiscountLines({ lines: [{ ...standing, band: "פדיון" }] })[0]).toMatch(/not a standing-order or recurring-plan line/);
+  });
+});
+
 describe("a provident list line under the cap (A-19, D83, re-check 2)", () => {
   const caps = { "kupat-gemel-lehashkaa": { balance: 1.05, deposit: 4 }, "keren-hishtalmut": { balance: 2, deposit: 0 }, "pension-comprehensive": { balance: 0.5, deposit: 6 } };
   const line = (rate: number, extra: object = {}) => ({ id: "x-kgl-balance-list", level: "list", base: "balance", applies_to: ["kupat-gemel-lehashkaa"], rate: { value: rate }, ...extra });
@@ -316,5 +324,30 @@ describe("a group's sub-rows (D43, D56)", () => {
     expect(checkGroupWords(snap(entry("פטור מעמלת קנייה"), entry("פטור מעמלת קנייה", { exempt: true })))).toEqual([expect.stringMatching(/is not priced and this one is priced/)]);
     // two entries not priced may share words: one sub-row
     expect(checkGroupWords(snap(entry("פטור מעמלת קנייה"), entry("פטור מעמלת קנייה")))).toEqual([]);
+  });
+});
+
+describe("a listing sold by amount (F-109, D94)", () => {
+  const plan = { base: "fx", band: "השקעה קבועה אוטומטית", applies_to: ["foreign_securities"] };
+  const trade = { base: "trade", band: null, applies_to: ["foreign_securities"] };
+  const entry = (over: object = {}) => ({ venue: "us", orders: "all", list_only: false, source: { url: "https://example.org", quote: "ניתן להזין הוראה לפי כמות שברית של מניות או לפי סכום כספי" }, ...over });
+  it("passes on the house's words for fractions or a sum, one entry a listing", () => {
+    expect(checkByAmount({ lines: [trade, plan], by_amount: [entry(), entry({ venue: "europe", orders: "recurring_plan", source: { url: "x", quote: "גם אם מדובר בחלק ממניה או תעודת סל, לפי הסכום" } })] })).toEqual([]);
+  });
+  it("fails a quote that does not say so, a listing twice, a plan with no plan line, and a record that prices nothing abroad", () => {
+    expect(checkByAmount({ lines: [trade], by_amount: [entry({ source: { url: "x", quote: "מסחר בארה״ב" } })] })[0]).toMatch(/does not say/);
+    expect(checkByAmount({ lines: [trade], by_amount: [entry(), entry()] })[0]).toMatch(/two entries/);
+    expect(checkByAmount({ lines: [trade], by_amount: [entry({ orders: "recurring_plan" })] })[0]).toMatch(/no recurring-plan conversion line/);
+    expect(checkByAmount({ lines: [], by_amount: [entry()] })[0]).toMatch(/no fund bought abroad/);
+  });
+});
+
+describe("a unit's price (F-109)", () => {
+  const price = (url: string, unit = "usd") => ({ share_price: { value: 814.9, unit, source: { url } } }) as never;
+  it("takes the issuer's page and refuses TASE's and Maya's", () => {
+    expect(checkSharePrice(price("https://www.ishares.com/uk/individual/en/products/253743/"))).toEqual([]);
+    expect(checkSharePrice(price("https://api.tase.co.il/api/company/securitydata?securityId=1159250"))[0]).toMatch(/forbid/);
+    expect(checkSharePrice(price("https://maya.tase.co.il/api/v1/funds/mutual/5139282"))[0]).toMatch(/forbid/);
+    expect(checkSharePrice(price("https://www.ishares.com/", "pct"))[0]).toMatch(/not a currency/);
   });
 });

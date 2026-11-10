@@ -2,7 +2,9 @@
 // a chip counts the offers the chosen amount opens, as the count line does.
 import { describe, expect, it } from "vitest";
 import { buildDepositBrowser } from "./deposit-browser.server";
-import { TERMS, isLinked, offersOf, openCount, opens, rowSplit, rowsOf, sortRows, type DbData, type DbOffer } from "./deposit-browser";
+import { TERMS, accessOf, interestOn, isLinked, offersOf, periodBest, rowSplit, rowsOf, sortRows, type DbData, type DbOffer } from "./deposit-browser";
+import { depositName, shownName } from "./deposit-kind";
+import { entered } from "./value";
 import type { SiteValue } from "./value";
 
 const v = (n: number): SiteValue => ({ value: n }) as unknown as SiteValue;
@@ -26,7 +28,6 @@ const offer = (id: string, over: Partial<DbOffer> & { rate: number; min?: number
     ...rest,
   };
 };
-const names = (id: string) => id;
 
 describe("rows of one name", () => {
   const plain = offer("a", { rate: 2.25 });
@@ -54,9 +55,9 @@ describe("rows of one name", () => {
 
   it("sorts a row by its best rate, and puts linked rows after unlinked ones", () => {
     const rows = rowsOf([monthly, quarterly, plain, offer("x", { rate: 2.3, bank: "b2" }), offer("y", { rate: 2.24, bank: "b3" }), offer("z", { rate: 9, bank: "b4", linkage: "cpi" })]);
-    const sorted = sortRows(rows, { id: "rate", dir: 1 }, names);
+    const sorted = sortRows(rows, { id: "rate", dir: 1 });
     expect(sorted.map((r) => r.offers[0]!.id)).toEqual(["x", "a", "y", "z"]);
-    const up = sortRows(rows, { id: "rate", dir: -1 }, names);
+    const up = sortRows(rows, { id: "rate", dir: -1 });
     expect(up.map((r) => r.offers[0]!.id)).toEqual(["y", "a", "x", "z"]);
   });
 });
@@ -64,11 +65,16 @@ describe("rows of one name", () => {
 describe("on the site's own deposits", () => {
   const data: DbData = buildDepositBrowser();
 
-  it("a chip counts only the offers the amount opens", () => {
+  it("a period's bar is the highest rate open to everyone that the amount opens, and none is higher in the list", () => {
     for (const a of data.amounts) {
       const amount = a.value as number;
       for (const kind of ["fixed", "variable"] as const)
-        for (const term of [null, ...TERMS]) expect(openCount(data, term, kind, amount)).toBe(offersOf(data, term, kind).filter((o) => opens(o, amount)).length);
+        for (const term of TERMS) {
+          const { pick, gap } = periodBest(data, term, kind, amount);
+          const open = offersOf(data, term, kind).filter((o) => !isLinked(o) && !o.limited && typeof o.rate_offered.value === "number" && o.amount_range.min.value !== null && amount >= (o.amount_range.min.value as number) && (o.amount_range.max === null || amount <= (o.amount_range.max.value as number)));
+          if (pick) expect(open.every((o) => (o.rate_offered.value as number) <= (pick.rate_offered.value as number))).toBe(true);
+          else expect(gap).not.toBeNull();
+        }
     }
   });
 
@@ -87,9 +93,43 @@ describe("on the site's own deposits", () => {
 
   it("a linked row is never ranked among the unlinked ones", () => {
     for (const kind of ["fixed", "variable"] as const) {
-      const sorted = sortRows(rowsOf(offersOf(data, null, kind)), { id: "rate", dir: 1 }, names);
+      const sorted = sortRows(rowsOf(offersOf(data, null, kind)), { id: "rate", dir: 1 });
       const firstLinked = sorted.findIndex((r) => isLinked(r.offers[0]!));
       if (firstLinked >= 0) expect(sorted.slice(firstLinked).every((r) => isLinked(r.offers[0]!))).toBe(true);
     }
+  });
+});
+
+describe("an offer's words and interest", () => {
+  it("ranks an offer only some may open among the others, by its rate", () => {
+    const rows = rowsOf([offer("a", { rate: 2 }), offer("b", { rate: 3, bank: "b2", limited: true }), offer("c", { rate: 1, bank: "b3" })]);
+    expect(sortRows(rows, { id: "rate", dir: 1 }).map((r) => r.offers[0]!.id)).toEqual(["b", "a", "c"]);
+  });
+
+  it("says how the money comes out: exit points, a break, or locked to the end", () => {
+    expect(accessOf(offer("a", { rate: 1 })).map((x) => x.kind)).toEqual(["locked"]);
+    expect(accessOf(offer("b", { rate: 1, breakTerm: "with_penalty" })).map((x) => x.words)).toEqual(["שבירה בקנס"]);
+    expect(accessOf(offer("c", { rate: 1, exits: { exists: true, everyMonths: 3 } }))[0]!.words).toBe("יציאה כל 3 חודשים");
+    expect(accessOf(offer("d", { rate: 1, exits: { exists: true, everyMonths: null } }))[0]!.words).toBe("יש תחנות יציאה");
+  });
+
+  it("computes the interest over the term by F-21, a year's at the rate and less over a shorter term", () => {
+    const amount = entered(10000, "nis", "2026-11-10");
+    const real = buildDepositBrowser().offers.find((o) => typeof o.rate_offered.value === "number")!;
+    const at = (rate: number, term: DbOffer["term"]) => interestOn({ ...real, term, rate_offered: { ...real.rate_offered, value: rate } }, 10000, amount, "2026-11-10")!.value as number;
+    expect(at(3.25, "y1")).toBeCloseTo(325, 6);
+    expect(at(2.2, "m3")).toBeCloseTo(10000 * (Math.pow(1.022, 0.25) - 1), 6);
+    expect(at(3.5, "y2")).toBeCloseTo(10000 * (1.035 * 1.035 - 1), 6);
+  });
+
+  it("puts back a parenthesis a table read in visual order left at the name's start", () => {
+    expect(shownName("(איתן-בשקלים בריבית קבועה (לשנה ויותר")).toBe("איתן-בשקלים בריבית קבועה (לשנה ויותר)");
+    expect(shownName("פיקדון לשנה (365 יום)")).toBe("פיקדון לשנה (365 יום)");
+  });
+
+  it("names a deposit by the bank's own name, after the model number where the table prints the kind first (Leumi)", () => {
+    expect(depositName({ names: { "447": ["פיקדון לשנה", "דגם: 231/1 חסכון שקלי לשנה", "חסכון שקלי לשנה"] }, type_447: "פיקדון לשנה" } as never)).toBe("חסכון שקלי לשנה");
+    expect(depositName({ names: { "447": ["(איתן-בשקלים בריבית קבועה (לשנה ויותר"] }, type_447: "פיקדון לשנה" } as never)).toBe("איתן-בשקלים בריבית קבועה (לשנה ויותר)");
+    expect(depositName({ names: { "447": [] }, type_447: "פיקדון לשנה" } as never)).toBe("פיקדון לשנה");
   });
 });

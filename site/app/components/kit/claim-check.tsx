@@ -4,7 +4,7 @@
 // the quoted words (a web page, by text fragment) or at the page (a PDF): `sourceHref`.
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { claims as copy } from "../../copy";
-import { fmt } from "../../lib/format";
+import { fmt, gershayim } from "../../lib/format";
 import { cx } from "./cx";
 import { isPdfUrl, sourceHref } from "../../lib/sources";
 import { DocLink } from "./doc-link";
@@ -16,7 +16,7 @@ function Side({ lead, words, href, title, when }: { lead: string; words?: string
       <span className="text-xs text-muted-foreground">{lead}</span>
       {words && (
         <span className="text-sm [overflow-wrap:anywhere]">
-          <bdi>{copy.quote(words)}</bdi>
+          <bdi>{copy.quote(gershayim(words))}</bdi>
         </span>
       )}
       <span className="flex flex-wrap items-center gap-x-2 text-xs">

@@ -1,5 +1,5 @@
 // The rules page: every general rule as a compact row, and a rule's whole record opened from its row. Nothing typed: the products (a
-// list beside the rules on a computer, a button that opens it on a phone), the five questions as tabs, and each question's rules by the
+// list beside the rules on a computer, a button that opens it on a phone), the five questions as chips with counts, and each question's rules by the
 // rule-base file they come from; "הידעת?" below them. Something typed: the closest match drawn larger, the other rules as rows, and what
 // each company wrote in a tab of its own; a rule's id typed is its match. A rule opens beside the list on a computer and on a screen of
 // its own below 1280 px, with a way back to where the list was. The address holds the state (?product=&shelf=&changing=1&q=, and the
@@ -13,7 +13,7 @@ import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
 import { Sheet } from "../components/Sheet";
 import { IconAll, IconArrowBack, IconChevronDown } from "../components/icons";
-import { AskField, Button, Card, CheckField, cx, gershayim, DidYouKnow, FilterChip, FoldGroup, GroupHead, InlineSelect, ListRow, PHONE_GONE, RowList, SelectField, TabStrip, TableCols, Tag, When, panelId, tabId, type FactItem } from "../components/kit";
+import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, FilterChip, FoldGroup, GroupHead, InlineSelect, ListRow, PHONE_GONE, RowList, SelectField, TabStrip, TableCols, Tag, When, panelId, tabId, type FactItem } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { emptyFilters, facetCounts, filtersToSearch, groupProducts, idInField, parseFilters, passesFilters, shelfGroups, shownShelf, type Filters, type LightRule } from "../lib/rules-filter";
@@ -298,7 +298,7 @@ export default function Rules() {
   const typing = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   /** The search the field last gave the page: a newer one may be in the field already, and must not be overwritten. */
   const committed = useRef("");
-  /** The product, question and checkbox before a search began: clearing the field goes back to them. */
+  /** The product, question and "changing only" chip before a search began: clearing the field goes back to them. */
   const browsing = useRef<Pick<Filters, "product" | "shelf" | "changing">>({ product: null, shelf: null, changing: false });
   /** On a narrow screen: where the list was scrolled when a rule opened, which rule, and whether opening it added a history step. */
   const back = useRef<{ y: number; id: string; pushed: boolean } | null>(null);
@@ -409,11 +409,13 @@ export default function Rules() {
     return idHit ? [lightById.get(idHit)!, ...law.filter((r) => r.id !== idHit)] : law;
   }, [claim, found, idHit, lightById, data.light]);
 
-  // ---- browse: the product, the checkbox, the question
+  // ---- browse: the product, the "changing only" chip, the question
   const browseFilters = useMemo(() => ({ ...filters, shelf: null }), [filters]);
   const counts = useMemo(() => facetCounts(data.light, browseFilters), [data.light, browseFilters]);
   const matches = useMemo(() => data.light.filter((r) => passesFilters(r, browseFilters)), [data.light, browseFilters]);
   const tab = shownShelf(filters.shelf, counts.shelf);
+  /** The rules "רק מה שעומד להשתנות" would show, the product as chosen. */
+  const changingCount = useMemo(() => data.light.filter((r) => passesFilters(r, { ...browseFilters, changing: true })).length, [data.light, browseFilters]);
 
   // ---- search: the product and the question are filters of the results
   const claimFilters = useMemo(() => ({ ...filters, changing: false }), [filters]);
@@ -716,12 +718,15 @@ export default function Rules() {
                     {gershayim(productName)}
                     <span className="text-sm font-normal text-muted-foreground">{countWords(matches.length)}</span>
                   </h2>
-                  <CheckField label={<span className="text-sm">{copy.changingOnly}</span>} checked={filters.changing} onChange={(v) => setFilters({ changing: v })} />
+                  <FilterChip on={filters.changing} count={changingCount} onClick={() => setFilters({ changing: !filters.changing })}>
+                    {copy.changingOnly}
+                  </FilterChip>
                 </div>
                 {tab ? (
                   <>
-                    <TabStrip wrap idBase="shelf" ariaLabel={copy.questions} current={tab} onChange={(k) => setFilters({ shelf: k as ShelfId })} tabs={shelfIds.filter((s) => (counts.shelf.get(s) ?? 0) > 0).map((s) => ({ key: s, label: copy.shelves[s]!.name, count: counts.shelf.get(s) }))} />
-                    <div id={panelId("shelf")} role="tabpanel" aria-labelledby={tabId("shelf", tab)} className="pt-1">
+                    {/* a question narrows the product's rules: chips with counts (design-system 11, "Which choice control") */}
+                    <ChoiceChips ariaLabel={copy.questions} ids={shelfIds.filter((s) => (counts.shelf.get(s) ?? 0) > 0)} labels={Object.fromEntries(shelfIds.map((s) => [s, copy.shelves[s]!.name]))} value={tab} counts={Object.fromEntries(shelfIds.map((s) => [s, counts.shelf.get(s) ?? 0]))} onChange={(k) => setFilters({ shelf: k })} />
+                    <div className="pt-1">
                       <RuleGroups rules={matches} shelf={tab} lightById={lightById} selected={selected} onOpen={openRule} />
                     </div>
                   </>
@@ -786,15 +791,8 @@ function CompanyResults({ company, names, docs, pd, failed }: { company: string[
   ) : (
     <>
       <p className="text-sm text-muted-foreground max-w-measure">{words.companiesLine}</p>
-      <ul className="flex flex-wrap gap-2">
-        {docGroups.map((g) => (
-          <li key={g}>
-            <FilterChip on={group === g} count={countOf(g)} onClick={() => setPicked(g)}>
-              {words.groups[g]}
-            </FilterChip>
-          </li>
-        ))}
-      </ul>
+      {/* one kind of company narrows the table: chips with counts, a kind with no document dimmed (design-system 11, "Which choice control") */}
+      <ChoiceChips wrap ariaLabel={words.tabs.companies} ids={docGroups} labels={words.groups} value={group} counts={Object.fromEntries(docGroups.map((g) => [g, countOf(g)]))} onChange={(g) => setPicked(g)} />
       <table className="tbl text-sm">
         <TableCols widths={[{ pc: "24%", phone: "auto" }, { pc: "auto", phone: "0" }, { pc: "92px", phone: "0" }, { pc: "150px", phone: "112px" }]} />
         <thead>

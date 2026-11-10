@@ -8,23 +8,37 @@ import { cx } from "./cx";
 import { RowArrow } from "./product-table";
 
 /** A group's heading in a list: its name, a muted count, and a hairline from there to the end of the line, so groups read apart. */
-export function GroupHead({ children, count, as: Tag = "h3", id, className }: { children: ReactNode; count?: ReactNode; as?: "h2" | "h3"; id?: string; className?: string }) {
+export function GroupHead({ children, count, as: Tag = "h3", id, className, plain, nowrap }: { children: ReactNode; count?: ReactNode; as?: "h2" | "h3"; id?: string; className?: string; /** A small muted label alone, with no count and no hairline: over rows that stand between rules (`RowList plain`). */ plain?: boolean; /** A short name in a narrow column (the companies page's groups): the name never breaks; the hairline gives way first, then the count moves under it. */ nowrap?: boolean }) {
+  if (plain)
+    return (
+      <Tag id={id} className={cx("text-sm font-normal text-muted-foreground", className)}>
+        {children}
+      </Tag>
+    );
   return (
-    <Tag id={id} className={cx("flex items-center gap-2 text-sm font-medium", className)}>
-      <span className="min-w-0">{children}</span>
+    <Tag id={id} className={cx("flex items-center gap-2 text-sm font-medium", nowrap && "flex-wrap", className)}>
+      <span className={nowrap ? "shrink-0 whitespace-nowrap" : "min-w-0"}>{children}</span>
       {count != null && (
         <bdi dir="ltr" className="shrink-0 text-[13px] font-normal tabular-nums text-muted-foreground">
           {count}
         </bdi>
       )}
-      <span aria-hidden="true" className="flex-1 min-w-4 h-px bg-border" />
+      <span aria-hidden="true" className={cx("flex-1 h-px bg-border", nowrap ? "min-w-0" : "min-w-4")} />
     </Tag>
   );
 }
 
-export function RowList({ children, className, label }: { children: ReactNode; className?: string; label?: string }) {
+/** The chosen row's look, shared by every list of rows that marks one (`ListRow`, `ChooseRow`, `SideNav`): a filled background; the others light on hover. */
+export const rowLook = (selected: boolean | undefined): string => cx("transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", selected ? "bg-accent" : "hover:bg-accent/50");
+
+/** The bar at the chosen row's start edge. */
+export function RowMark() {
+  return <span aria-hidden="true" className="absolute inset-y-0 start-0 w-[3px] bg-primary" />;
+}
+
+export function RowList({ children, className, label, plain }: { children: ReactNode; className?: string; label?: string; /** No box: the rows stand between hairlines, one over the first and one under the last (a company page's lists). */ plain?: boolean }) {
   return (
-    <ul aria-label={label} className={cx("rounded-lg border border-border bg-card divide-y divide-border overflow-hidden", className)}>
+    <ul aria-label={label} className={cx(plain ? "border-y border-border divide-y divide-border" : "rounded-lg border border-border bg-card divide-y divide-border overflow-hidden", className)}>
       {children}
     </ul>
   );
@@ -39,12 +53,9 @@ export function ListRow({ title, lead, chips, meta, end, selected, dim, onSelect
         onClick={onSelect}
         aria-current={selected ? "true" : undefined}
         aria-controls={controls}
-        className={cx(
-          "relative w-full min-h-target text-start px-3 py-2 lg:px-4 flex flex-col gap-1 md:gap-0.5 transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2",
-          selected ? "bg-accent" : "hover:bg-accent/50",
-        )}
+        className={cx("relative w-full min-h-target text-start px-3 py-2 lg:px-4 flex flex-col gap-1 md:gap-0.5", rowLook(selected))}
       >
-        {selected && <span aria-hidden="true" className="absolute inset-y-0 start-0 w-[3px] bg-primary" />}
+        {selected && <RowMark />}
         <span className="flex items-baseline gap-3 min-w-0">
           <span className="flex-1 min-w-0 font-semibold leading-snug md:leading-tight [overflow-wrap:anywhere]">{title}</span>
           {end && <span className="shrink-0 text-xs text-muted-foreground">{end}</span>}
@@ -73,7 +84,7 @@ const LIFT = "[&_:is(a,button,[role=button]):not([data-choose-row])]:relative [&
 export function ChooseRow({ title, end, line, chosen, dim, onChoose, label, link }: { title: ReactNode; /** Short and muted at the end of the title's line (a count). */ end?: ReactNode; /** A quieter second line; it may hold figures that open their source. */ line?: ReactNode; chosen: boolean; dim?: boolean; onChoose: () => void; /** The button's spoken name. */ label: string; /** The arrow at the end: where it goes and its spoken name. */ link?: { to: string; label: string } }) {
   return (
     <li className={cx("relative flex items-stretch transition-[background-color,opacity] duration-[var(--duration-base)]", LIFT, chosen ? "bg-accent" : "hover:bg-accent/50", dim && "opacity-45")}>
-      {chosen && <span aria-hidden="true" className="absolute inset-y-0 start-0 w-[3px] bg-primary" />}
+      {chosen && <RowMark />}
       <span className="flex-1 min-w-0 ps-3 pe-2 py-2 lg:ps-4 flex flex-col gap-0.5">
         <span className="flex items-baseline gap-3 min-w-0">
           <span className="flex-1 min-w-0 font-medium leading-snug">{title}</span>
@@ -87,6 +98,38 @@ export function ChooseRow({ title, end, line, chosen, dim, onChoose, label, link
         </Link>
       )}
       <button type="button" data-choose-row aria-pressed={chosen} aria-label={label} onClick={onChoose} className="absolute inset-0 w-full cursor-pointer focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2" />
+    </li>
+  );
+}
+
+/**
+ * A row that opens a part of the page or another page (a bank's overview of its products, the designer's mocks): its name, a muted count,
+ * one headline fact under a small label ("ריבית בשנה, מיום עד שנה" over "0.02% עד 2.05%"), a muted date and an arrow, in columns from
+ * 768 px and one under the other on a phone. Figures that open their source lie above the row's link and keep their own tap. The whole
+ * row is one link stretched under it. In a `RowList` (`plain`, between hairlines).
+ */
+export function OpenRow({ title, end, fact, date, to, label }: { title: ReactNode; /** Beside the name (a count). */ end?: ReactNode; /** The headline fact: a small muted label over its value (or over words, the parts of a product). */ fact?: { label: ReactNode; value: ReactNode; /** Words rather than a figure: said at the body's size, not large. */ words?: boolean }; /** Muted (an as-of date). */ date?: ReactNode; to: string; /** The link's spoken name. */ label: string }) {
+  return (
+    <li className={cx("relative flex items-stretch", LIFT, rowLook(false))}>
+      <span className="flex-1 min-w-0 ps-1 pe-2 py-4 flex flex-col gap-1.5 md:grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.8fr)_minmax(0,2.2fr)_minmax(9rem,1fr)] md:items-center md:gap-x-6">
+        <span className="flex flex-wrap items-baseline gap-x-3 md:contents">
+          <span className="text-lg font-semibold leading-snug">{title}</span>
+          <span className="text-muted-foreground md:text-foreground">{end}</span>
+        </span>
+        <span className="flex flex-col gap-0.5 min-w-0">
+          {fact && (
+            <>
+              <span className="text-xs text-muted-foreground">{fact.label}</span>
+              <span className={cx("leading-snug", fact.words ? "text-base" : "text-lg font-semibold")}>{fact.value}</span>
+            </>
+          )}
+        </span>
+        <span className="text-sm text-muted-foreground">{date}</span>
+      </span>
+      <span aria-hidden="true" className="shrink-0 w-11 flex items-center justify-center">
+        <RowArrow />
+      </span>
+      <Link to={to} preventScrollReset aria-label={label} data-choose-row className="absolute inset-0 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2" />
     </li>
   );
 }

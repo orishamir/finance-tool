@@ -142,6 +142,7 @@ export const formulas = {
   "F-103": corporateEventFee,
   "F-105": listFeeRange,
   "F-108": bestOpenOffer,
+  "F-109": runSecurities,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

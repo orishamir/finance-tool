@@ -205,12 +205,13 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   const domicile = rec.domicile === "US" ? "us" : rec.domicile === "IE" ? "ireland" : undefined;
   if (domicile) fund.domicile = domicile;
   if (w8ben !== undefined) fund.w8ben = w8ben;
-  // E1: the price of one unit, in the unit's currency, for per-share commissions.
+  // E1, F-109: the price of one unit, in the unit's currency, for per-share commissions and whole units.
   const price = rec.share_price;
   if (price && typeof price.value === "number") {
     const unitCode = { nis: "ILS", usd: "USD", eur: "EUR" }[price.unit as string];
     if (!unitCode) throw new RecordInputError(`fund ${rec.id} share_price: unit is ${price.unit}, expected a currency`);
     fund.sharePrice = price.value;
+    fund.sharePriceCurrency = unitCode;
   }
   if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
   // TXF-11: the fund's own annex reports a ruling that taxes it at sale and on distributions only.

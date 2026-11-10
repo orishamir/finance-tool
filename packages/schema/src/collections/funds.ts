@@ -143,7 +143,11 @@ export const fundRecord = z.strictObject({
       checked: isoDate,
     })
     .optional(),
-  /** S4: the price of one unit, in a currency unit, for per-share commissions. */
+  /**
+   * S4, F-109: the price of one unit, in a currency unit (`usd`, `nis`, `eur`), from the issuer's own page, for per-share commissions and for
+   * buying whole units. A Tel Aviv line of a foreign fund takes its issuer's NAV of the same share class, which the line's own Israeli
+   * document names; never a price from TASE or Maya, whose terms forbid republishing it (the data check refuses one).
+   */
   share_price: valueObject.optional(),
   snapshot: isoDate,
 });

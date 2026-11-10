@@ -54,6 +54,8 @@ export interface FocusCompany {
   /** The address of its page, `/companies/<id>`. */
   id: string;
   name: string;
+  /** Its name in the list, one short word or two that fit the narrow column (copy `companyFocus.shortNames`, else `shortName`). */
+  short: string;
   group: CompanyGroup;
   /** Every name the search finds it by (its legal companies' too). */
   match: string;
@@ -119,7 +121,7 @@ export function offers(kinds: readonly FocusProductKind[], c: FocusCompany, s: P
 /** The company's name has the search's words. */
 export function nameMatches(c: FocusCompany, q: string): boolean {
   const nq = normalize(q.trim());
-  return !nq || normalize(`${c.name} ${c.match}`).includes(nq);
+  return !nq || normalize(`${c.short} ${c.name} ${c.match}`).includes(nq);
 }
 
 /** Whether a company is shown at full strength: it offers what is chosen and its name matches the search. */

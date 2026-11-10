@@ -7,7 +7,7 @@ const kinds: FocusProductKind[] = [
   { id: "funds-etf", name: "קרנות סל", type: "funds", unit: "funds" },
   { id: "brokerage", name: "חשבון ניירות ערך", type: "trade", unit: "has" },
 ];
-const co = (id: string, name: string, products: string[], group: FocusCompany["group"] = "houses"): FocusCompany => ({ id, name, group, match: "", line: null, products: products.map((p) => ({ id: p, count: p === "brokerage" ? null : 3, href: `/companies/${id}` })), sections: [], terms: 0 });
+const co = (id: string, name: string, products: string[], group: FocusCompany["group"] = "houses"): FocusCompany => ({ id, name, short: name, group, match: "", line: null, products: products.map((p) => ({ id: p, count: p === "brokerage" ? null : 3, href: `/companies/${id}` })), sections: [], terms: 0 });
 const companies = [co("a", "אלפא", ["keren-hishtalmut", "brokerage"]), co("b", "בטא", ["keren-hishtalmut", "kupat-gemel-lehashkaa"], "managers"), co("c", "גמא", ["funds-etf"])];
 const data: FocusData = { kinds, companies };
 const all = { type: "all" as const, product: null, q: "" };

@@ -111,8 +111,14 @@ const chipShape = "inline-flex items-center gap-1 text-xs font-medium rounded-fu
 
 /** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
  *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height. */
-export function LabelChip({ label, still = false }: { label: Label; /** Drawn only, not a button: inside a control of its own (a tile of TileChoice), where a tap is the control's. */ still?: boolean }) {
+export function LabelChip({ label, still = false, words = false }: { label: Label; /** Drawn only, not a button: inside a control of its own (a tile of TileChoice), where a tap is the control's. */ still?: boolean; /** Words only, in the line's own colour, no chip: a kind that follows a product's name ("קבועה לשנה, מבצע"); a tap still opens its meaning. */ words?: boolean }) {
   const open = useContext(OpenCtx);
+  if (words)
+    return (
+      <button type="button" onClick={(e) => open(label, e.currentTarget)} className="term" data-label={label.id}>
+        {label.text}
+      </button>
+    );
   if (still)
     return (
       <span className={cx(chipShape, chipClass(label))} data-label={label.id}>

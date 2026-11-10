@@ -1,171 +1,260 @@
-// The deposits page (D92): the controls, the count, the list, the notes and the grid. The term, the amount, the kind of rate and the order are
-// in the address (`?term=y2&amount=100000&kind=variable&sort=min`; the defaults left out), read once the page is in the browser, as the
-// track browser does: the page is pre-rendered without them. One term: one list, then the linked offers on their own. Every term: the
-// offers under their banks. On a phone the controls fold into one line that says what is chosen.
-import { startTransition, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router";
-import { depositBrowser as t, r4catalogue as rc } from "../../copy";
+// The deposits page (D92): the controls, the period chart, the list's heading, the list, then the offers the amount does not open and the
+// grid, both folded. The term, the amount, the kind of rate, the two "show also" chips, the reader's bank and the order are in the address
+// (`?term=y2&amount=100000&kind=variable&conditional=0&linked=1&bank=leumi&sort=min`; the defaults left out), read once the page is in the
+// browser: the page is pre-rendered without them. On a phone the controls fold into one line that says what is chosen.
+import { useMemo, useState, useSyncExternalStore } from "react";
+import { depositBrowser as t } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
 import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
-import { HELP_TERMS, KIND_TERMS, TERMS, amountText, banksPhrase, defaultSort, isLinked, offersOf, offersPhrase, openCount, opens, orderLine, rowsOf, sortRows, sortable as sortableIn, standing, SORT_IDS, type DbData, type DbOffer, type RateKind, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
-import { FilterChip, HelpMark, LongestCase, MixedName, PhoneFold, SelectField } from "../kit";
-import { Term } from "../provenance";
+import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, TERMS, interestOn, interestText, isLinked, offersOf, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
+import { fmt } from "../../lib/format";
+import { entered } from "../../lib/value";
+import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
+import { NumberLegend, Num, Term } from "../provenance";
+import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
-import { BankLine, DepositList, GroupLine, type ListPart } from "./list";
+import { DepositList, FoldFoot, type ListContext, type ListRow } from "./list";
 
 /** The term the page opens on: a year, the plain deposit most guides speak of. */
 const START_TERM: TermId = "y1";
-/** The rows drawn at once when the list is new; the rest the moment after, in a transition, so a press is answered at once. */
-const FIRST_ROWS = 14;
-/** How long a row the grid scrolled to stays lit (the CSS animation's length). */
-const LIT_MS = 1800;
+/** The rows shown before "עוד N הצעות": eight on a computer, six on a phone. */
+const SHOWN = { table: 8, phone: 6 } as const;
+const WIDE = "(min-width: 48rem)";
+
+/** Whether the screen shows the table (from md) or the phone's rows; the pre-rendered page and its first render count as the table. */
+function useWide(): boolean {
+  return useSyncExternalStore(
+    (on) => {
+      const m = window.matchMedia(WIDE);
+      m.addEventListener("change", on);
+      return () => m.removeEventListener("change", on);
+    },
+    () => window.matchMedia(WIDE).matches,
+    () => true,
+  );
+}
+
+const amountText = (n: number) => `${fmt.number(n)} ₪`;
 
 export function DepositBrowser({ data }: { data: DbData }) {
   const { params: sp, update } = useAddressParams();
   const termParam = sp.get("term");
-  const all = termParam === "all";
-  const term: TermId | null = all ? null : (TERMS as readonly string[]).includes(termParam ?? "") ? (termParam as TermId) : START_TERM;
-  const amountParam = Number(sp.get("amount"));
-  const amount = data.amounts.some((a) => a.value === amountParam) ? amountParam : data.start;
+  const term: TermId = (TERMS as readonly string[]).includes(termParam ?? "") ? (termParam as TermId) : START_TERM;
+  const amountParam = sp.get("amount");
+  // any whole amount the reader types; "none" while the field is empty
+  const amount: number | null = amountParam === "none" ? null : amountParam && /^\d+$/.test(amountParam) && Number(amountParam) > 0 ? Number(amountParam) : data.start;
   const kind: RateKind = sp.get("kind") === "variable" ? "variable" : "fixed";
-  const sortable = sortableIn(all);
-  const asked = sortFromParams(sp, SORT_IDS);
-  const sort: SortState = asked && sortable.has(asked.id) ? asked : defaultSort(all);
-  const setTerm = (x: TermId | null) => update({ term: x === null ? "all" : x === START_TERM ? null : x });
-  const setAmount = (n: number) => update({ amount: n === data.start ? null : String(n) });
+  const withConditional = sp.get("conditional") !== "0";
+  const withLinked = sp.get("linked") === "1";
+  const bankParam = sp.get("bank");
+  const myBank = data.banks.some((b) => b.id === bankParam) ? bankParam : null;
+  const sort: SortState = sortFromParams(sp, SORT_IDS) ?? DEFAULT_SORT;
+  const setTerm = (x: TermId) => update({ term: x === START_TERM ? null : x });
+  const setAmount = (n: number | null) => update({ amount: n === null ? "none" : n === data.start ? null : String(n) });
   const setKind = (k: RateKind) => update({ kind: k === "fixed" ? null : k });
-  const setSort = (s: SortState) => update(sortParams(s, defaultSort(all)));
-
-  const bankName = (id: string) => data.banks.find((b) => b.id === id)?.name ?? id;
-  const shown = useMemo(() => offersOf(data, term, kind), [data, term, kind]);
-  const open = useMemo(() => shown.filter((o) => opens(o, amount)), [shown, amount]);
-  const shut = useMemo(() => shown.filter((o) => !opens(o, amount)), [shown, amount]);
-  const rows = (offers: DbOffer[], s: SortState = sort) => sortRows(rowsOf(offers), s, bankName);
-  const [foldOpen, setFoldOpen] = useState(false);
-  const amountWords = amountText(amount);
-  // one term: the offers everyone can open ranked by rate, then those only for some customers (new joiners, a closed-system account), then
-  // the linked ones, whose rate is on top of the index, each group ranked among itself. Every term: a bank's rows in that order (sortRows)
-  const linked = open.filter(isLinked);
-  const limited = open.filter((o) => standing(o) === 1);
-  const parts: ListPart[] = all
-    ? data.banks.map((b) => {
-        const mine = open.filter((o) => o.bank === b.id);
-        return { key: b.id, underBank: true, rows: rows(mine), heading: { title: <Link to={`/companies/${b.id}`} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0 md:tap-area"><MixedName>{b.name}</MixedName></Link>, line: <BankLine bank={b} count={mine.length} /> } };
-      })
-    : [
-        { key: "open", rows: rows(open.filter((o) => standing(o) === 0)) },
-        { key: "limited", rows: rows(limited), heading: { title: t.limitedGroup.title, line: <GroupLine count={limited.length}>{t.limitedGroup.line}</GroupLine> } },
-        { key: "linked", rows: rows(linked), linkedHead: true, heading: { title: <Term id={HELP_TERMS.linked}>{t.linkedGroup.title}</Term>, line: <GroupLine count={linked.length}>{t.linkedGroup.line}</GroupLine> } },
-      ];
-  parts.push({ key: "shut", rows: rows(shut, all ? { id: "term", dir: 1 } : sort), fold: { open: foldOpen, onToggle: () => setFoldOpen((x) => !x) }, heading: { title: `${offersPhrase(shut.length)} ${t.closed.before}${amountWords}` } });
-
-  const listKey = `${term ?? "all"}|${kind}|${amount}`;
-  const [grown, setGrown] = useState("");
-  const limit = grown === listKey ? Infinity : FIRST_ROWS;
-  useEffect(() => {
-    if (grown !== listKey) startTransition(() => setGrown(listKey));
-  }, [grown, listKey]);
-
-  // a cell of the grid: its term is chosen, the list grows in full, and the bank's first row comes into view and lights for a moment
+  const setSort = (s: SortState) => update(sortParams(s, DEFAULT_SORT));
+  const [expanded, setExpanded] = useState(false);
   const [lit, setLit] = useState<string | null>(null);
-  const [goTo, setGoTo] = useState<string | null>(null);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const pickCell = (bank: string, x: TermId) => {
-    if (term !== x) setTerm(x);
-    // the bank's rows of the term in this kind that the amount does not open are in the folded group: it opens
-    const inShut = data.offers.some((o) => o.bank === bank && o.term === x && o.kind === kind && !opens(o, amount));
-    const inOpen = data.offers.some((o) => o.bank === bank && o.term === x && o.kind === kind && opens(o, amount));
-    if (inShut && !inOpen) setFoldOpen(true);
-    setGrown(`${x}|${kind}|${amount}`);
-    setGoTo(bank);
-  };
-  useEffect(() => {
-    if (!goTo) return;
-    const row = [...document.querySelectorAll<HTMLElement>(`[data-row-of="${goTo}"]`)].find((el) => el.offsetParent !== null);
-    if (!row) return;
-    row.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-    setLit(goTo);
-    setGoTo(null);
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setLit(null), LIT_MS);
-  });
-  useEffect(() => () => clearTimeout(timer.current), []);
+  const wide = useWide();
 
-  const banksOpen = new Set(open.map((o) => o.bank)).size;
-  const count = (n: number, b: number) => `${n === 0 ? `${t.count.none} ${t.count.at}${amountWords}.` : `${t.count.at}${amountWords} ${t.count.canOpen} ${offersPhrase(n)} ${t.count.of} ${banksPhrase(b)}.`} ${t.count.notAnOffer}`;
-  // the phone's folded controls: "שנה · מ־10,000 ₪ · ריבית קבועה · מיון לפי ריבית"
-  const summary = (
+  const ofTerm = useMemo(() => offersOf(data, term, kind), [data, term, kind]);
+  const open = useMemo(() => (amount === null ? [] : ofTerm.filter((o) => opens(o, amount))), [ofTerm, amount]);
+  const shut = useMemo(() => (amount === null ? [] : ofTerm.filter((o) => !opens(o, amount))), [ofTerm, amount]);
+  const shows = (o: DbOffer) => withConditional || !o.limited;
+  const conditionalCount = rowsOf(open.filter((o) => o.limited && !isLinked(o))).length;
+  const linkedCount = rowsOf(open.filter((o) => isLinked(o) && shows(o))).length;
+  const ranked = sortRows(rowsOf(open.filter((o) => !isLinked(o) && shows(o))), sort);
+  const linked = withLinked ? sortRows(rowsOf(open.filter((o) => isLinked(o) && shows(o))), sort) : [];
+
+  // the chart: each term's highest rate open to everyone at the amount and kind
+  const bars: PeriodBar[] = TERMS.map((x) => {
+    const { pick, gap } = periodBest(data, x, kind, amount);
+    const bank = pick ? (data.banks.find((b) => b.id === pick.bank)?.name ?? pick.bank) : null;
+    const rate = pick ? Number(pick.rate_offered.value) : null;
+    const figure = rate !== null ? fmt.number(rate) : undefined;
+    const note = bank ?? (gap ? (gap === "otherKind" ? t.chart.gap.otherKind[kind] : amount === null ? "" : t.chart.gap[gap]) : "");
+    return { id: x, label: t.terms[x], short: t.termsShort[x], tiny: t.termsTiny[x], value: rate, figure, unit: "%", note, spoken: `${t.terms[x]}: ${rate !== null ? `${figure}%${t.chart.atBank}${bank}` : t.chart.none}` };
+  });
+
+  const best = periodBest(data, term, kind, amount).pick;
+  const amountValue = amount !== null ? entered(amount, "nis", data.today, t.interest.inputs.amount) : null;
+  const topRate = Math.max(0.0001, ...[...ranked, ...linked].map((r) => Number(r.offers[0]!.rate_offered.value) || 0));
+  const ctx: ListContext = { term, amount: amount !== null && amountValue ? { n: amount, value: amountValue } : null, today: data.today, banks: data.banks, topRate, lit };
+
+  // the fold: the first rows, then the reader's bank's rows wherever they stand, then "עוד N הצעות"
+  const all: { row: DbRow; linked: boolean }[] = [...ranked.map((row) => ({ row, linked: false })), ...linked.map((row) => ({ row, linked: true }))];
+  const first = wide ? SHOWN.table : SHOWN.phone;
+  const shown = expanded ? all : all.filter((x, i) => i < first || x.row.bank === myBank);
+  const hidden = all.length - shown.length;
+  const topKey = ranked.find((r) => !r.offers[0]!.limited)?.key ?? ranked[0]?.key;
+  const asRow = (row: DbRow): ListRow => ({ row, top: row.key === topKey && sort.id === "rate", mine: row.bank === myBank });
+
+  const termFor = t.termFor[term];
+  const kindWords = t.kindWords[kind];
+  const otherKindExists = data.offers.some((o) => o.term === term && o.kind !== kind);
+  const empty: { title: string; line: string } | null =
+    amount === null
+      ? { title: t.empty.noAmountTitle, line: t.empty.noAmount }
+      : ofTerm.length === 0
+        ? { title: `${t.empty.none}${termFor} ${kindWords}`, line: `${t.empty.none}${termFor} ${kindWords}.${otherKindExists ? ` ${t.empty.otherKindOnly[kind]}` : ""}` }
+        : all.length === 0
+          ? { title: `${t.empty.none}${termFor} ${kindWords}${t.empty.atAmount}${amountText(amount)}`, line: `${t.empty.none}${termFor} ${kindWords}${t.empty.atAmount}${amountText(amount)}.` }
+          : null;
+
+  const summary = amount === null ? t.empty.noAmountTitle : (
     <>
-      {term ? t.terms[term] : t.controls.termAll} · {rc.amount.from}
-      <bdi dir="ltr">{amountWords}</bdi> · {t.fold.kinds[kind]} · {t.fold.sort}
-      {t.sorts[sort.id].label}
+      <bdi dir="ltr">{amountText(amount)}</bdi> {termFor}, {kindWords}
     </>
   );
-  const longestOrder = SORT_IDS.flatMap((id) => ([1, -1] as const).flatMap((dir) => [true, false].map((a) => orderLine({ id, dir }, a))));
-  return (
-    <div className="flex flex-col gap-4">
-      <PhoneFold summary={summary} more={t.fold.more} less={t.fold.less}>
-        <div className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium" id="db-term">
-            {t.controls.term}
-          </span>
-          <div role="group" aria-labelledby="db-term" className="flex flex-wrap gap-2">
-            <FilterChip on={all} count={openCount(data, null, kind, amount)} onClick={() => setTerm(null)}>
-              {t.controls.termAll}
-            </FilterChip>
-            {TERMS.map((x) => (
-              <FilterChip key={x} on={term === x} count={openCount(data, x, kind, amount)} onClick={() => setTerm(x)}>
-                {t.terms[x]}
-              </FilterChip>
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium" id="db-amount">
-            {t.controls.amount}
-          </span>
-          <div role="group" aria-labelledby="db-amount" className="flex flex-wrap gap-2">
-            {data.amounts.map((a) => (
-              <FilterChip key={String(a.value)} on={a.value === amount} onClick={() => setAmount(a.value as number)}>
-                <bdi dir="ltr">{amountText(a.value as number)}</bdi>
-              </FilterChip>
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium inline-flex items-center gap-1" id="db-kind">
-            {t.controls.kind}
-            <HelpMark term={KIND_TERMS} about={t.controls.kind} />
-          </span>
-          <div role="group" aria-labelledby="db-kind" className="flex flex-wrap gap-2">
-            {(["fixed", "variable"] as const).map((k) => (
-              <FilterChip key={k} on={kind === k} count={openCount(data, term, k, amount)} onClick={() => setKind(k)}>
-                {t.kinds[k]}
-              </FilterChip>
-            ))}
-          </div>
-        </div>
-        <SelectField className="md:hidden" wide label={t.controls.sort} options={SORT_IDS.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))} value={sort.id} onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })} />
-      </PhoneFold>
+  const pick = amount !== null && data.amounts.some((a) => a.value === amount) ? String(amount) : null;
 
-      <div className="flex flex-col gap-1 pt-1">
-        {/* from md the number of offers stands beside the first column's head; a phone's rows have no heads, so it is said here */}
-        <LongestCase className="md:hidden" cases={[<p key="a" className="text-sm">{count(shown.length, data.banks.length)}</p>, <p key="b" className="text-sm">{count(0, 0)}</p>]}>
-          <p className="text-sm">{count(open.length, banksOpen)}</p>
-        </LongestCase>
-        <p className="hidden md:block text-sm">{t.count.notAnOffer}</p>
-        <LongestCase cases={longestOrder.map((line, i) => <p key={i} className="text-sm">{line}</p>)}>
-          <p className="text-sm text-muted-foreground">{orderLine(sort, all)}</p>
-        </LongestCase>
+  return (
+    <LabelSheetHost>
+      <div className="flex flex-col gap-6">
+        <PhoneFold summary={summary} more={t.fold.change} less={t.fold.close}>
+          <div className="flex flex-col md:flex-row md:items-end gap-3 md:gap-4">
+            <div className="md:w-56 shrink-0">
+              <NumberField label={t.controls.amount} unit="nis" value={amount} isEntered={amount !== data.start} start={null} optional groupAsTyped validate={() => null} onCommit={(n) => setAmount(n > 0 ? Math.round(n) : null)} onReset={() => setAmount(null)} />
+            </div>
+            <ChoiceChips wrap ariaLabel={t.controls.picks} ids={data.amounts.map((a) => String(a.value))} labels={Object.fromEntries(data.amounts.map((a) => [String(a.value), <bdi dir="ltr">{amountText(a.value as number)}</bdi>]))} value={pick} onChange={(v) => setAmount(Number(v))} />
+          </div>
+          <div className="flex flex-col md:flex-row md:flex-wrap md:items-end gap-4 md:gap-x-8">
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm text-muted-foreground inline-flex items-center gap-1">
+                <span id="deposit-kind-label">{t.controls.kind}</span>
+                <HelpMark term={KIND_TERMS} about={t.controls.kind} />
+              </span>
+              <SegmentedControl labelledBy="deposit-kind-label" check={false} fit options={(["fixed", "variable"] as const).map((k) => ({ value: k, label: t.kinds[k] }))} value={kind} onChange={setKind} />
+            </div>
+            {/* the phone has no column heads to press: its order is a choice here */}
+            <div className="md:hidden flex flex-col gap-1.5">
+              <span id="deposit-sort-label" className="text-sm text-muted-foreground">
+                {t.controls.sort}
+              </span>
+              <SegmentedControl labelledBy="deposit-sort-label" check={false} options={SORT_IDS.map((id) => ({ value: id, label: t.sortPhone[id] }))} value={sort.id} onChange={(id) => setSort({ id, dir: 1 })} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span id="deposit-show-label" className="text-sm text-muted-foreground">
+                {t.controls.show}
+              </span>
+              <div role="group" aria-labelledby="deposit-show-label" className="flex flex-wrap gap-2">
+                <FilterChip on={withConditional} count={conditionalCount} onClick={() => update({ conditional: withConditional ? "0" : null })}>
+                  {t.controls.conditional}
+                </FilterChip>
+                <FilterChip on={withLinked} count={linkedCount} onClick={() => update({ linked: withLinked ? null : "1" })}>
+                  {t.controls.linked}
+                </FilterChip>
+              </div>
+            </div>
+            <div className="md:w-48">
+              <SelectField wide label={<span className="text-sm text-muted-foreground">{t.controls.myBank}</span>} none={t.controls.noBank} options={data.banks.map((b) => ({ id: b.id, name: b.name }))} value={myBank} onChange={(id) => update({ bank: id })} />
+            </div>
+          </div>
+        </PhoneFold>
+
+        <section aria-labelledby="deposit-chart-title" className="flex flex-col gap-2">
+          <p id="deposit-chart-title" className="text-sm text-muted-foreground">
+            {amount === null ? (
+              t.chart.titleNoAmount[kind]
+            ) : (
+              <>
+                {t.chart.title[kind]}
+                <bdi dir="ltr">{amountText(amount)}</bdi>
+              </>
+            )}
+          </p>
+          <PeriodBars className="max-md:-mx-2" bars={bars} value={term} onChange={(x) => setTerm(x as TermId)} empty={t.chart.none} label={t.chart.axis} chosenWord={t.chart.chosen} />
+          <p aria-hidden="true" className="text-sm text-muted-foreground text-center">
+            {t.chart.axis}
+          </p>
+        </section>
+
+        <section aria-labelledby="deposit-list-title" className="flex flex-col gap-3 scroll-mt-14 lg:scroll-mt-16">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h2 id="deposit-list-title" className="text-xl lg:text-2xl font-semibold">
+              {empty ? empty.title : <Heading count={ranked.length} best={best} ctx={ctx} />}
+            </h2>
+            <p className="hidden md:block text-sm text-muted-foreground">
+              <When iso={data.read} lead={t.read} />
+            </p>
+          </div>
+          {empty ? (
+            <Card className="py-8">
+              <p>{empty.line}</p>
+            </Card>
+          ) : (
+            <DepositList
+              ranked={shown.filter((x) => !x.linked).map((x) => asRow(x.row))}
+              linked={shown.filter((x) => x.linked).map((x) => asRow(x.row))}
+              ctx={ctx}
+              sort={sort}
+              onSort={(id: SortId) => setSort(pressSort(sort, id))}
+              foot={() => (hidden > 0 || expanded ? <FoldFoot open={expanded} more={`${t.fold.more}${offersPhrase(hidden)}`} onToggle={() => setExpanded((x) => !x)} /> : null)}
+            />
+          )}
+          <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+            <NumberLegend />
+            <p className="md:hidden">
+              <When iso={data.read} lead={t.read} />.
+            </p>
+            {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
+            <p className="md:hidden">
+              {t.help.phoneLead} <Term id={HELP_TERMS.rate}>{t.help.rate}</Term> · <Term id={HELP_TERMS.exits}>{t.help.exits}</Term> · <Term id={HELP_TERMS.break}>{t.help.break}</Term>
+            </p>
+          </div>
+        </section>
+
+        {shut.length > 0 && (
+          <Disclosure label={`${offersPhrase(rowsOf(shut).length)} ${t.closed.before}${amount !== null ? amountText(amount) : ""}`} labelClassName="font-semibold" className="flex flex-col gap-3">
+            <div className="pt-2">
+              <DepositList ranked={sortRows(rowsOf(shut), sort).map((row) => ({ row, top: false, mine: row.bank === myBank }))} linked={[]} ctx={{ ...ctx, amount: null, topRate: Math.max(0.0001, ...shut.map((o) => Number(o.rate_offered.value) || 0)) }} sort={null} />
+            </div>
+          </Disclosure>
+        )}
+
+        <DepositGrid
+          data={data}
+          kind={kind}
+          amount={amount}
+          onCell={(bank, x) => {
+            setTerm(x);
+            setExpanded(true);
+            setLit(bank);
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              const row = [...document.querySelectorAll<HTMLElement>(`[data-row-of="${bank}"]`)].find((el) => el.offsetParent !== null);
+              row?.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+            }));
+            setTimeout(() => setLit(null), 1800);
+          }}
+        />
       </div>
-      {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
-      <p className="md:hidden text-sm text-muted-foreground">
-        {t.help.phoneLead} <Term id={HELP_TERMS.rate}>{t.help.rate}</Term> · <Term id={HELP_TERMS.exits}>{t.help.exits}</Term> · <Term id={HELP_TERMS.break}>{t.help.break}</Term>
-      </p>
-      <div className="scroll-mt-14 lg:scroll-mt-16">
-        <DepositList parts={parts} all={all} sort={sort} sortable={sortable} onSort={(id) => setSort(pressSort(sort, id))} banks={data.banks} lit={lit} limit={limit} count={open.length} />
-      </div>
-      <DepositGrid data={data} kind={kind} amount={amount} amountText={amountWords} term={term} onTerm={(x) => setTerm(x)} onCell={pickCell} />
-    </div>
+    </LabelSheetHost>
+  );
+}
+
+/** "23 הצעות לשנה. הגבוהה: 3.25% בבנק ירושלים, כ־325 ₪ על 10,000 ₪". */
+function Heading({ count, best, ctx }: { count: number; best: DbOffer | null; ctx: ListContext }) {
+  const bank = best ? ctx.banks.find((b) => b.id === best.bank)?.name : null;
+  const interest = best && ctx.amount ? interestOn(best, ctx.amount.n, ctx.amount.value, ctx.today) : null;
+  return (
+    <>
+      {offersPhrase(count)} {t.termFor[ctx.term]}.
+      {best && (
+        <>
+          {" "}
+          {t.heading.best}
+          <Num value={best.rate_offered} />
+          {t.heading.atBank}
+          {bank}
+          {interest && ctx.amount && (
+            <>
+              , <Num value={interest} display={interestText} />
+              {t.heading.on}
+              <bdi dir="ltr">{amountText(ctx.amount.n)}</bdi>
+            </>
+          )}
+        </>
+      )}
+    </>
   );
 }

@@ -598,6 +598,21 @@
       "note": "2026-11-05: US shares and ETFs only. The company's written answer of 2026-11-05 (docs/company-answers.md#altshuler-trade-2026-11-05) says: 'ניתן לסחור במערכת רק בבורסה הישראלית והאמריקאית וכל המניות הנמצאות בהן.' So a fund listed in London or elsewhere in Europe cannot be bought here; the US trade line's band names the US, so a fund bought abroad that trades in Europe finds no line here, as at One Zero. Before: 'unknown', because the tariff names no exchange outside the US."
     }
   ],
+  "by_amount": [
+    {
+      "venue": "us",
+      "orders": "all",
+      "list_only": false,
+      "shares_only": true,
+      "source": {
+        "url": "https://www.as-invest.co.il/trade/faq/",
+        "title": "שאלות נפוצות - אלטשולר שחם טרייד, 'איך קונים שברי מניות?'",
+        "checked": "2026-11-10",
+        "quote": "ניתן להזין הוראה לפי כמות שברית של מניות או לפי סכום כספי. השירות תקף למסחר בבורסה בארה״ב בלבד."
+      },
+      "note": "Whole units for a fund (D56, D94): the words are 'כמות שברית של מניות', shares, while the house's own price list names funds where it means them ('מסחר במניות ו-ETF's בארה\"ב', tariff part 4, (4א) s.7(א), p.2); no document read says a fund can be bought in fractions or by sum. A fractional order is also a limit order in the continuous session only (the house's article)."
+    }
+  ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
   "left_out": [
     {

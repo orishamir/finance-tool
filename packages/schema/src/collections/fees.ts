@@ -50,6 +50,19 @@ export const feeLine = z.strictObject({
    * line at `reverts_to` from the start. Requires `reverts_to`.
    */
   offer_he: z.string().min(1).max(240).optional(),
+  /**
+   * D41, D56: the price list prints the line, but the house's own documents do not show that an ordinary customer can use it for
+   * the holdings it names (a service limited to a list of funds the house does not publish, or one no document says where to set up).
+   * `reason_he` says so in the reader's words, `source` is the document whose words (or silence) it rests on. The ranked price never
+   * reads the line: the regular line prices those orders, and the indices page shows the line beside the row with the reason. Only on
+   * a banded line, so the standard line still prices the holding. The company pages show the line as printed.
+   */
+  not_ranked: z
+    .strictObject({
+      reason_he: z.string().min(1).max(240),
+      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+    })
+    .optional(),
   names: z.strictObject({ tariff: z.array(z.string()) }),
 });
 
@@ -76,6 +89,23 @@ export const availabilityEntry = z.strictObject({
       note: z.string().optional(),
     })
     .optional(),
+});
+
+/**
+ * D94, F-109: a listing a house sells by amount (an order in money, or in fractions of a unit), where its own document says so. Silence is
+ * whole units (D56). `orders`: `all` for every order on the listing, `recurring_plan` only for the monthly purchases of the house's recurring
+ * plan (the ones its recurring-plan conversion line prices, F-13). `list_only`: the document limits it to a list of securities it does not
+ * publish and names none of the site's funds, so no fund is bought by amount on it (D42); the entry is kept so the page and the data say
+ * why. `source.quote` is the document's own words.
+ */
+export const byAmountEntry = z.strictObject({
+  venue,
+  orders: z.enum(["all", "recurring_plan"]),
+  list_only: z.boolean(),
+  /** The words name shares and no exchange-traded fund: for a fund that is silence (D56), so the entry is kept for its reason and changes nothing. */
+  shares_only: z.literal(true).optional(),
+  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+  note: z.string().optional(),
 });
 
 /** A group price's place in a document: its page or sheet row, and the document's own words there. */
@@ -278,6 +308,8 @@ export const feesSnapshot = z.strictObject({
   current_account: z.strictObject({ monthly_minimum: feeValue }).optional(),
   notice_rule_ids: ruleIds,
   availability: z.array(availabilityEntry).optional(),
+  /** D94, F-109: the listings the house's own documents say it sells by amount; a listing with no entry is bought in whole units. */
+  by_amount: z.array(byAmountEntry).optional(),
   /** Who pays the prices on this record: required of a bank's or broker's record by the data check. */
   price_for_he: z.string().min(1).optional(),
   /** What the documents hold that this record does not use, and why; empty means nothing was found. */

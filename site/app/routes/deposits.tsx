@@ -1,14 +1,12 @@
-// "פיקדונות בכל הבנקים" (D92): every bank's standard shekel deposits side by side, by term, amount and kind of rate, with a grid of the
-// banks by the eight terms (F-108). Its place on the site (the menu item, the tab beside the companies and the tracks) is `DEPOSITS_PLACE`.
+// "פיקדונות בכל הבנקים" (D92): every bank's standard shekel deposits side by side, by term, amount and kind of rate, with a chart of the
+// highest rate in each term over the list and a grid of the banks by the eight terms (F-108). Its place on the site (the menu item, the tab beside the companies and the tracks) is `DEPOSITS_PLACE`.
 import { useLoaderData } from "react-router";
 import { depositBrowser as copy, site } from "../copy";
 import { DepositBrowser } from "../components/deposits/browser";
 import { HELP_TERMS, KIND_TERMS } from "../lib/deposit-browser";
 import { CompanyTabs, DEPOSITS_PLACE } from "../components/decoder/company-tabs";
-import { NumberLegend, RulesLine } from "../components/provenance";
-import { anyDoubt, anyWeak } from "../lib/value";
+import { RulesLine } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { When } from "../components/kit";
 
 export async function loader() {
   const { buildDepositBrowser, depositBrowserRuleIds } = await import("../lib/deposit-browser.server");
@@ -37,10 +35,6 @@ export default function Deposits() {
         <header className="flex flex-col gap-3">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-muted-foreground max-w-measure">{copy.lead}</p>
-          <p className="text-sm text-muted-foreground">
-            <When iso={data.read} lead={copy.read} />.
-          </p>
-          <NumberLegend institution={anyWeak(data.offers.flatMap((o) => [o.rate_offered, o.amount_range.min, o.amount_range.max]))} doubt={anyDoubt(data.offers.map((o) => o.rate_offered))} />
         </header>
         <DepositBrowser data={data} />
         <RulesLine ids={ruleIds} />

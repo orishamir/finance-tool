@@ -294,7 +294,7 @@
           "BRK-43"
         ],
         "state": "sourced",
-        "notes": "'0.05% of Trade Value' up to the first monthly value tier (then 0.03%, 0.02%, 0.015%), 'Minimum per order (shares) USD 1.70', 'Maximum per order (shares) USD 39.00'. Plus exchange and clearing fees for LSE, LSEETF and LSEIOB1; their amounts sit in a collapsed section that the page text read does not show (not collected). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+        "notes": "'0.05% of Trade Value' up to the first monthly value tier (then 0.03%, 0.02%, 0.015%), 'Minimum per order (shares) USD 1.70', 'Maximum per order (shares) USD 39.00'. Plus exchange and clearing fees, printed on IBKR's LSE fee page ('London Stock Exchange (LSE, LSEETF, LSEIOB1) Fees', https://www.interactivebrokers.com/en/accounts/fees/LSEstkfees.php, read 2026-11-10, library 1fff121c2d9eacc9; the same figures on interactivebrokers.ie, 10760b426e92102e): exchange fee for ETFs 'Trade Value * 0.000045', minimum 'GBP 0.10 per Trade'; clearing fee 'GBP 0.06'. Left out of the price, as every house's exchange and clearing charges are (D66; `left_out`). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
       },
       "min": {
         "value": 1.7,
@@ -654,16 +654,16 @@
       ],
       "level": "list",
       "rate": {
-        "value": 0.03,
+        "value": 0,
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
           "title": "Commissions Spot Currencies, note on the auto currency conversion service",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
-          "quote": "typically add or subtract (at its discretion) 0.03% to the exchange rate"
+          "quote": "IB does not separately charge a commission on these auto-conversion trades"
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-10",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -673,7 +673,7 @@
           "BRK-43"
         ],
         "state": "sourced",
-        "notes": "'For currency trades executed under the auto currency conversion service, IB will typically add or subtract (at its discretion) 0.03% to the exchange rate that would otherwise apply. Please note that IB does not separately charge a commission on these auto-conversion trades.' A markup on the rate, not a commission. Not limited by the documents (D56): the price list says 'typically' and 'at its discretion', and the client agreement (form 3203, s.32C) says the automatic conversion rate 'may be adjusted from the rate that otherwise would apply'. 0.03% is the figure printed, not a ceiling. A client who converts by a spot order instead pays the spot line (0.002%, minimum USD 2), with no markup on the quote."
+        "notes": "'Please note that IB does not separately charge a commission on these auto-conversion trades': no commission; the markup on the rate is in `spread`. A cash account converts by itself when it buys in a currency it does not hold: 'If Client incurs an obligation in a cash (or IRA) account in a currency as a result of a purchase denominated in such currency (the \"Purchase Currency\"), and if insufficient funds exist in the account in that currency, IBKR will automatically convert the necessary amount of Client's long currency balance(s) to the required amount of the Purchase Currency' (Interactive Brokers LLC client agreement, form 3203, s.30C, p.15, library b866cea6e6d76d50; Interactive Brokers Ireland, form 4750, 'Automatic Currency Conversion Functionality of CASH Accounts', p.23, library 8344401953b5e137, in the same words), so shekels held in the account pay for a fund quoted in dollars with no conversion order of the client's own. The clause speaks of a purchase: a sale's proceeds are converted by a spot order (interactive-brokers-fx-spot). A margin account is not covered by the clause."
       },
       "min": null,
       "max": null,
@@ -685,6 +685,28 @@
         "tariff": [
           "auto currency conversion"
         ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
+          "title": "Commissions Spot Currencies, note on the auto currency conversion service",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution",
+          "quote": "typically add or subtract (at its discretion) 0.03% to the exchange rate"
+        },
+        "checked": "2026-11-10",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents (D56, D65): 'For currency trades executed under the auto currency conversion service, IB will typically add or subtract (at its discretion) 0.03% to the exchange rate that would otherwise apply' (re-read 2026-11-10), and the client agreement (form 3203, s.30C) says the automatic conversion rate 'may be adjusted from the rate that otherwise would apply to compensate for differences between the agreed settlement cycle for the trade and the standard settlement cycle for that currency pair'. 0.03% is the figure printed as typical, not a ceiling, so it is not priced, as the conversion inside Interactive Israel's recurring plan is not (interactive-israel-fx-recurring-plan)."
       }
     }
   ],
@@ -780,7 +802,11 @@
     },
     {
       "what": "עמלות בורסה וסליקה בבורסת לונדון במסלול Tiered",
-      "why": "Added to the Tiered LSE price; their amounts sit in a collapsed section of the price page. The ranking on the indices page leaves the Tiered lines out."
+      "why": "IBKR's LSE fee page (https://www.interactivebrokers.com/en/accounts/fees/LSEstkfees.php, read 2026-11-10; the same figures on interactivebrokers.ie) adds to the Tiered price an exchange fee, for ETFs 'Trade Value * 0.000045' with a minimum of 'GBP 0.10 per Trade', and a clearing fee of 'GBP 0.06'. What an exchange and a clearing house charge, passed on: left out of every price (D66)."
+    },
+    {
+      "what": "עמלות בורסה, סליקה ועמלות מועברות בארה\"ב במסלול Tiered",
+      "why": "The commissions page adds to the Tiered US price exchange, clearing (NSCC, DTC USD 0.00020 per share) and pass-through fees (NYSE commissions * 0.000175, FINRA commissions * 0.000565); see interactive-brokers-buy-sell-us-tiered. What exchanges, clearing houses and a regulator charge, passed on: left out of every price (D66)."
     }
   ],
   "groups": {
