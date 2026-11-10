@@ -580,6 +580,20 @@
       }
     }
   ],
+  "by_amount": [
+    {
+      "venue": "us",
+      "orders": "all",
+      "list_only": true,
+      "source": {
+        "url": "https://www.xnes.co.il/trading/extrade-pro/fractional-shares/",
+        "title": "השקעה בשברי מניות - אקסלנס טרייד, שאלות נפוצות: 'באילו מניות ניתן לסחור בשברים'",
+        "checked": "2026-11-10",
+        "quote": "המסחר בשברי מניות זמין בניירות ערך זרים הנסחרים בארה״ב בלבד, מתוך רשימה רחבה של למעלה מ־3,000 מניות עיקריות"
+      },
+      "note": "The list is not published; whether IVV, VOO or ACWI is on it is not stated. Minimum 0.01 units (same page)."
+    }
+  ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
   "left_out": [
     {

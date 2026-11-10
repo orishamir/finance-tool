@@ -1,4 +1,4 @@
-// F-12 (2026-10-31, D41): a monthly purchase pays the tariff's standing-order price where one is printed; a lump sum and a sale pay the regular line.
+// F-12 (D41): a monthly purchase pays the tariff's standing-order price where one is printed and not set aside (`not_ranked`); a lump sum and a sale pay the regular line.
 // Expected figures computed by a separate script from the formula, with no return, fund cost or inflation.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -70,6 +70,34 @@ describe("which tariff line is the standing-order price (F-12)", () => {
     const t = buildTariff({ instrumentClass: "mutual_fund_units", channel: "direct", wrapper: "brokerage-account" } as Omit<WorkbenchInput, "fund">, { snapshot: snap, level: "list" }, snap).tariff;
     expect(t.buyStanding).toBeUndefined();
     expect(t.buy?.min).toBe(35);
+  });
+});
+
+describe("a standing-order line the house's documents do not show the customer can use (F-12, D41, D56)", () => {
+  // Massad's record as read on 2026-10-31, its direct standing-order line marked as the ranked price never reading it
+  const marked = () => {
+    const snap = JSON.parse(readFileSync(new URL("../../../data/fees/massad@2026-10-31.json", import.meta.url), "utf8"));
+    for (const l of snap.lines) if (l.id === "massad-standing-order-tase-direct") l.not_ranked = { reason_he: "x", source: { url: "https://example.org", title: "x", checked: "2026-11-10", quote: "x" } };
+    return snap;
+  };
+  const build = (snap: unknown, channel: string) => buildTariff({ instrumentClass: "mutual_fund_units", channel, wrapper: "brokerage-account" } as Omit<WorkbenchInput, "fund">, { snapshot: snap as never, level: "list" }, snap as never);
+  it("is never the price of a monthly purchase: the regular line prices every order, and the line is named as set aside", () => {
+    const b = build(marked(), "direct");
+    expect(b.tariff.buyStanding).toBeUndefined();
+    expect(b.tariff.buy?.min).toBe(35);
+    expect(b.linesUsed).not.toContain("massad-standing-order-tase-direct");
+    expect(b.standingAside).toEqual(["massad-standing-order-tase-direct"]);
+  });
+  it("prices the run as a tariff with no standing-order line at all", () => {
+    const snap = marked();
+    const without = { ...snap, lines: snap.lines.filter((l: { id: string }) => l.id !== "massad-standing-order-tase-direct") };
+    const run = (t: SecuritiesInput["tariff"]) => runSecurities(input(t), ctx).fees.trade;
+    expect(run(build(snap, "direct").tariff)).toBe(run(build(without, "direct").tariff));
+  });
+  it("leaves an unmarked line on another channel as it was", () => {
+    const b = build(marked(), "branch");
+    expect(b.tariff.buyStanding).toMatchObject({ rate: 0.0064, min: 7, max: 7_000 });
+    expect(b.standingAside).toEqual([]);
   });
 });
 

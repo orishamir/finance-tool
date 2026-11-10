@@ -85,6 +85,24 @@
     "url": "https://fund-docs.vanguard.com/F0968.pdf",
     "date": null
   },
+  "share_price": {
+    "value": 691.87,
+    "unit": "usd",
+    "source": {
+      "url": "https://investor.vanguard.com/irr/funds/profile/VOO",
+      "title": "Vanguard S&P 500 ETF, VOO: the data the profile page (investor.vanguard.com/investment-products/etfs/profile/voo) renders from, 'navPrice' 691.87, 'navPriceAsOfDate' '11/09/2026'",
+      "publisher": "Vanguard",
+      "strength": "institution"
+    },
+    "checked": "2026-11-10",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [],
+    "state": "sourced",
+    "notes": "F-109: the issuer's net asset value per share, the price a whole unit is bought at in the run (grown there like the fund). A market price differs slightly from the NAV and was not collected."
+  },
   "snapshot": "2026-11-07",
   "replication": {
     "method": "physical",

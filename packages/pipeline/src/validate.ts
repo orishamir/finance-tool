@@ -145,6 +145,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
       for (const message of checkFundNames(parsed.value as Pick<FundRecord, "names">)) report(file, message);
       for (const message of checkTrackingRecord(parsed.value as Pick<FundRecord, "exposure_id" | "tracking_record" | "domicile" | "fees">)) report(file, message);
+      for (const message of checkSharePrice(parsed.value as Pick<FundRecord, "share_price">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
@@ -178,6 +179,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
         report(file, `provider.part_of: ${partOf} is no other house with a record under data/fees/`);
       for (const message of checkTariffTitle((parsed.value as { tariff: { title: string } }).tariff.title)) report(file, message);
       for (const message of checkDiscountLines(parsed.value as DiscountSnapshot)) report(file, message);
+      for (const message of checkByAmount(parsed.value as ByAmountSnapshot)) report(file, message);
       if (isLatest) for (const message of checkTariffDate(parsed.value as TariffDateSnapshot)) report(file, message);
       if (isLatest) for (const message of checkCutSourceTitles(parsed.value)) report(file, message);
     }
@@ -607,16 +609,53 @@ export function checkGroupValues(snap: PremiseSnapshot): string[] {
   }
   return out;
 }
+export interface ByAmountSnapshot {
+  lines: { base: string; band?: string | null; applies_to: string[]; level?: string }[];
+  by_amount?: { venue: string; orders: string; list_only: boolean; source: { url: string; quote: string } }[];
+}
+/**
+ * F-109, D94: a listing sold by amount rests on the house's own words. Its quote says so (fractions, "שבר", or an order by sum, "סכום"); a
+ * listing has one entry; the record prices funds bought abroad, the only listings an entry names; and an entry for the recurring plan stands
+ * on a record that prints the plan's conversion line (F-13), the line that tells the plan's monthly purchases apart.
+ */
+export function checkByAmount(snap: ByAmountSnapshot): string[] {
+  const out: string[] = [];
+  const entries = snap.by_amount ?? [];
+  const seen = new Set<string>();
+  for (const e of entries) {
+    if (seen.has(e.venue)) out.push(`by_amount: ${e.venue} has two entries`);
+    seen.add(e.venue);
+    if (!/שבר|סכום/.test(e.source.quote)) out.push(`by_amount: the quote for ${e.venue} does not say, in the house's words, that it buys fractions or by a sum`);
+    if (e.orders === "recurring_plan" && !snap.lines.some((l) => l.base === "fx" && l.band === "השקעה קבועה אוטומטית"))
+      out.push(`by_amount: ${e.venue} is by amount on a recurring plan, and the record prints no recurring-plan conversion line (F-13)`);
+  }
+  if (entries.length > 0 && !snap.lines.some((l) => l.base === "trade" && l.applies_to.includes("foreign_securities")))
+    out.push("by_amount: the record prices no fund bought abroad, the only listings an entry names");
+  return out;
+}
+
+/** F-109: a unit's price is the issuer's own figure, never TASE's or Maya's, whose terms forbid republishing them (guidelines/research.md). */
+export function checkSharePrice(rec: Pick<FundRecord, "share_price">): string[] {
+  const p = rec.share_price;
+  if (!p) return [];
+  const out: string[] = [];
+  if (!["usd", "nis", "eur"].includes(p.unit)) out.push(`share_price: unit ${p.unit} is not a currency`);
+  if (/tase\.co\.il/i.test(p.source.url)) out.push(`share_price: ${p.source.url} is TASE's or Maya's; their terms forbid republishing a price`);
+  return out;
+}
+
 interface DiscountSnapshot {
-  lines: { id: string; rate: { value?: number | null }; reverts_to?: { value?: number | null }; discount_months?: unknown; offer_he?: string; level?: string; base?: string; applies_to?: string[] }[];
+  lines: { id: string; rate: { value?: number | null }; reverts_to?: { value?: number | null }; discount_months?: unknown; offer_he?: string; level?: string; base?: string; applies_to?: string[]; band?: string | null; not_ranked?: unknown }[];
 }
 /**
  * A-19 and D56: a discounted line reverts to a rate no lower than its own and says how long it lasts (`value: null` when
- * nothing is printed); an offer names the rate it is priced at, so `offer_he` needs `reverts_to`.
+ * nothing is printed); an offer names the rate it is priced at, so `offer_he` needs `reverts_to`. A line the ranking leaves out
+ * (`not_ranked`, D41) is a banded line, so the standard line still prices the holding.
  */
 export function checkDiscountLines(snap: DiscountSnapshot): string[] {
   const out: string[] = [];
   for (const l of snap.lines) {
+    if (l.not_ranked !== undefined && l.band !== "הוראת קבע" && l.band !== "השקעה קבועה אוטומטית") out.push(`${l.id}: not_ranked on a line that is not a standing-order or recurring-plan line; only those may be set aside, so the regular line still prices the holding and the page lists what it set aside (D41)`);
     if (l.offer_he !== undefined && !l.reverts_to) out.push(`${l.id}: offer_he without reverts_to; an offer is priced at the rate its binding documents allow (D56)`);
     if (!l.reverts_to) continue;
     const r = l.rate.value;

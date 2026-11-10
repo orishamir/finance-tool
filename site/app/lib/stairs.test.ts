@@ -64,12 +64,19 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   const grid = gridOf(buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan }), bundle.snapshots);
   const steps = (a: string, f: string) => chainOf(grid, { start: { a, f }, taken: [] })!.chain.map((s) => [Math.round(s.v), s.d]);
   it("Hapoalim with the MTF fund", () => expect(steps("hapoalim", "1150333")).toEqual([[79273, null], [84148, 4875], [86492, 2344]]));
-  // the accumulating iShares is ranked (TXF-11: its own annex reports the ruling), so the climb stays on it: to Interactive Israel, then no single change improves
-  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[58916, null], [83481, 24565]]));
-  it("Interactive Israel with the same iShares: no single change improves, the top is 3,011 away", () => {
+  // the accumulating iShares is ranked (TXF-11: its own annex reports the ruling). Bought in whole units (F-109), its unit of USD 815 makes
+  // 500 a month wait: the climb goes to Interactive Brokers, then to the distributing iShares there, whose unit of USD 75 buys every month
+  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83525, 6893], [83587, 62]]));
+  it("Interactive Israel with the same iShares: to Interactive Brokers (Tiered, the automatic conversion), then the distributing iShares", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
+    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [83525, 39], [83587, 62]]);
+    expect(c.chain[1]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie00b5bmr087" });
+    expect(c.chain[2]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie0031442068" });
+  });
+  it("Interactive Brokers with the distributing iShares: no single change improves, the top is 2,905 away", () => {
+    const c = chainOf(grid, { start: { a: "interactive-brokers", f: "ie0031442068" }, taken: [] })!;
     expect(c.chain).toHaveLength(1);
-    expect(Math.round(c.ceiling.v) - Math.round(c.chain[0]!.v)).toBe(3011);
+    expect(Math.round(c.ceiling.v) - Math.round(c.chain[0]!.v)).toBe(2905);
   });
   // the lanes' held heights are measured from these cases: every lane any start shows has a case with each of its rows, in the
   // same state, so no start draws a lane taller than its hold

@@ -54,7 +54,7 @@ describe("the 20-year case on the cheapest collected broker", () => {
   // IBI on its account agreement's fee annex (D56, now): no custody fee, 0.08% a trade, at least 5 NIS for a tracking fund, and
   // 15 NIS a month charged in full (the offset against the month's trading fees is not modelled)
   const best = "ibi";
-  it("lands above the kupat gemel on the best broker, and so does the unpicked default (Leumi, its monthly purchases on the standing-order line, D41) once Harel's discount ends, and the figures are these", () => {
+  it("lands above the kupat gemel on the best broker, and so does the unpicked default (Leumi, its monthly purchases on the regular line: its standing-order line is set aside, D41) once Harel's discount ends, and the figures are these", () => {
     const kgl = real(bundle, "kupat-gemel-lehashkaa");
     const dflt = real(bundle, BRK);
     const chosen = applyOwnProviders(bundle, { ownProviders: { [BRK]: best } });
@@ -68,8 +68,9 @@ describe("the 20-year case on the cheapest collected broker", () => {
     expect(cheapest).toBeGreaterThan(kgl);
     expect(Math.round(kgl)).toBe(985_597);
     expect(cheapest).toBeCloseTo(1_104_645, -2); // at IBI since 2026-11-08; at One Zero it was 1,098,743
-    // 240 purchases of 3,000: 0.225% (6.75) instead of the regular line's 26 saves 4,620 before growth and tax
-    expect(Math.abs(dflt - 1_034_620)).toBeLessThan(100);
+    // 240 purchases of 3,000 on the regular line, each at its minimum of 26: Leumi's standing-order price (0.225%, 6.75) is not ranked,
+    // because the bank opens it only to a list of funds it does not publish (D41, D56)
+    expect(Math.abs(dflt - 1_030_053)).toBeLessThan(100);
     // the ranking moves: the brokerage account leads outright with that broker
     const ev = evaluate(chosen, goal);
     expect(ev.ranking.entries[0]!.id).toBe(BRK);

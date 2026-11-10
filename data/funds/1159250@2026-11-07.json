@@ -117,6 +117,24 @@
     "quote": "ביום 1 ביולי 2019 התקבלה בידי הקרן החלטת המיסוי מהמחלקה המקצועית של רשות המיסים",
     "checked": "2026-11-04"
   },
+  "share_price": {
+    "value": 814.9,
+    "unit": "usd",
+    "source": {
+      "url": "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund",
+      "title": "iShares Core S&P 500 UCITS ETF USD (Acc), CSPX, product page: 'NAV as of 09/Nov/2026', USD 814.90",
+      "publisher": "BlackRock (iShares VII plc)",
+      "strength": "institution"
+    },
+    "checked": "2026-11-10",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [],
+    "state": "sourced",
+    "notes": "F-109: the Tel Aviv line is the issuer's share IE00B5BMR087: its Israeli prospectus annex (https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf, p. 1 'ISIN: IE00B5BMR087'; p. 9 s.3 lists the exchanges where 'היחידות המוצעות' trade and s.4 'יחידות הקרן רשומות למסחר בבורסה לניירות ערך בתל אביב, והסימול שלהן הוא: אש.סז702'). So the unit's price is the issuer's dollar NAV, taken to shekels at the run's rate of the dollar; no TASE or Maya price is used."
+  },
   "snapshot": "2026-11-07",
   "tracking_record": {
     "years": [

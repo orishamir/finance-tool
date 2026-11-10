@@ -3265,6 +3265,14 @@ export const invest = {
      *  read "העמלות זו על זו"; the fee page keeps its own name. */
     remainder: "תוספת משילוב עמלות החשבון",
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.",
+    /** F-109 (D94): the same part where the house buys the fund in whole units: it also holds what the cash waiting for a unit did not earn */
+    remainderUnits: "תוספת משילוב העמלות ומכסף שמחכה",
+    remainderUnitsAbout: "כאן קונים רק יחידות שלמות, ומה שלא מגיע ליחידה מחכה בחשבון בלי ריבית. מה שהכסף הזה לא הרוויח נמצא בחלק הזה, יחד עם מה שלא שייך לעמלה אחת.",
+    /** F-109 (D94): one line on a row whose house buys the fund in whole units, where a monthly deposit buys no unit in most months, or in some */
+    unitsEvery: "יחידה עולה יותר מההפקדה החודשית: קונים פעם בכמה חודשים, ובינתיים הכסף מחכה בחשבון בלי ריבית.",
+    unitsSome: "קונים רק יחידות שלמות: בחודש שההפקדה לא מגיעה ליחידה, הכסף מחכה בחשבון בלי ריבית.",
+    /** F-109: a fund bought in whole units whose unit price the site did not collect is priced by amount, and its row says so */
+    unitPriceMissing: "מחיר יחידה של הקרן לא נאסף, אז החישוב קונה בכל סכום, גם חלק מיחידה.",
     accountSlot: "חשבון ניירות ערך",
     fundSlot: "קרן",
     accounts: "כל החשבונות",
@@ -3341,6 +3349,15 @@ export const invest = {
       `קנייה חודשית מחושבת כהוראת קבע: ${n === 1 ? `אחד מתוך ${total} הבנקים ובתי ההשקעות בישראל שברשימה מפרסם` : `${n} מתוך ${total} הבנקים ובתי ההשקעות בישראל שברשימה מפרסמים`} לה מחיר נמוך יותר, והוא שנכלל בחישוב. סכום חד־פעמי ומכירה מחושבים במחיר הרגיל.`,
     /** In the standing-order note's place when the plan has no monthly deposit. */
     noMonthly: "בלי הפקדה חודשית אין קנייה בהוראת קבע, ולכן כל החשבונות מחושבים במחיר הרגיל.",
+    /**
+     * D41, D56: banks whose price lists print a standing-order price their own documents do not show the reader can use for the page's
+     * funds; each row says its bank's reason (`asideLine`). Counted over the Israeli houses, as `standingNote`.
+     */
+    asideNote: (n: number, total: number) =>
+      `קנייה חודשית מחושבת במחיר הרגיל. ${n === 1 ? `אחד מתוך ${total} הבנקים ובתי ההשקעות בישראל שברשימה מפרסם` : `${n} מתוך ${total} הבנקים ובתי ההשקעות בישראל שברשימה מפרסמים`} מחיר אחר לקנייה בהוראת קבע, אבל המסמכים שלהם לא מראים שאפשר לקנות בה את הקרנות שבעמוד, ולכן הוא לא נכנס לחישוב.`,
+    /** Under a bank's row, after the "not counted" tag: the standing-order price its price list prints, then the record's reason. */
+    asideLine: "מחיר אחר לקנייה בהוראת קבע: {rate}, מינימום {min}.",
+    asideLineNoMin: "מחיר אחר לקנייה בהוראת קבע: {rate}.",
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
     notPossible: "לא אפשרי שם",
     /** A fund's last cell when the picked account gives it no price, by why, naming the account;
@@ -3487,7 +3504,6 @@ export const invest = {
     flips: "הסדר משתנה בתשואה שונה:",
     flipsAt: (at: number) => `ב־${at}%`,
     flipWhat: { options: "הסדר בין האפשרויות", brokers: (o: string) => `הסדר בין החשבונות ב${o}`, funds: (o: string) => `הסדר בין הקרנות ב${o}` },
-    ibkr: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed; תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים.",
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
   },
 
