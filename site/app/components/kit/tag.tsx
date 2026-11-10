@@ -6,7 +6,7 @@ import { cx } from "./cx";
  * A short label with a tone: a state, a kind, a flag. One to three words; the tone never carries the meaning alone, so give it an icon or a word.
  * `wrap` lets a label that holds a name (a company's) break onto a second line instead of running past the edge of a phone.
  */
-export function Tag({ tone = "neutral", icon, children, className, wrap }: { tone?: "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter"; icon?: ReactNode; children: ReactNode; className?: string; wrap?: boolean }) {
+export function Tag({ tone = "neutral", icon, children, className, wrap }: { tone?: "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter" | "outline" | "primary"; icon?: ReactNode; children: ReactNode; className?: string; wrap?: boolean }) {
   const styles = {
     neutral: "bg-muted text-foreground",
     parameter: "bg-secondary text-foreground",
@@ -15,6 +15,10 @@ export function Tag({ tone = "neutral", icon, children, className, wrap }: { ton
     caution: "bg-caution-subtle text-caution-foreground",
     blocked: "bg-blocked-subtle text-blocked-foreground",
     positive: "bg-positive-subtle text-positive-foreground",
+    /** A teal wash: what a row offers, such as a deposit's exit points, or the reader's own bank (the deposits page). */
+    primary: "bg-primary-subtle text-primary !rounded-full !px-2.5 !py-0.5",
+    /** A thin frame and no fill, round: a kind beside figures that should not draw the eye (a rate's type in a table, the designer's mocks). */
+    outline: "border border-input text-foreground !rounded-full !px-2.5 !py-0.5 font-normal",
   }[tone];
   return (
     <span className={cx("inline-flex w-fit items-center gap-1 text-xs font-medium rounded-sm px-1.5 py-px align-middle", wrap ? "max-w-full" : "whitespace-nowrap", styles, className)}>

@@ -7,8 +7,12 @@
 //   warning  a caution or blocked callout in a figure's sheet that the smallest phone (320 × 568) shows only after scrolling (2026-11-08:
 //            Mercantile's doubt sat last in its sheet, under the source details). Checked on the first figures of each page that carry a
 //            doubt or a lock.
+//   side     on a company page, a table that scrolls sideways beside the side list (2026-11-10: the tracks table at a 1120 px window), at
+//            1440, 1120 and 1024 px;
+//   quote    an ASCII double quote between two Hebrew letters in a company page's product view (`?product=`), which the build's
+//            hebrew-quotes check cannot see: only the overview is pre-rendered.
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
-// Without paths: every guide, exposure, index and company page, the top pages and the kit. Needs a build (npm run build). Exits 1 when a
+// Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages and the kit. Needs a build (npm run build). Exits 1 when a
 // check fails. What a script cannot judge (balance, what draws the eye, whether a change reads as asked) still needs a look.
 // layout-check-leftovers.json lists what was there when the check came in (2026-11-08), each with why: a listed finding is reported, not
 // failed; a new one fails. A listed one no longer found is said, so the list can shrink.
@@ -17,6 +21,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { serveBuild } from "./serve-build.mjs";
+import { hebrewQuotes, shownText } from "./hebrew-quotes.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const build = join(here, "../build/client");
@@ -112,6 +117,18 @@ async function selfTest() {
   }
   if (!(await page.evaluate(warningsOutOfSight)).length) missed.push("warning");
   await ctx.close();
+  // a table that scrolls sideways beside a side list, planted on the kit page at a laptop's width
+  const wide = await browser.newContext({ viewport: { width: 1120, height: 800 }, colorScheme: "dark", locale: "he-IL" });
+  const desk = await wide.newPage();
+  await desk.goto(base + "/kit", { waitUntil: "networkidle" });
+  await desk.evaluate(settled);
+  await desk.evaluate(() => {
+    const planted = document.createElement("div");
+    planted.innerHTML = '<div data-side-page="" style="display:grid;grid-template-columns:240px minmax(0,1fr)"><div data-side-nav=""><nav style="height:40px">x</nav></div><div data-side-content="" style="min-width:0"><div style="overflow-x:auto"><table style="width:3000px"><tbody><tr><td>x</td></tr></tbody></table></div></div></div>';
+    document.querySelector("main").append(planted);
+  });
+  if (!(await desk.evaluate(sideScroll)).length) missed.push("side");
+  await wide.close();
   return missed;
 }
 
@@ -124,7 +141,15 @@ function defaultPages() {
           .map((d) => `/${dir}/${d}`)
       : [];
   const top = ["/", "/guide", "/indices", "/companies", "/rules", "/parameters", "/fees", "/not-covered", "/tracks", "/deposits", "/transfer", "/documents", "/kit"];
-  return [...top.filter((p) => p === "/" || existsSync(join(build, p, "index.html"))), ...under("guide"), ...under("exposure"), ...under("indices"), ...under("companies")];
+  const companies = under("companies");
+  return [...top.filter((p) => p === "/" || existsSync(join(build, p, "index.html"))), ...under("guide"), ...under("exposure"), ...under("indices"), ...companies, ...companies.flatMap(productViews)];
+}
+
+/** A company page shows one product at a time (`?product=`): each product's view, by the links of its pre-rendered side list. */
+function productViews(path) {
+  const html = readFileSync(join(build, path, "index.html"), "utf8");
+  const views = [...html.matchAll(/href="[^"]*?(\/companies\/[^"?#/]+\?product=[^"#]+)"/g)].map((m) => m[1].replaceAll("&amp;", "&"));
+  return [...new Set(views)].filter((v) => v.startsWith(`${path}?`));
 }
 
 /**
@@ -158,6 +183,8 @@ async function checkPage(page, path, width) {
   await page.evaluate(settled);
   // every fold open, so what sits in one is checked too (the current account's rate head is in its banks' fold)
   await page.evaluate(() => document.querySelectorAll("main details:not([open])").forEach((d) => (d.open = true)));
+  // and every row's fold (a deposit's details)
+  await page.evaluate(() => document.querySelectorAll('main [data-row-fold][aria-expanded="false"]').forEach((b) => b.click()));
   await page.waitForTimeout(500);
   await page.evaluate(settled);
   if (phone) {
@@ -166,6 +193,20 @@ async function checkPage(page, path, width) {
     for (const c of await page.evaluate(cutWords)) findings.push({ check: "cut", id: c.box, detail: `"${c.text}" runs ${c.by} px past its ${c.box}` });
   }
   for (const m of await page.evaluate(lonelyMarks)) findings.push({ check: "mark", id: m.text, detail: `a "?" on its own line, below "${m.text}" (${m.where})` });
+  if (width === 1440 && path.includes("?product=")) {
+    for (const q of hebrewQuotes(shownText(await page.evaluate(() => document.querySelector("main")?.outerHTML ?? "")))) findings.push({ check: "quote", id: q, detail: `an ASCII quote between Hebrew letters: …${q}…; write the gershayim ״, or pass text from the data through the kit's gershayim` });
+  }
+  if (width === 1440 && path.startsWith("/companies/")) {
+    // the side list stands beside a product only while its widest table fits there (kit SidePage): checked at a laptop's widths too
+    for (const w of [1440, 1120, 1024]) {
+      if (w !== 1440) {
+        await page.setViewportSize({ width: w, height: HEIGHT[1440] });
+        await page.evaluate(settled);
+      }
+      for (const x of await page.evaluate(sideScroll)) findings.push({ check: "side", id: String(w), detail: `at ${w} px a table scrolls ${x.by} px sideways beside the side list` });
+    }
+    await page.setViewportSize({ width: 1440, height: HEIGHT[1440] });
+  }
   if (width === SHEET_WIDTH) {
     const n = await page.evaluate((max) => {
       // the first figures that carry a doubt or a lock, in page order
@@ -301,6 +342,26 @@ function warningsOutOfSight() {
     if (!/\bbg-(caution|blocked)-subtle\b/.test(note.className)) continue;
     const r = note.getBoundingClientRect();
     if (r.top + 24 > bottom) out.push({ title: note.innerText.trim().replace(/\s+/g, " ").slice(0, 40), top: Math.round(r.top), bottom: Math.round(bottom) });
+  }
+  return out;
+}
+
+// Runs in the page. Beside a side list (kit SidePage, the list standing at the content's side rather than folded over it), each table whose
+// box scrolls sideways, and by how much.
+function sideScroll() {
+  const out = [];
+  for (const box of document.querySelectorAll("[data-side-page]")) {
+    const nav = box.querySelector("[data-side-nav] nav");
+    const content = box.querySelector("[data-side-content]");
+    if (!nav || !content || !nav.checkVisibility()) continue;
+    if (nav.getBoundingClientRect().bottom <= content.getBoundingClientRect().top + 1) continue; // folded: the list's line over the content
+    for (const t of content.querySelectorAll("table")) {
+      for (let p = t.parentElement; p && p !== content; p = p.parentElement) {
+        if (!["auto", "scroll"].includes(getComputedStyle(p).overflowX)) continue;
+        if (p.scrollWidth > p.clientWidth + 1) out.push({ by: p.scrollWidth - p.clientWidth });
+        break;
+      }
+    }
   }
   return out;
 }

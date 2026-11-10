@@ -1,12 +1,16 @@
 // The deposits page (D92, `/deposits`): every bank's standard shekel deposits side by side. Pure: the shapes the loader sends, the term
-// of a record, which offers the reader's amount opens, the grid's cell (F-108), the list's order and its words. No React, no I/O.
-import { amountOpens, bestOpenOffer } from "@finance-tool/engine";
+// of a record, which offers the reader's amount opens, the period chart's bars and the grid's cell (F-108), the interest an offer pays on
+// the amount (F-21), the list's order and its words. No React, no I/O.
+import { amountOpens, bestOpenOffer, depositInterest } from "@finance-tool/engine";
 import { depositBrowser as t } from "../copy";
 import { exitWords } from "./deposit-kind";
 import { fmt } from "./format";
 import type { Label } from "./labels";
 import type { ListSort } from "./list-sort";
 import { computed, numberOf, type SiteValue } from "./value";
+
+/** Each term's length in years, for the interest it pays (F-21): a day and a week on a 365-day year (BANK-04), the rest in months. */
+export const TERM_YEARS: Record<string, number> = { day: 1 / 365, week: 7 / 365, m1: 1 / 12, m3: 3 / 12, m6: 6 / 12, y1: 1, y2: 2, y3: 3 };
 
 /** The eight terms of the banks' standard table (directive 447 Annex A, BANK-14), shortest first. */
 export const TERMS = ["day", "week", "m1", "m3", "m6", "y1", "y2", "y3"] as const;
@@ -51,8 +55,6 @@ export interface DbOffer {
 export interface DbBank {
   id: string;
   name: string;
-  /** The date the bank's own table prints, when it is earlier than the day the tables were read ("טבלת הבנק מ־…"); null otherwise. */
-  tableDate: string | null;
 }
 
 export interface DbData {
@@ -79,17 +81,63 @@ export function offersOf(data: DbData, term: TermId | null, kind: RateKind): DbO
   return data.offers.filter((o) => o.kind === kind && (term === null || o.term === term));
 }
 
-/** How many of those offers the amount opens: a chip's count, the same offers the count line counts. */
-export const openCount = (data: DbData, term: TermId | null, kind: RateKind, amount: number): number => offersOf(data, term, kind).filter((o) => opens(o, amount)).length;
 
 /** Linked to the index: its rate is paid on top of the index, another kind of figure than an unlinked rate, so the two never rank together. */
 export const isLinked = (o: DbOffer): boolean => o.linkage !== "none";
 
-/** Where an offer stands in a list: open to everyone, only for some customers (a new-joiner or closed-system offer), or linked to the index. */
-export const standing = (o: DbOffer): 0 | 1 | 2 => (isLinked(o) ? 2 : o.limited ? 1 : 0);
+/** Whether a cell or a bar may pick the offer: unlinked and open to every customer (F-108). */
+export const forCell = (o: DbOffer) => o.linkage === "none" && !o.limited;
 
-/** Whether a cell may pick the offer: unlinked and open to every customer (F-108). */
-const forCell = (o: DbOffer) => o.linkage === "none" && !o.limited;
+/** Why a period's bar has no rate: no offer of the kind is open to everyone at this amount, but some of the other kind is ("רק משתנה"); some of the kind are, at other amounts ("לא בסכום הזה"); or none of either. */
+export type BarGap = "otherKind" | "notAtAmount" | "none";
+
+/**
+ * A period's bar in the chart over the list (F-108 over every bank at once): the highest rate of the kind among the offers of the term that
+ * are unlinked and open to every customer, that the amount opens, and the offer that pays it; with none, why.
+ */
+export function periodBest(data: DbData, term: TermId, kind: RateKind, amount: number | null): { pick: DbOffer | null; gap: BarGap | null } {
+  const ofTerm = data.offers.filter((o) => o.term === term && forCell(o));
+  const pick = amount === null ? null : bestOpenOffer(ofTerm.filter((o) => o.kind === kind), amount);
+  if (pick) return { pick, gap: null };
+  if (amount !== null && ofTerm.some((o) => o.kind !== kind && opens(o, amount))) return { pick: null, gap: "otherKind" };
+  return { pick: null, gap: ofTerm.some((o) => o.kind === kind) ? "notAtAmount" : "none" };
+}
+
+/**
+ * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21: `A × ((1 + r)^(years) − 1)`, the
+ * term's years from `TERM_YEARS`), as a computed value over the rate and the amount. A variable rate is taken as it stands today.
+ */
+export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, today: string): SiteValue | null {
+  const r = numberOf(o.rate_offered);
+  if (r === null) return null;
+  const v = depositInterest(amount, r / 100, TERM_YEARS[o.term]! * 12);
+  return computed(v, "nis", "F-21", { [t.interest.inputs.rate]: o.rate_offered, [t.interest.inputs.amount]: amountValue }, { today, about: `${t.interest.about}${t.termIn[o.term]}`, notes: o.kind === "variable" ? t.interest.variableNote : undefined });
+}
+
+/** "כ־325 ₪", and under one shekel "פחות מ־1 ₪": the interest in whole shekels, as the list says it. */
+export const interestText = (n: number): string => (n < 0.5 ? t.interest.underOne : `${t.interest.about2}${fmt.number(Math.round(n))} ₪`);
+
+/** How the money can come out before the end: exit points (every so many months, or at points the table does not space evenly), a break, or neither. */
+export type Access = { kind: "exits"; words: string } | { kind: "break"; words: string } | { kind: "locked"; words: string };
+
+/** The access column's answer for an offer: its exit points first, then a break, else locked to the end. Both when it has both. */
+export function accessOf(o: DbOffer): Access[] {
+  const out: Access[] = [];
+  if (o.exits.exists) out.push({ kind: "exits", words: o.exits.everyMonths ? `${t.access.every}${fmt.months(o.exits.everyMonths)}` : t.access.some });
+  if (o.breakTerm !== "not_allowed") out.push({ kind: "break", words: t.access.break[o.breakTerm] });
+  return out.length ? out : [{ kind: "locked", words: t.access.locked }];
+}
+
+/** The line that names an offer under its row's first one: "אותו פיקדון, עם תחנות יציאה", or what else sets it apart (a break, the amounts). */
+export function variantWords(row: DbRow, o: DbOffer): string {
+  const split = rowSplit(row);
+  const first = row.offers[0]!;
+  if (split.exits) return o.exits.exists ? t.variant.withExits : t.variant.noExits;
+  if (split.break) return `${t.variant.same}${o.breakTerm === "not_allowed" ? t.access.locked : t.access.break[o.breakTerm]}`;
+  const min = numberOf(o.amount_range.min);
+  return min !== null && min !== numberOf(first.amount_range.min) ? `${t.variant.same}${t.variant.from}${fmt.number(min)} ₪` : t.variant.plain;
+}
+
 
 /** Why a cell has no rate, in the order F-108 tests it. */
 export type CellGap = "none" | "notAtAmount" | "otherKind" | "otherOffers";
@@ -120,7 +168,7 @@ export function sheetNames(data: DbData): Map<string, string> {
     const parts = [bankName(o.bank), o.name];
     const min = numberOf(o.amount_range.min);
     if (differ((x) => numberOf(x.amount_range.min)) && min !== null) parts.push(`${t.grid.from}${fmt.number(min)} ₪`);
-    if (differ((x) => [x.exits.exists, x.exits.everyMonths])) parts.push(`${t.columns.exits}: ${exitWords(o.exits.exists, o.exits.everyMonths)}`);
+    if (differ((x) => [x.exits.exists, x.exits.everyMonths])) parts.push(`${t.help.exits}: ${exitWords(o.exits.exists, o.exits.everyMonths)}`);
     const base = parts.join(" · ");
     const n = (taken.get(base) ?? 0) + 1;
     taken.set(base, n);
@@ -145,35 +193,32 @@ export function cellOf(data: DbData, bank: string, term: TermId, kind: RateKind,
   return { bank, term, pick: null, rate: null, gap, more: all.length };
 }
 
-/** The share of the rates the shading spreads over: the few highest shade as the top, so they don't press the rest into one shade. */
-const SCALE_SHARE = 0.95;
-
 /**
- * The grid's shading scale (F-108): from 0 to `top`, the rate at the 95th percentile (nearest rank) of the kind among the offers a cell may
- * pick, at any amount, rounded up to the next half percent, so a change of amount does not move it. `above`: some of those rates are
- * higher, and shade as the top.
+ * The grid's shading scale (F-108): from 0 to `top`, the highest rate of the kind among the offers a cell may pick, at any amount, so a
+ * change of amount does not move it and every rate has a shade of its own.
  */
-export function scaleTop(data: DbData, kind: RateKind): { top: number; above: boolean } {
-  const rates = data.offers.filter((o) => o.kind === kind && forCell(o)).flatMap((o) => (typeof o.rate_offered.value === "number" ? [o.rate_offered.value] : [])).sort((a, b) => a - b);
-  if (rates.length === 0) return { top: 1, above: false };
-  const at = rates[Math.ceil(SCALE_SHARE * rates.length) - 1]!;
-  const top = Math.max(0.5, Math.ceil(at * 2) / 2);
-  return { top, above: rates[rates.length - 1]! > top };
+export function scaleTop(data: DbData, kind: RateKind): { top: number } {
+  const rates = data.offers.filter((o) => o.kind === kind && forCell(o)).flatMap((o) => (typeof o.rate_offered.value === "number" ? [o.rate_offered.value] : []));
+  return { top: rates.length ? Math.max(...rates) : 1 };
+}
+
+/** The bank whose cell is the highest of each term's column (the grid marks it), at the amount and kind: none for a column with no rate. */
+export function columnBest(cells: readonly DbCell[]): DbCell | null {
+  let best: DbCell | null = null;
+  for (const c of cells) if (c.rate && (!best || Number(c.rate.value) > Number(best.rate!.value))) best = c;
+  return best;
 }
 
 // ---------------------------------------------------------------- the list's order
 
-export type SortId = "bank" | "term" | "rate" | "min";
+export type SortId = "rate" | "min";
 export type SortState = ListSort<SortId>;
-/** Each column's natural order: names and terms from the start, the rate from the highest, the amount from the smallest. */
-const NATURAL: Record<SortId, 1 | -1> = { bank: 1, term: 1, rate: -1, min: 1 };
+/** Each column's natural order: the rate from the highest, the amount from the smallest. */
+const NATURAL: Record<SortId, 1 | -1> = { rate: -1, min: 1 };
 export const SORT_IDS = Object.keys(NATURAL) as SortId[];
 
-/** One term: the offers are one list, by rate from the highest. Every term: under their banks, by term from the shortest. */
-export const defaultSort = (all: boolean): SortState => ({ id: all ? "term" : "rate", dir: 1 });
-
-/** The sorts a list can take: by bank in one list, by term under the banks. */
-export const sortable = (all: boolean): ReadonlySet<SortId> => new Set<SortId>(all ? ["term", "rate", "min"] : ["bank", "rate", "min"]);
+/** The list starts by rate, from the highest. */
+export const DEFAULT_SORT: SortState = { id: "rate", dir: 1 };
 
 /** Whether the column runs from small to large in this order (the head's arrow). */
 export const ascending = (s: SortState): boolean => s.dir * NATURAL[s.id] === 1;
@@ -230,31 +275,28 @@ export function rowSplit(row: DbRow): RowSplit {
 }
 
 /**
- * The rows in the order, each by its best rate (its first offer) and its smallest amount; ties broken by rate (highest first), then by
- * name in Hebrew order, then by id, so nothing rests on file order. Rows open to everyone come first, then those only for some customers,
- * then linked ones (`standing`): a new-joiner or closed-system rate never ranks among the rates everyone can get, and a rate on top of the
- * index never ranks among plain rates (a list that holds all three: every term under a bank, the folded group).
+ * The rows in the order, each by its best rate (its first offer) or its smallest amount; ties broken by rate (highest first), then by
+ * name in Hebrew order, then by id, so nothing rests on file order. An offer only some customers may open ranks among the others with its
+ * label; linked rows come after the rest, since a rate on top of the index never ranks among plain rates.
  */
-export function sortRows(rows: readonly DbRow[], s: SortState, bankName: (id: string) => string): DbRow[] {
-  const key = (r: DbRow): number | string | null => {
+export function sortRows(rows: readonly DbRow[], s: SortState): DbRow[] {
+  const key = (r: DbRow): number | null => {
     const o = r.offers[0]!;
-    if (s.id === "bank") return bankName(r.bank);
-    if (s.id === "term") return TERMS.indexOf(r.term);
     if (s.id === "rate") return numberOf(o.rate_offered);
     const mins = r.offers.map((x) => numberOf(x.amount_range.min)).filter((n): n is number => n !== null);
     return mins.length ? Math.min(...mins) : null;
   };
   const sign = s.dir * NATURAL[s.id];
   return [...rows].sort((a, b) => {
-    const la = standing(a.offers[0]!);
-    const lb = standing(b.offers[0]!);
+    const la = isLinked(a.offers[0]!) ? 1 : 0;
+    const lb = isLinked(b.offers[0]!) ? 1 : 0;
     if (la !== lb) return la - lb;
     const ka = key(a);
     const kb = key(b);
     if (ka !== kb) {
       if (ka === null) return 1;
       if (kb === null) return -1;
-      const c = typeof ka === "string" ? ka.localeCompare(kb as string, "he") : ka - (kb as number);
+      const c = ka - kb;
       if (c !== 0) return sign * c;
     }
     const ra = rateOf(a.offers[0]!);
@@ -264,22 +306,11 @@ export function sortRows(rows: readonly DbRow[], s: SortState, bankName: (id: st
   });
 }
 
-/** "ההצעות מסודרות לפי הריבית, מהגבוהה לנמוכה." */
-export function orderLine(s: SortState, all: boolean): string {
-  const w = t.sorts[s.id];
-  return `${all ? t.order.all : t.order.one}${w.what}, ${ascending(s) ? w.up : w.down}.`;
-}
-
 // ---------------------------------------------------------------- words
 
 /** "54 הצעות", "הצעה אחת", "שתי הצעות". */
 export function offersPhrase(n: number): string {
   return n === 1 ? t.count.offerOne : n === 2 ? t.count.offerTwo : `${fmt.number(n)} ${t.count.offers}`;
-}
-
-/** "9 בנקים", "בנק אחד", "שני בנקים". */
-export function banksPhrase(n: number): string {
-  return n === 1 ? t.count.bankOne : n === 2 ? t.count.bankTwo : `${fmt.number(n)} ${t.count.banks}`;
 }
 
 /** "10,000 ₪". */

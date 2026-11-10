@@ -8,7 +8,7 @@ import { Fragment, useMemo, useRef, useState, type MouseEvent, type ReactNode } 
 import { isTie, type FeeLine, type GapList } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { brokeragePagePath, chargesCurrentAccount, doubtOf, firstCount, placesOf, tieShareOf, tieThresholdValue, paybackMayLower, accountWhole, pricedVariable, gapOf, gapListFor, gapUnstated, indexSeenBy, hasKinds, kindOf, opensOn, pairCosts, pairValueFigure, dollarBound, accountSum, phoneOnlyValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, chargesCurrentAccount, doubtOf, firstCount, placesOf, tieShareOf, tieThresholdValue, paybackMayLower, accountWhole, pricedVariable, gapOf, gapListFor, gapUnstated, indexSeenBy, hasKinds, kindOf, opensOn, pairCosts, pairValueFigure, dollarBound, accountSum, phoneOnlyValue, asideLines, type AsideLine as AsideLineRecord, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, sharedLabels, type Label } from "../../lib/labels";
 import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
@@ -195,10 +195,14 @@ function partsOf(pc: PairCosts, from: string, taxName: string): CostPart[] {
   const account = byLegend(pc.account).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from, group: "account" }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91); it is the account's
   // fees on each other, first among the account's parts, far from the fund's (beside it, it reads as the fund's)
-  return [{ ...remainderPart(pc.interaction), inside: true as const, group: "account" }, ...account, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: taxName, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
+  return [{ ...remainderPart(pc.interaction, !!pc.units), inside: true as const, group: "account" }, ...account, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: taxName, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
 }
 /** The account's fees on each other (F-91's remainder), as every bar of the page draws it. */
-const remainderPart = (value: number): CostPart => ({ id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value, className: "bg-chart-cost-other", source: c.pair.sourceComputed });
+/** F-109: where the house buys the fund in whole units, the part also holds what the cash waiting for a unit did not earn, and says so. */
+const remainderPart = (value: number, units = false): CostPart => ({ id: "remainder", name: units ? c.pair.remainderUnits : c.pair.remainder, about: units ? c.pair.remainderUnitsAbout : c.pair.remainderAbout, value, className: "bg-chart-cost-other", source: c.pair.sourceComputed });
+
+/** F-109 (D94): a way's line on whole units, where some monthly deposit bought no unit; null where none did. */
+export const unitsLine = (units: WayPrice["units"]): string | null => (!units || units.skipped === 0 ? null : units.skipped * 2 > units.monthly ? c.pair.unitsEvery : c.pair.unitsSome);
 /** The account's figure a bar's account parts add up to: the account list's. */
 const accountGroups = (pc: PairCosts) => ({ account: accountWhole(pc) });
 const totalOf = (parts: CostPart[]) => parts.reduce((a, p) => a + p.value, 0);
@@ -669,6 +673,31 @@ export function GroupLine({ id, house, snapshots, open, onOpen, choice }: { id: 
   return <GroupPriceFold className="col-start-2 col-end-[-1]" entries={g.entries} house={house} href={brokeragePagePath(id)} open={open} onOpenChange={(o) => onOpen(id, o)} {...(choice ? { choice } : {})} />;
 }
 
+/**
+ * A standing-order price the house's price list prints and the row's figure leaves out (D41, D56), under the house's row: the "not counted"
+ * tag a group price carries, the printed price, and the record's reason with its source. Two lines of it, the rest at the person's tap, as
+ * a grey row's reason; `open` is kept by the list, whose held height starts over with it.
+ */
+export function AsideLine({ lines, company, open, onOpen }: { lines: readonly AsideLineRecord[]; /** The house's name in its record, for the price's source. */ company: string; open: boolean; onOpen: (open: boolean) => void }) {
+  const l = lines[0];
+  if (!l) return null;
+  const amount = (v: NonNullable<AsideLineRecord["min"]>) => (typeof v.value !== "number" ? null : v.unit === "nis_per_trade" || v.unit === "nis" ? fmt.nis(v.value) : v.unit === "usd_per_trade" || v.unit === "usd" ? fmt.usd(v.value) : null);
+  const min = l.min && amount(l.min);
+  const rate = typeof l.rate.value === "number" ? <Num value={ownBy({ ...l.rate } as SiteValue, company)} display={fmt.pct(l.rate.value)} /> : null;
+  if (!rate) return null;
+  return (
+    <span className="col-start-2 col-end-[-1] text-xs leading-snug text-muted-foreground">
+      <ClampedText open={open} onOpenChange={onOpen} more={c.pair.reasonMore} less={c.pair.reasonLess}>
+        <Tag className="me-1.5">{groupPrices.notCounted}</Tag>
+        {min ? <Tpl t={c.pair.asideLine} vars={{ rate, min: <Num value={ownBy({ ...l.min! } as SiteValue, company)} display={min} /> }} /> : <Tpl t={c.pair.asideLineNoMin} vars={{ rate }} />} {l.not_ranked.reason_he}{" "}
+        <a href={sourceHref(l.not_ranked.source)} target="_blank" rel="noopener noreferrer" title={l.not_ranked.source.title} className="text-link hover:underline">
+          {c.pair.notPossibleSource} ↗
+        </a>
+      </ClampedText>
+    </span>
+  );
+}
+
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
 export function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<typeof providerName>>; snapshot: IndicesBundle["snapshots"][number] | undefined; charge: ReactNode }) {
   // the house's account on your own terms opens from here, the chosen account's card, not from a line on every row;
@@ -761,8 +790,9 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
               </Fragment>
             ))}
           </>,
-          // beside what the price of a fund abroad leaves out, not collected at the page's foot (wording.md: a note beside what it qualifies)
-          c.foot.sharePrice,
+          // beside what the price of a fund abroad leaves out, not collected at the page's foot (wording.md: a note beside what it qualifies);
+          // only while a fund abroad on the page has no unit price
+          ...(allFunds(view).some((f) => f.option === "abroad" && f.noUnitPrice) ? [c.foot.sharePrice] : []),
         ]}
       />
     </Disclosure>
@@ -832,10 +862,13 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   // when the price lists in this list were saved: the oldest and the newest day
   const saved = bundle.snapshots.filter((s) => providers.some((p) => p.id === s.id && !p.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
-  // what the cost column counts: the standing-order price where one is published, the regular customer's price, and when the price lists
-  // were collected (the "?" in its head)
+  // the houses whose standing-order price the figure leaves out (D41, D56), counted the same way
+  const asideCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.aside.length > 0; })).length;
+  // what the cost column counts: the standing-order price where one is published and counted, the regular customer's price, and when the
+  // price lists were collected (the "?" in its head)
   const chargesHelp = [
     monthly === 0 ? c.pair.noMonthly : standingCount > 0 ? c.pair.standingNote(standingCount, local.length) : "",
+    monthly > 0 && asideCount > 0 ? c.pair.asideNote(asideCount, local.length) : "",
     c.pair.whichPrice,
     saved.length > 0 ? c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`) : "",
   ]
@@ -868,8 +901,18 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   type Prov = (typeof providers)[number];
   // a house that sells a fund at a standing-order price keeps the tag's room whichever fund and plan (a monthly 0 and back moves nothing)
   const standingSomewhere = (id: string) => allFunds(view).some((f) => { const a = f.byHouse[id]; return priced(a) && a.standing; });
+  // a house whose standing-order price is left out of some fund's figure keeps the line's room whichever fund is picked: its longest one
+  const asideSomewhere = (id: string) =>
+    allFunds(view)
+      .map((f) => { const a = f.byHouse[id]; return priced(a) ? asideLines(bundle.snapshots.find((s) => s.id === id), a.aside) : []; })
+      .sort((a, b) => (b[0]?.not_ranked.reason_he.length ?? 0) - (a[0]?.not_ranked.reason_he.length ?? 0))[0] ?? [];
   // a house that sells some fund of the index only by phone keeps the tag's room whichever fund is picked
   const phoneSomewhere = (id: string) => allFunds(view).map((f) => phoneOf(view, bundle, { house: id, fund: f.rec.id })).find((v) => v) ?? null;
+  // F-109: the longest whole-units line any fund gives at this house (the line that says most months wait is the longer)
+  const unitsSomewhere = (id: string) => {
+    const got = allFunds(view).map((f) => { const a = f.byHouse[id]; return priced(a) ? unitsLine(a.units) : null; });
+    return got.find((l) => l === c.pair.unitsEvery) ?? got.find((l) => l) ?? null;
+  };
   /**
    * A priced row's cells; `unseen`: one of the row's cases, laid out to hold its height (PickList): every tag that can stand on many rows
    * at once (the tie, on a computer), and the one-per-list mark it is laid out with: the cheapest's star. The way back after a tap is not
@@ -877,7 +920,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
    * while it shows.
    */
   const pricedCells = (p: Prov, wp: WayPrice, unseen?: { crown: boolean; tie: boolean }) => {
-    const parts: CostPart[] = [remainderPart(wp.interaction), ...byLegend(wp.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) }))];
+    const parts: CostPart[] = [remainderPart(wp.interaction, !!wp.units), ...byLegend(wp.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) }))];
     const isYours = p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line
     const place = placeOf.get(p.id);
@@ -918,6 +961,14 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
         <span className={cx("col-end-[-1] text-end font-semibold", figureFit(wp.valueN))}>
           <Num animate value={wp.value} />
         </span>
+        <AsideLine
+          lines={unseen ? asideSomewhere(p.id) : asideLines(bundle.snapshots.find((s) => s.id === p.id), wp.aside)}
+          company={bundle.snapshots.find((s) => s.id === p.id)?.provider.name_he ?? p.short}
+          open={!unseen && openWhys.includes(`aside:${p.id}`)}
+          onOpen={(o) => onWhy(`aside:${p.id}`, o)}
+        />
+        {/* F-109: whole units, where a monthly deposit waits for a unit; laid out unseen with the longest any fund here gives */}
+        {(unseen ? unitsSomewhere(p.id) : unitsLine(wp.units)) && <span className="col-start-2 col-end-[-1] text-xs leading-snug text-muted-foreground">{unseen ? unitsSomewhere(p.id) : unitsLine(wp.units)}</span>}
         <GroupLine id={p.id} house={p.short} snapshots={bundle.snapshots} open={openGroups.includes(p.id)} onOpen={onGroup} choice={choiceOf(p.id)} />
         {p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={p.id} /></span>}
       </ShortRow>
@@ -1113,6 +1164,11 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
 const FILTER_FAMILIES = new Set<Label["family"]>(["trade", "follow", "currency", "payout", "held"]);
 /** The fund rests on an open rule at some house: its row keeps room for the tag at every house. */
 const openSomewhere = (f: FundWay) => Object.values(f.byHouse).some((x) => priced(x) && x.open);
+/** F-109: the longest whole-units line the fund gives at any house, which its row holds room for. */
+const fundUnits = (f: FundWay): string | null => {
+  const got = Object.values(f.byHouse).map((x) => (priced(x) ? unitsLine(x.units) : null));
+  return got.find((l) => l === c.pair.unitsEvery) ?? got.find((l) => l) ?? null;
+};
 
 const mayaHrefOf = (f: FundWay) => {
   // Maya's page of the fund exists for a fund listed in Israel
@@ -1507,6 +1563,12 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
               </span>
             )}
             {why && <span className="text-xs text-muted-foreground">{why}</span>}
+            {/* F-109: whole units at this house, held on every row of a fund some house buys so, so a pick that moves it never moves the list */}
+            {r.f.noUnitPrice ? (
+              <span className="text-xs text-muted-foreground">{c.pair.unitPriceMissing}</span>
+            ) : (
+              fundUnits(r.f) && <span className={cx("text-xs text-muted-foreground", !(priced(at) && unitsLine(at.units)) && "invisible")}>{(priced(at) && unitsLine(at.units)) || fundUnits(r.f)}</span>
+            )}
             {twinOf(r.f) && <span className="text-xs text-muted-foreground">{c.pair.sameFundAs(twinOf(r.f)!.number, twinOf(r.f)!.option === "abroad")}</span>}
             {mineTyped && <FundTerms id={r.f.rec.id} />}
           </span>

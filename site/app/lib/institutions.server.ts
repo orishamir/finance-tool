@@ -2,10 +2,10 @@
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { datedDay, tariffDated } from "./tariff-date";
-import { depositKindRules, printedQuotes, shownRate } from "./deposit-kind";
+import { depositKindRules, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
+import { companyTermRule, feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
   AvailabilityRow,
   InstitutionKind,
@@ -18,7 +18,7 @@ import type {
   TariffLineRow,
 } from "../components/decoder/institutions/types";
 import { distributionRuleIds } from "../components/decoder/institutions/types";
-import { loadChecklistRows, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadProducts, loadWrappers, pointedRecords, root, today } from "./data.server";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { isFxToFx } from "./invest";
@@ -151,13 +151,16 @@ function textValue(value: string, from: { source: ValueObject["source"]; checked
 
 const wrapperOrder = ["bank-deposit", "savings-plan", "current-account"];
 
+
 function productRow(d: DepositTerms, t: string): ProductRowData {
   const names447 = d.names["447"];
   const model = names447.map((n) => /דגם:\s*([\d/]+)/.exec(n)?.[1]).find(Boolean) ?? null;
-  const name = names447[0] ?? d.type_447;
+  const own = ownName(names447, d.type_447);
+  const name = shownName(own);
   const also: string[] = [];
-  for (const n of [...names447.slice(1), ...d.names.app, ...d.names.ad, ...d.names.abbrev]) {
-    if (/^דגם:/.test(n) || n === name || also.includes(n)) continue;
+  // the kind is the table's group heading, and a short form inside the name ("פק״מ" in "פק״מ קבוע 7-13 ימים") says nothing more
+  for (const n of [...names447, ...d.names.app, ...d.names.ad, ...d.names.abbrev]) {
+    if (/^דגם:/.test(n) || n === own || n === d.type_447 || own.includes(n) || also.includes(n)) continue;
     also.push(n);
   }
   const current = d.wrapper_id === "current-account";
@@ -428,6 +431,25 @@ export interface CompanyTermGroup {
   key: string;
   title: string;
   ids: string[];
+  /** The products a product record names an entry under (its `company_terms`), by entry; an entry no record names is about the whole topic. */
+  about: Record<string, string[]>;
+}
+
+/** A product record's id → the company page's id for that product, where they differ. */
+const PAGE_PRODUCT: Record<string, string> = { "brokerage-account": "brokerage" };
+
+/** Each entry a product record lists among its company terms → the page products whose records list it. */
+function termProducts(): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const w of loadWrappers()) {
+    const page = PAGE_PRODUCT[w.id] ?? w.id;
+    for (const refs of Object.values(w.company_terms ?? {}))
+      for (const ref of refs) {
+        const id = companyTermRule(ref);
+        if (!(out[id] ??= []).includes(page)) out[id].push(page);
+      }
+  }
+  return out;
 }
 
 let ownDocsCache: { rules: Record<string, RuleRecord>; out: OwnDocs } | null = null;
@@ -463,14 +485,14 @@ export function companyTermGroups(registryIds: readonly string[], rules: Record<
 
 function groupByTopic(list: RuleRecord[], topic: (file: string) => string): CompanyTermGroup[] {
   const files = [...new Set(list.map((r) => r.il_finance_file))].sort((a, b) => fileRank(a) - fileRank(b));
-  return files.map((f) => ({
-    key: f,
-    title: topic(f),
-    ids: list
+  const named = termProducts();
+  return files.map((f) => {
+    const ids = list
       .filter((r) => r.il_finance_file === f)
       .map((r) => r.id)
-      .sort((a, b) => a.localeCompare(b, "en", { numeric: true })),
-  }));
+      .sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+    return { key: f, title: topic(f), ids, about: Object.fromEntries(ids.filter((id) => named[id]).map((id) => [id, named[id]!])) };
+  });
 }
 
 /**

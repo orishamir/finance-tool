@@ -9,7 +9,7 @@ import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { ExposureCell, gershayim, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, gershayim, HelpMark, MixedName, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
 /** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
@@ -43,7 +43,7 @@ function AssetsFigure({ value, size = "cell" }: { value: SiteValue | null; size?
 
 /** "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪": the company's size in the product, each part unbroken. `stacked`: one part under the other, in a
  *  table cell too narrow to hold both on every row (so no row has one line where its neighbour has two). */
-function CompanySize({ count, assets, stacked }: { count: string; assets: SiteValue | null; stacked?: boolean }) {
+export function CompanySize({ count, assets, stacked }: { count: string; assets: SiteValue | null; stacked?: boolean }) {
   const money = assets && (
     <span className="whitespace-nowrap">
       {t.group.assets} <AssetsFigure value={assets} size="inline" />
@@ -92,11 +92,11 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
     return (
       <span className="flex flex-col items-start gap-1.5">
         <Link to={x.href} className="font-medium hover:underline">
-          <bdi>{x.short}</bdi>
+          <MixedName>{x.short}</MixedName>
         </Link>
         <span className="flex flex-wrap gap-1.5 empty:hidden">
           <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
-          {showsKindChip(x) && <Tag>{x.sub}</Tag>}
+          {showsKindChip(x) && <Tag>{gershayim(x.sub)}</Tag>}
         </span>
       </span>
     );
@@ -116,11 +116,28 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
       </span>
       {showsShortName(x) && (
         <Link to={x.href} className="hover:underline">
-          <bdi>{x.short}</bdi>
+          <MixedName>{x.short}</MixedName>
         </Link>
       )}
       <span className="flex flex-wrap gap-1.5 empty:hidden">
         <TrackLabels track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+      </span>
+    </span>
+  );
+}
+
+/** A company page's shorter table: the track's short name (the link to it), its labels, and its kind as a quiet line under it; a
+ *  self-managed track says so there, its yields being "—". */
+function CompactName({ x, notes }: { x: TbTrack; notes: RowNotes }) {
+  const sub = [showsKindChip(x) ? gershayim(x.sub) : null, x.selfManaged ? t.yield.selfManagedShort : null].filter(Boolean).join(" · ");
+  return (
+    <span className="flex flex-col items-start gap-0.5 whitespace-normal leading-snug">
+      <Link to={x.href} className="font-medium hover:underline">
+        <MixedName>{x.short}</MixedName>
+      </Link>
+      {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
+      <span className="flex flex-wrap gap-1.5 empty:hidden pt-0.5">
+        <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
       </span>
     </span>
   );
@@ -134,7 +151,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
         <span className="flex flex-col gap-1 min-w-0 items-start">
           {by === "company" ? (
             <span className="font-medium">
-              <bdi>{x.short}</bdi>
+              <MixedName>{x.short}</MixedName>
             </span>
           ) : (
             <>
@@ -143,14 +160,14 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
               </span>
               {showsShortName(x) && (
                 <span>
-                  <bdi>{x.short}</bdi>
+                  <MixedName>{x.short}</MixedName>
                 </span>
               )}
             </>
           )}
           <span className="flex flex-wrap gap-1.5 empty:hidden">
             <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
-            {by === "company" && showsKindChip(x) && <Tag>{x.sub}</Tag>}
+            {by === "company" && showsKindChip(x) && <Tag>{gershayim(x.sub)}</Tag>}
           </span>
         </span>
         <RowArrow />
@@ -185,12 +202,24 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
 
 /** `limit`: how many rows are drawn, from the top; the headings, the counts and the key under the list always speak of every row of the group.
  *  On a company's page: `fixed`, its one product, with no heading; `defaults`, its tracks a new member joins; `foot`, lines under the key. */
-export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode }) {
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, no "?" and no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit" }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string, alsoHolds?: string[]) =>
     sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} /> : <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>;
   const periodText = fmt.period(period);
-  const columns: ProductColumn[] = [
+  const short = t.columns.short;
+  const compactColumns: ProductColumn[] = [
+    { id: "name", head: head("name", t.columns.track), sort: state("name") },
+    { id: "fund", head: t.columns.fund, width: 5 },
+    { id: "fee", head: head("fee", short.fee), width: 8.5, sort: state("fee") },
+    ...(compact === "with-deposit" ? [{ id: "dep", head: head("dep", short.deposit), width: 7, sort: state("dep") }] : []),
+    { id: "stocks", head: head("stock", short.stocks), width: 5.5, sort: state("stock") },
+    { id: "currency", head: short.currency, width: 5 },
+    { id: "y3", head: short.y3, width: 7.5, headClassName: "whitespace-nowrap" },
+    { id: "y5", head: short.y5, width: 7.5, headClassName: "whitespace-nowrap" },
+    { id: "assets", head: head("assets", short.assets), width: 8.5, sort: state("assets") },
+  ];
+  const columns: ProductColumn[] = compact ? compactColumns : [
     { id: "name", head: head("name", by === "company" ? t.columns.track : t.columns.company, [t.columns.track, t.columns.company]), sort: state("name") },
     { id: "fund", head: t.columns.fund, width: 5.5 },
     {
@@ -246,7 +275,17 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
           x.id,
           {
             phone: <PhoneRow x={x} by={by} view={view} notes={notes} />,
-            cells: [
+            cells: compact ? [
+              <CompactName x={x} notes={notes} />,
+              <TrackFundId fundId={x.id} dataset={x.dataset} />,
+              <span className="font-semibold"><Num value={x.fee} size="cell" /></span>,
+              ...(compact === "with-deposit" ? [<Num value={x.deposit} size="cell" />] : []),
+              x.exposure?.stock ? <ShareNum value={x.exposure.stock} size="cell" /> : <span className={mutedWord}>—</span>,
+              x.exposure?.currency ? <ShareNum value={x.exposure.currency} size="cell" /> : <span className={mutedWord}>—</span>,
+              x.selfManaged ? <span className={mutedWord}>—</span> : <YieldFigure value={x.y3} track={x} years={3} size="cell" />,
+              x.selfManaged ? <span className={mutedWord}>—</span> : <YieldFigure value={x.y5} track={x} years={5} size="cell" />,
+              <AssetsFigure value={x.assets} />,
+            ] : [
               <NameCell x={x} by={by} view={view} notes={notes} />,
               <TrackFundId fundId={x.id} dataset={x.dataset} />,
               <TrackFeeLines fee={x.fee} deposit={x.deposit} size="cell" />,
@@ -255,7 +294,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
                 <Yields x={x} size="cell" />
               </span>,
               <AssetsFigure value={x.assets} />,
-              <Link to={x.href} aria-label={x.fullName} className="inline-flex size-target items-center justify-center -my-2">
+              <Link to={x.href} aria-label={gershayim(x.fullName)} className="inline-flex size-target items-center justify-center -my-2">
                 <RowArrow />
               </Link>,
             ],
@@ -263,7 +302,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
           ];
         }),
       ),
-    [view, by, defaults],
+    [view, by, defaults, compact],
   );
   let left = limit;
   const tableGroups: ProductGroup[] = [];
@@ -295,7 +334,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       groups={tableGroups}
       foot={(place) => (
         <>
-          {foot && <div className={cx("py-3 border-t border-border", place === "phone" ? "px-4" : "px-3")}>{foot}</div>}
+          {foot && !compact && <div className={cx("py-3 border-t border-border", place === "phone" ? "px-4" : "px-3")}>{foot}</div>}
         </>
       )}
     />

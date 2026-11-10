@@ -11,7 +11,7 @@ function offer(id: string, rate: number, exits: DbOffer["exits"], min = 250): Db
 const data: DbData = {
   today: "2026-11-09",
   read: "2026-11-09",
-  banks: [{ id: "discount", name: "דיסקונט", tableDate: null }],
+  banks: [{ id: "discount", name: "דיסקונט"}],
   offers: [offer("a", 2.25, { exists: false, everyMonths: null }), offer("b", 1, { exists: true, everyMonths: 3 }), offer("c", 0.5, { exists: true, everyMonths: 1 }), offer("d", 0.4, { exists: true, everyMonths: 1 })],
   amounts: [],
   start: 10000,

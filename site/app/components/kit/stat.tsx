@@ -98,3 +98,20 @@ export function KeyValueList({ items }: { items: KeyValueItem[] }) {
     </>
   );
 }
+
+/**
+ * Small figures one under the other, each on one line with a muted label at its start (a deposit's rate at each amount, on a phone row): a
+ * short list that keeps the row low. A line set aside by a choice elsewhere (`dim`) dims in place.
+ */
+export function FigureLines({ items, className }: { items: { id: string; label: ReactNode; figure: ReactNode; dim?: boolean }[]; className?: string }) {
+  return (
+    <dl className={cx("flex flex-col", className)}>
+      {items.map((it) => (
+        <div key={it.id} className={cx("flex items-baseline justify-between gap-3 py-1 border-t border-border first:border-t-0 transition-opacity duration-[var(--duration-base)]", it.dim && "opacity-45")}>
+          <dt className="min-w-0 text-sm text-muted-foreground">{it.label}</dt>
+          <dd className="shrink-0 text-end">{it.figure}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}

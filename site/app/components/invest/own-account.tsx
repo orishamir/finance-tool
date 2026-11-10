@@ -182,7 +182,8 @@ function costParts(pc: PairCosts, lines: readonly string[], source: (line: strin
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
   const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: fixedName(line, pc.account.some((l) => l.line === "account")) ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
   // the account's fees on each other first, as on every bar of the page
-  return [{ id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }, ...parts];
+  // F-109: where the account buys the fund in whole units, the part also holds what the cash waiting for a unit did not earn
+  return [{ id: "remainder", legendId: "remainder", name: pc.units ? pairWords.remainderUnits : pairWords.remainder, about: pc.units ? pairWords.remainderUnitsAbout : pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }, ...parts];
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
 

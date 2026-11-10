@@ -11,7 +11,10 @@ import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProduc
 import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
 import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
-import { FilterChip, LongestCase, PhoneFold, SelectField, TextField, useFlip } from "../kit";
+import { ChoicePair, LongestCase, PhoneFold, SelectField, TextField, useFlip } from "../kit";
+
+/** The kind chip that stands for every kind (the regulator never names a kind so). */
+const ALL_KINDS = "*";
 import { Term } from "../provenance";
 import { TrackList } from "./list";
 
@@ -96,56 +99,25 @@ export function TrackBrowser({ data }: { data: TbData }) {
   return (
     <div className="flex flex-col gap-4">
       <PhoneFold summary={summary} more={t.fold.more} less={t.fold.less}>
-        <div className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium" id="tb-product">
-            {t.controls.product}
-          </span>
-          <div role="group" aria-labelledby="tb-product" className="flex flex-wrap gap-2">
-            {data.products.map((p) => (
-              <FilterChip key={p.id} on={p.id === productId} count={p.rows.length} onClick={() => p.id !== productId && navigate(`/tracks/${p.id}${keepFor(sp)}`, { preventScrollReset: true })}>
-                {p.name}
-              </FilterChip>
-            ))}
-          </div>
-          <Link to={`/guide/${view.id}`} className="self-start -mb-2 text-sm text-link hover:underline inline-flex items-center min-h-target">
-            {t.count.whatIs} {view.name}
-          </Link>
-        </div>
-
-        {view.hasKinds ? (
-          <>
-            <div className="hidden md:flex flex-col gap-1.5">
-              <span className="text-sm font-medium" id="tb-kind">
-                {t.controls.kind}
-              </span>
-              <div role="group" aria-labelledby="tb-kind" className="flex flex-wrap gap-2">
-                <FilterChip on={kind === ""} count={view.tracks.length} onClick={() => setKind("")}>
-                  {t.controls.kindAll}
-                </FilterChip>
-                {view.kinds.map((k) => (
-                  <FilterChip key={k.sub} on={kind === k.sub} count={k.count} onClick={() => setKind(k.sub)}>
-                    {k.sub}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-            <SelectField
-              className="md:hidden"
-              wide
-              label={t.controls.kind}
-              none={`${t.controls.kindAll} (${fmt.number(view.tracks.length)})`}
-              options={view.kinds.map((k) => ({ id: k.sub, name: `${k.sub} (${fmt.number(k.count)})` }))}
-              value={kind || null}
-              onChange={(v) => setKind(v ?? "")}
-            />
-          </>
-        ) : (
-          // the place of the kinds says why there are none, so the control is not just gone
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">{t.controls.kind}</span>
-            <p className="text-sm text-muted-foreground max-w-measure">{t.controls.noKinds}</p>
-          </div>
-        )}
+        {/* the product, then the kind of track: one two-level choice, as the companies page's (kit ChoicePair) */}
+        <ChoicePair
+          parent={{ label: t.controls.product, ids: data.products.map((p) => p.id), labels: Object.fromEntries(data.products.map((p) => [p.id, p.name])), value: productId, counts: Object.fromEntries(data.products.map((p) => [p.id, p.rows.length])), onChange: (id) => id !== productId && navigate(`/tracks/${id}${keepFor(sp)}`, { preventScrollReset: true }) }}
+          under={
+            <Link to={`/guide/${view.id}`} className="self-start text-sm text-link hover:underline inline-flex items-center min-h-target">
+              {t.count.whatIs} {view.name}
+            </Link>
+          }
+          child={{
+            label: t.controls.kind,
+            ids: view.hasKinds ? [ALL_KINDS, ...view.kinds.map((k) => k.sub)] : [],
+            labels: { [ALL_KINDS]: t.controls.kindAll, ...Object.fromEntries(view.kinds.map((k) => [k.sub, k.sub])) },
+            value: kind || ALL_KINDS,
+            counts: { [ALL_KINDS]: view.tracks.length, ...Object.fromEntries(view.kinds.map((k) => [k.sub, k.count])) },
+            onChange: (id) => setKind(id === ALL_KINDS ? "" : id),
+            // the place of the kinds says why there are none, so the control is not just gone
+            hint: t.controls.noKinds,
+          }}
+        />
         <SelectField
           className="md:hidden"
           wide

@@ -6,7 +6,7 @@ import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn } from "../../icons";
 import { Num, RuleRef, RulesLine } from "../../provenance";
 import { Card, Disclosure, DoubtNote, LabelRow, MixedName, PrintedText, Tag, When } from "../../kit";
-import { depositLabels, exitWords } from "../../../lib/deposit-kind";
+import { depositLabels, exitWords, termWords } from "../../../lib/deposit-kind";
 import type { ProductRowData } from "./types";
 
 function Chips({ ids, known }: { ids: readonly string[]; known: ReadonlySet<string> }) {
@@ -42,7 +42,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
   // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (WIN WIN)
   const bucket = p.taxBucket.value;
   const taxWord = bucket === "unlinked_15" ? copy.tax.unlinked : bucket === "linked_25" ? copy.tax.linked : undefined;
-  const months = typeof p.term.value === "number" ? p.term.value : null;
+  const term = termWords(p.term);
   return (
     <Card as="article" id={`product-${p.id}`} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px] target:outline-2 target:outline-ring target:outline-offset-2">
       <header className="flex flex-col gap-1.5">
@@ -87,7 +87,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
             <MixedName>{p.type447}</MixedName>
           </Item>
           <Item id="term" label={l.term} known={known} rules={p.term.rule_ids ?? []}>
-            {p.currentAccount || months === null ? copy.term.none : <Num value={p.term} display={fmt.months(months)} />}
+            {p.currentAccount || term === null ? copy.term.none : <Num value={p.term} display={term} />}
           </Item>
           <Item id="rateType" label={l.rateType} known={known}>
             {p.rateType === "variable" ? (

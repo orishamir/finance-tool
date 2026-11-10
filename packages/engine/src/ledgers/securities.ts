@@ -43,8 +43,13 @@ export interface Fund {
   domicile?: "us" | "ireland";
   /** W-8BEN on file with the US payer (TXF-13). */
   w8ben?: boolean;
-  /** Share price in the instrument's currency at the start, for per-share fees and the share count. */
+  /** Share price at the start, for per-share fees and the share count: in the instrument's currency, or in `sharePriceCurrency` where given. */
   sharePrice?: number;
+  /** F-109: the currency `sharePrice` is printed in (ISO code), where it is not the instrument's: a Tel Aviv line of a foreign fund takes its issuer's NAV in dollars. */
+  sharePriceCurrency?: string;
+  /** The instrument's currency per one unit of `sharePriceCurrency` at the start (the run's rate), where the two differ: the price is taken
+   *  to the instrument's currency with it. Absent where it is needed, the run has no share price (a per-share fee then cannot be priced). */
+  sharePriceRate?: number;
   /** TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04). */
   ninetyPercentTest?: boolean;
   /** Renewable money-market fund: months between fixed dates (MF-35). */
@@ -168,6 +173,14 @@ export interface SecuritiesInput {
    * filed for the year of the loss (flagged). The unused part is reported in `detail.lossUnused`.
    */
   carriedLoss?: { amount: number; ruleIds: readonly string[]; carriedForward: boolean };
+  /**
+   * F-109 (D94): the fund is bought in whole units. `price` is one unit's price in shekels at the run's start (the fund record's
+   * `share_price` at the run's exchange rate), moved with the fund's value as `sharePrice` is. Each order buys the most whole units its cash
+   * pays for, fees included, at the ask; what is left waits in the account, earning nothing, and joins the next order. An order whose cash
+   * buys no unit is not placed and pays nothing. `monthlyByAmount`: the monthly purchases are bought by amount (a house's recurring plan that
+   * buys fractions), every other order in whole units. Absent: every order is bought by amount, as F-08 says.
+   */
+  wholeUnits?: { price: number; monthlyByAmount?: boolean };
   profile: Profile;
 }
 
@@ -283,8 +296,19 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     return at;
   };
   let nav = 1;
-  const sharePrice = (m: number) => (fund.sharePrice ? (fund.sharePrice * nav) / X[m]! : undefined);
+  // the share price in the instrument's currency: a price printed in another currency (a Tel Aviv line at its issuer's dollar NAV) at the run's rate
+  const priceRate = fund.sharePriceCurrency && fund.sharePriceCurrency !== (tariff.currency?.code ?? "ILS") ? fund.sharePriceRate : 1;
+  const sharePrice = (m: number) => (fund.sharePrice && priceRate ? (fund.sharePrice * priceRate * nav) / X[m]! : undefined);
   let lots: Lot[] = [];
+  // F-109: whole units. The unit's price in shekels moves with the fund's value per unit (`nav`, 1 at the start). Cash an order leaves waits in
+  // two pockets: shekels not yet converted (`waitingNis`), and the fund's currency a distribution left (`waitingHeld`, in that currency), which
+  // the next order spends without converting it again.
+  const unitBuy = input.wholeUnits;
+  if (unitBuy && !(unitBuy.price > 0)) throw new RangeError(`F-109: a unit's price of ${unitBuy.price} must be above 0`);
+  if (unitBuy) formulas.push("F-109");
+  let waitingNis = 0;
+  let waitingHeld = 0;
+  const wait = { monthly: 0, placed: 0, skipped: 0 };
 
   /**
    * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A monthly purchase (`standing`) is placed the
@@ -296,24 +320,62 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const buy = (cash: number, month: number, eventMonth: number, convert: boolean, standing = false) => {
     const at = tariffAt(month);
     const terms = { fxRate: fxRate(eventMonth) };
+    const tradeTerms = { ...terms, sharePrice: sharePrice(month) };
+    // F-109: the cash of this order and what earlier orders left. Shekels are converted (a fund in a foreign currency); a distribution's cash
+    // and what one left are in the fund's currency already. Without a currency nothing is converted and the two pockets are alike.
+    const fresh = (convert ? cash : 0) + waitingNis;
+    const held = (convert ? 0 : cash) + waitingHeld * fxRate(eventMonth);
+    const whole = unitBuy !== undefined && !(standing && unitBuy.monthlyByAmount);
     const order = (line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
-      const fx = convert && tariff.currency ? fxFee(conversion, cash, terms) + (at.fxSpread ?? 0) * cash : 0;
-      const sized = buyWithCash(cash - fx, line, { ...terms, sharePrice: sharePrice(month) });
-      return { fx, sized, cost: fx + sized.commission };
+      const fxOn = (amount: number) => (tariff.currency && amount > 0 ? fxFee(conversion, amount, terms) + (at.fxSpread ?? 0) * amount : 0);
+      const fx = fxOn(fresh);
+      const sized = buyWithCash(fresh - fx + held, line, tradeTerms);
+      if (!whole) return { fx, trade: sized.trade, commission: sized.commission, cost: fx + sized.commission, leftNis: 0, leftHeld: 0 };
+      // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
+      // conversion is charged on the shekels converted, the cash that pays for it (as F-08 charges it on a contribution)
+      const ask = unitBuy!.price * nav * (1 + spread);
+      for (let n = Math.floor(sized.trade / ask + 1e-9); n > 0; n--) {
+        const trade = n * ask;
+        const commission = tradeCommission(line, trade, tradeTerms);
+        const fromHeld = Math.min(held, trade + commission);
+        const owed = trade + commission - fromHeld;
+        // the shekels whose conversion leaves `owed`: c = owed + fx(c), found as F-12 finds the trade a cash pays for
+        let c = owed;
+        if (owed > 0 && tariff.currency) for (let i = 0; i < 100; i++) {
+          const next = owed + fxOn(c);
+          if (Math.abs(next - c) < 1e-10) break;
+          c = next;
+        }
+        if (c <= fresh + 1e-9) {
+          const fxPaid = owed > 0 ? c - owed : 0;
+          return { fx: fxPaid, trade, commission, cost: fxPaid + commission, leftNis: Math.max(0, fresh - c), leftHeld: held - fromHeld };
+        }
+      }
+      return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
     };
     const standingLine = standing ? (at.buyStanding ?? at.buy) : at.buy;
     let chosen = order(standingLine, standing ? (at.fxStanding ?? at.fx) : at.fx);
     if (standing && (at.cheaperOfStandingTrade || at.cheaperOfStandingFx)) {
+      // the way that buys the most, and of two that buy the same, the cheaper (by amount the two buy alike only when they cost the same)
       const regular = order(at.cheaperOfStandingTrade && at.buy ? at.buy : standingLine, at.fx);
-      if (regular.cost < chosen.cost) chosen = regular;
+      if (regular.trade > chosen.trade + 1e-9 || (Math.abs(regular.trade - chosen.trade) <= 1e-9 && regular.cost < chosen.cost)) chosen = regular;
     }
+    waitingNis = chosen.leftNis;
+    waitingHeld = chosen.leftHeld / fxRate(eventMonth);
+    if (standing) {
+      wait.monthly++;
+      if (chosen.trade > 0) wait.placed++;
+      else wait.skipped++;
+    }
+    if (chosen.trade <= 0) return;
     tally.fee("fx", chosen.fx);
-    const { trade, commission } = chosen.sized;
-    tally.fee("trade", commission);
-    const value = navBought(trade, spread);
-    tally.fee("spread", trade - value);
-    lots.push({ units: value / nav, basis: trade, index: J[eventMonth]! });
+    tally.fee("trade", chosen.commission);
+    const value = navBought(chosen.trade, spread);
+    tally.fee("spread", chosen.trade - value);
+    lots.push({ units: value / nav, basis: chosen.trade, index: J[eventMonth]! });
   };
+  /** F-109: the cash waiting in the account in month m, in shekels at the month's rate. */
+  const waiting = (m: number) => waitingNis + waitingHeld * fxRate(m);
 
   // F-20 distributions: Israeli rate, and the foreign withholding credited against it (TXF-17, TXF-18).
   let israeliDistRate = 0;
@@ -454,7 +516,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       distThisYear = 0;
     }
     if (estateThreshold !== undefined && (units * nav) / fxRate(m) > estateThreshold) tally.flag("TXF-27", m);
-    tally.point(m, I[m]!, units * nav);
+    tally.point(m, I[m]!, units * nav + waiting(m));
   }
 
   if (accountCharged) formulas.push("F-102");
@@ -468,9 +530,12 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const atExit = tariffAt(T);
   const commission = tradeCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
   tally.fee("trade", commission);
-  const fx = tariff.currency ? fxFee(atExit.fx, gross - commission, { fxRate: fxRate(T) }) + (atExit.fxSpread ?? 0) * (gross - commission) : 0;
+  // F-109: the cash still waiting is part of what is left, and no gain: the fund's currency is converted with the sale's proceeds
+  const heldAtExit = waitingHeld * fxRate(T);
+  const converted = gross - commission + heldAtExit;
+  const fx = tariff.currency && converted > 0 ? fxFee(atExit.fx, converted, { fxRate: fxRate(T) }) + (atExit.fxSpread ?? 0) * converted : 0;
   tally.fee("fx", fx);
-  const proceeds = gross - commission - fx;
+  const proceeds = converted - fx + waitingNis;
 
   const cost = lots.reduce((s, l) => s + l.basis, 0);
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
@@ -542,6 +607,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       foreignTax,
       israeliTaxOnDistributions: israeliDistTax,
       fundLevelTax,
+      // F-109: what whole units did to the monthly purchases, for the page's line on the row
+      ...(unitBuy ? { wholeUnits: 1, unitPrice: unitBuy.price, monthlyBuys: wait.monthly, monthlyOrders: wait.placed, monthlySkipped: wait.skipped, cashLeft: waitingNis + heldAtExit } : {}),
     },
     formulas,
   });

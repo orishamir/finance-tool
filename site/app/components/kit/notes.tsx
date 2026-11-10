@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { guideSignature as copy } from "../../copy";
 import { IconAlert } from "../icons";
 import { cx } from "./cx";
+import { gershayim } from "../../lib/format";
 
 /** Where the starting values came from, in one small line under the controls: "מקור ההתחלה: …". */
 export function SourceLine({ lead, items }: { lead: ReactNode; items: string[] }) {
@@ -49,13 +50,13 @@ const NUMBER = /\d+(?:[.,]\d+)*(?:\s?(?:₪|%))?/g;
 /**
  * Hebrew prose that carries figures, as a record prints it (a bank's conditions: "3,000 ₪", "31.03.2026", "2%"): each figure is isolated
  * left to right, so the shekel sign and the digits keep one order beside Hebrew words, as in a `Num`. The figures stay the document's own,
- * not site figures. In the kit (the current account's visual and the bank page's cards).
+ * not site figures; an abbreviation's straight quote is drawn as the gershayim (docs/copy.md 10.4). In the kit (the current account's visual and the bank page's cards).
  */
 export function PrintedText({ text }: { text: string }) {
   const parts: ReactNode[] = [];
   let last = 0;
   for (const m of text.matchAll(NUMBER)) {
-    parts.push(text.slice(last, m.index));
+    parts.push(gershayim(text.slice(last, m.index)));
     parts.push(
       <bdi key={m.index} dir="ltr" className="whitespace-nowrap">
         {m[0]}
@@ -63,7 +64,7 @@ export function PrintedText({ text }: { text: string }) {
     );
     last = m.index + m[0].length;
   }
-  parts.push(text.slice(last));
+  parts.push(gershayim(text.slice(last)));
   return <>{parts}</>;
 }
 
@@ -76,5 +77,35 @@ export function DoubtNote({ text, className }: { text: string; className?: strin
         <PrintedText text={text} />
       </span>
     </span>
+  );
+}
+
+/**
+ * What is true of every row of the table under it, said once over the table instead of on each row ("נכון לכל הפיקדונות בטבלה:"): a muted
+ * box with one point each. A fact true of only some rows stays in those rows.
+ */
+export function SharedFacts({ title, items, className, plain, foot }: { title: ReactNode; items: { key: string; text: ReactNode }[]; className?: string; /** Each item a line of plain sentences, with no bullets (a company page, the designer's mocks). */ plain?: boolean; /** After the lines: the rules behind them, as one quiet line of chips. */ foot?: ReactNode }) {
+  if (items.length === 0) return null;
+  if (plain)
+    return (
+      <div className={cx("rounded-lg border border-border bg-card px-4 py-3 flex flex-col gap-1 text-sm", className)}>
+        <p className="font-medium">{title}</p>
+        {items.map((it) => (
+          <p key={it.key} className="text-muted-foreground">
+            {it.text}
+          </p>
+        ))}
+        {foot}
+      </div>
+    );
+  return (
+    <div className={cx("rounded-lg bg-muted px-4 py-3 flex flex-col gap-1.5 text-sm", className)}>
+      <p className="font-medium">{title}</p>
+      <ul className="flex flex-col gap-1 list-disc ps-5 marker:text-chart-axis max-w-measure">
+        {items.map((it) => (
+          <li key={it.key}>{it.text}</li>
+        ))}
+      </ul>
+    </div>
   );
 }

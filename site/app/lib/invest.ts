@@ -160,6 +160,8 @@ export interface BrokerCell {
   venue?: Venue | null;
   /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
   standing?: boolean;
+  /** The house's standing-order lines for this purchase that the ranked price leaves out (`not_ranked`, D41, D56): shown beside the row. */
+  aside?: string[];
   /** The option the cell prices (a custom index's account list names the kind of fund each house's cost is for). */
   option?: OptionId;
   /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: read when shown, a run per line. */
@@ -186,6 +188,13 @@ export interface WayPrice {
   interaction: number;
   /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
   standing: boolean;
+  /** The house's standing-order lines for this purchase that the ranked price leaves out (`not_ranked`, D41, D56): shown beside the row. */
+  aside: string[];
+  /**
+   * F-109 (D94): the house buys the fund in whole units: the monthly purchases of the plan and how many of them bought no unit (their cash
+   * waited for a later month). Null where it buys by amount.
+   */
+  units: { monthly: number; skipped: number } | null;
 }
 
 export interface FundWay {
@@ -202,6 +211,8 @@ export interface FundWay {
   byHouse: Record<string, WayPrice | { reason: Reason; providerId: string; availability?: Availability }>;
   reason?: Reason;
   currencyMismatch: boolean;
+  /** F-109: the fund is bought in whole units and its record holds no unit price, so it is priced by amount and its row says so. */
+  noUnitPrice: boolean;
 }
 
 export interface OptionView {
@@ -270,6 +281,8 @@ export interface HouseRow {
   generic: BrokerCell | null;
   /** The house prints a standing-order line for a kind of fund here: by house, so the row keeps its label when the best fund changes. */
   standing: boolean;
+  /** The standing-order lines the ranked price leaves out at this house for any kind of fund here (`not_ranked`, D41): by house, as `standing`. */
+  aside: string[];
 }
 
 export interface WorthLines {
@@ -334,15 +347,11 @@ const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים
 export const isFxToFx = (l: Pick<FeesSnapshot["lines"][number], "base" | "names">) => l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "));
 
 const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
-/**
- * The lines this page ranks. Interactive Brokers' Tiered prices leave out exchange and clearing fees the data does not hold, so they would
- * understate the cost: only its Fixed lines are read. A foreign-currency to foreign-currency conversion line is left out.
- */
-export function scoped(s: FeesSnapshot, houseId: string = s.id): FeesSnapshot {
+/** The lines this page ranks: every line but a foreign-currency to foreign-currency conversion. */
+export function scoped(s: FeesSnapshot): FeesSnapshot {
   let out = scopedCache.get(s);
   if (!out) {
-    // `houseId`: the house whose price list it is, for an account built on a house (its own id is the person's)
-    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l) && !(houseId === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
+    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l)) };
     scopedCache.set(s, out);
   }
   return out;
@@ -371,17 +380,21 @@ interface Cand {
   band?: string[];
 }
 
-/** The ways to read a snapshot for an option: for a fund bought abroad, one per exchange its tariff names, then the plain reading. */
+/**
+ * The ways to read a snapshot for an option, the cheapest that computes winning (F-63). For a fund bought abroad: one per exchange its tariff
+ * names and per pricing plan on that exchange (Interactive Brokers prints Fixed and Tiered for each), each with the standard conversion and
+ * with every other way the house converts (a banded conversion line with no currency of its own and no recurring plan: Interactive Brokers'
+ * automatic conversion, F-13); then the plain reading.
+ */
 function candidates(s: FeesSnapshot, option: OptionId): Cand[] {
-  // Interactive Brokers' conversion is its spot order, the standard line (D56): its automatic conversion adds a markup
-  // "at its discretion" that no document limits, the spot order's 0.2 basis point (at least USD 2) and "no mark-ups on quotes" are printed
   const plain: Cand = { venue: null };
   if (option !== "abroad") return [plain];
   const trade = s.lines.filter((l) => l.base === "trade" && l.level === "list" && l.applies_to.includes("foreign_securities") && l.band);
+  const ways = [...new Set(s.lines.filter((l) => l.base === "fx" && l.level === "list" && l.band && l.band !== STANDING_CONVERSION_BAND && !l.conversion_currency && l.applies_to.some((a) => a === "foreign_securities" || a === "all")).map((l) => l.band!))];
   const out: Cand[] = [];
   for (const v of ["us", "europe"] as Venue[]) {
-    const bands = [...new Set(trade.filter((l) => venueOfBand(l.band) === v).map((l) => l.band!))];
-    if (bands.length) out.push({ venue: v, band: bands });
+    const plans = [...new Set(trade.filter((l) => venueOfBand(l.band) === v).map((l) => l.band!))];
+    for (const plan of plans) for (const way of [null, ...ways]) out.push({ venue: v, band: way ? [plan, way] : [plan] });
   }
   return [...out, plain];
 }
@@ -393,6 +406,8 @@ interface Spec {
   market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number };
   currency?: { code: string; startRate: number };
   cls: string;
+  /** F-109 (D94): where the fund is bought (TASE, or the exchange abroad it trades on), so each house buys it in whole units or by amount. */
+  listing?: "tase" | "us" | "europe";
 }
 
 interface Ctx {
@@ -465,6 +480,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
     instrumentClass: spec.cls,
     channel: "direct",
     ...(spec.currency ? { currency: spec.currency } : {}),
+    ...(spec.listing ? { listing: spec.listing } : {}),
     fx: ctx.fx,
     theta: ctx.theta,
     providers: list.map((x) => {
@@ -476,7 +492,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
       const account = current ? { currentAccount: true } : {};
       if (layered) {
         // an account built on a bank keeps the bank's current account (its own record copies only the price lines)
-        const snap = scoped(x.s, houseOfSnap(ctx, x.s));
+        const snap = scoped(x.s);
         return { snapshot: current ? { ...snap, current_account: current } : snap, level: "entered" as const, layered, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
       }
       return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
@@ -498,28 +514,33 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
 }
 
 /**
- * A house's own list tariff for a kind of holding, read as the comparison reads it for a generic fund of the option (the first reading of its
- * tariff that builds): what an account built on the house starts from (F-101), with the run facts the layers need. Null when the option cannot
- * run (no exchange rate for a fund abroad) or no reading of the house's tariff builds.
+ * A house's own list tariff for a kind of holding, read as the comparison reads it for a generic fund of the option (of the readings of its
+ * tariff that build, the one the comparison prices the house on, else the first): what an account built on the house starts from (F-101),
+ * with the run facts the layers need. Null when the option cannot run (no exchange rate for a fund abroad) or no reading of the house's
+ * tariff builds.
  */
 export function listReading(bundle: IndicesBundle, s: FeesSnapshot, option: OptionId, plan: WorkbenchInputs): { built: TariffBuild; run: LayeredRun; line: (id: string) => FeesSnapshot["lines"][number] | undefined } | null {
   const ctx = makeCtx(bundle, plan);
   const spec = genericSpec(ctx, option);
   if (!spec) return null;
   const scopedSnap = scoped(s);
-  for (const cand of candidates(scopedSnap, option)) {
+  const builds = candidates(scopedSnap, option).flatMap((cand) => {
     try {
       const built = buildTariff(
         { goal: { amountNow: plan.amountNow, monthly: plan.monthly, months: 12 * plan.years }, market: { ...spec.market, inflation: plan.inflation }, profile: {}, instrumentClass: spec.cls, channel: "direct", ...(spec.currency ? { currency: spec.currency } : {}), fx: ctx.fx, theta: ctx.theta, providers: [] },
         { snapshot: scopedSnap, level: "list", ...(cand.band ? { band: cand.band } : {}) },
         scopedSnap,
       );
-      return { built, run: { fx: ctx.fx, instrumentClass: spec.cls, currency: spec.currency, sharePrice: undefined }, line: (id) => scopedSnap.lines.find((l) => l.id === id) };
+      return [{ cand, built }];
     } catch {
-      continue;
+      return [];
     }
-  }
-  return null;
+  });
+  if (!builds.length) return null;
+  // several readings build (Interactive Brokers' plans and ways to convert): the one the comparison prices the house on
+  const won = builds.length > 1 ? priceMany(ctx, spec, option, [s], null).get(s.id) : undefined;
+  const { built } = (won?.kind === "ok" && builds.find((b) => sameCand(b.cand, won.cand))) || builds[0]!;
+  return { built, run: { fx: ctx.fx, instrumentClass: spec.cls, currency: spec.currency, sharePrice: undefined }, line: (id) => scopedSnap.lines.find((l) => l.id === id) };
 }
 
 function ambiguity(message: string, s: FeesSnapshot): NotComparable | null {
@@ -536,7 +557,8 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   return { code: r.code, detail: r.detail };
 }
 
-type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null; standing: boolean } | { kind: "fail"; reason: NotComparable };
+/** `cand`: the reading of the tariff the price is on (an account built on a house: the house's). */
+type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null; standing: boolean; aside: string[]; cand: Cand } | { kind: "fail"; reason: NotComparable };
 
 /** The venue the tariff line a row used names (a trade line's band), else the reading's venue. */
 function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | null {
@@ -563,7 +585,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   // #190: the layered run has no line of its own to say which exchange it trades on, and was priced where the house's list has no line)
   const bases = [...new Set(snaps.flatMap((s) => { const b = baseOf(s); return b && !snaps.some((x) => x.id === b) ? [b] : []; }))].flatMap((b) => ctx.bundle.snapshots.filter((x) => x.id === b));
   const all = [...snaps, ...bases];
-  const per = all.map((s) => ({ s, cands: typedOpen(s) ? [] : candidates(scoped(s, houseOfSnap(ctx, s)), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
+  const per = all.map((s) => ({ s, cands: typedOpen(s) ? [] : candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
   const results = new Map<string, { row: ProviderRow; cand: Cand }[]>();
   const slots = Math.max(0, ...per.map((p) => p.cands.length));
   for (let k = 0; k < slots; k++) {
@@ -572,18 +594,17 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     items.forEach((x, i) => results.set(x.s.id, [...(results.get(x.s.id) ?? []), { row: rows[i]!, cand: x.cand }]));
   }
   const out = new Map<string, Priced>();
-  const won = new Map<string, Cand>();
   // the houses first, so an account built on one can follow it
   const order = [...per].sort((a, b) => Number(!!baseOf(a.s)) - Number(!!baseOf(b.s)));
   for (const { s } of order) {
     const base = baseOf(s);
     if (base) {
       const at = out.get(base);
-      const cand = won.get(base);
+      const cand = at?.kind === "ok" ? at.cand : undefined;
       const mine = cand ? (results.get(s.id) ?? []).find((g) => sameCand(g.cand, cand)) : undefined;
       if (!at || at.kind === "fail") out.set(s.id, at ?? { kind: "fail", reason: { code: "data-missing", recorded: null } });
-      else if (mine?.row.kind === "compared") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing });
-      else out.set(s.id, { kind: "fail", reason: mine?.row.kind === "not-comparable" ? reasonOf(mine.row, scoped(s, base)) : { code: "data-missing", recorded: null } });
+      else if (mine?.row.kind === "compared") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing, aside: [], cand: at.cand });
+      else out.set(s.id, { kind: "fail", reason: mine?.row.kind === "not-comparable" ? reasonOf(mine.row, scoped(s)) : { code: "data-missing", recorded: null } });
       continue;
     }
     if (typedOpen(s)) {
@@ -606,8 +627,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue, cand: g.cand };
     }
     if (best) {
-      won.set(s.id, best.cand);
-      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }) });
+      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }), aside: best.row.standingAside, cand: best.cand });
       continue;
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));
@@ -667,6 +687,14 @@ export function phoneOnlyValue(s: FeesSnapshot | undefined, option: OptionId, ve
     notes: "",
   } as SiteValue;
   return ownBy(v, s.provider.name_he);
+}
+
+/** A standing-order line the ranked price leaves out (D41, D56): its printed price and why, from the house's record. */
+export type AsideLine = FeesSnapshot["lines"][number] & { not_ranked: NonNullable<FeesSnapshot["lines"][number]["not_ranked"]> };
+
+/** The lines of `ids` in the house's record that the ranked price leaves out, as the record prints them. */
+export function asideLines(s: FeesSnapshot | undefined, ids: readonly string[]): AsideLine[] {
+  return (s?.lines ?? []).filter((l): l is AsideLine => ids.includes(l.id) && l.not_ranked !== undefined);
 }
 
 /** Why the documents leave this kind of holding open at the house: said on its grey row. */
@@ -876,6 +904,8 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
       return splitOf().interaction;
     },
     standing: p.standing,
+    aside: p.aside,
+    units: unitsOf(row.run),
   };
 }
 
@@ -903,7 +933,28 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
-  return { spec: { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass }, mismatch };
+  const listing = listingOf(rec, subject.instrumentClass);
+  return { spec: { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, ...(listing ? { listing } : {}) }, mismatch };
+}
+
+/**
+ * F-109 (D94): where a fund is bought: an Israeli ETF and a foreign fund's Tel Aviv line on TASE, a fund abroad on the exchange it trades on.
+ * A tracking fund is bought from its manager by amount and has none.
+ */
+function listingOf(rec: FundRecord, cls: string): Spec["listing"] {
+  if (cls === "etf_units" || cls === "tase_foreign_fund_units") return "tase";
+  if (cls === "foreign_securities") return venueOfFund(rec) ?? undefined;
+  return undefined;
+}
+
+/** F-109: a fund bought in whole units whose record holds no unit price (a fund the person typed has none): priced by amount, and its row says the price was not collected. */
+export const unitPriceMissing = (rec: FundRecord, option: OptionId): boolean => option !== "il-tracking" && typeof rec.share_price?.value !== "number";
+
+/** F-109: what whole units did to a way's monthly purchases, from its run; null where the house buys by amount. */
+export function unitsOf(run: { detail: Record<string, number> }): WayPrice["units"] {
+  const d = run.detail;
+  if (!d.wholeUnits) return null;
+  return { monthly: d.monthlyBuys ?? 0, skipped: d.monthlySkipped ?? 0 };
 }
 
 const nameOf = (rec: FundRecord) => rec.names.he[0] ?? rec.names.en[0] ?? rec.id;
@@ -947,6 +998,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
         leftN: row.real,
         venue: p.venue,
         standing: p.standing,
+        aside: p.aside,
         get lines() {
           return splitOf().lines;
         },
@@ -966,7 +1018,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
   const recs = ctx.bundle.funds.filter((f) => f.exposure_id === (index.exposure?.id ?? index.id) && optionOfFund(f, index.exposure ?? undefined) === option);
   const yours = yourBroker ? ctx.snaps.find((s) => s.id === yourBroker) : undefined;
   const funds: FundWay[] = recs.map((rec) => {
-    const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, byHouse: {} as FundWay["byHouse"] };
+    const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
     const fs = fundSpec(ctx, rec);
     if ("reason" in fs) return { ...base, reason: fs.reason };
     const venue = option === "abroad" ? venueOfFund(rec) : null;
@@ -1124,7 +1176,8 @@ function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, provide
     const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? gapOf2(ctx, headlineEnd(headline), leftEnd(provider.short, best.price!.valueN, best.price!.value), "F-65", copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
     const standing = cells.some((c) => c.standing) || entries.some((e) => e.price?.standing);
-    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, standing };
+    const aside = [...new Set([...cells.flatMap((c) => c.aside ?? []), ...entries.flatMap((e) => e.price?.aside ?? [])])];
+    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, standing, aside };
   });
   const priced = (r: HouseRow) => r.best ?? r.generic;
   const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);
@@ -1225,6 +1278,8 @@ export interface PairCosts {
   fund: SiteValue;
   /** The state's part (F-91): what remains, the tax paid during and at exit with the growth a tax paid along the way would have earned, at the horizon in today's shekels. */
   tax: SiteValue;
+  /** F-109: the house buys the fund in whole units (`WayPrice.units`); the remainder then holds what the waiting cash did not earn. */
+  units: WayPrice["units"];
 }
 
 /** One account and one fund on a plan, ready to price; null when the account does not sell the fund or the fund cannot be run. */
@@ -1283,7 +1338,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
     interaction,
-    remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder)),
+    remainder: at(interaction, "F-91", copy.pair.lineAbout(unitsOf(row.run) ? copy.pair.remainderUnits : copy.pair.remainder)),
     accountCost: row.horizonCostBeforeTax,
     distributes: !!distribution,
     fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec })),
@@ -1291,6 +1346,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     base,
     // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
+    units: unitsOf(row.run),
   };
 }
 

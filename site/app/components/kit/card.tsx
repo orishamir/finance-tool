@@ -33,16 +33,16 @@ const HEADING: Record<SectionLevel, string> = { page: "text-xl lg:text-2xl font-
  * A heading with an optional lead and an optional action at the end of its row, then the body. Give `id` to make it a target of the
  * section index and of in-page links (it then carries the scroll margin under the sticky header).
  */
-export function Section({ id, title, lead, level = "page", action, children, className, as = "section" }: { id?: string; title: ReactNode; lead?: ReactNode; level?: SectionLevel; action?: ReactNode; children?: ReactNode; className?: string; as?: "section" | "div" }) {
+export function Section({ id, title, lead, level = "page", action, children, className, as = "section", heading: H = "h2" }: { id?: string; title: ReactNode; lead?: ReactNode; level?: SectionLevel; action?: ReactNode; children?: ReactNode; className?: string; as?: "section" | "div"; /** The heading's rank in the page's outline: `h3` for a part inside a section that has its own `h2`. */ heading?: "h2" | "h3" }) {
   const uid = useId();
   const headId = id ? `${id}-h` : `${uid}-h`;
   const Wrapper = as as ElementType;
   return (
     <Wrapper id={id} aria-labelledby={headId} className={cx("flex flex-col gap-4", id && "scroll-mt-[112px] lg:scroll-mt-[88px]", className)}>
       <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-        <h2 id={headId} className={HEADING[level]}>
+        <H id={headId} className={HEADING[level]}>
           {title}
-        </h2>
+        </H>
         {action}
       </div>
       {/* no word alone on the lead's last line (a mark alone on a line) */}

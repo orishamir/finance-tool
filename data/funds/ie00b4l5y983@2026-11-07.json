@@ -91,6 +91,24 @@
     "url": "https://www.ishares.com/gls-download/literature/fact-sheet/swda-ishares-core-msci-world-ucits-etf-fund-fact-sheet-en-gb.pdf",
     "date": null
   },
+  "share_price": {
+    "value": 144.15,
+    "unit": "usd",
+    "source": {
+      "url": "https://www.ishares.com/uk/individual/en/products/251882/ishares-msci-world-ucits-etf-acc-fund",
+      "title": "iShares Core MSCI World UCITS ETF USD (Acc), SWDA, product page: 'NAV as of 09/Nov/2026', USD 144.15",
+      "publisher": "BlackRock (iShares III plc)",
+      "strength": "institution"
+    },
+    "checked": "2026-11-10",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [],
+    "state": "sourced",
+    "notes": "F-109: the issuer's net asset value per share, the price a whole unit is bought at in the run (grown there like the fund). A market price differs slightly from the NAV and was not collected."
+  },
   "snapshot": "2026-11-07",
   "replication": {
     "method": "physical",
