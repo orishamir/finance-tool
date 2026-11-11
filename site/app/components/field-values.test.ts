@@ -7,7 +7,8 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { numbers, strength } from "../copy";
 import { asField, computed, entered, type SiteValue } from "../lib/value";
-import { Num, ProvenanceProvider, ValueSheet } from "./provenance";
+import { Num, ProvenanceProvider } from "./provenance";
+import { ValueSheet } from "./provenance-sheets";
 import { InputSlot, NumberField, RangeField } from "./kit";
 
 const today = "2026-11-08";

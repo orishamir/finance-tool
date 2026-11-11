@@ -37,8 +37,6 @@ export interface CostPart {
   legendId?: string;
   /** Whose cost the part is ("account"): with the bar's `groups`, the parts of a group write amounts that add up to that group's figure. */
   group?: string;
-  /** The part's colour as a `text-` class (`text-chart-by-account`): a `track` bar cut at the scale's end draws its hatched stub in it. */
-  ink?: string;
 }
 
 export { wholeParts };
@@ -108,11 +106,8 @@ const SLIVER = 0.01;
  * it, to the parts' own rounded sum. A `md` bar keeps a line under it, at one height, for the amounts too narrow to write inside; the root
  * carries the total and the amounts written (`data-total`, `data-amounts`), which a render test holds together on the pages. The chart
  * check (site/scripts/chart-check) finds it by `data-chart` and reads the bar's start (`data-zero`) and its parts (`data-mark`).
- * `track`: a list row's bar as charts.md draws a bar (the index page's two lists): a faint track the scale's whole length, a thin zero line
- * at its start, the parts square at the zero line and rounded at the far end; a total past the scale fills the track and ends in a stub
- * hatched in its last part's colour (`ink`), which a note beside the list explains.
  */
-export function CostStack({ parts, scale, size = "md", label, highlight, total: writtenTotal, groups, track = false }: { parts: CostPart[]; scale: number; size?: "sm" | "md"; label: string; highlight?: string | null; total?: number; /** A group's whole-shekel figure written elsewhere on the page (`{ account: 1043 }`): its parts' amounts add up to it. */ groups?: Readonly<Record<string, number>>; track?: boolean }) {
+export function CostStack({ parts, scale, size = "md", label, highlight, total: writtenTotal, groups }: { parts: CostPart[]; scale: number; size?: "sm" | "md"; label: string; highlight?: string | null; total?: number; /** A group's whole-shekel figure written elsewhere on the page (`{ account: 1043 }`): its parts' amounts add up to it. */ groups?: Readonly<Record<string, number>> }) {
   const pick = useChartPick();
   const root = useRef<HTMLDivElement>(null);
   // the bar's width in px, so an amount is written inside a part only where it fits
@@ -186,7 +181,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
       <div
         role="img"
         aria-label={label}
-        className={cx("flex", size === "sm" ? "h-3" : "h-7", track && "relative rounded-e-full bg-muted before:absolute before:start-0 before:-top-0.5 before:h-4 before:w-px before:bg-muted-foreground")}
+        className={cx("flex", size === "sm" ? "h-3" : "h-7")}
         data-zero=""
       >
         {list.map((p, i) => {
@@ -202,8 +197,8 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
                 // the remainder's grey is dark (re-picked through the palette validator) and the tax's rose mid-dark: their amounts are written in light ink
                 DARK_FILLS.has(p.className) ? "text-foreground" : "text-background",
                 live[i] && i !== lastLive && "border-e border-card",
-                i === firstLive && !track && "rounded-s-sm",
-                i === lastLive && (track ? "rounded-e-full" : "rounded-e-sm"),
+                i === firstLive && "rounded-s-sm",
+                i === lastLive && "rounded-e-sm",
                 named && "cursor-pointer",
                 size === "md" && named && "before:absolute before:inset-x-0 before:-inset-y-2",
                 "transition-opacity duration-[var(--duration-fast)]",
@@ -242,12 +237,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
         </div>
       )}
       {activeAt >= 0 && <Box rows={boxRows.map(({ p, i }) => ({ part: p, amount: wholes[i]! }))} active={list[activeAt]!.id} share={list[activeAt]!.value / total} total={shownSum} toStart={starts[activeAt]! + widths[activeAt]! / 2 > 0.5} />}
-      {broken && !track && <span aria-hidden="true" className={cx("absolute top-0 start-[82%] w-1.5 -skew-x-[20deg] bg-card", size === "sm" ? "h-3" : "h-7")} />}
-      {broken && track && (
-        <span aria-hidden="true" className={cx("absolute top-0 end-0 w-3 rounded-e-full bg-muted", size === "sm" ? "h-3" : "h-7")}>
-          <span className={cx("block size-full rounded-e-full hatch-cut", list[lastLive]?.ink)} />
-        </span>
-      )}
+      {broken && <span aria-hidden="true" className={cx("absolute top-0 start-[82%] w-1.5 -skew-x-[20deg] bg-card", size === "sm" ? "h-3" : "h-7")} />}
     </div>
   );
 }

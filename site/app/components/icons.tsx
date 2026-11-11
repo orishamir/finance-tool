@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   CircleAlert,
   Clock,
   Copy,
@@ -41,6 +42,7 @@ export const IconDrillIn = base(ChevronLeft);
 /** Back: points right in RTL (to the parent). */
 export const IconBack = base(ChevronRight);
 export const IconChevronDown = base(ChevronDown);
+export const IconChevronUp = base(ChevronUp);
 export const IconArrowBack = base(ArrowRight);
 /** A link's arrow forward, at the end of its words ("השוואה לפיקדונות בבנקים אחרים ←"); points to the end side in RTL. */
 export const IconArrowForward = base(ArrowLeft);

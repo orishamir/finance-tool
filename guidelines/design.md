@@ -74,10 +74,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
   Each state also has a pattern, an icon or a word, never colour alone. In a
   list of products, a column whose figures all share one state carries the
   mark in its head, and its cells stay plain.
-- **Type.** Inter for Latin and digits, then Heebo for Hebrew. Sizes 13, 14,
-  16, 18, 20, 24 and 30 px, plus 32 px for a headline figure; body 16 px at
-  line height 1.7. No letter-spacing on Hebrew. Tabular figures for numbers;
-  a slashed zero in identifiers.
+- **Type.** Inter for Latin and digits, then Heebo for Hebrew. No text under
+  13 px; body 16 px at line height 1.7. No letter-spacing on Hebrew. Tabular
+  figures for numbers; a slashed zero in identifiers.
 - **Spacing.** A 4 px base. `px-gutter` 16 to 32 px, `gap-section` 40 to
   64 px, 44 px touch targets, 48 px fields, prose no wider than
   `max-w-measure` (38rem).

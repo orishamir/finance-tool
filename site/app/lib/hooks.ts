@@ -1,5 +1,5 @@
 // Small React hooks shared across pages and the kit.
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
 import { useSearchParams } from "react-router";
 
 /** useLayoutEffect in the browser, useEffect while pre-rendering (where a layout effect only warns). */
@@ -10,6 +10,22 @@ export function useHydrated(): boolean {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
   return hydrated;
+}
+
+/**
+ * Whether a media query matches, following it as the window changes. False on the pre-rendered page: use it where the page renders only
+ * in the browser (the index page's body), so its first render already has the answer and nothing moves after it.
+ */
+export function useMedia(query: string): boolean {
+  const subscribe = useCallback(
+    (on: () => void) => {
+      const m = window.matchMedia(query);
+      m.addEventListener("change", on);
+      return () => m.removeEventListener("change", on);
+    },
+    [query],
+  );
+  return useSyncExternalStore(subscribe, () => window.matchMedia(query).matches, () => false);
 }
 
 const EMPTY = new URLSearchParams();

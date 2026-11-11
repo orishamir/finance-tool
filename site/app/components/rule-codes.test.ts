@@ -6,7 +6,8 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 // @ts-expect-error a plain ES module script, without types
 import { codesIn, ruleIds, shownText } from "../../scripts/rule-codes.mjs";
-import { ProvenanceProvider, RuleCard, RuleRef, RuleTitleRow } from "./provenance";
+import { ProvenanceProvider, RuleRef, RuleTitleRow } from "./provenance";
+import { RuleCard } from "./provenance-sheets";
 
 const rules: Set<string> = ruleIds();
 const codes = (html: string) => (codesIn(shownText(html), rules) as { code: string }[]).map((h) => h.code);

@@ -4,9 +4,9 @@ import { Link, useLocation, useRouteLoaderData } from "react-router";
 import { companies as companiesCopy, formulaNames, knowledgeEntry, r3workbench, site } from "../copy";
 import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, TermFromAddress, type ProvenanceData } from "./provenance";
-import { SearchCombo, SearchSheet } from "./search";
+import { preloadSearch, SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
-import { Button, CountingFigures, cx, gershayim, When } from "./kit";
+import { Button, CountingFigures, clearOfReceiptStub, cx, gershayim, When } from "./kit";
 import { useHydrated } from "../lib/hooks";
 
 export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "other";
@@ -166,7 +166,7 @@ function Header({ width, current, ready, onMenu, onSearch }: { width: string; cu
           </nav>
         </div>
         <div className="flex items-center gap-1 -me-2.5 lg:me-0 shrink-0">
-          <Button variant="icon" aria-label={site.search} disabled={!ready} onClick={(e) => onSearch(e.currentTarget)} className="lg:hidden disabled:opacity-40 disabled:cursor-wait">
+          <Button variant="icon" aria-label={site.search} disabled={!ready} onPointerDown={preloadSearch} onClick={(e) => onSearch(e.currentTarget)} className="lg:hidden disabled:opacity-40 disabled:cursor-wait">
             <IconSearch />
           </Button>
           <Button variant="icon" aria-label={site.menu} disabled={!ready} onClick={onMenu} className={cx(navFits && "xl:hidden", "disabled:opacity-40 disabled:cursor-wait")}>
@@ -209,7 +209,8 @@ function Footer({ width }: { width: string }) {
 
 /**
  * A small "back to the top" after a screen or so of scrolling, at the left: in right-to-left pages the names a row starts with sit at the right,
- * and the button covered them. It steps aside while it would cover a block marked `data-keep-clear` (the deposits grid's cells on a phone).
+ * and the button covered them. It steps aside while it would cover a block marked `data-keep-clear` (the deposits grid's cells on a phone),
+ * and stands above the receipt's stub while the stub shows (`clearOfReceiptStub`).
  */
 function ToTop() {
   const [show, setShow] = useState(false);
@@ -234,7 +235,7 @@ function ToTop() {
       type="button"
       aria-label={site.toTop}
       onClick={() => window.scrollTo({ top: 0 })}
-      className="fixed bottom-20 md:bottom-6 end-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent"
+      className={cx("fixed bottom-20 md:bottom-6 end-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent", clearOfReceiptStub)}
     >
       <span aria-hidden="true" className="-rotate-90 inline-flex">
         <IconBack size={20} />

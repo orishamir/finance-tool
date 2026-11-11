@@ -1454,7 +1454,7 @@ export const depositBrowser = {
     inputs: { rate: "הריבית שהבנק מפרסם", amount: "הסכום שמפקידים" },
     about: "הריבית על הסכום, לפני המס על הריבית, ",
     about2: "כ־",
-    underOne: "פחות מ־1 ₪",
+    underOne: "פחות מ־⁦1%⁩",
     variableNote: "ריבית משתנה: החישוב לפי הריבית של היום, והיא יכולה להשתנות במהלך התקופה.",
   },
   mine: "הבנק שלי",
@@ -2825,8 +2825,6 @@ const shownPair = (chosen: boolean) => {
     /** A difference's sheet: what it is. */
     diffAbout: `ההפרש מ${name}`,
     vs: `לעומת ${name}`,
-    /** The heading block's key to the small figure. */
-    keyDiff: `המספר הקטן: ההפרש מ${name}`,
     /** The rail's card of the pair's facts. */
     cardTitle: `${name}, בפירוט`,
     /** "לפני שמחליטים": its lead before the pair's names, and the tabs' spoken name. */
@@ -2884,19 +2882,28 @@ export const invest = {
     indexWord: "מדד",
   },
 
-  /** The receipt (the side rail's answer): what was paid in, what the index added, what each party took, what is left. */
+  /** The receipt (the page's answer, in the side rail or between the lists): what was paid in, what the index added, what each party took, what is left. */
   receipt: {
     title: "קבלה",
     added: "המדד הוסיף, לפני כל עלות",
     left: "נשאר לכם",
+    /** The receipt's stub at the screen's foot: the way back up to the receipt. */
+    toReceipt: "לקבלה",
     /** Under what is left: when, in what money, and on what the dollar does (only where the figure rests on it). */
     caption: (years: number, steady: string | null) => `בעוד ${yearsSpan(years)}, בכסף של היום${steady ? `, ${steady}` : ""}.`,
+    /** The ticket's two side parts: what the account and the fund take, under their names. */
+    accountCharges: "החשבון גובה",
+    fundCharges: "הקרן גובה",
     gain: "הרווח שלכם",
     gainNote: "מה שנשאר, פחות מה שהפקדתם",
     lost: "מה ירד בדרך",
     lostBar: "מה ירד בדרך, לפי מי שלקח",
     /** The bar's parts besides the tax, by who took them. */
     parts: { account: "החשבון", fund: "הקרן" },
+    /** A part that took money but under half a percent of what went. */
+    underOne: "פחות מ־⁦1%⁩",
+    /** The fund's fees as rows under its line, each by its whole name; `charged`: the variable fee the costs rest on, after its years. */
+    fundFees: { fixed: "דמי ניהול קבועים", variable: "דמי ניהול משתנים", trustee: "שכר נאמן", yearly: "דמי ניהול שנתיים", charged: (word: string) => `משתנים ${word}` },
   },
 
   /** A fee's rate in words as the price list prints it, under the receipt's account lines (lib/rate-words). */
@@ -2928,32 +2935,55 @@ export const invest = {
     isReport: (title: string) => title.replace(/["״]/g, "").startsWith("דוח"),
   },
 
-  /** The two linked lists and the heading block above them: the verdict on the chosen pair, how the lists work, and the key to the bars. */
+  /** The two linked lists and the heading block above them: the verdict on the chosen pair and the key to the small figure. */
   lists: {
     kicker: "איפה ואיך: החשבון והקרן",
-    /** Said by where the lists stand: side by side (accounts at the start), or one above the other. */
-    lead: "שתי רשימות שקשורות זו לזו. מימין, כל החשבונות כשקונים בהם את הקרן שנבחרה. משמאל, כל הקרנות בחשבון שנבחר. בחירה באחת מסדרת מחדש את השנייה.",
-    leadStacked: "שתי רשימות שקשורות זו לזו. למעלה, כל החשבונות כשקונים בהם את הקרן שנבחרה. למטה, כל הקרנות בחשבון שנבחר. בחירה באחת מסדרת מחדש את השנייה.",
-    keyLead: "הפס, סך העמלות של הזוג:",
-    /** The line under each list's title: the half the other list holds. */
-    accountsWith: "כשקונים בו את",
-    fundsAt: "בחשבון:",
-    colFees: "עמלות (₪)",
     colLeft: "נשאר בסוף",
-    /** An account row's small line, before what the account charges. */
-    charges: "החשבון גובה",
-    /** A fund row's small line where a rule the price rests on is an open question (`pair.openRow` in the chosen fund's tile). */
+    /** A fund row's note where the pair's price rests on a rule that is an open question (`pair.openRow` in the chosen fund's tile). */
     openRow: "לא מדורגת: שאלה פתוחה",
-    /** A house with a price for some of its customers (a group's, or a standing order's the figure leaves out): a star on its name, said once. */
-    otherPrice: "* יש בו גם מחיר אחר, לחלק מהלקוחות. הוא לא בחישוב; בחרו בחשבון כדי לראות למי.",
-    cut: "הפס נחתך: הסכום ארוך מהשטח",
-    /** The fees column's "?": which price a row counts; a group's price is in the chosen account's tile, marked on its row with a star. */
-    whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות, שלא נכנס לחישוב, מסומן בכוכבית וכתוב בפירוט של החשבון שנבחר.",
-    /** Above the accounts with no price for the chosen fund: a pick there picks a fund it prices; a house that prices no fund on the index stays. */
-    greyAccounts: "בחשבונות האלה אין מחיר לקרן שנבחרה. בחירה באחד מהם מעבירה גם לקרן אחרת.",
-    greyAccountsNone: "בחשבונות האלה אין מחיר לאף קרן על המדד.",
+    /** In "נשאר בסוף"'s "?": which price a row counts; a price for some customers is in the chosen account's card. */
+    whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר אחר, לחלק מהלקוחות, לא נכנס לחישוב. הוא כתוב בפירוט של החשבון שנבחר.",
     /** Above several funds with no price at the chosen account, after why: a pick moves the account (`pair.pickMoves` for one fund). */
     pickMovesMany: (house: string) => `בחירה באחת מהן מעבירה את החשבון ${toName(house)}`,
+    /** The accounts' side beside the ruler: an account is a stretch of it. */
+    accounts: {
+      title: "איפה: החשבון",
+      /** The line under the title, its last words bold. */
+      sets: { lead: "החשבון קובע את", what: "הקטע" },
+      each: "כל נקודה בקטע: קרן אחת שנקנית בו",
+      /** An account's figure: what is left with its cheapest fund. */
+      upTo: "עד",
+      /** Under the list: the small bar beside each row, on the ruler's scale (from 1280 px) or on one scale (below, with no ruler). */
+      barRuler: "הפס הקטן ליד כל חשבון: הקטע שלו על הסרגל, מהקרן הזולה בו עד היקרה.",
+      barAlone: "הפס הקטן ליד כל חשבון: הקטע שלו, מהקרן הזולה בו עד היקרה. לכל החשבונות אותו סולם.",
+      /** An account whose every priced fund of the kind rests on an open rule (G-18): shown, not ranked, no stretch; why is G-18's text. */
+      unranked: "לא מדורג",
+    },
+    /** The funds' side: a fund is a spot inside the chosen account's stretch. */
+    funds: {
+      title: "איך: הקרן",
+      sets: { lead: "הקרן קובעת את", what: "המקום בקטע" },
+      /** "בפסגות: עד 4,492 ₪ בין קרן לקרן": the stretch's length at the chosen account. */
+      span: "{house}: עד {span} בין קרן לקרן",
+      spanAbout: (house: string) => `הפער בין הקרן שמשאירה הכי הרבה לזו שמשאירה הכי מעט, ${inName(house)}`,
+      inHouse: (house: string) => inName(house),
+      /** A fund's figure against the pair in the receipt: less, more or the same as it leaves. */
+      less: "פחות",
+      more: "עוד",
+      same: "אותו סכום",
+      /** Below 1280 px, where no ruler stands: the small bar beside each fund. */
+      barAlone: (house: string) => `הפס הקטן ליד כל קרן: הקטע של ${house}, והנקודה בו היא הקרן.`,
+      /** The fold under the list: the funds the chosen account gives no price, with their reasons. */
+      unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
+      unpricedLabel: (house: string) => `קרנות בלי מחיר ${inName(house)}`,
+      /** The heading over the funds on an open rule (G-18), after the ranked ones of their kind: shown, not ranked. */
+      unranked: "לא מדורגות",
+    },
+    /** Under both lists. `ruler`: from 1280 px, where the ruler stands between them. */
+    note: (ruler: boolean) => (ruler ? "הסרגל: כמה נשאר לכם בסוף, לפי התוכנית שלכם. לחיצה על חשבון מחליפה את הקטע שעל הסרגל. לחיצה על קרן מזיזה את הנקודה בתוכו." : "לחיצה על חשבון מחליפה את הקטע. לחיצה על קרן מזיזה את הנקודה בתוכו."),
+    /** Under both lists, for the chosen account: a price for some of its customers that the figure leaves out (a group's, or a standing
+     *  order's), and where the card says whose. */
+    otherPrice: (house: string, card: string) => `${inName(house)} יש גם מחיר אחר, לחלק מהלקוחות. הוא לא נכנס לחישוב, ולמי הוא מיועד כתוב ב״${card}״.`,
   },
 
   /** "לפני שמחליטים" under the lists: a few questions about the chosen pair, a card each with its answer, one panel open at a time. */
@@ -3431,8 +3461,6 @@ export const invest = {
     fundSlot: "קרן",
     accounts: "כל החשבונות",
     funds: (index: string) => `כל הקרנות על ${index}`,
-    /** D60: a label true of every fund on a list with no groups, said once over the list instead of on every row; "משותף ל" so a chip in the singular ("צוברת") does not follow a plural subject */
-    fundsShared: "משותף לכל הקרנות ברשימה:",
     colAccount: "חשבון",
     colCharges: (years: number) => `מה החשבון גובה ${inYears(years)}`,
     colChargesShort: "מה החשבון גובה",
@@ -3654,8 +3682,6 @@ export const invest = {
     and: "ל־",
     /** Funds, not rows: a fund in Tel Aviv and abroad is a row each, and each of its rows says so. */
     groupCount: (n: number) => (n === 1 ? "קרן אחת" : n === 2 ? "שתי קרנות" : `${n} קרנות`),
-    /** In a group's head, before the labels every fund of the group shares. */
-    allOf: "כולן:",
     colGap: "מול המדד",
     /**
      * the row's words under the gap, and the gap sheet's head in full (not "בשנה" alone): one year names it
@@ -3996,8 +4022,8 @@ export const kit = {
       PhoneFold: "הבחירות של עמוד לפני רשימה, מקופלות בטלפון: שורה אחת אומרת מה נבחר ופותחת אותן, כדי שהרשימה תתחיל במסך הראשון. במחשב הן פתוחות תמיד, בלי השורה.",
       SegmentedControl: "שתיים עד ארבע תשובות קצרות, אחת תמיד נבחרת: לבחירה שמשנה איך אותו תוכן מוצג (כסף של היום או נומינלי, קיבוץ, סדר, גרף או טבלה), או לשאלה שהחישוב צריך (שכיר או עצמאי). התשובות קצרות מספיק כדי לעמוד זו ליד זו גם בטלפון. הבחירה נעשית לפי מה שהבחירה עושה, לא לפי מספר האפשרויות.",
       MenuPicker: "בחירה של פריט אחד מרשימה, בתוך שורת טקסט: כפתור שמראה את הנבחר וחץ, ומתחתיו הרשימה. הנבחר מסומן בווי ובכתב מודגש. פריט שהוספתם מקבל עיפרון ופח, והשורה האחרונה מוסיפה. החצים עוברים בין השורות, ו־Escape או הקשה מחוץ לרשימה סוגרים אותה.",
-      ShareBar: "שלם מפורק לכמה חלקים, בפס אחד של אחוזים: החלקים זה ליד זה, 2 פיקסלים ביניהם, וכל אחד באורך החלק שלו. שם החלק והאחוז נכתבים בתוכו כשיש מקום, ואם אין, במקרא מעל הפס. הסכומים עצמם כתובים ליד הפס.",
-      Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו.",
+      ShareBar: "שלם מפורק לכמה חלקים, בפס אחד של אחוזים: החלקים זה ליד זה, 2 פיקסלים ביניהם, וכל אחד באורך החלק שלו. מעל הפס מקרא אחד, בסדר של הפס: לכל חלק הצבע, השם והאחוז שלו, תמיד באותו מקום. הסכומים עצמם כתובים ליד הפס.",
+      Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",
       FactTile: "אריח קטן של עובדות על דבר אחד: שורת כותרת עם קישור בסופה, שם, ושורות של שם וערך ב־13 פיקסלים. הקצה שלו בצבע של מה שהדבר גובה, כמו השורה שלו בקבלה. שני אריחים מחוברים ב־+ עגול על התפר.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
       KnobStrip: "מספרי התוכנית כמחוונים שנשארים על המסך, לעמוד שנועד לשחק בו: שני טורים במחשב, אחד בטלפון. מספר שלא עובר בדיקה מקבל את ההודעה שלו בקצה שורת השם, במקום כפתור האיפוס, כך שהשורה לא גדלה.",
@@ -4060,12 +4086,12 @@ export const kit = {
       PageTabs: "לשוניות בראש עמוד שהוא אחת מכמה תצוגות של אותו נושא (לפי חברה, לפי מוצר): כל לשונית היא עמוד משלה, ולכן קישור; הנוכחית מסומנת בקו תחתון וב־aria-current.",
       TrackCells: "מה שהתאים של מסלול מכילים, לכל רשימת מסלולים: שני ממוצעי דמי הניהול של הרשות (TrackFeeLines, FeeNum; תא ריק מסביר את עצמו כשלוחצים עליו), החשיפה למניות ולמט״ח עם הטבעות (ExposureCell) והתוויות שליד השם (TrackLabels). כל מספר עובר דרך רכיב המקור.",
       ProductTable: "רשימה של מוצרים מאותו סוג (מסלולים, קרנות): טבלה אחת במחשב ושורה לכל מוצר בטלפון, אף פעם לא ערימה של כרטיסים. הכותרת נושאת את המילים והתא את הערך; fit לעמודה ברוחב התוכן שלה (מספר, קישור, דמי ניהול), והשם מקבל את השאר. banner: שורת זהירות מעל שורות ששייכות יחד. ProductPhoneRow: שורה של מוצר בטלפון. ProductIdLink: המזהה הוא הקישור החוצה (מספר הקרן למאיה), עם אייקון קישור חיצוני. ProductFigures: מספרים, כל אחד עם המילה שלו, אחד מתחת לשני בתא ובשורה אחת בטלפון.",
-      CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה, ובפס על מסילה (בשורה של רשימה) בקצה מקווקו בצבע החלק האחרון. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
+      CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
       PeriodBars: "בחירה של תקופה אחת, מצוירת כתרשים עמודות: כל עמודה כולה כפתור אחד, ובה המספר, העמודה, שם התקופה ומי משלם. כל העמודות על סולם אחד מאפס, בלי קווי רשת ובלי ציר, כי כל עמודה נושאת את המספר שלה. הנבחרת במסגרת וברקע, השם שלה במילוי. עמודה בלי מספר כותבת ״אין״ ואפשר לבחור גם אותה. בטלפון השמות מתקצרים ושם הבנק יורד.",
       MeterBar: "פס דק מתחת למספר בשורת טבלה: האורך שלו הוא החלק של המספר מהגבוה ברשימה. השורה הראשונה בצבע ההדגשה, השאר בצבע הערך, ושורה שעומדת בנפרד (הצעה עם תנאי) חלולה. גדל מתחילת השורה.",
       PeriodStrip: "שנות התוכנית ברצועה אחת, לכל תקופה גוון משלה ומה שמחזיק בה כתוב עליה: שנים במחיר של קבוצה, ואז שנים בתעריפון. הזמן רץ משמאל לימין והקצוות כתובים מתחת. רצועה לקריאה בלבד, לא כפתור.",
-      LinkLine: "קו שמחבר את השורה שנבחרה ברשימה אחת לשורה שנבחרה ברשימה שלידה, עם נקודה בכל קצה; הוא מתכופף כשהשורות בגבהים שונים, עוקב אחריהן כשהן זזות, ולא מוצג כשהרשימות זו מעל זו. קישוט בלבד: קוראי מסך לא מקריאים אותו.",
-      PickList: "רשימה שבוחרים בה שורה אחת: כל שורה היא כפתור בחירה, השורה הנבחרת צבועה עם פס בתחילתה, או, בשורות קצרות באותה צורה, צבועה וממוסגרת, וכל השורות בגובה של הגבוהה שבהן. שורה שאי אפשר לחשב נשארת ברשימה, מעומעמת; לא מסננים אותה החוצה. כותרת קבוצה יכולה לעמוד מעל שורה, ואותה לא בוחרים.",
+      Stretch: "שתי רשימות משני צדי סרגל של כסף: חשבון הוא קטע בסרגל, מהקרן היקרה בו עד הזולה, וקרן היא נקודה בקטע של החשבון שנבחר. השורה של החשבון שנבחר נפתחת אל הקטע שלו, פס על הסרגל, והפס נפתח אל רשימת הקרנות, עם קו ישר מהנקודה של כל קרן לשורה שלה. הזוג שנבחר הוא נקודה אחת בקטע, וקו ישר עולה ממנה אל מה שמעליה. הכול נמדד מהמקום של השורות, מחדש בכל שינוי. StretchBar: עותק קטן של הסרגל ליד שורה, באותו סולם לכל השורות, עם הקטע של השורה, ונקודה כשהשורה היא קרן. שורות הרשימות בסגנון line: שורה אחת, בלי עיגול בחירה, 32 פיקסלים זו מזו עם עכבר ולפחות 44 במגע ומתחת ל־1280 פיקסלים.",
+      PickList: "רשימה שבוחרים בה שורה אחת: כל שורה היא כפתור בחירה, והשורה הנבחרת צבועה עם פס בתחילתה, או, בשורות של שורה אחת ליד סרגל, צבועה וממוסגרת בצבע של מה שבוחרים בה. שורה שאי אפשר לחשב נשארת ברשימה, מעומעמת; לא מסננים אותה החוצה. כותרת קבוצה יכולה לעמוד מעל שורה, ואותה לא בוחרים.",
       PairBars: "שתי עמודות לכל שנה מאפס, השנים משמאל לימין והמספר בקצה כל עמודה. לכל סדרה גוון משלה, ומקרא לצד הגרף.",
       FixedTable: "טבלה שרוחב העמודות שלה קבוע, ולכן שום דבר לא זז כשמספר משתנה. אפשר להסתיר בטלפון עמודה שאינה הכרחית.",
       StatTile: "מספר גדול במסגרת משלו, עם שם מעליו ומשפט מתחתיו. שורה של שלושה מציגה את עיקרי הגוש.",
@@ -4087,7 +4113,8 @@ export const kit = {
       /** keepTitleWhole: a document's title naming a fund, made up, with a Latin run and a quoted name ending in a number. */
       chipSentence: "במכירת ניירות ערך הבנק או חבר הבורסה מנכים מס רווח הון במקור",
       docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
-      receipt: { title: "קבלה לדוגמה", paid: "הפקדתם", added: "צמיחה לדוגמה", tax: "מס רווחי הון לדוגמה", account: "החשבון: חשבון לדוגמה", accountLine: "עמלה לדוגמה", rate: "0.1% מכל פעולה (דוגמה)", fund: "הקרן: קרן לדוגמה", fundFees: "דמי ניהול 0.2% בשנה (דוגמה)", left: "נשאר לכם", gain: "מה שנשאר, פחות מה שהפקדתם", bar: "מה ירד בדרך, לדוגמה" },
+      receipt: { title: "קבלה לדוגמה", stubNames: "חשבון לדוגמה + קרן לדוגמה", paid: "הפקדתם", added: "צמיחה לדוגמה", tax: "מס רווחי הון לדוגמה", account: "החשבון: חשבון לדוגמה", accountLine: "עמלה לדוגמה", rate: "0.1% מכל פעולה (דוגמה)", fund: "הקרן: קרן לדוגמה", fundFee: "דמי ניהול לדוגמה", left: "נשאר לכם", gain: "מה שנשאר, פחות מה שהפקדתם", bar: "מה ירד בדרך, לדוגמה" },
+      stretch: { accounts: "חשבונות לדוגמה", funds: "קרנות לדוגמה", upTo: "עד", less: "פחות", chosen: "נבחר", years: "10 שנים לדוגמה" },
       tile: { account: "החשבון", fund: "הקרן", link: "התעריפון", name: "בית השקעות לדוגמה", rows: ["שורה ראשונה", "שורה שנייה"], values: ["ערך לדוגמה", "ערך נוסף"] },
       cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fund: "דמי ניהול הקרן", tax: "מס רווחי הון", remainder: "תוספת משילוב עמלות החשבון", remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       periods: ["יום", "שבוע", "חודש", "3 חודשים", "6 חודשים", "שנה", "שנתיים", "3 שנים"],
@@ -4155,7 +4182,6 @@ export const kit = {
       seriesB: "מסלול ב",
       seriesC: "קו מנוקד: על תשואה שהוזנה",
       baselineDots: "קו נקודות: העו״ש, קו הבסיס בגרף ההשוואה",
-      cutEnd: "קצה מפוספס: פס שנחתך בסוף הסקאלה",
       fee: "דמי ניהול",
       yearWord: "שנה",
       today: "היום",

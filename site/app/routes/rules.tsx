@@ -9,7 +9,8 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
 import { rulesFront as copy, scopeWords, sourceBlock, system, topicName } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
-import { NumberLegend, RuleCard, RuleDetail, SlottedText, StrengthLabel, TopMatch, type RuleUses } from "../components/provenance";
+import { NumberLegend, StrengthLabel, type RuleUses } from "../components/provenance";
+import { RuleCard, RuleDetail, SlottedText, TopMatch } from "../components/provenance-sheets";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
 import { Sheet } from "../components/Sheet";

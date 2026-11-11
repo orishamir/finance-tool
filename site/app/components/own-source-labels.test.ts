@@ -7,7 +7,8 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import { scopeWords, sourceBlock } from "../copy";
-import { ProvenanceProvider, RuleCard, SourceBlock } from "./provenance";
+import { ProvenanceProvider } from "./provenance";
+import { RuleCard, SourceBlock } from "./provenance-sheets";
 
 const src = (strength: "primary" | "institution" | "secondary", url: string) => ({ url, title: `מסמך ${strength}`, publisher: "x", strength, checked: "2026-10-25" });
 const sources = [src("institution", "https://example.org/own.pdf"), src("secondary", "https://example.org/press")];

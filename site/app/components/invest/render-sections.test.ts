@@ -12,8 +12,8 @@ import { TitleRow } from "./title";
 import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline } from "./pair";
 import { PlanCard } from "./plan-card";
 import { ChosenPair } from "./chosen";
-import { ValueSheet } from "../provenance";
-import { PairLists } from "./lists";
+import { ValueSheet } from "../provenance-sheets";
+import { PairLists, listName } from "./lists";
 import { PairReceipt } from "./receipt";
 import { BeforeDeciding, hedgeCard } from "./before";
 import { useDollarCase } from "./dollar";
@@ -39,7 +39,6 @@ describe("the index page's sections render", () => {
     expect(out).toContain("והסדר לא תלוי בדולר");
     expect(out).toContain("מול המדד");
     expect(out).toContain(invest.lists.kicker);
-    expect(out).toContain(invest.lists.colFees);
     expect(out).toContain(invest.lists.colLeft);
     expect(out).toContain(invest.shownPair(false).row);
     expect(out).toContain(invest.before.fees.total);
@@ -87,13 +86,23 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const pick = pickOfHeadline(view)!;
   const out = lists(view, bundle, plan, pick);
-  it("lists Meitav Trade and both Interactives, told apart as no data and not possible there", () => {
+  it("lists every house; one that prices no fund on an index stands last, with no data or not possible there", () => {
     for (const p of view.providers) expect(out).toContain(p.short.replace(/"/g, "&quot;"));
-    expect(out).toContain("אין נתון");
-    // what a house's documents leave open is no data; only what they say is closed reads as not possible
-    const etf = view.options.find((o) => o.id === "il-etf")!.funds[0]!;
-    const closed = lists(view, bundle, plan, { ...pick, fund: etf.rec.id });
-    expect(closed).toContain("לא אפשרי שם");
+    let last = 0;
+    for (const idx of knownIndices(bundle)) {
+      const v = buildInvest({ bundle, index: idx, plan });
+      const pk = pickOfHeadline(v);
+      if (!pk) continue;
+      const o = lists(v, bundle, plan, pk);
+      const none = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {})));
+      const some = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !none.includes(p));
+      for (const p of none) {
+        expect(fundRow(o, p.id), `${idx.id} ${p.id}`).toMatch(/אין נתון|לא אפשרי שם/);
+        for (const q of some) expect(o.indexOf(`data-pick-key="${p.id}"`), `${idx.id} ${p.id} after ${q.id}`).toBeGreaterThan(o.indexOf(`data-pick-key="${q.id}"`));
+        last++;
+      }
+    }
+    expect(last).toBeGreaterThan(0);
   });
   it("the chosen fund's tile links it to its Maya page at the address that exists", () => {
     const fund = html(createElement(ChosenPair, { view, bundle, plan, pick, chosen: false }));
@@ -102,18 +111,21 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
   });
 });
 
-describe("a bank's standing-order price the figure leaves out is marked on its row and said in its tile (D41, D56)", () => {
+describe("a bank's standing-order price the figure leaves out is said under the lists for the chosen account, and in its tile (D41, D56, D104)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const tracking = view.options.find((o) => o.id === "il-tracking")!.funds[0]!;
-  const out = lists(view, bundle, plan, { house: "psagot", fund: tracking.rec.id });
-  it("each of the three banks' rows carries the star the list's foot explains, and its tile the printed price and the record's reason", () => {
-    expect(shown(out)).toContain(invest.lists.otherPrice);
+  it("no row carries a star; the chosen bank's note points to its card, and its tile says the printed price and the record's reason", () => {
     for (const id of ["leumi", "massad", "fibi"]) {
-      expect(fundRow(out, id), id).toMatch(/\*/);
+      const out = lists(view, bundle, plan, { house: id, fund: tracking.rec.id });
+      expect(shown(out), id).not.toContain("*");
+      const short = view.providers.find((p) => p.id === id)!.short;
+      expect(shown(out).replace(/\u00a0/g, " "), id).toContain(invest.lists.otherPrice(short, invest.shownPair(false).cardTitle).replace(/\u00a0/g, " "));
       const line = bundle.snapshots.find((s) => s.id === id)!.lines.find((l) => l.not_ranked && l.applies_to.includes("mutual_fund_units"))!;
       const tile = html(createElement(ChosenPair, { view, bundle, plan, pick: { house: id, fund: tracking.rec.id }, chosen: true }));
       expect(tile, id).toContain(line.not_ranked!.reason_he.replace(/"/g, "&quot;"));
     }
+    // an account with no other price says nothing of one
+    expect(shown(lists(view, bundle, plan, { house: "psagot", fund: tracking.rec.id }))).not.toContain(invest.lists.otherPrice("פסגות", invest.shownPair(false).cardTitle).slice(10, 30));
   });
   it("a custom index's account list says the same, and under its head that monthly purchases are priced on the regular line", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
@@ -319,36 +331,24 @@ describe("the receipt's fund line names the variable fee the site prices beside 
   });
 });
 
-describe("a label true of every row shows once (D60, recheck 3)", () => {
-  const listOf = (id: string) => {
-    const view = buildInvest({ bundle, index: indexById(bundle, id)!, plan });
-    return lists(view, bundle, plan, pickOfHeadline(view)!).replace(/<!-- -->/g, "");
-  };
+describe("a fund row is its name: a label only where it tells two rows apart (D104)", () => {
   const accumulating = invest.labels?.["pays-accumulating"]?.text ?? "צוברת";
-  it("on the Tel Aviv lists, which have no groups, \"צוברת\" stands once over the list and on no row", () => {
-    for (const id of ["index-ta125", "index-ta35", "index-ta90"]) {
-      const out = listOf(id);
-      expect(out, id).toContain(invest.pair.fundsShared);
-      // the line over the list comes before the fund list's first row, and no fund row says it again
-      const funds = out.slice(out.lastIndexOf('role="radiogroup"'));
-      expect(out.indexOf(invest.pair.fundsShared), id).toBeLessThan(out.lastIndexOf('role="radiogroup"'));
-      expect(shown(funds), id).not.toContain(accumulating);
-      expect(shown(out.slice(out.indexOf(invest.pair.fundsShared), out.lastIndexOf('role="radiogroup"'))), id).toContain(accumulating);
-    }
-  });
-  it("a list with groups says a label its hedged group shares in that group's head, not on its rows", () => {
-    let heads = 0;
-    for (const id of ["index-sp500", "index-nasdaq100", "index-msci-world", "index-msci-acwi"]) {
+  it("no fund row on the index pages says a label every fund shares; two funds of one name (none in the data today) say what tells them apart", () => {
+    for (const id of ["index-ta125", "index-ta35", "index-ta90", "index-sp500", "index-nasdaq100", "index-msci-world"]) {
       const view = buildInvest({ bundle, index: indexById(bundle, id)!, plan });
-      const hedged = allFunds(view).filter((f) => kindOf(f.rec) === "hedged");
-      if (hedged.length < 2) continue;
-      const out = listOf(id);
-      const head = new RegExp(`${invest.kinds.name.hedged} · ${invest.kinds.allOf} ([^<]+)`).exec(out.replace(/<!-- -->/g, ""));
-      if (!head) continue;
-      heads++;
-      for (const f of hedged) expect(fundRow(out, f.rec.id), `${id} ${f.rec.id}`).not.toContain(head[1]!.split(" · ")[0]!);
+      const pick = pickOfHeadline(view)!;
+      const out = lists(view, bundle, plan, pick).replace(/<!-- -->/g, "");
+      const priced = allFunds(view).filter((f) => "valueN" in (f.byHouse[pick.house] ?? {}));
+      const names = new Map<string, number>();
+      for (const f of priced) names.set(listName(view, f.name), (names.get(listName(view, f.name)) ?? 0) + 1);
+      for (const f of priced) {
+        const row = fundRow(out, f.rec.id);
+        if ((names.get(listName(view, f.name)) ?? 0) > 1) {
+          // the shared name, then a muted word after it
+          expect(row, `${id} ${f.rec.id}`).toMatch(/ · /);
+        } else expect(row, `${id} ${f.rec.id}`).not.toContain(accumulating);
+      }
     }
-    expect(heads).toBeGreaterThan(0);
   });
 });
 

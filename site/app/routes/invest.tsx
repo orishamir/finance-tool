@@ -11,10 +11,10 @@ import { pageMeta } from "../lib/page-meta";
 import { OtherAssumptions, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
-import { PairReceipt } from "../components/invest/receipt";
+import { PairReceipt, PairStub } from "../components/invest/receipt";
 import { ChosenPair } from "../components/invest/chosen";
 import { pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
-import { PairLists } from "../components/invest/lists";
+import { PairLists, listName } from "../components/invest/lists";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
 import { returnHelpOf } from "../components/invest/foot";
@@ -35,7 +35,7 @@ import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
 import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
-import { useHydrated } from "../lib/hooks";
+import { useHydrated, useMedia } from "../lib/hooks";
 
 /** The data files this page fetches after it starts, requested with the HTML. */
 export const links = () => bundleLinks("indices-bundle.json", "compare-bundle.json");
@@ -203,6 +203,13 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
   const headId = useId();
+  // From 1280 px the plan and the pair's card stand in a rail, and beside it the receipt's ticket stands over the two lists and their
+  // ruler; below 1280 px everything stands in one column, the receipt above the lists with its stub at the screen's foot. The body renders
+  // only in the browser, so its first render already knows the width.
+  const railed = useMedia("(min-width: 80rem)");
+  const receiptRef = useRef<HTMLDivElement>(null);
+  const ticketRef = useRef<HTMLElement>(null);
+  const pairArea = useRef<HTMLDivElement>(null);
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way
   const world = useMemo(() => (index && view ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs]);
@@ -323,6 +330,18 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
       returnHelp={view ? returnHelpOf(view) : undefined}
     />
   );
+  // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
+  // a ticket over the lists, whose total the ruler's point joins
+  const receipt = pick && shown && shownView && (
+    railed ? (
+      <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} layout="ticket" ref={ticketRef} />
+    ) : (
+      <div ref={receiptRef} tabIndex={-1} className="scroll-mt-[112px] outline-none lg:scroll-mt-[88px]">
+        <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} />
+      </div>
+    )
+  );
+  const fund = shown && shownView ? allFunds(shownView).find((f) => f.rec.id === shown.fund) : undefined;
   // the two lists side by side where the main column has the room (a container query: the rail beside it takes its share from 1280 px)
   const lists = "grid gap-5 items-start @min-[57rem]:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)]";
   const join = (
@@ -341,20 +360,24 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
             <p className="text-muted-foreground">{c.chips.none}</p>
           ) : (
             <>
-              {/* the plan and its answer in a rail at the start side from 1280 px, the choice of account and fund beside it; one column under it */}
-              <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-6">
-                <div className="flex flex-col gap-5 xl:w-[22.25rem] xl:shrink-0">
+              {/* the plan and the pair's card in a rail at the start side from 1280 px, the receipt's ticket and the choice of account and
+                  fund beside it; one column under it, the receipt above the lists */}
+              <div ref={pairArea} className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-6">
+                <div className="flex flex-col gap-5 xl:w-80 xl:shrink-0">
                   {planCard}
                   {pick && shown && shownView && (
                     <>
-                      <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} />
+                      {!railed && receipt}
                       <ChosenPair view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} onPick={onPick} group={ownGroup} />
                     </>
                   )}
                 </div>
                 <div className="@container flex min-w-0 flex-1 flex-col gap-5 lg:gap-6">
                   {pick && shown && shownView ? (
-                    <PairLists view={shownView} bundle={shownBundle} plan={plan} livePlan={livePlan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={ownGroup} />
+                    <>
+                      {railed && receipt}
+                      <PairLists view={shownView} bundle={shownBundle} plan={plan} livePlan={livePlan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={ownGroup} ruler={railed} above={ticketRef} />
+                    </>
                   ) : (
                     // the same two lists as every index, the receipt set aside until a fund is added
                     <>
@@ -389,6 +412,10 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
           )}
         </div>
       </Frame>
+      {/* outside the block that glides on an index's change: a moving ancestor would carry a pinned element with it */}
+      {!railed && pick && shown && shownView && fund && (
+        <PairStub view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} fundName={listName(shownView, fund.name)} target={receiptRef} area={pairArea} />
+      )}
       <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
           {c.plan.panelTitle}

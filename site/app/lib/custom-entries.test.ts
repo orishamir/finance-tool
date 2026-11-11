@@ -379,31 +379,28 @@ describe("a typed row that cannot be priced is still where its terms are changed
   const noop = () => undefined;
   const editors: Editors = { addBroker: noop, addFund: noop, openOwn: noop, edit: noop, brokers: [partial], funds: [fund, blank], world: null };
   const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, createElement(EditorsContext.Provider, { value: editors }, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: false, onPick: noop, moved: null, group: null }))) })));
-  /** A row as drawn, up to the next row or the next row's unseen cases. */
+  /** A row as drawn, up to the next row. */
   const row = (id: string) => {
     const at = out.indexOf(`data-pick-key="${id}"`);
     expect(at).toBeGreaterThan(-1);
-    const next = out.slice(at + 1).search(/data-(pick-key|case-of)="/);
+    const next = out.slice(at + 1).search(/data-pick-key="/);
     return out.slice(out.lastIndexOf("<div", at), next < 0 ? undefined : at + 1 + next);
   };
-  it("an account with a field left empty: no pick, and its terms with the edit button on its row, at its own height", () => {
+  it("an account with a field left empty: no pick, and its terms with the edit button on a line under its row", () => {
     const r = row(partial.id);
     expect(r).toContain('aria-disabled="true"');
-    expect(r).toContain("data-own-height");
     expect(r).toContain(invest.customEntries.edit);
     expect(r).toContain(invest.customEntries.unknownLine(invest.customEntries.listWords(unknownLines(partial))));
   });
   it("a fund with a fee left empty: the same", () => {
     const r = row(blank.id);
     expect(r).toContain('aria-disabled="true"');
-    expect(r).toContain("data-own-height");
     expect(r).toContain(invest.customEntries.edit);
   });
   it("a typed fund that is priced keeps its terms on its row too, and the collected rows carry none", () => {
     expect(row(fund.id)).toContain(invest.customEntries.edit);
     const collected = view.providers.find((p) => !p.custom)!;
     expect(row(collected.id)).not.toContain(invest.customEntries.edit);
-    expect(row(collected.id)).not.toContain("data-own-height");
   });
 });
 

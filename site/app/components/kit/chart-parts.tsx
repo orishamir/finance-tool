@@ -13,12 +13,11 @@ export const scrollCueStyle: CSSProperties = {
     "linear-gradient(to right, var(--card) 30%, transparent) left center / 32px 100% no-repeat local, linear-gradient(to left, var(--card) 30%, transparent) right center / 32px 100% no-repeat local, radial-gradient(farthest-side at 0 50%, rgb(255 255 255 / 0.22), transparent) left center / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(255 255 255 / 0.22), transparent) right center / 14px 100% no-repeat scroll",
 };
 
-export type SwatchShape = "line" | "box" | "entered-line" | "rule" | "dotted-line" | "cut";
+export type SwatchShape = "line" | "box" | "entered-line" | "rule" | "dotted-line";
 
-/** The little mark of a series: `line` (14 by 3 px) for a line, `box` (10 px) for a band, `entered-line` (dashed, a stroke class) for a series that rests on an entered return, `rule` (dashed border) for a reference, `dotted-line` (round dots, a stroke class) for the comparison chart's baseline, which runs beside dashed entered-return lines, `cut` (stripes on a grey, rounded end, a text class) for the end of a bar cut at its scale (`CostStack` `track`). `className` carries the colour role. */
+/** The little mark of a series: `line` (14 by 3 px) for a line, `box` (10 px) for a band, `entered-line` (dashed, a stroke class) for a series that rests on an entered return, `rule` (dashed border) for a reference, `dotted-line` (round dots, a stroke class) for the comparison chart's baseline, which runs beside dashed entered-return lines. `className` carries the colour role. */
 export function Swatch({ shape = "line", className }: { shape?: SwatchShape; className?: string }) {
   if (shape === "box") return <span className={cx("size-2.5 rounded-sm", className)} />;
-  if (shape === "cut") return <span aria-hidden="true" className={cx("inline-block h-3 w-3 shrink-0 rounded-e-full bg-muted hatch-cut", className)} />;
   if (shape === "rule") return <span className={cx("w-3.5 border-t-2 border-dashed", className)} />;
   if (shape === "dotted-line")
     return (

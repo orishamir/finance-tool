@@ -256,12 +256,6 @@ export function inTieSet(view: InvestView, best: Pick | null, p: Pick, theta: nu
   return tieSet(view, best, theta).some((x) => x.house === p.house && x.fund === p.fund);
 }
 
-/** The most pairs a tie can count, for the unseen longest cases of the words that count them. */
-const TIE_MOST = 10;
-
-/** The longest figure the verdict's gap can hold, for the badge's unseen longest case. */
-const LONGEST_GAP = `\u2066\u2212${fmt.nisWhole(9_999_999)}\u2069`;
-
 /** The pair a pick is set against, and what the page says of the two (F-80, P-01): one reading for the receipt in the side rail and the
  * fees panel under the lists, so the two never disagree. The pairs are priced once per plan (`pairCostsKept`). */
 export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick, chosen: boolean) {
@@ -307,9 +301,6 @@ export function steadyOf(view: InvestView, bundle: IndicesBundle, fund: string):
   if (!rec || kindOf(rec) !== "unhedged" || indexSeenBy(view.index, rec, bundle).israeli) return null;
   return view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar;
 }
-
-/** Every title the verdict can carry, for the unseen longest cases of the badge. */
-export const VERDICT_CASES = [`${c.pair.yours} · ${c.pair.tiedWith}`, `${c.pair.yours} · ${c.pair.cheapestTag}`, c.pair.tieTop(2), c.pair.tieTop(TIE_MOST, TIE_MOST - 1), c.pair.cheapestStar, c.pair.openTop, `${c.pair.yours} · ${LONGEST_GAP} ${c.pair.moreIfCheapest}`];
 
 // ---------------------------------------------------------------- the account column
 

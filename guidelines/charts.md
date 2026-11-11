@@ -98,9 +98,8 @@ them, and change the shared piece when a rule here asks for it.
 
 ### One number
 
-- When one number answers the question, show it large (the 32 px figure
-  size), with a line under it saying what it is and what it depends on. No
-  chart around it.
+- When one number answers the question, show it large, with a line under it
+  saying what it is and what it depends on. No chart around it.
 
 ## Shared parts
 
