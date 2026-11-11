@@ -5,7 +5,8 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { Link, useLoaderData, useLocation } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, r3fees, site } from "../copy";
+import { pagePreview, r2, r3fees, site } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import type { KnobRanges } from "../components/invest/knobs";
 
 /** The ranges this page's fields read (P-05): the shares in percent, the age, and the plan sliders. */
@@ -52,8 +53,8 @@ export async function loader() {
   return { ...goalFormData(), publisherNames };
 }
 
-export function meta() {
-  return [{ title: `${r3fees.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: r3fees.title, description: pagePreview.fees, location });
 }
 
 export default function FeesPage() {

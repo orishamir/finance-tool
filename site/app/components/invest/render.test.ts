@@ -6,8 +6,11 @@ import { describe, expect, it } from "vitest";
 import { buildInvest, indexById, knownIndices } from "../../lib/invest";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
-import { AccountColumn, allFunds, bestFor, PairResult, pickOfHeadline } from "./pair";
-import { bundle, t, plan, shown, html, nisIn, writtenBars, writtenGap } from "./render-fixtures";
+import { allFunds, bestFor, pickOfHeadline } from "./pair";
+import { invest } from "../../copy";
+import { providerName } from "./sections";
+import { bundle, t, plan, shown, html, nisIn, writtenFees, ReceiptAndFees } from "./render-fixtures";
+import { PairReceipt } from "./receipt";
 
 describe("the pair set beside the person's (2026-10-28)", () => {
   const world = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan });
@@ -26,58 +29,37 @@ describe("the pair set beside the person's (2026-10-28)", () => {
   });
 });
 
-describe("every cost bar's written amounts add up to its written total, on every index (pass 6: the remainder's shekels were hidden)", () => {
-  for (const index of knownIndices(bundle)) {
-    it(index.id, () => {
-      const view = buildInvest({ bundle, index, plan });
-      const pick = pickOfHeadline(view);
-      if (!pick) return;
-      const out = html(createElement("div", null,
-        createElement(PairResult, { view, bundle, plan, pick, chosen: false, onPick: () => undefined }),
-        createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined })));
-      const bars = [...out.matchAll(/data-total="(-?\d+)" data-amounts="([\d,-]*)"/g)];
-      expect(bars.length, "bars rendered").toBeGreaterThan(2);
-      for (const [, total, amounts] of bars) {
-        const sum = amounts!.split(",").filter(Boolean).reduce((a, x) => a + Number(x), 0);
-        expect(sum, `${index.id}: ${amounts} beside ${total}`).toBe(Number(total));
-      }
-      // the pair bars' remainder holds shekels on every index, and its amount is written under the bar, in its colour
-      expect(out).toMatch(/inline-block size-2 rounded-\[2px\] bg-chart-cost-other/);
-    });
-  }
-  // the account, fund and tax differences under the two pair bars are the bars' own figures subtracted ("החשבון: 1 ₪
-  // יותר" beside account parts of 699 + 2 and 698 + 3, "הקרן: 58 ₪ פחות" beside 116 and 173). Read from what the reader sees: the
-  // amounts written under each bar, each by its colour (rendered with no width, every amount is written under its bar), and the three
-  // figures written under the bars, by their labels; no part's place in the bar is assumed
+describe("the fees panel's and the receipt's written amounts add up, on every index (pass 6: the remainder's shekels were hidden)", () => {
+  // the fees panel's items are the receipt's whole shekels, so they add up to the total written under them, on every index and two
+  // plans; and the account's items are the account list's figure and the receipt's account line (1,043 against 689 + 352 + 3 = 1,044
+  // on the MSCI ACWI was the mismatch this guards), read from what the reader sees: each amount past its bar, whose by the line under its name
   const short: WorkbenchInputs = { ...plan, amountNow: 10000, monthly: 500, years: 10, values: { ...plan.values, amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t) } };
   for (const p of [plan, short]) for (const index of knownIndices(bundle)) {
-    it(`the differences under the pair bars are the bars' own written figures: ${index.id}, ${p.years} years`, () => {
+    it(`the fees panel's items add up to its total, and the account's to the account list's figure and the receipt's: ${index.id}, ${p.years} years`, () => {
       const view = buildInvest({ bundle, index, plan: p });
       const pick = pickOfHeadline(view);
       if (!pick) return;
-      const out = html(createElement(PairResult, { view, bundle, plan: p, pick, chosen: false, onPick: () => undefined }));
-      const at = out.indexOf("data-gap=");
-      if (at < 0) return;
-      const bars = writtenBars(out).slice(0, 2);
-      expect(bars.length, index.id).toBe(2);
-      const written = writtenGap(out.slice(at));
-      expect(written, `${index.id}: ${JSON.stringify(written)}`).toEqual({ account: bars[0]!.account - bars[1]!.account, fund: bars[0]!.fund - bars[1]!.fund, tax: bars[0]!.tax - bars[1]!.tax });
-    });
-  }
-  // the account list's figure and the pair bar's account parts are one quantity and say one figure (1,043 against
-  // 689 + 352 + 3 = 1,044 on the MSCI ACWI), on every index and two plans
-  for (const p of [plan, short]) for (const index of knownIndices(bundle)) {
-    it(`the account list's figure is the sum of the pair bar's written account parts: ${index.id}, ${p.years} years`, () => {
-      const view = buildInvest({ bundle, index, plan: p });
-      const pick = pickOfHeadline(view);
-      if (!pick) return;
-      const bar = writtenBars(html(createElement(PairResult, { view, bundle, plan: p, pick, chosen: false, onPick: () => undefined })))[0]!;
-      const list = html(createElement(AccountColumn, { view, bundle, years: p.years, pick, onPick: () => undefined }));
-      const row = list.slice(list.indexOf(`data-pick-key="${pick.house}"`));
-      const cost = /whitespace-nowrap" style="width:[^"]*">([\s\S]*?)<\/span><\/span>/.exec(row)?.[1] ?? "";
-      expect(nisIn(cost), `${index.id}: the list's "${shown(cost)}" against ${bar.account} in the bar`).toBe(bar.account);
-      // the remainder, the account's fees on each other, is the first amount written under the bar, away from the fund's
-      expect(bar.order[0], index.id).toBe("bg-chart-cost-other");
+      const out = html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: false, onPick: () => undefined }));
+      const items = writtenFees(out);
+      expect(items.length, index.id).toBeGreaterThan(1);
+      expect(items.filter((x) => x.who === "fund").length, index.id).toBe(1);
+      const text = shown(out.slice(out.indexOf('data-chart="option-bars"')));
+      const total = nisIn(text.slice(text.indexOf(invest.before.fees.total) + invest.before.fees.total.length));
+      expect(items.reduce((a, x) => a + x.amount, 0), `${index.id}: ${JSON.stringify(items)} against ${total}`).toBe(total);
+      // the largest first
+      expect(items.map((x) => x.amount), index.id).toEqual([...items.map((x) => x.amount)].sort((a, b) => b - a));
+      const account = items.filter((x) => x.who === "account").reduce((a, x) => a + x.amount, 0);
+      // the wide screen's ticket: the account's part, its label then the amount taken
+      const ticket = shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: false, layout: "ticket" }))).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
+      const tAt = ticket.indexOf(invest.receipt.accountCharges);
+      expect(tAt, `${index.id}: the ticket's account line`).toBeGreaterThanOrEqual(0);
+      expect(-nisIn(ticket.slice(tAt + invest.receipt.accountCharges.length, tAt + invest.receipt.accountCharges.length + 40)), `${index.id}: the ticket's account line against ${account} in the panel`).toBe(account);
+      // and the receipt's account line, its label then the amount taken
+      const receipt = shown(out.slice(0, out.indexOf('data-chart="option-bars"'))).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
+      const label = `${invest.pair.who.account} ${providerName(view, pick.house)?.short ?? pick.house}`;
+      const at = receipt.indexOf(label);
+      expect(at, `${index.id}: the receipt's account line`).toBeGreaterThanOrEqual(0);
+      expect(-nisIn(receipt.slice(at + label.length, at + label.length + 40)), `${index.id}: the receipt's account line against ${account} in the panel`).toBe(account);
     });
   }
 });

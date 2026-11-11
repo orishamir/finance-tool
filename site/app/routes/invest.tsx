@@ -6,16 +6,19 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
-import { brands, invest as c, site } from "../copy";
-import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
-import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
+import { brands, invest as c } from "../copy";
+import { pageMeta } from "../lib/page-meta";
+import { OtherAssumptions, PlanKnobs } from "../components/invest/knobs";
+import { TitleRow } from "../components/invest/title";
+import { PlanCard } from "../components/invest/plan-card";
+import { PairReceipt, PairStub } from "../components/invest/receipt";
+import { ChosenPair } from "../components/invest/chosen";
+import { pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
+import { PairLists, listName } from "../components/invest/lists";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
-import { IndexHeader } from "../components/invest/sections";
 import { returnHelpOf } from "../components/invest/foot";
-import { DollarSection } from "../components/invest/dollar";
-import { StairsSection } from "../components/invest/stairs";
+import { BeforeDeciding } from "../components/invest/before";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
 import { Callout, useSwapGlide } from "../components/kit";
 import { Sheet } from "../components/Sheet";
@@ -32,7 +35,7 @@ import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
 import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
-import { useHydrated } from "../lib/hooks";
+import { useHydrated, useMedia } from "../lib/hooks";
 
 /** The data files this page fetches after it starts, requested with the HTML. */
 export const links = () => bundleLinks("indices-bundle.json", "compare-bundle.json");
@@ -67,10 +70,10 @@ const exposureIdOf = (slug: string | undefined, indices: readonly { id: string }
   return id && indices.some((i) => i.id === id) ? id : null;
 };
 
-export function meta({ loaderData: data, params }: Route.MetaArgs) {
+export function meta({ loaderData: data, params, location }: Route.MetaArgs) {
   const id = data ? exposureIdOf(params.slug, data.indices) : null;
   const name = id ? data?.indices.find((i) => i.id === id)?.name : null;
-  return [{ title: `${c.metaTitle}${name ? ` · ${name}` : ""} · ${site.name}` }];
+  return pageMeta({ title: `${c.metaTitle}${name ? ` · ${name}` : ""}`, description: c.sub, location });
 }
 
 type Data = Awaited<ReturnType<typeof loader>>;
@@ -99,25 +102,29 @@ export default function Invest() {
   );
 }
 
-function Head() {
-  return (
-    <header className="flex flex-col gap-2">
-      <h1 className="text-2xl lg:text-3xl font-semibold max-w-measure">{c.h1}</h1>
-      <p className="text-muted-foreground">{c.sub}</p>
-    </header>
-  );
-}
+/** The known indices by name, as the loader gives them: the title's picker works before the data arrives. */
+const knownOf = (data: Data): IndexRef[] => data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
+
+/** The page's frame: the title row, then what is below it, a little tighter than a page's sections (the sliders and what they move stay in one view). */
+const Frame = ({ title, children }: { title: React.ReactNode; children: React.ReactNode }) => (
+  <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
+    {title}
+    {children}
+  </div>
+);
 
 function Page({ wb, compare, failed, data }: { wb: IndicesBundle | null; compare: CompareBundle | null; failed: boolean; data: Data }) {
   const { ready } = useInputs();
   const { search } = useLocation();
+  const navigate = useNavigate();
+  const slug = useParams().slug;
   // The pre-rendered page has no address to read and no saved state: the first client render matches it, then they are read.
   const mounted = useHydrated();
+  // while the data loads, the title already names the index the address names, and its picker leads to the others
+  const known = knownOf(data);
+  const id = exposureIdOf(slug, data.indices);
   const frame = (body: React.ReactNode) => (
-    <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
-      <Head />
-      {body}
-    </div>
+    <Frame title={<TitleRow known={known} customs={[]} index={known.find((i) => i.id === id) ?? null} others={[]} bundle={null} onRemove={() => undefined} onRename={() => undefined} onSave={() => undefined} onGo={(p) => navigate(p)} />}>{body}</Frame>
   );
   if (!mounted || (!failed && (!wb || !compare || !ready))) return frame(<p className="text-muted-foreground">{c.loading}</p>);
   if (failed || !wb || !compare) return frame(<Callout tone="caution">{c.failed}</Callout>);
@@ -176,7 +183,7 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   const bundle = useMemo(() => withCustomEntries(wb, invest.customBrokers, invest.customFunds, customs), [wb, invest.customBrokers, invest.customFunds, customs]);
   const customId = new URLSearchParams(search).get("custom");
   const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
-  const known: IndexRef[] = data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
+  const known = knownOf(data);
 
   // the person compares their own account by picking it in the account list (the separate "החשבון שלכם" field was redundant)
   const yourBroker: string | null = null;
@@ -196,10 +203,16 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
   const headId = useId();
+  // From 1280 px the plan and the pair's card stand in a rail, and beside it the receipt's ticket stands over the two lists and their
+  // ruler; below 1280 px everything stands in one column, the receipt above the lists with its stub at the screen's foot. The body renders
+  // only in the browser, so its first render already knows the width.
+  const railed = useMedia("(min-width: 80rem)");
+  const receiptRef = useRef<HTMLDivElement>(null);
+  const ticketRef = useRef<HTMLElement>(null);
+  const pairArea = useRef<HTMLDivElement>(null);
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way
   const world = useMemo(() => (index && view ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs]);
-  const [labelFilter, setLabelFilter] = useState<string | null>(null);
   // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
@@ -274,6 +287,8 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
     else q.delete("group");
     navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
   };
+  // the house's group picked in the account card, by its name
+  const ownGroup = own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null;
   const movedNow = moved && shown && moved.at.house === (own?.house ?? shown.house) && moved.at.fund === shown.fund ? moved : null;
   // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
@@ -282,14 +297,15 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   // since that "?" opens a text of its own
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22", ...(index && !index.israeli ? ["ETF-71", "ETF-14", "MF-20"] : [])].filter((id) => wb.rules.some((r) => r.id === id));
 
-  // another index replaces what lies below the pills, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
+  // another index replaces what lies below the title, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
   const swap = useSwapGlide<HTMLDivElement>(index?.id ?? customId ?? "");
   const go = (p: string) => swap.begin(() => navigate(p));
-  const chips = (
-    <IndexChips
+  const title = (
+    <TitleRow
       known={known}
       customs={customs}
-      selectedId={index?.id ?? null}
+      index={index}
+      others={knownIndices(wb)}
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
@@ -301,9 +317,10 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
     />
   );
 
-  const planBlock = (
-    <PlanBlock
-      knobs={<PlanKnobs fi={fi} ranges={data.form.knobs} pct={data.form.pct} />}
+  // the knobs write the same current goal the fees page and the assumptions write: a value set here is the value there
+  const planCard = (
+    <PlanCard
+      knobs={<PlanKnobs fi={fi} ranges={data.form.knobs} pct={data.form.pct} stacked />}
       onOpen={() => setPanelOpen(true)}
       fx={wb.fx}
       today={data.today}
@@ -313,67 +330,98 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
       returnHelp={view ? returnHelpOf(view) : undefined}
     />
   );
+  // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
+  // a ticket over the lists, whose total the ruler's point joins
+  const receipt = pick && shown && shownView && (
+    railed ? (
+      <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} layout="ticket" ref={ticketRef} />
+    ) : (
+      <div ref={receiptRef} tabIndex={-1} className="scroll-mt-[112px] outline-none lg:scroll-mt-[88px]">
+        <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} />
+      </div>
+    )
+  );
+  const fund = shown && shownView ? allFunds(shownView).find((f) => f.rec.id === shown.fund) : undefined;
+  // the two lists side by side where the main column has the room (a container query: the rail beside it takes its share from 1280 px)
+  const lists = "grid gap-5 items-start @min-[57rem]:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)]";
+  const join = (
+    <span aria-hidden="true" className="hidden @min-[57rem]:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
+      +
+    </span>
+  );
 
   return (
     <LabelSheetHost>
       <CustomEntriesHost index={index} brokers={invest.customBrokers} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveBroker={invest.saveBroker} onRemoveBroker={invest.removeBroker} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world} opening={opening} onOpened={onOpened}>
-      {/* tighter than a page's sections: the sliders and the result they move stay in one view */}
-      <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
-        <div className="flex flex-col gap-4">
-          <Head />
-          {chips}
-        </div>
+      <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
-        {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
-        {!index || !view ? (
-          <p className="text-muted-foreground">{c.chips.none}</p>
-        ) : (
-          <>
-            <IndexHeader view={view} others={knownIndices(wb)} />
-            {/* the knobs write the same current goal the fees page and the panel write: a value set here is the value there; they sit
-                right above the result so it moves in view */}
-            {planBlock}
-            {pick && shown && shownView ? (
-              <>
-                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} chosen={picks} onPick={onPick} />
-                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} monthly={plan.monthly} pick={shown} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
-                  <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
-                    +
-                  </span>
-                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} filter={labelFilter} onFilter={setLabelFilter} />
+          {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
+          {!index || !view ? (
+            <p className="text-muted-foreground">{c.chips.none}</p>
+          ) : (
+            <>
+              {/* the plan and the pair's card in a rail at the start side from 1280 px, the receipt's ticket and the choice of account and
+                  fund beside it; one column under it, the receipt above the lists */}
+              <div ref={pairArea} className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-6">
+                <div className="flex flex-col gap-5 xl:w-80 xl:shrink-0">
+                  {planCard}
+                  {pick && shown && shownView && (
+                    <>
+                      {!railed && receipt}
+                      <ChosenPair view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} onPick={onPick} group={ownGroup} />
+                    </>
+                  )}
                 </div>
-              </>
-            ) : (
-              // the same two lists as every index, the result card set aside until a fund is added
-              <>
-                <NoFundCall view={view} />
-                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
-                  <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
-                    +
-                  </span>
-                  <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
+                <div className="@container flex min-w-0 flex-1 flex-col gap-5 lg:gap-6">
+                  {pick && shown && shownView ? (
+                    <>
+                      {railed && receipt}
+                      <PairLists view={shownView} bundle={shownBundle} plan={plan} livePlan={livePlan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={ownGroup} ruler={railed} above={ticketRef} />
+                    </>
+                  ) : (
+                    // the same two lists as every index, the receipt set aside until a fund is added
+                    <>
+                      <NoFundCall view={view} />
+                      <div className={lists}>
+                        <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
+                        {join}
+                        <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
+                      </div>
+                    </>
+                  )}
                 </div>
-              </>
-            )}
-            {/* what the advertising says against the price lists stands on each house's page, which the house's name opens (the page's own block of it is gone)
- */}
-            {/* what moves the result most: every number changed by the same share, at the bottom */}
-            <PlanChanges plan={plan} share={data.form.share} bundle={shownBundle} view={shownView ?? view} pick={shown} />
-            {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom */}
-            {shown && shownView && hasKinds(view) && wb.dollarRange && <DollarSection view={shownView} bundle={shownBundle} plan={plan} pick={shown} />}
-            {/* the stairs: which single change leaves more, one step at a time; appended last */}
-            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} example={!picks} />}
-            <RulesLine ids={rules} />
-          </>
-        )}
+              </div>
+              {/* before deciding: where the fees go, what moves the result most, hedged or not (only on a foreign index with funds of both
+                  kinds, F-94) and the stairs, a tab each */}
+              {pick && shown && shownView && (
+                <BeforeDeciding
+                  view={shownView}
+                  bundle={shownBundle}
+                  plan={plan}
+                  livePlan={livePlan}
+                  share={data.form.share}
+                  pick={shown}
+                  chosen={picks}
+                  hedge={hasKinds(view) && !!wb.dollarRange}
+                  stairs={{ view, bundle, startHouse: picks ? pick.house : null, startFund: picks ? pick.fund : null }}
+                  onPick={onPick}
+                />
+              )}
+              <RulesLine ids={rules} />
+            </>
+          )}
         </div>
-      </div>
+      </Frame>
+      {/* outside the block that glides on an index's change: a moving ancestor would carry a pinned element with it */}
+      {!railed && pick && shown && shownView && fund && (
+        <PairStub view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} fundName={listName(shownView, fund.name)} target={receiptRef} area={pairArea} />
+      )}
       <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
           {c.plan.panelTitle}
         </h2>
+        {/* what the results are and what they rest on, said here once (the plan card's line keeps to the return, the inflation and the dollar) */}
+        <p className="text-sm text-muted-foreground mb-3">{c.plan.knobs.assumptions}</p>
         {panelOpen && <OtherAssumptions inflation={fi.values.inflation} inflationStart={fi.starts?.inflation} pct={data.form.pct} />}
       </Sheet>
       </CustomEntriesHost>

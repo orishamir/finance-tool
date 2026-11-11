@@ -1,8 +1,10 @@
 // The guide list (flows 6.4): where the money is held, what it is invested in, and the not-covered card.
+import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { PageShell } from "../components/shell";
-import { Card, ChipList, gershayim, RowArrow } from "../components/kit";
+import { Card, ChipList, cx, gershayim, GroupHead, RowArrow, RowList } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
@@ -50,17 +52,25 @@ interface ExposureItem {
 const exposureOrder = ["shekel-cash", "mutual-funds", "money-market-funds", "makam", "government-bond", "limited-bond-fund"];
 const rank = (key: string) => (exposureOrder.includes(key) ? exposureOrder.indexOf(key) : exposureOrder.length);
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: copy.lede, location });
 }
+
+/** A group's guides: rows of one box on a phone (`RowList`), cards two and three across from `md`. */
+function GuideList({ children }: { children: ReactNode }) {
+  return <RowList className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:rounded-none md:border-0 md:bg-transparent md:divide-y-0 md:overflow-visible">{children}</RowList>;
+}
+
+/** A guide's card; inside a `GuideList` on a phone it is a row of the list's box, with no frame of its own. */
+const inList = "max-md:rounded-none max-md:border-0 max-md:bg-transparent";
 
 function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name: string; line: string | null; plain?: string | null; quiet?: boolean }) {
   return (
     <li>
       <Link to={href} className="block h-full">
-        <Card className={`h-full flex items-start justify-between gap-4 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)] ${quiet ? "bg-background" : ""}`}>
+        <Card pad="snug" className={cx("h-full flex items-start justify-between gap-4 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]", quiet ? "bg-background" : inList)}>
           <span className="flex flex-col gap-1">
-            <span className="text-lg font-semibold">{gershayim(name)}</span>
+            <span className="font-semibold md:text-lg">{gershayim(name)}</span>
             {plain && (
               <span className="text-sm">
                 {copy.alsoCalled} <bdi>{gershayim(plain)}</bdi>
@@ -93,13 +103,13 @@ export default function GuideIndex() {
           </div>
           {groupGuides(data.wrappers.map((w) => w.id)).map((g) => (
             <div key={g.id} className="flex flex-col gap-3">
-              <h3 className="text-lg font-semibold">{copy.purposeGroups[g.id] ?? g.id}</h3>
-              <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <GroupHead>{copy.purposeGroups[g.id] ?? g.id}</GroupHead>
+              <GuideList>
                 {g.ids.map((id) => {
                   const w = data.wrappers.find((x) => x.id === id)!;
                   return <InstrumentCard key={w.id} href={`/guide/${w.id}`} name={w.name} line={w.line} plain={w.plain} />;
                 })}
-              </ul>
+              </GuideList>
             </div>
           ))}
         </section>
@@ -111,13 +121,13 @@ export default function GuideIndex() {
               </h2>
               <p className="text-sm text-muted-foreground">{copy.group2.line}</p>
             </div>
-            <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <GuideList>
               {data.exposures.map((e) =>
                 e.kinds.length > 0 ? (
                   <li key={e.key}>
-                    <Card className="h-full flex flex-col gap-2">
+                    <Card pad="snug" className={cx("h-full flex flex-col gap-2", inList)}>
                       <Link to={e.href} className="flex items-start justify-between gap-4 hover:underline">
-                        <span className="text-lg font-semibold">{gershayim(e.name)}</span>
+                        <span className="font-semibold md:text-lg">{gershayim(e.name)}</span>
                         <RowArrow className="mt-1" />
                       </Link>
                       {e.line && <span className="text-sm text-muted-foreground">{gershayim(e.line)}</span>}
@@ -128,7 +138,7 @@ export default function GuideIndex() {
                   <InstrumentCard key={e.key} href={e.href} name={e.name} line={e.line} />
                 ),
               )}
-            </ul>
+            </GuideList>
           </section>
         )}
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

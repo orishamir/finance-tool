@@ -1,5 +1,6 @@
-// "Hedged or not: what happened" (F-95; option A of 8dd1f013:research/specs/2026-10-31-hedged): what the dollar did each year
-// and what each kind of fund did in the same years, from the funds' own reports, and one sentence on the plan. No forecast, no ranking.
+// "Hedged or not: what happened" (F-95; option A of 8dd1f013:research/specs/2026-10-31-hedged), a tab of the index page: the bottom line
+// first, then what the dollar did each year and what each kind of fund did in the same years, from the funds' own reports, and one sentence
+// on the plan in a box. No forecast, no ranking.
 import { useMemo } from "react";
 import { comparedYears, kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread, type Stretch } from "@finance-tool/engine";
 import { invest as c } from "../../copy";
@@ -9,7 +10,7 @@ import { gapListFor, kindMoney, kindOf, planInputs, reportFigure, reportsInSheke
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
-import { MixedName, Card, ChartLegend, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, Tpl, YearBars, gershayim, useChartPick, useHeldHeight } from "../kit";
+import { MixedName, Callout, ChartLegend, PanelHead, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, Tpl, YearBars, gershayim, useChartPick, useHeldHeight } from "../kit";
 import { allFunds, kindPairs, LONGEST_AMOUNT, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
 import { sourceHref } from "../../lib/sources";
@@ -21,9 +22,10 @@ const bare = (x: number) => `⁦${one.format(Math.abs(x))}%⁩`;
 const points = (x: number) => `⁦${x > 0 ? "+" : x < 0 ? "−" : ""}${one.format(Math.abs(x))}⁩`;
 const barLabel = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`;
 
-export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick }) {
-  const today = bundle.today;
-  const funds = allFunds(view);
+/** What the hedged-or-not panel rests on, read whether or not its panel is open (its tab's answer is the plan's sentence): null where the
+ * page has nothing to show, a fund of one kind missing, no exchange rates, or no compared year of a kind (no gap to say). */
+export function useDollarCase(view: InvestView | null, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick | null) {
+  const funds = useMemo(() => (view ? allFunds(view) : []), [view]);
   const history = bundle.fxHistory;
   const years = useMemo(() => yearlyChanges(history?.points ?? []), [history]);
   // F-95 compares shekel returns: a foreign fund's yearly figures are in its own currency and stay out (reportsInShekels)
@@ -33,19 +35,45 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
     () => kindRecord(reporting.map((f) => ({ hedged: kindOf(f.rec) === "hedged", years: f.rec.tracking_record!.years as readonly GapYear[], compared: comparedYears(f.rec.tracking_record, gapListFor(bundle, f.rec)) !== null })), years),
     [reporting, years, bundle],
   );
-  const pairs = kindPairs(view, pick);
+  const pairs = view && pick ? kindPairs(view, pick) : null;
   const money = useMemo(
-    () => (pairs ? kindMoney({ bundle, index: view.index, plan, unhedged: { fundId: pairs.unhedged.fund, providerId: pairs.unhedged.house }, hedged: { fundId: pairs.hedged.fund, providerId: pairs.hedged.house } }) : null),
-    [bundle, view.index, plan, pairs?.unhedged.fund, pairs?.unhedged.house, pairs?.hedged.fund, pairs?.hedged.house],
+    () => (view && pairs ? kindMoney({ bundle, index: view.index, plan, unhedged: { fundId: pairs.unhedged.fund, providerId: pairs.unhedged.house }, hedged: { fundId: pairs.hedged.fund, providerId: pairs.hedged.house } }) : null),
+    [bundle, view?.index, plan, pairs?.unhedged.fund, pairs?.unhedged.house, pairs?.hedged.fund, pairs?.hedged.house], // eslint-disable-line react-hooks/exhaustive-deps
   );
+  if (!view || !rec || !pairs || !history || !rec.gaps.unhedged || !rec.gaps.hedged) return null;
+  const houseOf = (id: string) => {
+    const info = providerName(view, id);
+    return info?.custom ? `${info.short} (${c.customEntries.enteredWord})` : (info?.short ?? id);
+  };
+  const nameOf = (p: Pick) => c.dollar.pairName(funds.find((f) => f.rec.id === p.fund)?.name ?? p.fund, houseOf(p.house));
+  const uMore = money ? money.unhedged - money.hedged : 0;
+  // what the pair of one kind leaves more than the other's, worked out from the two pairs' values left, each with what its run reads (F-95)
+  const more = money
+    ? (() => {
+        const u = [c.pair.input(nameOf(pairs.unhedged), c.pair.colLeft), money.figures.unhedged] as const;
+        const h = [c.pair.input(nameOf(pairs.hedged), c.pair.colLeft), money.figures.hedged] as const;
+        return differenceOf(uMore >= 0 ? u : h, uMore >= 0 ? h : u, "F-95", { today: bundle.today, about: c.dollar.moreAbout, round: Math.round });
+      })()
+    : null;
+  return { funds, history, years, reporting, rec, gaps: { unhedged: rec.gaps.unhedged, hedged: rec.gaps.hedged }, pairs, money, uMore, more, houseOf, nameOf };
+}
+export type DollarCase = NonNullable<ReturnType<typeof useDollarCase>>;
+
+/** The section's lead figure as plain words, for its tab's answer where the plan has no figure: how far the dollar moved against the shekel
+ *  in one year, at its lowest and highest over the years of the rates, and those years (the panel's first tile, which opens its sheets). */
+export function dollarSwing(d: DollarCase) {
+  const pcts = d.years.map((y) => y.pct);
+  return { lo: signed(Math.min(...pcts)), hi: signed(Math.max(...pcts)), from: d.years[0]?.year ?? 0, to: d.years[d.years.length - 1]?.year ?? 0 };
+}
+
+export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; d: DollarCase }) {
+  const today = bundle.today;
+  const { funds, history, years, reporting, rec, gaps, pairs, money, uMore, houseOf, nameOf } = d;
   const h = Math.round(plan.years);
-  const stretch = history ? stretchRange(history.points, h) : null;
+  const stretch = stretchRange(history.points, h);
   // a ratchet behind the cases: a pair's real words can still wrap a line longer than every case
   const held = useHeldHeight<HTMLDivElement>(view.index.id);
   const legendPick = useChartPick();
-  // with no compared year of a kind there is no gap to say, and the section's second tile would have no figure
-  if (!rec || !pairs || !history || !rec.gaps.unhedged || !rec.gaps.hedged) return null;
-  const gaps = { unhedged: rec.gaps.unhedged, hedged: rec.gaps.hedged };
 
   const hedgedFunds = reporting.filter((f) => kindOf(f.rec) === "hedged" && f.rec.tracking_record!.years.some((y) => rec.years.some((r) => r.year === y.year)));
   // the sentence beside the gap range counts only the reports the range rests on, those F-92 (d) compares, and names their years
@@ -185,22 +213,11 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const fell = rec.fell, rose = rec.rose;
   // each year's middle of each kind, as the bars draw them; the chart's title counts the years the hedged bar is the taller
   const fundBars = rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }));
-  const houseOf = (id: string) => {
-    const info = providerName(view, id);
-    return info?.custom ? `${info.short} (${c.customEntries.enteredWord})` : (info?.short ?? id);
-  };
-  const nameOf = (p: Pick) => c.dollar.pairName(funds.find((f) => f.rec.id === p.fund)?.name ?? p.fund, houseOf(p.house));
   const round100 = (n: number) => Math.round(n / 100) * 100;
-  const uMore = money ? money.unhedged - money.hedged : 0;
   // the sentence's figures are worked out from the two pairs' values left, each with what its run reads (F-95)
-  const pairInputs = (m: NonNullable<typeof money>) => ({ u: [c.pair.input(nameOf(pairs.unhedged), c.pair.colLeft), m.figures.unhedged] as const, h: [c.pair.input(nameOf(pairs.hedged), c.pair.colLeft), m.figures.hedged] as const });
   const worthV = (m: NonNullable<typeof money>, n: number) => {
-    const { u, h } = pairInputs(m);
-    return computed(Math.round(round100(n)), "nis", "F-95", { [u[0]]: u[1], [h[0]]: h[1] }, { today, about: c.dollar.pointAbout });
-  };
-  const moreV = (m: NonNullable<typeof money>) => {
-    const { u, h } = pairInputs(m);
-    return differenceOf(uMore >= 0 ? u : h, uMore >= 0 ? h : u, "F-95", { today, about: c.dollar.moreAbout, round: Math.round });
+    const u = c.pair.input(nameOf(pairs.unhedged), c.pair.colLeft), hd = c.pair.input(nameOf(pairs.hedged), c.pair.colLeft);
+    return computed(Math.round(round100(n)), "nis", "F-95", { [u]: m.figures.unhedged, [hd]: m.figures.hedged }, { today, about: c.dollar.pointAbout });
   };
   // the cases: every fund of the index in each of the two places, beside the longest pair in the other, at the longest account name, with
   // both kinds' words; a name's length in letters does not say how it wraps, so each name is laid out, not only the longest
@@ -212,7 +229,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const planCase = (a: string, b: string, k1: string, k2: string, key: string) => (
     <p key={key}>
       <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(LONGEST_YEARS)} {sampleNum} {c.dollar.to} {sampleNum}
-      {c.dollar.planReal} {c.dollar.planSteady} <MixedName>{a}</MixedName> {k1} {c.dollar.leaves} {sampleNum} {c.dollar.moreThan(b)}<MixedName>{b}</MixedName> {k2}.
+      {c.dollar.planReal} {c.dollar.planSteady}, <MixedName>{a}</MixedName> {k1} {c.dollar.leaves} {sampleNum} {c.dollar.moreThan(b)}<MixedName>{b}</MixedName> {k2}.
     </p>
   );
   const planCases = funds.flatMap((f, i) => {
@@ -221,10 +238,14 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   });
 
   return (
-    <Card pad="roomy" className="flex flex-col gap-5" id="invest-dollar">
-      <div className="flex flex-col gap-1">
-        <h2 className="text-xl font-semibold">{c.dollar.title}</h2>
-        <p>
+    <div className="flex flex-col gap-5">
+      {/* the bottom line first: the headline, then what the hedge trades and why its cost moves */}
+      <div className="flex flex-col gap-2">
+        <PanelHead kicker={c.dollar.title}>{c.dollar.bottomHead}</PanelHead>
+        <p className="max-w-[60rem]">
+          {c.dollar.bottomLine} <RuleRef id="ETF-75" titled />
+        </p>
+        <p className="max-w-[60rem] text-sm text-muted-foreground">
           {c.dollar.lead} {many ? c.kinds.hedgedMany : ""}
         </p>
       </div>
@@ -314,16 +335,19 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
       />
       {/* held at its longest case (a ratchet held it only after the fact, and a longer pair's name grew it by a few pixels the first
           time): the longest names of an account and a fund on this index in both places, the longest years and figures */}
+      {/* the plan's sentence in a box of its own: what the two kinds leave in this plan */}
+      <Callout tone="info">
       <div ref={held}>
       <LongestCase cases={planCases}>
         {money && (
           <p>
             <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(h)} <Num value={worthV(money, money.worth.low)} /> {c.dollar.to} <Num value={worthV(money, money.worth.high)} />
-            {c.dollar.planReal} {c.dollar.planSteady} <MixedName>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</MixedName> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={moreV(money)} /> {c.dollar.moreThan(uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged))}<MixedName>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</MixedName> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
+            {c.dollar.planReal} {c.dollar.planSteady}, <MixedName>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</MixedName> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={d.more!} /> {c.dollar.moreThan(uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged))}<MixedName>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</MixedName> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
           </p>
         )}
       </LongestCase>
       </div>
+      </Callout>
       {/* held with the tax sentence: with nothing left to tax (amount and deposit 0) it goes, and what follows moved 45 px */}
       <LongestCase className="text-sm text-muted-foreground" cases={[<p key="t">{c.dollar.small(rec.years.length, hedgedFunds.length)} {c.dollar.taxLead} {"⁦100%⁩"} {c.dollar.taxTail} {c.dollar.noSource}</p>]}>
         <p>
@@ -346,9 +370,6 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         }
         items={[]}
       />
-      <p>
-        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" titled />
-      </p>
-    </Card>
+    </div>
   );
 }

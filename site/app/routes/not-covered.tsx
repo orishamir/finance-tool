@@ -1,112 +1,108 @@
-// The "not covered yet" page (flows 6.13, product D2): the tier-2 kinds of holding, what is known and what still blocks
-// each. The cards are the D2 list (`notCoveredCards`), never every row of the glossary's section 3.
+// The "not covered yet" page (flows 6.13, product D2 and D69): the kinds of saving the site knows of and has no guide page for
+// yet, one row each (`notCoveredCards`, never every row of the glossary's section 3). A row says what the kind is, with its
+// source a tap away, and the open question that keeps it from a guide; one fold holds the rest of what is known. Built from the
+// rule base and the open questions, never typed. Each row's id is the anchor the search and other pages link to.
 import { useLoaderData } from "react-router";
-import { notCovered as copy, r5, site } from "../copy";
-import { IconExternal, IconLock, IconCheck } from "../components/icons";
-import { IconDashed } from "../components/compare/icons";
+import { notCovered as copy, provenance } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { Tpl } from "../components/exposure-mode/tpl";
-import { IdRef, LeadTail, RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
+import { RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, LinkButton, Tag, gershayim, When } from "../components/kit";
+import { Disclosure, DocLink, LinkButton, RowList, gershayim, When } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
-
-import { sourceLabel } from "../lib/source-label";
-import { provenance } from "../copy";
+import type { NotCoveredRow } from "../lib/data.server";
 import { sourceHref } from "../lib/sources";
+import { sourceLabel } from "../lib/source-label";
 
 export async function loader() {
-  const { loadRules, pointedRecords, today } = await import("../lib/data.server");
+  const { loadOpenQuestions, loadRules, pointedRecords, today } = await import("../lib/data.server");
   const { graduationStatuses, graduationRuleIds, notCoveredCards } = await import("../lib/graduation.server");
   const rules = loadRules();
   const statuses = graduationStatuses();
-  // one card per kind of holding the site lacks (product D2), never a glossary section's every row
+  // one row per kind of holding the site lacks (product D2), never a glossary section's every row
   const cards = notCoveredCards(statuses).filter((c) => c.status.status !== "graduated");
   const cited = new Set([...cards.flatMap((c) => c.row.ruleIds), ...graduationRuleIds(statuses)]);
   const mine = Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r]));
-  return { cards, statuses, rules: mine, pointed: pointedRecords(mine, rules), today: today() };
+  // each open question in its own words (the guard in not-covered.test.ts keeps every one titled)
+  const questions = loadOpenQuestions();
+  const titles = Object.fromEntries(cards.flatMap((c) => c.status.open.map((o) => [o.code, questions[o.code]?.title_he ?? ""])));
+  return { cards, titles, rules: mine, pointed: pointedRecords(mine, rules), today: today() };
 }
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: copy.lede, location });
 }
 
-const dateNode = (d: string) => <When iso={d} />;
-
-/** "מה חסר כדי שהאתר יחשב את זה" (flow 37): the status line with its icon, what blocks, what closed. Computed from the rule base, never typed. No fixed
- * "when it closes" sentence: the same promise on every card would say more than the site does for each. */
-function GraduationStatus({ s }: { s: GraduationStatusView }) {
-  const g = r5.graduation;
-  const line =
-    s.status === "blocked" ? (
-      <span className="flex items-center gap-2 font-medium">
-        <IconLock size={18} className="text-blocked shrink-0" />
-        {s.open.length === 1 ? g.blockedOne : <Tpl t={g.blocked} vars={{ n: <bdi dir="ltr">{s.open.length}</bdi> }} />}
-      </span>
-    ) : s.status === "remaining" ? (
-      <span className="flex items-center gap-2 font-medium">
-        <IconDashed size={18} className="text-caution shrink-0" />
-        <Tpl t={g.remaining} vars={{ list: (s.remaining ?? []).map((x) => g.remainingItems[x]).join(" · ") }} />
-      </span>
+/** Why the row has no guide yet: the one open question in its words, how many when there are several, or what is left. */
+function OpenLine({ s, titles }: { s: GraduationStatusView; titles: Record<string, string> }) {
+  const text =
+    s.open.length === 1 ? (
+      <Tpl t={copy.openOne} vars={{ question: titles[s.open[0]!.code] ?? "" }} />
+    ) : s.open.length > 1 ? (
+      <Tpl t={copy.openMany} vars={{ n: <bdi dir="ltr">{s.open.length}</bdi> }} />
     ) : (
-      <span className="flex items-center gap-2 font-medium">
-        <IconCheck size={18} className="text-positive shrink-0" />
-        <Tpl t={g.graduated} vars={{ date: dateNode(s.graduatedOn ?? "") }} />
-      </span>
+      <Tpl t={copy.remaining} vars={{ list: (s.remaining ?? []).map((x) => copy.remainingItems[x]).join(" · ") }} />
     );
-  const body = (
-    <div className="flex flex-col gap-3 pt-2">
-      {line}
-      {s.open.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <h5 className="text-sm text-muted-foreground">{g.blockersHeading}</h5>
-          {s.open.map((o) => (
-            <div key={o.code} className="flex flex-col gap-1">
-              <span className="flex items-center gap-2 text-sm text-blocked-foreground">
-                <IconLock size={16} className="text-blocked shrink-0" />
-                <Tpl t={g.blockerShort} vars={{ code: <IdRef id={o.code} titled /> }} />
-              </span>
-              {o.narrowedOn && o.narrowedBy && (
-                <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
-                  {/* the narrowing rule as the rules chip, never its bare code */}
-                  <Tpl t={g.narrowed} vars={{ date: dateNode(o.narrowedOn) }} />
-                  <RulesChip ids={[o.narrowedBy]} />
-                </span>
-              )}
-              {o.institutionAnswer && (
-                <span className="text-sm text-caution-foreground flex flex-wrap items-center gap-1.5">
-                  {g.institution} <RuleRef id={o.institutionAnswer.ruleId} />
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+  return <p className="text-sm text-muted-foreground max-w-measure">{text}</p>;
+}
+
+/** The fold: the questions still open when there are several, what part of a question is answered, the questions already answered, the
+ * sentence's source in full and the rules collected. No date of when an answer was found: that is the work's record, not the reader's. */
+function Known({ s, r, titles }: { s: GraduationStatusView; r: NotCoveredRow; titles: Record<string, string> }) {
+  const narrowed = s.open.filter((o) => o.narrowedBy);
+  const institution = s.open.filter((o) => o.institutionAnswer);
+  return (
+    <div className="flex flex-col gap-4 pt-2 max-w-measure">
+      {s.open.length > 1 && (
+        <section className="flex flex-col gap-1">
+          <h3 className="text-sm text-muted-foreground">{copy.openHeading}</h3>
+          <ul className="flex flex-col gap-1 list-disc ps-5 text-sm">
+            {s.open.map((o) => (
+              <li key={o.code}>{titles[o.code]}</li>
+            ))}
+          </ul>
+        </section>
       )}
-      <div className="flex flex-col gap-1">
-        <h5 className="text-sm text-muted-foreground">{g.closuresHeading}</h5>
-        {s.closed.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{g.none}</p>
-        ) : (
+      {narrowed.map((o) => (
+        <p key={o.code} className="text-sm flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{copy.narrowed}</span>
+          <RulesChip ids={[o.narrowedBy!]} />
+        </p>
+      ))}
+      {institution.map((o) => (
+        <p key={o.code} className="text-sm text-caution-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{copy.institution}</span>
+          <RuleRef id={o.institutionAnswer!.ruleId} />
+        </p>
+      ))}
+      {s.closed.length > 0 && (
+        <section className="flex flex-col gap-1">
+          <h3 className="text-sm text-muted-foreground">{copy.answeredHeading}</h3>
           <ul className="flex flex-col gap-1">
             {s.closed.map((c, i) => (
-              <li key={`${c.ruleIds.join(" ")}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
-                {/* a closure is said in words, not struck: a struck date and a bare count read as a fragment. It names the
-                    rules that answered it, never a question: an answered question is deleted from the rule base */}
-                <span>
-                  <Tpl t={c.closedOn ? g.closure : g.closureNoDate} vars={{ date: c.closedOn ? dateNode(c.closedOn) : "", topic: g.closureTopics[s.id]?.[c.ruleIds.join(" ")] ?? "" }} />
-                </span>
+              <li key={`${c.ruleIds.join(" ")}-${i}`} className="text-sm flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span>{copy.answeredTopics[s.id]?.[c.ruleIds.join(" ")] ?? ""}</span>
                 <RulesChip ids={c.ruleIds} />
               </li>
             ))}
           </ul>
-        )}
-      </div>
-    </div>
-  );
-  return (
-    <div className="flex flex-col gap-1">
-      <Disclosure defaultOpen label={<h4 className="font-medium">{g.block}</h4>} summaryClassName="text-base">
-        {body}
-      </Disclosure>
+        </section>
+      )}
+      {r.source && (
+        <section className="flex flex-col gap-1 text-sm">
+          <h3 className="text-muted-foreground">{copy.sourceLead}</h3>
+          <DocLink href={sourceHref(r.source)} className="self-start">
+            {sourceLabel(r.source, provenance.sourced.localFile).text}
+          </DocLink>
+          <span className="flex flex-wrap items-center gap-2 text-muted-foreground">
+            <span>
+              <Tpl t={copy.checked} vars={{ date: <When iso={r.source.checked} /> }} />
+            </span>
+            <StrengthLabel strength={r.source.strength} />
+          </span>
+        </section>
+      )}
+      {r.ruleIds.length > 0 && <RulesLine ids={r.ruleIds} lead={copy.rulesLead} />}
     </div>
   );
 }
@@ -125,67 +121,35 @@ export default function NotCovered() {
             <LinkButton to="/guide">{copy.covered.link}</LinkButton>
           </p>
         </header>
-        {data.cards.length > 0 && <Callout tone="blocked">{copy.notice}</Callout>}
         {data.cards.length === 0 ? (
           <p>{copy.empty}</p>
         ) : (
-          <ul className="grid gap-4 lg:grid-cols-2">
+          <RowList label={copy.title}>
             {data.cards.map(({ status: s, row: r }) => (
-              <Card as="li" key={s.id} id={s.id} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
-                <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
-                  <h2 className="text-lg font-semibold">
-                    <bdi>{gershayim(r.he)}</bdi>
-                  </h2>
-                  <Tag tone="blocked" icon={<IconLock size={14} />}>
-                    {copy.blockedTag}
-                  </Tag>
-                </div>
+              <li key={s.id} id={s.id} className="flex flex-col gap-2 p-4 md:p-5 scroll-mt-[112px] lg:scroll-mt-[88px]">
+                <h2 className="text-lg font-semibold">
+                  <bdi>{gershayim(r.he)}</bdi>
+                </h2>
                 {r.variants.length > 0 && (
                   <p className="text-sm text-muted-foreground">
                     {copy.alsoCalled}: {r.variants.map(gershayim).join(" · ")}
                   </p>
                 )}
-                <dl className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-1">
-                    <dt className="text-sm text-muted-foreground">{copy.rows.known}</dt>
-                    <dd>{gershayim(r.explanation)}</dd>
-                    {r.source && (
-                      <dd className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
-                        {(() => {
-                          const label = sourceLabel(r.source, provenance.sourced.localFile);
-                          return (
-                            <a href={sourceHref(r.source)} target="_blank" rel="noopener noreferrer" className="text-link hover:underline" title={label.english ?? undefined}>
-                              {/* the arrow is held to the title's last word: alone, it stood on a line under a long title */}
-                              {label.host ? (
-                                <span className="whitespace-nowrap">
-                                  <bdi dir="ltr">{label.text}</bdi>
-                                  <IconExternal size={16} className="inline-block align-text-bottom ms-1" />
-                                </span>
-                              ) : (
-                                <LeadTail lead={label.text}>
-                                  <IconExternal size={16} className="inline-block align-text-bottom ms-1" />
-                                </LeadTail>
-                              )}
-                            </a>
-                          );
-                        })()}
-                        <span>
-                          <Tpl t={copy.checked} vars={{ date: dateNode(r.source.checked) }} />
-                        </span>
-                        <StrengthLabel strength={r.source.strength} />
-                      </dd>
-                    )}
-                    {r.ruleIds.length > 0 && (
-                      <dd>
-                        <RulesLine ids={r.ruleIds} lead={copy.rulesLead} />
-                      </dd>
-                    )}
-                  </div>
-                </dl>
-                <GraduationStatus s={s} />
-              </Card>
+                <div className="flex flex-col max-w-measure">
+                  <p>{gershayim(r.explanation)}</p>
+                  {r.source && (
+                    <DocLink href={sourceHref(r.source)} className="self-start text-sm">
+                      {copy.toSource}
+                    </DocLink>
+                  )}
+                </div>
+                <OpenLine s={s} titles={data.titles} />
+                <Disclosure label={copy.known} summaryClassName="text-sm">
+                  <Known s={s} r={r} titles={data.titles} />
+                </Disclosure>
+              </li>
             ))}
-          </ul>
+          </RowList>
         )}
         <section id="wont-do" className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
           <h2 className="text-xl lg:text-2xl font-semibold">{copy.wontDo.title}</h2>
@@ -196,26 +160,6 @@ export default function NotCovered() {
             ))}
           </ul>
         </section>
-        {data.statuses.some((s) => s.status === "graduated") && (
-          <section className="flex flex-col gap-2">
-            <h2 className="text-xl lg:text-2xl font-semibold">{r5.graduation.graduatedHeading}</h2>
-            <ul className="flex flex-col gap-1">
-              {data.statuses
-                .filter((s) => s.status === "graduated")
-                .map((s) => (
-                  <li key={s.id} className="flex flex-wrap items-center gap-2">
-                    <IconCheck size={16} className="text-positive" />
-                    <Tpl t={r5.graduation.graduatedItem} vars={{ name: <bdi>{s.name}</bdi>, date: dateNode(s.graduatedOn ?? "") }} />
-                    {s.guideHref && (
-                      <a href={s.guideHref} className="text-link hover:underline">
-                        {r5.graduation.graduatedLink}
-                      </a>
-                    )}
-                  </li>
-                ))}
-            </ul>
-          </section>
-        )}
       </div>
     </PageShell>
   );

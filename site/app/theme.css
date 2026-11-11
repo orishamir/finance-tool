@@ -189,6 +189,10 @@
      reader typed, is a plain number with no blue (founder, 2026-11-08, guidelines/charts.md). */
   --entered: var(--palette-blue-300); /* text of a value the person entered */
   --entered-subtle: var(--palette-blue-950); /* highlight behind it */
+  /* A slider is where the person sets a number, so it takes the entered blue; a step deeper while it is held. */
+  --slider: var(--entered); /* the filled part of the track and the thumb */
+  --slider-active: var(--palette-blue-400); /* the same while dragged */
+  --slider-track: var(--palette-neutral-800); /* the part of the track not yet filled: a grey that stands off the card */
 
   /* Flags and marks */
   --caution: var(--palette-amber-400); /* icon: stale (D3), secondary or institution source (D10) */
@@ -292,6 +296,11 @@
   --chart-cost-fx: var(--palette-teal-500);
   --chart-cost-other: var(--palette-neutral-700);
   --chart-cost-fund: var(--palette-neutral-100);
+  /* who takes a pair's fees, one hue each, wherever the index page splits a cost only between the account and the fund (the receipt's
+     account and fund lines, its closing bar with the tax): what the account charges, and what the fund charges. The designer's mapping
+     (orange and gold), defined once here. Checked as a set with the tax's rose in kit/ratchets.test.ts. */
+  --chart-by-account: var(--palette-orange-400);
+  --chart-by-fund: var(--palette-gold-200);
   /* a fund label's family (founder, 2026-10-27: "i want all labels to have a nice icon with nice distinct color"): the icon and the
      words take the colour, the chip a faint fill of it. A caution label keeps the caution role and an open-rule label the blocked role */
   --label-held: var(--palette-neutral-200);
@@ -370,6 +379,8 @@
   --text-3xl--line-height: 1.3;
   --text-figure: 2rem; /* 32px: a headline number (digits only) */
   --text-figure--line-height: 1.15;
+  --text-total: 3.375rem; /* 54px: the receipt ticket's total, the one figure the index page answers with (digits only) */
+  --text-total--line-height: 1.15;
 
   --radius-sm: 0.25rem; /* badges, tags */
   --radius-md: 0.5rem; /* inputs, buttons, chips */
@@ -379,6 +390,7 @@
   --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
   --shadow-md: 0 2px 8px -2px oklch(0.2 0.01 80 / 0.1), 0 1px 2px oklch(0.2 0.01 80 / 0.06);
   --shadow-lg: 0 12px 32px -8px oklch(0.2 0.01 80 / 0.18), 0 2px 6px oklch(0.2 0.01 80 / 0.08);
+  --drop-shadow-up: 0 -6px 12px oklch(0 0 0 / 0.6); /* above a sheet pinned to the screen's foot (the receipt's stub) */
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-exit: cubic-bezier(0.3, 0, 1, 1);
@@ -495,6 +507,8 @@
   --color-chart-cost-fx: var(--chart-cost-fx);
   --color-chart-cost-other: var(--chart-cost-other);
   --color-chart-cost-fund: var(--chart-cost-fund);
+  --color-chart-by-account: var(--chart-by-account);
+  --color-chart-by-fund: var(--chart-by-fund);
   --color-label-held: var(--label-held);
   --color-label-trade: var(--label-trade);
   --color-label-follow: var(--label-follow);

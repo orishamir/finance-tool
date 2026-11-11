@@ -103,6 +103,26 @@ export function ChooseRow({ title, end, line, chosen, dim, onChoose, label, link
 }
 
 /**
+ * A row that opens another page, in a narrow column (the home page's ways in): its name, one quieter line that says what the page answers,
+ * and the arrow, one under the other at every width. A figure in the line opens its source: it lies above the row's link and keeps its own
+ * tap. The whole row is one link stretched under it. In a `RowList`.
+ */
+export function GoRow({ title, line, to, label }: { title: ReactNode; /** What the page answers; it may hold a figure that opens its source. */ line?: ReactNode; to: string; /** The link's spoken name. */ label: string }) {
+  return (
+    <li className={cx("relative flex items-stretch", LIFT, rowLook(false))}>
+      <span className="flex-1 min-w-0 ps-3 pe-2 py-3 lg:ps-4 flex flex-col gap-0.5">
+        <span className="font-semibold leading-snug">{title}</span>
+        {line && <span className="text-sm leading-snug text-muted-foreground">{line}</span>}
+      </span>
+      <span aria-hidden="true" className="shrink-0 w-11 flex items-center justify-center">
+        <RowArrow />
+      </span>
+      <Link to={to} aria-label={label} data-choose-row className="absolute inset-0 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2" />
+    </li>
+  );
+}
+
+/**
  * A row that opens a part of the page or another page (a bank's overview of its products, the designer's mocks): its name, a muted count,
  * one headline fact under a small label ("ריבית בשנה, מיום עד שנה" over "0.02% עד 2.05%"), a muted date and an arrow, in columns from
  * 768 px and one under the other on a phone. Figures that open their source lie above the row's link and keep their own tap. The whole

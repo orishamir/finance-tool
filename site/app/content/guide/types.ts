@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { KeyValueItem } from "../../components/guide/sections";
+import type { GlanceItem, KeyValueItem } from "../../components/guide/sections";
 import type { SiteValue } from "../../lib/value";
 import type { BreakTerms } from "../../lib/guide-signature";
 
@@ -42,6 +42,8 @@ export interface GuideContent {
 
 /** Prose of an exposure guide page (flows 6.6: no timeline, no money-in-and-out section). */
 export interface ExposureContent {
+  /** The page's own figures for the card beside the title, each as the prose states it; the kind and the currency follow them from the record. */
+  glance?: (p: ContentProps) => GlanceItem[];
   what: (p: ContentProps) => ReactNode;
   /** Optional line above the "how to hold it" cards (which wrappers can hold it, and any tax caveat). */
   holdNote?: (p: ContentProps) => ReactNode;

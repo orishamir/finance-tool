@@ -2,6 +2,7 @@
 // sends to a friend.
 import { useLoaderData } from "react-router";
 import { r3transfer as copy, site } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { TransferPanel } from "../components/transfer/panel";
 
@@ -10,8 +11,8 @@ export async function loader() {
   return { site: exportSiteInfo(), today: today() };
 }
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: copy.lede, location });
 }
 
 export default function TransferPage() {

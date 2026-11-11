@@ -124,11 +124,12 @@ export interface TableRowData {
 /**
  * A table always in view with a fixed width per column, so nothing moves when a number changes: a header on every column, row heads at
  * the start, `strong` for a closing row, and `hideOnPhone` for a column the phone can do without. `measure` caps it at the prose width
- * (38 rem), for a table of words inside guide prose: on a PC it no longer runs wider than the text around it.
+ * (38 rem), for a table of words inside guide prose: on a PC it no longer runs wider than the text around it. Without it the table is
+ * marked `data-wide`, so a guide section, which holds its blocks to the prose width, leaves it the page's.
  */
 export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: ReactNode; columns: { id: string; head: ReactNode; hideOnPhone?: boolean }[]; rows: { key: string; head: ReactNode; cells: ReactNode[]; strong?: boolean }[]; measure?: boolean }) {
   return (
-    <table className={cx("tbl text-sm max-md:text-[13px] [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1", measure && "max-w-measure")}>
+    <table data-wide={measure ? undefined : ""} className={cx("tbl text-sm max-md:text-[13px] [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1", measure && "max-w-measure")}>
       <TableCols widths={["auto", ...columns.map((c) => ({ pc: "auto", phone: c.hideOnPhone ? "0" : "auto" }))]} />
       <thead>
         <tr>

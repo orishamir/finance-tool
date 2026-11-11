@@ -1,13 +1,13 @@
 // The gallery at /kit: every component of the kit in its states, with its name beside it. A page for builders and for reviewing the look
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router";
 import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconAlert, IconExternal, IconLock } from "../icons";
-import { IdRef, LeadTail, MarkHead, Num, ReadingTag, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
+import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import { depositLabels } from "../../lib/deposit-kind";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -373,8 +373,35 @@ function Chips() {
           <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
         </State>
       </Demo>
+      <Demo name="MenuPicker" use={g.uses.MenuPicker}>
+        <State label={`in a heading, items you added (pencil, bin), the add row last, ${g.states.interactive}`} wide>
+          <h3 className="text-2xl font-semibold leading-relaxed">
+            {g.sample.title}{" "}
+            <MenuPicker
+              name={w.heading}
+              placeholder={w.heading}
+              items={[...sites.slice(0, 2).map((x) => ({ ...x, href: undefined })), ...order.map((id) => ({ id, label: label(id), editable: true }))]}
+              value={on}
+              words={words}
+              onSelect={setOn}
+              onRename={(id, name) => setNames((n) => ({ ...n, [id]: name || label(id) }))}
+              onDelete={(id) => setOrder((o) => o.filter((x) => x !== id))}
+              add={{ label: w.add, onClick: () => setOrder((o) => (o.length < 5 ? [...o, "n" + o.length] : o)) }}
+            />
+          </h3>
+        </State>
+        <State label="nothing chosen yet: the placeholder">
+          <MenuPicker name={w.heading} placeholder={w.heading} items={sites} value={null} />
+        </State>
+      </Demo>
     </>
   );
+}
+
+/** The gallery's page carries no rule records: the demos of a rule's title (a titled chip, a title row) get one sample record of their own. */
+function SampleRules({ today, children }: { today: string; children: ReactNode }) {
+  const rules = { "TXS-05": { id: "TXS-05", title: "Capital gains tax withheld at source", title_he: "ניכוי מס רווח הון במקור", scope: "general", strength: "primary", dimensions: [], figures: {} } };
+  return <ProvenanceProvider data={{ rules: rules as never, terms: {}, dimensions: {}, today }}>{children}</ProvenanceProvider>;
 }
 
 function Words({ today }: { today: string }) {
@@ -383,9 +410,10 @@ function Words({ today }: { today: string }) {
     <>
       <Demo name="IdRef" use={g.uses.IdRef}>
         <Grid>
-          <State label="rule: opens the rule card"><div><IdRef id="TXS-05" /></div></State>
-          <State label="formula: opens the formula sheet"><div><IdRef id="F-80" /></div></State>
-          <State label="parameter: goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
+          <State label="rule: D48's chip, opens the rule card at once"><div><IdRef id="TXS-05" /></div></State>
+          <State label="rule, titled: in a list of rules, the chip is the rule's title"><SampleRules today={today}><div><IdRef id="TXS-05" titled /></div></SampleRules></State>
+          <State label="formula: its name, opens the formula sheet"><div><IdRef id="F-80" /></div></State>
+          <State label="parameter: its name, goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
           <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
           <State label="ends a sentence: the full stop is passed as end and stays on the chip's line, with no gap before it (guard 20)"><p className="w-56">{g.sample.chipSentence} <IdRef id="TXS-05" end="." /></p></State>
         </Grid>
@@ -426,6 +454,15 @@ function Words({ today }: { today: string }) {
           <State label="one rule: opens its card at once"><RulesLine ids={["TXS-05"]} /></State>
           <State label="one open question: keeps its own chip"><RulesLine ids={["TX2 OQ6"]} /></State>
           <State label="no rules: renders nothing"><div><RulesLine ids={[]} /></div></State>
+        </Grid>
+      </Demo>
+      <Demo name="RuleTitleRow" use={g.uses.RuleTitleRow}>
+        <Grid>
+          <State label="a row that is the rule itself: its title is the link and opens its card; no code (the sheet of a RulesChip, a company page's terms)">
+            <SampleRules today={today}>
+              <ul className="flex flex-col border-y border-border"><li><RuleTitleRow id="TXS-05" /></li></ul>
+            </SampleRules>
+          </State>
         </Grid>
       </Demo>
       <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
@@ -540,10 +577,16 @@ function Words({ today }: { today: string }) {
               <KeyValue label={g.sample.kv[2]!}>
                 <Num value={s.sourced} size="cell" display="12" />
               </KeyValue>
+              <KeyValue label={g.sample.kv[0]!} size="xs">
+                <Num value={s.rate} size="cell" />
+              </KeyValue>
             </dl>
           </State>
           <State label="KeyValueList">
             <KeyValueList items={g.sample.cards.map((c) => ({ ...c, value: <Num value={s.sourced} />, tag: <Tag tone="positive">{g.states.sourced}</Tag> }))} />
+          </State>
+          <State label="KeyValueList rows">
+            <KeyValueList rows items={g.sample.cards.map((c) => ({ ...c, value: <Num value={s.sourced} /> }))} />
           </State>
         </Grid>
       </Demo>
@@ -667,6 +710,17 @@ function Fields() {
             ]}
           />
         </State>
+        <State label="stacked: one under the other at every width (a narrow side card)">
+          <div className="max-w-xs">
+            <KnobStrip
+              stacked
+              knobs={[
+                { id: "years", label: g.sample.range, unit: "years", value: years, start: 10, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+                { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
+              ]}
+            />
+          </div>
+        </State>
       </Demo>
       <Demo name="ChangeChart" use={g.uses.ChangeChart}>
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
@@ -685,17 +739,11 @@ function Fields() {
             yTitle="₪"
             yFormat={(v) => fmt.number(Math.round(v))}
             choicesLabel={g.sample.range}
-            head={[g.sample.range, g.sample.percent, g.sample.range]}
-            widths={[
-              { pc: "40%", phone: "50%" },
-              { pc: "30%", phone: "50%" },
-              { pc: "30%", phone: "0" },
-            ]}
-            // on a phone the third column's figure sits under the second's (stackOnPhone)
-            stackOnPhone={[1, 2]}
+            head={{ number: g.sample.range, diff: g.sample.percent, left: g.sample.range }}
+            rowsLabel={g.sample.range}
             rows={[
-              { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200), fmt.nisWhole(1440)] },
-              { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400), fmt.nisWhole(480)] },
+              { id: "a", swatch: "bg-chart-lever-2", name: g.sample.range, from: fmt.nisWhole(1200), to: fmt.nisWhole(1440), diff: fmt.nisWhole(240), size: 240, left: fmt.nisWhole(5440) },
+              { id: "b", swatch: "bg-chart-lever-4", name: g.sample.percent, from: fmt.nisWhole(400), to: fmt.nisWhole(480), diff: fmt.nisWhole(80), size: 80, left: fmt.nisWhole(5280) },
             ]}
           />
         </State>
@@ -737,12 +785,12 @@ function Fields() {
             fold={0}
             axis={{ lo: 70000, hi: 90000 }}
             ceiling={{ level: 86955, lines: [g.sample.rowA, "86,955 ₪", g.sample.rowB] }}
-            endsAt={null}
+            result={{ level: 86492, total: "86,492 ₪", words: [g.sample.rowB] }}
             now={g.sample.stairsNow}
             label={g.sample.rowA}
             onGo={() => undefined}
           />
-          <StairsTable rows={[{ id: "a", head: g.sample.rowA, cells: ["1", "2", "3", "4"] }]} />
+          <StairsTable slots={5} rows={[{ id: "a", head: g.sample.rowA, cells: ["1", "2", "3", "4", "5"] }]} />
           <StairsSteps steps={[{ id: "a", hue: "account", loses: false, head: g.sample.rowA, delta: "+4,875 ₪", parts: g.sample.rowB, next: true, label: g.sample.rowA }]} onGo={() => undefined} />
         </State>
       </Demo>
@@ -1075,6 +1123,125 @@ function sampleClaims(today: string): AdvertisingEntry[] {
   ];
 }
 
+/** Two short lists either side of a ruler: an account is a stretch of it, a fund a spot in the chosen account's stretch (made-up figures). */
+function StretchDemo() {
+  const p = g.sample.products;
+  const w = g.sample.stretch;
+  const scale = { lo: 60_000, hi: 90_000 };
+  const accounts = { a: { best: 86_492, worst: 80_000 }, b: { best: 84_824, worst: 70_000 }, c: { best: 83_141, worst: 62_000 } } as const;
+  const fundsAt: Record<string, Record<string, number>> = { a: { d: 86_492, e: 85_130, f: 80_000 }, b: { d: 84_824, e: 78_000, f: 70_000 }, c: { d: 83_141, e: 74_000, f: 62_000 } };
+  const names: Record<string, string> = { a: p.a, b: p.b, c: p.c, d: p.c, e: p.a, f: p.b };
+  const [a, setA] = useState<keyof typeof accounts>("a");
+  const [f, setF] = useState("d");
+  const ticket = useRef<HTMLDivElement>(null);
+  const at = fundsAt[a]!;
+  const nis = (v: number) => `${v.toLocaleString("en-US")} ₪`;
+  const accountRows = (Object.keys(accounts) as (keyof typeof accounts)[]).map((k) => ({
+    key: k,
+    selected: k === a,
+    onSelect: () => setA(k),
+    cells: (
+      <>
+        <span className="text-sm font-medium">{names[k]}</span>
+        <span className="text-xs text-muted-foreground tabular-nums">{k === a ? w.chosen : `${w.upTo} ${nis(accounts[k].best)}`}</span>
+        <StretchBar scale={scale} best={accounts[k].best} worst={accounts[k].worst} />
+      </>
+    ),
+  }));
+  const fundRows = Object.keys(at).map((k) => ({
+    key: k,
+    selected: k === f,
+    onSelect: () => setF(k),
+    cells: (
+      <>
+        <span data-spot-dot="" aria-hidden="true" className={cx("size-[7px] rounded-full ring-[1.5px] ring-inset ring-chart-by-fund", k === f && "bg-chart-by-fund")} />
+        <span className="text-sm font-medium">{names[k]}</span>
+        <span className="text-xs text-muted-foreground tabular-nums">{k === f ? w.chosen : `${w.less} ${nis(at[f]! - at[k]!)}`}</span>
+      </>
+    ),
+  }));
+  return (
+    <div className="flex flex-col gap-5">
+      <div ref={ticket} className="mx-auto rounded-xl bg-popover px-5 py-3 text-center text-figure font-semibold text-primary tabular-nums">{nis(at[f]!)}</div>
+      <StretchChart
+        startHead={<p className="text-sm font-semibold">{w.accounts}</p>}
+        startList={<PickList look="line" tone="account" anchor="demo-accounts" label={w.accounts} columns="minmax(0,1fr) auto auto" rows={accountRows} />}
+        endHead={<p className="text-sm font-semibold">{w.funds}</p>}
+        endList={<PickList look="line" tone="fund" anchor="demo-funds" label={w.funds} columns="auto minmax(0,1fr) auto" rows={fundRows} />}
+        startAnchor="demo-accounts"
+        endAnchor="demo-funds"
+        scale={scale}
+        band={accounts[a]}
+        point={at[f]!}
+        spots={at}
+        chosenStart={a}
+        chosenEnd={f}
+        above={ticket}
+        tick={fmt.compactNisAxis}
+        watch={`${a}|${f}`}
+      />
+    </div>
+  );
+}
+
+/** The receipt as a ticket across a wide column: the account's part, the middle with the total, the fund's part, and a row under them. */
+function TicketDemo() {
+  const r = g.sample.receipt;
+  return (
+    <ReceiptTicket
+      label={r.title}
+      top={
+        <>
+          <span>{r.title}</span>
+          <span>{g.sample.stretch.years}</span>
+        </>
+      }
+      start={
+        <TicketPart label={g.sample.tile.account} swatch="bg-chart-by-account" name={g.sample.tile.name}>
+          <ReceiptLine size="sm" edge="border-chart-by-account" label={r.accountLine} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={r.accountLine} value="−1,200 ₪" sub={r.rate} />} />
+        </TicketPart>
+      }
+      middle={
+        <>
+          <div className="flex flex-col gap-2.5 text-sm">
+            <ReceiptLine size="sm" label={r.paid} value="100,000 ₪" />
+            <ReceiptLine size="sm" label={r.added} value="+40,000 ₪" />
+            <ReceiptLine size="sm" swatch="bg-chart-tax" label={r.tax} value="−9,000 ₪" />
+          </div>
+          <ReceiptRule kind="double" />
+          <div className="flex flex-col items-center text-center">
+            <span className="text-base font-semibold">{r.left}</span>
+            <span className="text-total font-semibold text-primary tabular-nums">129,500 ₪</span>
+          </div>
+        </>
+      }
+      end={
+        <TicketPart label={g.sample.tile.fund} swatch="bg-chart-by-fund" name={r.fund}>
+          <ReceiptLine size="sm" edge="border-chart-by-fund" label={r.fundFee} value="−300 ₪" parts={<ReceiptLine size="sm" label={r.fundFee} value="0.2%" />} />
+        </TicketPart>
+      }
+      foot={[<ReceiptLine key="g" strong label={r.gain} value="+29,500 ₪" />, <ReceiptLine key="l" strong label={r.bar} value="10,500 ₪" />, <ShareBar key="b" label={r.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 86, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 11, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 3, className: "bg-chart-by-fund" }]} />]}
+    />
+  );
+}
+
+/** The receipt's stub, drawn in place; a tap scrolls to the receipt above it. */
+function StubDemo() {
+  const r = g.sample.receipt;
+  const target = useRef<HTMLDivElement>(null);
+  const area = useRef<HTMLDivElement>(null);
+  return (
+    <div ref={area} className="flex max-w-sm flex-col gap-4">
+      <div ref={target} tabIndex={-1} className="outline-none">
+        <ReceiptPaper label={r.title}>
+          <ReceiptLine label={r.left} value="129,500 ₪" strong />
+        </ReceiptPaper>
+      </div>
+      <ReceiptStub inline names={r.stubNames} label={r.left} figure="129,500 ₪" go={investWords.receipt.toReceipt} target={target} area={area} />
+    </div>
+  );
+}
+
 function Lists({ today }: { today: string }) {
   const s = samples(today);
   const p = g.sample.products;
@@ -1158,6 +1325,23 @@ function Lists({ today }: { today: string }) {
         </State>
         <State label="a group whose fold the page holds (fold: open, onToggle), folded at first; the button opens it and lights its row for a moment (rowOf marks the row data-row-of for a page that scrolls to it, lit lights it; an outline under reduced motion), as the deposits page does from its grid" wide>
           <PageFoldTable row={row} />
+        </State>
+      </Demo>
+      <Demo name="ProductPhoneFold" use={g.uses.ProductPhoneFold}>
+        <State label="two products on a phone, each one line (its name, one figure with its word, a chevron); a tap on the line opens the rest of the row in place, growing, and a tap on the figure opens its source instead" wide>
+          <Card pad="none" className="overflow-hidden flex flex-col max-w-sm">
+            {([["a", p.a, "1148808", 0.35], ["b", p.c, "1148162", 0.8]] as const).map(([k, name, n, rate]) => (
+              <ProductPhoneFold key={k} name={name} figure={<ProductFigures inline items={[{ id: "a", figure: <Num value={{ ...s.rate, value: rate }} />, word: p.figure }]} />} label={name}>
+                <span className="text-sm text-muted-foreground">
+                  {p.number} <bdi dir="ltr" className="num-id">{n}</bdi>
+                </span>
+                <LabelRow labels={labels} />
+                <a href="#kit" className="self-start text-link hover:underline inline-flex items-center min-h-target text-sm">
+                  {p.go}
+                </a>
+              </ProductPhoneFold>
+            ))}
+          </Card>
         </State>
       </Demo>
       <Demo name="GroupPriceFold, GroupPriceRows" use={g.uses.GroupPrices}>
@@ -1281,10 +1465,10 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="FormulaBlock, Tex" use={g.uses.Formula}>
-        <State label="one formula and its key (the stock share of a provident track, F-87): the math left to right, the key's symbols on the start side">
+        <State label="one formula and its key (the stock share of a provident track): the math left to right, the key's symbols on the start side">
           <FormulaBlock lines={[{ tex: String.raw`s = \frac{E}{A} \times 100` }]} symbols={formulaKeys["F-87"]!.symbols} where={provenanceWords.formulaSheet.where} />
         </State>
-        <State label="several formulas in one entry, each under its name (the dollar against the shekel, F-93)">
+        <State label="several formulas in one entry, each under its name (the dollar against the shekel)">
           <FormulaBlock
             lines={[String.raw`r_t = \frac{\text{ILS}_t}{\text{USD}_t}`, String.raw`\frac{r_{\text{Dec}(y)}}{r_{\text{Dec}(y-1)}} - 1`, String.raw`\left(\frac{r_{t+12H}}{r_t}\right)^{1/H} - 1`].map((tex, i) => ({ tex, label: formulaKeys["F-93"]!.lines?.[i] }))}
             symbols={formulaKeys["F-93"]!.symbols}
@@ -1312,6 +1496,24 @@ function Lists({ today }: { today: string }) {
             tabs={[
               { key: "a", label: trackBrowser.tabs.byCompany, href: "#kit" },
               { key: "b", label: trackBrowser.tabs.byProduct, href: "#kit" },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="TabCards, PanelHead" use={g.uses.TabCards}>
+        <State label={g.states.interactive} wide>
+          <TabCardsDemo />
+        </State>
+      </Demo>
+      <Demo name="OptionBars" use={g.uses.OptionBars}>
+        <State label="sorted, the largest first; one bar of another colour; an option at 0 has no bar" wide>
+          <OptionBars
+            label={g.sample.receipt.title}
+            bars={[
+              { id: "c", name: g.sample.cost.custody, sub: g.sample.tile.account, value: 699, amount: fmt.nisWhole(699), className: "bg-chart-by-account" },
+              { id: "t", name: g.sample.cost.trade, sub: g.sample.tile.account, value: 356, amount: fmt.nisWhole(356), className: "bg-chart-by-account" },
+              { id: "f", name: g.sample.cost.fund, sub: g.sample.tile.fund, value: 116, amount: fmt.nisWhole(116), className: "bg-chart-by-fund" },
+              { id: "x", name: g.sample.cost.fixed, sub: g.sample.tile.account, value: 0, amount: fmt.nisWhole(0), className: "bg-chart-by-account" },
             ]}
           />
         </State>
@@ -1358,6 +1560,14 @@ function Lists({ today }: { today: string }) {
           </RowList>
         </State>
       </Demo>
+      <Demo name="GoRow" use={g.uses.GoRow}>
+        <State label="rows that open another page in a narrow column: a name, a line with a figure that opens its source, the arrow">
+          <RowList className="max-w-sm">
+            <GoRow title={g.sample.option[0]} line={<>{g.sampleAbout}: <Num value={s.sourced} /></>} to="/kit" label={g.sample.option[0] ?? ""} />
+            <GoRow title={g.sample.option[1]} line={g.sampleSource} to="/kit" label={g.sample.option[1] ?? ""} />
+          </RowList>
+        </State>
+      </Demo>
       <Demo name="GoLink" use={g.uses.GoLink}>
         <State label="a link that sends the reader on, at the end of a part">
           <GoLink to="/kit">{g.sample.option[0]}</GoLink>
@@ -1393,6 +1603,52 @@ function Lists({ today }: { today: string }) {
             <ExposureCell size="cell" value={{ stock: { ...s.comp, value: 49, unit: "pct" }, currency: { ...s.comp, value: 21, unit: "pct" } }} />
             <ShareNum value={{ ...s.comp, value: 49, unit: "pct" }} />
             <TrackLabels isDefault track={{ inception: "2025-06-01", reportPeriod: "2026-09" }} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="ShareBar" use={g.uses.ShareBar}>
+        <State label="every part in the key above the bar, in the bar's order, with its share" wide>
+          <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 83, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 15, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 2, className: "bg-chart-by-fund" }]} />
+        </State>
+        <State label="narrow, and a part that took under half a percent: it stays in the key with its words, and is not drawn">
+          <div className="w-60">
+            <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 70, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 30, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 0, className: "bg-chart-by-fund", words: investWords.receipt.underOne }]} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptTicket, TicketPart, ReceiptStub" use={g.uses.Receipt}>
+        <State label="lines with leaders, a line's parts behind its colour, the double rule before the total, the dashed one after">
+          <ReceiptPaper className="max-w-sm" label={g.sample.receipt.title}>
+            <ReceiptLine label={g.sample.receipt.paid} value="100,000 ₪" />
+            <ReceiptLine label={g.sample.receipt.added} value="+40,000 ₪" />
+            <ReceiptLine swatch="bg-chart-tax" label={g.sample.receipt.tax} value="−9,000 ₪" />
+            <ReceiptLine swatch="bg-chart-by-account" edge="border-chart-by-account" label={g.sample.receipt.account} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.accountLine} value="−1,200 ₪" sub={g.sample.receipt.rate} />} />
+            <ReceiptLine swatch="bg-chart-by-fund" edge="border-chart-by-fund" label={g.sample.receipt.fund} value="−300 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.fundFee} value="0.2%" />} />
+            <ReceiptRule kind="double" />
+            <ReceiptLine label={g.sample.receipt.left} value={<span className="text-figure font-semibold text-primary">129,500 ₪</span>} strong />
+            <ReceiptRule kind="dashed" />
+            <ReceiptLine size="sm" label={g.sample.receipt.gain} value="+29,500 ₪" />
+          </ReceiptPaper>
+        </State>
+        <State label="the ticket (ReceiptTicket): the same lines across a wide column, the account's part and the fund's either side of the total, notches where the middle's dashed edges meet the ticket's; it stands only from 1280 px, and the gallery shows it only there" wide>
+          <div className="max-xl:hidden">
+            <TicketDemo />
+          </div>
+        </State>
+        <State label="the stub (ReceiptStub), drawn in place here: on the page it is pinned to the screen's foot while the receipt is above the screen, and a tap leads back up to it">
+          <StubDemo />
+        </State>
+      </Demo>
+      <Demo name="FactTile, TileJoin" use={g.uses.FactTile}>
+        <State label="two tiles, one under the other, joined by the round +">
+          <div className="flex max-w-sm flex-col">
+            <FactTile edge="border-chart-by-account" head={g.sample.tile.account} link={<a className="text-link" href="/kit">{g.sample.tile.link}</a>} name={g.sample.tile.name}>
+              {g.sample.tile.rows.map((r, i) => <KeyValue key={r} size="xs" label={r}>{g.sample.tile.values[i]}</KeyValue>)}
+            </FactTile>
+            <TileJoin />
+            <FactTile edge="border-chart-by-fund" head={g.sample.tile.fund} name={g.sample.receipt.fund}>
+              <KeyValue size="xs" label={g.sample.tile.rows[0]!}>{g.sample.tile.values[0]}</KeyValue>
+            </FactTile>
           </div>
         </State>
       </Demo>
@@ -1480,6 +1736,20 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
+      <Demo name="StretchChart, StretchBar, PickList (line)" use={g.uses.Stretch}>
+        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
+          <div className="max-xl:hidden">
+            <StretchDemo />
+          </div>
+        </State>
+        <State label="the small ruler beside a row: an account's stretch on the list's one scale, and a fund's spot in it">
+          <div className="flex items-center gap-4">
+            <StretchBar scale={{ lo: 60_000, hi: 90_000 }} best={86_492} worst={80_000} />
+            <StretchBar scale={{ lo: 60_000, hi: 90_000 }} best={84_824} worst={62_000} className="h-8" spot={70_000} />
+            <StretchBar scale={{ lo: 60_000, hi: 90_000 }} best={84_824} worst={62_000} className="h-8" spot={[66_000, 78_000]} />
+          </div>
+        </State>
+      </Demo>
       <Demo name="PickList (groups)" use={g.uses.PickList}>
         <State label="a heading above the first row of each group: a group, never a row to choose" wide>
           <PickList
@@ -1548,24 +1818,6 @@ function Lists({ today }: { today: string }) {
               ),
             }))}
           />
-        </State>
-      </Demo>
-      <Demo name="PickList (states)" use={g.uses.PickList}>
-        <State label="states and cases: the second row turns long in the other state, and the list holds that state's height, so nothing below it moves when it comes; every state is measured from its cases, the one shown included, and a mark (a tag on one row at a time) counts on one row only" wide>
-          <PickList
-            label={p.name}
-            columns="minmax(0,1fr) auto"
-            states={[{ a: "short", b: "short" }, { a: "short", b: "long" }]}
-            rows={[
-              { key: "a", selected: true, onSelect: () => {}, caseKey: "short", cells: <><span>{p.a}</span><span className="tabular-nums">78,943</span></>, cases: [{ key: "short", cells: <><span>{p.a}</span><span>—</span></> }, { key: "short", marks: ["star"], cells: <><span className="flex flex-col"><span>{p.a}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }] },
-              { key: "b", selected: false, onSelect: () => {}, caseKey: "short", cells: <><span>{p.b}</span><span className="tabular-nums">76,322</span></>, cases: [{ key: "short", cells: <><span>{p.b}</span><span>—</span></> }, { key: "short", marks: ["star"], cells: <><span className="flex flex-col"><span>{p.b}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }, { key: "long", cells: <><span className="flex flex-col"><span>{p.b}</span><span className="text-xs">{p.c}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }] },
-            ]}
-          />
-        </State>
-      </Demo>
-      <Demo name="LabelFilter" use={g.uses.LabelFilter}>
-        <State label="three labels with counts, the first on" wide>
-          <LabelFilter lead={p.figure} allLabel={p.link} value={labels[0]!.id} onChange={() => {}} options={labels.map((l, i) => ({ label: l, count: 5 - i }))} />
         </State>
       </Demo>
       <Demo name="LabelChip, LabelRow, LabelSheetHost, LabelIcon" use={g.uses.LabelChip}>
@@ -1741,6 +1993,19 @@ function PhoneFoldChips() {
   const chips = g.sample.phoneFold.chips;
   const [on, setOn] = useState<string>(chips[0]!);
   return <ChoiceChips wrap ids={chips} labels={Object.fromEntries(chips.map((c) => [c, c]))} value={on} onChange={setOn} counts={Object.fromEntries(chips.map((c, i) => [c, i + 2]))} ariaLabel={g.sample.phoneFold.summary} />;
+}
+
+function TabCardsDemo() {
+  const t = g.sample.tabCards;
+  const [on, setOn] = useState("0");
+  return (
+    <TabCards idBase="kit-tab-cards" ariaLabel={t.label} openWord={t.open} current={on} onChange={setOn} tabs={t.questions.map((q, i) => ({ key: String(i), question: q, answer: t.answers[i]!, note: t.note }))}>
+      <Card pad="roomy" className="flex flex-col gap-3">
+        <PanelHead kicker={t.kicker}>{t.head}</PanelHead>
+        <p>{t.body}</p>
+      </Card>
+    </TabCards>
+  );
 }
 
 function TabStripDemo() {

@@ -58,6 +58,31 @@ export const claims: { claim: string; rules: string[] }[] = [
   { claim: "הפנסיה שלי עברה לקרן אחרת בלי שביקשתי", rules: ["PF-28", "SW-22"] },
 ];
 
+/**
+ * Questions typed in the site's search, as a person asks them about a product: each names one or two products the site has a guide for,
+ * and `lead` holds the addresses its first rows must be, in order (a guide's section, the guide, the comparison page). Latin names reach
+ * the Hebrew pages through the alias table. `tools/search-top3.ts` prints the first three results of each.
+ */
+export const siteQuestions: { q: string; lead: string[] }[] = [
+  { q: "כמה מס משלמים על פיקדון", lead: ["/guide/bank-deposit#tax", "/guide/bank-deposit", "/deposits"] },
+  { q: "קרן כספית או פיקדון", lead: ["/guide/money-market-fund-daily", "/guide/bank-deposit", "/deposits"] },
+  { q: "קרן השתלמות", lead: ["/guide/keren-hishtalmut"] },
+  { q: "pension", lead: ["/guide/pension-comprehensive"] },
+  { q: "deposit", lead: ["/guide/bank-deposit"] },
+  { q: "ETF", lead: ["/guide/mutual-funds"] },
+  { q: "money market fund", lead: ["/guide/money-market-fund-daily"] },
+  { q: "כמה דמי ניהול בקרן השתלמות", lead: ["/guide/keren-hishtalmut#cost", "/guide/keren-hishtalmut", "/tracks/keren-hishtalmut"] },
+  { q: "איך מושכים כסף מקופת גמל להשקעה", lead: ["/guide/kupat-gemel-lehashkaa#inout", "/guide/kupat-gemel-lehashkaa", "/tracks/kupat-gemel-lehashkaa"] },
+  { q: "מס על קרן כספית", lead: ["/guide/money-market-fund-daily#tax", "/guide/money-market-fund-daily"] },
+  { q: "קופת גמל להשקעה או קרן השתלמות", lead: ["/guide/kupat-gemel-lehashkaa", "/guide/keren-hishtalmut"] },
+  { q: "הפיקדון שלי מובטח", lead: ["/guide/bank-deposit#risk", "/guide/bank-deposit", "/deposits"] },
+  { q: "מי מציע קרן השתלמות", lead: ["/guide/keren-hishtalmut#who", "/guide/keren-hishtalmut", "/tracks/keren-hishtalmut"] },
+  { q: "עמלות בחשבון ניירות ערך", lead: ["/guide/brokerage-account#cost", "/guide/brokerage-account"] },
+  { q: "מק״מ או פיקדון", lead: ["/guide/makam", "/guide/bank-deposit", "/deposits"] },
+  { q: "מס על קרן סל", lead: ["/guide/mutual-funds#tax", "/guide/mutual-funds"] },
+  { q: "ריבית על עו״ש", lead: ["/guide/current-account"] },
+];
+
 /** Claims written after the search was tuned on the list above, and not tuned on: what `claimHits` scores here is the honest figure. */
 export const unseenClaims: { claim: string; rules: string[] }[] = [
   { claim: "הבנק חייב להודיע לי לפני שהפיקדון נגמר", rules: ["BANK-07", "BANK-05"] },

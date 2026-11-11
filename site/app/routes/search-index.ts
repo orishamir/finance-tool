@@ -6,14 +6,48 @@ export async function loader() {
   const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
   const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
   const { normalize, ruleFigs } = await import("../lib/search");
+  const { gershayim } = await import("../lib/format");
   const { limitedBondFund, mutualFunds, search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
   const wrappers = loadProducts();
-  for (const w of wrappers) {
-    for (const name of [...w.names.he, ...w.names.app, ...w.names.statement]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/guide/${w.id}`, norm: normalize(name) });
+  const exposures = loadExposures();
+  // a guide's row says which page it opens: "עמוד המדריך" under the page's own name, "עמוד המדריך על <name>" under another
+  const titles = new Map<string, string>([...wrappers.map((w) => [`/guide/${w.id}`, w.names.he[0]!] as const), ["/guide/limited-bond-fund", limitedBondFund.title], ["/guide/mutual-funds", mutualFunds.title]]);
+  for (const e of exposures) if (!titles.has(exposureHref(e.id))) titles.set(exposureHref(e.id), e.names.he[0]!);
+  const guideRow = (name: string, href: string): SearchEntry => {
+    const title = titles.get(href) ?? name;
+    return { kind: "guide", name, line: name === title ? search.guideLine : `${search.guideAbout} ${gershayim(title)}`, href, norm: normalize(name) };
+  };
+  for (const w of wrappers) for (const name of [...w.names.he, ...w.names.app, ...w.names.statement]) entries.push(guideRow(name, `/guide/${w.id}`));
+  for (const name of limitedBondFund.searchNames) entries.push(guideRow(name, "/guide/limited-bond-fund"));
+  for (const name of mutualFunds.searchNames) entries.push(guideRow(name, "/guide/mutual-funds"));
+  // the parts of each guide a question can lead to (tax, cost, money in and out, who offers it, risks), found only through a product's
+  // name in the question (lib/search.ts `leadRows`), and the page that compares the product across providers
+  const { sectionTitle, topicSection } = await import("../lib/guide-nav");
+  const { sectionTopicWords } = await import("../lib/search-aliases");
+  const proseSections: Record<string, readonly { id: string; title: string }[]> = { "limited-bond-fund": limitedBondFund.sections, "mutual-funds": mutualFunds.sections };
+  for (const [href, title] of titles) {
+    if (!href.startsWith("/guide/")) continue;
+    const id = href.slice("/guide/".length);
+    // one row for one section, with every topic that leads to it ("מי מציע, ובכמה" answers both who offers it and what it costs)
+    const topics = new Map<string, string[]>();
+    for (const { topic } of sectionTopicWords) {
+      const section = topicSection(id, topic);
+      if (section) topics.set(section, [...(topics.get(section) ?? []), topic]);
+    }
+    for (const [section, keys] of topics) {
+      const heading = proseSections[id] ? proseSections[id]!.find((x) => x.id === section)!.title : sectionTitle(id, section);
+      const name = gershayim(`${title} · ${heading}`);
+      entries.push({ kind: "section", name, line: search.sectionLine, href: `${href}#${section}`, norm: normalize(name), key: keys.join(" "), of: href });
+    }
   }
-  for (const name of limitedBondFund.searchNames) entries.push({ kind: "guide", name, line: search.groups.guide, href: "/guide/limited-bond-fund", norm: normalize(name) });
-  for (const name of mutualFunds.searchNames) entries.push({ kind: "guide", name, line: search.groups.guide, href: "/guide/mutual-funds", norm: normalize(name) });
+  const { trackProductIds } = await import("../lib/track-browser");
+  const { depositBrowser, trackBrowser } = await import("../copy");
+  for (const id of trackProductIds) {
+    const name = gershayim(`${trackBrowser.guideLink.before}${titles.get(`/guide/${id}`)}${trackBrowser.guideLink.after}`);
+    entries.push({ kind: "compare", name, line: search.tracksLine, href: `/tracks/${id}`, norm: normalize(name), of: `/guide/${id}` });
+  }
+  entries.push({ kind: "compare", name: depositBrowser.search.names[0], line: depositBrowser.search.line, href: "/deposits", norm: normalize(depositBrowser.search.names[0]), of: "/guide/bank-deposit" });
   // the fund and track numbers are searchable, and the row says which number it is
   const idLine = (n: number | string) => `${search.fundWord} ${n}`;
   const cma = loadCma();
@@ -24,8 +58,7 @@ export async function loader() {
   const { loadBrands } = await import("../lib/brands.server");
   const { brands: brandWords } = await import("../copy");
   for (const b of loadBrands()) for (const name of [b.name, ...b.fundManagers]) entries.push({ kind: "company", name, line: brandWords.searchLine, href: `/companies/${b.page}`, norm: normalize(name) });
-  const exposures = loadExposures();
-  for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push({ kind: "guide", name, line: search.groups.guide, href: exposureHref(e.id), norm: normalize(name) });
+  for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push(guideRow(name, exposureHref(e.id)));
   // every name the catalogue records: the track when it names one, else the company page, else the product's guide page
   for (const c of loadCatalog()) {
     const first = cma.tracks.find((t) => c.maps_to.track_ids.includes(t.fundId));
@@ -64,7 +97,8 @@ export async function loader() {
     const href = `${guide ? `/guide/${guide}` : exposureHref(exposure!)}#term=${encodeURIComponent(term.he)}`;
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
-  // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title
+  // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title. The id is the row's key,
+  // which a typed code finds (lib/search.ts `idForms`); the row's line never prints it: the words carry the rule (D48)
   const { ruleTitle } = await import("../lib/rule-title");
   const strengthRank: Record<string, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
   // D30 (spec 2026-10-25-rules-scope §4): two groups; a company's term (or an unsettled one) names its company and leads to where it is listed
@@ -90,7 +124,7 @@ export async function loader() {
       entries.push({
         kind: "companyRule",
         name: title,
-        line: [who, topic, rule.id].join(" · "),
+        line: [who, topic].filter(Boolean).join(" · "),
         href: companyTermsHref(rule, links, ownDocs),
         norm: normalize(title),
         key: rule.id,
@@ -108,7 +142,7 @@ export async function loader() {
     entries.push({
       kind: "rule",
       name: title,
-      line: [topic, weak, rule.id].filter(Boolean).join(" · "),
+      line: [topic, weak].filter(Boolean).join(" · "),
       href: `/rules#${rule.id}`,
       norm: normalize(title),
       key: rule.id,
@@ -123,7 +157,7 @@ export async function loader() {
     const labels = Object.entries(parametersPage.fields as Record<string, string>)
       .filter(([k]) => k.startsWith(`${p.method_id}.`))
       .map(([, v]) => v.replace(/\{[^}]*\}:?\s*/g, ""));
-    entries.push({ kind: "parameter", name, line: `${searchMore.parameterLine} · ${p.method_id}`, href: `/parameters#${p.method_id}`, norm: normalize(name), key: p.method_id, ...(labels.length > 0 ? { alt: normalize(labels.join(" ")) } : {}) });
+    entries.push({ kind: "parameter", name, line: searchMore.parameterLine, href: `/parameters#${p.method_id}`, norm: normalize(name), key: p.method_id, ...(labels.length > 0 ? { alt: normalize(labels.join(" ")) } : {}) });
   }
   const { loadDocuments } = await import("../lib/documents.server");
   for (const d of loadDocuments().filter((x) => x.featured)) entries.push({ kind: "document", name: d.title, line: [searchMore.documentLine, d.publisher].filter(Boolean).join(" · "), href: `/documents#${d.key}`, norm: normalize(d.title) });
@@ -134,7 +168,6 @@ export async function loader() {
     entries.push({ kind: "bank", name: e.name, line: e.line, href: e.href, norm: normalize(e.extra ? `${e.name} ${e.extra}` : e.name), ...(e.extra && /^\d+$/.test(e.extra) ? { ids: [e.extra] } : {}) });
   }
   // the deposits page (D92): found by what it is, among the bank results
-  const { depositBrowser } = await import("../copy");
   for (const name of depositBrowser.search.names) entries.push({ kind: "bank", name, line: depositBrowser.search.line, href: "/deposits", norm: normalize(name) });
   return Response.json(entries);
 }

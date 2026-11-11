@@ -16,7 +16,7 @@ import { Num, NumAfter, RuleRef, RulesChip, RulesLine } from "../../provenance";
 import { Card, ClaimList, Disclosure, DocLink, GoLink, GroupPriceRows, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
-import { isPdfUrl, sourceHref, type CitedPlace } from "../../../lib/sources";
+import { isPdfUrl, sourceHref, withoutCodes, type CitedPlace } from "../../../lib/sources";
 import { accountSectionIds, feeKindName, feeKindOf, feeKinds } from "./sections";
 
 /** What a kind of fee is charged on, in the guides' words ("מכל המרה של שקלים למטבע זר או חזרה"). */
@@ -37,7 +37,7 @@ function WhereLink({ w }: { w: NonNullable<TariffLineRow["where"]> }) {
   const page = pdfPage(w);
   return (
     <DocLink href={sourceHref(w)} className="text-xs">
-      {w.tariff ? copy.card.whereTariff(page) : copy.card.whereOther(gershayim(w.title), page)}
+      {w.tariff ? copy.card.whereTariff(page) : copy.card.whereOther(gershayim(withoutCodes(w.title)), page)}
     </DocLink>
   );
 }

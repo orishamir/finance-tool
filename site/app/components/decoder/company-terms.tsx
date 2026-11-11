@@ -8,7 +8,8 @@
 import { useEffect, useState } from "react";
 import { scopeWords } from "../../copy";
 import { companyTermsAnchor, noCompanyAnchor, noPageAnchor } from "../../lib/scope";
-import { RuleCard, useProvenanceData } from "../provenance";
+import { useProvenanceData } from "../provenance";
+import { RuleCard } from "../provenance-sheets";
 import { Card, FoldGroup, Section, cx, gershayim } from "../kit";
 
 export interface TermGroup {

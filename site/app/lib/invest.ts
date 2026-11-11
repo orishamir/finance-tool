@@ -909,6 +909,15 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   };
 }
 
+/** The record's lines a run priced at the list's own level, and the current account it counted (`PairCosts.priced`). */
+function pricedLines(ctx: Ctx, s: FeesSnapshot, row: ComparedProvider): PairCosts["priced"] {
+  const entered = row.feeState === "entered";
+  const listed = new Set(row.lineSources.filter((x) => x.level === "list").map((x) => x.lineId));
+  const lines = entered ? [] : row.linesUsed.flatMap((id) => { const l = scoped(s).lines.find((x) => x.id === id); return l && listed.has(id) ? [l] : []; });
+  const counted = row.byType.some((x) => x.line === "account");
+  return { lines, currentAccount: !entered && counted ? (currentAccountOf(ctx, s) ?? null) : null, house: s.provider.name_he, entered };
+}
+
 // ---------------------------------------------------------------- funds
 
 
@@ -1280,6 +1289,12 @@ export interface PairCosts {
   tax: SiteValue;
   /** F-109: the house buys the fund in whole units (`WayPrice.units`); the remainder then holds what the waiting cash did not earn. */
   units: WayPrice["units"];
+  /**
+   * The price list as the run read it, so a fee's rate can be said as the list prints it (`lib/rate-words`): the record's lines the run
+   * priced at the list's own level, the bank's current account where the run counts one, and the house's name for their source. `entered`:
+   * the prices are the person's (an account they typed or built on a house, or a group's picked prices), so no line is the list's.
+   */
+  priced: { lines: FeesSnapshot["lines"]; currentAccount: FeesSnapshot["current_account"] | null; house: string; entered: boolean };
 }
 
 /** One account and one fund on a plan, ready to price; null when the account does not sell the fund or the fund cannot be run. */
@@ -1297,6 +1312,19 @@ function pairOf(ctx: Ctx, a: { index: IndexRef; fundId: string; providerId: stri
     return p && p.kind === "ok" ? p.row : null;
   };
   return { rec, s, fs, price };
+}
+
+/** `pairCosts`, kept per data and plan object: the receipt, the fees panel and the lists' fund parts price the same pair on the same plan, once. */
+const keptCosts = new WeakMap<object, WeakMap<object, Map<string, PairCosts | null>>>();
+export function pairCostsKept(a: InvestArgs & { fundId: string; providerId: string }): PairCosts | null {
+  if (a.assumptions) return pairCosts(a);
+  let byPlan = keptCosts.get(a.bundle);
+  if (!byPlan) keptCosts.set(a.bundle, (byPlan = new WeakMap()));
+  let kept = byPlan.get(a.plan);
+  if (!kept) byPlan.set(a.plan, (kept = new Map()));
+  const key = `${a.index.id}|${a.fundId}|${a.providerId}`;
+  if (!kept.has(key)) kept.set(key, pairCosts(a));
+  return kept.get(key)!;
 }
 
 /**
@@ -1347,6 +1375,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
     units: unitsOf(row.run),
+    priced: pricedLines(ctx, s, row),
   };
 }
 

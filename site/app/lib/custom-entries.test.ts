@@ -1,10 +1,13 @@
 // A broker and a fund the person types (D44): they run through the engine's path, rank with the collected houses, and go through the saved
 // state and the export file. The expected figures are printed by tests/golden/expected_custom_entries.py, none written by hand.
+import { ReceiptAndFees } from "../components/invest/render-fixtures";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { beforeEach, describe, expect, it } from "vitest";
-import { AccountColumn, allFunds, FundColumn, pickOfHeadline, PairResult, whyNoPrice } from "../components/invest/pair";
+import { allFunds, pickOfHeadline, whyNoPrice } from "../components/invest/pair";
+import { PairLists } from "../components/invest/lists";
+import { EditorsContext, type Editors } from "../components/invest/editors";
 import { invest } from "../copy";
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
@@ -354,8 +357,8 @@ describe("the rows mark what was typed (D7)", () => {
   const pick = pickOfHeadline(view)!;
   const data = { rules: {}, terms: {}, dimensions: {}, today: t };
   const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, el) })));
-  it("the account list and the result name it in the entered colour, and link to no tariff or company page", () => {
-    const out = html(createElement("div", null, createElement(AccountColumn, { view, bundle: b, years: 20, pick, onPick: () => undefined }), createElement(FundColumn, { view, bundle: b, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }), createElement(PairResult, { view, bundle: b, plan, pick, chosen: true, onPick: () => undefined })));
+  it("the lists and the result name it in the entered colour, and link to no tariff or company page", () => {
+    const out = html(createElement("div", null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null, group: null }), createElement(ReceiptAndFees, { view, bundle: b, plan, pick, chosen: true, onPick: () => undefined })));
     expect(out).toContain(zeros.name);
     expect(out).toContain(fund.name);
     expect(out).toContain("text-entered");
@@ -364,6 +367,40 @@ describe("the rows mark what was typed (D7)", () => {
     // the site's own id is a key of the row, never a word on it
     expect(out.replace(/<[^>]*>/g, " ")).not.toContain("custom-fund-");
     expect(out).not.toMatch(/href="[^"]*custom-(fund|broker)-/);
+  });
+});
+
+describe("a typed row that cannot be priced is still where its terms are changed (D44)", () => {
+  const blank = fundFromDraft({ ...said("il-tracking"), name: "בלי שכר נאמן", fixed: 0.2, variable: 0.05 }, "custom-fund-blank", "index-ta125", t);
+  const b = withCustomEntries(bundle, [partial], [fund, blank]);
+  const view = buildInvest({ bundle: b, index: ta125, plan });
+  const pick = pickOfHeadline(view)!;
+  const data = { rules: {}, terms: {}, dimensions: {}, today: t };
+  const noop = () => undefined;
+  const editors: Editors = { addBroker: noop, addFund: noop, openOwn: noop, edit: noop, brokers: [partial], funds: [fund, blank], world: null };
+  const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, createElement(EditorsContext.Provider, { value: editors }, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: false, onPick: noop, moved: null, group: null }))) })));
+  /** A row as drawn, up to the next row. */
+  const row = (id: string) => {
+    const at = out.indexOf(`data-pick-key="${id}"`);
+    expect(at).toBeGreaterThan(-1);
+    const next = out.slice(at + 1).search(/data-pick-key="/);
+    return out.slice(out.lastIndexOf("<div", at), next < 0 ? undefined : at + 1 + next);
+  };
+  it("an account with a field left empty: no pick, and its terms with the edit button on a line under its row", () => {
+    const r = row(partial.id);
+    expect(r).toContain('aria-disabled="true"');
+    expect(r).toContain(invest.customEntries.edit);
+    expect(r).toContain(invest.customEntries.unknownLine(invest.customEntries.listWords(unknownLines(partial))));
+  });
+  it("a fund with a fee left empty: the same", () => {
+    const r = row(blank.id);
+    expect(r).toContain('aria-disabled="true"');
+    expect(r).toContain(invest.customEntries.edit);
+  });
+  it("a typed fund that is priced keeps its terms on its row too, and the collected rows carry none", () => {
+    expect(row(fund.id)).toContain(invest.customEntries.edit);
+    const collected = view.providers.find((p) => !p.custom)!;
+    expect(row(collected.id)).not.toContain(invest.customEntries.edit);
   });
 });
 

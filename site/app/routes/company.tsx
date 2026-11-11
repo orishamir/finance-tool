@@ -5,7 +5,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLoaderData, useLocation, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
-import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, companyPage as w, r4catalogue, site } from "../copy";
+import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, companyPage as w, pagePreview, r4catalogue } from "../copy";
+import { pageMeta } from "../lib/page-meta";
 import { InstitutionPage } from "../components/decoder/institutions/page";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
@@ -117,9 +118,10 @@ export function shouldRevalidate({ currentUrl, nextUrl, defaultShouldRevalidate 
   return currentUrl.pathname === nextUrl.pathname ? false : defaultShouldRevalidate;
 }
 
-export function meta({ loaderData: data }: Route.MetaArgs) {
+export function meta({ loaderData: data, location }: Route.MetaArgs) {
   const name = data?.kind === "institution" ? data.institution.name : data?.name;
-  return [{ title: `${name ? gershayim(name) : companiesCopy.title} · ${site.name}` }];
+  if (!name) return pageMeta({ title: companiesCopy.title, description: pagePreview.companies, location });
+  return pageMeta({ title: gershayim(name), description: pagePreview.company(w.whatsIn(name)), location });
 }
 
 export default function Company() {

@@ -7,7 +7,7 @@ import { loadBrands } from "./brands.server";
 import { INDICES_PATH, indexPath } from "./invest";
 
 export function prerenderPaths(): string[] {
-  const paths = ["/", "/guide", "/companies", "/company-figures.json", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/companies.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/compare-bundle.json"];
+  const paths = ["/", "/guide", "/companies", "/company-figures.json", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/companies.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/documents-data.json", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/compare-bundle.json"];
   paths.push("/guide/limited-bond-fund", "/guide/mutual-funds");
   for (const w of loadProducts()) paths.push(`/guide/${w.id}`);
   const folds = exposureFolds();

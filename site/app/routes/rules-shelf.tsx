@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/rules-shelf";
-import { rulesFront as copy, site } from "../copy";
+import { pagePreview, rulesFront as copy } from "../copy";
+import { pageMeta } from "../lib/page-meta";
 import { PageShell } from "../components/shell";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 
@@ -13,9 +14,9 @@ export function loader({ params }: Route.LoaderArgs) {
   return { shelf };
 }
 
-export function meta({ params }: Route.MetaArgs) {
-  const name = copy.shelves[params.shelf ?? ""]?.name ?? copy.title;
-  return [{ title: `${name} · ${copy.title} · ${site.name}` }];
+export function meta({ params, location }: Route.MetaArgs) {
+  const shelf = copy.shelves[params.shelf ?? ""];
+  return pageMeta({ title: shelf ? `${shelf.name} · ${copy.title}` : copy.title, description: shelf ? pagePreview.shelf(shelf.line) : copy.lede, location });
 }
 
 export default function RulesShelf() {

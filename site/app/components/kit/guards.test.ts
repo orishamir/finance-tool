@@ -55,7 +55,8 @@ import { numbers } from "../../copy";
 import { formatValue, joinLead } from "../../lib/format";
 import { buildInstitution, institutionIds } from "../../lib/institutions.server";
 import type { SiteValue } from "../../lib/value";
-import { LeadTail, Num, ProvenanceProvider, ValueSheet, valueItem } from "../provenance";
+import { LeadTail, Num, ProvenanceProvider, valueItem } from "../provenance";
+import { ValueSheet } from "../provenance-sheets";
 import { When } from "./when";
 import { classTokens, directChildren, findElements, isLayoutToken } from "../../lib/jsx-scan";
 
@@ -67,8 +68,8 @@ const read = (f: string) => readFileSync(f, "utf8");
 /** Source without block comments and whole-line `//` comments, so a rule named in a comment is not a use of it. */
 const code = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
 
-/** Files that may still hold a plain <details>: the kit itself, and the source sheet in provenance.tsx (owned by another builder on; move its two footnote folds to `<Disclosure plain>` when that file is next opened, then delete this line). */
-const DETAILS_ALLOWED = new Set(["components/provenance.tsx"]);
+/** Files that may still hold a plain <details>: the kit itself, and the source sheet in provenance-sheets.tsx (owned by another builder on; move its two footnote folds to `<Disclosure plain>` when that file is next opened, then delete this line). */
+const DETAILS_ALLOWED = new Set(["components/provenance-sheets.tsx"]);
 
 describe("no fold outside the kit", () => {
   const found = files.filter((f) => /\.tsx$/.test(f) && !rel(f).startsWith("components/kit/") && /<details[\s>]/.test(code(read(f)))).map(rel);
@@ -539,8 +540,8 @@ describe("a chip at the end of a sentence (20)", () => {
 });
 
 describe("the arrow that opens a page", () => {
-  /** The source sheet's row arrow opens a sheet on the same page, not a page: it stays grey. */
-  const GREY_ALLOWED = new Set(["components/provenance.tsx"]);
+  /** The source sheet's row arrow, and a rule's title row (`RuleTitleRow`), open a sheet on the same page, not a page: they stay grey. */
+  const GREY_ALLOWED = new Set(["components/provenance-sheets.tsx", "components/provenance.tsx"]);
   it("is the kit's RowArrow, not a grey IconDrillIn", () => {
     const hits = files.filter((f) => /\.tsx$/.test(f) && !rel(f).startsWith("components/kit/") && !GREY_ALLOWED.has(rel(f)) && /<IconDrillIn[^>]*text-muted-foreground/.test(code(read(f))));
     expect(hits.map(rel)).toEqual([]);

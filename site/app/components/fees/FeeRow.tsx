@@ -155,7 +155,7 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
     return (
       <p key={id} className="text-sm flex flex-col gap-1">
         {r ? <span>{(r as { text_he?: string }).text_he ?? r.title}</span> : <span className="text-muted-foreground">{r3fees.review.ruleMissing}</span>}
-        <span className="flex items-center gap-2">{r ? <RuleRef id={id} /> : <bdi dir="ltr" className="text-xs text-muted-foreground">{id}</bdi>}</span>
+        {r && <span className="flex items-center gap-2"><RuleRef id={id} /></span>}
       </p>
     );
   };

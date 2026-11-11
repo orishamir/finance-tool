@@ -74,7 +74,8 @@ export interface FoldGroupProps {
   title: ReactNode;
   /** The number of rows or cards in the group, after the title. */
   count?: number;
-  level?: 3 | 4;
+  /** The heading's level: 2 for a page's own topics under its title (the documents page's kinds of document), 3 by default. */
+  level?: 2 | 3 | 4;
   /** Starts open (uncontrolled). */
   defaultOpen?: boolean;
   /** Controlled: the parent owns the state (an address names a card inside, a filter opens the group). Pair with `onOpenChange`. */
@@ -114,7 +115,7 @@ export function FoldGroup({ title, count, level = 3, defaultOpen, open, onOpenCh
       defaultOpen={defaultOpen}
       open={open}
       onOpenChange={onOpenChange}
-      as={level === 3 ? "h3" : "h4"}
+      as={level === 2 ? "h2" : level === 3 ? "h3" : "h4"}
       spread={section}
       size={section ? "field" : "target"}
       labelClassName={section ? "text-lg font-semibold flex flex-wrap items-baseline gap-x-2" : "font-medium"}

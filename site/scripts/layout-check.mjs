@@ -187,12 +187,32 @@ async function checkPage(page, path, width) {
   await page.evaluate(() => document.querySelectorAll('main [data-row-fold][aria-expanded="false"]').forEach((b) => b.click()));
   await page.waitForTimeout(500);
   await page.evaluate(settled);
-  if (phone) {
-    const wide = await page.evaluate(widePage);
-    if (wide) findings.push({ check: "wide", id: wide.ids[0] ?? "page", detail: `the page is ${wide.sw} px wide on a ${wide.vw} px screen; out of the screen: ${wide.els.join(" · ")}` });
-    for (const c of await page.evaluate(cutWords)) findings.push({ check: "cut", id: c.box, detail: `"${c.text}" runs ${c.by} px past its ${c.box}` });
+  const seen = new Set();
+  const add = (f) => { const k = `${f.check}|${f.id}|${f.detail}`; if (!seen.has(k)) { seen.add(k); findings.push(f); } };
+  const look = async () => {
+    if (phone) {
+      const wide = await page.evaluate(widePage);
+      if (wide) add({ check: "wide", id: wide.ids[0] ?? "page", detail: `the page is ${wide.sw} px wide on a ${wide.vw} px screen; out of the screen: ${wide.els.join(" · ")}` });
+      for (const c of await page.evaluate(cutWords)) add({ check: "cut", id: c.box, detail: `"${c.text}" runs ${c.by} px past its ${c.box}` });
+    }
+    for (const m of await page.evaluate(lonelyMarks)) add({ check: "mark", id: m.text, detail: `a "?" on its own line, below "${m.text}" (${m.where})` });
+  };
+  await look();
+  // a closed tab card's panel is not in the page (the index page's "לפני שמחליטים"): each is opened in turn and the page looked at again,
+  // then the first is opened again for the checks below
+  const tabs = page.locator("[data-tab-cards] [role=tab]");
+  const nTabs = await tabs.count();
+  for (let t = 1; t < nTabs; t++) {
+    // the card's corner: a figure in its middle opens its own sheet
+    await tabs.nth(t).click({ position: { x: 12, y: 12 } });
+    await page.waitForTimeout(500);
+    await page.evaluate(settled);
+    await look();
   }
-  for (const m of await page.evaluate(lonelyMarks)) findings.push({ check: "mark", id: m.text, detail: `a "?" on its own line, below "${m.text}" (${m.where})` });
+  if (nTabs > 1) {
+    await tabs.nth(0).click({ position: { x: 12, y: 12 } });
+    await page.evaluate(settled);
+  }
   if (width === 1440 && path.includes("?product=")) {
     for (const q of hebrewQuotes(shownText(await page.evaluate(() => document.querySelector("main")?.outerHTML ?? "")))) findings.push({ check: "quote", id: q, detail: `an ASCII quote between Hebrew letters: …${q}…; write the gershayim ״, or pass text from the data through the kit's gershayim` });
   }

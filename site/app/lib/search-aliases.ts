@@ -70,7 +70,44 @@ export const aliasRows: AliasRow[] = [
   { from: ["נזילות", "קרן נזילה", "נזיל"], to: ["קרן נזילה"], source: 'glossary; bank-product-names Terms ("נזיל")' },
   { from: ["תחנות יציאה", "נקודות יציאה"], to: ["תחנת יציאה"], source: "glossary" },
   { from: ["מח״מ"], to: ["משך חיים ממוצע"], source: "MF Terms" },
+  // the plain English names of what the site covers, typed in Latin letters: translations only, each to the Hebrew name the site uses
+  { from: ["pension", "pensions", "pension fund", "pension funds"], to: ["קרן חדשה מקיפה", "קרן פנסיה"], source: "translation; wrapper pension-comprehensive names" },
+  { from: ["deposit", "deposits", "bank deposit", "bank deposits", "fixed deposit", "time deposit"], to: ["פיקדון"], source: "translation; wrapper bank-deposit names" },
+  { from: ["money market fund", "money market funds", "money market"], to: ["קרן כספית"], source: "translation; security money-market-fund-daily names" },
+  { from: ["mutual fund", "mutual funds"], to: ["קרן נאמנות"], source: "translation; the mutual-funds guide's names" },
+  { from: ["etfs", "exchange traded fund", "exchange traded funds"], to: ["קרן סל"], source: 'translation; glossary "קרן סל => ETF"' },
+  { from: ["provident fund", "provident funds"], to: ["קופת גמל"], source: "translation; glossary" },
+  { from: ["investment provident fund"], to: ["קופת גמל להשקעה"], source: "translation; wrapper kupat-gemel-lehashkaa names" },
+  { from: ["study fund", "study funds", "training fund", "keren hishtalmut"], to: ["קרן השתלמות"], source: "translation and transliteration; wrapper keren-hishtalmut names" },
+  { from: ["savings plan", "savings plans"], to: ["תוכנית חיסכון"], source: "translation; wrapper savings-plan names" },
+  { from: ["current account", "checking account"], to: ["חשבון עובר ושב"], source: "translation; wrapper current-account names" },
+  { from: ["brokerage account", "securities account"], to: ["חשבון ניירות ערך"], source: "translation; wrapper brokerage-account names" },
+  { from: ["government bond", "government bonds"], to: ["אג״ח ממשלתית"], source: "translation; security government-bond names" },
+  { from: ["bond", "bonds"], to: ["איגרות חוב"], source: "translation; glossary" },
+  { from: ["treasury bill", "treasury bills", "t-bill", "t-bills", "makam"], to: ["מק״מ"], source: "translation and transliteration; exposure makam names.en" },
+  { from: ["capital gains tax"], to: ["מס רווחי הון"], source: 'translation; term "מס רווחי הון"' },
+  { from: ["capital gains", "capital gain"], to: ["רווח הון"], source: "translation; glossary" },
+  { from: ["management fee", "management fees"], to: ["דמי ניהול"], source: "translation; glossary" },
+  { from: ["child savings"], to: ["חיסכון לכל ילד"], source: "translation; wrappers child-savings-*" },
+  { from: ["tax", "taxes"], to: ["מס"], source: "translation" },
+  { from: ["interest", "interest rate"], to: ["ריבית"], source: "translation" },
 ];
+
+/**
+ * The parts of a guide a question can ask about, by the words that name each. A question that names a product and one of these
+ * leads with that part of the product's guide (`topicSection` in lib/guide-nav.ts says which section of which guide it is). Equivalences
+ * of words only, not finance facts.
+ */
+export const sectionTopicWords: { topic: GuideTopic; words: string[] }[] = [
+  { topic: "tax", words: ["מס", "ממס", "במס", "למס", "המס", "מסים", "מיסוי", "ממוסה", "ממוסים", "ממוסות", "פטור", "פטורה", "פטורים", "ניכוי במקור", "רווח הון", "רווחי הון"] },
+  { topic: "cost", words: ["עמלה", "עמלות", "עמלת", "דמי ניהול", "דמי משמרת", "כמה עולה", "כמה עולים", "כמה זה עולה", "עלות", "עלויות", "תעריף", "תעריפון", "יקר", "יקרה", "זול", "זולה"] },
+  { topic: "inout", words: ["למשוך", "משיכה", "משיכת", "מושכים", "מושך", "להוציא", "מוציאים", "לפדות", "פדיון", "נזילות", "נזיל", "נזילה", "להפקיד", "הפקדה", "הפקדות", "מפקידים", "להעביר", "העברה", "העברת", "ניוד", "לנייד", "מעבר", "לעבור"] },
+  { topic: "who", words: ["מציע", "מציעה", "מציעים", "מציעות", "איפה", "לפתוח", "פותחים", "פתיחת", "מפקח", "מפקחת", "פיקוח", "להצטרף", "מצטרפים"] },
+  { topic: "risk", words: ["סיכון", "סיכונים", "מסוכן", "מסוכנת", "בטוח", "בטוחה", "מובטח", "מובטחת", "מבוטח", "מבוטחת", "מוגן", "מוגנת", "ביטוח פיקדונות", "להפסיד", "קורס", "קריסה", "פושט רגל", "פשיטת רגל"] },
+];
+
+/** The parts of a guide the search can lead to: tax, cost, getting money in and out, who offers it, risks. */
+export type GuideTopic = "tax" | "cost" | "inout" | "who" | "risk";
 
 /**
  * Word families for claims typed in plain words: Hebrew verbs and their nouns share no stem the light stemmer

@@ -98,6 +98,8 @@ describe("ranking and dedupe", () => {
 import { beforeAll } from "vitest";
 import { analyze, highlightRanges, nearHits, relaxedHits, ruleFigs, snippetOf, stem, strips, type SearchHit, type SearchTexts } from "./search";
 import { aliasRows } from "./search-aliases";
+import { siteQuestions } from "./search-claims";
+import { namedGuides } from "./search";
 
 let real: SearchEntry[] = [];
 let texts: SearchTexts = {};
@@ -133,8 +135,17 @@ describe("normalisation", () => {
     expect(strips("הון")).toEqual([]);
   });
   it("keeps the 51 alias rows and marks the colloquial ones", () => {
-    expect(aliasRows).toHaveLength(51);
+    const latin = (r: (typeof aliasRows)[number]) => r.from.every((f) => /^[a-z][a-z -]*$/.test(f));
+    expect(aliasRows.filter((r) => !latin(r))).toHaveLength(51);
     expect(aliasRows.filter((r) => r.confirm).length).toBeGreaterThanOrEqual(2);
+  });
+  it("reads a Latin name only as a translation into a Hebrew name, never as a guess", () => {
+    const latin = aliasRows.filter((r) => r.from.every((f) => /^[a-z][a-z -]*$/.test(f)));
+    expect(latin.length).toBeGreaterThan(10);
+    for (const r of latin) {
+      expect(r.to.every((t) => /[א-ת]/.test(t))).toBe(true);
+      expect(r.confirm).toBeUndefined();
+    }
   });
 });
 
@@ -161,8 +172,8 @@ describe("the nineteen queries (top href)", () => {
     ["P-03", "/parameters#P-03"],
     ["סף תיקו", "/parameters#P-01"],
     ["מעבר מסלול", "/rules#TXH-17"],
-    ["כמה מס על פיקדון", "/rules#TXI-03"],
-    ["תקרת הפקדה קופת גמל להשקעה", "/rules#KGL-02"],
+    ["כמה מס על פיקדון", "/guide/bank-deposit#tax"],
+    ["תקרת הפקדה קופת גמל להשקעה", "/guide/kupat-gemel-lehashkaa#inout"],
     ["מס רווחי הון", `/guide/brokerage-account#term=${encodeURIComponent("מס רווחי הון")}`],
     ["קרן כספית", "/guide/money-market-fund-daily"],
     ["פק״מ", "/guide/bank-deposit"],
@@ -175,6 +186,13 @@ describe("the nineteen queries (top href)", () => {
   ];
   it.each(cases.map((c, i) => [i + 1, ...c] as const))("%i: %s", (_i, query, href) => {
     expect(top(query)[0]?.entry.href).toBe(href);
+  });
+  // a product named in a question leads with its guide; the rule that answers it is still the first of the rules
+  it.each([
+    ["כמה מס על פיקדון", "TXI-03"],
+    ["תקרת הפקדה קופת גמל להשקעה", "KGL-02"],
+  ])("%s: the first rule is %s", (query, rule) => {
+    expect(top(query).find((h) => isRuleKind(h.entry.kind))?.entry.key).toBe(rule);
   });
   // two rules answer it, for every provident product and for a study fund; both lead, either first (claims)
   it("האם אפשר להחליף מסלול בלי מס", () => {
@@ -300,5 +318,59 @@ describe("what a claim is read as", () => {
   it("keeps a word that only looks like a filler", () => {
     expect(said("בעל מניות מהותי")[0]).toBe(normalize("בעל"));
     expect(said("פיקדון בשקלים פטור ממס").some((w) => w.includes(normalize("שקלים")))).toBe(true);
+  });
+});
+
+describe("a question about a product leads with its guide (search-claims siteQuestions)", () => {
+  it.each(siteQuestions.map((c) => [c.q, c.lead] as const))("%s", (q, lead) => {
+    expect(top(q).slice(0, lead.length).map((h) => h.entry.href)).toEqual(lead);
+  });
+  it("puts a guide's section and the comparison page in the guide's group, under its own heading", () => {
+    const groups = groupHits(top("כמה מס משלמים על פיקדון"));
+    expect(groups[0]!.kind).toBe("guide");
+    expect(groups[0]!.items.map((h) => h.entry.kind).slice(0, 3)).toEqual(["section", "guide", "compare"]);
+    expect(groups.filter((g) => g.kind === "guide")).toHaveLength(1);
+    // the rules still follow, the one that answers the question first
+    expect(groups.find((g) => g.kind === "rule")!.items[0]!.entry.key).toBe("TXI-03");
+  });
+  it("keeps the order of a name with more in it than a product: a track's name is not a question", () => {
+    expect(top("קרן השתלמות מנורה מניות")[0]?.entry.kind).not.toBe("section");
+    expect(top("קרן השתלמות מנורה מניות").some((h) => h.entry.kind === "compare")).toBe(false);
+  });
+  it("reads the longest name, and a short word never as a longer name", () => {
+    const toks = (q: string) => normalize(q).split(" ");
+    expect(namedGuides(real, toks("מס על קרן השתלמות בניהול אישי")).flatMap((s) => s.guides)).toEqual(["/guide/ira-hishtalmut"]);
+    expect(namedGuides(real, toks("איך מושכים כסף מקופת גמל להשקעה")).flatMap((s) => s.guides)).toEqual(["/guide/kupat-gemel-lehashkaa"]);
+    expect(namedGuides(real, toks("חיסכון לילד או חיסכון רגיל")).flatMap((s) => s.guides).sort()).toEqual(["/guide/child-savings-bank", "/guide/child-savings-provident"]);
+  });
+  it("finds no section or comparison page by its own words: only through a product the query names", () => {
+    expect(top("מיסוי").some((h) => h.entry.kind === "section")).toBe(false);
+    expect(top("כל המסלולים").some((h) => h.entry.kind === "compare")).toBe(false);
+  });
+  it("shows two rows with the same name and the same line once", () => {
+    const rows = top("קרן השתלמות").map((h) => `${h.entry.name}|${h.entry.line}`);
+    expect(rows.length).toBe(new Set(rows).size);
+    // two pages whose rows would read alike say which page each is
+    const ira = top("IRA").filter((h) => h.entry.kind === "guide");
+    expect(new Set(ira.map((h) => h.entry.line)).size).toBe(ira.length);
+  });
+  it("finds the Hebrew pages by their plain English names", () => {
+    for (const [q, href] of [["pension", "/guide/pension-comprehensive"], ["deposit", "/guide/bank-deposit"], ["mutual funds", "/guide/mutual-funds"], ["study fund", "/guide/keren-hishtalmut"], ["treasury bill", "/guide/makam"]] as const) {
+      expect(top(q)[0]?.entry.href, q).toBe(href);
+    }
+  });
+});
+
+describe("a result's line prints no code (D48)", () => {
+  it("no rule, company term or parameter row prints its id in its line, and a typed id still finds the row", () => {
+    const coded = real.filter((e) => (e.kind === "rule" || e.kind === "companyRule" || e.kind === "parameter") && e.key && e.line.includes(e.key));
+    expect(coded.map((e) => e.key)).toEqual([]);
+    expect(hrefs("TXI-03")[0]).toBe("/rules#TXI-03");
+  });
+  it("two rules alike in title and line stay two rows", () => {
+    const rules = real.filter((e) => e.kind === "rule");
+    const twins = rules.find((a) => rules.some((b) => b !== a && b.name === a.name && b.line === a.line));
+    if (!twins) return;
+    expect(top(twins.name, false).filter((h) => h.entry.name === twins.name && h.entry.line === twins.line).length).toBeGreaterThan(1);
   });
 });

@@ -19,3 +19,11 @@ startTransition(() => {
     </StrictMode>,
   );
 });
+
+// What a tap opens (the provenance sheet's cards) and what the search runs on are scripts of their own, kept out of what a page needs
+// to show itself. They are fetched now, while the page hydrates and the connection is otherwise idle, so the first tap finds them in
+// (fetched only at the tap, a card waits about a quarter of a second on a slow phone connection: tools/first-tap.mjs).
+// Imported by name here (not through provenance.tsx and search.tsx) so these two stay apart from the script every page shares; their
+// importers find them in when they ask (`loadSheets`, `loadSearchCode`).
+import("./components/provenance-sheets").catch(() => undefined);
+import("./components/search-results").catch(() => undefined);

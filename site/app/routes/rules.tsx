@@ -7,8 +7,10 @@
 // come per shelf from /rules-data/<shelf>.json, fetched for the rule that is open and the search's top match.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
-import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName } from "../copy";
-import { NumberLegend, RuleCard, RuleDetail, SlottedText, StrengthLabel, TopMatch, type RuleUses } from "../components/provenance";
+import { rulesFront as copy, scopeWords, sourceBlock, system, topicName } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
+import { NumberLegend, StrengthLabel, type RuleUses } from "../components/provenance";
+import { RuleCard, RuleDetail, SlottedText, TopMatch } from "../components/provenance-sheets";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
 import { Sheet } from "../components/Sheet";
@@ -103,8 +105,8 @@ export async function loader() {
   };
 }
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: copy.lede, location });
 }
 
 // ---------------------------------------------------------------- record files (module-level cache)

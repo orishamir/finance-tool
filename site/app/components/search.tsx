@@ -1,14 +1,14 @@
 // The search (flows 6.3, architecture 3.5): on a phone a bottom sheet with its own field; on a PC the field in the header
-// or on the first page is itself the field, and the results open under it. One body for both.
-import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
-import { buttons, search as searchCopy, searchMore, site } from "../copy";
-import { formatValue } from "../lib/format";
-import { rememberUncatalogued } from "../lib/inputs";
-import { analyze, contentWords, groupHits, highlightRanges, isRuleKind, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
-import { IconClose, IconCopy, IconLock, IconSearch } from "./icons";
+// or on the first page is itself the field, and the results open under it. One body for both. The field is in every page's
+// first view; the matching and the results list (search-results.tsx) are a script of their own, fetched while the page hydrates
+// (entry.client.tsx) or, should that fail, when a search opens, so a page shows itself without waiting for them.
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { search as searchCopy, site } from "../copy";
+import type { SearchEntry, SearchTexts } from "../lib/search";
+import { IconClose, IconSearch } from "./icons";
 import { Sheet } from "./Sheet";
-import { Button, RowArrow, cx, gershayim } from "./kit";
+import { cx } from "./kit";
 
 let indexPromise: Promise<SearchEntry[]> | null = null;
 function loadIndex(): Promise<SearchEntry[]> {
@@ -23,6 +23,54 @@ function loadTexts(): Promise<SearchTexts> {
   return textsPromise;
 }
 
+/** A module fetched once, at its first need, and kept; a failed fetch (the connection dropped) is tried again at the next need. */
+function lazyModule<T>(load: () => Promise<T>): { now: () => T | null; get: () => Promise<T> } {
+  let mod: T | null = null;
+  let pending: Promise<T> | null = null;
+  const get = () =>
+    (pending ??= load().then(
+      (m) => (mod = m),
+      (e: unknown) => {
+        pending = null;
+        throw e;
+      },
+    ));
+  return { now: () => mod, get };
+}
+
+/** The matching (lib/search), for deciding when the texts are worth fetching; the rules page has it already. */
+const matching = lazyModule(() => import("../lib/search"));
+/** The matching and the results list. */
+const results = lazyModule(() => import("./search-results"));
+
+/** Fetches the results code ahead of need (entry.client.tsx, while the page hydrates). */
+export function loadSearchCode(): Promise<unknown> {
+  return results.get();
+}
+
+/** Starts fetching the results code and the index: on a pointer down or a focus on a search, before its tap opens it. */
+export function preloadSearch(): void {
+  results.get().catch(() => undefined);
+  loadIndex().catch(() => undefined);
+}
+
+/** A lazy module once `active` is true (null until it is in). */
+function useLazy<T>(m: { now: () => T | null; get: () => Promise<T> }, active: boolean): T | null {
+  const [mod, setMod] = useState<T | null>(m.now);
+  useEffect(() => {
+    if (!active || mod) return;
+    let live = true;
+    m.get().then(
+      (x) => live && setMod(() => x),
+      () => undefined,
+    );
+    return () => {
+      live = false;
+    };
+  }, [m, active, mod]);
+  return mod;
+}
+
 /** A device asking to save data fetches the texts only once the query has two or more content words. */
 function saveData(): boolean {
   return Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
@@ -32,11 +80,12 @@ function saveData(): boolean {
 export function useSearchIndex(active: boolean, text: string): { index: SearchEntry[] | null; texts: SearchTexts | null } {
   const [index, setIndex] = useState<SearchEntry[] | null>(null);
   const [texts, setTexts] = useState<SearchTexts | null>(null);
+  const m = useLazy(matching, active);
   useEffect(() => {
     if (!active) return;
     loadIndex().then(setIndex).catch(() => setIndex([]));
   }, [active]);
-  const wantTexts = active && index !== null && (!saveData() || contentWords(normalize(text)).length >= 2);
+  const wantTexts = active && index !== null && m !== null && (!saveData() || m.contentWords(m.normalize(text)).length >= 2);
   useEffect(() => {
     if (!wantTexts) return;
     loadTexts().then(setTexts).catch(() => undefined);
@@ -57,219 +106,22 @@ export function useDesktop(): boolean {
   return desktop;
 }
 
-interface Found {
-  q: string;
-  hits: SearchHit[];
-  nothing: boolean;
-  analysis: Analysis;
-  texts: SearchTexts | null;
-  /** For an empty result: figures near the number, or the rules a relaxed pass would suggest. */
-  maybe: SearchHit[];
+/** The results code once `active`, and what the text finds with it. */
+function useFound(active: boolean, index: SearchEntry[] | null, texts: SearchTexts | null, text: string) {
+  const r = useLazy(results, active);
+  const found = useMemo(() => (r ? r.findHits(index, texts, text) : null), [r, index, texts, text]);
+  return { r, found, hits: found?.hits ?? [] };
 }
 
-function useHits(index: SearchEntry[] | null, texts: SearchTexts | null, text: string): Found {
-  return useMemo(() => {
-    const q = normalize(text);
-    const analysis = analyze(text);
-    const hits = index && q.length >= 2 ? searchEntries(index, q, texts) : [];
-    const nothing = !!index && q.length >= 2 && hits.length === 0;
-    const maybe = !nothing || !index ? [] : analysis.type === "number" ? nearHits(index, analysis) : analysis.type === "question" ? relaxedHits(index, texts, analysis) : [];
-    return { q, hits, nothing, analysis, texts, maybe };
-  }, [index, texts, text]);
-}
-
-const groupLabel = (kind: SearchKind): string => (searchMore.groups as Record<string, string>)[kind] ?? (searchCopy.groups as Record<string, string>)[kind] ?? "";
-
-/** Ids, codes and numbers inside a Hebrew line are isolated so bidi reordering cannot scramble them. */
-function Isolated({ text }: { text: string }): ReactNode {
-  return (
-    <>
-      {text.split(/([A-Za-z0-9₪][A-Za-z0-9\-.,&%₪]*)/).map((part, i) => (i % 2 === 1 ? <bdi key={i}>{part}</bdi> : part))}
-    </>
-  );
-}
-
-/** The second line of a row: the figure that matched, the words of the text that matched, or the entry's own line. */
-function RowLine({ hit, found, text }: { hit: SearchHit; found: Found; text: string }): ReactNode {
-  const r = hit.entry;
-  if (hit.fig) {
-    const label = hit.fig.f ?? searchMore.figureLine;
-    return <Isolated text={`${label} · ${formatValue(hit.fig.n, hit.fig.u)} · ${r.key ?? ""}`} />;
-  }
-  if (hit.viaText && found.texts && r.key) {
-    const raw = found.texts[r.key];
-    const snippet = raw ? snippetOf(raw, found.analysis) : null;
-    if (snippet) {
-      const tail = isRuleKind(r.kind) || r.kind === "parameter" ? ` · ${r.key}` : "";
-      return (
-        <>
-          <Marked text={snippet} query={text} />
-          {tail && <Isolated text={tail} />}
-        </>
-      );
-    }
-  }
-  return <Isolated text={r.line} />;
-}
-
-/** `text` with the words of the query in weight 600, through deleted characters. */
-function Marked({ text, query }: { text: string; query: string }): ReactNode {
-  const ranges = highlightRanges(text, query);
-  if (ranges.length === 0) return text;
-  const out: ReactNode[] = [];
-  let at = 0;
-  ranges.forEach(([a, b], i) => {
-    out.push(text.slice(at, a), <span key={i} className="font-semibold">{text.slice(a, b)}</span>);
-    at = b;
-  });
-  out.push(text.slice(at));
-  return <>{out}</>;
-}
-
-/** The hint, the grouped results or the "not on the site yet" answer. A name is kept on the device only when its copy button is pressed. */
-function SearchBody({ text, setText, found }: { text: string; setText: (t: string) => void; found: Found }) {
-  const { q, hits, nothing, analysis, maybe } = found;
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
-  const groups = groupHits(hits);
-  const copy = async () => {
-    // a name goes to the device's list of names the site lacks; a question is only copied
-    if (analysis.type === "name") rememberUncatalogued(text.trim());
-    try {
-      await navigator.clipboard.writeText(text.trim());
-      setCopied("done");
-      window.setTimeout(() => setCopied("idle"), 2000);
-    } catch {
-      setCopied("failed");
-    }
-  };
-  return (
-    <>
-      {q.length === 0 && <p className="text-sm text-muted-foreground">{searchCopy.hint}</p>}
-      {q.length === 1 && <p className="text-sm text-muted-foreground">{searchCopy.tooShort}</p>}
-      {groups.length > 0 && (
-        <div className="flex flex-col gap-4 mt-2">
-          {groups.map((g) => {
-            const show = expanded.has(g.kind) ? g.items : g.items.slice(0, 5);
-            return (
-              <section key={g.kind} aria-label={groupLabel(g.kind)} className="flex flex-col gap-1">
-                <h3 className="text-xs text-muted-foreground">{groupLabel(g.kind)}</h3>
-                <ul className="flex flex-col">
-                  {show.map((hit) => {
-                    const { entry: r, also } = hit;
-                    return (
-                    <li key={r.href + r.name}>
-                      <Link to={r.href} className="flex items-center justify-between gap-3 min-h-12 py-1.5 border-b border-border hover:bg-accent/60 -mx-2 px-2 rounded-md">
-                        <span className="flex flex-col min-w-0">
-                          <span className="font-medium inline-flex items-center gap-1.5">
-                            <bdi>
-                              <Marked text={r.name} query={text} />
-                            </bdi>
-                            {isRuleKind(r.kind) && r.st === 4 && <IconLock size={14} className="text-muted-foreground shrink-0" />}
-                          </span>
-                          <span className="text-sm text-muted-foreground">
-                            <RowLine hit={hit} found={found} text={text} />
-                          </span>
-                          {also.length > 0 && (
-                            <span className="text-xs text-muted-foreground">
-                              {searchCopy.also} <bdi>{also.map(gershayim).join(" · ")}</bdi>
-                            </span>
-                          )}
-                        </span>
-                        <RowArrow />
-                      </Link>
-                    </li>
-                    );
-                  })}
-                </ul>
-                {g.items.length > show.length && (
-                  <Button variant="quiet" className="self-start -ms-2" onClick={() => setExpanded(new Set([...expanded, g.kind]))}>
-                    {searchCopy.more}
-                  </Button>
-                )}
-              </section>
-            );
-          })}
-        </div>
-      )}
-      {nothing && analysis.type === "name" && (
-        <section className="flex flex-col gap-3 mt-2" aria-live="polite">
-          <h3 className="text-lg font-semibold">{searchCopy.empty.title}</h3>
-          <p className="text-sm">
-            {searchCopy.empty.bodyBefore}
-            <bdi dir="auto">{text.trim()}</bdi>
-            {searchCopy.empty.bodyAfter}
-          </p>
-          <Link to={site.notCovered.href} className="text-link min-h-target inline-flex items-center hover:underline self-start">
-            {searchCopy.empty.notProduct}
-          </Link>
-          <Button variant="primary" onClick={copy} className="self-start">
-            <IconCopy size={18} /> {copied === "done" ? buttons.copied : buttons.copy}
-          </Button>
-          <p className="text-sm text-muted-foreground">{copied === "failed" ? searchCopy.empty.copyFailed : searchCopy.empty.underButton}</p>
-          <div className="flex flex-wrap gap-x-4">
-            <Link to="/companies" className="text-link min-h-target inline-flex items-center hover:underline">
-              {searchCopy.empty.links.companies}
-            </Link>
-            <button type="button" className="text-link min-h-target hover:underline" onClick={() => setText(text.trim().split(/\s+/).slice(0, 2).join(" "))}>
-              {searchCopy.empty.links.shorter}
-            </button>
-          </div>
-        </section>
-      )}
-      {nothing && analysis.type === "number" && (
-        <section className="flex flex-col gap-3 mt-2" aria-live="polite">
-          <h3 className="text-lg font-semibold">{searchMore.empty.numberTitle}</h3>
-          {maybe.length > 0 && <MaybeRows rows={maybe} found={found} text={text} heading={searchMore.empty.numberNear} />}
-        </section>
-      )}
-      {nothing && analysis.type === "question" && (
-        <section className="flex flex-col gap-3 mt-2" aria-live="polite">
-          <h3 className="text-lg font-semibold">{searchMore.empty.questionTitle}</h3>
-          <p className="text-sm">{searchMore.empty.questionBody}</p>
-          {maybe.length > 0 && <MaybeRows rows={maybe} found={found} text={text} heading={searchMore.maybe} />}
-          <div className="flex flex-wrap gap-x-4">
-            <Link to="/rules" className="text-link min-h-target inline-flex items-center hover:underline">
-              {searchMore.empty.questionLink}
-            </Link>
-            {contentWords(q).length > 0 && contentWords(q).join(" ") !== q && (
-              <button type="button" className="text-link min-h-target hover:underline" onClick={() => setText(contentWords(q).join(" "))}>
-                {searchMore.empty.mainWords}
-              </button>
-            )}
-          </div>
-          <Button variant="quiet" onClick={copy} className="self-start -ms-2">
-            <IconCopy size={18} /> {copied === "done" ? buttons.copied : searchMore.empty.questionCopy}
-          </Button>
-          <p className="text-sm text-muted-foreground">{copied === "failed" ? searchCopy.empty.copyFailed : searchMore.empty.questionUnder}</p>
-        </section>
-      )}
-    </>
-  );
-}
-
-/** The rows of an empty answer's "maybe" and "near" lists: the rule's title and the line the match gives. */
-function MaybeRows({ rows, found, text, heading }: { rows: SearchHit[]; found: Found; text: string; heading: string }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <h4 className="text-sm text-muted-foreground">{heading}</h4>
-      <ul className="flex flex-col">
-        {rows.map((hit) => (
-          <li key={hit.entry.href}>
-            <Link to={hit.entry.href} className="flex items-center justify-between gap-3 min-h-12 py-1.5 border-b border-border hover:bg-accent/60 -mx-2 px-2 rounded-md">
-              <span className="flex flex-col min-w-0">
-                <bdi className="font-medium">{hit.entry.name}</bdi>
-                <span className="text-sm text-muted-foreground">
-                  <RowLine hit={hit} found={found} text={text} />
-                </span>
-              </span>
-              <RowArrow />
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+/**
+ * The body while the results code is still on its way (the first moments of the first search on a page): the hint or the "too short"
+ * line the body would give. Results need the index, which comes with the code, so nothing else is missing meanwhile.
+ */
+function Waiting({ text }: { text: string }) {
+  const n = text.trim().length;
+  if (n === 0) return <p className="text-sm text-muted-foreground">{searchCopy.hint}</p>;
+  if (n === 1) return <p className="text-sm text-muted-foreground">{searchCopy.tooShort}</p>;
+  return null;
 }
 
 /** The phone search: a bottom sheet with its own field. */
@@ -279,14 +131,13 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { index, texts } = useSearchIndex(open, text);
+  const { r, found, hits } = useFound(open, index, texts, text);
   useEffect(() => setText(seed), [seed, open]);
   useEffect(() => {
     if (!open) return;
     const t = window.setTimeout(() => inputRef.current?.focus(), 50);
     return () => window.clearTimeout(t);
   }, [open]);
-  const found = useHits(index, texts, text);
-  const { hits } = found;
   return (
     <Sheet open={open} onClose={onClose} anchor={anchor} pc="center" height={100} labelledBy={id} className="sheet-search">
       <form
@@ -319,7 +170,7 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
           )}
         </div>
       </form>
-      <SearchBody text={text} setText={setText} found={found} />
+      {r && found ? <r.SearchBody text={text} setText={setText} found={found} /> : <Waiting text={text} />}
     </Sheet>
   );
 }
@@ -341,8 +192,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
   const navigate = useNavigate();
   const location = useLocation();
   const { index, texts } = useSearchIndex(open && desktop, text);
-  const found = useHits(index, texts, text);
-  const { hits } = found;
+  const { r, found, hits } = useFound(open && desktop, index, texts, text);
   useEffect(() => setOpen(false), [location.pathname, location.hash]);
   useEffect(() => {
     if (!open) return;
@@ -374,6 +224,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             !ready && "opacity-60",
           )}
           onClick={() => input.current?.focus()}
+          onPointerDown={preloadSearch}
         >
           <IconSearch size={18} />
           {variant === "header" && (
@@ -396,6 +247,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             placeholder={site.searchPlaceholder}
             className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input !text-start", resting && "xl:w-0 xl:flex-none")}
             onFocus={(e) => {
+              preloadSearch();
               setFocused(true);
               if (desktop) setOpen(true);
               else onSheet(e.currentTarget, text, "focus");
@@ -430,7 +282,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
       </form>
       {panelOpen && (
         <div id={panelId} className="absolute end-0 top-full mt-2 z-[var(--z-popover)] w-[min(30rem,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-lg border border-border bg-popover text-popover-foreground shadow-lg p-4 flex flex-col gap-3">
-          <SearchBody text={text} setText={setText} found={found} />
+          {r && found ? <r.SearchBody text={text} setText={setText} found={found} /> : <Waiting text={text} />}
         </div>
       )}
     </div>

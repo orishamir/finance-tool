@@ -8,7 +8,8 @@ import { describe, expect, it } from "vitest";
 import { tier2Table } from "./compare.server";
 import { loadNotCovered, root } from "./data.server";
 import { graduationStatuses, notCoveredCards } from "./graduation.server";
-import { r5 } from "../copy";
+import { notCovered } from "../copy";
+import { loader } from "../routes/not-covered";
 
 type TermRow = { id: string; he: string; variants?: string[]; wrapper_ids?: string[]; exposure_ids?: string[] };
 const terms: TermRow[] = readdirSync(join(root, "data/terms"))
@@ -59,11 +60,11 @@ describe("the not-covered page lists only what the site lacks", () => {
     expect(bad).toEqual([]);
   });
 
-  // "שאלה נסגרה ב־24.10.2026, לפי" named no question. Every closure is named by its entry in
-  // closureTopics (by the card and the closure's rules: an answered question is deleted from the rule base), and an
+  // "שאלה נסגרה ב־24.10.2026, לפי" named no question. Every answered question is named by its entry in
+  // answeredTopics (by the row and the closure's rules: an answered question is deleted from the rule base), and an
   // entry no closure uses goes
-  it("names every closure in words, and keeps no topic it does not use", () => {
-    const topics = r5.graduation.closureTopics;
+  it("names every answered question in words, and keeps no topic it does not use", () => {
+    const topics = notCovered.answeredTopics;
     const statuses = graduationStatuses();
     const keys = statuses.flatMap((s) => s.closed.map((c) => `${s.id}: ${c.ruleIds.join(" ")}`));
     expect(keys.filter((k) => { const [id, rules] = k.split(": ") as [string, string]; return !topics[id]?.[rules]; })).toEqual([]);
@@ -78,5 +79,12 @@ describe("the not-covered page lists only what the site lacks", () => {
   it("shows no bare code in a card's own words", () => {
     const coded = cards.flatMap((c) => [c.row.he, c.row.explanation, ...c.row.variants].filter((t) => ID.test(t)).map((t) => `${c.status.id}: ${t}`));
     expect(coded).toEqual([]);
+  });
+
+  // the row's line says why there is no guide yet in the question's own words; the page never shows a code for it
+  it("gives every open question of every row its words on the page", async () => {
+    const data = (await loader()) as { cards: { status: { id: string; open: { code: string }[] } }[]; titles: Record<string, string> };
+    const missing = data.cards.flatMap((c) => c.status.open.filter((o) => !data.titles[o.code] || ID.test(data.titles[o.code]!)).map((o) => `${c.status.id}: ${o.code}`));
+    expect(missing).toEqual([]);
   });
 });

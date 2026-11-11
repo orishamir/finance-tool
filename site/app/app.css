@@ -150,6 +150,19 @@
   }
 }
 
+/* A receipt's torn bottom edge (the index page's receipt): teeth 14 px wide and 7 px deep, cut by a mask so the paper's own fill shows
+   through, with the page under the teeth. A shadow goes on a wrapper (a mask clips the element's own). */
+@utility receipt-edge {
+  padding-block-end: 1.25rem;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+}
+
+/* the receipt's stub: the same paper torn along its top */
+@utility receipt-edge-top {
+  padding-block-start: 1rem;
+  mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+}
+
 @layer components {
   /* ---- the provenance number (D7) */
   .num {
@@ -212,6 +225,11 @@
     text-decoration: underline dotted;
     text-decoration-color: var(--computed-line);
     text-decoration-thickness: var(--num-underline-thickness);
+  }
+  /* a list whose figures are all computed carries the mark once, in its head (a `num-sample`), and its cells stay plain (design.md, number
+     states): each figure still opens its calculation */
+  .nums-plain .num-computed:not(.num-sample) {
+    text-decoration: none;
   }
   .num-entered {
     color: var(--entered);
@@ -363,17 +381,6 @@
   .sec-chip-add:hover,
   .sec-chip-add[aria-expanded="true"] {
     background: var(--accent);
-  }
-
-  /* ---- a line of labels that scrolls sideways on a phone (kit LabelFilter, a fund row's labels): its far end fades, so a chip that runs past
-     the edge reads as more to scroll to, not as a chip cut under the next column (independent check of pass 7: "מחזיקה" on IE00B6R52259 at
-     390 px); the end's padding lets the last chip clear the fade once scrolled to. The page is right to left, so the far end is the left */
-  @media (max-width: 47.99rem) {
-    .label-strip {
-      overflow-x: auto;
-      padding-inline-end: 20px;
-      mask-image: linear-gradient(to right, transparent, #000 20px);
-    }
   }
 
   /* ---- readout and definition lists in sheets */
@@ -671,6 +678,17 @@
     height: var(--target);
     padding: 0 10px;
   }
+  /* A slider's number floats beside its label: no box, a thin line under it, and the slider's blue ink, the default and a
+     typed value alike. The line turns red on an error (`.field-box-error`). */
+  .range-field .field-box-compact {
+    border-width: 0 0 1px;
+    border-radius: 0;
+    background: transparent;
+  }
+  .range-field .field-input {
+    color: var(--slider);
+    font-weight: 600;
+  }
   .field-box-error {
     border-color: var(--destructive);
   }
@@ -751,47 +769,54 @@
     align-self: start;
   }
 
-  /* ---- slider: a native range input, 44px hit area, 4px track filled from the start (right) */
+  /* ---- slider: a native range input, 44px hit area, a 12px rounded track filled from the start (right) in the slider blue,
+     a solid thumb of the same blue; both a step deeper while the slider is held */
   .slider {
+    --slider-ink: var(--slider);
+    --slider-bar: linear-gradient(to left, var(--slider-ink) var(--fill, 0%), var(--slider-track) var(--fill, 0%));
     appearance: none;
     -webkit-appearance: none;
     width: 100%;
     height: var(--target);
     margin: 0;
-    background: linear-gradient(to left, var(--primary) var(--fill, 0%), var(--chart-axis) var(--fill, 0%)) no-repeat center / 100% 4px;
-    border-radius: 999px;
+    background: transparent;
     cursor: pointer;
     direction: rtl;
+  }
+  .slider:active {
+    --slider-ink: var(--slider-active);
   }
   .slider:disabled {
     opacity: 0.6;
     cursor: default;
   }
   .slider::-webkit-slider-runnable-track {
-    height: var(--target);
-    background: transparent;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--slider-bar);
+    box-shadow: inset 0 0 0 1px var(--input);
   }
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 24px;
     height: 24px;
-    margin-top: 10px;
+    margin-top: -6px;
     border-radius: 50%;
-    background: var(--foreground);
-    box-shadow: 0 0 0 3px var(--primary);
+    background: var(--slider-ink);
     border: 0;
   }
   .slider::-moz-range-track {
-    height: 4px;
-    background: transparent;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--slider-bar);
+    box-shadow: inset 0 0 0 1px var(--input);
   }
   .slider::-moz-range-thumb {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: var(--foreground);
-    box-shadow: 0 0 0 3px var(--primary);
+    background: var(--slider-ink);
     border: 0;
   }
   .slider:focus-visible {

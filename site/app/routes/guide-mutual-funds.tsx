@@ -1,7 +1,8 @@
 // The guide page on funds of every kind (D55): prose only, no product id and no comparison option. It explains what a fund is
 // under the law and the kinds the money-market guides and the indices page build on.
 import { useLoaderData } from "react-router";
-import { invest, limitedBondFund, mutualFunds as copy, site } from "../copy";
+import { invest, limitedBondFund, mutualFunds as copy } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { Cost, Kinds, Safety, Tax, Trade, What, termIds } from "../content/guide/mutual-funds";
 import { RelatedProducts } from "../components/guide/sections";
 import { ProseGuide } from "../components/guide/prose-guide";
@@ -28,8 +29,8 @@ export async function loader() {
   return { ...proseGuideData({ ruleIds, termIds, product: "brokerage-account" }), related };
 }
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: copy.lede, location });
 }
 
 export default function GuideMutualFunds() {

@@ -3,41 +3,45 @@ import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
 import { feeAbsent } from "../../lib/providers";
-import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, indexSeenBy, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
+import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { type SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
-import { IndexHeader } from "./sections";
-import { AccountColumn, allFunds, FundColumn, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, PairResult, pickOfHeadline } from "./pair";
-import { PlanBlock } from "./chips";
-import { StairsSection } from "./stairs";
-import { ValueSheet } from "../provenance";
-import { bundle, t, plan, data, shown, html } from "./render-fixtures";
+import { TitleRow } from "./title";
+import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline } from "./pair";
+import { PlanCard } from "./plan-card";
+import { ChosenPair } from "./chosen";
+import { ValueSheet } from "../provenance-sheets";
+import { PairLists, listName } from "./lists";
+import { PairReceipt } from "./receipt";
+import { BeforeDeciding, hedgeCard } from "./before";
+import { useDollarCase } from "./dollar";
+import { bundle, t, plan, data, shown, html, lists, fundRow, ReceiptAndFees, StairsFor } from "./render-fixtures";
 
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: { ...plan, returnFromParameter: true }, yourBroker: "leumi" });
-  it("all sections of a known index: the result and the two linked lists", () => {
+  it("all sections of a known index: the title, the plan, the receipt, the chosen pair, the two linked lists and the fees panel", () => {
     const pick = pickOfHeadline(view)!;
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
-      createElement(IndexHeader, { view }),
-      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined }),
-      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
-      createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
-      createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
-      createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true })));
+      createElement(TitleRow, { known: knownIndices(bundle), customs: [], index: view.index, others: knownIndices(bundle), bundle, onRemove: () => undefined, onRename: () => undefined, onSave: () => undefined, onGo: () => undefined }),
+      createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined }),
+      createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
+      createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null }),
+      createElement(ChosenPair, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true }),
+      createElement(PlanCard, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true, inflation: plan.values.inflation })));
     expect(out).toContain("הפקדתם");
-    // a dollar index with funds of both kinds shows each kind across the dollar (F-94)
-    expect(out).toContain("בלי נטרול מט״ח");
-    expect(out).toContain("עם נטרול מט״ח");
+    // a dollar index with funds of both kinds: the hedged ones stand under their own heading, each with its range across the dollar (F-94)
+    expect(out).toContain(invest.kinds.name.hedged);
+    expect(shown(out)).toMatch(new RegExp(`${invest.kinds.between} [^<]*${invest.kinds.and}`));
     // the shekel column's "?" says the amounts hold the rate still; the line under the list says what orders each kind
     expect(out).toContain("והסדר לא תלוי בדולר");
     expect(out).toContain("מול המדד");
-    expect(out).toContain("עלות ב־20 שנים");
-    expect(out).toContain("כל החשבונות");
-    expect(out).toContain("כל הקרנות על");
-    expect(out).toContain("הבחירה");
+    expect(out).toContain(invest.lists.kicker);
+    expect(out).toContain(invest.lists.colLeft);
+    expect(out).toContain(invest.shownPair(false).row);
+    expect(out).toContain(invest.before.fees.total);
     expect(out).toContain("פסגות");
     expect(out).toContain("שער הדולר");
     expect(out).toContain("אינפלציה");
@@ -46,13 +50,13 @@ describe("the index page's sections render", () => {
   it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: { ...plan, returnFromParameter: true } });
     const pick = pickOfHeadline(ta)!;
-    const out = html(createElement(PairResult, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, chosen: true, onPick: () => undefined }));
+    const out = html(createElement(ReceiptAndFees, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, chosen: true, onPick: () => undefined }));
     expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
     expect(out).not.toContain("עם נטרול");
   });
   it("before any pick, the page's own pair is never called the person's, and each tile names its account and fund (2026-11-05)", () => {
     const pick = pickOfHeadline(view)!;
-    const out = shown(html(createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined })));
+    const out = shown(html(createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined })));
     expect(out).not.toContain("הבחירה שלכם");
     const fund = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund)!;
     // an index's name keeps its number on the line ("S&P\u00a0500")
@@ -60,9 +64,9 @@ describe("the index page's sections render", () => {
   });
   it("neither list leaves a row out: every account and every fund is listed, priced or with its reason", () => {
     const pick = pickOfHeadline(view)!;
-    const out = html(createElement("div", null, createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }), createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined })));
-    for (const p of view.providers) expect(out).toContain(p.short);
-    for (const f of view.options.filter((o) => o.exists).flatMap((o) => o.funds)) expect(out).toContain(f.number);
+    const out = lists(view, bundle, plan, pick);
+    for (const p of view.providers) expect(out).toContain(`data-pick-key="${p.id}"`);
+    for (const f of view.options.filter((o) => o.exists).flatMap((o) => o.funds)) expect(out).toContain(`data-pick-key="${f.rec.id}"`);
   });
   it("a custom index: the same two lists, the accounts by what they charge, and the request to add a fund (founder, 2026-11-04)", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
@@ -81,32 +85,47 @@ describe("the index page's sections render", () => {
 describe("every house keeps a row in the account list (founder, 2026-10-31)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const pick = pickOfHeadline(view)!;
-  const out = html(createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }));
-  it("lists Meitav Trade and both Interactives, told apart as no data and not possible there", () => {
+  const out = lists(view, bundle, plan, pick);
+  it("lists every house; one that prices no fund on an index stands last, with no data or not possible there", () => {
     for (const p of view.providers) expect(out).toContain(p.short.replace(/"/g, "&quot;"));
-    expect(out).toContain("אין נתון");
-    // what a house's documents leave open is no data; only what they say is closed reads as not possible
-    const etf = view.options.find((o) => o.id === "il-etf")!.funds[0]!;
-    const closed = html(createElement(AccountColumn, { view, bundle, years: 20, pick: { ...pick, fund: etf.rec.id }, onPick: () => undefined }));
-    expect(closed).toContain("לא אפשרי שם");
+    let last = 0;
+    for (const idx of knownIndices(bundle)) {
+      const v = buildInvest({ bundle, index: idx, plan });
+      const pk = pickOfHeadline(v);
+      if (!pk) continue;
+      const o = lists(v, bundle, plan, pk);
+      const none = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {})));
+      const some = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !none.includes(p));
+      for (const p of none) {
+        expect(fundRow(o, p.id), `${idx.id} ${p.id}`).toMatch(/אין נתון|לא אפשרי שם/);
+        for (const q of some) expect(o.indexOf(`data-pick-key="${p.id}"`), `${idx.id} ${p.id} after ${q.id}`).toBeGreaterThan(o.indexOf(`data-pick-key="${q.id}"`));
+        last++;
+      }
+    }
+    expect(last).toBeGreaterThan(0);
   });
-  it("links a fund to its Maya page at the address that exists", () => {
-    const fund = html(createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: [], onFilter: () => undefined } as never));
+  it("the chosen fund's tile links it to its Maya page at the address that exists", () => {
+    const fund = html(createElement(ChosenPair, { view, bundle, plan, pick, chosen: false }));
     expect(fund).not.toContain("funds/etfs");
     expect(fund).toContain("maya.tase.co.il/he/funds/mutual-funds/");
   });
 });
 
-describe("a bank's standing-order price the figure leaves out is said beside its row (D41, D56)", () => {
+describe("a bank's standing-order price the figure leaves out is said under the lists for the chosen account, and in its tile (D41, D56, D104)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const tracking = view.options.find((o) => o.id === "il-tracking")!.funds[0]!;
-  const out = html(createElement(AccountColumn, { view, bundle, years: 20, pick: { house: "psagot", fund: tracking.rec.id }, onPick: () => undefined }));
-  it("each of the three banks' rows carries the 'not counted' tag, the printed price and the record's reason", () => {
+  it("no row carries a star; the chosen bank's note points to its card, and its tile says the printed price and the record's reason", () => {
     for (const id of ["leumi", "massad", "fibi"]) {
+      const out = lists(view, bundle, plan, { house: id, fund: tracking.rec.id });
+      expect(shown(out), id).not.toContain("*");
+      const short = view.providers.find((p) => p.id === id)!.short;
+      expect(shown(out).replace(/\u00a0/g, " "), id).toContain(invest.lists.otherPrice(short, invest.shownPair(false).cardTitle).replace(/\u00a0/g, " "));
       const line = bundle.snapshots.find((s) => s.id === id)!.lines.find((l) => l.not_ranked && l.applies_to.includes("mutual_fund_units"))!;
-      expect(out, id).toContain(line.not_ranked!.reason_he.replace(/"/g, "&quot;"));
+      const tile = html(createElement(ChosenPair, { view, bundle, plan, pick: { house: id, fund: tracking.rec.id }, chosen: true }));
+      expect(tile, id).toContain(line.not_ranked!.reason_he.replace(/"/g, "&quot;"));
     }
-    expect(out).toContain(invest.pair.asideLine.split(":")[0]!);
+    // an account with no other price says nothing of one
+    expect(shown(lists(view, bundle, plan, { house: "psagot", fund: tracking.rec.id }))).not.toContain(invest.lists.otherPrice("פסגות", invest.shownPair(false).cardTitle).slice(10, 30));
   });
   it("a custom index's account list says the same, and under its head that monthly purchases are priced on the regular line", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
@@ -230,8 +249,6 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(kindIn("1159250").source).toMatchObject({ url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", page: 9 });
     // the same report as the years': one citation for the three inputs
     expect(kindIn("1144385").source.url).toBe(rec("1144385").tracking_record!.source.url);
-    // on a phone the cell under the fund's name says what it is
-    expect(cell("1143783")).toContain(invest.kinds.gapPhoneHead.trim());
     // every record with years says what its benchmark is (F-92 (d) applies to all alike)
     for (const f of bundle.funds) if (f.tracking_record) expect(f.tracking_record.benchmark?.dividends, f.id).toMatch(/^(net|gross|unstated)$/);
   });
@@ -279,24 +296,20 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a fund in Tel Aviv and abroad: each of its rows names the other, and the group's head counts nothing", () => {
+  it("a fund in Tel Aviv and abroad: the chosen fund's tile names its other listing", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
-    const out = html(createElement(FundColumn, { view: sp, bundle, plan, today: t, pick: pickOfHeadline(sp)!, onPick: () => undefined, filter: null, onFilter: () => undefined })).replace(/<!-- -->/g, "");
-    // the head counts nothing: it names the group and what all its funds share
-    expect(out).toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.allOf}`);
-    expect(out).not.toContain(`${invest.kinds.name.unhedged} · ${invest.kinds.groupCount(distinct)}`);
-    expect(out).not.toContain("בשתי שורות");
-    // each row of the fund listed twice names the other, so the rows and the count agree visibly
-    expect(out).toContain(invest.pair.sameFundAs("IE00B5BMR087", true));
-    expect(out).toContain(invest.pair.sameFundAs("1159250", false));
-    expect(out.split("ולכן שתיהן נספרות כקרן אחת").length - 1).toBe(2 * (funds.length - distinct));
+    const tile = (fund: string) => shown(html(createElement(ChosenPair, { view: sp, bundle, plan, pick: { house: allFunds(sp).find((f) => f.rec.id === fund)!.best!.providerId, fund }, chosen: true })));
+    expect(tile("1159250")).toContain(invest.pair.sameFundAs("IE00B5BMR087", true));
+    expect(tile("ie00b5bmr087")).toContain(invest.pair.sameFundAs("1159250", false));
+    // the list counts funds, so the head names no count of rows that would differ from it
+    expect(shown(lists(sp, bundle, plan, pickOfHeadline(sp)!))).not.toContain("בשתי שורות");
   });
 });
 
-describe("the fund card names the variable fee the site prices beside the listed rate (independent check of pass 7: no test held it)", () => {
+describe("the receipt's fund line names the variable fee the site prices beside the listed rate (independent check of pass 7: no test held it)", () => {
   it("1147362 on the MSCI ACWI: 0.3% listed, the mean charged over 2024 and 2025 priced; a fund charged its listed rate every year shows one figure", () => {
     const view = buildInvest({ bundle, index: indexById(bundle, "index-msci-acwi")!, plan });
     const head = pickOfHeadline(view)!;
@@ -306,8 +319,8 @@ describe("the fund card names the variable fee the site prices beside the listed
     expect(priced.years).toEqual([2025, 2024]);
     expect(priced.value.value).toBeCloseTo((0.249 + 0.201) / 2, 9);
     const card = (fund: string) => {
-      const out = shown(html(createElement(FundColumn, { view, bundle, plan, today: t, pick: { house: head.house, fund }, onPick: () => undefined, filter: null, onFilter: () => undefined })).replace(/<!-- -->/g, ""));
-      return out.slice(out.indexOf(invest.pair.colFees), out.indexOf(invest.pair.colFees) + 220);
+      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true })).replace(/<!-- -->/g, ""));
+      return out.slice(out.indexOf(invest.pair.who.fund), out.indexOf(invest.pair.who.fund) + 300);
     };
     expect(card("1147362")).toContain(invest.kinds.variableChargedWord([2025, 2024]));
     expect(card("1147362")).toContain("0.225%");
@@ -318,64 +331,23 @@ describe("the fund card names the variable fee the site prices beside the listed
   });
 });
 
-describe("the filter chips count funds, not rows (independent check of pass 7: no test held the chips' counts)", () => {
-  for (const id of ["index-sp500", "index-msci-acwi"]) {
-    it(id, () => {
-      const view = buildInvest({ bundle, index: indexById(bundle, id)!, plan });
-      const funds = allFunds(view);
-      const isin = (f: (typeof funds)[number]) => f.rec.identifiers?.isin ?? f.rec.id;
-      // the list holds a fund in Tel Aviv and abroad, so rows and funds differ
-      expect(new Set(funds.map(isin)).size, id).toBeLessThan(funds.length);
-      // a row's labels as the page's list takes them (pair.tsx labelsOf)
-      const labelsOf = (f: (typeof funds)[number]) => [f.option === "tase-foreign" ? optionLabels(f.option)[0]! : (optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!), ...fundLabels(f.rec, indexSeenBy(view.index, f.rec, bundle), f.option)];
-      const out = html(createElement(FundColumn, { view, bundle, plan, today: t, pick: pickOfHeadline(view)!, onPick: () => undefined, filter: null, onFilter: () => undefined })).replace(/<!-- -->/g, "");
-      const chips = [...out.matchAll(/<button[^>]*aria-pressed="(?:true|false)"[^>]*>([\s\S]*?)<\/button>/g)].map((m) => /^(.*?)(\d+)$/.exec(shown(m[1]!).trim())).filter((m): m is RegExpExecArray => !!m);
-      expect(chips.length, id).toBeGreaterThan(2);
-      let twinChip = false;
-      for (const [, text, n] of chips) {
-        const carriers = funds.filter((f) => labelsOf(f).some((l) => l.text === text));
-        expect(Number(n), `${id}: "${text}"`).toBe(new Set(carriers.map(isin)).size);
-        if (new Set(carriers.map(isin)).size < carriers.length) twinChip = true;
-      }
-      // at least one chip is carried by both rows of the fund listed twice, so a count of rows would fail here
-      expect(twinChip, id).toBe(true);
-    });
-  }
-});
-
-describe("a label true of every row shows once (D60, recheck 3)", () => {
-  const listOf = (id: string) => {
-    const view = buildInvest({ bundle, index: indexById(bundle, id)!, plan });
-    const pick = pickOfHeadline(view)!;
-    return html(createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined })).replace(/<!-- -->/g, "");
-  };
+describe("a fund row is its name: a label only where it tells two rows apart (D104)", () => {
   const accumulating = invest.labels?.["pays-accumulating"]?.text ?? "צוברת";
-  it("on the Tel Aviv lists, which have no groups, \"צוברת\" stands once over the list and on no row", () => {
-    for (const id of ["index-ta125", "index-ta35", "index-ta90"]) {
-      const out = listOf(id);
-      const count = out.split(`>${accumulating}<`).length - 1;
-      expect(count, id).toBe(1);
-      expect(out, id).toContain(invest.pair.fundsShared);
-      // the line over the list comes before the first row
-      expect(out.indexOf(invest.pair.fundsShared), id).toBeLessThan(out.indexOf('role="radio"'));
-    }
-  });
-  it("a list with groups says a label shared by a group in that group's head, not on its rows", () => {
-    const out = listOf("index-nasdaq100");
-    expect(out).not.toContain(invest.pair.fundsShared);
-    // each shared label appears at most once per group head
-    for (const k of ["unhedged", "hedged"] as const) expect(out).toContain(invest.kinds.name[k]);
-  });
-  it("a label carried by exactly the funds of one group leaves the filter, a group of one fund too (pass 5 S3: S&P 500's one hedged fund)", () => {
-    for (const id of ["index-sp500", "index-nasdaq100", "index-msci-world", "index-msci-acwi"]) {
+  it("no fund row on the index pages says a label every fund shares; two funds of one name (none in the data today) say what tells them apart", () => {
+    for (const id of ["index-ta125", "index-ta35", "index-ta90", "index-sp500", "index-nasdaq100", "index-msci-world"]) {
       const view = buildInvest({ bundle, index: indexById(bundle, id)!, plan });
-      const funds = allFunds(view);
-      const hedged = funds.filter((f) => kindOf(f.rec) === "hedged");
-      if (hedged.length === 0) continue;
-      const out = listOf(id);
-      const filter = /role="group"[\s\S]*?<\/div>/.exec(out)?.[0] ?? "";
-      // the hedge's label is the hedged group exactly, which its head names
-      expect(filter, `${id} (${hedged.length} hedged)`).not.toContain(invest.labels.hedged.text);
+      const pick = pickOfHeadline(view)!;
+      const out = lists(view, bundle, plan, pick).replace(/<!-- -->/g, "");
+      const priced = allFunds(view).filter((f) => "valueN" in (f.byHouse[pick.house] ?? {}));
+      const names = new Map<string, number>();
+      for (const f of priced) names.set(listName(view, f.name), (names.get(listName(view, f.name)) ?? 0) + 1);
+      for (const f of priced) {
+        const row = fundRow(out, f.rec.id);
+        if ((names.get(listName(view, f.name)) ?? 0) > 1) {
+          // the shared name, then a muted word after it
+          expect(row, `${id} ${f.rec.id}`).toMatch(/ · /);
+        } else expect(row, `${id} ${f.rec.id}`).not.toContain(accumulating);
+      }
     }
   });
 });
@@ -490,10 +462,10 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     let grey = 0;
     for (const index of knownIndices(bundle)) {
       const v = buildInvest({ bundle, index, plan });
-      const out = html(createElement(StairsSection, { view: v, bundle, plan, startHouse: null, startFund: null, example: true })).replace(/<!-- -->/g, "");
+      const out = html(createElement(StairsFor, { view: v, bundle, plan, startHouse: null, startFund: null, example: true })).replace(/<!-- -->/g, "");
       // the account lane as shown: from its title to the next lane's, the copies laid out unseen to hold its height left out
       const seen = out.replace(/<div aria-hidden="true" class="invisible">[\s\S]*?<\/div>/g, "");
-      const lane = seen.split(invest.stairs.lanes.account.title)[1]?.split(/<h4/)[0] ?? "";
+      const lane = seen.split(invest.stairs.lanes.account.title)[1]?.split(/<h5/)[0] ?? "";
       const lines = [...lane.matchAll(/<b class="font-medium">([^<]*):<\/b>/g)].map((m) => m[1]!.replace(/[\u2066-\u2069]/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\""));
       const names = [...new Set(allFunds(v).map((f) => f.name))];
       for (const line of lines) {
@@ -509,5 +481,45 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     for (const x of at("il-etf", "one-zero")) expect("valueN" in x).toBe(false);
     const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
     if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);
+  });
+});
+
+describe("before deciding: the tab cards", () => {
+  const index = indexById(bundle, "index-sp500")!;
+  const view = buildInvest({ bundle, index, plan });
+  const pick = pickOfHeadline(view)!;
+  const share = { min: -50, max: 50, step: 10, start: 20 };
+  const stairs = { view, bundle, startHouse: null, startFund: null };
+  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs, onPick: () => undefined }));
+  it("the tab list holds only its tabs: each card is one tab, its answer plain words with no control of its own", () => {
+    const out = before(false);
+    const list = out.slice(out.indexOf('role="tablist"'), out.indexOf('role="tabpanel"'));
+    const buttons = list.match(/<button/g) ?? [];
+    expect(buttons.length).toBeGreaterThan(1);
+    expect(buttons.length).toBe((list.match(/role="tab"/g) ?? []).length);
+    expect(list).not.toMatch(/<a |role="button"|data-num/);
+    // the open card says so in a word too, not by colour alone
+    expect(list).toContain(invest.before.openWord);
+    // the hedged-or-not card stands wherever its section has its figures
+    expect(shown(list)).toContain(invest.before.hedge.question);
+  });
+  it("before any pick, the pair is the receipt's, never the chosen one", () => {
+    const out = shown(before(false));
+    expect(out).toContain(`${invest.shownPair(false).name}:`);
+    expect(out).not.toContain(invest.shownPair(true).name);
+    expect(shown(before(true))).toContain(`${invest.shownPair(true).name}:`);
+  });
+  it("with no plan figure to say, the hedged-or-not card answers with how far the dollar moved, never blank", () => {
+    let card: ReturnType<typeof hedgeCard> | null = null;
+    const Probe = () => {
+      const d = useDollarCase(view, bundle, plan, pick);
+      card = d ? hedgeCard({ ...d, money: null, more: null }) : null;
+      return null;
+    };
+    html(createElement(Probe));
+    expect(card).not.toBeNull();
+    const c = card!;
+    expect(String(c.answer)).toMatch(new RegExp(`%.* ${invest.dollar.to} .*%`));
+    expect(String(c.note)).toMatch(/\d{4}/);
   });
 });

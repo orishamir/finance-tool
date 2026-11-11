@@ -2,6 +2,7 @@
 // "all the rules of X" link lands on. No I/O, so both are unit-tested.
 
 import { guide as guideCopy } from "../copy";
+import type { GuideTopic } from "./search-aliases";
 
 /** A section's title on a guide: its own where the usual one does not fit (copy `sectionTitles`). */
 export const sectionTitle = (wrapperId: string, sectionId: string): string =>
@@ -46,6 +47,21 @@ const omittedSections: Record<string, readonly string[]> = {
   "keren-hishtalmut": ["use"],
 };
 export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
+
+/**
+ * The section of a guide that answers a question about one topic (the search leads to it): on a product guide the section of the same
+ * name, unless the guide leaves it out; the two guides of prose sections name theirs. Null when the guide has none.
+ */
+const proseTopicSections: Record<string, Partial<Record<GuideTopic, string>>> = {
+  "mutual-funds": { tax: "tax", cost: "cost", inout: "trade", risk: "safety" },
+  // "מי מציע, ובכמה" holds the cost; "מה קורה בסוף" is how the money comes out
+  "limited-bond-fund": { tax: "tax", cost: "who", who: "who", inout: "end", risk: "risks" },
+};
+export function topicSection(guideId: string, topic: GuideTopic): string | null {
+  const prose = proseTopicSections[guideId];
+  if (prose) return prose[topic] ?? null;
+  return omitsSection(guideId, topic) ? null : topic;
+}
 
 /**
  * The withdrawal rules a guide's money-in-and-out section shows. PF-46 holds for every provident product. PF-45 and TXP-18

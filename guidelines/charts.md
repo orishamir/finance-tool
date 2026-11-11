@@ -98,9 +98,8 @@ them, and change the shared piece when a rule here asks for it.
 
 ### One number
 
-- When one number answers the question, show it large (the 32 px figure
-  size), with a line under it saying what it is and what it depends on. No
-  chart around it.
+- When one number answers the question, show it large, with a line under it
+  saying what it is and what it depends on. No chart around it.
 
 ## Shared parts
 
@@ -117,7 +116,8 @@ them, and change the shared piece when a rule here asks for it.
   change. Show it as a plain number, with no site-parameter tag and nothing
   that opens. What the reader types looks the same, with no blue background
   and no "you entered" mark; a reset beside the fields brings the defaults
-  back. Every other number keeps its sourced or computed mark, and the
+  back. A slider's own number is in the slider's blue, the default and a
+  typed value alike: it is the control's colour, not a "you entered" mark. Every other number keeps its sourced or computed mark, and the
   site's real parameters keep theirs.
 
 ### Legend

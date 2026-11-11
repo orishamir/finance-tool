@@ -15,6 +15,7 @@ import { Card } from "./card";
 import { HelpMark } from "./help-mark";
 import { cx } from "./cx";
 import { TableCols } from "./table-cols";
+import { cssMs } from "./chart-glide-math";
 
 export interface ProductColumn {
   id: string;
@@ -351,6 +352,65 @@ export function RowArrow({ className }: { className?: string }) {
 export function ProductPhoneRow({ stacked, className, children, rowOf, lit, mine }: { stacked?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean; /** As `ProductRow.mine`. */ mine?: boolean }) {
   return <div data-row-of={rowOf} className={cx("track", stacked && "!flex-col !items-stretch !gap-1", lit && "row-lit", mine && "row-mine", className)}>{children}</div>;
 }
+
+/** The fold token in ms: 0 for a reader who asked for less motion, and on the server. */
+const foldMs = () => (typeof window === "undefined" ? 0 : cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-fold")));
+const FOLD_EASE = "cubic-bezier(0.2, 0, 0, 1)";
+
+/**
+ * One product on a phone that opens in place, in a long list (the track browser's tracks under a company): closed, one line, its name and
+ * one figure with its word, the whole line a button with a chevron at its end; the figure lies above the button and keeps its own tap (its
+ * source). Open, the rest of the row (`children`: every line a `ProductPhoneRow` would show) grows under the line, so what is below it moves
+ * gently and nothing above it moves; it folds back the same way. Starts closed. `label` is the button's spoken name (the product's name).
+ */
+export function ProductPhoneFold({ name, figure, label, children }: { name: ReactNode; /** At the line's end: a figure and its word. */ figure?: ReactNode; label: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const body = useRef<HTMLDivElement>(null);
+  const id = useId();
+  const closing = useRef<Animation | null>(null);
+  // opening grows the part from nothing
+  useLayoutEffect(() => {
+    const el = body.current;
+    const ms = foldMs();
+    if (!open || !el || !ms || !el.animate) return;
+    el.animate([{ height: "0px", opacity: 0, overflow: "clip" }, { height: `${el.scrollHeight}px`, opacity: 1, overflow: "clip" }], { duration: ms, easing: FOLD_EASE });
+  }, [open]);
+  const toggle = () => {
+    // tapped again while it folds: it stays open
+    if (closing.current) {
+      closing.current.cancel();
+      closing.current = null;
+      return;
+    }
+    const el = body.current;
+    const ms = foldMs();
+    if (!open || !el || !ms || !el.animate) return setOpen(!open);
+    const shut = el.animate([{ height: `${el.offsetHeight}px`, opacity: 1, overflow: "clip" }, { height: "0px", opacity: 0, overflow: "clip" }], { duration: ms, easing: FOLD_EASE, fill: "forwards" });
+    closing.current = shut;
+    shut.onfinish = () => {
+      closing.current = null;
+      setOpen(false);
+    };
+  };
+  return (
+    <div className="track !flex-col !items-stretch !gap-0 !py-0">
+      <div className={cx("relative flex items-center gap-3 min-h-14 py-2", LIFT)}>
+        <span className="flex-1 min-w-0 font-medium">{name}</span>
+        {figure && <span className="shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap">{figure}</span>}
+        <IconChevronDown size={18} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
+        <button type="button" data-fold-line="" aria-expanded={open} aria-controls={open ? id : undefined} aria-label={label} onClick={toggle} className="absolute -inset-x-4 inset-y-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2" />
+      </div>
+      {open && (
+        <div ref={body} id={id} className="flex flex-col gap-1 pb-3">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Links and buttons inside a row whose whole line is a stretched button lie above that button and keep their own tap. */
+const LIFT = "[&_:is(a,button,[role=button]):not([data-fold-line])]:relative [&_:is(a,button,[role=button]):not([data-fold-line])]:z-10";
 
 /** Figures each followed by its word ("0.35% קבועים", "0.62% מהחיסכון"): one under the other in a table cell, in one line on a phone. */
 export function ProductFigures({ items, inline }: { items: { id: string; figure: ReactNode; word: ReactNode }[]; inline?: boolean }) {

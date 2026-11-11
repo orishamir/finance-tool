@@ -69,7 +69,7 @@ for (const width of WIDTHS) {
       if (m?.error) console.log(`      error: ${m.error}`);
       for (const f of findings) console.log(`      ${f.severity} ${f.check}: ${f.where}, ${f.detail}`);
     }
-    // the HTML charts of a page, one line for each kind (an index page has dozens of cost bars), with the findings of each chart
+    // the HTML charts of a page, one line for each kind (a page can have dozens of cost bars), with the findings of each chart
     const kinds = [...new Set(r.charts.filter((c) => !c.svg).map((c) => c.kind))];
     for (const kind of kinds) {
       const these = r.charts.filter((c) => !c.svg && c.kind === kind);
@@ -122,7 +122,19 @@ async function checkPage(page, lab, p, width) {
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(800); // charts glide into place
   await page.evaluate(settled);
-  const found = await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS });
+  const found = await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS, scope: "main" });
+  // panels behind tab cards are not in the page until their tab opens (the index page's "לפני שמחליטים"): each closed tab is opened in
+  // turn and the charts of its panel alone are added
+  const tabs = page.locator("[data-tab-cards] [role=tab]");
+  for (let t = 0; t < (await tabs.count()); t++) {
+    const tab = tabs.nth(t);
+    if ((await tab.getAttribute("aria-selected")) === "true") continue;
+    // the card's corner: a figure in its middle opens its own sheet
+    await tab.click({ position: { x: 12, y: 12 } });
+    await page.waitForTimeout(800);
+    await page.evaluate(settled);
+    found.push(...(await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS, scope: `[role=tabpanel][id="${await tab.getAttribute("aria-controls")}"]` })));
+  }
   let n = 0;
   for (const [i, c] of found.entries()) {
     c.id = `${p}|${width}|${i}`;
@@ -155,12 +167,12 @@ async function measure(lab, svg) {
   return JSON.parse(await pre.textContent());
 }
 
-// Runs in the page. Every chart in main: each svg of at least 200 × 60 px, exported with its computed styles inlined and colours as rgb (the
+// Runs in the page. Every chart in `scope` (main, or one tab panel): each svg of at least 200 × 60 px, exported with its computed styles inlined and colours as rgb (the
 // checker reads only rgb) on the background of its nearest painted ancestor; and each HTML chart piece (`data-chart`, the cost bars). Both get
 // the checks that read the live page: text cut off by a clipping ancestor or the screen's edge, an amount clipped by its part, bars that don't
 // start at the zero line, and more than MAX_COLOURS colours among the data marks. The kit's chart pieces mark their data marks (`data-mark`:
 // bar, step, part, line, point), their zero line (`data-zero`) and the amounts inside an HTML piece (`data-amount`).
-function inspect({ MIN_TEXT_PX, MAX_COLOURS }) {
+function inspect({ MIN_TEXT_PX, MAX_COLOURS, scope }) {
   const TOL = 1.5;
   const props = ["fill", "fill-opacity", "stroke", "stroke-width", "stroke-dasharray", "stroke-opacity", "opacity",
     "font-family", "font-size", "font-weight", "text-anchor", "dominant-baseline", "direction", "visibility", "display",
@@ -277,7 +289,7 @@ function inspect({ MIN_TEXT_PX, MAX_COLOURS }) {
   }
 
   const out = [];
-  const roots = [...document.querySelectorAll("main svg, main [data-chart]")].filter((el) => !el.parentElement.closest("[data-chart]") || el.matches("[data-chart]"));
+  const roots = [...document.querySelectorAll(`${scope} svg, ${scope} [data-chart]`)].filter((el) => !el.parentElement.closest("[data-chart]") || el.matches("[data-chart]"));
   for (const root of roots) {
     const box = root.getBoundingClientRect();
     if (!shown(root)) continue;

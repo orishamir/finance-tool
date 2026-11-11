@@ -25,7 +25,7 @@ const CARD: Record<string, number> = {
   };
 const INPUT: Record<string, number> = {
     "components/decoder/tracks.tsx": 1,
-    "components/invest/chips.tsx": 1,
+    "components/invest/title.tsx": 1,
     "components/search.tsx": 2,
     "components/transfer/panel.tsx": 1,
     "routes/companies.tsx": 1,
@@ -36,11 +36,11 @@ const STATGRID: Record<string, number> = {
   };
 /** A fold whose label is a heading, built by hand from Disclosure (`as="h2"` and the like): FoldGroup has the heading and its count. */
 const HEADINGFOLD: Record<string, number> = {
-    "routes/documents.tsx": 1,
   };
 const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
     "components/provenance.tsx": 1,
+    "components/provenance-sheets.tsx": 1,
   };
 
 const patterns: Record<string, { kit: string; count: (s: string) => number; allowed: Record<string, number> }> = {
@@ -86,7 +86,7 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
 patterns["a row of rule chips"] = {
   count: (s) => (s.match(/\.map\(\([^)]*\)\s*=>\s*\(?\s*(?:<span key=\{\w+\}>\s*)?<RuleRef\b/g) ?? []).length,
   kit: "RulesLine or RulesChip (provenance.tsx)",
-  allowed: { "components/provenance.tsx": 4, "routes/exposure.tsx": 2 },
+  allowed: { "components/provenance-sheets.tsx": 4, "routes/exposure.tsx": 2 },
 };
 
 // a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
@@ -107,7 +107,6 @@ patterns["a name in a plain bdi"] = {
     "components/guide/sections.tsx": 1,
     "components/tracks/list.tsx": 2,
     "routes/company.tsx": 1,
-    "routes/not-covered.tsx": 1,
     "routes/track.tsx": 2,
   },
 };
@@ -120,7 +119,7 @@ patterns["a button styled by hand as a link"] = {
   kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
   allowed: {
     "components/invest/stairs.tsx": 1,
-    "components/search.tsx": 2,
+    "components/search-results.tsx": 2,
     "root.tsx": 1,
     "routes/not-found.tsx": 1,
   },
@@ -164,6 +163,7 @@ const CHART_ROLES: Record<string, string[]> = {
   "the timeline (3.4)": ["chart-value", "chart-fee", "chart-tax-1", "chart-tax-2", "chart-contributions"],
   "the fee-drag chart (7.3)": ["chart-fee-1", "chart-fee-2", "chart-fee-3", "chart-fee-4", "chart-fee-total"],
   ChangeChart: ["chart-lever-1", "chart-lever-2", "chart-lever-3", "chart-lever-4"],
+  "the receipt's lines and closing bar (indices page)": ["chart-by-account", "chart-by-fund", "chart-tax"],
   CostStack: ["chart-cost-trade", "chart-cost-custody", "chart-cost-fixed", "chart-cost-fx", "chart-cost-other", "chart-cost-fund", "chart-tax"],
   PileBar: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-fee", "chart-pile-salary-tax", "chart-pile-tax", "chart-pile-loss", "chart-pile-left"],
   StairsChart: ["chart-stairs-start", "chart-stairs-account", "chart-stairs-kind", "chart-stairs-fund", "gain", "loss"],

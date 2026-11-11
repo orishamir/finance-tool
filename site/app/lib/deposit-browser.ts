@@ -25,6 +25,12 @@ export function termOf(term: { value: unknown; unit: string }): TermId | null {
 }
 
 export type RateKind = "fixed" | "variable";
+
+/** The term the page opens on: a year, the plain deposit most guides speak of. */
+export const START_TERM: TermId = "y1";
+/** The kind of rate the page opens on. */
+export const START_KIND: RateKind = "fixed";
+
 export type BreakTerm = "not_allowed" | "with_penalty" | "none";
 
 /**
@@ -102,6 +108,9 @@ export function periodBest(data: DbData, term: TermId, kind: RateKind, amount: n
   if (amount !== null && ofTerm.some((o) => o.kind !== kind && opens(o, amount))) return { pick: null, gap: "otherKind" };
   return { pick: null, gap: ofTerm.some((o) => o.kind === kind) ? "notAtAmount" : "none" };
 }
+
+/** The offer the page's heading names as the highest when it opens (its term, its kind, P-05's amount): the home page says it too. */
+export const startBest = (data: DbData): DbOffer | null => periodBest(data, START_TERM, START_KIND, data.start).pick;
 
 /**
  * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21: `A × ((1 + r)^(years) − 1)`, the
