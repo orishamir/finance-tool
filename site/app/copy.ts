@@ -101,9 +101,30 @@ export const buttons = {
 
 export const home = {
   searchLabel: "מה ראיתם באפליקציה, בפרסומת או בדוח?",
-  // the door names the kinds itself (P-10) and links to the whole list
-  door1: { title: "להבין סוג של חיסכון", line: "מה זה, כמה זה עולה ואיך זה ממוסה", href: "/guide", all: "לכל סוגי החיסכון במדריך" },
-  door2: { title: "מה חברה מציעה לי", line: "כל המוצרים והמסלולים שלה, עם הסבר לכל אחד", href: "/companies" },
+  /** Three groups by what the reader came to do. Each comparison row's title is its page's own title; its line says what the page answers. */
+  understand: {
+    head: "להבין",
+    // the kinds themselves (P-10), each opening its guide page, and a link to the whole list
+    title: "סוג של חיסכון",
+    line: "מה זה, כמה זה עולה ואיך זה ממוסה",
+    href: "/guide",
+    all: "לכל סוגי החיסכון במדריך",
+  },
+  compare: {
+    head: "להשוות",
+    // "הריבית הקבועה הגבוהה לשנה על 10,000 ₪: 3.25% בבנק ירושלים": the deposits page's own heading figure at its start
+    deposits: { lead: "הריבית הקבועה הגבוהה לשנה על ", colon: ": ", atBank: " בבנק ", plain: "הריבית של כל בנק, לכל תקופה ולכל סכום" },
+    tracks: "כמה כל מסלול גובה, במה הוא מושקע ומה הוא השיג בעבר",
+    indices: "באיזה חשבון ובאיזו קרן הכי זול להחזיק מדד לאורך זמן",
+    companies: "כל המוצרים והמסלולים של חברה, עם הסבר לכל אחד",
+  },
+  check: {
+    head: "לבדוק מה אמרו לכם",
+    lead: "מה כתוב על זה בחוק ובתנאים של החברות, ואיפה. למשל:",
+    /** An example claim as its row shows it, in quotation marks. */
+    quoted: (claim: string) => `״${claim}״`,
+    all: "לכל החוקים והכללים",
+  },
 } as const;
 
 export const search = {
@@ -117,6 +138,13 @@ export const search = {
   notCoveredLine: "מוצר שהאתר עוד לא מכסה",
   also: "נקרא גם:",
   termLine: "מונח · מוסבר בעמוד",
+  // a guide's row: its page by its own name, or by another name it is also known by; the part of a guide that answers a question
+  guideLine: "עמוד המדריך",
+  guideAbout: "עמוד המדריך על",
+  sectionLine: "חלק מעמוד המדריך",
+  tracksLine: "השוואה של המסלולים בכל החברות",
+  /** The guide group's heading when a comparison page stands beside the guide. */
+  guideAndCompare: "מדריך והשוואה",
   more: "הצגת כל התוצאות בקבוצה",
   clear: "ניקוי",
   empty: {
@@ -432,30 +460,39 @@ export function topicName(file: string): string {
 
 export const parametersPage = {
   title: "פרמטרים של האתר",
-  lede: "החלטות שהאתר מקבל בעצמו, כמו מתי שתי אפשרויות נחשבות שקולות. הן לא באות מהחוק, ואי אפשר לשנות אותן מהעמוד.",
+  lede: "החלטות שהאתר מקבל בעצמו, כמו מתי שתי אפשרויות נחשבות שקולות. הן לא באות מהחוק, ואי אפשר לשנות אותן מהעמוד. ליד כל אחת כתוב איזה עמוד משתמש בה.",
   rows: { why: "למה", usedIn: "משמש ב:" },
-  notSet: "עוד לא נקבע",
-  // Hebrew names of the parameters (method.md §2.3 names them in English); copy.md 3.15
+  // Hebrew names of the parameters a live page reads (lib/parameter-pages.ts); copy.md 3.15. The search lists the same ones.
   names: {
     "P-01": "סף תיקו",
     "P-02": "גבולות בדיקת הרגישות",
     "P-03": "ספי ההכרעה על דמי ניהול",
-    "P-04": "התאמת סיווג מסלול לטווח",
-    "P-05": "התרחיש לדוגמה בעמודי המדריך",
-    "P-06": "סטייה מותרת בבדיקות",
-    "P-07": "נקודות ההתחלה של טופס המטרה",
+    "P-05": "התרחיש לדוגמה",
+    "P-09": "העובדות שהאתר מבליט",
+    "P-10": "סוגי החיסכון שבעמוד הראשון",
+    "P-11": "הסכומים שאפשר לבחור בעמוד הפיקדונות",
   } as Record<string, string>,
+  /** The pages a parameter is used on, each a link (lib/parameter-pages.ts). */
+  pages: {
+    home: "העמוד הראשי",
+    guide: "עמודי המדריך",
+    rules: "עמוד החוקים והכללים",
+    fees: "עמוד העמלות",
+    indices: "עמוד המדדים",
+    deposits: "עמוד הפיקדונות",
+  } as Record<string, string>,
+  /**
+   * The page's own general line, where the file's line still speaks of a page the site no longer has (the comparison, the questions
+   * page). The same reasons, said of the pages that read the parameter now.
+   */
+  why: {
+    "P-05": "גרפי המדריכים, עמוד העמלות ועמוד המדדים נפתחים על ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך: סכום היום, הפקדה חודשית, אופק, תשואה למוצרי שוק, ריבית למוצרים דמויי מזומן ואינפלציה. הם לא תחזית ולא ממוצע שנמדד, ואפשר לשנות כל אחד מהם בעמוד. המחוונים מכסים את מה שרוב האנשים ינסו, וערכים גדולים יותר אפשר להקליד. הריבית למוצרים דמויי מזומן היא ההנחה של האתר לאפשרויות שאין להן ריבית שפורסמה (הקרן הכספית, המק״מ והאג״ח הממשלתית): היא לא ריבית שפורסמה ולא תחזית, ואפשר להזין ריבית אחרת במקומה. לכל מוצר בגרף האתר מחשב לפי רשומה מייצגת אחת שנאספה, למשל פיקדון, קרן או מסלול, והעמוד אומר איזו. בחשבון ניירות ערך, במק״מ ובאג״ח ממשלתית זה התעריפון שמשאיר הכי הרבה מבין מי שנאספו, או שהעמוד אומר שהתעריפונים שקולים. בפיקדון בנקאי זה האמצעי מבין הפיקדונות לשנה שנאספו שאי אפשר לשבור אותם, לצד הטווח של כל הפיקדונות שנאספו, והעמוד אומר זאת.",
+    "P-09": "בעמוד החוקים והכללים מופיעות עובדות ששווה לדעת, ובכל עמוד מדריך שתיים או שלוש מהן. איזה כלל חשוב יותר הוא שיקול דעת, ולכן הרשימה היא פרמטר של האתר: הדירוג המחושב של הכללים (שימוש בחישובים, באתר ובנתונים, מספרים, מוצר, חוזק המקור) מסדר את הכללים בתוך הקבוצות ובוחר דוגמאות, אבל לא את הרשימה הזאת. נבחרו כללים שמכריעים תוצאה באתר או שהמחקר מצא שאנשים טועים בהם או שואלים עליהם שוב ושוב, ושיש להם מקור ראשי עם קישור.",
+  } as Record<string, string>,
+  /** Over the kinds of saving the first page names (P-10), each its guide's name. */
+  homeKinds: "בעמוד הראשון, לפי הסדר:",
   noCeiling: "ללא תקרה",
-  // the Hebrew names of the products P-08 names by id
-  wrapperNames: {
-    "bank-deposit": "פיקדון בבנק",
-    "brokerage-account": "חשבון ניירות ערך",
-    "government-bond": "אג״ח ממשלתית",
-    "kupat-gemel-lehashkaa": "קופת גמל להשקעה",
-    makam: "מק״מ",
-  } as Record<string, string>,
-  wrapperOther: "מוצר נוסף",
-  /** Hebrew label of every parameter field, keyed by method id and field path ({row} is the classification of a table row, {preset} a preset's name). copy.md 3.15 */
+  /** Hebrew label of every parameter field, keyed by method id and field path ({name} is the assumption a bound moves). copy.md 3.15 */
   fields: {
     "P-01.value": "הפרש יחסי שמתחתיו שתי אפשרויות שקולות",
     "P-02.bounds.lo": "{name}: הגבול התחתון",
@@ -463,14 +500,11 @@ export const parametersPage = {
     "P-03.negotiate_nis": "שווי הורדת העמלה לממוצע לאורך האופק שמעליו שווה להתמקח", // D90 revised, 2026-11-07: the worth of the cut, not the cost
     "P-03.avoid_nis": "עלות העמלה שממנה מוצג מוצר במקום גבוה יותר",
     "P-03.negotiate_share": "חלק מכלל העלות (סף ההתמקחות)",
-    "P-04.table.horizon_min_years": "סיווג {row}: אופק מינימלי",
-    "P-04.table.horizon_max_years": "סיווג {row}: אופק מקסימלי",
-    "P-04.table.max_fall_pct": "סיווג {row}: ירידה מרבית מקובלת",
     "P-05.inputs.amount_now": "סכום התחלתי",
     "P-05.inputs.monthly_deposit": "הפקדה חודשית",
     "P-05.inputs.horizon_years": "אופק",
-    "P-05.inputs.A-01": "תשואה שנתית ברוטו למוצרי שוק (A-01)",
-    "P-05.inputs.A-02": "אינפלציה שנתית (A-02)",
+    "P-05.inputs.A-01": "תשואה שנתית ברוטו למוצרי שוק",
+    "P-05.inputs.A-02": "אינפלציה שנתית",
     "P-05.inputs.cash_rate": "ריבית למוצרים דמויי מזומן",
     "P-05.inputs.annual_income": "הכנסה שנתית ברוטו",
     "P-05.sliders.monthly_deposit.min": "מחוון ההפקדה החודשית: מינימום",
@@ -493,22 +527,19 @@ export const parametersPage = {
     "P-05.ranges.age.max": "גיל מותר בשדה: מקסימום",
     "P-05.ranges.pct.min": "אחוז שנתי מותר בשדה: מינימום",
     "P-05.ranges.pct.max": "אחוז שנתי מותר בשדה: מקסימום",
-    "P-06.abs_nis": "סטייה מותרת בשקלים",
-    "P-06.rel_pct": "סטייה מותרת באחוזים",
-    "P-07.presets.horizon_years": "{preset}: כמה שנים",
-    "P-07.presets.monthly_deposit": "{preset}: הפקדה חודשית",
-    "P-07.presets.must_stay_available_share": "{preset}: החלק שנשאר זמין",
-    "P-07.presets.withdrawable_any_time": "{preset}: חייב להיות ניתן למשיכה בכל רגע",
-    "P-07.ranges.horizon_years.min": "מחוון השנים: מינימום",
-    "P-07.ranges.horizon_years.max": "מחוון השנים: מקסימום",
-    "P-07.ranges.horizon_years.step": "מחוון השנים: גודל צעד",
+    "P-11.steps.0": "סכום 1",
+    "P-11.steps.1": "סכום 2",
+    "P-11.steps.2": "סכום 3",
+    "P-11.steps.3": "סכום 4",
+    "P-11.steps.4": "סכום 5",
+    "P-11.steps.5": "סכום 6",
   } as Record<string, string>,
-  /** Names of the assumptions a P-02 bound moves (method.md 2.2). */
+  /** Names of the assumptions a P-02 bound moves (method.md 2.2), in words only. */
   boundNames: {
-    "A-01": "תשואה שנתית ברוטו (A-01)",
-    "A-02": "אינפלציה שנתית (A-02)",
-    "A-03": "שינוי שער המטבע מול השקל (A-03)",
-    "A-06": "עלות בתוך הקרן (A-06)",
+    "A-01": "תשואה שנתית ברוטו",
+    "A-02": "אינפלציה שנתית",
+    "A-03": "שינוי שער המטבע מול השקל",
+    "A-06": "עלות בתוך הקרן",
     fee_rates: "מכפיל של כל עמלה",
     horizon: "שינוי באופק, בשנים",
   } as Record<string, string>,
@@ -639,17 +670,45 @@ export const track = {
 
 export const notCovered = {
   title: "מה האתר עוד לא מכסה",
-  lede: "אפשרויות חיסכון והשקעה וכללי מס שהאתר מכיר אבל עוד לא מחשב, ולמה.",
-  rows: { known: "מה ידוע", open: "מה עוד פתוח", why: "למה זה חשוב" },
-  empty: "כרגע האתר מכסה את כל המוצרים שהוא מכיר.",
-  openLine: "החוקים והכללים לזה עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותו.",
-  notice: "האתר לא מחשב את אלה עד שתהיה תשובה לכל שאלה על החוקים והכללים שלהם, ועד שיהיו להם נתונים עם מקור.",
-  blockedTag: "לא מחושב",
+  lede: "אפשרויות חיסכון והשקעה שהאתר מכיר, ועוד אין להן עמוד במדריך. בכל שורה: מה זה, והשאלה שעוד פתוחה.",
+  empty: "כרגע לכל מה שהאתר מכיר יש עמוד במדריך.",
   alsoCalled: "נקרא גם",
-  /** The date beside "מקור ראשי" and the card's rules count had no label; the page never said what the site does cover. */
-  checked: "נבדק ב־{date}",
-  rulesLead: "נאספו עד עכשיו:",
   covered: { line: "כל סוגי החיסכון וההשקעה שהאתר כן מכסה מופיעים במדריך.", link: "למדריך" },
+  /** The link to the source of the row's sentence, right under it. */
+  toSource: "למקור",
+  /** Why the row has no guide yet: the open question in its own words, or how many when there are several (the fold lists them). */
+  openOne: "שאלה פתוחה: {question}",
+  openMany: "{n} שאלות עוד פתוחות",
+  /** No question left open: what is still missing. */
+  remaining: "לכל השאלות יש תשובה; נותר: {list}",
+  remainingItems: { record: "נתונים עם מקור", formula: "שיטת חישוב" } as Record<string, string>,
+  /** The fold under each row: the rest of what is known. */
+  known: "מה כבר ידוע",
+  openHeading: "השאלות שעוד פתוחות",
+  narrowed: "לחלק מהשאלה כבר יש תשובה, לפי הכללים האלה:", // "…, לפי" before the chip read as cut off
+  institution: "יש תשובה של מוסד; האתר מחשב לפיה ומסמן ״לפי החברה״, אבל היא לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא.", // copy.md 7 (D23)
+  answeredHeading: "שאלות שכבר יש להן תשובה",
+  /**
+   * An answered question in words, by the row's id and the rules that answered it joined with a space (the rule base keeps no
+   * answered question). Each is the line the question's sheet had; its rules follow as a chip.
+   */
+  answeredTopics: {
+    "savings-policies": {
+      "TXA-28": "האם מעבר של פוליסת חיסכון לחברת ביטוח אחרת הוא אירוע מס",
+      "INS-25": "תקרה בתקנות לדמי הניהול בפוליסת חיסכון",
+      "TXA-08 TXA-28": "האם אפשר להעביר פוליסת חיסכון לחברת ביטוח אחרת",
+    },
+    "foreign-currency-deposits": { "TXI-25 TX2-01": "המס על פיקדון במטבע חוץ כשהמטבע יורד" },
+    "managed-portfolios": { "TX2-15 TX2-17": "איך ממוסה תיק השקעות מנוהל, כולל מע״מ על דמי הניהול" },
+    reits: { "RG-07 RG-08": "מה קורה לקרן להשקעות במקרקעין שלא חילקה כנדרש, ומי מאשר את מעמדה" },
+    "amendment-190-deposits": {
+      "TXA-30": "המקור לתקרות הגיל ולתנאים של גיל 60 ושל שלושה תלושי שכר בהיוון קצבה מוכרת",
+      "TXA-19": "האם תקרת ההיוון הפטור כוללת גם היוון של קצבה מוכרת",
+    },
+  } as Record<string, Record<string, string>>,
+  sourceLead: "המקור של ההגדרה:",
+  checked: "נבדק ב־{date}",
+  rulesLead: "הכללים שנאספו עד עכשיו:",
   // what the site does not compare or do, from product.md section 4; this is by design, not a gap to fill
   wontDo: {
     title: "מה האתר לא משווה ולא עושה",
@@ -681,6 +740,26 @@ export const system = {
   notFound: { title: "העמוד הזה לא קיים. אולי הקישור ישן.", home: "לעמוד הראשי", search: "לחיפוש" },
   loading: "טוען…",
   notInData: "לא נמצא בנתוני הרשות",
+} as const;
+
+/**
+ * The line a link to a page shows when it is pasted in a chat (lib/page-meta.ts), for a page with no line of its own under its
+ * title, and the lines made from a page's data. A page that has such a line (a guide's, the documents page's) gives that one.
+ */
+export const pagePreview = {
+  companies: "בתי השקעות, חברות מנהלות ובנקים, ומה כל אחד מציע: גמל, השתלמות ופנסיה, קרנות, מסחר בניירות ערך ופיקדונות.",
+  tracks: "כל המסלולים בכל החברות, מוצר אחר מוצר: דמי הניהול שנגבו בפועל, החשיפה, התשואה והכסף המנוהל, מנתוני רשות שוק ההון.",
+  fees: "כמה העמלות של מוצר או של מסלול יעלו לכם לאורך השנים, בכסף של היום.",
+  notFound: "בכתובת הזו אין עמוד באתר.",
+  /** A company's or a bank's page, after its "מה יש ב…" (companyPage.whatsIn). */
+  company: (whatsIn: string) => `${whatsIn}: המוצרים, התנאים והעמלות, עם מקור לכל מספר.`,
+  /** A track's page: whose track it is, and in which product when the site knows it. */
+  track: (company: string, product: string | null) =>
+    `מסלול${product ? ` ${inName(product)}` : ""} של ${company}: דמי הניהול שנגבו בפועל ובמה הכסף מושקע, מנתוני רשות שוק ההון.`,
+  /** One of the rules page's five questions, with its line (rulesFront.shelves). */
+  shelf: (line: string) => `חוקים וכללים: ${line}.`,
+  /** A guide or an exposure page whose record has no line of its own. */
+  guide: (name: string) => `מה זה ${name}, איך הכסף נכנס ויוצא, המס והעלויות.`,
 } as const;
 
 /** Hebrew names of the formulas a sheet names (method.md F-IDs); copy.md 3.8. */
@@ -1157,13 +1236,13 @@ export const exposurePage = {
     { id: "hold", title: "איך מחזיקים את זה" },
     { id: "risk", title: "סיכונים" },
   ] as const,
-  currencies: { ILS: "₪", USD: "$", EUR: "€" } as Record<string, string>,
   openDetails: "יש שאלות פתוחות",
   kinds: { equity_index: "מדד מניות", bond_index: "מדד אג״ח", cash_like: "מזומן ודומיו", mixed: "תמהיל של כמה סוגי נכסים", commodity: "סחורות", other: "אחר" } as Record<string, string>,
   kindLabel: "סוג",
   currencyLabel: "מטבע",
   holdLine: "המוצרים שבהם אפשר להחזיק את החשיפה הזו.",
   holdNone: "עוד לא נאספו המוצרים שמחזיקים את זה.",
+  toIndices: "להשוואת החשבונות והקרנות על המדד",
   openTax: "עוד לא ברור איך זה ממוסה כאן: שאלה פתוחה",
   toGuide: "לעמוד המדריך",
   noProse: "הטקסט של העמוד הזה עוד לא נכתב.",
@@ -1306,6 +1385,8 @@ export const trackBrowser = {
   help: { fee: "דמי ניהול ממוצעים", assets: "כסף מנוהל", exposure: "חשיפה למניות ולמט״ח", phoneLead: "מה אומרים המספרים:" },
   pastNote: "התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה.",
   oldData: "נתוני הרשות לא עודכנו מאז",
+  /** At the end of a phone's track row opened in place under its company. */
+  openTrack: "לעמוד המסלול",
 } as const;
 
 /**
@@ -2113,64 +2194,6 @@ export const r4workbench = {
   },
 } as const;
 
-// Release 5 (docs/copy.md section 9, status draft): the not-covered status card.
-// `{name}` is a place a value object fills (components/exposure-mode/tpl.tsx).
-export const r5 = {
-  // 9.5 not covered: the status card
-  graduation: {
-    block: "מה חסר כדי שהאתר יחשב את זה",
-    blocked: "{n} שאלות עוד בלי תשובה",
-    blockedOne: "שאלה אחת עוד בלי תשובה",
-    remaining: "לכל השאלות יש תשובה; נותר: {list}",
-    remainingItems: { record: "נתונים עם מקור", formula: "שיטת חישוב" },
-    graduated: "מחושב באתר מ־{date}",
-    blockersHeading: "השאלות שעוד אין להן תשובה",
-    blocker: "שאלה פתוחה ({code}): {text}",
-    blockerShort: "שאלה פתוחה {code}",
-    narrowed: "לחלק מהשאלה נמצאה תשובה ב־{date}, לפי הכללים האלה:", // "…, לפי" before the chip read as cut off
-    institution: "יש תשובה של מוסד; האתר מחשב לפיה ומסמן ״לפי החברה״, אבל היא לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא.", // copy.md 9.5 (D23)
-    reopened: "נפתח מחדש ב־{date}",
-    closuresHeading: "שאלות שכבר יש להן תשובה",
-    /**
-     * A closure: the question in words (closureTopics), then the rules that answered it as a chip. "שאלה נסגרה … לפי" named no
-     * question. The rule base keeps no answered question, so each topic is the line the
-     * question's sheet had, by the card's id and the closure's rules joined with a space.
-     */
-    closure: "נמצאה תשובה ב־{date}: {topic}",
-    none: "עוד אין שאלה שנמצאה לה תשובה.",
-    closureNoDate: "נמצאה תשובה: {topic}",
-    closureTopics: {
-      "savings-policies": {
-        "TXA-28": "האם מעבר של פוליסת חיסכון לחברת ביטוח אחרת הוא אירוע מס",
-        "INS-25": "תקרה בתקנות לדמי הניהול בפוליסת חיסכון",
-        "TXA-08 TXA-28": "האם אפשר להעביר פוליסת חיסכון לחברת ביטוח אחרת",
-      },
-      "foreign-currency-deposits": { "TXI-25 TX2-01": "המס על פיקדון במטבע חוץ כשהמטבע יורד" },
-      "managed-portfolios": { "TX2-15 TX2-17": "איך ממוסה תיק השקעות מנוהל, כולל מע״מ על דמי הניהול" },
-      reits: { "RG-07 RG-08": "מה קורה לקרן להשקעות במקרקעין שלא חילקה כנדרש, ומי מאשר את מעמדה" },
-      "amendment-190-deposits": {
-        "TXA-30": "המקור לתקרות הגיל ולתנאים של גיל 60 ושל שלושה תלושי שכר בהיוון קצבה מוכרת",
-        "TXA-19": "האם תקרת ההיוון הפטור כוללת גם היוון של קצבה מוכרת",
-      },
-    } as Record<string, Record<string, string>>,
-    nearest: "הקרוב ביותר לכיסוי מלא",
-    graduatedHeading: "כבר מחושבים באתר",
-    graduatedItem: "{name}, מ־{date}",
-    graduatedLink: "לעמוד המדריך",
-    holdingsLink: "מה חוסם את הכיסוי",
-    sourceNote: "המצב נקרא מקטעי ״מצב מעבר״ בקובצי מאגר החוקים והכללים של כל מוצר ומרשימת הפערים הפתוחים של שיטת החישוב.", // copy.md 9.2 to 9.6
-  },
-} as const;
-
-// the parameters page's name and field labels for P-08 (docs/parameters-rationale.md)
-Object.assign(parametersPage.names, { "P-08": "המוצר שמחזיק כל חשיפה, בהשוואה לפי חשיפה" });
-Object.assign(parametersPage.names, { "P-10": "סוגי החיסכון שהדלת למדריך בעמוד הראשון מציגה" });
-Object.assign(parametersPage.names, { "P-11": "הסכומים שאפשר לבחור בעמוד הפיקדונות" });
-for (let i = 0; i < 6; i++) (parametersPage.fields as Record<string, string>)[`P-11.steps.${i}`] = `סכום ${i + 1}`;
-for (const [id, he] of Object.entries({ "shekel-cash": "מזומן שקלי", makam: "מק״מ", "government-bond-cpi": "אג״ח ממשלתית צמודה", "government-bond-unlinked": "אג״ח ממשלתית לא צמודה", "index-sp500": "מדד S&P 500", "index-ta125": "מדד ת״א-125", "general-track": "מסלול כללי" })) {
-  (parametersPage.fields as Record<string, string>)[`P-08.holding.${id}.wrapper_id`] = `${he}: המוצר שמחזיק אותה`;
-}
-
 // ---------------------------------------------------------------------------------------------------------------
 // Knowledge layer (8dd1f013:research/knowledge/2026-10-24-synthesis.md). Keys are fixed; the Hebrew editor
 // polishes the values. docs/copy.md gets a section listing these strings.
@@ -2354,6 +2377,9 @@ export const documents = {
   rulesMore: "עוד {n}",
   checked: "נבדק לאחרונה",
   open: "למסמך",
+  /** In an opened kind of document while its cards come, and if they could not. */
+  loading: "טוען…",
+  failed: "המסמכים לא נטענו. רעננו את העמוד ונסו שוב.",
   data: {
     title: "נתונים שהאתר קרא",
     lede: "תעריפונים, תנאי פיקדונות, דוחות של קרנות וסדרות נתונים, כל אחד עם התאריך שבו נקרא ועם העמוד באתר שמשתמש בו.",
@@ -3953,12 +3979,13 @@ export const kit = {
       FilterChip: "מסנן שדולק או כבוי בלי קשר למסננים האחרים, עם מספר השורות שיוצגו כשהוא דולק. למספר יש מקום קבוע, ומסנן שלא יציג כלום מתעמעם ונשאר במקומו. בחירה של ערך אחד מכמה, שמבטלים זה את זה, היא ChoiceChips עם counts.",
       AskField: "השדה הגדול שהעמוד נפתח בו: נכנס בו משפט שלם, ו־× מרוקן אותו.",
       DidYouKnow: "״הידעת?״: עובדות קצרות מהחוקים והכללים, כל אחת עם המקור שלה והדרך לפירוט המלא. כל הכרטיסים באותו גובה.",
+      RuleTitleRow: "שורה ברשימה של חוקים וכללים, כשהשורה היא החוק עצמו: הכותרת היא הקישור, והיא פותחת את הכרטיס. בלי מזהה: הוא נשאר בכרטיס. כל השורה כפתור אחד, 44 פיקסלים לפחות. גר ב־provenance.tsx, לא ב־kit.",
       RulesLine: "החוקים והכללים שמאחורי עובדה: שבב אחד עם המספר שלהם, השורה האחרונה בבלוק, ולעולם לא עמודה בטבלה. שבב שפותח רשימה של השמות המלאים, וכלל אחד נפתח ישר בכרטיס. בלי חוקים וכללים אין שבב. גר ב־provenance.tsx, לא ב־kit.",
       MixedName: "שם של קרן או חברה בתוך שורה בעברית. שם שיש בו עברית נפרש מימין לשמאל גם כשהוא מתחיל באותיות לטיניות; שם בלי עברית שומר על הכיוון שלו. שם בשורה משלו שעלולה להיחתך (NameLine) נחתך בסוף השם לפי סדר הקריאה, כך שתחילתו, שם המותג, תמיד נראית.",
       ClampedText: "טקסט ארוך בשורה של רשימה ששורותיה שומרות על הגובה: שתי השורות הראשונות, והשאר נפתח בלחיצה ונסגר בלחיצה. הקישור מופיע רק כשהטקסט נחתך.",
       AlsoChanged: "בחירה ששינתה גם משהו אחר: המשפט נאמר בשורה שנלחצה, ולידו הדרך חזרה למה שהיה לפני הלחיצה. הקישור בגודל מגע מלא ולא מגדיל את השורה.",
       StrengthLabel: "כמה חזק המקור של נתון או של כלל: מקור משני או לפי החברה בתווית זהירות, שאלה פתוחה עם מנעול. נתון שנשען על קריאה של האתר בטקסט רשמי מקבל ReadingTag, לעולם לא \"מקור משני\". תווית אחת לשלב או לשורה, רק כשיש ספק. גר ב־provenance.tsx, לא ב־kit.",
-      IdRef: "שבב לכל מזהה שהאתר מציג: חוק, נוסחה, פרמטר או שאלה פתוחה. לא כותבים מזהה כטקסט חשוף. גר ב־provenance.tsx, לא ב־kit.",
+      IdRef: "שבב לכל מזהה שיש לאתר: חוק, נוסחה, פרמטר או שאלה פתוחה. השבב אומר מילים, לא את המזהה: חוק הוא ״חוקים וכללים · 1״ (או שמו, ברשימה של חוקים), נוסחה ופרמטר בשמם. המזהה נשאר בכרטיס שהשבב פותח. גר ב־provenance.tsx, לא ב־kit.",
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",
       Callout: "הערה בקופסה מתחת לתוצאה: caution (לא עודכן, מקור חלש), blocked (שאלה פתוחה), info, ו־upcoming (כללים שעומדים להשתנות: הצבעים של info עם לוח שנה, והתאריך בתגית ליד הכותרת; מספר בתוכה בלי סימן \"נכנס לתוקף\"). לכולן אותה צורה: מסגרת דקה וקצה של 4 פיקסלים בצד שבו הטקסט מתחיל, בצבע של הסוג; הרקע המלא מבדיל אזהרה מהערה.",
@@ -4011,6 +4038,7 @@ export const kit = {
       CompanyLinks: "פתיח ואחריו החברות שהוא עוסק בהן, כל אחת קישור לעמוד שלה: ״תלוי בחברה״ כשכל חברה קובעת לעצמה, ״לכל מה שמצאנו אצל״ מתחת לתנאי של חברה. רצוף: יכול לסגור משפט או לעמוד בשורה משלו.",
       RowArrow: "החץ בסוף שורה שפותחת עמוד אחר באתר, בצבע של קישור. חץ שפותח חלון באותו עמוד שייך לכפתור שלו, לא לזה.",
       ProductTableGroups: "רשימה ארוכה של מוצרים שמתחלקת לקבוצות (חברה, סוג השקעה): כותרת מעל כל קבוצה עם שורה של מספרים, כותרות עמודה שממיינות את הטבלה (SortHead, ו־aria-sort בעמודה), כותרת קבוצה שלחיצה עליה מקפלת את שורות הקבוצה (foldable), וכותרת שנשארת מתחת לכותרת האתר בזמן הגלילה (stickyHead) כל עוד הטבלה נכנסת ברוחבה. במחשב ובטלפון נבנית רק הפריסה שהמסך מציג.",
+      ProductPhoneFold: "מוצר ברשימה ארוכה בטלפון (מסלולים תחת חברה): שורה אחת עם השם ומספר אחד עם המילה שלו. הקשה על השורה פותחת במקום את כל השאר, והשורה גדלה בהדרגה, כך שמה שמתחתיה זז בעדינות ומה שמעליה לא זז. המספר שבשורה שומר על ההקשה שלו ופותח את המקור.",
       SortHead: "כותרת עמודה שממיינת את הטבלה בלחיצה: מודגשת עם ▲ או ▼ כשהיא פעילה, ⇅ חלש כשלא. לחיצה ראשונה נותנת את הסדר הטבעי של העמודה והשנייה הופכת אותו. החץ במקום קבוע ורוחב המודגש נשמר, ולכן לחיצה לא מזיזה דבר.",
       MarkHold: "סימן קטן לפני מילים או אחריהן (אזהרה, מנעול, חץ של קישור, סימן שאלה) נצמד למילה שלידו, כדי שלא יעמוד לבד בשורה.",
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
@@ -4024,6 +4052,7 @@ export const kit = {
       ChooseRow: "שורה שבוחרת משהו בעמוד (מסנן) ונגמרת בחץ שמוביל למקום אחר. כל השורה היא כפתור שנלחץ ושוב משחרר, והמספרים בשורה העמומה והחץ שומרים על הלחיצה שלהם. הנבחרת ברקע ובפס בתחילתה, ושורה מעומעמת נשארת במקומה.",
       SideNav: "רשימה בצד של עמוד שמראה חלק אחד בכל פעם (עמוד חברה: סקירה, ואז כל מוצר). כל פריט הוא קישור עם הכתובת שלו, כך שקישור וכפתור חזרה עובדים. הנבחר ברקע ובפס בתחילתו, כמו ListRow, והחלקים שלו נפתחים מתחתיו כקישורים בתוך העמוד. מ־1024 פיקסלים הרשימה ליד התוכן ונשארת במקום כשגוללים; מתחת לזה היא שורה אחת שאומרת מה מוצג ופותחת אותה.",
       GoLink: "קישור בתוך האתר שממשיך הלאה, בסוף חלק: המילים בצבע הקישור וחץ אחריהן, צמוד למילה האחרונה.",
+      GoRow: "שורה שפותחת עמוד אחר, בעמודה צרה (הדרכים פנימה בעמוד הראשי): שם, שורה עמומה שאומרת על מה העמוד עונה, וחץ. כל השורה היא קישור, ומספר בשורה שומר על הלחיצה שלו.",
       OpenRow: "שורה שפותחת חלק אחר של העמוד או עמוד אחר (הסקירה של בנק): שם, כמה, עובדה אחת מתחת לתווית קטנה, תאריך וחץ, בעמודות. כל השורה היא קישור, והמספרים בה שומרים על הלחיצה שלהם.",
       SharedFacts: "מה שנכון לכל השורות בטבלה, פעם אחת מעליה במקום בכל שורה. עובדה שנכונה רק לחלק מהשורות נשארת בשורות שלה.",
       FigureLines: "מספרים קטנים זה מתחת לזה, כל אחד בשורה אחת עם תווית בתחילתה (הריביות של פיקדון לפי סכום, בשורה בטלפון). שורה שבחירה במקום אחר מניחה בצד מתעמעמת במקומה.",

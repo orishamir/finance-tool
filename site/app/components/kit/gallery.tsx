@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconAlert, IconExternal, IconLock } from "../icons";
-import { IdRef, LeadTail, MarkHead, Num, ReadingTag, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
+import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import { depositLabels } from "../../lib/deposit-kind";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LinkLine, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LinkLine, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -398,15 +398,22 @@ function Chips() {
   );
 }
 
+/** The gallery's page carries no rule records: the demos of a rule's title (a titled chip, a title row) get one sample record of their own. */
+function SampleRules({ today, children }: { today: string; children: ReactNode }) {
+  const rules = { "TXS-05": { id: "TXS-05", title: "Capital gains tax withheld at source", title_he: "ניכוי מס רווח הון במקור", scope: "general", strength: "primary", dimensions: [], figures: {} } };
+  return <ProvenanceProvider data={{ rules: rules as never, terms: {}, dimensions: {}, today }}>{children}</ProvenanceProvider>;
+}
+
 function Words({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
       <Demo name="IdRef" use={g.uses.IdRef}>
         <Grid>
-          <State label="rule: opens the rule card"><div><IdRef id="TXS-05" /></div></State>
-          <State label="formula: opens the formula sheet"><div><IdRef id="F-80" /></div></State>
-          <State label="parameter: goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
+          <State label="rule: D48's chip, opens the rule card at once"><div><IdRef id="TXS-05" /></div></State>
+          <State label="rule, titled: in a list of rules, the chip is the rule's title"><SampleRules today={today}><div><IdRef id="TXS-05" titled /></div></SampleRules></State>
+          <State label="formula: its name, opens the formula sheet"><div><IdRef id="F-80" /></div></State>
+          <State label="parameter: its name, goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
           <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
           <State label="ends a sentence: the full stop is passed as end and stays on the chip's line, with no gap before it (guard 20)"><p className="w-56">{g.sample.chipSentence} <IdRef id="TXS-05" end="." /></p></State>
         </Grid>
@@ -447,6 +454,15 @@ function Words({ today }: { today: string }) {
           <State label="one rule: opens its card at once"><RulesLine ids={["TXS-05"]} /></State>
           <State label="one open question: keeps its own chip"><RulesLine ids={["TX2 OQ6"]} /></State>
           <State label="no rules: renders nothing"><div><RulesLine ids={[]} /></div></State>
+        </Grid>
+      </Demo>
+      <Demo name="RuleTitleRow" use={g.uses.RuleTitleRow}>
+        <Grid>
+          <State label="a row that is the rule itself: its title is the link and opens its card; no code (the sheet of a RulesChip, a company page's terms)">
+            <SampleRules today={today}>
+              <ul className="flex flex-col border-y border-border"><li><RuleTitleRow id="TXS-05" /></li></ul>
+            </SampleRules>
+          </State>
         </Grid>
       </Demo>
       <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
@@ -1210,6 +1226,23 @@ function Lists({ today }: { today: string }) {
           <PageFoldTable row={row} />
         </State>
       </Demo>
+      <Demo name="ProductPhoneFold" use={g.uses.ProductPhoneFold}>
+        <State label="two products on a phone, each one line (its name, one figure with its word, a chevron); a tap on the line opens the rest of the row in place, growing, and a tap on the figure opens its source instead" wide>
+          <Card pad="none" className="overflow-hidden flex flex-col max-w-sm">
+            {([["a", p.a, "1148808", 0.35], ["b", p.c, "1148162", 0.8]] as const).map(([k, name, n, rate]) => (
+              <ProductPhoneFold key={k} name={name} figure={<ProductFigures inline items={[{ id: "a", figure: <Num value={{ ...s.rate, value: rate }} />, word: p.figure }]} />} label={name}>
+                <span className="text-sm text-muted-foreground">
+                  {p.number} <bdi dir="ltr" className="num-id">{n}</bdi>
+                </span>
+                <LabelRow labels={labels} />
+                <a href="#kit" className="self-start text-link hover:underline inline-flex items-center min-h-target text-sm">
+                  {p.go}
+                </a>
+              </ProductPhoneFold>
+            ))}
+          </Card>
+        </State>
+      </Demo>
       <Demo name="GroupPriceFold, GroupPriceRows" use={g.uses.GroupPrices}>
         <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
           <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
@@ -1331,10 +1364,10 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="FormulaBlock, Tex" use={g.uses.Formula}>
-        <State label="one formula and its key (the stock share of a provident track, F-87): the math left to right, the key's symbols on the start side">
+        <State label="one formula and its key (the stock share of a provident track): the math left to right, the key's symbols on the start side">
           <FormulaBlock lines={[{ tex: String.raw`s = \frac{E}{A} \times 100` }]} symbols={formulaKeys["F-87"]!.symbols} where={provenanceWords.formulaSheet.where} />
         </State>
-        <State label="several formulas in one entry, each under its name (the dollar against the shekel, F-93)">
+        <State label="several formulas in one entry, each under its name (the dollar against the shekel)">
           <FormulaBlock
             lines={[String.raw`r_t = \frac{\text{ILS}_t}{\text{USD}_t}`, String.raw`\frac{r_{\text{Dec}(y)}}{r_{\text{Dec}(y-1)}} - 1`, String.raw`\left(\frac{r_{t+12H}}{r_t}\right)^{1/H} - 1`].map((tex, i) => ({ tex, label: formulaKeys["F-93"]!.lines?.[i] }))}
             symbols={formulaKeys["F-93"]!.symbols}
@@ -1423,6 +1456,14 @@ function Lists({ today }: { today: string }) {
           <RowList plain className="max-w-3xl">
             <OpenRow title={g.sample.option[0]} end={`16 ${companyFocus.units.tracks.many}`} fact={{ label: g.sampleAbout, value: <Num value={s.sourced} /> }} date={g.sampleSource} to="/kit" label={g.sample.option[0] ?? ""} />
             <OpenRow title={g.sample.option[1]} end={`4 ${companyFocus.units.tracks.many}`} fact={{ label: g.sampleAbout, value: g.sampleSource, words: true }} to="/kit" label={g.sample.option[1] ?? ""} />
+          </RowList>
+        </State>
+      </Demo>
+      <Demo name="GoRow" use={g.uses.GoRow}>
+        <State label="rows that open another page in a narrow column: a name, a line with a figure that opens its source, the arrow">
+          <RowList className="max-w-sm">
+            <GoRow title={g.sample.option[0]} line={<>{g.sampleAbout}: <Num value={s.sourced} /></>} to="/kit" label={g.sample.option[0] ?? ""} />
+            <GoRow title={g.sample.option[1]} line={g.sampleSource} to="/kit" label={g.sample.option[1] ?? ""} />
           </RowList>
         </State>
       </Demo>

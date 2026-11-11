@@ -223,6 +223,26 @@ export function loadDocuments(): DocumentCard[] {
   return groupDocuments(rules, (Array.isArray(table) ? table : []).filter((d) => !d.doc_kind), publishers, hrefOf);
 }
 
+/** A kind of document on the documents page, as its first HTML carries it: the count on its head, and the anchors of its documents, so a link
+ *  to one opens its group (and the fold of the short rows) before the cards come from `/documents-data.json`. */
+export interface DocumentSection {
+  id: SectionId;
+  count: number;
+  /** The documents shown as cards. */
+  cards: string[];
+  /** The documents shown as one-line rows under the group's second fold. */
+  rows: string[];
+}
+
+export function documentSections(docs: readonly DocumentCard[]): DocumentSection[] {
+  return sectionOrder
+    .map((id) => {
+      const list = docs.filter((x) => x.section === id);
+      return { id, count: list.length, cards: list.filter((x) => x.featured).map((x) => x.key), rows: list.filter((x) => !x.featured).map((x) => x.key) };
+    })
+    .filter((s) => s.count > 0);
+}
+
 
 // ---------------------------------------------------------------- the data part
 

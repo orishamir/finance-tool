@@ -4,7 +4,7 @@
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
-import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures } from "../lib/rule-row";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
@@ -464,10 +464,12 @@ export function idKind(id: string): IdKind | null {
 }
 
 /**
- * One chip for any id the site shows: a rule opens its card, a formula its sheet, an open question its sheet,
- * a parameter goes to its card on the parameters page. The ID is LTR with a slashed zero and a 44px tap area.
- * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
- * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
+ * One chip for any id the site has: a rule opens its card, a formula its sheet, an open question its sheet,
+ * a parameter goes to its card on the parameters page. The chip says words, never the code (D48): a rule's chip is
+ * "חוקים וכללים · 1" (`RulesChip`), or with `titled` the rule's title; a formula's says its name, a parameter's its name,
+ * an open question's "פרטים". The code stays in the card or sheet it opens and in the chip's address. A 44px tap area.
+ * - `asLabel`: the chip as a label that does nothing (a parameter's own card, which a link would only point back at).
+ * An empty id renders nothing; an id that is no kind renders as plain text; a parameter or an `A-nn` no card has, nothing.
  */
 /**
  * The punctuation that closes a sentence on a chip (".", ",", ";", ":"): held to the chip on one line and drawn close to its frame, so
@@ -484,7 +486,7 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
   );
 }
 
-export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own. */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its title, where the chip stands for the rule in a list of them. */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
 }
 
@@ -497,32 +499,33 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   const plain = <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>;
   if (!kind) return plain;
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
+  // a rule's chip says "חוקים וכללים · 1", or its title where the chip stands for the rule in a list (`titled`)
+  const rule = kind === "rule" ? ruleOf(data, shown) : undefined;
+  if (kind === "rule" && !(titled && rule) && !asLabel) return <RulesChip ids={[shown]} className={className} />;
   // an open question's chip says a word, not its code: the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
-  const ruleTitle = titled && kind === "rule" ? ruleOf(data, shown)?.title_he : undefined;
-  const chip = title ? (
-    <span className="text-start">{title}</span>
-  ) : ruleTitle ? (
-    <span className="text-start">
-      {ruleTitle} · <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{shown}</bdi>
-    </span>
-  ) : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
-  if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}>{chip}</span>;
+  const ruleName = rule ? ruleTitle(rule) : undefined;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
   if (kind === "assumption") card = data?.parameters?.[id];
-  if ((kind === "parameter" || kind === "assumption") && !card) return plain;
+  if ((kind === "parameter" || kind === "assumption") && !card) return null;
+  const formulaName = kind === "formula" ? formulaNames[id] || data?.formulas?.[id]?.name || formulaNames._other : undefined;
+  const words = title ?? (ruleName ? ruleName.text : card ? parametersPage.names[card] ?? copy.idRef.parameter : formulaName ?? (kind === "question" ? copy.idRef.questionChip : ruleCopy.set));
+  // a short word stays on one line; a title or a name wraps inside the chip
+  const long = !!(title || ruleName || formulaName || (card && parametersPage.names[card]));
+  const chip = ruleName?.english ? <bdi dir="ltr" className="text-start">{words}</bdi> : <span className={long ? "text-start" : "whitespace-nowrap"}>{words}</span>;
+  if (asLabel) return <span className={cx("rule-chip pointer-events-none", long && "whitespace-normal", className)}>{chip}</span>;
   if (card) {
     return (
-      <Link to={`/parameters#${card}`} className={cx("rule-chip", className)} onClick={close} aria-label={`${copy.idRef.parameter} ${id}`}>
-        <bdi dir="ltr">{id}</bdi>
+      <Link to={`/parameters#${card}`} className={cx("rule-chip", long && "whitespace-normal", className)} onClick={close} aria-label={`${copy.idRef.parameter}: ${words}`}>
+        {chip}
       </Link>
     );
   }
-  const aria = kind === "rule" ? `${ruleCopy.title} ${id}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed} ${id}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula} ${shown}`;
+  const aria = kind === "rule" ? `${ruleCopy.title}: ${words}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed}: ${words}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula}: ${words}`;
   const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", (title || ruleTitle) && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
+    <button type="button" className={cx("rule-chip", long && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
       {chip}
     </button>
   );
@@ -555,9 +558,10 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
 /**
  * The rule chip: `IdRef` for a rule id. A company's term (scope `institution`, or `unsettled` seen at named companies) shows the
  * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
- * "ועוד" and the count of the others. The code stays in the card it opens and in the chip's spoken name.
+ * "ועוד" and the count of the others. A general rule's chip is D48's "חוקים וכללים · 1", which opens its card at once. The code stays in
+ * the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className, titled, end }: { id: string; className?: string; /** A general rule's chip says its Hebrew title before its id (`IdRef`'s `titled`). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+export function RuleRef({ id, className, titled, end }: { id: string; className?: string; /** A general rule's chip says its title (`IdRef`'s `titled`): where it stands for the rule in a list of them. */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
@@ -644,9 +648,30 @@ export function RulesLine({ ids, lead, name, className }: { ids: readonly string
   );
 }
 
-/** What a `RulesChip` opens: each rule as "id, title", a company's term named; a row opens the card, with the sheet's back arrow to the list. */
-function RulesListSheet({ ids, name, data, headId }: { ids: readonly string[]; name?: string; data: ProvenanceData; headId: string }) {
+/**
+ * A row that is a rule itself (a list of rules, a company's terms from its documents): the rule's title is the link, and opens its card;
+ * a company's term says whose it is under the title (`scope`). No code: it stays in the card. The whole row is one button, at least 44 px.
+ */
+export function RuleTitleRow({ id, scope = true, className }: { id: string; /** Under a company's term, the companies it is about. */ scope?: boolean; className?: string }) {
   const open = useOpen();
+  const data = useContext(DataCtx);
+  const rule = ruleOf(data, id);
+  // a record the page does not hold: its chip still opens the card, which says so
+  if (!rule) return <span className={cx("flex min-h-target items-center", className)}><RulesChip ids={[id]} /></span>;
+  const title = ruleTitle(rule);
+  return (
+    <button type="button" onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className={cx("group flex w-full min-h-target items-center gap-3 py-2 text-start text-sm", className)}>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="text-link group-hover:underline leading-snug [overflow-wrap:anywhere]">{title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}</span>
+        {scope && !isGeneral(rule) && <span className="text-xs text-muted-foreground">{scopeTag(rule, data?.ownDocs, { company: data?.company })}</span>}
+      </span>
+      <IconDrillIn size={16} className="shrink-0 text-muted-foreground" />
+    </button>
+  );
+}
+
+/** What a `RulesChip` opens: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
+function RulesListSheet({ ids, name, headId }: { ids: readonly string[]; name?: string; headId: string }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
@@ -656,28 +681,11 @@ function RulesListSheet({ ids, name, data, headId }: { ids: readonly string[]; n
         {name && <p className="text-sm text-muted-foreground">{name}</p>}
       </div>
       <ul className="flex flex-col">
-        {ids.map((id) => {
-          const rule = ruleOf(data, id);
-          const title = rule ? ruleTitle(rule) : null;
-          return (
-            <li key={id} className="border-t border-border">
-              {idKind(id) === "rule" ? (
-                <button type="button" onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className="flex w-full min-h-target items-center gap-3 py-2 text-start text-sm hover:underline">
-                  <span className="min-w-16 shrink-0 text-xs text-link">
-                    <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>
-                  </span>
-                  <span className="flex min-w-0 flex-1 flex-col">
-                    {title && (title.english ? <bdi dir="ltr">{title.text}</bdi> : <span>{title.text}</span>)}
-                    {rule && !isGeneral(rule) && <span className="text-xs text-muted-foreground">{scopeTag(rule, data.ownDocs, { company: data.company })}</span>}
-                  </span>
-                  <IconDrillIn size={16} className="shrink-0 text-muted-foreground" />
-                </button>
-              ) : (
-                <span className="flex min-h-target items-center"><IdRef id={id} /></span>
-              )}
-            </li>
-          );
-        })}
+        {ids.map((id) => (
+          <li key={id} className="border-t border-border">
+            {idKind(id) === "rule" ? <RuleTitleRow id={id} /> : <span className="flex min-h-target items-center"><IdRef id={id} /></span>}
+          </li>
+        ))}
       </ul>
     </div>
   );
@@ -902,7 +910,7 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
     <InsideSheetCtx.Provider value={true}>
       {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} data={data} headId={headId} descId={descId} />}
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
-      {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} data={data} headId={headId} />}
+      {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
@@ -924,7 +932,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
   const key = formulaKeys[id];
   return (
     <div className="flex flex-col gap-3">
-      <h2 id={headId} className="text-lg font-semibold">
+      <h2 id={headId} data-code-ok className="text-lg font-semibold">
         {name} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
       </h2>
       {tex.length > 0 ? (
@@ -1249,7 +1257,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         <>
           <dl className="sheet-dl">
             <Row label={value.computed_from.formula.startsWith("A-") ? copy.idRef.howComputed : copy.computed.formula}>
-              {/* the chip alone: its name is on its own sheet */}
+              {/* the chip says the formula's name; its sheet holds the math */}
               <IdRef id={value.computed_from.formula} />
             </Row>
           </dl>
@@ -1449,7 +1457,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   const record = ruleOf(data, id);
   if (!record) {
     return (
-      <div className="flex flex-col gap-2">
+      <div data-code-ok className="flex flex-col gap-2">
         <h2 id={headId} className="text-lg font-semibold">
           <bdi dir="ltr" className="slashed-zero">{id}</bdi>
         </h2>
@@ -1471,7 +1479,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   };
   const uses = data.ruleUses?.[id];
   return (
-    <div className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
+    // the rule's own card: the one place outside the rules page where its code stands, in the heading "id · title" (D25)
+    <div data-code-ok className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
       <header className="flex flex-col gap-1.5">
         <h2 id={headId} className="text-lg font-semibold leading-snug">
           {open && <>{ruleCopy.open.title} </>}
@@ -1693,7 +1702,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
   const dims = rule.dimensions.filter((d) => data.dimensions[d]);
   const usesSome = !!uses && (uses.pages.length > 0 || uses.engine);
   return (
-    <article className={cx("flex flex-col gap-5 min-w-0 [overflow-wrap:anywhere]", open && "rule-open")}>
+    <article data-code-ok className={cx("flex flex-col gap-5 min-w-0 [overflow-wrap:anywhere]", open && "rule-open")}>
       <p className="text-[13px] text-muted-foreground">
         <bdi dir="ltr" className="tabular-nums slashed-zero">{id}</bdi>
       </p>

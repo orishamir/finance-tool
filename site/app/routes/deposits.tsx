@@ -1,7 +1,8 @@
 // "פיקדונות בכל הבנקים" (D92): every bank's standard shekel deposits side by side, by term, amount and kind of rate, with a chart of the
 // highest rate in each term over the list and a grid of the banks by the eight terms (F-108). Its place on the site (the menu item, the tab beside the companies and the tracks) is `DEPOSITS_PLACE`.
 import { useLoaderData } from "react-router";
-import { depositBrowser as copy, site } from "../copy";
+import { depositBrowser as copy } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { DepositBrowser } from "../components/deposits/browser";
 import { HELP_TERMS, KIND_TERMS } from "../lib/deposit-browser";
 import { CompanyTabs, DEPOSITS_PLACE } from "../components/decoder/company-tabs";
@@ -22,8 +23,8 @@ export async function loader() {
   return { data, rules, pointed: pointedRecords(rules, all), ruleIds: lineIds, terms };
 }
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: copy.lead, location });
 }
 
 export default function Deposits() {

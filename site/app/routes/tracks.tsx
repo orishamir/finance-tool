@@ -3,7 +3,8 @@
 // Every product is one route (`tracks/:product?`): choosing another keeps the page and fetches nothing, as the index page does.
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/tracks";
-import { site, trackBrowser as copy } from "../copy";
+import { pagePreview, trackBrowser as copy } from "../copy";
+import { pageMeta } from "../lib/page-meta";
 import { TrackBrowser } from "../components/tracks/browser";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { NumAfter, NumberLegend, RulesLine, StaleSaid } from "../components/provenance";
@@ -33,8 +34,8 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { data, rules, pointed: pointedRecords(rules, all), ruleIds: lineIds, terms };
 }
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: Route.MetaArgs) {
+  return pageMeta({ title: copy.title, description: pagePreview.tracks, location });
 }
 
 export default function Tracks() {

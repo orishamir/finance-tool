@@ -1,12 +1,11 @@
-// A company page's document entries (D30): what the site found in the company's own documents, each entry a line with its rule's id as a chip
-// (it opens the entry's card) and its title. At the end of each product's part, "מה כתוב במסמכים על {product}"; in the overview, the groups
-// about none of the page's products, under their group names, as "עוד במסמכים של {company}". The rows stand between hairlines, with no box (the designer's mocks). Each entry's line carries the entry's id, so an
-// address `#KH-09` lands on it.
+// A company page's document entries (D30): what the site found in the company's own documents, each entry a line whose title is the link
+// that opens the entry's card (`RuleTitleRow`); the code stays in the card. At the end of each product's part, "מה כתוב במסמכים על {product}"; in the overview, the groups
+// about none of the page's products, under their group names, as "עוד במסמכים של {company}". The rows stand between hairlines, with no box (the designer's mocks). Each entry's line carries the entry's id as its
+// element id, so an address `#KH-09` lands on it.
 import { companyPage as w } from "../../copy";
-import { ruleTitle } from "../../lib/rule-title";
 import type { DocGroup } from "../../lib/company-page";
-import { IdRef, useProvenanceData } from "../provenance";
-import { GroupHead, RowList, Section, cx, gershayim } from "../kit";
+import { RuleTitleRow, useProvenanceData } from "../provenance";
+import { GroupHead, RowList, Section, cx } from "../kit";
 
 const scrollMargin = "scroll-mt-[112px] lg:scroll-mt-[88px]";
 
@@ -16,15 +15,12 @@ function Entries({ ids }: { ids: readonly string[] }) {
   if (shown.length === 0) return null;
   return (
     <RowList plain>
-      {shown.map((id) => {
-        const t = ruleTitle(data!.rules[id]!);
-        return (
-          <li key={id} id={id} className={cx("flex items-center gap-3 px-1 py-1.5 min-h-14 target:bg-accent", scrollMargin)}>
-            <IdRef id={id} className="shrink-0" />
-            <span className="min-w-0 leading-snug [overflow-wrap:anywhere]">{t.english ? <bdi dir="ltr">{t.text}</bdi> : gershayim(t.text)}</span>
-          </li>
-        );
-      })}
+      {shown.map((id) => (
+        <li key={id} id={id} className={cx("px-1 target:bg-accent", scrollMargin)}>
+          {/* the page is the company's: its own name under each term would only repeat the page's */}
+          <RuleTitleRow id={id} scope={false} className="text-base py-2.5" />
+        </li>
+      ))}
     </RowList>
   );
 }

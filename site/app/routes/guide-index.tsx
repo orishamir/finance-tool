@@ -2,6 +2,7 @@
 import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { PageShell } from "../components/shell";
 import { Card, ChipList, cx, gershayim, GroupHead, RowArrow, RowList } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
@@ -51,8 +52,8 @@ interface ExposureItem {
 const exposureOrder = ["shekel-cash", "mutual-funds", "money-market-funds", "makam", "government-bond", "limited-bond-fund"];
 const rank = (key: string) => (exposureOrder.includes(key) ? exposureOrder.indexOf(key) : exposureOrder.length);
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: copy.lede, location });
 }
 
 /** A group's guides: rows of one box on a phone (`RowList`), cards two and three across from `md`. */

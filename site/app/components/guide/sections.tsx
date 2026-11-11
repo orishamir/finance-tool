@@ -124,6 +124,19 @@ export function GuideSection({ id, title, children, className }: { id: string; t
   );
 }
 
+/**
+ * Detail inside a guide section that only a specialist needs (an index maker's entry conditions, a fund's tracking asset): one
+ * closed line in the link colour that names what it holds, and the detail under it once opened. It sits after the text it adds
+ * to, so a glossary term it names for the first time on the page is still the page's first use.
+ */
+export function GuideFold({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <Disclosure label={<span className="text-link">{label}</span>} summaryClassName="justify-start">
+      <div className="flex flex-col gap-3 pb-2">{children}</div>
+    </Disclosure>
+  );
+}
+
 export interface KeyValueItem {
   id: string;
   label: ReactNode;

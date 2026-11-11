@@ -72,7 +72,7 @@ export function ReadingMark({ value }: { value: SiteValue }) {
   return hasReading(value) ? <ReadingTag /> : null;
 }
 
-/** A plain-Hebrew reason first, the code after it in a chip: never the code inside the sentence. */
+/** A plain-Hebrew reason first, then the rule behind it as D48's chip ("חוקים וכללים · 1"): never a code in the line. */
 export function ReasonWithCode({ message, code }: { message: string; code?: string }) {
   const isId = !!code && /^[A-Z]{1,4}-\d+$/.test(code);
   return (

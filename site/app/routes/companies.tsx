@@ -4,7 +4,8 @@
 // company focused is kept on the device for the next visit. Below lg the list is the page and the company opens as a sheet over it.
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
-import { companies as copy, companyFocus as w, site } from "../copy";
+import { companies as copy, companyFocus as w, pagePreview } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { IconSearch } from "../components/icons";
 import { PageShell } from "../components/shell";
 import { CompanyTabs } from "../components/decoder/company-tabs";
@@ -43,8 +44,8 @@ export async function loader() {
   return { focus: data, today: today(), rules, pointed: pointedRecords(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 
-export function meta() {
-  return [{ title: `${copy.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: copy.title, description: pagePreview.companies, location });
 }
 
 /** The last company the person focused, kept on this device. */

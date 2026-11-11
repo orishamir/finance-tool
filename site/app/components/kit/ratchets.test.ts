@@ -36,7 +36,6 @@ const STATGRID: Record<string, number> = {
   };
 /** A fold whose label is a heading, built by hand from Disclosure (`as="h2"` and the like): FoldGroup has the heading and its count. */
 const HEADINGFOLD: Record<string, number> = {
-    "routes/documents.tsx": 1,
   };
 const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
@@ -107,7 +106,6 @@ patterns["a name in a plain bdi"] = {
     "components/guide/sections.tsx": 1,
     "components/tracks/list.tsx": 2,
     "routes/company.tsx": 1,
-    "routes/not-covered.tsx": 1,
     "routes/track.tsx": 2,
   },
 };

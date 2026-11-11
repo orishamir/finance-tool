@@ -2,7 +2,8 @@
 import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
-import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, scopeWords, site } from "../copy";
+import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePreview, scopeWords } from "../copy";
+import { pageMeta } from "../lib/page-meta";
 import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type GlanceItem, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { IdRef, Num, NumberLegend, ReadingTag, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { PageShell } from "../components/shell";
@@ -42,8 +43,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds, feePage: feePageAnswers(compareBundle(), params.id) };
 }
 
-export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.name ? gershayim(data.name) : guideIndex.title} · ${site.name}` }];
+export function meta({ loaderData: data, location }: Route.MetaArgs) {
+  const name = data?.name ? gershayim(data.name) : guideIndex.title;
+  return pageMeta({ title: name, description: data?.lede ?? pagePreview.guide(name), location });
 }
 
 export default function GuidePage() {

@@ -6,7 +6,8 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
-import { brands, invest as c, site } from "../copy";
+import { brands, invest as c } from "../copy";
+import { pageMeta } from "../lib/page-meta";
 import { OtherAssumptions, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
@@ -69,10 +70,10 @@ const exposureIdOf = (slug: string | undefined, indices: readonly { id: string }
   return id && indices.some((i) => i.id === id) ? id : null;
 };
 
-export function meta({ loaderData: data, params }: Route.MetaArgs) {
+export function meta({ loaderData: data, params, location }: Route.MetaArgs) {
   const id = data ? exposureIdOf(params.slug, data.indices) : null;
   const name = id ? data?.indices.find((i) => i.id === id)?.name : null;
-  return [{ title: `${c.metaTitle}${name ? ` · ${name}` : ""} · ${site.name}` }];
+  return pageMeta({ title: `${c.metaTitle}${name ? ` · ${name}` : ""}`, description: c.sub, location });
 }
 
 type Data = Awaited<ReturnType<typeof loader>>;

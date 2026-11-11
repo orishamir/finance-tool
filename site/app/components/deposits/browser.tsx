@@ -6,7 +6,7 @@ import { useMemo, useState, useSyncExternalStore } from "react";
 import { depositBrowser as t } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
 import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
-import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, TERMS, interestOn, interestText, isLinked, offersOf, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
+import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
 import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
@@ -15,8 +15,6 @@ import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
 import { DepositList, FoldFoot, type ListContext, type ListRow } from "./list";
 
-/** The term the page opens on: a year, the plain deposit most guides speak of. */
-const START_TERM: TermId = "y1";
 /** The rows shown before "עוד N הצעות": eight on a computer, six on a phone. */
 const SHOWN = { table: 8, phone: 6 } as const;
 const WIDE = "(min-width: 48rem)";
@@ -43,7 +41,8 @@ export function DepositBrowser({ data }: { data: DbData }) {
   const amountParam = sp.get("amount");
   // any whole amount the reader types; "none" while the field is empty
   const amount: number | null = amountParam === "none" ? null : amountParam && /^\d+$/.test(amountParam) && Number(amountParam) > 0 ? Number(amountParam) : data.start;
-  const kind: RateKind = sp.get("kind") === "variable" ? "variable" : "fixed";
+  const kindParam = sp.get("kind");
+  const kind: RateKind = kindParam === "variable" || kindParam === "fixed" ? kindParam : START_KIND;
   const withConditional = sp.get("conditional") !== "0";
   const withLinked = sp.get("linked") === "1";
   const bankParam = sp.get("bank");
@@ -51,7 +50,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
   const sort: SortState = sortFromParams(sp, SORT_IDS) ?? DEFAULT_SORT;
   const setTerm = (x: TermId) => update({ term: x === START_TERM ? null : x });
   const setAmount = (n: number | null) => update({ amount: n === null ? "none" : n === data.start ? null : String(n) });
-  const setKind = (k: RateKind) => update({ kind: k === "fixed" ? null : k });
+  const setKind = (k: RateKind) => update({ kind: k === START_KIND ? null : k });
   const setSort = (s: SortState) => update(sortParams(s, DEFAULT_SORT));
   const [expanded, setExpanded] = useState(false);
   const [lit, setLit] = useState<string | null>(null);

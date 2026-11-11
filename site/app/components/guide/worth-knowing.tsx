@@ -1,5 +1,5 @@
 // "שווה לדעת" (synthesis 3.7): two or three pinned facts per wrapper guide page, each the rule's Hebrew title,
-// its first figure, the rule chip and the weak-strength tag, as cards side by side with the figure as the card's headline.
+// its first figure, D48's chip ("חוקים וכללים · 1", which opens the rule's card) and the weak-strength tag, as cards side by side with the figure as the card's headline.
 // Nothing renders when no row can be shown.
 //
 // current-account page: a row can also be a fact computed from the published records, not a rule

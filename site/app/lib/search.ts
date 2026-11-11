@@ -1,7 +1,7 @@
 // The search (architecture 3.5; design in 8dd1f013:research/knowledge/2026-10-24-search.md, scope in the synthesis 3.6).
 // Pure functions, no I/O: the index is a list of entries built at build time (routes/search-index.ts), the second file
 // (routes/search-texts.ts) holds the raw texts of rules, terms and parameters and only re-ranks and answers questions.
-import { aliasRows, wordFamilies } from "./search-aliases";
+import { aliasRows, sectionTopicWords, wordFamilies, type GuideTopic } from "./search-aliases";
 import { parseNumber } from "./format";
 
 // ------------------------------------------------------------------------------------------------ normalisation
@@ -99,7 +99,8 @@ export function highlightRanges(name: string, query: string): [number, number][]
 
 // ------------------------------------------------------------------------------------------------ entries
 
-export type SearchKind = "product" | "track" | "term" | "guide" | "bank" | "company" | "notcovered" | "rule" | "companyRule" | "parameter" | "document";
+/** `section` (a part of a guide) and `compare` (a page that compares one product across providers) are found only through a product named in the query. */
+export type SearchKind = "product" | "track" | "term" | "guide" | "bank" | "company" | "notcovered" | "rule" | "companyRule" | "parameter" | "document" | "section" | "compare";
 
 /** A rule of either group (D30, spec 2026-10-25-rules-scope §4): "rule" holds the general ones, "companyRule" the companies' own terms and the unsettled ones. */
 export const isRuleKind = (kind: SearchKind) => kind === "rule" || kind === "companyRule";
@@ -130,6 +131,8 @@ export interface SearchEntry {
   st?: number;
   /** Hook for the rule-uses score (higher first inside the rules group); absent today. */
   rank?: number;
+  /** A section or a comparison page: the address of the guide it belongs to. A section's `key` holds the topics it answers, by spaces. */
+  of?: string;
 }
 
 /** The texts file: raw Hebrew by record key. */
@@ -144,10 +147,12 @@ export interface SearchHit {
   fig?: SearchFig;
   /** True when the match is in the record's text, not its title: the row shows a snippet. */
   viaText?: boolean;
+  /** The group the row shows in, when not its own kind's (a guide's section and its comparison page sit with the guide). */
+  group?: SearchKind;
 }
 
 /** Which kind comes first when two entries match equally well: pages that explain, then rules and parameters, then names, then the catalogue. */
-export const kindRank: Record<SearchKind, number> = { guide: 0, term: 1, rule: 2, companyRule: 2.5, parameter: 3, document: 4, notcovered: 5, company: 6, product: 7, bank: 8, track: 9 };
+export const kindRank: Record<SearchKind, number> = { section: 0, guide: 0, compare: 0, term: 1, rule: 2, companyRule: 2.5, parameter: 3, document: 4, notcovered: 5, company: 6, product: 7, bank: 8, track: 9 };
 
 /**
  * The numeric figures of a rule for the index: the `value` of every value object under `figures` (bracket tables and
@@ -510,6 +515,7 @@ interface Scored {
 }
 
 function scoreFull(entry: SearchEntry, a: Analysis, docs: Map<string, TextDoc> | null): Scored | null {
+  if (entry.kind === "section" || entry.kind === "compare") return null;
   const isRule = isRuleKind(entry.kind);
   // numbers: a rule answers only through its figures; every other kind keeps today's number matching (ids, names)
   if (a.type === "number" && a.num) {
@@ -608,7 +614,11 @@ export function searchEntries(index: SearchEntry[], q: string, texts?: SearchTex
       prev.also.push(entry.name);
     }
   }
-  // a claim of two words or more: the rules come in the order of `claimHits`, one search across the site
+  return oneRowEach(leadRows(index, a, withClaims(index, texts, q, a, hits)));
+}
+
+/** A claim of two words or more: the rules come in the order of `claimHits`, one search across the site. */
+function withClaims(index: SearchEntry[], texts: SearchTexts | null | undefined, q: string, a: Analysis, hits: SearchHit[]): SearchHit[] {
   if (a.type === "number" || isRuleIdShape(a.q) || a.content.length < 2) return hits;
   const claimed = claimHits(index, texts, q);
   const first = hits.findIndex((h) => isRuleKind(h.entry.kind));
@@ -620,15 +630,156 @@ export function searchEntries(index: SearchEntry[], q: string, texts?: SearchTex
   return [...rest.slice(0, at), ...claimed.map((h) => ({ ...h, score })), ...rest.slice(at)];
 }
 
+/**
+ * Two rows that would show the same name and the same line are one: the first stays (two terms of one page, named alike). Two rules or
+ * parameters stay two by their ids, though their lines no longer print them.
+ */
+function oneRowEach(hits: SearchHit[]): SearchHit[] {
+  const seen = new Set<string>();
+  return hits.filter((h) => {
+    const id = isRuleKind(h.entry.kind) || h.entry.kind === "parameter" ? h.entry.key ?? "" : "";
+    const key = `${h.group ?? h.entry.kind}|${h.entry.name}|${h.entry.line}|${id}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 /** The hits grouped by kind, groups in the order their best hit appears. */
 export function groupHits(hits: SearchHit[]): { kind: SearchKind; items: SearchHit[] }[] {
   const groups: { kind: SearchKind; items: SearchHit[] }[] = [];
   for (const h of hits) {
-    let g = groups.find((x) => x.kind === h.entry.kind);
-    if (!g) groups.push((g = { kind: h.entry.kind, items: [] }));
+    const kind = h.group ?? h.entry.kind;
+    let g = groups.find((x) => x.kind === kind);
+    if (!g) groups.push((g = { kind, items: [] }));
     g.items.push(h);
   }
   return groups;
+}
+
+// ------------------------------------------------------------------------------------------------ the guide first
+
+/** Names too plain to say which product a question is about: "חיסכון" is a savings plan's name in its app, and a word of every question. */
+const tooPlain = new Set(N(["חיסכון", "ממשלתית"]));
+
+/**
+ * One word of a query read as one word of a name: the same, or the same after a prefix or a light suffix comes off the query's word
+ * (בקרן, קרנות); two long words also when they share a stem (כספיות, כספית). A short word never reads as a longer one ("כסף" is not "כספית").
+ */
+const wordIs = (t: string, w: string) => t === w || (HEB.test(w) && (forms(t).includes(w) || (Math.min(t.length, w.length) >= 5 && sameWord(t, w))));
+
+interface GuideName {
+  words: string[];
+  guides: string[];
+}
+interface GuideTable {
+  names: GuideName[];
+  sections: SearchEntry[];
+  compares: SearchEntry[];
+  /** A guide's first row in the index: its own name, the page's title. */
+  first: Map<string, SearchEntry>;
+}
+const guideTables = new WeakMap<SearchEntry[], GuideTable>();
+/** Every name a guide page is known by, and the alias table's names that stand for one, as words with the guides each names. */
+function guideTable(index: SearchEntry[]): GuideTable {
+  let t = guideTables.get(index);
+  if (t) return t;
+  const byName = new Map<string, Set<string>>();
+  const add = (norm: string, href: string) => {
+    const words = tokenize(norm);
+    if (words.length === 0 || (words.length === 1 && tooPlain.has(words[0]!))) return;
+    const k = words.join(" ");
+    const set = byName.get(k) ?? new Set<string>();
+    set.add(href);
+    byName.set(k, set);
+  };
+  const first = new Map<string, SearchEntry>();
+  for (const e of index) {
+    if (e.kind !== "guide" || !e.href.startsWith("/guide/") || e.href.includes("#")) continue;
+    add(e.norm, e.href);
+    if (!first.has(e.href)) first.set(e.href, e);
+  }
+  const named = new Map([...byName].map(([k, set]) => [k, [...set]]));
+  for (const row of aliasRows) {
+    const guides = [...new Set(row.to.flatMap((to) => named.get(tokenize(normalize(to)).join(" ")) ?? []))];
+    for (const f of row.from) for (const g of guides) add(normalize(f), g);
+  }
+  t = {
+    names: [...byName].map(([k, set]) => ({ words: k.split(" "), guides: [...set] })),
+    sections: index.filter((e) => e.kind === "section"),
+    compares: index.filter((e) => e.kind === "compare"),
+    first,
+  };
+  guideTables.set(index, t);
+  return t;
+}
+
+interface Span {
+  at: number;
+  len: number;
+  guides: string[];
+}
+/** The products a query names, in the order it names them: the longest name at each place ("קרן השתלמות בניהול אישי" before "קרן השתלמות"). */
+export function namedGuides(index: SearchEntry[], toks: string[]): Span[] {
+  const found: Span[] = [];
+  for (const n of guideTable(index).names) {
+    const L = n.words.length;
+    for (let i = 0; i + L <= toks.length; i++) if (n.words.every((w, j) => wordIs(toks[i + j]!, w))) found.push({ at: i, len: L, guides: n.guides });
+  }
+  found.sort((x, y) => y.len - x.len || x.at - y.at);
+  const taken: Span[] = [];
+  for (const c of found) {
+    const same = taken.find((t) => t.at === c.at && t.len === c.len);
+    if (same) same.guides = [...new Set([...same.guides, ...c.guides])];
+    else if (!taken.some((t) => c.at < t.at + t.len && t.at < c.at + c.len)) taken.push({ ...c });
+  }
+  return taken.sort((x, y) => x.at - y.at);
+}
+
+const topicMemo = sectionTopicWords.map(({ topic, words }) => ({ topic, words: words.map((w) => tokenize(normalize(w))) }));
+/** The parts of a guide the words outside the product's name ask about, in the order the query says them. */
+export function askedTopics(toks: string[], free: (i: number) => boolean): GuideTopic[] {
+  const at: { topic: GuideTopic; i: number }[] = [];
+  for (const { topic, words } of topicMemo) {
+    let best = Infinity;
+    for (const w of words) for (let i = 0; i + w.length <= toks.length && i < best; i++) if (w.every((x, j) => free(i + j) && wordIs(toks[i + j]!, x))) best = i;
+    if (best < Infinity) at.push({ topic, i: best });
+  }
+  return at.sort((x, y) => x.i - y.i).map((x) => x.topic);
+}
+
+/**
+ * A query of two words or more that names a product with a guide leads with that guide (two products: both): first the part of the guide
+ * the rest of the question asks about, then the guide, then the page that compares the product across providers; the other results follow
+ * as they were. It leads when the query is a question, asks about a part of the guide, names two products, or is the name alone; a name with
+ * more in it ("קרן השתלמות מנורה מניות") keeps its own order.
+ */
+function leadRows(index: SearchEntry[], a: Analysis, hits: SearchHit[]): SearchHit[] {
+  if (a.type === "number") return hits;
+  const toks = tokenize(a.q);
+  if (toks.length < 2) return hits;
+  const spans = namedGuides(index, toks);
+  if (spans.length === 0) return hits;
+  const free = (i: number) => !spans.some((s) => i >= s.at && i < s.at + s.len);
+  const topics = askedTopics(toks, free);
+  const nameAlone = toks.every((t, i) => !free(i) || isFiller(t));
+  if (a.type !== "question" && topics.length === 0 && spans.length < 2 && !nameAlone) return hits;
+  const guides = [...new Set(spans.flatMap((s) => s.guides))].slice(0, 3);
+  const table = guideTable(index);
+  const score = (hits[0]?.score ?? 0) - 1;
+  const rows: SearchHit[] = [];
+  for (const topic of topics) for (const g of guides) {
+    const e = table.sections.find((x) => x.of === g && (x.key ?? "").split(" ").includes(topic));
+    if (e && rows.length < 4 && !rows.some((r) => r.entry.href === e.href)) rows.push({ entry: e, score, also: [], group: "guide" });
+  }
+  for (const g of guides) {
+    const own = hits.find((h) => h.entry.kind === "guide" && h.entry.href === g);
+    const entry = own?.entry ?? table.first.get(g);
+    if (entry) rows.push({ ...(own ?? { also: [] }), entry, score });
+  }
+  for (const g of guides) for (const e of table.compares) if (e.of === g && !rows.some((r) => r.entry.href === e.href)) rows.push({ entry: e, score, also: [], group: "guide" });
+  const shown = new Set(rows.map((r) => r.entry.href));
+  return [...rows, ...hits.filter((h) => !shown.has(h.entry.href))];
 }
 
 // ------------------------------------------------------------------------------------------------ empty states

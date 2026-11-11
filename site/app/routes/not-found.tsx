@@ -1,10 +1,11 @@
 // Page not found (copy 4).
 import { Link } from "react-router";
-import { site, system } from "../copy";
+import { pagePreview, system } from "../copy";
+import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { PageShell, useOpenSearch } from "../components/shell";
 
-export function meta() {
-  return [{ title: `${system.notFound.title} · ${site.name}` }];
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: system.notFound.title, description: pagePreview.notFound, location });
 }
 
 export default function NotFound() {
