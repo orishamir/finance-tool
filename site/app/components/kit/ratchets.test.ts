@@ -40,6 +40,7 @@ const HEADINGFOLD: Record<string, number> = {
 const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
     "components/provenance.tsx": 1,
+    "components/provenance-sheets.tsx": 1,
   };
 
 const patterns: Record<string, { kit: string; count: (s: string) => number; allowed: Record<string, number> }> = {
@@ -85,7 +86,7 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
 patterns["a row of rule chips"] = {
   count: (s) => (s.match(/\.map\(\([^)]*\)\s*=>\s*\(?\s*(?:<span key=\{\w+\}>\s*)?<RuleRef\b/g) ?? []).length,
   kit: "RulesLine or RulesChip (provenance.tsx)",
-  allowed: { "components/provenance.tsx": 4, "routes/exposure.tsx": 2 },
+  allowed: { "components/provenance-sheets.tsx": 4, "routes/exposure.tsx": 2 },
 };
 
 // a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
@@ -118,7 +119,7 @@ patterns["a button styled by hand as a link"] = {
   kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
   allowed: {
     "components/invest/stairs.tsx": 1,
-    "components/search.tsx": 2,
+    "components/search-results.tsx": 2,
     "root.tsx": 1,
     "routes/not-found.tsx": 1,
   },

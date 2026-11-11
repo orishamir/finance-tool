@@ -9,7 +9,8 @@ import { loadDepositTerms } from "../../../lib/instruments.server";
 import { numbers, r4catalogue, strength } from "../../../copy";
 import { depositKindRules, depositLabels, exitWords, printedQuotes } from "../../../lib/deposit-kind";
 import { loadRules } from "../../../lib/data.server";
-import { ProvenanceProvider, ValueSheet, openQuestionOf } from "../../provenance";
+import { ProvenanceProvider, openQuestionOf } from "../../provenance";
+import { ValueSheet } from "../../provenance-sheets";
 import { BankProductRow } from "./product-row";
 
 const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-06" };

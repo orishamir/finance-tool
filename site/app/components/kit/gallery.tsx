@@ -1,6 +1,6 @@
 // The gallery at /kit: every component of the kit in its states, with its name beside it. A page for builders and for reviewing the look
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router";
 import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LinkLine, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -975,7 +975,6 @@ function ChartParts({ today }: { today: string }) {
             { id: "c", swatch: <Swatch shape="entered-line" className="stroke-chart-entered" />, label: <bdi>{g.sample.seriesC}</bdi> },
             { id: "d", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: g.sample.today },
             { id: "e", swatch: <Swatch shape="dotted-line" className="stroke-chart-baseline" />, label: g.sample.baselineDots },
-            { id: "f", swatch: <Swatch shape="cut" className="text-chart-by-account" />, label: g.sample.cutEnd },
             { id: "note", label: g.sample.note },
           ]}
         />
@@ -1124,19 +1123,121 @@ function sampleClaims(today: string): AdvertisingEntry[] {
   ];
 }
 
-/** Two short lists side by side, each with its pick, and the line between the two chosen rows. */
-function LinkedLists() {
+/** Two short lists either side of a ruler: an account is a stretch of it, a fund a spot in the chosen account's stretch (made-up figures). */
+function StretchDemo() {
   const p = g.sample.products;
-  const [a, setA] = useState("a");
-  const [b, setB] = useState("c");
-  const row = (key: string, name: string, figure: string, on: string, set: (k: string) => void) => ({ key, selected: key === on, onSelect: () => set(key), cells: <><span className="text-sm font-medium">{name}</span><span className="tabular-nums text-sm font-semibold">{figure}</span></> });
+  const w = g.sample.stretch;
+  const scale = { lo: 60_000, hi: 90_000 };
+  const accounts = { a: { best: 86_492, worst: 80_000 }, b: { best: 84_824, worst: 70_000 }, c: { best: 83_141, worst: 62_000 } } as const;
+  const fundsAt: Record<string, Record<string, number>> = { a: { d: 86_492, e: 85_130, f: 80_000 }, b: { d: 84_824, e: 78_000, f: 70_000 }, c: { d: 83_141, e: 74_000, f: 62_000 } };
+  const names: Record<string, string> = { a: p.a, b: p.b, c: p.c, d: p.c, e: p.a, f: p.b };
+  const [a, setA] = useState<keyof typeof accounts>("a");
+  const [f, setF] = useState("d");
+  const ticket = useRef<HTMLDivElement>(null);
+  const at = fundsAt[a]!;
+  const nis = (v: number) => `${v.toLocaleString("en-US")} ₪`;
+  const accountRows = (Object.keys(accounts) as (keyof typeof accounts)[]).map((k) => ({
+    key: k,
+    selected: k === a,
+    onSelect: () => setA(k),
+    cells: (
+      <>
+        <span className="text-sm font-medium">{names[k]}</span>
+        <span className="text-xs text-muted-foreground tabular-nums">{k === a ? w.chosen : `${w.upTo} ${nis(accounts[k].best)}`}</span>
+        <StretchBar scale={scale} best={accounts[k].best} worst={accounts[k].worst} />
+      </>
+    ),
+  }));
+  const fundRows = Object.keys(at).map((k) => ({
+    key: k,
+    selected: k === f,
+    onSelect: () => setF(k),
+    cells: (
+      <>
+        <span data-spot-dot="" aria-hidden="true" className={cx("size-[7px] rounded-full ring-[1.5px] ring-inset ring-chart-by-fund", k === f && "bg-chart-by-fund")} />
+        <span className="text-sm font-medium">{names[k]}</span>
+        <span className="text-xs text-muted-foreground tabular-nums">{k === f ? w.chosen : `${w.less} ${nis(at[f]! - at[k]!)}`}</span>
+      </>
+    ),
+  }));
   return (
-    <div className="@container">
-      <div className="relative grid gap-5 @min-[30rem]:grid-cols-2 @min-[30rem]:gap-7">
-        <PickList look="outlined" even label={p.name} columns="minmax(0,1fr) auto" rows={[row("a", p.a, "86,492", a, setA), row("b", p.b, "84,824", a, setA)]} />
-        <PickList look="outlined" even label={p.name} columns="minmax(0,1fr) auto" rows={[row("c", p.c, "86,492", b, setB), row("d", p.a, "85,130", b, setB), row("e", p.b, "83,907", b, setB)]} />
-        <LinkLine watch={`${a}|${b}`} className="hidden text-primary @min-[30rem]:block" />
+    <div className="flex flex-col gap-5">
+      <div ref={ticket} className="mx-auto rounded-xl bg-popover px-5 py-3 text-center text-figure font-semibold text-primary tabular-nums">{nis(at[f]!)}</div>
+      <StretchChart
+        startHead={<p className="text-sm font-semibold">{w.accounts}</p>}
+        startList={<PickList look="line" tone="account" anchor="demo-accounts" label={w.accounts} columns="minmax(0,1fr) auto auto" rows={accountRows} />}
+        endHead={<p className="text-sm font-semibold">{w.funds}</p>}
+        endList={<PickList look="line" tone="fund" anchor="demo-funds" label={w.funds} columns="auto minmax(0,1fr) auto" rows={fundRows} />}
+        startAnchor="demo-accounts"
+        endAnchor="demo-funds"
+        scale={scale}
+        band={accounts[a]}
+        point={at[f]!}
+        spots={at}
+        chosenStart={a}
+        chosenEnd={f}
+        above={ticket}
+        tick={fmt.compactNisAxis}
+        watch={`${a}|${f}`}
+      />
+    </div>
+  );
+}
+
+/** The receipt as a ticket across a wide column: the account's part, the middle with the total, the fund's part, and a row under them. */
+function TicketDemo() {
+  const r = g.sample.receipt;
+  return (
+    <ReceiptTicket
+      label={r.title}
+      top={
+        <>
+          <span>{r.title}</span>
+          <span>{g.sample.stretch.years}</span>
+        </>
+      }
+      start={
+        <TicketPart label={g.sample.tile.account} swatch="bg-chart-by-account" name={g.sample.tile.name}>
+          <ReceiptLine size="sm" edge="border-chart-by-account" label={r.accountLine} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={r.accountLine} value="−1,200 ₪" sub={r.rate} />} />
+        </TicketPart>
+      }
+      middle={
+        <>
+          <div className="flex flex-col gap-2.5 text-sm">
+            <ReceiptLine size="sm" label={r.paid} value="100,000 ₪" />
+            <ReceiptLine size="sm" label={r.added} value="+40,000 ₪" />
+            <ReceiptLine size="sm" swatch="bg-chart-tax" label={r.tax} value="−9,000 ₪" />
+          </div>
+          <ReceiptRule kind="double" />
+          <div className="flex flex-col items-center text-center">
+            <span className="text-base font-semibold">{r.left}</span>
+            <span className="text-total font-semibold text-primary tabular-nums">129,500 ₪</span>
+          </div>
+        </>
+      }
+      end={
+        <TicketPart label={g.sample.tile.fund} swatch="bg-chart-by-fund" name={r.fund}>
+          <ReceiptLine size="sm" edge="border-chart-by-fund" label={r.fundFee} value="−300 ₪" parts={<ReceiptLine size="sm" label={r.fundFee} value="0.2%" />} />
+        </TicketPart>
+      }
+      foot={[<ReceiptLine key="g" strong label={r.gain} value="+29,500 ₪" />, <ReceiptLine key="l" strong label={r.bar} value="10,500 ₪" />, <ShareBar key="b" label={r.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 86, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 11, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 3, className: "bg-chart-by-fund" }]} />]}
+    />
+  );
+}
+
+/** The receipt's stub, drawn in place; a tap scrolls to the receipt above it. */
+function StubDemo() {
+  const r = g.sample.receipt;
+  const target = useRef<HTMLDivElement>(null);
+  const area = useRef<HTMLDivElement>(null);
+  return (
+    <div ref={area} className="flex max-w-sm flex-col gap-4">
+      <div ref={target} tabIndex={-1} className="outline-none">
+        <ReceiptPaper label={r.title}>
+          <ReceiptLine label={r.left} value="129,500 ₪" strong />
+        </ReceiptPaper>
       </div>
+      <ReceiptStub inline names={r.stubNames} label={r.left} figure="129,500 ₪" go={investWords.receipt.toReceipt} target={target} area={area} />
     </div>
   );
 }
@@ -1506,28 +1607,36 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="ShareBar" use={g.uses.ShareBar}>
-        <State label="the parts wide enough write their name and share inside; the narrow one goes in the key above the bar" wide>
-          <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 83, className: "bg-chart-tax", lightInk: true }, { id: "a", name: g.sample.tile.account, share: 15, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 2, className: "bg-chart-by-fund" }]} />
+        <State label="every part in the key above the bar, in the bar's order, with its share" wide>
+          <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 83, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 15, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 2, className: "bg-chart-by-fund" }]} />
         </State>
-        <State label="narrow: everything but the widest part in the key">
+        <State label="narrow, and a part that took under half a percent: it stays in the key with its words, and is not drawn">
           <div className="w-60">
-            <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 60, className: "bg-chart-tax", lightInk: true }, { id: "a", name: g.sample.tile.account, share: 30, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 10, className: "bg-chart-by-fund" }]} />
+            <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 70, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 30, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 0, className: "bg-chart-by-fund", words: investWords.receipt.underOne }]} />
           </div>
         </State>
       </Demo>
-      <Demo name="ReceiptPaper, ReceiptLine, ReceiptRule" use={g.uses.Receipt}>
+      <Demo name="ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptTicket, TicketPart, ReceiptStub" use={g.uses.Receipt}>
         <State label="lines with leaders, a line's parts behind its colour, the double rule before the total, the dashed one after">
           <ReceiptPaper className="max-w-sm" label={g.sample.receipt.title}>
             <ReceiptLine label={g.sample.receipt.paid} value="100,000 ₪" />
             <ReceiptLine label={g.sample.receipt.added} value="+40,000 ₪" />
             <ReceiptLine swatch="bg-chart-tax" label={g.sample.receipt.tax} value="−9,000 ₪" />
             <ReceiptLine swatch="bg-chart-by-account" edge="border-chart-by-account" label={g.sample.receipt.account} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.accountLine} value="−1,200 ₪" sub={g.sample.receipt.rate} />} />
-            <ReceiptLine swatch="bg-chart-by-fund" label={g.sample.receipt.fund} value="−300 ₪" sub={g.sample.receipt.fundFees} />
+            <ReceiptLine swatch="bg-chart-by-fund" edge="border-chart-by-fund" label={g.sample.receipt.fund} value="−300 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.fundFee} value="0.2%" />} />
             <ReceiptRule kind="double" />
             <ReceiptLine label={g.sample.receipt.left} value={<span className="text-figure font-semibold text-primary">129,500 ₪</span>} strong />
             <ReceiptRule kind="dashed" />
             <ReceiptLine size="sm" label={g.sample.receipt.gain} value="+29,500 ₪" />
           </ReceiptPaper>
+        </State>
+        <State label="the ticket (ReceiptTicket): the same lines across a wide column, the account's part and the fund's either side of the total, notches where the middle's dashed edges meet the ticket's; it stands only from 1280 px, and the gallery shows it only there" wide>
+          <div className="max-xl:hidden">
+            <TicketDemo />
+          </div>
+        </State>
+        <State label="the stub (ReceiptStub), drawn in place here: on the page it is pinned to the screen's foot while the receipt is above the screen, and a tap leads back up to it">
+          <StubDemo />
         </State>
       </Demo>
       <Demo name="FactTile, TileJoin" use={g.uses.FactTile}>
@@ -1576,13 +1685,6 @@ function Lists({ today }: { today: string }) {
         </State>
         <State label="pointing or tapping a part shows its name, amount, share and where its price comes from; changing the prices makes every part and figure glide, and a part that falls to zero shrinks to nothing in its place" wide>
           <CostStackDemo />
-        </State>
-        <State label="list rows on a track (track): a thin zero line at the start, the parts square there and rounded at the far end, the last past the scale cut, ending in a stub hatched in its last part's colour" wide>
-          <div className="flex flex-col gap-3">
-            <CostStack track size="sm" label="1,173" scale={12000} parts={[{ id: "u", value: 116, className: "bg-chart-by-fund", ink: "text-chart-by-fund" }, { id: "a", value: 1057, className: "bg-chart-by-account", ink: "text-chart-by-account" }]} />
-            <CostStack track size="sm" label="7,232" scale={12000} parts={[{ id: "u", value: 116, className: "bg-chart-by-fund", ink: "text-chart-by-fund" }, { id: "a", value: 7116, className: "bg-chart-by-account", ink: "text-chart-by-account" }]} />
-            <CostStack track size="sm" label="23,906" scale={12000} parts={[{ id: "u", value: 116, className: "bg-chart-by-fund", ink: "text-chart-by-fund" }, { id: "a", value: 23790, className: "bg-chart-by-account", ink: "text-chart-by-account" }]} />
-          </div>
         </State>
         <State label="list rows (sm), the last past the scale: drawn to the edge with a break" wide>
           <div className="flex flex-col gap-2">
@@ -1634,26 +1736,18 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
-      <Demo name="PickList (outlined, even)" use={g.uses.PickList}>
-        <State label="short rows of one shape: the chosen one tinted and outlined, every row held at the tallest (a name on two lines), a quiet heading over a group" wide>
-          <div className="max-w-sm">
-            <PickList
-              look="outlined"
-              even
-              label={p.name}
-              columns="minmax(0,1fr) auto"
-              rows={[
-                { key: "a", selected: true, onSelect: () => {}, cells: <><span className="flex flex-col"><span className="text-sm font-semibold">{p.a}</span><span className="text-xs text-muted-foreground">{p.b}</span></span><span className="tabular-nums text-sm font-semibold">86,492</span></> },
-                { key: "b", selected: false, onSelect: () => {}, cells: <><span className="flex flex-col"><span className="text-sm font-medium">{p.b} {p.c} {p.a} {p.b}</span><span className="text-xs text-muted-foreground">{p.c}</span></span><span className="tabular-nums text-sm font-semibold">84,824</span></> },
-                { key: "c", heading: <span className="text-caution-foreground">{p.c}</span>, selected: false, muted: true, onSelect: () => {}, cells: <><span className="flex flex-col"><span className="text-sm font-medium">{p.c}</span><span className="text-xs">{p.a}</span></span><span className="text-sm">—</span></> },
-              ]}
-            />
+      <Demo name="StretchChart, StretchBar, PickList (line)" use={g.uses.Stretch}>
+        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
+          <div className="max-xl:hidden">
+            <StretchDemo />
           </div>
         </State>
-      </Demo>
-      <Demo name="LinkLine" use={g.uses.LinkLine}>
-        <State label="the chosen rows of two lists side by side, joined across the gap and bent where they stand at different heights; a pick in either list moves it, and the lists one above the other hide it" wide>
-          <LinkedLists />
+        <State label="the small ruler beside a row: an account's stretch on the list's one scale, and a fund's spot in it">
+          <div className="flex items-center gap-4">
+            <StretchBar scale={{ lo: 60_000, hi: 90_000 }} best={86_492} worst={80_000} />
+            <StretchBar scale={{ lo: 60_000, hi: 90_000 }} best={84_824} worst={62_000} className="h-8" spot={70_000} />
+            <StretchBar scale={{ lo: 60_000, hi: 90_000 }} best={84_824} worst={62_000} className="h-8" spot={[66_000, 78_000]} />
+          </div>
         </State>
       </Demo>
       <Demo name="PickList (groups)" use={g.uses.PickList}>
@@ -1723,19 +1817,6 @@ function Lists({ today }: { today: string }) {
                 </>
               ),
             }))}
-          />
-        </State>
-      </Demo>
-      <Demo name="PickList (states)" use={g.uses.PickList}>
-        <State label="states and cases: the second row turns long in the other state, and the list holds that state's height, so nothing below it moves when it comes; every state is measured from its cases, the one shown included, and a mark (a tag on one row at a time) counts on one row only" wide>
-          <PickList
-            label={p.name}
-            columns="minmax(0,1fr) auto"
-            states={[{ a: "short", b: "short" }, { a: "short", b: "long" }]}
-            rows={[
-              { key: "a", selected: true, onSelect: () => {}, caseKey: "short", cells: <><span>{p.a}</span><span className="tabular-nums">78,943</span></>, cases: [{ key: "short", cells: <><span>{p.a}</span><span>—</span></> }, { key: "short", marks: ["star"], cells: <><span className="flex flex-col"><span>{p.a}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }] },
-              { key: "b", selected: false, onSelect: () => {}, caseKey: "short", cells: <><span>{p.b}</span><span className="tabular-nums">76,322</span></>, cases: [{ key: "short", cells: <><span>{p.b}</span><span>—</span></> }, { key: "short", marks: ["star"], cells: <><span className="flex flex-col"><span>{p.b}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }, { key: "long", cells: <><span className="flex flex-col"><span>{p.b}</span><span className="text-xs">{p.c}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }] },
-            ]}
           />
         </State>
       </Demo>

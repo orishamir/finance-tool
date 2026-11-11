@@ -8,7 +8,6 @@ import { fmt } from "../../lib/format";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { allFunds, crowned, ownBankHelp, pairVerdict, pickOfHeadline, tieCount, tieFunds } from "./pair";
 import { ChosenPair } from "./chosen";
-import { listName } from "./lists";
 import { Terms } from "./custom-entries";
 import { bundle, t, plan, shown, fundRow, html, lists, DollarFor, ReceiptAndFees } from "./render-fixtures";
 
@@ -159,15 +158,17 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     // no list row carries the star: it is said once, in the tile
     expect(shown(lists(sp, bundle, base, head))).not.toContain(invest.pair.cheapestTag);
   });
-  it("a pick of another fund moves nothing below the lists: each account row carries the grey states it takes with the other funds; the fold holds the rows of every account's order (pick-list-hold)", () => {
-    const out = lists(sp, bundle, base, head);
-    const abroad = allFunds(sp).find((f) => f.option === "abroad" && f.best && !("valueN" in (f.byHouse.psagot ?? {})))!;
-    expect(abroad).toBeDefined();
-    expect(out).toMatch(/data-case-of="psagot" data-case="grey\|/);
-    // no row is marked as one the fold never shows: the fold reads every account's order instead (fourth pass: a row so marked stood
-    // in the fold the page opened with, and the first pick after a link moved what lies below by 233 px)
-    expect(out).toContain('data-pick-key="us-voo"');
-    expect(out).not.toContain("data-cannot");
+  it("a pick of another fund changes nothing in the accounts list but which row is chosen: each account's stretch is over all its funds (D104)", () => {
+    const accounts = (out: string) => out.slice(out.indexOf('data-anchor="accounts"'), out.indexOf('data-anchor="funds"'));
+    const one = accounts(lists(sp, bundle, base, head));
+    const other = allFunds(sp).find((f) => f.rec.id !== head.fund && "valueN" in (f.byHouse[head.house] ?? {}))!;
+    const two = accounts(lists(sp, bundle, base, { house: head.house, fund: other.rec.id }));
+    const keys = (x: string) => [...x.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]);
+    expect(keys(one).length).toBeGreaterThan(2);
+    expect(keys(two)).toEqual(keys(one));
+    expect(shown(two)).toEqual(shown(one));
+    // no row is marked as one the fold never shows
+    expect(lists(sp, bundle, base, head)).not.toContain("data-cannot");
   });
   it("why no pair is first follows the pair it is set beside, never before it", () => {
     const out = html(createElement(ReceiptAndFees, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));
@@ -176,12 +177,14 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(other).toBeGreaterThan(0);
     expect(why).toBeGreaterThan(other);
   });
-  it("the account list's head holds every fund's name laid out as the shown one, so a long name moves nothing", () => {
+  it("the fund list's head holds every account's line laid out as the shown one, so a pick of an account moves nothing under it", () => {
     const out = lists(sp, bundle, base, head).replace(/&amp;/g, "&").replace(/&quot;/g, '"');
-    const headPart = out.slice(out.indexOf(invest.receipt.parts.account), out.indexOf('role="radiogroup"'));
-    const held = [...headPart.matchAll(/<div aria-hidden="true" class="invisible">([\s\S]*?)<\/div>/g)].map((m) => shown(m[1]!));
-    const same = (x: string) => x.replace(/["״]/g, '"');
-    for (const f of allFunds(sp)) expect(held.some((x) => same(x).includes(same(listName(sp, f.name)))), f.name).toBe(true);
+    const funds = out.indexOf('data-anchor="funds"');
+    const headPart = out.slice(out.lastIndexOf(invest.lists.funds.title, funds), funds);
+    const held = [...headPart.matchAll(/<div aria-hidden="true" class="invisible">([\s\S]*?)<\/div>/g)].map((m) => shown(m[1]!)).join(" ");
+    const priced = sp.providers.filter((p) => allFunds(sp).some((f) => "valueN" in (f.byHouse[p.id] ?? {})) && !p.id.startsWith("custom-broker-group"));
+    expect(priced.length).toBeGreaterThan(2);
+    for (const p of priced) expect(held.replace(/\u00a0/g, " "), p.id).toContain(p.short.replace(/\u00a0/g, " "));
   });
 });
 

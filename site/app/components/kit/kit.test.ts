@@ -4,7 +4,8 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { ProvenanceProvider, TermCard } from "../provenance";
+import { ProvenanceProvider } from "../provenance";
+import { TermCard } from "../provenance-sheets";
 import { Disclosure, Sentence, Stat, StatRow } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
@@ -105,12 +106,6 @@ describe("PickList holds its height", () => {
     const keys = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const outs = keys.map((sel) => renderToString(createElement(PickList, { label: "x", columns: "1fr", phoneLimit: 3, more: () => "more", rows: keys.map((k) => row(k, { selected: k === sel })) })));
     expect(new Set(outs.map(folded))).toEqual(new Set([5]));
-  });
-  it("a row's other states are laid out unseen, out of the flow, never as a row to choose", () => {
-    const out = renderToString(createElement(PickList, { label: "x", columns: "1fr", states: [{ a: "one" }, { a: "two" }], rows: [row("a", { caseKey: "one", cases: [{ key: "two", cells: createElement("span", null, "LONG-STATE") }] })] }));
-    expect(out).toContain('data-case-of="a"');
-    expect(out).toMatch(/aria-hidden="true" data-case-of="a" data-case="two" class="[^"]*absolute[^"]*invisible/);
-    expect((out.match(/role="radio"/g) ?? []).length).toBe(1);
   });
   it("the fold's button counts things, not rows: two rows that are one thing count once, and none already above the fold (independent check of pass 7: no test held countAs)", () => {
     const more = (n: number) => `more ${n}`;

@@ -9,7 +9,8 @@ import type { WorkbenchInputs } from "../../lib/providers";
 import { allFunds, bestFor, pickOfHeadline } from "./pair";
 import { invest } from "../../copy";
 import { providerName } from "./sections";
-import { bundle, t, plan, shown, html, nisIn, lists, fundRow, writtenFees, ReceiptAndFees } from "./render-fixtures";
+import { bundle, t, plan, shown, html, nisIn, writtenFees, ReceiptAndFees } from "./render-fixtures";
+import { PairReceipt } from "./receipt";
 
 describe("the pair set beside the person's (2026-10-28)", () => {
   const world = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan });
@@ -28,21 +29,7 @@ describe("the pair set beside the person's (2026-10-28)", () => {
   });
 });
 
-describe("every cost bar's written amounts add up to its written total, on every index (pass 6: the remainder's shekels were hidden)", () => {
-  for (const index of knownIndices(bundle)) {
-    it(index.id, () => {
-      const view = buildInvest({ bundle, index, plan });
-      const pick = pickOfHeadline(view);
-      if (!pick) return;
-      const out = html(createElement(ReceiptAndFees, { view, bundle, plan, pick, chosen: false, onPick: () => undefined })) + lists(view, bundle, plan, pick);
-      const bars = [...out.matchAll(/data-total="(-?\d+)" data-amounts="([\d,-]*)"/g)];
-      expect(bars.length, "bars rendered").toBeGreaterThan(2);
-      for (const [, total, amounts] of bars) {
-        const sum = amounts!.split(",").filter(Boolean).reduce((a, x) => a + Number(x), 0);
-        expect(sum, `${index.id}: ${amounts} beside ${total}`).toBe(Number(total));
-      }
-    });
-  }
+describe("the fees panel's and the receipt's written amounts add up, on every index (pass 6: the remainder's shekels were hidden)", () => {
   // the fees panel's items are the receipt's whole shekels, so they add up to the total written under them, on every index and two
   // plans; and the account's items are the account list's figure and the receipt's account line (1,043 against 689 + 352 + 3 = 1,044
   // on the MSCI ACWI was the mismatch this guards), read from what the reader sees: each amount past its bar, whose by the line under its name
@@ -62,10 +49,11 @@ describe("every cost bar's written amounts add up to its written total, on every
       // the largest first
       expect(items.map((x) => x.amount), index.id).toEqual([...items.map((x) => x.amount)].sort((a, b) => b - a));
       const account = items.filter((x) => x.who === "account").reduce((a, x) => a + x.amount, 0);
-      // the account list's row of the pair's house, its figure after the words that say what the account charges
-      const row = fundRow(lists(view, bundle, p, pick), pick.house).replace(/[\u2066-\u2069\u200e\u200f]/g, "");
-      const cost = new RegExp(`${invest.lists.charges}\\s*([\\d,]+)`).exec(row)?.[1] ?? "";
-      expect(Number(cost.replace(/,/g, "")), `${index.id}: the list's "${row}" against ${account} in the panel`).toBe(account);
+      // the wide screen's ticket: the account's part, its label then the amount taken
+      const ticket = shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: false, layout: "ticket" }))).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
+      const tAt = ticket.indexOf(invest.receipt.accountCharges);
+      expect(tAt, `${index.id}: the ticket's account line`).toBeGreaterThanOrEqual(0);
+      expect(-nisIn(ticket.slice(tAt + invest.receipt.accountCharges.length, tAt + invest.receipt.accountCharges.length + 40)), `${index.id}: the ticket's account line against ${account} in the panel`).toBe(account);
       // and the receipt's account line, its label then the amount taken
       const receipt = shown(out.slice(0, out.indexOf('data-chart="option-bars"'))).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
       const label = `${invest.pair.who.account} ${providerName(view, pick.house)?.short ?? pick.house}`;

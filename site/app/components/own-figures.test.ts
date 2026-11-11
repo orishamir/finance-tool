@@ -5,7 +5,8 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { formulaNames } from "../copy";
 import { computed, type SiteValue } from "../lib/value";
-import { Num, NumberLegend, ProvenanceProvider, ValueSheet } from "./provenance";
+import { Num, NumberLegend, ProvenanceProvider } from "./provenance";
+import { ValueSheet } from "./provenance-sheets";
 import { FeeFigure } from "./kit";
 
 const fee = (extra: Partial<SiteValue> = {}): SiteValue => ({

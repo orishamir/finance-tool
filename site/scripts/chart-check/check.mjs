@@ -69,7 +69,7 @@ for (const width of WIDTHS) {
       if (m?.error) console.log(`      error: ${m.error}`);
       for (const f of findings) console.log(`      ${f.severity} ${f.check}: ${f.where}, ${f.detail}`);
     }
-    // the HTML charts of a page, one line for each kind (an index page has dozens of cost bars), with the findings of each chart
+    // the HTML charts of a page, one line for each kind (a page can have dozens of cost bars), with the findings of each chart
     const kinds = [...new Set(r.charts.filter((c) => !c.svg).map((c) => c.kind))];
     for (const kind of kinds) {
       const these = r.charts.filter((c) => !c.svg && c.kind === kind);
