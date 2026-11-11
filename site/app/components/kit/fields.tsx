@@ -299,7 +299,7 @@ export function RangeField(props: RangeFieldProps) {
   const clamped = Math.max(min, Math.min(max, current));
   const fill = ((clamped - min) / (max - min)) * 100;
   return (
-    <div className="field">
+    <div className="field range-field">
       <div className="flex items-center justify-between gap-3 min-h-target">
         <span className="flex flex-wrap items-center gap-x-2 min-w-0 flex-1">
           <span className="field-label min-w-0" id={`${id}-l`}>

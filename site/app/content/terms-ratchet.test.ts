@@ -307,7 +307,7 @@ describe("no page names a financial term that has no row", () => {
 // use. The rule (docs/copy.md 1, "Financial terms"; docs/design-system.md 11, "Term") is written: the first time a glossary term appears on
 // a page it opens its card, and later uses are plain. This check holds every guide and exposure page to it.
 // What counts: the page's prose in the order the page shows it (a guide's what, use, who, money in and out, tax, risks; an exposure
-// page's what, holdNote, risks; a page of its own layout in file order); a row's name, its FORMS, and a variant that is a phrase or an
+// page's card, what, holdNote, risks; a page of its own layout in file order); a row's name, its FORMS, and a variant that is a phrase or an
 // abbreviation (a one-word variant such as חיסכון or כללי is everyday Hebrew far more often than the row). A <Term> of the row is a mark,
 // and so is a <Link> whose words are the row's (it leads to the row's own page). A string the reader sees (a callout's title, a table's
 // head or cell, a row's value, words in quotes inside the prose) counts like any other text: every such prop takes a ReactNode, so the
@@ -373,7 +373,8 @@ const FIRST_USE_UNMARKED: Record<string, readonly string[]> = {
 const blankOut = (m: string) => m.replace(/[^\n]/g, " ");
 /** Comments blanked in place, so every offset is the source's. */
 const codeInPlace = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, blankOut).replace(/^\s*\/\/.*$/gm, blankOut);
-const SECTION_ORDER = ["what", "use", "holdNote", "who", "switchLine", "inoutRows", "afterTax", "risks"];
+// an exposure page's card (`glance`) stands beside its title, before every section
+const SECTION_ORDER = ["glance", "what", "use", "holdNote", "who", "switchLine", "inoutRows", "afterTax", "risks"];
 interface Use {
   at: number;
   row: string;

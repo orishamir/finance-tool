@@ -32,6 +32,7 @@ import { pointedIds } from "./scope";
 import { readJsonCached, readParsedCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type RefLink } from "./sources";
 import { heCollator } from "./format";
+import { isShownParameter } from "./parameter-pages";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -391,7 +392,9 @@ export function loadOpenQuestions(): Record<string, OpenQuestionView> {
   return out;
 }
 
-/** Which card on /parameters each id answers to: `P-01` to itself, and an `A-01` that a card holds as an input key to that card. */
+/** Which card on /parameters each id answers to: `P-01` to itself, and an `A-01` that a card holds as an input key to that card. Only
+ * the cards the page shows (a parameter a live page reads, lib/parameter-pages.ts): any other id stays plain text, never a link to
+ * a card that is not there. */
 export function loadParameterAnchors(): Record<string, string> {
   const out: Record<string, string> = {};
   const scan = (node: unknown, card: string) => {
@@ -402,7 +405,9 @@ export function loadParameterAnchors(): Record<string, string> {
         scan(v, card);
       }
   };
-  const cards = loadParameters().sort((a, b) => a.method_id.localeCompare(b.method_id));
+  const cards = loadParameters()
+    .filter((p) => isShownParameter(p.method_id))
+    .sort((a, b) => a.method_id.localeCompare(b.method_id));
   for (const p of cards) out[p.method_id] = p.method_id;
   for (const p of cards) scan(p, p.method_id);
   return out;

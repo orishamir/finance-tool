@@ -2,12 +2,13 @@
 // which products can hold it, risks, and the words used for it.
 import { Link, redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/exposure";
-import { exposurePage as copy, guideIndex, site } from "../copy";
-import { GuideSection, GuideFrame, GuideHeader, useCurrentSection } from "../components/guide/sections";
+import { exposurePage as copy, guideIndex, invest, pagePreview } from "../copy";
+import { pageMeta } from "../lib/page-meta";
+import { GuideSection, GuideFrame, GuideHeader, useCurrentSection, type GlanceItem } from "../components/guide/sections";
 import { IconLock } from "../components/icons";
 import { NumberLegend, RuleRef } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, RowArrow, Tag } from "../components/kit";
+import { Card, GoLink, RowArrow, Tag, gershayim } from "../components/kit";
 import { exposureContent } from "../content/exposure";
 import { ruleFigure, type SiteValue } from "../lib/value";
 
@@ -20,11 +21,14 @@ export async function loader({ params }: Route.LoaderArgs) {
   const content = exposureContent[params.id];
   const data = buildExposurePage(params.id, content ? [...content.termIds] : []);
   if (!data) throw new Response("Not found", { status: 404 });
-  return data;
+  // an equity index has its own page on the indices page (D28), where its accounts and funds are compared
+  const { indexPath } = await import("../lib/invest");
+  return { ...data, indicesHref: data.record.kind === "equity_index" ? indexPath(data.record.id) : null };
 }
 
-export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.name ?? guideIndex.title} · ${site.name}` }];
+export function meta({ loaderData: data, location }: Route.MetaArgs) {
+  const name = data?.name ?? guideIndex.title;
+  return pageMeta({ title: name, description: data?.lede ?? pagePreview.guide(name), location });
 }
 
 export default function ExposurePage() {
@@ -35,23 +39,15 @@ export default function ExposurePage() {
   const figure = (ruleId: string, name: string): SiteValue | null => (rules[ruleId] ? ruleFigure(rules[ruleId]!, name, today) : null);
   const cp = { figure };
   const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today };
-  const kind = copy.kinds[record.kind] ?? record.kind;
+  // the card beside the title: the page's own figures, then what the record says it is and its currency
+  const glance: GlanceItem[] = [...(content?.glance?.(cp) ?? [])];
+  if (record.kind !== "other") glance.push({ id: "kind", label: copy.kindLabel, value: copy.kinds[record.kind] ?? record.kind });
+  glance.push({ id: "currency", label: copy.currencyLabel, value: invest.currencies[record.currency] ?? record.currency });
   return (
     <PageShell current="guide" data={provenance}>
-      <GuideFrame sections={[...copy.sections]} current={current}>
-        <GuideHeader title={data.name}>
-          {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
-          <p className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-            {record.kind !== "other" && (
-              <Tag tone="neutral">
-                {copy.kindLabel}: {kind}
-              </Tag>
-            )}
-            <Tag tone="neutral">
-              {copy.currencyLabel}: <bdi dir="ltr">{copy.currencies[record.currency] ?? record.currency}</bdi>
-            </Tag>
-          </p>
-          <NumberLegend term />
+      <GuideFrame sections={[...copy.sections]} current={current} foot={<NumberLegend term />}>
+        <GuideHeader title={gershayim(data.name)} glance={glance}>
+          {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{gershayim(data.lede)}</p>}
         </GuideHeader>
 
         <GuideSection id="what" title={copy.sections[0].title}>
@@ -60,16 +56,17 @@ export default function ExposurePage() {
 
         <GuideSection id="hold" title={copy.sections[1].title}>
           {content?.holdNote?.(cp)}
+          {data.indicesHref && <GoLink to={data.indicesHref}>{copy.toIndices}</GoLink>}
           <p className="text-sm text-muted-foreground max-w-measure">{copy.holdLine}</p>
           {data.holders.length === 0 ? (
             <p className="text-muted-foreground">{copy.holdNone}</p>
           ) : (
-            <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <ul data-wide className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {data.holders.map((h) => (
                 <li key={h.id}>
                   <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]">
                     <Link to={`/guide/${h.id}`} className="flex items-center justify-between gap-4">
-                      <span className="text-lg font-semibold">{h.name}</span>
+                      <span className="text-lg font-semibold">{gershayim(h.name)}</span>
                       <RowArrow />
                     </Link>
                     {/* red only when the product's own exit tax is blocked; the shared open questions get a neutral tag */}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { citationText, isPdfUrl, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, strongestStrength, type RuleSource } from "./sources";
+import { citationText, isPdfUrl, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, strongestStrength, withoutCodes, type RuleSource } from "./sources";
 
 const src = (o: Partial<RuleSource> = {}): RuleSource => ({ url: "https://example.gov.il/a", title: "T", publisher: "Pub", strength: "primary", checked: "2026-10-01", ...o });
 const fig = (url: string, strength: string) => ({
@@ -80,5 +80,13 @@ describe("strongestStrength and moreSourcesLabel", () => {
     expect(moreSourcesLabel(1)).toBe("עוד מקור אחד");
     expect(moreSourcesLabel(2)).toBe("עוד שני מקורות");
     expect(moreSourcesLabel(5)).toBe("עוד 5 מקורות");
+  });
+});
+
+describe("a title as shown carries no rule code (D48)", () => {
+  it("drops a code in brackets, and keeps an index's name", () => {
+    expect(withoutCodes("אינטראקטיב ישראל: בורסה ישראלית (BRK-41)")).toBe("אינטראקטיב ישראל: בורסה ישראלית");
+    expect(withoutCodes("עמוד (BRK-41, BRK-44) של החברה")).toBe("עמוד של החברה");
+    expect(withoutCodes("מדד ת״א (TA-35)")).toBe("מדד ת״א (TA-35)");
   });
 });

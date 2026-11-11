@@ -134,34 +134,6 @@ export function LabelChip({ label, still = false, words = false }: { label: Labe
   );
 }
 
-/**
- * Filter a list by one label: each label that splits the list, with how many rows carry it; a tap keeps only
- * those rows, a second tap or "all" shows every row again. Only offer labels that some rows have and some do not.
- */
-export function LabelFilter({ options, value, onChange, lead, allLabel }: { options: { label: Label; count: number }[]; value: string | null; onChange: (id: string | null) => void; lead: ReactNode; allLabel: string }) {
-  if (options.length === 0) return null;
-  return (
-    <div className="label-strip flex md:flex-wrap items-center gap-1.5 max-md:pb-1" role="group" aria-label={typeof lead === "string" ? lead : undefined}>
-      <span className="text-sm text-muted-foreground me-1 shrink-0">{lead}</span>
-      {options.map(({ label, count }) => {
-        const on = value === label.id;
-        return (
-          <button key={label.id} type="button" aria-pressed={on} onClick={() => onChange(on ? null : label.id)} className={cx(chipShape, "shrink-0 min-h-8 tap-area hover:brightness-110", chipClass(label), on && "ring-2 ring-current ring-offset-1 ring-offset-card")}>
-            <LabelIcon name={label.icon} />
-            {label.text}
-            <span className="tabular-nums opacity-75">{count}</span>
-          </button>
-        );
-      })}
-      {value !== null && (
-        <button type="button" onClick={() => onChange(null)} className="shrink-0 text-sm text-link hover:underline min-h-8 tap-area px-1">
-          {allLabel}
-        </button>
-      )}
-    </div>
-  );
-}
-
 export function LabelRow({ labels, className, still }: { labels: Label[]; className?: string; /** See LabelChip. */ still?: boolean }) {
   if (labels.length === 0) return null;
   return (

@@ -1,6 +1,8 @@
 // The track browser (D54): the controls and the list for one product. The product is in the address
 // (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are the person's state on the page.
 // No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list. The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
+// With no kind and no search the list opens folded: each company one row with its count and its money, the first open, and on a phone each
+// track one line that opens in place; on a computer the companies fold the same way and the table keeps its rows.
 // The product, the kind and the sort stand first; on a phone they fold into one line that says what is chosen (`PhoneFold`), and the
 // search stays open under them. The count and the order are said right over the list.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
@@ -78,8 +80,15 @@ export function TrackBrowser({ data }: { data: TbData }) {
   }, [grown, listKey]);
   const feeYear = data.feeYear && typeof data.feeYear.value === "string" ? data.feeYear.value : null;
   const product = data.products.find((p) => p.id === productId)!;
-  // another product, kind, order or search: the rows that stay slide to their new places and the new ones fade in
-  const list = useFlip<HTMLDivElement>(hydrated ? `${listKey}|${sort.id}|${sort.dir}|${dq}` : null);
+  // With no kind and no search, each company is one folded row with its count and its money, the first open so the reader sees what a row
+  // holds; on a phone each of its tracks is one line that opens in place. A search or a kind shows its matches open.
+  const browsing = !kind && !dq.trim();
+  const [opened, setOpened] = useState<{ product: string; keys: ReadonlySet<string> } | null>(null);
+  const openKeys = opened?.product === productId ? opened.keys : new Set(groups[0] ? [groups[0].key] : []);
+  const fold = browsing ? { isOpen: (key: string) => openKeys.has(key), toggle: (key: string) => setOpened({ product: productId, keys: flipKey(openKeys, key) }) } : undefined;
+  // another product, kind, order or search, or a company opened or folded: the rows that stay slide to their new places, so what is below a
+  // company that opens moves down gently and nothing above it moves; the new rows fade in
+  const list = useFlip<HTMLDivElement>(hydrated ? `${listKey}|${sort.id}|${sort.dir}|${dq}|${browsing ? [...openKeys].join(",") : "*"}` : null);
   /** A head pressed while the list is scrolled under it: the list starts again from its first row, under the same head. */
   const pressHead = (id: SortId) => {
     setSort(pressSort(sort, id));
@@ -153,12 +162,19 @@ export function TrackBrowser({ data }: { data: TbData }) {
             {t.noResult.after}
           </p>
         ) : (
-          <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={product.period} limit={limit} />
+          <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={product.period} limit={limit} fold={fold} foldRows={browsing} />
         )}
       </div>
       <p className="text-sm text-muted-foreground max-w-measure">{t.pastNote}</p>
     </div>
   );
+}
+
+/** The set with `key` added, or taken out if it was there. */
+function flipKey(set: ReadonlySet<string>, key: string): ReadonlySet<string> {
+  const next = new Set(set);
+  if (!next.delete(key)) next.add(key);
+  return next;
 }
 
 function orderLine(sort: SortState, by: GroupBy): string {

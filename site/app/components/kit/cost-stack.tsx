@@ -14,6 +14,7 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
+import { wholeParts } from "../../lib/whole-parts";
 import { useGlidingSeries, type GlideSeries } from "./chart-glide";
 import { useChartPick } from "./chart-interact";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
@@ -36,36 +37,11 @@ export interface CostPart {
   legendId?: string;
   /** Whose cost the part is ("account"): with the bar's `groups`, the parts of a group write amounts that add up to that group's figure. */
   group?: string;
+  /** The part's colour as a `text-` class (`text-chart-by-account`): a `track` bar cut at the scale's end draws its hatched stub in it. */
+  ink?: string;
 }
 
-/**
- * Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total.
- * `can`: the parts whose amounts are written; the rounding goes only to them, and an amount not written is only rounded.
- */
-export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) => a + x, 0)), can?: readonly boolean[]): number[] {
-  const ok = (i: number) => !can || !!can[i];
-  // rounding moves each part by less than a shekel, and a target made of rounded figures (a bar's total is the rounded value without costs
-  // less the rounded value left, less a group's rounded figure) is up to a shekel and a half from its exact sum: a target further off than
-  // both is a part missing from the sum, never rounding (with the remainder dropped, its shekels went to the
-  // other parts and every sum still matched; a hedged pair on MSCI ACWI was 1.46 off with one written part, and the page fell over)
-  // plus the float's own precision on a huge total (a plan typed at 1,000 billion ₪ for 40 years at 50% gives
-  // figures near 10^18, whose last 512 ₪ a double cannot hold; the guard fired on every bar there)
-  const room = Math.max(1, xs.filter((_, i) => ok(i)).length) + 1.5 + Math.abs(target) * 1e-12;
-  const off = target - xs.reduce((a, x) => a + x, 0);
-  // a check for the builders: in tests and in development it stops the render; on the site the page goes on with the amounts rounded
-  if (Math.abs(off) > room + 1e-6) {
-    const msg = `wholeParts: the target ${target} is ${off.toFixed(2)} from the parts' sum, more than a shekel a part (${room})`;
-    if (import.meta.env.DEV) throw new Error(msg);
-    console.error(msg);
-  }
-  const out = xs.map((x, i) => (ok(i) ? Math.floor(x) : Math.round(x)));
-  const order = xs.map((x, i) => ({ i, r: x - Math.floor(x) })).filter((x) => ok(x.i)).sort((a, b) => b.r - a.r);
-  if (order.length === 0) return out;
-  let left = target - out.reduce((a, x) => a + x, 0);
-  for (let k = 0; left > 0; k++, left--) out[order[k % order.length]!.i]! += 1;
-  for (let k = order.length - 1; left < 0; k--, left++) out[order[((k % order.length) + order.length) % order.length]!.i]! -= 1;
-  return out;
-}
+export { wholeParts };
 
 /** Which parts write their amount: in or under the bar (`inside: true`), or in the box (a name). */
 const writesOf = (parts: readonly CostPart[]) => parts.map((p) => p.value > 0 && (p.inside === true || !!p.name));
@@ -132,8 +108,11 @@ const SLIVER = 0.01;
  * it, to the parts' own rounded sum. A `md` bar keeps a line under it, at one height, for the amounts too narrow to write inside; the root
  * carries the total and the amounts written (`data-total`, `data-amounts`), which a render test holds together on the pages. The chart
  * check (site/scripts/chart-check) finds it by `data-chart` and reads the bar's start (`data-zero`) and its parts (`data-mark`).
+ * `track`: a list row's bar as charts.md draws a bar (the index page's two lists): a faint track the scale's whole length, a thin zero line
+ * at its start, the parts square at the zero line and rounded at the far end; a total past the scale fills the track and ends in a stub
+ * hatched in its last part's colour (`ink`), which a note beside the list explains.
  */
-export function CostStack({ parts, scale, size = "md", label, highlight, total: writtenTotal, groups }: { parts: CostPart[]; scale: number; size?: "sm" | "md"; label: string; highlight?: string | null; total?: number; /** A group's whole-shekel figure written elsewhere on the page (`{ account: 1043 }`): its parts' amounts add up to it. */ groups?: Readonly<Record<string, number>> }) {
+export function CostStack({ parts, scale, size = "md", label, highlight, total: writtenTotal, groups, track = false }: { parts: CostPart[]; scale: number; size?: "sm" | "md"; label: string; highlight?: string | null; total?: number; /** A group's whole-shekel figure written elsewhere on the page (`{ account: 1043 }`): its parts' amounts add up to it. */ groups?: Readonly<Record<string, number>>; track?: boolean }) {
   const pick = useChartPick();
   const root = useRef<HTMLDivElement>(null);
   // the bar's width in px, so an amount is written inside a part only where it fits
@@ -204,7 +183,12 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   const boxRows = list.map((p, i) => ({ p, i })).filter(({ p, i }) => p.name && shows(i));
   return (
     <div ref={root} className="relative w-full min-w-0" data-chart="cost-stack" data-total={shownSum} data-amounts={list.map((_, i) => (shows(i) ? wholes[i] : null)).filter((x) => x !== null).join(",")}>
-      <div role="img" aria-label={label} className={cx("flex", size === "sm" ? "h-3" : "h-7")} data-zero="">
+      <div
+        role="img"
+        aria-label={label}
+        className={cx("flex", size === "sm" ? "h-3" : "h-7", track && "relative rounded-e-full bg-muted before:absolute before:start-0 before:-top-0.5 before:h-4 before:w-px before:bg-muted-foreground")}
+        data-zero=""
+      >
         {list.map((p, i) => {
           const w = widths[i]!;
           const named = !!p.name && p.value > 0;
@@ -218,8 +202,8 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
                 // the remainder's grey is dark (re-picked through the palette validator) and the tax's rose mid-dark: their amounts are written in light ink
                 DARK_FILLS.has(p.className) ? "text-foreground" : "text-background",
                 live[i] && i !== lastLive && "border-e border-card",
-                i === firstLive && "rounded-s-sm",
-                i === lastLive && "rounded-e-sm",
+                i === firstLive && !track && "rounded-s-sm",
+                i === lastLive && (track ? "rounded-e-full" : "rounded-e-sm"),
                 named && "cursor-pointer",
                 size === "md" && named && "before:absolute before:inset-x-0 before:-inset-y-2",
                 "transition-opacity duration-[var(--duration-fast)]",
@@ -258,7 +242,12 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
         </div>
       )}
       {activeAt >= 0 && <Box rows={boxRows.map(({ p, i }) => ({ part: p, amount: wholes[i]! }))} active={list[activeAt]!.id} share={list[activeAt]!.value / total} total={shownSum} toStart={starts[activeAt]! + widths[activeAt]! / 2 > 0.5} />}
-      {broken && <span aria-hidden="true" className={cx("absolute top-0 start-[82%] w-1.5 -skew-x-[20deg] bg-card", size === "sm" ? "h-3" : "h-7")} />}
+      {broken && !track && <span aria-hidden="true" className={cx("absolute top-0 start-[82%] w-1.5 -skew-x-[20deg] bg-card", size === "sm" ? "h-3" : "h-7")} />}
+      {broken && track && (
+        <span aria-hidden="true" className={cx("absolute top-0 end-0 w-3 rounded-e-full bg-muted", size === "sm" ? "h-3" : "h-7")}>
+          <span className={cx("block size-full rounded-e-full hatch-cut", list[lastLive]?.ink)} />
+        </span>
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
+import { formulaNames } from "../copy";
 import { computed, type SiteValue } from "../lib/value";
 import { Num, NumberLegend, ProvenanceProvider, ValueSheet } from "./provenance";
 import { FeeFigure } from "./kit";
@@ -57,7 +58,7 @@ describe("the sheet", () => {
   it("heads a signed figure with its sign and says what it means before the formula", () => {
     const html = sheet(computed(0.37, "pct_per_year", "F-92", { a: fee({ own: "הראל" }) }, { today: "2026-11-07", lead: "מה המספר אומר", signed: true }));
     expect(html).toContain("+0.37%");
-    expect(html.indexOf("מה המספר אומר")).toBeLessThan(html.indexOf("F-92"));
+    expect(html.indexOf("מה המספר אומר")).toBeLessThan(html.indexOf(formulaNames["F-92"]!));
     expect(sheet(computed(-0.37, "pct_per_year", "F-92", {}, { today: "2026-11-07", signed: true }))).toContain("−0.37%");
   });
 });

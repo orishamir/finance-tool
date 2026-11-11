@@ -1,5 +1,6 @@
 // "שווה לדעת" (synthesis 3.7): two or three pinned facts per wrapper guide page, each the rule's Hebrew title,
-// its first figure, the rule chip and the weak-strength tag. Nothing renders when no row can be shown.
+// its first figure, D48's chip ("חוקים וכללים · 1", which opens the rule's card) and the weak-strength tag, as cards side by side with the figure as the card's headline.
+// Nothing renders when no row can be shown.
 //
 // current-account page: a row can also be a fact computed from the published records, not a rule
 // (`WorthFactRow`): it carries its own content, every figure in it through `Num`, and is listed after the rule rows.
@@ -8,6 +9,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { guideWorth as copy, provenance as provCopy } from "../../copy";
 import { ruleFigure, type SiteValue } from "../../lib/value";
 import { Num, RuleRef, StrengthLabel } from "../provenance";
+import { Card } from "../kit";
 import { GuideSection } from "./sections";
 
 export interface WorthRow {
@@ -54,24 +56,30 @@ export function WorthKnowing({ rows, facts = [] }: { rows: WorthRow[]; facts?: W
   return (
     <GuideSection id="worth" title={copy.title}>
       <p className="text-muted-foreground max-w-measure">{copy.line}</p>
-      <ul className="flex flex-col gap-3 max-w-measure">
+      <ul data-wide className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {rows.map((r) => (
-          <li key={r.id} className="flex flex-wrap items-baseline gap-x-2 gap-y-1 border-b border-border pb-3">
-            <span>{r.title}</span>
-            {r.figure && (
-              <span className="whitespace-nowrap">
-                {r.upTo && <>{copy.upTo} </>}
-                <Num value={r.figure} />
-                {["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && (provCopy.unit as Record<string, string>)[r.figure.unit] && <span className="text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
+          <li key={r.id}>
+            <Card pad="snug" className="h-full flex flex-col gap-1">
+              {r.figure && (
+                <span className="text-2xl font-semibold whitespace-nowrap">
+                  {r.upTo && <span className="text-base font-normal text-muted-foreground">{copy.upTo} </span>}
+                  <Num value={r.figure} />
+                  {["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && (provCopy.unit as Record<string, string>)[r.figure.unit] && <span className="text-base font-normal text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
+                </span>
+              )}
+              <span>{r.title}</span>
+              <span className="mt-auto flex flex-wrap items-center gap-x-2">
+                <RuleRef id={r.id} />
+                {r.weak && <StrengthLabel strength={r.weak} />}
               </span>
-            )}
-            <RuleRef id={r.id} />
-            {r.weak && <StrengthLabel strength={r.weak} />}
+            </Card>
           </li>
         ))}
         {facts.map((f) => (
-          <li key={f.id} className="border-b border-border pb-3">
-            {f.content}
+          <li key={f.id}>
+            <Card pad="snug" className="h-full">
+              {f.content}
+            </Card>
           </li>
         ))}
       </ul>

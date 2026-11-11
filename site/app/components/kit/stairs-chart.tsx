@@ -1,8 +1,10 @@
 // The stairs (the indices page): money left at the end on the vertical axis, the order of the steps from left to right.
 // The first column is the start (grey, with a break mark because the axis does not begin at zero); every other column floats from the level
 // before it to its own, in the hue of what changed (the account, the kind of fund, the fund) and red when it loses money. A step taken is
-// solid; the largest one still ahead is lighter and outlined; one that rests on an open rule is hollow. A dashed line marks the most any
-// priced pair leaves. Under the chart a table of the same columns on a computer, a list of the steps on a phone. Own SVG.
+// solid; the largest one still ahead is lighter and outlined; one that rests on an open rule is hollow. The last column is the result: a
+// bar from the floor to where the steps end, labelled with its total (charts.md). A dashed line marks the most any priced pair leaves, with
+// its words in the right margin where the steps end below it. Under the chart a table of the same columns on a computer, a list of the
+// steps on a phone. Own SVG.
 import type { KeyboardEvent, ReactNode } from "react";
 import { cx } from "./cx";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
@@ -33,8 +35,11 @@ export interface StairColumn {
 
 /** Columns on screen at most; a longer chain folds its first steps away. */
 export const STAIRS_SLOTS = 5;
-/** The chart's left and right margins as shares of its width, so a table under it keeps the chart's columns. */
-export const STAIRS_MARGIN = { left: 0.095, right: 0.175 };
+/** The chart's left and right margins as shares of its width, so a table under it keeps the chart's columns: the right one holds the
+ * dashed line's words, a sliver where there are none (the result column already says them). */
+export const STAIRS_MARGIN = { left: 0.095, right: 0.175, rightBare: 0.02 };
+/** The columns of a chart of these stairs: each on screen, then the result. */
+export const stairsSlots = (stairs: number) => Math.min(STAIRS_SLOTS, stairs) + 1;
 
 const FILL: Record<StairHue | "loss", string> = { start: "fill-chart-stairs-start", account: "fill-chart-stairs-account", kind: "fill-chart-stairs-kind", fund: "fill-chart-stairs-fund", loss: "fill-loss" };
 const STROKE: Record<StairHue | "loss", string> = { start: "stroke-chart-stairs-start", account: "stroke-chart-stairs-account", kind: "stroke-chart-stairs-kind", fund: "stroke-chart-stairs-fund", loss: "stroke-loss" };
@@ -74,21 +79,21 @@ export function StairsChart({
   fold,
   axis,
   ceiling,
-  endsAt,
   now,
   label,
   onGo,
+  result,
 }: {
   /** The columns on screen (at most `STAIRS_SLOTS`). */
   columns: StairColumn[];
+  /** The last column: where the steps end, its total and the words inside it (a heading line, then any more). */
+  result: { level: number; total: string; words: string[] };
   /** How many steps are folded away before the first column; a column's index for `onGo` counts them. */
   fold: number;
   /** The levels the plot spans (no figures drawn on the axis: the amounts on the columns are the axis, charts.md). */
   axis: { lo: number; hi: number };
   /** The dashed line: what the most that any priced pair leaves, and the words beside it on a computer (the first is a heading). */
   ceiling: { level: number; lines: string[] };
-  /** The level where the climb stops below the ceiling and the words for it; shown on a computer when there is room. */
-  endsAt: { level: number; text: string } | null;
   now: string;
   label: string;
   onGo: (index: number) => void;
@@ -98,8 +103,11 @@ export function StairsChart({
   const H = compact ? 300 : 340;
   const { lo, hi } = axis;
   // no value axis: every column carries its amount, and up to about twelve marks the amounts replace the axis (charts.md)
-  const m = compact ? { l: 6, r: 6, t: 40, b: 6 } : { l: W * STAIRS_MARGIN.left, r: W * STAIRS_MARGIN.right, t: 44, b: 6 };
-  const cw = (W - m.l - m.r) / STAIRS_SLOTS;
+  // the right margin holds the dashed line's words where there are any (the steps end below it)
+  const bare = ceiling.lines.length === 0;
+  const m = compact ? { l: 6, r: 6, t: 40, b: 6 } : { l: W * STAIRS_MARGIN.left, r: W * (bare ? STAIRS_MARGIN.rightBare : STAIRS_MARGIN.right), t: 44, b: 6 };
+  const slots = columns.length + 1;
+  const cw = (W - m.l - m.r) / slots;
   const y = (v: number) => m.t + (1 - (v - lo) / (hi - lo || 1)) * (H - m.t - m.b);
   const floor = y(lo);
   const bx = (i: number) => m.l + i * cw + cw * 0.1;
@@ -211,6 +219,34 @@ export function StairsChart({
             </g>
           );
         })}
+        {/* the result: a bar from the floor to where the steps end, joined to the last step, its total and words inside it */}
+        {(() => {
+          const i = columns.length;
+          const x = bx(i);
+          const last = columns[columns.length - 1];
+          const top = y(result.level);
+          const inside = floor - top >= 64;
+          const max = Math.max(6, Math.floor((bw - 12) / 6.6));
+          const words = result.words.flatMap((t) => wrapLines(t, max));
+          return (
+            <g>
+              {last && <line x1={bx(i - 1) + bw} x2={x} y1={y(last.level)} y2={y(last.level)} className="stroke-chart-marker" strokeWidth={1.5} />}
+              <rect x={x} y={top} width={bw} height={Math.max(floor - top, 2)} rx={3} className="fill-chart-stairs-below stroke-foreground" strokeWidth={1.5} data-mark="bar" />
+              <g pointerEvents="none">
+                <Txt x={x + bw / 2} y={inside ? top + 30 : top - 7} a="mid" size={compact ? CHART_TEXT_PX : 18} className="fill-foreground" weight={600}>
+                  {result.total}
+                </Txt>
+                {inside &&
+                  !compact &&
+                  words.map((t, j) => (
+                    <Txt key={j} x={x + bw / 2} y={top + 52 + 17 * j} a="mid" className="fill-chart-text">
+                      {t}
+                    </Txt>
+                  ))}
+              </g>
+            </g>
+          );
+        })()}
         {/* the figures over the columns come after every column, so their card-coloured halo keeps them clear of the next column's
             outline where a figure is wider than its column (a phone at 320 px: "78,038 ₪" was crossed by the next step's edge) */}
         <g pointerEvents="none">
@@ -237,11 +273,6 @@ export function StairsChart({
                 {l.text}
               </Txt>
             ))}
-            {endsAt && columns.length < STAIRS_SLOTS && columns.length > 1 && (
-              <Txt x={bx(columns.length - 1) + bw + 8} y={y(endsAt.level) + 5} a="left" size={14} className="fill-foreground" weight={600}>
-                {endsAt.text}
-              </Txt>
-            )}
           </>
         )}
       </svg>
@@ -250,12 +281,12 @@ export function StairsChart({
 }
 
 /**
- * The table under the stairs on a computer: one column per step, on the chart's own columns, so each figure sits under its stair. Rows are
- * given heading and cells; a row with fewer cells than slots leaves the rest blank, and the grid keeps its shape.
+ * The table under the stairs on a computer: one column per step and the result, on the chart's own columns, so each figure sits under its
+ * stair. Rows are given heading and cells; a row with fewer cells than slots leaves the rest blank, and the grid keeps its shape.
  */
-export function StairsTable({ rows, slots = STAIRS_SLOTS }: { rows: { id: string; head: ReactNode; cells: ReactNode[]; className?: string; headClassName?: string }[]; slots?: number }) {
+export function StairsTable({ rows, slots, bare = false }: { rows: { id: string; head: ReactNode; cells: ReactNode[]; className?: string; headClassName?: string }[]; /** The chart's columns, the result's included (`stairsSlots`). */ slots: number; /** The chart's right margin is bare (no words beside its dashed line). */ bare?: boolean }) {
   const g = STAIRS_MARGIN.left * 100;
-  const r = STAIRS_MARGIN.right * 100;
+  const r = (bare ? STAIRS_MARGIN.rightBare : STAIRS_MARGIN.right) * 100;
   const c = (100 - g - r) / slots;
   return (
     <div role="table" className="grid [direction:ltr] mt-0.5" style={{ gridTemplateColumns: `${g}% ${Array(slots).fill(`${c}%`).join(" ")} ${r}%` }}>

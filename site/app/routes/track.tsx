@@ -1,7 +1,8 @@
 // The track page (flows 6.12): the fund's official record and its date, what to check, and the guide link.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/track";
-import { catalogue, companies as companiesCopy, company as companyCopy, r3workbench, site, trackBrowser, track as copy } from "../copy";
+import { catalogue, companies as companiesCopy, company as companyCopy, pagePreview, r3workbench, trackBrowser, track as copy } from "../copy";
+import { pageMeta } from "../lib/page-meta";
 import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
@@ -108,8 +109,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   };
 }
 
-export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data ? gershayim(data.track.name) : companiesCopy.title} · ${site.name}` }];
+export function meta({ loaderData: data, location }: Route.MetaArgs) {
+  if (!data) return pageMeta({ title: companiesCopy.title, description: pagePreview.companies, location });
+  return pageMeta({ title: gershayim(data.track.name), description: pagePreview.track(data.track.companyName, data.wrapper?.name ?? null), location });
 }
 
 export default function TrackPage() {

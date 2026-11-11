@@ -44,7 +44,7 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
   return (
     <>
       {/* the question is the card's title: outside the card it read as a second heading under the section's on a phone */}
-      <Card className="flex flex-col gap-4">
+      <Card data-wide className="flex flex-col gap-4">
         <p className="text-lg font-semibold max-w-measure">{page.question}</p>
         <Visual data={data} today={today} />
       </Card>
@@ -60,7 +60,7 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
         page.altLine && <p className="text-sm max-w-measure">{page.altLine}</p>
       )}
       {timeline && !NO_TIMELINE.has(id) && (
-        <Card pad="none" className="px-4 py-1 md:px-6">
+        <Card data-wide pad="none" className="px-4 py-1 md:px-6">
           <Disclosure label={<span className="font-medium">{copy.timeline.summary}</span>} openLabel={<span className="font-medium">{copy.timeline.hide}</span>} summaryClassName="justify-between">
             <div className="flex flex-col gap-4 pb-4">
               <p className="text-sm text-muted-foreground max-w-measure">{copy.timeline.lead}</p>

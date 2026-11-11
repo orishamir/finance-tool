@@ -25,7 +25,7 @@ const CARD: Record<string, number> = {
   };
 const INPUT: Record<string, number> = {
     "components/decoder/tracks.tsx": 1,
-    "components/invest/chips.tsx": 1,
+    "components/invest/title.tsx": 1,
     "components/search.tsx": 2,
     "components/transfer/panel.tsx": 1,
     "routes/companies.tsx": 1,
@@ -36,7 +36,6 @@ const STATGRID: Record<string, number> = {
   };
 /** A fold whose label is a heading, built by hand from Disclosure (`as="h2"` and the like): FoldGroup has the heading and its count. */
 const HEADINGFOLD: Record<string, number> = {
-    "routes/documents.tsx": 1,
   };
 const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
@@ -107,7 +106,6 @@ patterns["a name in a plain bdi"] = {
     "components/guide/sections.tsx": 1,
     "components/tracks/list.tsx": 2,
     "routes/company.tsx": 1,
-    "routes/not-covered.tsx": 1,
     "routes/track.tsx": 2,
   },
 };
@@ -164,6 +162,7 @@ const CHART_ROLES: Record<string, string[]> = {
   "the timeline (3.4)": ["chart-value", "chart-fee", "chart-tax-1", "chart-tax-2", "chart-contributions"],
   "the fee-drag chart (7.3)": ["chart-fee-1", "chart-fee-2", "chart-fee-3", "chart-fee-4", "chart-fee-total"],
   ChangeChart: ["chart-lever-1", "chart-lever-2", "chart-lever-3", "chart-lever-4"],
+  "the receipt's lines and closing bar (indices page)": ["chart-by-account", "chart-by-fund", "chart-tax"],
   CostStack: ["chart-cost-trade", "chart-cost-custody", "chart-cost-fixed", "chart-cost-fx", "chart-cost-other", "chart-cost-fund", "chart-tax"],
   PileBar: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-fee", "chart-pile-salary-tax", "chart-pile-tax", "chart-pile-loss", "chart-pile-left"],
   StairsChart: ["chart-stairs-start", "chart-stairs-account", "chart-stairs-kind", "chart-stairs-fund", "gain", "loss"],

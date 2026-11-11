@@ -9,7 +9,7 @@ import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { ExposureCell, gershayim, HelpMark, MixedName, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
 /** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
@@ -143,6 +143,50 @@ function CompactName({ x, notes }: { x: TbTrack; notes: RowNotes }) {
   );
 }
 
+/** The exposure and the two yields, then the assets and the fund's number: the lines a phone's row shows under its name and fees. */
+function PhoneFigures({ x }: { x: TbTrack }) {
+  return (
+    <>
+      {/* the exposure and the two yields are two short lines each: side by side, as their columns stand on a computer */}
+      <span className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        {x.exposure ? <ExposureCell value={x.exposure} /> : <span className={mutedWord}>{t.assets.missing}</span>}
+        <span className="flex flex-col gap-0.5 min-w-0">
+          {!x.selfManaged && <span className={mutedWord}>{t.yield.phone}</span>}
+          <Yields x={x} size="inline" />
+        </span>
+      </span>
+      {/* the fund's number closes every row at the same place, whatever the lines above it hold */}
+      <span className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        <span className="flex items-center gap-1.5">
+          <span className={mutedWord}>{t.assets.phone}</span>
+          <AssetsFigure value={x.assets} size="inline" />
+        </span>
+        <span className={mutedWord}>
+          {t.columns.fund} <TrackFundId fundId={x.id} dataset={x.dataset} />
+        </span>
+      </span>
+    </>
+  );
+}
+
+/** A track under its company on a phone, in a long list: one line, its name and its fee from savings; a tap opens the rest of the row in
+ *  place (its labels, the fee from deposits, the exposure, the yields, the assets, the fund's number and the link to its page). */
+function FoldedPhoneRow({ x, notes }: { x: TbTrack; notes: RowNotes }) {
+  return (
+    <ProductPhoneFold name={<MixedName>{x.short}</MixedName>} figure={<TrackFeeLines fee={x.fee} inline />} label={gershayim(x.fullName)}>
+      <span className="flex flex-wrap gap-1.5 empty:hidden">
+        <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+        {showsKindChip(x) && <Tag>{gershayim(x.sub)}</Tag>}
+      </span>
+      <TrackFeeLines deposit={x.deposit} inline />
+      <PhoneFigures x={x} />
+      <GoLink to={x.href} className="self-start">
+        {t.openTrack}
+      </GoLink>
+    </ProductPhoneFold>
+  );
+}
+
 function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: ProductView; notes: RowNotes }) {
   const company = view.companies.find((c) => c.index === x.company);
   return (
@@ -178,31 +222,16 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
         </span>
       )}
       <TrackFeeLines fee={x.fee} deposit={x.deposit} inline />
-      {/* the exposure and the two yields are two short lines each: side by side, as their columns stand on a computer */}
-      <span className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-        {x.exposure ? <ExposureCell value={x.exposure} /> : <span className={mutedWord}>{t.assets.missing}</span>}
-        <span className="flex flex-col gap-0.5 min-w-0">
-          {!x.selfManaged && <span className={mutedWord}>{t.yield.phone}</span>}
-          <Yields x={x} size="inline" />
-        </span>
-      </span>
-      {/* the fund's number closes every row at the same place, whatever the lines above it hold */}
-      <span className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-        <span className="flex items-center gap-1.5">
-          <span className={mutedWord}>{t.assets.phone}</span>
-          <AssetsFigure value={x.assets} size="inline" />
-        </span>
-        <span className={mutedWord}>
-          {t.columns.fund} <TrackFundId fundId={x.id} dataset={x.dataset} />
-        </span>
-      </span>
+      <PhoneFigures x={x} />
     </ProductPhoneRow>
   );
 }
 
-/** `limit`: how many rows are drawn, from the top; the headings, the counts and the key under the list always speak of every row of the group.
+/** `limit`: how many rows of the open groups are drawn, from the top; the headings, the counts and the key under the list always speak of every
+ *  row of the group. `fold`: the page holds which groups are open (the track browser's companies, folded but the first); without it every
+ *  group starts open. `foldRows`: on a phone a row is one line that opens in place (a long list under the companies).
  *  On a company's page: `fixed`, its one product, with no heading; `defaults`, its tracks a new member joins; `foot`, lines under the key. */
-export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, no "?" and no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit" }) {
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, no "?" and no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string, alsoHolds?: string[]) =>
     sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} /> : <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>;
@@ -274,7 +303,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
           return [
           x.id,
           {
-            phone: <PhoneRow x={x} by={by} view={view} notes={notes} />,
+            phone: foldRows && by === "company" ? <FoldedPhoneRow x={x} notes={notes} /> : <PhoneRow x={x} by={by} view={view} notes={notes} />,
             cells: compact ? [
               <CompactName x={x} notes={notes} />,
               <TrackFundId fundId={x.id} dataset={x.dataset} />,
@@ -302,16 +331,19 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
           ];
         }),
       ),
-    [view, by, defaults, compact],
+    [view, by, defaults, compact, foldRows],
   );
   let left = limit;
   const tableGroups: ProductGroup[] = [];
   for (const g of groups) {
-    if (left <= 0) break;
-    const drawn = g.tracks.slice(0, left);
+    // a folded group is its heading alone; an open one past the rows drawn so far waits for the rest
+    const shut = !!fold && !fold.isOpen(g.key);
+    if (!shut && left <= 0) continue;
+    const drawn = shut ? [] : g.tracks.slice(0, left);
     left -= drawn.length;
     tableGroups.push({
       key: g.key,
+      fold: fold && { open: !shut, onToggle: () => fold.toggle(g.key) },
       // a chosen kind is one list with no heading: the chip names it, and the count line holds its count and its fees
       heading: g.by === "kind" || fixed ? undefined : {
         title: g.companyId ? (

@@ -1,4 +1,4 @@
-// The gap sentence under the cost bars: its rounded parts add up to the rounded gap (F-91).
+// Whole-shekel parts that add up to their rounded sum (wholeParts, F-91), and how a pick of a house moves the fund (repick).
 import { describe, expect, it } from "vitest";
 import { buildInvest, knownIndices } from "../../lib/invest";
 import type { WorkbenchInputs } from "../../lib/providers";

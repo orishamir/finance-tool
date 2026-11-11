@@ -339,7 +339,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
 }
 
 /** The pill's name as a field: Enter or leaving the field keeps it, Escape goes back. */
-function RenameInput({ initial, placeholder, label, onDone }: { initial: string; placeholder: string; label: string; onDone: (name: string | null) => void }) {
+export function RenameInput({ initial, placeholder, label, onDone }: { initial: string; placeholder: string; label: string; onDone: (name: string | null) => void }) {
   const [value, setValue] = useState(initial);
   const ref = useRef<HTMLInputElement>(null);
   const cancelled = useRef(false);

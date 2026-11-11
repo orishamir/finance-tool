@@ -1,13 +1,13 @@
-// The index page's pair bars rendered on the collected data (part of render.test.ts, which says why it is split).
+// The index page's pair result (the receipt and the fees panel) rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { buildInvest, knownIndices } from "../../lib/invest";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
-import { allFunds, PairResult, pickOfHeadline } from "./pair";
-import { bundle, t, plan, html } from "./render-fixtures";
+import { allFunds, pickOfHeadline } from "./pair";
+import { bundle, t, plan, html, ReceiptAndFees } from "./render-fixtures";
 
-describe("every pair bar renders at the sliders' ends and between, with any fund picked (pass 7: the page fell over on MSCI ACWI)", () => {
+describe("the receipt and the fees panel render at the sliders' ends and between, with any fund picked (pass 7: the page fell over on MSCI ACWI)", () => {
   // the movement script leaves each slider a quarter of the way along (125,000 ₪, 2,500 ₪ a month, 11 years, 3%), and a hedged fund picked
   // there made the bar's total 1.46 ₪ off its one written part: the rounding guard threw and the page showed its error screen
   const at = (a: number, m: number, y: number, r: number): WorkbenchInputs => ({ ...plan, amountNow: a, monthly: m, years: y, grossReturn: r, values: { ...plan.values, amount: entered(a, "nis", t), monthly: entered(m, "nis_per_month", t), years: entered(y, "years", t), returnV: entered(r * 100, "pct_per_year", t) } });
@@ -20,7 +20,7 @@ describe("every pair bar renders at the sliders' ends and between, with any fund
         if (!head) continue;
         for (const f of allFunds(view)) {
           const pick = { house: head.house, fund: f.rec.id };
-          expect(() => html(createElement(PairResult, { view, bundle, plan: p, pick, chosen: true, onPick: () => undefined })), `${index.id} ${f.rec.id} ${p.amountNow}/${p.monthly}/${p.years}/${p.grossReturn}`).not.toThrow();
+          expect(() => html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: true, onPick: () => undefined })), `${index.id} ${f.rec.id} ${p.amountNow}/${p.monthly}/${p.years}/${p.grossReturn}`).not.toThrow();
         }
       }
     });

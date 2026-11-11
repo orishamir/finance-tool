@@ -7,7 +7,7 @@ import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
 import { IdRef, RulesLine, StrengthLabel } from "../provenance";
 import { Breadcrumb } from "../shell";
-import { Card, cx, Disclosure, gershayim, KeyValueList as KitKeyValueList, Section, TableCols } from "../kit";
+import { Card, cx, Disclosure, gershayim, KeyValueList as KitKeyValueList, Section, Stat, StatRow, TableCols } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -64,33 +64,76 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
   );
 }
 
-/** A guide page's columns: the section index beside the page's header and sections. */
-export function GuideFrame({ sections, current, children }: { sections: readonly SectionDef[]; current: string; children: ReactNode }) {
+/** A guide page's columns: the section index beside the page's header and sections; `foot` closes the page under a hairline (the key to the number marks). */
+export function GuideFrame({ sections, current, children, foot }: { sections: readonly SectionDef[]; current: string; children: ReactNode; foot?: ReactNode }) {
   return (
     <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
       <SectionIndex sections={sections} current={current} />
-      <div className="flex-1 min-w-0 flex flex-col gap-section">{children}</div>
+      <div className="flex-1 min-w-0 flex flex-col gap-section">
+        {children}
+        {foot && <div className="border-t border-border pt-6">{foot}</div>}
+      </div>
     </div>
   );
 }
 
-/** A guide page's header: the way back to the guide, the title, then what the page adds under it. */
-export function GuideHeader({ title, children }: { title: string; children?: ReactNode }) {
+/** One of the facts a guide opens with: what it is, in the words of the section that holds it, and its value. */
+export interface GlanceItem {
+  id: string;
+  label: ReactNode;
+  value: ReactNode;
+}
+
+/**
+ * A guide page's header: the way back to the guide, the title, then what the page adds under it. `glance` is the product's main
+ * facts in one card, each as its section states it: under the header's words, and beside them from `xl`, where the room is.
+ */
+export function GuideHeader({ title, children, glance = [] }: { title: string; children?: ReactNode; glance?: GlanceItem[] }) {
   return (
-    <header className="flex flex-col gap-3">
-      <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={title} />
-      <h1 className="text-2xl lg:text-3xl font-semibold">{title}</h1>
-      {children}
+    <header className="flex flex-col gap-6 xl:grid xl:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] xl:items-end xl:gap-x-12">
+      <div className="flex flex-col gap-3">
+        <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={title} />
+        <h1 className="text-2xl lg:text-3xl font-semibold">{title}</h1>
+        {children}
+      </div>
+      {/* one fact alone is no summary: the card shows from two */}
+      {glance.length > 1 && (
+        <Card pad="snug" className="max-w-measure xl:max-w-none">
+          <StatRow cols={2}>
+            {glance.map((g) => (
+              <Stat key={g.id} label={g.label}>
+                {g.value}
+              </Stat>
+            ))}
+          </StatRow>
+        </Card>
+      )}
     </header>
   );
 }
 
-/** A section of a guide page. */
+/**
+ * A section of a guide page, opened by a hairline across the page. Its blocks keep the prose measure, so words, lists and tables share
+ * one edge; a block marked `data-wide` (a drawing, a grid of cards) takes the page's width.
+ */
 export function GuideSection({ id, title, children, className }: { id: string; title: string; children: ReactNode; className?: string }) {
   return (
-    <Section id={id} title={title} className={className}>
-      <div className="flex flex-col gap-4">{children}</div>
+    <Section id={id} title={title} className={cx("border-t border-border pt-8", className)}>
+      <div className="flex flex-col gap-4 [&>*:not([data-wide])]:max-w-measure">{children}</div>
     </Section>
+  );
+}
+
+/**
+ * Detail inside a guide section that only a specialist needs (an index maker's entry conditions, a fund's tracking asset): one
+ * closed line in the link colour that names what it holds, and the detail under it once opened. It sits after the text it adds
+ * to, so a glossary term it names for the first time on the page is still the page's first use.
+ */
+export function GuideFold({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <Disclosure label={<span className="text-link">{label}</span>} summaryClassName="justify-start">
+      <div className="flex flex-col gap-3 pb-2">{children}</div>
+    </Disclosure>
   );
 }
 
@@ -104,9 +147,9 @@ export interface KeyValueItem {
   lead?: ReactNode;
 }
 
-/** The guide page's facts as the kit's key/value cards, each closed by its rule chips (design-spec 2). */
+/** The guide page's facts as the kit's key/value rows, each closed by its rule chips (design-spec 2). */
 export function KeyValueList({ items }: { items: KeyValueItem[] }) {
-  return <KitKeyValueList items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> }))} />;
+  return <KitKeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> }))} />;
 }
 
 export interface FeeRow {
@@ -144,7 +187,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
       </Card>
       <Card className="hidden md:block p-0 md:p-0 overflow-hidden">
         <table className="tbl">
-          <TableCols widths={["22%", "38%", "40%"]} />
+          <TableCols widths={["26%", "34%", "40%"]} />
           <thead>
             <tr>
               <th scope="col">{copy.feeTable.type}</th>
@@ -194,48 +237,36 @@ export interface TaxStep {
 /** The step's name on the list of its rules: its headline when that is words alone, else when it happens. */
 const stepName = (s: TaxStep) => (typeof s.headline === "string" ? s.headline : s.when);
 
-/** Phone: vertical with a line joining 28px circles at the start side, each holding a down chevron (UX fix 22). PC: three cards joined by arrows pointing left. */
+/**
+ * The three moments of the money as a rail of 28px circles: one under the other on a phone, the line at the start side and a down
+ * chevron in each (UX fix 22); side by side across the page from `lg`, the line along the top and the arrow pointing the way the
+ * money goes.
+ */
 export function TaxSteps({ steps }: { steps: TaxStep[] }) {
   return (
-    <>
-      <ol className="lg:hidden flex flex-col">
-        {steps.map((s, i) => (
-          <li key={s.id} className="relative ps-10 pb-6 last:pb-0">
-            {i < steps.length - 1 && <span className="absolute inset-s-[13px] top-7 bottom-0 w-0.5 bg-border" aria-hidden="true" />}
-            <span className="absolute inset-s-0 top-0 size-7 rounded-full border-2 border-primary bg-card flex items-center justify-center text-primary" aria-hidden="true">
+    <ol data-wide className="flex flex-col lg:grid lg:grid-cols-3">
+      {steps.map((s, i) => (
+        <li key={s.id} className="relative ps-10 pb-6 last:pb-0 lg:ps-0 lg:pb-0 lg:pt-11 lg:pe-8">
+          {i < steps.length - 1 && <span className="absolute bg-border inset-s-[13px] top-7 bottom-0 w-0.5 lg:inset-s-7 lg:inset-e-0 lg:top-[13px] lg:bottom-auto lg:w-auto lg:h-0.5" aria-hidden="true" />}
+          <span className="absolute inset-s-0 top-0 size-7 rounded-full border-2 border-primary bg-card flex items-center justify-center text-primary" aria-hidden="true">
+            <span className="lg:hidden">
               <IconChevronDown size={16} />
             </span>
-            <div className="flex flex-col gap-1">
-              <span className="text-sm text-muted-foreground">{s.when}</span>
-              <span className="font-medium">{s.headline}</span>
-              <span className="text-sm">{s.text}</span>
-              {s.tag}
-              {s.alt && <span className="text-sm text-muted-foreground">{s.alt}</span>}
-              <RulesLine ids={s.rules} name={stepName(s)} />
-            </div>
-          </li>
-        ))}
-      </ol>
-      <ol className="hidden lg:grid gap-0 items-stretch" style={{ gridTemplateColumns: "1fr 24px 1fr 24px 1.3fr" }}>
-        {steps.map((s, i) => (
-          <li key={s.id} className="contents">
-            <Card className="flex flex-col gap-1.5">
-              <span className="text-sm text-muted-foreground">{s.when}</span>
-              <span className="text-xl font-semibold">{s.headline}</span>
-              <span className="text-sm">{s.text}</span>
-              {s.alt && <span className="text-sm text-muted-foreground">{s.alt}</span>}
-              {s.tag && <span>{s.tag}</span>}
-              <RulesLine ids={s.rules} name={stepName(s)} className="mt-auto" />
-            </Card>
-            {i < steps.length - 1 && (
-              <span className="flex items-center justify-center text-muted-foreground" aria-hidden="true">
-                <IconDrillIn size={24} />
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
-    </>
+            <span className="max-lg:hidden">
+              <IconDrillIn size={16} />
+            </span>
+          </span>
+          <div className="flex flex-col gap-1 lg:h-full">
+            <span className="text-sm text-muted-foreground">{s.when}</span>
+            <span className="font-medium lg:text-lg lg:font-semibold">{s.headline}</span>
+            <span className="text-sm">{s.text}</span>
+            {s.tag}
+            {s.alt && <span className="text-sm text-muted-foreground">{s.alt}</span>}
+            <RulesLine ids={s.rules} name={stepName(s)} className="lg:mt-auto" />
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 

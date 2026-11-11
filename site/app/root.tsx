@@ -6,7 +6,8 @@ import heeboHebrew from "../../node_modules/@fontsource-variable/heebo/files/hee
 import { InputsProvider } from "./lib/inputs";
 import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
-import { system } from "./copy";
+import { site, system } from "./copy";
+import { pageMeta, type MetaPlace } from "./lib/page-meta";
 import { useIsoLayoutEffect } from "./lib/hooks";
 
 /**
@@ -18,6 +19,11 @@ import { useIsoLayoutEffect } from "./lib/hooks";
 export async function loader() {
   const { rootData } = await import("./lib/root.server");
   return rootData();
+}
+
+/** The head of a page no route answers for (the fallback the build writes as 404.html): the site's own card. Each route's `meta` replaces it. */
+export function meta({ location }: MetaPlace) {
+  return pageMeta({ title: null, description: site.tagline, location });
 }
 
 export function links() {

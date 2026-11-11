@@ -13,11 +13,12 @@ export const scrollCueStyle: CSSProperties = {
     "linear-gradient(to right, var(--card) 30%, transparent) left center / 32px 100% no-repeat local, linear-gradient(to left, var(--card) 30%, transparent) right center / 32px 100% no-repeat local, radial-gradient(farthest-side at 0 50%, rgb(255 255 255 / 0.22), transparent) left center / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(255 255 255 / 0.22), transparent) right center / 14px 100% no-repeat scroll",
 };
 
-export type SwatchShape = "line" | "box" | "entered-line" | "rule" | "dotted-line";
+export type SwatchShape = "line" | "box" | "entered-line" | "rule" | "dotted-line" | "cut";
 
-/** The little mark of a series: `line` (14 by 3 px) for a line, `box` (10 px) for a band, `entered-line` (dashed, a stroke class) for a series that rests on an entered return, `rule` (dashed border) for a reference, `dotted-line` (round dots, a stroke class) for the comparison chart's baseline, which runs beside dashed entered-return lines. `className` carries the colour role. */
+/** The little mark of a series: `line` (14 by 3 px) for a line, `box` (10 px) for a band, `entered-line` (dashed, a stroke class) for a series that rests on an entered return, `rule` (dashed border) for a reference, `dotted-line` (round dots, a stroke class) for the comparison chart's baseline, which runs beside dashed entered-return lines, `cut` (stripes on a grey, rounded end, a text class) for the end of a bar cut at its scale (`CostStack` `track`). `className` carries the colour role. */
 export function Swatch({ shape = "line", className }: { shape?: SwatchShape; className?: string }) {
   if (shape === "box") return <span className={cx("size-2.5 rounded-sm", className)} />;
+  if (shape === "cut") return <span aria-hidden="true" className={cx("inline-block h-3 w-3 shrink-0 rounded-e-full bg-muted hatch-cut", className)} />;
   if (shape === "rule") return <span className={cx("w-3.5 border-t-2 border-dashed", className)} />;
   if (shape === "dotted-line")
     return (
@@ -124,11 +125,12 @@ export interface TableRowData {
 /**
  * A table always in view with a fixed width per column, so nothing moves when a number changes: a header on every column, row heads at
  * the start, `strong` for a closing row, and `hideOnPhone` for a column the phone can do without. `measure` caps it at the prose width
- * (38 rem), for a table of words inside guide prose: on a PC it no longer runs wider than the text around it.
+ * (38 rem), for a table of words inside guide prose: on a PC it no longer runs wider than the text around it. Without it the table is
+ * marked `data-wide`, so a guide section, which holds its blocks to the prose width, leaves it the page's.
  */
 export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: ReactNode; columns: { id: string; head: ReactNode; hideOnPhone?: boolean }[]; rows: { key: string; head: ReactNode; cells: ReactNode[]; strong?: boolean }[]; measure?: boolean }) {
   return (
-    <table className={cx("tbl text-sm max-md:text-[13px] [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1", measure && "max-w-measure")}>
+    <table data-wide={measure ? undefined : ""} className={cx("tbl text-sm max-md:text-[13px] [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1", measure && "max-w-measure")}>
       <TableCols widths={["auto", ...columns.map((c) => ({ pc: "auto", phone: c.hideOnPhone ? "0" : "auto" }))]} />
       <thead>
         <tr>

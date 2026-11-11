@@ -175,10 +175,16 @@ export function sourceLabel2(source: RuleSource): SourceNames {
 /** Maya's page of a fund listed in Israel. An ETF sits under the same address as any other fund; "etfs" does not exist there (47 of 47 checked). */
 export const mayaFundHref = (number: string) => `https://maya.tase.co.il/he/funds/mutual-funds/${number}`;
 
+/**
+ * A title as the reader sees it, without the rule codes a record's working title may carry in brackets ("אינטראקטיב ישראל: בורסה
+ * ישראלית (BRK-41)"): a code tells the reader nothing, and stays in the rule's card (D48). An index's name ("TA-35") is not a code.
+ */
+export const withoutCodes = (title: string): string => title.replace(/\s*\((?:(?!TA-)[A-Z][A-Z0-9]{0,4}-\d{1,3}(?:[,;]\s*)?)+\)/g, "").trim();
+
 /** The title as shown, in this order: a Hebrew title as it is; the document kind's word
  * ("מסמך של החברה", "עמוד של הרשות"); the link's host. The English working title is never shown (F1 and F4). */
 export function shownTitle(title: string, url: string, kind?: string): { text: string; host: boolean } {
-  if (isHebrewTitle(title)) return { text: hebrewCitation(title), host: false };
+  if (isHebrewTitle(title)) return { text: hebrewCitation(withoutCodes(title)), host: false };
   const word = kind ? (documentsCopy.kinds as Record<string, string>)[kind] : undefined;
   if (word) return { text: word, host: false };
   return { text: hostOf(url) ?? title, host: !!hostOf(url) };

@@ -78,7 +78,9 @@ function useHits(index: SearchEntry[] | null, texts: SearchTexts | null, text: s
   }, [index, texts, text]);
 }
 
-const groupLabel = (kind: SearchKind): string => (searchMore.groups as Record<string, string>)[kind] ?? (searchCopy.groups as Record<string, string>)[kind] ?? "";
+/** A group's heading; the guide group says so when a page that compares the product stands in it beside the guide. */
+const groupLabel = (kind: SearchKind, items: SearchHit[]): string =>
+  kind === "guide" && items.some((h) => h.entry.kind === "compare") ? searchCopy.guideAndCompare : ((searchMore.groups as Record<string, string>)[kind] ?? (searchCopy.groups as Record<string, string>)[kind] ?? "");
 
 /** Ids, codes and numbers inside a Hebrew line are isolated so bidi reordering cannot scramble them. */
 function Isolated({ text }: { text: string }): ReactNode {
@@ -94,20 +96,12 @@ function RowLine({ hit, found, text }: { hit: SearchHit; found: Found; text: str
   const r = hit.entry;
   if (hit.fig) {
     const label = hit.fig.f ?? searchMore.figureLine;
-    return <Isolated text={`${label} · ${formatValue(hit.fig.n, hit.fig.u)} · ${r.key ?? ""}`} />;
+    return <Isolated text={`${label} · ${formatValue(hit.fig.n, hit.fig.u)}`} />;
   }
   if (hit.viaText && found.texts && r.key) {
     const raw = found.texts[r.key];
     const snippet = raw ? snippetOf(raw, found.analysis) : null;
-    if (snippet) {
-      const tail = isRuleKind(r.kind) || r.kind === "parameter" ? ` · ${r.key}` : "";
-      return (
-        <>
-          <Marked text={snippet} query={text} />
-          {tail && <Isolated text={tail} />}
-        </>
-      );
-    }
+    if (snippet) return <Marked text={snippet} query={text} />;
   }
   return <Isolated text={r.line} />;
 }
@@ -152,8 +146,8 @@ function SearchBody({ text, setText, found }: { text: string; setText: (t: strin
           {groups.map((g) => {
             const show = expanded.has(g.kind) ? g.items : g.items.slice(0, 5);
             return (
-              <section key={g.kind} aria-label={groupLabel(g.kind)} className="flex flex-col gap-1">
-                <h3 className="text-xs text-muted-foreground">{groupLabel(g.kind)}</h3>
+              <section key={g.kind} aria-label={groupLabel(g.kind, g.items)} className="flex flex-col gap-1">
+                <h3 className="text-xs text-muted-foreground">{groupLabel(g.kind, g.items)}</h3>
                 <ul className="flex flex-col">
                   {show.map((hit) => {
                     const { entry: r, also } = hit;
@@ -163,7 +157,7 @@ function SearchBody({ text, setText, found }: { text: string; setText: (t: strin
                         <span className="flex flex-col min-w-0">
                           <span className="font-medium inline-flex items-center gap-1.5">
                             <bdi>
-                              <Marked text={r.name} query={text} />
+                              <Marked text={gershayim(r.name)} query={text} />
                             </bdi>
                             {isRuleKind(r.kind) && r.st === 4 && <IconLock size={14} className="text-muted-foreground shrink-0" />}
                           </span>

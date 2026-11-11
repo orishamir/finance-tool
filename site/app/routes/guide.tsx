@@ -2,8 +2,9 @@
 import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
-import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, scopeWords, site } from "../copy";
-import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
+import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePreview, scopeWords } from "../copy";
+import { pageMeta } from "../lib/page-meta";
+import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type GlanceItem, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { IdRef, Num, NumberLegend, ReadingTag, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
@@ -42,8 +43,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds, feePage: feePageAnswers(compareBundle(), params.id) };
 }
 
-export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.name ? gershayim(data.name) : guideIndex.title} · ${site.name}` }];
+export function meta({ loaderData: data, location }: Route.MetaArgs) {
+  const name = data?.name ? gershayim(data.name) : guideIndex.title;
+  return pageMeta({ title: name, description: data?.lede ?? pagePreview.guide(name), location });
 }
 
 export default function GuidePage() {
@@ -385,6 +387,13 @@ export default function GuidePage() {
       <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} lumpSum={lumpSumIds.includes(record.id) ? { note: content?.lumpNote ?? null } : null} />
     ) : null;
 
+  // the header's card: when the money is free, the deposit ceiling, the tax on the way out and the first fee, each as its section states it
+  const glance: GlanceItem[] = [];
+  if (!omitted("inout")) for (const id of ["withdraw", "ceiling"]) for (const it of inout.filter((x) => x.id === id)) glance.push({ id, label: it.label, value: it.value });
+  const exitStep = steps.find((x) => x.id === "exit");
+  if (!omitted("tax") && exitStep) glance.push({ id: "tax", label: <>{title("tax")}, {exitStep.when}</>, value: exitStep.headline });
+  if (!omitted("cost") && fees[0]) glance.push({ id: "cost", label: fees[0].name, value: fees[0].cap });
+
   const links = (
     <>
       <RelatedProducts items={data.related} />
@@ -395,8 +404,10 @@ export default function GuidePage() {
 
   return (
     <PageShell current="guide" data={provenance}>
-      <GuideFrame sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current}>
-        <GuideHeader title={gershayim(data.name)}>
+      <GuideFrame
+        foot={<NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} doubt={anyDoubt((signature?.banks ?? []).map((b) => b.rate))} />}
+        sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current}>
+        <GuideHeader title={gershayim(data.name)} glance={glance}>
           {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{gershayim(data.lede)}</p>}
           {data.heldIn && (
             <div className="flex flex-col gap-1 max-w-measure">
@@ -414,13 +425,12 @@ export default function GuidePage() {
               <RulesLine ids={gen(data.heldIn.ruleIds)} />
             </div>
           )}
-          <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} doubt={anyDoubt((signature?.banks ?? []).map((b) => b.rate))} />
         </GuideHeader>
 
         <GuideSection id="what" title={title("what")}>
           {content?.what(cp)}
           {/* D29: a page with a visual folds the timeline under it; without one it stays here */}
-          {!signature && timelineNode}
+          {!signature && timelineNode && <div data-wide>{timelineNode}</div>}
           {omitted("use") && links}
         </GuideSection>
 

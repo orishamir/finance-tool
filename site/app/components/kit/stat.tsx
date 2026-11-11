@@ -40,9 +40,9 @@ export function StatRow({ children, cols = 3 }: { children: ReactNode; cols?: ke
 }
 
 /** One label and its value on a line, the label at the start and the value at the end. Rows of a `<dl>` (a fee line, a term). */
-export function KeyValue({ label, children, size = "sm" }: { label: ReactNode; children: ReactNode; /** The value's size: `sm` (14 px) or `base` (16 px). */ size?: "sm" | "base" }) {
+export function KeyValue({ label, children, size = "sm" }: { label: ReactNode; children: ReactNode; /** The value's size: `xs` (13 px, label and value both, in a small tile), `sm` (14 px) or `base` (16 px). */ size?: "xs" | "sm" | "base" }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 text-sm">
+    <div className={cx("flex items-baseline justify-between gap-3", size === "xs" ? "text-xs" : "text-sm")}>
       <dt className="text-muted-foreground">{label}</dt>
       <dd className={size === "base" ? "text-base" : undefined}>{children}</dd>
     </div>
@@ -62,8 +62,31 @@ export interface KeyValueItem {
   footer?: ReactNode;
 }
 
-/** Facts as cards: one card with dividers on a phone, a two-by-two grid with the value at 20 px from `lg` (design-spec 2). */
-export function KeyValueList({ items }: { items: KeyValueItem[] }) {
+/**
+ * Facts as cards: one card with dividers on a phone, a two-by-two grid with the value at 20 px from `lg` (design-spec 2).
+ * `rows`: one card of divided rows at every size, the label in a column of its own from `md` and the value at body size, for facts
+ * whose values run to sentences (a guide page's list).
+ */
+export function KeyValueList({ items, rows }: { items: KeyValueItem[]; rows?: boolean }) {
+  if (rows)
+    return (
+      <Card pad="none" className="flex flex-col divide-y divide-border">
+        {items.map((it) => (
+          <div key={it.id} className="flex flex-col gap-1 p-4 md:grid md:grid-cols-[10rem_minmax(0,1fr)] md:gap-x-6 md:px-5">
+            <span className="text-sm text-muted-foreground md:pt-0.5">{it.label}</span>
+            <span className="flex min-w-0 flex-col gap-1">
+              <span className="flex flex-wrap items-center gap-2">
+                <span>{it.value}</span>
+                {it.tag}
+              </span>
+              {it.line && <span className="text-sm">{it.line}</span>}
+              {it.lead && <span className="text-xs text-muted-foreground">{it.lead}</span>}
+              {it.footer}
+            </span>
+          </div>
+        ))}
+      </Card>
+    );
   return (
     <>
       {/* the card pads itself and each item pads again: the earlier `p-0 md:p-0` never took effect (the stylesheet puts p-4 after p-0), so the look is kept and the dead classes dropped */}
