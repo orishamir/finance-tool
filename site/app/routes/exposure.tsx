@@ -38,7 +38,7 @@ export default function ExposurePage() {
   const kind = copy.kinds[record.kind] ?? record.kind;
   return (
     <PageShell current="guide" data={provenance}>
-      <GuideFrame sections={[...copy.sections]} current={current}>
+      <GuideFrame sections={[...copy.sections]} current={current} foot={<NumberLegend term />}>
         <GuideHeader title={data.name}>
           {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
           <p className="flex flex-wrap gap-2 text-sm text-muted-foreground">
@@ -51,7 +51,6 @@ export default function ExposurePage() {
               {copy.currencyLabel}: <bdi dir="ltr">{copy.currencies[record.currency] ?? record.currency}</bdi>
             </Tag>
           </p>
-          <NumberLegend term />
         </GuideHeader>
 
         <GuideSection id="what" title={copy.sections[0].title}>
@@ -64,7 +63,7 @@ export default function ExposurePage() {
           {data.holders.length === 0 ? (
             <p className="text-muted-foreground">{copy.holdNone}</p>
           ) : (
-            <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <ul data-wide className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {data.holders.map((h) => (
                 <li key={h.id}>
                   <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]">

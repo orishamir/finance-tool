@@ -1,11 +1,11 @@
 // What moves the result (the indices page): every plan number changed by the same share on one chart, left to
 // right from less to more, all lines crossing at the plan; a marker the person drags (or sets with a choice) reads every line at one
-// share, and the table under it says, for each number, what it was, what it becomes, what is left and the difference. Own SVG.
+// share, and beside it the numbers ranked by how much they change what is left, a row each: the number before and after, a bar of the
+// difference from one zero line, the difference and what is left. Own SVG; the rows are HTML.
 import { useState, type PointerEvent, type ReactNode } from "react";
 import { tickFade, ticksOn, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn } from "./chart-glide";
 import { pickDim, useChartPick } from "./chart-interact";
 import { cx } from "./cx";
-import { PHONE_GONE, TableCols } from "./table-cols";
 import { ChoiceChips } from "./choice";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { useWidth } from "./marker";
@@ -20,11 +20,20 @@ export interface ChangeLine {
   ys: (number | null)[];
 }
 
+/** A number's row, in rank order. */
 export interface ChangeRow {
   id: string;
-  /** The line's swatch class (`bg-chart-lever-1`). */
+  /** The line's swatch class (`bg-chart-lever-1`), and the bar's. */
   swatch: string;
-  cells: ReactNode[];
+  name: ReactNode;
+  /** The number in the plan, and after the change. */
+  from: ReactNode;
+  to: ReactNode;
+  /** The difference in what is left, with its word ("19,116 ₪ יותר"), and the bar's length (its size, on the rows' shared scale). */
+  diff: ReactNode;
+  size: number;
+  /** What is left after the change. */
+  left: ReactNode;
 }
 
 const H = 260;
@@ -41,8 +50,6 @@ const SWATCH_GAP = 5;
 const END_LINE = 16;
 /** Top to top between two lines' end labels (a name and the value under it). */
 const END_GAP = 36;
-/** A column left out on a phone leaves the grid with its <col> (TableCols), so its cells go too. */
-const GONE = PHONE_GONE;
 
 export function ChangeChart({
   lines,
@@ -58,8 +65,7 @@ export function ChangeChart({
   choicesLabel,
   head,
   rows,
-  widths,
-  stackOnPhone,
+  rowsLabel,
 }: {
   lines: ChangeLine[];
   /** The shares the lines are priced at, in percent, from the lowest to the highest; 0 is the plan. */
@@ -75,17 +81,11 @@ export function ChangeChart({
   yTitle: string;
   yFormat: (n: number) => string;
   choicesLabel: string;
-  head: ReactNode[];
+  /** The rows' heads: the number with its two values, the difference, and the word before what is left. */
+  head: { number: ReactNode; diff: ReactNode; left: ReactNode };
   rows: ChangeRow[];
-  /** Each column's width, on a computer and on a phone ("0" leaves the column out on a phone): fixed, so no value that changes
-   * moves a column. The widths add up to 100% on each. */
-  widths: { pc: string; phone: string }[];
-  /**
-   * Two columns that share one on a phone, `[top, under]`: the under column's figure sits below the top one's, and its own column is left
-   * out (its phone width "0"). Four figures side by side left a phone's column 63 px for a typed plan's "50,000,000 ₪", and three
-   * figures were printed over each other.
-   */
-  stackOnPhone?: [number, number];
+  /** The rows' spoken name. */
+  rowsLabel: string;
 }) {
   const [ref, w] = useWidth(600);
   const [drag, setDrag] = useState(false);
@@ -148,10 +148,14 @@ export function ChangeChart({
   const grid = ticksOn(fading, y, [TOP, H - BOTTOM]);
   const path = (pts: { year: number; v: number }[]) => pts.reduce<string>((acc, p, i) => (!Number.isFinite(p.v) ? acc : `${acc}${acc && Number.isFinite(pts[i - 1]?.v) ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`), "");
   const ids = choices.map(String);
-  const tableRows = useFlip<HTMLTableSectionElement>(rows.map((r) => r.id).join());
+  const rowList = useFlip<HTMLOListElement>(rows.map((r) => r.id).join());
+  const top = Math.max(0, ...rows.map((r) => r.size));
   return (
     <div className="flex flex-col gap-3">
       <ChoiceChips ids={ids} labels={Object.fromEntries(choices.map((s) => [String(s), shareWord(s)]))} value={ids.includes(String(at)) ? String(at) : null} onChange={(id) => onAt(Number(id))} ariaLabel={choicesLabel} wrap />
+      {/* the ranked rows at the start, the chart beside them where there is room; on a phone the chart first */}
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
+      <div className="flex min-w-0 flex-col gap-3 lg:order-last">
       <p className="text-xs text-muted-foreground">{yTitle}</p>
       <div ref={ref} dir="ltr" className="select-none -mt-2">
         <svg
@@ -208,43 +212,37 @@ export function ChangeChart({
         </svg>
       </div>
       <p className="text-xs text-muted-foreground text-center -mt-2">{xTitle}</p>
-      <div className="overflow-x-auto">
-        <table className="tbl text-sm max-md:text-[13px] max-md:[&_td]:px-1.5 max-md:[&_th]:px-1.5">
-          <TableCols widths={widths} />
-          <thead>
-            <tr>
-              {head.map((h, i) => (
-                <th key={i} scope="col" className={widths[i]?.phone === "0" ? GONE : undefined}>
-                  {h}
-                  {stackOnPhone?.[0] === i && <span className="block md:hidden">{head[stackOnPhone[1]]}</span>}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody ref={tableRows}>
-            {rows.map((r) => (
-              <tr key={r.id} data-flip={r.id} {...pick.bind(r.id)} className={cx("cursor-pointer transition-colors duration-[var(--duration-fast)]", pick.active === r.id && "bg-accent")}>
-                {r.cells.map((c, i) => (
-                  <td key={i} className={widths[i]?.phone === "0" ? GONE : undefined}>
-                    {i === 0 ? (
-                      <span className="inline-flex items-center gap-2">
-                        <span aria-hidden="true" className={`inline-block size-3 rounded-sm ${r.swatch}`} />
-                        {c}
-                      </span>
-                    ) : stackOnPhone?.[0] === i ? (
-                      <>
-                        {c}
-                        <span className="block md:hidden">{r.cells[stackOnPhone[1]]}</span>
-                      </>
-                    ) : (
-                      c
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      </div>
+      <div className="flex min-w-0 flex-col">
+        <div className="flex items-baseline justify-between gap-3 border-b border-border pb-1.5 text-xs text-muted-foreground">
+          <span>{head.number}</span>
+          <span>{head.diff}</span>
+        </div>
+        {/* the bars of the differences from one zero line at the rows' start (charts.md: a bar in a Hebrew row grows with the row) */}
+        <ol ref={rowList} aria-label={rowsLabel} data-chart="change-rows" className="flex flex-col">
+          {rows.map((r, i) => (
+            <li key={r.id} data-flip={r.id} {...pick.bind(r.id)} className={cx("grid cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 border-b border-border px-1 py-2.5 transition-colors duration-[var(--duration-fast)]", pick.active === r.id && "bg-accent")}>
+              <span className="flex min-w-0 flex-wrap items-baseline gap-x-2">
+                <span className="inline-flex items-center gap-2 font-semibold">
+                  <span aria-hidden="true" className={cx("inline-block size-3 rounded-sm", r.swatch)} />
+                  {r.name}
+                </span>
+                <span className="whitespace-nowrap text-xs text-muted-foreground tabular-nums">
+                  {r.from} ← {r.to}
+                </span>
+              </span>
+              <span className="text-end font-semibold">{r.diff}</span>
+              <span className="relative flex h-4 items-center">
+                {i === 0 && <span aria-hidden="true" data-zero className="absolute inset-y-0 start-0 w-px" />}
+                {top > 0 && r.size > 0 && <span aria-hidden="true" data-mark="bar" className={cx("block h-4 rounded-e-[4px] transition-[width] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", r.swatch)} style={{ width: `${(100 * r.size) / top}%` }} />}
+              </span>
+              <span className="text-end text-xs text-muted-foreground">
+                {head.left} {r.left}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
       </div>
     </div>
   );

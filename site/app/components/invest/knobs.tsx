@@ -1,8 +1,8 @@
 // The plan controls of the indices and fee pages: the four plan numbers as plain sliders, the rest behind a
 // button; they write the values the person entered on this device (lib/inputs.tsx, the guide pages' own), never the saved goal
-// (only the goal page speaks of a goal). At the bottom of the indices page, what each number changed by the
-// same share does to the result (F-89, F-90).
-import { useMemo, useState } from "react";
+// (only the goal page speaks of a goal). In a tab of the indices page, what each number changed by the same share does to the result
+// (F-89, F-90).
+import { useMemo } from "react";
 import { changedByShare, sweep } from "@finance-tool/engine";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
@@ -15,7 +15,7 @@ import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
-import { ChangeChart, KnobStrip, NumberField, SegmentedControl, percentCheck, type Knob } from "../kit";
+import { ChangeChart, KnobStrip, NumberField, PanelHead, SegmentedControl, percentCheck, type Knob } from "../kit";
 
 type Range = { min: number; max: number; step: number };
 export type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
@@ -60,7 +60,7 @@ const valueOf = (fi: FeeInputs, id: Id) => {
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-export function PlanKnobs({ fi, ranges, pct }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number } }) {
+export function PlanKnobs({ fi, ranges, pct, stacked }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number }; /** One under the other (the index page's side card). */ stacked?: boolean }) {
   const setKnob = useSetKnob();
   const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
   const field = (id: Id) => {
@@ -74,18 +74,18 @@ export function PlanKnobs({ fi, ranges, pct }: { fi: FeeInputs; ranges: KnobRang
     { ...field("years"), unit: "years", ...span(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
     { ...field("ret"), unit: "pct_per_year", ...span(ranges["A-01"]), validate: percentCheck(pct) },
   ];
-  return <KnobStrip knobs={knobs} />;
+  return <KnobStrip knobs={knobs} stacked={stacked} />;
 }
 
-/** F-89 and F-90: every plan number changed by the same share, on one chart with a marker and a table, at the bottom of the page.
- * 4 lines of 21 runs, the page's heaviest work, so it waits for the charts above to finish moving. */
-export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan: WorkbenchInputs; share: { min: number; max: number; step: number; start: number }; bundle: IndicesBundle; view: InvestView | null; pick: Pair }) {
+type Share = { min: number; max: number; step: number; start: number };
+
+/** F-89 and F-90: every plan number changed by the same share, 4 lines of 21 runs, the page's heaviest work: it waits until the plan has
+ * rested. Null where the page prices no pair. Its tab's answer reads it whether or not its panel is open. */
+export function usePlanChanges({ plan: resting, share, bundle, view, pick }: { plan: WorkbenchInputs; share: Share; bundle: IndicesBundle; view: InvestView | null; pick: Pair }) {
   const plan = useSettled(resting, 400);
   const left = usePairLeft(bundle, view, pick);
-  const [at, setAt] = useState(share.start);
-  const ch = k.changes;
   const shares = useMemo(() => Array.from({ length: Math.round((share.max - share.min) / share.step) + 1 }, (_, i) => share.min + i * share.step), [share]);
-  const run = useMemo(() => {
+  return useMemo(() => {
     if (!left) return null;
     const base = left.value(plan);
     if (!base) return null;
@@ -93,34 +93,49 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
       const tos = shares.map((sh) => changedByShare(plan[key] * scale, sh / 100, id === "years"));
       return { id, key, scale, tos, ys: sweep(left.number, plan, key, tos, scale) };
     });
-    return { base, lines };
+    return { plan, shares, base, lines };
   }, [left, plan, shares]);
-  if (!run) return null;
+}
+export type PlanChangesRun = NonNullable<ReturnType<typeof usePlanChanges>>;
 
+const unitOf: Record<Id, "nis" | "nis_per_month" | "years" | "pct_per_year"> = { amount: "nis", monthly: "nis_per_month", years: "years", ret: "pct_per_year" };
+const planValueOf = (plan: WorkbenchInputs): Record<Id, SiteValue> => ({ amount: plan.values.amount, monthly: plan.values.monthly, years: plan.values.years, ret: plan.values.returnV });
+
+/** Each number at one share: what it becomes, what is left after it and the difference from the plan, ranked by how much it changes what is left. */
+export function changesAt(run: PlanChangesRun, at: number, share: Share, today: string) {
+  const ch = k.changes;
   const idx = Math.round((at - share.min) / share.step);
-  const unitOf: Record<Id, "nis" | "nis_per_month" | "years" | "pct_per_year"> = { amount: "nis", monthly: "nis_per_month", years: "years", ret: "pct_per_year" };
-  const planValue: Record<Id, SiteValue> = { amount: plan.values.amount, monthly: plan.values.monthly, years: plan.values.years, ret: plan.values.returnV };
-  const show = (id: Id, n: number) => (id === "years" ? fmt.years(n) : id === "ret" ? fmt.pct(n) : fmt.nisWhole(n));
-  const word = (sh: number) => `${Math.abs(sh)}% ${sh > 0 ? ch.more : ch.less}`;
+  const planValue = planValueOf(run.plan);
   // what the plan's run reads (the value left on the plan carries it), the changed number in its place: a run after the change reads the same
   const baseInputs = (run.base.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
-  const rows = run.lines
+  return run.lines
     .map((l, n) => {
       const after = l.ys[idx] ?? null;
-      const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [labelOf[l.id]]: planValue[l.id] }, { today: bundle.today, about: ch.aboutTo });
+      const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [labelOf[l.id]]: planValue[l.id] }, { today, about: ch.aboutTo });
       const planName = c.planInputs[PLAN_INPUT[l.id]];
       const afterInputs = Object.fromEntries(Object.entries(baseInputs).map(([name, v]) => [name, name === planName ? to : v]));
-      const afterValue = after === null ? null : computed(Math.round(after), "nis", "F-90", afterInputs, { today: bundle.today, about: ch.aboutLeft });
+      const afterValue = after === null ? null : computed(Math.round(after), "nis", "F-90", afterInputs, { today, about: ch.aboutLeft });
       return {
         l,
         n,
         to,
         after: afterValue,
         // the value left after the change less the value left on the plan; taken before the rounding, as the row always was
-        diff: after === null || !afterValue ? null : computed(Math.round(after - (run.base.value as number)), "nis", "F-89", { [ch.aboutLeft]: afterValue, [k.changes.planHead]: run.base }, { today: bundle.today, about: ch.aboutDiff }),
+        diff: after === null || !afterValue ? null : computed(Math.round(after - (run.base.value as number)), "nis", "F-89", { [ch.aboutLeft]: afterValue, [k.changes.planHead]: run.base }, { today, about: ch.aboutDiff }),
       };
     })
     .sort((a, b) => Math.abs((b.diff?.value as number) ?? 0) - Math.abs((a.diff?.value as number) ?? 0));
+}
+
+/** "20% יותר", "10% פחות": a share in words. */
+export const shareWord = (sh: number) => `${Math.abs(sh)}% ${sh > 0 ? k.changes.more : k.changes.less}`;
+
+/** The panel: the headline at the share shown, the chart of the four lines and the numbers ranked beside it. */
+export function PlanChanges({ run, at, onAt, share, today }: { run: PlanChangesRun; at: number; onAt: (at: number) => void; share: Share; today: string }) {
+  const ch = k.changes;
+  const planValue = planValueOf(run.plan);
+  const show = (id: Id, n: number) => (id === "years" ? fmt.years(n) : id === "ret" ? fmt.pct(n) : fmt.nisWhole(n));
+  const rows = changesAt(run, at, share, today);
   const diffText = (d: SiteValue) => (
     <>
       <Num value={d} display={fmt.nisWhole(Math.abs(d.value as number))} /> {(d.value as number) >= 0 ? ch.more : ch.less}
@@ -139,49 +154,40 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
       </>
     );
   return (
-    <section className="flex flex-col gap-3" aria-label={ch.title}>
-      <h2 className="text-lg font-semibold">{ch.title}</h2>
-      <p className="text-base font-medium">{headline}</p>
+    <div className="flex flex-col gap-3">
+      <PanelHead kicker={ch.title}>{headline}</PanelHead>
       <p className="text-sm text-muted-foreground max-w-measure">{ch.lead}</p>
       <ChangeChart
         lines={run.lines.map((l, n) => ({ id: l.id, label: labelOf[l.id], stroke: LINE[n]!.stroke, fill: LINE[n]!.fill, ys: l.ys }))}
-        shares={shares}
+        shares={run.shares}
         at={at}
-        onAt={setAt}
+        onAt={onAt}
         choices={CHOICES.filter((c) => c >= share.min && c <= share.max)}
-        shareWord={word}
+        shareWord={shareWord}
         planWord={ch.planWord}
         xTitle={ch.xTitle}
         yTitle={ch.yTitle}
         yFormat={(v) => fmt.number(Math.round(v))}
         choicesLabel={ch.choices}
-        head={[...ch.cols]}
-        // on a phone the plan's number and the changed one share a column, one under the other: four figures side by side left each 63 px,
-        // and a typed plan's "50,000,000 ₪" ran over its neighbours
-        widths={[
-          { pc: "24%", phone: "27%" },
-          { pc: "18%", phone: "37%" },
-          { pc: "18%", phone: "0" },
-          { pc: "20%", phone: "0" },
-          { pc: "20%", phone: "36%" },
-        ]}
-        stackOnPhone={[1, 2]}
+        head={{ number: `${ch.cols[0]} · ${ch.cols[1]} ← ${ch.cols[2]}`, diff: ch.cols[4], left: ch.cols[3] }}
+        rowsLabel={ch.title}
         rows={rows.map(({ l, n, to, after, diff }) => {
-          // a row with a figure of a billion or more writes its other shekel figures in the same short form; only the figures a phone shows
-          // count (what is left is not in a phone's table), or a typed "50,000,000 ₪" read "0.05 מיליארד ₪" beside it
+          // a row with a figure of a billion or more writes its other shekel figures in the same short form
           const short = shortRow(...(l.id === "amount" || l.id === "monthly" ? [planValue[l.id].value as number, to.value as number] : []), diff?.value as number);
-          const cells = [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? (
-              // on a phone the word goes under the figure, on every row, so the column holds a nine-digit figure at the sliders' far ends with the
-              // largest share ("7,369,509 ₪ יותר" was cut at 390 px)
-              <span key="d" className="font-semibold">
-                <Num value={diff} display={fmt.nisWhole(Math.abs(diff.value as number))} /> <span className="whitespace-nowrap max-md:block">{(diff.value as number) >= 0 ? ch.more : ch.less}</span>
-              </span>
-            ) : null];
-          return { id: l.id, swatch: LINE[n]!.bg, cells: cells.map((cell, i) => <ShortRow key={i} when={short}>{cell}</ShortRow>) };
+          return {
+            id: l.id,
+            swatch: LINE[n]!.bg,
+            name: labelOf[l.id],
+            from: <ShortRow when={short}><Num value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} /></ShortRow>,
+            to: <ShortRow when={short}><Num value={to} display={show(l.id, to.value as number)} /></ShortRow>,
+            diff: diff ? <ShortRow when={short}>{diffText(diff)}</ShortRow> : null,
+            size: diff ? Math.abs(diff.value as number) : 0,
+            left: after ? <ShortRow when={short}><Num value={after} /></ShortRow> : null,
+          };
         })}
       />
       <p className="text-sm text-muted-foreground">{ch.foot}</p>
-    </section>
+    </div>
   );
 }
 

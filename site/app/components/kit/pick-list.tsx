@@ -14,10 +14,15 @@ export interface PickRow {
   cells: ReactNode;
   /** A row that cannot be chosen as it is is still a row, muted (it is never left out). */
   muted?: boolean;
+  /** A row nothing can choose (a fund no account prices): shown, but no button; a tap and a key do nothing, and it says so. */
+  disabled?: boolean;
   /** A group's heading, shown above this row (the index page's two kinds of fund); not a row, never chosen. */
   heading?: ReactNode;
   /** Never folded on a phone (the person's own row, D44). */
   keep?: boolean;
+  /** A row as tall as its own cells, left out of the height `even` holds every row at: a line only it carries (the terms the person typed,
+   *  with the way to change them) leaves the other rows as they are. */
+  ownHeight?: boolean;
   /**
    * The cells the row takes in each of the list's states (`states`), by key, the one it shows now (`caseKey`) included: a house priced or
    * not, with each reason it can give. Laid out unseen and out of the flow, to be measured; every state is measured from its cases, so
@@ -90,7 +95,13 @@ export function holdOnPick(key: string, el: HTMLElement) {
   pending = holdOf(key, el);
 }
 
-export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders, holdKey }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[]; /** What the list's hold lasts for (an index): the list also keeps the tallest it has held for it at this width, because `orders` and the rows' cases are those of the plan on the screen, and another plan sorts other rows into the fold or words a row longer (14 px at the sliders' ends). */ holdKey?: string }) {
+/**
+ * `look`: `tinted` (the chosen row tinted, with a bar at its start) or `outlined` (short rows of one shape: the chosen row tinted and
+ * outlined, the radio centred on the row, a group's heading a quiet line of the caller's own). `even`: every row is held at the height of
+ * the list's tallest row (a name on two lines), its rows' other `cases` included, so a re-sort, or a pick that changes what a row
+ * says, never moves anything below a row.
+ */
+export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders, holdKey, look = "tinted", even = false }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[]; /** What the list's hold lasts for (an index): the list also keeps the tallest it has held for it at this width, because `orders` and the rows' cases are those of the plan on the screen, and another plan sorts other rows into the fold or words a row longer (14 px at the sliders' ends). */ holdKey?: string; look?: "tinted" | "outlined"; even?: boolean }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list: keep the tapped row where it
   // was on the screen, wherever the list now puts it
@@ -131,13 +142,19 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
     requestAnimationFrame(hold);
   });
   const choose = (r: PickRow, el: HTMLElement) => {
+    if (r.disabled) return;
     anchor.current = holdOf(r.key, el);
     r.onSelect();
   };
   const grid = { "--pick-cols": columns, "--pick-cols-phone": phoneColumns ?? columns } as CSSProperties;
-  const cellsClass = "grid gap-x-3 gap-y-1 items-center";
-  const rowClass = "text-start px-4 py-2.5 border-b border-border last:border-b-0 min-h-target cursor-pointer hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-ring";
-  const radio = (r: PickRow) => <span aria-hidden="true" className={cx("size-4 rounded-full border-[1.5px] self-start mt-1", r.selected ? "border-[5px] border-primary" : "border-input")} />;
+  const outlined = look === "outlined";
+  const cellsClass = cx("grid gap-x-3 items-center", outlined ? "gap-y-0" : "gap-y-1");
+  const rowClass = cx(
+    "text-start border-b border-border last:border-b-0 focus-visible:outline-2 focus-visible:outline-ring",
+    // a short row of 52 px, or the list's tallest row's height (`even`)
+    outlined ? "px-3 py-1.5 min-h-[max(3.25rem,var(--pick-row,0px))]" : "px-4 py-2.5 min-h-target",
+  );
+  const radio = (r: PickRow) => <span aria-hidden="true" className={cx("size-4 rounded-full border-[1.5px]", outlined ? "self-center" : "self-start mt-1", r.selected ? "border-[5px] border-primary" : "border-input")} />;
   const gridClass = "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
   const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
   // the rows the fold shows: the first N, the chosen one among them (further down, it takes the last place, so the count never changes);
@@ -157,6 +174,12 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
     if (!list) return;
     const fit = () => {
       list.style.minHeight = "";
+      if (even) {
+        // every row at its own height first, then all of them at the tallest, of the rows and of their other cases laid out unseen
+        list.style.removeProperty("--pick-row");
+        const tallest = Math.max(0, ...[...list.querySelectorAll<HTMLElement>(":scope > [data-pick-key]:not([data-own-height]), :scope > [data-case-of]:not([data-own-height])")].map((el) => el.getBoundingClientRect().height));
+        if (tallest > 0) list.style.setProperty("--pick-row", `${Math.ceil(tallest)}px`);
+      }
       const h = (el: Element) => el.getBoundingClientRect().height;
       const rowEls = [...list.querySelectorAll<HTMLElement>(":scope > [data-pick-key]")];
       const inFlow = rowEls.filter((el) => el.dataset.folded === undefined || window.matchMedia("(min-width: 48rem)").matches);
@@ -203,7 +226,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   return (
     <div ref={root} role="radiogroup" aria-label={label} className="relative flex flex-col [overflow-anchor:none]">
       {head && (
-        <div className={cx("grid gap-x-3 items-end px-4 pb-1.5 text-xs text-muted-foreground border-b border-border", gridClass)} style={grid}>
+        <div className={cx("grid gap-x-3 items-end pb-1.5 text-xs text-muted-foreground border-b border-border", outlined ? "px-3" : "px-4", gridClass)} style={grid}>
           <span />
           {head}
         </div>
@@ -211,10 +234,10 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
       {rows.map((r, i) => (
         // a div, not a button: a row holds controls of its own (a fund's number to Maya, a figure's sheet), and a click on one is not a pick
         <Fragment key={r.key}>
-        {r.heading && <div className={cx("px-4 py-2 bg-popover border-b border-border text-sm font-semibold", folded(i) && "max-md:hidden")}>{r.heading}</div>}
+        {r.heading && <div className={cx(outlined ? "px-3 pt-3 pb-1.5 border-b border-border text-xs" : "px-4 py-2 bg-popover border-b border-border text-sm font-semibold", folded(i) && "max-md:hidden")}>{r.heading}</div>}
         {/* the row's states, unseen and out of the flow: measured, never shown; before the row, so the last row is the list's last child */}
         {r.cases?.map((x) => (
-          <div key={`${x.key}\u0001${marksKey(x.marks)}`} aria-hidden="true" data-case-of={r.key} data-case={x.key} {...(x.marks?.length ? { "data-marks": marksKey(x.marks) } : {})} className={cx(rowClass, cellsClass, gridClass, "absolute inset-x-0 top-0 invisible pointer-events-none")} style={grid}>
+          <div key={`${x.key}\u0001${marksKey(x.marks)}`} aria-hidden="true" data-case-of={r.key} data-case={x.key} {...(x.marks?.length ? { "data-marks": marksKey(x.marks) } : {})} {...(r.ownHeight ? { "data-own-height": "" } : {})} className={cx(rowClass, cellsClass, gridClass, "absolute inset-x-0 top-0 invisible pointer-events-none")} style={grid}>
             <Unseen>
               {radio(r)}
               {x.cells}
@@ -224,10 +247,12 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         <div
           role="radio"
           aria-checked={r.selected}
+          {...(r.disabled ? { "aria-disabled": true } : {})}
           data-pick-key={r.key}
           data-flip={r.key}
           {...(folded(i) ? { "data-folded": "" } : {})}
           {...(r.keep ? { "data-keep": "" } : {})}
+          {...(r.ownHeight ? { "data-own-height": "" } : {})}
           {...(r.caseKey !== undefined ? { "data-case-key": r.caseKey } : {})}
           tabIndex={r.selected ? 0 : -1}
           onClick={(e) => {
@@ -247,11 +272,13 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
           }}
           className={cx(
             rowClass,
+            // a row that can be chosen shows it on a computer: the pointer, and a light on hover
+            !r.disabled && "cursor-pointer hover:bg-muted/60",
             cellsClass,
             gridClass,
             // a folded row is laid out unseen and out of the flow, so its height can be read (the fold holds its tallest rows)
             folded(i) && "max-md:absolute max-md:inset-x-0 max-md:top-0 max-md:invisible",
-            r.selected && "bg-primary/10 shadow-[inset_-3px_0_0_var(--primary)] hover:bg-primary/10",
+            r.selected && (outlined ? "rounded-md bg-primary/10 ring-1 ring-inset ring-primary hover:bg-primary/10" : "bg-primary/10 shadow-[inset_-3px_0_0_var(--primary)] hover:bg-primary/10"),
             r.muted && !r.selected && "text-muted-foreground",
           )}
           style={grid}

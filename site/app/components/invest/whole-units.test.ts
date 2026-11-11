@@ -6,8 +6,9 @@ import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
 import { buildInvest, indexById, pairCosts, type WayPrice } from "../../lib/invest";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
-import { AccountColumn, FundColumn, unitsLine } from "./pair";
-import { bundle, plan, html, shown } from "./render-fixtures";
+import { ChosenPair } from "./chosen";
+import { unitsLine } from "./pair";
+import { bundle, plan, html, lists, shown } from "./render-fixtures";
 
 type Funds = typeof bundle.funds;
 type Snaps = typeof bundle.snapshots;
@@ -65,14 +66,14 @@ describe("whole units on the indices page (F-109, D94)", () => {
     expect(w.units?.skipped).toBe(0);
     expect(unitsLine(w.units)).toBeNull();
   });
-  it("the row says so in one line, and a fund with no unit price says that instead", () => {
+  it("the chosen pair's account tile says so in one line, and a fund with no unit price is marked on its row", () => {
     const view = buildInvest({ bundle: priced, index: sp, plan });
     const tase = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === "1159250")!;
-    const accounts = shown(html(createElement(AccountColumn, { view, bundle: priced, years: 20, pick: { house: "leumi", fund: tase.rec.id }, onPick: () => undefined })));
+    const accounts = shown(html(createElement(ChosenPair, { view, bundle: priced, plan, pick: { house: "leumi", fund: tase.rec.id }, chosen: true })));
     expect(accounts).toContain(invest.pair.unitsEvery);
     const etf = view.options.find((o) => o.id === "il-etf")!.funds.find((f) => !f.reason)!;
     expect(etf.noUnitPrice).toBe(true);
-    const funds = shown(html(createElement(FundColumn, { view, bundle: priced, plan, today: priced.today, pick: { house: "leumi", fund: etf.rec.id }, onPick: () => undefined, filter: null, onFilter: () => undefined })));
+    const funds = shown(lists(view, priced, plan, { house: "leumi", fund: etf.rec.id }, { today: priced.today }));
     expect(funds).toContain(invest.pair.unitPriceMissing);
     // the cost bar's part that holds the waiting cash says so, at a house that buys in whole units
     const pc = pairCosts({ bundle: priced, index: sp, plan, fundId: "1159250", providerId: "leumi" })!;

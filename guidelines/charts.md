@@ -117,7 +117,8 @@ them, and change the shared piece when a rule here asks for it.
   change. Show it as a plain number, with no site-parameter tag and nothing
   that opens. What the reader types looks the same, with no blue background
   and no "you entered" mark; a reset beside the fields brings the defaults
-  back. Every other number keeps its sourced or computed mark, and the
+  back. A slider's own number is in the slider's blue, the default and a
+  typed value alike: it is the control's colour, not a "you entered" mark. Every other number keeps its sourced or computed mark, and the
   site's real parameters keep theirs.
 
 ### Legend

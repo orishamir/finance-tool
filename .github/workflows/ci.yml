@@ -49,15 +49,20 @@ jobs:
           cache: npm
       - run: npm ci
       # Playwright's headless Chrome, at the version package.json pins, installs while the site builds (about 13 s, most of it apt);
-      # "Wait for Chrome" below prints its log and fails the run if it failed.
+      # "Wait for Chrome" below prints its log and fails the run if it failed. The system packages come from Ubuntu's archive: when
+      # it does not answer within 2 minutes the install goes on with the browser alone, on the packages the runner already has
+      # (a library Chrome then lacks fails the checks when they start it).
       - name: Install Chrome for the browser checks (in the background)
-        run: nohup sh -c 'npx playwright install --with-deps --only-shell chromium > "$RUNNER_TEMP/chrome.log" 2>&1; echo $? > "$RUNNER_TEMP/chrome.done"' > /dev/null 2>&1 &
-      - run: npm run build
-      - name: Wait for Chrome
-        timeout-minutes: 5
         run: |
-          while [ ! -f "$RUNNER_TEMP/chrome.done" ]; do sleep 1; done
+          nohup sh -c '(timeout 120 npx playwright install --with-deps --only-shell chromium || { echo "the install with system packages failed or ran over 2 minutes: installing the browser alone"; npx playwright install --only-shell chromium; }) > "$RUNNER_TEMP/chrome.log" 2>&1; echo $? > "$RUNNER_TEMP/chrome.done"' > /dev/null 2>&1 &
+      - run: npm run build
+      # An install still running after 5 minutes is given up on with its log printed, so the run says where it stood.
+      - name: Wait for Chrome
+        timeout-minutes: 6
+        run: |
+          for i in $(seq 1 300); do [ -f "$RUNNER_TEMP/chrome.done" ] && break; sleep 1; done
           cat "$RUNNER_TEMP/chrome.log"
+          [ -f "$RUNNER_TEMP/chrome.done" ] || { echo "Chrome's install did not finish in 5 minutes"; ps -eo pid,etimes,args | grep -i "playwright\|apt\|dpkg" | grep -v grep; exit 1; }
           exit "$(cat "$RUNNER_TEMP/chrome.done")"
       # The chart check (site/scripts/chart-check/): headless Chrome and python3 with only its standard library, which ubuntu-latest has.
       # A chart that overlaps, cuts off or shrinks its text, or draws bars off the zero line or in more than six colours, fails the run,

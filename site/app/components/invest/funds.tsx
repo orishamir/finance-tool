@@ -1,4 +1,4 @@
-// The fund's three fees, each with its word: the index page's fund card and fund rows read them (components/invest/pair.tsx).
+// The fund's three fees, each with its word: the index page's fund card and the receipt's fund line read them (components/invest/receipt.tsx).
 import { brands, invest as c } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
 import { feeAbsent } from "../../lib/providers";

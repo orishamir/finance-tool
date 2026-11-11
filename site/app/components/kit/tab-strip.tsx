@@ -16,6 +16,20 @@ export interface StripTab {
 export const tabId = (idBase: string, key: string) => `${idBase}-tab-${key}`;
 export const panelId = (idBase: string) => `${idBase}-panel`;
 
+/** A tab list's keys: the arrows move to the next or the one before (right to left: the left arrow is the next tab), Home and End to the
+ * ends; the tab moved to is chosen and takes the focus. */
+export const tabKeys = (tabs: readonly { key: string }[], current: string, onChange: (key: string) => void, idBase: string) => (e: KeyboardEvent<HTMLButtonElement>) => {
+  const i = tabs.findIndex((t) => t.key === current);
+  const rtl = getComputedStyle(e.currentTarget).direction === "rtl";
+  const step = e.key === "ArrowLeft" ? (rtl ? 1 : -1) : e.key === "ArrowRight" ? (rtl ? -1 : 1) : 0;
+  const to = e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : step ? (i + step + tabs.length) % tabs.length : -1;
+  if (to < 0) return;
+  e.preventDefault();
+  const next = tabs[to]!;
+  onChange(next.key);
+  requestAnimationFrame(() => document.getElementById(tabId(idBase, next.key))?.focus());
+};
+
 export function TabStrip({ tabs, current, onChange, ariaLabel, idBase, end, wrap, className }: { tabs: StripTab[]; current: string; onChange: (key: string) => void; ariaLabel: string; idBase: string; end?: ReactNode; /** From 768 px the tabs wrap onto a second line instead of scrolling (more tabs than the column is wide). */ wrap?: boolean; className?: string }) {
   const list = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -24,17 +38,7 @@ export function TabStrip({ tabs, current, onChange, ariaLabel, idBase, end, wrap
     if (!el || !box || box.scrollWidth <= box.clientWidth) return;
     el.scrollIntoView({ block: "nearest", inline: "nearest" });
   }, [current]);
-  const keys = (e: KeyboardEvent<HTMLButtonElement>) => {
-    const i = tabs.findIndex((t) => t.key === current);
-    const rtl = getComputedStyle(e.currentTarget).direction === "rtl";
-    const step = e.key === "ArrowLeft" ? (rtl ? 1 : -1) : e.key === "ArrowRight" ? (rtl ? -1 : 1) : 0;
-    const to = e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : step ? (i + step + tabs.length) % tabs.length : -1;
-    if (to < 0) return;
-    e.preventDefault();
-    const next = tabs[to]!;
-    onChange(next.key);
-    requestAnimationFrame(() => document.getElementById(tabId(idBase, next.key))?.focus());
-  };
+  const keys = tabKeys(tabs, current, onChange, idBase);
   return (
     <div className={cx("flex items-end gap-3 border-b border-border min-w-0", className)}>
       <div ref={list} role="tablist" aria-label={ariaLabel} className={cx("flex flex-1 min-w-0 gap-x-5 -mb-px overflow-x-auto scrollbar-none", wrap && "md:flex-wrap md:overflow-visible")}>
