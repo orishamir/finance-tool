@@ -4,6 +4,7 @@
 // has the same amount ranges, each range is a rate column, and "כמה מפקידים" keeps one lit and dims the others in place; where the ranges
 // differ, each row lists its amounts as lines, as the deposits page does. A phone shows a row per deposit, its rates as small tiles.
 import { Fragment, useId, useMemo, useState, type ReactNode } from "react";
+import { guidePath } from "../../lib/site-paths";
 import { companyPage as w, r4catalogue as copy } from "../../copy";
 import { breakKey, kindGroups, lineAt, rangeKey, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
 import { amountRangeText, breakText, depositLabels, exitsText, renewText, taxWord, termWords } from "../../lib/deposit-kind";
@@ -320,7 +321,7 @@ export function BankLinks({ wrapperId, wrapperName, compare }: { wrapperId: stri
   return (
     <p className="flex flex-wrap gap-x-6">
       {compare && <GoLink to={compare.to}>{compare.label}</GoLink>}
-      <GoLink to={`/guide/${wrapperId}`}>{w.deposits.whatIsTax(wrapperName)}</GoLink>
+      <GoLink to={guidePath(wrapperId)}>{w.deposits.whatIsTax(wrapperName)}</GoLink>
     </p>
   );
 }

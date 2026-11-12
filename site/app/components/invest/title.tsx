@@ -2,7 +2,8 @@
 // nothing preselected, D27), one line under it about the index chosen, and the "מדד אחר" flow for a custom index.
 import { useId, useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
+import { customIdOf, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
+import { customIndexPath, indexPath } from "../../lib/site-paths";
 import type { IndicesBundle } from "../../lib/providers";
 import { Button, Card, MenuPicker, PageHead, Tag, type MenuItem } from "../kit";
 

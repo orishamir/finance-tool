@@ -4,6 +4,7 @@
 // list and no overview: it opens on that product, with what the overview would hold after it. An address's `#id` (a document entry, a
 // deposit, a part of the securities account) opens the part that holds it, then lands on it.
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
+import { companyPath } from "../../lib/site-paths";
 import { useLocation, useNavigate } from "react-router";
 import { companies as companiesCopy, companyPage as w } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
@@ -28,9 +29,9 @@ export interface CompanyPart {
   body: ReactNode;
 }
 
-export function CompanyTemplate({ path, name, line, header, parts, groups, listLabel, overview, single }: {
-  /** The page's address, `/companies/<id>`. */
-  path: string;
+export function CompanyTemplate({ pageId, name, line, header, parts, groups, listLabel, overview, single }: {
+  /** The id in the page's address (`companyPath`). */
+  pageId: string;
   name: string;
   /** The one line under the name (the legal companies; "בנק" and the legal name). */
   line?: ReactNode;
@@ -56,16 +57,17 @@ export function CompanyTemplate({ path, name, line, header, parts, groups, listL
   // an older address (a Hebrew product id) opens the same product under its address now
   const renamed = !lone && !current && asked ? parts.find((p) => p.id === currentAddress(asked)) : undefined;
   useEffect(() => {
-    if (renamed) navigate(`${hrefOf(renamed.id)}${location.hash}`, { replace: true, preventScrollReset: true });
+    if (renamed) navigate(companyPath(pageId, { product: renamed.id, hash: location.hash.slice(1) }), { replace: true, preventScrollReset: true });
   }, [renamed?.id]);
   const shownId = current?.id ?? "";
-  const hrefOf = (id: string) => (id ? `${path}?product=${encodeURIComponent(id)}` : path);
+  const path = companyPath(pageId);
+  const hrefOf = (id: string) => companyPath(pageId, { product: id });
 
   // an address's #id opens the part that holds it; once that part is shown, the page lands on the element
   const hash = hydrated ? decodeURIComponent(location.hash.slice(1)) : "";
   const owner = lone ? null : partOf(hash, [{ id: "", anchors: overview.anchors }, ...parts.map((p) => ({ id: p.id, anchors: p.anchors ?? [] }))]);
   useEffect(() => {
-    if (owner !== null && owner !== shownId) navigate(`${hrefOf(owner)}#${encodeURIComponent(hash)}`, { replace: true, preventScrollReset: true });
+    if (owner !== null && owner !== shownId) navigate(companyPath(pageId, { product: owner, hash: encodeURIComponent(hash) }), { replace: true, preventScrollReset: true });
   }, [owner, shownId, hash]);
   useEffect(() => {
     if (!hash || (owner !== null && owner !== shownId)) return;

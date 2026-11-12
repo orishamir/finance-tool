@@ -3,6 +3,7 @@
 // What the company offers is the tracks page's list over
 // this company alone (components/tracks/company-browser.tsx): its products, funds and securities account are chips, "כל המוצרים" first.
 import { useEffect, useMemo, useState } from "react";
+import { companyPath } from "../lib/site-paths";
 import { useLoaderData, useLocation, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
 import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, companyPage as w, pagePreview, r4catalogue } from "../copy";
@@ -135,7 +136,6 @@ type CompanyData = Extract<ReturnType<typeof useLoaderData<typeof loader>>, { ki
 function ManagerCompany({ data }: { data: CompanyData }) {
   const company = data.company;
   const browser = data.browser;
-  const path = `/companies/${data.pageId}`;
   const views = useMemo(() => browser.products.map((p) => buildProductView(browser, p.id)!), [browser]);
   const fundIds = data.funds.map((g) => `funds-${g.kind}`);
   const docs = splitDocGroups(data.companyTerms.groups, [...views.map((v) => v.id), ...fundIds, ...(data.brokerage ? ["brokerage"] : [])]);
@@ -206,7 +206,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   // a group of funds' count; the securities account's price list; under the list's groups when it has them
   const assetsOf = (v: ProductView) => v.companies[0]?.assets ?? null;
   const top = Math.max(0, ...views.map((v) => (typeof assetsOf(v)?.value === "number" ? (assetsOf(v)!.value as number) : 0)));
-  const to = (id: string) => `${path}?product=${encodeURIComponent(id)}`;
+  const to = (id: string) => companyPath(data.pageId, { product: id });
   const tableRow = (p: CompanyPart): OverviewTableRow => {
     const v = views.find((x) => addressId(x.id) === p.id);
     const base = { id: p.id, title: p.label, to: to(p.id) };
@@ -274,7 +274,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   return (
     <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <CompanyTemplate
-        path={path}
+        pageId={data.pageId}
         name={data.name}
         line={
           data.members.length > 1 ? (

@@ -1,6 +1,7 @@
 // Builds the data of one guide page at build time (design-spec 2): the wrapper record, its rule figures,
 // the engine bundle and its first run on P-05, the terms and the companies that offer it.
 import { breakCount, listFeeRange, oneYearDeposits, pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
+import { exposurePath, guidePath } from "./site-paths";
 import { join } from "node:path";
 import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
@@ -309,19 +310,19 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const folds = exposureFolds();
   const exposuresHeld = loadExposures()
     .filter((e) => (e.wrapper_ids ?? []).includes(record.id))
-    .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, href: folds[e.id] ? `/guide/${folds[e.id]}` : `/exposure/${e.id}` }));
+    .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, href: folds[e.id] ? guidePath(folds[e.id]!) : exposurePath(e.id) }));
 
   const wrappers = loadProducts();
   const related = (relatedIds ?? record.transfer_routes.map((r) => r.to))
     .filter((to, i, a) => to !== id && a.indexOf(to) === i)
     .map((to) => wrappers.find((w) => w.id === to))
     .filter((w): w is ProductRecord => !!w)
-    .map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
+    .map((w) => ({ href: guidePath(w.id), label: w.names.he[0]! }));
   const account = isSecurity(record) ? wrappers.find((w) => w.id === record.held_in.wrapper_ids[0]) : undefined;
   const heldIn = isSecurity(record) && account ? { id: account.id, name: account.names.he[0]!, ruleIds: record.held_in.rule_ids } : null;
-  const securities = wrappers.filter((w) => isSecurity(w) && w.held_in.wrapper_ids.includes(record.id as never)).map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
+  const securities = wrappers.filter((w) => isSecurity(w) && w.held_in.wrapper_ids.includes(record.id as never)).map((w) => ({ href: guidePath(w.id), label: w.names.he[0]! }));
   // an exposure that is this page, or a security the row above already links, is not linked twice
-  const exposures = exposuresHeld.filter((e) => e.href !== `/guide/${record.id}` && !securities.some((x) => x.href === e.href));
+  const exposures = exposuresHeld.filter((e) => e.href !== guidePath(record.id) && !securities.some((x) => x.href === e.href));
 
   const feeRange = id === "keren-hishtalmut" ? reportedFeeRange(id, t) : null;
   const breakTerms = id === "bank-deposit" ? depositBreakTerms(t) : null;

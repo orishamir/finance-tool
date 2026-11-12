@@ -4,6 +4,7 @@
 // collected banks publish, F-85, in the notes; the range across the collected banks, F-86; the site's assumption, D20). The other
 // products link to their own guide pages.
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
+import { guidePath } from "../../lib/site-paths";
 import { guideSignature as copy } from "../../copy";
 import { fact, ladderRows, slowerPayNoMore, speedOrder, type LadderRow, type Speed } from "../../lib/guide-signature";
 import { Num, RulesLine, Term } from "../provenance";
@@ -41,7 +42,7 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                 <Tag tone="positive">{copy.ladder.thisOne}</Tag>
               </span>
             ) : (
-              <TextLink to={`/guide/${r.id}`}>
+              <TextLink to={guidePath(r.id)}>
                 <RowName row={r} />
               </TextLink>
             ),

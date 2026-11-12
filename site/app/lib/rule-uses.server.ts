@@ -3,6 +3,7 @@
 // Computed once per build from the source files themselves (a quoted id in content/, routes/, components/, a few lib/ files),
 // so a page that starts citing a rule shows up here with no table to maintain.
 import { existsSync, readdirSync, statSync } from "node:fs";
+import { feesPath, guidePath } from "./site-paths";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, invest, limitedBondFund, mutualFunds, r3fees, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
@@ -146,7 +147,7 @@ function build(): Scan {
     let key: string | undefined;
     if (rel[0] === "content" && rel[1] === "guide") {
       if (base === "index" || base === "types") continue;
-      page = { href: `/guide/${base}`, label: base === "limited-bond-fund" ? limitedBondFund.title : base === "mutual-funds" ? mutualFunds.title : (wrapperName.get(base) ?? base) };
+      page = { href: guidePath(base), label: base === "limited-bond-fund" ? limitedBondFund.title : base === "mutual-funds" ? mutualFunds.title : (wrapperName.get(base) ?? base) };
     } else if (rel[0] === "content" && rel[1] === "exposure") {
       const e = loadExposures().find((x) => x.id === base);
       page = { href: exposureHref(base), label: e?.names?.he?.[0] ?? base };
@@ -185,7 +186,7 @@ function build(): Scan {
       collections.set(id, m);
       if (name === "instruments/wrappers" || name === "instruments/securities") {
         const wid = parts[parts.length - 1]!.replace(/\.json$/, "");
-        addPage(id, { href: `/guide/${wid}`, label: wrapperName.get(wid) ?? wid });
+        addPage(id, { href: guidePath(wid), label: wrapperName.get(wid) ?? wid });
       }
     }
   }
@@ -216,7 +217,7 @@ function feePageOf(): (id: string) => RuleUsePage {
   const products = ruleProducts();
   return (id) => {
     const mine = (products[id] ?? []).filter((p) => answers.has(p));
-    return { href: mine.length === 1 ? `/fees?wrapper=${mine[0]}` : null, label: r3fees.title };
+    return { href: mine.length === 1 ? feesPath({ wrapper: mine[0]! }) : null, label: r3fees.title };
   };
 }
 
