@@ -31,9 +31,16 @@ describe("flag slots", () => {
   }, 120000);
 
   it("the deposit flag says which way the number is off and names the exit point (G-16, 2026-11-12)", () => {
-    // the run knows no exit points and prices no break: the sentence is true for a deposit that cannot be broken with or without exit points
+    // the run prices no break: the sentence is true for a deposit that cannot be broken, with or without exit points
     expect(flags["G-16"]).toContain("יכול להיות גבוה");
     expect(flags["G-16"]).toContain("תחנת יציאה");
     expect(flags["G-16"]).toContain("שבירת פיקדון");
+  });
+
+  it("the exit-point flag says the money can come out and that the number may still run high (G-34, 2026-11-12)", () => {
+    // the run knows the day is an exit point, not what the exit point pays: the sentence holds whether it pays all the interest or a share
+    expect(flags["G-34"]).toContain("בלי לשבור את הפיקדון");
+    expect(flags["G-34"]).toContain("רק חלק מהריבית");
+    expect(flags["G-34"]).toContain("יכול להיות גבוה");
   });
 });

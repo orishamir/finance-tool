@@ -72,7 +72,8 @@ describe("G-16: money still inside a deposit's term on the last day", () => {
 });
 
 // F-41: a piece's age on month m is m - startMonth + 1; it matures at age termMonths and is at an exit point when its age is a
-// whole multiple of exitEveryMonths. A piece at an exit point on the last day can be taken out without a break: no G-16.
+// whole multiple of exitEveryMonths. A piece at an exit point on the last day can be taken out without a break: no G-16. It
+// raises G-34 instead, since what an exit point pays is not in the records.
 describe("G-16 and exit points", () => {
   const dep = (months: number, monthly: number, termMonths: number, exitEveryMonths?: number, kind: "deposit" | "savings-plan" = "deposit", linkage: "unlinked" | "cpi" = "unlinked"): DepositInput => ({
     goal: { amountNow: 10_000, monthly, months },
@@ -81,6 +82,33 @@ describe("G-16 and exit points", () => {
     profile: {},
   });
   const flagged = (i: DepositInput) => runDeposit(i, ctx).flags.some((f) => f.code === "G-16");
+  const atExit = (i: DepositInput) => runDeposit(i, ctx).flags.some((f) => f.code === "G-34");
+
+  it("says the money is at an exit point instead, and nothing when every piece has matured", () => {
+    expect(atExit(dep(18, 0, 12, 3))).toBe(true); // 6 months into the second deposit
+    expect(atExit(dep(17, 0, 12, 3))).toBe(false); // between exit points: G-16 alone
+    expect(atExit(dep(18, 0, 12))).toBe(false); // no exit points given
+    expect(atExit(dep(24, 0, 12, 3))).toBe(false); // matured on the last day: neither flag
+    expect(flagged(dep(24, 0, 12, 3))).toBe(false);
+    // monthly deposits, quarterly exit points: some pieces are at one and some between, so both are said
+    expect(atExit(dep(24, 500, 12, 3))).toBe(true);
+    expect(flagged(dep(24, 500, 12, 3))).toBe(true);
+  });
+
+  it("takes a savings plan's piece as at an exit point only when the count from the plan's start agrees", () => {
+    // term 12, an exit point every 5 months, 5 months into the second deposit on month 17: a deposit counts from its own start,
+    // a plan may count from the plan's first month (BPN-10), and month 17 is no multiple of 5
+    expect(atExit(dep(17, 0, 12, 5))).toBe(true);
+    expect(flagged(dep(17, 0, 12, 5))).toBe(false);
+    expect(atExit(dep(17, 0, 12, 5, "savings-plan"))).toBe(false);
+    expect(flagged(dep(17, 0, 12, 5, "savings-plan"))).toBe(true);
+    // month 10 is a multiple of 5 on both counts
+    expect(atExit(dep(10, 0, 12, 5, "savings-plan"))).toBe(true);
+    // an instalment paid in month 7 is 12 months old on month 18, which is no yearly exit point of a plan begun in month 1
+    const lateInstalment: DepositInput = { goal: { amountNow: 0, monthly: 500, months: 18 }, market: { inflation: 0.02 }, deposit: { kind: "savings-plan", rate: 0.03, termMonths: 36, linkage: "unlinked", exitEveryMonths: 12 }, profile: {} };
+    expect(atExit(lateInstalment)).toBe(false);
+    expect(flagged(lateInstalment)).toBe(true);
+  });
 
   it("is not flagged when the one piece open on the last day is at an exit point, and is one month either side", () => {
     // the first deposit matures on month 12 and rolls into one opened on month 13: on month 18 it is 6 months old
@@ -105,7 +133,7 @@ describe("G-16 and exit points", () => {
     expect(flagged(dep(23, 500, 12, 1))).toBe(false);
   });
 
-  it("counts a savings plan's exit points from each piece's own start", () => {
+  it("reads a savings plan's exit points where the piece's count and the plan's agree", () => {
     // the one-off sum's first plan matures on month 36 and rolls into one opened on month 37: 12 months old on month 48
     expect(flagged(dep(47, 0, 36, 12, "savings-plan"))).toBe(true);
     expect(flagged(dep(48, 0, 36, 12, "savings-plan"))).toBe(false);
