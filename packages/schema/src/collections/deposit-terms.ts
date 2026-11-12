@@ -58,17 +58,20 @@ export const depositTerms = z.strictObject({
   exit_points: z
     .strictObject({
       exists: z.boolean(),
-      /** The interval between exit points in months, as the bank prints how often they come; not the date of the first one. */
-      every_months: z.number().nullable(),
+      /** The interval between exit points in months, as the bank prints how often they come; not the date of the first one. Null where there are none or the bank prints no interval. */
+      every_months: z.number().positive().nullable(),
       /**
        * Months from the deposit's start to its first exit point, as the bank prints it ("בתום 6 חודשים, וכל 3 חודשים לאחר מכן" is 6, added
-       * 2026-11-12). Null or absent when the bank prints only how often the exit points come: the first one is then not known, and no
-       * reader may take it to fall one interval after the start (a plan with yearly exit points may open its first after ten years).
+       * 2026-11-12). A record with exit points always carries the key: a number, or null when the bank prints only how often the exit
+       * points come. The first one is then not known, and no reader may take it to fall one interval after the start (a plan with yearly
+       * exit points may open its first after ten years). A record without exit points leaves it out or null.
        */
       first_after_months: z.number().positive().nullable().optional(),
     })
-    .refine((e) => e.exists || (e.first_after_months ?? null) === null, {
-      message: "first_after_months is set only where exit points exist",
+    .refine((e) => e.exists || e.every_months === null, { message: "every_months is set only where exit points exist", path: ["every_months"] })
+    .refine((e) => e.exists || (e.first_after_months ?? null) === null, { message: "first_after_months is set only where exit points exist", path: ["first_after_months"] })
+    .refine((e) => !e.exists || e.first_after_months !== undefined, {
+      message: "a deposit with exit points says when the first one falls (first_after_months), or null where the bank prints only how often they come",
       path: ["first_after_months"],
     }),
   auto_renew: z.strictObject({ value: z.boolean(), max_renewals: z.number().int().nullable() }),
@@ -89,6 +92,11 @@ export const depositTerms = z.strictObject({
   doubt_he: z.string().min(1).optional(),
   snapshot: isoDate,
   source,
-});
+})
+  // an exit point is a day inside the term: a first one at the term's end or after it is the maturity, or a misread figure
+  .refine((d) => !(typeof d.exit_points.first_after_months === "number" && typeof d.term_months.value === "number" && d.term_months.unit === "months" && d.exit_points.first_after_months >= d.term_months.value), {
+    message: "the first exit point falls at or after the end of the term",
+    path: ["exit_points", "first_after_months"],
+  });
 
 export type DepositTerms = z.infer<typeof depositTerms>;
