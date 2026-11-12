@@ -511,7 +511,8 @@
           "binds": {
             "type": "string",
             "enum": [
-              "banks"
+              "banks",
+              "banks_and_fund_distributors"
             ]
           }
         },

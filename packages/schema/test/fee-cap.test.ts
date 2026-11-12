@@ -11,6 +11,10 @@ describe("a fee cap's binds", () => {
     expect(securityRecord.parse(read("securities/makam.json")).fee_caps.custody?.binds).toBe("banks");
   });
 
+  it("is kept on the money-market custody ban, which binds banks and a fund's distributor", () => {
+    for (const f of ["money-market-fund-daily", "money-market-fund-renewable"]) expect(securityRecord.parse(read(`securities/${f}.json`)).fee_caps.custody?.binds).toBe("banks_and_fund_distributors");
+  });
+
   it("is absent on a cap that binds every provider, and refuses a value it does not name", () => {
     const cap = (read("wrappers/brokerage-account.json") as { fee_caps: Record<string, object> }).fee_caps.transfer_out!;
     const { binds: _, ...every } = cap as { binds?: string };
