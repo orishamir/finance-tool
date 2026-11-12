@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
-import { checkCitedPages } from "../src/validate.ts";
+import { checkCitedPages, checkFirstExitPoint } from "../src/validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -650,5 +650,19 @@ describe("a link opens the page it cites (2026-11-12)", () => {
     expect(checkCitedPages({ sources: [{ url: `${pdf}#page=12`, page: 12 }] }, filePages)).toEqual([]);
     // a file the library does not hold is not judged on its length
     expect(checkCitedPages({ sources: [{ url: "https://example.org/other.pdf", page: 900 }] }, filePages)).toEqual([]);
+  });
+});
+
+describe("a deposit's first exit point (2026-11-12)", () => {
+  const rec = (exit_points: unknown, notes: string) => ({ exit_points, rate_offered: { notes } });
+  it("a record with no first exit point may not quote the bank dating one", () => {
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: null }, "'תחנות יציאה בתום 5 שנים, ולאחר מכן כל שנה'"))).toEqual([expect.stringContaining("dates an exit point")]);
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: null }, "'תחנת יציאה ראשונה לאחר 36 חודשים'"))).toHaveLength(1);
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: null }, "'מתום שנתיים תחנות כל שנה'"))).toHaveLength(1);
+  });
+  it("passes a record that carries its first, one whose bank prints only how often they come, and one without exit points", () => {
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: 60 }, "'תחנות יציאה בתום 5 שנים, ולאחר מכן כל שנה'"))).toEqual([]);
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 6, first_after_months: null }, "ExitPointsFreq 'חצי שנתית'; החל מ-50 ₪ בחודש; בתום תקופת החיסכון הפיקדון מתחדש"))).toEqual([]);
+    expect(checkFirstExitPoint(rec({ exists: false, every_months: null }, "'אין תחנות יציאה; בתום 5 שנים הפיקדון נפרע'"))).toEqual([]);
   });
 });
