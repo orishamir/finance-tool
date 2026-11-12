@@ -68,9 +68,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.767, s.2(4)",
-      "locator_he": "עמוד 767, סעיף 2(4)",
-      "page": 767,
+      "locator": "file p.3 (gazette p.767), s.2(4)",
+      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 767), סעיף 2(4)",
+      "page": 3,
       "checked": "2026-10-25"
     },
     {
