@@ -109,6 +109,16 @@ edit; a record edited by hand no longer matches its block.
   Write `p.12`, or `file p.12 (gazette p.246)` when the sheet prints another
   number. A link that carries `#page=` carries the same page; the site opens
   the link there.
+- **Several passages of one link.** Start each passage with its page and
+  separate them with `; ` (`p.4, s.1; p.8, s.2 "…"`). The passages before
+  the first quoted one become one source, opening at their first page; the
+  quoted passage and each after it becomes a source of its own, so the card
+  names the page each link opens at. A `#page=` on such a link may stay:
+  each source's address opens at its own passage's page.
+- **Remarks.** A remark in English after a link's place, in parentheses or
+  after `; ` (`; the ISA directives list shows no later version`), stays out
+  of the record's locator. A part after `; ` that opens on a place (`p.9`,
+  `s.4`, `Schedule E`, `appendix A`) or holds one is a passage.
 
 ## The Scope line
 

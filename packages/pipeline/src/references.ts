@@ -131,7 +131,16 @@ export function blockUrlText(block: RuleBlock): string {
   return `${block.body}\n${Object.values(block.defs).join("\n")}`;
 }
 
-/** Is `url` in the block verbatim? */
+/**
+ * Is `url` in the block verbatim, but for the number of its `#page=`? One link of a block may cite passages on several pages; the
+ * extraction gives each passage's source the link's address opened at that passage's own page (`…pdf#page=9` from a link written
+ * `…pdf#page=8`), since the site opens a PDF at its address's `#page=`. Any other difference is an address the block does not hold.
+ */
 export function urlInBlock(url: string, block: RuleBlock): boolean {
-  return blockUrlText(block).includes(url);
+  const text = blockUrlText(block);
+  if (text.includes(url)) return true;
+  const m = /#page=\d+/.exec(url);
+  if (!m) return false;
+  const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`${escape(url.slice(0, m.index))}#page=\\d+${escape(url.slice(m.index + m[0].length))}`).test(text);
 }
