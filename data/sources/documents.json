@@ -86,7 +86,7 @@
   {"id":"tase-ta125-about","match":["ת\"א-125 אודות המדד"],"title_he":"ת״א-125: אודות המדד","publisher_he":"הבורסה לניירות ערך בתל אביב","kind":"institution_doc","official_url":null},
   {"id":"tase-terms-of-use-2026","match":["TASE, תנאי שימוש"],"title_he":"תנאי השימוש באתר הבורסה, מהדורת אוגוסט 2026","publisher_he":"הבורסה לניירות ערך בתל אביב","kind":"institution_doc","official_url":null},
   {"id":"tase-nbcm-guide-2026","match":["TASE NBCM guide","non-banking corporation member","How to become an NBCM"],"title_he":"How to become a non-banking corporation member (ינואר 2026)","publisher_he":"הבורסה לניירות ערך בתל אביב","kind":"institution_doc","official_url":null},
-  {"id":"tase-foreign-etfs-list","match":["קרנות חוץ נסחרות"],"title_he":"קרנות חוץ נסחרות (רשימה)","publisher_he":"הבורסה לניירות ערך בתל אביב","kind":"dataset","official_url":null},
+  {"id":"tase-foreign-etfs-list","match":["קרנות חוץ נסחרות"],"title_he":"קרנות חוץ נסחרות (רשימה)","publisher_he":"הבורסה לניירות ערך בתל אביב","kind":"dataset","official_url":null,"hosts":["market.tase.co.il"]},
   {"id":"tase-datastore-pricelist","match":["מחירון מוצרי המידע של הבורסה"],"title_he":"מחירון מוצרי המידע של הבורסה","publisher_he":"הבורסה לניירות ערך בתל אביב","kind":"institution_doc","official_url":null},
   {"id":"maya-fund-list","match":["Maya, רשימת קרנות","מאיה, רשימת קרנות"],"title_he":"רשימת קרנות הנאמנות במאיה","publisher_he":"מאיה (מערכת ההודעות של הבורסה)","kind":"dataset","official_url":null},
   {"id":"sp-us-indices-methodology","match":["S&P U.S. Indices Methodology"],"title_he":"S&P U.S. Indices Methodology (יולי 2026)","publisher_he":"S&P Dow Jones Indices","kind":"other","official_url":null},
