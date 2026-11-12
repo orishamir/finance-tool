@@ -497,7 +497,9 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
   const capped = view.providers.filter((p) => !p.custom && limits(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
   // F-103 (D67): the houses whose price lists print a charge per corporate event abroad, which their figures count on each dividend
   const charge = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "corporate_event" && typeof l.rate.value === "number")?.rate;
-  const perDividend = view.providers.flatMap((p) => { const rate = p.custom ? undefined : charge(p.id); return rate ? [{ name: p.short, rate }] : []; }).sort((a, b) => a.name.localeCompare(b.name, "he"));
+  // the note says custody abroad there is free, from the house's own custody line for securities abroad: only where that line prints 0
+  const custodyAbroad = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "custody" && l.applies_to.includes("foreign_securities") && l.rate.value === 0)?.rate;
+  const perDividend = view.providers.flatMap((p) => { const rate = p.custom ? undefined : charge(p.id); const custody = p.custom ? undefined : custodyAbroad(p.id); return rate && custody ? [{ name: p.short, rate, custody }] : []; }).sort((a, b) => a.name.localeCompare(b.name, "he"));
   return (
     <Disclosure label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} labelClassName="text-sm text-link">
       <NoteList
@@ -509,7 +511,7 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
             {perDividend.map((x) => (
               <Fragment key={x.name}>
                 {" "}
-                <Tpl t={c.pair.abroadPerDividend} vars={{ name: x.name, amount: <Num value={ownBy(x.rate as SiteValue, x.name)} display={fmt.usd(x.rate.value as number)} /> }} />
+                <Tpl t={c.pair.abroadPerDividend} vars={{ name: x.name, custody: <Num value={ownBy(x.custody as SiteValue, x.name)} display={fmt.pct(x.custody.value as number)} />, amount: <Num value={ownBy(x.rate as SiteValue, x.name)} display={fmt.usd(x.rate.value as number)} /> }} />
               </Fragment>
             ))}
           </>,

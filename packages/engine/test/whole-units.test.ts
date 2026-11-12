@@ -5,7 +5,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
-import { providerWorkbench, unitWaysAt, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
+import { beforeTax, providerWorkbench, unitWaysAt, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -168,5 +168,107 @@ describe("a per-share fee on a Tel Aviv line priced at its issuer's dollar NAV (
   });
   it("a dollar price with no rate to shekels is no share price: a per-share fee cannot be priced", () => {
     expect(() => run({ kind: "foreign-fund", drag: {}, sharePrice: 814.9, sharePriceCurrency: "USD" })).toThrow(/share price/);
+  });
+});
+
+describe("a fee a month for the account while the cash waits for a unit (F-17, F-102, F-109)", () => {
+  const free = { rate: 0 };
+  it("the waiting cash pays the fixed fee when no unit is held: 200 ₪ a month at 2,500 ₪ a unit buys nothing in a year and pays 10 ₪ a month", () => {
+    // month k holds 190k after its fee; a unit needs 2,500, which 12 months never reach: 120 ₪ of fees, 2,280 ₪ waiting at the end
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 10 }, wholeUnits: { price: 2_500 } }), ctx);
+    expect(r.detail.monthlyOrders).toBe(0);
+    expect(r.fees.fixed).toBeCloseTo(120, 9);
+    expect(r.detail.cashLeft).toBeCloseTo(2_280, 9);
+    expect(r.nominal).toBeCloseTo(2_280, 9);
+    // by amount the same plan holds units from month 1, and pays the same fee out of them
+    const byAmount = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 10 } }), ctx);
+    expect(byAmount.fees.fixed).toBeCloseTo(120, 9);
+  });
+  it("a bank's current account is paid the same way, after the fixed fee", () => {
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 10, currentAccount: 5.5 }, wholeUnits: { price: 2_500 } }), ctx);
+    expect(r.fees.account).toBeCloseTo(66, 9);
+    expect(r.detail.cashLeft).toBeCloseTo(2_400 - 120 - 66, 9);
+  });
+  it("the units pay first: where a unit is held, the waiting cash is left as it was", () => {
+    // the first plan above (22 units, 270 ₪ waiting at the end) with a fee of 5 ₪ a month, taken from the units every month
+    const r = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, tariff: { buy: ten, monthlyFee: 5 }, wholeUnits: { price: 300 } }), ctx);
+    expect(r.fees.fixed).toBeCloseTo(60, 9);
+    expect(r.detail.cashLeft).toBeCloseTo(270, 6);
+    expect(r.nominal).toBeCloseTo(6_870 - 60, 6);
+  });
+  it("what neither the units nor the cash can pay is not charged: a fee of 300 ₪ on 200 ₪ a month takes the 200 each month and no more", () => {
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 300 }, wholeUnits: { price: 2_500 } }), ctx);
+    expect(r.fees.fixed).toBeCloseTo(2_400, 9);
+    expect(r.nominal).toBeCloseTo(0, 9);
+  });
+});
+
+describe("the split of a whole-units run by fee line (F-63, F-91, F-109)", () => {
+  it("a run carries each fee to the exit at the fund's total return: with no return, what was paid", () => {
+    // the first plan of this file: 13 orders of 10 ₪ and nothing to grow on, so the carried trade line is the 130 ₪ paid
+    const flat = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, wholeUnits: { price: 300 } }), ctx);
+    expect(flat.feesCarried!.trade).toBeCloseTo(130, 9);
+    // at 12% a year the 10 ₪ of month 1 has grown by the 12 months' return of the fund, the 10 ₪ of month 12 by none
+    const grown = runSecurities(input({ goal: { amountNow: 1_000, monthly: 0, months: 12 }, market: { grossReturn: 0.12, inflation: 0 }, tariff: { buy: ten, monthlyFee: 5 }, wholeUnits: { price: 300 } }), ctx);
+    const g = Math.pow(1.12, 1 / 12);
+    // the order at the start of month 1 pays 10 ₪ before any growth; the fee of month k is paid after month k's growth
+    expect(grown.feesCarried!.trade).toBeCloseTo(10 * 1.12, 6);
+    let fixed = 0;
+    for (let k = 1; k <= 12; k++) fixed += 5 * Math.pow(g, 12 - k);
+    expect(grown.feesCarried!.fixed).toBeCloseTo(fixed, 6);
+  });
+
+  it("a fee is carried net of the custody a shekel it took would have paid at the margin, and of none where the minimum binds", () => {
+    // 3 units held from month 1, no return; custody 0.1% a month: the 10 ₪ order of month 1 would have paid 0.1% in each of the 12 months
+    const at = (custody: { rate: number; min?: number; everyMonths: number }) =>
+      runSecurities(input({ goal: { amountNow: 1_000, monthly: 0, months: 12 }, tariff: { buy: ten, custody }, wholeUnits: { price: 300 } }), ctx);
+    expect(at({ rate: 0.001, everyMonths: 1 }).feesCarried!.trade).toBeCloseTo(10 * Math.pow(0.999, 12), 9);
+    // a minimum of 5 ₪ a month binds on 900 ₪ (0.90 ₪ at the rate): another shekel would pay nothing more, so the 10 ₪ is carried as paid
+    expect(at({ rate: 0.001, min: 5, everyMonths: 1 }).feesCarried!.trade).toBeCloseTo(10, 9);
+  });
+
+  it("every line is at or above zero, has no after-tax figure, and the lines with the remainder add up to the account's cost before tax", () => {
+    // by hand: 1,000 ₪ once at 300 ₪ a unit and 10 ₪ an order, 12% over the year, no fund cost and no inflation. With no fees the 1,000 ₪
+    // is invested whole and is 1,120 before tax; in whole units 3 units (900 ₪) grow to 1,008 and 90 ₪ waits, 1,098 in all. The account
+    // costs 22 ₪ before tax, the trade line is the 10 ₪ carried to 11.20, and the remainder is +10.80: the 12% the 90 ₪ waiting did not earn.
+    const once = { goal: { amountNow: 1_000, monthly: 0, months: 12 }, market: { grossReturn: 0.12, inflation: 0 } } as const;
+    const none = runSecurities(input({ ...once, tariff: {} }), ctx);
+    const units = runSecurities(input({ ...once, wholeUnits: { price: 300 } }), ctx);
+    expect(beforeTax(none)).toBeCloseTo(1_120, 6);
+    expect(beforeTax(units)).toBeCloseTo(1_098, 6);
+    const remainder = beforeTax(none) - beforeTax(units) - units.feesCarried!.trade;
+    expect(remainder).toBeGreaterThan(0);
+    expect(remainder).toBeCloseTo(90 * 0.12, 6);
+
+    const read = (p: string) => JSON.parse(readFileSync(new URL(`../../../data/${p}`, import.meta.url), "utf8"));
+    const fibi = read("fees/fibi@2026-11-12.json");
+    const wb = (monthly: number, months: number): WorkbenchInput => ({
+      goal: { amountNow: 0, monthly, months },
+      market: { grossReturn: 0.07, inflation: 0.02, returnIn: "instrument" },
+      fund: { kind: "foreign-fund", drag: { management: 0.0007 }, sharePrice: 115, sharePriceCurrency: "USD" },
+      profile: {},
+      instrumentClass: "foreign_securities",
+      currency: { code: "USD", startRate: 3.17 },
+      fx: { USD: 3.17 },
+      listing: "europe",
+      channel: "direct",
+      theta: 0.005,
+      providers: [{ snapshot: fibi, level: "list" }],
+    });
+    for (const [monthly, months] of [[200, 12], [200, 60], [1_000, 120]] as const) {
+      const r = providerWorkbench(wb(monthly, months), ctx).rows[0]!;
+      if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify(r)}`);
+      expect(r.run.detail.wholeUnits).toBe(1);
+      for (const t of r.byType) {
+        expect(t.costBeforeTax).toBeGreaterThanOrEqual(0);
+        // the line is what was paid on it, carried to the horizon, in today's shekels
+        expect(t.costBeforeTax).toBeCloseTo(r.run.feesCarried![t.line] / r.run.series.at(-1)!.index, 9);
+      }
+      expect(r.byType.every((t) => t.cost === null)).toBe(true);
+      expect(r.interaction).toBeNull();
+      // the before-tax remainder is what the waiting cash did not earn, the sale's costs on the carried money and what the carry misses: small
+      const rest = r.horizonCostBeforeTax - r.byType.reduce((s, t) => s + t.costBeforeTax, 0);
+      expect(Math.abs(rest)).toBeLessThan(0.05 * r.horizonCostBeforeTax);
+    }
   });
 });

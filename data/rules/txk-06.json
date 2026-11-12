@@ -110,9 +110,9 @@
       "publisher_he": "הכנסת",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.875",
-      "locator_he": "עמוד 875",
-      "page": 875,
+      "locator": "file p.3 (gazette p.875)",
+      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 875)",
+      "page": 3,
       "quote": "יראו ברווחים כאמור הכנסה ולפיכך הם יהיו חייבים במס רווחי הון בשיעור 25% מהרווח הריאלי",
       "checked": "2026-10-25",
       "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))"

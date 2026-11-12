@@ -2,7 +2,7 @@
 // stands beside a link to a web page (not a PDF), reads the page as a browser shows it, and keeps a text fragment (`#:~:text=`) only where
 // the words are on the page exactly as it prints them and the fragment lands on them and nowhere else first.
 //
-//   node tools/quote-fragments.mjs [--only=<host or url part>] [--cache=<dir>] [--report=<file.json>] [--dry]
+//   node tools/quote-fragments.mjs [--only=<host or url part>] [--cache=<dir>] [--report=<file.json>] [--dry] [--no-solver]
 //   node tools/quote-fragments.mjs --browser-check=<n|all> [--prune] [--shots=<dir>]   (opens kept fragments in Chromium)
 //
 // Every fragment the text matching keeps is then opened in Chromium with `::target-text` painted magenta, and kept only if the browser
@@ -313,6 +313,8 @@ const refused = (status, title, text) =>
   status >= 400 || /just a moment|attention required|access denied|request unsuccessful|incapsula|captcha|cloudflare/i.test(title) || text.replace(/\s+/g, " ").length < 300;
 
 async function flare(url) {
+  // `--no-solver`: a page that refuses is left unread (its earlier rows stay) instead of being asked of FlareSolverr
+  if (args.includes("--no-solver")) return null;
   try {
     const r = await fetch("http://127.0.0.1:8191/v1", {
       method: "POST",
@@ -398,10 +400,16 @@ async function landsInBrowser(rows, shots) {
   const { chromium } = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/")("playwright");
   if (shots) mkdirSync(shots, { recursive: true });
   const landed = new Set();
-  const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
-  const counter = await (await browser.newContext()).newPage();
+  const launch = () => chromium.launch({ executablePath: process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+  let browser = await launch();
+  let counter = await (await browser.newContext()).newPage();
   const tally = { lands: 0, missed: 0, error: 0 };
   for (const [k, row] of rows.entries()) {
+    // a page can take the browser down with it (fibi.co.il did, 2026-11-12): the row counts as an error and the next one gets a new browser
+    if (!browser.isConnected()) {
+      browser = await launch();
+      counter = await (await browser.newContext()).newPage();
+    }
     const [base, hash] = row.url.split("#");
     const href = `${base}#${hash ?? ""}:~:${encodeDirective(row.text)}`;
     // a site that refuses a plain browser gets FlareSolverr's clearance first, as when the page was read

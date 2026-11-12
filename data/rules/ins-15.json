@@ -1,0 +1,80 @@
+{
+  "id": "INS-15",
+  "title": "Fee caps for executive insurance depend on the issue date: policies from 1 January 2013 are capped at 4% plus 1.05%",
+  "title_he": "תקרת דמי הניהול בביטוח מנהלים: רק בפוליסות מ־1.1.2013",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי תקנות דמי הניהול של קופות הגמל, התקרה של עד 1.05% בשנה מהיתרה ועד 4% מההפקדות חלה גם על ביטוח מנהלים, כי מבין קופות הביטוח רק קופת ביטוח מבטיחת תשואה מוחרגת ממנה. התקרה לא חלה על פוליסות שהוצאו לפני 1 בינואר 2013, ובהן נשארים דמי הניהול שבחוזה. בתכנית של הראל מ־2009, למשל, דמי הניהול מהיתרה הם עד 1.7% בשנה, בלי דמי ניהול מהפקדה, והחברה יכולה להוריד אותם.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=9",
+      "title": "s.12",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.12",
+      "locator_he": "סעיף 12",
+      "page": 9,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
+      "title": "s.2, gazette תשע״ד, 977",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.2, gazette תשע״ד, 977",
+      "locator_he": "סעיף 2, תשע״ד, 977",
+      "page": 4,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8",
+      "title": "s.11, gazette ק״ת תשע״ב, 1260",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.11, gazette ק״ת תשע״ב, 1260",
+      "locator_he": "סעיף 11, ק״ת תשע״ב, 1260",
+      "page": 8,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.harel-group.co.il/Policies/2010.pdf",
+      "title": "Harel plan 1286",
+      "title_he": "הראל מגוון למנהלים קצבה משלמת (תוכנית 1286, מהדורת 7/2009)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s. 10",
+      "locator_he": "סעיף 10",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf",
+      "title": "Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016",
+      "title_he": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה (מכתב הראל, יוני 2016)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p. 3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-10-22"
+    }
+  ]
+}

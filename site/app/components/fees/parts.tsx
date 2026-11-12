@@ -44,7 +44,7 @@ export function SubjectStrip({ subject, publisherNames, otherRecords }: { subjec
   return (
     <Card className="!p-3.5 md:!p-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm">
       <p className="min-w-0">{body}</p>
-      <span className="flex flex-wrap items-center gap-x-4 gap-y-1 shrink-0">
+      <span className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
         {otherRecords && (
           <Link to={otherRecords.href} className="text-link hover:underline tap-area">
             {otherRecords.label}

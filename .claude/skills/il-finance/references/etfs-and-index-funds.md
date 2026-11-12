@@ -31,6 +31,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Conditions / exceptions: The tax transition rules are for `tax-securities-israeli.md`. Leumi's page has no date.
 - Figures: start date 3 Oct 2018.
 - Source: [ISA, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה, update 3 (15.10.2024), p.1](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf) · checked 2026-10-22 · primary. [s.17, gazette ק״ת תשע״ח, 2394](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=7); the Knesset's record of the regulations (2067979) lists no amendment, so the gazette text is the current one · checked 2026-11-08 · primary. [Leumi, קרנות סל](https://www.leumi.co.il/he/exchange-traded-funds) · checked 2026-10-22 · institution.
+- Scope: general
 - Dimensions: regulator
 - Likely to change: no.
 
@@ -39,6 +40,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Conditions / exceptions: The market maker may not carry out coordinated trades (עסקאות מתואמות) or off-exchange trades in the units. There are two exceptions with an institutional manager of others' money: coordinated trades of at least NIS 500,000, and off-exchange trades of at least NIS 5 million. The law also lets the Minister allow a market maker controlled by the manager's controlling shareholder (s. 67(ג)). TASE monitors compliance. The market maker's quoting duties (minimum quantity, maximum spread, presence in the order book) are TASE's, ETF-82 (corrected 2026-11-06: this sentence said the TASE rules had not been reached).
 - Figures: NIS 500,000; NIS 5,000,000 (fixed in the regulation text as read).
 - Source: [Joint Investment Trust Law, Securities Authority's consolidated copy, file of 31.8.2026](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=43) (file pages: s.57 43-45; s.67 49-50; s.82 60-61) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [s.3, gazette ק״ת תשע״ח, 2394](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4); the Knesset's record of the regulations (2067979) lists no amendment, so the gazette text is the current one · checked 2026-11-08 · primary.
+- Scope: general
 - Dimensions: liquidity-lockup, fee-trade
 - Likely to change: yes, if the regulations are amended; the Knesset's record lists no amendment to date (checked 2026-11-08).
 
@@ -120,6 +122,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Conditions / exceptions: Section 7 took effect on 3 July 2024, except 7(a) (INAV), which took effect on 3 October 2024.
 - Figures: 10-minute sampling, 30 trading days, 12 months.
 - Source: [ISA tracking-fund directive, update 3 (15.10.2024), s. 7 and commencement](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf) · checked 2026-10-22 · primary.
+- Scope: general
 - Dimensions: fee-trade, reporting-obligation
 - Likely to change: yes. The directive is due for its first regulatory review 10 years after it took effect.
 
@@ -128,6 +131,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Conditions / exceptions: In July 2023 the ISA cancelled the duty to track the index at 95% correlation. It moved responsibility for tracking quality to the manager and gave the manager more freedom.
 - Figures: none.
 - Source: [ISA tracking-fund directive, p.1, definitions, s. 1, s. 10](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf) · checked 2026-10-22 · primary.
+- Scope: general
 - Dimensions: (proposed) tracking-difference
 - Likely to change: no.
 
@@ -237,6 +241,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Conditions / exceptions: Example: IBI S&P 500 ETF, fixed fee 0.80% and refund rate to institutions 0.7915%. A retail saver is not an institutional manager and pays the full published fee.
 - Figures: example as of 31.12.2025.
 - Source: [s.1, gazette ק״ת תשע״ח, 2394](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2), [s.13](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=6); the Knesset's record of the regulations (2067979) lists no amendment, so the gazette text is the current one · checked 2026-11-08 · primary. [IBI ETF annual report, p.1](https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf) · checked 2026-10-22 · institution.
+- Scope: general
 - Dimensions: fee-management-balance, eligibility
 - Likely to change: no.
 

@@ -1241,6 +1241,52 @@
           "עמלת חליפין",
           "ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)"
         ]
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 3,
+          "unit": "usd",
+          "source": {
+            "publisher": "Mizrahi Tefahot Bank Ltd.",
+            "strength": "institution",
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), הערה (6) רכישה/מכירה בסכומים קטנים",
+            "page": 14,
+            "quote": "עד $3.00 -$50.00"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2025-07-11",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16"
+          ],
+          "state": "sourced",
+          "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+        },
+        "up_to": {
+          "value": 50,
+          "unit": "usd",
+          "source": {
+            "publisher": "Mizrahi Tefahot Bank Ltd.",
+            "strength": "institution",
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), הערה (6) רכישה/מכירה בסכומים קטנים",
+            "page": 14,
+            "quote": "עד $3.00 -$50.00"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2025-07-11",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16"
+          ],
+          "state": "sourced",
+          "notes": "Part 5 note (6), p.14: 'עד $50.00'."
+        }
       }
     },
     {
@@ -1348,6 +1394,54 @@
           "חליפין - ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)",
           "שירות האינטרנט"
         ]
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 2.85,
+          "unit": "usd",
+          "source": {
+            "publisher": "Mizrahi Tefahot Bank Ltd.",
+            "strength": "institution",
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע, רכישה/מכירה בסכום עד 50 $, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+            "page": 48,
+            "quote": "רכישה/מכירה בסכום עד $ 2.85 :$ 50"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2025-08-12",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16",
+            "BRK-19"
+          ],
+          "state": "sourced",
+          "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+        },
+        "up_to": {
+          "value": 50,
+          "unit": "usd",
+          "source": {
+            "publisher": "Mizrahi Tefahot Bank Ltd.",
+            "strength": "institution",
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע, רכישה/מכירה בסכום עד 50 $, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+            "page": 48,
+            "quote": "רכישה/מכירה בסכום עד $ 2.85 :$ 50"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2025-08-12",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16",
+            "BRK-19"
+          ],
+          "state": "sourced",
+          "notes": "Annex E, p.48: 'בסכום עד 50 $'."
+        }
       }
     },
     {
@@ -1480,7 +1574,7 @@
     {
       "what": "קבלת שערי בורסה בשעת המסחר באמצעות מערכת האינטרנט: 'על פי תעריפון הבורסה' (11.16); מזרחי טפחות בזמן אמת 10 ₪ לחודש (2.7.2)",
       "why": "11.16 passes on the exchange's own charge with no amount; nothing says that an ordinary customer's trading screen triggers it. 2.7.2 is an alert service the customer chooses ('לקוח שיבחר בשירות'). Neither is priced.",
-      "why_he": "קבלת שערים בזמן אמת באתר הבנק מחויבת לפי תעריף הבורסה, ושירות התראות עולה 10 ₪ לחודש למי שבוחר בו. המסמכים לא אומרים שכל לקוח משלם על השערים, ולכן האתר לא מוסיף אותם, והמחיר יכול לצאת מעט יקר יותר.",
+      "why_he": "קבלת שערים בזמן אמת באתר הבנק מחויבת לפי תעריף הבורסה, בלי סכום. המסמכים לא אומרים שכל לקוח משלם עליה, ולכן האתר לא מוסיף אותה, והמחיר יכול לצאת יקר יותר. שירות ההתראות, 10 ₪ לחודש, הוא רק למי שבוחר בו, ולכן האתר לא מוסיף גם אותו.",
       "could_change_price": true
     },
     {
@@ -1492,14 +1586,14 @@
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.08%-0.44% לשנה, זרים 0.11%-0.43%; קנייה ומכירה של מניות ואג\"ח 0.13%-0.32%, ני\"ע זרים 0.12%-0.34%",
       "why": "What customers paid on average by portfolio size (the exchange's sheet, '01/01/26 - 30/06/26'; the bank's own page brokerage/amalot): a sourced fact, not a price. The list price is 0.70% a year in Israel.",
-      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.08% עד 0.44% בשנה בארץ, לפי גודל התיק, פחות מ־0.70% שבמחירון. זה ממוצע של מה שנגבה בפועל אחרי הנחות, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון: מי שמתמקח יכול לשלם פחות.",
+      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.08% עד 0.44% בשנה בארץ, לפי גודל התיק, פחות מ־0.70% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true
     },
     {
-      "what": "חליפין - ממטבע לש\"ח/מש\"ח למטבע: 'רכישה/מכירה בסכום עד 50 $' 2.85 $ בשירות האינטרנט (3.00 $ אצל פקיד); עד 10 $ פטור (חלק 5, הערה (6))",
-      "page": 48,
-      "why": "Annex E, p.48: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' in the internet service (clerk 3.00 $); part 5 note (6), p.14: up to $10 exempt, up to $50 a flat $3.00. The engine reads `flat_up_to` on trade lines only, so a conversion of $50 or less is priced at the $5.40 minimum, about $2.55 above the printed price. Reported as an engine gap; not priced.",
-      "why_he": "המרה של עד 50 דולר עולה באינטרנט 2.85 דולר בלבד, והמרה של עד 10 דולר פטורה, אבל האתר מחשב כל המרה לפי 0.133% עם מינימום של 5.40 דולר. למי שמפקיד כל חודש עד 50 דולר ההמרה בפועל זולה בכ־2.5 דולר מהמחיר שמוצג.",
+      "what": "חליפין - ממטבע לש\"ח/מש\"ח למטבע: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור' (חלק 5, הערה (6))",
+      "page": 14,
+      "why": "Part 5 note (6), p.14: a conversion up to $10 is exempt. The flat price up to $50 (2.85 $ in the internet service, annex E p.48; 3.00 $ at a clerk) is priced (`flat_up_to`, F-13); the free band below it is not a flat price, and the engine charges such a conversion the flat price. Only a monthly purchase of 10 dollars or less (about 32 NIS at the rate of 2026-11-11) is that small. Not priced.",
+      "why_he": "האתר לא מחשב את הפטור מעמלה על המרה של עד 10 דולר. למי שמפקיד כל חודש עד 10 דולר, ההמרה בפועל זולה מהמחיר שמוצג.",
       "could_change_price": true
     }
   ],

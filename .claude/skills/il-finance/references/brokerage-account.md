@@ -173,6 +173,7 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Conditions / exceptions: Which entity a given Israeli client is placed at, and any excess cover, was not read on Interactive Brokers' own pages (blocked). The Irish scheme's own page did not load; what its rules say is BRK-35.
 - Figures: SIPC USD 500,000 / USD 250,000 cash (SIPC page, no date shown; set by US law, not re-checked). EUR 20,000 as stated by Interactive Israel.
 - Source: [SIPC, "What SIPC Protects"](https://www.sipc.org/for-investors/what-sipc-protects) · checked 2026-10-22 · primary (foreign); [Interactive Israel, about page](https://lp3.inter-il.com/about-3) · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: `protection`, `currency`
 - Likely to change: no.
 
@@ -237,6 +238,7 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Conditions / exceptions: none.
 - Figures: none.
 - Source: [BoI fees rules 2008, consolidated, s.4(א), 4(ב)](https://boi.org.il/media/w2lgmymp/159a.pdf), p.4 · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `fee-change-over-time`, `reporting-obligation`
 - Likely to change: no.
 

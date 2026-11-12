@@ -15,18 +15,19 @@
 // page's own and is named by where it is shown, the receipt (`invest.shownPair`); with a group picked, its house's row keeps its price-list
 // stretch and place (D43), and the fund list is priced at the group's prices, as the receipt is.
 import { useMemo, useState, type ReactNode, type RefObject } from "react";
-import { flags, invest as c } from "../../copy";
+import { flags, invest as c, leftOut as leftOutCopy } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
 import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
 import { isGroupProvider } from "../../lib/group-pick";
+import { leftOutOf } from "../../lib/left-out";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num, Term } from "../provenance";
-import { AlsoChanged, Disclosure, HelpMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
+import { AlsoChanged, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
@@ -188,6 +189,16 @@ export function PairLists(props: ListsProps) {
   const nameOf = (p: (typeof providers)[number], selected: boolean) => (
     <span className={cx("min-w-0 text-sm", selected ? "font-semibold" : "font-medium", (p.id === view.yourBroker || p.custom) && "text-entered")}>{p.short}</span>
   );
+  // what an account's documents hold and its price leaves out, where it can change what some reader pays: a quiet mark beside the name
+  // that opens it, so it is seen before the account is chosen (D106); the receipt says it under the chosen account's lines
+  const leftOutAt = new Map(providers.map((p) => [p.id, leftOutOf(snapOf(p.id))]));
+  const marked = providers.some((p) => (leftOutAt.get(p.id)?.warn ?? 0) > 0);
+  const nameWithMark = (p: (typeof providers)[number], selected: boolean) => (
+    <span className="flex min-w-0 items-center gap-1">
+      {nameOf(p, selected)}
+      <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
+    </span>
+  );
   const movedHere = (half: "fund" | "house") =>
     moved?.back && moved.half === half
       ? underRow(
@@ -207,7 +218,7 @@ export function PairLists(props: ListsProps) {
         onSelect: () => pickHalf(view, pick, { house: p.id }, onPick),
         cells: (
           <>
-            {nameOf(p, selected)}
+            {nameWithMark(p, selected)}
             {selected ? chosenWord(chosen, "text-chart-by-account") : figureCell(c.lists.accounts.upTo, priced(best) && <Num animate value={best.value} />, s.best)}
             <StretchBar scale={scale} best={s.best} worst={s.worst} className="h-6 max-xl:h-8" />
             {p.custom && underRow(<BrokerTerms id={p.id} />)}
@@ -229,6 +240,7 @@ export function PairLists(props: ListsProps) {
               {nameOf(p, selected)}
               {/* why its funds are shown and not ranked, in the rule's own words */}
               <HelpMark about={c.lists.accounts.unranked} text={flags["G-18"] ?? ""} />
+              <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
             </span>
             {selected ? chosenWord(chosen, "text-chart-by-account") : <span className="inline-flex items-center gap-1 text-xs text-blocked-foreground whitespace-nowrap"><IconLock size={14} />{c.lists.accounts.unranked}</span>}
             <StretchBar scale={scale} best={null} worst={null} className="h-6 max-xl:h-8" />
@@ -533,6 +545,7 @@ export function PairLists(props: ListsProps) {
   const accountsFoot = (
     <div className="flex flex-col gap-3">
       <p className="text-xs text-muted-foreground">{ruler ? c.lists.accounts.barRuler : c.lists.accounts.barAlone}</p>
+      {marked && <p className="text-xs text-muted-foreground">{leftOutCopy.markKey}</p>}
       <AddEntryButton kind="broker" />
       {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />

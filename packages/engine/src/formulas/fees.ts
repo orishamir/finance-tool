@@ -96,6 +96,32 @@ export function fxFee(line: number | Commission | undefined, amount: number, ter
   return tradeCommission(line, amount, terms);
 }
 
+/**
+ * F-13 on a purchase in whole units (F-109): the shekels `c` whose conversion leaves `owed` once its fee and the spread `s` are paid,
+ * `c = owed + fee_fx(c) + s × c`; the fee is on `c`, the amount converted, as F-08 charges it on a contribution. Solved by fixed-point
+ * iteration, as `buyWithCash` solves F-12. A flat price for a conversion up to a sum (`flatUpTo`) jumps at the sum, which the iteration
+ * cannot cross: where `(owed + flat) / (1 − s)` is at or under the sum the conversion pays the flat price, and a larger one leaves the flat
+ * price out and pays the line (the data check holds every recorded flat price below its line's minimum, so the line is dearer past the sum).
+ */
+export function convertFor(owed: number, line: number | Commission | undefined, terms: TradeTerms, spread = 0): number {
+  if (!(owed > 0)) return 0;
+  let l = line;
+  if (typeof l === "object" && l.flatUpTo) {
+    const k = l.in === "instrument" ? terms.fxRate : 1;
+    const c = (owed + l.flatUpTo.amount * k) / (1 - spread);
+    if (c <= l.flatUpTo.upTo * k) return c;
+    const { flatUpTo: _, ...rest } = l;
+    l = rest;
+  }
+  let c = owed;
+  for (let i = 0; i < 100; i++) {
+    const next = owed + fxFee(l, c, terms) + spread * c;
+    if (Math.abs(next - c) < 1e-10) break;
+    c = next;
+  }
+  return c;
+}
+
 /** A custody fee per period (F-14), on the holdings it applies to. */
 export interface Custody {
   rate: number;

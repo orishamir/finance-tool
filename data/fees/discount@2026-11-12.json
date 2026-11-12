@@ -1262,14 +1262,14 @@
       "what": "מסלול INVEST או ניהול תיקים",
       "page": 32,
       "why": "Every annex A group page ends 'ללקוחות שחשבונם משויך למסלול INVEST או ניהול תיקים יחולו הטבות בשירותי ני\"ע ומט\"ח ... בהתאם לתנאי מסלול INVEST או ניהול תיקים' (p.32 and on). The track's terms are not published (searched 2026-11-12: the tariff, the young-investor page, a web search; forms 03-068 are advisory agreements with no price). Not collected.",
-      "why_he": "לקוחות במסלול INVEST או בניהול תיקים משלמים בניירות ערך ובהמרת מטבע לפי תנאי המסלול, שהבנק לא מפרסם. האתר לא מחשב אותם, ולמי שבמסלול כזה המחיר יכול להיות שונה.",
+      "why_he": "לקוחות במסלול INVEST או בניהול תיקים משלמים בניירות ערך ובהמרת מטבע לפי תנאי המסלול, שהבנק לא מפרסם. האתר לא מחשב אותם, ולמי שבמסלול כזה המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "דיגיטל פרימיום: פטור מדמי ניהול פיקדון ני\"ע בארץ ובחו\"ל ומעמלת חליפין, 0.20% מינימום 25 ₪ בת\"א, 0.25% מינימום 25$ בחו\"ל",
       "page": 40,
       "why": "Binding (annex A, 22/06/2026) but conditional: the digital branch (טאצ'ר, 535), a monthly salary above 8,000 NIS (14,000 for a couple) or a portfolio above 500,000 NIS, kept 'בכפוף להתמדה'; no end date printed; the toucher page reserves 'לשנותם... ואף לבטלם, בכפוף למתן הודעה'. An offer, listed under groups and not ranked (D56). The trade rows name only 'מניות ואגרות חוב'; the custody rows name fund units.",
-      "why_he": "בסניף הדיגיטלי, לקוח עם משכורת של יותר מ־8,000 ₪ (14,000 ₪ לזוג) או תיק של יותר מ־500,000 ₪ פטור מדמי ניהול פיקדון ומעמלת המרה, ומשלם 0.20% על קנייה ומכירה בתל אביב. ההטבה מותנית והבנק רשאי לבטל אותה, ולכן האתר מחשב את המחירון הרגיל, ולמי שעומד בתנאים המחיר זול יותר.",
+      "why_he": "בסניף הדיגיטלי, לקוח עם משכורת של יותר מ־8,000 ₪ (14,000 ₪ לזוג) או תיק של יותר מ־500,000 ₪ פטור מדמי ניהול פיקדון ומעמלת המרה, ומשלם 0.20% על קנייה ומכירה של מניות ואג״ח בתל אביב (שורת העמלה הזו לא מזכירה קרנות). ההטבה מותנית והבנק רשאי לבטל אותה, ולכן האתר מחשב את המחירון הרגיל, ולמי שעומד בתנאים המחיר זול יותר.",
       "could_change_price": true
     },
     {
@@ -1290,7 +1290,7 @@
       "what": "4.11.1 עמלת קסטודיאן 0.1% משווי העסקה, מינימום 50 ₪, מקסימום 10,000 ₪ לני\"ע",
       "page": 16,
       "why": "Printed under 'שרותים מיוחדים או עסקיים' with no scope; not priced for the reader's trades. The bank could say what it covers.",
-      "why_he": "התעריפון מציין ״עמלת קסטודיאן״ של 0.1%, מינימום 50 ₪, בין השירותים המיוחדים, בלי לומר על מה היא נגבית. האתר לא מחשב אותה, ואם היא חלה על קרן שנקנתה בחו״ל המחיר יכול לצאת יקר יותר.",
+      "why_he": "התעריפון מציין ״עמלת קסטודיאן״ של 0.1%, מינימום 50 ₪, בין השירותים המיוחדים, בלי לומר על מה היא נגבית. האתר לא מחשב אותה, ואם היא חלה על קנייה, מכירה או החזקה רגילה, המחיר יכול לצאת יקר יותר.",
       "could_change_price": true
     },
     {
@@ -1316,14 +1316,14 @@
     {
       "what": "ממוצעי העמלות שנגבו בפועל, 1-6/2026",
       "why": "Israeli custody 0.06%-0.37% a year by portfolio size, foreign 0.08%-0.28% (library 875d6fab311736f2). A fact, not a price (D56); kept in the custody line's notes, not in `averages`.",
-      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.06% עד 0.37% בשנה בארץ, לפי גודל התיק, פחות מ־0.80% שבמחירון. זה ממוצע של מה שנגבה בפועל אחרי הנחות, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון: מי שמתמקח יכול לשלם פחות.",
+      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.06% עד 0.37% בשנה בארץ, לפי גודל התיק, פחות מ־0.80% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true
     },
     {
       "what": "עמלת חליפין בעסקאות קטנות: 'בעסקאות מט\"ח שסכומן עד 10$ - פטור. עד 100$ - 50% הנחה, לרבות על המינימום' (חלק 5, הערה (*))",
       "page": 18,
-      "why": "Part 5 footnote (*), p.18, attached to 5.1.1 (p.17). The engine cannot hold a discount by the size of the conversion (an FX line takes no `flat_up_to` and no band by amount), so a conversion of $100 or less is priced at the full direct minimum of $6, about $3 above what the footnote charges, and one of $10 or less is not free. Not priced.",
-      "why_he": "המרה של עד 100 דולר מקבלת 50% הנחה, גם על המינימום, והמרה של עד 10 דולר פטורה. האתר מחשב כל המרה במחיר המלא, עם מינימום של 6 דולר, ולכן למי שמפקיד כל חודש עד 100 דולר ההמרה בפועל זולה בכ־3 דולר מהמחיר שמוצג.",
+      "why": "Part 5 footnote (*), p.18, attached to 5.1.1 (p.17). A discount by the size of the conversion (50% off the line, the minimum included, up to $100) and a free band (up to $10) are not a flat price (`flat_up_to`, F-13), which is all the engine holds for a small conversion; approximating them would be pricing by analogy. So a conversion of $100 or less is priced at the full direct minimum of $6, about $3 above what the footnote charges, and one of $10 or less is not free. Not priced.",
+      "why_he": "האתר לא מחשב את ההנחה של 50% על המרה של עד 100 דולר, גם על המינימום, ולא את הפטור על המרה של עד 10 דולר. למי שמפקיד כל חודש עד 100 דולר, ההמרה בפועל זולה בכ־3 דולר מהמחיר שמוצג, ועד 10 דולר היא בלי עמלה.",
       "could_change_price": true
     }
   ],

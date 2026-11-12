@@ -29,6 +29,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: For deposits longer than one year the agreement must also state: restrictions on transferring the deposit; other benefits and their conditions; for deposits under the Savings Encouragement Law 1956, the tax-exemption terms; for deposits made from time to time (savings plans), the deposit schedule and limits on amounts and dates; for deposits that allow early repayment, the early-repayment terms.
 - Figures: none.
 - Source: [Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated (amendments to 30.12.2014), BoI copy](https://boi.org.il/media/rvzi1ngd/151.pdf), s.7(a), 7(b) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: liquidity-lockup, real-vs-nominal, regulator, reporting-obligation
 - Likely to change: no
 
@@ -37,6 +38,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: The supervisor may exempt certain account types from the signature requirement (s.3(a1)).
 - Figures: none.
 - Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.3(a)(2)-(3), 4 · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: reporting-obligation
 - Likely to change: no
 
@@ -45,6 +47,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: The effective annual rate formula is in Schedule A of the rules (compounding by the number of interest calculation periods per year, or by the deposit length in days on a 365-day year).
 - Figures: none.
 - Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.1 (definition "ריבית מתואמת שנתית"), s.2(a), (b), (d), Schedule A · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: real-vs-nominal, reporting-obligation
 - Likely to change: no
 
@@ -89,6 +92,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: Post-repayment notice is not needed for deposits repaid within three months if the details were in the deposit document, or for unlinked deposits if they were in the pre-maturity notice. Schedule E exempts the s.8 interest-crediting notice up to NIS 75.
 - Figures: NIS 75 exempt sum (Schedule E); 30 days.
 - Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.8, 12, 30(c), 30(e), Schedule E · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: reporting-obligation
 - Likely to change: no
 
@@ -106,6 +110,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: Directive 447 builds the uniform format on top of this (BANK-13).
 - Figures: none.
 - Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.14 · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: reporting-obligation
 - Likely to change: no
 
@@ -114,6 +119,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: Directive 447 and 447A add display rules for the bank's own channels (BANK-13, BANK-15). Institution disclaimers seen: rate tables are "not an offer", terms in the deposit agreement bind (Leumi, Mizrahi); examples in ads are theoretical (FIBI).
 - Figures: none.
 - Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.33B (33ב) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: reporting-obligation
 - Likely to change: no
 
@@ -122,6 +128,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: Does not apply to interest types whose rates change daily. For individual customers with benefits granted for over three months, the end of the benefit must be notified at least two weeks ahead under these rules; the Banking (Customer Service) Law now requires 21 days for banking benefits (BANK-19).
 - Figures: two weeks; three business days.
 - Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.5(a)(1)-(3), 5(a)(6), 5(b)(1) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: fee-change-over-time, reporting-obligation
 - Likely to change: no
 
@@ -157,6 +164,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: The full tariff has no part for deposits or savings plans; the cost of breaking a deposit is a deposit term (BANK-06), not a tariff fee. Items marked "(בפיקוח)" in the schedule (including the basic track price and single teller and direct-channel actions) are price-controlled; the figures are a data-track item. Per-bank publication locations are listed under Institutions.
 - Figures: none here (tariff figures go to `data/`).
 - Source: [Banking Rules (Customer Service) (Fees) 2008, consolidated to amendment of 9.4.2025, BoI copy](https://boi.org.il/media/jbwnaivp/159a.pdf), s.2-4, First and Second Schedules · checked 2026-10-22 · primary. [Banking (Customer Service) Law, BoI consolidation 10/11](https://boi.org.il/media/y3akar3j/חוק-הבנקאות-שירות-ללקוח-התשמא-1981.pdf), s.9T (9ט), 9Y (9י) · checked 2026-10-22 · primary (unofficial consolidation)
+- Scope: general
 - Dimensions: fee-deposit, fee-custody, regulator
 - Likely to change: yes: the fee rules have been amended repeatedly (last amendment listed 9.4.2025).
 
@@ -343,6 +351,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: One bank's marketing article; other banks may use the abbreviation more narrowly (BPN OQ8).
 - Figures: none.
 - Source: [Bank of Jerusalem, פק"מ או פיקדון מובנה](https://www.bankjerusalem.co.il/deposits-savings/deposit-types-and-differences/) · checked 2026-10-22 · institution
+- Scope: institution: Bank of Jerusalem
 - Dimensions: `liquidity-lockup`, `protection`
 - Likely to change: no.
 
@@ -351,6 +360,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Conditions / exceptions: The Bank of Jerusalem document is dated 2018 (it still refers to LIBOR); other banks may use the abbreviations slightly differently. "פר"ן" (Mercantile) is still not defined in any bank document found.
 - Figures: none.
 - Source: [בנק ירושלים: הסכם תנאים כלליים לפתיחת חשבון 73813 (01.2024)](https://www.bankjerusalem.co.il/media/5757/%D7%A0%D7%92%D7%99%D7%A9_%D7%94%D7%A1%D7%9B%D7%9D_%D7%AA%D7%A0%D7%90%D7%99%D7%9D_%D7%9B%D7%9C%D7%9C%D7%99%D7%9D_%D7%9C%D7%A4%D7%AA%D7%99%D7%97%D7%AA_%D7%97%D7%A9%D7%91%D7%95%D7%9F_73813_%D7%A2%D7%91%D7%A8%D7%99%D7%AA_%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%AA_%D7%99%D7%A0%D7%95%D7%90%D7%A8_2024_%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C.pdf), p.30, ss.92-95 "פיקדון לא צמוד לזמן קצוב, לתקופה מוגדרת מראש" · checked 2026-11-12 · institution; [Bank of Jerusalem, תנאים כלליים לניהול חשבון (accessible PDF)](https://www.bankjerusalem.co.il/media/2932/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf), pp.23-24, ss.92-95 (the older edition the conditions line dates) · checked 2026-10-22 · institution; [Discount 447 table, "פיקדון בהוראת קבע" filter](https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/) · checked 2026-10-22 · institution
+- Scope: institution: Bank of Jerusalem, Discount Bank
 - Dimensions: `product-marking`, `rate-type-anchor`, `auto-renewal`
 - Likely to change: no.
 

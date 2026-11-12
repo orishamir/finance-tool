@@ -1015,6 +1015,50 @@
           "עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים",
           "מעל 99 $"
         ]
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 5.5,
+          "unit": "usd",
+          "source": {
+            "publisher": "Bank Hapoalim B.M.",
+            "strength": "institution",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+            "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
+            "quote": "עד 99 $ | $5.50"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-10-05",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16"
+          ],
+          "state": "sourced",
+          "notes": "Printed '$5.50' for a conversion 'עד 99 $' (sheet row 1103); the row 'מעל 99 $' is the line's 0.19%, minimum $6.70. Read in the library's copy of the sheet (e939af51e5b97376), identical to the file fetched 2026-11-12."
+        },
+        "up_to": {
+          "value": 99,
+          "unit": "usd",
+          "source": {
+            "publisher": "Bank Hapoalim B.M.",
+            "strength": "institution",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+            "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
+            "quote": "עד 99 $ | $5.50"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-10-05",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16"
+          ],
+          "state": "sourced",
+          "notes": "'עד 99 $' (sheet row 1103), against 'מעל 99 $' (row 1104): a conversion of 99 dollars or less pays the flat price."
+        }
       }
     },
     {
@@ -1117,6 +1161,52 @@
           "מעל 99 $",
           "ערוץ ישיר"
         ]
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 3.3,
+          "unit": "usd",
+          "source": {
+            "publisher": "Bank Hapoalim B.M.",
+            "strength": "institution",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+            "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
+            "quote": "3.3 $"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-10-05",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16",
+            "BRK-19"
+          ],
+          "state": "sourced",
+          "notes": "Annex E (sheet row 106): '3.3 $' in a direct channel for a conversion 'עד 99 $' (clerk 5.5 $); above 99 dollars the line's 0.17%, minimum 5.7 $. Read in the library's copy of the sheet (e939af51e5b97376), identical to the file fetched 2026-11-12."
+        },
+        "up_to": {
+          "value": 99,
+          "unit": "usd",
+          "source": {
+            "publisher": "Bank Hapoalim B.M.",
+            "strength": "institution",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+            "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
+            "quote": "עד 99 $"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-10-05",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16",
+            "BRK-19"
+          ],
+          "state": "sourced",
+          "notes": "Annex E (sheet row 106): 'סכום עד 99 $', against 'מעל 99 $'."
+        }
       }
     },
     {
@@ -1227,7 +1317,7 @@
     {
       "what": "מחיר מופחת בערוץ ישיר למניות בחוץ לארץ: 0.30% בארצות הברית ו-0.50% מחוצה לה, מינימום 20 דולר, מקסימום 7,000 דולר",
       "why": "Annex E (sheet rows 101-102; 145.pdf) prints 0.30% (US) and 0.50% (elsewhere), min $20, max $7,000, for 'מניות הנסחרות בארה\"ב*' and 'מניות הנסחרות למעט ארה\"ב*', the asterisk only making the annex subject to the full tariff's notes. The rows name shares, not funds, so a fund abroad is priced on the row that names funds, 0.90%, min $25 (founder, 2026-10-31: no price from analogy). The gap: a small order pays the minimum on either row ($25 against $20); from about $2,800 the rates part, $10,000 paying $90 against $30.",
-      "why_he": "בערוץ הישיר הבנק גובה על מניות בחו״ל 0.30% בארה״ב ו־0.50% מחוצה לה, מינימום 20 דולר, אבל השורה מזכירה רק מניות. האתר מחשב קרן שנקנית בחו״ל לפי השורה שמזכירה קרנות, 0.90% ומינימום 25 דולר, ואם הבנק גובה על קרן סל את מחיר המניות המחיר יוצא זול בהרבה.",
+      "why_he": "בערוץ הישיר הבנק גובה על מניות בחו״ל 0.30% בארה״ב ו־0.50% מחוצה לה, מינימום 20 דולר, אבל השורה מזכירה רק מניות. האתר מחשב קרן שנקנית בחו״ל לפי השורה שמזכירה קרנות, 0.90% ומינימום 25 דולר, ואם הבנק גובה על קרן סל את מחיר המניות המחיר יוצא זול יותר, ובעסקה גדולה זול בהרבה.",
       "could_change_price": true
     },
     {
@@ -1239,7 +1329,7 @@
     {
       "what": "פועלים פלוס: 'הטבות בעמלות ניירות ערך'",
       "why": "The joining page (library 7e6de8c6c17a9800) names no figure; the benefits need a new account opened 1.10.2026-31.12.2026, a net salary of 10,000 NIS (joint 15,000), and last 3 years. Annex A prints no Poalim Plus club. The linked promotion terms (library 074b3666da413df1) are the April-June 2026 grant offer and say nothing on securities.",
-      "why_he": "מסלול פועלים פלוס מבטיח ״הטבות בעמלות ניירות ערך״ למי שפותח חשבון חדש עד 31.12.2026 עם משכורת של 10,000 ₪ לפחות, בלי לומר מה ההטבות. האתר לא מחשב אותן, ולמי שמצטרף למסלול המחיר יכול לצאת זול יותר.",
+      "why_he": "מסלול פועלים פלוס מבטיח ״הטבות בעמלות ניירות ערך״ למי שפותח חשבון חדש עד 31.12.2026 עם משכורת נטו של 10,000 ₪ לפחות (15,000 ₪ לחשבון משותף), בלי לומר מה ההטבות. האתר לא מחשב אותן, ולמי שמצטרף למסלול המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
@@ -1251,7 +1341,7 @@
     {
       "what": "עמלת קסטודיאן 0.01%, מינימום 20 ₪ לנייר ערך, מקסימום 500 ₪ לנייר ערך",
       "why": "Securities chapter, special services (sheet row 1054; PDF p.48, checked on the page image). Note (05) says only 'כולל אופציות וחוזים עתידיים על נכסי בסיס במעו\"ף'; what it is charged on is not printed. Not priced, as at Leumi, Discount and Meitav Trade.",
-      "why_he": "התעריפון מציין ״עמלת קסטודיאן״ של 0.01%, מינימום 20 ₪ לנייר, בין השירותים המיוחדים, בלי לומר על מה היא נגבית. האתר לא מחשב אותה, ואם היא חלה על קרן שנקנתה בחו״ל המחיר יכול לצאת יקר יותר.",
+      "why_he": "התעריפון מציין ״עמלת קסטודיאן״ של 0.01%, מינימום 20 ₪ לנייר, בין השירותים המיוחדים, בלי לומר על מה היא נגבית. האתר לא מחשב אותה, ואם היא חלה על קנייה, מכירה או החזקה רגילה, המחיר יכול לצאת יקר יותר.",
       "could_change_price": true
     },
     {
@@ -1263,13 +1353,7 @@
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.08%-0.40% לשנה, זרים 0.07%-0.39%; קנייה ומכירה של מניות ואג\"ח 0.15%-0.30%",
       "why": "What customers paid on average by portfolio size (the bank's sheet, library ef2681f813a11810, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.60% a year in Israel.",
-      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.08% עד 0.40% בשנה בארץ, לפי גודל התיק, פחות מ־0.60% שבמחירון. זה ממוצע של מה שנגבה בפועל אחרי הנחות, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון: מי שמתמקח יכול לשלם פחות.",
-      "could_change_price": true
-    },
-    {
-      "what": "עמלת חליפין בקניה/מכירה עד 99 $: '3.3 $' בערוץ ישיר ('5.5 $' אצל פקיד)",
-      "why": "Annex E (sheet row 106) and the foreign-currency chapter print a flat 3.3 $ in a direct channel (clerk 5.5 $) for a conversion up to $99; the recorded line, 0.17% with a $5.70 minimum, is the row 'מעל 99 $'. The engine reads `flat_up_to` on trade lines only (packages/engine/src/providers/workbench.ts, the fx branch), so every conversion of $99 or less is priced at the $5.70 minimum, $2.40 above the printed price. Reported as an engine gap; not priced.",
-      "why_he": "המרה של עד 99 דולר עולה בערוץ הישיר 3.3 דולר בלבד, אבל האתר מחשב כל המרה לפי 0.17% עם מינימום של 5.7 דולר. למי שמפקיד כל חודש פחות מ־99 דולר ההמרה בפועל זולה בכ־2.4 דולר מהמחיר שמוצג.",
+      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.08% עד 0.40% בשנה בארץ, לפי גודל התיק, פחות מ־0.60% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true
     }
   ],

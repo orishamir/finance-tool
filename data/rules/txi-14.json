@@ -40,16 +40,16 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5",
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
       "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.4-5, regs. 1, 5, 8",
-      "locator_he": "עמודים 4 עד 5, תקנות 1, 5, 8",
-      "page": 4,
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
       "quote": "כשהן מוגדלות או מוקטנות",
       "checked": "2026-10-25"
     },

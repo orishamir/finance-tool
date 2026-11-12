@@ -1,0 +1,49 @@
+{
+  "id": "FXD-11",
+  "title": "Structured deposits at banks: what they are, guarantee, return, advice requirement, lock-up",
+  "title_he": "פיקדון מובנה בבנק הבינלאומי ובבנק מסד: קרן ״ככלל מובטחת״, מענק אפשרי, וייעוץ חובה",
+  "strength": "institution",
+  "dimensions": [
+    "protection",
+    "liquidity-lockup",
+    "eligibility",
+    "currency",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-22",
+  "text_he": "הבנק הבינלאומי ובנק מסד מגדירים פיקדון מובנה כפיקדון שהתשואה או הסיכון שלו תלויים במחירים בשוק ההון, למשל מדד, מניה, ריביות או שערי חליפין. לפי שניהם הקרן ״ככלל מובטחת (במטבע הבסיס)״, והתשואה היא מענק אפשרי לפי תנאי המוצר, בלי התחייבות לתשואה מינימלית; הסיכון שהם מציינים הוא הפסד של ריבית שאפשר היה לקבל במקום אחר, והמוצר לא מתאים למי שהנזילות חשובה לו. בשני הבנקים ההצטרפות מותנית בייעוץ השקעות. הקרן מובטחת במטבע הבסיס, ולכן במוצר דולרי מובטחים דולרים ולא שקלים, והמילה ״ככלל״ אומרת שההבטחה לא נכתבה לכל מוצר.",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
+      "title": "FIBI structured deposits page",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/structureddeposits/",
+      "title": "Massad structured deposits page",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

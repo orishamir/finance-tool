@@ -76,9 +76,9 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.20-21, s.4.4",
-      "locator_he": "עמודים 20 עד 21, סעיף 4.4",
-      "page": 20,
+      "locator": "pp.20-21, s.4.4; p.21",
+      "locator_he": "עמודים 20 עד 21, סעיף 4.4; עמוד 21",
+      "page": 21,
       "quote": "החיוב במס של בעל היחידה יערך לפי השקעות הקרן",
       "checked": "2026-10-26",
       "qualifier": "(contrary, before Amendment 147)"

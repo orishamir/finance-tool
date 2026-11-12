@@ -1,0 +1,99 @@
+{
+  "id": "RG-03",
+  "title": "What a REIT may hold (the 95% test) and the 75%-in-Israel test",
+  "title_he": "מה קרן להשקעות במקרקעין יכולה להחזיק: מבחן 95% ומבחן 75% בישראל",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "text_he": "ב־30 ביוני וב־31 בדצמבר בכל שנה, לפחות 95% מנכסי הקרן צריכים להיות מהסוגים האלה: מקרקעין מניבים, מקרקעין בהקמה, מקרקעין לדיור להשכרה, איגרות חוב, ניירות ערך שנסחרים בבורסה, מלוות מדינה, חובות של לקוחות, פיקדונות ומזומן. מקרקעין בהקמה, שנוספו לרשימה ב־2026, נכללים רק אם עלות הרכישה ששולמה בפועל היא עד 20% משווי כל הנכסים. מקרקעין מניבים ומקרקעין לדיור להשכרה שנמצאים בישראל צריכים להיות לפחות 75% משווי שני הסוגים האלה יחד.",
+  "il_finance_file": "reits-and-gold-funds.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=103",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, file of 15.1.2023",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.103, s.64א3(א)(5)(א)",
+      "locator_he": "עמוד 103, סעיף 64א3(א)(5)(א)",
+      "page": 103,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=103",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, file of 15.1.2023",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.104, s.64א3(א)(5א)",
+      "locator_he": "עמוד 104, סעיף 64א3(א)(5א)",
+      "page": 104,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=103",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, file of 15.1.2023",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.101, s.64א2",
+      "locator_he": "עמוד 101, סעיף 64א2",
+      "page": 101,
+      "quote": "לרבות מקרקעין מחוץ לישראל ולמעט זכות באיגוד מקרקעין שלא חל לגביה האמור בסעיף 64א7ג",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=103",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, file of 15.1.2023",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.110, s.64א7ג(א)",
+      "locator_he": "עמוד 110, סעיף 64א7ג(א)",
+      "page": 110,
+      "quote": "מספר בעלי המניות בו אינו עולה על עשרה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=103",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, file of 15.1.2023",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.111, s.64א7ג(ב)(1)",
+      "locator_he": "עמוד 111, סעיף 64א7ג(ב)(1)",
+      "page": 111,
+      "quote": "לפחות 50% מאמצעי השליטה באיגוד המקרקעין נרכשו על ידי הקרן שלא בדרך של הקצאה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12223928.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 285), התשפ\"ו-2026, ספר החוקים 3509",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 285), התשפ\"ו-2026, ספר החוקים 3509",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.346, s.2 (s.64א3(א)(5)(א))",
+      "locator_he": "עמוד 346, סעיף 2 (סעיף 64א3(א)(5)(א))",
+      "page": 346,
+      "quote": "מקרקעין בהקמה שעלות רכישתם ששולמה בפועל אינה עולה על 20% משווי כלל נכסיה באותו מועד",
+      "checked": "2026-10-26"
+    }
+  ]
+}

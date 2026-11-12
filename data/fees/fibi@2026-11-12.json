@@ -1698,6 +1698,52 @@
           "עמלת חליפין",
           "מט\"י-מט\"ח"
         ]
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 3,
+          "unit": "usd",
+          "source": {
+            "publisher": "First International Bank of Israel Ltd.",
+            "strength": "institution",
+            "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+            "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 22)",
+            "page": 1,
+            "quote": "המרות בחשבון - עד 3.0$ - 100$"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-09-06",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16"
+          ],
+          "state": "sourced",
+          "notes": "Part 5, printed page 22, note 2.3: 'המרות בחשבון - עד 100$ - 3.0$' (2.1 and 2.2 price a conversion of cash); annex E prints the same 3.0$ in its clerk column. Note 8 exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (f780bbff5d87c1c2), identical to the file fetched 2026-11-12."
+        },
+        "up_to": {
+          "value": 100,
+          "unit": "usd",
+          "source": {
+            "publisher": "First International Bank of Israel Ltd.",
+            "strength": "institution",
+            "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+            "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 22)",
+            "page": 1,
+            "quote": "המרות בחשבון - עד 3.0$ - 100$"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-09-06",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16"
+          ],
+          "state": "sourced",
+          "notes": "Part 5, note 2.3: 'עד 100$'."
+        }
       }
     },
     {
@@ -1807,6 +1853,54 @@
           "אינטרנט",
           "אפליקציה סלולרית"
         ]
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 1.5,
+          "unit": "usd",
+          "source": {
+            "publisher": "First International Bank of Israel Ltd.",
+            "strength": "institution",
+            "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+            "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - עד 100$, תעריף באמצעות אינטרנט / אפליקציה סלולרית (עמוד מס' 63)",
+            "page": 4,
+            "quote": "1.5$ פטור 1.5$ עמלת חליפין"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-09-06",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16",
+            "BRK-19"
+          ],
+          "state": "sourced",
+          "notes": "Annex E, printed page 63 (file page 4): 'עמלת חליפין (מט\"י/מט\"ח) - עד 100$', 1.5$ in the internet and the mobile-app columns, 'פטור' at an automatic teller, 3.0$ at a clerk; above 100 dollars the line's 0.0875%, minimum 5.0$ (printed page 62). Read in the library's copy (7d1cf0d48500cb12), identical to the file fetched 2026-11-12."
+        },
+        "up_to": {
+          "value": 100,
+          "unit": "usd",
+          "source": {
+            "publisher": "First International Bank of Israel Ltd.",
+            "strength": "institution",
+            "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+            "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - עד 100$, תעריף באמצעות אינטרנט / אפליקציה סלולרית (עמוד מס' 63)",
+            "page": 4,
+            "quote": "3.0$ עד 100$"
+          },
+          "checked": "2026-11-12",
+          "effective_from": "2026-09-06",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-16",
+            "BRK-19"
+          ],
+          "state": "sourced",
+          "notes": "Annex E, printed page 63: 'עד 100$', against 'מעל 100$' on page 62."
+        }
       }
     },
     {
@@ -1921,7 +2015,7 @@
     {
       "what": "טופ טרייד, מסלול לצעירים עד גיל 30: 'עמלת קנייה/מכירה של מניות/אג\"ח ישראליים עבור תיק של עד 200,000 ש\"ח - 5 ש\"ח (סכום קבוע)', '$5 לפעולה' abroad, 'עמלות דמי ניהול פיקדון ני\"ע ישראליים וזרים - פטור'",
       "why": "Advertising only, in no binding document read (annex A has no such row). The Wayback Machine shows the table from 2025-09-16 to 2026-06-09 (library 421891a11c854334); on 2026-11-04 the page still advertises 'הטבות מטורפות' but the table is empty (library cd07a4daaecd8bf0). Ages 18-30, portfolio up to 200,000 NIS, self-directed, 'הבנק רשאי לשנות את תנאי השירותים או להפסיקם בכל עת'. The Israeli row names shares and bonds, not funds (D42). Not an offer the site can rank or list as a group.",
-      "why_he": "הבנק פרסם מסלול לצעירים עד גיל 30 עם עמלה קבועה של 5 ₪ על מניות ואג״ח בתל אביב, 5 דולר בחו״ל ופטור מדמי ניהול פיקדון. ההטבה לא מופיעה במסמכים המחייבים, טבלת ההטבות כבר לא מופיעה בדף, והשורה בתל אביב לא מזכירה קרנות, ולכן האתר לא מחשב אותה, ולצעיר שיקבל אותה המחיר יכול לצאת זול יותר.",
+      "why_he": "הבנק פרסם מסלול לצעירים עד גיל 30 עם עמלה קבועה של 5 ₪ על מניות ואג״ח בתל אביב לתיק של עד 200,000 ₪, 5 דולר בחו״ל ופטור מדמי ניהול פיקדון. ההטבה לא מופיעה במסמכים המחייבים, טבלת ההטבות כבר לא מופיעה בדף, והשורה בתל אביב לא מזכירה קרנות, ולכן האתר לא מחשב אותה, ולצעיר שיקבל אותה המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
@@ -1941,7 +2035,7 @@
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.25%-0.43% לשנה, זרים 0.28%-0.37%; קנייה ומכירה של מניות ואג\"ח 0.02%-0.19%",
       "why": "What customers paid on average by portfolio size (the bank's sheet, library e61fc4bbf05ba137, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.78% a year in Israel.",
-      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.25% עד 0.43% בשנה בארץ, לפי גודל התיק, פחות מ־0.78% שבמחירון. זה ממוצע של מה שנגבה בפועל אחרי הנחות, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון: מי שמתמקח יכול לשלם פחות.",
+      "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.25% עד 0.43% בשנה בארץ, לפי גודל התיק, פחות מ־0.78% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true
     },
     {
@@ -1953,7 +2047,7 @@
     {
       "what": "SMART לעורכי דין ורואי חשבון: עורכי דין ורואי חשבון",
       "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
-      "why_he": "מסלול SMART לעורכי דין ולרואי חשבון כולל הטבות משלו. הוא פתוח למקצוע אחד, ולכן האתר לא מחשב אותו, ולמי ששייך אליו המחיר יכול לצאת זול יותר.",
+      "why_he": "מסלול SMART כולל הטבות משלו. הוא פתוח רק לעורכי דין ולרואי חשבון, ולכן האתר לא מחשב אותו, ולמי ששייך אליו המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
@@ -1963,10 +2057,11 @@
       "could_change_price": true
     },
     {
-      "what": "עמלת חליפין (מט\"י/מט\"ח) - עד 100$: '1.5$' באינטרנט ובאפליקציה ('3.0$' אצל פקיד); עסקות עד 10$ פטורות (נספח ה'; חלק 5 סעיפים 2.1-2.3 והערה 8)",
-      "why": "Annex E (נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf, library 7d1cf0d48500cb12, p.2): 'עמלת חליפין (מט\"י/מט\"ח) - עד 100$', 1.5$ in the internet and app columns; the recorded line (p.3, 0.0875%, min $5) is 'מעל 100$'. Part 5 (library f780bbff5d87c1c2, p.1): 'המרות בחשבון - עד 100$ - 3.0$' and note 8, conversions up to $10 exempt. The engine reads `flat_up_to` on trade lines only, so a conversion of $100 or less is priced at the $5 minimum, $3.50 above the printed price. Reported as an engine gap; not priced.",
-      "why_he": "המרה של עד 100 דולר עולה באינטרנט ובאפליקציה 1.5 דולר בלבד, והמרה של עד 10 דולר פטורה, אבל האתר מחשב כל המרה לפי 0.0875% עם מינימום של 5 דולר. למי שמפקיד כל חודש עד 100 דולר ההמרה בפועל זולה בכ־3.5 דולר מהמחיר שמוצג.",
-      "could_change_price": true
+      "what": "עמלת חליפין: 'עסקות המרה/רכישת מט\"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה' (חלק 5, הערה 8)",
+      "why": "Part 5 (library f780bbff5d87c1c2, file p.1, printed p.22) note 8: a conversion up to $10 is exempt. The flat price up to $100 (1.5$ in the internet and the app, annex E printed p.63; 3.0$ at a clerk, part 5 note 2.3) is priced (`flat_up_to`, F-13); the free band below it is not a flat price, and the engine charges such a conversion the flat price. Only a monthly purchase of 10 dollars or less (about 32 NIS at the rate of 2026-11-11) is that small. Not priced.",
+      "why_he": "האתר לא מחשב את הפטור מעמלה על המרה של עד 10 דולר. למי שמפקיד כל חודש עד 10 דולר, ההמרה בפועל זולה מהמחיר שמוצג.",
+      "could_change_price": true,
+      "page": 1
     }
   ],
   "groups": {

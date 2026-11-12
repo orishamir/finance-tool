@@ -1,0 +1,30 @@
+{
+  "id": "BRK-20",
+  "title": "Banks: where the tariff must be published",
+  "title_he": "בנקים: איפה התעריפון צריך להיות מפורסם",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי כללי העמלות של בנק ישראל משנת 2008, בנק צריך להציג את התעריפון המלא ואת התעריפונים המופחתים במקום בולט בסניפים שלו. כל אחד יכול לקבל אותם בסניפים, בערוצי התקשורת של הבנק ובקישור ישיר מעמוד הבית של האתר שלו.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+      "title": "BoI fees rules 2008, consolidated, s.4(א), 4(ב)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-22"
+    }
+  ]
+}

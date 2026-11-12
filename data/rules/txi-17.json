@@ -74,7 +74,8 @@
       "strength": "primary",
       "locator": "printed p.58, section 48 item ג או כנגד שבח במכירת מקרקעין",
       "quote": "הפסד הון ניתן לקזז כנגד רווח הון (לרבות הפסד במכירת ניירות ערך סחירים) או כנגד שבח במכירת מקרקעין",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "page": 60
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ2fYurUQ637QU6g8aQkbVy0=#page=3",

@@ -1,0 +1,32 @@
+{
+  "id": "PF-31",
+  "title": "Planned changes in the CMA 2026 regulation plan that touch these products",
+  "title_he": "מה רשות שוק ההון מתכננת לשנות ב־2026 בקופות הגמל ובפנסיה",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "fee-change-over-time",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-12-31",
+  "text_he": "תוכנית האסדרה של רשות שוק ההון ל־2026, שפורסמה ב־31 בדצמבר 2025 ועודכנה ב־14 בינואר 2026, כוללת בין השאר: חוזר על מסמך הייעוץ ועל הצגת העלות השנתית הצפויה; כלל שלפיו משיכה שלא כדין ביוזמת הלקוח תבוצע רק אחרי ייעוץ או שיווק; עדכון של חוזר איתור העמיתים; חוזר מסלולי השקעה; חוזר משיכות עם כללים אחידים וחוזר פרישה; כללים לפרסום תשואות ומסלולים; תיקון לחוזר ההעברות שיאפשר לתושבי חוץ זיהוי בלי תעודת זהות ישראלית; ותיקון לתקנות של קופה בניהול אישי. אף פריט בתוכנית לא משנה את תקרות דמי הניהול, את החוזר על הנחות בדמי הניהול או את תקנות ההעברה. התוכנית עצמה אומרת שחלק מהפריטים אולי לא יושלמו בתוך השנה.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf",
+      "title": "CMA, תכנית אסדרה לשנת 2026, pp. 1 to 21 read",
+      "title_he": "תכנית אסדרה לשנת 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp. 1 to 21",
+      "locator_he": "עמודים 1 עד 21",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
+}

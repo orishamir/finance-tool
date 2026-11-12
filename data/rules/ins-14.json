@@ -1,0 +1,43 @@
+{
+  "id": "INS-14",
+  "title": "Which Provident Funds Law provisions apply to an insurance fund",
+  "title_he": "אילו סעיפים בחוק קופות הגמל חלים על קופת ביטוח",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "protection",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק קופות הגמל, רוב החוק לא חל על קופת ביטוח ועל המבטח שמנהל אותה, חוץ מסעיפים שהחוק מונה, ולגביהם המבטח נחשב חברה מנהלת. מקריאה של הרשימה, חלים בחירת הקופה בידי העובד, משיכה והעברה, דמי ניהול והוצאות, איסור עיקול של נכסי הקופה ודיווח לעמיתים. לא חל הסעיף שמחייב להחזיק את נכסי הקופה בנפרד מהרכוש של החברה המנהלת, ולכן ההגנה על נכסי קופת ביטוח נשענת על חוק הפיקוח על הביטוח.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=21",
+      "title": "s.56, gazette ס״ח תשס״ה, 889",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.56, gazette ס״ח תשס״ה, 889",
+      "locator_he": "סעיף 56, ס״ח תשס״ה, 889",
+      "page": 21,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=21",
+      "title": "s.57",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.57",
+      "locator_he": "סעיף 57",
+      "page": 21,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "TXP-30",
+  "title": "Form 161 part B: the employee's four choices for each severance grant",
+  "title_he": "טופס 161 חלק ב: ארבע הבחירות של העובד לכל מענק פיצויים",
+  "text_he": "בעזיבת עבודה העובד מחלק כל מענק שהמעסיק דיווח עליו בטופס 161 בין ארבע אפשרויות: רצף קצבה, שבו הפיצויים נשארים בקופה והופכים לקצבה; רצף פיצויים, שדוחה את אירוע המס לפרישה מהמעסיק הבא, עד תקרה; מענק פטור ממס, עד תקרת המענק הפטור; ומענק חייב במס. עובד שמשאיר את החלק הזה ריק נחשב כמי שביקש רצף קצבה, אם המעסיק סימן שהסכום לא עובר את התקרה ושאין מענקים ממשלמים אחרים חוץ מקופה לקצבה. רצף קצבה אפשר לבטל בכל זמן בטופס 161ג, ורצף פיצויים דורש מעסיק חדש שמפקיד לרכיב פיצויים בתוך שנה. לפי הטופס, משיכת מענקים מקטינה את הקצבה בעתיד ועלולה להקטין את הפטור החודשי על הקצבה.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/service/notice-of-retirement/he/161-2023.%20docx.docx",
+      "title": "Tax Authority, form 161 (accessible .docx), part B",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/he/service/notice-of-retirement",
+      "title": "service page",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

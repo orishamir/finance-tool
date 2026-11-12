@@ -7,6 +7,7 @@ import type { GlanceItem } from "../../components/guide/sections";
 import { GuideFold as Fold, KeyValueList as RuleRows } from "../../components/guide/sections";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { KeyValueList, ProseList, Section, Sentence, Tag } from "../../components/kit";
+import { fmt } from "../../lib/format";
 
 export const content: ExposureContent = {
   glance: ({ figure }) => {
@@ -74,7 +75,7 @@ export const content: ExposureContent = {
           <ProseList
             items={[
               <Sentence as="span" key="cap">
-                שווי שוק של לפחות {minCap ? <Num value={minCap} display="22.7 מיליארד דולר" /> : null}
+                שווי שוק של לפחות {minCap ? <Num value={minCap} display={`${fmt.number(Number(minCap.value) / 1e9)} מיליארד דולר`} /> : null}
               </Sentence>,
               "סחירות מספקת",
               "רווח חשבונאי חיובי ברבעון האחרון ובארבעת הרבעונים האחרונים יחד",

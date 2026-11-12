@@ -1,6 +1,7 @@
 // The shapes the bank and broker pages and the companies list share (flows 15.4, design-spec 20). Plain JSON: the
 // loader builds them in lib/institutions.server.ts, the components in this folder show them.
 import type { TariffDated } from "../../../lib/tariff-date";
+import type { LeftOutView } from "../../../lib/left-out";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { TextFragment } from "../../../lib/sources";
 import type { SiteValue } from "../../../lib/value";
@@ -107,7 +108,8 @@ export interface AvailabilityRow {
 
 export interface TariffCardData {
   missing: boolean;
-  reason: string | null;
+  /** Why the price list is missing, in the record's Hebrew (`missing_reason_he`); the English `missing_reason` is the working note and stays in the record. */
+  reasonHe: string | null;
   title: string;
   url: string;
   format: string;
@@ -129,6 +131,8 @@ export interface TariffCardData {
   /** Who pays the card's prices (a bank's or broker's record says so). */
   priceFor: string | null;
   availability: AvailabilityRow[];
+  /** What the house's documents hold and its prices leave out (D106), or null where the record lists nothing. */
+  leftOut?: LeftOutView | null;
 }
 
 export interface InstitutionPageData {

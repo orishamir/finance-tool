@@ -1,6 +1,7 @@
 // Guide prose for קרן חדשה מקיפה (new comprehensive pension fund). Same shape and register as
 // kupat-gemel-lehashkaa.tsx; checked against the rule base (PEN, TXP, PF, REG); each block ends with the
 // rules it rests on. NEW copy for the founder to review.
+import { Fragment } from "react";
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
@@ -37,7 +38,11 @@ export const content: GuideContent = {
   switchLine: "בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. במעבר חודשי הביטוח נספרים, חוץ מחריגים.",
   switchRules: ["PEN-17", "PF-23", "SW-22", "SW-12", "PF-28"],
   termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קרן נבחרת", "קופת גמל לקצבה", "קרן פנסיה", "צמוד למדד המחירים לצרכן", "עמית", "גיל הפרישה", "הליך תחרותי", "דמי ניהול", "רשות שוק ההון ביטוח וחיסכון", "חברה מנהלת", "משיכה", "הפקדות המעסיק", "השלמת תשואה", "קצבה", "השכר הממוצע במשק", "אינפלציה"],
-  afterTax: ({ figure }) => (
+  afterTax: ({ figure }) => {
+    // the exempt share the law already sets for the years after this one (TXP-14's figure by tax year), each with its source
+    const share = figure("TXP-14", "exempt_share");
+    const later = share?.tax_year ? Array.from({ length: 10 }, (_, i) => String(share.tax_year! + 1 + i)).flatMap((y) => { const v = figure("TXP-14", `exempt_share@${y}`); return v ? [{ y, v }] : []; }) : [];
+    return (
     <>
       <p className="max-w-measure">
         ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
@@ -53,14 +58,27 @@ export const content: GuideContent = {
         קצבה אפשר לקבל מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל הפטור ממס מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל מדורג לפי שנת הלידה.
       </p>
       <p className="max-w-measure">
-        הפטור הוא סכום, זהה לכל מי שזכאי, ולא חלק מהקצבה של כל אדם: <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש על <Term id="קצבה מזכה">קצבה מזכה</Term>. השיעור עולה בחוק ב־2027 וב־2028.
+        הפטור הוא סכום, זהה לכל מי שזכאי, ולא חלק מהקצבה של כל אדם: <N v={share} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש על <Term id="קצבה מזכה">קצבה מזכה</Term>.
+        {later.length > 0 && (
+          <>
+            {" "}השיעור עולה בחוק:{" "}
+            {later.map(({ y, v }, i) => (
+              <Fragment key={y}>
+                {i > 0 && (i === later.length - 1 ? " ו־" : ", ")}
+                <N v={v} /> ב־<bdi>{y}</bdi>
+              </Fragment>
+            ))}
+            .
+          </>
+        )}
       </p>
       <p className="max-w-measure">
         משיכה שלא כקצבה אפשרית רק במקרים מסוימים. החוק קורא לה <Term id="משיכה שלא כדין">משיכה שלא כדין</Term>, והיא ממוסה על כל הסכום שמשולם: הגבוה מבין <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" end="." /> יש חריגים, כמו הוצאות רפואיות גבוהות.
       </p>
       <RulesLine ids={["TXP-14", "TXP-15", "TXP-18", "PEN-26", "PEN-27", "PEN-30"]} />
     </>
-  ),
+    );
+  },
   risks: ({ figure }) => (
     <>
       <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של <Term id="עמית">עמית</Term> אפשר לעקל רק לפי כללים שהשר קובע. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת.</p>

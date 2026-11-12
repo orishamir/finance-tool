@@ -10,6 +10,7 @@
     "checked": "2026-10-23"
   },
   "rule_ids": [
+    "BANK-16",
     "BANK-18",
     "BANK-32",
     "BRK-15",

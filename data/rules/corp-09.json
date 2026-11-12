@@ -1,0 +1,30 @@
+{
+  "id": "CORP-09",
+  "title": "Holders' meetings and changing the terms",
+  "title_he": "אסיפת מחזיקי איגרות חוב, ושינוי התנאים",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק ניירות ערך, הנאמן מכנס אסיפת מחזיקים כשהוא רואה צורך, או כשמחזיקים של 5% לפחות מיתרת הערך הנקוב של הסדרה דורשים זאת. שינוי בשטר הנאמנות או בתנאי איגרות החוב דורש החלטה של אסיפה, אלא אם הנאמן מצא שהשינוי לא פוגע במחזיקים: באסיפה צריכים להיות נוכחים מחזיקים של 50% לפחות מיתרת הערך הנקוב, וההחלטה מתקבלת ברוב של שני שלישים לפחות מהערך הנקוב שמיוצג בהצבעה, או ברוב גבוה יותר שהשטר קובע. באסיפה נדחית מספיקה נוכחות של 20%.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "ss. 35ז(2), 35ז1, 35יב1(א), 35יב13, 35יב16, 35יב17",
+      "locator_he": "סעיפים 35ז(2), 35ז1, 35יב1(א), 35יב13, 35יב16, 35יב17",
+      "page": 43,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

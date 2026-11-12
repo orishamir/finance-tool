@@ -1,0 +1,27 @@
+{
+  "id": "BANK-08",
+  "title": "Notices at interest crediting and after repayment; statements",
+  "title_he": "ההודעות שבנק שולח על ריבית בפיקדון ואחרי הפירעון",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי כללי הגילוי הנאות של בנק ישראל, סמוך לכל תשלום או זיכוי של ריבית על פיקדון הבנק מודיע על שיעור הריבית, על התקופה ועל הסכום, ולא יותר מפעם בחודש אם הריבית מזוכה לעתים קרובות יותר. בתוך 30 ימים אחרי שפיקדון לזמן קצוב נפרע, הבנק מודיע על הסכום, על סכום הריבית ושיעורה, על הפרשי ההצמדה, על המדדים או השערים ששימשו ועל התקופה. בפיקדון לזמן קצוב הבנק שולח הודעה בסוף התקופה או דף חשבון לפחות פעם בשנה, עם הסכום, הריבית ותקופתה, השיעור, אם הוא קבוע או משתנה והפרשי ההצמדה. הודעה על זיכוי ריבית של עד 75 ₪ לא נדרשת, ובמקרים מסוימים לא נדרשת גם הודעה אחרי הפירעון.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Disclosure rules 1992 (BoI copy)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.8, 12, 30(c), 30(e), Schedule E",
+      "checked": "2026-10-22"
+    }
+  ]
+}

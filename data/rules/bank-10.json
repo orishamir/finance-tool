@@ -1,0 +1,28 @@
+{
+  "id": "BANK-10",
+  "title": "The deposit rate board in branches and online",
+  "title_he": "לוח שיעורי הריבית על פיקדונות בסניף ובאתר",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי כללי הגילוי הנאות של בנק ישראל, בכל סניף ובאתר של הבנק צריך להופיע לוח בשם ״שיעורי ריבית על פקדונות״, עם שיעורי הריבית הנומינליים המינימליים שהבנק משלם על כל סוג פיקדון לתקופה של עד שנה. אם השיעור המינימלי חל רק על פיקדונות מעטים, צריך להציג גם את הריבית של ״פיקדון שכיח״. לכל סוג מופיעים שיעור הריבית והתקופה שהוא חל עליה.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Disclosure rules 1992 (BoI copy)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.14",
+      "locator_he": "סעיף 14",
+      "checked": "2026-10-22"
+    }
+  ]
+}

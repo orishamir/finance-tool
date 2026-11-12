@@ -2409,6 +2409,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -3339,6 +3364,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -3417,6 +3467,31 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 240
+              },
+              "fragment": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "start": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "end": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "suffix": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "start"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [

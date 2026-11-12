@@ -1,0 +1,58 @@
+{
+  "id": "CORP-02",
+  "title": "Commercial paper (ניירות ערך מסחריים)",
+  "title_he": "ניירות ערך מסחריים: חוב לשנה לכל היותר, בלי נאמן",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "minimum",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק ניירות ערך, ניירות ערך מסחריים הם ניירות ערך שתאגיד מנפיק, שבהם הוא מתחייב לשלם למחזיק סכום כסף לא יאוחר משנה מיום ההצעה, ושאי אפשר לממש או להמיר אותם לניירות ערך אחרים. הם לא נחשבים תעודות התחייבות, ולכן חובת מינוי הנאמן לא חלה עליהם. לפי הנחיות הבורסה, נייר ערך מסחרי שנרשם למסחר מ־29.9.2016 נסחר ביחידות של 10 ₪ ערך נקוב (1 ₪ אם נרשם לפני כן), ויום המסחר האחרון בו הוא שלושה ימי מסחר לפני הפדיון. אם נדרש דירוג או הגנה אחרת לנייר ערך מסחרי שנסחר בבורסה, לא נמצא.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=10",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s. 1",
+      "locator_he": "סעיף 1",
+      "page": 10,
+      "quote": "ניירות ערך מסחריים",
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "פרק ב' s. 1(א) ; פרק א' s. 6(ה) ; פרק ג' s. 1(א)(14)",
+      "locator_he": "פרק ב' סעיף 1(א) ; פרק א' סעיף 6(ה) ; פרק ג' סעיף 1(א)(14)",
+      "checked": "2026-10-22",
+      "qualifier": "(TASE rule guidelines)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+      "title": "TASE, דוח תקופתי לשנת 2025",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "part A s. 1.10.3.2, p.37",
+      "page": 37,
+      "checked": "2026-10-22",
+      "qualifier": "(exchange's statutory report)"
+    }
+  ]
+}

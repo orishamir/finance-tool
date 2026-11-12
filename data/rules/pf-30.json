@@ -1,0 +1,65 @@
+{
+  "id": "PF-30",
+  "title": "Merger, split and change of manager need CMA approval and advance notice; accounts are not merged",
+  "title_he": "מיזוג או פיצול של קופות: באישור הממונה, בהודעה מראש, בלי למזג חשבונות",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק קופות הגמל, חברה מנהלת יכולה למזג קופות גמל רק אם הממונה אישר את התוכנית מראש והעמיתים קיבלו הודעה מראש, והמיזוג לא ממזג את החשבונות של העמיתים. אותה הגנה חלה על פיצול של קופה, והעברה מרצון של ניהול קופה לחברה אחרת דורשת גם היא אישור מראש והודעה לעמיתים. אם מונה לחברה המנהלת כונס נכסים או מפרק ולא הוסר בתוך 60 ימים, היא צריכה להעביר את ניהול הקופות שלה לחברה מנהלת אחרת. בחוק שנקרא אין לעמיתים זכות מיוחדת להתנגד למיזוג, אבל עמית יכול להעביר את הכסף לקופה אחרת.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=14",
+      "title": "s.37, gazette ס״ח תשס״ה, 889",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.37, gazette ס״ח תשס״ה, 889",
+      "locator_he": "סעיף 37, ס״ח תשס״ה, 889",
+      "page": 14,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "title": "s.38",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.38",
+      "locator_he": "סעיף 38",
+      "page": 15,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "title": "s.41",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.41",
+      "locator_he": "סעיף 41",
+      "page": 15,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "title": "s.42",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.42",
+      "locator_he": "סעיף 42",
+      "page": 15,
+      "checked": "2026-10-31"
+    }
+  ]
+}

@@ -13,7 +13,7 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
 import { Num, NumAfter, RuleRef, RulesChip, RulesLine, Term } from "../../provenance";
-import { Card, ClaimList, Disclosure, DocLink, GoLink, GroupPriceRows, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
+import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 import { isPdfUrl, sourceHref, withoutCodes, type CitedPlace } from "../../../lib/sources";
@@ -396,13 +396,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
             <CircleDashed size={20} strokeWidth={1.75} aria-hidden="true" className="text-caution shrink-0" />
             {copy.missingTariff}
           </h3>
-          {tariff?.reason && (
-            <Disclosure label={<span className="text-sm text-link">{copy.recordedReason}</span>} summaryClassName="min-h-11 justify-start gap-1">
-              <p className="text-xs bg-muted rounded-md p-3 font-mono whitespace-pre-wrap break-words" dir="ltr">
-                {tariff.reason}
-              </p>
-            </Disclosure>
-          )}
+          {tariff?.reasonHe && <p className="text-sm text-muted-foreground max-w-measure">{tariff.reasonHe}</p>}
           {tariff && (
             <a href={sourceHref(tariff)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target text-sm">
               <span>
@@ -456,6 +450,8 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} byChannel={byChannel} channel={channel} onChannel={setChannel} />
           <FeeTable lines={tariff.lines} channel={channel} />
+          {/* what the house's documents hold and these prices leave out (D106) */}
+          <LeftOutLine view={tariff.leftOut ?? null} house={gershayim(tariff.providerName)} className="text-sm" />
           <FeeNotes lines={tariff.lines} kind={kind} byChannel={byChannel} />
         </Section>
       )}

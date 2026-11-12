@@ -1,0 +1,34 @@
+{
+  "id": "FXD-10",
+  "title": "\"Structured product\" in law, and the principal-guarantee exclusion",
+  "title_he": "מה החוק מגדיר כמוצר מובנה, ומתי פיקדון עם קרן מובטחת לא נחשב כזה",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "protection",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-30",
+  "text_he": "חוק הייעוץ להשקעות מגדיר ״מוצר מובנה״ כהשקעה, בפיקדון או בדרך אחרת, שהתשואה או הסיכון שלה נקבעים לפי נוסחה שמבוססת על שינויים במדד, במחיר של ניירות ערך, סחורות, אופציות או חוזים עתידיים, בריבית או בשער חליפין. השקעה שמבטיחה בלי תנאי את תשלום הקרן, עם הפרשי מדד שאינו מדד ניירות ערך או הפרשי שער מטבע חוץ אם נקבעו, ואת הריבית הקבועה או המשתנה אם נקבעה, לא נחשבת מוצר מובנה; אם יש ברירה בין כמה מאלה, צריך להיות מובטח התשלום לפי הגבוה מביניהם. בנק יכול לתת ייעוץ השקעות בלי רישיון לפי החוק הזה, אבל לא לנהל תיקים. אם פיקדון עם מענק מותנה, מעבר לקרן ולריבית המובטחות, הוא מוצר מובנה, אף מקור שנקרא לא מכריע.",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3",
+      "title": "Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ״ה-1995",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "page": 3,
+      "quote": "מוצר מובנה",
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

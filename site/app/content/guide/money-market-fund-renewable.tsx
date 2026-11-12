@@ -4,11 +4,13 @@
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
+import { fmt } from "../../lib/format";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
     const maxBeyond = figure("MF-36", "max_share_maturing_after_next_fixed_date");
     const maxInterval = figure("MF-08", "max_interval_months");
+    const noticeAfter = figure("MF-38", "advance_notice_min_interval_years");
     const distCap = figure("MF-24", "distribution_fee_cap_money_market");
     const foreign = figure("MF-11", "foreign_securities_line");
     return (
@@ -24,7 +26,7 @@ export const content: GuideContent = {
         </p>
         <RulesLine ids={["MF-07", "MF-08", "MF-35", "MF-36", "MF-37"]} />
         <Sentence measure>
-          המרווח בין מועדים קבועים הוא עד {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך משנה הפדיון יכול לדרוש הודעה מוקדמת, ולפני המועד הקרן שולחת תזכורת. מנהל הקרן מפרסם מחיר רק למועד הקבוע.
+          המרווח בין מועדים קבועים הוא עד {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך {noticeAfter ? <>מ<Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /></> : "מהתקופה שבתקנות"} הפדיון יכול לדרוש הודעה מוקדמת, ולפני המועד הקרן שולחת תזכורת. מנהל הקרן מפרסם מחיר רק למועד הקבוע.
         </Sentence>
         <RulesLine ids={["MF-08", "MF-38", "MF-09"]} />
         <p className="max-w-measure">

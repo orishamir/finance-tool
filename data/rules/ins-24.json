@@ -1,0 +1,32 @@
+{
+  "id": "INS-24",
+  "title": "Planned CMA changes that touch insurer savings products (2026 plan)",
+  "title_he": "מה רשות שוק ההון מתכננת לשנות ב־2026 במוצרי חיסכון של חברות ביטוח",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "fee-change-over-time",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-12-31",
+  "text_he": "בתכנית האסדרה של רשות שוק ההון לשנת 2026 יש כמה פריטים שנוגעים למוצרי חיסכון של חברות ביטוח: כללים על הנחות בביטוח חיים ומנגנון להחזר עמלות, כדי לצמצם החלפת פוליסות ולשפר את השקיפות של הפרמיות; חוזר אחיד למשיכת כספים מחיסכון פנסיוני; וחוזר מסלולי השקעה שכולל עדכון לגבי מסלולי האירוח. יש בה גם כללים על פרסום תשואות ומסלולים שיחולו על גופים מוסדיים ועל בעלי רישיון. לפי התכנית, חלק מהפריטים אולי לא יושלמו השנה, ואף אחד מהם לא קובע תקרת דמי ניהול לפוליסות חיסכון.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf",
+      "title": "CMA, תכנית אסדרה לשנת 2026",
+      "title_he": "תכנית אסדרה לשנת 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp. 20 to 21",
+      "locator_he": "עמודים 20 עד 21",
+      "page": 20,
+      "checked": "2026-10-22"
+    }
+  ]
+}

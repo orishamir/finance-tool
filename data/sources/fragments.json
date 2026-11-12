@@ -5,7 +5,7 @@
     "text": {
       "start": "לא ניתן להעביר את כספי החיסכון מהבנק שבחרתם לבנק אחר או לקופת גמל אחרת"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://hly.gov.il/Differences.html",
@@ -14,7 +14,7 @@
       "start": "מסלולי החיסכון יבטיחו",
       "end": "הקרן) שנצברו לזכותו"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://lp.pepper.co.il/minisite/open-account/students/student-account",
@@ -23,7 +23,7 @@
       "start": "הזכאות לחבילת ההטבות",
       "end": "עד לתאריך 31.10.2026"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://lp.xnes.co.il/trade/",
@@ -32,7 +32,23 @@
       "start": "פותחים חשבון מסחר",
       "end": "טיפול לכל החיים!"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://market.tase.co.il/he/about_tase/tase_members/tase_members_list",
+    "words": "הרשימה לא כוללת חברים משמורנים",
+    "text": {
+      "start": "הרשימה לא כוללת חברים משמורנים"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://market.tase.co.il/he/about_tase/tase_members/tasech_members_list",
+    "words": "חבר משמורן (אינו פועל במסחר כחבר)",
+    "text": {
+      "start": "חבר משמורן (אינו פועל במסחר כחבר)"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://secapp.taxes.gov.il/TMMISUYWEB/frmAbsSearch.aspx?cur=4",
@@ -40,7 +56,7 @@
     "text": {
       "start": "בכפוף לקיום מערכת נסיבות דומה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://supremedecisions.court.gov.il/Home/Download?path=HebrewVerdicts/14/860/074/l09&fileName=14074860_l09.txt&type=2",
@@ -48,7 +64,7 @@
     "text": {
       "start": "מדובר בחלופות הכנסה נפרדות ועצמאיות"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
@@ -57,7 +73,7 @@
       "start": "כל אדם רשאי",
       "end": "גיל ובכל סכום"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.as-invest.co.il/trade/",
@@ -65,7 +81,7 @@
     "text": {
       "start": "מצטרפים ונהנים מפטור מלא מדמי ניהול ללא הגבלת זמן!*"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.as-invest.co.il/trade/trading_benefits/",
@@ -74,7 +90,7 @@
       "start": "השקעה חודשית קבועה",
       "end": "ללא עלות"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.as-invest.co.il/trade/trading_benefits/",
@@ -83,7 +99,7 @@
       "start": "קנייה / מכירה",
       "end": "למניה (מינימום $6)"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.as-invest.co.il/trade/trading_benefits/",
@@ -92,7 +108,7 @@
       "start": "קנייה / מכירה מניות,",
       "end": "0.07% (מינימום 2.9 ₪)"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.as-invest.co.il/trade/trading_benefits/",
@@ -101,7 +117,7 @@
       "start": "קנייה / מכירה מניות,",
       "end": "0.07% (מינימום 2.9 ₪)"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.bank-yahav.co.il/all-savings/adir-monthly-deposit/",
@@ -109,7 +125,7 @@
     "text": {
       "start": "מסלול - הפקדה חודשית בהוראת קבע"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.bank-yahav.co.il/all-savings/hermon-monthly-deposit/",
@@ -117,7 +133,23 @@
     "text": {
       "start": "הפקדות בשנתיים הראשונות - P-3.5%"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.bank-yahav.co.il/investments/deposits/",
+    "words": "פיקדונות בהוראות קבע",
+    "text": {
+      "start": "פיקדונות בהוראות קבע"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+    "words": "אין אפשרות לשבירת הפיקדון",
+    "text": {
+      "start": "אין אפשרות לשבירת הפיקדון"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
@@ -126,7 +158,24 @@
       "start": "אפשרות לשבירת",
       "end": "פיקדון"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.bankmassad.co.il/private/accountmngment/servicess/call/",
+    "words": "הקמה/שינוי/ביטול של הוראות קבע לקרנות נאמנות (לא כולל הקמת הו\"ק במסד)",
+    "text": {
+      "start": "הקמה/שינוי/ביטול של הוראות",
+      "end": "הקמת הו\"ק במסד)"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+    "words": "פיקדונות בהוראות קבע",
+    "text": {
+      "start": "פיקדונות בהוראות קבע"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
@@ -134,7 +183,7 @@
     "text": {
       "start": "האם ניתן להעביר את החיסכון לגוף פיננסי אחר?"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
@@ -142,7 +191,7 @@
     "text": {
       "start": "למי נפתחת תכנית חיסכון?"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/pension.aspx",
@@ -150,7 +199,7 @@
     "text": {
       "start": "הילד יוכל לבחור לקבל את כספי החיסכון לאחר הפרישה כקצבה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/tax.aspx",
@@ -158,7 +207,16 @@
     "text": {
       "start": "בעת משיכה תחויב במס רווחי הון"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
+    "words": "הביטוח הלאומי פותח תכנית חיסכון אישית לכל ילד הזכאי לקצבת ילדים עד הגיעו לגיל 18, בקופת גמל או בבנק לפי בחירתכם.",
+    "text": {
+      "start": "הביטוח הלאומי פותח",
+      "end": "בבנק לפי בחירתכם."
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/HisahonKupot.aspx",
@@ -166,7 +224,7 @@
     "text": {
       "start": "הסכום הנוסף יופקד לחיסכון של הילד בחודש שלאחר ביצוע הבחירה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
@@ -174,7 +232,25 @@
     "text": {
       "start": "לא תוכלו להעביר את החיסכון לבנק אחר"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
+    "words": "תוכלו לשנות את מסלול החיסכון רק אם בחרתם במסלול חיסכון עם תחנות יציאה כל 5 שנים. שינוי המסלול אפשרי רק במועד תחנת היציאה.",
+    "text": {
+      "start": "תוכלו לשנות את",
+      "end": "במועד תחנת היציאה."
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+    "words": "את כספי החיסכון ניתן למשוך רק כשהילד יגיע לגיל 18 (בתום החודש בו ימלאו לו 18), למעט במקרים חריגים.",
+    "text": {
+      "start": "את כספי החיסכון",
+      "end": "למעט במקרים חריגים."
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx",
@@ -182,7 +258,7 @@
     "text": {
       "start": "לאחר גיל 21 דמי הניהול ייגבו מחשבון החיסכון"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx",
@@ -190,7 +266,7 @@
     "text": {
       "start": "מופקדים 58 ש\"ח מדי חודש"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%9E%D7%95%D7%A6%D7%A2.aspx",
@@ -198,7 +274,7 @@
     "text": {
       "start": "לפי סעיף 2 בחוק - קצבאות: 13,769 ש\"ח"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
@@ -206,7 +282,7 @@
     "text": {
       "start": "פטור מלא מדמי ניהול פיקדון ני\"ע ישראליים וזרים"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
@@ -214,7 +290,7 @@
     "text": {
       "start": "פטור מעמלות קנייה ומכירה של מניות ואג\"ח הנסחרות בארץ"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
@@ -223,7 +299,7 @@
       "start": "קנייה/ מכירה של",
       "end": "0.01% משווי העסקה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
@@ -231,7 +307,7 @@
     "text": {
       "start": "פיקדונות בהוראת קבע"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/standingorders/",
@@ -239,7 +315,7 @@
     "text": {
       "start": "ההפקדה בפיקדון מותנת בפתיחת חשבון בבנק"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/hightech10/",
@@ -248,7 +324,15 @@
       "start": "מועדון הייטקטן מיועד",
       "end": "ממגזר ההייטק בישראל"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.fibi.co.il/private/fibiaccount/infoactions/call/",
+    "words": "הקמה/שינוי/ביטול של הוראות קבע לקרנות נאמנות",
+    "text": {
+      "start": "הקמה/שינוי/ביטול של הוראות קבע לקרנות נאמנות"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.gov.il/he/Departments/news/news_0008",
@@ -257,7 +341,7 @@
       "start": "ההחלטה על מינוי",
       "end": "התגלו כשלים בהתנהלותה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.gov.il/he/pages/gov_terms_of_use",
@@ -265,7 +349,7 @@
     "text": {
       "start": "שימוש הוגן כולל ציטוט סביר מתוך החומר המוגן"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.gov.il/he/pages/govermental-bonds",
@@ -273,7 +357,24 @@
     "text": {
       "start": "מאפייני אג\"ח לא סחיר"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.gov.il/he/pages/govermental-bonds",
+    "words": "מאפייני אג״ח סחיר",
+    "text": {
+      "start": "תקנות אג\"ח לא סחיר",
+      "end": "מאפייני אג\"ח סחיר"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/",
+    "words": "מהיום ניתן לקנות ולמכור שברי מניות במגוון ניירות ערך בארה\"ב",
+    "text": {
+      "start": "מהיום ניתן לקנות ולמכור שברי מניות במגוון ניירות ערך בארה\"ב"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/",
@@ -281,7 +382,7 @@
     "text": {
       "start": "עד 90% חיסכון בעמלות, ללא דמי משמרת וללא עמלות מיותרות"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.ibi.co.il/תקנון-מבצע-הטבת-הצטרפות/",
@@ -290,7 +391,7 @@
       "start": "הפקדת מזומן ו/או",
       "end": "מעת לעת, לחשבון"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.inter-il.com/commission/",
@@ -299,7 +400,7 @@
       "start": "אנו לא גובים",
       "end": "שמירת ניירות ערך"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.inter-il.com/commission/",
@@ -307,7 +408,42 @@
     "text": {
       "start": "דמי מערכת: 0 ש\"ח"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.inter-il.com/israeli-stock-market/",
+    "words": "באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד",
+    "text": {
+      "start": "באינטראקטיב ישראל נכון",
+      "end": "ללקוחות מוסדיים בלבד"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.inter-il.com/order-execution-policy-oct-2023-2/",
+    "words": "The Company routes client orders for execution to another broker, Interactive Brokers",
+    "text": {
+      "start": "The Company routes",
+      "end": "broker, Interactive Brokers"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.inter-il.com/question-answer/%D7%9E%D7%94%D7%95-%D7%A1%D7%9B%D7%95%D7%9D-%D7%94%D7%94%D7%A4%D7%A7%D7%93%D7%94-%D7%94%D7%9E%D7%99%D7%A0%D7%99%D7%9E%D7%9C%D7%99-%D7%9C%D7%A4%D7%AA%D7%99%D7%97%D7%AA-%D7%97%D7%A9%D7%91%D7%95%D7%9F/",
+    "words": "באינטראקטיב ישראל ניתן לפתוח חשבון השקעות ללא מינימום הפקדה",
+    "text": {
+      "start": "באינטראקטיב ישראל ניתן לפתוח חשבון השקעות ללא מינימום הפקדה"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.inter-il.com/recurring-transfer/",
+    "words": "בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה ... תוכנית החיסכון תקנה לנו את הנכס המבוקש לפי הסכום שנבקש גם אם מדובר בחלק ממניה או תעודת סל",
+    "text": {
+      "start": "בתוכנית חיסכון ניתן",
+      "end": "או תעודת סל"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.inter-il.com/regulation-and-security/",
@@ -316,7 +452,34 @@
       "start": "עמלות המסחר באינטראקטיב",
       "end": "דמי החזקה כלל"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.inter-il.com/terms-and-conditions/",
+    "words": "shall mean the IB’s online trading platform located at where you can trade in financial instruments and where your Client Account is located",
+    "text": {
+      "start": "shall mean the IB’s",
+      "end": "Client Account is located"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.interactivebrokers.com/en/accounts/required-minimums.php",
+    "words": "Account Minimums USD 0.00",
+    "text": {
+      "start": "Account Minimums",
+      "end": "USD 0.00"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.interactivebrokers.com/en/general/communiques/2019/news-at-ibkr-02-2019-vol6.php",
+    "words": "IBKR institutional clients globally and retail clients outside of Israel can use their account to trade stocks on the Tel Aviv Stock Exchange",
+    "text": {
+      "start": "IBKR institutional clients",
+      "end": "Aviv Stock Exchange"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
@@ -324,7 +487,16 @@
     "text": {
       "start": "0.20"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
+    "words": "IB does not separately charge a commission on these auto-conversion trades",
+    "text": {
+      "start": "IB does not",
+      "end": "these auto-conversion trades"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
@@ -332,7 +504,7 @@
     "text": {
       "start": "Tier I - USD 2.00"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
@@ -341,7 +513,7 @@
       "start": "typically add or",
       "end": "the exchange rate"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.interactivebrokers.com/en/pricing/other-fees.php",
@@ -349,7 +521,24 @@
     "text": {
       "start": "ILS denominated stocks"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.interactivebrokers.com/lib/cstools/faq/#/content/56713690",
+    "words": "At this moment we do not offer trading on Tel Aviv Exchange (TASE) to retail clients who are a resident of Israel.",
+    "text": {
+      "start": "At this moment",
+      "end": "resident of Israel."
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.leumi.co.il/he/tax-deduction",
+    "words": "דמי ניכיון - 15%",
+    "text": {
+      "start": "דמי ניכיון - 15%"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/provident_pension/ira/",
@@ -357,40 +546,16 @@
     "text": {
       "start": "על אופן הניהול"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
-    "url": "https://www.meitav.co.il/provident_pension/ira/",
-    "words": "עליכם להעביר את הכסף לקופת גמל מסוג קופת גמל בניהול אישי",
+    "url": "https://www.meitav.co.il/trade/",
+    "words": "אין כפל מבצעים. ההטבה למצטרפים חדשים אשר ביצעו הפקדה ראשונה לחשבונם עד לתאריך 30.11.26",
     "text": {
-      "start": "עליכם להעביר את",
-      "end": "גמל בניהול אישי"
+      "start": "אין כפל מבצעים.",
+      "end": "עד לתאריך 30.11.26"
     },
-    "seen": "2026-11-07"
-  },
-  {
-    "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-    "words": "כמוה כמתן מתנה בלתי חוזרת לאותו אדם",
-    "text": {
-      "start": "כמוה כמתן מתנה בלתי חוזרת לאותו אדם"
-    },
-    "seen": "2026-11-07"
-  },
-  {
-    "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-    "words": "עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי",
-    "text": {
-      "start": "עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי"
-    },
-    "seen": "2026-11-07"
-  },
-  {
-    "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
-    "words": "שמתפקד כמסלול ברירת מחדל",
-    "text": {
-      "start": "שמתפקד כמסלול ברירת מחדל"
-    },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/",
@@ -399,7 +564,7 @@
       "start": "מצטרפים למיטב טרייד",
       "end": "טיפול לארבע שנים"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/",
@@ -407,7 +572,15 @@
     "text": {
       "start": "פטור מדמי טיפול לארבע שנים"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.meitav.co.il/trade/about/",
+    "words": "סכום מינימלי לפתיחת חשבון במיטב טרייד: 10,000 ₪",
+    "text": {
+      "start": "סכום מינימלי לפתיחת חשבון במיטב טרייד: 10,000 ₪"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/currency_exchange/",
@@ -415,7 +588,7 @@
     "text": {
       "start": "ללא עמלות אחזקת חשבון"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/currency_exchange/",
@@ -423,7 +596,23 @@
     "text": {
       "start": "ללא עמלת חליפין"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.meitav.co.il/trade/exchange/",
+    "words": "ללא עמלות אחזקת חשבון",
+    "text": {
+      "start": "ללא עמלות אחזקת חשבון"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.meitav.co.il/trade/exchange/",
+    "words": "ללא עמלת חליפין",
+    "text": {
+      "start": "ללא עמלת חליפין"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
@@ -431,7 +620,7 @@
     "text": {
       "start": "5 שקל לנייר ערך ישראל"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
@@ -439,7 +628,7 @@
     "text": {
       "start": "מורידים את טופס בקשת ההעברה מהבנק"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
@@ -447,16 +636,7 @@
     "text": {
       "start": "רצף המס נשמר"
     },
-    "seen": "2026-11-07"
-  },
-  {
-    "url": "https://www.meitav.co.il/trade/independent_trading/",
-    "words": "ניתן לסחור בכל סוגי המכשירים הפיננסים הנסחרים בבורסה: אגרות חוב, קרנות נאמנות, קרנות סל, אופציות מעו\"ף ועוד, כל זאת בבורסה בת\"א",
-    "text": {
-      "start": "ניתן לסחור בכל",
-      "end": "זאת בבורסה בת\"א"
-    },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/independent_trading/",
@@ -464,16 +644,7 @@
     "text": {
       "start": "פטור מדמי משמרת"
     },
-    "seen": "2026-11-07"
-  },
-  {
-    "url": "https://www.meitav.co.il/trade/tel-aviv-trading/information_about_independent_trading_on_the_stock_exchange/",
-    "words": "מסלול לפעילות השקעות ומסחר עצמאי בארץ ובחו\"ל. סכום המינימום לפתיחת חשבון הוא 10,000 ש\"ח בלבד.",
-    "text": {
-      "start": "מסלול לפעילות השקעות",
-      "end": "10,000 ש\"ח בלבד."
-    },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.meitav.co.il/trade/tel-aviv-trading/information_about_independent_trading_on_the_stock_exchange/",
@@ -482,7 +653,7 @@
       "start": "מסלול קרנות ללא",
       "end": "קרנות מנוהלות אקטיבית"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
@@ -491,7 +662,7 @@
       "start": "פירוט ההטבות בקבוצת דלקס",
       "end": "25,000 ש\"ח לחשבון משותף"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
@@ -500,7 +671,7 @@
       "start": "פירוט ההטבות בקבוצת מרכנתיל טופ",
       "end": "או 18,000 ש\"ח לחשבון משותף"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
@@ -508,7 +679,15 @@
     "text": {
       "start": "תוקף ההטבות - 3 שנים ממועד ההצטרפות לקבוצה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+    "words": "ריבית אי רצף תרד ב-0.04%",
+    "text": {
+      "start": "ריבית אי רצף תרד ב-0.04%"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.mercantile.co.il/private/investments-savings/taxation/securities-taxation/",
@@ -516,7 +695,7 @@
     "text": {
       "start": "אמנות מס"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.misim.gov.il/tmmisuyweb/frmAbsSearch.aspx?cur=4",
@@ -525,7 +704,7 @@
       "start": "יכול הציבור הרחב",
       "end": "בתמציות החלטות מיסוי"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
@@ -533,7 +712,7 @@
     "text": {
       "start": "הבנק מממן את מלוא עלות הפנייה למסלקה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
@@ -541,7 +720,7 @@
     "text": {
       "start": "מזכה את הבנק בעמלות הפצה מהיצרנים הפנסיונים"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.moreinvest.co.il/%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D/%D7%92%D7%9E%D7%9C-%D7%95%D7%A4%D7%A0%D7%A1%D7%99%D7%94/%D7%A7%D7%A8%D7%9F-%D7%A4%D7%A0%D7%A1%D7%99%D7%94/",
@@ -549,7 +728,7 @@
     "text": {
       "start": "דמי ניהול של 1% מההפקדות ו-0.22% מהחיסכון הצבור בקרן"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.moreinvest.co.il/מוצרים/גמל-ופנסיה/קופות-גמל/",
@@ -557,7 +736,25 @@
     "text": {
       "start": "והוא אינו כולל כיסויים ביטוחיים"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.onezerobank.com/company/information/5683",
+    "words": "בניירות ערך ישראליים הנכללים במדד 125 וכן בקרנות נאמנות, הנסחרות בתום יום המסחר (שלא במסגרת המסחר הרציף), בבורסה בתל אביב אשר הבנק התקשר בהסכמי הפצה בגינם",
+    "text": {
+      "start": "בניירות ערך ישראליים",
+      "end": "בהסכמי הפצה בגינם"
+    },
+    "seen": "2026-11-12"
+  },
+  {
+    "url": "https://www.onezerobank.com/company/information/5683",
+    "words": "וכן בקרנות חוץ נסחרות (Foreign ETFs)בהתאם לרשימת הקרנות הנתמכות על ידי הבנק מעת לעת",
+    "text": {
+      "start": "וכן בקרנות חוץ",
+      "end": "הבנק מעת לעת"
+    },
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -565,7 +762,7 @@
     "text": {
       "start": "0.05% משווי העיסקה, מינימום ₪ 2 לפעולה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -573,7 +770,7 @@
     "text": {
       "start": "0.06%משווי העיסקה, מינימום 2₪ לפעולה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -581,7 +778,7 @@
     "text": {
       "start": "0.07% משווי העיסקה, מינימום ₪ 2 לפעולה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -589,7 +786,7 @@
     "text": {
       "start": "0.07% משווי העיסקה, מינימום 2₪ לפעולה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -597,7 +794,7 @@
     "text": {
       "start": "1 סנט למניה מינימום $ 6.5לעסקה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -605,7 +802,7 @@
     "text": {
       "start": "גבייה רבעונית 0.03%"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -614,7 +811,7 @@
       "start": "דמי משמרת",
       "end": "גבייה רבעונית 0.03%"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -623,7 +820,7 @@
       "start": "דמי שימוש/דמי טיפול",
       "end": "ללא עלות"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -631,7 +828,7 @@
     "text": {
       "start": "וקרנות סל שחלים עליהם כללי המסחר על מניות"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -639,7 +836,7 @@
     "text": {
       "start": "מניות ו-ETF הנסחרים בבורסות ארה\"ב"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -648,7 +845,7 @@
       "start": "מניות ו-ETF הנסחרים",
       "end": "מינימום $ 6.5לעסקה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -657,7 +854,7 @@
       "start": "עבור המרה למטבע",
       "end": "0.5% משווי העסקה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -666,7 +863,7 @@
       "start": "עבור המרה מדולר",
       "end": "עבור כל דולר/שקל"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -674,7 +871,7 @@
     "text": {
       "start": "עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -682,7 +879,7 @@
     "text": {
       "start": "קניה, מכירה, ופדיון של קרנות נאמנות"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/en/website1/",
@@ -690,7 +887,7 @@
     "text": {
       "start": "קרנות נאמנות: פטור מעמלת ק/מ בקרנות כספיות ואקטיביות"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/trade_heb/",
@@ -699,7 +896,7 @@
       "start": "המרה ישירה של",
       "end": "וללא עמלות המרה"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/website/",
@@ -707,7 +904,7 @@
     "text": {
       "start": "סכום מינימאלי לפתיחת חשבון בפסגות: 10,000 ש\"ח"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.psagot.co.il/website/",
@@ -716,16 +913,7 @@
       "start": "פטור מלא",
       "end": "ללא הגבלת זמן"
     },
-    "seen": "2026-11-07"
-  },
-  {
-    "url": "https://www.tase.co.il/he/content/news-lobby/20250318_pr",
-    "words": "מדדי בולט נועדו לאפשר למשקיעים לקבע תשואה לפדיון של תיק אג״ח בעל מאפיינים מוגדרים",
-    "text": {
-      "start": "מדדי בולט נועדו",
-      "end": "בעל מאפיינים מוגדרים"
-    },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   },
   {
     "url": "https://www.tazkirim.gov.il/s/legislativeworkactivity/a133Y00000LPZM1QAP",
@@ -734,6 +922,6 @@
       "start": "כשמשיכה מוקדמת מהאמור,",
       "end": "על הכספים שנמשכו"
     },
-    "seen": "2026-11-07"
+    "seen": "2026-11-12"
   }
 ]

@@ -1,0 +1,102 @@
+{
+  "id": "TX2-01",
+  "title": "FX deposits: the exchange rate is the index; exchange-rate gain on the principal is exempt, the profit above it is taxed at up to 25%",
+  "title_he": "פיקדון במטבע חוץ: שער המטבע הוא המדד",
+  "text_he": "בפיקדון שצמוד למטבע חוץ או נקוב בו, שער המטבע הוא המדד. הרווח מהשינוי בשער על הקרן הוא הפרשי הצמדה, והם פטורים ממס ליחיד אם ההצמדה מלאה, לא נדרשו הוצאות ריבית או הצמדה על הנכס, והם לא הכנסה מעסק. הרווח שמעל עליית השער ממוסה בשנת המס 2026 בשיעור של עד 25%, ומגיל 60 אפשר לשלם פחות. כשהמטבע נחלש מול השקל, הריבית עדיין ממוסה במלואה. בית המשפט המחוזי לא מצא בחוק הוראה שמאפשרת לקזז מולה את ההפרש השלילי בשער, ובית המשפט העליון השאיר פתוח אם יש דרך כזו.",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "real-vs-nominal",
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.204, s.125C(a)",
+      "locator_he": "עמוד 204, סעיף 125ג(א)",
+      "page": 204,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.12, s.1",
+      "locator_he": "עמוד 12, סעיף 1",
+      "page": 12,
+      "quote": "הפרשי הצמדה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.16, s.1",
+      "locator_he": "עמוד 16, סעיף 1",
+      "page": 16,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.41, s.9(13)",
+      "locator_he": "עמוד 41, סעיף 9(13)",
+      "page": 41,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.42",
+      "locator_he": "עמוד 42",
+      "page": 42,
+      "quote": "אופן הצמדה",
+      "checked": "2026-10-22",
+      "qualifier": "(page image)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.54, section ג.1",
+      "locator_he": "עמוד 54, סעיף ג.1",
+      "page": 54,
+      "quote": "בפקדונות ובתוכניות חסכון הצמודים למדד, הפרשי ההצמדה פטורים ממס",
+      "checked": "2026-10-22",
+      "qualifier": "(page image)"
+    }
+  ]
+}

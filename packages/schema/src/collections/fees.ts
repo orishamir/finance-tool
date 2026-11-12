@@ -60,7 +60,7 @@ export const feeLine = z.strictObject({
   not_ranked: z
     .strictObject({
       reason_he: z.string().min(1).max(240),
-      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() }),
     })
     .optional(),
   names: z.strictObject({ tariff: z.array(z.string()) }),
@@ -87,7 +87,7 @@ export const availabilityEntry = z.strictObject({
   phone_only: z
     .strictObject({
       venues: z.array(venue).min(1).optional(),
-      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() }),
       note: z.string().optional(),
     })
     .optional(),
@@ -106,7 +106,7 @@ export const byAmountEntry = z.strictObject({
   list_only: z.boolean(),
   /** The words name shares and no exchange-traded fund: for a fund that is silence (D56), so the entry is kept for its reason and changes nothing. */
   shares_only: z.literal(true).optional(),
-  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() }),
   note: z.string().optional(),
 });
 

@@ -1,0 +1,30 @@
+{
+  "id": "ETF-07",
+  "title": "Managers must publish INAV, median spread, holdings and tracking data",
+  "title_he": "מה מנהל של קרן מחקה צריך לפרסם",
+  "strength": "primary",
+  "dimensions": [
+    "fee-trade",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-22",
+  "text_he": "לפי ההנחיה של רשות ניירות ערך לקרנות מחקות, מנהל הקרן מפרסם באתר שלו, או דרך גורם אחר, במבנה שמערכות מידע מקובלות יכולות לקלוט, את השווי ההוגן האינדיקטיבי של קרן סל: לאורך כל יום המסחר כשהמדד מקומי, ובמדדים אחרים בשעות שבהן אפשר לחשב אותו בפועל. הוא מפרסם גם את מרווח הציטוט החציוני בין פקודות קנייה למכירה בקרן סל, מדגימה כל 10 דקות ב־30 ימי המסחר האחרונים, ולפני תחילת המסחר בכל יום את רשימת הנכסים שקרן הסל מחזיקה ואת המשקל של כל אחד. בכל יום שבו מחושב מחיר הוא מפרסם את מקום הקרן ביחס לרצועת דמי הניהול המשתנים, ואת טעות העקיבה והפרש העקיבה ב־12 החודשים האחרונים. החובות האלה בתוקף מ־3.7.2024, והשווי האינדיקטיבי מ־3.10.2024.",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+      "title": "ISA tracking-fund directive, update 3 (15.10.2024), s. 7 and commencement",
+      "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s. 7",
+      "locator_he": "סעיף 7",
+      "checked": "2026-10-22"
+    }
+  ]
+}

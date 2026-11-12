@@ -69,6 +69,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: none found.
 - Figures: none.
 - Source: [s.6, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) · checked 2026-10-31 · primary
+- Scope: general
 - Dimensions: `fee-management-balance`, `fee-deposit`
 - Likely to change: no
 
@@ -77,6 +78,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: Not applicable to sector funds, most old pension funds, and certain deceased annuitants (reg. 8(ד)). If contact is restored, the manager may return to the prior rate and collect the difference for the gap period, capped at 0.5% a year. That detail comes from a summary of reg. 8(ב); the exact wording was not quoted. For what counts as lost contact, see PF-27.
 - Figures: 0.3% a year. Fixed.
 - Source: [s.8, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `fee-management-balance`, `fee-change-over-time`
 - Likely to change: no
 
@@ -85,6 +87,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: none found.
 - Figures: none.
 - Source: [s.9, gazette תשע״ד, 977](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4), [s.10, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8) · checked 2026-10-31 · primary
+- Scope: general
 - Dimensions: `fee-management-balance`
 - Likely to change: no
 
@@ -102,6 +105,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: Guaranteed-return channel investments are excluded from the calculation.
 - Figures: none in the regulation. Per-manager figures were not collected (open question 3).
 - Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ"ג-2022, קובץ התקנות 10377 (30.10.2022) p.212](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=5), file pp.5-6 (gazette pp.215-216), s.4, which inserts reg. 2א whole: 2א(א)-(ב), (ד), (ו)-(ט) ("משקיע מוסדי לא יגבה הוצאות ישירות מסוג עמלת ניהול חיצוני, מעבר למגבלת עמלת הניהול החיצוני") · checked 2026-11-08 · primary. The Knesset's secondary-legislation record lists no amendment of these regulations after ק"ת 10377, so the inserted text is the current one. The Wikisource copy read first is a lead only.
+- Scope: general
 - Dimensions: `fee-direct-expenses` (proposed), `fee-change-over-time`
 - Likely to change: yes, the cap is reset by each manager every year.
 
@@ -137,6 +141,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: This covers only a move between two arrangements at the same body. Leaving an employer without a new arrangement falls under PF-14 case (1): six months after deposits stop.
 - Figures: none.
 - Source: [CMA circular 2017-9-15, s. 3(ג), 3(ד) (gov.il copy p. 2)](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `fee-change-over-time`, `eligibility`
 - Likely to change: see open question 1.
 
@@ -193,6 +198,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: Section 13(ב)(1) has exceptions: an active member of an old pension fund, an active member of an insurance policy, health-related exclusions, and others the Commissioner sets. An agent or adviser may receive a distribution fee from the institution only with the customer's prior written consent (s. 19(א)(2)). That fee is treated as part of the customer's management fee and may not exceed what is set under law s. 32 (s. 28(א), (ג)).
 - Figures: none.
 - Source: [s.13, gazette 20_lsr_316718](https://fs.knesset.gov.il/20/law/20_lsr_316718.pdf#page=24), [s.19, gazette ס״ח תשס״ה, 918](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf#page=10), [s.28](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf#page=13) · checked 2026-10-31 · primary; [Altshuler bylaws s. 38](https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf) · institution
+- Scope: general
 - Dimensions: `transfer-switch-process`, `fee-management-balance`
 - Likely to change: yes. A 2026 plan item requires that a non-statutory withdrawal on the customer's own initiative go through advice or marketing first (PF-31). That applies to withdrawals, not transfers.
 
@@ -255,6 +261,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: The law empowers the Commissioner to set search duties (law s. 24). A lower fee cap applies where search duties were not met (PF-08). No public lookup database is required by these regulations. Whether Har HaKesef (the CMA's unclaimed-money lookup) is fed by them was not verified; what it shows is PF-32.
 - Figures: NIS 5,000, CPI-linked each 1 March since 2014; 10 years and 5 years; 3 years.
 - Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע"ב-2012, קובץ התקנות 7083 (30.1.2012) p.696](https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7083%2Fheb#page=2), file pp.2-7 (gazette pp.696-701): reg. 1 ("דואר חוזר", "חשבון רדום", "עמית שהקשר עמו נותק"), reg. 2 (Population Registry), reg. 3(א)-(ג) ("בשקידה סבירה"; within a year; every three years; "5,000 שקלים חדשים"), reg. 4, reg. 6 (the amount changes on 1 March each year from 1 March 2014 by the CPI) · checked 2026-11-08 · primary. [Knesset, secondary legislation record 2136913](https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_SecondaryLaw(2136913)): published, no amending regulation listed · checked 2026-11-08 · primary (official record of publication, not of the text). The Wikisource copy read first is a lead only.
+- Scope: general
 - Dimensions: `fee-change-over-time`, `protection`
 - Likely to change: yes. A 2026 plan item updates the locating circular and replaces the regulations "בהתאם לסמכות הממונה" (PF-31).
 
@@ -281,6 +288,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: The law gives members no specific right to object to a merger, and no fee condition attached to one, in the text read. A member can still transfer out under PF-17. A merger requires the external-management cap to be published within 30 days of approval (PF-11).
 - Figures: 60 days.
 - Source: [s.37, gazette ס״ח תשס״ה, 889](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=14), [s.38](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15), [s.41](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15), [s.42](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15) · checked 2026-10-31 · primary; bylaws s. 34 repeats this (institution)
+- Scope: general
 - Dimensions: `protection`, `regulator`
 - Likely to change: no
 
@@ -299,6 +307,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: No item in the plan changes the management-fee caps, the fee-discount circular, or the transfer regulations. The plan says some items may not be completed within the year (p. 3). An "arbitrage reform" that merges wrappers is only a recommendation of the Finance Ministry team's final report of July 2026, not law (TXK-21).
 - Figures: none.
 - Source: [CMA, תכנית אסדרה לשנת 2026, pp. 1 to 21 read](https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `regulator`, `fee-change-over-time`, `transfer-switch-process`
 - Likely to change: yes, by definition. Re-check each item's status at the next plan publication (expected around Dec 2026).
 
@@ -307,6 +316,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Conditions / exceptions: It shows only that an account may exist; balances and rights are with the institutions. Querying someone else's ID without permission may be a criminal offence. CMA public enquiries: *3002 or 1222-3002, Sunday to Thursday 9:00 to 16:00. The page was machine-translated by the browser; facts above are from that rendering.
 - Figures: none.
 - Source: [CMA, קבלת מידע על חסכונות פנסיוניים](https://www.gov.il/he/service/pension_savings_search) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `dispute-channel`
 - Likely to change: no.
 

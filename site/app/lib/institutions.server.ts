@@ -30,6 +30,7 @@ import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type TextFragment } from "./sources";
 import { heCollator } from "./format";
+import { leftOutOf } from "./left-out";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -258,7 +259,7 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   const min = s.minimums.account_opening;
   return {
     missing: s.missing,
-    reason: s.missing_reason,
+    reasonHe: s.missing_reason_he ?? null,
     title: s.tariff.title,
     url: s.tariff.url,
     format: s.tariff.format,
@@ -276,6 +277,7 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     providerName: s.provider.name_he,
     priceFor: s.price_for_he ?? null,
     availability: availabilityRows(s),
+    leftOut: leftOutOf(s),
   };
 }
 

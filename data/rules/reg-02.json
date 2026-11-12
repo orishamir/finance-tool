@@ -1,0 +1,30 @@
+{
+  "id": "REG-02",
+  "title": "Bank complaints go to the Supervisor of Banks, without new rights",
+  "title_he": "תלונה על בנק: המפקח על הבנקים מברר, בלי זכויות חדשות",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק הבנקאות (שירות ללקוח), המפקח על הבנקים מברר תלונות של הציבור על בנקים כשהוא רואה בהן ממש. אם התלונה מוצדקת, הוא מודיע למתלונן ולבנק מה מצא ואיך לתקן את הליקוי. הממצאים שלו לא נותנים למתלונן זכות או סעד בבית משפט שלא היו לו קודם ולא מונעים סעדים אחרים, והגשת תלונה לא מאריכה מועד שנקבע בחוק. בסעיף על תלונות אין סמכות לחייב בנק להחזיר כסף; בנפרד, המפקח יכול, באישור היועץ המשפטי לממשלה, לקבל התחייבות בכתב של בנק לפצות לקוח.",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/nvadftgk/150.pdf#page=3",
+      "title": "Banking (Service to Customer) Law, Bank of Israel's consolidated copy, file of 14.4.2026",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "ss.1, 16(א) to (ד), 12(א)(2)",
+      "locator_he": "סעיפים 1, 16(א) עד (ד), 12(א)(2)",
+      "page": 3,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

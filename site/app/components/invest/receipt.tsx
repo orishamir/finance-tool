@@ -14,7 +14,9 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { receiptAmounts, sharesOf, takenWords } from "../../lib/receipt";
 import { differenceOf, ownBy, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { HelpMark, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
+import { HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
+import { isGroupProvider } from "../../lib/group-pick";
+import { leftOutOf } from "../../lib/left-out";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, barTotalValue, pairVerdict, partName, plus, steadyOf, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
@@ -128,6 +130,9 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const house = providerName(view, pick.house);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const short = house?.short ?? pick.house;
+  const held = view.providers.find((p) => p.id === pick.house);
+  const baseHouse = held && isGroupProvider(held) ? (held as typeof held & { group: { house: string } }).group.house : pick.house;
+  const baseShort = providerName(view, baseHouse)?.short ?? short;
   // the figures each line shows are whole shekels that add up; each opens the figure it stands for, with that figure's sources
   const added = differenceOf([c.pair.baseInput, whole(pc.baseValue)], [c.pair.paidIn, whole(pc.paidIn)], "F-91", { today, about: c.receipt.added });
   const gain = differenceOf([c.receipt.left, whole(pc.left)], [c.pair.paidIn, whole(pc.paidIn)], "F-91", { today, about: c.receipt.gain });
@@ -157,6 +162,8 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
       })}
       {r.remainder !== 0 && <ReceiptLine size="sm" label={pc.units ? c.pair.remainderUnits : c.pair.remainder} value={<Num value={pc.remainder} display={minus(r.remainder)} />} />}
+      {/* what the house's documents hold and its price leaves out, under its lines (D106); a group's account is its house's */}
+      <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === baseHouse))} house={baseShort} />
     </>
   );
   const accountValue = <Num value={account} display={minus(r.account)} />;

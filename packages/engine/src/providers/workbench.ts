@@ -206,10 +206,11 @@ export interface ComparedProvider extends ProviderBase {
   yearOneCost: ValueObject;
   /** Nominal fees paid in a 12-month run, exit commission included (trade, custody, fx, fixed). */
   yearOneFeesPaid: number;
-  /** F-61 by fee type: `V(F \ {f}) − V(F)`, real NIS, for each provider line the tariff charges, largest first; `costBeforeTax` is the same difference before tax (F-91). */
-  byType: { line: FeeLine; cost: number; costBeforeTax: number }[];
-  /** `total − Σ cost_f`. */
-  interaction: number;
+  /** F-61 by fee type: `V(F \ {f}) − V(F)`, real NIS, for each provider line the tariff charges, largest first; `costBeforeTax` is the same difference before tax (F-91).
+   *  In whole units (F-109) a line is what was paid on it, carried to the horizon before tax: `costBeforeTax` only, and `cost` is null, since no after-tax figure is worked for it. */
+  byType: { line: FeeLine; cost: number | null; costBeforeTax: number }[];
+  /** `total − Σ cost_f`; null in whole units, where the lines have no after-tax cost (the before-tax remainder is `horizonCostBeforeTax − Σ costBeforeTax_f`). */
+  interaction: number | null;
   /** Real value at the horizon with this provider's fees. */
   real: number;
   /** `B(∅) − B(F_p)`, the horizon cost before the tax it saves, real NIS (F-91's account part; additive). */
@@ -495,6 +496,39 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     }
   }
 
+  /**
+   * F-13: a conversion line as the run charges it. A bare percentage stays a number; a price per dollar, a minimum or maximum, or a flat price
+   * for a conversion up to a sum (`flat_up_to`) makes a `Commission`. Bounds and the flat price set in dollars stay in the trade currency
+   * (`in: "instrument"`), converted at the rate of each conversion; all of a line's sums are in one currency, since a `Commission` holds one.
+   */
+  const conversionOf = (l: { line: SnapLine; rate: ValueObject; min?: ValueObject | null; max?: ValueObject | null; flat?: SnapLine["flat_up_to"] }): number | Commission => {
+    const c: Commission = { rate: 0 };
+    // F-13: a conversion priced in shekels a dollar, not as a share of the amount.
+    if (l.rate.unit === "nis_per_usd") {
+      if (input.currency!.code !== "USD") throw new RecordInputError(`${l.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
+      if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
+      c.perCurrencyUnit = l.rate.value;
+    } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
+    const sums = [l.min, l.max, l.flat?.amount, l.flat?.up_to].filter(hasBound);
+    if (!sums.length) return c.perCurrencyUnit !== undefined ? c : c.rate;
+    // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13).
+    const units = new Set(sums.map((b) => (USD_UNITS.has(b.unit) ? "usd" : NIS_UNITS.has(b.unit) ? "nis" : b.unit)));
+    if (units.size > 1) throw new RecordInputError(`${l.line.id}: the conversion's sums are in different units (${[...new Set(sums.map((b) => b.unit))].join(", ")})`);
+    if (units.has("usd")) {
+      if (input.currency!.code !== "USD") throw new RecordInputError(`${l.line.id}: the sums are in USD but the instrument currency is ${input.currency!.code}`);
+      c.in = "instrument";
+    }
+    const bound = (vo: ValueObject, what: string) => {
+      if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
+      if (!USD_UNITS.has(vo.unit) && !NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels or dollars`);
+      return vo.value;
+    };
+    if (hasBound(l.min)) c.min = bound(l.min, `${l.line.id} min`);
+    if (hasBound(l.max)) c.max = bound(l.max, `${l.line.id} max`);
+    if (l.flat) c.flatUpTo = { amount: bound(l.flat.amount, `${l.line.id} flat amount`), upTo: bound(l.flat.up_to, `${l.line.id} flat up to`) };
+    return c;
+  };
+
   // FX: only a fund quoted in a foreign currency is converted (F-13).
   if (input.currency) {
     out.tariff.currency = input.currency;
@@ -507,42 +541,20 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     } else {
       const r = resolve("fx");
       if (r) {
-        const c: Commission = { rate: 0 };
-        // F-13: a conversion priced in shekels a dollar, not as a share of the amount.
-        if (r.rate.unit === "nis_per_usd") {
-          if (input.currency!.code !== "USD") throw new RecordInputError(`${r.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
-          if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
-          c.perCurrencyUnit = r.rate.value;
-        } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
+        // F-13: a flat price for a conversion up to a sum, read at the list price only: an average is a percentage with no bounds (F-63)
+        const atList = r.rate === r.line.rate;
+        const c = conversionOf({ ...r, flat: atList ? r.line.flat_up_to : undefined });
         // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, beside the conversion fee and in a field of its
         // own (`fxSpread`), charged on every conversion; a spread with no ceiling (value null) is not priced. Only the list line carries it: an
         // average row is what customers paid, spread and all.
-        const spread = r.rate === r.line.rate ? r.line.spread : null;
+        const spread = atList ? r.line.spread : null;
         if (spread && typeof spread.value === "number") {
-          if (c.perCurrencyUnit !== undefined || hasBound(r.min) || hasBound(r.max)) throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds or a price per dollar is not modelled`);
+          if (typeof c !== "number") throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds, a flat price or a price per dollar is not modelled`);
           const s = pct(spread, "pct_of_trade", `${r.line.id} spread`);
           if (s > 0) out.tariff.fxSpread = s;
         }
-        if (hasBound(r.min) || hasBound(r.max)) {
-          // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13).
-          const bounds = [r.min, r.max].filter(hasBound);
-          const units = new Set(bounds.map((b) => b.unit));
-          if (units.size > 1) throw new RecordInputError(`${r.line.id}: min and max are in different units (${[...units].join(", ")})`);
-          const unit = bounds[0]!.unit;
-          if (USD_UNITS.has(unit)) {
-            if (input.currency!.code !== "USD") throw new RecordInputError(`${r.line.id}: bounds are in USD but the instrument currency is ${input.currency!.code}`);
-            c.in = "instrument";
-          }
-          const bound = (vo: ValueObject, what: string) => {
-            if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
-            if (!USD_UNITS.has(vo.unit) && !NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels or dollars`);
-            return vo.value;
-          };
-          if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
-          if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
-        }
-        out.tariff.fx = hasBound(r.min) || hasBound(r.max) || c.perCurrencyUnit ? c : c.rate;
-        used(r.line, r.rate, r.min, r.max, spread && typeof spread.value === "number" ? spread : null);
+        out.tariff.fx = c;
+        used(r.line, r.rate, r.min, r.max, spread && typeof spread.value === "number" ? spread : null, ...(typeof c === "object" && c.flatUpTo ? [r.line.flat_up_to!.amount, r.line.flat_up_to!.up_to] : []));
         // F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
         if (r.rate === r.line.rate && r.line.level === "list") {
           const every = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
@@ -551,8 +563,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (plan.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${plan.length} recurring-plan conversion lines apply (${plan.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
           const l = plan[0];
           if (l) {
-            out.tariff.fxStanding = pct(l.rate, "pct_of_trade", `${l.id} rate`);
-            used(l, l.rate);
+            out.tariff.fxStanding = conversionOf({ line: l, rate: l.rate, min: l.min, max: l.max, flat: l.flat_up_to });
+            used(l, l.rate, l.min, l.max, l.flat_up_to?.amount, l.flat_up_to?.up_to);
           }
         }
       }
@@ -832,8 +844,19 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     const total = noneT.real - run.real;
     // F-61's split takes a whole run per fee line, and a page that ranks every fund at every house reads it for few: run when first read.
     const split = once(() => {
-      const byType = feeLines(planF)
-        .filter((l) => providerLines.includes(l))
+      const lines = feeLines(planF).filter((l) => providerLines.includes(l));
+      // F-63, F-91 in whole units (F-109): a run without one line places its orders in other months (the cash a fee no longer takes buys a unit
+      // sooner, and each order pays its own minimum), so removing a line can leave less and the line would read below zero. A line is instead
+      // what was paid on it, each payment carried to the horizon at the fund's total return from the month it was paid, in today's shekels;
+      // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged.
+      const carried = units ? run.feesCarried : undefined;
+      if (carried) {
+        const index = run.series.find((pt) => pt.month === run.exitMonth)?.index ?? 1;
+        // before tax only: an after-tax line taken from a pre-tax carry would mix the two
+        const byType = lines.map((line) => ({ line, cost: null, costBeforeTax: carried[line] / index })).sort((a, b) => b.costBeforeTax - a.costBeforeTax);
+        return { byType, interaction: null };
+      }
+      const byType = lines
         .map((line) => {
           const w = withoutFeeLine(planF, line);
           if (w.run !== "runSecurities") throw new Error("unreachable: a securities plan stays a securities plan");
@@ -908,6 +931,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     const gaps: Partial<Record<FeeLine, number>> = {};
     let line: FeeLine | null = null;
     let best = 0;
+    const gap = relativeGap(top.real, second.real);
+    // a whole-units row (F-109) has no after-tax cost per line, so no line decides between it and another
+    if (top.byType.some((t) => t.cost === null) || second.byType.some((t) => t.cost === null)) return { top: top.id, second: second.id, gap, tie: gap < input.theta, deciding: { line, gaps } };
     for (const l of providerLines) {
       const a = top.byType.find((t) => t.line === l)?.cost ?? 0;
       const b = second.byType.find((t) => t.line === l)?.cost ?? 0;
@@ -918,7 +944,6 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
         line = l;
       }
     }
-    const gap = relativeGap(top.real, second.real);
     return { top: top.id, second: second.id, gap, tie: gap < input.theta, deciding: { line, gaps } };
   });
   if (top && second) Object.defineProperty(ranking, "topTwo", { enumerable: true, get: decide });

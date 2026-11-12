@@ -1,0 +1,43 @@
+{
+  "id": "TXA-14",
+  "title": "Growth inside executive insurance: the fund-level exemption excludes insurance funds",
+  "title_he": "צמיחה בביטוח מנהלים: הפטור של קופת הגמל לא כולל קופת ביטוח",
+  "text_he": "הפקודה פוטרת ממס את ההכנסה של קופת גמל שלא הושגה מעסק, אבל לעניין הפטור הזה ״קופת גמל״ מוגדרת בלי קופת ביטוח. לכן הפטור שמשאיר את הצמיחה בקרן פנסיה או בקופת גמל בלי מס לא חל, לפי לשונו, על ביטוח מנהלים. איך ממוסה הכנסת ההשקעות שמאחורי היתרות בביטוח מנהלים, ואם מס כלשהו מגיע לדוח של העמית, לא נמצא.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.32-33, s.9(2)(a), (b) ; p.87, s.50",
+      "locator_he": "עמודים 32 עד 33, סעיף 9(2)(א), (ב) ; עמוד 87, סעיף 50",
+      "page": 32,
+      "quote": "קופת גמל",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.87, s.50",
+      "locator_he": "עמוד 87, סעיף 50",
+      "page": 87,
+      "checked": "2026-11-07"
+    }
+  ]
+}

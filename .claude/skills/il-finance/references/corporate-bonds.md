@@ -31,6 +31,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: TASE describes the 2025 commercial-paper raising as variable-rate ("בריבית משתנה"). Whether a rating or any other protection is required for listed commercial paper was not found (open question 4).
 - Figures: 2025: about NIS 24.4 bn raised through commercial paper, of which about NIS 18.1 bn by banks (2024: about NIS 10 bn, of which 6.2 bn by banks). These are calendar-year facts and change each year.
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=10) (file pages: s.1 10; s.35א 37), s. 1 "ניירות ערך מסחריים", s. 35א · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)](https://content.tase.co.il/media/mwsduioc/274698.pdf), פרק ב' s. 1(א) (update 130, 5.2.24); פרק א' s. 6(ה) (update 144, 3.3.26); פרק ג' s. 1(א)(14) (update 122, 1.12.22) · checked 2026-10-22 · primary (TASE rule guidelines). [TASE, דוח תקופתי לשנת 2025](https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a), part A s. 1.10.3.2, p.37 · checked 2026-10-22 · primary (exchange's statutory report)
+- Scope: general
 - Dimensions: `liquidity-lockup`, `minimum`, `protection`, `rate-reset` (proposed in GOV)
 - Likely to change: the figures yearly; the definition no
 
@@ -47,6 +48,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: Not required for commercial paper (CORP-02). The Trust Law applies unless the chapter provides otherwise, and some of its sections cannot be waived by contract (s. 35ב(ב)). Only the opening of s. 35ב(א) was read verbatim; the reappointment meeting is from a summarised reading of s. 35ב(א1).
 - Figures: 60 days (fixed in law).
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38) (file pages: s.35ב 38), s. 35ב(א), (א1), (ב) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+- Scope: general
 - Dimensions: `protection`, `regulator`
 - Likely to change: no
 
@@ -55,6 +57,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: If holders replace the trustee, they bear any unreasonable excess in the new trustee's fee. The Minister may add conditions such as a deposit, insurance and expertise (s. 35ג1(ה)). The ISA copy prints only the later wording of s. 35ג, with this footnote: "תחילתם של סעיפים 35ג עד 35ג2 לחוק במועד תחילתן של תקנות לפי סעיף 35ג1(ד) ו–(ה) לחוק"; the page carries the stamp 1.5.2020. Corrected 2026-10-31: the record gave the old wording and the register side by side as if both applied. The list of registered trustees was not read (open question 2).
 - Figures: none.
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38) (file pages: s.35ג 38; s.35ג1 39; s.35ג2 40; s.35ה 41; s.35ה1 41; s.35ו 42), ss. 35ג, 35ג1, 35ג2, 35ה, 35ה1, 35ו · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording); [Securities Law (Amendment 9), 1988, gazette](https://fs.knesset.gov.il/11/law/11_lsr_210594.PDF#page=10), s.35ג as enacted · checked 2026-10-31 · primary (gazette)
+- Scope: general
 - Dimensions: `protection`, `regulator`, `fee-management-balance` (paid by the issuer, not the holder)
 - Likely to change: no
 
@@ -63,6 +66,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: Acting on a valid holders' resolution counts as meeting its duty (s. 35ח(ד2)). A court may direct the trustee on a holder's application (s. 35ח(ד3)). Signing the trust deed is not an opinion on the bonds (s. 35ט(ב)). Points not in quotation marks come from a summarised reading of the sections.
 - Figures: 10% of holders for a report on request (fixed in law).
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43) (file pages: s.35ח 43-45; s.35ח1 45-46; s.35ט 47), ss. 35ח, 35ח1, 35ט · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+- Scope: general
 - Dimensions: `protection`, `reporting-obligation`
 - Likely to change: no
 
@@ -80,6 +84,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: What happens next (creditors' arrangement, liquidation, recovery) is governed by the Insolvency and Economic Rehabilitation Law 2018, which was not read (open question 12). A creditors' representative (נציג הנושים) may be appointed: in the trust deed with three-quarters approval (s. 35ז(3)), or under insolvency law by a majority across all series (s. 35יב17(ב)); both from a summarised reading.
 - Figures: 45 days; three-quarters; 60 days (fixed in law).
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43) (file pages: s.35ח 43-45; s.35ז 43; s.35יב17 53), ss. 35ח(ד2ב), 35ז(3), 35יב17(ב) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+- Scope: general
 - Dimensions: `protection`, `liquidity-lockup`
 - Likely to change: no
 
@@ -88,6 +93,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: Per a summarised reading: the general quorum is two holders with at least 25% of voting rights (s. 35יב13); ordinary decisions pass by simple majority unless the law or deed says otherwise (ss. 35יב16, 35יב17); changes to collateral are further restricted (s. 35ז1). A debt settlement is in practice a change of terms; the ISA staff view on "material debt settlements" is in CORP-10.
 - Figures: 5%; 50% and two-thirds; 20% (fixed in law).
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43) (file pages: s.35ז 43; s.35ז1 43; s.35יב1 49-50; s.35יב13 52; s.35יב17 53), ss. 35ז(2), 35ז1, 35יב1(א), 35יב13, 35יב16, 35יב17 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+- Scope: general
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -120,6 +126,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: The law does not apply to internal, unpublished ratings, or to an institutional investor's internal model approved by the Capital Market Commissioner. The Minister may grant exemptions (s. 54). Whether a rating is mandatory for a public bond offering or a TASE listing was not found in any source read (open question 4). Points not in quotation marks come from a summarised reading.
 - Figures: maximum sanction NIS 5,000,000 for a rating company by the administrative enforcement committee (s. 40(3); fixed in law).
 - Source: [s.1, gazette ס״ח תשע״ד, 418](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=2), [s.2](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=3), [s.4](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=3), [s.16](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=8), [s.21](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=9), [s.40](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=13), [s.54](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=16); the Knesset lists two amending laws only (law record 2001380): [חוק בנק ישראל (תיקון מס' 7), התשע"ט-2018, ס״ח 2759 (28.11.2018)](https://fs.knesset.gov.il/20/law/20_lsr_525578.pdf#page=8), s.12, which adds words to the purpose in s.21(ב); and [חוק פסיקת ריבית והצמדה (תיקון מס' 9), התשפ"ד-2023, ס״ח 3117 (19.11.2023)](https://fs.knesset.gov.il/25/law/25_lsr_3568695.pdf#page=45), p.183, which touches ss.1, 32(ב), 33 and 35(ב) only; none of the words quoted here was changed · checked 2026-11-08 · primary
+- Scope: general
 - Dimensions: `regulator`
 - Likely to change: no
 
@@ -160,6 +167,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: The exact times in force come from TASE board decisions, which were not read. TASE trades Monday to Friday since 5 January 2026 (BRK-29). How prices are quoted, the settlement cycle and the record date for coupons were not found (open question 6).
 - Figures: unit NIS 1 face value (guide update 130, 5.2.24); time ranges (update 141, 4.1.26); last trading day (update 144, 3.3.26). Set by TASE rules; change by rule amendment.
 - Source: [TASE trading guide 274698](https://content.tase.co.il/media/mwsduioc/274698.pdf), פרק א' s. 1(ב) and s. 6(ב); פרק ב' s. 1(ב); פרק ג' s. 1(א)(2) · checked 2026-10-22 · primary (TASE rule guidelines)
+- Scope: general
 - Dimensions: `minimum`, `liquidity-lockup`, `market-price-exit` (proposed in GOV)
 - Likely to change: yes, TASE amends the guide often
 
@@ -210,6 +218,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: None of the Israeli sources read describes an investor-compensation scheme.
 - Figures: none.
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37) (file pages: s.35א 37; s.35ו 42-43; s.35ח 43-45), ss. 35א, 35ו(א), 35ח · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording); GOV-02 for the contrast
+- Scope: general
 - Dimensions: `protection`, `credit-risk` (proposed)
 - Likely to change: no
 

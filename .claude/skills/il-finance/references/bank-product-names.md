@@ -83,6 +83,7 @@ The same name means different products at different banks (אדיר, לביא/ל
 - Conditions / exceptions: In the wrapper model these are deposits with a "choice of best" attribute. Ones with an FX alternative are mapped to `fx-and-structured-deposits.md`.
 - Figures: none.
 - Source: [Yahav board](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf) pp.4, 8; [FIBI choice deposits](https://www.fibi.co.il/private/depositsandsavings/savingtypes/choicedeposits/); [Hapoalim WIN WIN contract](https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/win_win_1832025.pdf) p.1; [Mizrahi Carambola](https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/carambola-cd/), [Passiflora](https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/passionfruit-cd/), [Strawberry](https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/cd_strawberry/); Leumi 447 PDF p.36 · checked 2026-10-22 · institution
+- Scope: institution: Bank Yahav, First International Bank, Bank Hapoalim, Mizrahi Tefahot Bank
 - Dimensions: real-vs-nominal, liquidity-lockup, protection, currency
 - Likely to change: no
 

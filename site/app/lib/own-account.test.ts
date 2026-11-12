@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, it } from "vitest";
 import { brokerDraftOf, brokerFromDraft, tariffOfBroker, validCustomBrokers, withCustomEntries, type CustomBroker } from "./custom-entries";
 import { buildInvest, listReading, indexById } from "./invest";
-import { baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
+import { applyOwn, baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
 import { FEE_TYPES, layersOf, ownAccountResult, withoutGroupLine } from "./own-account-view";
 import { buildIndicesBundle } from "./providers.server";
 import { ruleContext, type WorkbenchInputs } from "./providers";
@@ -277,6 +277,12 @@ describe("the tariff built in layers (F-101)", () => {
     expect(got.buy).toEqual({ rate: 0.0025, min: 3, max: 90 });
     expect(got.sell).toEqual({ rate: 0.0025, min: 3, max: 90 });
   });
+  it("a conversion rate of one's own keeps the line's flat price for a small conversion and its bounds (F-13)", () => {
+    // Hapoalim's direct channel: 0.17%, 5.7 $ to 2,300 $, up to 99 $ a flat 3.3 $; the person types 0.1%
+    const fx = { rate: 0.0017, min: 5.7, max: 2_300, in: "instrument" as const, flatUpTo: { amount: 3.3, upTo: 99 } };
+    const got = applyOwn({ fx }, { fxPct: { value: 0.1 } } as never);
+    expect(got.fx).toEqual({ ...fx, rate: 0.001 });
+  });
   it("lays the person's values over the group's, a yearly custody percent as a quarter of it a quarter, and holds them for the whole plan", () => {
     const b = accountOn(STUDENT, { tradeMin: 12, custodyPct: 0.4 });
     const got = unwrap(layeredTariff(b, list, run));
@@ -474,7 +480,7 @@ describe("a price for a time through the page's own run (F-101)", () => {
     const row = rowAt(leumi, accountAtLeumi(named(OFFER.group!), { untilYears: 3 }));
     expect(row.run.formulas).toContain("F-101");
     expect(row.byType.map((x) => x.line).sort()).toEqual(["custody", "trade"]);
-    expect(row.byType.reduce((a, x) => a + x.cost, 0) + row.interaction).toBeCloseTo(row.horizonCost.value as number, 6);
+    expect(row.byType.reduce((a, x) => a + x.cost!, 0) + row.interaction!).toBeCloseTo(row.horizonCost.value as number, 6);
   });
 });
 

@@ -21,6 +21,13 @@ describe("parseAnswer", () => {
       { kind: "slot", id: "B-2", figure: "y" },
     ]);
   });
+  it("reads a figure's start month as its own slot", () => {
+    expect(parseAnswer("מ{BANK-35:fee.from} התקרה")).toEqual([
+      { kind: "text", text: "מ" },
+      { kind: "slot", id: "BANK-35", figure: "fee.from" },
+      { kind: "text", text: " התקרה" },
+    ]);
+  });
   it("leaves braces that are not slots as text", () => {
     expect(parseAnswer("{n} ו־{a:}")).toEqual([{ kind: "text", text: "{n} ו־{a:}" }]);
   });
