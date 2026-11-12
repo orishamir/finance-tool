@@ -136,12 +136,6 @@ export function lineFees(l: Line, own: string): Mapped {
 }
 
 /**
- * A line of the distribution fee a fund's manager pays the bank that distributes it, a yearly share of the fund's assets (MF-24): the
- * fund pays it, not the account, so it is no fee of the deal and is neither filled nor listed as left out.
- */
-const managersDistributionFee = (l: Line): boolean => l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period";
-
-/**
  * Whether a price list line applies to a holding as the run's line choice reads it (`tariffLine`, F-63): a list line in the holding's
  * channel (or none) that names its class, the account or `all` and does not exclude the class; a conversion line only for a holding bought
  * abroad in another currency, and one printed for a currency only for a holding in that currency (F-13).
@@ -198,7 +192,7 @@ function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string 
   }
   // every other line that applies to the holding is listed with why it fills nothing, so no line is left out unsaid
   for (const l of snap.lines) {
-    if (read.has(l.id) || ambiguous.has(l.base) || managersDistributionFee(l) || !appliesTo(l, place, currency, channel)) continue;
+    if (read.has(l.id) || ambiguous.has(l.base) || !appliesTo(l, place, currency, channel)) continue;
     left.push({ lineId: l.id, why: (HOUSE_BASES as readonly string[]).includes(l.base) ? whyNotRead(l) : "other-base" });
   }
   const usesChannel = snap.lines.some((l) => l.channel !== null);

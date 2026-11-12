@@ -106,6 +106,16 @@ export const fmt = {
   },
   number: (v: number) => withMinus(plain.format(v)),
   /**
+   * A share of a whole in percent (a price's share of its cap, `57.14` is 57.14%): a whole percent (`57%`), except below 1% and between
+   * 99% and 100%, where one decimal keeps it from reading `0%` or `100%` when it is neither (`0.4%`, `99.6%`; `0.1%` at least and `99.9%`
+   * at most there).
+   */
+  share: (v: number) => {
+    if (v > 0 && v < 1) return fixed(1, "percent").format(Math.max(0.1, Math.round(v * 10) / 10) / 100);
+    if (v > 99 && v < 100) return fixed(1, "percent").format(Math.min(99.9, Math.round(v * 10) / 10) / 100);
+    return withMinus(fixed(0, "percent").format(v / 100));
+  },
+  /**
    * `22.10.2026` from `2026-10-22`. A document that prints only a month is dated `2025-11` (fees schema); it is said as the
    * month, `נובמבר 2025`, never with an invented first day.
    */

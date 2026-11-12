@@ -165,6 +165,24 @@ describe("a figure with its sign", () => {
   });
 });
 
+describe("a share of a whole", () => {
+  it("is a whole percent", () => {
+    expect(fmt.share((0.6 / 1.05) * 100)).toBe("57%");
+    expect(fmt.share(25)).toBe("25%");
+    expect(fmt.share(98.6)).toBe("99%");
+    expect(fmt.share(0)).toBe("0%");
+    expect(fmt.share(100)).toBe("100%");
+  });
+  it("keeps one decimal below 1% and between 99% and 100%, so it never reads 0% or 100% when it is neither", () => {
+    expect(fmt.share(0.42)).toBe("0.4%");
+    expect(fmt.share(0.02)).toBe("0.1%");
+    expect(fmt.share(99)).toBe("99%");
+    expect(fmt.share(99.04)).toBe("99.0%");
+    expect(fmt.share(99.62)).toBe("99.6%");
+    expect(fmt.share(99.97)).toBe("99.9%");
+  });
+});
+
 describe("a count in words", () => {
   const companies = { one: "חברה אחת", two: "שתי חברות", many: "חברות" };
   it("says one and two in words and any other count as the number and the plural", () => {

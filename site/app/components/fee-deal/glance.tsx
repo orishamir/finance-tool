@@ -1,6 +1,7 @@
 // The deal at a glance, the column "העסקה במבט אחד" (method §10.6, `glance`): the fees that hold throughout, grouped by what they are
-// charged on, each group with the rate its shares add to (F-111) and the sums its prices mark (F-112); then what changes and when, by
-// date. A fee with a cap shows its bar and its standing (F-113) inside its own block.
+// charged on, each group with the rate its shares add to (F-111) and the sums its prices mark (F-112); then what changes and when: the
+// fees that change at their price today, each group with its rate today, and by date. A fee with a cap shows its bar and its standing
+// (F-113) inside its own block.
 import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
@@ -31,9 +32,11 @@ function GroupBox({ children }: { children: ReactNode }) {
   return <div className="flex flex-col gap-1 rounded-md bg-muted/50 px-3 py-2 text-sm">{children}</div>;
 }
 
-function RateLine({ side, rate, of }: { side: DealSide; rate: SiteValue; of: string }) {
+/** The rate a group's fees add to; `lead` says when it holds ("היום ") where the group's rate changes later. */
+function RateLine({ side, rate, of, lead }: { side: DealSide; rate: SiteValue; of: string; lead?: string }) {
   return (
     <p>
+      {lead}
       <SideLead side={side} />
       {copy.glance.together}
       <Num value={rate} /> {of}
@@ -115,16 +118,18 @@ function Group({ group, kind, saved, lead, laterOf }: { group: GlanceGroup; kind
       <GroupHead as="h4" plain>
         {copy.on[key]}
       </GroupHead>
-      <ul className="flex flex-col gap-3">
-        {group.fees.map((f) => {
-          const later = laterOf?.(f.fee);
-          return <FeeLine key={f.fee} fee={f} kind={kind} saved={saved} {...(lead ? { lead } : {})} {...(later ? { later } : {})} />;
-        })}
-      </ul>
+      {group.fees.length > 0 && (
+        <ul className="flex flex-col gap-3">
+          {group.fees.map((f) => {
+            const later = laterOf?.(f.fee);
+            return <FeeLine key={f.fee} fee={f} kind={kind} saved={saved} {...(lead ? { lead } : {})} {...(later ? { later } : {})} />;
+          })}
+        </ul>
+      )}
       {(rates.length > 0 || group.marks.length > 0) && (
         <GroupBox>
           {rates.map((r) => (
-            <RateLine key={r.side} side={r.side} rate={r.rate} of={copy.glance.of[key] ?? ""} />
+            <RateLine key={r.side} side={r.side} rate={r.rate} of={copy.glance.of[key] ?? ""} {...(lead ? { lead } : {})} />
           ))}
           {group.marks.map((m, k) => (
             <MarkLine key={k} mark={m} action={action} many={group.fees.length > 1} />
@@ -163,7 +168,8 @@ export function GlanceColumn({ glance, kind, saved, empty, names }: { glance: Gl
     }
     return undefined;
   };
-  const changing = glance.changing.map((g) => ({ ...g, fees: g.fees.filter((f) => f.price.form !== "free") })).filter((g) => g.fees.length > 0);
+  // a fee that is free now is said by its date's change; a group of such fees alone stays where its fees that hold throughout add to a rate today
+  const changing = glance.changing.map((g) => ({ ...g, fees: g.fees.filter((f) => f.price.form !== "free") })).filter((g) => g.fees.length > 0 || g.rates.some((r) => r.fees.length > 1));
   return (
     <Section title={copy.glance.title} level="kick" heading="h2">
       {empty ? (

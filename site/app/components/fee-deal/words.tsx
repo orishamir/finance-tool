@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { FeeRef, PriceView, StandingView } from "../../lib/fee-deal/parts";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
+import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { CapBar, Swatch, Tag, When, cx } from "../kit";
 import { Num } from "../provenance";
@@ -142,7 +143,7 @@ export function StandingWords({ standing, binds }: { standing: StandingView; bin
       return (
         <>
           {w.share.before}
-          <Num value={standing.share} />
+          <Num value={standing.share} display={fmt.share} />
           {w.share.after}
         </>
       );
