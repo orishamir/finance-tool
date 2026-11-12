@@ -291,8 +291,8 @@ Out of scope: tax at deposit, during and at exit, including the annuity exemptio
 - Likely to change: no.
 
 ### KGL-31 Meitav Kids: Meitav's children's gemel lehashkaa
-- Rule: Meitav sells "מיטב קידס" ("קופת גמל לילדים") as a plan "המבוצעת באמצעות קופת גמל להשקעה", managed by מיטב גמל ופנסיה, and states "תקרת הפקדה שנתית של 83,641 שקלים לאדם (נכון לשנת 2026)". In the CMA's Gemel-Net data for 202609, Meitav has 4 tracks under the child-savings programme's own classification (11385 to 11388) beside its 16 gemel lehashkaa tracks.
-- Conditions / exceptions: Meitav's page gives inconsistent totals for several children: about 245K and 237K for three children, against 3 × 83,641 = 250,923. The per-person ceiling is the general rule (KGL-02, KGL-21); the page's examples are not used. Split from KGL-21 on 2026-11-12.
+- Rule: Meitav sells "מיטב קידס" ("קופת גמל לילדים") as a plan "המבוצעת באמצעות קופת גמל להשקעה", managed by מיטב גמל ופנסיה, and states "תקרת הפקדה שנתית של 83,641 שקלים לאדם (נכון לשנת 2026)". This product is not the government "חיסכון לכל ילד" programme: in the CMA's Gemel-Net data for 202609 that programme's provident tracks have their own classification, "קופת גמל להשקעה - חסכון לילד", under which Meitav has 4 tracks (11385 to 11388) beside its 16 gemel lehashkaa tracks.
+- Conditions / exceptions: Meitav's page gives inconsistent totals for several children: about 245K and 237K for three children, against 3 × 83,641 = 250,923. The per-person ceiling is the general rule (KGL-02, KGL-21); the page's examples are not used. Split from KGL-21 on 2026-11-12; the sentence that Meitav Kids is not the government programme, in the old KGL-21, was restored the same day after review.
 - Figures: none of its own; the ceiling is KGL-03's.
 - Source: [Meitav Kids page](https://www.meitav.co.il/provident_pension/saving_kids/) "תקרת הפקדה שנתית של 83,641 שקלים לאדם (נכון לשנת 2026)" · checked 2026-10-22 · institution; [גמל-נט: מסלולי מיטב, 202609](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb) · checked 2026-10-22 · primary
 - Scope: institution: Meitav
