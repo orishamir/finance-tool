@@ -1,0 +1,32 @@
+[
+ {
+  "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/monthly-deposit/",
+  "words": "ריבית אי רצף תרד ב-0.04%",
+  "occurrence": 1,
+  "why": "the page prints the same plan's terms twice; the first is the one shown"
+ },
+ {
+  "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+  "words": "אין אפשרות לשבירת הפיקדון",
+  "occurrence": 1,
+  "why": "BANK-48 says every plan's row prints these words; the first row stands for them"
+ },
+ {
+  "url": "https://www.inter-il.com/order-execution-policy-oct-2023-2/",
+  "words": "The Company routes client orders for execution to another broker, Interactive Brokers",
+  "occurrence": 1,
+  "why": "the policy prints the sentence twice, word for word; the first is in its execution section"
+ },
+ {
+  "url": "https://www.gov.il/he/pages/govermental-bonds",
+  "words": "מאפייני אג״ח סחיר",
+  "occurrence": 4,
+  "why": "the first three are the page's title and its list of sections; the fourth heads the section itself"
+ },
+ {
+  "url": "https://www.leumi.co.il/he/tax-deduction",
+  "words": "דמי ניכיון - 15%",
+  "occurrence": 1,
+  "why": "the first is the מק\"מ row TXI-11 rests on; the others are bond rows printing ריבית/דמי ניכיון"
+ }
+]

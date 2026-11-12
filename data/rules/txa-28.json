@@ -56,7 +56,7 @@
       "locator": "p.16",
       "locator_he": "עמוד 16",
       "page": 16,
-      "quote": "מעבר בין מסלולי השקעה שונים בתוך חברת הביטוח לא נחשבת",
+      "quote": "מעבר בין מסלולי השקעה שונים בתוך חברת הביטוח לא נחשבת \"אירוע מס\"",
       "checked": "2026-10-25",
       "note": "(official report of a Ministry of Finance team whose members include the Tax Authority director; describes current law, is not law)"
     },
@@ -81,15 +81,16 @@
       "publisher_he": "הכנסת",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.915",
-      "locator_he": "עמוד 915",
-      "page": 915,
+      "locator": "file p.3 (gazette p.915)",
+      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 915)",
+      "page": 3,
       "quote": "מרכיב הפרשי ההצמדה ברווחים אלה זכאי לפטור ממס בידי יחיד, לפי סעיף 9(13) לפקודה, אם אינם הכנסה מעסק בידיו",
       "checked": "2026-10-25",
       "qualifier": "(explanatory notes)"
     }
   ],
   "derived_from": [
+    "TXA-04",
     "TXI-08"
   ]
 }

@@ -1,0 +1,943 @@
+{
+  "id": "excellence",
+  "provider": {
+    "name_he": "אקסלנס טרייד",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+    "title": "תעריפון מלא - אקסלנס טרייד",
+    "notes": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; לא מודפס עליו תאריך; מטא-נתוני ה-PDF: נוצר ושונה 15.7.2026; Last-Modified של השרת 15.7.2026). נקרא שוב 2026-11-04: זהה ביט לביט לעותק בספרייה (6c9ec0ada66f77d8, md5 561a2d47). זה התעריפון היחיד שהאתר מקשר אליו (דף הבית, מידע לסוחר, גילוי נאות, תחתית כל עמוד); גיליון החבר במחשבון העמלות של הבורסה (עדכון אחרון 06/07/26) מדפיס אותם מחירים. חלק 4 - ניירות ערך (עמ' 3-5), חלק 5 - מט\"ח (עמ' 5), חלק 6 - שירותים ועמלות נוספים (עמ' 5-6). הסכם פתיחת החשבון ונספח העמלות שלו (\"חוברת פתיחת החשבון\"), שדף מידע לסוחר ותקנוני המבצעים מפנים אליהם, אינם מפורסמים. Re-read 2026-11-12: the same file (md5 561a2d47, Last-Modified 15.7.2026), still the only tariff the /trading/ page links.",
+    "published": null,
+    "printed": {
+      "kind": "none"
+    },
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-12",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "excellence-buy-sell-tase",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "makam",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסורתיות 0.4% מינימום 10ש\"ח"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.4% מינימום 10 ש\"ח', charged on execution. The line covers all TASE securities except traditional mutual funds, Maof options and futures, and explicitly includes ETFs and tracking funds ('ולרבות קרנות סל וקרנות מחקות'); no separate makam row is printed, so makam falls under this line. No channel split. Its heading also names '(כולל קניה או מכירה שלא בוצעה)' and no line of the tariff exempts an order that was not executed. The tariff's closing note: the member may charge lower amounts or rates (BRK-24). D56 (2026-11-04): the Kesem-funds arrangement (no buy fee on Kesem funds, at most 40 buys, 1.1-31.12.2026) is an offer under groups, never this price. Place: library 6c9ec0ada66f77d8, PDF page 3, line 1 of part 4(א); re-read 2026-11-04 on the page image."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסורתיות 0.4% מינימום 10ש\"ח"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ש\"ח'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בת\"א (למעט קרנות נאמנות מסורתיות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף ולרבות קרנות סל וקרנות מחקות) (כולל קניה או מכירה שלא בוצעה)"
+        ]
+      }
+    },
+    {
+      "id": "excellence-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסורתיות 0.4% מינימום 10ש\"ח"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff prints no line of its own for makam; the heading of its only line for securities on TASE names redemption and leaves out only mutual funds, options and futures, and this is the line the run already reads for makam."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסורתיות 0.4% מינימום 10ש\"ח"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ש\"ח'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בת\"א"
+        ]
+      }
+    },
+    {
+      "id": "excellence-buy-sell-mutual-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 16,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב (עמ' 3)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 3,
+          "quote": "קרנות נאמנות ₪ 16 פיקס"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed '₪ 16 פיקס לעסקה': a fixed shekel amount per trade, not a percentage. Band set 2026-10-31: this line is for traditional funds only, so a tracking fund is not priced on it. Place: library 6c9ec0ada66f77d8, PDF page 3, line 2 of part 4(א), \"קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב\", price \"₪ 16 פיקס לעסקה\"."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "קרנות נאמנות מסורתיות",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב"
+        ]
+      }
+    },
+    {
+      "id": "excellence-buy-sell-foreign-us-cents",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.03,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "3סנט למניה מינימום 8$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Third-party fees may apply. This line: 3 US cents a share, recorded as USD 0.03 in the schema's per-share unit."
+      },
+      "min": {
+        "value": 8,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, מינימום (עמ' 4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "3סנט למניה מינימום 8$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 8$' (p.4), the first track's minimum."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "רק ארה\"ב: 3 סנט למניה, מינימום 8$",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (כולל קניה או מכירה שלא בוצעה)",
+          "3 סנט למניה מינימום 8$"
+        ]
+      },
+      "cap": {
+        "value": 2,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "עמלת מקסימום 2% משווי העסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עמלת מקסימום 2% משווי העסקה', printed under the line's three tracks, so read as the line's ceiling on each (until 2026-11-12 stored as max). The tariff does not say what applies when it is below a minimum; the engine lets the cap win, as Interactive Brokers prints."
+      }
+    },
+    {
+      "id": "excellence-buy-sell-foreign-us-fixed",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "או 11$ פיקס לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Third-party fees may apply. This line: USD 11 a trade (rate 0, minimum and maximum USD 11)."
+      },
+      "min": {
+        "value": 11,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "או 11$ פיקס לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'11$ פיקס לעסקה' (p.4): the trade's fixed price."
+      },
+      "max": {
+        "value": 11,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "או 11$ פיקס לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'11$ פיקס לעסקה' (p.4): the trade's fixed price, so also the most a trade pays."
+      },
+      "period": null,
+      "channel": null,
+      "band": "רק ארה\"ב: 11$ פיקס לעסקה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (כולל קניה או מכירה שלא בוצעה)",
+          "11$ פיקס לעסקה"
+        ]
+      },
+      "cap": {
+        "value": 2,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "עמלת מקסימום 2% משווי העסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עמלת מקסימום 2% משווי העסקה', printed under the line's three tracks, so read as the line's ceiling on each (until 2026-11-12 stored as max). The tariff does not say what applies when it is below a minimum; the engine lets the cap win, as Interactive Brokers prints."
+      }
+    },
+    {
+      "id": "excellence-buy-sell-foreign-non-us",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – מחוץ לארה\"ב (עמ' 4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "0.4% משווי העסקה עם מינימום 35"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.4% משווי העסקה עם מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה'. Third-party fees may apply in some markets. Band 'מחוץ לארה\"ב' set 2026-11-12, so the indices page reads this line for a fund bought outside the US and the US tracks for a fund bought there (before, the US line's band named no exchange, and this unbanded line priced every fund abroad, US funds included)."
+      },
+      "min": {
+        "value": 35,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, מינימום (עמ' 4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "0.4% משווי העסקה עם מינימום 35"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה' (p.4, item 7): 35 units of the currency the trade is in, shekels, US dollars or euros. Every fund the site prices on this line trades in US dollars on the London Stock Exchange, so it is recorded as 35 US dollars, as IBI's, Meitav Trade's and Interactive Israel's minimums in the trade's currency are. Until 2026-11-12 the value was empty ('no single currency unit applies'), and the engine reads an empty minimum as none, so every purchase abroad at Excellence was priced at 0.4% with no minimum (2026-11-12 pricing audit)."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מחוץ לארה\"ב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – מחוץ לארה\"ב (כולל קניה או מכירה שלא בוצעה)",
+          "מחוץ לארה\"ב"
+        ]
+      }
+    },
+    {
+      "id": "excellence-custody",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.6,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 8, דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) (עמ' 4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "0.6% לרבעון עם מינימום 40 ₪לחודש"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.6% לרבעון עם מינימום 40 ₪ לחודש', collection 'חודשי/רבעוני' (PDF page 4, item 8, checked on the page image 2026-11-04); the exchange's member sheet (updated 06/07/26) prints the same: 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון 0.6000% לרבעון', minimum '40.00 ₪ לחודש'. So at most 2.4% a year, at least 480 NIS a year. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded. D56 (2026-11-04): the joining page's 'ללא דמי משמרת' is advertising and is contradicted by this line; the handling-fee promotions say in their own terms that they do not cover 'דמי משמרת'. Section (4ב)2 prints a further 'דמי משמרת' of 0.1% for managed accounts or accounts 'שמהות פעילותם היא אחזקת נכסים ולא מסחר פעיל'; it is listed under left_out, not priced here. What customers paid on average (the exchange, H1 2026) is far lower, 0.0492% a year below 25,000 NIS; listed under left_out as a fact, not a price."
+      },
+      "min": {
+        "value": 40,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 8, מינימום (עמ' 4)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 4,
+          "quote": "0.6% לרבעון עם מינימום 40 ₪לחודש"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 40 ₪ לחודש' (PDF page 4; the exchange's sheet: '40.00 ₪ לחודש')."
+      },
+      "max": null,
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)"
+        ]
+      }
+    },
+    {
+      "id": "excellence-fx-conversion",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 5 - מט\"ח, (5א) שירותים נפוצים, סעיף 1, עמלת חליפין (עמ' 5)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 5,
+          "quote": "עמלת חליפין 0.1%"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עמלת חליפין 0.1%', charged on execution (PDF page 5, part 5(א) item 1, checked on the page image 2026-11-04). The joining page's 'ללא עמלת מט\"ח' is advertising and is contradicted by this line (D56)."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 5, (5א) סעיף 1, עמלת חליפין, הערות (עמ' 5)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 5,
+          "quote": "אינו כולל מרווח הנקבע בהסכם מול הלקוח"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The notes column of the same line reads 'אינו כולל מרווח הנקבע בהסכם מול הלקוח': a spread is charged on top of the 0.1% and is set in the client's agreement, which is not published. No binding document read limits it, so the spread is not limited by the documents; it is not zero and no number is recorded (D56)."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין"
+        ]
+      }
+    },
+    {
+      "id": "excellence-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 99,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 6 - שירותים ועמלות נוספים, (6א) סעיף 1, דמי טיפול (עמ' 5)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 5,
+          "quote": "פרטיים :עד 99"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'דמי טיפול', 'ללקוחות פרטיים: עד 99 ₪', 'אחת לחודש', notes 'לחשבונות שייעודם לטובת מסחר בלבד' (PDF page 5, part 6(א) item 1, checked on the page image 2026-11-04); other clients up to 2%. Priced at the 99 NIS ceiling (D56: 'up to' is the ceiling), 1,188 NIS a year. Separate from custody: the promotion terms define their exemption as 'פטור מדמי טיפול חודשיים' and say it does not cover 'דמי משמרת'. The two handling-fee exemptions (24 months, and 'לכל חיי החשבון' for accounts opened with 10,000 NIS by 31.12.2026) are offers, listed under left_out with their conditions; the kids page's '15 ₪ בלבד בכל חודש' after two years appears in no binding document."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי טיפול"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 4500,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.xnes.co.il/trading/full-disclosure/",
+        "title": "גילוי נאות - מסחר עצמאי בבורסה: תקנון מבצע קורס במתנה",
+        "publisher": "Excellence Investments Management and Securities Ltd.",
+        "strength": "institution",
+        "quote": "מובהר כי סכום מינימלי לפתיחת חשבון הינו 4,500 ₪"
+      },
+      "checked": "2026-11-04",
+      "effective_from": "2026-08-05",
+      "effective_to": "2026-12-31",
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "The course-gift terms (1.1-31.12.2026, library b93a77c489a2d38d) and the /trading/ page ('מינימום הפקדה רק 4,500 ש\"ח') say 4,500 NIS; the page's footnote calls it a relaxation 'החל מיום 5.8 באוגוסט 2026 ועד ליום 31 בדצמבר 2026', which the company may change 'בכל עת וללא הודעה מוקדמת'. The handling-fee and referral terms on the same disclosure page still say 'סכום מינימלי לפתיחת חשבון הינו 10,000 ₪', and the handling-fee exemptions need 10,000 NIS. The tariff prints no minimum. A condition of opening, not a price."
+    }
+  },
+  "notice_rule_ids": [
+    "BRK-15"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד; חלק 4 - ניירות ערך",
+        "checked": "2026-11-04",
+        "page": 3,
+        "quote": "סל וקרנות מחקות"
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד; חלק 4 - ניירות ערך",
+        "checked": "2026-11-04",
+        "page": 4,
+        "quote": "ניירות ערך בחוץ לארץ"
+      }
+    }
+  ],
+  "by_amount": [
+    {
+      "venue": "us",
+      "orders": "all",
+      "list_only": true,
+      "source": {
+        "url": "https://www.xnes.co.il/trading/extrade-pro/fractional-shares/",
+        "title": "השקעה בשברי מניות - אקסלנס טרייד, שאלות נפוצות: 'באילו מניות ניתן לסחור בשברים'",
+        "checked": "2026-11-10",
+        "quote": "המסחר בשברי מניות זמין בניירות ערך זרים הנסחרים בארה״ב בלבד, מתוך רשימה רחבה של למעלה מ־3,000 מניות עיקריות"
+      },
+      "note": "The list is not published; whether IVV, VOO or ACWI is on it is not stated. Minimum 0.01 units (same page)."
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "דף ההצטרפות lp.xnes.co.il/trade: \"80% מעמלות הבנקים\" ו\"ללא עמלת אי-ביצוע, ללא עמלת מט\"ח וללא דמי משמרת\"",
+      "why": "Advertising (library bd8f20b36b20db2b; Last-Modified 11.10.2026), with no condition. Contradicted by the tariff: custody 'דמי ניהול/טיפול פיקדון ניירות ערך' 0.6% a quarter, minimum 40 NIS a month (p.4, item 8); 'עמלת חליפין 0.1%' (p.5); and the trade line's heading includes '(כולל קניה או מכירה שלא בוצעה)' with no exemption printed (p.3). Priced at the tariff (D56).",
+      "why_he": "בדף ההצטרפות כתוב שאין עמלת המרה, אין דמי משמרת ואין עמלה על פעולה שלא בוצעה, אבל התעריפון מפרסם את כל אלה. האתר מתמחר לפי התעריפון.",
+      "could_change_price": false
+    },
+    {
+      "what": "דף ההצטרפות: \"פטור מדמי טיפול לכל החיים!\" (תקנון \"פטור מדמי טיפול לכל חיי החשבון\")",
+      "why": "An offer. Terms dated 1.10.26 on /trading/full-disclosure/ (library b93a77c489a2d38d): private clients with no account in the past year who open a new self-trading account and deposit 10,000 NIS by 31.12.2026; it waives 'דמי טיפול חודשיים' only, for that account until it closes, and 'אינה חלה על עמלות מסחר, דמי משמרת, עמלות צדדים שלישיים ... עלויות המרה'. The company may change or shorten it 'על פי שיקול דעתה הבלעדי, בכל עת וללא הודעה מוקדמת' and raise tariff fees the same way. Not a group price (the schema's group fees are trade and custody only), so it is kept here; the handling fee is priced at 99 NIS.",
+      "why_he": "לקוח פרטי חדש שמפקיד 10,000 ₪ עד 31.12.2026 פטור מדמי הטיפול החודשיים כל עוד החשבון פתוח, והחברה רשאית לשנות את ההטבה בכל עת. זו הטבת הצטרפות, והאתר מתמחר את דמי הטיפול הרגילים.",
+      "could_change_price": false
+    },
+    {
+      "what": "דף המסחר העצמאי /trading/: \"פטור מדמי טיפול לשנתיים\" (תקנון \"פטור מדמי טיפול לשנתיים\")",
+      "why": "An offer. Terms on the disclosure page: from 12.10.2025 to 31.12.2027, new private clients depositing 10,000 NIS get 'פטור מדמי טיפול חודשיים' for 24 months, 36 months with a further deposit above 10,000 NIS within 30 days; 'יתר התשלומים המפורטים בנספח העמלות ו/או בהסכם פתיחת חשבון יהיו ללא שינוי'. The page advertises it beside 'מינימום הפקדה רק 4,500 ש\"ח', but the exemption's own terms require 10,000 NIS.",
+      "why_he": "לקוח פרטי חדש שמפקיד 10,000 ₪ פטור מדמי הטיפול החודשיים לשנתיים, ולשלוש שנים בהפקדה נוספת של יותר מ־10,000 ₪ בתוך 30 ימים. זו הטבת הצטרפות, והאתר מתמחר את דמי הטיפול הרגילים.",
+      "could_change_price": false
+    },
+    {
+      "what": "דף חשבון השקעות לילדים: \"פטור מלא מדמי ניהול\" בשנתיים הראשונות, \"ולאחר מכן תשלמו 15 ₪ בלבד בכל חודש - שיתקזזו עם עמלות פעולות המסחר\"",
+      "why": "Advertising (library 74fd4b45fcb70feb). No binding document read prints 15 NIS or an offset against trade fees; the tariff allows the handling fee up to 99 NIS a month, priced at 99. Customers' forum reports (hasolidit, not documents): 15 NIS raised to 40 NIS by letter for a passive account (2018); 19 NIS a month offset against trade fees (2022). The 15 NIS may sit in the unpublished fee annex.",
+      "why_he": "התעריפון כותב דמי טיפול ״עד 99 ₪״ בחודש, והאתר מחשב 99 ₪. בדף אחר של החברה כתוב 15 ₪ בחודש שמתקזזים מול עמלות, אבל לא במסמך מחייב; אם זה המחיר שלכם, החשבון זול בפועל יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "\"רבע מעמלות הבנקים\" (/trading/, דף הילדים) לצד \"80% מעמלות הבנקים\" (lp)",
+      "why": "Advertising comparisons with no binding basis; the two pages contradict each other. Not a price.",
+      "why_he": "השוואות פרסומיות לעמלות הבנקים, בלי בסיס במסמך מחייב. זה לא מחיר.",
+      "could_change_price": false
+    },
+    {
+      "what": "תעריפון (4ב)2: \"דמי משמרת 0.1%\", רבעוני, \"לחשבונות מנוהלים ו/או לחשבונות שמהות פעילותם היא אחזקת נכסים ולא מסחר פעיל\"",
+      "page": 4,
+      "why": "A second custody charge for accounts the company deems holding rather than active trading, which fits a buy-and-hold reader. The tariff prints no period for the 0.1% (collected quarterly, computed daily) and does not say whether it replaces item 8 or is added to it. Not priced: the engine reads one custody line, and adding it is the lead's decision. At most it adds 0.1% a quarter (0.4% a year) to item 8's 2.4%.",
+      "why_he": "לחשבונות שעיקרם החזקה ולא מסחר פעיל התעריפון מפרסם עוד ״דמי משמרת״ של 0.1%, שנגבים כל רבעון; התעריפון לא אומר אם השיעור לרבעון או לשנה, ולא אומר אם הם במקום דמי הניהול של הפיקדון או בנוסף להם. האתר לא מחשב אותם; אם הם בנוסף, חוסך שקונה ומחזיק ישלם בפועל יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "מחשבון העמלות של הבורסה, ממוצעים בפועל 01/01/26-30/06/26: \"דמי ניהול - ני\"ע ישראלים\" 0.0492% עד 25 אלף ₪, 0.0402%, 0.0235%, 0.0171%, 0.0109%, 0.0054%, 0.0029%, 0.0019%, 0.0005% מעל מיליון; קנייה ומכירה ני\"ע ישראלים 0.0859% עד 0.0600%, זרים 0.2818% עד 0.0693%",
+      "why": "A sourced fact, not a price (D56). Read in Chrome on 2026-11-04. Customers actually paid custody at a small fraction of the tariff's 2.4% a year and trade fees at a fifth of 0.4%; presumably through the unpublished fee annex, which binds nothing for a new customer.",
+      "why_he": "במחשבון של הבורסה מופיע שלקוחות החברה שילמו בממוצע בפועל הרבה פחות מהתעריפון. זה נתון על העבר ולא מחיר שלקוח חדש מקבל, ולכן האתר מתמחר לפי התעריפון.",
+      "could_change_price": false
+    },
+    {
+      "what": "מתווה פטור מעמלת קנייה בקרנות קסם (קרנות מסורתיות, מחקות פתוחות וקרנות סל), עד 40 קניות, 1.1.2026-31.12.2026",
+      "why": "An offer, stated under groups (library 43f34e04f32015ce). Kesem manages S&P 500 tracking funds held in the site's fund records (for example 5124482). Sale fees, custody and the handling fee are unchanged ('יתר התשלומים ... יוותרו על כנם').",
+      "why_he": "עד 40 קניות בלי עמלה בקרנות של קסם, במבצע עד 31.12.2026. זו הטבה מוגבלת, והאתר מתמחר את העמלה הרגילה; למי שקונה קרנות של קסם המחיר יכול לצאת זול יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "הוראה מחזורית (הוראת קבע לקנייה חודשית)",
+      "why": "Advertised on /trading/extrade-pro/recurring-instruction/ (library 281434618d0953df), monthly, any security in the system. No tariff line prices it; each buy is an ordinary trade at 0.4%, minimum 10 NIS (2% of a 500 NIS buy).",
+      "why_he": "אפשר להגדיר קנייה חודשית קבועה, אבל כל קנייה משלמת את העמלה הרגילה. האתר מחשב כל קנייה חודשית כפעולה נפרדת.",
+      "could_change_price": false
+    },
+    {
+      "what": "טיפול בדיבידנדים וחלוקות",
+      "why": "No tariff line for receiving a dividend or distribution; item 6.1 'עמלת Dividend re-invest' is 'בכפוף לעמלות קניה ומכירה שנקבעו מול הלקוח'. An accumulating fund pays none.",
+      "why_he": "אין בתעריפון עמלה על קבלת דיבידנד, וקרן צוברת לא מחלקת אותו.",
+      "could_change_price": false
+    },
+    {
+      "what": "העברת ניירות ערך (העברה החוצה), תעריפון (4א)9",
+      "page": 4,
+      "why": "Israeli securities 0.1% of the value transferred, minimum 99 NIS; foreign 0.1%, minimum 10 USD; 'שלא במסגרת עסקה'. No maximum printed. Not modelled by the comparison. The FAQ: depositing securities into Excellence has no fee.",
+      "why_he": "העברת ניירות ערך לבית השקעות אחר עולה 0.1% מהשווי, לפחות 99 ₪ לנייר ישראלי ולפחות 10 דולר לנייר זר. זו עלות של עזיבה, והאתר לא מחשב אותה.",
+      "could_change_price": false
+    },
+    {
+      "what": "מערכות מתקדמות/ציטוטים, תעריפון (6א)3: \"עד 3,000 ₪\" לחודש",
+      "page": 5,
+      "why": "A charge for advanced systems or quotes; the tariff does not say which systems, or whether the basic Extrade Pro system is free. The advertising pages describe the system as included.",
+      "why_he": "מערכות מסחר מתקדמות ושערים בזמן אמת עולים עד 3,000 ₪ בחודש, למי שבוחר בהם. לא צריך אותם כדי לקנות ולמכור.",
+      "could_change_price": false
+    },
+    {
+      "what": "ארה\"ב, המסלול השלישי: \"או + 0.3% עמלת ברוקר\"; ועמלות צד שלישי מחוץ לארה\"ב",
+      "page": 4,
+      "why": "Since 2026-11-12 the two quantified US tracks ('3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה') are priced as lines and the cheaper is read; the third, '0.3% + עמלת ברוקר', adds a broker fee the tariff does not quantify, so it is not priced (it can only cost 0.3% or more). Outside the US: 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים', not limited (D66).",
+      "why_he": "במסחר בארה״ב יש מסלול שלישי, 0.3% ועוד עמלת ברוקר שלא מפורסמת, שהאתר לא מתמחר. מחוץ לארה״ב ייתכנו עמלות של גופים אחרים בחלק מהבורסות; האתר לא מוסיף אותן, כמו אצל כל בית השקעות, ולכן המחיר בפועל יקר יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "מט\"ח: הפקדת מזומן או משיכת מזומן 40$; העברה לצד ג' עד 2,200 ₪/$; העברה לחשבון אחר 65 ₪ ב-RTGS או 30$; אין ריבית על יתרת זכות במט\"ח",
+      "page": 1,
+      "why": "Account services outside the reader's two cases, except that dollars held uninvested earn no interest: part 1, item 5 says 'בגין יתרת זכות במטבע שאינו במטבע שקלי, הלקוח לא יהא זכאי לריבית זכות', the arrangement of the class-action settlement ת\"צ 42919-11-23 (library 47c4169bd38b479b).",
+      "why_he": "עמלות על הפקדה ומשיכה של מזומן במט״ח ועל העברות כסף, ואין ריבית על דולרים שלא הושקעו. אלה לא חלק מקנייה והחזקה של קרן.",
+      "could_change_price": false
+    },
+    {
+      "what": "מבצע \"חבר מביא חבר\" (7.10-31.12.2026)",
+      "why": "A referral reward (100 NIS to the new client, 300 to 700 NIS to the referrer), not a fee; and the site carries no referral links.",
+      "why_he": "בתוכנית ״חבר מביא חבר״ המצטרף מקבל 100 ₪ פעם אחת. זו הטבה, והאתר מתמחר את המחיר הרגיל.",
+      "could_change_price": false
+    },
+    {
+      "what": "ארה\"ב: \"3 סנט למניה מינימום 8$\" \"או 11$ פיקס לעסקה\" ... \"עמלת מקסימום 2% משווי העסקה\"",
+      "page": 4,
+      "why": "The tariff (p.4, item 6, library 6c9ec0ada66f77d8) prints a ceiling of 2% of the trade and a minimum on the same line and does not say which applies to a small order. The site applies the ceiling, as the schema does for any cap (docs/data-schema.md: \"a cap below the minimum wins\"), so a US order below 400 USD on the per-share track (8 / 0.02) or below 550 USD on the fixed track (11 / 0.02) is priced at 2% of the trade. If the minimum governs, such an order costs up to the minimum.",
+      "why_he": "התעריפון מפרסם גם עמלת מינימום וגם עמלת מקסימום של 2% משווי העסקה, ולא אומר מה משלמים בעסקה קטנה. האתר מחשב לפי עמלת המקסימום. אם חלה עמלת המינימום, עסקה של פחות מ־400 דולר (במסלול של 3 סנט למניה) או של פחות מ־550 דולר (במסלול הקבוע) עולה בפועל יותר.",
+      "could_change_price": true
+    }
+  ],
+  "groups": {
+    "state": "prices",
+    "note": "Full tariff re-read 2026-11-04, with the promotion terms on /trading/full-disclosure/ (two handling-fee exemptions, course gift, referral), the Kesem-funds arrangement page, the self-trading, joining, kids, teens, standing-order and dealer-information pages, and the exchange's member sheet (read in Chrome, not listed in read because psagot lists that host). No young, student, soldier or released-soldier price is printed; the teens page says 'העמלות בחשבון מסחר לנוער זהות לעמלות הנהוגות בחשבון מסחר רגיל'. The Kesem-funds buy exemption is the only offer on a trade or custody fee, recorded as an entry of kind 'other' (D56: stated on the row, never ranked). The handling-fee exemptions are under left_out. This covers what was read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא"
+      },
+      {
+        "url": "https://www.xnes.co.il/trading/full-disclosure/",
+        "title": "גילוי נאות - מסחר עצמאי בבורסה (תקנוני המבצעים)"
+      },
+      {
+        "url": "https://www.xnes.co.il/trading/ksm-mutual-funds/",
+        "title": "מתווה לפטור מעמלות ברכישת קרנות קסם ומפיצים נוספים"
+      },
+      {
+        "url": "https://www.xnes.co.il/trading/teens-account/",
+        "title": "חשבון מסחר לנוער"
+      },
+      {
+        "url": "https://www.xnes.co.il/trading/kids-investments/",
+        "title": "חשבון השקעות לילדים"
+      },
+      {
+        "url": "https://lp.xnes.co.il/trade/",
+        "title": "דף הצטרפות לאקסלנס טרייד"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "other",
+        "name_he": "מתווה פטור מעמלות בקרנות קסם",
+        "who_he": "לקוחות פרטיים קיימים ולקוחות פרטיים חדשים שיפתחו חשבון בתקופת המתווה.",
+        "who_source": {
+          "url": "https://www.xnes.co.il/trading/ksm-mutual-funds/",
+          "title": "מתווה לפטור מעמלות ברכישת קרנות קסם, משתתפים",
+          "quote": "לקוחות פרטיים קיימים שהינם בעלי חשבון אצל החברה ו/או לקוחות פרטיים חדשים שיפתחו חשבון אצל החברה במהלך תקופת המתווה"
+        },
+        "ends_printed": true,
+        "ends_he": "מ־1.1.2026 עד 31.12.2026, ולכל היותר 40 קניות. החברה רשאית לשנות, להאריך או לקצר את המתווה לפי שיקול דעתה הבלעדי, בכל עת וללא הודעה מוקדמת.",
+        "ends_source": {
+          "url": "https://www.xnes.co.il/trading/ksm-mutual-funds/",
+          "title": "מתווה לפטור מעמלות ברכישת קרנות קסם, תקופת המתווה",
+          "quote": "החל מיום 1 לינואר 2026 ועד ליום 31 בדצמבר 2026 (כולל)"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "פטור מעמלת קנייה, עד 40 קניות",
+            "holdings_he": "קרנות מסורתיות, קרנות מחקות פתוחות וקרנות סל שמנוהלות ע\"י קסם קרנות נאמנות בע\"מ ומפיצים נוספים",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.xnes.co.il/trading/ksm-mutual-funds/",
+              "title": "מתווה לפטור מעמלות ברכישת קרנות קסם, המתווה",
+              "quote": "פטור מעמלת קניה יינתן ללקוח בגין 40 פעולות רכישה, לכל היותר, בתקופת המתווה בלבד"
+            }
+          }
+        ],
+        "inferred": "The page is in the sitemap but no menu links to it. 'מפיצים נוספים' are named only in the disclosure document it points to. The exemption is on buys only; selling is at the tariff. With one buy a month, 40 buys cover the rest of 2026.",
+        "who_short_he": "קונים בקרנות קסם",
+        "cheaper_he": "פטור מעמלת קנייה בקרנות קסם, עד 40 קניות",
+        "ends_short_he": "עד 31.12.2026"
+      }
+    ]
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "ללא דמי משמרת",
+      "claim_source": {
+        "url": "https://lp.xnes.co.il/trade/",
+        "title": "אקסלנס טרייד: דף הצטרפות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) … 0.6% לרבעון עם מינימום 40 ₪ לחודש",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד, חלק 4(א), סעיף 8",
+        "page": 4,
+        "dated": "2026-07-15",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "conversion",
+      "verdict": "contradicted",
+      "claim_he": "ללא עמלת מט\"ח",
+      "claim_source": {
+        "url": "https://lp.xnes.co.il/trade/",
+        "title": "אקסלנס טרייד: דף הצטרפות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "עמלת חליפין … 0.1% … אינו כולל מרווח הנקבע בהסכם מול הלקוח",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד, חלק 5(א), סעיף 1",
+        "page": 5,
+        "dated": "2026-07-15",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "account",
+      "verdict": "offer",
+      "claim_he": "פותחים חשבון מסחר עצמאי באקסלנס טרייד ומקבלים פטור מדמי טיפול לכל החיים!",
+      "claim_source": {
+        "url": "https://lp.xnes.co.il/trade/",
+        "title": "אקסלנס טרייד: דף הצטרפות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "לקוחות פרטיים שאינם בעלי חשבון בחברה ולא היו בשנה האחרונה בעלי חשבון בחברה, אשר פותחים חשבון מסחר עצמאי חדש ומפקידים בחשבון סך מינימלי של 10,000 ש\"ח עד ליום 31 בדצמבר 2026 … ההטבה מתייחסת לדמי טיפול חודשיים בלבד, ואינה חלה על עמלות מסחר, דמי משמרת",
+      "binding_source": {
+        "kind": "promotion_terms",
+        "url": "https://www.xnes.co.il/trading/full-disclosure/",
+        "title": "תקנון מבצע פטור מדמי טיפול לכל חיי החשבון",
+        "dated": "2026-10-01",
+        "dated_from": "printed",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
+}

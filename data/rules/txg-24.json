@@ -1,0 +1,31 @@
+{
+  "id": "TXG-24",
+  "title": "Annual return deadlines",
+  "title_he": "מועדי הגשת הדוח השנתי",
+  "text_he": "לשנת המס 2025, מי שלא מנהל ספרים בשיטה כפולה, או שכיר שחייב בדוח, מגיש עד 30.4.2026, ודוח שמוגש באינטרנט עד 31.5.2026. פקיד השומה יכול לאשר מועד מאוחר יותר, ולמייצגים יש לוח הארכות. אם הוכרזה הארכה לשנת המס 2025 לא נבדק.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.10 s.7, p.8",
+      "locator_he": "עמוד 10 סעיף 7, עמוד 8",
+      "page": 10,
+      "quote": "מועד הגשת הדוחות",
+      "checked": "2026-10-31"
+    }
+  ]
+}

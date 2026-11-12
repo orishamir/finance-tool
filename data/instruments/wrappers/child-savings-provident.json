@@ -24,7 +24,8 @@
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
       "title": "National Insurance Institute, תכנית חיסכון לכל ילד (programme page): opened \"בקופת גמל או בבנק לפי בחירתכם\"",
       "publisher": "National Insurance Institute (BTL)",
-      "strength": "primary"
+      "strength": "primary",
+      "quote": "הביטוח הלאומי פותח תכנית חיסכון אישית לכל ילד הזכאי לקצבת ילדים עד הגיעו לגיל 18, בקופת גמל או בבנק לפי בחירתכם."
     },
     "checked": "2026-10-22",
     "effective_from": null,
@@ -126,7 +127,8 @@
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
         "title": "National Insurance Institute, child savings: withdrawal page (from 18 with a parent's signature, from 21 alone); law 74ג(ב)",
         "publisher": "National Insurance Institute (BTL)",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "את כספי החיסכון ניתן למשוך רק כשהילד יגיע לגיל 18 (בתום החודש בו ימלאו לו 18), למעט במקרים חריגים."
       },
       "checked": "2026-10-22",
       "effective_from": null,
@@ -169,7 +171,7 @@
     "value": false,
     "unit": "boolean",
     "source": {
-      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=21",
       "title": "Income Tax Ordinance, s.3(ה4)(3) (Tax Authority's text, p.21): the charge applies to sums an individual \"משך\" from a kupat gemel lehashkaa",
       "publisher": "Israel Tax Authority",
       "strength": "primary"

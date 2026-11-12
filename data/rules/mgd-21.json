@@ -1,0 +1,58 @@
+{
+  "id": "MGD-21",
+  "title": "Online joining and algorithmic risk-setting (directive on technological means)",
+  "title_he": "הצטרפות באינטרנט לתיק מנוהל, ורמת סיכון שאלגוריתם קובע",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "text_he": "לפי ההוראה של רשות ניירות ערך על מתן שירותים באמצעים טכנולוגיים, בנוסח שבתוקף מ־21.8.2023, בעל רישיון לפי חוק הסדרת העיסוק בייעוץ השקעות (יועץ השקעות, משווק השקעות או מנהל תיקים) יכול לברר את הצרכים של הלקוח ולחתום איתו על הסכם באינטרנט, אבל ההליך לא מסתיים עד שהלקוח ענה על כל השאלות; אם סירב לשאלה או שהתשובות סותרות, ההליך מסתיים רק אחרי שיחה עם בעל רישיון. אלגוריתם יכול לקבוע את רמת הסיכון ואת מדיניות ההשקעה, בתנאי שבעלי הרישיון מבינים את השיטה שלו והלקוח מקבל הסבר עליה, ולקוח שרוצה מדיניות אחרת מזו שהאלגוריתם קבע מסיים את ההליך רק אחרי שיחה עם בעל רישיון. תיק שמנוהל באלגוריתם בידי בעל רישיון שקשור לבנק יכול להחזיק רק יחידות של קרנות נאמנות, כולל קרנות זרות שמותר להציע בישראל, קרנות סל, פיקדונות ומזומן. בעל הרישיון אחראי כלפי הלקוח לנזק שהאמצעי הטכנולוגי גרם, והתיעוד של כל הליך נשמר שבע שנים.",
+  "il_finance_file": "managed-and-robo-portfolios.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
+      "title": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "title_he": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.8, ss.6, 8, 11-13; p.9, s.14",
+      "locator_he": "עמוד 8, סעיפים 6, 8, 11-13; עמוד 9, סעיף 14",
+      "page": 8,
+      "quote": "ההליך יתבצע כך שלא ניתן יהיה להשלימו מבלי שהלקוח השיב לכל השאלות הנכללות בשאלון בירור הצרכים והמטרות של הלקוח",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
+      "title": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "title_he": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.9, s.21",
+      "locator_he": "עמוד 9, סעיף 21",
+      "page": 9,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
+      "title": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "title_he": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-26"
+    }
+  ]
+}

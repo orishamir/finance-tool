@@ -843,7 +843,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בארץ (עמ' 32)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 32,
+          "quote": "-הנסחרים בארץ 0.150% 3700ש"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -925,7 +927,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בחוץ לארץ (עמ' 32)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 32,
+          "quote": "-הנסחרים בחוץ לארץ 0.200% 7400ש"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1235,7 +1239,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 5 - מטבע חוץ, (5א) (1) עמלת חליפין (עמ' 35), מט\"י - מט\"ח, מינימום",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 35,
+          "quote": "מינימום 7.20 דולר"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1255,7 +1261,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 5 - מטבע חוץ, (5א) (1) עמלת חליפין (עמ' 35), מט\"י - מט\"ח, מכסימום",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 35,
+          "quote": "מינימום 7.20 דולר מכסימום 3000 דולר"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1275,7 +1283,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 5 - מטבע חוץ, (5א) (1) עמלת חליפין (עמ' 35)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 35,
+          "quote": "עמלת חליפין 0.200% בביצוע"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1336,7 +1346,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), עמלת חליפין, ערוצים ישירים, מינימום (עמ' 14)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 14,
+          "quote": "מינימום 5.76 דולר"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1356,7 +1368,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), עמלת חליפין, ערוצים ישירים, מכסימום (עמ' 14)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 14,
+          "quote": "מינימום 5.76 דולר מכסימום 2400 דולר"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1376,7 +1390,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 5 - מטבע חוץ, (5א) (1) עמלת חליפין (עמ' 35)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 35,
+          "quote": "עמלת חליפין 0.200% בביצוע"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1574,7 +1590,7 @@
         "title": "סוגי חשבונות, בנק לאומי"
       },
       {
-        "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+        "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
         "title": "חשבון סטודנט, בנק לאומי"
       }
     ],
@@ -1976,7 +1992,7 @@
         "name_he": "לאומי סטודנט, בפתיחת חשבון",
         "who_he": "בפתיחת חשבון סטודנט",
         "who_source": {
-          "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+          "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
           "title": "חשבון סטודנט, בנק לאומי",
           "page": 1,
           "quote": "בפתיחת חשבון הינכם זכאים לקבל פטור מדמי ניהול ניירות ערך ישראליים וזרים"
@@ -1984,7 +2000,7 @@
         "ends_printed": true,
         "ends_he": "פטור מדמי ניהול למשך שנה. על העמלות לא כתוב עד מתי.",
         "ends_source": {
-          "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+          "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
           "title": "חשבון סטודנט, בנק לאומי",
           "page": 1,
           "quote": "למשך שנה שלמה"
@@ -1996,7 +2012,7 @@
             "holdings_he": "ניירות ערך ישראליים וזרים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "פטור מדמי ניהול ניירות ערך ישראליים וזרים"
@@ -2008,7 +2024,7 @@
             "holdings_he": "ניירות ערך ישראליים וזרים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "פטור מדמי ניהול ניירות ערך ישראליים וזרים"
@@ -2020,7 +2036,7 @@
             "holdings_he": "ניירות ערך ישראלים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "עמלה בסך ₪7 בלבד בניירות ערך ישראלים"
@@ -2032,7 +2048,7 @@
             "holdings_he": "ניירות ערך זרים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "עמלה בסך 7$ בלבד בניירות ערך זרים"

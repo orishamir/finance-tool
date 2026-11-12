@@ -1,0 +1,64 @@
+{
+  "id": "PF-21",
+  "title": "No agent is needed: a saver can transact directly with the manager",
+  "title_he": "אפשר לפנות ישירות לגוף המוסדי, בלי סוכן",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-12-31",
+  "text_he": "לפי החוק, עסקה במוצר פנסיוני בשביל לקוח נעשית רק במסגרת ייעוץ פנסיוני או שיווק פנסיוני, אבל זה לא חל כשהלקוח פונה מיוזמתו לגוף המוסדי ומבצע איתו את העסקה בעצמו, ישירות. לפטור הזה יש חריגים, למשל עמית פעיל בקרן פנסיה ותיקה, מבוטח פעיל בפוליסת ביטוח, מצבים שקשורים לבריאות וחריגים אחרים שהממונה קובע. סוכן או יועץ יכולים לקבל עמלת הפצה מהגוף המוסדי רק בהסכמה מראש ובכתב של הלקוח, והעמלה נחשבת חלק מדמי הניהול של הלקוח ולא יכולה לעלות על מה שנקבע לפי החוק.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_316718.pdf#page=24",
+      "title": "s.13, gazette 20_lsr_316718",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.13, gazette 20_lsr_316718",
+      "page": 24,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf#page=10",
+      "title": "s.19, gazette ס״ח תשס״ה, 918",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.19, gazette ס״ח תשס״ה, 918",
+      "locator_he": "סעיף 19, ס״ח תשס״ה, 918",
+      "page": 10,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf#page=13",
+      "title": "s.28",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.28",
+      "locator_he": "סעיף 28",
+      "page": 13,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws s. 38",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s. 38",
+      "locator_he": "סעיף 38",
+      "checked": "2026-10-31"
+    }
+  ]
+}

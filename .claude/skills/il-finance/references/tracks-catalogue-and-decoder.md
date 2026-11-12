@@ -70,6 +70,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Conditions / exceptions: The following are not defined in any source read: the alpha benchmark, the risk-free index, whether the standard deviation is annualised, and what counts as "liquid" (open question 3). Meitav shows the standard deviation without a % sign (for example 5.99 for 7978). Per product.md section 4, the site does not rank by past return; these fields are history only.
 - Figures: n/a
 - Source: dictionaries (CAT-02) rows 26 to 29 (gemel), 27 to 30 (pension), 18 to 21 (insurance) · checked 2026-10-22 · primary · links from the cited rules: [1](<https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100>), [2](<https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100>), [3](<https://data.gov.il/api/3/action/datastore_search?resource_id=388992c7-0280-48d8-b147-13e636bd804d&limit=100>), [4](<https://data.gov.il/api/3/action/resource_show?id=76ad9eed-d076-46d6-96e2-a4eb8e045444>)
+- Scope: general
 - Dimensions: liquidity-lockup (only in the sense of asset liquidity inside the track, not saver access)
 - Likely to change: no
 
@@ -393,6 +394,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Conditions / exceptions: The page says nothing about how the fee fields are averaged or about the risk measures, so CAT OQ1-OQ3 stay open for those parts.
 - Figures: none.
 - Source: [Gemel-Net, מקורות המידע והנחות מערכת](https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `fee-management-balance`
 - Likely to change: no.
 

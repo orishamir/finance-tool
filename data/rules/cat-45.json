@@ -1,0 +1,45 @@
+{
+  "id": "CAT-45",
+  "title": "The \"עוקב מדד S&P 500\" track: the CMA list makes it follow the S&P 500 alone, up to 100% exposure, with only hedging and cash-like holdings outside the index",
+  "title_he": "מסלול עוקב מדד S&P 500: רק המדד הזה, עד 100% מהנכסים",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "לפי רשימת מסלולי ההשקעה של רשות שוק ההון, נכסי מסלול עוקב מדד S&P 500 עוקבים אחרי המדד הזה בלבד, באמצעות מכשירים עוקבי מדד ונגזרים, בחשיפה של עד 100% מנכסי המסלול. מחוץ למדד מותר להחזיק רק נגזרים לגידור, ולצורך הפקדות, משיכות, העברות וביטחונות: מזומן, מק״מ, פיקדונות של עד 12 חודשים, איגרות חוב של ממשלת ישראל או של מדינת חוץ מאושרת שנפדות בתוך 12 חודשים, וקרן כספית. הרשימה לא קובעת שיעור מינימלי למדד ולא כלל לגידור מטבע; היא אומרת רק שהמסלול עשוי להיות חשוף לסיכוני מטבע. שיעורי החשיפה שהרשות מפרסמת למסלולים כאלה יכולים לעבור 100%, ואיך זה מתיישב עם התקרה שברשימה לא נבדק.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=14",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.14, p.9, pp.9 to 13, p.1",
+      "locator_he": "עמוד 14, עמוד 9, עמודים 9 עד 13, עמוד 1",
+      "page": 14,
+      "quote": "מסלול עוקב מדד S&P 500",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=14",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "checked": "2026-11-06"
+    }
+  ]
+}

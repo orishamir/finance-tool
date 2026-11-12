@@ -865,7 +865,9 @@
           "url": "https://www.bankhapoalim.co.il/api/media/rvvhcfel/account-opening-request-adult-0923.pdf",
           "title": "בקשה לפתיחת חשבון ותנאים כלליים לניהול חשבון לבגיר (09.23), הגדרות 34.61-34.62, עמ' 15",
           "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 15,
+          "quote": "34.61 \"שער המכירה המקובל בבנק\" - שער חליפין"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-05",
@@ -964,7 +966,9 @@
           "url": "https://www.bankhapoalim.co.il/api/media/rvvhcfel/account-opening-request-adult-0923.pdf",
           "title": "בקשה לפתיחת חשבון ותנאים כלליים לניהול חשבון לבגיר (09.23), הגדרות 34.61-34.62, עמ' 15",
           "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 15,
+          "quote": "34.61 \"שער המכירה המקובל בבנק\" - שער חליפין"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-05",
@@ -1132,7 +1136,7 @@
         "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים"
       },
       {
-        "url": "https://www.bankhapoalim.co.il/he/open-account/students",
+        "url": "https://www.bankhapoalim.co.il/open-account/students",
         "title": "חשבון PRO סטודנט, בנק הפועלים"
       }
     ],

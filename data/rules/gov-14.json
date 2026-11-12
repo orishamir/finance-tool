@@ -109,9 +109,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.404-406, reg. 1",
-      "locator_he": "עמודים 404 עד 406, תקנה 1",
-      "page": 404,
+      "locator": "file pp.6-8 (gazette pp.404-406), reg. 1",
+      "locator_he": "עמודי הקובץ 6 עד 8 (עמודי הרשומות 404 עד 406), תקנה 1",
+      "page": 6,
       "quote": "נכס הבסיס",
       "checked": "2026-10-26"
     },
@@ -126,6 +126,7 @@
       "locator": "p.978, s.1",
       "locator_he": "עמוד 978, סעיף 1",
       "page": 978,
+      "quote": "במקום \"לתקופה של שנתיים\" יבוא \"לתקופה של שנה\"",
       "checked": "2026-10-26"
     },
     {

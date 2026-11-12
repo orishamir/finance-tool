@@ -1,7 +1,7 @@
 // Funds and ETFs held as securities: the F-08 month step and the F-09 exit, with F-10 drag, F-12 to F-14
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
-import { buyWithCash, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+import { buyWithCash, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
@@ -334,18 +334,19 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
       // conversion is charged on the shekels converted, the cash that pays for it (as F-08 charges it on a contribution)
       const ask = unitBuy!.price * nav * (1 + spread);
-      for (let n = Math.floor(sized.trade / ask + 1e-9); n > 0; n--) {
+      // the count starts from the most the cash could buy: a flat price for a small trade or conversion (F-12, F-13) can make a smaller order
+      // cheaper than the whole cash's, so the start takes the lower of the two prices on each side, and the loop below checks each count exactly
+      const flatOf = (l: SecuritiesTariff["fx"]) => (typeof l === "object" && l.flatUpTo ? l.flatUpTo.amount * (l.in === "instrument" ? terms.fxRate : 1) : Infinity);
+      const fxLow = tariff.currency && fresh > 0 ? Math.min(fx, flatOf(conversion) + (at.fxSpread ?? 0) * fresh) : fx;
+      const most = Math.max(sized.trade, fresh - fxLow + held - Math.min(sized.commission, flatOf(line)));
+      for (let n = Math.floor(most / ask + 1e-9); n > 0; n--) {
         const trade = n * ask;
         const commission = tradeCommission(line, trade, tradeTerms);
         const fromHeld = Math.min(held, trade + commission);
         const owed = trade + commission - fromHeld;
-        // the shekels whose conversion leaves `owed`: c = owed + fx(c), found as F-12 finds the trade a cash pays for
-        let c = owed;
-        if (owed > 0 && tariff.currency) for (let i = 0; i < 100; i++) {
-          const next = owed + fxOn(c);
-          if (Math.abs(next - c) < 1e-10) break;
-          c = next;
-        }
+        // the shekels whose conversion leaves `owed`: c = owed + fx(c), found as F-12 finds the trade a cash pays for, a flat price for a
+        // small conversion settled before the iteration (F-13, `convertFor`)
+        const c = tariff.currency ? convertFor(owed, conversion, terms, at.fxSpread ?? 0) : owed;
         if (c <= fresh + 1e-9) {
           const fxPaid = owed > 0 ? c - owed : 0;
           return { fx: fxPaid, trade, commission, cost: fxPaid + commission, leftNis: Math.max(0, fresh - c), leftHeld: held - fromHeld };
@@ -464,6 +465,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     tally.fee("fund", (before * delta) / 12);
     fundLevelTax += before * fundLevelRate * g;
     nav *= 1 + g - delta / 12 - fundLevelRate * g;
+    tally.grow(1 + g - delta / 12 - fundLevelRate * g);
 
     // 4. Distributions (F-20): paid out of the fund's value; the net is reinvested as a new lot.
     if (fund.distribution && m % (12 / fund.distribution.perYear) === 0) {
@@ -492,15 +494,35 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       }
     }
 
-    // 5. Holding costs, paid by removing units oldest first (F-14, F-17, F-15 for the IRA manager).
+    // 5. Holding costs, paid by removing units oldest first (F-14, F-17, F-15 for the IRA manager). A share of the holdings (custody, the
+    // IRA manager's fee) is charged on the units alone. A fee a month for the account (F-17's fixed fee, F-102's current account) is owed
+    // whether or not a unit is held: where the units cannot pay it, the cash waiting for a whole unit (F-109) pays the rest, shekels first;
+    // what neither can pay is not charged (method F-17, a decision of 2026-11-12 for the reviewer).
     const manager = (wrapperFee / 12) * units * nav;
     const custody = custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
-    const fixed = fixedFee(tariffAt(m).monthlyFee, units * nav - manager - custody);
+    const heldLeft = units * nav - manager - custody;
+    const cashLeft = waiting(m);
+    const fixed = fixedFee(tariffAt(m).monthlyFee, heldLeft + cashLeft);
     // F-102: the current account at a bank, after the account's own fees, at the price of the month's stretch (F-101: a group exempt for a
     // time); it stays out of the exit year's fees (TXS-06)
-    const account = currentAccountFee(tariffAt(m).currentAccount, units * nav - manager - custody - fixed);
-    if (custody + fixed + manager + account > 0) {
-      lots = removeFifo(lots, (custody + fixed + manager + account) / nav);
+    const account = currentAccountFee(tariffAt(m).currentAccount, heldLeft + cashLeft - fixed);
+    // the units pay first, as they always did; the waiting cash pays only what they cannot
+    const fromCash = Math.min(cashLeft, Math.max(0, fixed + account - Math.max(0, heldLeft)));
+    if (fromCash > 0) {
+      const nis = Math.min(waitingNis, fromCash);
+      waitingNis -= nis;
+      // the fund's currency a distribution left, at the month's rate; converting a few shekels' worth is left out, as F-13 leaves out a sale's spot conversion
+      waitingHeld = Math.max(0, waitingHeld - (fromCash - nis) / fxRate(m));
+    }
+    // F-91: a shekel the fees did not take would have paid the share of the holdings this month charges at the margin (custody where its
+    // minimum and maximum do not bind, the IRA manager's fee), so the fees are carried to the exit net of it; a fixed sum takes no share
+    const custodyLine = custodyLineAt(m);
+    const held = units * nav;
+    const custodyAtRate = custodyLine !== undefined && custody > 0 && Math.abs(custody - custodyLine.rate * (held - manager)) <= 1e-9 * Math.max(1, custody);
+    tally.grow(1 - (custodyAtRate ? custodyLine.rate * (1 - wrapperFee / 12) : 0) - wrapperFee / 12);
+    const fromUnits = custody + manager + fixed + account - fromCash;
+    if (fromUnits > 0) {
+      lots = removeFifo(lots, fromUnits / nav);
       units = totalUnits(lots);
     }
     tally.fee("custody", custody);

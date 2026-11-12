@@ -110,7 +110,37 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
+      "locator": "file p.9, ch. ב' s.1(י)-(יא)",
+      "page": 9,
       "quote": "בקרנות סל - יחידת מסחר הינה יחידת קרן סל אחת",
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+      "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "file pp.39-42, ch. ה' s.2א, s.2ב(2)(א), (י), (יא)",
+      "page": 39,
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+      "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "file p.41",
+      "locator_he": "עמוד הקובץ 41",
+      "page": 41,
+      "quote": "שלא יעלה על 10,000 ש״ח",
       "checked": "2026-10-26",
       "qualifier": "(exchange rules, ISA-approved)"
     }

@@ -1,0 +1,863 @@
+{
+  "id": "meitav-trade",
+  "provider": {
+    "name_he": "מיטב טרייד בע\"מ",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+    "title": "תעריפון עמלות מיטב טרייד",
+    "notes": "התעריפון המלא, גרסת 04/2026 (5 עמ'; מודפס 'גרסת 04/2026' בכל עמוד; מטא-נתוני ה-PDF: נוצר ושונה 23.4.2026). נקרא 2026-11-04: זהה ביט לביט לעותק בספרייה (3ec196cf860a522c, md5 a426a621). דף אודות טרייד וגיליון החבר במחשבון העמלות של הבורסה (עדכון אחרון 07/07/26) מקשרים אליו; לא נמצא תעריפון חדש יותר. הגרסה הקודמת 01/2025 (z2hkkhku/taarifon.pdf, ספרייה 3dab65d44284a0e2, נוצרה 14.1.2025) עדיין מוגשת, ושונה רק במרווח ההמרה (עד 0.7% אז, עד 0.8% עכשיו). חלקים 1-3 בעמ' 1-2, חלק 4 - ניירות ערך בעמ' 2-4, חלקים 5, 8 ו-9 בעמ' 5. אין הסכם פתיחת חשבון או נספח עמלות מפורסם; לתקנוני המבצעים ראו groups ו-left_out. Re-read 2026-11-12: the tariff file is byte for byte the same (md5 a426a621) and still linked from the about page; the terms page links the same three promotion terms (the reserve-duty terms byte for byte the same, md5 64d7a018); every quote of the record from the landing, self-trading, currency and terms pages is on them as before. One change: the general track's page now prints a 5000 NIS opening minimum where it printed 10,000 (minimums.account_opening).",
+    "published": null,
+    "printed": {
+      "kind": "version",
+      "version": "04/2026"
+    },
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-12",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "meitav-trade-buy-sell-tase",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.3,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1, קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.3%, מינימום 10 ₪ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.3%, מינימום 10 ₪ לעסקה', collected 'ביום העסקה'; 'לא נגבית עמלה בגין אי ביצוע או ביטול עסקה'; off-exchange trades 0.3%, minimum NIS 50. The tariff has one line for every security traded on the Tel Aviv exchange other than Maof options and futures, and no separate line for mutual funds or ETFs; the custody line (item 8) names 'יחידות השתתפות בקרנות נאמנות' in the deposit, and the self-trading page names 'קרנות נאמנות, קרנות סל' among what can be traded. Checked on the page image 2026-11-04. The exchange's member sheet (updated 07/07/26) prints the same, '0.3000% משווי עסקה', minimum '10.00 ₪ לעסקה'. The site's claim 'עמלות אטרקטיביות' prints no price. Each monthly buy by a standing order is an ordinary trade at this line: the tariff prints no standing-order line."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 1, מינימום (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.3%, מינימום 10 ₪ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ₪ לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט אופציות מעו\"ף וחוזים עתידיים במעו\"ף)"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-buy-sell-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון מק\"מ (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.1%, מינימום 10 ₪ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.1%, מינימום 10 ₪ לעסקה', collected 'ביום העסקה'."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 2, מינימום (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.1%, מינימום 10 ₪ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ₪ לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון מק\"מ"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון מק\"מ (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.1%, מינימום 10 ₪ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff has one line for makam and it names redemption ('ופדיון')."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 2, מינימום (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.1%, מינימום 10 ₪ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ₪ לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון מק\"מ"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-buy-sell-foreign-us",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.01,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 5, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ, מסחר בבורסות ארה\"ב, מסלול א' (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "מסלול א': 1 סנט למניה, מינימום 12 $ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Shares 'על פי אחד המסלולים כמפורט בהערות'; for the US the notes print track A, '1 סנט למניה, מינימום 12 $ לעסקה' (recorded here), and track B, '0.7% משווי העסקה, מינימום 12 $ לעסקה' (listed under left_out). Trades outside trading hours or through an ECN or market maker outside the arrangement pay an extra broker fee; no fee for a trade not executed. The exchange's member sheet (updated 07/07/26) prints for the US only '0.01 $ למניה', minimum '12.00 $ לעסקה', which is track A. Checked on the page image 2026-11-04."
+      },
+      "min": {
+        "value": 12,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 5, מסלול א', מינימום (עמ' 2)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "מסלול א': 1 סנט למניה, מינימום 12 $ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 12 $ לעסקה' (both US tracks)."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מסחר בבורסות ארה\"ב, מסלול א'",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ",
+          "מסחר בבורסות ארה\"ב: מסלול א'"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-buy-sell-foreign-world",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 5, הערות, מסחר בשאר בורסות העולם (עמ' 3)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסחר בשאר בורסות העולם: 0.25%, מינימום 25 במטבע העסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מסחר בשאר בורסות העולם: 0.25%, מינימום 25 במטבע העסקה, יתכן חיוב בעמלות ברוקר/עמלות צד ג' נוספות' (printed after the US and Canada, so every exchange outside them; the band says 'מחוץ לארה\"ב' for that reason). Canada: 3 Canadian cents a share, minimum 50 Canadian dollars. The exchange's member sheet (updated 07/07/26) prints for outside the US '0.3000% משווי עסקה', minimum '25.00 במטבע העסקה': higher than this tariff; the difference is listed under left_out. Checked on the page image 2026-11-04."
+      },
+      "min": {
+        "value": 25,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 5, הערות, מינימום (עמ' 3)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסחר בשאר בורסות העולם: 0.25%, מינימום 25 במטבע העסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 25 במטבע העסקה' (tariff 04/2026, p.3): 25 units of the currency the trade is in. Every fund the site prices on this line trades in US dollars on the London Stock Exchange (CSPX, VUAA and the others), so it is recorded as 25 US dollars, as IBI's 'מינימום 30 במטבע העסקה' and Interactive Israel's 'מינימום 2.5 בהתאם למטבע העסקה' are. A fund bought in euros or pounds would pay 25 of that currency. Until 2026-11-12 it was recorded as 25 euros, which overpriced every small purchase of such a fund by the gap between a euro and a dollar (2026-11-12 pricing audit)."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מסחר בשאר בורסות העולם, מחוץ לארה\"ב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ",
+          "מסחר בשאר בורסות העולם"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-custody",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 8, דמי ניהול פיקדון ניירות ערך (עמ' 3)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) 0.15%, מינימום 270 ₪ לרבעון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.15%, מינימום 270 ₪ לרבעון', on securities 'לרבות יחידות השתתפות בקרנות נאמנות' (part 4(א) item 8, p.3, checked on the page image 2026-11-04); the collection column reads 'ביום העסקה'. The same in version 01/2025. Period: the exchange's member sheet (market.tase.co.il/he/market_data/trading_fees, Meitav Trade's sheet, 'עדכון אחרון: 07/07/26', read in Chrome 2026-11-04, which links this PDF) prints 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון 0.6000% לשנה', minimum '90.00 ₪ לחודש', which is 0.15% and 270 NIS a quarter; so the period is a quarter for both. D56 (2026-11-04, amending D42): priced at the list rate and minimum for every customer. The site's 'פטור מדמי משמרת' (/trade/independent_trading, /trade/currency_exchange), 'כולל פטור מדמי משמרת' (/trade/application) and 'ללא דמי משמרת ועמלות נסתרות' (/trade/about, the same words in the Wayback copy of 15.3.2025) are advertising with no condition, contradicted by this line. The November 2026 joining offer's 'פטור מדמי טיפול לארבע שנים' is an offer (groups). A fact, not a price: the exchange's averages actually charged, 01/01/26-30/06/26, 'דמי ניהול - ני\"ע ישראלים' and 'ני\"ע זרים', are 0.0718% up to 25 thousand NIS down to 0.0011% above 1 million; not put in averages, so no calculation reads them. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52), so no excludes are recorded."
+      },
+      "min": {
+        "value": 270,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 8, מינימום (עמ' 3)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) 0.15%, מינימום 270 ₪ לרבעון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 270 ₪ לרבעון': 270 NIS each quarter, the charging period of this line (the exchange's sheet: '90.00 ₪ לחודש')."
+      },
+      "max": null,
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-fx-conversion",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.13,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 5 - מטבע חוץ, סעיף 1, עמלת חליפין (עמ' 5)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 5,
+          "quote": "עמלת חליפין 0.13%"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.13%', collected 'ביום העסקה' (part 5 item 1, p.5, checked on the page image 2026-11-04); the same in 01/2025. The site's 'ללא עמלת חליפין' (/trade/currency_exchange, /trade/about), 'פטור מעמלת המרת מט\"ח' (/trade/independent_trading) and 'פטור מעמלת המרת מט\"ח' with the custody claim (/trade/application) are advertising with no condition, contradicted by this line; priced at 0.13% (D56)."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": 0.8,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 5 - מטבע חוץ, סעיף 2, מרווח המרה (עמ' 5)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 5,
+          "quote": "מרווח המרה עד 0.8% משער ההמרה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עד 0.8%' 'משער ההמרה', charged 'בעת ביצוע העסקה': a ceiling, priced at 0.8% (D56). The spread is limited by the document. Version 01/2025 printed 'עד 0.7%'; version 04/2026 raised it. The currency page's 'מרווח ההמרה נמוך משמעותית' is advertising."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "מרווח המרה"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 90,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+          "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 9 - שירותים ועמלות נוספים, סעיף 1, דמי שימוש/ טיפול (עמ' 5)",
+          "publisher": "Meitav Trade Ltd.",
+          "strength": "institution",
+          "page": 5,
+          "quote": "דמי שימוש/ טיפול עד 90 ₪ אחת לחודש"
+        },
+        "checked": "2026-11-12",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עד 90 ₪', collected 'אחת לחודש' (part 9 item 1, p.5, checked on the page image 2026-11-04); the same in 01/2025. A ceiling, priced at 90 (D56). A separate line from custody (part 4(א) item 8), with its own collection; both are charged. The currency page's 'ללא עמלות אחזקת חשבון' is advertising, contradicted by this line. The self-trading page's funds-only track says 'אין דמי טיפול חודשיים, אין דמי משמרת' for that track only (mutual funds, a portfolio of at least 100,000 NIS), which names the two as separate fees. The joining offer's 'פטור מדמי טיפול' is an offer (groups). Advanced trading systems and quotes: up to NIS 3,000 a month (item 2), optional, see left_out."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי שימוש/ טיפול"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/trade/about/",
+        "title": "מיטב טרייד: אודות",
+        "publisher": "Meitav Trade Ltd.",
+        "strength": "institution",
+        "quote": "סכום מינימלי לפתיחת חשבון במיטב טרייד: 10,000 ₪"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "The company's own pages disagree. The about page's footnote (library 974970b6c30f653a, read 2026-11-12) says 'סכום מינימלי לפתיחת חשבון במיטב טרייד: 10,000 ₪'. The general track's page said 'סכום המינימום לפתיחת חשבון הוא 10,000 ש\"ח בלבד' on 2026-10-31 (library 3d56645174b8a3b4) and says 'סכום המינימום לפתיחת חשבון הוא 5000 ש\"ח בלבד' on 2026-11-12 (library e683f9f990fa133e). Earlier the landing and self-trading pages' fine print and FAQ said 5,000 NIS ('החל מהפקדה של 5,000 ₪ בלבד'); those words were not on those pages on 2026-11-12. The higher is recorded. The tariff prints no minimum. A condition of opening, not a price."
+    }
+  },
+  "notice_rule_ids": [
+    "BRK-15"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 4, (4א) סעיף 8 (עמ' 3)",
+        "checked": "2026-11-12",
+        "page": 3,
+        "quote": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)"
+      },
+      "note": "Fund units are held in the deposit; they are bought at part 4(א) item 1, the line for every security traded on the Tel Aviv exchange. The self-trading page (library f57d393657c2d282) names 'קרנות נאמנות' among what can be traded. 2026-11-04 (D56): the record was unpriced (missing) until today because who pays custody was open; under D56 the printed fee is priced."
+    },
+    {
+      "applies_to": [
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.meitav.co.il/trade/independent_trading/",
+        "title": "מיטב טרייד: מסחר עצמאי בבורסה",
+        "checked": "2026-11-12",
+        "quote": "ניתן לסחור בכל סוגי המכשירים הפיננסים הנסחרים בבורסה: אגרות חוב, קרנות נאמנות, קרנות סל, אופציות מעו\"ף ועוד, כל זאת בבורסה בת\"א"
+      },
+      "note": "The tariff names no fund kind on a trade line; ETFs are securities traded on the Tel Aviv exchange, priced at part 4(א) item 1, whose words cover every such security except Maof options and futures. The app page (library 1315f97ac91f198c) says the same: 'מניות, קרנות נאמנות, אג\"ח , ETF מהבורסה בתל אביב ומוול סטריט'."
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 4, (4א) סעיף 5 (עמ' 2)",
+        "checked": "2026-11-12",
+        "page": 2,
+        "quote": "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ"
+      },
+      "note": "US exchanges (two tracks), Canada, and 'שאר בורסות העולם'. The exchange's member sheet names 'מניות, אג\"ח, קרנות נאמנות' for the US and outside it; the app page names 'ETF ... מוול סטריט'."
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "דפי האתר: \"פטור מדמי משמרת\", \"כולל פטור מדמי משמרת\", \"ללא דמי משמרת ועמלות נסתרות\"",
+      "why": "Advertising with no condition (/trade/independent_trading and /trade/currency_exchange, library f57d393657c2d282 and 12fe612e0d2913df; /trade/application, 1315f97ac91f198c; /trade/about, 697ecc32a2bdcfa4). The self-trading page has said 'פטור מדמי משמרת' since at least the Wayback copy of 10.10.2023, the about page 'ללא דמי משמרת' since at least 15.3.2025, while the tariffs of 01/2025 and 04/2026 print custody. Contradicted: priced at the tariff's 0.15% a quarter, minimum 270 NIS (D56).",
+      "why_he": "בדפי האתר של החברה כתוב שאין דמי משמרת, אבל התעריפון מפרסם 0.15% לרבעון, לפחות 270 ₪. האתר מתמחר לפי התעריפון.",
+      "could_change_price": false
+    },
+    {
+      "what": "דפי האתר: \"ללא עמלת חליפין\", \"פטור מעמלת המרת מט\"ח\", \"ללא עמלות אחזקת חשבון\", \"ללא עמלת העברת שקלים (לחשבון בישראל)\"",
+      "why": "Advertising (/trade/currency_exchange, /trade/about, /trade/independent_trading). Contradicted by the tariff: 'עמלת חליפין 0.13%' (p.5), 'דמי שימוש/ טיפול עד 90 ₪ אחת לחודש' (p.5) and, for shekel transfers out, 'העברות שקלים 25 ₪' (part 1 item 1, p.1).",
+      "why_he": "בדפי האתר של החברה כתוב שאין עמלת המרה ואין דמי אחזקת חשבון, אבל התעריפון מפרסם עמלת חליפין של 0.13% ודמי שימוש עד 90 ₪ בחודש. האתר מתמחר לפי התעריפון.",
+      "could_change_price": false
+    },
+    {
+      "what": "מחשבון העמלות של הבורסה, ממוצעים 01/01/26-30/06/26: \"דמי ניהול - ני\"ע ישראלים\" ו\"ני\"ע זרים\": 0.0718% עד 25 אלף ₪, יורד עד 0.0011% מעל מיליון ₪",
+      "why": "What customers paid is a sourced fact, not a price (D56). Trades were charged in every band: Israeli shares and bonds 0.0849% to 0.0723%, makam 0.0724% to 0.0463%, foreign 0.2768% to 0.0783%. Read in Chrome 2026-11-04; recorded in the custody line's notes, not in averages.",
+      "why_he": "במחשבון של הבורסה מופיע כמה שילמו לקוחות החברה בממוצע בפועל בחצי שנה. זה נתון על העבר ולא מחיר, ולכן האתר מתמחר לפי התעריפון.",
+      "could_change_price": false
+    },
+    {
+      "what": "מסחר בבורסות ארה\"ב, מסלול ב': \"0.7% משווי העסקה, מינימום 12 $ לעסקה\"",
+      "page": 2,
+      "why": "The tariff prints two US tracks, 'על פי אחד המסלולים', and does not say which one a customer is on or who picks it; the record prices track A, the one the exchange's member sheet prints. Under D56 the most the documents allow for one buy is the dearer track: track B costs more than track A for any buy of shares priced above 1.43 USD (0.7% of the price against 1 cent). For the lead to decide, as for the US tracks of IBI and Altshuler.",
+      "why_he": "התעריפון מפרסם שני מסלולים למסחר בארה״ב ולא אומר מי בוחר ביניהם. האתר מתמחר את מסלול א׳, סנט למניה ולפחות 12 דולר; במסלול ב׳, 0.7% מסכום העסקה, קנייה או מכירה של יותר מכ־1,700 דולר עולה יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "מחשבון הבורסה, מחוץ לארה\"ב: \"0.3000% משווי עסקה\", מינימום \"25.00 במטבע העסקה\"; התעריפון: \"0.25%, מינימום 25 במטבע העסקה\"",
+      "page": 3,
+      "why": "The member's sheet (updated 07/07/26) prints a higher rate outside the US than the tariff of 04/2026. The tariff is the binding document and is recorded; the sheet is the member's own filing. For the lead: which one rules where they differ.",
+      "why_he": "בגיליון שהחברה מסרה לבורסה העמלה בבורסות מחוץ לארה״ב היא 0.3%, ובתעריפון 0.25%. האתר מתמחר לפי התעריפון; אם החברה גובה לפי הגיליון, קנייה או מכירה גדולה עולה בפועל יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "עמלת קרן זרה פתוחה: \"0.2%, מינימום 20$\", \"לא כולל עמלת סליקה ועמלת קורספונדנט\"; אג\"ח זר: \"0.3%, מינימום 25$\"",
+      "page": 3,
+      "why": "An open-ended foreign fund, not an ETF traded on an exchange: not the reader's case. Settlement and correspondent fees are on top, at whatever they cost; not limited by the documents.",
+      "why_he": "זו עמלה על קרן זרה שלא נסחרת בבורסה. הקרנות באתר נסחרות בבורסה, ולכן היא לא חלה עליהן.",
+      "could_change_price": false
+    },
+    {
+      "what": "טיפול בתשלומי ריבית/דיבידנד: \"0.3%\", במועד ביצוע הזיכוי",
+      "page": 4,
+      "why": "Charged on each interest or dividend payment; an accumulating tracking fund pays none, a distributing ETF pays 0.3% of each distribution. No engine field holds a fee on distributions, so it is not priced.",
+      "why_he": "על כל תשלום של דיבידנד או ריבית החברה גובה 0.3% ממנו. האתר לא מחשב את זה, ולכן קרן שמחלקת דיבידנד עולה שם בפועל מעט יותר; קרן צוברת לא משלמת אותה.",
+      "could_change_price": true
+    },
+    {
+      "what": "העברת ניירות ערך ונכסים פיננסים: ישראליים \"20 ₪ לנייר מקסימום 99 ₪ להעברה (שתבוצע באותו היום)\"; זרים \"10$ לנייר/נכס פיננסי זר\"; קרנות זרות/פתוחות: עמלת ברוקר/בנק בנוסף",
+      "page": 3,
+      "why": "A cost on leaving, not in the holding calculation; at most 99 NIS for Israeli securities, the foreign broker's or bank's added fee not limited by the documents.",
+      "why_he": "העברת ניירות ערך לבית השקעות אחר עולה 20 ₪ לכל נייר ישראלי, עד 99 ₪ להעברה, ו־10 דולר לכל נייר זר. זו עלות של עזיבה, והאתר לא מחשב אותה.",
+      "could_change_price": false
+    },
+    {
+      "what": "תשלום בגין מערכות מסחר מתקדמות/ציטוטים: \"עד 3,000 ₪\" אחת לחודש",
+      "page": 5,
+      "why": "For advanced systems and quotes, by the client's choice. The app page says 'אפליקציית Mטרייד ללא עלות נוספת' (advertising); the tariff prints no line for the basic platform, and the 90 NIS 'דמי שימוש/ טיפול' line is priced.",
+      "why_he": "מערכות מסחר מתקדמות ושערים בזמן אמת עולים עד 3,000 ₪ בחודש, למי שבוחר בהם. לא צריך אותם כדי לקנות ולמכור.",
+      "could_change_price": false
+    },
+    {
+      "what": "עמלת קסטודיאן: \"0.1%\", \"30 ₪\"",
+      "page": 4,
+      "why": "Under part 4(ב), 'שירותים מיוחדים או עסקיים'; the line prints no description of what it is charged on or when, and the 30 NIS stands in the collection column. Not a service the reader's case asks for, so not priced; the lead may ask Meitav Trade what it covers.",
+      "why_he": "התעריפון מפרסם ״עמלת קסטודיאן״ של 0.1% ו־30 ₪, בלי לומר על מה היא נגבית ומתי. האתר לא מחשב אותה; אם היא חלה על החזקה רגילה, המחיר בפועל יקר יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "השקעה חודשית בהוראת קבע",
+      "why": "The tariff prints no standing-order line, and no page offers a standing buy order; the deposits page gives 'פרטי חשבון להפקדה בהוראת קבע' for depositing cash. Each monthly buy is a trade at part 4(א) item 1 (0.3%, minimum 10 NIS).",
+      "why_he": "אין בתעריפון הוראת קבע לקנייה, ולכן האתר מחשב כל קנייה חודשית כפעולה נפרדת, בעמלה של 0.3% ולפחות 10 ₪.",
+      "could_change_price": false
+    },
+    {
+      "what": "מסלול קרנות ללא עמלות: \"אין דמי טיפול חודשיים, אין דמי משמרת ואין עמלות קניה מכירה על קרנות מנוהלות אקטיבית\"",
+      "why": "Advertising on the tracks page (library 3d56645174b8a3b4), for an account limited to mutual funds 'לא כולל קרנות שמוגדרות כמניות עפ\"י הבורסה', with a portfolio of at least 100,000 NIS; no binding document prints it. Not the reader's case below 100,000 NIS, and the buy exemption is for actively managed funds only.",
+      "why_he": "מסלול לקרנות נאמנות בלבד, מתיק של 100,000 ₪, בלי עמלות קנייה ומכירה רק על קרנות מנוהלות אקטיבית. אין לו מסמך מחייב והוא לא חל על קרנות מחקות, ולכן האתר לא מתמחר אותו.",
+      "could_change_price": false
+    },
+    {
+      "what": "תקנוני מבצעים שהסתיימו: משרתי מילואים (\"פטור מדמי טיפול בחשבון המסחר לתקופה בת 4 שנים\", 1.5.2026-30.6.2026); לקוחות מיטב גמל ופנסיה בקישור בדיוור (\"פטור מדמי טיפול למשך כשנתיים\", 2024); I24 (100 ₪ וקורס)",
+      "why": "Read 2026-11-04 (library dcecc52b58613c1e, a7aaf9628ee8db97, 18d8c74d49f9d1e5); the terms page marks the last two 'המבצע הסתיים', and the reservists' terms print their end, 30.6.2026 (section 7.1). Ended, so no group entry.",
+      "why_he": "הטבות שהחברה נתנה בעבר לקבוצות מסוימות, ושהסתיימו. הן לא חלות היום.",
+      "could_change_price": false
+    },
+    {
+      "what": "חבר מביא חבר: \"עד 500* ₪ במתנה על כל חבר שיצטרף בהמלצתך\"",
+      "why": "Paid to the referrer, not the joiner; its terms (/trade/takanon_haver_mevi_haver/) not read.",
+      "why_he": "בתוכנית ״חבר מביא חבר״ המתנה ניתנת ללקוח שממליץ, לא למצטרף, ולכן היא לא משנה את המחיר שלכם.",
+      "could_change_price": false
+    },
+    {
+      "what": "צדדים שלישיים: \"דמי ניהול: פטור לשנתיים, אח״כ 15 ₪\" (פורום)",
+      "why": "Not a Meitav document; a forum post, found by web search 2026-11-04. No binding document read prints 15 NIS.",
+      "why_he": "בפורום נכתב על דמי ניהול של 15 ₪ אחרי שנתיים של פטור. זה לא מסמך של החברה, והאתר לא משתמש בו.",
+      "could_change_price": false
+    }
+  ],
+  "groups": {
+    "state": "prices",
+    "note": "Full tariff 04/2026 re-read 2026-11-04, with the landing, self-trading, about, app, currency, tracks and terms pages, the three promotion terms linked from the terms page, and the exchange's member sheet (read in Chrome; not listed in read because psagot lists that host). No young, student, soldier or released-soldier price is printed. The November 2026 joining offer is the only current offer, recorded as an entry of kind 'other' (D56: an offer stated on the row, never ranked); its terms are not published. The ended offers are under left_out. This covers what was read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026"
+      },
+      {
+        "url": "https://www.meitav.co.il/trade/",
+        "title": "מיטב טרייד, דף הבית"
+      },
+      {
+        "url": "https://www.meitav.co.il/trade/independent_trading/",
+        "title": "מסחר עצמאי בבורסה"
+      },
+      {
+        "url": "https://www.meitav.co.il/trade/customer-service/meitav_terms/",
+        "title": "תקנון - מיטב טרייד"
+      },
+      {
+        "url": "https://www.meitav.co.il/media/ijvfm5ag/תקנון-מבצע-מילואים-2026-מעודכן-מונגש-2.pdf",
+        "title": "תקנון מבצע למשרתי.ות מילואים - מאי-יוני 2026"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "other",
+        "name_he": "מבצע הצטרפות נובמבר 2026",
+        "who_he": "מצטרפים חדשים שביצעו הפקדה ראשונה לחשבונם עד 30.11.2026, בלי כפל מבצעים.",
+        "who_source": {
+          "url": "https://www.meitav.co.il/trade/",
+          "title": "מיטב טרייד, דף הבית",
+          "quote": "אין כפל מבצעים. ההטבה למצטרפים חדשים אשר ביצעו הפקדה ראשונה לחשבונם עד לתאריך 30.11.26"
+        },
+        "ends_printed": true,
+        "ends_he": "ההצטרפות עד 30.11.2026, והפטור לארבע שנים. תקנון המבצע לא מפורסם, ולכן לא ידוע מה עוד מסיים אותו.",
+        "ends_source": {
+          "url": "https://www.meitav.co.il/trade/",
+          "title": "מיטב טרייד, דף הבית",
+          "quote": "פטור מדמי טיפול לארבע שנים"
+        },
+        "prices": [
+          {
+            "fee": "custody_israel",
+            "price_he": "״פטור מדמי טיפול לארבע שנים״, בלי לומר אם הוא חל על דמי ניהול הפיקדון (0.15% לרבעון, מינימום 270 ₪) או על דמי השימוש והטיפול (עד 90 ₪ לחודש)",
+            "holdings_he": "דמי טיפול בחשבון",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.meitav.co.il/trade/",
+              "title": "מיטב טרייד, דף הבית",
+              "quote": "פטור מדמי טיפול לארבע שנים"
+            }
+          }
+        ],
+        "inferred": "The exemption is printed only on the landing and self-trading pages, which are advertising; no terms for it are published (the terms page lists only ended offers). The reservists' terms of May-June 2026 (section 4.1) used the same words, 'פטור מדמי טיפול בחשבון המסחר'. By its name 'דמי טיפול' matches part 9 item 1 ('דמי שימוש/ טיפול', up to 90 NIS a month), not the custody line ('דמי ניהול פיקדון'), so it may waive only the 90 NIS; inferred from the names, never read.",
+        "who_short_he": "מצטרפים חדשים עד 30.11.2026",
+        "cheaper_he": "״פטור מדמי טיפול״, בלי לומר מאילו",
+        "ends_short_he": "ארבע שנים"
+      }
+    ]
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "פטור מדמי משמרת",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/independent_trading/",
+        "title": "מיטב טרייד: מסחר עצמאי",
+        "seen": "2026-11-12"
+      },
+      "binding_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) … 0.15%, מינימום ₪ 270 … לרבעון",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 4(א), סעיף 8",
+        "page": 3,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-12"
+      }
+    },
+    {
+      "fee": "account",
+      "verdict": "contradicted",
+      "claim_he": "ללא עמלות אחזקת חשבון",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/exchange/",
+        "title": "מיטב טרייד: המרת מט\"ח",
+        "seen": "2026-11-12"
+      },
+      "binding_he": "דמי שימוש/ טיפול … עד ₪ 90 … אחת לחודש",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 9, סעיף 1",
+        "page": 5,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-12"
+      }
+    },
+    {
+      "fee": "conversion",
+      "verdict": "contradicted",
+      "claim_he": "ללא עמלת חליפין",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/exchange/",
+        "title": "מיטב טרייד: המרת מט\"ח",
+        "seen": "2026-11-12"
+      },
+      "binding_he": "עמלת חליפין … 0.13%",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 5, סעיף 1",
+        "page": 5,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-12"
+      }
+    },
+    {
+      "fee": "account",
+      "verdict": "not_found",
+      "claim_he": "מצטרפים למיטב טרייד במהלך חודש נובמבר ונהנים מהטבות שלא יחזרו … פטור מדמי טיפול לארבע שנים",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/",
+        "title": "מיטב טרייד: דף הבית",
+        "seen": "2026-11-12"
+      },
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 9, סעיף 1",
+        "page": 5,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-12"
+      }
+    },
+    {
+      "fee": "custody",
+      "verdict": "not_found",
+      "claim_he": "מסלול קרנות ללא עמלות … אין דמי טיפול חודשיים, אין דמי משמרת ואין עמלות קניה מכירה על קרנות מנוהלות אקטיבית",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/tel-aviv-trading/information_about_independent_trading_on_the_stock_exchange/",
+        "title": "מידע על מסחר עצמאי בבורסה: ארבעה מסלולים",
+        "seen": "2026-11-12"
+      },
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 4(א), סעיף 8",
+        "page": 3,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-12"
+      }
+    }
+  ]
+}

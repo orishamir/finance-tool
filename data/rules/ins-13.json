@@ -1,0 +1,67 @@
+{
+  "id": "INS-13",
+  "title": "Executive insurance is an insurance plan approved as a provident fund (קופת ביטוח)",
+  "title_he": "ביטוח מנהלים: תכנית ביטוח שאושרה כקופת גמל",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק קופות הגמל, ״קופת ביטוח״ היא תכנית ביטוח שהממונה אישר כקופת גמל לתגמולים, לפיצויים או לקצבה, ו״ביטוח מנהלים״ הוא השם שלה בשוק; החוק שנקרא לא מגדיר את המונח ״ביטוח מנהלים״. עבירה להציג כקופת גמל תכנית שלא אושרה ככזו. התנאים של הראל, למשל, נקראים ״תנאים כלליים לביטוח חיים (מנהלים)״, עם כותרת המשנה ״קופת גמל משלמת לקצבה לעובדים שכירים״.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=17",
+      "title": "s.49",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.49",
+      "locator_he": "סעיף 49",
+      "page": 17,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1",
+      "title": "s.1, gazette ס״ח תשס״ה, 889",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1, gazette ס״ח תשס״ה, 889",
+      "locator_he": "סעיף 1, ס״ח תשס״ה, 889",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
+      "title": "s.13",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.13",
+      "locator_he": "סעיף 13",
+      "page": 8,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.harel-group.co.il/Policies/2010.pdf",
+      "title": "Harel, הראל מגוון למנהלים קצבה משלמת, plan 1286, edition 7/2009",
+      "title_he": "הראל מגוון למנהלים קצבה משלמת (תוכנית 1286, מהדורת 7/2009)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p. 3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-10-22"
+    }
+  ]
+}

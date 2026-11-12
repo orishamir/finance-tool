@@ -1,0 +1,30 @@
+{
+  "id": "BANK-04",
+  "title": "Interest is quoted as an annual rate; effective annual rate for unlinked shekel deposits",
+  "title_he": "ריבית בפיקדון: שיעור שנתי, וריבית מתואמת שנתית בפיקדון שקלי לא צמוד",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי כללי הגילוי הנאות של בנק ישראל, כשהכללים דורשים לציין שיעור ריבית, הכוונה לשיעור שנתי, אלא אם נאמר אחרת. בפיקדון שקלי לא צמוד הבנק צריך לציין גם את הריבית המתואמת השנתית, אלא אם מועדי תשלום הריבית לא נקבעו מראש. בפיקדון צמוד הבנק צריך לומר אם ההצמדה חלה רק כשהמדד עולה או גם כשהוא יורד. את הריבית המתואמת מחשבים בריבית דריבית, לפי מספר תקופות חישוב הריבית בשנה או לפי מספר הימים בפיקדון מתוך שנה של 365 ימים.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Disclosure rules 1992 (BoI copy)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "quote": "ריבית מתואמת שנתית",
+      "checked": "2026-10-22"
+    }
+  ]
+}

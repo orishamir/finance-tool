@@ -37,6 +37,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
   can. A small shift is better than a blank gap kept for a rare case.
 - **Phones.** Touch targets at least 44 px, nothing that depends on hover,
   nothing cut off at 390 px.
+- **Computers.** A page uses the space a computer screen gives it: more
+  shown side by side, tools that need the room. It is not a phone page made
+  wider. Both sizes are designed, neither is the default.
 - **Money fields take whole shekels.** A field for an amount of money
   accepts whole shekels only. A rate (interest, inflation, a return) and a
   fee from a price list may have decimals.

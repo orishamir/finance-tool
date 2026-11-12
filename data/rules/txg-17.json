@@ -2,7 +2,7 @@
   "id": "TXG-17",
   "title": "Exemption from filing: ceilings, and the salary-vs-surtax threshold",
   "title_he": "פטור מהגשת דוח: התקרות וסף השכר מול מס יסף",
-  "text_he": "תושב שהכנסתו היא רק מהסוגים המנויים, כל אחת מתחת לתקרה שלה ועם ניכוי מס מלא במקור (או פטור, או מקדמה כשהכלל מאפשר), פטור מהגשת דוח שנתי. תקרת הריבית מכסה ריבית, דמי ניכיון והצמדה מפיקדונות, תוכניות חיסכון, קופות גמל ואג״ח סחירות; תקרת ניירות הערך היא על תמורת המכירה (מחזור), לא על הרווח, וכוללת ניירות זרים ומק״ם. לפי התקנות היא חלה רק על מכירה שפטורה ממס או שנוכה ממנה מלוא המס; מכירה ששולמה עליה רק מקדמה נכללת בהכנסת חוץ, עם תקרה משלה, אף שהמדריך של רשות המסים מנסח את סעיף ניירות הערך בהרחבה. תקרת השכר לא קובעת בפועל, כי מי שחייב במס נוסף חייב להגיש דוח בכל מקרה. התקנות תוקנו ב־2024 וב־2025: הפטור הוגבל ליחיד תושב ישראל לגבי מי שנעשה תושב לראשונה או תושב חוזר ותיק מ־2026, ונוספה הכנסה מעסק זעיר בתנאים, ומ־2025 גם דמי מילואים ודמי לידה של בעל עסק זעיר. מדריך ההחזרים של רשות המסים מציג את אותן תקרות כנכונות לשנה הנוכחית.",
+  "text_he": "תושב שכל הכנסתו מהסוגים המנויים בתקנות, כל סוג מתחת לתקרה שלו ועם ניכוי מס מלא במקור או פטור, לא צריך להגיש דוח שנתי; מ־2024 נוספה לסוגים האלה הכנסה מעסק זעיר. תקרת ניירות הערך היא על תמורת המכירה ולא על הרווח, ומכירה ששולמה עליה רק מקדמה נספרת בהכנסת חוץ, עם תקרה משלה; תקרת השכר לא קובעת בפועל, כי מי שחייב במס נוסף מגיש דוח בכל מקרה. גם מתחת לתקרות הפטור לא חל על בעל שליטה, ולא על מי שלו, לבן הזוג או לילד מתחת לגיל שמונה עשרה יש נכסים בחו״ל או חשבונות בבנק בחו״ל מעל הסף שבתקנות. עד 2026 התקנות פטרו מהחריגים האלה, בתנאים, תושב חדש ותושב חוזר ותיק, ולמי שנעשה כזה מ־2026 ההקלה הזו בוטלה.",
   "figure_names_he": {
     "interest_ceiling": "תקרת הריבית לפטור מהגשת דוח",
     "securities_proceeds_ceiling": "תקרת תמורת מכירת ניירות ערך לפטור מהגשת דוח"
@@ -56,9 +56,38 @@
     }
   },
   "il_finance_file": "tax-general.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-12",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/7ImSG7R~31kgMHXzY2UjRTIi0nZwJhLAGkfNjyZo+zU=#page=2",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, ss.1-3",
+      "locator_he": "עמוד 2, סעיפים 1-3",
+      "page": 2,
+      "quote": "תקנות משנה (ג) ו–(ד) - בטלות",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, s.3(2)",
+      "locator_he": "עמוד 8, סעיף 3(2)",
+      "page": 8,
+      "quote": "לא יחול על יחיד שהיה לתושב ישראל",
+      "checked": "2026-11-12",
+      "qualifier": "(read from the page image: the text layer is poor)"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
       "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
@@ -95,9 +124,9 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.5 s.2 items 1, 3, 4, p.6 items 5-8",
-      "locator_he": "עמוד 5 סעיף 2 פרטים 1, 3, 4, עמוד 6 פרטים 5-8",
-      "page": 5,
+      "locator": "p.5 s.2 items 1, 3, 4; p.6 items 5-8",
+      "locator_he": "עמוד 5 סעיף 2 פרטים 1, 3, 4; עמוד 6 פרטים 5-8",
+      "page": 6,
       "quote": "אלה הסכומים המרביים לשנת 2025, המקנים פטור מהגשת דוח",
       "checked": "2026-10-25"
     },
@@ -127,19 +156,6 @@
       "locator_he": "עמוד 3, סעיף 2",
       "page": 3,
       "quote": "הוא או בן זוגו חייבים במס נוסף בהתאם לסעיף 121ב לפקודה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/7ImSG7R~31kgMHXzY2UjRTIi0nZwJhLAGkfNjyZo+zU=#page=2",
-      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
-      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.2, s.2",
-      "locator_he": "עמוד 2, סעיף 2",
-      "page": 2,
       "checked": "2026-10-25"
     },
     {

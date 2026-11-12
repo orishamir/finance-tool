@@ -1,0 +1,130 @@
+{
+  "id": "REG-20",
+  "title": "Complaints against provident and pension managers go to the CMA Commissioner",
+  "title_he": "תלונה על קופת גמל או קרן פנסיה: הממונה על שוק ההון מברר",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק קופות הגמל, כמה סעיפים של חוק הפיקוח על הביטוח חלים גם על חברות מנהלות של קופות גמל וקרנות פנסיה. לפי סעיפי התלונות שבהם, הממונה על שוק ההון מברר תלונות שיש בהן בסיס ממשי, ויכול להורות למי שהתלונה עליו לתקן ליקוי שהבירור העלה; בסעיפים שנקראו לא נמצאה סמכות לחייב פיצוי למתלונן. סעיף אחר מביניהם מחייב חברה מנהלת שיש לה שירות טלפוני עם מערכת אוטומטית לניתוב שיחות לתת מענה אנושי מקצועי.",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=15",
+      "title": "s.39, gazette ס״ח תשס״ה, 889",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.39(ג)",
+      "locator_he": "סעיף 39(ג)",
+      "page": 15,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf#page=14",
+      "title": "s.60, gazette ס״ח תשמ״א, 208",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.60, gazette ס״ח תשמ״א, 208",
+      "locator_he": "סעיף 60, ס״ח תשמ״א, 208",
+      "page": 14,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf#page=14",
+      "title": "s.62, same gazette",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.221",
+      "locator_he": "עמוד 221",
+      "page": 221,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299916.pdf#page=45",
+      "title": "ס״ח 1995 (7.4.2005), s.9",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.9",
+      "locator_he": "סעיף 9",
+      "page": 45,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299983.pdf#page=48",
+      "title": "ס״ח 2024 (10.8.2005), s.12(39)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.12(39)",
+      "locator_he": "סעיף 12(39)",
+      "page": 48,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf#page=2",
+      "title": "Amendment 32, ס״ח 2582 (21.8.2016), s.1(1)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1(1)",
+      "locator_he": "סעיף 1(1)",
+      "page": 2,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf#page=4",
+      "title": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
+      "title_he": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.880), s.4(1)",
+      "locator_he": "עמוד הקובץ 4 (עמוד ספר החוקים 880), סעיף 4(1)",
+      "page": 4,
+      "quote": "מבטח המספק שירות טלפוני הכולל מערכת אוטומטית לניתוב שיחות ייתן מענה אנושי מקצועי ללקוח",
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf#page=4",
+      "title": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
+      "title_he": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.5 (gazette p.881), s.5(1)",
+      "locator_he": "עמוד הקובץ 5 (עמוד ספר החוקים 881), סעיף 5(1)",
+      "page": 5,
+      "quote": "בסעיף 39(ג), במקום \"60\" יבוא \"59ב\"",
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_14187324.pdf#page=7",
+      "title": "חוק הגנת הצרכן (תיקון מס' 74), התשפ\"ו-2026, ספר החוקים 3569 (22.7.2026)",
+      "title_he": "חוק הגנת הצרכן (תיקון מס' 74), התשפ\"ו-2026, ספר החוקים 3569 (22.7.2026)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.7, s.6(1) ; file p.10 (gazette p.912), s.9",
+      "locator_he": "עמוד הקובץ 7, סעיף 6(1) ; עמוד הקובץ 10 (עמוד ספר החוקים 912), סעיף 9",
+      "page": 10,
+      "quote": "כפי שהוחל בסעיף 39(ג)",
+      "checked": "2026-11-08"
+    }
+  ]
+}

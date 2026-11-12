@@ -1,0 +1,50 @@
+{
+  "id": "RG-22",
+  "title": "Physically backed gold and the Israeli foreign-fund route",
+  "title_he": "שני מוצרי זהב מגובה פיזית שנבדקו לא מתוארים כקרן שיכולה להיסחר בתל אביב כקרן חוץ",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "eligibility",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-02",
+  "text_he": "קרן חוץ יכולה להיות מוצעת לציבור בישראל, וכך להיסחר בבורסה בתל אביב, רק אם היא פועלת לפי דירקטיבת UCITS או לפי חוק חברות ההשקעה האמריקאי מ־1940. שני מוצרי זהב מגובים פיזית, תעודה עם זכות חזרה מוגבלת ונאמנות אמריקאית שאומרת שהיא לא חברת השקעות לפי החוק מ־1940, לא מתוארים בידי המנפיקים שלהם כקרן UCITS או כקרן לפי החוק מ־1940. זו מסקנה מהכלל ומהתיאורים של המנפיקים ולא קביעה של רשות ניירות ערך, ולפיה מי שרוצה מוצר זהב מגובה פיזית מגיע אליו דרך ברוקר בחו״ל ולא בבורסה בתל אביב. ההגדרה של קרן חוץ משתנה ב־2.2.2027, והתקנות אולי ישתנו בעקבותיה.",
+  "il_finance_file": "reits-and-gold-funds.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=2",
+      "title": "s.2, gazette ק״ת תשע״ו, 1090",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.2, gazette ק״ת תשע״ו, 1090",
+      "locator_he": "סעיף 2, ק״ת תשע״ו, 1090",
+      "page": 2,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F10198%2Fheb#page=2",
+      "title": "the one amendment, ק\"ת 10198 (7.6.2022), p.3134",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3134",
+      "locator_he": "עמוד 3134",
+      "page": 2,
+      "quote": "בורסה בחו״ל",
+      "checked": "2026-11-08"
+    }
+  ],
+  "derived_from": [
+    "ETF-23"
+  ],
+  "examples": [
+    "RG-20"
+  ]
+}

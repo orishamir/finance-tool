@@ -250,6 +250,7 @@ Out, and where it lives:
 - Updated: yearly, in the ISA's annual licensees report. The 2025 report was published 29 Jul 2026 (domain report S7).
 - Source check (2026-11-07): the report's copy on the Securities Authority's own site was searched for and not found. Tried: web searches for the report's title and for its file on new.isa.gov.il; the press items on it (Funder 206333, Calcalist, Bizportal), which link only Funder's copy; the Authority's sitemap (pages only, dated 2025-02, and the site is a script-built application whose pages carry no links to a plain fetch); the Wayback Machine's list of the Authority's archived PDFs (204 files, none of them this report); and about 120 likely file names in five of the Authority's folders. The figures stay on the press host's copy (Funder, cdn.funder.co.il), which is the report as published (24 pages, created 28.7.2026); a browser visit to the Authority's investment-licensees pages ("Data-on-consultants-marketers-netonim" in its sitemap) should find the official file. **[2026-11-08, copies sweep]** Found on the Securities Authority's own site, on its page "נתונים בדבר פעילות חברות בעלות רישיון השקעות" (item "פעילות חברות בעלות רישיון השקעות בשנת 2025", dated 29 July 2026; file Investments_intermediates_report25.pdf), reached in the founder's Chrome; the citations now point to it. Its text matches the Funder copy page for page (24 pages, same creation date) except p.20, where the client-flow rows were revised (MGD-18).
 - Source: [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.2, 16, 17, 21 · checked 2026-11-08 · primary
+- Scope: general
 - Dimensions: `fee-management-balance`, `fee-change-over-time`
 - Likely to change: yes (annual)
 
@@ -290,6 +291,7 @@ Out, and where it lives:
   - **Savings policies:** NIS 21.4 bn of savings policies are managed through hosting by portfolio managers, per CMA data cited by the ISA.
 - Conditions / exceptions: The ISA states it published a draft directive on outsourcing in hosting and external fund advice. Its text and status were not read (open question 9).
 - Source: [ISA 2025 licensees report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), pp.2, 7, 18, 19, 23 · checked 2026-11-08 · primary
+- Scope: general
 - Dimensions: `conflict-of-interest` (proposed), `fee-fund-underlying` (proposed)
 - Likely to change: yes (annual; hosting directive pending)
 

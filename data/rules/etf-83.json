@@ -1,0 +1,67 @@
+{
+  "id": "ETF-83",
+  "title": "What an index is: the ISA's general definition, a stock index as TASE computes it, and the kinds of index a fund or track follows (shares, bonds, commodities)",
+  "title_he": "מה זה מדד",
+  "strength": "primary",
+  "dimensions": [],
+  "likely_to_change": "no",
+  "text_he": "לפי המדריך למשקיע של רשות ניירות ערך, מדד הוא מספר סטטיסטי שמודד תופעות או שינויים בכלכלה; למספר עצמו אין משמעות, והמשמעות באה מההשוואה לערך קודם של המדד. קרן מחקה יכולה לחקות מדדים של מניות, של איגרות חוב או של סחורות, ואפילו לשלב ביניהם, ובדרך כלל מנהל הקרן קונה את הנכסים שבמדד לפי המשקלות שלהם במדד. בהנחיות הבורסה בתל אביב לנגזרים על מדדי מניות, מדד מניות הוא מדד שהבורסה מחשבת ומפרסמת כמה פעמים במהלך יום המסחר. ברשימת מסלולי ההשקעה של רשות שוק ההון, מסלולים עוקבי מדדים עוקבים אחרי מדדי מניות, מדדי אג״ח קונצרני ומדדי אג״ח ממשלות.",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=30",
+      "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא",
+      "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.30",
+      "locator_he": "עמוד 30",
+      "page": 30,
+      "quote": "קרן מחקה",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=9",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp.9 to 13",
+      "locator_he": "עמודים 9 עד 13",
+      "page": 9,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf#page=10",
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+      "title_he": "פעילות קרנות נאמנות בישראל 2024",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.10",
+      "locator_he": "עמוד 10",
+      "page": 10,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf#page=5",
+      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף)",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.ב6",
+      "locator_he": "עמוד ב6",
+      "checked": "2026-11-06",
+      "qualifier": "(exchange rules, ISA-approved)"
+    }
+  ]
+}

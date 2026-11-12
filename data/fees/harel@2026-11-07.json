@@ -213,6 +213,15 @@
   "minimums": {
     "account_opening": null
   },
+  "left_out": [
+    {
+      "what": "נוסף על דמי הניהול, רשאית החברה המנהלת לגבות מהנכסים המנוהלים בקופה הוצאות ישירות בשל ביצוע עסקאות",
+      "page": 2,
+      "why": "Direct transaction expenses come out of the fund's assets on top of the management fees. The document prints no rate; it says the past year's rates are on the company's website. This record prices the management fees only; a track's direct expenses enter a run only from data/funds/ (A-18), otherwise as 0 with a 'not collected' flag. Read 2026-11-12.",
+      "why_he": "מלבד דמי הניהול, החברה רשאית לגבות מכספי הקופה הוצאות ישירות על קנייה ומכירה של השקעות. המסמך לא קובע להן שיעור, ולכן הן לא כלולות במחיר שמוצג כאן, והעלות בפועל יכולה להיות גבוהה ממנו.",
+      "could_change_price": true
+    }
+  ],
   "notice_rule_ids": [
     "PF-16"
   ]

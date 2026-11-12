@@ -131,9 +131,9 @@
       "publisher_he": "בנק ישראל",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.1-2",
-      "locator_he": "עמודים 1 עד 2",
-      "page": 1,
+      "locator": "pp.1-2; p.2",
+      "locator_he": "עמודים 1 עד 2; עמוד 2",
+      "page": 2,
       "quote": "מוארכת הוראת המעבר עד ליום",
       "checked": "2026-10-25"
     },

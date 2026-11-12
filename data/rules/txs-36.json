@@ -23,6 +23,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "s.88, definition יתרת המחיר המקורי המתואם",
+      "page": 148,
       "checked": "2026-11-01"
     },
     {
@@ -33,9 +34,9 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.17-18, s.4.1",
-      "locator_he": "עמודים 17 עד 18, סעיף 4.1",
-      "page": 17,
+      "locator": "p.18, s.4.1",
+      "locator_he": "עמוד 18, סעיף 4.1",
+      "page": 18,
       "quote": "מרגע הקמתה ועד סוף ימיה",
       "checked": "2026-11-01"
     },
@@ -48,6 +49,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "s.88, definition מדד",
+      "page": 146,
       "checked": "2026-10-25"
     },
     {

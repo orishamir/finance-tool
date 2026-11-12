@@ -40,6 +40,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=9",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457, p.407",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.9, s.2",
+      "locator_he": "עמוד הקובץ 9, סעיף 2",
+      "page": 9,
+      "quote": "מכירה לכלל הציבור תיעשה באמצעות תאגידים בנקאיים, חברי הבורסה וגופים נוספים שיאשר החשב הכללי במשרד האוצר",
+      "checked": "2026-11-08"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
       "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",

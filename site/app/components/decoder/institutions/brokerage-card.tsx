@@ -12,8 +12,8 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
-import { Num, NumAfter, RuleRef, RulesChip, RulesLine } from "../../provenance";
-import { Card, ClaimList, Disclosure, DocLink, GoLink, GroupPriceRows, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
+import { Num, NumAfter, RuleRef, RulesChip, RulesLine, Term } from "../../provenance";
+import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 import { isPdfUrl, sourceHref, withoutCodes, type CitedPlace } from "../../../lib/sources";
@@ -247,7 +247,16 @@ function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
           {rows.map((a) => (
             <li key={a.classes.join()} className="flex flex-col items-start gap-1 px-1 py-2.5">
               <span className="flex flex-wrap items-center gap-2.5">
-                <Tag tone={a.state === "yes" ? "positive" : a.state === "no" ? "blocked" : "caution"}>{copy.card.canBuy.state[a.state]}</Tag>
+                {/* where the record names the rule that settles it, the state's word opens the rule's card (D105) */}
+                <Tag tone={a.state === "yes" ? "positive" : a.state === "no" ? "blocked" : "caution"}>
+                  {a.rules?.length ? (
+                    <Term id={[]} rules={a.rules} name={classWords(a.classes)}>
+                      {copy.card.canBuy.state[a.state]}
+                    </Term>
+                  ) : (
+                    copy.card.canBuy.state[a.state]
+                  )}
+                </Tag>
                 <bdi>{classWords(a.classes)}</bdi>
               </span>
               {a.reason && <span className="text-sm text-muted-foreground max-w-measure">{a.reason}</span>}
@@ -387,13 +396,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
             <CircleDashed size={20} strokeWidth={1.75} aria-hidden="true" className="text-caution shrink-0" />
             {copy.missingTariff}
           </h3>
-          {tariff?.reason && (
-            <Disclosure label={<span className="text-sm text-link">{copy.recordedReason}</span>} summaryClassName="min-h-11 justify-start gap-1">
-              <p className="text-xs bg-muted rounded-md p-3 font-mono whitespace-pre-wrap break-words" dir="ltr">
-                {tariff.reason}
-              </p>
-            </Disclosure>
-          )}
+          {tariff?.reasonHe && <p className="text-sm text-muted-foreground max-w-measure">{tariff.reasonHe}</p>}
           {tariff && (
             <a href={sourceHref(tariff)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target text-sm">
               <span>
@@ -447,6 +450,8 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} byChannel={byChannel} channel={channel} onChannel={setChannel} />
           <FeeTable lines={tariff.lines} channel={channel} />
+          {/* what the house's documents hold and these prices leave out (D106) */}
+          <LeftOutLine view={tariff.leftOut ?? null} house={gershayim(tariff.providerName)} className="text-sm" />
           <FeeNotes lines={tariff.lines} kind={kind} byChannel={byChannel} />
         </Section>
       )}

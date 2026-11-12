@@ -1,0 +1,35 @@
+{
+  "id": "KGL-13",
+  "title": "Switching tracks inside the fund",
+  "title_he": "מעבר בין מסלולים בקופת גמל להשקעה של אלטשולר שחם: בתוך שלושה ימי עסקים",
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי התקנון של אלטשולר שחם לקופת גמל להשקעה, עמית יכול להעביר בהוראה כסף ממסלול אחד או מכמה מסלולים למסלול אחר או לכמה מסלולים. ההעברה מתבצעת בתוך שלושה ימי עסקים מבקשה מלאה וחתומה, ואם המועד נופל בשלושת ימי העסקים הראשונים של החודש, החברה יכולה לדחות אותה ליום העסקים הרביעי. על איחור בביצוע משולם פיצוי כמו על איחור במשיכה.",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    }
+  ],
+  "scope_settle": "the CMA's own rule on how fast a track switch is executed (the standard bylaws or a circular)",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "clause 20",
+      "locator_he": "סעיף 20",
+      "checked": "2026-10-22"
+    }
+  ]
+}

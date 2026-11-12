@@ -1,0 +1,40 @@
+{
+  "id": "PF-09",
+  "title": "How the balance fee is collected and prorated",
+  "title_he": "איך ומתי נגבים דמי הניהול מחיסכון",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "text_he": "דמי הניהול מחיסכון נגבים בחלקים שווים, ביום העסקים האחרון בכל חודש או בסוף כל יום עסקים. על כסף שהופקד, נמשך או הועבר במהלך החודש, דמי הניהול מחיסכון מחושבים רק לימים שבהם הכסף היה בחשבון. החלופה של סכום בשקלים לחודש, לכסף שהופקד לפני 2008, נגבית ביום העסקים האחרון בשנה או במשיכה או בהעברה.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
+      "title": "s.9, gazette תשע״ד, 977",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.9, gazette תשע״ד, 977",
+      "locator_he": "סעיף 9, תשע״ד, 977",
+      "page": 4,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8",
+      "title": "s.10, gazette ק״ת תשע״ב, 1260",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.10, gazette ק״ת תשע״ב, 1260",
+      "locator_he": "סעיף 10, ק״ת תשע״ב, 1260",
+      "page": 8,
+      "checked": "2026-10-31"
+    }
+  ]
+}

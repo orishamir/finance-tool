@@ -1,0 +1,72 @@
+{
+  "id": "PEN-20",
+  "title": "Actuarial assumptions behind annuity conversion",
+  "title_he": "על אילו הנחות נשען מקדם ההמרה לקצבה",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-06-30",
+  "text_he": "בקרן פנסיה מקיפה, מקדם ההמרה לקצבה, דמי הביטוח וסכומי ההיוון מחושבים בידי האקטואר של הקרן לפי הנחות שקבע הממונה על שוק ההון: ריבית שנתית להיוון אחרי ניכוי דמי הניהול המרביים, לוחות תמותה ונכות ומודל לשיפור בתוחלת החיים. לפי החוזר המאוחד, מהרבעון השני של 2022 הריבית השנתית להיוון בקרן מקיפה היא 4.38% לשנה, 4.26% למקבלי קצבה שאירע להם אירוע מזכה לפני 1.1.2023 ו־4% בקרן כללית, ומהן מנכים את דמי הניהול המרביים. שינוי בהנחות מחייב לעדכן את המקדמים באישור הממונה, וקצבת הזקנה מחושבת לפי המקדמים שבתוקף ביום הזכאות הראשון. בפרישה המקדם מחושב לפי נתוני הגיל האמיתיים, למשל הגיל של בן או בת הזוג, ולא לפי הנחות.",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/information-entities-codex/he/Gate5_Part2_Chapter1-signC-version9.pdf#page=19",
+      "title": "החוזר המאוחד, שער 5 חלק 2 פרק 1 סימן ג' – מדידת התחייבויות, מהדורה 9 (27.7.2022)",
+      "title_he": "החוזר המאוחד, שער 5 חלק 2 פרק 1 סימן ג' – מדידת התחייבויות, מהדורה 9 (27.7.2022)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "file p.19",
+      "locator_he": "עמוד הקובץ 19",
+      "page": 19,
+      "quote": "ריבית שנתית להיוון",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/information-entities-codex/he/codex6.6_clean_new.pdf#page=10",
+      "title": "קודקס הרגולציה, חלק 6 – הוראות ספציפיות לקרן פנסיה",
+      "title_he": "קודקס הרגולציה, חלק 6 – הוראות ספציפיות לקרן פנסיה",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.10, s.(ד)(2)(ב)",
+      "locator_he": "עמוד 10, סעיף (ד)(2)(ב)",
+      "page": 10,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.33, s.45; pp.65-66, s.111(א)",
+      "locator_he": "עמוד 33, סעיף 45; עמודים 65 עד 66, סעיף 111(א)",
+      "page": 65,
+      "quote": "יחושבו ע״י אקטואר הקרן על בסיס ההנחות שנקבעו בהוראות הממונה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/sdzeowt4/תקנון-קרן-פנסיה-מקיפה.pdf#page=76",
+      "title": "מור – תקנון קרן פנסיה מקיפה, מיום 01.04.2026",
+      "title_he": "מור – תקנון קרן פנסיה מקיפה, מיום 01.04.2026",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "file p.76, s.110(א)(1)",
+      "locator_he": "עמוד הקובץ 76, סעיף 110(א)(1)",
+      "page": 76,
+      "checked": "2026-11-06"
+    }
+  ]
+}

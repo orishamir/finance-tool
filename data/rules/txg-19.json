@@ -1,0 +1,57 @@
+{
+  "id": "TXG-19",
+  "title": "Foreign income: the \"shortened reporting\" advance can replace the return",
+  "title_he": "הכנסה מחו״ל: מקדמה במסלול המקוצר במקום דוח",
+  "text_he": "הכנסה מחו״ל, כולל ממכירת נייר ערך זר, של עד 375,000 שקלים לא מחייבת לבדה הגשת דוח אם המס עליה נוכה במלואו, אם היא פטורה, או אם שולמה עליה מקדמת מס במסלול ״הדיווח המקוצר״ עד 30 באפריל שאחרי שנת המס. הסכום נקוב לשנת המס 2025 ומוקפא. שאר התנאים לפטור מהגשת דוח עדיין צריכים להתקיים. אם מי שמוכר אצל ברוקר זר ומשלם את המקדמה הזו פטור באמת מהדוח ומהדיווח החצי־שנתי, זו שאלה פתוחה: הטפסים של רשות המסים רואים בו מי שמגיש דוח.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=6",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004, ותקנות מס הכנסה (מקדמות בשל הכנסת חוץ), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 1 of the Exemption Regulations as",
+      "page": 6,
+      "quote": "מקדמה לפי הוראות תקנות מס הכנסה (מקדמות בשל הכנסת חוץ), התשס״ד-2004, שצורף אליה דו״ח בדבר דרך קביעת המקדמה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=6",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004, ותקנות מס הכנסה (מקדמות בשל הכנסת חוץ), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.10-11, Foreign Income Advance Regulations regs. 1, 2, 5, 6",
+      "page": 10,
+      "quote": "ישלם בשלהן מקדמה שנתית עד יום 30 באפריל בשנת המס שלאחריה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5 s.2 item 3 and the paragraph on",
+      "page": 5,
+      "quote": "מקדמת מס",
+      "checked": "2026-10-22",
+      "qualifier": "(read from a rendered page image)"
+    }
+  ]
+}

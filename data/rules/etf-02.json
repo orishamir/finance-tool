@@ -1,0 +1,50 @@
+{
+  "id": "ETF-02",
+  "title": "Israeli ETNs became ETFs in October 2018 (Amendment 28)",
+  "title_he": "תעודות הסל הפכו לקרנות סל באוקטובר 2018",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי רשות ניירות ערך, ההנחיה שלה לקרנות מחקות נכנסה לתוקף לראשונה ב־2018, כחלק מתיקון 28 לחוק השקעות משותפות בנאמנות, שהסב את תעודות הסל לקרנות נאמנות. תקנות הקרנות המחקות נכנסו לתוקף ב־3.10.2018. לאומי, למשל, כותב באתר שלו את אותו תאריך, ושחלה תקופת מעבר של רשות המסים.",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=7",
+      "title": "s.17, gazette ק״ת תשע״ח, 2394",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.17, gazette ק״ת תשע״ח, 2394",
+      "locator_he": "סעיף 17, ק״ת תשע״ח, 2394",
+      "page": 7,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+      "title": "ISA, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה, update 3 (15.10.2024), p.1",
+      "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/exchange-traded-funds",
+      "title": "Leumi, קרנות סל",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "INS-18",
+  "title": "Executive insurance can satisfy mandatory pension if death and disability cover is held",
+  "title_he": "ביטוח מנהלים יכול לעמוד בחובת הפנסיה, אם יש כיסוי למקרה מוות ולנכות, בו או בקופה אחרת",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "insurance-cover"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-08",
+  "text_he": "לפי צו ההרחבה לפנסיה חובה, העובד יכול לבחור ביטוח פנסיוני מקיף, כולל קופת גמל לקצבה שהממונה אישר, ובלבד שיש לו כיסוי למקרה מוות וכיסוי לנכות, באותה קופה או בקופה אחרת. קופת גמל לקצבה כוללת גם תכנית ביטוח שהממונה אישר כקופת גמל לקצבה, ולכן ביטוח מנהלים יכול לעמוד בחובה. בקופת ביטוח, תשלום התגמולים של המעסיק יכול לכלול ביטוח אובדן כושר עבודה שמבטיח עד 75% מהשכר; סך התגמולים והביטוח הזה לא יכול לעבור 7.5%, וחלק התגמולים לא יכול לרדת מ־5%. עובד שלא בחר מצורף לקרן פנסיה, לא לקופת ביטוח.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2",
+      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
+      "publisher": "gov.il",
+      "publisher_he": "משרד העבודה",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.6939), s. 2(ח), 2(ט), 3(א); file p.3 (gazette p.6940), s. 4(א)(2)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 6939), סעיף 2(ח), 2(ט), 3(א); עמוד הקובץ 3 (עמוד הרשומות 6940), סעיף 4(א)(2)",
+      "page": 2,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf",
+      "title": "Harel June 2016 letter",
+      "title_he": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה (מכתב הראל, יוני 2016)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p. 1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "PEN-03",
+    "PEN-05"
+  ]
+}

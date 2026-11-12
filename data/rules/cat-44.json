@@ -1,0 +1,59 @@
+{
+  "id": "CAT-44",
+  "title": "The exposure fields are total exposure: what is held plus exposure through derivatives, so they can pass 100% of assets",
+  "title_he": "החשיפה שמסלול מדווח כוללת נגזרים, ולכן יכולה לעבור 100%",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-03",
+  "text_he": "חוזר הדוח החודשי של רשות שוק ההון מ־2015 מגדיר את החשיפה למניות, החשיפה למטבע חוץ והחשיפה לחו״ל שכל מסלול מדווח כחשיפה כוללת: שווי מה שהמסלול מחזיק, ועוד החשיפה דרך נגזרים על אותו נכס, ולכן היא יכולה לעבור את 100% מנכסי המסלול. הנוסח העדכני של ההוראה בחוזר המאוחד של הרשות לא נקרא, ולכן ייתכן שההגדרה השתנתה מאז. השקעה אחת יכולה להיספר בכמה מהן, למשל מניה בחו״ל נספרת במניות, במטבע חוץ ובחו״ל, ולכן אי אפשר לחבר את שלוש החשיפות לתמהיל אחד. שדות החשיפה בנתונים שהרשות מפרסמת נושאים את אותם שמות; שהם החשיפות שהחוזר מגדיר זו הסקה מהשמות ומעמוד המסלול של הרשות, ולא כתוב במפורש. בנתוני ספטמבר 2026 החשיפה לחו״ל הגבוהה ביותר בגמל נט, מאגר הנתונים של רשות שוק ההון, הייתה 184.2%, במסלול S&P 500 של קרן השתלמות באלטשולר שחם, ואף מקור שנקרא לא מסביר שיעור כזה.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-03",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulations33/he/regulation_th_2019-71-appendixa-changes.pdf#page=7",
+      "title": "חוזר מאוחד, שער 5 חלק 4 פרק 3, נספח א, מהדורה 10 (26.3.2020)",
+      "title_he": "חוזר מאוחד, שער 5 חלק 4 פרק 3, נספח א, מהדורה 10 (26.3.2020)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p. 1 and 7",
+      "page": 1,
+      "checked": "2026-11-03"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1446/he/regulation_h_2015-9-9.pdf#page=10",
+      "title": "חוזר גופים מוסדיים 2015-9-9 \"דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח\" (26.2.2015)",
+      "title_he": "חוזר גופים מוסדיים 2015-9-9 \"דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח\" (26.2.2015)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "checked": "2026-11-03"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "title": "Gemel-Net dictionary",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-03"
+    },
+    {
+      "url": "https://gemelnet.cma.gov.il/views/perutHodshi.aspx?idGuf=13414&OCHLUSIYA=1",
+      "title": "Gemel-Net track page, Harel 13414",
+      "publisher": "Gemel-Net (Capital Market Authority)",
+      "publisher_he": "גמל־נט (רשות שוק ההון, ביטוח וחיסכון)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-03",
+      "qualifier": "(definition; link to the dataset fields inferred)"
+    }
+  ]
+}

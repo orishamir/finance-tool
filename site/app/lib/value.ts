@@ -204,11 +204,16 @@ export function sumOf(parts: Record<string, SiteValue>, formula: string, options
   return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? list[0]?.unit ?? "nis", formula, parts, options);
 }
 
-/** A figure out of a rule record, carrying the rule's strength and re-check date. */
+/**
+ * A figure out of a rule record, carrying the rule's strength and re-check date. "name@2027" is a figure set by tax year, for that year
+ * (null when the record sets none for it): prose that says a rise the law already sets reads each later year's figure.
+ */
 export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteValue | null {
-  const f = rule.figures?.[name];
+  const [base, year] = name.split("@") as [string, string | undefined];
+  const f = rule.figures?.[base];
   if (!f || Array.isArray(f)) return null;
-  const v = "by_tax_year" in f ? f.by_tax_year[today.slice(0, 4)] ?? Object.values(f.by_tax_year).at(-1) : f;
+  if (year !== undefined && !("by_tax_year" in f)) return null;
+  const v = "by_tax_year" in f ? (year !== undefined ? f.by_tax_year[year] : f.by_tax_year[today.slice(0, 4)] ?? Object.values(f.by_tax_year).at(-1)) : f;
   if (!v) return null;
   const stale = rule.recheck_date && rule.recheck_date < today ? { since: rule.checked, cadence: "yearly" as const } : null;
   return { ...v, stale, rule_ids: v.rule_ids ?? [rule.id] };

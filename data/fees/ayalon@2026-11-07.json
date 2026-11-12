@@ -12,7 +12,7 @@
     ]
   },
   "tariff": {
-    "url": "https://www.ayalon-ins.co.il/mediastorage/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf",
+    "url": "https://www.ayalon-ins.co.il/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf",
     "title": "תקנון תקני לקופת גמל להשקעה",
     "notes": "Ayalon Kupot Gemel's standard bylaws of איילון קופת גמל להשקעה (fund 15969), 14 pages, \"מהדורה 07.2026\" on p.1; fees in s.35.1 on p.9. The edition prints a month only (07.2026), recorded as its first day. Also read: the joining form 102, edition 06.2026 (https://www.ayalon-ins.co.il/mediastorage/media/sn4mjoiz/%D7%98%D7%95%D7%A4%D7%A1-%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-102-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-062026-1.pdf), whose p.2 leaves both rates blank and whose p.3 says the company began operating in 2026. Linked from https://www.ayalon-ins.co.il/providents/provident-fund-invest. Read 2026-11-07 in a browser. Ayalon Kupot Gemel (517085874) is a provident manager in gemelnet; only its provident fund for investing is recorded here.",
     "published": "2026-07-01",
@@ -33,7 +33,7 @@
         "value": 1.05,
         "unit": "pct_per_year",
         "source": {
-          "url": "https://www.ayalon-ins.co.il/mediastorage/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf#page=9",
+          "url": "https://www.ayalon-ins.co.il/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf#page=9",
           "title": "תקנון תקני לקופת גמל להשקעה, איילון קופת גמל להשקעה (15969), מהדורה 07.2026, סעיף 35.1.1",
           "publisher": "Ayalon Kupot Gemel",
           "strength": "institution",
@@ -76,7 +76,7 @@
         "value": 4,
         "unit": "pct_of_deposit",
         "source": {
-          "url": "https://www.ayalon-ins.co.il/mediastorage/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf#page=9",
+          "url": "https://www.ayalon-ins.co.il/media/k23nhvjs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%AA%D7%A7%D7%A0%D7%99-%D7%9C%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-15969-%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94-072026.pdf#page=9",
           "title": "תקנון תקני לקופת גמל להשקעה, איילון קופת גמל להשקעה (15969), מהדורה 07.2026, סעיף 35.1.2",
           "publisher": "Ayalon Kupot Gemel",
           "strength": "institution",
@@ -113,6 +113,22 @@
   "minimums": {
     "account_opening": null
   },
+  "left_out": [
+    {
+      "what": "דמי הניהול שנקבעים לעמית בהצטרפות: התקנון קובע רק \"שלא יעלה על\" המרבי (סעיף 35.1)",
+      "page": 9,
+      "why": "Joining form 102 (edition 06.2026, p.2, filed in the library 2026-11-12 as 38108dcc21aa9120) leaves both rates blank; the bylaws bind only the ceiling. The rate a joiner is given is not published. The record prices the ceiling (D56: 'up to' is priced at the top). Read 2026-11-12.",
+      "why_he": "המחיר כאן הוא התקרה שהמסמכים המחייבים של החברה מתירים. השיעור שעמית מקבל בפועל נקבע בהצטרפות ולא מתפרסם, ולכן הוא יכול להיות נמוך יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "הוצאות ישירות בשל ביצוע עסקאות בנכסי קופת גמל בהתאם להוראות ההסדר התחיקתי (סעיף 27.1.2)",
+      "page": 8,
+      "why": "Direct transaction expenses come out of the fund's assets on top of the management fees. The document prints no rate; This record prices the management fees only; a track's direct expenses enter a run only from data/funds/ (A-18), otherwise as 0 with a 'not collected' flag. Read 2026-11-12.",
+      "why_he": "מלבד דמי הניהול, החברה רשאית לגבות מכספי הקופה הוצאות ישירות על קנייה ומכירה של השקעות. המסמך לא קובע להן שיעור, ולכן הן לא כלולות במחיר שמוצג כאן, והעלות בפועל יכולה להיות גבוהה ממנו.",
+      "could_change_price": true
+    }
+  ],
   "notice_rule_ids": [
     "PF-16"
   ]

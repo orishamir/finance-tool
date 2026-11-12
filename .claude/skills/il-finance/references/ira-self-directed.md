@@ -236,6 +236,7 @@ An IRA is a provident fund (tagmulim or annuity) or a study fund opened for one 
 - Conditions / exceptions: Meitav Trade is in the same group as the managing company. The related-party conditions of IRA-18 apply.
 - Figures: none
 - Source: [Meitav joining-form annex](https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf) · checked 2026-10-22 · institution; [Meitav IRA page](https://www.meitav.co.il/provident_pension/ira/) · checked 2026-10-22 · institution
+- Scope: institution: Meitav
 - Dimensions: `fee-trade`, `transfer-switch-process`
 - Likely to change: yes, with each competitive process
 

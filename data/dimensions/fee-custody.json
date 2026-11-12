@@ -10,6 +10,7 @@
     "checked": "2026-10-23"
   },
   "rule_ids": [
+    "BANK-16",
     "BANK-18",
     "BANK-32",
     "BRK-15",
@@ -25,6 +26,7 @@
     "BRK-48",
     "BRK-52",
     "BRK-54",
+    "BRK-61",
     "CORP-23",
     "CORP-29",
     "GOV-21",

@@ -17,7 +17,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> מפקיד {monthly ? <Num value={monthly} /> : null} בחודש עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), ואפשר להכפיל את הסכום מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null} למי שלא משך כלום קודם.
+          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> מפקיד {monthly ? <Num value={monthly} /> : null} בחודש עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), וההורה שמקבל את קצבת הילדים יכול להכפיל את הסכום מתוכה (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null} למי שלא משך כלום קודם.
         </Sentence>
         <Sentence measure>
           הכסף פנוי כשהילד מגיע לגיל {until ? <Num value={until} /> : null}. לפני כן מושכים רק למימון צרכים רפואיים של הילד, כשמצב רפואי מסכן את חייו, גופו או נפשו ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד מושך לבד. כסף שלא נמשך נשאר בבנק, ואי אפשר להוסיף אליו כסף חדש. העלות של שבירת תקופה נקבעת בהסכם של כל בנק.

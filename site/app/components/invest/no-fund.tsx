@@ -3,19 +3,18 @@
 // the cheapest kind of fund at it; the fund column says there is no fund yet. Once a fund is added the page is the pair page.
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import { asideLines, firstCount, phoneOnlyValue, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
+import { asideLines, firstCount, GROUP_OPTIONS, phoneOnlyValue, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
 import type { SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
-import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, SourcedTag, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { AsideLine, barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
+import { Num, Term } from "../provenance";
+import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { AsideLine, barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, partName, legendName, AbroadNotes, OwnBankField, whyNoKindAt, type WhyNone } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
-import { sourceHref } from "../../lib/sources";
 
 const n = c.noFund;
 
@@ -32,7 +31,7 @@ export function NoFundCall({ view }: { view: InvestView }) {
   );
 }
 
-/** The houses the list ranks: priced ones by what the account charges, then the ones it cannot price, "no data" before "not possible". */
+/** The houses the list ranks: priced ones by what the account charges, then the ones it cannot price, those not sold there last. */
 function ordered(view: InvestView) {
   const rows = view.houses.filter((h) => !isGroupProvider(h.provider));
   const ok = rows.filter((h): h is HouseRow & { generic: NonNullable<HouseRow["generic"]> } => !!h.generic).sort((a, b) => a.generic.costN! - b.generic.costN! || a.provider.short.localeCompare(b.provider.short, "he"));
@@ -123,8 +122,16 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
     };
   });
   const greyRows: PickRow[] = missing.map((h) => {
-    const na = h.unavailable;
-    const snap = bundle.snapshots.find((s) => s.id === h.provider.id);
+    // why, over every kind of fund the house's row stands for (its group's, all of them for a typed account), in the words of the pair
+    // page's account rows: the words open the rule the record names, or each kind's reason with its document (D104, D105); what the
+    // person typed says it in their own words, with no document
+    // (a house abroad on an Israeli index has no kind of its group: every kind the index has says why, Interactive Brokers' "no" on Tel Aviv)
+    const typedNo = h.provider.custom && h.unavailable?.source.url === "local";
+    const exist = view.options.filter((o) => o.exists);
+    const mine = exist.filter((o) => h.provider.custom || (GROUP_OPTIONS[h.group] as readonly OptionId[]).includes(o.id));
+    const told: WhyNone = typedNo
+      ? { state: "notSold", why: c.customEntries.notSold, parts: [{ text: c.customEntries.notSold }], rules: [] }
+      : whyNoKindAt(bundle, h.provider.id, (mine.length > 0 ? mine : exist).map((o) => ({ option: o.id, at: o.cells.find((x) => x.providerId === h.provider.id) })));
     return {
       key: h.provider.id,
       selected: h.provider.id === houseId,
@@ -137,18 +144,13 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             {h.provider.short}
             <span className="min-h-5" />
           </span>
-          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
-            <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
-            {na && !h.provider.custom && (
-              <a href={sourceHref(na.source)} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
-                {c.pair.notPossibleSource} ↗
-              </a>
-            )}
+          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs text-muted-foreground @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
+            {/* the words that say why are what opens it: no tag, no "?" and no separate source link (the link's title, a hover, held the reason) */}
+            <Term id={[]} name={c.pair.noPriceAt.other(h.provider.short)} parts={told.parts} rules={told.rules}>
+              {c.pair.noFund[told.state]}
+            </Term>
           </span>
           <span className="col-end-[-1] text-end font-semibold">—</span>
-          <span className="col-start-2 col-end-[-1] text-xs leading-snug">
-            {na && h.provider.custom ? c.customEntries.notSold : na ? c.pair.notPossibleAny : (snap?.missing_reason_he ?? (h.reason ? reasonText(h.reason, optionClass["il-etf"]) : c.funds.cannot))}
-          </span>
           {h.provider.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={h.provider.id} /></span>}
         </>
       ),

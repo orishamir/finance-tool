@@ -1,0 +1,42 @@
+{
+  "id": "BANK-16",
+  "title": "Fee tariff: closed list, full and reduced tariffs, where shown",
+  "title_he": "בנק גובה עמלה רק על שירות שבתעריפון",
+  "strength": "primary",
+  "dimensions": [
+    "fee-deposit",
+    "fee-custody",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-22",
+  "text_he": "לפי כללי העמלות של בנק ישראל משנת 2008, בנוסח המשולב עד 9.4.2025, בנק יכול לגבות עמלה רק על שירות שמופיע בתעריפון המלא שקבע הנגיד, או על שירות שנוסף באישור המפקח על הבנקים; ומלקוח שיש לסוג שלו תעריפון מופחת, רק על שירות שבתעריפון המופחת. התעריפון המלא מחולק לחלקים, ובהם עו״ש, אשראי, ניירות ערך, מטבע חוץ, כרטיסי חיוב ואפליקציות תשלום, ויש תעריפונים מופחתים לחשבון עו״ש, להלוואות לדיור, לכרטיסי חיוב ולסליקת כרטיסים. בתעריפון המלא אין חלק לפיקדונות או לתוכניות חיסכון, ולכן העלות של שבירת פיקדון היא תנאי של הפיקדון ולא עמלה. מחירים שמסומנים בתעריפון ״(בפיקוח)״ נמצאים בפיקוח, והבנק צריך לתת ללקוח את התעריפון המופחת שמתאים לו כשהשירות מתחיל.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+      "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to amendment of 9.4.2025, BoI copy",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.2-4, First and Second Schedules",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://boi.org.il/media/y3akar3j/חוק-הבנקאות-שירות-ללקוח-התשמא-1981.pdf",
+      "title": "Banking (Customer Service) Law, BoI consolidation 10/11",
+      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "publisher": "Bank of Israel",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.9T (9ט), 9Y (9י)",
+      "checked": "2026-10-22",
+      "qualifier": "(unofficial consolidation)"
+    }
+  ]
+}

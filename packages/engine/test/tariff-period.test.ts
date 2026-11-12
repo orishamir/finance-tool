@@ -255,6 +255,6 @@ describe("an entered tariff with a period through the workbench (F-101)", () => 
     const row = rowOf([{ snapshot, level: "entered", entered }]);
     const custody = row.byType.find((t) => t.line === "custody")!;
     expect(custody.cost).toBeGreaterThan(0.99 * row.run.fees.custody);
-    expect(row.byType.reduce((a, t) => a + t.cost, 0) + row.interaction).toBeCloseTo(row.horizonCost.value as number, 6);
+    expect(row.byType.reduce((a, t) => a + t.cost!, 0) + row.interaction!).toBeCloseTo(row.horizonCost.value as number, 6);
   });
 });

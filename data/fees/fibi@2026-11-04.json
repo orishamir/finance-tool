@@ -1333,7 +1333,9 @@
           "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
           "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.1, מינ' (עמוד מס' 17)",
           "publisher": "First International Bank of Israel Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "4.5.1 הנסחרים בארץ 0.195% מקס' 4,000"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1415,7 +1417,9 @@
           "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
           "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.2, מינ' (עמוד מס' 17)",
           "publisher": "First International Bank of Israel Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "4.5.2 הנסחרים בחוץ לארץ 0.199% מקס' 4,000"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1670,7 +1674,9 @@
           "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
           "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 22)",
           "publisher": "First International Bank of Israel Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "5.1.1 מט\"י-מט\"ח 0.175% מינ'6.25$ מקס' 2,750.0$"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1775,7 +1781,9 @@
           "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
           "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - מעל 100$, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
           "publisher": "First International Bank of Israel Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "עמלת חליפין מט\"י/מט\"ח מעל 100$ 0.0875% מינ' 5.0$ מקס' $2475"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",

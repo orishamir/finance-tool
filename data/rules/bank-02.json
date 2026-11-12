@@ -1,0 +1,31 @@
+{
+  "id": "BANK-02",
+  "title": "What a deposit agreement must state",
+  "title_he": "מה הסכם פיקדון בבנק צריך לכלול",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "real-vs-nominal",
+    "regulator",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי כללי הבנקאות של בנק ישראל על גילוי נאות ומסירת מסמכים, הסכם פיקדון, או המסמכים שמשלימים אותו, צריך לכלול את הסכום, את התקופה ואת תנאי הפירעון, כולל מועדי הפירעון ותנאי החידוש. הוא כולל גם את שיעור הריבית, את תקופות החישוב שלה ואת מועד התשלום, ואם הבנק יכול לשנות אותה, את התנאים לשינוי; בפיקדון צמוד, גם את סוג ההצמדה והבסיס שלה, את שיעור ההצמדה, אם היא חלה גם על הריבית, וזמן מינימלי או מרבי שההצמדה תלויה בו. בפיקדון של יותר משנה ההסכם כולל גם הגבלות על העברת הפיקדון והטבות אחרות ותנאיהן, ובתוכנית חיסכון את לוח ההפקדות ואת המגבלות על הסכומים והמועדים, ואם מותר לפרוע מוקדם, את התנאים לכך.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated (amendments to 30.12.2014), BoI copy",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.7(a), 7(b)",
+      "locator_he": "סעיף 7(א), 7(ב)",
+      "checked": "2026-10-22"
+    }
+  ]
+}

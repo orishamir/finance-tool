@@ -23,6 +23,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.6, annex s.7(ב)",
+      "locator_he": "עמוד 6, נספח סעיף 7(ב)",
       "page": 6,
       "checked": "2026-10-25"
     },
@@ -35,6 +36,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.4, annex ss.3, 4(א)",
+      "locator_he": "עמוד 4, נספח סעיפים 3, 4(א)",
       "page": 4,
       "quote": "שאינן קרנות השתלמות ואינן קופות גמל להשקעה",
       "checked": "2026-10-25"

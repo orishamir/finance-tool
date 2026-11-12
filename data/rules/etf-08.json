@@ -1,0 +1,26 @@
+{
+  "id": "ETF-08",
+  "title": "Tracking difference and tracking error: definitions and duties",
+  "title_he": "הפרש עקיבה וטעות עקיבה, ומה מנהל הקרן חייב",
+  "strength": "primary",
+  "dimensions": [],
+  "likely_to_change": "no",
+  "text_he": "רשות ניירות ערך מגדירה הפרש עקיבה כהפרש בין התשואה של הקרן לתשואה של נכס המעקב שלה בתקופת החישוב, וטעות עקיבה כסטיית התקן של ההפרש הזה. מנהל קרן מחקה צריך לנהל אותה כך שהתוצאות יהיו קרובות ככל האפשר לשינוי בנכס המעקב, לשאוף למתאם מלא בכל עת, לעקוב אחרי העקיבה כל הזמן ולפעול לתקן את הסיבות להפרשים. ביולי 2023 ביטלה הרשות את החובה לעקוב אחרי המדד במתאם של 95%, והעבירה את האחריות לאיכות העקיבה למנהל הקרן.",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+      "title": "ISA tracking-fund directive, p.1, definitions, s. 1, s. 10",
+      "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1, definitions, s. 1, s. 10",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
+}

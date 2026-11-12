@@ -33,8 +33,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.2, s.1(3)",
-      "locator_he": "עמוד 2, סעיף 1(3)",
+      "locator": "p.2 (gazette p.990), s.1(3)",
+      "locator_he": "עמוד 2 (עמוד ספר החוקים 990), סעיף 1(3)",
       "page": 2,
       "checked": "2026-10-25"
     },
@@ -46,8 +46,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.3, s.15",
-      "locator_he": "עמוד 3, סעיף 15",
+      "locator": "p.3 (gazette p.991), s.15",
+      "locator_he": "עמוד 3 (עמוד ספר החוקים 991), סעיף 15",
       "page": 3,
       "checked": "2026-10-25"
     },
@@ -59,8 +59,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.8, s.20(א)",
-      "locator_he": "עמוד 8, סעיף 20(א)",
+      "locator": "p.8 (gazette p.996), s.20(א)",
+      "locator_he": "עמוד 8 (עמוד ספר החוקים 996), סעיף 20(א)",
       "page": 8,
       "checked": "2026-10-25"
     }

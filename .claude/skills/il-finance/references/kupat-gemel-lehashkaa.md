@@ -185,6 +185,7 @@ Out of scope: tax at deposit, during and at exit, including the annuity exemptio
 - Conditions / exceptions: Whether switching tracks is a tax event belongs in `tax-gemel-lehashkaa-ira-child.md`.
 - Figures: 3 business days.
 - Source: [Altshuler bylaws March 2025](https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf), clause 20 (same in Infinity); circular 2020-9-18 section 12(ג)(5) refers to "זכותו של כל עמית להעביר בכל עת את כספיו, כולם או חלקם, מכל מסלול לכל מסלול אחר" · checked 2026-10-22 · institution and primary.
+- Scope: unsettled: the CMA's own rule on how fast a track switch is executed (the standard bylaws or a circular); seen at: Altshuler Shaham
 - Dimensions: `transfer-switch-process`, `switching-tax-event`
 - Likely to change: no.
 
@@ -238,6 +239,7 @@ Out of scope: tax at deposit, during and at exit, including the annuity exemptio
 - Conditions / exceptions: none beyond the above.
 - Figures: NIS 5,000 (indexed, base date not stated); 3 years.
 - Source: [Altshuler bylaws March 2025](https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf), clauses 22–26 (same in Infinity) · checked 2026-10-22 · institution.
+- Scope: unsettled: the CMA's standard bylaws for kupat gemel lehashkaa or its circular on beneficiaries; seen at: Altshuler Shaham
 - Dimensions: `eligibility`
 - Proposed dimension: `beneficiaries-on-death`.
 - Likely to change: the CMA 2026 plan (p. 20) updates the circular on locating members and beneficiaries.

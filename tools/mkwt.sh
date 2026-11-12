@@ -12,4 +12,6 @@ for e in "$MAIN"/node_modules/* "$MAIN"/node_modules/.bin; do n=$(basename "$e")
 for p in engine schema pipeline; do ln -s ../../packages/$p "$WT/node_modules/@finance-tool/$p"; done
 [ -e "$MAIN/site/node_modules" ] && ln -s "$MAIN/site/node_modules" "$WT/site/node_modules"
 [ -e "$MAIN/packages/pipeline/node_modules" ] && ln -s "$MAIN/packages/pipeline/node_modules" "$WT/packages/pipeline/node_modules"
+# the library's documents are not in git (tools/library.mjs keeps them in research/library/store): link the one store, or `find` and `cite` see nothing
+[ -d "$MAIN/research/library/store" ] && [ ! -e "$WT/research/library/store" ] && ln -s "$MAIN/research/library/store" "$WT/research/library/store"
 echo "$WT"

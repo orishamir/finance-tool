@@ -27,7 +27,7 @@ export const content: GuideContent = {
         הפטור לא חל על כל סכום. לשכירים הוא חל על הפקדות של עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק ועד <N v={figure("KH-04", "employee_pct")} /> מהשכר שלכם, ורק על שכר של עד <Whole v={figure("TXH-02", "determining_salary_cap")} /> בחודש: גם מי שמרוויח יותר מחשב את האחוזים לפי <Whole v={figure("TXH-02", "determining_salary_cap")} />. לעצמאים הוא חל על הפקדות של עד <Whole v={figure("TXH-08", "self_employed_benefited")} /> בשנה.
       </p>
       <p className="max-w-measure">
-        אפשר להפקיד גם יותר, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. בשאר המקרים אפשר למשוך גם לפני <N v={figure("TXH-09", "lock_years")} /> השנים, אבל אז משלמים מס. כמה משלמים בכל מקרה כתוב ב״{sectionTitle("keren-hishtalmut", "tax")}״.
+        אפשר להפקיד גם יותר, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. אפשר למשוך גם לפני שעברו <N v={figure("TXH-09", "lock_years")} /> השנים, אבל אז משלמים מס הכנסה. כמה משלמים בכל מקרה כתוב ב״{sectionTitle("keren-hishtalmut", "tax")}״.
       </p>
       <RulesLine ids={["KH-01", "KH-02", "KH-03", "KH-04", "KH-10", "TXH-09", "TXH-10", "TXH-02", "TXH-08", "TXH-03"]} />
     </>
@@ -78,14 +78,14 @@ export const content: GuideContent = {
       <ProseList
         items={[
           <>על כסף שהמעסיק הפקיד עד הגבול: מס הכנסה, כמו על משכורת.</>,
-          <>על הרווח מההשקעות: מס הכנסה, ולא מס רווחי הון. למי שמתחת לגיל <N v={figure("TXG-04", "age")} /> זה לפחות <N v={figure("TXG-03", "first_rate")} />; מגיל <N v={figure("TXG-04", "age")} /> המדרגות מתחילות נמוך יותר.</>,
-          <>על כסף שהפקדתם מהשכר: לא משלמים שוב, כי כבר שילמתם עליו מס כשקיבלתם את השכר.</>,
+          <>על הרווח מההשקעות: מס הכנסה, ולא מס רווחי הון. למי שמתחת לגיל <N v={figure("TXG-04", "age")} /> שיעור המס הוא לפחות <N v={figure("TXG-03", "first_rate")} />; מגיל <N v={figure("TXG-04", "age")} /> המדרגות מתחילות נמוך יותר.</>,
+          <>על כסף שהפקדתם מהשכר: לא משלמים שוב, כי כבר שילמתם עליו מס הכנסה כשקיבלתם את השכר.</>,
         ]}
       />
       <p className="max-w-measure">עצמאים משלמים מס הכנסה, כמו על הכנסה מהעסק, על הרווח ועל ההפקדות שקיבלו עליהן <Term id="ניכוי">ניכוי</Term> ממס.</p>
       <RulesLine ids={["TXH-13", "TXH-04", "TXG-03", "TXG-04"]} />
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">לא כל הסכום מגיע לחשבון.</span> במשיכה לפני הזמן, מהכסף שחייב במס הקרן מעבירה <N v={figure("TXH-15", "withholding_early")} /> ישירות למס הכנסה. זה לא בהכרח המס שלכם: מי שהמס שלו נמוך יותר מקבל את ההפרש בחזרה רק אם מבקש החזר ממס הכנסה. לשכירים הסכומים מופיעים למעלה, ב״{sectionTitle("keren-hishtalmut", "different")}״, כשבוחרים פחות מ־<N v={figure("TXH-09", "lock_years")} /> שנים; לעצמאים האתר עוד לא מחשב אותם.
+        <span className="font-medium">לא כל הסכום מגיע לחשבון.</span> במשיכה לפני הזמן, מהכסף שחייב במס הקרן מעבירה <N v={figure("TXH-15", "withholding_early")} /> ישירות למס הכנסה. הניכוי הזה לא בהכרח המס הסופי שלכם: מי שהמס שלו נמוך יותר מקבל את ההפרש בחזרה רק אם מבקש החזר ממס הכנסה. לשכירים הסכומים מופיעים למעלה, ב״{sectionTitle("keren-hishtalmut", "different")}״, כשבוחרים פחות מ־<N v={figure("TXH-09", "lock_years")} /> שנים; לעצמאים האתר עוד לא מחשב אותם.
       </Callout>
       <RulesLine ids={["TXH-13", "TXH-15"]} />
       <p className="max-w-measure text-sm text-muted-foreground">

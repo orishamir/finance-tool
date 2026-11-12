@@ -1,0 +1,39 @@
+{
+  "id": "INS-02",
+  "title": "No annual deposit ceiling applies to a savings policy",
+  "title_he": "לא נמצאה תקרת הפקדה שנתית בפוליסת חיסכון",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-22",
+  "text_he": "מבקר המדינה מצא שבפוליסות חיסכון משתמשים בלי הגבלה על הסכום שמפקידים בהן בכל שנה, בניגוד לקופת גמל להשקעה, שתקרת ההפקדה השנתית שלה שמה אותה בעמדת נחיתות מול פוליסת חיסכון בסכומים שמעל התקרה. המבקר לא מציין את הבסיס החוקי לכך, ובשום מקור שנקרא לא נמצאה תקרה. חברת הביטוח עדיין יכולה לסרב להפקדה או להתנות אותה: בתנאים של כלל, למשל, הפקדה חד־פעמית או הגדלה דורשות הסכמה מראש ובכתב של החברה.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://library.mevaker.gov.il/sites/DigitalLibrary/Documents/2024/The-cost-of-living/2024-The-cost-of-living-104-Hon.pdf",
+      "title": "State Comptroller, January 2024",
+      "title_he": "הפיקוח של רשות שוק ההון על הגופים המוסדיים המנהלים חיסכון ארוך טווח (ינואר 2024)",
+      "publisher": "State Comptroller",
+      "publisher_he": "מבקר המדינה",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.clalbit.co.il/media/yy5djhg3/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-1418.pdf",
+      "title": "Clal 1418",
+      "title_he": "תנאים כלליים לביטוח חיים – חיסכון פיננסי לעתיד (1418), מהדורת 8/2024",
+      "publisher": "Clal Insurance",
+      "publisher_he": "כלל ביטוח",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s. 7.1",
+      "locator_he": "סעיף 7.1",
+      "checked": "2026-10-22"
+    }
+  ]
+}

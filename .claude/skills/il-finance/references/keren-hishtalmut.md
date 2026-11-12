@@ -255,6 +255,7 @@ A study fund is a provident fund (קופת גמל) "intended to pay study allowa
 - Conditions / exceptions: Some tracks are closed to new members. Altshuler "כללי ב'" "will be closed to new members from 1.1.2016". It appears in Gemel-Net next to "אלטשולר שחם השתלמות כללי", which is a case of two similar names for the catalogue (3.10). Track naming and the catalogue belong to `tracks-catalogue-and-decoder.md`. No dimension in the README vocabulary describes the asset class a track holds; the exposure itself is an exposure record (D6), not a dimension.
 - Figures: 154 general-public study-fund track records in 202609.
 - Source: [Gemel-Net datastore, resource a30dcbea-a1d2-482c-ae29-8f781f5025fb, filters REPORT_PERIOD=202609, FUND_CLASSIFICATION=קרנות השתלמות, TARGET_POPULATION=כלל האוכלוסיה](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={"REPORT_PERIOD":202609,"FUND_CLASSIFICATION":"קרנות%20השתלמות","TARGET_POPULATION":"כלל%20האוכלוסיה"}&fields=FUND_ID,FUND_NAME,MANAGING_CORPORATION,SPECIALIZATION,SUB_SPECIALIZATION,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,TOTAL_ASSETS&limit=500) · checked 2026-10-22 · primary. Altshuler bylaws 1.12.2024, s.8.4 · checked 2026-10-22 · institution. Harel bylaws 07/2024, s.9 · checked 2026-10-22 · institution.
+- Scope: general
 - Dimensions: `fee-management-balance`, `transfer-switch-process`
 - Likely to change: yes. Tracks open and close monthly.
 

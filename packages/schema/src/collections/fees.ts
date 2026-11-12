@@ -60,7 +60,7 @@ export const feeLine = z.strictObject({
   not_ranked: z
     .strictObject({
       reason_he: z.string().min(1).max(240),
-      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() }),
     })
     .optional(),
   names: z.strictObject({ tariff: z.array(z.string()) }),
@@ -77,6 +77,8 @@ export const availabilityEntry = z.strictObject({
   source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...place }),
   note: z.string().optional(),
   reason_he: z.string().min(1).optional(),
+  /** The rules of the rule base that hold this fact: the house's row opens their cards from the words that say the class cannot be bought there, or that it is unclear. Display only; it changes no price and no ranking. */
+  rule_ids: ruleIds.optional(),
   /**
    * the class can be bought there only by phone (through the house's trading desk), as the house's own words say, with their
    * own source and its quote; with `venues`, only a fund bought on those exchanges (a class of funds bought abroad). A sourced fact shown
@@ -85,7 +87,7 @@ export const availabilityEntry = z.strictObject({
   phone_only: z
     .strictObject({
       venues: z.array(venue).min(1).optional(),
-      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+      source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() }),
       note: z.string().optional(),
     })
     .optional(),
@@ -104,7 +106,7 @@ export const byAmountEntry = z.strictObject({
   list_only: z.boolean(),
   /** The words name shares and no exchange-traded fund: for a fund that is silence (D56), so the entry is kept for its reason and changes nothing. */
   shares_only: z.literal(true).optional(),
-  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240) }),
+  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() }),
   note: z.string().optional(),
 });
 
@@ -312,8 +314,12 @@ export const feesSnapshot = z.strictObject({
   by_amount: z.array(byAmountEntry).optional(),
   /** Who pays the prices on this record: required of a bank's or broker's record by the data check. */
   price_for_he: z.string().min(1).optional(),
-  /** What the documents hold that this record does not use, and why; empty means nothing was found. */
-  left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1) })).optional(),
+  /**
+   * What the documents hold that this record does not use, and why; empty means nothing was found. `why` is the working note. `why_he` is
+   * the same reason in plain Hebrew for the reader, and `could_change_price` says whether leaving it out can make what some reader pays
+   * differ from the price shown (another plan, a tier, a minimum by activity): a page tells the reader of those beside the house's price.
+   */
+  left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1), why_he: z.string().min(1).optional(), could_change_price: z.boolean().optional() })).optional(),
   groups: feeGroups.optional(),
   /** What the house's advertising says against its binding documents (D57); absent or empty when nothing was found. */
   advertising: z.array(advertisingEntry).optional(),

@@ -37,6 +37,19 @@
       "strength": "primary",
       "locator": "pp.10-11, appendix",
       "page": 10,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf",
+      "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
       "quote": "כל רווח ההון הנומינלי ייחשב כסכום אינפלציוני פטור ממס",
       "checked": "2026-10-26"
     },

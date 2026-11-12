@@ -1,0 +1,904 @@
+{
+  "id": "ibi",
+  "provider": {
+    "name_he": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+    "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ",
+    "notes": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ (8 עמ', 'נכון לתאריך: 1.7.2026'; PDF CreationDate 3.7.2026, ModDate 5.7.2026, Last-Modified 5.7.2026). נקרא שוב 4.11.2026: אותו קובץ (md5 e1a27163...) כמו בספרייה 1b2d30fbf999c143 מ-31.10.2026; אין תעריפון חדש יותר: כל עמודי ibi.co.il מקשרים אליו, בספריית המדיה רק גרסאות ישנות (2024, ינואר 2025 - ספרייה bbbec847048e2596), ודף החבר במחשבון הבורסה עודכן 06/07/26. חלק 1-2 (עמ' 1), חלק 3 (עמ' 2), חלק 4 - ניירות ערך (עמ' 3-6), חלק 5 - מטבע חוץ (עמ' 6), חלק 6 - שירותים ועמלות נוספות (עמ' 7), חלק 7 - מגזר עסקי (עמ' 7-8). הגרסה מ-14.1.2025 הדפיסה דמי משמרת '0.1%, עד מקסימום ₪ 5,000 לרבעון'; גרסת 1.7.2026 מדפיסה 0.1% לרבעון בלי תקרה. מ-8.11.2026 המחיר לפי נספח העמלות של הסכם פתיחת החשבון (נספח ח', גרסה 27.01.2026, עמ' 72-76), שהחברה שלחה לפי בקשה ואישרה בכתב שהוא הנוכחי ללקוח חדש במסחר עצמאי; אין לו עותק ציבורי, והמילים שהאתר משתמש בהן מצוטטות ב-docs/company-answers.md#ibi-2026-11-08 (ספרייה 3bf5279377349699). השורות שהנספח אינו קובע נשארות לפי התעריפון. 2026-11-08: the annex opens 'החברה תהיה זכאית לקבל מהלקוח ולחייב את החשבון בעמלות ותשלומים לפי הקבוע בנספח זה או בכל הסכם אחר עם הלקוח וכן עמלות הנקובות בתעריפון החברה' (p.72). Where both set a fee, the annex rules: it is the client agreement in which a TASE member states its fees (BRK-24), and IBI confirmed it as current (docs/company-answers.md#ibi-2026-11-08). So the price list's 0.1% custody and its 'דמי שימוש עד ₪ 50' do not apply: the annex prints 'דמי משמרת: פטור' (p.74) and a NIS 15 usage fee (p.72), and IBI wrote 'לא קיים דמי משמרת אלא דמי ניהול חודשיים של 15 ₪ מתקזז עם פעולות'. Lines the annex does not set stay on the price list.",
+    "published": "2026-07-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-12",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "ibi-buy-sell-tase",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.08,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "תעודות סל 0.08%"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.73, 'מסחר בישראל': 'מניות והמירים 0.08%', 'תעודות סל 0.08%', 'אג\"ח 0.08%', with no 'עד'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The price list of 1.7.2026 prints up to 0.15%, min NIS 3.5 (p.3). Off-exchange trades 0.1% / min NIS 50, purchase in an offering 0.1% (annex p.73). No channel split: the price list's fees apply to actions 'באמצעות החברה, לרבות באמצעות מוקד טלפוני מאויש'."
+      },
+      "min": {
+        "value": 2.35,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "עמלת מינימום לעסקה ₪ 2.35"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עמלת מינימום לעסקה ₪ 2.35' (annex p.73), the Tel Aviv lines' minimum."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מסחר בישראל",
+          "מניות והמירים",
+          "תעודות סל",
+          "אג\"ח"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.06,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "מק\"מ 0.06%"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.73: 'מק\"מ 0.06%'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The price list prints up to 0.1%, min NIS 3.5 (p.3)."
+      },
+      "min": {
+        "value": 2.35,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "עמלת מינימום לעסקה ₪ 2.35"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עמלת מינימום לעסקה ₪ 2.35' (annex p.73)."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מסחר בישראל",
+          "מק\"מ"
+        ]
+      }
+    },
+    {
+      "id": "ibi-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.06,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, עמלות כלליות (עמ' 74); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 74,
+          "quote": "פדיון של ני\"ע ומכשירים פיננסים: זהה לעמלת קניה ומכירה של אותו נייר"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.74: redemption pays the same as buying and selling the same security, so makam's 0.06% (p.73). The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני')."
+      },
+      "min": {
+        "value": 2.35,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, עמלות כלליות (עמ' 74); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 74,
+          "quote": "פדיון של ני\"ע ומכשירים פיננסים: זהה לעמלת קניה ומכירה של אותו נייר"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The purchase's minimum, 'עמלת מינימום לעסקה ₪ 2.35' (annex p.73)."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "פדיון של ני\"ע ומכשירים פיננסים"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-mutual-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.08,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "קרנות נאמנות 0.08%, מינימום ₪ 5 לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.73: 'קרנות נאמנות 0.08%, מינימום ₪ 5 לעסקה', the same figures as the price list (p.3), now without 'עד'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). Hedge funds in trust: 0.15%, min NIS 50."
+      },
+      "min": {
+        "value": 5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "קרנות נאמנות 0.08%, מינימום ₪ 5 לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 5 לעסקה' (annex p.73)."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מסחר בישראל",
+          "קרנות נאמנות"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-foreign-us-per-share",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.01,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "סנט למניה, מינימום 7.5$ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.73, 'מסחר בניירות ערך הנסחרים בארה\"ב', the first of two tracks, each with a box to tick: 'סנט למניה, מינימום 7.5$ לעסקה', with 'ללא עמלת מקסימום (באם ישנה כזאת)' (so no cap is recorded). One US cent a share, recorded as USD 0.01 in the schema's per-share unit (as Psagot's and Altshuler Trade's '1 סנט למניה'). IBI confirmed the annex in writing on 8.11.2026 as its current one for a new self-trading customer, and its first answer (item 4) says one can move between the US tracks, so an ordinary customer can be on this track. Added 2026-11-12 (pricing audit): the indices page reads this line and the fixed one (ibi-buy-sell-foreign-us-fixed) and takes the cheaper that computes (method F-63); a fund with no share price (the page's generic fund abroad) cannot be priced on this line and stays on the fixed one. Third-party charges (SEC, TAF, ECN, ORF, tax) are added (annex p.75, item ח)."
+      },
+      "min": {
+        "value": 7.5,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "סנט למניה, מינימום 7.5$ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 7.5$ לעסקה' (annex p.73)."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מסחר בניירות ערך הנסחרים בארה״ב, סנט למניה, מינימום 7.5$ לעסקה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מסחר בניירות ערך הנסחרים בארה\"ב",
+          "סנט למניה, מינימום 7.5$ לעסקה"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-foreign-us-fixed",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "פיקס 12$ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.73, 'מסחר בניירות ערך הנסחרים בארה\"ב': two tracks, each with a box to tick, 'סנט למניה, מינימום 7.5$ לעסקה' and 'פיקס 12$ לעסקה', and 'ללא עמלת מקסימום (באם ישנה כזאת)'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'), and its first answer (item 4) says one can move between the US tracks. This line is the fixed track (rate 0, minimum and maximum USD 12); since 2026-11-12 the per-share track is its own line (ibi-buy-sell-foreign-us-per-share), and the indices page reads each and takes the cheaper that computes, as for Interactive Brokers' Fixed and Tiered (method F-63). Before, only this track was priced, because the page had no share price for the per-share track: it costs USD 7.5 for any order up to 750 shares and less than USD 12 up to 1,200, so the fixed USD 12 overstated every ordinary US order. Third-party charges (SEC, TAF, ECN, ORF, tax) are added (annex p.75, item ח). The price list's five tracks (p.3) are superseded."
+      },
+      "min": {
+        "value": 12,
+        "unit": "usd",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "פיקס 12$ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'פיקס 12$ לעסקה' (annex p.73): the trade's fixed price."
+      },
+      "max": {
+        "value": 12,
+        "unit": "usd",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "פיקס 12$ לעסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'פיקס 12$ לעסקה' (annex p.73): the trade's fixed price, so it is also the most a trade pays."
+      },
+      "period": null,
+      "channel": null,
+      "band": "מסחר בניירות ערך הנסחרים בארה״ב, פיקס 12$ לעסקה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מסחר בניירות ערך הנסחרים בארה\"ב",
+          "פיקס 12$ לעסקה"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-foreign-other-markets",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.3,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה) (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "0.3%, מינימום 30 במטבע העסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.73, 'מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה)', 'ניירות ערך': '0.3%, מינימום 30 במטבע העסקה', with no warning that it may change (the annex's 'עשויה להשתנות' is item ז, p.75, about arbitrage only). The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). IBI's written answers of 8.11.2026 put the iShares Core S&P 500 UCITS ETF (IE00B5BMR087) on this line: 'העמלה באירופה היא 0.3% מינימום 30 ממטבע העסקה, קרנות נאמנות זרות זה משהו אחר' and 'העלות רכישה של נייר הערך שציינת היא 0.3% מינימום 30 במטבע דולר אמריקאי'. The site reads every fund bought outside the US on this line (inferred from the one fund IBI named). The price list prints the same figures for 'ני\"ע באסיה ובאירופה' with 'עשויה להשתנות ... באחריות הלקוח לפנות לחברה' (p.3), which greyed IBI until 2026-11-04. Foreign funds that do not trade continuously ('קרנות נאמנות זרות') have their own line, 0.275% + a foreign agent's cost (annex p.73), not priced. Bought by phone only, through the trading desk (availability.phone_only); the price list's fees apply to actions 'לרבות באמצעות מוקד טלפוני מאויש', so the price is the same."
+      },
+      "min": {
+        "value": 30,
+        "unit": "usd",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה) (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 73,
+          "quote": "0.3%, מינימום 30 במטבע העסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 30 במטבע העסקה' (annex p.73): in the trade's currency; recorded in dollars, the currency IBI's second answer names for the iShares fund ('30 במטבע דולר אמריקאי'). A fund traded in euros or pounds pays 30 of that currency."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה)",
+          "ניירות ערך",
+          "0.3%, מינימום 30 במטבע העסקה"
+        ]
+      }
+    },
+    {
+      "id": "ibi-custody",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, עמלות כלליות (עמ' 74); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 74,
+          "quote": "דמי משמרת: פטור"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.74, 'עמלות כלליות': 'דמי משמרת: פטור'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). IBI's first answer: 'לא קיים דמי משמרת אלא דמי ניהול חודשיים של 15 ₪ מתקזז עם פעולות.' The price list of 1.7.2026 prints 0.1% of the account a quarter (p.4), superseded here. A foreign security whose trading stopped or is 'חסר ערך': USD 11 a month (annex p.75, item טו); ADR holdings: a foreign bank's custody charge (item יא); neither applies to an ETF."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי משמרת"
+        ]
+      }
+    },
+    {
+      "id": "ibi-fx-spread",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 5 - מטבע חוץ, סעיף 1, מרווח המרה (עמ' 6)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-25"
+        ],
+        "state": "sourced",
+        "notes": "No conversion fee: the price list prints 'מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה' (part 5, item 1, p.6); the annex sets no conversion fee, so this stays on the price list. The cost is the spread, recorded under spread from the annex (p.75, item ד) and priced at 0.7% (D56, F-13). Conversions run once a day, 12:30-13:30 (the new-customers page)."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": 0.7,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, סעיף ד (עמ' 75); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 75,
+          "quote": "מרווח המרה בשיעור של 0.7% לעסקאות ששוויין נמוך מ-15,000 דולר ארה\"ב ובשיעור של 0.5% לעסקאות ששוויין עולה על 15,000 דולר ארה\"ב"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.75, item ד: 0.7% for a conversion under USD 15,000 and 0.5% above. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The schema has one spread, so every conversion is priced at 0.7%, the most either document allows (the price list: 'עד 0.7%', p.6); a conversion over USD 15,000 is overstated by 0.2% of it (left_out)."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מרווח המרה"
+        ]
+      }
+    },
+    {
+      "id": "ibi-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 15,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, דמי שימוש עבור מסלולי ציטוט (עמ' 72); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 72,
+          "quote": "עלות חודשית הניתנת לקיזוז כנגד חיובי עמלות בגין פעולות אשר בוצעו בחודש החיוב ₪ 15"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-01-27",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Annex p.72, 'דמי שימוש עבור מסלולי ציטוט': the basic Israeli track ('מסלול בסיסי, שכבת מחיר אחת') NIS 15 a month, the delayed US track NIS 0, 'העלות החודשית תהיה עלות המסלול הנבחר בישראל בתוספת עלות המסלול הנבחר בארה\"ב'; 'החיוב בגין דמי שימוש יתבצע ללא תלות בפעילות'. IBI's second answer: 'דמי ניהול חודשיים של 15 ₪ בחודש מתקזז עם פעולות.' The offset is not modelled: the schema and the engine have no fee that the month's trading fees reduce, so the NIS 15 is charged in full every month. That overstates IBI by the month's trading fees, at most NIS 15 a month (left_out). The price list prints 'דמי שימוש עד ₪ 50 אחת לחודש' (p.7), superseded here. The extended tracks (NIS 100 Israel, NIS 30 US) and the advanced systems are the customer's choice."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי שימוש עבור מסלולי ציטוט",
+          "מסלול בסיסי, שכבת מחיר אחת"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 15000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.ibi.co.il/תקנון-מבצע-הטבת-הצטרפות/",
+        "title": "תקנון מבצע – הטבות הצטרפות לחשבון מסחר עצמאי, הגדרת 'הצטרפות'",
+        "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+        "strength": "institution",
+        "quote": "הפקדת מזומן ו/או נכסים פיננסיים בסך מינימלי של 15,000 ש\"ח, או סכום שתקבע החברה מעת לעת, לחשבון"
+      },
+      "checked": "2026-11-04",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Printed in the definition of joining in all three promotion terms (library b822f008efdaaba5, 1a5d38e9f2ae478b, f56fad6dc256a8a4) and the referral terms; the same words in the small print of the managed-funds and standing-order pages and in the IBI SMART page's FAQ ('מהו המינימום לפתיחת חשבון ב-IBI TRADE? 15,000 ₪'). The tariff prints no minimum. 'או סכום שתקבע החברה מעת לעת': the company may change it. A condition of opening, not a price."
+    }
+  },
+  "notice_rule_ids": [
+    "BRK-15"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "docs/company-answers.md#ibi-2026-11-08",
+        "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+        "checked": "2026-11-08",
+        "page": 73,
+        "quote": "קרנות נאמנות 0.08%, מינימום ₪ 5 לעסקה"
+      }
+    },
+    {
+      "applies_to": [
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "docs/company-answers.md#ibi-2026-11-08",
+        "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+        "checked": "2026-11-08",
+        "page": 73,
+        "quote": "תעודות סל 0.08%"
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 5 (עמ' 3)",
+        "checked": "2026-11-08",
+        "page": 3,
+        "quote": "קניה, מכירה ופדיון של ניירות ערך בחו\"ל … מניות/תעודת סל בארה\"ב"
+      },
+      "note": "2026-11-08: the price list names ETFs abroad (US ones, in its own words). For a fund bought in Europe, IBI's written answers of 8.11.2026 (docs/company-answers.md#ibi-2026-11-08) say the iShares Core S&P 500 UCITS ETF (IE00B5BMR087) can be bought, by phone through the trading desk, at the annex's line for other markets (0.3%, at least USD 30), which prints no warning that it may change. Until 2026-11-04 the kind was greyed ('unknown') because the price list's Europe row may change and the customer must ask first; IBI's answer and the annex settle it.",
+      "phone_only": {
+        "venues": [
+          "europe"
+        ],
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "IBI, תשובה בכתב של דסק המסחר העצמאי, 8.11.2026, סעיף 1",
+          "checked": "2026-11-08",
+          "quote": "טלפונית מול חדר מסחר"
+        },
+        "note": "IBI's first answer, item 1, about the iShares Core S&P 500 UCITS ETF (IE00B5BMR087): it can be bought 'טלפונית מול חדר מסחר'. The site reads it for every fund IBI's line for other markets prices (inferred from the one fund IBI named). A fund bought in the US is not marked: no document read says it is phone only."
+      }
+    }
+  ],
+  "by_amount": [
+    {
+      "venue": "us",
+      "orders": "all",
+      "list_only": true,
+      "source": {
+        "url": "https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/",
+        "title": "אפליקציית IBI SMART, 'מסחר בשברי מניות בארה\"ב'",
+        "checked": "2026-11-10",
+        "quote": "מהיום ניתן לקנות ולמכור שברי מניות במגוון ניירות ערך בארה\"ב"
+      },
+      "note": "The house's account agreement (s.9.1.18) limits fractions to selected US securities ('בניירות ערך נבחרים בלבד בארה\"ב'); the list is not published. An order by amount is not stated."
+    }
+  ],
+  "price_for_he": "לקוח חדש במסחר עצמאי, לפי ההסכם הרגיל של החברה. לפי החברה, בתיק של כחצי מיליון ומעלה התנאים יכולים להיות טובים יותר.",
+  "left_out": [
+    {
+      "what": "התעריפון המפורסם (נכון לתאריך 1.7.2026), מסחר בארה\"ב, חמישה מסלולים: '0.01 דולר ארה\"ב למניה, מינימום 10 דולר'; 'עמלה קבועה של 14 דולר'; '0.15% משווי העסקה, מינימום 10 דולר'; '0.15% משווי העסקה + 0.01 דולר ארה\"ב למניה, מינימום 6 דולר'; OTC",
+      "page": 3,
+      "why": "Superseded by the annex a new customer signs (version 27.01.2026, p.73), which offers two US tracks, both priced since 2026-11-12 (the lead, 2026-11-08: the annex is the price). Note: the price list's fourth track has a lower minimum (USD 6) than the annex's per-share track (USD 7.5); the annex does not offer it, and IBI did not say a new customer can ask for it. Until 2026-11-12 this entry held the annex's per-share track, then not priced.",
+      "why_he": "התעריפון שבאתר החברה מונה חמישה מסלולים למסחר בארה״ב, אבל בנספח העמלות שלקוח חדש חותם עליו יש רק שניים, והאתר מתמחר את שניהם.",
+      "could_change_price": false
+    },
+    {
+      "what": "דף אפליקציית IBI SMART: \"עד 90% חיסכון בעמלות, ללא דמי משמרת וללא עמלות מיותרות\"",
+      "why": "Advertising (ibi.co.il/solutions/trading/app-ibi-smart-2/, modified 2026-11-02, library 5e8baa650897027d; same words in the Wayback copy of 2022-08-10). Its custody claim is now guaranteed: the annex IBI confirmed as its current one prints 'דמי משמרת: פטור' (p.74), so it is not an advertising entry (D57: a guarantee is not a finding). Until 2026-11-04 the price list's 0.1% a quarter (p.4) contradicted it.",
+      "why_he": "בדף האפליקציה כתוב שאין דמי משמרת, וגם בנספח העמלות שלקוח חדש חותם עליו כתוב ״דמי משמרת: פטור״. האתר מתמחר לפי הנספח.",
+      "could_change_price": false
+    },
+    {
+      "what": "דף קרנות מנוהלות: \"ללא דמי שמירה על כלל הקרנות במערכת, כולל קרנות מחקות\"; \"0 ₪ עמלת קניה ומכירה על מגוון קרנות כספיות ומנוהלות\"",
+      "why": "Advertising (ibi.co.il/solutions/zero-balance-managed-funds/, library d70f0a57d34af10b; since the first Wayback copy, 2025-07-04). The custody claim is now guaranteed by the annex ('דמי משמרת: פטור', p.74). The free trading covers only managed funds of twelve named managers and excludes tracking funds and ETFs in its own small print; 'החברה רשאית להפסיק את מתן ההטבה... לפי שיקול דעתה הבלעדי, בכל עת וללא הודעה מוקדמת'. An offer, not the reader's price.",
+      "why_he": "בדף הקרנות המנוהלות מוצעת קנייה ומכירה בלי עמלה בקרנות מנוהלות של כמה מנהלים, אבל לפי האותיות הקטנות לא בקרנות מחקות ולא בקרנות סל, והחברה יכולה להפסיק את ההטבה בכל עת. האתר לא מתמחר אותה.",
+      "could_change_price": false
+    },
+    {
+      "what": "\"300 ש\"ח מתנה לחשבון המסחר + 0 ש\"ח דמי טיפול לשנה!\" (דף IBI SMART); \"300 ש\"ח מתנה לחשבון\" (דף הבית ודף המסחר העצמאי)",
+      "why": "The general joining terms (pages 119617 and 66037, modified 2026-11-01/02, library b822f008efdaaba5 and 1a5d38e9f2ae478b) give a one-off NIS 300 credit, repayable if the account closes within 90 days, and a recorded course; no fee waiver. New customers only, during a period the company sets, which it may change or cancel 'לפי שיקול דעתה הבלעדי, בכל עת וללא מתן הודעה מוקדמת'. The year without handling fees is in no terms read today. An offer, not a price.",
+      "why_he": "לקוח חדש מקבל 300 ₪ פעם אחת לחשבון, בתקופה שהחברה קובעת ובתנאי שהחשבון לא נסגר בתוך 90 ימים. זו הטבת הצטרפות, והאתר מתמחר את המחיר הרגיל.",
+      "could_change_price": false
+    },
+    {
+      "what": "תקנון מבצע – הטבות הצטרפות באמצעות מפיצים: \"פטור מדמי שימוש במסלול הבסיסי בלבד, למשך שנתיים\" ו-300 ש\"ח",
+      "why": "Binding but conditional (library f56fad6dc256a8a4, created 2026-10-22, modified 2026-10-29): only for a new customer who joins through an approved distributor ('מפיץ... ואשר החברה אישרה את השתתפותו'), for two years from the joining month, then the fee applies per the agreement and tariff; the company may change or cancel the offer at its sole discretion. An offer, never the ranked price (D56). Since 2026-11-08 the usage fee priced is the annex's NIS 15 a month (p.72).",
+      "why_he": "מי שמצטרף דרך מפיץ שהחברה אישרה פטור מדמי השימוש במסלול הבסיסי לשנתיים. זו הטבה בתנאי, והאתר מתמחר את דמי השימוש הרגילים.",
+      "could_change_price": false
+    },
+    {
+      "what": "חבר מביא חבר: 700 ₪ למפנה ו-300 ₪ למצטרף (בתוקף עד 31.12.2026)",
+      "why": "Referral terms (ibi.co.il/solutions/smart_friends/, library 91c0072149274f17): new customers only, through a referrer's link, 15,000 NIS minimum, 90 days open. An offer with an end date, not a price.",
+      "why_he": "מי שמצטרף דרך הפניה של לקוח מקבל 300 ₪, עד 31.12.2026 ובהפקדה של לפחות 15,000 ₪. זו הטבת הצטרפות, והאתר מתמחר את המחיר הרגיל.",
+      "could_change_price": false
+    },
+    {
+      "what": "מחשבון העמלות של הבורסה: עמלות ממוצעות בפועל 01/01/26-30/06/26, \"דמי ניהול - ני\"ע ישראלים\" ו\"ני\"ע זרים\" 0.0673% (עד 25 אלף ₪) עד 0.0012% (מעל מיליון ₪); מסחר בישראל 0.0451%-0.0955%; מק\"מ 0.0379%-0.0602%; ני\"ע זרים 0.0939%-0.3614%",
+      "why": "What customers paid on average is a sourced fact, not a price (D56); recorded in the custody line's notes, not in averages. The sheet's list rates (updated 06/07/26) match the tariff, except that its custody row shows the NIS 50 monthly usage fee and not the 0.1% a quarter.",
+      "why_he": "במחשבון של הבורסה מופיע כמה שילמו לקוחות החברה בממוצע בפועל בחצי שנה. זה נתון על העבר ולא מחיר, ולכן האתר מתמחר לפי נספח העמלות.",
+      "could_change_price": false
+    },
+    {
+      "what": "הוראת קבע למסחר בארה\"ב",
+      "why": "Its page says 'שירות הוראות הקבע מספק התראות בלבד ואינו מבצע מסחר אוטומטי' and each purchase pays 'העמלות המוגדרות בחשבון המסחר'; the company may stop it 'בכל עת ללא הודעה מוקדמת'. No standing order on Tel Aviv securities is named anywhere read; a monthly purchase is a separate trade at the line's minimum.",
+      "why_he": "הוראת הקבע למסחר בארה״ב רק שולחת התראה ולא קונה לבד, וכל קנייה משלמת את העמלה הרגילה. האתר מחשב כל קנייה חודשית כפעולה נפרדת.",
+      "could_change_price": false
+    },
+    {
+      "what": "העברת ניירות ערך לחשבון בנק/ברוקר של הלקוח: בורסת ת\"א ₪ 20 לכל ני\"ע, מקסימום ₪ 150 להעברה; 10$ לכל ני\"ע ארה\"ב, 40$ לני\"ע קנדי, שאר ני\"ע מינימום 25$ (נספח העמלות, עמ' 74)",
+      "why": "A cost of leaving, not of holding; the schema has no line for it. The annex (p.74) sets it; the price list's figures (p.5) agree for Tel Aviv and the US. 'עלות משיכת ני\"ע מבורסות שונות בעולם תימסר ע\"פ דרישת לקוח' (p.76, item יח).",
+      "why_he": "העברת ניירות ערך לבית השקעות אחר עולה 20 ₪ לכל נייר שנסחר בתל אביב, עד 150 ₪ להעברה, ו־10 דולר לכל נייר מארה״ב. זו עלות של עזיבה, והאתר לא מחשב אותה.",
+      "could_change_price": false
+    },
+    {
+      "what": "טיפול באירועי חברה בני\"ע זרים שאינם בגדר חובת היענות: 50 דולר; ADR: חיוב משמורת של בנק זר",
+      "page": 7,
+      "why": "Item 5 of part 6 is charged 'במידה שישנו מענה מצד הלקוח', so a holder of an ETF who does not respond does not pay it. ADR custody does not apply to an ETF. Not priced. The annex adds that agents abroad may charge for foreign securities held for the account, corporate events included, though no fee list prints them (p.76, item כג).",
+      "why_he": "טיפול באירוע של חברה זרה שאין חובה להיענות לו עולה 50 דולר, רק אם הלקוח בוחר להגיב. מי שמחזיק קרן ולא מגיב לא משלם אותו.",
+      "could_change_price": false
+    },
+    {
+      "what": "חלק 7 - שירותי תפעול לחברות ופעילים במגזר העיסקי, כולל דמי משמרת 1.5% שנתי או 50,000 ₪ לרבעון",
+      "page": 8,
+      "why": "Business-sector operations services, not a retail self-trading account.",
+      "why_he": "אלה מחירים לחברות ולמגזר העסקי, לא לחשבון של אדם פרטי.",
+      "could_change_price": false
+    },
+    {
+      "what": "קיזוז דמי השימוש (₪ 15 לחודש) כנגד עמלות הפעולות של אותו חודש (נספח העמלות, עמ' 72)",
+      "why": "The schema and the engine have no fee that the month's trading fees reduce, so the NIS 15 is charged in full every month (2026-11-08). A month whose trading fees reach NIS 15 pays nothing more in fact; the site overstates IBI by up to NIS 15 a month.",
+      "why_he": "דמי השימוש של 15 ₪ בחודש מתקזזים מול עמלות הפעולות של אותו חודש: בכל חודש שיש בו קנייה, העמלה שלה יורדת מדמי השימוש, עד 15 ₪. האתר גובה את מלוא 15 ₪ כל חודש, ולכן המחיר בפועל זול יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "מרווח המרה 0.5% לעסקאות ששוויין עולה על 15,000 דולר ארה\"ב (נספח העמלות, עמ' 75, סעיף ד)",
+      "why": "The schema has one spread, so every conversion is priced at 0.7% (2026-11-08); a conversion over USD 15,000 is overstated by 0.2% of it.",
+      "why_he": "מרווח ההמרה הוא 0.7% בהמרה של פחות מ־15,000 דולר ו־0.5% מעל זה. האתר מחשב 0.7% בכל המרה, ולכן המרה גדולה זולה בפועל יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "\"ההטבות יכולות להשתנות בהתאם לגודל תיק (בדרך כלל תיק של כחצי מיליון ומעלה)\" (תשובת IBI בכתב, 8.11.2026)",
+      "why": "No price is given: terms agreed for a large portfolio are an offer, not the ordinary customer's price (D56). Said in price_for_he.",
+      "why_he": "לפי החברה, בתיק של כחצי מיליון ומעלה התנאים יכולים להיות טובים יותר, בלי מחיר כתוב. האתר מתמחר את המחיר שבנספח.",
+      "could_change_price": false
+    },
+    {
+      "what": "ני\"ע זרים: \"ייתכנו חיובים נוספים בעבור כל פעולה ו/או החזקה של ניירות הערך או הכספים, כגון: SEC, TAF, ECN, ORF, TAX ועוד\" (נספח העמלות, עמ' 75, סעיף ח); עמלות של גורמים בחו\"ל על ניירות ערך זרים (עמ' 76, סעיף כג)",
+      "why": "Third-party charges on top of the commission, at whatever they cost (D66): the annex says they 'ייגבו בנוסף לעמלה המוגדרת בחוזה הלקוח/ה' and that IBI 'אינה יכולה לצפות קיומם', and IBI's first answer of 8.11.2026 (item 5) says it cannot know them in advance. Not limited by the documents, so left out, as for every house.",
+      "why_he": "על ניירות ערך בחו״ל נוספים חיובים של גופים אחרים, כמו אגרות של הרשויות בארה״ב במכירה, בסכום שהחברה לא יודעת מראש. האתר לא מוסיף אותם, כמו אצל כל בית השקעות, ולכן המחיר בפועל יקר יותר.",
+      "could_change_price": true
+    }
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff re-read 2026-11-04, with the three joining-offer terms, the referral terms, the IBI SMART, self-trading, managed-funds and standing-order pages, and the exchange's member sheet (read in Chrome; not listed under read, because another house's record lists that host). None names young, student, soldier, released-soldier or other groups on a price. The joining offers are for new customers and distributors' referrals (see left_out). This covers what was read, not a personal offer. 2026-11-08: the account agreement's fee annex (version 27.01.2026) names no group either. IBI's second written answer says better terms depend on the portfolio's size, 'בדרך כלל תיק של כחצי מיליון ומעלה', with no price: said in price_for_he, not a group price.",
+    "read": [
+      {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "תעריפון"
+      },
+      {
+        "url": "https://www.ibi.co.il/תקנון-מבצע-הטבת-הצטרפות/",
+        "title": "תקנון מבצע – הטבות הצטרפות לחשבון מסחר עצמאי"
+      },
+      {
+        "url": "https://www.ibi.co.il/תקנון-מבצע-הטבות-הצטרפות-באמצעות-מפ/",
+        "title": "תקנון מבצע – הטבות הצטרפות באמצעות מפיצים"
+      },
+      {
+        "url": "https://www.ibi.co.il/solutions/smart_friends/",
+        "title": "תקנון חבר מביא חבר IBI SMART"
+      },
+      {
+        "url": "https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/",
+        "title": "אפליקציית IBI SMART"
+      },
+      {
+        "url": "https://www.ibi.co.il/solutions/zero-balance-managed-funds/",
+        "title": "0 ש\"ח עמלת קניה ומכירה קרנות כספיות ומנוהלות"
+      }
+    ],
+    "entries": []
+  },
+  "advertising": [
+    {
+      "fee": "account",
+      "verdict": "not_found",
+      "claim_he": "300 ש\"ח מתנה לחשבון המסחר + 0 ש\"ח דמי טיפול לשנה!",
+      "claim_source": {
+        "url": "https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/",
+        "title": "אפליקציית IBI SMART",
+        "seen": "2026-11-04"
+      },
+      "binding_source": {
+        "kind": "promotion_terms",
+        "url": "https://www.ibi.co.il/תקנון-מבצע-הטבת-הצטרפות/",
+        "title": "תקנון מבצע – הטבת הצטרפות (חשבון מסחר עצמאי)",
+        "dated": "2026-11-02",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
+}

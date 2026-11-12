@@ -13,6 +13,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=15",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.15 (gazette p.1015), reg. 18(ה)",
+      "locator_he": "עמוד הקובץ 15 (עמוד הרשומות 1015), תקנה 18(ה)",
+      "page": 15,
+      "quote": "תחת הכותרת",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
       "title": "פעילות קרנות נאמנות בישראל 2025",
       "title_he": "פעילות קרנות נאמנות בישראל 2025",
@@ -24,19 +38,6 @@
       "locator_he": "עמודים 1 עד 21",
       "page": 1,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=15",
-      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
-      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.15 (gazette p.1015), reg. 18(ה)",
-      "locator_he": "עמוד הקובץ 15 (עמוד הרשומות 1015), תקנה 18(ה)",
-      "quote": "תחת הכותרת",
-      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

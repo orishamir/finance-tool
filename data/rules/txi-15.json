@@ -37,7 +37,7 @@
     }
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "scope": "general",
   "sources": [
     {
@@ -87,7 +87,7 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "quote": "מאפייני אג״ח סחיר",
+      "quote": "גילון חדש",
       "checked": "2026-10-26"
     }
   ]

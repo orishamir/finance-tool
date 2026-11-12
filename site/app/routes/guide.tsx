@@ -31,16 +31,17 @@ export async function loader({ params }: Route.LoaderArgs) {
   const data = buildGuidePage(params.id, content ? [...(content.switchRules ?? [])] : [], content ? [...content.termIds] : [], content?.relatedIds);
   if (!data) throw new Response("Not found", { status: 404 });
   // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
-  const { loadPinnedRules, loadRules, pointedRecords } = await import("../lib/data.server");
+  const { loadPinnedRules, loadRules, pointedWithFlagSlots } = await import("../lib/data.server");
   const worthIds = loadPinnedRules().guide_blocks?.[params.id] ?? [];
   const allRules = loadRules();
   const rules = { ...data.rules };
   for (const id of [...worthIds, ...withdrawalRules(params.id)]) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
-  // the records the cards point at, the pinned facts' too, travel beside the page's own rules (only chips and cards read them)
+  // the records the cards point at, the pinned facts' too, and those the run flags' words read travel beside the page's own rules (only
+  // chips, cards and the flags read them)
   // the fee page is linked only where it can answer: a product with no fee terms ends there in "no record"
   const { compareBundle } = await import("../lib/compare.server");
   const { feePageAnswers } = await import("../lib/fees");
-  return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds, feePage: feePageAnswers(compareBundle(), params.id) };
+  return { ...data, rules, pointed: pointedWithFlagSlots(rules, allRules), worthIds, feePage: feePageAnswers(compareBundle(), params.id) };
 }
 
 export function meta({ loaderData: data, location }: Route.MetaArgs) {

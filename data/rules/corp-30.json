@@ -35,8 +35,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "reg. 2(1)",
-      "locator_he": "תקנה 2(1)",
+      "locator": "reg. 2(1), file p.3",
+      "locator_he": "תקנה 2(1), עמוד הקובץ 3",
+      "page": 3,
       "quote": "הנכסים המגבים את ההתחייבות לפי התעודה הם פיקדונות בבנק",
       "checked": "2026-11-07"
     }

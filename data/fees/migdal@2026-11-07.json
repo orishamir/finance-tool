@@ -113,6 +113,22 @@
   "minimums": {
     "account_opening": null
   },
+  "left_out": [
+    {
+      "what": "שיעור דמי ניהול מצבירה (שנתי): __% (שורה ריקה בטופס)",
+      "page": 3,
+      "why": "Form 2501 leaves the agreed balance rate blank beside 'דמי הניהול הרגילים בקופה הינם בשיעור של 1.05%', names no deposit rate, and p.5 prints a fund average (0.61% of savings, 0.00% of deposits): an average, not a price. The rate a joiner is given is not published. The record prices the ceiling (D56: 'up to' is priced at the top). Read 2026-11-12.",
+      "why_he": "המחיר כאן הוא התקרה שהמסמכים המחייבים של החברה מתירים. השיעור שעמית מקבל בפועל נקבע בהצטרפות ולא מתפרסם, ולכן הוא יכול להיות נמוך יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "נוסף על דמי הניהול, רשאית החברה המנהלת לגבות מהנכסים המנוהלים בקופה הוצאות ישירות בשל ביצוע עסקאות",
+      "page": 3,
+      "why": "Direct transaction expenses come out of the fund's assets on top of the management fees. The document prints no rate; it says the past year's rates are on the company's website. This record prices the management fees only; a track's direct expenses enter a run only from data/funds/ (A-18), otherwise as 0 with a 'not collected' flag. Read 2026-11-12.",
+      "why_he": "מלבד דמי הניהול, החברה רשאית לגבות מכספי הקופה הוצאות ישירות על קנייה ומכירה של השקעות. המסמך לא קובע להן שיעור, ולכן הן לא כלולות במחיר שמוצג כאן, והעלות בפועל יכולה להיות גבוהה ממנו.",
+      "could_change_price": true
+    }
+  ],
   "notice_rule_ids": [
     "PF-16"
   ]

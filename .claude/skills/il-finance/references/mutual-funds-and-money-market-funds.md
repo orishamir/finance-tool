@@ -62,6 +62,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Conditions / exceptions: The ISA guide says a tracking fund aims for the index return but does not commit to it, and tracking funds generally charge lower management fees than active funds. Meitav's site describes the open tracking fund the same way ("אינה מתחייבת לכך").
 - Figures: End-2025: open tracking funds 799 funds, NIS 128.9 bn; active funds (excluding alternative funds) 1,067 funds, NIS 228.2 bn (ISA 2025 report p. 3).
 - Source: [Joint Investment Trust Law, Securities Authority's consolidated copy, file of 31.8.2026](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=3) (file pages: s.1 3-5), section 1 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [ISA investor guide (2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), p. 11 · primary (dated). [ISA, פעילות קרנות נאמנות בישראל 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), p. 3 · checked 2026-11-08 · primary. [Meitav, types of mutual funds](https://www.meitav.co.il/mutual_funds/types_of_mutual_funds/) · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: fee-management-balance
 - Likely to change: no (figures change yearly)
 
@@ -242,6 +243,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Conditions / exceptions: none further found
 - Figures: none
 - Source: [s.5, gazette ק״ת תשס״ו, 494](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmfLeg7C4UCrAfbCcchwXa2I=#page=3); [same regulations, the 2016 amendment (קובץ התקנות 7653)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=10), regulation 5 · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)
+- Scope: general
 - Dimensions: fee-management-balance
 - Likely to change: no
 
@@ -380,7 +382,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Rule: On 9 April 2025 the ISA and the Bank of Israel published a directive (A447) requiring banks to publish information on deposits, money-market funds and makam together under the name "מוצרי שוק הכסף", simply and accessibly. The final directive (version 1, 09/04/25, circular 2813) requires the display on the public website, the personal area and the app (s.6), filters by period and currency and no favouring of one product (s.5), a link to the ISA's general information on money-market funds (s.13), at least daily updates (ss.14, 18), and a consolidated view of the client's own holdings of deposits, money-market funds and makam in the personal area and the app (s.19).
 - Conditions / exceptions: Money-market funds with fixed dates more than 12 months apart are outside the directive's definition. Details belong to `bank-current-account-deposits.md`.
 - Figures: none
-- Source: [פעילות קרנות נאמנות בישראל 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), p.2 · primary · checked 2026-10-25. [הוראת ניהול בנקאי תקין 447A: פרסום מידע מרוכז על קרנות כספיות ומק"מ (04/25)](https://boi.org.il/media/gcmk52bw/447a.pdf), pp.1-3, ss.4-20 ("יעדכן את המידע לפחות ברמה יומית", s.14) · primary · checked 2026-10-26. The draft text first cited here (sections 4-19) was replaced on 2026-10-25 by the final 04/25 text (a new section 17 on makam; later sections renumbered 19-20).
+- Source: [פעילות קרנות נאמנות בישראל 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), p.2 · primary · checked 2026-10-25. [הוראת ניהול בנקאי תקין 447A: פרסום מידע מרוכז על קרנות כספיות ומק"מ (04/25)](https://boi.org.il/media/gcmk52bw/447a.pdf), pp.1-3, ss.4-20; p.2, s.14 "יעדכן את המידע לפחות ברמה יומית" · primary · checked 2026-10-26. The draft text first cited here (sections 4-19) was replaced on 2026-10-25 by the final 04/25 text (a new section 17 on makam; later sections renumbered 19-20).
 - Scope: general
 - Dimensions: regulator, reporting-obligation
 - Likely to change: no
@@ -415,6 +417,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Conditions / exceptions: The code is a ceiling the manager commits to, not current holdings (ISA guide p. 15: the rules on maximums do not mean the fund holds the asset). For Israeli funds of funds the grades follow the weighted maximum exposures of the funds held. Examples in the ISA guide: "קרנית (1A) ! שקלית", "קרנית (1B) אג"ח", "קרנית (4B) ת"א 125", "קרנית (00) כספית".
 - Figures: as listed; fixed in regulations. Last amended by ק"ת 8038 (12.7.2018), which changes reg. 1's definitions ("פעילות בנגזרים" now takes in forward contracts and unfunded index swaps; "קרן מחקה" deleted) and adds the ETF mark 3(ב)(2א), not the exposure grades; the Knesset's record 2133656 lists the amendments ק"ת 7441, 7653 and 8038 and none after (checked 2026-11-08).
 - Source: [s.3, gazette ק״ת תשס״ח, 152](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=26); [same regulations, the 2016 amendment (קובץ התקנות 7653)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=11), regulations 1, 3(א)(4) · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found). [ISA investor guide (2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), pp. 15-17 · primary (dated; same table)
+- Scope: general
 - Dimensions: currency, protection
 - Proposed dimension: product-marking
 - Likely to change: no
@@ -452,6 +455,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Conditions / exceptions: The name is only partial information; the prospectus and immediate reports govern. The full ISA circular on naming was not read (open question 9).
 - Figures: as listed (2017)
 - Source: [ISA investor guide (2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), pp. 14-15 · checked 2026-10-22 · primary (dated)
+- Scope: general
 - Dimensions: reporting-obligation
 - Proposed dimension: product-marking
 - Likely to change: unknown
@@ -479,6 +483,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Conditions / exceptions: MAGNA is a JavaScript application and was not read by script (data report 1.7).
 - Figures: none
 - Source: [ISA investor guide (2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), pp. 13, 18-19, 27, 29 · checked 2026-10-22 · primary (dated). [Joint Investment Trust Law, Securities Authority's consolidated copy, file of 31.8.2026](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=74) (file pages: s.112ב 74-75), section 112ב · primary (state body's consolidated copy, not the binding gazette wording) · checked 2026-10-31
+- Scope: general
 - Dimensions: reporting-obligation
 - Likely to change: no
 

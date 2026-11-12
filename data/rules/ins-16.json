@@ -1,0 +1,60 @@
+{
+  "id": "INS-16",
+  "title": "Issue-period cohorts: what the 1990-91, 1992-2003 and 2004+ split means for a holder",
+  "title_he": "פוליסות לפי שנת הנפקה: 1990 עד 1991, 1992 עד 2003, ומ־2004",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "text_he": "בנתוני ביטוח נט של רשות שוק ההון כל מסלול של חברת ביטוח מסווג לפי תקופת ההנפקה של הפוליסות: 1990 עד 1991, 1992 עד 2003, ומ־2004. בספטמבר 2026 ממוצע דמי הניהול השנתיים במסלולים של שתי התקופות הישנות נע ברובו בין כ־1.5% לכ־3.8%, לעומת כ־0.4% עד 1.4% ברוב המסלולים מ־2004. יש פוליסות ישנות עם מבנה אחר: ב״מניב״ של הפניקס, למשל, 0.6% בשנה מהחיסכון ועוד 15% מהתשואה הריאלית, שנגבים רק כשהתשואה הריאלית המצטברת חיובית, בלי הנחות. אם שדה דמי הניהול של הרשות כולל את החלק המשתנה הרשות לא אומרת, ולמה נקבעו דווקא הגבולות האלה בין התקופות לא נמצא.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=13",
+      "title": "CMA report 2024, chapter 4 (gov.il)",
+      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2024",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "table ד-12, file p. 13",
+      "page": 13,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c6c62cc7-fe02-4b18-8f3e-813abfbb4647&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_ID,FUND_NAME,PARENT_COMPANY_NAME,FUND_CLASSIFICATION,TOTAL_ASSETS,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE&limit=500&sort=PARENT_COMPANY_NAME%20asc",
+      "title": "Bituach-Net 202609 query",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf",
+      "title": "Harel June 2016 letter",
+      "title_he": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה (מכתב הראל, יוני 2016)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp. 2, 4",
+      "locator_he": "עמודים 2, 4",
+      "page": 2,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.fnx.co.il/life-insurance/meniv/",
+      "title": "Phoenix, פוליסת מניב",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

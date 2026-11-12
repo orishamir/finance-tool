@@ -1,0 +1,58 @@
+{
+  "id": "TXG-05",
+  "title": "Credit point value",
+  "title_he": "שווי נקודת זיכוי",
+  "text_he": "נקודת זיכוי שווה 242 שקלים בחודש בשנת 2026, והיא מקטינה את המס שחושב על ההכנסה החייבת. נקודות הזיכוי מקטינות גם מס על הכנסה בשיעורים מיוחדים: לפי מדריך רשות המסים, ההכנסה הזו מחושבת בשיעורים שלה, ואז מורידים את נקודות הזיכוי מהמס שחושב. הסכום מוקפא עד 2027. יש מקרים שבהם הנקודות מוגבלות, כמו משיכה שלא כדין מקופת גמל, שבה ניתנות רק הנקודות הבסיסיות.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.10, s.9(ג)",
+      "locator_he": "עמוד 10, סעיף 9(ג)",
+      "page": 10,
+      "quote": "מהמס המחושב יש להפחית את הזיכויים מהמס ואת נקודות הזיכוי (חלקים יג ו-יד לטופס 1301)",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Deductions booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.98",
+      "locator_he": "עמוד 98",
+      "page": 98,
+      "quote": "נקודת זיכוי שווה 2,904 ₪ לשנה",
+      "checked": "2026-10-22"
+    }
+  ]
+}

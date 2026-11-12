@@ -1,0 +1,61 @@
+{
+  "id": "TXG-34",
+  "title": "Health contributions are charged on the same income as National Insurance",
+  "title_he": "דמי ביטוח בריאות נגבים על אותה הכנסה כמו ביטוח לאומי",
+  "text_he": "לפי חוק ביטוח בריאות ממלכתי, ההכנסה שעליה משלמים דמי ביטוח בריאות היא ההכנסה שעליה חייבים בדמי ביטוח לאומי, והשיעור הוא 5.17% (2026); על הכנסה של שכיר ושל עצמאי, החלק שעד הסכום המופחת נושא 3.23%. לכן הכנסה שפטורה מדמי ביטוח לאומי, כמו ריבית ודיבידנד בשיעורים מיוחדים ורווחי הון, פטורה גם מדמי ביטוח בריאות. ריבית שממוסה בשיעור השולי לא נכללת בנוסח הפטור, ולכן ייתכן שהיא בשני הבסיסים, למשל רווחים מקרן השתלמות שנמשכו לפני הזמן. מי שאין לו הכנסה משלם מינימום של 123 שקלים בחודש (2026), והמינימום הזה לא תלוי בהשקעות.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-05",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9C%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%A9%D7%9B%D7%99%D7%A8%D7%99%D7%9D.aspx",
+      "title": "National Insurance Institute, rates for employees",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "5.17% (החל ב- 01.02.2025)",
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9E%D7%99%20%D7%A9%D7%90%D7%99%D7%A0%D7%9D%20%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%95%D7%91%D7%A2%D7%9C%D7%99%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%D7%A9%D7%9C%D7%90%20%D7%9E%D7%A2%D7%91%D7%95%D7%93%D7%94.aspx",
+      "title": "rates for those not employed",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "דמי ביטוח בריאות בסך 123 ש״ח",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4227554.pdf",
+      "title": "חוק ביטוח בריאות ממלכתי (תיקון מס' 69 והוראת שעה), התשפ\"ד-2024, ספר החוקים 3177 (17.3.2024) p.606",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1(1)",
+      "locator_he": "סעיף 1(1)",
+      "quote": "בכל מקום, במקום",
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5482809.pdf",
+      "title": "חוק ביטוח בריאות ממלכתי (תיקון מס' 72 והוראת שעה), התשפ\"ה-2025, ספר החוקים 3348 (14.1.2025) p.180",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "checked": "2026-11-08"
+    }
+  ]
+}

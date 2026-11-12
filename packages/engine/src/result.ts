@@ -87,6 +87,11 @@ export interface RunResult {
   formulas: string[];
   /** Every rule the run read, with its strength and dimensions: the dimension checklist derives from it. */
   rules: UsedRule[];
+  /**
+   * F-91 (securities runs): each fee line's payments carried to the exit at the fund's total return from the month each was paid, nominal at
+   * the exit; what the money a line took would have been worth in the fund. The split of a whole-units run by fee line reads it (F-63).
+   */
+  feesCarried?: Record<FeeType, number>;
 }
 
 export function emptyFees(): Record<FeeType, number> {

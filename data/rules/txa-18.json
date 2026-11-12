@@ -1,0 +1,56 @@
+{
+  "id": "TXA-18",
+  "title": "Recognized annuity: exempt from 60, no ceiling, on top of the qualifying-annuity exemption",
+  "title_he": "קצבה מוכרת: פטורה ממס מגיל 60, בנוסף לפטור על קצבה מזכה",
+  "text_he": "קצבה מוכרת פטורה ממס ליחיד בן 60 ומעלה, או למי שפרש מוקדם בגלל נכות של 75% או יותר. הפטור הזה בא בנוסף לפטור על חלק מהקצבה המזכה, ואפשר ליהנות משניהם. בדוגמה של מדריך רשות המסים, קצבה של 12,000 שקלים מחברת ביטוח, ש־3,000 שקלים ממנה נובעים מתשלומים שלא נוכו, מקבלת פטור על 3,000 שקלים ועוד פטור של קצבה מזכה על השאר. הפטור קיים רק בקופה שאינה קרן ותיקה, ואיך ממוסה קצבה מוכרת לפני גיל 60 לא נמצא במקורות שנקראו.",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.50, s.9A(b1)",
+      "locator_he": "עמוד 50, סעיף 9א(ב1)",
+      "page": 50,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "title": "Circular 2/2013",
+      "title_he": "חוזר מס הכנסה 2/2013: תיקון 190 לפקודה",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "s.2.2.1",
+      "locator_he": "סעיף 2.2.1",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.33",
+      "locator_he": "עמוד 33",
+      "page": 33,
+      "checked": "2026-11-07"
+    }
+  ]
+}

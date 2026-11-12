@@ -24,6 +24,7 @@
       "strength": "primary",
       "locator": "s.129ג(א)(1)",
       "locator_he": "סעיף 129ג(א)(1)",
+      "page": 208,
       "checked": "2026-11-01"
     },
     {
@@ -36,6 +37,7 @@
       "strength": "primary",
       "locator": "s.129ד",
       "locator_he": "סעיף 129ד",
+      "page": 209,
       "checked": "2026-11-01"
     },
     {
@@ -47,6 +49,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "s.88, definition מכירה",
+      "page": 148,
       "checked": "2026-11-01"
     }
   ]

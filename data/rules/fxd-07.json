@@ -1,0 +1,67 @@
+{
+  "id": "FXD-07",
+  "title": "FX deposit terms are product terms: currencies, periods, customer categories, fixed rate, no exit points",
+  "title_he": "פיקדון במטבע חוץ בבנק הפועלים, בלאומי וביהב: התנאים של כל בנק",
+  "strength": "institution",
+  "dimensions": [
+    "currency",
+    "liquidity-lockup",
+    "minimum",
+    "eligibility",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-22",
+  "text_he": "לא נמצא תקן של רגולטור לתנאים של פיקדון במטבע חוץ, וכל בנק קובע בעצמו מטבעות, תקופות, ריביות וסוגי לקוחות. בבנק הפועלים הריבית תלויה בסכום, בתקופה ובשאר תנאי הפיקדון, המטבעות העיקריים הם דולר, לירה שטרלינג, אירו ויין, ויש קווי מוצרים נפרדים לתושבים, לבעלי פטור ולתושבי חוץ, לתקופות של 7 עד 370 ימים. בבנק לאומי יש פיקדונות בדולר, באירו ובלירה שטרלינג, לתקופות משבוע עד 12 חודשים (באירו עד 24 ובלירה עד 18), כולם בריבית קבועה, לא צמודים ובלי נקודות יציאה. בבנק יהב, בלוח שבתוקף מ־6.10.2026, יש פיקדונות בריבית קבועה בשבעה מטבעות, מ־2,000 יחידות מטבע, לתקופות של חודש עד שנה.",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    },
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "Yahav rate board 13_26, effective 06/10/2026",
+      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/he/savings/product-of-the-month/forex-interest-rates",
+      "title": "Hapoalim, \"שיעורי ריבית בפיקדונות במט\"ח\"",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
+      "title": "Leumi interest-rate table",
+      "title_he": "טבלת הריביות של בנק לאומי",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

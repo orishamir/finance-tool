@@ -1,0 +1,25 @@
+{
+  "id": "CAT-32",
+  "title": "Gemel-Net \"sources and assumptions\": yields are nominal and gross of management fees",
+  "title_he": "התשואות בגמל נט: נומינליות ולפני דמי ניהול",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי עמוד ״מקורות המידע והנחות מערכת״ של גמל נט, המערכת של רשות שוק ההון משתמשת בדיווחי התשואות החודשיים שהקופות מגישות לרשות, ובמדדי שוק כפי שהבורסה בתל אביב מפרסמת אותם. התשואות בה הן נומינליות ברוטו, כלומר בלי ניכוי דמי ניהול. העמוד לא מסביר איך מחושבים הממוצעים של דמי הניהול או מדדי הסיכון.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx",
+      "title": "Gemel-Net, מקורות המידע והנחות מערכת",
+      "publisher": "Gemel-Net (Capital Market Authority)",
+      "publisher_he": "גמל־נט (רשות שוק ההון, ביטוח וחיסכון)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

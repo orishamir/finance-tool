@@ -1,0 +1,44 @@
+{
+  "id": "TXA-17",
+  "title": "What money is \"exempt payments\" (the money Amendment 190 deposits are made of)",
+  "title_he": "מה נחשב ״תשלומים פטורים״",
+  "text_he": "״תשלומים פטורים״ הם הכסף שממנו נבנית קצבה מוכרת: הפקדות של מעסיק או של עובד לקופת גמל לקצבה מעל השיעורים שבחוק, פיצויים שנחשבו הכנסת עבודה, כסף שהועבר לחשבון חדש, וכסף שיחיד הפקיד בעצמו לקופת גמל לקצבה או לקופת גמל להשקעה. הפקדה עצמית לקופת גמל לקצבה נחשבת תשלום פטור רק אם אין לצידה הפקדה של מעסיק ואם היחיד לא זכאי עליה לזיכוי או לניכוי, ולכן הפקדות בתוך תקרות הזיכוי והניכוי לא נחשבות. לפי מדריך רשות המסים, חלק המעסיק הוא מה שנובע מתשלומים שחויבו במס מ־2012 ואילך. תיקון 190 נכנס לתוקף ב־1.1.2012, אלא אם נקבע אחרת.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-deposit",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.48-49, s.9A(a)",
+      "locator_he": "עמודים 48 עד 49, סעיף 9א(א)",
+      "page": 48,
+      "quote": "לקופת גמל לשקעה",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "PDF p.2, s.7 )",
+      "page": 2,
+      "checked": "2026-11-07"
+    }
+  ]
+}

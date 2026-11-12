@@ -2409,6 +2409,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -3294,6 +3319,13 @@
             "type": "string",
             "minLength": 1
           },
+          "rule_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
           "phone_only": {
             "type": "object",
             "properties": {
@@ -3332,6 +3364,31 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -3410,6 +3467,31 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 240
+              },
+              "fragment": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "start": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "end": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "suffix": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "start"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [
@@ -3454,6 +3536,13 @@
           "why": {
             "type": "string",
             "minLength": 1
+          },
+          "why_he": {
+            "type": "string",
+            "minLength": 1
+          },
+          "could_change_price": {
+            "type": "boolean"
           }
         },
         "required": [

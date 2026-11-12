@@ -1,0 +1,72 @@
+{
+  "id": "TX2-09",
+  "title": "REIT distributions to an individual: taxed by the source of the fund's income",
+  "title_he": "חלוקה של קרן ריט ליחיד: המס לפי מקור ההכנסה בקרן",
+  "text_he": "קרן להשקעות במקרקעין (ריט) היא צינור: ההכנסה החייבת שלה שמועברת לבעלי המניות נחשבת הכנסה שלהם, ממוסה כשהיא מועברת, והאופי שלה נקבע לפי המקור בקרן. הכנסות חריגות ממוסות ב־70%, בלי פטור, ניכוי, זיכוי או קיזוז; הכנסה מדירות להשכרה למגורים ורווח ריאלי ממכירתן ממוסים ב־20%; וסכום בגובה הפחת נחשב רווח הון. שאר ההכנסה, למשל שכר דירה ממשרדים, ממסחר או מלוגיסטיקה, ממוסה בשיעורי המס הרגילים של האדם ולא נחשבת הכנסה מיגיעה אישית, ולכן מתחת לגיל 60 היא מתחילה ב־31% (2026). הכנסה שהקרן השאירה ושילמה עליה מס בעצמה נחשבת דיבידנד כשהיא מחולקת אחר כך.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "distribution-policy",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.100-102, s.64A2",
+      "locator_he": "עמודים 100 עד 102, סעיף 64א2",
+      "page": 100,
+      "quote": "מקרקעין לצורכי דיור להשכרה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.105-106, s.64A4(a)-(h)",
+      "page": 105,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_2572039.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2023 ו-2024), התשפ\"ג-2023, ספר החוקים 3045",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2023 ו-2024), התשפ\"ג-2023, ספר החוקים 3045",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.163, s.12(1)",
+      "locator_he": "עמוד 163, סעיף 12(1)",
+      "page": 163,
+      "quote": "מכירה למשכיר",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12223928.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 285), התשפ\"ו-2026, ספר החוקים 3509",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 285), התשפ\"ו-2026, ספר החוקים 3509",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.346, s.1(1)(א)-(ב)",
+      "locator_he": "עמוד 346, סעיף 1(1)(א)-(ב)",
+      "page": 346,
+      "quote": "הכנסות חריגות",
+      "checked": "2026-10-26"
+    }
+  ]
+}

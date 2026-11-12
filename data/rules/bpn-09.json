@@ -1,0 +1,98 @@
+{
+  "id": "BPN-09",
+  "title": "\"Choice\" and \"dual-track\" deposits: the alternatives differ by bank",
+  "title_he": "פיקדונות ״ברירה״: החלופות והיציאה המוקדמת שונות מבנק לבנק",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal",
+    "liquidity-lockup",
+    "protection",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "text_he": "יש בנקים שמוכרים פיקדון שמשלם בסוף התקופה את הטובה מבין שתיים או שלוש חלופות, והחלופות שונות מבנק לבנק. בבנק יהב, בבנק הבינלאומי, בבנק הפועלים ובבנק מזרחי טפחות יש פיקדונות שבוחרים בין ריבית קבועה לא צמודה לבין הצמדה למדד, כמו ״נבו ברירה מדד״, ״עוז״, ״WIN WIN״, ״קרמבולה״, ״פסיפלורה״ ו״תות״; ביהב ובבינלאומי יש גם פיקדונות שבוחרים בין ריבית קבועה לריבית משתנה לפי הפריים, ובבינלאומי פיקדון ״תלתן״ שבוחר בין לא צמוד, צמוד למדד וצמוד לדולר. גם היציאה המוקדמת שונה: ב״קרמבולה״ וב״פסיפלורה״ של מזרחי טפחות משיכה מוקדמת מוחזרת צמודה למדד, בלי ריבית ובלי הבטחה של הסכום הנומינלי שהופקד; ב״WIN WIN״ של בנק הפועלים אי אפשר למשוך לפני סוף התקופה, ובשורות של ״חסכון נבו ברירה״ בבנק יהב כתוב ״אין אפשרות שבירה״.",
+  "il_finance_file": "bank-product-names.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    },
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    },
+    {
+      "id": "mizrahi-tefahot",
+      "name_he": "בנק מזרחי טפחות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "Yahav board",
+      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.4, 8",
+      "locator_he": "עמודים 4, 8",
+      "page": 4,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/win_win_1832025.pdf",
+      "title": "Hapoalim WIN WIN contract",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/cd_strawberry/",
+      "title": "Strawberry",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/choicedeposits/",
+      "title": "FIBI choice deposits",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/carambola-cd/",
+      "title": "Mizrahi Carambola",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/passionfruit-cd/",
+      "title": "Passiflora",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}
