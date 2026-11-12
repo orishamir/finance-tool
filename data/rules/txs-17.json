@@ -20,8 +20,21 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.4-5, s.3.3.1; p.5, ss.3.3.2, 3.5, 3.7",
-      "locator_he": "עמודים 4 עד 5, סעיף 3.3.1; עמוד 5, סעיפים 3.3.2, 3.5, 3.7",
+      "locator": "pp.4-5, s.3.3.1",
+      "locator_he": "עמודים 4 עד 5, סעיף 3.3.1",
+      "page": 4,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf",
+      "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, ss.3.3.2, 3.5, 3.7",
+      "locator_he": "עמוד 5, סעיפים 3.3.2, 3.5, 3.7",
       "page": 5,
       "quote": "הפסדי הון מניירות ערך לא ניתנים לקיזוז כנגד ריבית ששולמה על תכנית חיסכון",
       "checked": "2026-10-31"

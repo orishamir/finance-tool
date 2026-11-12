@@ -1,4 +1,4 @@
-import { appendFileSync, readdirSync } from "node:fs";
+import { appendFileSync, existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { israelToday } from "@finance-tool/schema";
@@ -88,6 +88,7 @@ if (command === "validate") {
     ruleBase: readRuleBaseIds(refs),
     formulas: readFormulaIds(`${root}docs/method.md`),
     citing: { files: citing, prefixOf: readQuestionPrefixes(refs) },
+    filePages: readFilePages(`${root}research/library/index.jsonl`),
   });
   for (const p of problems) console.error(`${p.file}: ${p.message}`);
   console.log(problems.length === 0 ? "data/ is valid" : `${problems.length} problem(s) in data/`);
@@ -97,4 +98,18 @@ if (command === "validate") {
 } else {
   console.error(`usage: cli.ts validate | ${USAGE.replace("usage: cli.ts ", "")}`);
   process.exit(2);
+}
+
+/** The page count of every filed PDF by its address, from the library's index; a document's newest row wins. */
+function readFilePages(indexPath: string): Map<string, number> {
+  const pages = new Map<string, number>();
+  if (!existsSync(indexPath)) return pages;
+  for (const line of readFileSync(indexPath, "utf8").split("\n")) {
+    if (!line.trim()) continue;
+    const d = JSON.parse(line) as { url?: string; ext?: string; pages?: number; superseded_by?: string };
+    if (!d.url || d.ext !== ".pdf" || !d.pages) continue;
+    const key = d.url.replace(/#.*$/, "");
+    if (!d.superseded_by || !pages.has(key)) pages.set(key, d.pages);
+  }
+  return pages;
 }

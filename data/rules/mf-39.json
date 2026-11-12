@@ -21,8 +21,21 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.1-3, ss.4-20; p.2, s.14",
-      "locator_he": "עמודים 1 עד 3, סעיפים 4-20; עמוד 2, סעיף 14",
+      "locator": "pp.1-3, ss.4-20",
+      "locator_he": "עמודים 1 עד 3, סעיפים 4-20",
+      "page": 1,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
+      "title": "הוראת ניהול בנקאי תקין 447A: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (04/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, s.14",
+      "locator_he": "עמוד 2, סעיף 14",
       "page": 2,
       "quote": "יעדכן את המידע לפחות ברמה יומית",
       "checked": "2026-10-26"

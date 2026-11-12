@@ -15,6 +15,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=3",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "reg. 2(2)-(3), file pp.3-4",
+      "locator_he": "תקנה 2(2)-(3), עמודי הקובץ 3 עד 4",
+      "page": 3,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4",
       "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
       "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
@@ -22,8 +35,8 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "reg. 2(2)-(3), file pp.3-4; file p.4",
-      "locator_he": "תקנה 2(2)-(3), עמודי הקובץ 3 עד 4; עמוד הקובץ 4",
+      "locator": "file p.4",
+      "locator_he": "עמוד הקובץ 4",
       "page": 4,
       "quote": "פדיון התעודות יהיה רק במועדי תחלופת הנכסים",
       "checked": "2026-11-07"

@@ -66,6 +66,8 @@ export interface ValidationContext {
    * file-to-prefix table for the questions its files name in words; absent in hand-built contexts.
    */
   citing?: { files: string[]; prefixOf: Map<string, string> };
+  /** The number of pages of each filed PDF by its address without the `#…` part (research/library/index.jsonl); absent in hand-built contexts. */
+  filePages?: Map<string, number>;
 }
 
 export interface Problem {
@@ -130,6 +132,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     for (const id of collectStrings(parsed.value, "formula")) {
       if (/^F-\d{2,3}$/.test(id) && !ctx.formulas.has(id)) report(file, `formula: ${id} is not defined in docs/method.md (data-schema §4 item 6)`);
     }
+    for (const message of checkCitedPages(parsed.value, ctx.filePages)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;
       for (const message of checkRuleSources(rec, ctx, ruleRecords, warn)) report(file, message);
@@ -932,6 +935,31 @@ function hostOf(url: string): string {
   } catch {
     return "";
   }
+}
+
+/**
+ * A cited page is the page of the file, the one the link opens (2026-11-12, the founder: a link opens the page it cites). The site
+ * opens a PDF at the address's own `#page=` and, when the address has none, at `page` (site/app/lib/sources.ts `sourceHref`), so a
+ * record whose address says one page and whose `page` says another sends the reader to a page the words are not on, and a `page`
+ * past the file's last page (a gazette's printed number) opens nowhere. Returns one line per such source, with its path in the record.
+ */
+export function checkCitedPages(record: unknown, filePages?: Map<string, number>): string[] {
+  const out: string[] = [];
+  const walk = (node: unknown, at: string): void => {
+    if (Array.isArray(node)) return node.forEach((x, i) => walk(x, `${at}[${i}]`));
+    if (!node || typeof node !== "object") return;
+    const o = node as Record<string, unknown>;
+    if (typeof o.url === "string" && typeof o.page === "number" && Number.isInteger(o.page)) {
+      const inUrl = /#page=(\d+)/.exec(o.url);
+      const opens = inUrl ? Number(inUrl[1]) : o.page;
+      if (inUrl && opens !== o.page) out.push(`${at}: the link opens page ${opens} but the page cited is ${o.page}; a page is the file's page, and the address's #page= carries the same one`);
+      const last = filePages?.get(o.url.replace(/#.*$/, ""));
+      if (last !== undefined && opens > last) out.push(`${at}: the link opens page ${opens}, past the file's last page (${last}); write the file's page, and a printed number in the locator ("file p.3 (gazette p.375)")`);
+    }
+    for (const [k, v] of Object.entries(o)) walk(v, at ? `${at}.${k}` : k);
+  };
+  walk(record, "");
+  return out;
 }
 
 function isPdfUrl(url: string): boolean {

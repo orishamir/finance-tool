@@ -8,6 +8,9 @@
 // write nothing). After editing blocks, write only their records: `-- --only=KGL-12,MF-25`; every other record stays as it is, so a
 // run never re-dates or reorders a card nobody touched. `-- --drift` writes nothing and lists the records that differ from what
 // their blocks give today (a block edited without its record, or a record edited by hand).
+// A link that cites several passages ("p.4, s.1; p.8, s.2 "…"") may become several sources, each opening at the first page its own
+// locator names; where the link carries `#page=`, each one's address names its own page, the one difference from the block's address
+// the data check accepts (`urlInBlock`).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -186,6 +189,21 @@ const CHECKED_RE = /checked (\d{4}-\d{2}-\d{2})/;
 
 // ---------------------------------------------------------------- locator, page, quote
 
+/** The words that name a place in a document: a part of a locator that opens on one of them is a passage, never a remark. */
+const PLACE_WORD =
+  /^(?:pp?|ss?|regs?|arts?|paras?|cl|sections?|regulations?|clauses?|annex(?:es)?|appendix|appendices|schedules?|tables?|printed|footnotes?|notes?|paragraphs?|items?|definitions?|parts?|chapters?|articles?|rows?|questions?|circulars?|pages?|file|gazette|first|second|third|and|or|also)$/i;
+/** A reference to a place: "s.4", "pp.5-7", "reg. 2(ב)", "Art. 23(1)", "footnote 1", "annex ג", "§7ב". */
+const PLACE_REF =
+  /\b(?:pp?|ss?|regs?|arts?|paras?|cl)\.\s*[\dא-ת(]|§\s*\d|\b(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|schedules?|tables?|footnotes?|notes?|paragraphs?|items?|parts?|chapters?|articles?|questions?|pages?)\s+[\dא-תA-Z]/i;
+/**
+ * A part of a locator after "; " that is a remark in English: it opens on a word that names no place and holds no reference. Its
+ * numbers do not make it a passage ("the Knesset's record of the regulations (2067442) lists no amendment").
+ */
+function isLocatorRemark(part: string): boolean {
+  const first = /^\s*([A-Za-z]+)/.exec(part)?.[1];
+  return first !== undefined && !PLACE_WORD.test(first) && !PLACE_REF.test(part);
+}
+
 /** Cleans the raw text after a link into a locator: sections, regulations, pages; quotes removed. */
 export function cleanLocator(text: string): string {
   // Hebrew abbreviations such as תשע"ה carry a quote mark that is not a quotation; mask it while cutting.
@@ -198,6 +216,14 @@ export function cleanLocator(text: string): string {
   // ("(gazette p.375)" beside a file's page is kept: it is the page the gazette prints)
   t = t.replace(/\((?!\s*(?:gazette|file) (?:pp?\.|pages?)\s*\d+(?:\s*(?:–|-|to)\s*\d+)?\s*\))(?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
   t = t.replace(/\(\s*\)/g, " ");
+  // A remark after "; " ("; the ISA directives list shows no later version") is not part of the locator either: a part that opens on an
+  // English word that names no place in a document and holds no reference is dropped, as a parenthesised remark is. It goes before the
+  // prose cut below, which would keep its first words and drop every passage after it; "; p.9, s.4", "; s.3(ד)", "; Schedule E",
+  // "; appendix A and B on pp.5-7" and "; and footnote 1" stay.
+  t = t
+    .split(";")
+    .filter((part, i) => i === 0 || !isLocatorRemark(part))
+    .join(";");
   // Prose after the reference ("describe Amendment 15 as the law that") is cut off.
   const prose = /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?|parts?|file|gazette|enacted)\b)[a-z]{4,}\b/.exec(t);
   if (prose) t = t.slice(0, prose.index);
@@ -268,15 +294,24 @@ export function pageInUrl(url: string): number | undefined {
 /**
  * First page for "#page=": only from a `p.`/`pp.` locator on a PDF, never a printed page. "file p.3 (gazette p.375)" gives 3; a gazette
  * booklet from the Reshumot resolver opens at a page only when the locator names the file's page (its "p.1001" is printed on the sheet).
+ * The first passage that names a page wins, whichever form it takes: "p.5, s.2; file p.9 (gazette p.300), s.7" opens at 5, where its
+ * first passage is, as the locator reads. Within one passage a "file p." wins over a plain "p.": a writer names the file's page beside
+ * a page only when that page is the printed one ("p.909 (file p.21)", "gazette ס״ח p.898, file p.10"). A "gazette p." is never a candidate.
  */
 export function firstPage(locator: string, url: string): number | undefined {
   if (!isPdf(url)) return undefined;
-  const file = /\bfile (?:pp?\.|pages?)\s*(\d+)/i.exec(locator);
-  if (file) return Number(file[1]) > 0 ? Number(file[1]) : undefined;
-  if (isGazetteBooklet(url) || /printed|bylaws/i.test(locator)) return undefined;
-  const m = /(?:^|[\s,(])pp?\.\s*(\d+)/i.exec(locator.replace(/\bgazette (?:pp?\.|pages?)\s*[\d\s–\-to]+/gi, " "));
-  const n = m ? Number(m[1]) : NaN;
-  return Number.isInteger(n) && n > 0 && n < 5000 ? n : undefined;
+  // where the plain "p." may be a printed number (a gazette booklet, a printed or bylaws page), only a "file p." is the file's page
+  const fileOnly = isGazetteBooklet(url) || /printed|bylaws/i.test(locator);
+  for (const passage of locator.split(";")) {
+    const file = /(?:^|[\s,(])file (?:pp?\.|pages?)\s*(\d+)/i.exec(passage);
+    if (file) return Number(file[1]) > 0 ? Number(file[1]) : undefined;
+    if (fileOnly) continue;
+    const m = /(?:^|[\s,(])pp?\.\s*(\d+)/i.exec(passage.replace(/\bgazette (?:pp?\.|pages?)\s*[\d\s–\-to]+/gi, " "));
+    if (!m) continue;
+    const n = Number(m[1]);
+    return Number.isInteger(n) && n > 0 && n < 5000 ? n : undefined;
+  }
+  return undefined;
 }
 
 /**
@@ -436,40 +471,55 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (titleHe) entry.title_he = titleHe;
     const publisherHe = doc?.publisher_he ?? pub?.publisher_he;
     if (publisherHe) entry.publisher_he = publisherHe;
-    // `quotedPassage`: the passage the quoted words come from, when it is not the first; the link opens at its page, where the words
-    // are, not at the locator's first page ("p.4, s.1 definitions; p.8, s.2 "…"" opens at p.8; 2026-11-12)
-    const locate = (e: ExtractedSource, loc: string, quoteText: string, quotedPassage?: string) => {
+    // a source opens at the first page its own locator names, so the locator the card shows and the page the link opens agree
+    const locate = (e: ExtractedSource, loc: string, quoteText: string) => {
       const quote = findQuote(quoteText);
       if (loc) {
         e.locator = loc;
         const he = toHebrewLocator(loc, url);
         if (he) e.locator_he = he;
       }
-      const page = (quote && quotedPassage ? firstPage(cleanLocator(quotedPassage), url) : undefined) ?? (loc ? firstPage(loc, url) : undefined) ?? pageInUrl(url);
+      const page = (loc ? firstPage(loc, url) : undefined) ?? pageInUrl(url);
       if (page) e.page = page;
       if (quote) e.quote = quote;
     };
     const body = rest.slice(0, rest.includes("·") ? rest.indexOf("·") : rest.length);
     // One link may cite several passages of its document, each from its own page ("p.8, s.4.1 "…"; p.9, s.4.2.3 "…"; p.11,
-    // s.4.2.8 "…""). The locator above runs up to the first quote mark, so it covers the passages up to the first quoted one;
-    // each passage after that becomes a source of its own, with its locator, page and quote, so the rule card shows every
-    // passage the rule rests on (TXF-28's two exempting passages were dropped; review, 2026-10-26).
+    // s.4.2.8 "…""), so the rule card shows every passage the rule rests on. The passages before the first quoted one stay one
+    // source, as a link with no quote does, opening at their first page; the quoted passage and each after it is a source of its
+    // own, with its locator, page and quote. Were the quoted passage merged into the ones before it, the source would open where its
+    // words are while its locator, cut at the first prose word or quote mark, named only the first passage's page: BANK-07's
+    // "file p.1, amendment list …; file p.18, Schedule E, row "…"" said "file p.1" and opened at 18.
     const passages = body.split(/;\s*(?=(?:file\s+)?pp?\.\s*\d)/);
     const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
+    // a passage whose quote marks hold no quote (a title, a term, an English heading) stays with the passages before it, as before
+    const quoteApart = firstQuoted > 0 && findQuote(passages[firstQuoted]!) !== undefined;
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
-    locate(entry, locator, covered.join("; "), firstQuoted > 0 ? covered[firstQuoted] : undefined);
+    const lead = quoteApart ? passages.slice(0, firstQuoted) : covered;
+    // a lead before a quoted passage takes its locator from its own text alone; with no place of its own it is no source
+    const leadLocator = quoteApart ? cleanLocator(lead.join("; ")) : locator;
+    locate(entry, leadLocator, lead.join("; "));
     if (note) {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;
     }
-    sources.push(orderKeys(entry));
-    for (const passage of passages.slice(covered.length)) {
+    const own: ExtractedSource[] = leadLocator || !quoteApart ? [entry] : [];
+    for (const passage of passages.slice(lead.length)) {
       const loc = cleanLocator(passage);
       if (!loc) continue;
       const more: ExtractedSource = { ...entry };
       for (const k of ["locator", "locator_he", "page", "quote"] as const) delete more[k];
       locate(more, loc, passage);
-      sources.push(orderKeys(more));
+      own.push(more);
+    }
+    // The site opens a PDF at its address's own `#page=` before the record's page, so a passage split off a link that carries one
+    // would open at the link's page, not its own: its address names its own page instead, and the block need not drop `#page=` to
+    // cite passages on several pages. The data check takes such an address as the block's (`urlInBlock`). A link that yields one
+    // source keeps its address as written: a `#page=` that differs from its locator's page is the block's to correct.
+    const linkPage = pageInUrl(url);
+    for (const e of own) {
+      if (own.length > 1 && linkPage !== undefined && e.page !== undefined && e.page !== linkPage) e.url = url.replace(/#page=\d+/, `#page=${e.page}`);
+      sources.push(orderKeys(e));
     }
   });
 

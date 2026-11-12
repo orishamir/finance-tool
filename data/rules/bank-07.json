@@ -60,7 +60,7 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf#page=18",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf#page=1",
       "title": "same rules, נוסח משולב (בנק ישראל)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
@@ -68,6 +68,17 @@
       "strength": "primary",
       "locator": "file p.1",
       "locator_he": "עמוד הקובץ 1",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf#page=18",
+      "title": "same rules, נוסח משולב (בנק ישראל)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "file p.18, Schedule E",
       "page": 18,
       "quote": "הודעה מוקדמת על פרעון פקדון לשנה ומעלה",
       "checked": "2026-11-07"
