@@ -61,13 +61,31 @@ function onExitPoint(age: number, first: number | undefined, every: number | und
 }
 
 /**
+ * F-41: whether a piece that began on `startMonth` is at one of its exit points on month `m`. Its own age is `m − startMonth + 1`,
+ * the months it has earned with its first month included. A deposit's exit points count from the deposit's own start. A savings
+ * plan's may count from the plan's start (one bank's plans are read so, BPN-10) or from each instalment's, and the record does not
+ * say which, so a plan's piece is at an exit point only when both counts agree: its own age, and its age counted from the start of
+ * the plan it was paid into. The run opens a plan on its first month and a new one every `termMonths` months, so that plan began
+ * on month `startMonth − ((startMonth − 1) mod termMonths)`, and it stays the piece's plan however long the piece runs on: an
+ * instalment paid in month 8 of a twelve-month plan is counted on month 17 as in that plan's seventeenth month, not as in the
+ * fifth month of the plan opened on month 13.
+ */
+export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<DepositInput["deposit"], "kind" | "termMonths" | "exitFirstMonth" | "exitEveryMonths">): boolean {
+  const first = wholeMonths(deposit.exitFirstMonth);
+  const every = wholeMonths(deposit.exitEveryMonths);
+  const age = m - startMonth + 1;
+  if (!onExitPoint(age, first, every)) return false;
+  return deposit.kind !== "savings-plan" || onExitPoint(age + ((startMonth - 1) % deposit.termMonths), first, every);
+}
+
+/**
  * F-21 Bank deposit, laddered (F-22 savings plan, F-26 current account, F-41 exit). Each contribution
  * opens its own deposit of term n; at maturity the interest is taxed and principal plus net interest rolls
  * into a new deposit. At T the open deposits are treated as matured on the exit day.
  * F-22 Savings plan: the same ladder with the plan's own rate and term (TXI-07, BANK-28).
  * F-41 Deposits at exit: tax was charged at each maturity; the last open deposit matures on the exit day. A run that holds
- * a piece still inside its term that day raises G-16 (the break is not priced), or G-34 when the piece is at one of its
- * exit points (what an exit point pays is not in the records).
+ * a piece still inside its term that day raises G-16 (the break is not priced), or G-34 in its place when the piece is at one
+ * of its exit points (what an exit point pays is not in the records). Neither flag changes an amount.
  */
 export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx);
@@ -79,9 +97,6 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const C = contributions(goal, I);
   const linked = deposit.linkage === "cpi";
   const isCurrentAccount = deposit.kind === "current-account";
-  // F-41: the exit points, as positive whole months or not at all; without a first exit point the run knows none
-  const exitFirst = wholeMonths(deposit.exitFirstMonth);
-  const exitEvery = wholeMonths(deposit.exitEveryMonths);
   const tally = new Tally();
 
   // The bank withholds at maturity (TXI-07, TXI-08): 25% of the real interest on a fully linked deposit with
@@ -131,20 +146,16 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
     }
     for (const d of due) {
       // The piece's age on month m: the months it has earned, its start month included. It matures when its age is n
-      // (startMonth + n - 1 === m), and it is at an exit point when its age is the first exit point's, or past it by a whole
-      // number of intervals.
+      // (startMonth + n - 1 === m).
       const months = m - d.startMonth + 1;
       // G-16: a piece still inside its term on the exit day is priced as if it matured that day. The records hold whether a break
       // is allowed, not what it pays, so the break is not priced; the run says so on the number.
-      // G-34: a piece at one of its exit points can be taken out that day without a break (BANK-27), so it is not stuck. Its amount
-      // is still interest to date, and the records do not hold what an exit point pays (some products pay a share of the
-      // interest there), so the run says that instead. A deposit's exit points count from the deposit's own start. A savings
-      // plan's may count from the plan's start (BPN-10) or from each instalment's, and the record does not say which: a plan's
-      // piece is at an exit point only when both counts agree. The plan's age on month m is ((m - 1) % n) + 1, because the
-      // run renews a plan every n months from its first month; the piece's own age is `months`.
-      const atExitPoint =
-        onExitPoint(months, exitFirst, exitEvery) && (deposit.kind !== "savings-plan" || onExitPoint(((m - 1) % n) + 1, exitFirst, exitEvery));
-      if (months < n) tally.flag(atExitPoint ? "G-34" : "G-16");
+      // G-34: where that day is one of the piece's exit points (`pieceAtExitPoint`), the money can be withdrawn without a break
+      // (BANK-27), and the run says that in place of G-16. The amount is the same interest to date either way: the records do not
+      // hold what an exit point pays, and products differ (BANK OQ20), so the note says the sum received may differ. Which of the
+      // two notes a piece raises decides nothing else: how money inside a term on the last day should be treated is the
+      // founder's open question (F-41).
+      if (months < n) tally.flag(pieceAtExitPoint(m, d.startMonth, deposit) ? "G-34" : "G-16");
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
       const interest = depositInterest(indexed * earning, deposit.rate, months);
       const tax = rate * interest;

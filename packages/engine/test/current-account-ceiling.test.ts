@@ -1,6 +1,6 @@
 // F-26 (2026-10-25): a current account pays its rate on the first `balanceCeiling` of the balance (BANK-09, Leumi: 10,000 NIS).
 import { describe, expect, it } from "vitest";
-import { runDeposit, type DepositInput } from "../src/index.ts";
+import { pieceAtExitPoint, runDeposit, type DepositInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -73,8 +73,8 @@ describe("G-16: money still inside a deposit's term on the last day", () => {
 
 // F-41: a piece's age on month m is m - startMonth + 1; it matures at age termMonths. It is at an exit point when its age is the
 // first exit point's (exitFirstMonth, the record's first_after_months), or past it by a whole number of intervals
-// (exitEveryMonths). Without a first the run knows no exit point. A piece at an exit point on the last day can be taken out
-// without a break: no G-16. It raises G-34 instead, since what an exit point pays is not in the records.
+// (exitEveryMonths). Without a first the run knows no exit point. A piece at an exit point on the last day can be withdrawn
+// without a break (BANK-27): the run says G-34 in place of G-16, since what an exit point pays is not in the records.
 describe("G-16 and exit points", () => {
   type Exits = { first?: number; every?: number };
   const dep = (months: number, monthly: number, termMonths: number, exits: Exits = {}, kind: "deposit" | "savings-plan" = "deposit", linkage: "unlinked" | "cpi" = "unlinked", amountNow = 10_000): DepositInput => ({
@@ -108,6 +108,10 @@ describe("G-16 and exit points", () => {
     expect(said(dep(12, 0, 36, { every: 12 }))).toBe("G-16");
     expect(said(dep(18, 0, 12, { every: 3 }))).toBe("G-16");
     expect(said(dep(3, 0, 12, { every: 1 }))).toBe("G-16");
+    // the same three runs with a first one interval after the start are at an exit point: the interval was read, and not as the first
+    expect(said(dep(12, 0, 36, { first: 12, every: 12 }))).toBe("G-34");
+    expect(said(dep(18, 0, 12, { first: 3, every: 3 }))).toBe("G-34");
+    expect(said(dep(3, 0, 12, { first: 1, every: 1 }))).toBe("G-34");
   });
 
   it("with a first and no interval, knows the first exit point alone", () => {
@@ -175,12 +179,43 @@ describe("G-16 and exit points", () => {
     expect(said(dep(7, 500, 12, { first: 5, every: 5 }, "savings-plan", "unlinked", 0))).toBe("G-16");
     // on month 10 the plan is 10 months old: the instalments 5 and 10 months old are let out, the rest are not
     expect(said(dep(10, 500, 12, { first: 5, every: 5 }, "savings-plan", "unlinked", 0))).toBe("G-16 G-34");
-    // in the plan's second term, month 17 is the renewed plan's fifth month: the pieces 5 months old are let out
+    // on month 17 the instalment of month 13 is 5 months old in a plan opened that month: both counts are on an exit point
     expect(said(dep(17, 500, 12, { first: 5, every: 5 }, "savings-plan", "unlinked", 0))).toBe("G-16 G-34");
     // an instalment paid in month 7 of a three-year plan with a first exit point after a year is 12 months old on month 18,
     // which is no exit point of a plan begun in month 1
     expect(said(dep(18, 500, 36, { first: 12, every: 12 }, "savings-plan", "unlinked", 0))).toBe("G-16");
     expect(said(dep(12, 0, 36, { first: 12, every: 12 }, "savings-plan"))).toBe("G-34");
+  });
+
+  it("counts a plan's instalment from the plan it was paid into, however long it runs on", () => {
+    const plan = { kind: "savings-plan" as const, termMonths: 12, exitFirstMonth: 5, exitEveryMonths: 5 };
+    // paid in month 8 of the plan opened on month 1: on month 17 it is 10 months old, an exit point by its own count, and in the
+    // seventeenth month of its plan, which is none. Counting month 17 as the fifth month of the plan opened on month 13 let it out.
+    expect(pieceAtExitPoint(17, 8, plan)).toBe(false);
+    expect(pieceAtExitPoint(17, 8, { ...plan, kind: "deposit" })).toBe(true);
+    // paid in month 13, the first month of the next plan: 5 months old by both counts
+    expect(pieceAtExitPoint(17, 13, plan)).toBe(true);
+    // paid in month 1: months 5 and 10 by both counts; month 15 is past its term
+    expect([5, 10].map((m) => pieceAtExitPoint(m, 1, plan))).toEqual([true, true]);
+    expect(pieceAtExitPoint(7, 3, plan)).toBe(false); // 5 months old, in its plan's seventh month
+    // a plan whose exit points fall on a divisor of its term agrees on both counts for an instalment paid on an exit point
+    expect(pieceAtExitPoint(16, 9, { ...plan, exitFirstMonth: 4, exitEveryMonths: 4 })).toBe(true); // 8 months old, plan month 16
+    expect(pieceAtExitPoint(15, 8, { ...plan, exitFirstMonth: 4, exitEveryMonths: 4 })).toBe(false); // 8 months old, plan month 15
+    // no first, no exit point; bad figures are no figures
+    expect(pieceAtExitPoint(6, 1, { kind: "deposit", termMonths: 12, exitEveryMonths: 3 })).toBe(false);
+    expect(pieceAtExitPoint(6, 1, { kind: "deposit", termMonths: 12, exitFirstMonth: 1.5, exitEveryMonths: 1.5 })).toBe(false);
+  });
+
+  it("reads a refund paid into the ladder at the year's end as a piece with its own count", () => {
+    // a run that begins in July: the lump matures in October (month 4) and the year closes in December (month 6), when the refund of
+    // the tax withheld above the low-income deduction (TXI-20) opens a piece of its own on month 7. On month 9 that piece is 3
+    // months old and the piece opened by the lump's second maturity is one month old.
+    const run = (exits: Exits): DepositInput => ({ ...dep(9, 0, 4, exits), goal: { amountNow: 100_000, monthly: 0, months: 9, firstMonth: 7 }, profile: { annualIncome: 30_000 } });
+    expect(runDeposit(run({}), ctx).nominal).toBeGreaterThan(runDeposit({ ...run({}), profile: {} }, ctx).nominal); // there is a refund
+    expect(said(run({}))).toBe("G-16");
+    expect(said(run({ first: 3 }))).toBe("G-16 G-34");
+    expect(said(run({ first: 1 }))).toBe("G-16 G-34"); // the one-month-old piece
+    expect(said(run({ first: 2 }))).toBe("G-16"); // neither piece is two months old
   });
 
   it("changes no number the run returns", () => {
@@ -193,5 +228,9 @@ describe("G-16 and exit points", () => {
         expect(withExits).toEqual(without);
       }
     }
+    // and the exit points were read in those runs: the note differs, the numbers do not
+    const [i] = inputs;
+    expect(said(i!)).toBe("G-16");
+    expect(said({ ...i!, deposit: { ...i!.deposit, exitFirstMonth: 6, exitEveryMonths: 3 } })).toBe("G-34");
   });
 });
