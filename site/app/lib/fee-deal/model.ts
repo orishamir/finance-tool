@@ -85,8 +85,11 @@ export interface FeeDeal {
   /** What a kind that holds funds holds. */
   held?: Held;
   fees: Fee[];
-  /** The template the deal was filled from, where one was. */
-  template?: { id: string; name: string };
+  /**
+   * The template the deal names: the one its fees were filled from, or, where `feesKept` is set, the track picked for it while it held a
+   * fee the person typed or changed, which filled none of its fees.
+   */
+  template?: { id: string; name: string; feesKept?: true };
   /** When the deal was last saved on the device, YYYY-MM-DD. */
   saved?: string;
 }
@@ -142,6 +145,19 @@ export const typed = (v: number): Num => ({ v });
 
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
+
+/** The figures of a price (`Num`s): its rate and bounds, or its sum. */
+const figuresOf = (p: Price): (Num | undefined)[] => (p.form === "action" || p.form === "held" ? [p.rate, p.min, p.max] : p.form === "free" ? [] : [p.amount]);
+
+/**
+ * Whether a fee is as a template filled it and the person left it: one price with no end, no sale priced apart and no name of its own, as a
+ * template fills a fee, and every figure of it still carrying its source (`retyped` drops the source of a figure the person changes).
+ */
+export function untouched(fee: Fee): boolean {
+  if (fee.stages.length !== 1 || fee.stages[0]!.until !== undefined || fee.sale || fee.name !== undefined) return false;
+  const figures = figuresOf(fee.stages[0]!.price).filter((n): n is Num => n !== undefined);
+  return figures.length > 0 && figures.every((n) => n.src !== undefined);
+}
 
 /** A new price of a fee's usual form, with nothing typed in it yet (zero), or free. */
 export function blankPrice(form: FormId): Price {
@@ -369,7 +385,8 @@ export function readDeal(raw: unknown): FeeDeal | null {
   }
   if (raw.template !== undefined) {
     if (!isRec(raw.template) || !str(raw.template.id, 120) || !str(raw.template.name, 200)) return null;
-    deal.template = { id: raw.template.id, name: raw.template.name };
+    if (raw.template.feesKept !== undefined && raw.template.feesKept !== true) return null;
+    deal.template = { id: raw.template.id, name: raw.template.name, ...(raw.template.feesKept ? { feesKept: true as const } : {}) };
   }
   if (raw.saved !== undefined) {
     if (typeof raw.saved !== "string" || !DATE.test(raw.saved)) return null;

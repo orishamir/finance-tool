@@ -7,10 +7,11 @@ import { builder, panel } from "./builder";
 import { glance } from "./glance";
 import { capLine, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
-import { newDeal, readDeal, typed, type FeeDeal } from "./model";
+import { NAME_MAX, newDeal, readDeal, typed, untouched, type FeeDeal } from "./model";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { dealFromTemplate, dealFromTrack, fillDeal, houseTemplate, lineFees, templateOf, templateOptions } from "./templates";
+import { dealFromTemplate, dealFromTrack, fillDeal, houseTemplate, lineFees, pickTrack, templateOf, templateOptions } from "./templates";
+import { updateFee, withFigure, editPrice } from "./edit";
 import { latestSnapshots } from "../providers.server";
 
 const data = feesData();
@@ -427,5 +428,66 @@ describe("a deal the views cannot read whole", () => {
       expect(c.rates).toHaveLength(1);
       expect(c.at[0]).toBeGreaterThan(7000);
     }
+  });
+});
+
+describe("a track picked in the builder, on the deal on screen", () => {
+  const both = data.tracks.filter((x) => x.wrapperId === "kupat-gemel-lehashkaa" && typeof x.b.value === "number" && x.b.value > 0 && typeof x.d.value === "number" && x.d.value > 0);
+  const [a, b] = [both[0]!, both.find((x) => x.b.value !== both[0]!.b.value)!];
+  const kept = (d: FeeDeal) => ({ id: d.id, start: d.start, saved: d.saved });
+
+  it("keeps a typed name and typed fees, and records the track", () => {
+    const deal: FeeDeal = { ...provident(), name: "ההצעה של הסוכן", start: "2026-01", saved: "2026-11-10" };
+    const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
+    expect(kept(next)).toEqual(kept(deal));
+    expect(next.name).toBe("ההצעה של הסוכן");
+    expect(next.fees).toEqual(deal.fees);
+    expect(next.template).toMatchObject({ id: `track:${a.id}`, feesKept: true });
+    expect(readDeal(JSON.parse(JSON.stringify(next)))).toEqual(next);
+    expect(decodeDeal(encodeDeal(next))?.template).toEqual(next.template);
+  });
+  it("fills and names an empty deal, keeping its id", () => {
+    const deal = newDeal("kupat-gemel-lehashkaa");
+    const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
+    const t = templateOf(deal, `track:${a.id}`, data, TODAY)!;
+    expect(next.id).toBe(deal.id);
+    expect(next.name).toBe(t.name.slice(0, NAME_MAX));
+    expect(next.template).toEqual({ id: `track:${a.id}`, name: t.name });
+    expect(next.fees.map(({ id: _id, ...f }) => f)).toEqual(t.fees);
+    expect(next.fees.every(untouched)).toBe(true);
+  });
+  it("refills a deal filled from one track and left untouched from another, and its name with it", () => {
+    const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const next = pickTrack(first, `track:${b.id}`, data, TODAY)!;
+    const t = templateOf(first, `track:${b.id}`, data, TODAY)!;
+    expect(next.id).toBe(first.id);
+    expect(next.name).toBe(t.name.slice(0, NAME_MAX));
+    expect(next.template).toEqual({ id: `track:${b.id}`, name: t.name });
+    expect(next.fees.map(({ id: _id, ...f }) => f)).toEqual(t.fees);
+    expect(next.fees.map((f) => f.id)).toEqual(first.fees.map((f) => f.id));
+    // a name the person typed over the first track's stays
+    expect(pickTrack({ ...first, name: "שלי" }, `track:${b.id}`, data, TODAY)!.name).toBe("שלי");
+  });
+  it("keeps every fee where one among the filled ones is typed or changed", () => {
+    const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const deposit = first.fees.find((f) => f.kind === "deposit")!;
+    const changed = updateFee(first, deposit.id, (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.1)));
+    expect(untouched(changed.fees.find((f) => f.id === deposit.id)!)).toBe(false);
+    const next = pickTrack(changed, `track:${b.id}`, data, TODAY)!;
+    expect(next.fees).toEqual(changed.fees);
+    expect(next.template).toMatchObject({ id: `track:${b.id}`, feesKept: true });
+    // the name the first track gave is still the template's, so it follows the track picked
+    expect(next.name).toBe(templateOf(first, `track:${b.id}`, data, TODAY)!.name.slice(0, NAME_MAX));
+    const added = { ...first, fees: [...first.fees, { id: "fee-own", kind: "own" as const, name: "x", stages: [{ price: { form: "free" as const } }] }] };
+    expect(pickTrack(added, `track:${b.id}`, data, TODAY)!.fees).toEqual(added.fees);
+  });
+  it("calls a fee untouched only as a template fills it: one price, every figure sourced", () => {
+    const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const f = first.fees[0]!;
+    expect(untouched(f)).toBe(true);
+    expect(untouched(editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 99)))).toBe(false);
+    expect(untouched({ ...f, stages: [{ ...f.stages[0]!, until: "2027-01" }, f.stages[0]!] })).toBe(false);
+    expect(untouched({ ...f, stages: [{ price: { form: "free" } }] })).toBe(false);
+    expect(provident().fees.some(untouched)).toBe(false);
   });
 });

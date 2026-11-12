@@ -8,7 +8,7 @@ import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { isProductId, NAME_MAX, newDeal, newFeeId, type BoundCurrency, type Fee, type FeeDeal, type Months, type Num, type Price, type ProviderKind } from "./model";
+import { isProductId, NAME_MAX, newDeal, newFeeId, untouched, type BoundCurrency, type Fee, type FeeDeal, type Months, type Num, type Price, type ProviderKind } from "./model";
 import type { FeeKindId, Held } from "./shapes";
 import { sourcedOf } from "./values";
 
@@ -329,6 +329,25 @@ export function fillDeal(deal: FeeDeal, id: string, data: Pick<FeesData, "houses
 export function dealFromTemplate(from: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
   const d = fillDeal({ ...newDeal(from.kind), ...(from.held ? { held: from.held } : {}) }, id, data, today);
   return d && { ...d, name: (d.template?.name ?? "").slice(0, NAME_MAX) };
+}
+
+/**
+ * The deal on screen with a track picked for it in the builder: the same deal (its id, start month and place in the saved list), naming
+ * the track. The track's fees replace the deal's where it has none or every fee in it is as a template filled it (`untouched`); a deal
+ * with any fee the person typed or changed keeps every fee as it is, and its template says the track filled none (`feesKept`). The
+ * track's name becomes the deal's where the deal has none or still has the name the previous template gave it; a name the person typed
+ * stays. Null where the id names no template of the deal's kind.
+ */
+export function pickTrack(deal: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
+  const t = templateOf(deal, id, data, today);
+  if (!t) return null;
+  const name = t.name.slice(0, NAME_MAX);
+  const named = deal.name.trim() === "" || (deal.template !== undefined && deal.name === deal.template.name.slice(0, NAME_MAX));
+  const base = { ...deal, ...(named ? { name } : {}) };
+  if (!deal.fees.every(untouched)) return { ...base, template: { id, name: t.name, feesKept: true } };
+  // a fee of a kind the deal already has keeps its id, so the fee chosen on screen stays chosen
+  const fees = t.fees.map((f) => ({ ...f, id: deal.fees.find((x) => x.kind === f.kind)?.id ?? newFeeId() }));
+  return { ...base, fees, template: { id, name: t.name }, ...(t.provider ? { provider: t.provider } : {}) };
 }
 
 /** A new deal of a track's kind, filled from the track (`/deal?track=`); null where the track maps to no product id. */
