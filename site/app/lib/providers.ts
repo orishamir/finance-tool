@@ -70,6 +70,9 @@ export interface IndicesBundle {
 
 export const BROKERAGE = "brokerage-account";
 
+/** The channels a house's own price is read in, in order: its direct channel, then its branch; the first that prices a trade is the house's. */
+export const HOUSE_CHANNELS = ["direct", "branch"] as const;
+
 let bundlePromise: Promise<IndicesBundle> | null = null;
 /** The provider and fund data (`/indices-bundle.json`), fetched once per visit by the indices page. */
 export function loadIndicesBundle(): Promise<IndicesBundle> {

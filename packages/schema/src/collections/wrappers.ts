@@ -17,10 +17,11 @@ export const companyTermRule = (ref: CompanyTermRef): string => (typeof ref === 
 
 /**
  * A legal cap on one fee base (data-schema §3.3): a value object, and `binds` where the cap binds only some providers. `banks`: the
- * cap binds banks only (the price of moving securities out, BRK-18; the ban on custody of makam, BRK-17). The fee page judges such a
- * cap only where the deal names a provider of that kind (F-113).
+ * cap binds banks only (the price of moving securities out, BRK-18; the ban on custody of makam, BRK-17). `banks_and_fund_distributors`:
+ * the cap binds banks and a fund's distributor that is not an investment marketer (the ban on custody of money-market units, BANK-18,
+ * MF-26). The fee page judges such a cap only where the deal names a bank (F-113).
  */
-export const feeCap = valueObject.safeExtend({ binds: z.enum(["banks"]).optional() });
+export const feeCap = valueObject.safeExtend({ binds: z.enum(["banks", "banks_and_fund_distributors"]).optional() });
 
 export type FeeCap = z.infer<typeof feeCap>;
 
