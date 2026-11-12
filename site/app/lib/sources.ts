@@ -3,8 +3,9 @@
 // schema export is there. A record without `sources` falls back to the sources of its figures.
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy, sourceBlock } from "../copy";
-import { fmt } from "./format";
+import { countPhrase, fmt } from "./format";
 import { monthsBefore } from "./dates";
+import { recheckStale } from "./value";
 import { hostOf, isHebrewTitle, hebrewCitation } from "./source-label";
 import { ruleTitle } from "./rule-title";
 
@@ -216,16 +217,11 @@ export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "tex
 /** The "it may have changed since" line shows when the rule's recheck date has passed, or the source was read more than six months ago
  * (a rule that is likely to change but whose recheck date is still ahead shows that date instead; the line is for a read that is past its time, not a forecast). */
 export function mayHaveChanged(rule: Pick<SourcedRule, "likely_to_change" | "recheck_date">, source: Pick<RuleSource, "checked">, today: string): boolean {
-  if (rule.recheck_date && rule.recheck_date < today) return true;
+  if (recheckStale(rule, today)) return true;
   return !!today && source.checked < monthsBefore(today, SOURCE_AGE_WARNING_MONTHS);
 }
 
-const plural = new Intl.PluralRules("he-IL");
-
 /** "עוד מקור אחד" / "עוד שני מקורות" / "עוד {n} מקורות" for `n` further sources. */
 export function moreSourcesLabel(n: number): string {
-  const cat = plural.select(n);
-  if (cat === "one") return sourceBlock.more.one;
-  if (cat === "two") return sourceBlock.more.two;
-  return sourceBlock.more.many.replace("{n}", String(n));
+  return countPhrase(n, sourceBlock.more);
 }

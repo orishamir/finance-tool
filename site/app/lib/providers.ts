@@ -6,6 +6,7 @@ import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContex
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames } from "../copy";
 import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
+import { withoutLtd } from "./company-name";
 import type { EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
@@ -112,7 +113,7 @@ const SHORT_NAMES: Record<string, string> = {
 
 /** A label for a chart's right strip (display only): the provider's name without the company suffix. */
 export function shortName(id: string, name: string): string {
-  return SHORT_NAMES[id] ?? name.replace(/\s*\(.*\)\s*/g, " ").replace(/\s*בע["״]מ\s*/g, "").trim();
+  return SHORT_NAMES[id] ?? withoutLtd(name.replace(/\s*\(.*\)\s*/g, " "));
 }
 
 /** A site parameter as a value object (P-01, A-28): the file's value with the marker the provenance sheet reads. */

@@ -1,6 +1,6 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import { compactFee, computed, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, staleCma, staleCmaFee, type SiteValue } from "./value";
+import { compactFee, computed, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -114,5 +114,14 @@ describe("differenceOf and sumOf", () => {
   it("are null when a figure is not a number", () => {
     expect(differenceOf(["א", a], ["ב", { ...b, value: null }], "F-91", { today }).value).toBeNull();
     expect(sumOf({}, "F-91", { today }).value).toBeNull();
+  });
+});
+
+describe("recheckStale", () => {
+  it("is true once a rule's re-check date has passed, never for a rule with none", () => {
+    expect(recheckStale({ recheck_date: "2026-11-12" }, "2026-11-13")).toBe(true);
+    expect(recheckStale({ recheck_date: "2026-11-13" }, "2026-11-13")).toBe(false);
+    expect(recheckStale({ recheck_date: null }, "2026-11-13")).toBe(false);
+    expect(recheckStale({}, "2026-11-13")).toBe(false);
   });
 });
