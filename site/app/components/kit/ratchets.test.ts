@@ -25,7 +25,6 @@ const PILL: Record<string, number> = {
 const CARD: Record<string, number> = {
   };
 const INPUT: Record<string, number> = {
-    "components/decoder/tracks.tsx": 1,
     "components/invest/title.tsx": 1,
     "components/search.tsx": 1,
     "components/transfer/panel.tsx": 1,
@@ -156,7 +155,6 @@ const LINK_COLOUR = /^text-(link|primary)$/;
 const scriptFiles = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && !rel(f).startsWith("components/kit/") && rel(f) !== "lib/hooks.ts");
 
 const HAND_TITLE: Record<string, number> = {
-    "components/company/template.tsx": 1,
     "components/fees/parts.tsx": 1,
     "components/home/body.tsx": 1,
     "components/invest/title.tsx": 1,
@@ -166,17 +164,12 @@ const HAND_TITLE: Record<string, number> = {
 };
 const HAND_SECTION_HEADING: Record<string, number> = {
     "components/companies/focus.tsx": 1,
-    "components/company/overview.tsx": 1,
-    "components/company/template.tsx": 1,
     "components/decoder/institutions/page.tsx": 1,
     "components/deposits/browser.tsx": 1,
     "routes/fees.tsx": 3,
 };
 const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/company/bank-views.tsx": 1,
-    "components/company/docs.tsx": 1,
-    "components/company/template.tsx": 1,
-    "components/decoder/company-terms.tsx": 1,
     "components/decoder/institutions/page.tsx": 1,
     "components/decoder/institutions/product-row.tsx": 1,
     "components/deposits/browser.tsx": 1,
@@ -186,16 +179,12 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
     "routes/invest.tsx": 1,
 };
 const HAND_SITE_LINK: Record<string, number> = {
-    "components/companies/focus.tsx": 3,
-    "components/decoder/brand-funds.tsx": 1,
-    "components/decoder/institutions/brokerage-card.tsx": 1,
     "components/decoder/institutions/product-row.tsx": 1,
     "components/fees/parts.tsx": 5,
     "components/fees/sensitivity.tsx": 1,
     "components/guide/sections.tsx": 1,
     "components/home/body.tsx": 2,
     "components/provenance-sheets.tsx": 2,
-    "components/tracks/browser.tsx": 1,
     "content/exposure/shekel-cash.tsx": 2,
     "content/guide/bank-deposit.tsx": 2,
     "content/guide/government-bond.tsx": 3,
@@ -204,7 +193,6 @@ const HAND_SITE_LINK: Record<string, number> = {
     "routes/guide.tsx": 1,
 };
 const HAND_LINK_OUT: Record<string, number> = {
-    "components/decoder/institutions/brokerage-card.tsx": 1,
     "components/decoder/institutions/page.tsx": 1,
     "components/fees/parts.tsx": 1,
     "components/invest/pair.tsx": 1,
@@ -212,9 +200,6 @@ const HAND_LINK_OUT: Record<string, number> = {
 };
 const BANG_OVERRIDE: Record<string, number> = {
     "components/company/bank-views.tsx": 2,
-    "components/company/overview.tsx": 3,
-    "components/decoder/institutions/brokerage-card.tsx": 1,
-    "components/decoder/tracks.tsx": 1,
     "components/deposits/list.tsx": 8,
     "components/fees/parts.tsx": 2,
     "components/invest/plan-card.tsx": 1,

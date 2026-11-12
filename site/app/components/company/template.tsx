@@ -9,7 +9,7 @@ import { companies as companiesCopy, companyPage as w } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
 import { currentAddress, partOf } from "../../lib/company-page";
 import { Breadcrumb } from "../shell";
-import { MixedName, SideNav, SidePage, gershayim, type SideNavGroup } from "../kit";
+import { MixedName, PageHead, Section, SideNav, SidePage, gershayim, type SideNavGroup } from "../kit";
 
 export interface CompanyPart {
   /** The product's id in the address; "" is the overview. */
@@ -87,13 +87,12 @@ export function CompanyTemplate({ path, name, line, header, parts, groups, listL
 
   const title = current ? current.label : w.overview;
   const content = current ? (
-    <section aria-labelledby="part-h" className="flex flex-col gap-6">
-      <h2 id="part-h" className="text-xl lg:text-2xl font-semibold">
-        {current.label}
-      </h2>
-      {current.body}
-      {lone && single}
-    </section>
+    <Section title={current.label}>
+      <div className="flex flex-col gap-6">
+        {current.body}
+        {lone && single}
+      </div>
+    </Section>
   ) : (
     overview.body
   );
@@ -110,16 +109,16 @@ export function CompanyTemplate({ path, name, line, header, parts, groups, listL
   }
 
   return (
-    <div className="pt-2 lg:pt-8 flex flex-col gap-6 lg:gap-8">
-      <header className="flex flex-col gap-3 pb-5 border-b border-border">
-        <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} {...(current && !lone ? { middle: { href: path, label: name } } : {})} current={current && !lone ? title : gershayim(name)} />
-        <h1 className="text-2xl lg:text-3xl font-semibold">
-          <MixedName>{name}</MixedName>
-        </h1>
-        {line && <p className="text-sm text-muted-foreground max-w-measure">{line}</p>}
+    <div className="flex flex-col gap-6 lg:gap-8">
+      <PageHead
+        rule
+        crumb={<Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} {...(current && !lone ? { middle: { href: path, label: name } } : {})} current={current && !lone ? title : gershayim(name)} />}
+        title={<MixedName>{name}</MixedName>}
+        lede={line}
+      >
         {header}
-      </header>
-      <div ref={top} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
+      </PageHead>
+      <div ref={top} className="anchor-target">
         {lone ? (
           <div className="flex flex-col gap-8 min-w-0">{content}</div>
         ) : (

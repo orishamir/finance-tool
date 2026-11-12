@@ -6,17 +6,16 @@
 // Its missing form is one card: the reason, the price list's page, the comparison.
 import { CircleDashed } from "lucide-react";
 import { useId, useMemo, useState, type ReactNode } from "react";
-import { Link } from "react-router";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, guideBlocks } from "../../../copy";
 
 import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
-import { IconAlert, IconExternal } from "../../icons";
+import { IconAlert } from "../../icons";
 import { Num, NumAfter, RuleRef, RulesChip, RulesLine, Term } from "../../provenance";
-import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
+import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
-import { isPdfUrl, sourceHref, withoutCodes, type CitedPlace } from "../../../lib/sources";
+import { isPdfUrl, withoutCodes, type CitedPlace } from "../../../lib/sources";
 import { wholeSum } from "../../../lib/format";
 import { accountSectionIds, feeKindName, feeKindOf, feeKinds } from "./sections";
 
@@ -37,7 +36,7 @@ const pdfPage = (w: NonNullable<TariffLineRow["where"]>) => (isPdfUrl(w.url) && 
 function WhereLink({ w }: { w: NonNullable<TariffLineRow["where"]> }) {
   const page = pdfPage(w);
   return (
-    <DocLink href={sourceHref(w)} className="text-xs">
+    <DocLink source={w} className="text-xs">
       {w.tariff ? copy.card.whereTariff(page) : copy.card.whereOther(gershayim(withoutCodes(w.title)), page)}
     </DocLink>
   );
@@ -51,7 +50,7 @@ function WhereCell({ w }: { w: TariffLineRow["where"] }) {
   if (!w) return <span className="text-sm text-muted-foreground">—</span>;
   const page = pdfPage(w);
   const link = (
-    <DocLink href={sourceHref(w)} className="text-sm -my-2.5">
+    <DocLink source={w} className="text-sm -my-2.5">
       {page ? copy.card.page(page) : w.tariff ? copy.card.inTariff : copy.card.otherDoc}
     </DocLink>
   );
@@ -326,7 +325,7 @@ function Groups({ groups, houseId, linked }: { groups: FeesSnapshot["groups"] | 
   return (
     <Section level="card" heading="h3" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={copy.card.groupsLead}>
       <Card pad="snug">
-        <GroupPriceRows entries={groups.entries} sources own={{ can: (key) => linked.includes(key), link: (key) => <Link to={groupPath(houseId, key)} className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWords.ownAccount}</Link> }} />
+        <GroupPriceRows entries={groups.entries} sources own={{ can: (key) => linked.includes(key), link: (key) => <TextLink look="line" to={groupPath(houseId, key)} className="text-sm">{groupWords.ownAccount}</TextLink> }} />
       </Card>
     </Section>
   );
@@ -431,13 +430,10 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
           </h3>
           {tariff?.reasonHe && <p className="text-sm text-muted-foreground max-w-measure">{tariff.reasonHe}</p>}
           {tariff && (
-            <a href={sourceHref(tariff)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target text-sm">
-              <span>
-                {copy.missingLinks.tariffPageBefore}
-                <bdi>{gershayim(tariff.providerName)}</bdi>
-              </span>
-              <IconExternal size={16} />
-            </a>
+            <DocLink source={tariff} className="text-sm">
+              {copy.missingLinks.tariffPageBefore}
+              <bdi>{gershayim(tariff.providerName)}</bdi>
+            </DocLink>
           )}
           <LinkButton to={compareHref} variant="secondary">
             {kind === "bank" ? copy.missingLinks.compare : copy.missingLinks.compareBroker}
@@ -451,11 +447,12 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
   return (
     <div className={cx("flex flex-col gap-8", className)}>
       {/* the account's price list first, as a product's name and its quiet line: the document (its title is the link), its dates, who pays these prices */}
-      <div className="flex flex-col gap-1.5 -mt-4">
+      {/* 8 px under the part's heading, whose section leaves 16 */}
+      <div className="flex flex-col gap-1.5 -mt-2">
         {/* one muted line under the product's heading (the designer's mock): the price list, its title the link to it (a title may hold an
             address with no space in it: it breaks anywhere rather than widen the page), its house, its date and when it was collected */}
         <Sentence size="sm" tone="muted">
-          <DocLink href={sourceHref(tariff)} className="!min-h-0 max-w-measure">
+          <DocLink source={tariff} look="inline" className="max-w-measure">
             {gershayim(tariff.title)}
           </DocLink>
           {/* the house, unless the title names it already ("… - בנק לאומי") */}
