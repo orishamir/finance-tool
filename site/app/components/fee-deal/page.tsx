@@ -7,13 +7,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
+import { addFee, removeFee, updateFee } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedWith, without } from "../../lib/fee-deal/store";
-import { dealFromTemplate, HELD_UNSAID, templateLeft, templateOptions, type LeftOut } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, HELD_UNSAID, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -21,10 +23,9 @@ import { Callout, Card, PageHead, Section } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
 import { BuilderColumn } from "./builder";
-import { addFee, removeFee, updateFee } from "./edit";
 import { GlanceColumn, READING_ID } from "./glance";
 import { PanelColumn } from "./panel";
-import { TemplatePicker, templateSource } from "./picker";
+import { TemplatePicker } from "./picker";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
 
@@ -129,17 +130,17 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     const m = new Map<string, LeftOut[]>();
     if (!picker) return m;
     const probe: FeeDeal = { ...newDeal(deal.kind), held: deal.held ?? HELD_UNSAID };
-    for (const o of options) if (o.source === "house") m.set(o.id, templateLeft(probe, o.id, data, today) ?? []);
+    for (const o of options) if (o.source === "house") m.set(o.id, templateOf(probe, o.id, data, today)?.left ?? []);
     return m;
   }, [picker, options, deal.kind, deal.held, data, today]);
-  const left = useMemo(() => (deal.template ? templateLeft(deal, deal.template.id, data, today) : null), [deal, data, today]);
+  const left = useMemo(() => (deal.template ? (templateOf(deal, deal.template.id, data, today)?.left ?? null) : null), [deal, data, today]);
 
   const kind = kindById(data.kinds, deal.kind);
-  const views = useMemo(
-    () => ({ glance: glance(deal, data.kinds, today), builder: builder(deal, data.kinds, today), panel: chosen ? panelOf(deal, chosen, data.kinds, today) : null }),
-    [deal, chosen, data.kinds, today],
-  );
-  const reading = useMemo(() => readingOf(deal, data.kinds, today, data.fx), [deal, data.kinds, data.fx, today]);
+  // the deal is read once for every view; choosing another fee builds only its panel again
+  const read = useMemo(() => readDealFor(deal, data.kinds, today), [deal, data.kinds, today]);
+  const views = useMemo(() => ({ glance: glance(read), builder: builder(read), reading: readingOf(read, data.fx) }), [read, data.fx]);
+  const panel = useMemo(() => (chosen ? panelOf(read, chosen) : null), [read, chosen]);
+  const reading = views.reading;
   const hasTracks = options.some((o) => o.source === "track");
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
@@ -194,11 +195,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
         </Card>
         {deal.kind && (
           <Card edge={chosenFee ? "accent" : undefined} className="flex flex-col gap-4 xl:col-start-3 xl:row-start-1">
-            <PanelColumn panel={views.panel} fee={chosenFee} law={reading.law.find((r) => r.fee === chosen) ?? null} first={reading.from} saved={saves} onFee={onFee} onRemove={onRemove} />
+            <PanelColumn panel={panel} fee={chosenFee} law={reading.law.find((r) => r.fee === chosen) ?? null} first={reading.from} saved={saves} onFee={onFee} onRemove={onRemove} />
           </Card>
         )}
         <Card className="flex flex-col gap-4 lg:col-span-2 xl:col-span-1 xl:col-start-1 xl:row-start-1">
-          <GlanceColumn glance={views.glance} kind={kind} saved={saves} empty={deal.fees.length === 0} names={nameOf} />
+          <GlanceColumn glance={views.glance} law={reading.law} saved={saves} empty={deal.fees.length === 0} names={nameOf} />
         </Card>
       </div>
       <Section id={READING_ID} title={copy.reading}>

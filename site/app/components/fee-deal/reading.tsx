@@ -1,6 +1,6 @@
 // The section "קוראים את העסקה" under the columns (method §10.6, `readingOf`): the deal period after period (F-110), the two curves of
 // F-112 where the library draws them, the points where the deal changes behaviour (F-112), and what the law says of each fee with a cap
-// line (F-113). The headlines and the choices are worked out in reading-heads.ts; this file words and draws them.
+// line (F-113). The headlines and the choices are worked out in lib/fee-deal/reading-heads.ts; this file words and draws them.
 import { useState, type ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
@@ -9,10 +9,10 @@ import { countPhrase, fmt, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
 import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from "../../lib/fee-deal/reading";
-import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, When, cx } from "../kit";
+import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
+import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
-import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "./reading-heads";
-import { CapRules, FeeName, LawBlock, PriceWords, StandingTag, feeColour, refName } from "./words";
+import { CapRules, FeeName, LawBlock, MeetSentence, PriceWords, StandingTag, feeColour, refName } from "./words";
 
 const w = copy.read;
 
@@ -104,7 +104,7 @@ function PeriodsHeadline({ head }: { head: PeriodsHead }) {
       const c = head.change;
       return (
         <>
-          <When iso={c.at} lead={p.from} /> {p.one[c.change]!.replace("{name}", refName(c.fee))}
+          <When iso={c.at} lead={p.from} /> {fill(p.one[c.change]!, { name: refName(c.fee) })}
           {c.change === "rises" && c.cap ? p.toCap[c.cap] : ""}
         </>
       );
@@ -178,14 +178,13 @@ function Spans({ spans, lead = "" }: { spans: Span[]; lead?: string }) {
 
 function CurveHeadline({ head, noun }: { head: CurveHead; noun: string }) {
   const h = w.curves.head;
-  const fill = (t: string) => t.replace("{noun}", noun);
   switch (head.kind) {
     case "min":
     case "max": {
       const words = head.mark.on === "held" ? (head.kind === "min" ? h.minHeld : h.maxHeld) : head.kind === "min" ? h.min : h.max;
       return (
         <>
-          {fill(words.before)}
+          {fill(words.before, { noun })}
           <Num value={head.mark.amount} />
           {words.after}
         </>
@@ -297,28 +296,15 @@ const swatchOf = (s: Statement) => (s.kind === "mark" ? (s.mark.kind === "meet" 
 
 function MarkSentence({ mark }: { mark: MarkView }) {
   const p = w.points;
-  if (mark.kind === "meet") {
-    const m = copy.marks.meet;
-    return (
-      <>
-        {m.before}
-        <Num value={mark.sum} />
-        {m.sum}
-        <Num value={mark.rate} />
-        {m.rate}
-        <Num value={mark.amount} />
-        {m.after}
-      </>
-    );
-  }
+  if (mark.kind === "meet") return <MeetSentence mark={mark} />;
   const words = mark.on === "held" ? (mark.kind === "min" ? p.minHeld : p.maxHeld) : mark.kind === "min" ? p.minAction : p.maxAction;
   // a mark names its fee, not its action: the bound is said on "each action" of that fee
   const noun = copy.marks.noun.none!;
   return (
     <>
-      {words.before.replace("{name}", refName(mark.fee)).replace("{side}", sideWord(mark.side))}
+      {fill(words.before, { name: refName(mark.fee), side: sideWord(mark.side) })}
       <Num value={mark.bound} />
-      {words.middle.replace("{noun}", noun)}
+      {fill(words.middle, { noun })}
       <Num value={mark.amount} />
       {words.after}
     </>
@@ -330,16 +316,16 @@ function StatementLine({ statement, reading }: { statement: Statement; reading: 
   const spans = spansOf(statement.periods, reading.periods);
   let body: ReactNode;
   if (statement.kind === "mark") body = <MarkSentence mark={statement.mark} />;
-  else if (statement.kind === "no-max") body = p.noMax.replace("{name}", refName(statement.fee)).replace("{side}", sideWord(statement.side));
+  else if (statement.kind === "no-max") body = fill(p.noMax, { name: refName(statement.fee), side: sideWord(statement.side) });
   else {
     const row = reading.periods.find((x) => x.from === statement.periods[0])?.rows.find((r) => r.fee === statement.fee.fee);
     const price = row?.price;
     if (!price?.figures.rate || !price.per) return null;
     body = (
       <>
-        {p.every.before.replace("{name}", refName(statement.fee))}
+        {fill(p.every.before, { name: refName(statement.fee) })}
         <Num value={price.figures.rate} /> {copy.price.per[price.per]}, {copy.price.charged[statement.every]}
-        {price.per > statement.every ? p.every.part.replace("{k}", String(price.per / statement.every)) : "."}
+        {price.per > statement.every ? fill(p.every.part, { k: price.per / statement.every }) : "."}
       </>
     );
   }

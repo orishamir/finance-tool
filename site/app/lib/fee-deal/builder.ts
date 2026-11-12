@@ -1,14 +1,14 @@
 // The builder column and one fee's panel (method §10.6): a row per fee with its prices in short, the facts the row says beside them,
-// and its standing against the cap now and where it next changes; the fees to suggest; and the panel's fields by the fee's shape, each
-// price's standing and the cap's line.
-import type { ChangeKind, DealSide } from "@finance-tool/engine";
-import { capLine, type CapLine, type DealKind } from "./kinds";
-import { monthKey, type Fee, type FeeDeal, type MonthKey, type Price, type Stage } from "./model";
-import { groupOn, priceView, readDealFor, refOf, standingView, type DealRead, type FeeRef, type GroupOn, type PriceView, type StandingView } from "./parts";
+// and its standing against the cap now and where it next changes; the fees to suggest; and the panel's fields by the fee's shape and the
+// cap's line (the panel's prices against the cap are the reading's law row, reading.ts).
+import type { ChangeKind } from "@finance-tool/engine";
+import { capLine, type CapLine } from "./kinds";
+import { monthKey, type Fee, type MonthKey, type Price, type Stage } from "./model";
+import { priceView, refOf, sameStanding, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { FEE_SHAPES, holdsFunds, ONE_SIDE, suggestions, type FeeKindId, type FeeShape, type FieldId, type Held } from "./shapes";
 import { insideFund } from "./values";
 
-/** A price of a fee as a row or the panel shows it: the price, the month it ends where it ends, and its standing against the cap. */
+/** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
 export interface StageView {
   price: PriceView;
   until?: MonthKey;
@@ -18,14 +18,12 @@ export interface StageView {
 /** One fee's next change after the reading's month, where it has one (F-110). */
 export interface NextChange {
   at: MonthKey;
-  side: DealSide;
   change: ChangeKind;
 }
 
-/** A fee's row in the builder: its prices in short, a sale's own where it has them, and the facts beside them. */
+/** A fee's row in the builder: its prices in short and the facts beside them. */
 export interface BuilderRow extends FeeRef {
   stages: StageView[];
-  sale?: StageView[];
   /** Whether a sale is priced as a purchase is: null where the fee is not one a sale may price apart. */
   saleSame: boolean | null;
   /** The fee's next change, and whether it is a start from free. */
@@ -46,7 +44,6 @@ export interface Builder {
   /** Whether the deal says what it holds (a kind that holds funds), and what. */
   holdsFunds: boolean;
   held?: Held;
-  unread: string[];
 }
 
 /** A fee's prices as stage views. */
@@ -59,8 +56,6 @@ function stageViews(r: DealRead, i: number, stages: readonly Stage[]): StageView
 
 /** The stages read from the reading's month on: those whose end is after it, and the last. */
 const readStages = (r: DealRead, views: StageView[]): StageView[] => views.filter((s) => s.until === undefined || s.until > monthKey(r.reading.from));
-
-const sameStanding = (a: StandingView, b: StandingView) => JSON.stringify(a.standing) === JSON.stringify(b.standing);
 
 function rowOf(r: DealRead, i: number): BuilderRow {
   const fee = r.fees[i]!;
@@ -76,9 +71,8 @@ function rowOf(r: DealRead, i: number): BuilderRow {
   return {
     ...refOf(fee),
     stages,
-    ...(sale ? { sale } : {}),
     saleSame: shape.saleApart && !ONE_SIDE[fee.kind] ? !fee.sale : null,
-    ...(c ? { next: { at: monthKey(c.at), side: c.side, change: c.kind } } : {}),
+    ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
     bounds: { min: has("min"), max: has("max") },
     insideFund: insideFund(fee),
     standingNow: now.standing,
@@ -86,30 +80,29 @@ function rowOf(r: DealRead, i: number): BuilderRow {
   };
 }
 
-/** The builder column of a deal, read on `today` (YYYY-MM-DD) with the kinds' records. */
-export function builder(deal: FeeDeal, kinds: readonly DealKind[], today: string): Builder {
-  const r = readDealFor(deal, kinds, today);
+/** The builder column of a deal, from the deal read once (`readDealFor`). */
+export function builder(r: DealRead): Builder {
+  const deal = r.deal;
   const funds = holdsFunds(deal.kind);
   return {
     rows: r.fees.map((_, i) => rowOf(r, i)),
     suggestions: deal.kind && r.kind ? suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), deal.held) : { usual: [], rarer: ["own"] },
     holdsFunds: funds,
     ...(funds && deal.held ? { held: deal.held } : {}),
-    unread: r.unread,
   };
 }
 
 // ---------------------------------------------------------------- one fee's panel
 
-/** A price in the panel: its view, the fields its form has for this fee, the month it ends, and its standing. */
-export interface PanelStage extends StageView {
+/** A price in the panel: its view, the month it ends, and the fields its form has for this fee. */
+export interface PanelStage {
+  price: PriceView;
+  until?: MonthKey;
   fields: readonly FieldId[];
 }
 
 export interface Panel extends FeeRef {
   shape: FeeShape;
-  /** What the fee is charged on at its price now (F-111). */
-  on: GroupOn;
   /** The side of a trade it is charged on alone, where it is. */
   oneSide?: "buy" | "sell";
   /** Every price as typed, the passed ones too (the panel edits them all). */
@@ -118,33 +111,29 @@ export interface Panel extends FeeRef {
   sale: { allowed: boolean; stages?: PanelStage[] };
   /** Whether the fee has more than one price (its price is for a time). */
   limited: boolean;
-  /** Whether its prices are in order (F-110); a fee that is not is left out of every reading until it is. */
-  inOrder: boolean;
   cap: CapLine;
 }
 
 const fieldsOf = (fee: Fee, p: Price): readonly FieldId[] => (p.form === "free" ? [] : (FEE_SHAPES[fee.kind].fields[p.form] ?? []));
 
-/** One fee's panel, read on `today` with the kinds' records; null where the deal has no fee with that id. */
-export function panel(deal: FeeDeal, feeId: string, kinds: readonly DealKind[], today: string): Panel | null {
-  const r = readDealFor(deal, kinds, today);
-  const fee = deal.fees.find((f) => f.id === feeId);
+/** One fee's panel, from the deal read once (`readDealFor`); null where the deal has no fee with that id. */
+export function panel(r: DealRead, feeId: string): Panel | null {
+  const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
-  // a fee whose prices are not in order is read on its own, so its fields and standings still show while it is edited
+  // a fee whose prices are not in order is not among the read fees: its prices are shown on their own, so its fields still show while it is edited
   const at = r.fees.indexOf(fee);
-  const ctx = at >= 0 ? { r, i: at } : { r: { ...r, fees: [fee] }, i: 0 };
-  const stagesOf = (stages: readonly Stage[]): PanelStage[] => stageViews(ctx.r, ctx.i, stages).map((s, k) => ({ ...s, fields: fieldsOf(fee, stages[k]!.price) }));
+  const fees = at >= 0 ? r.fees : [fee];
+  const i = Math.max(at, 0);
+  const stagesOf = (stages: readonly Stage[]): PanelStage[] => stages.map((s) => ({ price: priceView(fees, i, s.price, r.today), ...(s.until ? { until: s.until } : {}), fields: fieldsOf(fee, s.price) }));
   const shape = FEE_SHAPES[fee.kind];
   const side = ONE_SIDE[fee.kind];
   return {
     ...refOf(fee),
     shape,
-    on: groupOn(r, fee, fee.stages[0]!.price),
     ...(side ? { oneSide: side } : {}),
     stages: stagesOf(fee.stages),
     sale: { allowed: shape.saleApart && !side, ...(fee.sale ? { stages: stagesOf(fee.sale) } : {}) },
     limited: fee.stages.length > 1,
-    inOrder: at >= 0,
     cap: capLine(r.kind, fee.kind),
   };
 }

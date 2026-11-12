@@ -107,7 +107,8 @@ export interface FeeRef {
   name?: string;
 }
 
-export const refOf = (f: Fee): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) });
+/** A fee's line, from the deal's fee or from a line of a view that carries more (a period's row). */
+export const refOf = (f: Fee | FeeRef): FeeRef => ({ fee: "id" in f ? f.id : f.fee, kind: f.kind, ...(f.name ? { name: f.name } : {}) });
 
 /** The stage of a fee whose price holds in month `i` (F-110: the first whose end is after it, else the last). */
 export function stageIn(stages: readonly { until?: MonthKey }[], at: CalendarMonth): number {

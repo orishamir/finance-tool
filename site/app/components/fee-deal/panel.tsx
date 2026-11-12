@@ -5,13 +5,14 @@ import type { ReactNode } from "react";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { Panel, PanelStage } from "../../lib/fee-deal/builder";
 import type { CapLine } from "../../lib/fee-deal/kinds";
-import { BOUND_CURRENCIES, MONTHS, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
+import { addStage, editPrice, removeStage, setFeeName, setSaleApart, setUntil, withCurrency, withForm, withMonths, type Side } from "../../lib/fee-deal/edit";
+import { BOUND_CURRENCIES, MONTHS, NAME_MAX, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
+import { refOf } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FieldId, FormId } from "../../lib/fee-deal/shapes";
 import { Button, ChoiceChips, GroupHead, KeyValueList, MonthField, Section, SegmentedControl, TextField, InlineSelect, Tag, type KeyValueItem } from "../kit";
-import { addStage, editPrice, removeStage, setFeeName, setSaleApart, setUntil, withCurrency, withForm, withMonths, type Side } from "./edit";
 import { PriceFigure } from "./figures";
-import { CapRules, FeeName, LawBlock, refName } from "./words";
+import { CapRules, FeeName, LawBlock, perActionWord, refName } from "./words";
 
 const p = copy.panel;
 
@@ -26,7 +27,7 @@ function orderNote(stages: readonly PanelStage[]): string | null {
 
 /** One price's fields, by its form: a row of the panel's list for each. */
 function stageItems(fee: Fee, side: Side, k: number, s: PanelStage, onFee: (f: Fee) => void): KeyValueItem[] {
-  const name = refName({ fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) });
+  const name = refName(refOf(fee));
   const label = (field: string) => copy.builder.fieldName(name, field);
   const price = (fee.sale && side === "sell" ? fee.sale : fee.stages)[k]!.price;
   const edit = (fn: Parameters<typeof editPrice>[3]) => onFee(editPrice(fee, side, k, fn));
@@ -39,17 +40,17 @@ function stageItems(fee: Fee, side: Side, k: number, s: PanelStage, onFee: (f: F
       label: p.howMuch,
       value: (
         <span className="flex flex-wrap items-center gap-2">
-          {figure("rate", price.form === "action" ? (copy.price.perAction[fee.kind] ?? copy.price.perAction.default) : undefined)}
+          {figure("rate", price.form === "action" ? perActionWord(fee.kind) : undefined)}
           {price.form === "held" && <InlineSelect label={label(p.per)} labelHidden options={monthOptions(p.perOptions)} value={String(price.per)} onChange={(v) => v && edit((x) => withMonths(x, "per", Number(v) as Months))} />}
         </span>
       ),
     });
-  if (has("amount")) items.push({ id: "amount", label: p.howMuch, value: figure("amount", price.form === "perAction" ? (copy.price.perAction[fee.kind] ?? copy.price.perAction.default) : undefined) });
+  if (has("amount")) items.push({ id: "amount", label: p.howMuch, value: figure("amount", price.form === "perAction" ? perActionWord(fee.kind) : undefined) });
   if (has("every") && price.form === "held")
     items.push({ id: "every", label: p.every, value: <InlineSelect label={label(p.every)} labelHidden options={monthOptions(p.everyOptions)} value={String(price.every)} onChange={(v) => v && edit((x) => withMonths(x, "every", Number(v) as Months))} /> });
   if (has("every") && price.form === "sum")
     items.push({ id: "every", label: p.sumEvery, value: <InlineSelect label={label(p.sumEvery)} labelHidden options={monthOptions(p.sumEveryOptions)} value={String(price.every)} onChange={(v) => v && edit((x) => withMonths(x, "every", Number(v) as Months))} /> });
-  const boundWords = [price.form === "held" ? p.perCharge : copy.price.perAction[fee.kind] ?? copy.price.perAction.default, p.optional].join(" · ");
+  const boundWords = [price.form === "held" ? p.perCharge : perActionWord(fee.kind), p.optional].join(" · ");
   if (has("min")) items.push({ id: "min", label: p.min, value: figure("min", boundWords, true) });
   if (has("max")) items.push({ id: "max", label: p.max, value: figure("max", boundWords, true) });
   if (has("currency") && price.form === "action")
@@ -63,7 +64,7 @@ function stageItems(fee: Fee, side: Side, k: number, s: PanelStage, onFee: (f: F
 
 /** A fee's prices on one side, stage after stage: each with its form, its fields and the month it ends; a stage added or taken away. */
 function Stages({ fee, side, stages, forms, onFee }: { fee: Fee; side: Side; stages: readonly PanelStage[]; forms: readonly FormId[]; onFee: (f: Fee) => void }) {
-  const name = refName({ fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) });
+  const name = refName(refOf(fee));
   const note = orderNote(stages);
   const typed = side === "sell" && fee.sale ? fee.sale : fee.stages;
   return (
@@ -162,7 +163,7 @@ export function PanelColumn({ panel, fee, law, first, saved, onFee, onRemove }: 
         <h3 className="text-lg font-semibold">
           <FeeName fee={panel} />
         </h3>
-        {fee.kind === "own" && <TextField label={p.ownName} value={fee.name ?? ""} maxLength={60} onChange={(v) => onFee(setFeeName(fee, v))} />}
+        {fee.kind === "own" && <TextField label={p.ownName} value={fee.name ?? ""} maxLength={NAME_MAX} onChange={(v) => onFee(setFeeName(fee, v))} />}
         {base && (
           <p className="text-sm text-muted-foreground">
             {p.base}

@@ -2,7 +2,7 @@
 // deals' side store and the export file that carries them.
 import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
-import { decodeDeal, dealOfAddress, dealSearch, encodeDeal, parseSubject } from "./link";
+import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
 import { blankPrice, engineDeal, feeInOrder, newDeal, newFee, readDeal, typed, type FeeDeal, type Sourced } from "./model";
 import { DEALS_KEY, parseDeals, savedWith, without } from "./store";
 import { engineBase, FEE_KIND_IDS, FEE_SHAPES, fitsHeld, suggestions } from "./shapes";
@@ -154,7 +154,6 @@ describe("the link", () => {
     expect(dealOfAddress("?track=999", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
     expect(dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
     expect(dealOfAddress("", data, "2026-11-12")).toBeNull();
-    expect(dealSearch(account())).toMatch(/^\?d=[A-Za-z0-9_-]+$/);
     expect(parseSubject("?track=12")).toEqual({ kind: "track", trackId: 12 });
   });
 });

@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { FeeRef, PriceView, StandingView } from "../../lib/fee-deal/parts";
+import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { fmt } from "../../lib/format";
@@ -21,6 +21,9 @@ export function feeName(kind: FeeKindId, own?: string): string {
 }
 
 export const refName = (r: FeeRef) => feeName(r.kind, r.name);
+
+/** What a price charged on each action is per ("לכל פעולה"), by the fee's kind. */
+export const perActionWord = (kind: FeeKindId): string => copy.price.perAction[kind] ?? copy.price.perAction.default!;
 
 /**
  * Each fee's one colour on the whole page (theme.css, the `--fee-*` roles): a `bg-*` for its swatch and its bar against the cap, a
@@ -116,7 +119,7 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
     case "perAction":
       body = (
         <>
-          <Num value={f.amount!} /> {p.perAction[kind] ?? p.perAction.default}
+          <Num value={f.amount!} /> {perActionWord(kind)}
         </>
       );
       break;
@@ -241,11 +244,12 @@ function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: 
 }
 
 /**
- * A fee against its cap as the reading reads it (F-113), the same in the chosen fee's panel and in the law card: its name and the tag of
- * its standing (or of the first later one that differs, with its month), the bar, each price from the reading's month on, and the cap's
- * line. Its container lays the pieces out as a column. Nothing where the cap has no figure.
+ * A fee against its cap (F-113), the one block the glance, the chosen fee's panel and the law card draw: its name and the tag of its
+ * standing (or of the first later one that differs, with its month), the bar, then `children` (its price or prices in words, and the cap's
+ * line where the place says it). It reads the fee's law row of the reading, so the three never disagree. Its container lays the pieces out
+ * as a column. Nothing where the cap has no figure.
  */
-export function LawBlock({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
+export function CapBlock({ row, children }: { row: LawRow; children?: ReactNode }) {
   if (row.cap.state !== "value") return null;
   return (
     <>
@@ -254,8 +258,33 @@ export function LawBlock({ row, saved, first }: { row: LawRow; saved: boolean; f
         {row.later ? <StandingTag standing={row.later.standing} from={row.later.at} /> : row.now && <StandingTag standing={row.now} />}
       </span>
       {row.now && <FeeCapBar kind={row.kind} now={row.now} {...(row.later ? { later: row.later.standing } : {})} cap={row.cap.value} />}
+      {children}
+    </>
+  );
+}
+
+/** A fee's law row whole, as the panel and the law card show it: the block against its cap, each price from the reading's month on, and the cap's line. */
+export function LawBlock({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
+  return (
+    <CapBlock row={row}>
       <LawPrices row={row} saved={saved} first={first} />
       <CapRules cap={row.cap} />
+    </CapBlock>
+  );
+}
+
+/** The value held at which the yearly sums on the account and the custody rate cost the same (F-112), as a sentence's words and figures. */
+export function MeetSentence({ mark }: { mark: Extract<MarkView, { kind: "meet" }> }) {
+  const m = copy.marks.meet;
+  return (
+    <>
+      {m.before}
+      <Num value={mark.sum} />
+      {m.sum}
+      <Num value={mark.rate} />
+      {m.rate}
+      <Num value={mark.amount} />
+      {m.after}
     </>
   );
 }

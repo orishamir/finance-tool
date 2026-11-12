@@ -3,9 +3,9 @@
 import { actionCost, changeKind, curveEnd, dealMarks, groupAction, holdingCost, type ChangeKind, type DealAction, type DealMark, type DealPeriod, type DealSide } from "@finance-tool/engine";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import type { SiteValue } from "../value";
-import { capLine, type CapLine, type DealKind } from "./kinds";
-import { monthKey, type FeeDeal, type MonthKey, type Months, type Stage } from "./model";
-import { markView, monthsValue, priceAt, priceView, readDealFor, refOf, sameStanding, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
+import { capLine, type CapLine } from "./kinds";
+import { monthKey, type MonthKey, type Months, type Stage } from "./model";
+import { markView, monthsValue, priceAt, priceView, refOf, sameStanding, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue } from "./values";
 
@@ -344,12 +344,10 @@ export interface Reading {
   curves: Curve[];
   undrawn: Undrawn[];
   law: LawRow[];
-  unread: string[];
 }
 
-/** The reading of a deal on `today` (YYYY-MM-DD), with the kinds' records and the site's exchange rates (F-84) for a bound in another currency. */
-export function readingOf(deal: FeeDeal, kinds: readonly DealKind[], today: string, fx: FxSnapshot | null): Reading {
-  const r = readDealFor(deal, kinds, today);
+/** The reading of a deal, from the deal read once (`readDealFor`), with the site's exchange rates (F-84) for a bound in another currency. */
+export function readingOf(r: DealRead, fx: FxSnapshot | null): Reading {
   const { curves, undrawn } = curvesOf(r, fx);
-  return { from: monthKey(r.reading.from), periods: r.reading.periods.map((_, k) => cardOf(r, k)), statements: statementsOf(r), curves, undrawn, law: lawOf(r), unread: r.unread };
+  return { from: monthKey(r.reading.from), periods: r.reading.periods.map((_, k) => cardOf(r, k)), statements: statementsOf(r), curves, undrawn, law: lawOf(r) };
 }

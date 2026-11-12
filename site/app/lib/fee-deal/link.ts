@@ -106,9 +106,6 @@ export function decodeDeal(d: string): FeeDeal | null {
   return readDeal({ ...long, id: newDealId(), fees });
 }
 
-/** The query of a deal's address: the deal in `d`. */
-export const dealSearch = (deal: FeeDeal): string => `?d=${encodeDeal(deal)}`;
-
 /** The address of a deal: the fee page with the deal in `d` (site-paths.ts). */
 export const dealPath = (deal: FeeDeal): string => feesPath({ deal: encodeDeal(deal) });
 

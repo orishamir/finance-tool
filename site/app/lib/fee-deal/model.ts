@@ -97,7 +97,7 @@ export const NAME_MAX = 60;
 const TEXT_MAX = 400;
 /** No typed percent is above this, and no sum above this many shekels: anything larger is not a price and is refused. */
 const PCT_MAX = 100;
-const SUM_MAX = 1_000_000_000;
+export const SUM_MAX = 1_000_000_000;
 const FEES_MAX = 40;
 const STAGES_MAX = 12;
 const MONTH = /^(\d{4})-(0[1-9]|1[0-2])$/;
