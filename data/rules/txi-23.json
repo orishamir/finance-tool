@@ -14,6 +14,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.8 (gazette p.290), regs. 11, 12",
+      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 290), תקנות 11, 12",
+      "page": 8,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",
@@ -24,16 +37,6 @@
       "locator": "pp.42-43",
       "locator_he": "עמודים 42 עד 43",
       "page": 42,
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
-      "kind": "regulation",
-      "strength": "primary",
       "checked": "2026-11-07"
     }
   ]
