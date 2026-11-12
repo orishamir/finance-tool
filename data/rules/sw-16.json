@@ -23,6 +23,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.11, Annex A table",
+      "locator_he": "עמוד 11, נספח א טבלה",
       "page": 11,
       "quote": "במסלול ההשקעה",
       "checked": "2026-10-25"

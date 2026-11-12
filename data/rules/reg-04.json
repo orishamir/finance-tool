@@ -69,6 +69,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "locator": "p.2, ss.15, 16; p.1, footnote 1",
+      "locator_he": "עמוד 2, סעיפים 15, 16; עמוד 1, הערת שוליים 1",
       "page": 2,
       "checked": "2026-10-25"
     },
@@ -80,8 +81,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.60 (gazette p.408)",
-      "locator_he": "עמוד 60 (עמוד ספר החוקים 408)",
+      "locator": "p.60 (gazette p.408), chapter י\"א s.16",
+      "locator_he": "עמוד 60 (עמוד ספר החוקים 408), פרק י\"א סעיף 16",
       "page": 60,
       "checked": "2026-10-25"
     },

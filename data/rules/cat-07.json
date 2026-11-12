@@ -20,6 +20,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 26 to 29",
+      "locator_he": "שורות 26 עד 29",
       "checked": "2026-10-22"
     },
     {
@@ -30,6 +32,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 27 to 30",
+      "locator_he": "שורות 27 עד 30",
       "checked": "2026-10-22"
     },
     {
@@ -40,6 +44,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 18 to 21",
+      "locator_he": "שורות 18 עד 21",
       "checked": "2026-10-22"
     },
     {

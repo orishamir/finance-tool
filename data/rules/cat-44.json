@@ -36,6 +36,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.7 and p.1",
+      "locator_he": "עמוד 7 ועמוד 1",
       "page": 7,
       "checked": "2026-11-03"
     },
@@ -46,6 +47,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 30 to 32",
+      "locator_he": "שורות 30 עד 32",
       "checked": "2026-11-03"
     },
     {

@@ -176,7 +176,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule: The Tel Aviv Stock Exchange describes itself as "a regulated exchange, as well as a self-regulating organization (SRO)", supervised by the ISA. It is a listed company (since August 2019); its wholly owned subsidiaries are the TASE Clearing House (מסלקת הבורסה), the MAOF Clearing House (מסלקת מעו"ף) and the Nominee Company (החברה לרישומים).
 - Conditions / exceptions: Split from REG-13 on 2026-10-26 (scope settling). The licence and the ISA's supervision of the exchange are general and stay in REG-13 (Securities Law ss.45, 45א, 46, 48, 51). This record is TASE's brochure about itself, not a TASE rule.
 - Figures: none.
-- Source: [TASE, How to become TASE Remote Member, January 2026](https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf), pp.3-4: "TASE is a regulated exchange, as well as a self-regulating organization (SRO)" · checked 2026-10-26 · institution (TASE's own brochure). General rule: REG-13.
+- Source: [TASE, How to become TASE Remote Member, January 2026](https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf), p.3; p.4 "TASE is a regulated exchange, as well as a self-regulating organization (SRO)" · checked 2026-10-26 · institution (TASE's own brochure). General rule: REG-13.
 - Scope: institution: Tel Aviv Stock Exchange
 - Dimensions: `regulator`
 - Likely to change: no

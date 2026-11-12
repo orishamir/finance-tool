@@ -257,6 +257,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.8, annex ג, row 9100",
+      "locator_he": "עמוד 8, נספח ג, שורה 9100",
       "page": 8,
       "quote": "ממשק טרום ייעוץ",
       "checked": "2026-10-26"

@@ -111,6 +111,7 @@
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "file p.9, ch. ב' s.1(י)-(יא)",
+      "locator_he": "עמוד הקובץ 9, פרק ב' סעיף 1(י)-(יא)",
       "page": 9,
       "quote": "בקרנות סל - יחידת מסחר הינה יחידת קרן סל אחת",
       "checked": "2026-10-26",
@@ -125,6 +126,7 @@
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "file pp.39-42, ch. ה' s.2א, s.2ב(2)(א), (י), (יא)",
+      "locator_he": "עמודי הקובץ 39 עד 42, פרק ה' סעיף 2א, סעיף 2ב(2)(א), (י), (יא)",
       "page": 39,
       "checked": "2026-10-26",
       "qualifier": "(exchange rules, ISA-approved)"

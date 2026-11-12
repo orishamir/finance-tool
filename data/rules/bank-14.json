@@ -49,8 +49,8 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.3, Annex A",
-      "locator_he": "עמוד 3, נספח א",
+      "locator": "p.3, Annex A and notes 1-2",
+      "locator_he": "עמוד 3, נספח א והערות 1-2",
       "page": 3,
       "checked": "2026-10-25"
     },

@@ -17,12 +17,13 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=15",
       "title": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה או יחידה בקרן נאמנות), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
-      "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס״ג-2002",
+      "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה או יחידה בקרן נאמנות), התשס״ג-2002",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.15 (gazette p.387), reg. 1, definition ניירות ערך זהים",
+      "locator_he": "עמוד הקובץ 15 (עמוד הרשומות 387), תקנה 1, הגדרת ניירות ערך זהים",
       "page": 15,
       "quote": "ניירות ערך מאותו סוג ושל אותו מנפיק",
       "checked": "2026-11-07"

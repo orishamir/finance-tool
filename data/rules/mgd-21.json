@@ -75,8 +75,8 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
+      "locator": "p.4, note 1",
+      "locator_he": "עמוד 4, הערה 1",
       "page": 4,
       "checked": "2026-10-26"
     }

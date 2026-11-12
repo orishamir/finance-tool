@@ -109,8 +109,8 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.15",
-      "locator_he": "עמוד 15",
+      "locator": "p.15, tables ד-14, ד-15",
+      "locator_he": "עמוד 15, טבלאות ד-14, ד-15",
       "page": 15,
       "quote": "עלות ביטוח חיים לגבר בן",
       "checked": "2026-11-12"
@@ -123,8 +123,8 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.16",
-      "locator_he": "עמוד 16",
+      "locator": "p.16, tables ד-16, ד-17",
+      "locator_he": "עמוד 16, טבלאות ד-16, ד-17",
       "page": 16,
       "quote": "עלות ביטוח חיים לאישה בת",
       "checked": "2026-11-12"

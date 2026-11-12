@@ -22,6 +22,7 @@
       "kind": "dataset",
       "strength": "primary",
       "locator": "row 2",
+      "locator_he": "שורה 2",
       "quote": "תשואות נומינליות ברוטו",
       "checked": "2026-11-12"
     },
@@ -34,6 +35,7 @@
       "kind": "dataset",
       "strength": "primary",
       "locator": "row 2",
+      "locator_he": "שורה 2",
       "quote": "כלל התשואות הפיננסיות הינן נומינליות ברוטו",
       "checked": "2026-11-12"
     },
@@ -46,6 +48,7 @@
       "kind": "dataset",
       "strength": "primary",
       "locator": "row 2",
+      "locator_he": "שורה 2",
       "checked": "2026-11-12"
     },
     {

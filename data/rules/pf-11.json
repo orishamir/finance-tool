@@ -15,14 +15,28 @@
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=5",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022, קובץ התקנות 10377 (30.10.2022) p.212",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022, קובץ התקנות 10377 (30.10.2022)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022, קובץ התקנות 10377 (30.10.2022)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file pp.5-6 (gazette pp.215-216), s.4",
-      "locator_he": "עמודי הקובץ 5 עד 6 (עמודי הרשומות 215 עד 216), סעיף 4",
+      "locator": "file p.5 (gazette p.215), s.4, reg. 2א(א)-(ב)",
+      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 215), סעיף 4, תקנה 2א(א)-(ב)",
       "page": 5,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022, קובץ התקנות 10377 (30.10.2022)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022, קובץ התקנות 10377 (30.10.2022)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.216), reg. 2א(ד), (ו)-(ט)",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 216), תקנה 2א(ד), (ו)-(ט)",
+      "page": 6,
       "quote": "משקיע מוסדי לא יגבה הוצאות ישירות מסוג עמלת ניהול חיצוני, מעבר למגבלת עמלת הניהול החיצוני",
       "checked": "2026-11-08"
     }

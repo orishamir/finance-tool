@@ -99,7 +99,10 @@ edit; a record edited by hand no longer matches its block.
 - **After editing blocks**, write only their records:
   `npm run extract:sources -w @finance-tool/pipeline -- --only=KGL-12,MF-25`.
   Every other record stays as it is. `-- --drift` lists the records that
-  differ from what their blocks give today.
+  differ from what their blocks give today. The check fails while any
+  record differs (`packages/pipeline/test/records-match-blocks.test.ts`),
+  so a change to the registry of publishers and documents, or to the
+  extraction itself, is followed by writing the records it touches.
 - **Dates.** A source with no `checked` date of its own takes the next date
   after it on the line: the trailer `· checked YYYY-MM-DD · strength` closes
   the run of links before it. Give a source its own date when it was read
@@ -122,7 +125,14 @@ edit; a record edited by hand no longer matches its block.
 - **Remarks.** A remark in English after a link's place, in parentheses or
   after `; ` (`; the ISA directives list shows no later version`), stays out
   of the record's locator. A part after `; ` that opens on a place (`p.9`,
-  `s.4`, `Schedule E`, `appendix A`) or holds one is a passage.
+  `s.4`, `Schedule E`, `appendix A`) or holds one is a passage. A remark in
+  parentheses may hold `; ` and brackets of its own.
+- **Places.** A locator names places: page, section, regulation, annex,
+  table, and, with its number or name after it, a note, a row, a chapter or
+  a question (`p.5, note 10`, `table 2, rows סחורות`, `chapter ב s.2`). Any
+  other English word in lower case ends the locator where it stands, so a
+  name or a remark goes in parentheses. A link titled by its page
+  (`[p.119](…#page=119), note 10`) keeps that page before what follows it.
 
 ## The Scope line
 
