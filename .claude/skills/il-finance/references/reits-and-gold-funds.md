@@ -198,7 +198,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   - The report does not say which funds make up the category, so these averages may include non-gold funds (RG-15). They are not a gold-fund price.
   - These are reference averages (D4).
 - Figures: as stated; end-2025; updated yearly by the ISA report.
-- Source: [רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), p.5 (row "סחורות": קרן מחקה פתוחה 0.01, קרן סל 0.65), p.14 (לוח 2, "דמי ניהול ממוצעים - ממוצע משוקלל ופשוט", rows "סחורות"), p.16 (לוח 3, "תשואה מצטברת ממוצעת - חודשי", קרן סל "סחורות", December 4.78%) · checked 2026-11-07 · primary. Re-read 2026-11-07 on the Securities Authority's own site: every figure above matches; the copy first read on a press host (cdn.funder.co.il) is the same document (same title and creation date, 10.6.2026) and is no longer cited.
+- Source: [רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), p.5, row סחורות; p.14, table 2, rows סחורות "דמי ניהול ממוצעים - ממוצע משוקלל ופשוט"; p.16, table 3, row סחורות "תשואה מצטברת ממוצעת - חודשי" · checked 2026-11-07 · primary. Re-read 2026-11-07 on the Securities Authority's own site: every figure above matches; the copy first read on a press host (cdn.funder.co.il) is the same document (same title and creation date, 10.6.2026) and is no longer cited.
 - Scope: general
 - Dimensions: fee-management-balance, fee-change-over-time
 - Likely to change: yes, yearly
