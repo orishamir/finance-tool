@@ -4447,6 +4447,10 @@ export const kit = {
 
 /** What the guide visuals' range facts are, as their number sheets say it (moved from guide-signature-g2.server.ts). */
 export const signatureFacts = {
+  /** Beside an exchange rate worked out from the European Central Bank's reference rates (F-84), with their date ("23.10.2026"). */
+  fxLabel: (date: string) => `מחושב משערי הייחוס של הבנק המרכזי האירופי, ${date}`,
+  /** What the house named in a guide's own-account figure is: the one the site's parameters assume (P-05). */
+  ownHouse: "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך",
   /** The regulator's monthly file a count of its tracks rests on (F-64); its value is the month, said as "ספטמבר 2026". */
   cmaFile: "הקובץ החודשי של רשות שוק ההון",
   /** A guide's count of the regulator's tracks of the product, without self-directed tracks (F-64). */
