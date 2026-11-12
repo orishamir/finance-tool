@@ -1,6 +1,7 @@
 // The fee page (method §10.6): one deal's fees as the person enters them, and what the deal charges, on what and when. The deal is kept on
 // this device; the page's data (the kinds a deal can be with their caps, the price lists and tracks that fill a deal, the rules the caps
-// cite) is fetched once after the page starts. Pre-rendered as its head alone: everything under it waits for the device's day and deals.
+// cite, the glossary cards of its fees) is fetched once after the page starts. Pre-rendered as its head alone: everything under it waits
+// for the device's day and deals.
 import { useEffect, useMemo, useState } from "react";
 import { useLoaderData } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
@@ -35,7 +36,7 @@ export default function FeesPage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((data?.rules ?? []).map((r) => [r.id, r]));
-    return { rules, pointed: recordsById(data?.pointed), terms: {}, dimensions: {}, today };
+    return { rules, pointed: recordsById(data?.pointed), terms: data?.terms ?? {}, dimensions: {}, today };
   }, [data, today]);
   return (
     <PageShell current="other" data={provenance}>

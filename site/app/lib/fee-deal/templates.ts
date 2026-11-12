@@ -260,8 +260,8 @@ function trackTemplate(track: TrackLite, data: Pick<FeesData, "templates">, toda
 
 // ---------------------------------------------------------------- the picker, and filling a deal
 
-/** A template a picker offers for a kind: a house's price list, or a track (with its company, to group by). */
-export type TemplateOption = { id: string; name: string; source: "house" } | { id: string; name: string; source: "track"; company: string };
+/** A template a picker offers for a kind: a house's price list, or a track (with its company, to group by, and its short name under the company where it is shorter, D54). */
+export type TemplateOption = { id: string; name: string; source: "house" } | { id: string; name: string; source: "track"; company: string; short?: string };
 
 const HOUSE = "house:";
 const TRACK = "track:";
@@ -278,7 +278,7 @@ export const templateSource = (id: string): "house" | "track" => (id.startsWith(
 export function templateOptions(kind: FeeDeal["kind"], data: Pick<FeesData, "houses" | "tracks">): TemplateOption[] {
   if (kind === "brokerage-account") return data.houses.map((h) => ({ id: houseId(h), name: h.name, source: "house" }));
   if (kind === null) return [];
-  return data.tracks.filter((t) => t.wrapperId === kind).map((t) => ({ id: trackId(t), name: t.name, source: "track", company: t.company }));
+  return data.tracks.filter((t) => t.wrapperId === kind).map((t) => ({ id: trackId(t), name: t.name, source: "track", company: t.company, ...(t.short ? { short: t.short } : {}) }));
 }
 
 /** A template as it fills a deal: its name, its fees for what the deal holds, what it leaves out with why, and a house's provider kind. */
@@ -348,6 +348,29 @@ export function pickTrack(deal: FeeDeal, id: string, data: Pick<FeesData, "house
   // a fee of a kind the deal already has keeps its id, so the fee chosen on screen stays chosen
   const fees = t.fees.map((f) => ({ ...f, id: deal.fees.find((x) => x.kind === f.kind)?.id ?? newFeeId() }));
   return { ...base, fees, template: { id, name: t.name }, ...(t.provider ? { provider: t.provider } : {}) };
+}
+
+/**
+ * The houses whose price list fills a fee of `kind` for what a securities account's deal holds (or, where it does not say, for a fund bought
+ * in Israel in shekels): the price lists a single fee can be filled from. None for another kind of deal.
+ */
+export function feePriceLists(deal: FeeDeal, kind: FeeKindId, data: Pick<FeesData, "houses">): { id: string; name: string }[] {
+  if (deal.kind !== "brokerage-account") return [];
+  return data.houses.filter((h) => holdingOf(h, deal.held ?? HELD_UNSAID)?.fees.some((f) => f.kind === kind)).map((h) => ({ id: houseId(h), name: h.name }));
+}
+
+/**
+ * The deal with one fee's price filled from a house's price list (`feePriceLists`): the fee keeps its id and place, takes the list's one
+ * price with its sources, and so prices a sale as a purchase. No other fee changes, nor the deal's name, template or provider. Null where
+ * the list has no line for the fee.
+ */
+export function fillFee(deal: FeeDeal, feeId: string, houseIdOf: string, data: Pick<FeesData, "houses">): FeeDeal | null {
+  const fee = deal.fees.find((f) => f.id === feeId);
+  const h = data.houses.find((x) => houseId(x) === houseIdOf);
+  if (!fee || !h || deal.kind !== "brokerage-account") return null;
+  const t = holdingOf(h, deal.held ?? HELD_UNSAID)?.fees.find((f) => f.kind === fee.kind);
+  if (!t) return null;
+  return { ...deal, fees: deal.fees.map((f) => (f.id === feeId ? { id: f.id, kind: f.kind, stages: structuredClone(t.stages) } : f)) };
 }
 
 /** A new deal of a track's kind, filled from the track (`/deal?track=`); null where the track maps to no product id. */

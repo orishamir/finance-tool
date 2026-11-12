@@ -5,12 +5,17 @@ import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import type { DealKind } from "./fee-deal/kinds";
 import type { HouseTemplate } from "./fee-deal/templates";
 import type { FxSnapshot } from "./fx";
+import type { TermRow } from "./data.server";
 import { expandFee, staleCmaFee, type CompactFee, type SiteValue } from "./value";
 
-/** A track of the regulator's data as a template: its fund id, name, company, the product it is, its dataset and its two fees. */
+/**
+ * A track of the regulator's data as a template: its fund id, name, company, the product it is, its dataset and its two fees; `short`, the
+ * name the track browser shows under its company (D54, `shortTrackNames`), only where it is shorter than the full name.
+ */
 export interface TrackLite {
   id: number;
   name: string;
+  short?: string;
   company: string;
   wrapperId: string | null;
   dataset: string;
@@ -32,6 +37,8 @@ export interface FeesData {
   houses: HouseTemplate[];
   /** The ECB's reference rates (F-84): a bound typed in another currency enters a cost curve in shekels at them (F-112). */
   fx: FxSnapshot | null;
+  /** The glossary cards of the fees a deal can hold, by the fee's name: a fee's "מה זה" opens its card. */
+  terms: Record<string, TermRow>;
 }
 
 /**
