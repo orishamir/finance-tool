@@ -11,9 +11,9 @@ import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { LeadTail, Num } from "../provenance";
+import { LeadTail, Num, Term, type SheetPart } from "../provenance";
 import { wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
-import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT } from "./pair";
+import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
 /** A signed whole-shekel figure isolated for a Hebrew line: "+4,875 ₪", "−1,524 ₪", "0 ₪". */
@@ -281,6 +281,26 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const longestName = [...new Set(allFunds(view).map((f) => f.name))].sort((a, b) => b.length - a.length)[0] ?? "";
   const whyWords = (lane: Lane, why: "u" | "n" | "d", unseen: boolean) => (lane === "account" ? t.whyFund[why](unseen ? longestName : here.fundName) : t.why[why]);
   const titleOf = (r: Row) => (r.lane === "account" ? house(r.to.a).short : r.lane === "kind" ? t.kinds[r.kind!] ?? r.kind! : nameOfFund(r.to.f));
+  // why each step on a grey line has no price, in the words of the pair page's rows (D105): its words open the rules the records name for
+  // all of them, or each one's reason under its name with the document it rests on; names with the same reason and document share it
+  const whyOfRows = (these: readonly Row[]): { parts: SheetPart[]; rules: string[] } => {
+    const each = these.map((r) => {
+      const w = ways.get(r.to.f);
+      const at = w?.byHouse[r.to.a];
+      // an account the person typed that sells no such fund: their own words, no document
+      const typed = !!at && "availability" in at && at.availability?.source.url === "local";
+      return { name: titleOf(r), told: typed ? { parts: [{ text: c.customEntries.notSold } as SheetPart], rules: [] as string[] } : whyNoFundAt(bundle, r.to.a, w ? [w] : []) };
+    });
+    const parts: SheetPart[] = [];
+    for (const { name, told } of each) {
+      const p = told.parts[0]!;
+      const same = parts.find((x) => x.text === p.text && x.doc?.href === p.doc?.href);
+      if (same) same.head = `${same.head}, ${name}`;
+      else parts.push({ ...p, head: name });
+    }
+    const rules = each.every((x) => x.told.rules.length > 0) ? [...new Set(each.flatMap((x) => x.told.rules))] : [];
+    return { parts, rules };
+  };
   // `list`: the rows of a case laid out unseen (laneCases), with a turn on its second row, so the hold counts the turn's thicker line
   const laneBlock = (lane: Lane, list: readonly Row[] = rows, unseen = false) => {
     const mine = list.filter((r) => r.lane === lane);
@@ -326,12 +346,22 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
         })}
         {mine.length === 0 && <p className="border-t border-border px-1.5 py-1.5 text-xs text-muted-foreground">{t.noOtherFund}</p>}
         {(["u", "n", "d"] as const).map((why) => {
-          const names = grey.filter((r) => r.why === why).map(titleOf);
-          return names.length ? (
-            <GreyLine key={why} why={whyWords(lane, why, unseen)}>
-              {names.join(", ")}
+          const these = grey.filter((r) => r.why === why);
+          if (these.length === 0) return null;
+          const words = whyWords(lane, why, unseen);
+          const told = whyOfRows(these);
+          return (
+            <GreyLine
+              key={why}
+              why={
+                <Term id={[]} name={words} parts={told.parts} rules={told.rules}>
+                  {words}
+                </Term>
+              }
+            >
+              {these.map(titleOf).join(", ")}
             </GreyLine>
-          ) : null;
+          );
         })}
       </div>
     );

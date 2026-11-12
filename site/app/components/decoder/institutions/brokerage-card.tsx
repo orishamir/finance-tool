@@ -12,7 +12,7 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
-import { Num, NumAfter, RuleRef, RulesChip, RulesLine } from "../../provenance";
+import { Num, NumAfter, RuleRef, RulesChip, RulesLine, Term } from "../../provenance";
 import { Card, ClaimList, Disclosure, DocLink, GoLink, GroupPriceRows, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
@@ -247,7 +247,16 @@ function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
           {rows.map((a) => (
             <li key={a.classes.join()} className="flex flex-col items-start gap-1 px-1 py-2.5">
               <span className="flex flex-wrap items-center gap-2.5">
-                <Tag tone={a.state === "yes" ? "positive" : a.state === "no" ? "blocked" : "caution"}>{copy.card.canBuy.state[a.state]}</Tag>
+                {/* where the record names the rule that settles it, the state's word opens the rule's card (D105) */}
+                <Tag tone={a.state === "yes" ? "positive" : a.state === "no" ? "blocked" : "caution"}>
+                  {a.rules?.length ? (
+                    <Term id={[]} rules={a.rules} name={classWords(a.classes)}>
+                      {copy.card.canBuy.state[a.state]}
+                    </Term>
+                  ) : (
+                    copy.card.canBuy.state[a.state]
+                  )}
+                </Tag>
                 <bdi>{classWords(a.classes)}</bdi>
               </span>
               {a.reason && <span className="text-sm text-muted-foreground max-w-measure">{a.reason}</span>}

@@ -679,7 +679,9 @@
           "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
           "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.1, מיזערי",
           "publisher": "Mizrahi Tefahot Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 11,
+          "quote": "4.5.1 הנסחרים בארץ 0.175% ₪ 10,750.00"
         },
         "checked": "2026-11-04",
         "effective_from": "2024-04-02",
@@ -761,7 +763,9 @@
           "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
           "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.2, מיזערי",
           "publisher": "Mizrahi Tefahot Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 11,
+          "quote": "4.5.2 הנסחרים בחוץ לארץ 0.195% ₪ 10,750.00"
         },
         "checked": "2026-11-04",
         "effective_from": "2024-04-02",
@@ -1212,7 +1216,7 @@
           "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.6.1 העברת ניירות ערך לחשבון אותו לקוח בגוף פיננסי אחר",
           "publisher": "Mizrahi Tefahot Bank Ltd.",
           "strength": "institution",
-          "page": 11,
+          "page": 12,
           "quote": "4.6.1 לחשבון אותו לקוח בגוף פיננסי אחר (בפיקוח) ₪ 5.00 לתיק"
         },
         "checked": "2026-11-04",

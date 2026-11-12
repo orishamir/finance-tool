@@ -208,7 +208,11 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
 /** A distribution fee, by the price list's own words ("עמלת הפצה"): the fund manager pays it to the distributor (MF-24), not a charge of the account. */
 const isDistributionFee = (l: FeeLine) => l.base === "distribution_handling" && /עמלת הפצ/.test(l.names.tariff.join(" "));
 /** The records the account's card cites beside the snapshot's own: those over its distribution fees. */
-const cardRuleIds = (s: FeesSnapshot) => (s.lines.some((l) => l.level === "list" && isDistributionFee(l)) ? distributionRuleIds(s.provider.class === "bank" ? "bank" : "broker") : []);
+const cardRuleIds = (s: FeesSnapshot) => [
+  ...(s.lines.some((l) => l.level === "list" && isDistributionFee(l)) ? distributionRuleIds(s.provider.class === "bank" ? "bank" : "broker") : []),
+  // the rules a can-buy row's state opens (D105)
+  ...(s.availability ?? []).flatMap((a) => a.rule_ids ?? []),
+];
 
 
 function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffUrl: string): TariffLineRow {
@@ -240,6 +244,7 @@ function availabilityRows(s: FeesSnapshot): AvailabilityRow[] {
     state: a.available === true ? "yes" : a.available === false ? "no" : "unknown",
     reason: a.reason_he ?? null,
     source: { url: a.source.url, title: a.source.title, ...(a.source.page ? { page: a.source.page } : {}) },
+    ...(a.rule_ids?.length ? { rules: a.rule_ids } : {}),
   }));
 }
 

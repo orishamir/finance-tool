@@ -1333,7 +1333,9 @@
           "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.1, מינ' (עמוד מס' 17)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "4.5.1 הנסחרים בארץ 0.195% מקס' לפיקדון 10,000"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1415,7 +1417,9 @@
           "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.2, מינ' (עמוד מס' 17)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "4.5.2 הנסחרים בחוץ לארץ 0.20% מקס' לפיקדון 10,000"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1670,7 +1674,9 @@
           "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 20)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "5.1.1 מט\"י-מט\"ח 0.175% מינ' 6.25$ מקס' 2,700.0$"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1775,7 +1781,9 @@
           "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - מעל 100$, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 53)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 4,
+          "quote": "עמלת חליפין מט\"י/מט\"ח מעל 100$ 0.17% מינ' 5.0$ מקס' $2500"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",

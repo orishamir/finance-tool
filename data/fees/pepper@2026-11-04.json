@@ -692,7 +692,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בארץ (עמ' 32)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 32,
+          "quote": "-הנסחרים בארץ 0.150%"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -774,7 +776,9 @@
           "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
           "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בחוץ לארץ (עמ' 32)",
           "publisher": "Bank Leumi le-Israel B.M.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 32,
+          "quote": "הנסחרים בחוץ לארץ"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-10-01",
@@ -1040,8 +1044,8 @@
         "page": 11,
         "quote": "מניות ,מק \"מ ואגרות חוב"
       },
-      "reason_he": "המחירון של פפר נוקב במניות, מק״מ ואגרות חוב, ואף מסמך שלה לא אומר שאפשר לקנות שם קרן על מדד.",
-      "note": "The founder, a PEPPER customer, says an S&P 500 fund cannot be bought there (2026-10-31). The annex also prints foreign shares, bonds and mutual funds; no document says an index fund abroad can be bought through PEPPER."
+      "reason_he": "המחירון של פפר נוקב בבורסה בתל אביב במניות, מק״מ ואגרות חוב, ובחו״ל במניות, אגרות חוב וקרנות נאמנות. הוא לא אומר אם קרן על מדד נכללת בהן, ואף מסמך אחר של פפר לא אומר שאפשר לקנות שם קרן כזו.",
+      "note": "A PEPPER customer reports that an S&P 500 fund cannot be bought there (2026-10-31). The annex prints, for PEPPER customers, shares, makam and bonds on the Tel Aviv exchange and shares, bonds and mutual funds abroad; no document says an index fund can be bought through PEPPER."
     }
   ],
   "price_for_he": "לקוחות פפר",

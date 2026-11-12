@@ -14,13 +14,10 @@ import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
 export function SubjectStrip({ subject, publisherNames, otherRecords }: { subject: SubjectView; publisherNames: Record<string, string>; otherRecords?: { href: string; label: string } | null }) {
   const s = r3fees.strip;
-  // The record is named by its publisher, which the data keeps in English: show the provider's Hebrew name, keep the record for the popover.
+  // The record is named by its publisher, which the data keeps in English: show the provider's Hebrew name. No hover with the English
+  // record's name: a phone never shows it, and the reader needs only the Hebrew one (D105).
   const recordName = gershayim(publisherNames[subject.record] ?? subject.record);
-  const record = (
-    <bdi className="font-medium" title={subject.record}>
-      {recordName}
-    </bdi>
-  );
+  const record = <bdi className="font-medium">{recordName}</bdi>;
   let body;
   let back: string | null;
   if (subject.from === "track" && subject.track) {

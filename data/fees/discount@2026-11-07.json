@@ -675,7 +675,9 @@
           "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.1, גובה העמלה מינימום (עמ' 14 מתוך 52, עודכן 07/02/2025)",
           "publisher": "Israel Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 14,
+          "quote": "4.5.1 דמי ניהול פיקדון ני\"ע 0.2% לרבעון ₪ 7,500"
         },
         "checked": "2026-11-04",
         "effective_from": "2025-02-07",
@@ -757,7 +759,9 @@
           "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.2, גובה העמלה מינימום (עמ' 14 מתוך 52, עודכן 07/02/2025)",
           "publisher": "Israel Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 14,
+          "quote": "4.5.2 דמי ניהול פיקדון ני\"ע 0.25% לרבעון ₪ 7,500"
         },
         "checked": "2026-11-04",
         "effective_from": "2025-02-07",
@@ -1060,7 +1064,9 @@
           "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026)",
           "publisher": "Israel Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 17,
+          "quote": "5.1.1 עמלת חליפין מט\"י-מט\"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-05-25",
@@ -1164,7 +1170,9 @@
           "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026)",
           "publisher": "Israel Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 17,
+          "quote": "0.17% מסכום העסקה מינימום בערוץ ישיר $ 6 לפעולה מקסימום $ 1,055"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-05-25",

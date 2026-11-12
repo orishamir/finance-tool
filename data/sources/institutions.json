@@ -886,5 +886,22 @@
     "own_hosts": [
       "invesco.com"
     ]
+  },
+  {
+    "id": "vanguard",
+    "name_he": "Vanguard",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Vanguard"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "vanguard.com",
+      "vanguard.co.uk"
+    ]
   }
 ]

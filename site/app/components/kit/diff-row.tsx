@@ -108,8 +108,8 @@ export function DiffRow({ name, sub, left, d, unit, open, diff, turn, label, onT
   );
 }
 
-/** The grey lines under a list: the choices with no price, grouped by why. */
-export function GreyLine({ why, children }: { why: string; children: ReactNode }) {
+/** The grey lines under a list: the choices with no price, grouped by why. `why` may be a tappable word (a `Term`) that opens the reasons. */
+export function GreyLine({ why, children }: { why: ReactNode; children: ReactNode }) {
   return (
     <p className="border-t border-border px-1.5 py-1.5 text-xs leading-normal text-muted-foreground">
       <b className="font-medium">{why}:</b> {children}

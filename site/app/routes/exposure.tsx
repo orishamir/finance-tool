@@ -70,18 +70,20 @@ export default function ExposurePage() {
                       <RowArrow />
                     </Link>
                     {/* red only when the product's own exit tax is blocked; the shared open questions get a neutral tag */}
-                    {h.blockedBy.length > 0 && (
-                      <span className="flex flex-col gap-1.5">
+                    {/* the tag says what the questions leave open: the annuity's conversion factors on the pension products (how a
+                        pension is taxed is known, TXP-14 to TXP-17), the tax only for a tax question (D105) */}
+                    {h.blocks.map((g) => (
+                      <span key={g.kind} className="flex flex-col gap-1.5">
                         <Tag tone="blocked" icon={<IconLock size={14} />} wrap>
-                          {copy.openTax}
+                          {copy.openBlock[g.kind]}
                         </Tag>
                         <span className="flex flex-wrap gap-2">
-                          {h.blockedBy.map((q) => (
+                          {g.ids.map((q) => (
                             <RuleRef key={q} id={q} titled />
                           ))}
                         </span>
                       </span>
-                    )}
+                    ))}
                     {h.openQuestions.length > 0 && (
                       <span className="flex flex-col gap-1.5">
                         <Tag tone="neutral">{copy.openDetails}</Tag>

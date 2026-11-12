@@ -15,8 +15,9 @@ import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, strengthOf, type S
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { Card, CompanyLinks, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
+import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
+import type { SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleRow, RulesLine, StateTag, StrengthLabel, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, type Item, type ProvenanceData } from "./provenance";
 
 /** What a `RulesChip` opens: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
@@ -150,7 +151,7 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
-      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} data={data} headId={headId} />}
+      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} parts={item.parts} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
@@ -1163,7 +1164,7 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
 }
 
 /** Several glossary terms that make up one thing (a column of three fees): its name, a line, then each term's card under a rule. */
-function TermsSheet({ ids, name, lead, data, headId }: { ids: readonly string[]; name: string; lead?: string; data: ProvenanceData; headId: string }) {
+function TermsSheet({ ids, name, lead, parts, data, headId }: { ids: readonly string[]; name: string; lead?: string; parts?: readonly SheetPart[] | undefined; data: ProvenanceData; headId: string }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
@@ -1172,6 +1173,16 @@ function TermsSheet({ ids, name, lead, data, headId }: { ids: readonly string[];
         </h2>
         {lead && <p className="text-muted-foreground">{lead}</p>}
       </div>
+      {/* the sheet's own sentences, each with the document it rests on right under it */}
+      {parts?.map((p) => (
+        <div key={`${p.head ?? ""}${p.text}`} className="flex flex-col">
+          <p className="text-muted-foreground">
+            {p.head && <span className="text-foreground font-medium">{p.head}: </span>}
+            {p.text}
+          </p>
+          {p.doc && <DocLink href={p.doc.href}>{p.doc.title}</DocLink>}
+        </div>
+      ))}
       {ids.map((id) => (
         <div key={id} className="border-t border-border pt-4">
           <TermCard id={id} data={data} sub />

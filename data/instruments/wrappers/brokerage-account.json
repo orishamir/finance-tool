@@ -50,7 +50,7 @@
       "value": null,
       "unit": "pct_of_trade",
       "source": {
-        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=15",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 4(א)(1)",
         "publisher": "Bank of Israel",
         "strength": "primary"
@@ -75,7 +75,7 @@
       "value": null,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=16",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 4(א)(5) and notes",
         "publisher": "Bank of Israel",
         "strength": "primary"
@@ -100,7 +100,7 @@
       "value": null,
       "unit": "pct_of_trade",
       "source": {
-        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=18",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 5 (עמלת חליפין)",
         "publisher": "Bank of Israel",
         "strength": "primary"
@@ -162,7 +162,7 @@
       "value": 10,
       "unit": "nis_per_transfer",
       "source": {
-        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf#page=17",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 9.4.2025, first schedule part 4(א)(6) notes, part 5 item 10",
         "publisher": "Bank of Israel",
         "strength": "primary"

@@ -77,6 +77,8 @@ export const availabilityEntry = z.strictObject({
   source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...place }),
   note: z.string().optional(),
   reason_he: z.string().min(1).optional(),
+  /** The rules of the rule base that hold this fact: the house's row opens their cards from the words that say the class cannot be bought there, or that it is unclear. Display only; it changes no price and no ranking. */
+  rule_ids: ruleIds.optional(),
   /**
    * the class can be bought there only by phone (through the house's trading desk), as the house's own words say, with their
    * own source and its quote; with `venues`, only a fund bought on those exchanges (a class of funds bought abroad). A sourced fact shown

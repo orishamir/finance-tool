@@ -739,7 +739,6 @@ export const system = {
   wentWrong: { title: "משהו השתבש", line: "האתר לא הצליח להציג את העמוד הזה. אפשר לרענן, או לחזור לעמוד הראשי.", home: "לעמוד הראשי", reload: "לרענן את העמוד" },
   notFound: { title: "העמוד הזה לא קיים. אולי הקישור ישן.", home: "לעמוד הראשי", search: "לחיפוש" },
   loading: "טוען…",
-  notInData: "לא נמצא בנתוני הרשות",
 } as const;
 
 /**
@@ -1243,7 +1242,9 @@ export const exposurePage = {
   holdLine: "המוצרים שבהם אפשר להחזיק את החשיפה הזו.",
   holdNone: "עוד לא נאספו המוצרים שמחזיקים את זה.",
   toIndices: "להשוואת החשבונות והקרנות על המדד",
-  openTax: "עוד לא ברור איך זה ממוסה כאן: שאלה פתוחה",
+  /** A product's tag on an exposure page, by what its open questions leave out (D105): the pension products are blocked by conversion
+   *  factors not collected, not by an unclear tax. */
+  openBlock: { tax: "עוד לא ברור איך זה ממוסה כאן: שאלה פתוחה", annuity: "האתר עוד לא מחשב כאן את הקצבה: חסרים מקדמי ההמרה", other: "האתר עוד לא מחשב את זה כאן: שאלה פתוחה" },
   toGuide: "לעמוד המדריך",
   noProse: "הטקסט של העמוד הזה עוד לא נכתב.",
   guideGroup: "עמודי מדריך על מה שהכסף מושקע בו",
@@ -2055,7 +2056,7 @@ export const r4catalogue = {
     canBuyFrom: "לפי",
     canBuy: {
       title: "מה אפשר לקנות כאן",
-      state: { yes: "אפשר", no: "אי אפשר", unknown: "לא ידוע" } as Record<"yes" | "no" | "unknown", string>,
+      state: { yes: "אפשר", no: "אי אפשר", unknown: "לא ברור" } as Record<"yes" | "no" | "unknown", string>,
       source: "איפה זה כתוב",
     },
     claims: {
@@ -2167,7 +2168,6 @@ export const r4workbench = {
   noAverage: "אין ממוצע שנאסף",
   noAverageReason: "ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור: הפרסום מחדש דורש הסכמה בכתב.",
   noAverageLinks: { boi: "ללוח הנתונים של בנק ישראל", tase: "למחשבון העמלות של הבורסה" },
-  notCollected: { fee: "לא נאסף", list: "לא נאספה", record: "עוד לא נאספו" },
   notPrinted: "לא מודפס",
   instrumentClasses: {
     etf_units: "קרן סל",
@@ -2179,7 +2179,6 @@ export const r4workbench = {
     money_market_units: "קרן כספית",
   } as Record<string, string>,
   domicile: { IL: "ישראל", IE: "אירלנד", US: "ארה״ב" } as Record<string, string>,
-  policy: { accumulating: "לא מחלקת", distributing: "מחלקת", "not-collected": "לא נאסף" } as Record<string, string>,
   links: {
     /** the index page, where every house is priced */
     providersCompare: "להשוואת הבנקים ובתי ההשקעות",
@@ -2236,8 +2235,8 @@ export const scopeWords = {
   line: {
     institution: "נמצא במסמכים של {names}; בחברות אחרות זה יכול להיות אחרת.",
     notTheirs: "המקורות כאן אינם מסמכים של {names}.",
-    unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
-    unsettled: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
+    unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות; האתר לא מצא לזה מקור רשמי.",
+    unsettled: "אולי כך בכל החברות; האתר לא מצא לזה מקור רשמי.",
   },
   /** The card's foot: where the company's terms are listed, one link per company. */
   allAt: "לכל מה שמצאנו אצל {name}",
@@ -2386,7 +2385,9 @@ export const documents = {
     tariffs: "תעריפונים",
     tariffLine: "תעריפון {provider}",
     linesAfter: " שורות בתעריפון",
-    missing: "לא נמצא תעריפון שפורסם",
+    /** A price list the site has not read: every record marked so names a list that exists and could not be read (a human check, a page
+     *  with no text) or a price left open, never a house with no published list, so it is "not collected", as on the company's card (D105). */
+    missing: "התעריפון עוד לא נאסף",
     funds: "קרנות שהאתר קרא",
     fundsLine: "קרנות שהאתר קרא אחת־אחת מהדוח של מנהל הקרן; לא רשימה של כל הקרנות בבורסה.",
     deposits: "תנאי פיקדונות",
@@ -3528,14 +3529,17 @@ export const invest = {
     asideLine: "מחיר אחר לקנייה בהוראת קבע: {rate}, מינימום {min}.",
     asideLineNoMin: "מחיר אחר לקנייה בהוראת קבע: {rate}.",
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
-    notPossible: "לא אפשרי שם",
-    /** A fund's last cell when the picked account gives it no price, by why, naming the account;
-     *  the full reason is under the list. Same order as `whyNoPrice`: a doubt in the record, a price list not collected, a kind the house does not sell. */
+    /** An account's row where it prices no fund on the index, by why, in `whyNoFundAt`'s order: its record leaves it in doubt, its price
+     *  list is not collected, its documents say no kind of fund on the index is sold there, or the engine gave no price. The words
+     *  themselves open why: the rule the record names, or each kind's reason with its document (D104, D105). */
+    noFund: { doubt: "לא ברור אם אפשר שם", missing: "התעריפון עוד לא נאסף", notSold: "לא אפשרי שם", other: "אין מחיר" },
+    /** The line over the funds the picked account gives no price, by why, naming the account; the words open why, as an account's row
+     *  does (D105). Same order as `whyNoPrice`: a doubt in the record, a price list not collected, a kind the house does not sell. */
     noPriceAt: {
-      doubt: (house: string) => `המחיר ב${house} לא ברור בתעריפון`,
+      doubt: (house: string) => `המחיר ${inName(house)} לא ברור בתעריפון`,
       missing: (house: string) => `התעריפון של ${house} עוד לא נאסף`,
-      notSold: (house: string) => `לא נקנית ב${house}`,
-      other: (house: string) => `אין מחיר ב${house}`,
+      notSold: (house: string) => `לא נקנית ${inName(house)}`,
+      other: (house: string) => `אין מחיר ${inName(house)}`,
     },
     /** Under a fund listed in Tel Aviv and abroad, on each of its two rows: the other row is the same fund, counted once. */
     sameFundAs: (number: string, abroad: boolean) => `אותה קרן כמו \u2066${number}\u2069 ${abroad ? "שנסחרת בחו״ל" : "שנסחרת בתל אביב"}, ולכן שתיהן נספרות כקרן אחת`,
@@ -3559,7 +3563,6 @@ export const invest = {
     /** On a fund row priced on an open rule: why it stands below the ranked funds, on the row itself (Invesco
      *  1183441 leaves more than a tied fund and stands under it; a legend elsewhere does not say why). */
     openRow: "מוצגת, לא מדורגת: שאלה פתוחה",
-    noData: "אין נתון",
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),
     switched: (what: string) => `${what} לא מחושב עם הבחירה הקודמת, אז נבחר גם החלק השני שנשאר בו הכי הרבה.`,
     listLabelAccounts: "חשבונות ניירות ערך",
@@ -3602,7 +3605,7 @@ export const invest = {
      * the index is not counted as a gain. `unstated`: how many funds' index is of no stated kind; `grossApart`: a
      * gross index not compared on this list; `kind` null: no fund on the list has a compared gap, and the column is left out.
      */
-    gapNote: ({ kind, unstated, grossApart, funds, noYear, notCollected }: { kind: "net" | "gross" | "mixed" | null; unstated: number; grossApart: boolean; funds: number; noYear: number; notCollected: number }) =>
+    gapNote: ({ kind, unstated, grossApart, funds, noYear, notCollected, typed = 0 }: { kind: "net" | "gross" | "mixed" | null; unstated: number; grossApart: boolean; funds: number; noYear: number; notCollected: number; typed?: number }) =>
       [
         kind
           ? "מול המדד: בכמה הקרן, אחרי כל העלויות שלה, הקדימה (+) או פיגרה (−) אחרי המדד שלה: בשנה המלאה שבדוח של הקרן, או בממוצע לשנה כשבדוח יש כמה שנים מלאות."
@@ -3625,6 +3628,7 @@ export const invest = {
         // "אין שנה מלאה" stood in the list with no word about it
         noYear > 0 ? "״אין שנה מלאה״: בדוח השנתי של הקרן עוד אין שנה קלנדרית מלאה להשוות למדד." : null,
         notCollected > 0 ? "״עוד לא נאסף״: האתר עוד לא קרא את התשואות של הקרן ושל המדד שלה." : null,
+        typed > 0 ? "״לא נבדק״: לקרן שהזנתם האתר לא קורא דוח שנתי, ולכן הוא לא יודע את הפער שלה מהמדד." : null,
       ]
         .filter(Boolean)
         .join(" "),
@@ -3690,6 +3694,8 @@ export const invest = {
     gapYears: (n: number, year?: number) => (n === 1 && year ? gapUnit(1, year) : `${gapUnit(n)} · ${n === 2 ? "שנתיים" : `${n} שנים`}`),
     gapNone: "אין שנה מלאה",
     gapNotCollected: "עוד לא נאסף",
+    /** a fund the person typed: the site reads no report of it, so its gap is not something still to collect (D105) */
+    gapTyped: "לא נבדק",
     /** F-92 (d): years not compared: an index of unstated kind, or a gross one beside a net one or off TA-35, TA-90 and TA-125 or on a fund that is not exempt */
     gapUnstated: "לא מושווה",
     /** the column's head and the gap sheet's title: the kind of index every compared gap on the list is measured against */

@@ -21,6 +21,15 @@ export const OPTION_IDS: readonly OptionId[] = ["il-tracking", "il-etf", "tase-f
 export const OPTION_CLASS: Record<OptionId, string> = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" };
 /** The classes a snapshot's `availability` entry may name for the option. */
 const AVAILABILITY_CLASSES: Record<OptionId, string[]> = { "il-tracking": ["mutual_fund_units"], "il-etf": ["etf_units"], "tase-foreign": ["etf_units", "tase_foreign_fund_units"], abroad: ["foreign_securities"] };
+/**
+ * The classes whose availability entries speak for this kind of fund at a house. A record with an entry of its own for the foreign funds
+ * traded in Tel Aviv speaks for them through it alone, not through its entry for Israeli ETFs (One Zero sells no Israeli ETF and leaves the
+ * foreign funds open, on a list it does not publish); other records answer for both through their ETF entry.
+ */
+function classesAt(s: FeesSnapshot | undefined, option: OptionId): string[] {
+  if (option === "tase-foreign" && (s?.availability ?? []).some((a) => a.applies_to.includes("tase_foreign_fund_units"))) return ["tase_foreign_fund_units"];
+  return AVAILABILITY_CLASSES[option];
+}
 
 /** The options an index has: an Israeli index only the Israeli funds (ETF-51, ETF-31). */
 export const optionsOf = (israeli: boolean): OptionId[] => (israeli ? ["il-tracking", "il-etf"] : [...OPTION_IDS]);
@@ -143,6 +152,10 @@ export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield
 export interface Availability {
   source: { url: string; title: string; checked: string };
   note: string | null;
+  /** The record's own sentence on why this kind of fund is not sold there, where it has one; shown instead of the page's general words. */
+  reason_he?: string | null;
+  /** The rules that hold the fact (the record's `rule_ids`): the row's words open their cards. */
+  rule_ids?: readonly string[];
 }
 
 export interface BrokerCell {
@@ -639,10 +652,10 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
 }
 
 type AvailabilityEntry = NonNullable<FeesSnapshot["availability"]>[number];
-const AVAILABLE_NOTE = (a: AvailabilityEntry): Availability => ({ source: a.source, note: a.note ?? null });
+const AVAILABLE_NOTE = (a: AvailabilityEntry): Availability => ({ source: a.source, note: a.note ?? null, reason_he: a.reason_he ?? null, ...(a.rule_ids?.length ? { rule_ids: a.rule_ids } : {}) });
 
 function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
-  for (const a of s.availability ?? []) if (a.available === false && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return AVAILABLE_NOTE(a);
+  for (const a of s.availability ?? []) if (a.available === false && a.applies_to.some((c) => classesAt(s, option).includes(c))) return AVAILABLE_NOTE(a);
   return null;
 }
 
@@ -652,7 +665,7 @@ function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
  * "יש ספק אם נמכרת שם" while its own row said the conversion was not typed). Such an entry is the person's, with no document behind it.
  */
 export function leftEmpty(s: FeesSnapshot | undefined, option: OptionId): boolean {
-  return (s?.availability ?? []).some((a) => a.available === "unknown" && a.source.url === "local" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c)));
+  return (s?.availability ?? []).some((a) => a.available === "unknown" && a.source.url === "local" && a.applies_to.some((c) => classesAt(s, option).includes(c)));
 }
 
 /**
@@ -663,7 +676,7 @@ export function leftEmpty(s: FeesSnapshot | undefined, option: OptionId): boolea
 export function phoneOnlyOf(s: FeesSnapshot | undefined, option: OptionId, venue: Venue | null | undefined): NonNullable<AvailabilityEntry["phone_only"]> | null {
   for (const a of s?.availability ?? []) {
     const p = a.phone_only;
-    if (!p || a.available !== true || !a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) continue;
+    if (!p || a.available !== true || !a.applies_to.some((c) => classesAt(s, option).includes(c))) continue;
     if (!p.venues || (venue && p.venues.includes(venue))) return p;
   }
   return null;
@@ -697,9 +710,15 @@ export function asideLines(s: FeesSnapshot | undefined, ids: readonly string[]):
   return (s?.lines ?? []).filter((l): l is AsideLine => ids.includes(l.id) && l.not_ranked !== undefined);
 }
 
+/** The record's entry that leaves this kind of holding open at the house (`doubtOf`'s words), with its source and rules; null where the person typed the entry. */
+export function doubtAt(s: FeesSnapshot | undefined, option: OptionId): Availability | null {
+  for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => classesAt(s, option).includes(c))) return a.source.url === "local" ? null : AVAILABLE_NOTE(a);
+  return null;
+}
+
 /** Why the documents leave this kind of holding open at the house: said on its grey row. */
 export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string | null {
-  for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return a.reason_he ?? null;
+  for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => classesAt(s, option).includes(c))) return a.reason_he ?? null;
   return null;
 }
 

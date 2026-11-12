@@ -101,6 +101,8 @@ export interface AvailabilityRow {
   state: "yes" | "no" | "unknown";
   reason: string | null;
   source: { url: string; title: string; page?: number };
+  /** The rules the record names for this state (its `rule_ids`): the state's word opens them (D105). */
+  rules?: readonly string[];
 }
 
 export interface TariffCardData {

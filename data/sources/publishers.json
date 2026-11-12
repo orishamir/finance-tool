@@ -35,6 +35,7 @@
   "am.jpmorgan.com": { "publisher": "J.P. Morgan Asset Management", "publisher_he": "J.P. Morgan Asset Management", "kind": "other" },
   "ishares.com": { "publisher": "iShares", "publisher_he": "iShares", "kind": "institution_doc" },
   "blackrock.com": { "publisher": "BlackRock", "publisher_he": "BlackRock", "kind": "institution_doc" },
+  "fund-docs.vanguard.com": { "publisher": "Vanguard", "publisher_he": "Vanguard", "kind": "institution_doc" },
   "spdrgoldshares.com": { "publisher": "SPDR Gold Shares", "publisher_he": "SPDR Gold Shares", "kind": "institution_doc" },
   "lbma.org.uk": { "publisher": "LBMA", "publisher_he": "LBMA", "kind": "other" },
   "ice.com": { "publisher": "ICE (Intercontinental Exchange)", "publisher_he": "ICE (Intercontinental Exchange)", "kind": "other" },
