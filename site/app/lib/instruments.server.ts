@@ -168,8 +168,11 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
         // interval alone does not say when the first falls (a plan with yearly exit points may open its first after ten years).
         const whole = (x: number | null | undefined): x is number => typeof x === "number" && Number.isInteger(x) && x > 0;
         const { exists, first_after_months: firstAfter, every_months: every } = rec.exit_points;
-        if (!noTerm && exists && whole(firstAfter)) terms.deposit.exitFirstMonth = firstAfter;
-        if (!noTerm && exists && whole(every)) terms.deposit.exitEveryMonths = every;
+        // A savings plan that renews keeps the money in a new plan after its term, and the run's count for a plan's piece takes
+        // a plan that has ended as paid out (`pieceAtExitPoint`): such a plan reaches the run with no exit points.
+        const renews = wrapperId === "savings-plan" && rec.auto_renew.value !== false;
+        if (!noTerm && !renews && exists && whole(firstAfter)) terms.deposit.exitFirstMonth = firstAfter;
+        if (!noTerm && !renews && exists && whole(every)) terms.deposit.exitEveryMonths = every;
         if (!noTerm) feeValues.term = { ...rec.term_months };
         feeValues.linkage = textValue(linkage, "text", { source: rec.source, checked: rec.snapshot }, `from the record's linkage "${rec.linkage}"${rec.anchor ? ` and anchor "${rec.anchor}"` : ""}`);
       }

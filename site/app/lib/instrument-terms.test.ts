@@ -61,6 +61,20 @@ describe("buildInstrumentTerms: a deposit's exit points", () => {
     expect(none).not.toHaveProperty("exitEveryMonths");
   });
 
+  it("passes no exit points for a savings plan that renews: the run takes a plan that has ended as paid out", () => {
+    const plan = deposits.find((d) => d.id === "leumi-tashlumim-prime-3y")!;
+    expect(plan.auto_renew.value).toBe(false);
+    const buildPlan = (rec: DepositTerms) => buildInstrumentTerms("savings-plan", "deposit", { deposit_terms: rec.id }, { fees: [], funds: [], deposits: [...deposits, rec], rules, today: "2026-11-12" });
+    // the plan as collected, which does not renew, is passed with its exit points
+    expect(depositOf(buildPlan({ ...plan, id: "plan-probe" }))).toMatchObject({ exitFirstMonth: 6, exitEveryMonths: 3 });
+    const renewing = depositOf(buildPlan({ ...plan, id: "plan-probe", auto_renew: { value: true, max_renewals: null } }));
+    expect(renewing).not.toHaveProperty("exitFirstMonth");
+    expect(renewing).not.toHaveProperty("exitEveryMonths");
+    // a deposit that renews keeps its exit points: each of its pieces counts from its own start, renewed or not
+    const deposit = depositOf(build({ ...withExits({ exists: true, every_months: 3, first_after_months: 6 }), auto_renew: { value: true, max_renewals: null } }));
+    expect(deposit).toMatchObject({ exitFirstMonth: 6, exitEveryMonths: 3 });
+  });
+
   it("passes nothing for a current account, which has no term", () => {
     // the same exit points on a deposit are passed; on a current account they are not
     expect(depositOf(build(withExits({ exists: true, every_months: 1, first_after_months: 1 })))).toMatchObject({ exitFirstMonth: 1, exitEveryMonths: 1 });

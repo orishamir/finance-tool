@@ -169,8 +169,19 @@ describe("G-16 and exit points", () => {
     expect(plan(17, { first: 5, every: 5 })).toBe("G-34");
     expect(plan(22, { first: 5, every: 5 })).toBe("G-34");
     expect(plan(15, { first: 5, every: 5 })).toBe("G-16"); // month 15 is a multiple of 5, the plan's age (3) is not on an exit point
-    // a CPI-linked plan reads its exit points the same way
-    expect(said(dep(17, 0, 12, { first: 5, every: 5 }, "savings-plan", "cpi"))).toBe("G-34");
+  });
+
+  it("reads no exit point for a CPI-linked deposit or plan: the tax on leaving a linked deposit there is not in the rule base (TXI OQ14)", () => {
+    // each pair: the same unlinked deposit is at its exit point (G-34); linked, it is said only to be inside its term (G-16)
+    expect(said(dep(17, 0, 12, { first: 5, every: 5 }, "savings-plan", "unlinked"))).toBe("G-34");
+    expect(said(dep(17, 0, 12, { first: 5, every: 5 }, "savings-plan", "cpi"))).toBe("G-16");
+    expect(said(dep(24, 0, 36, { first: 24, every: 12 }, "deposit", "unlinked"))).toBe("G-34");
+    expect(said(dep(24, 0, 36, { first: 24, every: 12 }, "deposit", "cpi"))).toBe("G-16");
+    // and the amount is the same whichever note is raised: the exit points change no number
+    const linked = dep(24, 0, 36, { first: 24, every: 12 }, "deposit", "cpi");
+    const plain = runDeposit(dep(24, 0, 36, {}, "deposit", "cpi"), ctx);
+    expect(runDeposit(linked, ctx).nominal).toBe(plain.nominal);
+    expect(runDeposit(linked, ctx).taxDuring).toBe(plain.taxDuring);
   });
 
   it("does not let a plan's instalment out where only its own count is on an exit point", () => {

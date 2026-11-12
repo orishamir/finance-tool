@@ -50,5 +50,9 @@ describe("a deposit's exit points", () => {
     const days = { ...plan, term_months: { ...(plan.term_months as object), value: 30, unit: "days" } };
     expect(withExits(days, { exists: true, every_months: null, first_after_months: 0.25 }).success).toBe(true);
     expect(paths(withExits(days, { exists: true, every_months: null, first_after_months: 2 }))).toEqual(["exit_points.first_after_months"]);
+    // a term in years: a first after two years inside a three-year deposit passes, one at the three years does not
+    const years = { ...plan, term_months: { ...(plan.term_months as object), value: 3, unit: "years" } };
+    expect(withExits(years, { exists: true, every_months: 12, first_after_months: 24 }).success).toBe(true);
+    expect(paths(withExits(years, { exists: true, every_months: 12, first_after_months: 36 }))).toEqual(["exit_points.first_after_months"]);
   });
 });

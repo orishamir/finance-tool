@@ -951,8 +951,11 @@ const PRINTS_FIRST_EXIT = new RegExp(`(?:תחנ\\S*|יציאה|exit (?:points?|s
  * A deposit with exit points whose record gives no first one (`exit_points.first_after_months` null: the bank prints only how often
  * they come) must not itself quote the bank dating the first: "תחנות יציאה בתום 5 שנים, ואחר כך כל שנה" beside a null first leaves
  * the site saying "כל 12 חודשים" of a plan that lets nothing out for five years. On 2026-11-12, 48 records carry a first and the
- * text of each is caught by this pattern when its first is taken away; no record with a null first is. Returns one line when the
- * record's own text dates an exit point and the first is null.
+ * text of each is caught by this pattern when its first is taken away; no record with a null first is. The pattern is a net for the
+ * usual wording, no proof. It errs toward a false alarm, which is loud: a lone "מ" before a unit counts ("מחודש"), and so does "בתום
+ * שנה" said of the term's end near the word for exit points. It does not see an abbreviated unit ("12 ח׳"), a date with no
+ * preposition, or a first written only in English. Returns one line when the record's own text dates an exit point and the first is
+ * null.
  */
 export function checkFirstExitPoint(record: unknown): string[] {
   const e = (record as { exit_points?: { exists?: boolean; first_after_months?: number | null } }).exit_points;
