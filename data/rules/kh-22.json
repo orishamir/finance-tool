@@ -43,15 +43,56 @@
   "sources": [
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7358%2Fheb#page=3",
-      "title": "ק\"ת 7358, 24.3.2014",
-      "title_he": "ק\"ת 7358, 24.3.2014",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
       "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "law",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
       "strength": "primary",
-      "locator": "file pp.3-5, regs 1-8",
+      "locator": "file pp.3-5, regs. 1-8",
+      "locator_he": "עמודי הקובץ 3 עד 5, תקנות 1-8",
       "page": 3,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7358%2Fheb#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.978), reg. 4",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 978), תקנה 4",
+      "page": 4,
       "quote": "למעט לעניין תקנה 2(א)(2א)",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7358%2Fheb#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.978), reg. 6",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 978), תקנה 6",
+      "page": 4,
+      "quote": "ולעניין דמי ניהול הנגבים מן היתרה הצבורה בחשבונו של כל עמית",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F9942%2Fheb#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.2-3",
+      "locator_he": "עמודי הקובץ 2 עד 3",
+      "page": 2,
       "checked": "2026-11-12"
     },
     {
@@ -67,19 +108,6 @@
       "page": 7,
       "quote": "קופות גמל – למעט קרנות השתלמות שבהן אין דמי ניהול מהפקדה",
       "checked": "2026-11-12"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F9942%2Fheb#page=2",
-      "title": "ק\"ת 9942, 24.1.2022",
-      "title_he": "ק\"ת 9942, 24.1.2022",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "file pp.2-3",
-      "locator_he": "עמודי הקובץ 2 עד 3",
-      "page": 2,
-      "checked": "2026-11-08"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
@@ -110,16 +138,16 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.5, reg. 2(ב)",
-      "locator_he": "עמוד 5, תקנה 2(ב)",
-      "page": 5,
+      "locator": "p.4, reg. 2(ב)",
+      "locator_he": "עמוד 4, תקנה 2(ב)",
+      "page": 4,
       "checked": "2026-10-25"
     },
     {
