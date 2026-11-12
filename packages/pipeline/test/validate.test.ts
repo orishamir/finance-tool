@@ -440,8 +440,8 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
   it("reads every numbered item under the file's prefix, none struck, and keeps the numbers of the deleted ones unused", () => {
     // 583 items on the morning of 2026-11-08, less the 163 answered ones deleted that day (founder: an answered question is deleted
     // once its answer is in a rule, and its number is never used again); one more on 2026-11-12, how an individual would apply for
-    // an exemption from withholding on securities (TXS OQ25)
-    expect(items.length).toBe(421);
+    // an exemption from withholding on securities (TXS OQ25), and another, what a withdrawal at a deposit's exit point pays (BANK OQ20)
+    expect(items.length).toBe(422);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
