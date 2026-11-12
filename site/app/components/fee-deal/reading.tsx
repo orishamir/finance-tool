@@ -10,7 +10,7 @@ import type { MonthKey } from "../../lib/fee-deal/model";
 import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
 import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
-import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, When, cx, fill } from "../kit";
+import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
 import { CapRules, FeeName, LawBlock, MeetSentence, PriceWords, StandingTag, feeColour, refName } from "./words";
 
@@ -176,8 +176,23 @@ function Spans({ spans, lead = "" }: { spans: Span[]; lead?: string }) {
   );
 }
 
-function CurveHeadline({ head, noun }: { head: CurveHead; noun: string }) {
+/**
+ * A curve's headline. `above` and `of`: the words around the rate above a minimum (by the action's noun, or what is held), said where the
+ * curve has the rate of its whole group (F-111).
+ */
+function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: string; above: string; of: string }) {
   const h = w.curves.head;
+  if (head.kind === "min" && head.rate)
+    return (
+      <>
+        {fill((head.mark.on === "held" ? h.minHeld : h.min).before, { noun })}
+        <Num value={head.mark.amount} />
+        {h.minRate.lead}
+        {above}
+        {h.minRate.cost}
+        <Num value={head.rate} /> {of}
+      </>
+    );
   switch (head.kind) {
     case "min":
     case "max": {
@@ -200,14 +215,17 @@ function CurveHeadline({ head, noun }: { head: CurveHead; noun: string }) {
           {h.minMax.after}
         </>
       );
-    case "meet":
+    case "meet": {
+      // one fee that is a sum per period is named, the words agreeing with its name; several, or one of the person's own, are "the sums"
+      const one = head.mark.kind === "meet" && head.mark.fees.length === 1 ? copy.nameForms[head.mark.fees[0]!.kind] : undefined;
       return (
         <>
           {h.meet.before}
           <Num value={head.mark.amount} />
-          {h.meet.after}
+          {one?.the ? ` ${one.the}${h.meetOne[one.g]}` : h.meet.after}
         </>
       );
+    }
     case "marks":
       return <>{countPhrase(head.n, h.marks)}</>;
   }
@@ -239,12 +257,14 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
   const noun = nounOf(group.action);
   const xKey = group.on === "held" ? (saved ? "heldSaved" : "held") : (group.action ?? "trade");
   const optionLabel = (from: MonthKey) => (reading.periods.find((p) => p.from === from)?.current ? w.periods.today : fromText(from));
-  // one curve that holds only in some periods says which; several, a choice of period
-  const spans = curve && distinct === 1 ? spansOf(curve.periods, reading.periods) : [];
+  // a choice of period where the curve is not one for every period of the deal: several curves, or one that holds only in some periods.
+  // F-112 draws a curve only where a mark falls on it, so a period with none is a choice that cannot be made; past four periods the
+  // chips list only those with a curve.
+  const whole = curve !== null && distinct === 1 && spansOf(curve.periods, reading.periods).length === 0;
   const choice =
-    distinct > 1 && chosen ? (
-      choices.length <= 4 ? (
-        <SegmentedControl fit label={c.choose} options={choices.map((x) => ({ value: x.from, label: optionLabel(x.from) }))} value={chosen} onChange={setPicked} />
+    !whole && chosen ? (
+      reading.periods.length <= 4 ? (
+        <SegmentedControl fit label={c.choose} options={reading.periods.map((p) => ({ value: p.from, label: optionLabel(p.from), disabled: !choices.some((x) => x.from === p.from) }))} value={chosen} onChange={setPicked} />
       ) : (
         <ChoiceChips line bleed="" ids={choices.map((x) => x.from)} labels={Object.fromEntries(choices.map((x) => [x.from, optionLabel(x.from)]))} value={chosen} ariaLabel={c.choose} onChange={setPicked} />
       )
@@ -252,16 +272,7 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
   return (
     <Card className="flex min-w-0 flex-col gap-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <PanelHead
-          kicker={
-            <>
-              {kicker}
-              {spans.length > 0 && <Spans spans={spans} lead={w.periods.sep} />}
-            </>
-          }
-        >
-          {curve && <CurveHeadline head={curveHead(curve)} noun={noun} />}
-        </PanelHead>
+        <PanelHead kicker={kicker}>{curve && <CurveHeadline head={curveHead(curve)} noun={noun} above={c.head.minRate.above[group.on === "held" ? "held" : (group.action ?? "none")] ?? ""} of={copy.glance.of[group.on === "held" ? (saved ? "heldSaved" : "held") : `action:${group.action ?? "none"}`] ?? ""} />}</PanelHead>
         {choice}
       </div>
       {curve && (
@@ -379,9 +390,10 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
 
 function LawRowView({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
   if (row.cap.state === "absent") return null;
+  // a fee the law sets no cap for is one line: its name, the words and the rules
   if (row.cap.state === "none")
     return (
-      <li className="flex flex-col gap-1">
+      <li className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <FeeName fee={row} className="font-medium" />
         <CapRules cap={row.cap} />
       </li>
@@ -416,7 +428,7 @@ export function ReadingCards({ reading, saved, fx }: { reading: Reading; saved: 
   const points = reading.statements.length > 0;
   const law = reading.law.length > 0;
   return (
-    <div className="flex flex-col gap-4">
+    <TypedPlain className="flex flex-col gap-4">
       {reading.periods.length >= 2 && <PeriodsCard reading={reading} saved={saved} />}
       {groups.length > 0 && (
         <div className="grid items-start gap-4 lg:grid-cols-2">
@@ -431,6 +443,6 @@ export function ReadingCards({ reading, saved, fx }: { reading: Reading; saved: 
           {law && <LawCard reading={reading} saved={saved} />}
         </div>
       )}
-    </div>
+    </TypedPlain>
   );
 }

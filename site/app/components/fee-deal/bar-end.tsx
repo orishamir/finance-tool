@@ -65,11 +65,11 @@ export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, o
         onDelete={onDelete}
         add={{ label: w.newDeal, onClick: onNew }}
       />
-      <Button variant="quiet" onClick={onCopy}>
+      <Button variant="outline" onClick={onCopy}>
         <IconCopy size={18} /> {copied ? w.copied : w.link}
       </Button>
       {onTemplates && (
-        <Button variant="quiet" onClick={(e) => onTemplates(e.currentTarget)}>
+        <Button variant="outline" onClick={(e) => onTemplates(e.currentTarget)}>
           {w.template}
         </Button>
       )}

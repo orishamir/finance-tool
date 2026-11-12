@@ -1501,6 +1501,34 @@ export const feeDeal = {
   failed: "הנתונים של העמוד לא נטענו. אפשר לרענן את הדף ולנסות שוב.",
   /** The four fees the records' bases do not list (shapes.ts), and the name of a fee of the person's own before they name it. */
   names: { fund_management: "דמי הניהול של הקרן", fx_spread: "הפרש שער בהמרה", current_account: "חשבון עובר ושב בבנק", own: "עמלה משלכם" } as Record<string, string>,
+  /**
+   * The grammar of each fee's name (the guide's names and the four above), by its kind, for a word that agrees with it: its gender and
+   * number (`m`, `f`, `mp`, `fp`), and for a fee that can be a sum on the account its name with the article ("דמי החשבון הקבועים"). A fee
+   * of the person's own has none: a sentence about it keeps the form that agrees with nothing.
+   */
+  nameForms: {
+    balance: { g: "mp" },
+    deposit: { g: "mp" },
+    direct_expenses: { g: "fp" },
+    exit: { g: "mp" },
+    trade: { g: "f" },
+    custody: { g: "mp", the: "דמי ניהול פיקדון ניירות הערך" },
+    fx: { g: "f" },
+    fixed_period: { g: "mp", the: "דמי החשבון הקבועים" },
+    distribution_handling: { g: "m" },
+    spread: { g: "m" },
+    creation_redemption: { g: "f" },
+    transfer_out: { g: "f" },
+    corporate_event: { g: "f" },
+    load: { g: "f" },
+    redemption_deduction: { g: "m" },
+    variable_management: { g: "mp" },
+    trustee: { g: "m" },
+    insurance_premium: { g: "mp" },
+    fund_management: { g: "mp" },
+    fx_spread: { g: "m" },
+    current_account: { g: "m", the: "החשבון העובר ושב בבנק" },
+  } as Record<string, { g: "m" | "f" | "mp" | "fp"; the?: string }>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
   rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
   /** The bar under the page's head: the deal's name, its kind, its start and where it is kept. */
@@ -1556,7 +1584,6 @@ export const feeDeal = {
     title: "העסקה במבט אחד",
     throughout: "לאורך כל העסקה",
     changes: "מה משתנה ומתי",
-    empty: "עוד אין בעסקה עמלות. כל עמלה שמוסיפים מופיעה כאן.",
     still: "אף עמלה בעסקה לא משתנה עם הזמן.",
     /** Before the months to the nearest change (a computed figure). */
     inMonths: "בעוד ",
@@ -1566,6 +1593,8 @@ export const feeDeal = {
     of: { "action:trade": "מהפעולה", "action:conversion": "מההמרה", "action:deposit": "מההפקדה", "action:distribution": "מכל תשלום", "action:transfer_out": "מההעברה", "action:none": "מהפעולה", held: "בשנה ממה שמוחזק", heldSaved: "בשנה ממה שנצבר" } as Record<string, string>,
     /** A change of a fee's price at a date: the new price, then the one it replaces. */
     instead: ", במקום ",
+    /** A fee that starts after a free time, before its name, by the name's gender and number ("מתחילים דמי חשבון קבועים, 10 ₪ בחודש"). */
+    starts: { m: "מתחיל ", f: "מתחילה ", mp: "מתחילים ", fp: "מתחילות " } as Record<string, string>,
     toReading: "לקריאה המלאה של העסקה",
     /** Fees left out of every reading until their prices' months are in order, by name. */
     unread: "לא נקראות עד שהתאריכים שלהן מסודרים: ",
@@ -1624,7 +1653,6 @@ export const feeDeal = {
     kindPick: "בחרו את סוג המוצר",
     kindsAria: "סוגי המוצרים",
     held: "מה מחזיקים בה",
-    heldChange: "לשנות",
     close: "סגירה",
     place: { label: "איפה הקרן נקנית", israel: "בבורסה בתל אביב", abroad: "בחו״ל" } as Record<string, string>,
     currency: { label: "המטבע של הקרן", ILS: "שקלים", USD: "דולרים", EUR: "אירו", GBP: "לירות שטרלינג" } as Record<string, string>,
@@ -1645,6 +1673,9 @@ export const feeDeal = {
     add: "אפשר להוסיף:",
     unread: "התאריכים של המחירים לא מסודרים, ולכן העמלה לא נקראת.",
     then: "אחר כך",
+    /** The line a fee just taken away leaves in its place, before its name, and the action that puts it back. */
+    removed: "הוסרה מהעסקה: ",
+    undo: "ביטול",
     /** A field's spoken name: the fee, then the figure. */
     fieldName: (fee: string, field: string) => `${fee}, ${field}`,
     /** The facts a row says beside its prices. */
@@ -1660,18 +1691,18 @@ export const feeDeal = {
   /** The left column: every field of the chosen fee. */
   panel: {
     title: "העמלה שבחרתם",
-    none: "לחיצה על עמלה בעסקה פותחת כאן את כל השדות שלה.",
     ownName: "שם העמלה",
     /** What the fee is charged on, from the guide's words for its base. */
     base: "ממה",
-    fields: "כל השדות של העמלה",
-    stages: "המחיר, שלב אחרי שלב",
     stage: { first: "בהתחלה", next: "אחר כך" },
     form: "איך נגבה",
     forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה" } as Record<string, string>,
     howMuch: "כמה",
-    min: "לא פחות מ",
-    max: "לא יותר מ",
+    min: "מינימום",
+    max: "מקסימום",
+    /** An empty bound's box. */
+    empty: "—",
+    /** The spoken name of the bounds' currency, the choice in their boxes. */
     currency: "המטבע של המינימום והמקסימום",
     currencies: { ILS: "שקלים", USD: "דולרים", EUR: "אירו", GBP: "לירות שטרלינג" } as Record<string, string>,
     signs: { ILS: "₪", USD: "$", EUR: "€", GBP: "£" } as Record<string, string>,
@@ -1681,14 +1712,16 @@ export const feeDeal = {
     everyOptions: { 1: "חודש", 3: "רבעון", 6: "חצי שנה", 12: "שנה" } as Record<number, string>,
     sumEvery: "כל כמה זמן",
     sumEveryOptions: { 1: "בחודש", 3: "ברבעון", 6: "בחצי שנה", 12: "בשנה" } as Record<number, string>,
-    /** After an optional bound. */
-    optional: "לא חובה",
     /** A sum past what a deal keeps (model.ts, `SUM_MAX`). */
     tooLarge: "הזינו סכום עד מיליארד ₪.",
     perCharge: "לכל חיוב",
     until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
+    /** How long the price holds: on, or up to a month, after which the fee is free. */
+    when: "עד מתי",
+    always: "כל הזמן",
+    limited: "לזמן מוגבל",
     addLater: "מחיר אחר אחר כך",
     addStage: "עוד שלב",
     removeStage: "להסיר את השלב",
@@ -1701,12 +1734,14 @@ export const feeDeal = {
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
     law: "מול החוק",
     remove: "להסיר את העמלה",
+    /** Opens the site's explanation of the fee (its glossary card). */
+    whatIs: "מה זה",
+    /** Fills this fee's price from a house's price list. */
+    fill: "למלא מתעריפון",
   },
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
   read: {
-    /** Before the deal has a fee to read. */
-    empty: "כשמוסיפים לעסקה עמלות, הקריאה שלה מופיעה כאן.",
     /** The periods of F-110 as cards. */
     periods: {
       kicker: "העסקה, תקופה אחרי תקופה",
@@ -1762,6 +1797,13 @@ export const feeDeal = {
         maxHeld: { before: "על יותר מ־", after: " המקסימום קובע, ומתחת לסכום הזה משלמים אחוז" },
         minMax: { before: "המינימום קובע עד ", middle: ", והמקסימום מעל ", after: ". ביניהם משלמים אחוז" },
         meet: { before: "מתחת ל־", after: " הסכומים הקבועים הם העלות הגדולה בהחזקה" },
+        /** Where one fee is the sum per period: its name with the article, and the words that agree with it. */
+        meetOne: { m: " הוא העלות הגדולה בהחזקה", f: " היא העלות הגדולה בהחזקה", mp: " הם העלות הגדולה בהחזקה", fp: " הן העלות הגדולה בהחזקה" } as Record<string, string>,
+        /**
+         * After a minimum's headline where the curve's fees are their whole group (F-111): the rate above the minimum's sum, between "מעליה"
+         * (by the action's noun, or the sum held) and what the rate is a share of (the glance's words).
+         */
+        minRate: { lead: " המינימום קובע. ", above: { trade: "מעליה", conversion: "מעליה", deposit: "מעליה", distribution: "מעליו", transfer_out: "מעליה", none: "מעליה", held: "מעליו" } as Record<string, string>, cost: " העלות " },
         marks: { one: "העלות משנה התנהגות בסכום אחד", two: "העלות משנה התנהגות בשני סכומים", many: "העלות משנה התנהגות ב־{n} סכומים" },
       },
       /** Under a trade's curve that includes a conversion (F-111); the second where a sale costs the same. */
@@ -4303,6 +4345,7 @@ export const kit = {
       FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא ממחירון או ממסלול עם קו אפור ועם סימן שפותח את המקור, ושדה רשות שלא מולא עם מסגרת מקווקוות.",
       MonthField: "חודש ושנה שמקלידים במקום, כמו 03.2027, באותה תיבה של FigureField. נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק.",
       CapBar: "מחיר מול התקרה שלו: פס דק עד התקרה, סימן במקום התקרה והמספר שלה בסוף. מחיר מאוחר יותר בקו מתאר, ומה שמעל התקרה בפסים אדומים. המשפט שליד הפס אומר את המצב במילים.",
+      TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
       AmountChart: "מה משהו עולה בכל סכום: החלקים כשטחים זה על זה מאפס, הסכום משמאל לימין, השם של כל חלק בסוף הרצועה שלו, והסכומים שבהם העלות משנה התנהגות כנקודות על הקו העליון עם קו מקווקו עד הציר. מצביע או הקשה על הגרף קוראים כל חלק ואת הסכום שלהם. כשאין מקום לשמות בסוף, הם עוברים למקרא מעל הגרף.",
       AddLine: "שורה שקטה מתחת לרשימה שהאדם בונה: מסגרת מקווקוות, פלוס ושבב קטן לכל דבר שאפשר להוסיף. הרגילים קודם בדיו מלאה, הנדירים אחריהם בדיו מעומעמת. המקום היחיד בעמוד שמדבר על מה שחסר.",
