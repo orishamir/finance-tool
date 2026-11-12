@@ -328,7 +328,7 @@ export function dealFromTemplate(from: FeeDeal, id: string, data: Pick<FeesData,
   return d && { ...d, name: (d.template?.name ?? "").slice(0, NAME_MAX) };
 }
 
-/** A new deal of a track's kind, filled from the track (`/fees?track=`); null where the track maps to no product id. */
+/** A new deal of a track's kind, filled from the track (`/deal?track=`); null where the track maps to no product id. */
 export function dealFromTrack(fundId: number, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
   const t = data.tracks.find((x) => x.id === fundId);
   if (!t?.wrapperId || !isProductId(t.wrapperId)) return null;

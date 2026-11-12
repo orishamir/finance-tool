@@ -3,7 +3,7 @@
 // Computed once per build from the source files themselves (a quoted id in content/, routes/, components/, a few lib/ files),
 // so a page that starts citing a rule shows up here with no table to maintain.
 import { existsSync, readdirSync, statSync } from "node:fs";
-import { feesPath, guidePath } from "./site-paths";
+import { DEAL_PATH, dealPagePath, guidePath } from "./site-paths";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { feeDeal, guideIndex, invest, limitedBondFund, mutualFunds, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
@@ -52,7 +52,7 @@ function idsIn(text: string, re: RegExp, known: Set<string>): Set<string> {
 /** The pages a rule can be used on: the address and the label of each. */
 function pageTable(): Record<string, RuleUsePage> {
   const t: Record<string, RuleUsePage> = {
-    fees: { href: "/fees", label: feeDeal.title },
+    deal: { href: DEAL_PATH, label: feeDeal.title },
     transfer: { href: "/transfer", label: r3transfer.title },
     companies: { href: "/companies", label: companiesCopy.title },
     guide: { href: "/guide", label: guideIndex.title },
@@ -69,8 +69,8 @@ function pageTable(): Record<string, RuleUsePage> {
  * rule's score but names no page.
  */
 const routeKey: Record<string, string> = {
-  fees: "fees",
-  "fees-data": "fees",
+  deal: "deal",
+  "deal-data": "deal",
   "compare-bundle": "shared",
   invest: "indices",
   tracks: "tracks",
@@ -84,7 +84,7 @@ const routeKey: Record<string, string> = {
 /** components/<dir>/ → the page that renders it. */
 const componentKey: Record<string, string> = {
   compare: "shared",
-  "fee-deal": "fees",
+  "fee-deal": "deal",
   tracks: "tracks",
   invest: "indices",
   transfer: "transfer",
@@ -106,7 +106,7 @@ const libPrefixes: [string, string][] = [
 
 /** lib/<dir>/ → the page whose logic it holds. */
 const libFolderKey: Record<string, string> = {
-  "fee-deal": "fees",
+  "fee-deal": "deal",
 };
 
 interface Scan {
@@ -198,11 +198,11 @@ function build(): Scan {
   const capKinds = new Map<string, Set<string>>();
   for (const w of wrappers.filter((x) => x.fee_bases_allowed.length > 0))
     for (const id of Object.values(w.fee_caps ?? {}).flatMap((c) => c?.rule_ids ?? [])) if (known.has(id)) capKinds.set(id, (capKinds.get(id) ?? new Set()).add(w.id));
-  for (const id of capKinds.keys()) addPage(id, table.fees!);
+  for (const id of capKinds.keys()) addPage(id, table.deal!);
   // a cap of one product opens the page on a new deal of that product; any other rule opens the page as it is
   const feePage = (id: string): RuleUsePage => {
     const kinds = [...(capKinds.get(id) ?? [])];
-    return { href: kinds.length === 1 ? feesPath({ wrapper: kinds[0]! }) : table.fees!.href, label: table.fees!.label };
+    return { href: kinds.length === 1 ? dealPagePath({ wrapper: kinds[0]! }) : table.deal!.href, label: table.deal!.label };
   };
 
   const uses: Record<string, RuleUse> = {};
@@ -210,7 +210,7 @@ function build(): Scan {
     const cols = Object.fromEntries(collections.get(r.id) ?? []);
     const colRefs = Object.values(cols).reduce((a, b) => a + b, 0);
     uses[r.id] = {
-      pages: [...(pages.get(r.id)?.values() ?? [])].map((pg) => (pg.href === table.fees!.href ? feePage(r.id) : pg)).sort((a, b) => a.href.localeCompare(b.href)),
+      pages: [...(pages.get(r.id)?.values() ?? [])].map((pg) => (pg.href === table.deal!.href ? feePage(r.id) : pg)).sort((a, b) => a.href.localeCompare(b.href)),
       engine: (engineFiles.get(r.id) ?? 0) > 0,
       collections: cols,
       score: scoreOf(r, engineFiles.get(r.id) ?? 0, siteFiles.get(r.id) ?? 0, colRefs),

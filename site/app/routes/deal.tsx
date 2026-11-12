@@ -13,7 +13,7 @@ import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { recordsById } from "../lib/scope";
 
 /** The data file this page fetches after it starts, requested with the HTML. */
-export const links = () => bundleLinks("fees-data.json");
+export const links = () => bundleLinks("deal-data.json");
 
 export async function loader() {
   const { today } = await import("../lib/data.server");

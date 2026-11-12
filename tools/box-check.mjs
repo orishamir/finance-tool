@@ -8,7 +8,7 @@
 //   BASE=http://127.0.0.1:4173/finance-tool node tools/box-check.mjs /indices/sp500 phone,pc,wide
 //
 // Served with `node site/scripts/serve-build.mjs site/build/client --port 4173`. A page that reads its query takes the slash
-// before the "?" (`/fees/?wrapper=kupat-gemel-lehashkaa`): that server's redirect to the slashed path drops the query.
+// before the "?" (`/deal/?wrapper=kupat-gemel-lehashkaa`): that server's redirect to the slashed path drops the query.
 // The second argument picks the widths: phone (390), pc (1280), desk (1440), wide (1920). `--sheet` first opens a guide's values sheet
 // (the last chip of its example line), so the sliders that live only in the phone's sheet are moved too (2026-11-07: at 390 the check
 // found 0 sliders and tested nothing). `--pick=<text>` first clicks the visible element with that

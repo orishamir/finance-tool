@@ -202,4 +202,9 @@ describe("the saved deals", () => {
     expect(JSON.parse(store.get(DEALS_KEY)!).version).toBe(1);
     expect(readSideStores(s).deals).toEqual(m.merged.deals);
   });
+  it("is kept under the key the device already holds, whatever the page's address, so the deals a person saved still open", () => {
+    expect(DEALS_KEY).toBe("mekor.v2.fee-deals");
+    const a = account();
+    expect(parseDeals(JSON.parse(JSON.stringify({ version: 1, deals: [a] })))).toEqual([a]);
+  });
 });

@@ -1,4 +1,4 @@
-// The fee page's data (method §10.6), built at build time and served as /fees-data.json: the kinds a deal can be with their caps, every
+// The fee page's data (method §10.6), built at build time and served as /deal-data.json: the kinds a deal can be with their caps, every
 // house's latest price list and the regulator's tracks in compact form as templates that fill a deal, the ECB's reference rates, and the
 // rule records the page's figures and cap lines cite with the records their cards point at. Server-only.
 import { existsSync, readdirSync } from "node:fs";

@@ -1,8 +1,8 @@
-// The fee page's address: `/fees?d=…` carries a whole deal, encoded compactly; `/fees?wrapper=<id>` opens a new deal of that kind and
-// `/fees?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readDeal`): a
+// The fee page's address: `/deal?d=…` carries a whole deal, encoded compactly; `/deal?wrapper=<id>` opens a new deal of that kind and
+// `/deal?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readDeal`): a
 // broken or hostile value opens an empty deal and never throws.
 import type { FeesData } from "../fee-page-data";
-import { feesPath } from "../site-paths";
+import { dealPagePath } from "../site-paths";
 import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
 import { dealFromTrack } from "./templates";
 
@@ -107,7 +107,7 @@ export function decodeDeal(d: string): FeeDeal | null {
 }
 
 /** The address of a deal: the fee page with the deal in `d` (site-paths.ts). */
-export const dealPath = (deal: FeeDeal): string => feesPath({ deal: encodeDeal(deal) });
+export const encodedDealPath = (deal: FeeDeal): string => dealPagePath({ deal: encodeDeal(deal) });
 
 /**
  * The deal the address opens: a deal in `d`; a new deal of the kind `wrapper` names, where it names a kind of the data; a new deal filled
