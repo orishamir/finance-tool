@@ -6,14 +6,14 @@
 // The product, the kind and the sort stand first; on a phone they fold into one line that says what is chosen (`PhoneFold`), and the
 // search stays open under them. The count and the order are said right over the list.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
-import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
+import { useAddressSort } from "../../lib/list-sort";
 import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
-import { ChoicePair, LongestCase, PhoneFold, SelectField, TextField, useFlip } from "../kit";
+import { ChoicePair, LongestCase, PhoneFold, SelectField, TextField, TextLink, useFlip } from "../kit";
 
 /** The kind chip that stands for every kind (the regulator never names a kind so). */
 const ALL_KINDS = "*";
@@ -56,12 +56,11 @@ export function TrackBrowser({ data }: { data: TbData }) {
   // ?kind=מניות&sort=assets&order=reverse; the defaults are left out. The page is pre-rendered without them, so they are
   // read once the page is in the browser (reading them while hydrating would not match the pre-rendered page).
   const { params: sp, update, hydrated } = useAddressParams();
+  const { chosen: sortSet, set: setSort, press } = useAddressSort(SORT_IDS, defaultSort);
   // an address written before a kind's spelling was mended ("s&p" for "S&P") still opens it
   const kindParam = normName(sp.get("kind") ?? "");
   const kind = (kindParam && view.kinds.find((k) => normName(k.sub) === kindParam)?.sub) || "";
-  const sortSet = sortFromParams(sp, SORT_IDS) ?? defaultSort;
   const setKind = (sub: string) => update({ kind: sub || null });
-  const setSort = (s: SortState) => update(sortParams(s, defaultSort));
   const [q, setQ] = useState("");
   const dq = useDeferredValue(q);
   // a kind holds at most one track of most companies, so under the companies' headings its sort would move nothing: it is one list
@@ -90,11 +89,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
   // company that opens moves down gently and nothing above it moves; the new rows fade in
   const list = useFlip<HTMLDivElement>(hydrated ? `${listKey}|${sort.id}|${sort.dir}|${dq}|${browsing ? [...openKeys].join(",") : "*"}` : null);
   /** A head pressed while the list is scrolled under it: the list starts again from its first row, under the same head. */
-  const pressHead = (id: SortId) => {
-    setSort(pressSort(sort, id));
-    const el = list.current;
-    if (el && el.getBoundingClientRect().top < parseFloat(getComputedStyle(el).scrollMarginTop)) el.scrollIntoView({ block: "start", behavior: "instant" });
-  };
+  const pressHead = (id: SortId) => press(id, sort, list.current);
 
   const longestOrder = SORT_IDS.flatMap((id) => ([1, -1] as const).flatMap((dir) => (["company", "kind"] as const).map((mode) => orderLine({ id, dir }, mode))));
   // the phone's folded controls: "קרן השתלמות · מניות · מיון לפי דמי ניהול"
@@ -112,9 +107,9 @@ export function TrackBrowser({ data }: { data: TbData }) {
         <ChoicePair
           parent={{ label: t.controls.product, ids: data.products.map((p) => p.id), labels: Object.fromEntries(data.products.map((p) => [p.id, p.name])), value: productId, counts: Object.fromEntries(data.products.map((p) => [p.id, p.rows.length])), onChange: (id) => id !== productId && navigate(`/tracks/${id}${keepFor(sp)}`, { preventScrollReset: true }) }}
           under={
-            <Link to={`/guide/${view.id}`} className="self-start text-sm text-link hover:underline inline-flex items-center min-h-target">
+            <TextLink look="line" to={`/guide/${view.id}`} className="self-start text-sm">
               {t.count.whatIs} {view.name}
-            </Link>
+            </TextLink>
           }
           child={{
             label: t.controls.kind,

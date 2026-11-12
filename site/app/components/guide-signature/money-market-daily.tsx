@@ -4,11 +4,10 @@
 // collected banks publish, F-85, in the notes; the range across the collected banks, F-86; the site's assumption, D20). The other
 // products link to their own guide pages.
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
-import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
 import { fact, ladderRows, slowerPayNoMore, speedOrder, type LadderRow, type Speed } from "../../lib/guide-signature";
 import { Num, RulesLine, Term } from "../provenance";
-import { ChartLegend, CompareTable, NoteList, Sentence, StepTag, Swatch, Tag, ValueBar } from "../kit";
+import { ChartLegend, CompareTable, NoteList, Sentence, StepTag, Swatch, Tag, TextLink, ValueBar } from "../kit";
 import { CommonRateLine, type VisualProps } from "./kit";
 
 const icons: Record<Speed, React.ReactNode> = { "any-time": <Zap aria-hidden="true" />, "trading-day": <CalendarCheck aria-hidden="true" />, "fixed-dates": <CalendarDays aria-hidden="true" />, "at-maturity": <Lock aria-hidden="true" /> };
@@ -42,9 +41,9 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                 <Tag tone="positive">{copy.ladder.thisOne}</Tag>
               </span>
             ) : (
-              <Link to={`/guide/${r.id}`} className="text-link hover:underline">
+              <TextLink to={`/guide/${r.id}`}>
                 <RowName row={r} />
-              </Link>
+              </TextLink>
             ),
             cells: [
               <div key="when" className="flex flex-col gap-1">

@@ -2,14 +2,14 @@
 // grid, both folded. The term, the amount, the kind of rate, the two "show also" chips, the reader's bank and the order are in the address
 // (`?term=y2&amount=100000&kind=variable&conditional=0&linked=1&bank=leumi&sort=min`; the defaults left out), read once the page is in the
 // browser: the page is pre-rendered without them. On a phone the controls fold into one line that says what is chosen.
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useMemo, useRef, useState } from "react";
 import { depositBrowser as t } from "../../copy";
-import { useAddressParams } from "../../lib/hooks";
-import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
-import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
+import { MQ, useAddressParams, useMedia } from "../../lib/hooks";
+import { useAddressSort } from "../../lib/list-sort";
+import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
-import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
+import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
 import { NumberLegend, Num, Term } from "../provenance";
 import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
@@ -17,22 +17,6 @@ import { DepositList, FoldFoot, type ListContext, type ListRow } from "./list";
 
 /** The rows shown before "עוד N הצעות": eight on a computer, six on a phone. */
 const SHOWN = { table: 8, phone: 6 } as const;
-const WIDE = "(min-width: 48rem)";
-
-/** Whether the screen shows the table (from md) or the phone's rows; the pre-rendered page and its first render count as the table. */
-function useWide(): boolean {
-  return useSyncExternalStore(
-    (on) => {
-      const m = window.matchMedia(WIDE);
-      m.addEventListener("change", on);
-      return () => m.removeEventListener("change", on);
-    },
-    () => window.matchMedia(WIDE).matches,
-    () => true,
-  );
-}
-
-const amountText = (n: number) => `${fmt.number(n)} ₪`;
 
 export function DepositBrowser({ data }: { data: DbData }) {
   const { params: sp, update } = useAddressParams();
@@ -47,14 +31,15 @@ export function DepositBrowser({ data }: { data: DbData }) {
   const withLinked = sp.get("linked") === "1";
   const bankParam = sp.get("bank");
   const myBank = data.banks.some((b) => b.id === bankParam) ? bankParam : null;
-  const sort: SortState = sortFromParams(sp, SORT_IDS) ?? DEFAULT_SORT;
+  const { chosen: sort, set: setSort, press } = useAddressSort(SORT_IDS, DEFAULT_SORT);
   const setTerm = (x: TermId) => update({ term: x === START_TERM ? null : x });
   const setAmount = (n: number | null) => update({ amount: n === null ? "none" : n === data.start ? null : String(n) });
   const setKind = (k: RateKind) => update({ kind: k === START_KIND ? null : k });
-  const setSort = (s: SortState) => update(sortParams(s, DEFAULT_SORT));
   const [expanded, setExpanded] = useState(false);
   const [lit, setLit] = useState<string | null>(null);
-  const wide = useWide();
+  // the table from md, the phone's rows under it; the pre-rendered page and its first render count as the table
+  const wide = useMedia(MQ.md, true);
+  const list = useRef<HTMLDivElement>(null);
 
   const ofTerm = useMemo(() => offersOf(data, term, kind), [data, term, kind]);
   const open = useMemo(() => (amount === null ? [] : ofTerm.filter((o) => opens(o, amount))), [ofTerm, amount]);
@@ -97,12 +82,12 @@ export function DepositBrowser({ data }: { data: DbData }) {
       : ofTerm.length === 0
         ? { title: `${t.empty.none}${termFor} ${kindWords}`, line: `${t.empty.none}${termFor} ${kindWords}.${otherKindExists ? ` ${t.empty.otherKindOnly[kind]}` : ""}` }
         : all.length === 0
-          ? { title: `${t.empty.none}${termFor} ${kindWords}${t.empty.atAmount}${amountText(amount)}`, line: `${t.empty.none}${termFor} ${kindWords}${t.empty.atAmount}${amountText(amount)}.` }
+          ? { title: `${t.empty.none}${termFor} ${kindWords}${t.empty.atAmount}${fmt.nisWhole(amount)}`, line: `${t.empty.none}${termFor} ${kindWords}${t.empty.atAmount}${fmt.nisWhole(amount)}.` }
           : null;
 
   const summary = amount === null ? t.empty.noAmountTitle : (
     <>
-      <bdi dir="ltr">{amountText(amount)}</bdi> {termFor}, {kindWords}
+      <bdi dir="ltr">{fmt.nisWhole(amount)}</bdi> {termFor}, {kindWords}
     </>
   );
   const pick = amount !== null && data.amounts.some((a) => a.value === amount) ? String(amount) : null;
@@ -115,7 +100,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
             <div className="md:w-56 shrink-0">
               <NumberField label={t.controls.amount} unit="nis" value={amount} isEntered={amount !== data.start} start={null} optional groupAsTyped validate={() => null} onCommit={(n) => setAmount(n > 0 ? Math.round(n) : null)} onReset={() => setAmount(null)} />
             </div>
-            <ChoiceChips wrap ariaLabel={t.controls.picks} ids={data.amounts.map((a) => String(a.value))} labels={Object.fromEntries(data.amounts.map((a) => [String(a.value), <bdi dir="ltr">{amountText(a.value as number)}</bdi>]))} value={pick} onChange={(v) => setAmount(Number(v))} />
+            <ChoiceChips wrap ariaLabel={t.controls.picks} ids={data.amounts.map((a) => String(a.value))} labels={Object.fromEntries(data.amounts.map((a) => [String(a.value), <bdi dir="ltr">{fmt.nisWhole(a.value as number)}</bdi>]))} value={pick} onChange={(v) => setAmount(Number(v))} />
           </div>
           <div className="flex flex-col md:flex-row md:flex-wrap md:items-end gap-4 md:gap-x-8">
             <div className="flex flex-col gap-1.5">
@@ -158,7 +143,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
             ) : (
               <>
                 {t.chart.title[kind]}
-                <bdi dir="ltr">{amountText(amount)}</bdi>
+                <bdi dir="ltr">{fmt.nisWhole(amount)}</bdi>
               </>
             )}
           </p>
@@ -168,29 +153,31 @@ export function DepositBrowser({ data }: { data: DbData }) {
           </p>
         </section>
 
-        <section aria-labelledby="deposit-list-title" className="flex flex-col gap-3 scroll-mt-14 lg:scroll-mt-16">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <h2 id="deposit-list-title" className="text-xl lg:text-2xl font-semibold">
-              {empty ? empty.title : <Heading count={ranked.length} best={best} ctx={ctx} />}
-            </h2>
+        <Section
+          title={empty ? empty.title : <Heading count={ranked.length} best={best} ctx={ctx} />}
+          action={
             <p className="hidden md:block text-sm text-muted-foreground">
               <When iso={data.read} lead={t.read} />
             </p>
+          }
+        >
+          {/* a head pressed while the list is scrolled under the header brings the list back to its first row */}
+          <div ref={list} className="scroll-mt-14 lg:scroll-mt-16">
+            {empty ? (
+              <Card className="py-8">
+                <p>{empty.line}</p>
+              </Card>
+            ) : (
+              <DepositList
+                ranked={shown.filter((x) => !x.linked).map((x) => asRow(x.row))}
+                linked={shown.filter((x) => x.linked).map((x) => asRow(x.row))}
+                ctx={ctx}
+                sort={sort}
+                onSort={(id: SortId) => press(id, sort, list.current)}
+                foot={() => (hidden > 0 || expanded ? <FoldFoot open={expanded} more={`${t.fold.more}${offersPhrase(hidden)}`} onToggle={() => setExpanded((x) => !x)} /> : null)}
+              />
+            )}
           </div>
-          {empty ? (
-            <Card className="py-8">
-              <p>{empty.line}</p>
-            </Card>
-          ) : (
-            <DepositList
-              ranked={shown.filter((x) => !x.linked).map((x) => asRow(x.row))}
-              linked={shown.filter((x) => x.linked).map((x) => asRow(x.row))}
-              ctx={ctx}
-              sort={sort}
-              onSort={(id: SortId) => setSort(pressSort(sort, id))}
-              foot={() => (hidden > 0 || expanded ? <FoldFoot open={expanded} more={`${t.fold.more}${offersPhrase(hidden)}`} onToggle={() => setExpanded((x) => !x)} /> : null)}
-            />
-          )}
           <div className="flex flex-col gap-1 text-sm text-muted-foreground">
             <NumberLegend />
             <p className="md:hidden">
@@ -201,10 +188,10 @@ export function DepositBrowser({ data }: { data: DbData }) {
               {t.help.phoneLead} <Term id={HELP_TERMS.rate}>{t.help.rate}</Term> · <Term id={HELP_TERMS.exits}>{t.help.exits}</Term> · <Term id={HELP_TERMS.break}>{t.help.break}</Term>
             </p>
           </div>
-        </section>
+        </Section>
 
         {shut.length > 0 && (
-          <Disclosure label={`${offersPhrase(rowsOf(shut).length)} ${t.closed.before}${amount !== null ? amountText(amount) : ""}`} labelClassName="font-semibold" className="flex flex-col gap-3">
+          <Disclosure label={`${offersPhrase(rowsOf(shut).length)} ${t.closed.before}${amount !== null ? fmt.nisWhole(amount) : ""}`} labelClassName="font-semibold" className="flex flex-col gap-3">
             <div className="pt-2">
               <DepositList ranked={sortRows(rowsOf(shut), sort).map((row) => ({ row, top: false, mine: row.bank === myBank }))} linked={[]} ctx={{ ...ctx, amount: null, topRate: Math.max(0.0001, ...shut.map((o) => Number(o.rate_offered.value) || 0)) }} sort={null} />
             </div>
@@ -249,7 +236,7 @@ function Heading({ count, best, ctx }: { count: number; best: DbOffer | null; ct
             <>
               , <Num value={interest} display={interestText} />
               {t.heading.on}
-              <bdi dir="ltr">{amountText(ctx.amount.n)}</bdi>
+              <bdi dir="ltr">{fmt.nisWhole(ctx.amount.n)}</bdi>
             </>
           )}
         </>

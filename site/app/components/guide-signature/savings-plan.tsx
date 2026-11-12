@@ -3,13 +3,13 @@
 // free and what is still locked on that date. The value of one finished deposit is an engine run of the plan's record.
 import { scaleLinear } from "d3-scale";
 import { useId, useMemo, useState } from "react";
-import { guideSignature as copy, values as valuesCopy } from "../../copy";
+import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 
-import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useGlidingNumbers, useWidth } from "../kit";
+import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, SegmentedControl, Stat, StatRow, Swatch, useGlidingNumbers, useWidth } from "../kit";
 import { IdText, Num, RulesLine } from "../provenance";
-import { figure, inputSite, rulesOfBundle, useSigInputs, typed, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, SigAmountField, useSigInputs, typed, type VisualProps } from "./kit";
 
 const TOP = 22;
 const AXIS = 24;
@@ -59,17 +59,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   return (
     <div className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <NumberField
-          label={copy.plan.monthly}
-          unit="nis"
-          value={monthly}
-          start={inputs.p05.monthly}
-          isEntered={inputs.source.monthly === "guide"}
-          validate={(v) => (v < 0 ? valuesCopy.errors.negative : null)}
-          onCommit={inputs.setMonthly}
-          onReset={() => inputs.setMonthly(null)}
-          disabled={!inputs.ready}
-        />
+        <SigAmountField inputs={inputs} field="monthly" label={copy.plan.monthly} />
         <div className="flex flex-col gap-1.5">
           <span className="field-label" id="sig-plan-count">
             {copy.plan.count}

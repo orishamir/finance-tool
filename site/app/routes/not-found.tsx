@@ -2,7 +2,7 @@
 import { pagePreview, system } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { PageShell, useOpenSearch } from "../components/shell";
-import { PageHead, TextLink } from "../components/kit";
+import { Button, PageHead, TextLink } from "../components/kit";
 
 export function meta({ location }: MetaPlace) {
   return pageMeta({ title: system.notFound.title, description: pagePreview.notFound, location });
@@ -25,9 +25,9 @@ function Body() {
         <TextLink look="line" to="/">
           {system.notFound.home}
         </TextLink>
-        <button type="button" className="text-link min-h-target hover:underline" onClick={(e) => open(e.currentTarget)}>
+        <Button variant="quiet" flush onClick={(e) => open(e.currentTarget)}>
           {system.notFound.search}
-        </button>
+        </Button>
       </div>
     </div>
   );

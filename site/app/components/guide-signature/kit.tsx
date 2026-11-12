@@ -1,13 +1,14 @@
-// The parts that belong to the "what makes it different" visuals alone (D29): the guide inputs they start from (rule 9 of the spec), the
-// run date and what a visual receives, and the lines that look their copy up (a gap, a common rate). The parts any
-// page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
+// The parts that belong to the "what makes it different" visuals alone (D29): the guide inputs they start from (rule 9 of the spec) and
+// the fields that set them, the run date and what a visual receives, and the lines that look their copy up (a gap, a common rate). The
+// parts any page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
+import type { ReactNode } from "react";
 import type { P05Input } from "@finance-tool/engine";
-import { computedInputs as ci, guideBlocks, guideSignature as copy } from "../../copy";
+import { computedInputs as ci, guideBlocks, guideSignature as copy, values as valuesCopy } from "../../copy";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
 import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, type SiteValue, type Strength } from "../../lib/value";
-import { GapNote } from "../kit";
+import { GapNote, NumberField, RangeField, nonNegativeCheck, yearsCheck } from "../kit";
 import { IdText, Num } from "../provenance";
 
 // ---------------------------------------------------------------- the guide inputs a visual starts from
@@ -45,9 +46,30 @@ export function useSigInputs(bundle: Bundle): SigInputs {
 /** The slider range of the years field, from P-05. */
 export const yearsRange = (bundle: Bundle) => p05Range(bundle.p05, "sliders", "horizon_years") ?? { min: 1, max: 40, step: 1, values: {} };
 
-/** "עוד לא חושב" with its reason, for a part the data cannot compute yet. */
-export function Gap({ id, className }: { id: string; className?: string }) {
-  const reason = (copy.common.gaps as Record<string, string>)[id.split(":")[0]!] ?? copy.common.gapFallback;
+/**
+ * The guide's amount today (`amount`) or monthly deposit (`monthly`) as a visual's field: it shows and writes the guide's own field, the
+ * one the timeline reads, starts at P-05's and takes no amount below zero.
+ */
+export function SigAmountField({ inputs, field, label }: { inputs: SigInputs; field: "amount" | "monthly"; label: ReactNode }) {
+  const set = field === "amount" ? inputs.setAmount : inputs.setMonthly;
+  return <NumberField label={label} unit="nis" value={inputs[field]} start={inputs.p05[field]} isEntered={inputs.source[field] === "guide"} validate={nonNegativeCheck} onCommit={set} onReset={() => set(null)} disabled={!inputs.ready} />;
+}
+
+/** The guide's years as a visual's field with its slider, on P-05's range: `value` is the years the visual runs on, the guide's own held to its range. */
+export function SigYearsField({ inputs, bundle, value }: { inputs: SigInputs; bundle: Bundle; value: number }) {
+  const yr = yearsRange(bundle);
+  return <RangeField label={copy.common.years} unit="years" value={value} start={inputs.p05.years} isEntered={inputs.source.years === "guide"} validate={yearsCheck(yr)} onCommit={inputs.setYears} onReset={() => inputs.setYears(null)} min={yr.min} max={yr.max} step={yr.step ?? 1} inputMode="numeric" disabled={!inputs.ready} />;
+}
+
+/** The check for an amount that must be above zero (a salary, an income): the kit's checks have none. */
+export const aboveZeroCheck = (n: number): string | null => (n <= 0 ? valuesCopy.errors.positive : null);
+
+/** The tables of reasons a part is not computed yet: the first-wave visuals' and the second wave's (the study fund, the pensions). */
+const GAPS = { common: copy.common.gaps, g2: copy.g2.gaps };
+
+/** "עוד לא חושב" with its reason, for a part the data cannot compute yet: the part's id (before any ":") in the table `from` names. */
+export function Gap({ id, from = "common", className }: { id: string; from?: keyof typeof GAPS; className?: string }) {
+  const reason = GAPS[from][id.split(":")[0]!] ?? copy.common.gapFallback;
   return <GapNote reason={<IdText text={reason} />} className={className} />;
 }
 

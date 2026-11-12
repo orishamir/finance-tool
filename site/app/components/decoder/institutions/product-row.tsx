@@ -1,12 +1,12 @@
 // The bank product row (design-system 8.7): one deposit, savings plan or current-account record of a bank, as the
 // 447 page names it, with its terms as a key-value list, every figure a sourced Num with its date.
-import { Link } from "react-router";
+import type { ReactNode } from "react";
 import { r4catalogue as copy } from "../../../copy";
-import { fmt } from "../../../lib/format";
-import { IconAlert, IconDrillIn } from "../../icons";
+import { IconAlert } from "../../icons";
 import { Num, RuleRef, RulesLine } from "../../provenance";
-import { Card, Disclosure, DoubtNote, LabelRow, MixedName, PrintedText, Tag, When } from "../../kit";
-import { depositLabels, exitsText, termWords } from "../../../lib/deposit-kind";
+import { Card, Disclosure, DoubtNote, GoLink, KeyValueList, LabelRow, MixedName, PrintedQuotes, PrintedText, Tag, When, type KeyValueItem } from "../../kit";
+import { AmountRange, AnchorSpread } from "../../deposits/deposit-words";
+import { breakText, depositLabels, exitsText, renewText, taxWord, termWords } from "../../../lib/deposit-kind";
 import type { ProductRowData } from "./types";
 
 function Chips({ ids, known }: { ids: readonly string[]; known: ReadonlySet<string> }) {
@@ -14,37 +14,58 @@ function Chips({ ids, known }: { ids: readonly string[]; known: ReadonlySet<stri
   return shown.length ? <RulesLine ids={shown} /> : null;
 }
 
-function Item({ id, label, children, rules, known, after }: { id: string; label: string; children: React.ReactNode; rules?: readonly string[]; known: ReadonlySet<string>; after?: React.ReactNode }) {
-  return (
-    <div key={id} className="flex flex-col gap-1 py-3 border-b border-border last:border-b-0 md:grid md:grid-cols-[11rem_minmax(0,1fr)] md:gap-4">
-      <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="flex flex-col gap-1">
-        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">{children}</span>
-        {after}
-        {rules && <Chips ids={rules} known={known} />}
-      </dd>
-    </div>
-  );
-}
-
-/** A spread in words: the unit is percentage points and a minus sign misreads in Hebrew (BANK-47). */
-function SpreadWords({ spread }: { spread: NonNullable<ProductRowData["spread"]> }) {
-  const v = Number(spread.value);
-  return (
+/** One term of the card: its label and value, then what stands under the value (a doubt, the bank's words) and the rules behind it. */
+const item = (id: string, label: string, value: ReactNode, known: ReadonlySet<string>, more: { rules?: readonly string[]; tag?: ReactNode; after?: ReactNode } = {}): KeyValueItem => ({
+  id,
+  label,
+  value,
+  ...(more.tag ? { tag: more.tag } : {}),
+  footer: (more.after || more.rules) && (
     <>
-      {v < 0 ? copy.rateType.less : copy.rateType.more} <Num value={spread} display={`${fmt.number(Math.abs(v))} ${copy.rateType.points}`} />
+      {more.after}
+      {more.rules && <Chips ids={more.rules} known={known} />}
     </>
-  );
-}
+  ),
+});
 
 export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; known: ReadonlySet<string>; wrapperName: string }) {
   const l = copy.labels;
-  // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (WIN WIN)
-  const bucket = p.taxBucket.value;
-  const taxWord = bucket === "unlinked_15" ? copy.tax.unlinked : bucket === "linked_25" ? copy.tax.linked : undefined;
   const term = termWords(p.term);
+  const items: KeyValueItem[] = [
+    item("type", l.type447, <MixedName>{p.type447}</MixedName>, known, { rules: ["BANK-13"] }),
+    item("term", l.term, p.currentAccount || term === null ? copy.term.none : <Num value={p.term} display={term} />, known, { rules: p.term.rule_ids ?? [] }),
+    item(
+      "rateType",
+      l.rateType,
+      p.rateType === "variable" ? (
+        <>
+          {copy.rateType.variable} <AnchorSpread variable anchor={p.anchor} spread={p.spread} look="words" />
+        </>
+      ) : (
+        copy.rateType.fixed
+      ),
+      known,
+    ),
+    item("rate", l.rate, <Num value={p.rate} size="cell" />, known, { rules: p.rate.rule_ids ?? [], after: p.doubt ? <DoubtNote text={p.doubt} className="text-sm" /> : undefined }),
+    item("asOf", l.asOf, <Num value={p.asOf} />, known, { tag: p.asOfAfterRead && <Tag tone="caution" icon={<IconAlert size={14} />}>{copy.asOfAfterRead}</Tag> }),
+    item("linkage", l.linkage, <Num value={p.linkageValue} display={copy.linkage[p.linkage]} />, known),
+    // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (WIN WIN)
+    item("tax", l.tax, <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} />, known, { rules: p.taxBucket.rule_ids ?? [] }),
+    item("amount", l.amount, <AmountRange min={p.amountMin} max={p.amountMax} />, known, { rules: p.amountMin.rule_ids ?? [] }),
+    item("break", l.breakTerms, breakText(p.breakTerms.penalty, p.exitPoints.exists), known, {
+      rules: p.breakTerms.rules,
+      after: p.breakTerms.quotes.length > 0 && (
+        <Disclosure look="link" label={copy.breakDisclosure} summaryClassName="text-sm">
+          <PrintedQuotes quotes={p.breakTerms.quotes} />
+        </Disclosure>
+      ),
+    }),
+    // exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing)
+    item("exits", l.exits, exitsText(p.exitPoints, p.conditions), known),
+    item("renew", l.autoRenew, renewText(p.autoRenew.value, p.autoRenew.maxRenewals), known),
+  ];
   return (
-    <Card as="article" id={`product-${p.id}`} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px] target:outline-2 target:outline-ring target:outline-offset-2">
+    <Card as="article" id={`product-${p.id}`} className="flex flex-col gap-3 anchor-target target:outline-2 target:outline-ring target:outline-offset-2">
       <header className="flex flex-col gap-1.5">
         <h3 className="text-lg font-semibold max-w-measure">
           <MixedName>{p.name}</MixedName>
@@ -82,97 +103,9 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
           </span>
         </p>
       )}
-      <dl className="flex flex-col">
-          <Item id="type" label={l.type447} known={known} rules={["BANK-13"]}>
-            <MixedName>{p.type447}</MixedName>
-          </Item>
-          <Item id="term" label={l.term} known={known} rules={p.term.rule_ids ?? []}>
-            {p.currentAccount || term === null ? copy.term.none : <Num value={p.term} display={term} />}
-          </Item>
-          <Item id="rateType" label={l.rateType} known={known}>
-            {p.rateType === "variable" ? (
-              <>
-                {copy.rateType.variable} {p.anchor === "prime" ? copy.rateType.prime : p.anchor && <MixedName>{p.anchor}</MixedName>}{" "}
-                {p.spread && <SpreadWords spread={p.spread} />}
-              </>
-            ) : (
-              copy.rateType.fixed
-            )}
-          </Item>
-          <Item id="rate" label={l.rate} known={known} rules={p.rate.rule_ids ?? []} after={p.doubt ? <DoubtNote text={p.doubt} className="text-sm" /> : undefined}>
-            <Num value={p.rate} size="cell" />
-          </Item>
-          <Item id="asOf" label={l.asOf} known={known}>
-            <Num value={p.asOf} />
-            {p.asOfAfterRead && <Tag tone="caution" icon={<IconAlert size={14} />}>{copy.asOfAfterRead}</Tag>}
-          </Item>
-          <Item id="linkage" label={l.linkage} known={known}>
-            <Num value={p.linkageValue} display={copy.linkage[p.linkage]} />
-          </Item>
-          <Item id="tax" label={l.tax} known={known} rules={p.taxBucket.rule_ids ?? []}>
-            <Num value={p.taxBucket} display={taxWord} />
-          </Item>
-          <Item id="amount" label={l.amount} known={known} rules={p.amountMin.rule_ids ?? []}>
-            {typeof p.amountMin.value === "number" && p.amountMin.value > 0 ? (
-              <>
-                {copy.amount.from}
-                <Num value={p.amountMin} />
-                {p.amountMax && (
-                  <>
-                    {" "}
-                    {copy.amount.to} <Num value={p.amountMax} />
-                  </>
-                )}
-              </>
-            ) : p.amountMax ? (
-              <>
-                {copy.amount.to} <Num value={p.amountMax} />
-              </>
-            ) : (
-              copy.amount.noMin
-            )}
-          </Item>
-          <Item
-            id="break"
-            label={l.breakTerms}
-            known={known}
-            rules={p.breakTerms.rules}
-            after={
-              p.breakTerms.quotes.length > 0 && (
-                <Disclosure label={<span className="text-sm text-link">{copy.breakDisclosure}</span>} summaryClassName="min-h-11 justify-start gap-1">
-                  <span className="flex flex-col gap-1.5 text-sm bg-muted rounded-md p-3 max-w-measure">
-                    {p.breakTerms.quotes.map((q) => (
-                      <span key={q}>
-                        ״<PrintedText text={q} />״
-                      </span>
-                    ))}
-                  </span>
-                </Disclosure>
-              )
-            }
-          >
-            {p.breakTerms.penalty === "not_allowed" && p.exitPoints.exists ? copy.breakAtExits : copy.breakWord[p.breakTerms.penalty]}
-          </Item>
-          <Item id="exits" label={l.exits} known={known}>
-            {/* exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing) */}
-            {exitsText(p.exitPoints, p.conditions)}
-          </Item>
-          <Item id="renew" label={l.autoRenew} known={known}>
-            {p.autoRenew.value ? (
-              p.autoRenew.maxRenewals !== null ? (
-                <>
-                  {copy.autoRenewWord.upTo} <bdi dir="ltr">{fmt.number(p.autoRenew.maxRenewals)}</bdi> {copy.autoRenewWord.times}
-                </>
-              ) : (
-                copy.autoRenewWord.yes
-              )
-            ) : (
-              copy.autoRenewWord.no
-            )}
-          </Item>
-      </dl>
+      <KeyValueList plain items={items} />
       {p.currentAccount && p.conditions && (
-        <Disclosure label={<span className="text-sm text-link">{copy.currentConditions}</span>} summaryClassName="min-h-11 justify-start gap-1">
+        <Disclosure look="link" label={copy.currentConditions} summaryClassName="text-sm">
           <p className="text-sm bg-muted rounded-md p-3 max-w-measure">
             <PrintedText text={p.conditions} />
           </p>
@@ -181,12 +114,9 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
       <p className="text-sm text-muted-foreground max-w-measure">
         {copy.notAnOffer} {known.has("BANK-13") && <RuleRef id="BANK-13" />}
       </p>
-      <p className="flex flex-wrap gap-x-4">
-        <Link to={`/guide/${p.wrapperId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline">
-          {copy.rowLinks.whatIs} {wrapperName}
-          <IconDrillIn size={16} />
-        </Link>
-      </p>
+      <GoLink to={`/guide/${p.wrapperId}`} className="self-start">
+        {copy.rowLinks.whatIs} {wrapperName}
+      </GoLink>
     </Card>
   );
 }

@@ -1,12 +1,11 @@
 // A brand's funds (D33) as the company page's product table (design-system 11 "Lists of products"): the
 // name with the fund's labels, the number as the link to Maya, the index it follows, and the manager's own three fees (D31).
 // Only collected records: the full list is the manager's, on Maya (CAT-43).
-import { Link } from "react-router";
 import { brands as copy, invest } from "../../copy";
 import type { BrandFundRow, FundKind } from "../../lib/brands.server";
 import type { SiteValue } from "../../lib/value";
 import { IconDrillIn } from "../icons";
-import { FeeFigure, FundFeesHead, FundFeesPhoneHelp, LabelRow, LabelSheetHost, MixedName, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
+import { FeeFigure, FundFeesHead, FundFeesPhoneHelp, LabelRow, LabelSheetHost, MixedName, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, TextLink, type ProductColumn } from "../kit";
 
 const c = copy.funds;
 
@@ -30,11 +29,12 @@ function NumberLink({ f }: { f: BrandFundRow }) {
 function Follows({ f, phone }: { f: BrandFundRow; phone?: boolean }) {
   if (!f.follows) return null;
   return (
-    <Link to={f.follows.href} className="relative before:absolute before:inset-x-0 before:-inset-y-[9px] text-link hover:underline inline-flex items-center gap-0.5 whitespace-nowrap self-start">
+    // a line high, with a 44 px tap area (tap-area), so the row keeps its height
+    <TextLink to={f.follows.href} className="tap-area inline-flex items-center gap-0.5 whitespace-nowrap self-start">
       {phone && f.follows.kind === "index" && <span className="text-muted-foreground">{c.indexWord}&nbsp;</span>}
       <MixedName>{f.follows.name}</MixedName>
       <IconDrillIn size={16} />
-    </Link>
+    </TextLink>
   );
 }
 

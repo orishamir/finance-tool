@@ -5,9 +5,7 @@
 import { companyPage as w } from "../../copy";
 import type { DocGroup } from "../../lib/company-page";
 import { RuleTitleRow, useProvenanceData } from "../provenance";
-import { GroupHead, RowList, Section, cx } from "../kit";
-
-const scrollMargin = "scroll-mt-[112px] lg:scroll-mt-[88px]";
+import { GroupHead, RowList, Section } from "../kit";
 
 function Entries({ ids }: { ids: readonly string[] }) {
   const data = useProvenanceData();
@@ -16,7 +14,7 @@ function Entries({ ids }: { ids: readonly string[] }) {
   return (
     <RowList plain>
       {shown.map((id) => (
-        <li key={id} id={id} className={cx("px-1 target:bg-accent", scrollMargin)}>
+        <li key={id} id={id} className="px-1 target:bg-accent anchor-target">
           {/* the page is the company's: its own name under each term would only repeat the page's */}
           <RuleTitleRow id={id} scope={false} className="text-base py-2.5" />
         </li>
