@@ -26,13 +26,16 @@ export interface MenuItem {
 
 const ic = { strokeWidth: 1.75, "aria-hidden": true } as const;
 
-export function MenuPicker({ name, items, value, placeholder, words, onSelect, onFollow, onRename, onDelete, add, listHost }: {
+export function MenuPicker({ name, items, value, placeholder, buttonLabel, words, onSelect, onFollow, onRename, onDelete, add, listHost }: {
   /** The list's spoken name ("המדד"). */
   name: string;
   items: MenuItem[];
   /** The chosen item's id; null shows `placeholder`. */
   value: string | null;
   placeholder: string;
+  /** The button's words in place of the chosen item, where the button names the list rather than what is chosen in it ("העסקאות שלי · 3"):
+   *  the chosen item is still marked in the list. */
+  buttonLabel?: string;
   /** Needed only when an item can be renamed or deleted (the same words `ChipList` takes). */
   words?: ChipListWords;
   onSelect?: (id: string) => void;
@@ -247,12 +250,12 @@ export function MenuPicker({ name, items, value, placeholder, words, onSelect, o
         type="button"
         aria-expanded={open}
         aria-controls={`${id}-list`}
-        aria-label={`${name}: ${chosen?.label ?? placeholder}`}
+        aria-label={buttonLabel ?? `${name}: ${chosen?.label ?? placeholder}`}
         onClick={() => (open ? close() : setOpen(true))}
         onKeyDown={onButtonKey}
         className="inline-flex max-w-full items-center gap-3 min-h-target rounded-md border border-input bg-card ps-4 pe-3 hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
       >
-        <bdi className="truncate">{chosen?.label ?? placeholder}</bdi>
+        <bdi className="truncate">{buttonLabel ?? chosen?.label ?? placeholder}</bdi>
         <IconChevronDown size={18} className={cx("shrink-0 text-muted-foreground transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
       </button>
       {open && (listHost ? at && createPortal(menu, listHost) : menu)}
