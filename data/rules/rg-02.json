@@ -49,9 +49,10 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "file p.3 (gazette p.723), s.2(1)(א), para (2)",
-      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 723), סעיף 2(1)(א), פסקה (2)",
+      "locator": "file p.3 (gazette p.723), s.2(1)(א)",
+      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 723), סעיף 2(1)(א)",
       "page": 3,
+      "quote": "ובתום 36 חודשים מיום התאגדותה",
       "checked": "2026-11-07"
     },
     {
@@ -62,7 +63,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "file p.4 (gazette p.724), s.2(1)(ג), new (3א)",
+      "locator": "file p.4 (gazette p.724), s.2(1)(ג)",
+      "locator_he": "עמוד הקובץ 4 (עמוד ספר החוקים 724), סעיף 2(1)(ג)",
       "page": 4,
       "quote": "ממועד הרישום למסחר בבורסה ואילך מניותיה נסחרות בבורסה בישראל",
       "checked": "2026-11-07"
@@ -89,8 +91,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.2",
-      "locator_he": "סעיף 2",
+      "locator": "file p.2, s.2",
+      "locator_he": "עמוד הקובץ 2, סעיף 2",
+      "page": 2,
       "checked": "2026-11-07"
     }
   ]

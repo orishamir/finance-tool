@@ -15,28 +15,46 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
-      "title": "s.13(ב), file p.8",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "s.13(ב)",
-      "locator_he": "סעיף 13(ב)",
-      "checked": "2026-10-31",
-      "qualifier": "(gazette)"
-    },
-    {
-      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=2",
       "title": "Provident Funds Law, gazette ס״ח תשס״ה, 889",
       "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
-      "checked": "2026-10-22"
+      "locator": "file p.2, s.1, definition קופת ביטוח",
+      "page": 2,
+      "quote": "תכנית ביטוח שאושרה לפי הוראות סעיף 13(ב) כקופת גמל לתגמולים, לפיצויים או לקצבה",
+      "checked": "2026-10-31",
+      "qualifier": "(gazette)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=3",
+      "title": "Provident Funds Law, gazette ס״ח תשס״ה, 889",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3, s.1, definition קופת גמל לקצבה",
+      "page": 3,
+      "quote": "קופת גמל המיועדת לתשלום קצבה",
+      "checked": "2026-10-31",
+      "qualifier": "(gazette)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
+      "title": "Provident Funds Law, gazette ס״ח תשס״ה, 889",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.8, s.13(ב)",
+      "locator_he": "עמוד הקובץ 8, סעיף 13(ב)",
+      "page": 8,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette)"
     }
   ]
 }

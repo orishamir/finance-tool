@@ -16,19 +16,49 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.8 (gazette p.290), reg. 11",
+      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 290), תקנה 11",
+      "page": 8,
+      "quote": "פקיד השומה רשאי להתיר בכתב, כי ניכוי המס לפי תקנות אלה יוקטן, אם היה סבור שעלול להתהוות עודף מניכוי המס לפי השיעורים האמורים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=5",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.5 (gazette p.377), reg. 11",
+      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 377), תקנה 11",
+      "page": 5,
+      "quote": "פקיד השומה רשאי להתיר בכתב, כי ניכוי המס לפי תקנות אלה יוקטן",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-      "title": "1",
+      "title": "Deductions booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
+      "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
       "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-      "title": "2",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
+      "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
       "checked": "2026-11-07"
@@ -41,28 +71,6 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
-      "kind": "regulation",
-      "strength": "primary",
-      "quote": "פקיד השומה רשאי להתיר בכתב, כי ניכוי המס לפי תקנות אלה יוקטן, אם היה סבור שעלול להתהוות עודף מניכוי המס לפי השיעורים האמורים",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=5",
-      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
-      "kind": "regulation",
-      "strength": "primary",
-      "quote": "פקיד השומה רשאי להתיר בכתב, כי ניכוי המס לפי תקנות אלה יוקטן",
       "checked": "2026-11-07"
     }
   ],

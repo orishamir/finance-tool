@@ -15,6 +15,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=9",
+      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים) (תיקון), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ״ה-1994",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.9 (gazette p.2401), s.1(3), reg. 1",
+      "locator_he": "עמוד הקובץ 9 (עמוד הרשומות 2401), סעיף 1(3), תקנה 1",
+      "page": 9,
+      "quote": "עסקת החלף שאינה במימון",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2",
       "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
       "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
@@ -22,24 +36,11 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 1",
-      "locator_he": "עמוד 2, תקנה 1",
+      "locator": "p.2 (gazette p.2394), reg. 1",
+      "locator_he": "עמוד 2 (עמוד הרשומות 2394), תקנה 1",
       "page": 2,
       "quote": "חלק משכר מנהל הקרן, הנגזר מתשואת הקרן ומהפרש העקיבה שלה",
       "checked": "2026-10-26"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=9",
-      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים) (תיקון), התשע\"ח-2018 (קובץ התקנות 8038, עמ' 2400)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.9, reg. 1 (definition added)",
-      "locator_he": "עמוד 9, תקנה 1",
-      "page": 9,
-      "quote": "עסקת החלף שאינה במימון",
-      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

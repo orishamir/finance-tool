@@ -79,6 +79,16 @@
       "checked": "2026-10-31"
     },
     {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/arbel/",
+      "title": "Massad Arbel",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פיקדון ברירת ריבית לשנה",
+      "checked": "2026-11-12"
+    },
+    {
       "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/choicedeposits/",
       "title": "FIBI choice deposits",
       "publisher": "First International Bank",
@@ -104,16 +114,6 @@
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-31"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/arbel/",
-      "title": "Massad Arbel",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "פיקדון ברירת ריבית לשנה",
-      "checked": "2026-11-12"
     },
     {
       "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/cd_strawberry/",

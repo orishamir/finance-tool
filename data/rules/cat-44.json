@@ -15,6 +15,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1446/he/regulation_h_2015-9-9.pdf#page=10",
+      "title": "חוזר גופים מוסדיים 2015-9-9 \"דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח\" (26.2.2015)",
+      "title_he": "חוזר גופים מוסדיים 2015-9-9 \"דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח\" (26.2.2015)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.10-11, נספח א' item ג; p.9; pp.2-3, נספח ו'; p.7, item ד; p.5, s.7",
+      "locator_he": "עמודים 10 עד 11, נספח א' פרט ג; עמוד 9; עמודים 2 עד 3, נספח ו'; עמוד 7, פרט ד; עמוד 5, סעיף 7",
+      "page": 10,
+      "checked": "2026-11-03"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulations33/he/regulation_th_2019-71-appendixa-changes.pdf#page=7",
       "title": "חוזר מאוחד, שער 5 חלק 4 פרק 3, נספח א, מהדורה 10 (26.3.2020)",
       "title_he": "חוזר מאוחד, שער 5 חלק 4 פרק 3, נספח א, מהדורה 10 (26.3.2020)",
@@ -24,16 +37,6 @@
       "strength": "primary",
       "locator": "p.7 and p.1",
       "page": 7,
-      "checked": "2026-11-03"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1446/he/regulation_h_2015-9-9.pdf#page=10",
-      "title": "חוזר גופים מוסדיים 2015-9-9 \"דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח\" (26.2.2015)",
-      "title_he": "חוזר גופים מוסדיים 2015-9-9 \"דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח\" (26.2.2015)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
       "checked": "2026-11-03"
     },
     {
