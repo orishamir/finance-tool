@@ -12,8 +12,7 @@ import { fmt } from "../../lib/format";
 import { numberOf, type SiteValue } from "../../lib/value";
 import { IconAlert, IconFile } from "../icons";
 import { Num, NumAfter, RulesLine } from "../provenance";
-import { ChoiceChips, Disclosure, GoLink, SegmentedControl, DoubtNote, FigureLines, LabelRow, LabelSheetHost, MixedName, PrintedQuotes, PrintedText, ProductPhoneRow, ProductTable, RowFoldButton, SharedFacts, Tag, When, cx, gershayim, type FoldMark, type ProductColumn, type ProductRow } from "../kit";
-import { AmountRange, AnchorSpread } from "../deposits/deposit-words";
+import { AmountRange, AnchorSpread, ChoiceChips, Disclosure, GoLink, SegmentedControl, DoubtNote, FigureLines, LabelRow, LabelSheetHost, MixedName, PrintedQuotes, PrintedText, ProductPhoneRow, ProductTable, RowFoldButton, SharedFacts, Tag, When, cx, gershayim, type FoldMark, type ProductColumn, type ProductRow } from "../kit";
 import type { ProductRowData } from "../decoder/institutions/types";
 
 const muted = "text-sm text-muted-foreground";

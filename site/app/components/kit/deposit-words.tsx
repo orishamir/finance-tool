@@ -1,12 +1,13 @@
 // A deposit's figures in words, drawn the same on every page that shows a deposit (the deposits page, the bank page's table and its
 // single-product card): a variable rate's anchor and spread, and the amounts the bank takes. Each figure is its record's sourced value;
-// the words come from lib/deposit-kind.ts, which the pages' plain-text places (a chip) use too.
+// the words come from lib/deposit-kind.ts, which the pages' plain-text places (a chip) use too. In the kit because three feature folders
+// draw them (deposits, company, decoder), and a feature never imports from a neighbouring one.
 import { r4catalogue as copy } from "../../copy";
 import { amountRangeForm } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import { numberOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { MixedName } from "../kit";
+import { MixedName } from "./name";
 
 const LOOK = {
   under: "block text-sm text-muted-foreground font-normal",

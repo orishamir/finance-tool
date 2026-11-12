@@ -168,8 +168,8 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
   const flip = (key: string) => setOpened((o) => { const n = new Set(o); if (!n.delete(key)) n.add(key); return n; });
   // the rows' fold buttons: a column at the end, as wide as the most marks a button holds
   const marksMost = Math.max(-1, ...groups.flatMap((g) => g.rows.map((r) => (r.detail ? (r.detail.marks?.length ?? 0) : -1))));
-  // the button: a 44 px target, wider with two marks (16 px each and their gaps, beside the 18 px chevron); 6 px on each side
-  if (marksMost >= 0) columns = [...columns, { id: DETAIL, head: <span className="sr-only">{kit.rowDetail}</span>, width: (Math.max(44, 18 + 20 * marksMost) + 12) / 16, headClassName: "!px-1.5", cellClassName: "!px-1.5" }];
+  // the button: a 44 px target, wider with two marks (16 px each and their gaps, beside the 18 px chevron); a tight column's 4 px on each side
+  if (marksMost >= 0) columns = [...columns, { id: DETAIL, head: <span className="sr-only">{kit.rowDetail}</span>, width: (Math.max(44, 18 + 20 * marksMost) + 8) / 16, tight: true }];
   // the columns that share the rest keep a readable width: under that the table scrolls inside its card (a narrow tablet)
   const minRem = columns.reduce((sum, c) => sum + (c.width ?? MIN_SHARED_REM), 0);
   // the table's last row, if a row ends it (not a heading or a folded group)

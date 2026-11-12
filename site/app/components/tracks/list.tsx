@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { ExposureCell, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, Tag, TrackFeeLines, TextLink, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
 /** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
@@ -92,9 +92,9 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
   if (by === "company") {
     return (
       <span className="flex flex-col items-start gap-1.5">
-        <Link to={x.href} className="font-medium hover:underline">
+        <TextLink tone="plain" to={x.href} className="font-medium">
           <MixedName>{x.short}</MixedName>
-        </Link>
+        </TextLink>
         <span className="flex flex-wrap gap-1.5 empty:hidden">
           <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
           {showsKindChip(x) && <Tag>{gershayim(x.sub)}</Tag>}
@@ -106,9 +106,9 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
   return (
     <span className="flex flex-col items-start gap-1">
       <span className="flex flex-col items-start gap-0.5">
-        <Link to={companyPath(company?.id ?? "")} className="font-semibold hover:underline">
+        <TextLink tone="plain" to={companyPath(company?.id ?? "")} className="font-semibold">
           <bdi>{gershayim(x.companyName)}</bdi>
-        </Link>
+        </TextLink>
         {company && (
           <span className={mutedWord}>
             <CompanySize count={tracksPhrase(company.tracks.length)} assets={company.assets} stacked />
@@ -116,9 +116,9 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
         )}
       </span>
       {showsShortName(x) && (
-        <Link to={x.href} className="hover:underline">
+        <TextLink tone="plain" to={x.href}>
           <MixedName>{x.short}</MixedName>
-        </Link>
+        </TextLink>
       )}
       <span className="flex flex-wrap gap-1.5 empty:hidden">
         <TrackLabels track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
@@ -133,9 +133,9 @@ function CompactName({ x, notes }: { x: TbTrack; notes: RowNotes }) {
   const sub = [showsKindChip(x) ? gershayim(x.sub) : null, x.selfManaged ? t.yield.selfManagedShort : null].filter(Boolean).join(" · ");
   return (
     <span className="flex flex-col items-start gap-0.5 whitespace-normal leading-snug">
-      <Link to={x.href} className="font-medium hover:underline">
+      <TextLink tone="plain" to={x.href} className="font-medium">
         <MixedName>{x.short}</MixedName>
-      </Link>
+      </TextLink>
       {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
       <span className="flex flex-wrap gap-1.5 empty:hidden pt-0.5">
         <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
@@ -348,9 +348,9 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       // a chosen kind is one list with no heading: the chip names it, and the count line holds its count and its fees
       heading: g.by === "kind" || fixed ? undefined : {
         title: g.companyId ? (
-          <Link to={companyPath(g.companyId)} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0 md:tap-area">
+          <TextLink tone="plain" to={companyPath(g.companyId)} className="inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0 md:tap-area">
             <bdi>{g.title}</bdi>
-          </Link>
+          </TextLink>
         ) : (
           <bdi>{g.title}</bdi>
         ),

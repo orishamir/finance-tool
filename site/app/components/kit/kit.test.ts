@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { Button, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Sentence, Stat, StatRow, Tag, TextLink, nonNegativeCheck, yearsCheck } from "./index";
+import { Button, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -20,7 +20,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "ShareRings", "SourcedTag", "PageHead", "TextLink", "SearchField"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "ShareRings", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -240,5 +240,53 @@ describe("the field checks say one message each", () => {
     expect(check(1)).toBeNull();
     expect(check(40)).toBeNull();
     for (const n of [0, 41, 2.5]) expect(check(n)).toBe("הזינו מספר שנים בין 1 ל־40.");
+  });
+  it("ageCheck is the same test in the age's words, and aboveZeroCheck refuses zero and below", () => {
+    const check = ageCheck({ min: 18, max: 67 });
+    expect(check(30)).toBeNull();
+    for (const n of [17, 68, 30.5]) expect(check(n)).toBe("הזינו גיל בין 18 ל־67.");
+    expect(aboveZeroCheck(1)).toBeNull();
+    for (const n of [0, -1]) expect(aboveZeroCheck(n)).toBe("הזינו סכום גדול מאפס.");
+  });
+});
+
+describe("the third kit job's options", () => {
+  // the piece alone, before the provenance sheet the test frame draws after it
+  const own = (el: React.ReactElement) => html(el).split("<dialog")[0]!;
+  it("an inline button wraps with its sentence: no flex box, underlined, a tap layer", () => {
+    const out = own(createElement(Button, { variant: "inline", children: "x" }));
+    expect(out).not.toContain("inline-flex");
+    expect(out).toContain("underline");
+    expect(out).toContain("before:-inset-y-3");
+  });
+  it("a compact text action is 44 px on a phone and low with a tap area from lg; gap sm is one gap", () => {
+    const out = html(createElement(Button, { variant: "quiet", size: "compact", children: "x" }));
+    expect(out).toContain("min-h-target lg:min-h-7 lg:tap-area");
+    const gap = own(createElement(Button, { variant: "quiet", gap: "sm", children: "x" }));
+    expect(gap).toContain("gap-1.5");
+    expect(gap).not.toContain("gap-2");
+  });
+  it("a link's tone sets its ink, one colour class each", () => {
+    expect(html(createElement(TextLink, { to: "/a", tone: "muted", children: "a" }))).toContain('class="text-muted-foreground hover:underline"');
+    const plain = html(createElement(TextLink, { to: "/a", tone: "plain", children: "a" }));
+    expect(plain).not.toContain("text-link");
+    expect(plain).toContain("hover:underline");
+  });
+  it("a compact link out is low from lg, with its tap area", () => {
+    expect(html(createElement(DocLink, { href: "https://example.com", look: "compact", children: "doc" }))).toContain("min-h-target lg:min-h-7 lg:tap-area");
+  });
+  it("wide rows have the wide label column", () => {
+    expect(html(createElement(KeyValueList, { plain: true, wide: true, items: [{ id: "a", label: "L", value: "V" }] }))).toContain("md:grid-cols-[14rem_minmax(0,1fr)]");
+  });
+  it("a section takes its heading's id, a line under the heading and one gap", () => {
+    const out = html(createElement(Section, { title: "T", headingId: "own-id", under: "U", gap: "tight", children: "B" }));
+    expect(out).toContain('id="own-id"');
+    expect(out).toContain('aria-labelledby="own-id"');
+    expect(out).toContain("gap-2");
+    expect(out).not.toContain("gap-4");
+    expect(out.indexOf("U")).toBeLessThan(out.indexOf("B"));
+  });
+  it("a pick card takes Card's padding", () => {
+    expect(html(createElement(PickCard, { label: "x", onPick: () => undefined, pad: "snug", children: "c" }))).toContain("p-4 md:p-5");
   });
 });

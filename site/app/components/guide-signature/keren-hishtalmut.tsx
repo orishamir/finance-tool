@@ -12,10 +12,10 @@ import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment,
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
-import { gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, percentCheck, type PileBarPart } from "../kit";
+import { aboveZeroCheck, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, percentCheck, type PileBarPart } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { text } from "./g2-parts";
-import { aboveZeroCheck, figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
+import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
 const YEARS = 12;
 const story = copy.hishtalmut.story;

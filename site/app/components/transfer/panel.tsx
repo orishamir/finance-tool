@@ -30,7 +30,7 @@ import type { Rejected } from "../../lib/import-check";
 import { entered } from "../../lib/value";
 import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
-import { Button, Callout, Card, cx, Section, SegmentedControl, Sentence, Tpl, When } from "../kit";
+import { Button, Callout, Card, cx, PageHead, Section, SegmentedControl, Sentence, Tpl, When } from "../kit";
 
 type Site = { version: string; data: string };
 
@@ -87,21 +87,19 @@ const countItems = (c: { goals: number; holdings: number; names: number; compari
   { n: c.deals ?? 0, forms: copy.forms.deals },
 ];
 
-export function TransferPanel({ site }: { site: Site }) {
+export function TransferPanel({ site, crumb }: { site: Site; crumb: ReactNode }) {
   const snap = useStateStore();
   useEffect(() => {
     ensureLoaded();
   }, []);
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold">{copy.title}</h1>
-        <p className="text-muted-foreground max-w-measure">{copy.lede}</p>
+      <PageHead crumb={crumb} title={copy.title} lede={copy.lede}>
         <p className="text-sm text-muted-foreground max-w-measure">
           {copy.onePerDevice} {copy.erasedNote}
         </p>
         {!snap.saved && snap.ready && <Callout tone="caution">{copy.unavailable}</Callout>}
-      </header>
+      </PageHead>
       {/* from a computer up, the two halves stand side by side and use the frame's room */}
       <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start">
         <ExportHalf site={site} />
