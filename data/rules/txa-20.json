@@ -23,8 +23,9 @@
       "publisher_he": "רשות המסים",
       "kind": "circular",
       "strength": "primary",
-      "locator": "ss.5.1, 5.2.1",
-      "locator_he": "סעיפים 5.1, 5.2.1",
+      "locator": "p.13, ss.5.1, 5.2.1",
+      "locator_he": "עמוד 13, סעיפים 5.1, 5.2.1",
+      "page": 13,
       "checked": "2026-10-22"
     },
     {
@@ -42,42 +43,44 @@
       "checked": "2026-10-22"
     },
     {
-      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf#page=2",
-      "title": "Amendment 5, later changes to s.23, file pp.2-3",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "s.23, file pp.2-3",
-      "locator_he": "סעיף 23, עמודי הקובץ 2 עד 3",
-      "page": 2,
-      "checked": "2026-10-31",
-      "qualifier": "(gazette)"
-    },
-    {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=11",
-      "title": "Provident Funds Law, gazette ס״ח תשס״ה, 889, s.23, file p.11",
+      "title": "Provident Funds Law, gazette ס״ח תשס״ה, 889",
       "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.23, file p.11",
-      "locator_he": "סעיף 23, עמוד הקובץ 11",
+      "locator": "file p.11, s.23",
+      "locator_he": "עמוד הקובץ 11, סעיף 23",
       "page": 11,
-      "checked": "2026-10-22"
+      "checked": "2026-10-31"
     },
     {
       "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf#page=4",
-      "title": "Amendment 3, which added s.23(ה) with the 3,850 NIS base, file p.4",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008, ספר החוקים 2130, 28.1.2008",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.23(ה)",
-      "locator_he": "סעיף 23(ה)",
+      "locator": "file p.4, s.5(3)",
+      "locator_he": "עמוד הקובץ 4, סעיף 5(3)",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf#page=2",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 5 והוראת שעה), התשע\"א-2010, ספר החוקים 2262, 18.11.2010",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 5 והוראת שעה), התשע\"א-2010",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file pp.2-3, s.5",
+      "locator_he": "עמודי הקובץ 2 עד 3, סעיף 5",
+      "page": 2,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette)"
     }
   ]
 }
