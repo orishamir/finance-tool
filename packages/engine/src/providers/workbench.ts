@@ -320,12 +320,58 @@ const ranked = (l: SnapLine) => l.not_ranked === undefined;
  */
 export const lineClasses = (cls: string): string[] => (cls === "tase_bonds" ? ["tase_bonds", "tase_shares_bonds"] : cls === "tase_foreign_fund_units" ? ["tase_foreign_fund_units", "etf_units"] : [cls]);
 
+/** What chooses a snapshot's line for a holding: its class, the wrapper, the channel and, for a conversion, the holding's currency. */
+export type LineChoice = Pick<WorkbenchInput, "instrumentClass" | "wrapper" | "channel"> & { currency?: Pick<NonNullable<WorkbenchInput["currency"]>, "code"> };
+
+/** Whether a snapshot line applies to a holding of this class in this wrapper: it names the class, the wrapper or `all`, and does not exclude the class. */
+function appliesTo(l: SnapLine, input: Pick<LineChoice, "instrumentClass" | "wrapper">): boolean {
+  const classes = lineClasses(input.instrumentClass);
+  const wrapper = input.wrapper ?? "brokerage-account";
+  return l.applies_to.some((a) => a === "all" || classes.includes(a) || a === wrapper) && !(l.excludes ?? []).some((x) => classes.includes(x));
+}
+
+/**
+ * The line of a base at a level a run reads for a holding (F-63): none, one, or an error where two apply (the snapshot is ambiguous) or
+ * the lines name channels and the choice names none. A line applies by `appliesTo`; a line set aside (`not_ranked`, D41) and a
+ * standing-order, recurring-plan or redemption line are never the regular line. A conversion line printed for the holding's currency
+ * wins over one with none (F-13), and a line that names the class itself wins over one that names a wider class. A plan line (`band`)
+ * is read only when asked for; otherwise the standard line (`band: null`) wins, and a fixed fee that only a plan has is not the
+ * standard tariff's.
+ */
+export function tariffLine(snapshot: FeesSnapshot, input: LineChoice, base: SnapLine["base"], at: SnapLine["level"], band?: ProviderInput["band"]): SnapLine | undefined {
+  const all = snapshot.lines.filter((l) => l.base === base && l.level === at && appliesTo(l, input) && ranked(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND && l.band !== REDEMPTION_BAND);
+  const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
+  if (input.channel === undefined && channels.size > 0)
+    throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
+  let found = all.filter((l) => l.channel === null || l.channel === input.channel);
+  // F-13: a conversion line printed for one currency prices a fund in it, and the line with no currency prices the others.
+  if (base === "fx" && input.currency) {
+    const own = found.filter((l) => l.conversion_currency === input.currency!.code);
+    found = own.length > 0 ? own : found.filter((l) => !l.conversion_currency);
+  }
+  const exact = found.filter((l) => l.applies_to.includes(input.instrumentClass));
+  if (exact.length > 0 && exact.length < found.length && lineClasses(input.instrumentClass).length > 1) found = exact;
+  const ambiguous = (ls: SnapLine[]) =>
+    new RecordInputError(`provider ${snapshot.id}: ${ls.length} ${base} lines apply (${ls.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+  // F-63: a plan line (a `band` the person names in `p.band`) wins when asked for; otherwise the standard line (`band: null`)
+  // wins over every banded line. A fixed fee that only a plan has is the plan's price, not the standard tariff's.
+  if (band !== undefined) {
+    const wanted = typeof band === "string" ? [band] : band;
+    const asked = found.filter((l) => l.band !== null && wanted.some((w) => l.band === w || l.band!.includes(w)));
+    if (asked.length > 1) throw ambiguous(asked);
+    if (asked.length === 1) return asked[0];
+  }
+  const standard = found.filter((l) => l.band === null);
+  if (standard.length > 1) throw ambiguous(standard);
+  if (standard.length === 1) return standard[0];
+  if (found.length > 1) throw ambiguous(found);
+  if (found[0] && base === "fixed_period") return undefined;
+  return found[0];
+}
+
 /** A tariff can be read without a fund (the goal comparison's list of brokers): only a fee per share and a distribution line need one. */
 export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: WorkbenchInput["fund"] }, p: ProviderInput, snapshot: FeesSnapshot): TariffBuild {
-  const wrapper = input.wrapper ?? "brokerage-account";
-  const classes = lineClasses(input.instrumentClass);
-  const applicable = (l: SnapLine) =>
-    l.applies_to.some((a) => a === "all" || classes.includes(a) || a === wrapper) && !(l.excludes ?? []).some((x) => classes.includes(x));
+  const applicable = (l: SnapLine) => appliesTo(l, input);
   const out: TariffBuild = { tariff: {}, linesUsed: [], lineSources: [], noLine: [], notModelled: [], averagesApplied: 0, strengths: [], flags: [], standingAside: [] };
   /** A line the tariff reads: its id, and the strength and source of the rate actually used (an average row's, not the list line's). */
   const used = (l: SnapLine, rate: ValueObject, ...vos: (ValueObject | null | undefined)[]) => {
@@ -338,37 +384,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   const averageLevel = level === "regulator_average" || level === "tase_average" ? level : undefined;
   if (level === "entered" && !p.entered) throw new RecordInputError(`provider ${snapshot.id}: level "entered" needs the person's entered tariff`);
 
-  /** The line of a base at a level for the channel: none, one, or an error when two apply (the snapshot is ambiguous). */
-  const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => {
-    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && ranked(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND && l.band !== REDEMPTION_BAND);
-    const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
-    if (input.channel === undefined && channels.size > 0)
-      throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
-    let found = all.filter((l) => l.channel === null || l.channel === input.channel);
-    // F-13: a conversion line printed for one currency prices a fund in it, and the line with no currency prices the others.
-    if (base === "fx" && input.currency) {
-      const own = found.filter((l) => l.conversion_currency === input.currency!.code);
-      found = own.length > 0 ? own : found.filter((l) => !l.conversion_currency);
-    }
-    const exact = found.filter((l) => l.applies_to.includes(input.instrumentClass));
-    if (exact.length > 0 && exact.length < found.length && classes.length > 1) found = exact;
-    const ambiguous = (ls: SnapLine[]) =>
-      new RecordInputError(`provider ${snapshot.id}: ${ls.length} ${base} lines apply (${ls.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
-    // F-63: a plan line (a `band` the person names in `p.band`) wins when asked for; otherwise the standard line (`band: null`)
-    // wins over every banded line. A fixed fee that only a plan has is the plan's price, not the standard tariff's.
-    if (p.band !== undefined) {
-      const wanted = typeof p.band === "string" ? [p.band] : p.band;
-      const asked = found.filter((l) => l.band !== null && wanted.some((w) => l.band === w || l.band!.includes(w)));
-      if (asked.length > 1) throw ambiguous(asked);
-      if (asked.length === 1) return asked[0];
-    }
-    const standard = found.filter((l) => l.band === null);
-    if (standard.length > 1) throw ambiguous(standard);
-    if (standard.length === 1) return standard[0];
-    if (found.length > 1) throw ambiguous(found);
-    if (found[0] && base === "fixed_period") return undefined;
-    return found[0];
-  };
+  /** The line of a base at a level for the channel (`tariffLine`). */
+  const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => tariffLine(snapshot, input, base, at, p.band);
 
   const averageFor = (l: SnapLine): ValueObject | undefined => {
     if (!averageLevel) return undefined;

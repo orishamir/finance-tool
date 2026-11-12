@@ -17,7 +17,7 @@ import { validCustomBrokers, validCustomFunds, type CustomBroker, type CustomFun
 import { todayLocal } from "./today";
 import { entered as enteredValue, p05Units } from "./value";
 import { sanitizeRawState, type Rejected } from "./import-check";
-import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
+import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type DealProblem, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
 
 export const STATE_KEY = "mekor.v2.state";
 export const STATE_VERSION = 3;
@@ -796,10 +796,11 @@ export function exportCounts(s: StateV3, side?: SideStores) {
     variants: sc.variants,
     ticks: sc.ticks,
     ownRates: sc.ownRates,
+    deals: sc.deals,
   };
 }
 
-/** The three side stores as this device holds them now (browser only; empty on the server). */
+/** The side stores as this device holds them now (browser only; empty on the server). */
 export function currentSideStores(): SideStores {
   return readSideStores(theStorage());
 }
@@ -807,7 +808,7 @@ export function currentSideStores(): SideStores {
 /** Nothing worth a file: no goal with content, no holding, no name, no guide input, no saved comparison, no side store. */
 export function isEmptyState(s: StateV3, side?: SideStores): boolean {
   const c = exportCounts(s, side);
-  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0 && c.indices === 0 && c.entries === 0 && c.offers + c.variants + c.ticks + c.ownRates === 0;
+  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0 && c.indices === 0 && c.entries === 0 && c.offers + c.variants + c.ticks + c.ownRates + c.deals === 0;
 }
 
 export function buildStateFile(s: StateV3, site: { version: string; data: string }, now = new Date(), side?: SideStores): StateFile {
@@ -854,12 +855,14 @@ export interface ImportPreviewData {
   /** The file's state as this release reads it (an older version already migrated), without the items that failed their check. */
   state: StateV3;
   migrated: boolean;
-  counts: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number };
+  counts: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number; deals: number };
   /** The file's side stores that passed their check, or null when the file has none. */
   side: SideStores | null;
   /** Goals, holdings, saved comparisons and inputs left out for a field that failed (A33), and side-store items likewise. */
   rejected: Rejected[];
   sideProblems: SideProblem[];
+  /** Saved deals in the file that are not deals (`readDeal`), left out. */
+  dealProblems: DealProblem[];
 }
 
 export type ImportRead = { ok: true; preview: ImportPreviewData } | { ok: false; refusal: Refusal };
@@ -880,7 +883,7 @@ export function readImport(text: string): ImportRead {
   const { state: cleaned, rejected } = sanitizeRawState(json.state);
   const r = readState(cleaned, json.version);
   if (!r.ok) return r;
-  const { side, problems } = readSideFile(json.sideStores);
+  const { side, problems, dealProblems } = readSideFile(json.sideStores);
   const goals = r.state.goals.filter((g) => !isBlankGoal(g)).length;
   const sc = side ? sideCounts(side) : noSideCounts();
   return {
@@ -893,6 +896,7 @@ export function readImport(text: string): ImportRead {
       side,
       rejected,
       sideProblems: problems,
+      dealProblems,
     },
   };
 }

@@ -15,7 +15,7 @@ import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-
 import { computedInputs as ci, guideBlocks, r3fees } from "../copy";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
-import { BROKERAGE, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
+import { BROKERAGE, HOUSE_CHANNELS, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
 import { indexPath } from "./site-paths";
 import { readJsonCached, readTextCached } from "./read-cache.server";
@@ -303,7 +303,7 @@ function providerTariffs(productId: string, instrumentClass: string): Record<str
     if (snap.missing) continue;
     // a security held directly is bought on TASE through an Israeli member; a foreign broker does not sell makam or Israeli government bonds
     if (direct && snap.provider.class === "foreign_broker") continue;
-    for (const channel of ["direct", "branch"]) {
+    for (const channel of HOUSE_CHANNELS) {
       let built: ReturnType<typeof engineTariff>;
       try {
         built = engineTariff({ instrumentClass, wrapper: BROKERAGE, channel } as WorkbenchInput, { snapshot: snap, level: "list" }, snap);

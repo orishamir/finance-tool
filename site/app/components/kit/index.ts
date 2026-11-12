@@ -70,3 +70,7 @@ export { ChooseRow, GoRow, GroupHead, ListRow, OpenRow, RowList } from "./list-r
 export { SideNav, SidePage, type SideNavGroup, type SideNavItem } from "./side-nav";
 export { GoLink, TextLink } from "./go-link";
 export { MeterBar, PeriodBars, type PeriodBar } from "./period-bars";
+export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
+export { CapBar } from "./cap-bar";
+export { Step } from "./steps";
+export { AddLine, type AddItem } from "./add-line";
