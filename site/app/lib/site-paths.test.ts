@@ -17,6 +17,7 @@ import {
   indexPath,
   ownAccountPath,
   rulesPath,
+  siteAddress,
   trackBrowserPath,
   trackPath,
 } from "./site-paths";
@@ -88,6 +89,17 @@ describe("feesPath", () => {
     expect(feesPath({ wrapper: "keren-hishtalmut" })).toBe("/fees?wrapper=keren-hishtalmut");
     expect(feesPath({ track: 13245 })).toBe("/fees?track=13245");
     expect(feesPath({ track: "13245" })).toBe("/fees?track=13245");
+  });
+  it("writes a whole deal's fee page", () => {
+    expect(feesPath({ deal: "WzEseyJu_-" })).toBe("/fees?d=WzEseyJu_-");
+  });
+});
+
+describe("siteAddress", () => {
+  it("writes a path whole under the site's origin and basename, with or without the basename's last slash", () => {
+    expect(siteAddress("https://example.org", "/finance-tool/", "/fees?d=x")).toBe("https://example.org/finance-tool/fees?d=x");
+    expect(siteAddress("https://example.org", "/finance-tool", "/fees?d=x")).toBe("https://example.org/finance-tool/fees?d=x");
+    expect(siteAddress("http://localhost:5173", "/", "/fees?d=x")).toBe("http://localhost:5173/fees?d=x");
   });
 });
 

@@ -9,7 +9,7 @@ import { capLine, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, readDeal, typed, type FeeDeal } from "./model";
 import { readingOf } from "./reading";
-import { dealFromTrack, fillDeal, houseTemplate, lineFees, templateOptions } from "./templates";
+import { dealFromTemplate, dealFromTrack, fillDeal, houseTemplate, lineFees, templateLeft, templateOptions } from "./templates";
 import { latestSnapshots } from "../providers.server";
 
 const data = feesData();
@@ -140,6 +140,37 @@ describe("templates", () => {
     expect(tracks.length).toBeGreaterThan(0);
     expect(tracks.every((o) => o.source === "track")).toBe(true);
     expect(templateOptions("bank-deposit", data)).toEqual([]);
+  });
+  it("makes a new deal from a template beside the one on screen, of its kind and holding, named by the template", () => {
+    const h = data.houses.find((x) => x.holdings.abroad?.fees.some((f) => f.kind === "fx"))!;
+    const from = account();
+    const before = JSON.stringify(from);
+    const d = dealFromTemplate(from, `house:${h.id}`, data, TODAY)!;
+    expect(JSON.stringify(from)).toBe(before);
+    expect(d.id).not.toBe(from.id);
+    expect(d).toMatchObject({ kind: "brokerage-account", held: from.held, name: h.name, template: { id: `house:${h.id}`, name: h.name } });
+    expect(d.fees.some((f) => f.kind === "fund_management")).toBe(false);
+    expect(d.fees.some((f) => f.kind === "fx")).toBe(true);
+    expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
+    expect(dealFromTemplate(from, "house:nothing", data, TODAY)).toBeNull();
+  });
+  it("says what a template leaves out, with why: a house's lines for the holding, a track's fees the data or the rule leave empty", () => {
+    const leumi = data.houses.find((x) => x.id === "leumi")!;
+    const left = templateLeft(account(), "house:leumi", data, TODAY)!;
+    expect(left).toEqual(leumi.holdings["abroad:USD"]?.left.map((l) => ({ line: l.lineId, why: l.why })) ?? leumi.holdings.abroad!.left.map((l) => ({ line: l.lineId, why: l.why })));
+    expect(templateLeft({ ...account(), held: undefined }, "house:leumi", data, TODAY)).toEqual(leumi.holdings.israel!.left.map((l) => ({ line: l.lineId, why: l.why })));
+    const abroadOnly = data.houses.find((x) => !x.holdings.israel && x.holdings.abroad);
+    if (abroadOnly) expect(templateLeft({ ...account(), held: undefined }, `house:${abroadOnly.id}`, data, TODAY)).toEqual([{ why: "no-holding" }]);
+    // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out
+    for (const t of data.tracks.filter((x) => x.wrapperId === "keren-hishtalmut").slice(0, 20)) {
+      const deal = newDeal("keren-hishtalmut");
+      const filled = fillDeal(deal, `track:${t.id}`, data, TODAY)!;
+      const out = templateLeft(deal, `track:${t.id}`, data, TODAY)!;
+      expect(out.length + filled.fees.length, `track ${t.id}`).toBe(2);
+    }
+    const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
+    expect(templateLeft(newDeal("keren-hishtalmut"), `track:${t.id}`, data, TODAY)).toBeNull();
+    expect(templateLeft(account(), "nothing", data, TODAY)).toBeNull();
   });
   it("opens a new deal from a track, its yearly fee charged each month, both figures sourced", () => {
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
