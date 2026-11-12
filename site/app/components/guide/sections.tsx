@@ -1,4 +1,4 @@
-// Guide page components (design-spec 2): section index, sections, key-value list, fee table, tax steps,
+// Guide page components (design-spec 2): section index, sections, the facts with their rules, fee table, tax steps,
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router";
@@ -7,7 +7,7 @@ import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
 import { IdRef, RulesLine, StrengthLabel } from "../provenance";
 import { Breadcrumb } from "../shell";
-import { Card, cx, Disclosure, gershayim, KeyValueList as KitKeyValueList, Section, Stat, StatRow, TableCols } from "../kit";
+import { Card, cx, Disclosure, gershayim, GoLink, KeyValueList, PageHead, Section, Stat, StatRow, TableCols, TextLink } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -48,7 +48,8 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
           ))}
         </ul>
       </nav>
-      <nav aria-label={copy.indexTitle} className="hidden lg:block w-[200px] shrink-0 sticky top-24 self-start text-sm">
+      {/* lg:mt-8 is PageHead's top padding: the index starts level with the way back above the title */}
+      <nav aria-label={copy.indexTitle} className="hidden lg:block w-[200px] shrink-0 sticky top-24 self-start lg:mt-8 text-sm">
         <span className="block text-xs text-muted-foreground ps-3.5 pb-1.5">{copy.indexTitle}</span>
         <ul>
           {sections.map((s) => (
@@ -64,10 +65,13 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
   );
 }
 
-/** A guide page's columns: the section index beside the page's header and sections; `foot` closes the page under a hairline (the key to the number marks). */
+/**
+ * A guide page's columns: the section index beside the page's header and sections; `foot` closes the page under a hairline (the key to
+ * the number marks). The header (`GuideHeader`, the first child) carries the page's top padding.
+ */
 export function GuideFrame({ sections, current, children, foot }: { sections: readonly SectionDef[]; current: string; children: ReactNode; foot?: ReactNode }) {
   return (
-    <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
+    <div className="lg:flex lg:gap-12">
       <SectionIndex sections={sections} current={current} />
       <div className="flex-1 min-w-0 flex flex-col gap-section">
         {children}
@@ -85,17 +89,15 @@ export interface GlanceItem {
 }
 
 /**
- * A guide page's header: the way back to the guide, the title, then what the page adds under it. `glance` is the product's main
- * facts in one card, each as its section states it: under the header's words, and beside them from `xl`, where the room is.
+ * A guide page's header: the page's head (the way back to the guide, the title, the `lede`, then what the page adds under it). `glance`
+ * is the product's main facts in one card, each as its section states it: under the head, and beside it from `xl`, where the room is.
  */
-export function GuideHeader({ title, children, glance = [] }: { title: string; children?: ReactNode; glance?: GlanceItem[] }) {
+export function GuideHeader({ title, lede, children, glance = [] }: { title: string; lede?: ReactNode; children?: ReactNode; glance?: GlanceItem[] }) {
   return (
-    <header className="flex flex-col gap-6 xl:grid xl:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] xl:items-end xl:gap-x-12">
-      <div className="flex flex-col gap-3">
-        <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={title} />
-        <h1 className="text-2xl lg:text-3xl font-semibold">{title}</h1>
+    <div className="flex flex-col gap-6 xl:grid xl:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] xl:items-end xl:gap-x-12">
+      <PageHead crumb={<Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={title} />} title={title} lede={lede}>
         {children}
-      </div>
+      </PageHead>
       {/* one fact alone is no summary: the card shows from two */}
       {glance.length > 1 && (
         <Card pad="snug" className="max-w-measure xl:max-w-none">
@@ -108,7 +110,7 @@ export function GuideHeader({ title, children, glance = [] }: { title: string; c
           </StatRow>
         </Card>
       )}
-    </header>
+    </div>
   );
 }
 
@@ -131,13 +133,13 @@ export function GuideSection({ id, title, children, className }: { id: string; t
  */
 export function GuideFold({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <Disclosure label={<span className="text-link">{label}</span>} summaryClassName="justify-start">
+    <Disclosure look="link" label={label}>
       <div className="flex flex-col gap-3 pb-2">{children}</div>
     </Disclosure>
   );
 }
 
-export interface KeyValueItem {
+export interface RuleRowItem {
   id: string;
   label: ReactNode;
   value: ReactNode;
@@ -148,9 +150,13 @@ export interface KeyValueItem {
 }
 
 /** The guide page's facts as the kit's key/value rows, each closed by its rule chips (design-spec 2). */
-export function KeyValueList({ items }: { items: KeyValueItem[] }) {
-  return <KitKeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> }))} />;
+export function RuleRows({ items }: { items: RuleRowItem[] }) {
+  return <KeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> }))} />;
 }
+
+/** `RuleRows` under the kit's name, for routes/guide.tsx and the exposure pages' content, which import it so. */
+export { RuleRows as KeyValueList };
+export type KeyValueItem = RuleRowItem;
 
 export interface FeeRow {
   id: string;
@@ -304,7 +310,7 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
         {/* the status sentence is its own line, not glued to the question */}
         {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
         {r.rules.length > 0 && (
-          <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-target justify-start gap-1 [&>svg]:size-4">
+          <Disclosure look="link" label={copy.checklist.expand} summaryClassName="text-xs [&>svg]:size-4">
             <RulesLine ids={r.rules} className="pb-2" />
           </Disclosure>
         )}
@@ -335,7 +341,7 @@ export function DimensionChecklist({ rows }: { rows: ChecklistRowView[] }) {
           </ul>
         </>
       )}
-      <Disclosure label={<span className="text-link">{copy.checklist.showAll}</span>} openLabel={<span className="text-link">{copy.checklist.hideAll}</span>} summaryClassName="justify-start">
+      <Disclosure look="link" label={copy.checklist.showAll} openLabel={copy.checklist.hideAll}>
         <ul className="grid lg:grid-cols-2 gap-x-8">
           {rows.map((r) => (
             <ChecklistRow key={r.id} r={r} />
@@ -375,14 +381,15 @@ export function ExposureLinks({ items }: { items: { id: string; name: string; hr
   );
 }
 
-function CompanyLinks({ companies }: { companies: { id: string; name: string }[] }) {
+/** The companies that offer a product, each a link to its page, in two columns from `md`. */
+function CompanyColumns({ companies }: { companies: { id: string; name: string }[] }) {
   return (
     <ul className="text-sm leading-8 md:columns-2 md:gap-x-10">
       {companies.map((c) => (
         <li key={c.id} className="break-inside-avoid">
-          <Link to={`/companies/${c.id}`} className="text-link hover:underline">
+          <TextLink to={`/companies/${c.id}`}>
             <bdi>{gershayim(c.name)}</bdi>
-          </Link>
+          </TextLink>
         </li>
       ))}
     </ul>
@@ -395,25 +402,25 @@ export function InstitutionChips({ companies, allHref, tracks, open }: { compani
     <div className="flex flex-col gap-1">
       {companies.length > 0 && open && (
         <div className="pb-2">
-          <CompanyLinks companies={companies} />
+          <CompanyColumns companies={companies} />
         </div>
       )}
       {companies.length > 0 && !open && (
-        <Disclosure label={<span className="text-link">{copy.companiesShow}</span>} openLabel={<span className="text-link">{copy.companiesHide}</span>} summaryClassName="justify-start">
+        <Disclosure look="link" label={copy.companiesShow} openLabel={copy.companiesHide}>
           <div className="pb-2">
-            <CompanyLinks companies={companies} />
+            <CompanyColumns companies={companies} />
           </div>
         </Disclosure>
       )}
-      <Link to={allHref} className="text-link font-medium hover:underline text-sm min-h-target inline-flex items-center self-start">
+      <GoLink to={allHref} className="self-start">
         {copy.allCompanies}
-      </Link>
+      </GoLink>
       {tracks && (
-        <Link to={tracks.href} className="text-link font-medium hover:underline text-sm min-h-target inline-flex items-center self-start">
+        <GoLink to={tracks.href} className="self-start">
           {trackBrowser.guideLink.before}
           {tracks.name}
           {trackBrowser.guideLink.after}
-        </Link>
+        </GoLink>
       )}
     </div>
   );

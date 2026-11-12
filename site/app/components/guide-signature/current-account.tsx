@@ -169,7 +169,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       </Sentence>
 
       {everyBank.length > 0 ? (
-        <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border scroll-mt-24" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
+        <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border anchor-target" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
           <div className="flex flex-col gap-4 px-4 pb-4">
             {/* each column says what it holds in its head: the last one with the balance the person entered, the rate with a "?" for where the
                 rates come from; no sentence around the table explains a column (guidelines/design.md "Tables"). The tax

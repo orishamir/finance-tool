@@ -158,7 +158,6 @@ const scriptFiles = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?
 const HAND_TITLE: Record<string, number> = {
     "components/company/template.tsx": 1,
     "components/fees/parts.tsx": 1,
-    "components/guide/sections.tsx": 1,
     "components/home/body.tsx": 1,
     "components/invest/title.tsx": 1,
     "components/transfer/panel.tsx": 1,
@@ -181,7 +180,6 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/decoder/institutions/page.tsx": 1,
     "components/decoder/institutions/product-row.tsx": 1,
     "components/deposits/browser.tsx": 1,
-    "components/guide-signature/current-account.tsx": 1,
     "components/timeline/Timeline.tsx": 1,
     "components/tracks/browser.tsx": 1,
     "components/tracks/company-browser.tsx": 1,
@@ -194,10 +192,7 @@ const HAND_SITE_LINK: Record<string, number> = {
     "components/decoder/institutions/product-row.tsx": 1,
     "components/fees/parts.tsx": 5,
     "components/fees/sensitivity.tsx": 1,
-    "components/guide/sections.tsx": 4,
-    "components/guide-signature/index.tsx": 1,
-    "components/guide-signature/keren-hishtalmut.tsx": 1,
-    "components/guide-signature/money-market-daily.tsx": 1,
+    "components/guide/sections.tsx": 1,
     "components/home/body.tsx": 2,
     "components/provenance-sheets.tsx": 2,
     "components/tracks/browser.tsx": 1,
@@ -233,7 +228,6 @@ const MATCH_MEDIA: Record<string, number> = {
 const FOLD_AS_LINK: Record<string, number> = {
     "components/company/bank-views.tsx": 1,
     "components/decoder/institutions/product-row.tsx": 2,
-    "components/guide/sections.tsx": 4,
 };
 
 patterns["a page title written by hand"] = {
