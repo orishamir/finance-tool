@@ -1,7 +1,7 @@
 // Guide page components (design-spec 2): section index, sections, the facts with their rules, fee table, tax steps,
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
-import { companyPath, feesPath } from "../../lib/site-paths";
+import { companyPath, dealPagePath } from "../../lib/site-paths";
 import { Link, useParams } from "react-router";
 import { feePageLink, guide as copy, guideIndex, trackBrowser } from "../../copy";
 import type { Strength } from "../../lib/value";
@@ -219,7 +219,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
       </Card>
       <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
       {id && feePage && (
-        <TextLink look="line" to={feesPath({ wrapper: id })} className="self-start">
+        <TextLink look="line" to={dealPagePath({ wrapper: id })} className="self-start">
           {feePageLink}
         </TextLink>
       )}

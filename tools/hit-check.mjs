@@ -5,7 +5,7 @@
 // control whose hit span is under 44 px is listed, with its drawn height beside it. A chip that draws 24 px but carries a 48 px area
 // passes; an area another element covers does not.
 //
-//   BASE=http://127.0.0.1:4173/finance-tool node tools/hit-check.mjs "/fees/?wrapper=kupat-gemel-lehashkaa" phone,pc
+//   BASE=http://127.0.0.1:4173/finance-tool node tools/hit-check.mjs "/deal/?wrapper=kupat-gemel-lehashkaa" phone,pc
 //
 // Served with `node site/scripts/serve-build.mjs site/build/client --port 4173`. `--all` lists every control with its span.
 //
@@ -35,7 +35,7 @@ const guidePages = () => {
 };
 let [paths = "/", widths = "phone"] = args.filter((a) => !a.startsWith("--"));
 if (checks) {
-  paths = [...guidePages(), "/fees/?wrapper=kupat-gemel-lehashkaa", "/fees/?wrapper=keren-hishtalmut"].join(",");
+  paths = [...guidePages(), "/deal/?wrapper=kupat-gemel-lehashkaa", "/deal/?wrapper=keren-hishtalmut"].join(",");
   widths = "phone,pc";
 }
 /** page@width → names of the controls still under 44 px, by the name the check prints. */

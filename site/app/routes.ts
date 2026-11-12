@@ -24,8 +24,8 @@ export default [
   // one route for /tracks and every /tracks/<product>: choosing another product keeps the page and fetches nothing (routes/tracks.tsx)
   route("tracks/:product?", "routes/tracks.tsx"),
   route("deposits", "routes/deposits.tsx"),
-  route("fees", "routes/fees.tsx"),
-  route("fees-data.json", "routes/fees-data.ts"),
+  route("deal", "routes/deal.tsx"),
+  route("deal-data.json", "routes/deal-data.ts"),
   route("transfer", "routes/transfer.tsx"),
   // one route for /indices and every /indices/<x>: choosing another index keeps the page and fetches nothing (routes/invest.tsx)
   route("indices/:slug?", "routes/invest.tsx"),

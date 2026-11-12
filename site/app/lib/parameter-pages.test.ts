@@ -95,8 +95,8 @@ describe("the parameters page shows only what a live page reads", () => {
     expect(routeOf("/indices")).toBe("routes/invest.tsx");
     expect(routeOf("/guide")).toBe("routes/guide-index.tsx");
     expect(routeOf("/no-such-page")).toBe(null);
-    const fees = [...closure(join(app, "routes/fees.tsx")).keys()].map((f) => f.slice(app.length + 1));
-    expect(fees).toEqual(expect.arrayContaining(["routes/fees-data.ts", "lib/fees.server.ts"]));
+    const fees = [...closure(join(app, "routes/deal.tsx")).keys()].map((f) => f.slice(app.length + 1));
+    expect(fees).toEqual(expect.arrayContaining(["routes/deal-data.ts", "lib/fees.server.ts"]));
   });
 
   it("names, for every parameter it shows, a parameter file in data/parameters/", () => {

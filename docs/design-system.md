@@ -478,7 +478,7 @@ The site name, one line on what it does and the footer note, with the search fie
 
 ## 7. Fees and the transfer file
 
-The fee page (`routes/fees.tsx`, `components/fee-deal/`, its logic in `lib/fee-deal/`) and the transfer page (`components/transfer/`). The fee page reads one deal with no plan (method 10.6, F-110 to F-113); the transfer page is called for by 3.9 of the product (export and import, N3). The fee page's colours are the `fee-*` roles of 2.3, one per fee across the whole page; the transfer page has none of its own.
+The fee page (`routes/deal.tsx`, `components/fee-deal/`, its logic in `lib/fee-deal/`) and the transfer page (`components/transfer/`). The fee page reads one deal with no plan (method 10.6, F-110 to F-113); the transfer page is called for by 3.9 of the product (export and import, N3). The fee page's colours are the `fee-*` roles of 2.3, one per fee across the whole page; the transfer page has none of its own.
 
 ### 7.1 Fee page (one deal)
 

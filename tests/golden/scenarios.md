@@ -256,7 +256,7 @@ Exercises F-51, two fee layers (PF-06 manager fee + IRA-21 bank tariff), F-46.
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S33): Real V_T/I_T = 272,096.32; nominal V_T = 307,852.01; fees: trade 557.91, spread 278.97, custody 2,795.48, fund (δ) 15,380.19, IRA manager 4,178.85; tax 0 (exempt). Subject to Q19, Q21.
 
 ### S56 Kupat gemel lehashkaa on the fee page, a discount that ends
-Exercises F-11 and F-15 with F-16 on both lines (A-19, PF-13, D83), F-44, F-61 (the fee page, /fees, from the guide: `buildFees` on `kupat-gemel-lehashkaa`). Added 2026-11-07; the site's own path is pinned in `site/app/lib/fees-golden-harel.test.ts`.
+Exercises F-11 and F-15 with F-16 on both lines (A-19, PF-13, D83), F-44, F-61 (the fee page, /deal, from the guide: `buildFees` on `kupat-gemel-lehashkaa`). Added 2026-11-07; the site's own path is pinned in `site/app/lib/fees-golden-harel.test.ts`.
 - Profile: other income 144,000 a year (P-05); age not given (under 60).
 - Goal: P-05's example (`data/parameters/illustrative-scenario.json`): 10,000 now; 500/month, constant real; horizon 10 years.
 - Market: r_g 7%; π = 2% (P-05).

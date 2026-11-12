@@ -3,7 +3,7 @@
 // templates. Copying the link says it was copied; where the browser refuses the clipboard, the page shows the address to copy by hand.
 import { useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
-import { dealPath } from "../../lib/fee-deal/link";
+import { encodedDealPath } from "../../lib/fee-deal/link";
 import type { FeeDeal } from "../../lib/fee-deal/model";
 import { siteAddress } from "../../lib/site-paths";
 import { IconCopy } from "../icons";
@@ -15,7 +15,7 @@ const w = copy.end;
 export const dealLabel = (d: FeeDeal, kindName: string | null): string => d.name.trim() || d.template?.name || copy.bar.namePlaceholder(kindName);
 
 /** The deal's address to copy, on this site's origin and base. */
-export const dealLink = (deal: FeeDeal): string => siteAddress(window.location.origin, import.meta.env.BASE_URL, dealPath(deal));
+export const dealLink = (deal: FeeDeal): string => siteAddress(window.location.origin, import.meta.env.BASE_URL, encodedDealPath(deal));
 
 /** Copying a deal's link: `copied` for a moment after it worked, `blocked` holding the address where the clipboard refused it. */
 export function useCopyLink() {

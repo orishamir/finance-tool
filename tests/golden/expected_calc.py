@@ -2172,7 +2172,7 @@ def s55():
 
 
 def s56():
-    """The fee page (/fees) on kupat gemel lehashkaa: P-05's example on Harel's binding documents (data/fees/harel@2026-11-07.json),
+    """The fee page (/deal) on kupat gemel lehashkaa: P-05's example on Harel's binding documents (data/fees/harel@2026-11-07.json),
     0.7% of the balance and 0% of deposits for PF-13's five years, then the regulation's caps 1.05% and 4% (A-19, D83)."""
     now, monthly, years, r, pi = 10000.0, 500.0, 10, 0.07, 0.02
     # The scenario fixes its inputs; P-05 is where the page takes them from, so a change there is told, not followed.

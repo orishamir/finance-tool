@@ -1,4 +1,4 @@
-// The fee page's data (lib/fees.server.ts, served as /fees-data.json and fetched once per visit): the kinds a deal can be with their caps,
+// The fee page's data (lib/fees.server.ts, served as /deal-data.json and fetched once per visit): the kinds a deal can be with their caps,
 // every house's price list and the regulator's tracks in compact form (with the value object they share) as templates, the ECB's
 // reference rates, and the rules the page cites. What a track's fees are as value objects is read here.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
@@ -51,6 +51,6 @@ let dataPromise: Promise<FeesData> | null = null;
 
 /** The fee page's data (fees.server.ts), fetched once per visit. */
 export function loadFeesData(): Promise<FeesData> {
-  if (!dataPromise) dataPromise = fetch(`${import.meta.env.BASE_URL}fees-data.json`).then((r) => r.json() as Promise<FeesData>);
+  if (!dataPromise) dataPromise = fetch(`${import.meta.env.BASE_URL}deal-data.json`).then((r) => r.json() as Promise<FeesData>);
   return dataPromise;
 }

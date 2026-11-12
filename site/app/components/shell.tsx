@@ -22,7 +22,7 @@ const doorItems: NavItem[] = [
   byHref("/guide"),
   byHref("/companies"),
   byHref("/indices"),
-  byHref("/fees"), // founder, 2026-11-13: the fee page "should have a link from the header"; placed beside the other tool
+  byHref("/deal"), // founder, 2026-11-13: the fee page "should have a link from the header"; placed beside the other tool
   byHref("/rules"), // the header order the founder set: guide, companies, indices, rules
 ];
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */

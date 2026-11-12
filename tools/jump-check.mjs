@@ -22,7 +22,7 @@ const phone = vpName === "phone";
 const SEL = "button[aria-pressed], [role=switch], [role=radio], [role=tab], input[type=checkbox], input[type=radio], button[aria-expanded], summary";
 const MAX_PER_PAGE = 80;
 
-let pages = ["/", "/transfer", "/fees", "/rules", "/questions", "/parameters", "/documents", "/guide", "/guide/kupat-gemel-lehashkaa", "/guide/keren-hishtalmut", "/exposure/index-sp500", "/companies", "/indices/sp500", "/not-covered"];
+let pages = ["/", "/transfer", "/deal", "/rules", "/questions", "/parameters", "/documents", "/guide", "/guide/kupat-gemel-lehashkaa", "/guide/keren-hishtalmut", "/exposure/index-sp500", "/companies", "/indices/sp500", "/not-covered"];
 if (process.argv[3]) pages = process.argv[3].split(",");
 
 const browser = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});

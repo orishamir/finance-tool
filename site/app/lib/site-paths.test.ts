@@ -10,7 +10,7 @@ import {
   documentsPath,
   exposureIdOfSlug,
   exposurePath,
-  feesPath,
+  dealPagePath,
   groupPath,
   guidePath,
   housePath,
@@ -84,22 +84,22 @@ describe("documentsPath", () => {
   });
 });
 
-describe("feesPath", () => {
+describe("dealPagePath", () => {
   it("writes a product's and a track's fee page", () => {
-    expect(feesPath({ wrapper: "keren-hishtalmut" })).toBe("/fees?wrapper=keren-hishtalmut");
-    expect(feesPath({ track: 13245 })).toBe("/fees?track=13245");
-    expect(feesPath({ track: "13245" })).toBe("/fees?track=13245");
+    expect(dealPagePath({ wrapper: "keren-hishtalmut" })).toBe("/deal?wrapper=keren-hishtalmut");
+    expect(dealPagePath({ track: 13245 })).toBe("/deal?track=13245");
+    expect(dealPagePath({ track: "13245" })).toBe("/deal?track=13245");
   });
   it("writes a whole deal's fee page", () => {
-    expect(feesPath({ deal: "WzEseyJu_-" })).toBe("/fees?d=WzEseyJu_-");
+    expect(dealPagePath({ deal: "WzEseyJu_-" })).toBe("/deal?d=WzEseyJu_-");
   });
 });
 
 describe("siteAddress", () => {
   it("writes a path whole under the site's origin and basename, with or without the basename's last slash", () => {
-    expect(siteAddress("https://example.org", "/finance-tool/", "/fees?d=x")).toBe("https://example.org/finance-tool/fees?d=x");
-    expect(siteAddress("https://example.org", "/finance-tool", "/fees?d=x")).toBe("https://example.org/finance-tool/fees?d=x");
-    expect(siteAddress("http://localhost:5173", "/", "/fees?d=x")).toBe("http://localhost:5173/fees?d=x");
+    expect(siteAddress("https://example.org", "/finance-tool/", "/deal?d=x")).toBe("https://example.org/finance-tool/deal?d=x");
+    expect(siteAddress("https://example.org", "/finance-tool", "/deal?d=x")).toBe("https://example.org/finance-tool/deal?d=x");
+    expect(siteAddress("http://localhost:5173", "/", "/deal?d=x")).toBe("http://localhost:5173/deal?d=x");
   });
 });
 

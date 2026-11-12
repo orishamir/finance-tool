@@ -1,6 +1,6 @@
 // The track page (flows 6.12): the fund's official record and its date, what to check, and the guide link.
 import { useLoaderData } from "react-router";
-import { companyPath, feesPath, guidePath, trackBrowserPath, trackPath } from "../lib/site-paths";
+import { companyPath, dealPagePath, guidePath, trackBrowserPath, trackPath } from "../lib/site-paths";
 import type { Route } from "./+types/track";
 import { catalogue, companies as companiesCopy, company as companyCopy, feePageLink, pagePreview, trackBrowser, track as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
@@ -191,7 +191,7 @@ export default function TrackPage() {
             ]}
           />
           {data.feePage && <div className="pt-1 border-t border-border">
-            <TextLink look="line" to={feesPath({ track: track.fundId })}>
+            <TextLink look="line" to={dealPagePath({ track: track.fundId })}>
               {feePageLink}
               <IconDrillIn size={16} />
             </TextLink>
