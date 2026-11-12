@@ -1,5 +1,6 @@
 // Every Hebrew string the site shows, from docs/copy.md.
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
+import { countPhrase } from "./lib/count";
 
 export const site = {
   name: "מקור",
@@ -2021,9 +2022,9 @@ export const companyPage = {
   /** The folded list on a phone: what is shown, and its words. */
   fold: { shown: "מוצג:", more: "מוצרים אחרים", less: "סגירה" },
   units: {
-    funds: (n: number) => (n === 1 ? "קרן אחת" : n === 2 ? "שתי קרנות" : `${n.toLocaleString("he-IL")} קרנות`),
-    deposits: (n: number) => (n === 1 ? "פיקדון אחד" : n === 2 ? "שני פיקדונות" : `${n.toLocaleString("he-IL")} פיקדונות`),
-    plans: (n: number) => (n === 1 ? "תוכנית אחת" : n === 2 ? "שתי תוכניות" : `${n.toLocaleString("he-IL")} תוכניות`),
+    funds: (n: number) => countPhrase(n, { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" }),
+    deposits: (n: number) => countPhrase(n, { one: "פיקדון אחד", two: "שני פיקדונות", many: "פיקדונות" }),
+    plans: (n: number) => countPhrase(n, { one: "תוכנית אחת", two: "שתי תוכניות", many: "תוכניות" }),
   },
   /** The overview's line of a product. */
   overviewLine: { rate: "ריבית בשנה:", to: "עד", assets: "כסף מנוהל:", fees: "דמי ניהול מהחיסכון:", asOf: "נכון לסוף ", funds: "קרנות שהאתר אסף עליהן דוח" },
@@ -2973,17 +2974,17 @@ Object.assign(parametersPage.names, { "P-09": "השאלות שכולם שואל�
  * The labels are defined in lib/labels.ts (id, icon, tone, rules); their words are here.
  */
 /** A span of years in a sentence (copy.md §1): "שנה", "שנתיים", "10 שנים"; never "1 שנים". */
-const yearsSpan = (n: number) => (n === 1 ? "שנה" : n === 2 ? "שנתיים" : `${n} שנים`);
+const yearsSpan = (n: number) => countPhrase(n, numbers.yearWords);
 /** "ל" before a Hebrew name, "ל־" before a Latin one: "לפסגות", "ל־IBI". */
 const toName = (name: string) => `${/^[A-Za-z]/.test(name) ? "ל־" : "ל"}${name}`;
 /** "ב" before a Hebrew name, "ב־" before a Latin one: "בפסגות", "ב־IBI". */
 const inName = (name: string) => `${/^[A-Za-z]/.test(name) ? "ב־" : "ב"}${name}`;
 /** "מ" joined to a Hebrew name, "מ־" before a Latin one or a number (copy.md 10.4): "מהראל", "מ־MTF". The prefix only: the name follows. */
 const fromPrefix = (name: string) => (/^[A-Za-z0-9]/.test(name.replace(/^[\u2066-\u2069\u200e\u200f]+/, "")) ? "מ־" : "מ");
-/** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
 /** The words after a fund's gap, in its row and in its sheet's head alike (copy 10.4): the year when it rests on one, else the yearly mean. */
 const gapUnit = (n: number, year?: number) => (n === 1 && year ? `ב־${year}` : "בשנה");
-const inYears = (n: number) => (n === 1 ? "בשנה אחת" : n === 2 ? "בשנתיים" : `ב־${n} שנים`);
+/** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
+const inYears = (n: number) => countPhrase(n, { one: "בשנה אחת", two: "בשנתיים", many: "ב־{n} שנים" });
 
 /** How many questions "לפני שמחליטים" asks, in words. */
 const questionCount = (n: number) => (n === 4 ? "ארבע שאלות" : n === 3 ? "שלוש שאלות" : n === 2 ? "שתי שאלות" : "שאלה אחת");
@@ -3240,7 +3241,7 @@ export const invest = {
       startList: (house: string) => `התעריפון של ${house}`,
       noWay: (house: string) => `ל${house} אין מחיר לקרן במדד הזה, ולכן אי אפשר לחשב חשבון על בסיסו כאן.`,
       computing: "מחשב…",
-      tileLeft: (years: number) => `נשאר אחרי ${years === 1 ? "שנה אחת" : years === 2 ? "שנתיים" : `${years} שנים`}`,
+      tileLeft: (years: number) => `נשאר אחרי ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}`,
       tileLeftNote: "בכסף של היום, אחרי דמי ניהול, עמלות ומס",
       tilePlace: "המקום בהשוואה",
       tilePlaceValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
@@ -3258,7 +3259,7 @@ export const invest = {
       sameAsList: "כמו בתעריפון",
       fromGroup: (name: string) => `לפי ${name}`,
       groupDoc: "המסמך",
-      groupEnds: (months: number) => (months % 12 === 0 ? (months === 12 ? "שנה אחת" : months === 24 ? "שנתיים" : `${months / 12} שנים`) : months === 1 ? "חודש אחד" : months === 2 ? "חודשיים" : `${months} חודשים`),
+      groupEnds: (months: number) => (months % 12 === 0 ? countPhrase(months / 12, { one: "שנה אחת", two: "שנתיים", many: "שנים" }) : countPhrase(months, { one: "חודש אחד", two: "חודשיים", many: "חודשים" })),
       groupFor: (period: string) => `תקף ${period} מההצטרפות`,
       groupSide: { buy: "בקנייה בלבד", sell: "במכירה בלבד" },
       groupNoFund: "המסמך של הקבוצה לא מזכיר קרנות, ולכן האתר לא מחשב את הקרן לפי המחיר הזה.",
@@ -3864,7 +3865,7 @@ export const invest = {
     between: "בין",
     and: "ל־",
     /** Funds, not rows: a fund in Tel Aviv and abroad is a row each, and each of its rows says so. */
-    groupCount: (n: number) => (n === 1 ? "קרן אחת" : n === 2 ? "שתי קרנות" : `${n} קרנות`),
+    groupCount: (n: number) => countPhrase(n, { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" }),
     colGap: "מול המדד",
     /**
      * the row's words under the gap, and the gap sheet's head in full (not "בשנה" alone): one year names it
@@ -4044,7 +4045,7 @@ export const invest = {
     inputIndex: (year: number) => `המדד בדולרים, ${year}`,
     planLead: "בתוכנית שלכם:",
     /** "בסוף השנה", "בסוף השנתיים", "בסוף 10 השנים": never "1 השנים". */
-    planPoint: (h: number) => `הפרש של נקודת אחוז אחת בכל שנה, בין שהוא בא מהדולר ובין שהוא בא מהפער, שווה בסוף ${h === 1 ? "השנה" : h === 2 ? "השנתיים" : `${h} השנים`}`,
+    planPoint: (h: number) => `הפרש של נקודת אחוז אחת בכל שנה, בין שהוא בא מהדולר ובין שהוא בא מהפער, שווה בסוף ${countPhrase(h, { one: "השנה", two: "השנתיים", many: "{n} השנים" })}`,
     planReal: ", בכסף של היום ואחרי מס.",
     planSteady: "אם שער הדולר לא ישתנה והפער יישאר כמו בדוחות",
     pairName: (fund: string, house: string) => `${fund} ב${house}`,
