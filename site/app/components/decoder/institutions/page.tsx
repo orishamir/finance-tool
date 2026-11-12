@@ -3,6 +3,7 @@
 // list and no overview. The overview lists each product with its headline fact, then the documents about none of them and the catalogue's
 // names.
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
+import { companyPath } from "../../../lib/site-paths";
 import { catalogue, companyPage as w, r4catalogue as copy } from "../../../copy";
 import { Num, NumAfter } from "../../provenance";
 import { PageShell } from "../../shell";
@@ -28,7 +29,6 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
   const known = new Set(Object.keys(data.rules));
   const isBank = data.kind === "bank";
   const tariff = data.tariff;
-  const path = `/companies/${data.id}`;
   const name = withoutLtd(data.name);
   const hasAccount = !!tariff && !tariff.missing;
   const groups = data.groups.filter((g) => g.products.length > 0);
@@ -83,7 +83,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
   // account's parts and its price list's date
   const rows: OverviewRow[] = parts.map((p) => {
     const g = groups.find((x) => x.wrapperId === p.id);
-    const base = { id: p.id, title: p.label, to: `${path}?product=${encodeURIComponent(p.id)}`, label: p.label };
+    const base = { id: p.id, title: p.label, to: companyPath(data.id, { product: p.id }), label: p.label };
     if (g) {
       const range = rateRange(g.products);
       const many = g.products.length > 1;
@@ -155,7 +155,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
   return (
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}), pageCompanies: data.terms.pageCompanies }}>
       <CompanyTemplate
-        path={path}
+        pageId={data.id}
         name={name}
         line={isBank ? `${copy.classWord.bank} · ${gershayim(data.name)}` : copy.brokerClassLine}
         header={

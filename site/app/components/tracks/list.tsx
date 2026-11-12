@@ -3,6 +3,7 @@
 // (no heading) it says the company first. The column heads sort. Every figure goes through the provenance component. On a company's page
 // the groups are its products (`fixed`: one product, no heading over it), and a track a new member joins by default says so.
 import { useMemo, type ReactNode } from "react";
+import { companyPath } from "../../lib/site-paths";
 import { Link } from "react-router";
 import { track as trackCopy, trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
@@ -105,7 +106,7 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
   return (
     <span className="flex flex-col items-start gap-1">
       <span className="flex flex-col items-start gap-0.5">
-        <Link to={`/companies/${company?.id ?? ""}`} className="font-semibold hover:underline">
+        <Link to={companyPath(company?.id ?? "")} className="font-semibold hover:underline">
           <bdi>{gershayim(x.companyName)}</bdi>
         </Link>
         {company && (
@@ -347,7 +348,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       // a chosen kind is one list with no heading: the chip names it, and the count line holds its count and its fees
       heading: g.by === "kind" || fixed ? undefined : {
         title: g.companyId ? (
-          <Link to={`/companies/${g.companyId}`} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0 md:tap-area">
+          <Link to={companyPath(g.companyId)} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0 md:tap-area">
             <bdi>{g.title}</bdi>
           </Link>
         ) : (

@@ -3,6 +3,7 @@
 // Server-only. The sources of a rule are read loosely: the `sources` field is W1's, and a record without it contributes
 // only its figures' own sources.
 import { existsSync } from "node:fs";
+import { companyPath, feesPath, rulesPath } from "./site-paths";
 import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy } from "../copy";
@@ -168,7 +169,7 @@ function sectionOf(kind: string, strength: Strength, host: string, publisherKind
 
 /** The grouping itself, on given inputs (the tests use fixtures). */
 /** `hrefOf`: where a rule's link goes; by default the rules page (a company's term goes to where it is listed, D30: loadDocuments passes that). */
-export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => `/rules#${id}`): DocumentCard[] {
+export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => rulesPath({ hash: id })): DocumentCard[] {
   const groups = new Map<string, { doc: TableDoc | null; entries: Entry[] }>();
   const all = entriesOf(rules);
   // the same address is the same document whatever a link called it ("[1](url)"): the table match found by any entry of an address serves them all
@@ -219,7 +220,7 @@ export function loadDocuments(): DocumentCard[] {
   // the rules page lists general rules only (D30): a company's term links to where it is listed
   const links = companyLinks();
   const ownDocs = ownDocuments(rules);
-  const hrefOf = (id: string) => (rules[id] && rules[id]!.scope !== "general" ? companyTermsHref(rules[id]!, links, ownDocs) : `/rules#${id}`);
+  const hrefOf = (id: string) => (rules[id] && rules[id]!.scope !== "general" ? companyTermsHref(rules[id]!, links, ownDocs) : rulesPath({ hash: id }));
   return groupDocuments(rules, (Array.isArray(table) ? table : []).filter((d) => !d.doc_kind), publishers, hrefOf);
 }
 
@@ -271,7 +272,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const { root } = dataServer;
   const { institutionIds } = await import("./institutions.server");
   const { loadDepositTerms, loadExposures, loadFunds, exposureHref } = await import("./instruments.server");
-  const { indexPath } = await import("./invest");
+  const { indexPath } = await import("./site-paths");
   // an index fund on its index's page, any other on its holding's page (the funds page is gone)
   const indexIds = new Set(loadExposures().filter((e) => e.kind === "equity_index").map((e) => e.id));
   const fundHref = (exposureId: string) => (indexIds.has(exposureId) ? indexPath(exposureId) : exposureHref(exposureId));
@@ -285,7 +286,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const bundle = compareBundle();
   const feePageOf = (id: string): string | null => {
     const reading = bundle.wrappers.filter((w) => w.providers?.[id] && feePageAnswers(bundle, w.id));
-    return reading.length === 1 ? `/fees?wrapper=${reading[0]!.id}` : null;
+    return reading.length === 1 ? feesPath({ wrapper: reading[0]!.id }) : null;
   };
   const tariffs = snaps
     .map((s) => ({
@@ -296,13 +297,13 @@ export async function loadDocumentData(): Promise<DocumentData> {
       lines: s.lines.length,
       // banks and brokers have their own page; a manager has its company page when the regulator's data names it; else the fee page of the
       // one product whose fee page reads the price list, and no link where none or several do
-      href: institutions.has(s.id) ? `/companies/${s.id}` : providerCompany[s.id] ? `/companies/${providerCompany[s.id]}` : feePageOf(s.id),
+      href: institutions.has(s.id) ? companyPath(s.id) : providerCompany[s.id] ? companyPath(providerCompany[s.id]!) : feePageOf(s.id),
     }))
     .sort((a, b) => heCollator.compare(a.title, b.title));
   const funds = loadFunds()
     .map((f) => ({ key: f.id, title: f.names.he[0] ?? f.names.en[0] ?? f.id, line: f.manager, href: fundHref(f.exposure_id) }))
     .sort((a, b) => heCollator.compare(a.title, b.title));
-  const deposits = loadDepositTerms().map((d) => ({ key: d.id, title: depositName(d), line: d.bank, href: `/companies/${d.bank}`, bank: d.bank }));
+  const deposits = loadDepositTerms().map((d) => ({ key: d.id, title: depositName(d), line: d.bank, href: companyPath(d.bank), bank: d.bank }));
   const { institutionRows } = await import("./institutions.server");
   const bankName = new Map(institutionRows().map((r) => [r.id, r.name]));
   const depositCards: DataCard[] = deposits.map(({ bank, ...d }) => ({ ...d, line: bankName.get(bank) ?? d.line }));

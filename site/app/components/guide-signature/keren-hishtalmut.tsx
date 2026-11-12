@@ -3,6 +3,7 @@
 // An employee's fund stands alone, since no other place receives the employer's money (B2); a self-employed person's stands beside the same outlay
 // in a securities account, which is a choice they really have. Every figure is an engine run on the person's own values (F-96).
 import { useMemo, useState } from "react";
+import { trackPath } from "../../lib/site-paths";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
@@ -198,7 +199,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
   const feeHint = trackName && (
     <>
-      {story.hints.fee.before} <Term id="דמי ניהול">{story.hints.fee.fee}</Term> {story.hints.fee.middle} ״{trackCompany ? <TextLink to={`/companies/${trackCompany}/${trackNumber}`}><MixedName>{trackName}</MixedName></TextLink> : <MixedName>{trackName}</MixedName>}״ ({story.hints.fee.number} <bdi dir="ltr">{trackNumber}</bdi>){story.hints.fee.after}
+      {story.hints.fee.before} <Term id="דמי ניהול">{story.hints.fee.fee}</Term> {story.hints.fee.middle} ״{trackCompany ? <TextLink to={trackPath(trackCompany, trackNumber)}><MixedName>{trackName}</MixedName></TextLink> : <MixedName>{trackName}</MixedName>}״ ({story.hints.fee.number} <bdi dir="ltr">{trackNumber}</bdi>){story.hints.fee.after}
     </>
   );
   // ---- the reader's own values, not the rule: that is in the guide's text above

@@ -2,6 +2,7 @@
 // holds every product of every member (the managing company's tracks, the brokerage account, the funds its fund manager runs), each
 // under its own heading, and every member's old address shows that page. Server-only; the table is data/sources/brands.json.
 import { mayaFundHref } from "./sources";
+import { exposurePath } from "./site-paths";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { brandsTable, institutionsTable, type ExposureRecord, type FundRecord, type InstitutionRegistryRow } from "@finance-tool/schema";
@@ -137,7 +138,7 @@ function fundRow(rec: FundRecord, exposure: ExposureRecord | null): BrandFundRow
   const index = exposure && exposure.id.startsWith("index-") ? exposure : null;
   // the column's head carries the word "index", so the cell holds the index's name without it
   const follows: BrandFundRow["follows"] = index
-    ? { kind: "index", name: (index.names.he[0] ?? index.id).replace(indexWordAtStart, ""), href: `/exposure/${index.id}` }
+    ? { kind: "index", name: (index.names.he[0] ?? index.id).replace(indexWordAtStart, ""), href: exposurePath(index.id) }
     : kind === "money-market"
       ? rec.legal_form.includes("מתחדשת")
         ? { kind: "money-market", name: brandsCopy.funds.moneyMarketKinds.renewable, href: "/guide/money-market-fund-renewable" }

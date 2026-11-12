@@ -1,6 +1,7 @@
 // The search index (architecture 3.5): built at build time over wrapper names, the regulator's fund names
 // and the glossary terms, and served as a static file the search sheet fetches once.
 import type { SearchEntry } from "../lib/search";
+import { companyPath, documentsPath, guidePath, rulesPath, trackBrowserPath, trackPath } from "../lib/site-paths";
 
 export async function loader() {
   const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
@@ -12,13 +13,13 @@ export async function loader() {
   const wrappers = loadProducts();
   const exposures = loadExposures();
   // a guide's row says which page it opens: "עמוד המדריך" under the page's own name, "עמוד המדריך על <name>" under another
-  const titles = new Map<string, string>([...wrappers.map((w) => [`/guide/${w.id}`, w.names.he[0]!] as const), ["/guide/limited-bond-fund", limitedBondFund.title], ["/guide/mutual-funds", mutualFunds.title]]);
+  const titles = new Map<string, string>([...wrappers.map((w) => [guidePath(w.id), w.names.he[0]!] as const), ["/guide/limited-bond-fund", limitedBondFund.title], ["/guide/mutual-funds", mutualFunds.title]]);
   for (const e of exposures) if (!titles.has(exposureHref(e.id))) titles.set(exposureHref(e.id), e.names.he[0]!);
   const guideRow = (name: string, href: string): SearchEntry => {
     const title = titles.get(href) ?? name;
     return { kind: "guide", name, line: name === title ? search.guideLine : `${search.guideAbout} ${gershayim(title)}`, href, norm: normalize(name) };
   };
-  for (const w of wrappers) for (const name of [...w.names.he, ...w.names.app, ...w.names.statement]) entries.push(guideRow(name, `/guide/${w.id}`));
+  for (const w of wrappers) for (const name of [...w.names.he, ...w.names.app, ...w.names.statement]) entries.push(guideRow(name, guidePath(w.id)));
   for (const name of limitedBondFund.searchNames) entries.push(guideRow(name, "/guide/limited-bond-fund"));
   for (const name of mutualFunds.searchNames) entries.push(guideRow(name, "/guide/mutual-funds"));
   // the parts of each guide a question can lead to (tax, cost, money in and out, who offers it, risks), found only through a product's
@@ -44,26 +45,26 @@ export async function loader() {
   const { trackProductIds } = await import("../lib/track-browser");
   const { depositBrowser, trackBrowser } = await import("../copy");
   for (const id of trackProductIds) {
-    const name = gershayim(`${trackBrowser.guideLink.before}${titles.get(`/guide/${id}`)}${trackBrowser.guideLink.after}`);
-    entries.push({ kind: "compare", name, line: search.tracksLine, href: `/tracks/${id}`, norm: normalize(name), of: `/guide/${id}` });
+    const name = gershayim(`${trackBrowser.guideLink.before}${titles.get(guidePath(id))}${trackBrowser.guideLink.after}`);
+    entries.push({ kind: "compare", name, line: search.tracksLine, href: trackBrowserPath(id), norm: normalize(name), of: guidePath(id) });
   }
   entries.push({ kind: "compare", name: depositBrowser.search.names[0], line: depositBrowser.search.line, href: "/deposits", norm: normalize(depositBrowser.search.names[0]), of: "/guide/bank-deposit" });
   // the fund and track numbers are searchable, and the row says which number it is
   const idLine = (n: number | string) => `${search.fundWord} ${n}`;
   const cma = loadCma();
-  for (const t of cma.tracks) entries.push({ kind: "track", name: t.name, line: `${t.companyName} · ${t.classification} · ${idLine(t.fundId)}`, href: `/companies/${t.companyId}/${t.fundId}`, norm: normalize(t.name), ids: [String(t.fundId)] });
+  for (const t of cma.tracks) entries.push({ kind: "track", name: t.name, line: `${t.companyName} · ${t.classification} · ${idLine(t.fundId)}`, href: trackPath(t.companyId, t.fundId), norm: normalize(t.name), ids: [String(t.fundId)] });
   // the managing companies are results, by name and by company number
-  for (const c of cma.companies) entries.push({ kind: "company", name: c.name, line: search.groups.company, href: `/companies/${c.id}`, norm: normalize(c.name), ids: [c.id] });
+  for (const c of cma.companies) entries.push({ kind: "company", name: c.name, line: search.groups.company, href: companyPath(c.id), norm: normalize(c.name), ids: [c.id] });
   // D33: a brand is a result by the name the site shows and by its fund managers' names; each leads to the brand's one page
   const { loadBrands } = await import("../lib/brands.server");
   const { brands: brandWords } = await import("../copy");
-  for (const b of loadBrands()) for (const name of [b.name, ...b.fundManagers]) entries.push({ kind: "company", name, line: brandWords.searchLine, href: `/companies/${b.page}`, norm: normalize(name) });
+  for (const b of loadBrands()) for (const name of [b.name, ...b.fundManagers]) entries.push({ kind: "company", name, line: brandWords.searchLine, href: companyPath(b.page), norm: normalize(name) });
   for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push(guideRow(name, exposureHref(e.id)));
   // every name the catalogue records: the track when it names one, else the company page, else the product's guide page
   for (const c of loadCatalog()) {
     const first = cma.tracks.find((t) => c.maps_to.track_ids.includes(t.fundId));
     const wrapper = wrappers.find((w) => w.id === c.maps_to.wrapper_id);
-    const href = first ? (c.maps_to.track_ids.length === 1 ? `/companies/${first.companyId}/${first.fundId}` : `/companies/${first.companyId}`) : wrapper ? `/guide/${wrapper.id}` : "/guide";
+    const href = first ? (c.maps_to.track_ids.length === 1 ? trackPath(first.companyId, first.fundId) : companyPath(first.companyId)) : wrapper ? guidePath(wrapper.id) : "/guide";
     const line = [first?.companyName, wrapper?.names.he[0]].filter(Boolean).join(" · ");
     // the number is the entry's own only when the entry is one track; a company page is not found by its tracks' numbers
     const ids = c.maps_to.track_ids.length === 1 ? c.maps_to.track_ids.map(String) : [];
@@ -72,7 +73,7 @@ export async function loader() {
   // the funds the site holds a record of, by name and by TASE number: an index fund on its index's page,
   // any other on its holding's page (the funds page is gone)
   const { loadFunds } = await import("../lib/instruments.server");
-  const { indexPath } = await import("../lib/invest");
+  const { indexPath } = await import("../lib/site-paths");
   for (const f of loadFunds()) {
     const exposure = exposures.find((e) => e.id === f.exposure_id);
     const num = f.identifiers.tase_number;
@@ -94,7 +95,8 @@ export async function loader() {
     if (!guide && !exposure) continue;
     const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;
     // the term's card opens on its page (TermFromAddress): the pages' terms list is gone
-    const href = `${guide ? `/guide/${guide}` : exposureHref(exposure!)}#term=${encodeURIComponent(term.he)}`;
+    const hash = `term=${encodeURIComponent(term.he)}`;
+    const href = guide ? guidePath(guide, { hash }) : `${exposureHref(exposure!)}#${hash}`;
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title. The id is the row's key,
@@ -143,7 +145,7 @@ export async function loader() {
       kind: "rule",
       name: title,
       line: [topic, weak].filter(Boolean).join(" · "),
-      href: `/rules#${rule.id}`,
+      href: rulesPath({ hash: rule.id }),
       norm: normalize(title),
       key: rule.id,
       st: strengthRank[rule.strength] ?? 3,
@@ -160,7 +162,7 @@ export async function loader() {
     entries.push({ kind: "parameter", name, line: searchMore.parameterLine, href: `/parameters#${p.method_id}`, norm: normalize(name), key: p.method_id, ...(labels.length > 0 ? { alt: normalize(labels.join(" ")) } : {}) });
   }
   const { loadDocuments } = await import("../lib/documents.server");
-  for (const d of loadDocuments().filter((x) => x.featured)) entries.push({ kind: "document", name: d.title, line: [searchMore.documentLine, d.publisher].filter(Boolean).join(" · "), href: `/documents#${d.key}`, norm: normalize(d.title) });
+  for (const d of loadDocuments().filter((x) => x.featured)) entries.push({ kind: "document", name: d.title, line: [searchMore.documentLine, d.publisher].filter(Boolean).join(" · "), href: documentsPath({ hash: d.key }), norm: normalize(d.title) });
   // release 4: bank and broker names and every name a deposit record carries (447, app, ad, abbreviation)
   const { institutionSearchEntries } = await import("../lib/institutions.server");
   const { r4catalogue } = await import("../copy");

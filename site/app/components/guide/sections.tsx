@@ -1,6 +1,7 @@
 // Guide page components (design-spec 2): section index, sections, the facts with their rules, fee table, tax steps,
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
+import { companyPath, feesPath } from "../../lib/site-paths";
 import { Link, useParams } from "react-router";
 import { guide as copy, guideIndex, r3fees, trackBrowser } from "../../copy";
 import type { Strength } from "../../lib/value";
@@ -218,7 +219,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
       </Card>
       <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
       {id && feePage && (
-        <Link to={`/fees?wrapper=${id}`} className="text-link hover:underline self-start min-h-target inline-flex items-center">
+        <Link to={feesPath({ wrapper: id })} className="text-link hover:underline self-start min-h-target inline-flex items-center">
           {r3fees.links.fromGuide}
         </Link>
       )}
@@ -383,7 +384,7 @@ function CompanyColumns({ companies }: { companies: { id: string; name: string }
     <ul className="text-sm leading-8 md:columns-2 md:gap-x-10">
       {companies.map((c) => (
         <li key={c.id} className="break-inside-avoid">
-          <TextLink to={`/companies/${c.id}`}>
+          <TextLink to={companyPath(c.id)}>
             <bdi>{gershayim(c.name)}</bdi>
           </TextLink>
         </li>

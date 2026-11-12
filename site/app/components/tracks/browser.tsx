@@ -6,6 +6,7 @@
 // The product, the kind and the sort stand first; on a phone they fold into one line that says what is chosen (`PhoneFold`), and the
 // search stays open under them. The count and the order are said right over the list.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { guidePath, trackBrowserPath } from "../../lib/site-paths";
 import { useNavigate, useParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
@@ -105,9 +106,9 @@ export function TrackBrowser({ data }: { data: TbData }) {
       <PhoneFold summary={summary} more={t.fold.more} less={t.fold.less}>
         {/* the product, then the kind of track: one two-level choice, as the companies page's (kit ChoicePair) */}
         <ChoicePair
-          parent={{ label: t.controls.product, ids: data.products.map((p) => p.id), labels: Object.fromEntries(data.products.map((p) => [p.id, p.name])), value: productId, counts: Object.fromEntries(data.products.map((p) => [p.id, p.rows.length])), onChange: (id) => id !== productId && navigate(`/tracks/${id}${keepFor(sp)}`, { preventScrollReset: true }) }}
+          parent={{ label: t.controls.product, ids: data.products.map((p) => p.id), labels: Object.fromEntries(data.products.map((p) => [p.id, p.name])), value: productId, counts: Object.fromEntries(data.products.map((p) => [p.id, p.rows.length])), onChange: (id) => id !== productId && navigate(trackBrowserPath(id, { search: keepFor(sp) }), { preventScrollReset: true }) }}
           under={
-            <TextLink look="line" to={`/guide/${view.id}`} className="self-start text-sm">
+            <TextLink look="line" to={guidePath(view.id)} className="self-start text-sm">
               {t.count.whatIs} {view.name}
             </TextLink>
           }

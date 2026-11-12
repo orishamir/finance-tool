@@ -5,6 +5,7 @@
 // open ranks among the rest with an amber tag; linked offers follow the rest under one line. The reader's bank is tinted. Every rate and
 // amount goes through the provenance component, as the record's own figure; the interest as a computed one.
 import { Fragment, type ReactNode } from "react";
+import { companyPath } from "../../lib/site-paths";
 import { Link } from "react-router";
 import { depositBrowser as t } from "../../copy";
 import { HELP_TERMS, accessOf, ascending, interestOn, interestText, isLinked, rowSplit, variantWords, type DbBank, type DbOffer, type DbRow, type RowSplit, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
@@ -79,7 +80,7 @@ function BankName({ bank, mine }: { bank: DbBank | undefined; mine: boolean }) {
   if (!bank) return null;
   return (
     <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-      <Link to={`/companies/${bank.id}`} className="font-semibold hover:underline">
+      <Link to={companyPath(bank.id)} className="font-semibold hover:underline">
         <MixedName>{bank.name}</MixedName>
       </Link>
       {mine && <Tag tone="primary">{t.mine}</Tag>}

@@ -9,7 +9,7 @@ import { useId, useMemo, useState, type ReactNode } from "react";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, guideBlocks } from "../../../copy";
 
-import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
+import { groupPath, housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
 import { Num, NumAfter, RuleRef, RulesChip, RulesLine, Term } from "../../provenance";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";

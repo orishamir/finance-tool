@@ -3,6 +3,7 @@
 // savings plans and current account, and the sections its page has. The page's loader ships the light list; the sourced values behind its
 // figures are /company-figures.json (routes/company-figures.ts). Server-only.
 import { brands as brandsCopy, companyFocus as focusCopy, r4catalogue, topicName } from "../copy";
+import { companyPath } from "./site-paths";
 import { shortName } from "./providers";
 import { loadCma, loadRules } from "./data.server";
 import { brandFunds, loadBrands, type Brand } from "./brands.server";
@@ -32,22 +33,22 @@ type Built = { kind: FocusProductKind; product: FocusProduct; figures?: FocusFig
 const num = (v: SiteValue | null | undefined): number | null => (v && typeof v.value === "number" ? v.value : null);
 
 /** A managing company's provident products, from the same data its page's list reads. */
-function savingsProducts(tb: TbData, href: string): Built[] {
+function savingsProducts(tb: TbData, pageId: string): Built[] {
   return tb.products.map((p) => {
     const view = buildProductView(tb, p.id)!;
     const assets = view.companies[0]?.assets ?? null;
     const fees = feeRangeOf(view.tracks, tb.today);
     return {
       kind: { id: p.id, name: p.name, type: "savings", unit: "tracks" },
-      product: { id: p.id, count: view.tracks.length, assets: num(assets), fees: fees ? { low: num(fees.low)!, high: num(fees.high)! } : null, href: `${href}?product=${encodeURIComponent(addressId(p.id))}` },
+      product: { id: p.id, count: view.tracks.length, assets: num(assets), fees: fees ? { low: num(fees.low)!, high: num(fees.high)! } : null, href: companyPath(pageId, { product: addressId(p.id) }) },
       figures: { assets, fees },
     };
   });
 }
 
-function brokerageProduct(t: TariffCardData | null | undefined, href: string): Built[] {
+function brokerageProduct(t: TariffCardData | null | undefined, pageId: string): Built[] {
   if (!t || t.missing) return [];
-  return [{ kind: { id: "brokerage", name: r4catalogue.groups.brokerage, type: "trade", unit: "has" }, product: { id: "brokerage", count: null, tariffGroups: feeKinds(t.lines).map(feeKindName), href: `${href}?product=brokerage` } }];
+  return [{ kind: { id: "brokerage", name: r4catalogue.groups.brokerage, type: "trade", unit: "has" }, product: { id: "brokerage", count: null, tariffGroups: feeKinds(t.lines).map(feeKindName), href: companyPath(pageId, { product: "brokerage" }) } }];
 }
 
 /** What a page's securities account card holds, for the companies route to name its sections. The route adds the two that rest on what the
@@ -87,14 +88,13 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
   const brands = loadBrands();
   const inBrand = new Set(brands.flatMap((b) => b.pageIds));
   const brandEntry = (b: Brand): Omit<FocusCompany, "short"> => {
-    const href = `/companies/${b.page}`;
     const company = b.cmaId ? cma.companies.find((c) => c.id === b.cmaId) : undefined;
     const tb = company ? buildTrackBrowser(company.id) : null;
     const funds = brandFunds(b);
     const brokerage = b.brokerId ? brokeragePart(b.brokerId) : null;
     const fundProducts: Built[] = fundOrder.flatMap((k) => {
       const g = funds.find((x) => x.kind === k);
-      return g ? [{ kind: { id: `funds-${k}`, name: brandsCopy.funds.groups[k], type: "funds" as const, unit: "funds" as const }, product: { id: `funds-${k}`, count: g.funds.length, href: `${href}?product=funds-${k}` } }] : [];
+      return g ? [{ kind: { id: `funds-${k}`, name: brandsCopy.funds.groups[k], type: "funds" as const, unit: "funds" as const }, product: { id: `funds-${k}`, count: g.funds.length, href: companyPath(b.page, { product: `funds-${k}` }) } }] : [];
     });
     // the legal companies the page stands for, as its header lists them (routes/company.tsx)
     const members = [...new Set([company?.name, brokerage?.tariff.providerName, ...b.fundManagers].filter((x): x is string => !!x))];
@@ -104,7 +104,7 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
       group: "houses",
       match: [b.id, company?.name, ...b.members.map((m) => m.name_he), ...b.fundManagers].join(" "),
       line: members.length > 1 ? { kind: "members", names: members } : null,
-      products: take(b.page, [...(tb ? savingsProducts(tb, href) : []), ...fundProducts, ...brokerageProduct(brokerage?.tariff, href)]),
+      products: take(b.page, [...(tb ? savingsProducts(tb, b.page) : []), ...fundProducts, ...brokerageProduct(brokerage?.tariff, b.page)]),
       sections: [],
       terms: termsOf(b.page),
     };
@@ -114,21 +114,19 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
     account(b.page, b.brokerId ? brokeragePart(b.brokerId)?.tariff : null, b.brokerId);
   }
   for (const c of cma.companies.filter((x) => !inBrand.has(x.id))) {
-    const href = `/companies/${c.id}`;
-    companies.push({ id: c.id, name: shortCompanyName(c.id, c.name), group: "managers", match: c.name, line: null, products: take(c.id, savingsProducts(buildTrackBrowser(c.id), href)), sections: [], terms: termsOf(c.id) });
+    companies.push({ id: c.id, name: shortCompanyName(c.id, c.name), group: "managers", match: c.name, line: null, products: take(c.id, savingsProducts(buildTrackBrowser(c.id), c.id)), sections: [], terms: termsOf(c.id) });
   }
 
   // the banks, and the investment house that has a page of its own (its page calls it one)
   for (const r of institutionRows()) {
     const inst = buildInstitution(r.id);
     if (!inst) continue;
-    const href = `/companies/${r.id}`;
     const bank = inst.kind === "bank";
     const asOf = inst.depositsAsOf;
     const deposits: Built[] = bankProducts.flatMap((p) => {
       const g = inst.groups.find((x) => x.wrapperId === p.id);
       if (!g || g.products.length === 0) return [];
-      return [{ kind: { id: p.id, name: p.name, type: "bank" as const, unit: p.unit }, product: { id: p.id, count: p.unit === "has" ? null : depositCount(g.products), asOf: asOf ? String(asOf.value) : null, href: `${href}?product=${p.id}` }, figures: { asOf } }];
+      return [{ kind: { id: p.id, name: p.name, type: "bank" as const, unit: p.unit }, product: { id: p.id, count: p.unit === "has" ? null : depositCount(g.products), asOf: asOf ? String(asOf.value) : null, href: companyPath(r.id, { product: p.id }) }, figures: { asOf } }];
     });
     const tariff = inst.tariff && !inst.tariff.missing ? inst.tariff : null;
     const line: FocusLine | null = bank ? (tariff ? { kind: "tariff", at: String(tariff.snapshot.value) } : null) : { kind: "class", text: r4catalogue.brokerClassLine };
@@ -138,7 +136,7 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
       group: bank ? "banks" : "houses",
       match: `${r.id} ${inst.name}`,
       line,
-      products: take(r.id, [...deposits, ...brokerageProduct(inst.tariff, href)]),
+      products: take(r.id, [...deposits, ...brokerageProduct(inst.tariff, r.id)]),
       sections: [],
       terms: inst.terms.groups.reduce((n, g) => n + g.ids.length, 0),
     });

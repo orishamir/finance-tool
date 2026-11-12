@@ -1,6 +1,7 @@
 // `/rules/<shelf>`: the five addresses that were live for an hour before the rules became one page with filters. A line and a
 // link, and on mount a replace-navigation to `/rules?shelf=<shelf>` (the query and the hash it came with are kept).
 import { useEffect } from "react";
+import { rulesPath } from "../lib/site-paths";
 import { useLoaderData, useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/rules-shelf";
 import { pagePreview, rulesFront as copy } from "../copy";
@@ -27,7 +28,7 @@ export default function RulesShelf() {
   const target = (() => {
     const p = new URLSearchParams(search);
     p.set("shelf", shelf);
-    return `/rules?${p.toString().replace(/%2C/g, ",")}${hash}`;
+    return rulesPath({ search: `?${p.toString().replace(/%2C/g, ",")}`, hash: hash.slice(1) });
   })();
   useEffect(() => {
     void navigate(target, { replace: true });

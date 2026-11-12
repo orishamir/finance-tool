@@ -2,6 +2,7 @@
 // a term's card, a formula, an open question, and the cards the rules page lays out. A script apart from the figures and chips
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
 import { useContext, useState, type ReactNode } from "react";
+import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
@@ -1111,10 +1112,10 @@ function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {
 function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
   const close = useContext(CloseCtx);
   if (isGeneral(rule)) {
-    return data.rulesOf ? <LinkButton to={`${data.rulesOf.href}#${rule.id}`} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={`/rules#${rule.id}`} onClick={close}>{ruleCopy.all}</LinkButton>;
+    return data.rulesOf ? <LinkButton to={`${data.rulesOf.href}#${rule.id}`} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={rulesPath({ hash: rule.id })} onClick={close}>{ruleCopy.all}</LinkButton>;
   }
   const links = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
-  if (links.length === 0) return <LinkButton to={`/documents#${noCompanyAnchor}`} onClick={close}>{scopeWords.allNoCompany}</LinkButton>;
+  if (links.length === 0) return <LinkButton to={documentsPath({ hash: noCompanyAnchor })} onClick={close}>{scopeWords.allNoCompany}</LinkButton>;
   if (links.length === 1) return <LinkButton to={links[0]!.href} onClick={close}>{scopeWords.allAt.replace("{name}", links[0]!.name)}</LinkButton>;
   return (
     <span onClick={close}>
