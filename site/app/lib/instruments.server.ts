@@ -163,6 +163,10 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
       else missing.push(`${wrapperId}: "${rec.id}" is linked to ${rec.linkage}; the deposit run has no such linkage`);
       if (missing.length === 0 && linkage) {
         terms.deposit = { termMonths: noTerm ? 1 : (rec.term_months.value as number), linkage };
+        // F-41: exit points at a fixed interval reach the run, which then does not flag G-16 on a piece at one on the last day. Exit
+        // points the record gives no interval for (`every_months` null) cannot be dated, so the run is told of none.
+        const every = rec.exit_points.every_months;
+        if (!noTerm && rec.exit_points.exists && every !== null && Number.isInteger(every) && every > 0) terms.deposit.exitEveryMonths = every;
         if (!noTerm) feeValues.term = { ...rec.term_months };
         feeValues.linkage = textValue(linkage, "text", { source: rec.source, checked: rec.snapshot }, `from the record's linkage "${rec.linkage}"${rec.anchor ? ` and anchor "${rec.anchor}"` : ""}`);
       }
