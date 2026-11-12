@@ -1,0 +1,28 @@
+{
+  "id": "BANK-03",
+  "title": "Written agreement for deposits over one year; copy to the customer",
+  "title_he": "פיקדון של יותר משנה: הסכם בכתב ועותק ללקוח",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי כללי הגילוי הנאות של בנק ישראל, הסכם לפיקדון לזמן קצוב של יותר משנה, והסכם לפתיחת חשבון עו״ש ולניהולו, צריכים להיות בכתב, והלקוח צריך להיות מסוגל לקרוא אותם לפני החתימה. הבנק נותן ללקוח עותק, או מעמיד אותו בחשבון באינטרנט אם הלקוח הסכים. המפקח על הבנקים יכול לפטור סוגי חשבונות מסוימים מדרישת החתימה.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Disclosure rules 1992 (BoI copy)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.3(a)(2)-(3), 4",
+      "locator_he": "סעיף 3(א)(2)-(3), 4",
+      "checked": "2026-10-22"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "TXG-06",
+  "title": "Freeze of indexation for tax years 2025 to 2027, and indexation after",
+  "title_he": "הקפאת ההצמדה בשנים 2025 עד 2027",
+  "text_he": "בדרך כלל הסכומים בפקודה שקשורים לסעיף ההצמדה, כמו ספי מדרגות המס, סף המס הנוסף והקלות רבות, מתעדכנים בכל 1 בינואר לפי עליית המדד בשנה הקודמת. בשנות המס 2025 עד 2027 הם לא מתעדכנים ונשארים בערכם מ־1 בינואר 2024. ב־1 בינואר 2028 הסכומים של 1 בינואר 2024 יתעדכנו לפי הכלל הרגיל, ולא ברור מהנוסח אם העדכון יכסה את כל עליית המדד מ־2024 עד 2027 או רק שנה אחת. סכומים שקשורים לשכר הממוצע, כמו תקרת הפקדות המעסיק לפנסיה, תקרת הפיצויים וספי הביטוח הלאומי, ממשיכים להשתנות כל שנה. לא כל התקרות של פנסיה וקרן השתלמות הן כאלה: חלקן מוקפאות, וחלקן לא השתנו ב־2026.",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2028-01-15",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.200, ss.120A, 120B(a)",
+      "locator_he": "עמוד 200, סעיפים 120א, 120ב(א)",
+      "page": 200,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Deductions booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "title": "Sefer HaChukim 3342, 26.12.2024, Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
+      "title_he": "ספר החוקים 3342 (26.12.2024): חוק ההתייעלות הכלכלית (הקפאת עדכוני מס ומס יסף), התשפ״ה-2024",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1(1)",
+      "locator_he": "עמוד 2, סעיף 1(1)",
+      "page": 2,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12235101.pdf",
+      "title": "SH 3511",
+      "title_he": "ספר החוקים 3511",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.416, s.7",
+      "locator_he": "עמוד 416, סעיף 7",
+      "page": 416,
+      "checked": "2026-10-22"
+    }
+  ]
+}

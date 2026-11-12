@@ -1,0 +1,43 @@
+{
+  "id": "KGL-21",
+  "title": "Children: a gemel lehashkaa in a child's name is the same wrapper, with the child's own ceiling",
+  "title_he": "קופת גמל להשקעה על שם ילד: תקרת הפקדה משלו",
+  "text_he": "תקרת ההפקדה השנתית לקופת גמל להשקעה היא לכל עמית, על כל החשבונות שלו בכל הקופות. לכן, לפי הקריאה של החוק, חשבון שהעמית בו הוא ילד נספר בתקרה של הילד ולא בתקרה של ההורה; החוק לא אומר את זה במילים. תוכנית ״חיסכון לכל ילד״ של המדינה היא מוצר אחר: במילון של גמל נט, מאגר הנתונים של רשות שוק ההון, היא סוג קופה נפרד.",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf#page=5",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, ביטוח וחיסכון, 29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5, s.8.1",
+      "locator_he": "עמוד 5, סעיף 8.1",
+      "page": 5,
+      "quote": "בכלל חשבונותיו בכל קופות הגמל להשקעה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "title": "גמל-נט: מילון השדות",
+      "title_he": "גמל-נט: מילון השדות",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "row 5",
+      "quote": "קופת גמל להשקעה חיסכון לכל ילד",
+      "checked": "2026-11-12"
+    }
+  ]
+}

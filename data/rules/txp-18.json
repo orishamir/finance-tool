@@ -2,11 +2,12 @@
   "id": "TXP-18",
   "title": "Early or non-compliant withdrawal (`משיכה שלא כדין`)",
   "title_he": "משיכה שלא כדין: מוקדמת או בלי עמידה בתנאים",
-  "text_he": "משיכה מקופת גמל לקצבה, או משיכה מקופת גמל לפני זמנה, היא משיכה שלא כדין וממוסה בגבוה מבין שיעור המס המזערי והשיעור השולי; הקופה מנכה במקור את השיעור המזערי. בחישוב לפי השיעור המזערי ניתנות רק נקודות הזיכוי הבסיסיות, ובחישוב השולי ניתנים זיכויים, ניכויים וקיזוזים כמו בהכנסה מיגיעה אישית. לא ממוסה כך: משיכה בשל הכנסה נמוכה של בני הזוג, עד הפער משכר המינימום (כפול אם יש ילד קטין), בטופס לקופה; הוצאות רפואיות (לא שיניים) מעל מחצית ההכנסה השנתית; נכות קבועה בדרגה גבוהה של העמית או של קרוב שנקבעה אחרי תחילת ההפקדות; ומשיכת יורשים במות העמית. המס חל על כל הסכום שמשולם: התקנות ממסות את העמית על אותם כספים בשיעור המזערי גם אם הוא פטור ממס או חייב בשיעור נמוך יותר, והפקודה מחילה במקומן את המס הרגיל כשהוא גבוה יותר.",
+  "text_he": "משיכה שלא כדין היא כסף שקופת גמל משלמת לעמית בניגוד לכללי המשיכה של חוק קופות הגמל: סכום חד־פעמי מקופת גמל לקצבה שהחוק לא מתיר, או משיכה מקופת גמל לפני שמותר למשוך. קצבה, היוון קצבה ומשיכה של סכום צבירה מזערי לפי הכללים הם משיכה כדין, והם לא ממוסים כך. משיכה שלא כדין ממוסה על כל הסכום שמשולם, בגבוה מבין השיעור המזערי והמס השולי, והקופה מנכה במקור את השיעור המזערי. היא לא ממוסה כך, בתנאים, כשלבני הזוג הכנסה נמוכה, כשיש הוצאות רפואיות גבוהות או נכות קשה, ובמשיכת יורשים במות העמית.",
   "figure_names_he": {
     "minimum_rate": "שיעור המס המזערי על משיכה שלא כדין",
     "low_income_one": "הכנסה מזערית: יחיד, או זוג בלי ילדים מתחת לגיל 18",
-    "low_income_double": "הכנסה מזערית: יחיד או זוג עם ילד מתחת לגיל 18"
+    "low_income_double": "הכנסה מזערית: יחיד או זוג עם ילד מתחת לגיל 18",
+    "child_age_limit": "גיל הילד: עד הגיל הזה ההכנסה המזערית כפולה"
   },
   "strength": "primary",
   "dimensions": [
@@ -75,10 +76,30 @@
       ],
       "state": "sourced",
       "notes": "Twice the monthly minimum wage, as of 4/2025 as the letter prints it."
+    },
+    "child_age_limit": {
+      "value": 18,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
+        "title": "רשות המסים, משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025, p.1 s.ב.3, table: \"יחיד עם ילד אחד לפחות שטרם מלאו לו גיל 18\", \"זוג עם ילד אחד לפחות שטרם מלאו לו לגיל 18\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXP-18"
+      ],
+      "state": "sourced",
+      "notes": "The minimum income is doubled (low_income_double) for a single person or a couple with at least one child who has not yet turned 18; a couple whose children have all turned 18 takes one minimum wage (low_income_one)."
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-12",
   "scope": "general",
   "sources": [
     {
@@ -159,7 +180,22 @@
       "locator": "p.13, s.5.1",
       "locator_he": "עמוד 13, סעיף 5.1",
       "page": 13,
-      "checked": "2026-10-25"
+      "quote": "המס על היוון קצבה שלא לפי הוראות סעיף 23 לחוק הפקוח על קופות הגמל, יהיה כשיעור המס המוטל על כל משיכה שלא כדין מקופת גמל",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "title": "Circular 2/2013",
+      "title_he": "חוזר מס הכנסה 2/2013: תיקון 190 לפקודה",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.13, s.5.2",
+      "locator_he": "עמוד 13, סעיף 5.2",
+      "page": 13,
+      "quote": "משיכה כדין של כספים מקופת גמל לקצבה, בסכום חד-פעמי, תיתכן באחד מהמצבים הבאים",
+      "checked": "2026-11-12"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -169,10 +205,11 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.145, s.87",
-      "locator_he": "עמוד 145, סעיף 87",
+      "locator": "p.145, s.87(א)(2)",
+      "locator_he": "עמוד 145, סעיף 87(א)(2)",
       "page": 145,
-      "checked": "2026-10-25"
+      "quote": "כספים ששולמו על ידי קופת גמל לחבריה בניגוד להוראות לפי סעיף 23 לחוק הפיקוח על קופות גמל",
+      "checked": "2026-11-12"
     }
   ]
 }

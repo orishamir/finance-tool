@@ -1,0 +1,73 @@
+{
+  "id": "BANK-31",
+  "title": "What the deposit abbreviations stand for",
+  "title_he": "מה פירוש הקיצורים בשמות של פיקדונות",
+  "strength": "institution",
+  "dimensions": [],
+  "likely_to_change": "no",
+  "text_he": "בתנאים הכלליים לניהול חשבון של בנק ירושלים: פז״ק הוא פיקדון לזמן קצוב, לא צמוד, חד־פעמי או מתחדש, בריבית קבועה או משתנה; פקצ״מ הוא פיקדון שקלי צמוד למדד; פח״ק, או פדיום, הוא פיקדון חוזר קרדיטורי, פיקדון שקלי לא צמוד ליום אחד שמתחדש מעצמו, והריבית שלו יכולה להשתנות כל יום; ופצ״מ הוא פיקדון שקלי צמוד למטבע חוץ. בטבלת הריביות של בנק דיסקונט מוצרי ״הו״ק נזיל״ מופיעים תחת ״פיקדון בהוראת קבע״, ולכן הו״ק היא הוראת קבע. ההגדרות מופיעות בהסכם התנאים הכלליים של בנק ירושלים מינואר 2024, ובנקים אחרים יכולים להשתמש בקיצורים קצת אחרת.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "jerusalem",
+      "name_he": "בנק ירושלים"
+    },
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bankjerusalem.co.il/media/5757/%D7%A0%D7%92%D7%99%D7%A9_%D7%94%D7%A1%D7%9B%D7%9D_%D7%AA%D7%A0%D7%90%D7%99%D7%9D_%D7%9B%D7%9C%D7%9C%D7%99%D7%9D_%D7%9C%D7%A4%D7%AA%D7%99%D7%97%D7%AA_%D7%97%D7%A9%D7%91%D7%95%D7%9F_73813_%D7%A2%D7%91%D7%A8%D7%99%D7%AA_%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%AA_%D7%99%D7%A0%D7%95%D7%90%D7%A8_2024_%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C.pdf",
+      "title": "בנק ירושלים: הסכם תנאים כלליים לפתיחת חשבון 73813 (01.2024)",
+      "title_he": "בנק ירושלים: הסכם תנאים כלליים לפתיחת חשבון 73813 (01.2024)",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.30, ss.92-95",
+      "locator_he": "עמוד 30, סעיפים 92-95",
+      "page": 30,
+      "quote": "פיקדון לא צמוד לזמן קצוב, לתקופה מוגדרת מראש",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/media/2932/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "title": "Bank of Jerusalem, תנאים כלליים לניהול חשבון (accessible PDF)",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.23, ss.92-95",
+      "locator_he": "עמוד 23, סעיפים 92-95",
+      "page": 23,
+      "quote": "פיקדון לא צמוד לזמן קצוב",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/media/2932/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "title": "Bank of Jerusalem, תנאים כלליים לניהול חשבון (accessible PDF)",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.22",
+      "locator_he": "עמוד 22",
+      "page": 22,
+      "quote": "שיעור ריבית הליבור",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "Discount 447 table, \"פיקדון בהוראת קבע\" filter",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

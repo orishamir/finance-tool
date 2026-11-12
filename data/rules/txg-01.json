@@ -1,0 +1,44 @@
+{
+  "id": "TXG-01",
+  "title": "Tax year and who these rules apply to",
+  "title_he": "שנת המס ומי נחשב תושב ישראל",
+  "text_he": "שנת המס היא השנה הקלנדרית, מ־1 בינואר עד 31 בדצמבר. התושבות של יחיד נקבעת לפי מרכז החיים שלו, ויש חזקות: מי ששהה בישראל 183 ימים בשנת המס, או 30 ימים בשנה ו־425 ימים בה ובשתי השנים שלפניה, נחשב תושב. היחיד או פקיד השומה יכולים לסתור את החזקות. לתושב חוץ, לעולה ולתושב חוזר ותיק יש כללים נפרדים.",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.14, s.1",
+      "locator_he": "עמוד 14, סעיף 1",
+      "page": 14,
+      "quote": "תושב ישראל",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.8 s.1",
+      "locator_he": "עמוד 8 סעיף 1",
+      "page": 8,
+      "quote": "שנת המס 2025 מתחילה ב-1.1.2025 ומסתיימת ב-31.12.2025",
+      "checked": "2026-10-22"
+    }
+  ]
+}

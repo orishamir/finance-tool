@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkAdvertising, checkByAmount, checkDiscountLines, checkSharePrice, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
+import { checkAdvertising, checkByAmount, checkDiscountLines, checkFlatPrices, checkSharePrice, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
 
 const dir = fileURLToPath(new URL("../../../data/fees", import.meta.url));
 type Line = { id: string; base: string; applies_to: string[]; [k: string]: unknown };
@@ -349,5 +349,28 @@ describe("a unit's price (F-109)", () => {
     expect(checkSharePrice(price("https://api.tase.co.il/api/company/securitydata?securityId=1159250"))[0]).toMatch(/forbid/);
     expect(checkSharePrice(price("https://maya.tase.co.il/api/v1/funds/mutual/5139282"))[0]).toMatch(/forbid/);
     expect(checkSharePrice(price("https://www.ishares.com/", "pct"))[0]).toMatch(/not a currency/);
+  });
+});
+
+describe("a flat price for a small order or conversion (F-12, F-13)", () => {
+  const fx = (amount: number, unit = "usd", upUnit = "usd", minUnit = "usd") => ({
+    lines: [{ id: "x-fx", base: "fx", applies_to: ["all"], min: { value: 5.7, unit: minUnit }, flat_up_to: { amount: { value: amount, unit }, up_to: { value: 99, unit: upUnit } } }],
+  });
+  it("passes a flat price below the line's minimum, in the same currency", () => {
+    expect(checkFlatPrices(fx(3.3))).toEqual([]);
+  });
+  it("fails a flat price at or above the minimum, and sums in two currencies", () => {
+    expect(checkFlatPrices(fx(5.7))[0]).toMatch(/not below the line's minimum/);
+    expect(checkFlatPrices(fx(3.3, "usd", "nis"))[0]).toMatch(/different currencies/);
+    expect(checkFlatPrices(fx(12, "nis", "nis"))[0]).toMatch(/another currency/);
+  });
+  it("fails a conversion line's flat price with no numeric minimum, a sum with no unit, and a maximum in another currency", () => {
+    const line = fx(3.3).lines[0]!;
+    expect(checkFlatPrices({ lines: [{ ...line, min: null }] })[0]).toMatch(/needs the line's numeric minimum/);
+    expect(checkFlatPrices({ lines: [{ ...line, min: { value: null, unit: "usd" } }] })[0]).toMatch(/needs the line's numeric minimum/);
+    expect(checkFlatPrices({ lines: [{ ...line, flat_up_to: { amount: { value: 3.3 }, up_to: { value: 99 } } }] })[0]).toMatch(/need a unit/);
+    expect(checkFlatPrices({ lines: [{ ...line, max: { value: 9_000, unit: "nis" } }] })[0]).toMatch(/line's maximum/);
+    // a trade line's flat price with no minimum (PEPPER's 4 NIS) is not a conversion's and passes
+    expect(checkFlatPrices({ lines: [{ ...line, base: "trade", min: null }] })).toEqual([]);
   });
 });

@@ -1,0 +1,34 @@
+{
+  "id": "TXF-07",
+  "title": "\"קרן חוץ\" distributions: the reporting form and whether a securities loss offsets them are open (a 2019 letter, read only in a copy, says form 867ג and no offset)",
+  "title_he": "חלוקה של קרן חוץ בבורסה: קיזוז הפסדים ודיווח",
+  "text_he": "לא ידוע מטקסט רשמי אם אפשר לקזז הפסדי הון מניירות ערך מול חלוקה של קרן חוץ הרשומה בבורסה בתל אביב. על קרן נאמנות ישראלית רשות המסים כותבת במפורש שהפסדי הון מניירות ערך לא מתקזזים מול רווחים שהקרן שילמה, אבל החוזר לא מזכיר קרן חוץ. מכתב של רשות המסים לבורסה, שלפיו חלוקות של קרן חוץ מדווחות בטופס 867ג ולא מתקזזות מול הפסדים, ידוע רק מעותק באתר לא רשמי, ולכן הוא לא מקור. זו שאלה פתוחה.",
+  "strength": "open",
+  "dimensions": [
+    "loss-offset",
+    "distribution-policy",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf#page=5",
+      "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, s.3.7",
+      "locator_he": "עמוד 5, סעיף 3.7",
+      "page": 5,
+      "quote": "כנגד רווחים ששילמה קרן נאמנות",
+      "checked": "2026-11-06",
+      "qualifier": "(an Israeli fund's distribution; the circular does not name a \"קרן חוץ\")"
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "id": "BRK-67",
+  "title": "Six banks: a ceiling on a securities trade's fee, or on its minimum, as a share of the trade",
+  "title_he": "שישה בנקים: תקרה לעמלת קנייה ומכירה, או למינימום שלה, כאחוז מהעסקה",
+  "text_he": "בתעריפוני ניירות הערך של שישה בנקים העמלה על קנייה, מכירה ופדיון נעצרת באחוז מסוים מסכום העסקה, ולכן בעסקה קטנה היא יכולה לצאת נמוכה מהמינימום שמודפס. בבנק הפועלים, בבנק יהב ובבנק מסד העמלה לא עולה על 25% מסכום העסקה, ובבנק הבינלאומי לא על 30%. במזרחי טפחות התקרה היא על עמלת המינימום בלבד: היא לא עולה על 25% מהשווי. בבנק לאומי עמלת המינימום לא עולה על 30% מהעסקה בפקיד ועל 27% בערוצים הישירים. אלה תנאים של הבנקים עצמם, ובכללי העמלות של בנק ישראל לא נמצאה תקרה כזו.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-12",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    },
+    {
+      "id": "mizrahi-tefahot",
+      "name_he": "בנק מזרחי טפחות"
+    },
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    },
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    },
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+      "title": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "title_he": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, 4.1",
+      "locator_he": "עמוד 10, 4.1",
+      "page": 10,
+      "quote": "העמלה המזערית לא תעלה בכל מקרה על 25% מהשווי",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+      "title": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "title_he": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, 4.4",
+      "locator_he": "עמוד 11, 4.4",
+      "page": 11,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+      "title": "בנק יהב: תעריפון יחיד / עסק קטן 2.2026",
+      "title_he": "בנק יהב: תעריפון יחיד / עסק קטן 2.2026",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.13",
+      "locator_he": "עמוד 13",
+      "page": 13,
+      "quote": "העמלה לא תעלה על 25% מהערך הכספי של העיסקה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+      "title": "בנק יהב: תעריפון יחיד / עסק קטן 2.2026",
+      "title_he": "בנק יהב: תעריפון יחיד / עסק קטן 2.2026",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.14",
+      "locator_he": "עמוד 14",
+      "page": 14,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+      "title": "הבנק הבינלאומי: תעריפון, חלק 4 ניירות ערך",
+      "title_he": "הבנק הבינלאומי: תעריפון, חלק 4 ניירות ערך",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "סכום העמלה לא יעלה על 30% משווי העסקה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+      "title": "הבנק הבינלאומי: תעריפון, חלק 4 ניירות ערך",
+      "title_he": "הבנק הבינלאומי: תעריפון, חלק 4 ניירות ערך",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+      "title": "בנק מסד: תעריפון, חלק 4 ניירות ערך",
+      "title_he": "בנק מסד: תעריפון, חלק 4 ניירות ערך",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "סכום העמלה לא יעלה על 25% משווי העסקה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+      "title": "בנק מסד: תעריפון, חלק 4 ניירות ערך",
+      "title_he": "בנק מסד: תעריפון, חלק 4 ניירות ערך",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "בנק לאומי: תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (01/10/2026)",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.30",
+      "locator_he": "עמוד 30",
+      "page": 30,
+      "quote": "עמלת מינימום תיגבה לפי הסכום הנקוב כעמלת מינימום",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "בנק לאומי: תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (01/10/2026)",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.31",
+      "locator_he": "עמוד 31",
+      "page": 31,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "בנק לאומי: תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (01/10/2026)",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.13 to 14, annex E",
+      "locator_he": "עמודים 13 עד 14, נספח ה",
+      "page": 13,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+      "title": "בנק הפועלים: תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן (גיליון, 'נכון ליום: 05/10/2026')",
+      "title_he": "בנק הפועלים: תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן (גיליון, 'נכון ליום: 05/10/2026')",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "העמלה לא תעלה על 25% מהערך הכספי",
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "BRK-16"
+  ]
+}

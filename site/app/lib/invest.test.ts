@@ -84,6 +84,21 @@ describe("invest page computation", () => {
     expect(view.headline!.providerId).toBe("psagot");
   });
 
+  it("One Zero sells no Israeli ETF and leaves the foreign funds traded in Tel Aviv open, each with its own reason (2026-11-12)", () => {
+    const oz = bundle.snapshots.find((s) => s.id === "one-zero");
+    // the Israeli ETF is a plain no: no doubt on that option; the foreign fund in Tel Aviv reads its own entry, not the ETF's
+    expect(doubtOf(oz, "il-etf")).toBeNull();
+    expect(doubtOf(oz, "tase-foreign")).toContain("קרנות חוץ");
+    const at = (option: string) => view.options.find((o) => o.id === option)!.funds.map((f) => f.byHouse["one-zero"] as { availability?: unknown; valueN?: number } | undefined);
+    expect(at("il-etf").length).toBeGreaterThan(0);
+    for (const h of at("il-etf")) expect(h?.availability).toBeDefined();
+    expect(at("tase-foreign").length).toBeGreaterThan(0);
+    for (const h of at("tase-foreign")) {
+      expect(h?.availability).toBeUndefined();
+      expect(h?.valueN).toBeUndefined();
+    }
+  });
+
   it("lists the equity indices of the records, none chosen for the person", () => {
     expect(knownIndices(bundle).map((i) => i.id)).toContain("index-sp500");
     expect(knownIndices(bundle).every((i) => i.exposure?.kind === "equity_index")).toBe(true);

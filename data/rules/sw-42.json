@@ -89,6 +89,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.10, annex ג",
+      "locator_he": "עמוד 10, נספח ג",
       "page": 10,
       "quote": "ממשק הניוד קובע מבנה אחיד להעברת מידע",
       "checked": "2026-10-25"

@@ -1,0 +1,29 @@
+{
+  "id": "PF-08",
+  "title": "Lower fee cap on lost-contact and deceased members' accounts",
+  "title_he": "תקרה נמוכה יותר לדמי הניהול כשהקשר עם העמית נותק או כשהוא נפטר",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "no",
+  "text_he": "אם הקשר עם עמית נותק, החל משנה אחרי שהקשר נותק, או אם העמית נפטר, והחברה המנהלת לא השלימה בזמן את פעולות האיתור שהתקנות מחייבות, דמי הניהול מחיסכון לא יעלו על 0.3% לשנה, או על השיעור שנגבה לאחרונה אם הוא נמוך יותר. התקרה לא חלה על קופות גמל ענפיות, על רוב קרנות הפנסיה הוותיקות ועל חלק ממקבלי הקצבה שנפטרו.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+      "title": "s.8, gazette ק״ת תשע״ב, 1260",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.8, gazette ק״ת תשע״ב, 1260",
+      "locator_he": "סעיף 8, ק״ת תשע״ב, 1260",
+      "page": 6,
+      "checked": "2026-10-22"
+    }
+  ]
+}

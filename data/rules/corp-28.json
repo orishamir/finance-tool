@@ -22,8 +22,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "reg. 2(2)-(3)",
-      "locator_he": "תקנה 2(2)-(3)",
+      "locator": "reg. 2(2)-(3), file pp.3-4; file p.4",
+      "locator_he": "תקנה 2(2)-(3), עמודי הקובץ 3 עד 4; עמוד הקובץ 4",
+      "page": 4,
       "quote": "פדיון התעודות יהיה רק במועדי תחלופת הנכסים",
       "checked": "2026-11-07"
     },

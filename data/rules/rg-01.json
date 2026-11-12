@@ -1,0 +1,77 @@
+{
+  "id": "RG-01",
+  "title": "What an Israeli REIT is in law",
+  "title_he": "מה זו קרן להשקעות במקרקעין לפי החוק",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-06-30",
+  "text_he": "לפי פקודת מס הכנסה, קרן להשקעות במקרקעין היא חברה שמתקיימים בה התנאים שהפקודה קובעת בפרק נפרד. אחד התנאים הוא שהחברה התאגדה בישראל, והשליטה בעסקים שלה והניהול שלהם נעשים מישראל. לפני הרישום למסחר אסור שיהיו לחברה נכסים, פעילות או התחייבויות, חוץ מפעילות שעומדת במבחן הנכסים. הסעיף שקובע את התנאים תוקן לאחרונה ב־2026.",
+  "il_finance_file": "reits-and-gold-funds.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=100",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, file of 15.1.2023",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.100",
+      "locator_he": "עמוד 100",
+      "page": 100,
+      "quote": "פרק שני 1: קרן להשקעות במקרקעין",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=100",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, file of 15.1.2023",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.103, s.64א2(א)",
+      "locator_he": "עמוד 103, סעיף 64א2(א)",
+      "page": 103,
+      "quote": "קרן להשקעות במקרקעין",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299994.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023 (10.8.2005)",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023 (10.8.2005)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.770, s.64א2",
+      "locator_he": "עמוד 770, סעיף 64א2",
+      "page": 770,
+      "quote": "קרן להשקעות במקרקעין",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_338810.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 222), התשע\"ו-2016, ספר החוקים 2547",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 222), התשע\"ו-2016, ספר החוקים 2547",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.724, s.2(1)(ב)",
+      "locator_he": "עמוד 724, סעיף 2(1)(ב)",
+      "page": 724,
+      "checked": "2026-11-07"
+    }
+  ],
+  "derived_from": [
+    "RG-02",
+    "RG-03"
+  ]
+}

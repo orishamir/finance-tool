@@ -1,0 +1,90 @@
+{
+  "id": "TXF-30",
+  "title": "Dividend of a foreign fund through an Israeli bank or TASE member: 25% withheld; no 30 April advance",
+  "title_he": "דיבידנד של קרן זרה דרך בנק או חבר בורסה בישראל: מנוכה מס, בלי מקדמה",
+  "text_he": "כשבנק או חבר בורסה בישראל מקבל דיבידנד של קרן זרה בשביל יחיד תושב ישראל, הוא מנכה ממנו מס במקור, ולמחזיק אין מקדמה לשלם עליו. המקדמה של 30 באפריל היא לדיבידנד מחו״ל שלא נוכה ממנו מס בישראל. התקנה מדברת על דיבידנד על מניות, ולכן היא מתאימה לקרן שמאורגנת כחברה; קרן שמאורגנת כנאמנות או כהסדר חוזי, וחלוקה של קרן איגרות חוב, הן שאלות פתוחות. קרן אירית מחלקת בלי מס אירי, ולכן הניכוי חל על כל הסכום.",
+  "figure_names_he": {
+    "withholding_rate": "שיעור הניכוי במקור מדיבידנד זר ליחיד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "distribution-policy",
+    "tax-during",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "withholding_rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012), gazette p.600, s.2(6), amending reg. 2(ד)",
+        "publisher": "רשומות",
+        "strength": "primary"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2012-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXF-30"
+      ],
+      "state": "sourced",
+      "notes": "Reg. 2(d)(1) of the 2005 withholding regulations: whoever receives from a foreign resident a dividend on shares for an Israeli resident individual withholds 25%. A fund organised as a trust or contractual fund, and a bond fund's distribution, are not settled (the file's open questions)."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "רשות המסים: דע זכויותיך וחובותיך 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.85",
+      "locator_he": "עמוד 85",
+      "page": 85,
+      "quote": "רשימת מדינות",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=5",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "אדם המשלם דיבידנד או ריבית, בין על חשבונו הוא ובין מטעמו או על חשבונו של אדם אחר",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "מוסד כספי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-11-07"
+    }
+  ]
+}

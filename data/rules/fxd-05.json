@@ -1,0 +1,31 @@
+{
+  "id": "FXD-05",
+  "title": "BoI fee rules part 5: the closed list of FX fee types at banks",
+  "title_he": "על אילו שירותי מטבע חוץ בנק יכול לגבות עמלה",
+  "strength": "primary",
+  "dimensions": [
+    "fee-fx",
+    "fee-exit",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-22",
+  "text_he": "לפי כללי העמלות של בנק ישראל, בנוסח המשולב עד 9.4.2025, בחלק של מטבע חוץ בתעריפון המלא יש רשימה סגורה של שירותים שבנק יכול לגבות עליהם עמלה: עמלת חליפין, הפקדה או משיכה של מזומן בחשבון מטבע חוץ, המרת מזומן, שיקים, העברת מטבע חוץ לחו״ל, מחו״ל ובתוך הארץ, ימי ערך, וכיסוי אוטומטי של יתרת חובה בחשבון מטבע חוץ. בעמלת חליפין הבנק קובע את הפירוט, ובלבד שלא יהיו יותר משתי עמלות. אין בחלק הזה שורה לניהול או להחזקה של חשבון מטבע חוץ, או לפתיחה ולהחזקה של פיקדון במטבע חוץ, ובנק יכול לגבות רק על שירותים שבתעריפון המלא. העברה לחשבון של אותו לקוח כשסוגרים חשבון לא יכולה לעלות יותר מ־10 ₪, ואם הבנק יכול להרוויח גם מהפרש בין שער הקנייה לשער המכירה שלו, מעבר לעמלת החליפין, הכללים לא אומרים.",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+      "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "First Schedule part 5, items (1) to (12)",
+      "locator_he": "התוספת הראשונה חלק 5, פרטים (1) עד (12)",
+      "checked": "2026-10-22"
+    }
+  ]
+}

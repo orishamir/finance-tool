@@ -1,4 +1,5 @@
 // The index page's sections rendered on the collected data (part of render.test.ts, which says why it is split).
+import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
@@ -9,7 +10,7 @@ import { type SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
 import { TitleRow } from "./title";
-import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline } from "./pair";
+import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline, whyNoFundAt, whyNoKindAt } from "./pair";
 import { PlanCard } from "./plan-card";
 import { ChosenPair } from "./chosen";
 import { ValueSheet } from "../provenance-sheets";
@@ -80,6 +81,87 @@ describe("the index page's sections render", () => {
     const shown = [...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!).filter((id) => v.houses.find((h) => h.provider.id === id)?.generic);
     expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.costN!)).toEqual(costs);
   });
+  it("a custom index's account that prices no kind of fund says why in the pair page's words, which open the reason: no tag, no \"no data\", no separate source link (D105)", () => {
+    // no house prices nothing on a custom index today (every kind exists there): a planted one, Interactive Israel with its foreign
+    // securities not sold either, stands for it, its entries and rule as the record writes them
+    const ii = bundle.snapshots.find((s) => s.id === "interactive-israel")!;
+    const no = ii.availability!.find((a) => a.available === false)!;
+    const planted = { ...bundle, snapshots: bundle.snapshots.map((s) => (s === ii ? { ...s, availability: [...s.availability!, { ...no, applies_to: ["foreign_securities"] }] } : s)) } as typeof bundle;
+    const v = buildInvest({ bundle: planted, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
+    const out = html(createElement(NoFundAccountColumn, { view: v, bundle: planted, years: 20, chosen: null, onPick: () => undefined }));
+    const missing = v.houses.filter((h) => !h.generic && !h.provider.id.startsWith("custom-broker-group"));
+    expect(missing.map((h) => h.provider.id)).toEqual(["interactive-israel"]);
+    const from = out.indexOf('data-pick-key="interactive-israel"');
+    const next = out.indexOf("data-pick-key=", from + 1);
+    const row = out.slice(from, next < 0 ? undefined : next);
+    expect(row).toMatch(new RegExp(`class="term"[^>]*>${invest.pair.noFund.notSold}<`));
+    expect(row).not.toContain("<a ");
+    expect(shown(row)).not.toContain("אין נתון");
+    expect(shown(row)).not.toContain(invest.pair.notPossibleSource);
+    // its words open the company's rule
+    const told = whyNoKindAt(planted, "interactive-israel", v.options.filter((o) => o.exists && o.id === "abroad").map((o) => ({ option: o.id, at: o.cells.find((x) => x.providerId === "interactive-israel") })));
+    expect(told.state).toBe("notSold");
+    expect(told.rules).toEqual(["BRK-65"]);
+  });
+});
+
+describe("an account that prices no fund on an index says why, over every kind of fund the index has", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
+  const pick = pickOfHeadline(view)!;
+  const out = lists(view, bundle, plan, pick);
+  it("Interactive Israel on TA-125: not possible there, the ETF in its own words about institutional clients and the mutual fund by its terms and Interactive Brokers' fund list (second pass, 2026-11-12)", () => {
+    const w = whyNoFundAt(bundle, "interactive-israel", allFunds(view));
+    expect(w.state).toBe("notSold");
+    expect(w.why).toContain("מוסדיים");
+    expect(w.why).toContain("תנאי השימוש");
+    expect(w.why).toContain(invest.stairs.kinds["il-etf"]!);
+    expect(fundRow(out, "interactive-israel")).toContain(invest.pair.noFund.notSold);
+    expect(fundRow(out, "interactive-israel")).not.toContain(invest.pair.noFund.doubt);
+    // its words open the company's rule, and no document's title in the reasons carries a rule's code
+    expect(w.rules).toEqual(["BRK-65"]);
+    expect(w.parts.map((p) => p.doc?.title ?? "").join(" ")).not.toMatch(/BRK-\d/);
+  });
+  it("Interactive Brokers on TA-125: not possible there, in its FAQ's words on Tel Aviv and its fund list for a resident of Israel (read 2026-11-12)", () => {
+    const w = whyNoFundAt(bundle, "interactive-brokers", allFunds(view));
+    expect(w.state).toBe("notSold");
+    expect(w.why).toContain("לקוחות פרטיים שגרים בישראל");
+    expect(w.why).toContain("קרנות הנאמנות");
+    // the row's words open the rule that says it, in place of the reasons; the reasons, kept for a row with no rule behind it, each carry
+    // their own document, the FAQ among them (the row's one "source" link led to the fund list only)
+    expect(w.rules).toEqual(["BRK-64"]);
+    expect(w.parts.map((p) => p.head)).toEqual(expect.arrayContaining([invest.stairs.kinds["il-tracking"]!, invest.stairs.kinds["il-etf"]!]));
+    expect(w.parts.map((p) => p.doc?.href ?? "").join(" ")).toContain("faq/#/content/56713690");
+    expect(w.parts.map((p) => p.doc?.href ?? "").join(" ")).toContain("products-mutual-funds.php");
+    // the label is the button: no "?" beside the name and no link beside the label
+    const from = out.indexOf('data-pick-key="interactive-brokers"');
+    // the row's cells are spans, so it ends at the first closing div (it is the list's last row: the next pick key is in the funds list)
+    const row = out.slice(from, out.indexOf("</div>", from));
+    expect(row).not.toContain("help-mark");
+    expect(row).not.toContain("<a ");
+    expect(row).toMatch(new RegExp(`class="term"[^>]*>${invest.pair.noFund.notSold}<`));
+    expect(fundRow(out, "interactive-brokers")).toContain(invest.pair.noFund.notSold);
+    expect(fundRow(out, "interactive-brokers")).not.toContain(invest.pair.noFund.doubt);
+    expect(fundRow(out, "interactive-brokers")).not.toContain("אין נתון");
+  });
+  it("the line over the funds an account gives no price opens why, as the account's row does (D105)", () => {
+    let seen = 0;
+    for (const house of ["one-zero", "pepper", "psagot", "interactive-israel"]) {
+      for (const idx of knownIndices(bundle)) {
+        const v = buildInvest({ bundle, index: idx, plan });
+        const priced = allFunds(v).find((f) => "valueN" in (f.byHouse[house] ?? {}));
+        const unpriced = allFunds(v).filter((f) => f.byHouse[house] && !("valueN" in f.byHouse[house]!));
+        if (!priced || unpriced.length === 0) continue;
+        const o = lists(v, bundle, plan, { house, fund: priced.rec.id });
+        const short = v.providers.find((p) => p.id === house)!.short;
+        const words = [invest.pair.noPriceAt.doubt(short), invest.pair.noPriceAt.notSold(short), invest.pair.noPriceAt.missing(short), invest.pair.noPriceAt.other(short)].map((w) => w.replace(/"/g, "&quot;"));
+        const said = words.filter((w) => o.includes(`>${w}</span>`));
+        expect(said.length, `${idx.id} ${house}`).toBeGreaterThan(0);
+        for (const w of said) expect(o, `${idx.id} ${house}`).toMatch(new RegExp(`class="term"[^>]*>${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<`));
+        seen++;
+      }
+    }
+    expect(seen).toBeGreaterThan(0);
+  });
 });
 
 describe("every house keeps a row in the account list (founder, 2026-10-31)", () => {
@@ -97,7 +179,8 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
       const none = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {})));
       const some = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !none.includes(p));
       for (const p of none) {
-        expect(fundRow(o, p.id), `${idx.id} ${p.id}`).toMatch(/אין נתון|לא אפשרי שם/);
+        expect(fundRow(o, p.id), `${idx.id} ${p.id}`).toMatch(/לא ברור אם אפשר שם|התעריפון עוד לא נאסף|לא אפשרי שם|אין מחיר/);
+        expect(fundRow(o, p.id), `${idx.id} ${p.id}`).not.toContain("אין נתון");
         for (const q of some) expect(o.indexOf(`data-pick-key="${p.id}"`), `${idx.id} ${p.id} after ${q.id}`).toBeGreaterThan(o.indexOf(`data-pick-key="${q.id}"`));
         last++;
       }
@@ -172,6 +255,17 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(cell).not.toContain(invest.kinds.gapNone);
     const young = html(createElement(GapCell, { rec: { ...none, domicile: "IL" }, today, list: gapListFor(bundle, none) }));
     expect(young).toContain(invest.kinds.gapNone);
+    // a fund the person typed: the site reads no report of it, so nothing waits to be collected, and the note says so (D105)
+    for (const domicile of ["IE", "IL"]) {
+      const typed = { ...none, id: "custom-fund-x", domicile };
+      const cellT = html(createElement(GapCell, { rec: typed, today, list: gapListFor(bundle, typed) }));
+      expect(cellT, domicile).toContain(invest.kinds.gapTyped);
+      expect(cellT, domicile).not.toContain(invest.kinds.gapNotCollected);
+      expect(cellT, domicile).not.toContain(invest.kinds.gapNone);
+      const noteT = gapNoteOf([typed], ["none"]);
+      expect(noteT, domicile).toContain(`״${invest.kinds.gapTyped}״`);
+      expect(noteT, domicile).not.toContain(`״${invest.kinds.gapNotCollected}״`);
+    }
   });
   it("a foreign fund's gap is measured against the benchmark its own documents name, and none stands where the kind of index is unstated (F-92 (d))", () => {
     const today = "2026-11-07";
@@ -431,10 +525,10 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     expect(view.providers.map((p) => p.id)).not.toContain("pepper");
     expect(view.providers.map((p) => p.id)).toContain("leumi");
   });
-  it("Interactive Brokers prices nothing on Tel Aviv: grey as no data, not as not possible", () => {
+  it("Interactive Brokers prices nothing on Tel Aviv: not possible there, by its own FAQ entry (it was no data until the entry was read, 2026-11-12)", () => {
     for (const x of at("il-etf", "interactive-brokers")) {
       expect("valueN" in x).toBe(false);
-      expect("availability" in x && x.availability).toBeFalsy();
+      expect("availability" in x && x.availability ? x.availability.source.url : "").toContain("faq/#/content/56713690");
     }
   });
   it("a house whose document names funds abroad is priced there, on the row that names them", () => {
@@ -466,7 +560,9 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
       // the account lane as shown: from its title to the next lane's, the copies laid out unseen to hold its height left out
       const seen = out.replace(/<div aria-hidden="true" class="invisible">[\s\S]*?<\/div>/g, "");
       const lane = seen.split(invest.stairs.lanes.account.title)[1]?.split(/<h5/)[0] ?? "";
-      const lines = [...lane.matchAll(/<b class="font-medium">([^<]*):<\/b>/g)].map((m) => m[1]!.replace(/[\u2066-\u2069]/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\""));
+      // the line's words are a button that opens why (D105): the tags inside the bold are left out
+      const lines = [...lane.matchAll(/<b class="font-medium[^"]*">([\s\S]*?):<\/b>/g)].map((m) => m[1]!.replace(/<[^>]+>/g, "").replace(/[\u2066-\u2069]/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\""));
+      for (const m of lane.matchAll(/<b class="font-medium[^"]*">([\s\S]*?):<\/b>/g)) expect(m[1], `${index.id}: a grey line's words open why`).toContain('class="term"');
       const names = [...new Set(allFunds(v).map((f) => f.name))];
       for (const line of lines) {
         grey++;
@@ -521,5 +617,17 @@ describe("before deciding: the tab cards", () => {
     const c = card!;
     expect(String(c.answer)).toMatch(new RegExp(`%.* ${invest.dollar.to} .*%`));
     expect(String(c.note)).toMatch(/\d{4}/);
+  });
+});
+
+describe("a record that names the rules behind what an account does not sell names rules the site holds (2026-11-12)", () => {
+  // the data check passes an id that is a heading in the rule base with no record in data/rules, and its card would open saying the page
+  // does not hold the rule; the row's words open that card
+  it("every rule an availability entry names has a record", async () => {
+    const { existsSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const named = bundle.snapshots.flatMap((s) => (s.availability ?? []).flatMap((a) => a.rule_ids ?? []));
+    expect(named).toEqual(expect.arrayContaining(["BRK-64", "BRK-65"]));
+    for (const id of new Set(named)) expect(existsSync(join(fileURLToPath(new URL("../../../../data/rules", import.meta.url)), `${id.toLowerCase()}.json`)), id).toBe(true);
   });
 });

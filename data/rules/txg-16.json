@@ -1,0 +1,28 @@
+{
+  "id": "TXG-16",
+  "title": "Who must file an annual return: general rule",
+  "title_he": "מי חייב להגיש דוח שנתי",
+  "text_he": "כל תושב ישראל שמלאו לו 18 בתחילת שנת המס חייב להגיש דוח שנתי (טופס 1301), אלא אם תקנות הפטור פוטרות אותו. חייבים להגיש גם צעיר בן 16 עד 18 שיש לו הכנסה חייבת של 91,450 שקלים או יותר (שנת המס 2025), וכל מי שפקיד השומה מבקש ממנו. הפטורים והמקרים שבהם חייבים להגיש בכל זאת הם כללים נפרדים.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5 s.1 (a), (d), and s.3 on p.7",
+      "page": 5,
+      "checked": "2026-10-22"
+    }
+  ]
+}

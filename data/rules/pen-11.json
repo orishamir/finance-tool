@@ -34,6 +34,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "pp.5-11, annex ב",
+      "locator_he": "עמודים 5 עד 11, נספח ב",
       "page": 5,
       "checked": "2026-11-07"
     },
@@ -59,6 +60,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.4, annex א ss.2-3",
+      "locator_he": "עמוד 4, נספח א סעיפים 2-3",
       "page": 4,
       "checked": "2026-10-25"
     }

@@ -1,0 +1,46 @@
+{
+  "id": "TX2-13",
+  "title": "Gold through an Israeli mutual fund or ETF",
+  "title_he": "זהב דרך קרן נאמנות או קרן סל ישראלית",
+  "text_he": "לא נמצא כלל מס מיוחד לזהב. קרן זהב שרשומה בישראל היא קרן נאמנות, ולכן חלים הכללים הרגילים של קרנות: מסלול המס, פטורה או חייבת, קבוע בתשקיף; בקרן פטורה החוסך משלם עד 25% מהרווח הריאלי בפדיון ו־25% על חלוקות; ומעבר לקרן אחרת הוא מכירה. הרווח הריאלי נמדד מול מדד המחירים לצרכן ביחידות שקליות, מול שער המטבע ביחידות במטבע חוץ, ומול המטבע העיקרי רק בקרן להשקעות חוץ שעומדת במבחן ה־90%. את מסלול המס ואת המטבע של כל קרן בודקים בתשקיף שלה.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "real-vs-nominal",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.148, s.88, definition נייר ערך",
+      "page": 148,
+      "quote": "לרבות איגרת חוב או מילווה של מדינת ישראל או בערבותה, איגרת חוב של מדינת חוץ, יחידה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=146",
+      "title": "p.146",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "s.88, definition מדד",
+      "quote": "לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד",
+      "checked": "2026-11-07"
+    }
+  ],
+  "derived_from": [
+    "TXS-07",
+    "TXS-14"
+  ]
+}

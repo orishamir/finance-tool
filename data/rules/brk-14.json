@@ -1,0 +1,31 @@
+{
+  "id": "BRK-14",
+  "title": "SIPC: what it gives back when a US broker that is a member fails",
+  "title_he": "SIPC: ההגנה האמריקאית כשחברת ברוקר שחברה בה קורסת",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "text_he": "SIPC הוא הגוף האמריקאי שמחזיר ללקוחות של חברת ברוקר שחברה בו את ניירות הערך והמזומן שהיו בחשבון שלהם, כשהחברה קורסת והנכסים חסרים. לפי האתר שלו ההגנה היא עד 500,000 דולר, ומתוכם עד 250,000 דולר במזומן. לא צריך לגור בארצות הברית או להיות אזרח שלה. SIPC מגן רק על השמירה של הנכסים: הוא לא מגן מירידה בערך ההשקעות ולא מהפסד בגלל ייעוץ גרוע. ההגנה חלה רק אצל ברוקר שחבר ב־SIPC.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.sipc.org/for-investors/what-sipc-protects",
+      "title": "SIPC, \"What SIPC Protects\"",
+      "publisher": "SIPC",
+      "publisher_he": "SIPC",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "The limit of SIPC protection is $500,000, which includes a $250,000 limit for cash.",
+      "checked": "2026-11-12",
+      "qualifier": "(foreign statutory body)"
+    }
+  ],
+  "examples": [
+    "BRK-41"
+  ]
+}

@@ -675,7 +675,9 @@
           "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.1, גובה העמלה מינימום (עמ' 15 מתוך 42, עודכן 07/02/2025)",
           "publisher": "Mercantile Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.1 דמי ניהול פיקדון ני\"ע 0.2% לרבעון ₪ 7,500"
         },
         "checked": "2026-11-04",
         "effective_from": "2025-02-07",
@@ -757,7 +759,9 @@
           "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.2, גובה העמלה מינימום (עמ' 15 מתוך 42, עודכן 07/02/2025)",
           "publisher": "Mercantile Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.2 דמי ניהול פיקדון ני\"ע 0.25% לרבעון ₪ 7,500"
         },
         "checked": "2026-11-04",
         "effective_from": "2025-02-07",
@@ -1060,7 +1064,9 @@
           "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
           "publisher": "Mercantile Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 18,
+          "quote": "5.1.1 עמלת חליפין מט\"י-מט\"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075"
         },
         "checked": "2026-11-04",
         "effective_from": "2024-06-16",
@@ -1164,7 +1170,9 @@
           "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
           "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
           "publisher": "Mercantile Discount Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 18,
+          "quote": "0.17% מסכום העסקה מינימום $ 6.30 בערוץ ישיר לפעולה מקסימום $ 1,055"
         },
         "checked": "2026-11-04",
         "effective_from": "2024-06-16",
@@ -1252,31 +1260,43 @@
   "left_out": [
     {
       "what": "מרכנתיל טופ ודלקס: 'דמי ניהול חשבון ני\"ע - פטור', קניה/מכירה בישראל 0.12% מינימום 10 ₪, בחו\"ל 0.15%",
-      "why": "A promotion on the new-account-groups page (library e83a067b2644e092; on the Wayback Machine since 2025-02-09), not in the tariff: new joiners 'במהלך תקופת המבצע', from age 19, a salary of 12,000 NIS (18,000 joint; Deluxe 20,000/25,000) plus 3,000 NIS a month on a Mercantile credit card; 'תוקף ההטבות - 3 שנים ממועד ההצטרפות'; 'הבנק רשאי לשנות את תנאי המבצע בכל עת'. An offer, not ranked (D56). The rows name no fund."
+      "why": "A promotion on the new-account-groups page (library e83a067b2644e092; on the Wayback Machine since 2025-02-09), not in the tariff: new joiners 'במהלך תקופת המבצע', from age 19, a salary of 12,000 NIS (18,000 joint; Deluxe 20,000/25,000) plus 3,000 NIS a month on a Mercantile credit card; 'תוקף ההטבות - 3 שנים ממועד ההצטרפות'; 'הבנק רשאי לשנות את תנאי המבצע בכל עת'. An offer, not ranked (D56). The rows name no fund.",
+      "why_he": "מי שמצטרף לחשבון טופ או דלקס בזמן המבצע, מעביר משכורת מ־12,000 ₪ (בדלקס מ־20,000 ₪) ומשלם 3,000 ₪ בחודש בכרטיס האשראי של הבנק, פטור מדמי ניהול ניירות ערך ומשלם 0.12% על קנייה ומכירה בארץ, למשך 3 שנים. שורות ההטבה לא מזכירות קרנות. זה מבצע שמופיע רק באתר הבנק והבנק רשאי לשנות אותו בכל עת, ולכן האתר לא מחשב אותו; למי שזכאי המחיר יוצא זול יותר.",
+      "could_change_price": true
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: עמלת סוכן, Sec fee, הוצאות קסטודיאן בחו\"ל",
       "page": 29,
-      "why": "Part 11 prices them 'משתנה' or 'בהתאם להוצאה הממשית'; not limited by the documents, not priced."
+      "why": "Part 11 prices them 'משתנה' or 'בהתאם להוצאה הממשית'; not limited by the documents, not priced.",
+      "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של צד שלישי: עמלת הסוכן בחו״ל על כל עסקה, עמלה לרשות ניירות הערך האמריקאית והוצאות המשמורן בחו״ל. התעריפון לא נוקב בסכום שלהן אלא ״בהתאם להוצאה הממשית״ או ״משתנה״, ולכן האתר לא מחשב אותן והמחיר בחו״ל יכול לצאת יקר יותר.",
+      "could_change_price": true
     },
     {
       "what": "4.11.1 עמלת קסטודיאן 0.1% משווי העסקה, מינימום 50 ₪, מקסימום 10,000 ₪ לני\"ע",
       "page": 17,
-      "why": "Printed with no scope; not priced for the reader's trades."
+      "why": "Printed with no scope; not priced for the reader's trades.",
+      "why_he": "התעריפון מדפיס ״עמלת קסטודיאן״ של 0.1% משווי העסקה, מינימום 50 ₪ לנייר, בלי לומר על אילו פעולות היא חלה. האתר לא מחשב אותה; אם היא חלה גם על קנייה או מכירה רגילה, המחיר יקר יותר.",
+      "could_change_price": true
     },
     {
       "what": "שימוש במערכת מסחר עצמאי ונתוני מסחר שוטפים (11.20-11.22)",
       "page": 29,
-      "why": "'בהתאם להוצאה הממשית', for the advanced trading system; the website and app need neither. Optional, not priced."
+      "why": "'בהתאם להוצאה הממשית', for the advanced trading system; the website and app need neither. Optional, not priced.",
+      "why_he": "רישיון למערכת המסחר המתקדמת ונתוני מסחר שוטפים עולים לפי ההוצאה בפועל, אבל רק למי שבוחר במערכת הזו. קנייה דרך האתר או האפליקציה לא צריכה אותם, ולכן הם לא נכללים במחיר.",
+      "could_change_price": false
     },
     {
       "what": "חשבון עו\"ש: פעולה ע\"י פקיד 6.40 ₪, בערוץ ישיר 2.00 ₪, עמלת מינימום חודשית עד מחיר פעולה אחת ע\"י פקיד; מסלול בסיסי 8.50 ₪, מורחב 26.50 ₪",
       "page": 2,
-      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Abridged tariff 01/10/2026, library 897991154e216138."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Abridged tariff 01/10/2026, library 897991154e216138.",
+      "why_he": "מחשבון העו״ש האתר סופר רק את עמלת המינימום החודשית, 6.40 ₪, כי זה מה שחשבון עולה למי שעושה בו מעט פעולות. עמלות על פעולות נוספות ומסלולי עמלות הם עניין של השימוש בחשבון ולא של ההשקעה. אם סימנתם שזה הבנק שלכם, האתר לא סופר את עמלת המינימום.",
+      "could_change_price": false
     },
     {
       "what": "ממוצעי העמלות שנגבו בפועל, 1-6/2026",
-      "why": "Israeli custody 0.08%-0.43% a year by portfolio size, foreign 0.05%-0.44% (the exchange's sheet). A fact, not a price (D56); kept in the custody line's notes."
+      "why": "Israeli custody 0.08%-0.43% a year by portfolio size, foreign 0.05%-0.44% (the exchange's sheet). A fact, not a price (D56); kept in the custody line's notes.",
+      "why_he": "לפי הממוצעים שהבורסה מפרסמת על הבנק, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.08% עד 0.43% בשנה על ניירות ערך בארץ, לפי גודל התיק, ובתעריפון כתוב 0.2% לרבעון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
+      "could_change_price": true
     }
   ],
   "groups": {

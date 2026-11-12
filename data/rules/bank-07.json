@@ -60,6 +60,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf#page=1",
+      "title": "same rules, נוסח משולב (בנק ישראל)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "file p.1",
+      "locator_he": "עמוד הקובץ 1",
+      "page": 18,
+      "quote": "הודעה מוקדמת על פרעון פקדון לשנה ומעלה",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
       "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
       "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",

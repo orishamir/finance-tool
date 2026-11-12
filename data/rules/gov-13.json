@@ -4,7 +4,8 @@
   "title_he": "אג״ח ממשלתית שקלית בריבית קבועה (וסוג ישן נפרד: שחר)",
   "text_he": "איגרת ממשלתית בריבית קבועה היא איגרת שתשלומי הקרן והריבית שלה לא צמודים למדד, למטבע או לנכס אחר, לפי מילון המונחים של יחידת ניהול החוב. בנתוני המכרזים של משרד האוצר הסדרות האלה מופיעות כ\"ממשלתית\" עם קופון קבוע לכל סדרה, והחשב הכללי מונה את הסוג \"אג\"ח ממשלתית\" עם תקנות משלו. התקנות האלה קובעות ריבית שנתית קבועה שנקבעת לכל סדרה כך שהמחיר יהיה קרוב למאה בהנפקה הראשונה, שווי נקוב של אלף שקלים או כפולה שלו, תקופות ריבית של שנים עשר חודשים, כלומר קופון פעם בשנה, ומועד קובע בסוף היום העשרים בחודש התשלום: מי שקונה אחריו לא מקבל את הריבית של אותה תקופה. \"שחר\" הוא סוג ישן ונפרד עם תקנות משלו, לא השם הקודם של הסוג הזה; נוסח התקנות שלו לא נקרא.",
   "figure_names_he": {
-    "linkage": "הצמדה"
+    "linkage": "הצמדה",
+    "coupon_every_months": "תדירות תשלום הקופון (חודשים)"
   },
   "strength": "primary",
   "dimensions": [
@@ -32,12 +33,45 @@
       ],
       "state": "sourced",
       "notes": "Per the Debt Unit glossary (p. 41, \"אג\"ח בריבית קבועה\"): payments of principal and interest are not linked to an index, a currency or any other asset. The 2006 \"אג\"ח ממשלתית\" regulations (ק\"ת 6457 pp.2-3) set a fixed rate, NIS 1,000 face value and twelve-month interest periods; the Accountant General's bond page lists \"אג\"ח ממשלתית\" (first issued 6.11.2006, interest once a year) as the current fixed-rate type with these regulations, so today's \"ממשלתית\" series are of this type (GOV open question 4 now asks only for the 1995 \"שחר\" base text and amendments after 2007). Method F-25 takes the coupon frequency of a fixed-rate series from the series data."
+    },
+    "coupon_every_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=2",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457), p.2 (gazette p.400), reg. 1 (תקופת ריבית)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary",
+        "quote": "בחודש השנים עשר שקדם לו"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-13"
+      ],
+      "state": "sourced",
+      "notes": "Each interest period ends on a payment day and starts on the last bank business day of the twelfth month before it, or on the day the series was first issued if that is later, so the coupon is paid once a year (reg. 1, reg. 5(ג)). The Accountant General's bond page also lists interest once a year for this type (GOV-13 Source)."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
   "checked": "2026-10-26",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "tab מאפייני אג״ח סחיר, table אג״ח לא צמוד",
+      "quote": "שחר 24.8.1995 קבועה: כפי שנקבע על ידי אגף החשב הכללי במשרד האוצר אחת לשנה",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
       "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
@@ -102,17 +136,6 @@
       "locator_he": "עמוד 6",
       "page": 6,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/he/pages/govermental-bonds",
-      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
-      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "quote": "מאפייני אג״ח סחיר",
-      "checked": "2026-10-26"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c92fdda2-0939-4110-8ebc-edfcf35e8723&limit=40&sort=ISSUANCEDATE%20desc",

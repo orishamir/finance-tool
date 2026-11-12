@@ -142,11 +142,16 @@ const hostOf = (url: string): string => {
     return "";
   }
 };
+/**
+ * The Ministry of Justice's Reshumot resolver (`api.justice.gov.il/reshumot/resolver?path=akn/il/officialGazette/...`) serves a whole
+ * gazette booklet as one PDF: its printed page numbers (p.1001) run on from the booklet before, so they are never the file's page.
+ */
+export const isGazetteBooklet = (url: string): boolean => /^https:\/\/api\.justice\.gov\.il\/reshumot\/resolver\?/i.test(url);
 const isPdf = (url: string): boolean => {
   try {
     const u = new URL(url);
     // the Reshumot gazette service serves PDFs at a document key with no `.pdf` (2026-10-25)
-    return /\.pdf$/i.test(u.pathname) || u.pathname.includes("BlobFolder") || (u.host === "free-justice.openapi.gov.il" && u.pathname.includes("/Documents/"));
+    return /\.pdf$/i.test(u.pathname) || u.pathname.includes("BlobFolder") || (u.host === "free-justice.openapi.gov.il" && u.pathname.includes("/Documents/")) || isGazetteBooklet(url);
   } catch {
     return false;
   }
@@ -188,10 +193,11 @@ export function cleanLocator(text: string): string {
   if (q >= 0) t = t.slice(0, q);
   t = t.replace(/\uE000/g, '"');
   // Parenthetical remarks in English ("(gov.il)", "(as amended 2007)", "(link above)") are not part of the locator.
-  t = t.replace(/\((?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
+  // ("(gazette p.375)" beside a file's page is kept: it is the page the gazette prints)
+  t = t.replace(/\((?!\s*(?:gazette|file) (?:pp?\.|pages?)\s*\d+(?:\s*(?:–|-|to)\s*\d+)?\s*\))(?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
   t = t.replace(/\(\s*\)/g, " ");
   // Prose after the reference ("describe Amendment 15 as the law that") is cut off.
-  const prose = /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?|parts?)\b)[a-z]{4,}\b/.exec(t);
+  const prose = /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?|parts?|file|gazette|enacted)\b)[a-z]{4,}\b/.exec(t);
   if (prose) t = t.slice(0, prose.index);
   t = t.replace(/\s+/g, " ").replace(/^[\s,;:.()]+/, "");
   t = t.replace(/(?:[\s,;:.(]|\b(?:definitions?|definition of|of|and|paragraph|footnote|items?|the|read)\b)+$/gi, "");
@@ -210,9 +216,20 @@ export function locatorFromTitle(title: string): string {
 }
 
 /** "s.3(ה4)(3)" to "סעיף 3(ה4)(3)", "pp.27–30" to "עמודים 27 עד 30"; undefined when English words would remain. */
-export function toHebrewLocator(locator: string): string | undefined {
+export function toHebrewLocator(locator: string, url = ""): string | undefined {
   if (/printed|bylaws/i.test(locator)) return undefined;
+  // the gazette a Knesset law booklet prints its pages in is Sefer HaChukim
+  const gazette = /^https:\/\/fs\.knesset\.gov\.il\/[^?#]*\/law\//i.test(url) ? "ספר החוקים" : "הרשומות";
   let t = locator
+    // "reg. 9(ב) as enacted": a regulation is feminine, regulations plural feminine, a section masculine
+    .replace(/(\bregs\.\s*[^,;]*?)\s+as enacted\b/gi, "$1 בנוסחן המקורי")
+    .replace(/(\breg\.\s*[^,;]*?)\s+as enacted\b/gi, "$1 בנוסחה המקורי")
+    .replace(/\s+as enacted\b/gi, " בנוסחו המקורי")
+    .replace(/\bfile (?:pp\.|pages)\s*(\d+)\s*(?:–|-|to)\s*(\d+)/gi, "עמודי הקובץ $1 עד $2")
+    .replace(/\bfile (?:p\.|page)\s*(\d+)/gi, "עמוד הקובץ $1")
+    .replace(/\bgazette (?:pp\.|pages)\s*(\d+)\s*(?:–|-|to)\s*(\d+)/gi, `עמודי ${gazette} $1 עד $2`)
+    .replace(/\bgazette (?:p\.|page)\s*(\d+)/gi, `עמוד ${gazette} $1`)
+    .replace(/\bgazette\s+(?=[\u05D0-\u05EA])/gi, "")
     .replace(/\bpp\.\s*(\d+)\s*(?:–|-|to)\s*(\d+)/gi, "עמודים $1 עד $2")
     .replace(/\bpp\.\s*/gi, "עמודים ")
     .replace(/\bp\.\s*/gi, "עמוד ")
@@ -225,6 +242,7 @@ export function toHebrewLocator(locator: string): string | undefined {
     .replace(/\bclauses\s+/gi, "סעיפים ")
     .replace(/\bclause\s+/gi, "סעיף ")
     .replace(/\bfirst schedule\b/gi, "התוספת הראשונה")
+    .replace(/\bannex\s+(?=[\u05D0-\u05EA])/gi, "נספח ")
     .replace(/\bannex\s+([a-e])\b/gi, (_m, l: string) => `נספח ${LATIN_TO_HE[l.toLowerCase()]}`)
     .replace(/\bparts\s+/gi, "חלקים ")
     .replace(/\bpart\s+/gi, "חלק ")
@@ -239,25 +257,72 @@ export function toHebrewLocator(locator: string): string | undefined {
   return t || undefined;
 }
 
-/** First page for "#page=": only from a `p.`/`pp.` locator on a PDF, never a printed page. */
+/** The page a PDF link opens at by itself (`…pdf#page=3`): the record's page when its locator names none the link can use. */
+export function pageInUrl(url: string): number | undefined {
+  const m = isPdf(url) ? /#page=(\d+)/.exec(url) : null;
+  return m && Number(m[1]) > 0 ? Number(m[1]) : undefined;
+}
+
+/**
+ * First page for "#page=": only from a `p.`/`pp.` locator on a PDF, never a printed page. "file p.3 (gazette p.375)" gives 3; a gazette
+ * booklet from the Reshumot resolver opens at a page only when the locator names the file's page (its "p.1001" is printed on the sheet).
+ */
 export function firstPage(locator: string, url: string): number | undefined {
-  if (!isPdf(url) || /printed|bylaws/i.test(locator)) return undefined;
-  const m = /(?:^|[\s,(])pp?\.\s*(\d+)/i.exec(locator);
+  if (!isPdf(url)) return undefined;
+  const file = /\bfile (?:pp?\.|pages?)\s*(\d+)/i.exec(locator);
+  if (file) return Number(file[1]) > 0 ? Number(file[1]) : undefined;
+  if (isGazetteBooklet(url) || /printed|bylaws/i.test(locator)) return undefined;
+  const m = /(?:^|[\s,(])pp?\.\s*(\d+)/i.exec(locator.replace(/\bgazette (?:pp?\.|pages?)\s*[\d\s–\-to]+/gi, " "));
   const n = m ? Number(m[1]) : NaN;
   return Number.isInteger(n) && n > 0 && n < 5000 ? n : undefined;
 }
 
-/** A quoted span inside the segment that is mostly Hebrew, 8 to 240 characters, without elision. */
-export function findQuote(segment: string): string | undefined {
-  const masked = segment.replace(/(?<=[א-ת])"(?=[א-ת])/g, "״");
-  const spans = [...masked.matchAll(/"([^"]+)"|“([^”]+)”|״([^״]+)״/g)].map((m) => (m[1] ?? m[2] ?? m[3] ?? "").replace(/\uE000/g, '"').trim());
-  for (const s of spans) {
-    if (s.length < 8 || s.length > 240) continue;
-    if (/\.\.\.|…/.test(s)) continue;
-    if (hebrewRatio(s) < 0.6) continue;
-    return s.replace(/[\s,;:]+$/, "");
+/**
+ * A quoted English span that reads as a sentence of the document, not a title or a term quoted beside it: at least six words, a verb
+ * a sentence carries (is, are, shall, may, must, does, means…) or a closing full stop, not a question (an FAQ's or a section's heading), and not opening on
+ * punctuation (the piece between two quotes). "Expiration of Form W-8BEN", "Stock in a regulated investment company (RIC)" and "How
+ * much protection do you have?" are titles and terms; "At this moment we do not offer trading on Tel Aviv Exchange (TASE) to retail
+ * clients who are a resident of Israel." is a sentence (2026-11-12: an English page's link could never land on its words).
+ */
+const SENTENCE_VERB = /\b(?:is|are|was|were|be|been|being|shall|may|must|will|can|cannot|could|should|would|do|does|did|don't|doesn't|has|have|had|means|apply|applies|routes|offer|offers)\b/i;
+export function isEnglishSentence(s: string): boolean {
+  if (/[א-ת]/.test(s) || !/^[A-Za-z0-9"'(“]/.test(s) || /\?\s*$/.test(s)) return false;
+  if (s.split(/\s+/).filter((w) => /[A-Za-z]/.test(w)).length < 6) return false;
+  // a title never ends on a full stop; an imperative sentence ("Use our … tool to identify funds …") has no auxiliary
+  return SENTENCE_VERB.test(s) || /[a-z)]\.\s*$/.test(s);
+}
+
+/** Spans inside straight quotes, where a quote may hold quoted words ("במקום "20%" יבוא "25%"" is one span): a mark after a space or an
+ *  opening bracket and before a non-space opens, any other closes; an unbalanced segment falls back to plain pairs. */
+function straightSpans(s: string): { at: number; text: string }[] {
+  const out: { at: number; text: string }[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] !== '"') continue;
+    const opens = (i === 0 || /[\s([{\u2013\u2014/:]/.test(s[i - 1]!)) && i + 1 < s.length && !/[\s"]/.test(s[i + 1]!);
+    if (opens) {
+      if (depth++ === 0) start = i + 1;
+    } else if (depth > 0 && --depth === 0) out.push({ at: start, text: s.slice(start, i) });
   }
-  return undefined;
+  return depth === 0 ? out : [...s.matchAll(/"([^"]+)"/g)].map((m) => ({ at: m.index!, text: m[1]! }));
+}
+
+/**
+ * The quoted words of a segment: the first span that is mostly Hebrew, else the first that is an English sentence (`isEnglishSentence`);
+ * 8 to 240 characters, without elision. Hebrew is tried first, so a line that quotes both keeps its Hebrew words as before.
+ */
+export function findQuote(segment: string): string | undefined {
+  // a quote mark between two Hebrew letters is an abbreviation's gershayim (ק"ת, התשע״ה), never a quotation's edge: it is masked while
+  // the spans are cut, so "ק״ת 7469, התשע״ה" yields no quote "ת 7469, התשע" (BANK-07, 2026-11-12); it comes back as gershayim, as it
+  // always has (ק"ת is written ק״ת in a quote)
+  const masked = segment.replace(/(?<=[א-ת])["״](?=[א-ת])/g, "\uE001");
+  const spans = [...straightSpans(masked), ...[...masked.matchAll(/“([^”]+)”|״([^״]+)״/g)].map((m) => ({ at: m.index!, text: m[1] ?? m[2] ?? "" }))]
+    .sort((a, b) => a.at - b.at)
+    .map(({ text: x }) => x.replace(/\uE000/g, '"').replace(/\uE001/g, "״").trim())
+    .filter((x) => x.length >= 8 && x.length <= 240 && !/\.\.\.|…/.test(x));
+  const pick = spans.find((x) => hebrewRatio(x) >= 0.6) ?? spans.find(isEnglishSentence);
+  return pick?.replace(/[\s,;:]+$/, "");
 }
 
 // ---------------------------------------------------------------- kind, rank
@@ -366,15 +431,17 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (titleHe) entry.title_he = titleHe;
     const publisherHe = doc?.publisher_he ?? pub?.publisher_he;
     if (publisherHe) entry.publisher_he = publisherHe;
-    const locate = (e: ExtractedSource, loc: string, quoteText: string) => {
+    // `quotedPassage`: the passage the quoted words come from, when it is not the first; the link opens at its page, where the words
+    // are, not at the locator's first page ("p.4, s.1 definitions; p.8, s.2 "…"" opens at p.8; 2026-11-12)
+    const locate = (e: ExtractedSource, loc: string, quoteText: string, quotedPassage?: string) => {
+      const quote = findQuote(quoteText);
       if (loc) {
         e.locator = loc;
-        const he = toHebrewLocator(loc);
+        const he = toHebrewLocator(loc, url);
         if (he) e.locator_he = he;
-        const page = firstPage(loc, url);
-        if (page) e.page = page;
       }
-      const quote = findQuote(quoteText);
+      const page = (quote && quotedPassage ? firstPage(cleanLocator(quotedPassage), url) : undefined) ?? (loc ? firstPage(loc, url) : undefined) ?? pageInUrl(url);
+      if (page) e.page = page;
       if (quote) e.quote = quote;
     };
     const body = rest.slice(0, rest.includes("·") ? rest.indexOf("·") : rest.length);
@@ -382,10 +449,10 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     // s.4.2.8 "…""). The locator above runs up to the first quote mark, so it covers the passages up to the first quoted one;
     // each passage after that becomes a source of its own, with its locator, page and quote, so the rule card shows every
     // passage the rule rests on (TXF-28's two exempting passages were dropped; review, 2026-10-26).
-    const passages = body.split(/;\s*(?=pp?\.\s*\d)/);
+    const passages = body.split(/;\s*(?=(?:file\s+)?pp?\.\s*\d)/);
     const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
-    locate(entry, locator, covered.join("; "));
+    locate(entry, locator, covered.join("; "), firstQuoted > 0 ? covered[firstQuoted] : undefined);
     if (note) {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;

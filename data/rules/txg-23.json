@@ -1,0 +1,29 @@
+{
+  "id": "TXG-23",
+  "title": "Late payment: linkage, 4% interest and a weekly fine",
+  "title_he": "תשלום באיחור: הצמדה, ריבית של 4% וקנס שבועי",
+  "text_he": "מס שלא שולם עד סוף שנת המס, או עד מועד המקדמה, נושא הפרשי הצמדה וריבית מסוף שנת המס ועד התשלום. הריבית היא 4% לשנה על החוב הצמוד למדד. על מס שלא שולם בזמן מוטל גם קנס פיגור של 0.2% לכל שבוע של איחור. פקיד השומה יכול במקרים מסוימים להפחית או לבטל קנסות וריבית לפי בקשה.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.119 s.d, p.120 s.7, p.121 s.g",
+      "page": 119,
+      "quote": "שיעור הריבית הוא 4% לשנה",
+      "checked": "2026-10-22"
+    }
+  ]
+}

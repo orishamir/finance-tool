@@ -15,6 +15,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.9, s.1",
+      "locator_he": "עמוד 9, סעיף 1",
+      "page": 9,
+      "quote": "שכר מבוטח",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
       "title": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
       "title_he": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
@@ -36,20 +50,6 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.9, s.1",
-      "locator_he": "עמוד 9, סעיף 1",
-      "page": 9,
-      "quote": "שכר מבוטח",
       "checked": "2026-10-25"
     }
   ]

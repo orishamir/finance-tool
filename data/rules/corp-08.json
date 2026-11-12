@@ -1,0 +1,76 @@
+{
+  "id": "CORP-08",
+  "title": "Payment default: trustee must go to court after 45 days",
+  "title_he": "תשלום שלא שולם: אחרי 45 ימים הנאמן פונה לבית המשפט",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק ניירות ערך, אם עברו 45 ימים מהמועד לתשלום קרן או ריבית של איגרת חוב והתשלום לא שולם, הנאמן צריך לבקש לפתוח הליך חדלות פירעון נגד המנפיק. החריג: מחזיקים שיש להם יחד שלושה רבעים לפחות מהקרן או מהריבית שלא שולמה מתנגדים לכך, ואז הנאמן בודק שוב את עמדתם לפחות פעם ב־60 ימים. מה קורה אחר כך, הסדר נושים, פירוק או שיקום, קבוע בחוק חדלות פירעון ושיקום כלכלי, והאתר עוד לא קרא אותו.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=45",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.45, s. 35ח(ד2ב)",
+      "locator_he": "עמוד הקובץ 45, סעיף 35ח(ד2ב)",
+      "page": 45,
+      "quote": "ישוב הנאמן ויבחן את עמדתם לעניין הגשת",
+      "checked": "2026-11-12",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.43, s. 35ז(3)",
+      "locator_he": "עמוד הקובץ 43, סעיף 35ז(3)",
+      "page": 43,
+      "quote": "ברוב של המחזיקים בשלושה רבעים לפחות",
+      "checked": "2026-11-12",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=53",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.53, s. 35יב17(ב)",
+      "locator_he": "עמוד הקובץ 53, סעיף 35יב17(ב)",
+      "page": 53,
+      "quote": "ברוב קולות של המחזיקים בתעודות",
+      "checked": "2026-11-12",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "ss. 35ח(ד2ב), 35ז(3), 35יב17(ב)",
+      "locator_he": "סעיפים 35ח(ד2ב), 35ז(3), 35יב17(ב)",
+      "page": 43,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

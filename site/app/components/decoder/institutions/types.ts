@@ -1,6 +1,7 @@
 // The shapes the bank and broker pages and the companies list share (flows 15.4, design-spec 20). Plain JSON: the
 // loader builds them in lib/institutions.server.ts, the components in this folder show them.
 import type { TariffDated } from "../../../lib/tariff-date";
+import type { LeftOutView } from "../../../lib/left-out";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { TextFragment } from "../../../lib/sources";
 import type { SiteValue } from "../../../lib/value";
@@ -91,6 +92,8 @@ export interface TariffLineRow {
   max: SiteValue | null;
   /** Where the rate stands (D57): its document, the page of a PDF, the quoted words of a web page; `tariff` when it is the record's own price list. */
   where: { url: string; title: string; page?: number; fragment?: TextFragment; tariff: boolean } | null;
+  /** A flat price for an order or a conversion up to a sum (the record's `flat_up_to`, F-12, F-13), with where it stands; a larger one pays the rate and its bounds. */
+  flat: { amount: SiteValue; upTo: SiteValue; where: TariffLineRow["where"] } | null;
   /** A conversion's spread: printed ("עד 0.7%"), or not limited by the documents (D56: never zero); null when the line has none. */
   spread: SiteValue | "not_limited" | null;
 }
@@ -101,11 +104,14 @@ export interface AvailabilityRow {
   state: "yes" | "no" | "unknown";
   reason: string | null;
   source: { url: string; title: string; page?: number };
+  /** The rules the record names for this state (its `rule_ids`): the state's word opens them (D105). */
+  rules?: readonly string[];
 }
 
 export interface TariffCardData {
   missing: boolean;
-  reason: string | null;
+  /** Why the price list is missing, in the record's Hebrew (`missing_reason_he`); the English `missing_reason` is the working note and stays in the record. */
+  reasonHe: string | null;
   title: string;
   url: string;
   format: string;
@@ -127,6 +133,8 @@ export interface TariffCardData {
   /** Who pays the card's prices (a bank's or broker's record says so). */
   priceFor: string | null;
   availability: AvailabilityRow[];
+  /** What the house's documents hold and its prices leave out (D106), or null where the record lists nothing. */
+  leftOut?: LeftOutView | null;
 }
 
 export interface InstitutionPageData {

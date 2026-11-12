@@ -1,0 +1,1658 @@
+{
+  "id": "yahav",
+  "provider": {
+    "name_he": "בנק יהב לעובדי המדינה בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+    "title": "בנק יהב - תעריפון יחיד / עסק קטן",
+    "notes": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026); פרק: ניירות ערך (שירותים נפוצים, ניירות ערך בחוץ לארץ, דמי ניהול פיקדון ניירות ערך, העברת ניירות ערך, עמלת הפצה), פרק: מטבע חוץ. קובץ PDF תאום של אותו תעריפון: https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf. Read in the founder's Chrome and fetched with curl on 2026-10-24; the tariff page https://www.bank-yahav.co.il/footer/footer-menu/bank-tariff/ links it as 'תעריפון מלא- יחיד/עסק קטן'. The tariff has no separate buy/sell line for open mutual-fund units. Re-read 2026-11-04 (D56): the tariff page (read in the founder's Chrome; its list is drawn by script) still links the same 2.2026 PDF and Excel (PDF md5 3998663c…, Excel md5 00b8eca6…, the same files as the library copies 7195a5fd275270b4 and 5a675100ac5dc956); the PDF was created 2026-10-15 and modified 2026-10-18; the server's Last-Modified header is the time of the request, so it dates nothing. The page also links the change notice of 16/09/2026 (library 27bd3cacbc773066, PDF modified 2026-09-17), which sets the 01/10/2026 changes, and 'הוראות כלליות לשימוש בתעריפון' (1.2026, PDF modified 2026-07-09, library 4fb2de5e055a5ef0). The 2.2026 tariff is the newest binding document: it is the edition the notice announces, and no later notice is linked. Annex E ('הטבות בערוצי בנקאות בתקשורת', PDF p.43) prints the direct-channel prices as 'אינטרנט / יישומון', including a direct conversion fee the 2026-10-31 record did not carry. The exchange's member sheet (market.tase.co.il trading_fees, 'עדכון אחרון: 01/07/26', read in Chrome 2026-11-04) prints the same direct prices and custody 'לפקדון' 0.15% a quarter, 8,500 NIS at most; it labels the 0.30% foreign row 'מניות, אג\"ח, קרנות נאמנות - כללי' (see left_out). General account agreement 'בקשה לפתיחת חשבון ותנאים כלליים לניהול חשבון' (PDF created 2024-03-26, modified 2024-04-01; library 322ff632b328571c, unchanged md5): chapter 5 s.1.1.2 (p.39) knows a 'הוראת קבע לרכישת ני\"ע/קרן נאמנות'; s.11.2 and s.15.1 (p.44) set third-party fees and the conversion rate. No promotion terms, no securities fee annex and no club tariff are published. 2026-11-12: the record's figures now cite the PDF twin (library 7195a5fd275270b4, md5 3998663c…, 44 pp.), so each opens at its page; it is the same edition as the XLSX (library 5a675100ac5dc956, md5 00b8eca6…, both byte for byte as served on 2026-11-12): every page prints 'מספר סידורי: 2.2026' and 'נכון ליום: 01/10/2026' (the XLSX: 'מספר סידורי: 2.2026', date cell 46296 = 01/10/2026), and every figure the record took from the XLSX is printed the same on the PDF (securities pp.13-17, foreign currency p.19, the teller action p.3).",
+    "published": "2026-10-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-12",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "yahav-buy-sell-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.55,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מניות ואגרות חוב, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "מניות ואגרות חוב 0.55% 32.00 6,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Printed as 0.55% (the Excel cell holds 0.0055 formatted as a percentage); charged on execution (מועד הגביה: ביום ביצוע הפעולה). Note (04): the mutual-fund exclusion does not cover a tracking fund (קרן מחקה) or an ETF (קרן סל) or a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note (03): the fee may not exceed 25% of the trade value. Note (05): also charged on unlisted securities. Note (07): a split order pays one minimum per day. Note (02): also charged on a tender offer or a security exchange or removal. An order not executed (הוראת קניה או מכירה שלא בוצעה - בבורסה של ת\"א) is a flat 32 NIS, charged only if a clerk acted (note 08). No channel column: this is the clerk price; the internet price is note (06), recorded as the direct line. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 7195a5fd275270b4, PDF page 13, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות...\", footnote (04): \"לרבות 'קרן מחקה' ו'קרן סל', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד 1994\". 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 32,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מניות ואגרות חוב, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "מניות ואגרות חוב 0.55% 32.00 6,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'32' (NIS). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 6000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מניות ואגרות חוב, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "מניות ואגרות חוב 0.55% 32.00 6,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'6000' (NIS). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (4) - מניות ואגרות חוב",
+          "מניות ואגרות חוב"
+        ]
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (03)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "העמלה לא תעלה על 25% מהערך הכספי של העיסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (03) on page 13, referenced by the TASE shares-and-bonds row (notes 02, 03, 05, 06, 07, 08) and the makam row (notes 03, 07, 08, 09); the internet prices of notes (06) and (09) are prices of the same rows, so the cap holds for them too (the same reading as Massad). Read 2026-11-12 in the library copy (7195a5fd275270b4, file page 13), the same file as the live one. Binds only below 80 NIS a trade online (20 / 0.25) and 128 NIS at the branch (32 / 0.25)."
+      }
+    },
+    {
+      "id": "yahav-buy-sell-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (06)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "(06) עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.4 אחוז לפעולה במניות ובאגרות חוב, מינימום 20 ש\"ח, מקסימום 4,000 ₪"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Note (06): 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.4 אחוז לפעולה במניות ובאגרות חוב, מינימום 20 ש\"ח, מקסימום 4,000 ₪'. Annex E (PDF p.43) prints the same reduced price for the channel 'אינטרנט / יישומון': 'קניה, מכירה של ניירות ערך הנסחרים בבורסה בתל אביב *' at '0.4%, מינימום 20 ₪, מקסימום 4,000 ₪' against the clerk price '0.55%, מינימום 32 ₪, מקסימום 6,000 ₪', so an order placed in the bank's site or app pays it. The rate is for 'פעולה המבוצעת ישירות באמצעות האינטרנט': a standing order to buy securities or fund units (agreement chapter 5 s.1.1.2, p.39) is carried out by the bank, and no price list prints a price for one, so the most the documents allow for it is the clerk line, 0.55% with a 32 NIS minimum; this line prices a purchase the reader places online each month. The exchange's sheet ('עדכון אחרון: 01/07/26') prints '0.4000%', 20 and 4,000 NIS. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 7195a5fd275270b4, PDF page 13, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות...\", footnote (04): \"לרבות 'קרן מחקה' ו'קרן סל', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד 1994\". 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (06), מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "(06) עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.4 אחוז לפעולה במניות ובאגרות חוב, מינימום 20 ש\"ח, מקסימום 4,000 ₪"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 20 ש\"ח'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 4000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (06), מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "(06) עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.4 אחוז לפעולה במניות ובאגרות חוב, מינימום 20 ש\"ח, מקסימום 4,000 ₪"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 4,000 ₪'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (4) - מניות ואגרות חוב",
+          "מניות ואגרות חוב",
+          "פעולה המבוצעת ישירות באמצעות האינטרנט",
+          "אינטרנט / יישומון"
+        ]
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (03)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "העמלה לא תעלה על 25% מהערך הכספי של העיסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (03) on page 13, referenced by the TASE shares-and-bonds row (notes 02, 03, 05, 06, 07, 08) and the makam row (notes 03, 07, 08, 09); the internet prices of notes (06) and (09) are prices of the same rows, so the cap holds for them too (the same reading as Massad). Read 2026-11-12 in the library copy (7195a5fd275270b4, file page 13), the same file as the live one. Binds only below 80 NIS a trade online (20 / 0.25) and 128 NIS at the branch (32 / 0.25)."
+      }
+    },
+    {
+      "id": "yahav-buy-sell-makam-branch",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה) 0.10% 15.00 2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed as 0.10% (cell 0.001); 'קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה)'. Notes 03, 07, 08, 09 apply; an order not executed in makam is a flat 15 NIS. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 15,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה) 0.10% 15.00 2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'15' (NIS). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 2000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה) 0.10% 15.00 2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'2000' (NIS). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה)"
+        ]
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (03)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "העמלה לא תעלה על 25% מהערך הכספי של העיסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (03) on page 13, referenced by the TASE shares-and-bonds row (notes 02, 03, 05, 06, 07, 08) and the makam row (notes 03, 07, 08, 09); the internet prices of notes (06) and (09) are prices of the same rows, so the cap holds for them too (the same reading as Massad). Read 2026-11-12 in the library copy (7195a5fd275270b4, file page 13), the same file as the live one. Binds only below 60 NIS a trade: this line's minimum, 15 NIS, divided by 0.25; below that the minimum is more than a quarter of the trade, and the 0.1% rate never is. The direct makam line binds below 52 NIS (its 13 NIS minimum / 0.25)."
+      }
+    },
+    {
+      "id": "yahav-buy-sell-makam-direct",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.09,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (09)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "(09) בעד פעולה המבוצעת ישירות באמצעות האינטרנט יגבה שיעור מופחת של 0.09 אחוז לפעולה במלווה קצר מועד, מינימום 13 ₪, מקסימום 1,000 ₪"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (09): 'בעד פעולה המבוצעת ישירות באמצעות האינטרנט יגבה שיעור מופחת של 0.09 אחוז לפעולה במלווה קצר מועד, מינימום 13 ₪, מקסימום 1,000 ₪'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 13,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (09), מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "(09) בעד פעולה המבוצעת ישירות באמצעות האינטרנט יגבה שיעור מופחת של 0.09 אחוז לפעולה במלווה קצר מועד, מינימום 13 ₪, מקסימום 1,000 ₪"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 13 ₪'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 1000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (09), מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "(09) בעד פעולה המבוצעת ישירות באמצעות האינטרנט יגבה שיעור מופחת של 0.09 אחוז לפעולה במלווה קצר מועד, מינימום 13 ₪, מקסימום 1,000 ₪"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 1,000 ₪'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה)",
+          "פעולה המבוצעת ישירות באמצעות האינטרנט"
+        ]
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (03)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "העמלה לא תעלה על 25% מהערך הכספי של העיסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (03) on page 13, referenced by the TASE shares-and-bonds row (notes 02, 03, 05, 06, 07, 08) and the makam row (notes 03, 07, 08, 09); the internet prices of notes (06) and (09) are prices of the same rows, so the cap holds for them too (the same reading as Massad). Read 2026-11-12 in the library copy (7195a5fd275270b4, file page 13), the same file as the live one. Binds only below 52 NIS a trade: this line's minimum, 13 NIS, divided by 0.25; below that the minimum is more than a quarter of the trade, and the 0.09% rate never is. The branch makam line binds below 60 NIS (its 15 NIS minimum / 0.25)."
+      }
+    },
+    {
+      "id": "yahav-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "quote": "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה) 0.10% 15.00 2,000.00",
+          "page": 13
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "This row names redemption. The reduced row (0.09%) reads \"קניה, מכירה של מלווה קצר מועד\", without redemption, so a redemption stays at this row's price. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 15,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה) 0.10% 15.00 2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'15' (NIS). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 2000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה) 0.10% 15.00 2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'2000' (NIS). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה)"
+        ]
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, הערה (03)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "העמלה לא תעלה על 25% מהערך הכספי של העיסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (03) on page 13, referenced by the TASE shares-and-bonds row (notes 02, 03, 05, 06, 07, 08) and the makam row (notes 03, 07, 08, 09); the internet prices of notes (06) and (09) are prices of the same rows, so the cap holds for them too (the same reading as Massad). Read 2026-11-12 in the library copy (7195a5fd275270b4, file page 13), the same file as the live one. Binds only below 60 NIS a redemption: this line's minimum, 15 NIS, divided by 0.25; below that the minimum is more than a quarter of the trade, and the 0.1% rate never is."
+      }
+    },
+    {
+      "id": "yahav-buy-sell-foreign",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.95,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (ניירות ערך בחוץ לארץ), שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג') 0.95% $25.00 $1,500.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed as 0.95% (cell 0.0095); 'קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג')'. Note (02): third-party costs per the third-party chapter are added. Note (06): fee may not exceed 25% of the trade value. Note (07): fees quoted in foreign currency are computed at the known representative rate on the trade date. Note (08) gives the internet price; it names shares only, so no direct line is recorded for it and it is in left_out. The printed row limits no channel; the lower internet prices name shares only (see left_out), so a fund abroad pays this row on any channel. Annex E (p.43) repeats the reduced price for 'ניירות ערך בחוץ לארץ -מניות' only, channel 'אינטרנט / יישומון'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 25,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (ניירות ערך בחוץ לארץ), מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג') 0.95% $25.00 $1,500.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$25.00'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 1500,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (ניירות ערך בחוץ לארץ), מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג') 0.95% $25.00 $1,500.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$1,500.00'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג')"
+        ]
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, ניירות ערך בחוץ לארץ, הערה (06)",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "העמלה לא תעלה על 25% מהערך הכספי של העיסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (06) on page 14, referenced by the row 'מניות, אגרות חוב וקרנות נאמנות' abroad (notes 02, 03, 04, 05, 06, 07, 08). Read 2026-11-12 in the library copy (7195a5fd275270b4, file page 14), the same file as the live one. Binds only on a trade below 100 USD (25 / 0.25)."
+      }
+    },
+    {
+      "id": "yahav-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (דמי ניהול פיקדון ניירות ערך), הנסחרים בבורסה של תל אביב, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסה של תל אביב (לרבות יחידות השתתפות בקרנות נאמנות) 0.15% לרבעון 8,500.00 לפיקדון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "'0.15% לרבעון'; charged 'בתחילת כל רבעון עבור רבעון קודם'. Note (02): charged per security on each sale, transfer, redemption or withdrawal and on the running quarterly charge. Note (03): may not be charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note (05): computed on a daily basis at the closing price. Note (04): not charged on delisted securities (with the full-tender-offer exception). No minimum is printed. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (דמי ניהול פיקדון ניירות ערך), הנסחרים בבורסה של תל אביב, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסה של תל אביב (לרבות יחידות השתתפות בקרנות נאמנות) 0.15% לרבעון 8,500.00 לפיקדון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 8500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (דמי ניהול פיקדון ניירות ערך), הנסחרים בבורסה של תל אביב, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסה של תל אביב (לרבות יחידות השתתפות בקרנות נאמנות) 0.15% לרבעון 8,500.00 לפיקדון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'8,500.00 לפיקדון' per quarter: the maximum is per securities deposit (the whole account), not per security. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסה של תל אביב (לרבות יחידות השתתפות בקרנות נאמנות)"
+        ]
+      }
+    },
+    {
+      "id": "yahav-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.19,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (דמי ניהול פיקדון ניירות ערך), הנסחרים בבורסות חו\"ל, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסות חו\"ל (לרבות יחידות השתתפות בקרנות נאמנות) 0.19% לרבעון 8,500.00 לפיקדון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.19% לרבעון'; the same rate and maximum are printed for securities not traded on an exchange (שאינם נסחרים בבורסה). Notes as for the Israeli line. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (דמי ניהול פיקדון ניירות ערך), הנסחרים בבורסות חו\"ל, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסות חו\"ל (לרבות יחידות השתתפות בקרנות נאמנות) 0.19% לרבעון 8,500.00 לפיקדון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 8500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (דמי ניהול פיקדון ניירות ערך), הנסחרים בבורסות חו\"ל, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסות חו\"ל (לרבות יחידות השתתפות בקרנות נאמנות) 0.19% לרבעון 8,500.00 לפיקדון"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'8,500.00 לפיקדון' per quarter. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך - הנסחרים בבורסות חו\"ל (לרבות יחידות השתתפות בקרנות נאמנות)"
+        ]
+      }
+    },
+    {
+      "id": "yahav-transfer-out-same-client",
+      "base": "transfer_out",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 5,
+        "unit": "nis_per_transfer",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (העברת ניירות ערך), לחשבון אותו לקוח בגוף פיננסי אחר",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 16,
+          "quote": "העברת ניירות ערך - לחשבון אותו לקוח בגוף פיננסי אחר (להעברה) 5.00 (בפיקוח)"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-18",
+          "SW-33"
+        ],
+        "state": "sourced",
+        "notes": "'5.00 (בפיקוח)' per transfer (להעברה), a supervised price. Note (04): plus the bank's actual third-party cost. Note (09): on closing the account the transfer of the whole portfolio to the same client may not exceed 10 NIS plus third-party costs. Note (02): 'חשבון אותו לקוח' includes a joint account with a spouse. A transfer to another client's account is 0.25%, minimum 6.00 per security, maximum 75.00 per portfolio (not recorded as a line). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "העברת ניירות ערך - לחשבון אותו לקוח בגוף פיננסי אחר (להעברה)"
+        ]
+      }
+    },
+    {
+      "id": "yahav-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (עמלת הפצה), קרן מסוג 1",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 17,
+          "quote": "עמלת הפצת קרן מסוג 1, כמשמעותה בתקנות השקעות משותפות בנאמנות (עמלת הפצה) … 0.20% לשנה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.20% לשנה', charged 'באמצע החודש עבור החודש הקודם'. Note (03): charged per unit per day held (365-day year) at the relevant redemption price, except units bought by portfolio managers. Note (02) defines a type-1 fund (short government or top-rated bonds and deposits). Charged to the holder only in the cases the 2006 regulations permit (MF-26); base distribution_handling as in the Leumi snapshot. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצת קרן מסוג 1, כמשמעותה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006"
+        ]
+      }
+    },
+    {
+      "id": "yahav-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (עמלת הפצה), קרן מסוג 3",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 17,
+          "quote": "עמלת הפצת קרן מסוג 3, כמשמעותה בתקנות השקעות משותפות בנאמנות (עמלת הפצה) … 0.35% לשנה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-25",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.35% לשנה'. Note (04): excludes a tracking fund (קרן מחקה) as defined in the 2007 classification regulations. Note (05): a type-3 fund is one that is neither type 1 nor type 4. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצת קרן מסוג 3, כמשמעותה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006"
+        ]
+      }
+    },
+    {
+      "id": "yahav-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (עמלת הפצה), קרן מסוג 4",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 17,
+          "quote": "עמלת הפצת קרן מסוג 4, כמשמעותה בתקנות השקעות משותפות בנאמנות (עמלת הפצה) … 0.10% לשנה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.10% לשנה'. Note (06): 'קרן כספית - קרן פתוחה שבהסכם הקרן נקבע כי תהיה קרן כספית'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצת קרן מסוג 4, כמשמעותה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006"
+        ]
+      }
+    },
+    {
+      "id": "yahav-fx-conversion-branch",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.185,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: מטבע חוץ, שירותים שונים במטבע חוץ, עמלת חליפין, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 19,
+          "quote": "@ עמלת חליפין 0.185% $6.75 $2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Printed as 0.185% (cell 0.00185), part 5 'עמלת חליפין'; annex E (p.43) prints it as the clerk price ('מחיר פקיד'). Note (02): the FX services that count as a clerk operation for the part-1 minimum. The 16/09/2026 change notice (library 27bd3cacbc773066) raised this fee from 0.175% to 0.185% and its maximum from $1,200 to $2,000 from 01/10/2026. Note (03): third-party fees are added. An automatic conversion for a purchase abroad (agreement ch.5 s.15.1) is bought by the bank 'בתוספת עמלת מס חליפין' and names no channel, so the most the documents allow for it is this clerk price. The spread is recorded in 'spread'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 6.75,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: מטבע חוץ, עמלת חליפין, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 19,
+          "quote": "@ עמלת חליפין 0.185% $6.75 $2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$6.75'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 2000,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: מטבע חוץ, עמלת חליפין, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 19,
+          "quote": "@ עמלת חליפין 0.185% $6.75 $2,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Cell prints '2000' without a currency sign; the change notice of 16/09/2026 prints the new maximum as '$ 2,000.00', so the unit is US dollars. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "מחיר פקיד"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+          "title": "בקשה לפתיחת חשבון ותנאים כלליים לניהול חשבון, פרק 5, ס' 15.1, עמ' 44",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 44,
+          "quote": "לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו את מטבע החוץ הרלוונטי תמורת מטבע ישראלי בתוספת עמלת מס חליפין"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."
+      }
+    },
+    {
+      "id": "yahav-fx-conversion-direct",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.13,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, עמ' 43, עמלת חליפין, אינטרנט / יישומון",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 43,
+          "quote": "0.13%, מינימום 5.00$, מקסימום 1,300$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Annex E: '@ עמלת חליפין', channel 'אינטרנט / יישומון', '0.13%, מינימום 5.00$, מקסימום 1,300$' against the clerk price '0.185%, מינימום 6.75$, מקסימום 2,000$'. The change notice of 16/09/2026 (p.2) moved it from 0.1225% (min 4.72$, max 1,000$, channel 'אינטרנט') to 0.13% (min 5$, max 1,300$, channel 'אינטרנט/יישומון') from 01/10/2026. It is the fee on a conversion the reader makes in the site or app ('המרת מט\"ח בדיגיטל', foreign-currency page: 'בגין פעולת המרה בדיגיטל ניתנת הנחה בעמלת חליפין'), for example before buying a fund abroad; a conversion the bank makes itself for a purchase pays the clerk line. Third-party fees are added (part 5 note 03). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 5,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, עמ' 43, עמלת חליפין, אינטרנט / יישומון, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 43,
+          "quote": "מינימום 5.00$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 5.00$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 1300,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, עמ' 43, עמלת חליפין, אינטרנט / יישומון, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 43,
+          "quote": "מקסימום 1,300$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 1,300$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "אינטרנט / יישומון"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+          "title": "בקשה לפתיחת חשבון ותנאים כלליים לניהול חשבון, פרק 5, ס' 15.1, עמ' 44",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 44,
+          "quote": "לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו את מטבע החוץ הרלוונטי תמורת מטבע ישראלי בתוספת עמלת מס חליפין"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."
+      }
+    },
+    {
+      "id": "yahav-fx-conversion-fx-to-fx-branch",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.37,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: מטבע חוץ, עמלת חליפין - המרה בין שני מטבעות זרים, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 19,
+          "quote": "@ עמלת חליפין - המרה בין שני מטבעות זרים 0.37% $13.50 $4,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Printed as 0.37% (cell 0.0037); raised from 0.35% on 01/10/2026 per the change notice; annex E (p.43) prints it as the clerk price. The spread is recorded in 'spread'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 13.5,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: מטבע חוץ, עמלת חליפין - המרה בין שני מטבעות זרים, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 19,
+          "quote": "@ עמלת חליפין - המרה בין שני מטבעות זרים 0.37% $13.50 $4,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$13.50'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 4000,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: מטבע חוץ, עמלת חליפין - המרה בין שני מטבעות זרים, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 19,
+          "quote": "@ עמלת חליפין - המרה בין שני מטבעות זרים 0.37% $13.50 $4,000.00"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Cell prints '4000'; the change notice prints '$ 4,000.00'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין - המרה בין שני מטבעות זרים",
+          "מחיר פקיד"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+          "title": "בקשה לפתיחת חשבון ותנאים כלליים לניהול חשבון, פרק 5, ס' 15.1, עמ' 44",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 44,
+          "quote": "לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו את מטבע החוץ הרלוונטי תמורת מטבע ישראלי בתוספת עמלת מס חליפין"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."
+      }
+    },
+    {
+      "id": "yahav-fx-conversion-fx-to-fx-direct",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.26,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, עמ' 43, עמלת חליפין - המרה בין שני מטבעות זרים, אינטרנט / יישומון",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 43,
+          "quote": "0.26%, מינימום 10.00$, מקסימום 2,600$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Annex E: '@ עמלת חליפין-המרה בין שני מטבעות זרים', channel 'אינטרנט / יישומון', '0.26%, מינימום 10.00$, מקסימום 2,600$' against the clerk price '0.37%, מינימום 13.5$, מקסימום 4,000$'; set from 01/10/2026 by the change notice (before: 0.245%, 9.45$, 2,000$, channel 'אינטרנט'). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "min": {
+        "value": 10,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, עמ' 43, המרה בין שני מטבעות זרים, אינטרנט / יישומון, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 43,
+          "quote": "מינימום 10.00$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10.00$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "max": {
+        "value": 2600,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, עמ' 43, המרה בין שני מטבעות זרים, אינטרנט / יישומון, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 43,
+          "quote": "מקסימום 2,600$"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 2,600$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין - המרה בין שני מטבעות זרים",
+          "אינטרנט / יישומון"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+          "title": "בקשה לפתיחת חשבון ותנאים כלליים לניהול חשבון, פרק 5, ס' 15.1, עמ' 44",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "page": 44,
+          "quote": "לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו את מטבע החוץ הרלוונטי תמורת מטבע ישראלי בתוספת עמלת מס חליפין"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 4.0,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+        "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: חשבון עובר ושב, פעולה על ידי פקיד והערות 02 ו-07",
+        "publisher": "Bank Yahav for State Employees Ltd.",
+        "strength": "institution",
+        "quote": "4.00 לפעולה (בפיקוח)",
+        "page": 3
+      },
+      "checked": "2026-11-12",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Sheet row 65, 'פעולה על ידי פקיד' at '4.00 לפעולה (בפיקוח)', charged 'בתחילת כל חודש עבור החודש קודם'; note (02), rows 70-71: 'לקוחות שחיובם הכולל בגין פעולות שבוצעו ע\"י פקיד ופעולות בערוץ ישיר לא הגיע לכדי 4.00 ש\"ח יחוייבו בהפרש'; note (07): the higher of the actions and a minimum not above one clerk action. So at least 4.00 NIS a month. Young customers, soldiers and students are exempt (a group, D43). Read in the library copy (5a675100ac5dc956), 2026-11-06; the same figure as research/2026-11-04-binding-prices/yahav.md. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
+    }
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+        "title": "בנק יהב - תעריפון יחיד / עסק קטן, פרק ניירות ערך",
+        "checked": "2026-11-04",
+        "quote": "לרבות \"קרן מחקה\" ו \"קרן סל\"",
+        "page": 13
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+        "title": "בנק יהב - תעריפון יחיד / עסק קטן, פרק ניירות ערך",
+        "checked": "2026-11-04",
+        "quote": "מניות, אגרות חוב וקרנות נאמנות",
+        "page": 14
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחיר מופחת באינטרנט למניות בחוץ לארץ: 0.3%, מינימום 24 דולר, מקסימום 1,000 דולר",
+      "why": "The printed row names shares, not funds, so a fund abroad is priced on the row that names funds (founder, 2026-10-31: no price from analogy). Annex E (p.43) repeats it for 'ניירות ערך בחוץ לארץ -מניות' only. The exchange's sheet ('עדכון אחרון: 01/07/26'), which the bank supplies, labels the same 0.30% / 24$ / 1,000$ 'קניה/ מכירה/ פדיון - ני\"ע בחו\"ל - מניות, אג\"ח, קרנות נאמנות - כללי'; the sheet is not a binding document, and the price list's note (08) names shares, so a fund abroad stays at 0.95%, 25$ minimum.",
+      "why_he": "באינטרנט ובאפליקציה הבנק גובה על מניות בחו״ל 0.3% במינימום 24 דולר, אבל התעריפון לא מזכיר קרנות, ולכן האתר מחשב קרן שנקנית בחו״ל לפי 0.95% במינימום 25 דולר. אם הבנק נותן את המחיר המופחת גם על קרנות, המחיר זול יותר מזה שמוצג, ובעסקה גדולה זול בהרבה.",
+      "could_change_price": true
+    },
+    {
+      "what": "הוצאות צד ג' לעסקאות בני\"ע: 'לפי החיוב בפועל', 'כגון: הוצאות ברוקר, הוצאות קסטודיאן, תשלומים לבורסה והוצאות נוספות אשר תידרש להשלמת הפעולה בחו\"ל'",
+      "page": 41,
+      "why": "Third-party chapter (PDF p.41) and agreement chapter 5 s.11.2 (p.44: 'כל עמלות צד ג', כפי שיידרשו על-ידו בעת הביצוע או אחזקת הנייר (לרבות עמלות שייגבו בשל אירועי חברה)'). Printed for every customer abroad, with no amount and no ceiling: not limited by the documents. Not priced: no record prices third-party costs (a decision for the lead, as at FIBI, Hapoalim, Mizrahi-Tefahot and Bank of Jerusalem).",
+      "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של צד שלישי, כמו ברוקר, משמורן ותשלומים לבורסה, ״לפי החיוב בפועל״, בלי סכום ובלי תקרה, וגם עמלות על אירועי חברה. האתר לא מחשב אותן, ולכן המחיר בחו״ל יכול לצאת יקר יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "הוראת קבע לרכישת ני\"ע/קרן נאמנות: אין מחיר מודפס",
+      "why": "The agreement (chapter 5 s.1.1.2, p.39) knows a standing order to buy securities or fund units; no price list prints a price for one. The reduced rate is for 'פעולה המבוצעת ישירות באמצעות האינטרנט' (note 06; annex E 'אינטרנט / יישומון'), which a standing order the bank carries out is not, so the most the documents allow is the clerk price, 0.55% with a 32 NIS minimum (the same reading as FIBI, Mizrahi-Tefahot and Bank of Jerusalem). The record prices a purchase the reader places online each month at 0.40%, 20 NIS minimum; up to 5,000 NIS a purchase both minimums bind, so the two differ by 12 NIS a purchase (32 against 20).",
+      "why_he": "אפשר לקנות ניירות ערך בהוראת קבע, אבל התעריפון לא מדפיס לה מחיר, והמחיר המופחת הוא רק לפעולה שהלקוח עושה בעצמו באינטרנט. האתר מחשב קנייה חודשית שעושים באינטרנט, 0.4% במינימום 20 ₪; מי שקונה בהוראת קבע עלול לשלם את מחיר הפקיד, 0.55% במינימום 32 ₪.",
+      "could_change_price": true
+    },
+    {
+      "what": "חשבון עובר ושב: פעולה על ידי פקיד 4.00 ₪, פעולה בערוץ ישיר 1.20 ₪ (בפיקוח), ועמלת מינימום חודשית 'שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (4.00 ₪); מסלול בסיסי 10.00 ₪ ומסלול מורחב 20.00 ₪ לחודש",
+      "page": 3,
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 (PDF pp.3-6), notes (02) and (07): a customer whose fees in the month do not reach 4.00 NIS is charged the difference, and one with no action pays 4.00 NIS, so an ordinary customer pays at least 4 NIS a month (48 NIS a year). Annex A exempts young customers, soldiers and students; the state-employee page advertises the same exemption.",
+      "why_he": "מחשבון העו״ש האתר סופר רק את עמלת המינימום החודשית, 4 ₪, כי זה מה שחשבון עולה למי שעושה בו מעט פעולות. עמלות על פעולות נוספות ומסלולי עמלות הם עניין של השימוש בחשבון ולא של ההשקעה. אם סימנתם שזה הבנק שלכם, האתר לא סופר את עמלת המינימום. לקוחות צעירים, חיילים וסטודנטים פטורים מהעמלה הזו, ולהם המחיר זול ב־4 ₪ לחודש.",
+      "could_change_price": true
+    },
+    {
+      "what": "החזר עמלות מסחר בניירות ערך לצעירים 'במסגרת מתווה בנק ישראל': החזר רטרואקטיבי של עמלות קנייה ומכירה ששולמו ברבעון השלישי של 2026, עד 500 ₪ לחשבון, לחשבון שאחד מבעליו בן 18 עד 35 ותיקו עד 450,000 ₪ ביום 30.09.2026",
+      "why": "Advertising only (page trading-benefits-young, read 2026-11-04, library 4b5d6522bfe22050; first captured by the Wayback Machine 2026-06-24); its link for details (/niyaroterech/) is refused and no terms are published. It refunds a quarter that has ended, so a new customer cannot earn it; a news report of 13.4.2026 (ice.co.il 1109358) describes an earlier round for the first quarter of 2026 (up to age 35, portfolio up to 400,000 NIS). An offer, never a price (D56).",
+      "why_he": "הבנק מפרסם לצעירים בני 18 עד 35 החזר של עמלות קנייה ומכירה, עד 500 ₪ לחשבון, על רבעון שכבר הסתיים. אין לו תנאים מפורסמים ואין הבטחה לסבב הבא, ולכן האתר לא מחשב אותו; לצעיר שיקבל החזר כזה המחיר יוצא זול יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "עובדי מדינה: 'פטור מדמי ניהול פיקדון ני\"ע (עמלת דמי משמרת)', 'הטבות בעמלת קניה / מכירה', 'פטור מעמלת אי ביצוע' (עלון 'שיווק 11.24'); בעמוד הטבות לעובדי מדינה היום: 'שירותי ני\"ע - עמלות מופחתות'",
+      "why": "The leaflet (library 941f7bd0ff7f160a, p.2, created 2024-11-10) is still at its address but no longer linked; the live page links a flyer that reads 'מסמך זה לא פורסם עדיין' and gives no figure. The leaflet's fine print: 'הזכאות להטבות הינה לפי התעריפון הרלבנטי למועדון הלקוחות', 'הבנק רשאי לשנות את התנאים בכל עת', and the benefits need a current account fed by the employer's salary. No club tariff is published and annex A has no state-employee row, so no binding document prints the exemption; kept out of groups.entries because its only figure is a two-year-old unlinked leaflet.",
+      "why_he": "עלון ישן של הבנק מבטיח לעובדי מדינה פטור מדמי ניהול ניירות ערך והנחות בעמלות הקנייה והמכירה, והעמוד היום מזכיר ״עמלות מופחתות״ בלי סכום. אין תעריפון מפורסם למועדון הזה, ולכן האתר לא מחשב אותו; לעובד מדינה המחיר יכול לצאת זול יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "עמלות ממוצעות בפועל, 01/01/2026-30/06/2026: דמי ניהול ני\"ע ישראליים 0.03%-0.28% לשנה וזרים 0.03%-0.37%; קנייה ומכירה של מניות ואג\"ח 0.15%-0.36%, מק\"מ 0.05%-0.07%, ני\"ע זרים 0.17%-0.42%",
+      "why": "What customers paid on average by portfolio size (the exchange's sheet, '01/01/26 - 30/06/26', and the bank's own page 'התפלגות עמלות ניירות ערך', library 64b0a8432e8844d8, checked on the page image): a sourced fact, not a price. Up to 25 thousand NIS: Israeli custody 0.23% a year against the list's 0.60%.",
+      "why_he": "לפי הממוצעים שהבנק והבורסה מפרסמים, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.03% עד 0.28% בשנה על ניירות ערך בארץ, לפי גודל התיק, ובתעריפון כתוב 0.15% לרבעון. כלומר רבים משלמים הרבה פחות ממחיר התעריפון, ולכן המחיר בפועל יכול לצאת זול מזה שמוצג.",
+      "could_change_price": true
+    }
+  ],
+  "groups": {
+    "state": "prices",
+    "note": "Re-read 2026-11-04. Annex A of the 2.2026 tariff (PDF p.7) lists 'מועדון צעיר / חייל / סטודנט': exemptions from the clerk and direct-channel fees, credit allocation and some card fees; young up to 18, soldiers and students on proof; no securities row. The bank's group pages (state employees, teachers, students, soldiers, senior citizens, government corporations, public sector, salaried, self-employed) were read; the only securities prices with figures are in the self-employed doctors' flyer (September 2026), recorded as an entry. The state-employee leaflet of 11.2024, the teachers' and Koral flyers and the young customers' refund are in left_out. Every flyer says eligibility follows 'התעריפון הרלבנטי למועדון הלקוחות', which is not published.",
+    "read": [
+      {
+        "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+        "title": "תעריפון מלא, נספח א'"
+      },
+      {
+        "url": "https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf",
+        "title": "תעריפון מלא 2.2026, נספח א' (עמ' 7)"
+      },
+      {
+        "url": "https://www.bank-yahav.co.il/media/ch3bfrkq/doctors-flyer.pdf",
+        "title": "עלון רופאים עצמאיים (ספטמבר 2026)"
+      },
+      {
+        "url": "https://www.bank-yahav.co.il/media/nypekqfi/professions-flyer.pdf",
+        "title": "עלון בעלי מקצועות חופשיים (ספטמבר 2026)"
+      },
+      {
+        "url": "https://bank-yahav.co.il/media/h01eqxjk/%D7%A2%D7%95%D7%91%D7%93%D7%99-%D7%9E%D7%93%D7%99%D7%A0%D7%94-11-2024.pdf",
+        "title": "עלון עובדי מדינה, שיווק 11.24"
+      },
+      {
+        "url": "https://www.bank-yahav.co.il/account-management/gov-employees/",
+        "title": "הטבות לעובדי מדינה",
+        "read_in": "chrome"
+      },
+      {
+        "url": "https://www.bank-yahav.co.il/investments/trading-benefits-young/",
+        "title": "החזר עמלות מסחר בניירות ערך לצעירים",
+        "read_in": "chrome"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "other",
+        "name_he": "רופאים עצמאיים",
+        "who_he": "רופאים עצמאיים שמעבירים לבנק תיק ניירות ערך של יותר מ־200,000 ₪ (מחיר נמוך יותר מעל 500,000 ₪ ומעל 1,000,000 ₪), בתנאי ״העברת פעילות עסקית חודשית בהיקף של 15,000 ₪ ומעלה״.",
+        "who_source": {
+          "url": "https://www.bank-yahav.co.il/media/ch3bfrkq/doctors-flyer.pdf",
+          "title": "עלון רופאים עצמאיים, הטבות בעמלות ניירות ערך",
+          "page": 4,
+          "quote": "מתן ההטבות מותנה בהעברת פעילות עסקית חודשית בהיקף של 15,000 ₪ ומעלה"
+        },
+        "ends_printed": true,
+        "ends_he": "״ההטבות הינן לשנה ויחודשו מעבר לכך בכפוף לשיקולי הבנק״; ״הבנק רשאי להפסיק או לשנות את התנאים בכל עת״.",
+        "ends_source": {
+          "url": "https://www.bank-yahav.co.il/media/ch3bfrkq/doctors-flyer.pdf",
+          "title": "עלון רופאים עצמאיים, הערות",
+          "page": 4,
+          "quote": "ההטבות הינן לשנה ויחודשו מעבר לכך בכפוף לשיקולי הבנק"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.15% (תיק מעל 200,000 ₪), 0.12% (מעל 500,000 ₪), 0.1% (מעל 1,000,000 ₪), בכפוף לעמלת מינימום",
+            "holdings_he": "קניה/מכירה בבורסת ת\"א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bank-yahav.co.il/media/ch3bfrkq/doctors-flyer.pdf",
+              "title": "עלון רופאים עצמאיים, הטבות בעמלות ניירות ערך",
+              "page": 4,
+              "quote": "קניה/מכירה בבורסת ת\"א"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.25%, 0.2%, 0.15% לפי אותן מדרגות, בכפוף לעמלת מינימום",
+            "holdings_he": "קניה/מכירה בני\"ע זרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bank-yahav.co.il/media/ch3bfrkq/doctors-flyer.pdf",
+              "title": "עלון רופאים עצמאיים, הטבות בעמלות ניירות ערך",
+              "page": 4,
+              "quote": "קניה/מכירה בני\"ע זרים"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.05% לרבעון, 0.04%, 0.02% לפי אותן מדרגות",
+            "holdings_he": "עמלת דמי ניהול לרבעון",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bank-yahav.co.il/media/ch3bfrkq/doctors-flyer.pdf",
+              "title": "עלון רופאים עצמאיים, הטבות בעמלות ניירות ערך",
+              "page": 4,
+              "quote": "עמלת דמי ניהול לרבעון"
+            }
+          }
+        ],
+        "inferred": "Printed only in an advertising flyer (PDF modified 2026-09-07, linked from the self-employed page; earlier copies in the Wayback Machine from 2026-01-08). The flyer says eligibility follows the club's own tariff, which is not published, so no binding document read prints these prices. The table does not say whether the custody rate covers holdings abroad; it is recorded for Israel only. The minimum the trade prices are 'בכפוף' to is not printed.",
+        "who_short_he": "רופאים עצמאיים",
+        "cheaper_he": "דמי ניהול 0.05% במקום 0.15%; קנייה ומכירה 0.15% במקום 0.4%",
+        "ends_short_he": "שנה, והבנק רשאי להפסיק"
+      }
+    ]
+  }
+}

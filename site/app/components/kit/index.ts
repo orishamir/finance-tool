@@ -18,6 +18,7 @@ export { ChangeChart, type ChangeLine, type ChangeRow } from "./change-chart";
 export { PileBar, PileYears, type PileBarPart, type PileSlice } from "./pile-story";
 export { STAIRS_MARGIN, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, wrapLines, type StairColumn, type StairHue, type StairStep } from "./stairs-chart";
 export { DiffBar, DiffFigure, DiffHead, DiffRow, GreyLine, barShare, type DiffRowProps } from "./diff-row";
+export { LeftOutLine, LeftOutMark } from "./left-out";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { FigureLines, KeyValue, KeyValueList, Stat, StatRow, StatTile, type KeyValueItem } from "./stat";
 export { DoubtNote, GapNote, NoteList, PrintedText, ProseList, SharedFacts, SourceLine } from "./notes";

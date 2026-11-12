@@ -1,0 +1,31 @@
+{
+  "id": "TXA-01",
+  "title": "The savings component of a life policy is a \"savings plan\" in tax law",
+  "title_he": "רכיב החיסכון בפוליסת ביטוח חיים הוא ״תכנית חיסכון״ בחוק המס",
+  "text_he": "הפקודה מגדירה ״תכנית חיסכון״ כתכנית חיסכון בתאגיד בנקאי, וגם כרכיב החיסכון בפוליסה לביטוח חיים או כתכנית חיסכון שצורפה לפוליסה כזו ושהממונה אישר. לכן כל כלל בפקודה שמדבר על תכנית חיסכון חל גם על רכיב החיסכון בפוליסת ביטוח חיים, אלא אם נאמר אחרת. אם כל מוצר שנמכר כ״פוליסת חיסכון״ הוא רכיב חיסכון בפוליסת ביטוח חיים, זו שאלה פתוחה.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.16, s.1",
+      "locator_he": "עמוד 16, סעיף 1",
+      "page": 16,
+      "quote": "תכנית חיסכון",
+      "checked": "2026-11-07"
+    }
+  ]
+}

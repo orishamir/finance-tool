@@ -14,7 +14,7 @@
   "tariff": {
     "url": "https://www.yl-invest.co.il/uploads/n/1776587589.2159.pdf",
     "title": "בקשת הצטרפות לקופת גמל להשקעה",
-    "notes": "Yalin Lapidot's joining request, 10 pages, file created 2026-03-24; fees on p.1, section ג. Linked from yl-invest.co.il/forms. Read in Chrome 2026-11-07 (the site answers scripts with an Imperva block). Also read in Chrome 2026-11-07: the fund's bylaws (ילין לפידות קופת גמל להשקעה, fund 11389, in force from 16 October 2025 as printed on p.1, listed as the current bylaws on the fund's bylaws page), s.35.1 and s.36.1 on p.10; no copy in the store for the same reason.",
+    "notes": "Yalin Lapidot's joining request, 10 pages, file created 2026-03-24; fees on p.1, section ג. Linked from yl-invest.co.il/forms. Read in Chrome 2026-11-07 (the site answers scripts with an Imperva block). Also read in Chrome 2026-11-07: the fund's bylaws (ילין לפידות קופת גמל להשקעה, fund 11389, in force from 16 October 2025 as printed on p.1, listed as the current bylaws on the fund's bylaws page), s.35.1 and s.36.1 on p.10. Both files are in the library since 2026-11-12 (3da4c141aa93d6e5, 97ae1b2cab28fcf3), the same bytes as at the cited links; the bylaws also carry s.36.2 (p.10) and s.37.3 (pp.10-11).",
     "published": null,
     "printed": {
       "kind": "none"
@@ -216,6 +216,15 @@
   "minimums": {
     "account_opening": null
   },
+  "left_out": [
+    {
+      "what": "נוסף על דמי הניהול, רשאית החברה המנהלת לגבות מהנכסים המנוהלים בקופה הוצאות ישירות בשל ביצוע עסקאות",
+      "page": 1,
+      "why": "Direct transaction expenses come out of the fund's assets on top of the management fees. The document prints no rate; it says the past year's rates are on the company's website. This record prices the management fees only; a track's direct expenses enter a run only from data/funds/ (A-18), otherwise as 0 with a 'not collected' flag. Read 2026-11-12.",
+      "why_he": "מלבד דמי הניהול, החברה רשאית לגבות מכספי הקופה הוצאות ישירות על קנייה ומכירה של השקעות. המסמך לא קובע להן שיעור, ולכן הן לא כלולות במחיר שמוצג כאן, והעלות בפועל יכולה להיות גבוהה ממנו.",
+      "could_change_price": true
+    }
+  ],
   "notice_rule_ids": [
     "PF-16"
   ]

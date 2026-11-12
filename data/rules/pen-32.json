@@ -1,0 +1,70 @@
+{
+  "id": "PEN-32",
+  "title": "Death",
+  "title_he": "מה קורה לכסף בקרן הפנסיה כשעמית או פנסיונר נפטר",
+  "strength": "primary",
+  "dimensions": [
+    "insurance-cover",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי התקנון האחיד של קרנות הפנסיה המקיפות, כשעמית או פנסיונר נפטר, הכסף שמגיע לשאירים משולם כקצבאות שאירים. אם אין שאירים, היתרה משולמת למוטבים שהעמית קבע בהודעה בכתב, לפי השיעורים שקבע או בחלקים שווים, ואם אין מוטבים, ליורשים. מוטב הוא מי שנקבע בהוראת המוטבים האחרונה שהגיעה לקרן, וצוואה מאוחרת יותר שמחלקת במפורש את כספי הקרן נחשבת להוראת מוטבים. לפנסיונר שבחר תקופת תשלומים מובטחת ואין לו שאירים, המוטבים מקבלים את הערך המהוון של התשלומים המובטחים שנשארו.",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.7, s.1",
+      "locator_he": "עמוד 7, סעיף 1",
+      "page": 7,
+      "quote": "מי שהעמית או הפנסיונר קבע בהודעה בכתב (להלן - הוראת מוטבים) האחרונה שהומצאה לקרן",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.35, s.50(ג)",
+      "locator_he": "עמוד 35, סעיף 50(ג)",
+      "page": 35,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.63, s.115(ב)-(ג)",
+      "locator_he": "עמוד 63, סעיף 115(ב)-(ג)",
+      "page": 63,
+      "quote": "בהעדר מוטבים תשולם היתרה הצבורה של העמית שנפטר ליורשים",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "Mor gemel standard bylaws 18.02.2026",
+      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "sections 31-34",
+      "locator_he": "סעיפים 31-34",
+      "checked": "2026-10-22"
+    }
+  ]
+}

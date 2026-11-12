@@ -1,0 +1,29 @@
+{
+  "id": "CORP-18",
+  "title": "Trading on TASE: unit, hours and last trading day",
+  "title_he": "מסחר באיגרות חוב בבורסה: יחידת מסחר, שעות ויום מסחר אחרון",
+  "strength": "primary",
+  "dimensions": [
+    "minimum",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "text_he": "לפי הנחיות המסחר של הבורסה בתל אביב, יחידת המסחר באיגרות חוב היא 1 ₪ ערך נקוב, או דולר אחד או אירו אחד באיגרת חוב במטבע הזה. יום המסחר האחרון באיגרת חוב קונצרנית הוא שלושה ימי מסחר לפני מועד הפדיון המלא, המקורי או המוקדם, ואם התשקיף קובע יום קובע לפדיון הסופי, שלושה ימי מסחר לפניו, המוקדם מביניהם; באיגרות חוב שחל עליהן דין המס האמריקאי המסחר נפסק עשרה ימים לפני הפדיון. איגרות חוב, ניירות ערך מסחריים ומק״מ נסחרים באותו לוח זמנים, והבורסה קובעת את השעות של כל שלב בתוך טווחים שבהנחיות, למשל מכרז הנעילה בין 15:10 ל־18:30, וביום שישי בין 12:10 ל־13:45. ביום המסחר הראשון מחיר הבסיס הוא המחיר שנקבע במכרז ההנפקה.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+      "title": "TASE trading guide 274698",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "פרק א' s. 1(ב) and s. 6(ב); פרק ב' s. 1(ב); פרק ג' s. 1(א)(2)",
+      "checked": "2026-10-22",
+      "qualifier": "(TASE rule guidelines)"
+    }
+  ]
+}

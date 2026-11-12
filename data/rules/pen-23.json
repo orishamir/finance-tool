@@ -6,7 +6,14 @@
   "figure_names_he": {
     "selected_deposit_fee": "דמי ניהול מההפקדות בקרן נבחרת",
     "selected_balance_fee": "דמי ניהול מהצבירה בקרן נבחרת",
-    "guarantee_years": "תקופת הבטחת דמי הניהול (שנים)"
+    "guarantee_years": "תקופת הבטחת דמי הניהול (שנים)",
+    "period_from": "תחילת תקופת הקרנות הנבחרות",
+    "period_to": "סוף תקופת הקרנות הנבחרות",
+    "digits_from": "תחילת החלוקה לפי ספרת הביקורת",
+    "digits_infinity": "ספרות הביקורת של אינפיניטי",
+    "digits_mor": "ספרות הביקורת של מור",
+    "digits_altshuler": "ספרות הביקורת של אלטשולר שחם",
+    "digits_meitav": "ספרות הביקורת של מיטב"
   },
   "strength": "primary",
   "dimensions": [
@@ -77,6 +84,153 @@
       ],
       "state": "sourced",
       "notes": "The selected fund's fee holds for at least 10 years from joining for a member who joined while the fund was selected. The four-year selection period runs from 1.11.2024; its end date (31.10.2028) is derived, not seen in an official text."
+    },
+    "period_from": {
+      "value": "2024-11-01",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "החל מיום 1 בנובמבר 2024"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "The fourth process set four selected funds for four years from 1 November 2024."
+    },
+    "period_to": {
+      "value": "2028-10-31",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "ועד ליום 31 באוקטובר 2028"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "The four-year period ends on 31 October 2028."
+    },
+    "digits_from": {
+      "value": "2025-06-01",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "החל מיום 1 ביוני 2025"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "From 1 June 2025 an employer with 50 employees or more whose employee did not choose, and who ran no competitive process of its own, deposits in the selected fund the check digit of the employee's ID number points to."
+    },
+    "digits_infinity": {
+      "value": "7, 8, 9",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "אינפיניטי"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "The clarification's table: check digits 7, 8, 9 go to Infinity's selected fund."
+    },
+    "digits_mor": {
+      "value": "4, 5, 6",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "מור"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "The clarification's table: check digits 4, 5, 6 go to Mor's selected fund."
+    },
+    "digits_altshuler": {
+      "value": "2, 3",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "אלטשולר שחם"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "The clarification's table: check digits 2, 3 go to Altshuler Shaham's selected fund."
+    },
+    "digits_meitav": {
+      "value": "0, 1",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "מיטב"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "The clarification's table: check digits 0, 1 go to Meitav's selected fund."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
@@ -85,8 +239,8 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf",
-      "title": "הבהרה לעניין הליך קביעת קרנות נבחרות, 11.6.2025",
-      "title_he": "הבהרה לעניין הליך קביעת קרנות נבחרות, 11.6.2025",
+      "title": "הבהרה לעניין הליך קביעת קרנות נבחרות, 10.6.2025",
+      "title_he": "הבהרה לעניין הליך קביעת קרנות נבחרות, 10.6.2025",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
@@ -94,7 +248,8 @@
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-31"
+      "quote": "המבוסס על ספרת הביקורת במספר תעודת הזהות",
+      "checked": "2026-11-12"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
@@ -105,6 +260,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.4, annex s.4(א)",
+      "locator_he": "עמוד 4, נספח סעיף 4(א)",
       "page": 4,
       "quote": "יקבע הממונה שתי קרנות פנסיה חדשות מקיפות לפחות",
       "checked": "2026-10-26"
@@ -118,6 +274,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "pp.4-5, annex ss.2, 4, 5",
+      "locator_he": "עמודים 4 עד 5, נספח סעיפים 2, 4, 5",
       "page": 4,
       "quote": "יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן",
       "checked": "2026-10-25"
@@ -131,6 +288,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.12, annex ג'",
+      "locator_he": "עמוד 12, נספח ג'",
       "page": 12,
       "checked": "2026-10-25"
     },

@@ -357,6 +357,15 @@ export type { P05Input };
 
 // ---------------------------------------------------------------- exposure pages (flows 6.6)
 
+export interface BlockGroup { kind: "tax" | "annuity" | "other"; ids: string[] }
+
+/** A product's exit blockers by what they leave open, so the tag says it: a tax question (TX…), the annuity's conversion factors
+ *  (PEN OQ7, PEN OQ19), or anything else not computed yet. */
+export function blockGroups(ids: readonly string[]): BlockGroup[] {
+  const kindOf = (q: string) => (/^TX/.test(q) ? "tax" : /^PEN[ -]OQ(7|19)$/.test(q) ? "annuity" : "other");
+  return (["annuity", "tax", "other"] as const).map((kind) => ({ kind, ids: ids.filter((q) => kindOf(q) === kind) })).filter((g) => g.ids.length > 0);
+}
+
 export interface ExposurePageData {
   record: ExposureRecord;
   name: string;
@@ -371,7 +380,7 @@ export interface ExposurePageData {
    * questions the wrapper and the exposure both carry and the wrapper does not list as exit-tax blockers: some are tax questions that
    * do not block the run (TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8), so the card shows them in a neutral tag.
    */
-  holders: { id: string; name: string; blockedBy: string[]; openQuestions: string[] }[];
+  holders: { id: string; name: string; blockedBy: string[]; /** `blockedBy` by what it leaves open, for the tag (`blockGroups`). */ blocks: BlockGroup[]; openQuestions: string[] }[];
   dimensionNames: Record<string, string>;
   today: string;
 }
@@ -392,7 +401,7 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
       const blockedBy = [...new Set(w.tax_at_exit.blocked_by)];
       const openQuestions = (record.open_questions ?? []).filter((q) => w.open_questions.includes(q) && !blockedBy.includes(q));
       [...blockedBy, ...openQuestions].forEach((q) => cited.add(q));
-      return { id: w.id, name: w.names.he[0]!, blockedBy, openQuestions };
+      return { id: w.id, name: w.names.he[0]!, blockedBy, blocks: blockGroups(blockedBy), openQuestions };
     });
   const rules: Record<string, RuleRecord> = {};
   for (const rid of cited) if (allRules[rid]) rules[rid] = allRules[rid]!;

@@ -7,7 +7,7 @@ import { Fragment, type ReactNode } from "react";
 import { isTie, type FeeLine, type GapList } from "@finance-tool/engine";
 import { groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { brokeragePagePath, chargesCurrentAccount, doubtOf, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, chargesCurrentAccount, doubtAt, doubtOf, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
@@ -19,7 +19,7 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { OwnAccountButton } from "./own-account";
 import { StateTag } from "../provenance";
-import { sourceHref } from "../../lib/sources";
+import { sourceHref, withoutCodes } from "../../lib/sources";
 
 export interface Pick {
   house: string;
@@ -99,13 +99,74 @@ export function otherWay(view: InvestView, house: string): { fund: FundWay; at: 
  * collected, a kind the house does not sell, and only then the engine's reason.
  */
 export function whyNoPrice(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, fund: FundWay): string {
-  const snap = bundle.snapshots.find((s) => s.id === houseId);
+  return whyOfKind(bundle, houseId, kindAt(fund, houseId));
+}
+
+/** A fund's entry at a house as a `KindAt`: a price stands for no reason. */
+const kindAt = (fund: FundWay, houseId: string): KindAt => {
   const at = fund.byHouse[houseId];
-  const doubt = doubtOf(snap, fund.option);
+  return { option: fund.option, at: at && !("valueN" in at) ? at : undefined };
+};
+
+/**
+ * One kind of fund at a house, as the reasons read it: the kind, and the house's entry for it, a fund's price or reason
+ * (`FundWay.byHouse`) or, on an index with no fund, the house's cell for the kind (`BrokerCell`).
+ */
+export interface KindAt {
+  option: OptionId;
+  at?: { availability?: Availability | null; reason?: Reason } | undefined;
+}
+
+/** `whyNoPrice` for one kind at a house: a doubt the record words, a price list not collected, a kind the house does not sell, the engine's reason. */
+function whyOfKind(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, { option, at }: KindAt): string {
+  const snap = bundle.snapshots.find((s) => s.id === houseId);
+  const doubt = doubtOf(snap, option);
   if (doubt) return doubt;
   if (snap?.missing && snap.missing_reason_he) return snap.missing_reason_he;
-  if (at && "availability" in at && at.availability) return c.pair.notPossibleWhy(c.stairs.kinds[fund.option] ?? fund.option);
-  return at && "reason" in at ? reasonText(at.reason, optionClass[fund.option]) : c.funds.cannot;
+  // the record's own sentence where it has one (Interactive Brokers: its FAQ's words on Tel Aviv), the page's general words otherwise
+  if (at?.availability) return at.availability.reason_he ?? c.pair.notPossibleWhy(c.stairs.kinds[option] ?? option);
+  return at?.reason ? reasonText(at.reason, optionClass[option]) : c.funds.cannot;
+}
+
+/** The record's entry behind `whyOfKind`'s words, in the same order: its doubt, nothing for a price list not collected, the kind it does not sell. */
+const entryOfWhy = (bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, { option, at }: KindAt) => {
+  const snap = bundle.snapshots.find((s) => s.id === houseId);
+  if (doubtOf(snap, option)) return doubtAt(snap, option);
+  if (snap?.missing && snap.missing_reason_he) return null;
+  return at?.availability ?? null;
+};
+
+/**
+ * Why a house prices no fund on the index, over every kind of fund the index has, for the house's own row: "no data" told a reader
+ * nothing where the record says trading in Tel Aviv is for institutional clients only, or prints a price and does not say who may use
+ * it. The state the row names follows `whyNoPrice`'s order (a doubt in the record, a price list not collected, every kind not sold
+ * there), and `why` is each kind's reason in `whyNoPrice`'s words, the kind named where the kinds' reasons differ. `rules` are the
+ * rules the record names for those reasons (the row's label opens their cards instead of the reasons), and `parts` the same reasons one
+ * by one, each with the document it rests on, shown for a row where some reason has no rule behind it: the row's one "source" link led to the first kind's document only, so a reader
+ * looking for Interactive Brokers' FAQ landed on its fund list.
+ */
+export function whyNoFundAt(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, funds: readonly FundWay[]) {
+  return whyNoKindAt(bundle, houseId, funds.map((f) => kindAt(f, houseId)));
+}
+
+/** The type of what `whyNoFundAt` returns: the state the words name, the reasons as one line, each reason with its document, and the rules. */
+export type WhyNone = ReturnType<typeof whyNoKindAt>;
+
+/**
+ * `whyNoFundAt` over kinds of fund rather than funds: an index with no fund (a custom index) has only each kind's cell at the house, and its
+ * account rows say why in the same words and open the same card (the funds section had a tag and a separate "source" link).
+ */
+export function whyNoKindAt(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, ways: readonly KindAt[]) {
+  const snap = bundle.snapshots.find((s) => s.id === houseId);
+  const kinds = ways.filter((f, i) => ways.findIndex((g) => g.option === f.option) === i);
+  const reasons = kinds.map((f) => ({ kind: c.stairs.kinds[f.option] ?? f.option, why: whyOfKind(bundle, houseId, f), at: entryOfWhy(bundle, houseId, f) }));
+  const told = reasons.filter((r, i) => reasons.findIndex((x) => x.why === r.why) === i);
+  const why = told.length === 1 ? told[0]!.why : told.map((r) => `${r.kind}: ${r.why}`).join(" ");
+  const state: "doubt" | "missing" | "notSold" | "other" = kinds.some((f) => doubtOf(snap, f.option)) ? "doubt" : snap?.missing ? "missing" : kinds.length > 0 && kinds.every((f) => !!f.at?.availability) ? "notSold" : "other";
+  const parts = told.map((r) => ({ ...(told.length > 1 ? { head: r.kind } : {}), text: r.why, ...(r.at ? { doc: { href: sourceHref(r.at.source), title: withoutCodes(r.at.source.title) } } : {}) }));
+  // a rule's card replaces the reasons, so it opens only where every reason has a rule behind it: a kind with none would lose its reason
+  const rules = told.every((r) => r.at?.rule_ids?.length) ? [...new Set(told.flatMap((r) => r.at!.rule_ids!))] : [];
+  return { state, why: why || c.funds.cannot, parts: parts.length ? parts : [{ text: c.funds.cannot }], rules };
 }
 
 /** The short line in a fund's last cell when the house gives it no price, naming the house, in `whyNoPrice`'s order. */
@@ -436,7 +497,9 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
   const capped = view.providers.filter((p) => !p.custom && limits(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
   // F-103 (D67): the houses whose price lists print a charge per corporate event abroad, which their figures count on each dividend
   const charge = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "corporate_event" && typeof l.rate.value === "number")?.rate;
-  const perDividend = view.providers.flatMap((p) => { const rate = p.custom ? undefined : charge(p.id); return rate ? [{ name: p.short, rate }] : []; }).sort((a, b) => a.name.localeCompare(b.name, "he"));
+  // the note says custody abroad there is free, from the house's own custody line for securities abroad: only where that line prints 0
+  const custodyAbroad = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "custody" && l.applies_to.includes("foreign_securities") && l.rate.value === 0)?.rate;
+  const perDividend = view.providers.flatMap((p) => { const rate = p.custom ? undefined : charge(p.id); const custody = p.custom ? undefined : custodyAbroad(p.id); return rate && custody ? [{ name: p.short, rate, custody }] : []; }).sort((a, b) => a.name.localeCompare(b.name, "he"));
   return (
     <Disclosure label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} labelClassName="text-sm text-link">
       <NoteList
@@ -448,7 +511,7 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
             {perDividend.map((x) => (
               <Fragment key={x.name}>
                 {" "}
-                <Tpl t={c.pair.abroadPerDividend} vars={{ name: x.name, amount: <Num value={ownBy(x.rate as SiteValue, x.name)} display={fmt.usd(x.rate.value as number)} /> }} />
+                <Tpl t={c.pair.abroadPerDividend} vars={{ name: x.name, custody: <Num value={ownBy(x.custody as SiteValue, x.name)} display={fmt.pct(x.custody.value as number)} />, amount: <Num value={ownBy(x.rate as SiteValue, x.name)} display={fmt.usd(x.rate.value as number)} /> }} />
               </Fragment>
             ))}
           </>,
@@ -534,7 +597,8 @@ export function gapNoteOf(recs: readonly FundWay["rec"][], states: readonly GapS
     grossApart: states.includes("gross-apart"),
     funds: states.length,
     noYear: states.filter((_, i) => israeliNone(i)).length,
-    notCollected: states.filter((x, i) => x === "none" && !israeliNone(i)).length,
+    notCollected: states.filter((x, i) => x === "none" && !israeliNone(i) && !isCustomFund(recs[i]!)).length,
+    typed: states.filter((x, i) => x === "none" && isCustomFund(recs[i]!)).length,
   });
 }
 
@@ -551,8 +615,9 @@ export function GapCell({ rec, today, list }: { rec: FundWay["rec"]; today: stri
   if (state === "unstated" || state === "gross-apart") return note(c.kinds.gapUnstated);
   const g = gapOf(rec, list);
   const val = gapValue(rec, list, today);
-  // "no full year" is what an Israeli fund's annual report says; a foreign or typed fund's years were never read, which says nothing about its age
-  if (!g || !val) return note(rec.domicile === "IL" && !isCustomFund(rec) ? c.kinds.gapNone : c.kinds.gapNotCollected);
+  // "no full year" is what an Israeli fund's annual report says; a foreign fund's years were not read yet, which says nothing about its age;
+  // a fund the person typed has no report the site reads, so nothing is waiting to be collected (D105)
+  if (!g || !val) return note(isCustomFund(rec) ? c.kinds.gapTyped : rec.domicile === "IL" ? c.kinds.gapNone : c.kinds.gapNotCollected);
   return (
     <span className="flex flex-col leading-tight">
       <span className="font-semibold">

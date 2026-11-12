@@ -30,6 +30,7 @@ import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type TextFragment } from "./sources";
 import { heCollator } from "./format";
+import { leftOutOf } from "./left-out";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -208,12 +209,20 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
 /** A distribution fee, by the price list's own words ("עמלת הפצה"): the fund manager pays it to the distributor (MF-24), not a charge of the account. */
 const isDistributionFee = (l: FeeLine) => l.base === "distribution_handling" && /עמלת הפצ/.test(l.names.tariff.join(" "));
 /** The records the account's card cites beside the snapshot's own: those over its distribution fees. */
-const cardRuleIds = (s: FeesSnapshot) => (s.lines.some((l) => l.level === "list" && isDistributionFee(l)) ? distributionRuleIds(s.provider.class === "bank" ? "bank" : "broker") : []);
+const cardRuleIds = (s: FeesSnapshot) => [
+  ...(s.lines.some((l) => l.level === "list" && isDistributionFee(l)) ? distributionRuleIds(s.provider.class === "bank" ? "bank" : "broker") : []),
+  // the rules a can-buy row's state opens (D105)
+  ...(s.availability ?? []).flatMap((a) => a.rule_ids ?? []),
+];
 
 
 function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffUrl: string): TariffLineRow {
-  const src = l.rate.source as { url?: string; title?: string; page?: number; fragment?: TextFragment };
   const docOf = (u: string) => u.replace(/#.*$/, "");
+  /** Where a figure of the line stands: its document, the page of a PDF, the words of a web page; `tariff` when it is the record's own price list. */
+  const whereOf = (v: ValueObject): TariffLineRow["where"] => {
+    const src = v.source as { url?: string; title?: string; page?: number; fragment?: TextFragment };
+    return src.url && src.title ? { url: src.url, title: src.title, ...(src.page ? { page: src.page } : {}), ...(src.fragment ? { fragment: src.fragment } : {}), tariff: docOf(src.url) === docOf(tariffUrl) } : null;
+  };
   // a spread the documents do not limit is said so, never shown as zero (D56)
   const spread = l.base !== "fx" || l.spread === undefined ? null : l.spread === null || l.spread.value === null ? ("not_limited" as const) : site(l.spread, t, snapshot, owner);
   return {
@@ -228,7 +237,9 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,
     max: l.max ? site(l.max, t, snapshot, owner) : null,
-    where: src.url && src.title ? { url: src.url, title: src.title, ...(src.page ? { page: src.page } : {}), ...(src.fragment ? { fragment: src.fragment } : {}), tariff: docOf(src.url) === docOf(tariffUrl) } : null,
+    where: whereOf(l.rate),
+    // a flat price for a small order or conversion (F-12, F-13) stands on its own place in the documents
+    flat: l.flat_up_to ? { amount: site(l.flat_up_to.amount, t, snapshot, owner), upTo: site(l.flat_up_to.up_to, t, snapshot, owner), where: whereOf(l.flat_up_to.amount) } : null,
     spread,
   };
 }
@@ -240,6 +251,7 @@ function availabilityRows(s: FeesSnapshot): AvailabilityRow[] {
     state: a.available === true ? "yes" : a.available === false ? "no" : "unknown",
     reason: a.reason_he ?? null,
     source: { url: a.source.url, title: a.source.title, ...(a.source.page ? { page: a.source.page } : {}) },
+    ...(a.rule_ids?.length ? { rules: a.rule_ids } : {}),
   }));
 }
 
@@ -253,7 +265,7 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   const min = s.minimums.account_opening;
   return {
     missing: s.missing,
-    reason: s.missing_reason,
+    reasonHe: s.missing_reason_he ?? null,
     title: s.tariff.title,
     url: s.tariff.url,
     format: s.tariff.format,
@@ -271,6 +283,7 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     providerName: s.provider.name_he,
     priceFor: s.price_for_he ?? null,
     availability: availabilityRows(s),
+    leftOut: leftOutOf(s),
   };
 }
 

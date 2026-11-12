@@ -1,0 +1,26 @@
+{
+  "id": "TXP-29",
+  "title": "Leaving a job: the new form 161 (employer notice and employee choices)",
+  "title_he": "עזיבת עבודה: טופס 161 החדש",
+  "text_he": "מ־1 בינואר 2024 מעסיק חייב לדווח על פרישה סופית של עובד בטופס 161 החדש, ״הודעה על פרישה מעבודה״, שמכסה כל סכום וזכות שהמעסיק העמיד לרשותו, ישירות או דרך קופות הגמל. חלק א הוא ההודעה של המעסיק, בחלק ב העובד רושם מה הוא בוחר לעשות במענקי הפיצויים, ובחלק ג המעסיק מחשב ומורה לקופות איך לסווג את הכסף וכמה מס לנכות. המעסיק מוסר את הטופס לפקיד השומה של תיק הניכויים שלו ולעובד. אם המעסיק מילא את חלק ג2, העובד צריך לבקש מפקיד השומה הוראות למעסיק ולקופות לפי הבחירה שלו, ולהעביר אותן.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/he/service/notice-of-retirement",
+      "title": "Tax Authority, הודעה על פרישה מעבודה (טופס 161 חדש)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

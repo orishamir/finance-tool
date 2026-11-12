@@ -1,0 +1,32 @@
+{
+  "id": "TXG-25",
+  "title": "Refunds: six years back, and a short form for non-filers",
+  "title_he": "החזר מס: שש שנים אחורה, וטופס מקוצר למי שלא חייב בדוח",
+  "text_he": "בקשה להחזר מס על שנת מס אפשר להגיש עד 6 שנים מסוף אותה שנה, למשל על שנת 2020 עד 31.12.2026. מי שלא חייב להגיש דוח ושילם יותר מדי, למשל חוסך בן 60 ומעלה שנוכה לו מס בשיעור המלא, או מי שהפסיד בבנק אחד והרוויח בבנק אחר, יכול לבקש החזר בדוח מלא או בטופס המקוצר 0135. הטופס המקוצר לא מיועד, בין השאר, למי שיש לו הכנסה מעסק, הכנסה מחו״ל או רווח הון שלא מניירות ערך סחירים. ההחזר ניתן עם הצמדה וריבית לפי החוק.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "age-or-use-exemption",
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7, p.9 s.4, p.11 s.11",
+      "locator_he": "עמוד 7, עמוד 9 סעיף 4, עמוד 11 סעיף 11",
+      "page": 7,
+      "quote": "טופס מקוצר - בקשה להחזר מס",
+      "checked": "2026-10-22"
+    }
+  ]
+}

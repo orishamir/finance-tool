@@ -32,7 +32,7 @@ describe("the source lines of a company's own term", () => {
     const html = render(createElement(RuleCard, { id: "IRA-28", data, inline: true }), data);
     expect(html).not.toContain(weak.secondary);
     expect(html).not.toContain("נמצא במסמכים של");
-    expect(html).toContain("המקורות כאן אינם מסמכים של סלייס");
+    expect(html).toContain("המקורות כאן הם לא מסמכים של סלייס");
   });
   // the card's own data (the root loader's company links and own documents), as every page has them
   const real = async () => {

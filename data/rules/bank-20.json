@@ -4,7 +4,8 @@
   "title_he": "הודעה על יתרת זכות גבוהה שנשארת בעובר ושב",
   "text_he": "אם יתרת הזכות בעובר ושב של אדם פרטי עולה על סף הסכום ברציפות לפחות רבעון, הבנק חייב לשלוח לו הודעה על היתרה שמפנה למידע על חלופות השקעה שעשויות להניב יותר. ההודעה נשלחת בתחילת כל רבעון, ובשנה וחצי הראשונות אחרי כניסת התיקון לתוקף בתחילת כל חודש. שר האוצר רשאי לשנות את הסכום בצו, והנגיד רשאי לקבוע תדירות גבוהה יותר אחרי התקופה הראשונה.",
   "figure_names_he": {
-    "credit_balance_threshold": "סף יתרת הזכות בעובר ושב"
+    "credit_balance_threshold": "סף יתרת הזכות בעובר ושב",
+    "continuous_period_months": "תקופה רצופה מעל הסף שאחריה נשלחת הודעה (רבעון)"
   },
   "strength": "primary",
   "dimensions": [
@@ -33,12 +34,45 @@
       ],
       "state": "sourced",
       "notes": "If an individual's current-account credit balance exceeds this amount for a continuous period of at least a quarter, the bank must send a notice that refers the customer to information on investment alternatives. Sent at the start of each quarter; monthly during the first 18 months after commencement. The Minister of Finance may change the amount by order; it is not CPI-linked in the text. Effective six months after publication on 21.5.2025 (il-finance's computation: 21.11.2025)."
+    },
+    "continuous_period_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_6913397.pdf",
+        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 39), התשפ\"ה-2025, ספר החוקים 3417, p.2, s.1 (סעיף 5א4(א)): \"בתקופה רצופה של רבעון לפחות\"",
+        "publisher": "הכנסת",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": "2025-11-21",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BANK-20"
+      ],
+      "state": "sourced",
+      "notes": "The law says a quarter ('רבעון'), recorded as 3 months: the credit balance must exceed the threshold for a continuous period of at least a quarter before the notice is due."
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-12",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_6913397.pdf",
+      "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 39), התשפ\"ה-2025",
+      "title_he": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 39), התשפ\"ה-2025",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1, new s.5A4(א)",
+      "page": 2,
+      "quote": "בתקופה רצופה של רבעון לפחות",
+      "checked": "2026-11-12"
+    },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6913397.pdf",
       "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 39), התשפ\"ה-2025",

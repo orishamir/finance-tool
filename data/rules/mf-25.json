@@ -1,0 +1,41 @@
+{
+  "id": "MF-25",
+  "title": "No distribution fee on listed units and some holdings",
+  "title_he": "על אילו יחידות אסור לגבות עמלת הפצה",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי תקנות השקעות משותפות בנאמנות (עמלת הפצה), אסור לגבות עמלת הפצה על יחידות של קרן או של קרן חוץ שרשומות למסחר בבורסה, ועל יחידות שמנהל תיקים קנה ללקוח לפי הסכם ניהול, חוץ מחריג שהתקנה מפרטת. גם על יחידות שנקנו לפני 1.4.2006, כשהתקנות נכנסו לתוקף, אין עמלת הפצה, חוץ מחריג אחד. התקנות תוקנו גם בתיקון שהאתר עוד לא קרא, ואולי יש בו פטורים נוספים.",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=10",
+      "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016, ק״ת 7653 (5.5.2016)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016, ק״ת 7653 (5.5.2016)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "regulations 2(ב)(2), 3",
+      "page": 10,
+      "quote": "יחידות של קרן או של קרן חוץ הרשומות למסחר",
+      "checked": "2026-11-12",
+      "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmfLeg7C4UCrAfbCcchwXa2I=#page=3",
+      "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006, ק״ת 6464 (26.2.2006), עמ' 494",
+      "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס״ו-2006 (קובץ התקנות 6464; תיקון 2013 בקובץ התקנות 7236)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "page": 3,
+      "checked": "2026-11-12"
+    }
+  ]
+}

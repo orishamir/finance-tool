@@ -1,0 +1,96 @@
+{
+  "id": "TX2-02",
+  "title": "FX deposits: banks withhold 25% in practice; the regulations' wording does not clearly support it",
+  "title_he": "פיקדון במטבע חוץ: בנק הפועלים ובנק לאומי מנכים 25%, ולשון התקנות לא ברורה",
+  "text_he": "בנק הפועלים ובנק לאומי כותבים במסמכים שלהם שהם מנכים מס במקור של 25% מהרווח על פיקדון במטבע חוץ של יחיד תושב ישראל, ושיחיד תושב חוץ פטור. לפי לשון תקנות הניכוי, ״מדד״ הוא המדד שבפקודה, ושם שער המטבע משמש כמדד רק לנייר ערך, ופיקדון אינו נייר ערך; קריאה מילולית הייתה נותנת ניכוי של 15%, כמו בנכס לא צמוד. ה־25% של הבנקים תואם את החבות במס, אבל אין טקסט רשמי שתומך בו, ועל איזה בסיס הבנקים מחשבים לא כתוב באף אחד משני המסמכים. הניכוי לא משנה את המס הסופי, שנקבע לפי החוק בדוח שנתי אם צריך.",
+  "strength": "institution",
+  "dimensions": [
+    "tax-during",
+    "currency",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-11-07",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    },
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
+  "scope_settle": "a Tax Authority text on the withholding rate for FX-deposit profits",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.146",
+      "locator_he": "עמוד 146",
+      "page": 146,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=6",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "לענין זה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "בתקנה 4 לתקנות העיקריות, במקום",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://bankhapoalim.co.il/sites/default/files/media/PDFS/pyqdwn_qzwb_bymym-hskm_mspty_bryt.pdf",
+      "title": "Bank Hapoalim, \"תנאים להפקדת פיקדון לזמן קצוב בימים\"",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 2",
+      "locator_he": "סעיף 2",
+      "quote": "ניכוי במקור",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/Articles/9929",
+      "title": "Bank Leumi, \"פיקדונות במטבע חוץ\"",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "שיעורי המס על רווחים בפיקדונות מט״ח",
+      "checked": "2026-10-22"
+    }
+  ]
+}

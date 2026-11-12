@@ -279,6 +279,14 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const snaps = latestSnapshots();
   const institutions = new Set(institutionIds());
   const { providerCompany } = companyLinks(snaps);
+  // `/fees` alone shows only that no product was found: a price list with no company page opens the fee page of the one product that reads it
+  const { compareBundle } = await import("./compare.server");
+  const { feePageAnswers } = await import("./fees");
+  const bundle = compareBundle();
+  const feePageOf = (id: string): string | null => {
+    const reading = bundle.wrappers.filter((w) => w.providers?.[id] && feePageAnswers(bundle, w.id));
+    return reading.length === 1 ? `/fees?wrapper=${reading[0]!.id}` : null;
+  };
   const tariffs = snaps
     .map((s) => ({
       key: s.id,
@@ -286,8 +294,9 @@ export async function loadDocumentData(): Promise<DocumentData> {
       dated: tariffDated(s.tariff, s.snapshot),
       missing: s.missing,
       lines: s.lines.length,
-      // banks and brokers have their own page; a manager has its company page when the regulator's data names it; else the fees page
-      href: institutions.has(s.id) ? `/companies/${s.id}` : providerCompany[s.id] ? `/companies/${providerCompany[s.id]}` : "/fees",
+      // banks and brokers have their own page; a manager has its company page when the regulator's data names it; else the fee page of the
+      // one product whose fee page reads the price list, and no link where none or several do
+      href: institutions.has(s.id) ? `/companies/${s.id}` : providerCompany[s.id] ? `/companies/${providerCompany[s.id]}` : feePageOf(s.id),
     }))
     .sort((a, b) => heCollator.compare(a.title, b.title));
   const funds = loadFunds()

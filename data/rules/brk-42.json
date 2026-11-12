@@ -24,13 +24,25 @@
   ],
   "sources": [
     {
-      "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-      "title": "Interactive Brokers: Commissions Stocks, ETFs, Warrants and Structured Products",
-      "publisher": "Interactive Brokers",
+      "url": "https://ndcdyn.interactivebrokers.com/Universal/servlet/Registration_v2.formSampleView?formdb=3203#page=15",
+      "title": "Interactive Brokers LLC: Client Agreement, form 3203",
+      "publisher": "ndcdyn.interactivebrokers.com",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.15, s.30C",
+      "locator_he": "עמוד 15, סעיף 30ג",
+      "checked": "2026-11-10"
+    },
+    {
+      "url": "https://www.interactivebrokers.ie/Universal/servlet/Registration_v2.formSampleView?formdb=4750#page=23",
+      "title": "Interactive Brokers Ireland: Customer Agreement, form 4750",
+      "publisher": "Interactive Brokers Ireland",
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
+      "locator": "p.23",
+      "locator_he": "עמוד 23",
+      "checked": "2026-11-10"
     },
     {
       "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
@@ -51,22 +63,13 @@
       "checked": "2026-11-10"
     },
     {
-      "url": "https://ndcdyn.interactivebrokers.com/Universal/servlet/Registration_v2.formSampleView?formdb=3203#page=15",
-      "title": "Interactive Brokers LLC: Client Agreement, form 3203",
+      "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+      "title": "Interactive Brokers: Commissions Stocks, ETFs, Warrants and Structured Products",
       "publisher": "Interactive Brokers",
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-11-10"
-    },
-    {
-      "url": "https://www.interactivebrokers.ie/Universal/servlet/Registration_v2.formSampleView?formdb=4750#page=23",
-      "title": "Interactive Brokers Ireland: Customer Agreement, form 4750",
-      "publisher": "Interactive Brokers",
-      "publisher_he": "Interactive Brokers",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-11-10"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.interactivebrokers.com/en/accounts/required-minimums.php",

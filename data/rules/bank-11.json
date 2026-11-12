@@ -1,0 +1,28 @@
+{
+  "id": "BANK-11",
+  "title": "Advertising deposits",
+  "title_he": "פרסום של פיקדון: מה המודעה צריכה לכלול",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי כללי הגילוי הנאות של בנק ישראל, בנק שמפרסם הצעה לקבל פיקדונות צריך לכלול בפרסום את תנאי הפיקדון, ובהם הריבית המתואמת השנתית המוצעת, סוג ההצמדה והבסיס שלה ותקופת הפיקדון. הוראות נוספות של בנק ישראל קובעות איך מציגים פיקדונות בערוצים של הבנק עצמו.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Disclosure rules 1992 (BoI copy)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.33B (33ב)",
+      "locator_he": "סעיף 33ב (33ב)",
+      "checked": "2026-10-22"
+    }
+  ]
+}

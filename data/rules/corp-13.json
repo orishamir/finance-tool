@@ -1,0 +1,138 @@
+{
+  "id": "CORP-13",
+  "title": "Rating companies must register with the ISA",
+  "title_he": "חברות דירוג אשראי חייבות להירשם ברשות ניירות ערך",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי החוק להסדרת פעילות חברות דירוג האשראי, התשע״ד-2014, אסור לעסוק בדירוג בלי להירשם כחברת דירוג, ורשות ניירות ערך רושמת את חברות הדירוג ומפקחת עליהן. חברת דירוג צריכה להיות עצמאית בפעולות שלה. תשלום על דירוג מהמשקיע שהזמין אותו, או ממשתתף בהנפקה כמו המנפיק או החתם, לא פוגע בעצמאות כשלעצמו, אבל חברה שמקבלת תשלום ממשתתף בהנפקה מפרסמת לכל דירוג מי שילם עליו. הרשות יכולה להטיל על חברת דירוג עיצום כספי של עד 5,000,000 ₪.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=2",
+      "title": "s.1, gazette ס״ח תשע״ד, 418",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1, gazette ס״ח תשע״ד, 418",
+      "locator_he": "סעיף 1, ס״ח תשע״ד, 418",
+      "page": 2,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=3",
+      "title": "s.2",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.2",
+      "locator_he": "סעיף 2",
+      "page": 3,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=3",
+      "title": "s.4",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.4",
+      "locator_he": "סעיף 4",
+      "page": 3,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=7",
+      "title": "s.16",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.16",
+      "locator_he": "סעיף 16",
+      "page": 7,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=8",
+      "title": "s.16(ג)-(ד)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.16(ג)-(ד)",
+      "locator_he": "סעיף 16(ג)-(ד)",
+      "page": 8,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=9",
+      "title": "s.21",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.21",
+      "locator_he": "סעיף 21",
+      "page": 9,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=13",
+      "title": "s.40",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.40",
+      "locator_he": "סעיף 40",
+      "page": 13,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=16",
+      "title": "s.54",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.54",
+      "locator_he": "סעיף 54",
+      "page": 16,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_525578.pdf#page=8",
+      "title": "חוק בנק ישראל (תיקון מס' 7), התשע\"ט-2018, ס״ח 2759 (28.11.2018)",
+      "title_he": "חוק בנק ישראל (תיקון מס' 7), התשע\"ט-2018, ס״ח 2759 (28.11.2018)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.12",
+      "locator_he": "סעיף 12",
+      "page": 8,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_3568695.pdf#page=45",
+      "title": "חוק פסיקת ריבית והצמדה (תיקון מס' 9), התשפ\"ד-2023, ס״ח 3117 (19.11.2023)",
+      "title_he": "חוק פסיקת ריבית והצמדה (תיקון מס' 9), התשפ\"ד-2023, ס״ח 3117 (19.11.2023)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.183",
+      "locator_he": "עמוד 183",
+      "page": 183,
+      "checked": "2026-11-08"
+    }
+  ]
+}

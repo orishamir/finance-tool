@@ -15,20 +15,6 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
-      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
-      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.1070), s.1(2), s.74ב(ד)(1א); s.2 (in force 1.1.2025, for a child born from that day)",
-      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(2), סעיף 74ב(ד)(1א); סעיף 2",
-      "page": 2,
-      "quote": "בתוך תקופה של שישה חודשים מיום לידתו של ילד זכאי",
-      "checked": "2026-11-07"
-    },
-    {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
       "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "title_he": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
@@ -50,6 +36,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.4, annex s.3(ד1)-(ד2)",
+      "locator_he": "עמוד 4, נספח סעיף 3(ד1)-(ד2)",
       "page": 4,
       "quote": "לכל ילד המצטרף לראשונה החל מיום 1 בדצמבר 2022",
       "checked": "2026-10-25"
@@ -63,6 +50,20 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
+      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.1070), s.1(2), s.74ב(ד)(1א); s.2",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(2), סעיף 74ב(ד)(1א); סעיף 2",
+      "page": 2,
+      "quote": "בתוך תקופה של שישה חודשים מיום לידתו של ילד זכאי",
+      "checked": "2026-11-07"
     }
   ]
 }

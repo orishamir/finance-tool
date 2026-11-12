@@ -2,10 +2,11 @@
   "id": "ETF-35",
   "title": "TASE updates its share universes and index compositions every half year (first Thursday of May and November) and the weight parameters every quarter",
   "title_he": "הבורסה מעדכנת מאגרים והרכבי מדדים חצי-שנתית ומשקלים רבעונית",
-  "text_he": "הרכב מאגרי תמר ורימון ומדדי המניות שנבנים מהם מתעדכן לפי מספר עדכוני ההרכב בשנה, בתום המסחר ביום חמישי הראשון של מאי ושל נובמבר; אם אין מסחר בתל אביב, בבורסות בארצות הברית או בלונדון באותו יום, העדכון נדחה ליום המסחר הבא שיש בו מסחר בכולן. העדכון מתפרסם מראש ונקבע מנתוני מועד קובע שקודם לו, חוץ מקריטריון החזקות הציבור, שמועדו הקובע הוא סוף מרס לעדכון מאי וסוף ספטמבר לעדכון נובמבר. ארבעת פרמטרי המשקל הקבועים מתעדכנים לפי מספר עדכוני הפרמטרים בשנה, בתום המסחר ביום חמישי הראשון של פברואר, מאי, אוגוסט ונובמבר, גם הם מנתוני מועד קובע ובפרסום מראש. הרפורמה בנזילות של הבורסה העבירה את עדכון הפרמטרים מחודשי לרבעוני והגבילה את המסלול המהיר למניות חדשות וגדולות.",
+  "text_he": "הרכב מאגרי תמר ורימון ומדדי המניות שנבנים מהם מתעדכן בתום המסחר ביום חמישי הראשון של מאי ושל נובמבר; אם אין מסחר בתל אביב, בבורסות בארצות הברית או בלונדון באותו יום, העדכון נדחה ליום המסחר הבא שיש בו מסחר בכולן. העדכון מתפרסם מראש ונקבע מנתוני מועד קובע שקודם לו, חוץ מקריטריון החזקות הציבור, שמועדו הקובע הוא סוף מרס לעדכון מאי וסוף ספטמבר לעדכון נובמבר. ארבעת פרמטרי המשקל הקבועים מתעדכנים בתום המסחר ביום חמישי הראשון של פברואר, מאי, אוגוסט ונובמבר, גם הם מנתוני מועד קובע ובפרסום מראש. הרפורמה בנזילות של הבורסה העבירה את עדכון הפרמטרים מחודשי לרבעוני והגבילה את המסלול המהיר למניות חדשות וגדולות.",
   "figure_names_he": {
     "composition_updates_per_year": "מספר עדכוני ההרכב בשנה",
-    "parameter_updates_per_year": "מספר עדכוני פרמטרי המשקל בשנה"
+    "parameter_updates_per_year": "מספר עדכוני פרמטרי המשקל בשנה",
+    "composition_update_day": "מועד עדכון ההרכב"
   },
   "strength": "primary",
   "dimensions": [
@@ -53,6 +54,27 @@
       ],
       "state": "sourced",
       "notes": "First Thursday of February, May, August and November; published at least five trading days before."
+    },
+    "composition_update_day": {
+      "value": "יום חמישי הראשון בחודשים מאי ונובמבר",
+      "unit": "text",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf#page=9",
+        "title": "הבורסה, הנחיות על פי החלק השביעי לתקנון (מדריך מעו\"ף), עמוד 9, סעיף 3א",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary",
+        "quote": "המאגרים יעודכנו פעמיים בשנה"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-35"
+      ],
+      "state": "sourced",
+      "notes": "At the end of trading on that day; if TASE, the U.S. exchanges or London do not trade that day, the next day with trading in all of them (s.3א(1)). Live file identical to the library copy on 2026-11-12."
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
@@ -70,7 +92,7 @@
       "locator": "pp.9 to 11, 17 to 18, ss.2(4), 3א to 3ד, 3ח, 9א",
       "page": 9,
       "quote": "המאגרים יעודכנו פעמיים בשנה",
-      "checked": "2026-10-26",
+      "checked": "2026-11-12",
       "qualifier": "(exchange rules, ISA-approved)"
     },
     {

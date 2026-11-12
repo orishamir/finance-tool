@@ -1333,7 +1333,9 @@
           "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.1, מינ' (עמוד מס' 17)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "4.5.1 הנסחרים בארץ 0.195% מקס' לפיקדון 10,000"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1415,7 +1417,9 @@
           "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.2, מינ' (עמוד מס' 17)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "4.5.2 הנסחרים בחוץ לארץ 0.20% מקס' לפיקדון 10,000"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1670,7 +1674,9 @@
           "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 20)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "5.1.1 מט\"י-מט\"ח 0.175% מינ' 6.25$ מקס' 2,700.0$"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1775,7 +1781,9 @@
           "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
           "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - מעל 100$, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 53)",
           "publisher": "Bank Massad Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 4,
+          "quote": "עמלת חליפין מט\"י/מט\"ח מעל 100$ 0.17% מינ' 5.0$ מקס' $2500"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-09-06",
@@ -1912,29 +1920,60 @@
   "left_out": [
     {
       "what": "מורים ובני זוג: '50% הנחה בדמי ניהול פיקדון ני\"ע (דנ\"פ) לשלוש שנים'",
-      "why": "Advertising pages for teachers and their spouses (library e482d4ca74c58147, af05f414e55a7416): new customers only, salary from 5,000 NIS (10,000 for a couple), 'בפיקדון ניירות ערך החל מ- 150,000 ₪', three years, 'הבנק רשאי להפסיק את מתן ההטבות בכל עת'. No annex A row prints it. An offer for a profession, not the ordinary customer."
+      "why": "Advertising pages for teachers and their spouses (library e482d4ca74c58147, af05f414e55a7416): new customers only, salary from 5,000 NIS (10,000 for a couple), 'בפיקדון ניירות ערך החל מ- 150,000 ₪', three years, 'הבנק רשאי להפסיק את מתן ההטבות בכל עת'. No annex A row prints it. An offer for a profession, not the ordinary customer.",
+      "why_he": "הבנק מפרסם למורים ולבני זוגם 50% הנחה בדמי הניהול של ניירות ערך לשלוש שנים, ללקוחות חדשים עם משכורת מ־5,000 ₪ ותיק מ־150,000 ₪. ההטבה לא מופיעה בתעריפון והבנק רשאי להפסיק אותה בכל עת, ולכן האתר לא מחשב אותה; למורה שזכאי לה המחיר יוצא זול יותר.",
+      "could_change_price": true
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: ברוקר, קורספונדנט, קסטודיאן",
       "page": 43,
-      "why": "Part 11 prints them 'עפ\"י החיוב בפועל' with no maximum, and part 4 adds custodian costs with no part 11 row: not limited by the documents."
+      "why": "Part 11 prints them 'עפ\"י החיוב בפועל' with no maximum, and part 4 adds custodian costs with no part 11 row: not limited by the documents.",
+      "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של ברוקר, בנק קורספונדנט ומשמורן בחו״ל ״עפ״י החיוב בפועל״, בלי סכום ובלי תקרה. האתר לא מחשב אותן, ולכן המחיר בחו״ל יכול לצאת יקר יותר.",
+      "could_change_price": true
     },
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 6.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 2.00 ₪, מסלול בסיסי 10 ₪ ומורחב 30 ₪ לחודש; מורים במסלול 10: 10 ₪",
       "page": 3,
-      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 s.1.2.1 note 4: the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3)."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 s.1.2.1 note 4: the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3).",
+      "why_he": "מחשבון העו״ש האתר סופר רק את עמלת המינימום החודשית, עד 6.30 ₪, כי זה מה שחשבון עולה למי שעושה בו מעט פעולות. עמלות על פעולות נוספות ומסלולי עמלות הם עניין של השימוש בחשבון ולא של ההשקעה. אם סימנתם שזה הבנק שלכם, האתר לא סופר את עמלת המינימום.",
+      "could_change_price": false
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.33%-0.59% לשנה, זרים 0.28%-0.67%; קנייה ומכירה של מניות ואג\"ח 0.14%-0.40%",
-      "why": "What customers paid on average by portfolio size (the bank's sheet, library 820753ecaf4802d4, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.78% a year in Israel."
+      "why": "What customers paid on average by portfolio size (the bank's sheet, library 820753ecaf4802d4, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.78% a year in Israel.",
+      "why_he": "לפי הממוצעים שהבנק והבורסה מפרסמים, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.33% עד 0.59% בשנה על ניירות ערך בארץ, לפי גודל התיק, ובתעריפון כתוב 0.195% לרבעון. כלומר רבים משלמים פחות ממחיר התעריפון, ולכן המחיר בפועל יכול לצאת זול מזה שמוצג.",
+      "could_change_price": true
     },
     {
       "what": "מורים ועובדי הוראה: מורים עם משכורת ותיק מ־150,000 ₪",
-      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/"
+      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
+      "why_he": "לבנק יש מסלול למורים ועובדי הוראה שמעבירים משכורת ומחזיקים תיק של 150,000 ₪ לפחות. האתר לא מציג הטבות של מקצוע אחד, ולכן למורה המחיר יכול לצאת זול יותר מזה שמוצג.",
+      "could_change_price": true
     },
     {
       "what": "בני זוג של מורים: בני זוג של מורים עם תיק מ־150,000 ₪",
-      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/"
+      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/",
+      "why_he": "לבנק יש מסלול לבני זוג של מורים שמחזיקים תיק של 150,000 ₪ לפחות. האתר לא מציג הטבות של מקצוע אחד, ולכן לבן או בת זוג של מורה המחיר יכול לצאת זול יותר מזה שמוצג.",
+      "could_change_price": true
+    },
+    {
+      "what": "עמלת חליפין (מט\"י/מט\"ח) - עד 100$: 1.0$ באינטרנט ובאפליקציה (3.0$ בפקיד); מעל 100$: 0.17%, מינ' 5.0$ (נספח ה', עמוד מס' 53)",
+      "why": "Annex E prints a flat 1.0 USD for a conversion up to 100 USD in the internet and app columns (clerk 3.0 USD); the record prices every conversion on the 'מעל 100$' line (0.17%, minimum 5 USD). The schema's flat_up_to exists on a line, but the engine's conversion step (packages/engine/src/providers/workbench.ts, resolve('fx')) does not read it, so writing it would change nothing; a conversion of up to 100 USD is overpriced by up to 4 USD. Read 2026-11-12 in the filed annex E (library 9023a51ca129dafa, file page 4).",
+      "why_he": "המרה של עד 100 דולר עולה באינטרנט ובאפליקציה 1 דולר בלבד, והאתר מחשב כל המרה לפי 0.17% במינימום 5 דולר. למי שמשקיע כל חודש סכום קטן בקרן בחו״ל, המחיר האמיתי זול יותר מזה שמוצג.",
+      "could_change_price": true
+    },
+    {
+      "what": "בגין כל ביצוע חלקי של הוראת קניה/מכירה של ני\"ע (למעט ביצועים חלקיים באותו שער) תיגבה עמלה נפרדת (לרבות עמלת מינימום)",
+      "page": 2,
+      "why": "Part 4, 4.4 (foreign securities), note 5 (printed page 16, file page 2 of the part-4 file, library 14d10e0ed6b25245; read 2026-11-12). An order abroad filled in parts at different prices pays the commission, and its 24.5 USD minimum, once per part. The site prices one commission per order; how often an order is filled in parts is not known, so it is not priced.",
+      "why_he": "בקנייה או מכירה בחו״ל שמתבצעת בכמה חלקים במחירים שונים, הבנק גובה עמלה נפרדת על כל חלק, כולל עמלת המינימום. האתר מחשב עמלה אחת לכל הוראה, ולכן הוראה שמתפצלת יכולה לעלות יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "חבילת אקסטרה CLASS: 'הנחות והטבות בתוכניות חסכון, פיקדונות בשקלים, ניירות ערך ומטבע חוץ'",
+      "why": "The account-type page (library 06f1e0b7231c02b9, read 2026-11-04) offers unspecified securities discounts to joiners with a salary account of 4,000 NIS and up, for 36 months, 'הבנק רשאי להפסיק את תנאי המבצע ו/או להפסיקו בכל עת'. No rate is printed and no tariff row prints it: an offer with no price (D56), not a group price.",
+      "why_he": "הבנק מפרסם חבילה בשם אקסטרה CLASS עם ״הנחות והטבות״ בניירות ערך ובמטבע חוץ למי שמעביר משכורת מ־4,000 ₪, ל־36 חודשים, בלי לומר כמה. בלי שיעור אי אפשר לחשב אותה, ולמי שמצטרף המחיר יכול לצאת זול יותר.",
+      "could_change_price": true
     }
   ],
   "groups": {

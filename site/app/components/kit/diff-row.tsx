@@ -6,8 +6,11 @@
 import type { ReactNode } from "react";
 import { cx } from "./cx";
 
-/** Columns on a computer and on a phone: fixed, so a figure with another digit moves nothing (nothing moves when a number changes). */
-const COLS = "grid-cols-[minmax(0,1fr)_5.25rem_6rem] md:grid-cols-[minmax(0,1.5fr)_5.5rem_minmax(0,1fr)_8rem]";
+/** Columns on a computer and on a phone: the same on every row, so a figure with another digit moves nothing (nothing moves when a number
+ *  changes). On a phone the difference's word stands over its figure (`DiffFigure`), so its column holds "15,288 ₪" and more: side by side
+ *  in 6rem, "פחות 15,288 ₪" ran past the card at 320 px (2026-11-12). The name and the bar share what is left, so the name keeps room for
+ *  its value under it ("82,574 ₪") and the bar's head its two words. */
+const COLS = "grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)_5rem] md:grid-cols-[minmax(0,1.5fr)_5.5rem_minmax(0,1fr)_8rem]";
 
 /** Where the bar's end lies: a share of the half width, at most the whole half; `cut` when the real size is longer. */
 export function barShare(d: number, unit: number): { share: number; cut: boolean } {
@@ -59,13 +62,15 @@ export function DiffHead({ name, left, versus, less, more, money }: { name: stri
   );
 }
 
-/** "עוד 4,875 ₪", "פחות 1,524 ₪" or "אותו סכום": the figure (a `Num` of the size, no sign) after a word of fixed width. */
+/** "עוד 4,875 ₪", "פחות 1,524 ₪" or "אותו סכום": the figure (a `Num` of the size, no sign) after a word of fixed width; on a phone the
+ *  word stands over the figure, in the row's two lines. */
 export function DiffFigure({ d, words, figure }: { d: number; words: { more: string; fewer: string; same: string }; figure: ReactNode }) {
   if (Math.round(d) === 0) return <span className="text-muted-foreground">{words.same}</span>;
   return (
-    <span className={cx("flex items-baseline gap-1.5 whitespace-nowrap tabular-nums font-medium", d < 0 && "text-muted-foreground font-normal")}>
-      <span className="w-9 flex-none">{d < 0 ? words.fewer : words.more}</span>
-      {figure}
+    <span className={cx("flex items-baseline gap-1.5 whitespace-nowrap tabular-nums font-medium max-md:flex-col max-md:items-start max-md:gap-0", d < 0 && "text-muted-foreground font-normal")}>
+      <span className="w-9 flex-none max-md:w-auto max-md:text-xs">{d < 0 ? words.fewer : words.more}</span>
+      {/* a size down on a phone from six digits, so a typed plan's larger differences stay in the column */}
+      <span className={cx(Math.abs(d) >= 1e5 && "max-md:text-xs")}>{figure}</span>
     </span>
   );
 }
@@ -108,11 +113,13 @@ export function DiffRow({ name, sub, left, d, unit, open, diff, turn, label, onT
   );
 }
 
-/** The grey lines under a list: the choices with no price, grouped by why. */
-export function GreyLine({ why, children }: { why: string; children: ReactNode }) {
+/** The grey lines under a list: the choices with no price, grouped by why. `why` may be a tappable word (a `Term`) that opens the reasons. */
+export function GreyLine({ why, children }: { why: ReactNode; children: ReactNode }) {
   return (
     <p className="border-t border-border px-1.5 py-1.5 text-xs leading-normal text-muted-foreground">
-      <b className="font-medium">{why}:</b> {children}
+      {/* a tappable reason wraps like the words around it: a term keeps itself on one line elsewhere, and a reason that names a fund
+          ("⁨אי.בי.אי. סל (4D) MSCI AC World⁩ לא נמכרת שם") made the whole list wider than a 320 px screen (2026-11-12) */}
+      <b className="font-medium [&_.term]:whitespace-normal">{why}:</b> {children}
     </p>
   );
 }

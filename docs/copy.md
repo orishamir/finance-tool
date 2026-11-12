@@ -56,7 +56,7 @@ What the guideline's voice, sentence and word-choice rules don't already say:
 - **"החברה קובעת"** for a figure a company sets, in the active voice, so it is not confused with the strength tag "לפי החברה".
 - **"עד"** before a "worth knowing" figure that is a legal cap, so a cap never reads as the rate charged. A cap set in the fee regulations is "שבתקנות", not "שבחוק" (a scan in `kit/guards.test.ts`, guard 18, fails "התקרה שבחוק" and "התקרה בחוק" in the copy, the guide prose and the records, 2026-11-07).
 - **"ריבית הבנק, בתוקף מ־{תאריך}"** for a deposit's own rate: the date is the record's `effective_from`, which can be after today; it is not a publication date.
-- **No typed figure even for a fixed count:** a default reads "ברירת המחדל: החודש האחרון", paging reads "להציג עוד" with no page size, and an age in a flag is written in words.
+- **No typed figure even for a fixed count:** a default reads "ברירת המחדל: החודש האחרון", paging reads "להציג עוד" with no page size, and an age, a rate or a period in a flag is its rule's figure, read through a `{ID:figure}` slot (`{ID:figure.from}` for the month it takes effect), never typed in digits or in words (D108, D111).
 
 ## 4. Laws and rules, documents and questions
 

@@ -1,0 +1,41 @@
+{
+  "id": "PF-27",
+  "title": "Lost contact and dormant accounts: definitions and the manager's search duty",
+  "title_he": "עמית שהקשר איתו נותק וחשבון רדום: מה הם, ומה החברה חייבת לעשות",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-12-31",
+  "text_he": "לפי תקנות האיתור, הקשר עם עמית נחשב מנותק אם שני דיווחים תקופתיים שנשלחו אליו בדואר חזרו בתוך שלוש שנים, או אם החשבון שלו רדום. חשבון לא פנסיוני הוא רדום כשלא ניתנה בו הוראה 10 שנים, או 5 שנים אם החברה המנהלת יודעת שאפשר למשוך את הכסף, המוקדם מביניהם. החברה צריכה לבדוק את פרטי הזיהוי מול מרשם האוכלוסין, ולעמית שהקשר איתו נותק לפעול בשקידה סבירה לאתר אותו, דרך אנשי קשר, המעסיק ומקורות מידע, בתוך שנה ושוב כל שלוש שנים; בחשבון רדום היא חוזרת על החיפוש רק אם היתרה גבוהה מ־5,000 ₪, סכום שמתעדכן לפי המדד ב־1 במרץ בכל שנה מאז 2014. גם מוטבים של עמית שנפטר מחפשים לפי לוח זמנים קבוע.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7083%2Fheb#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע\"ב-2012, קובץ התקנות 7083 (30.1.2012) p.696",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.2-7 (gazette pp.696-701): reg. 1, reg. 2, reg. 3(א)-(ג), reg. 4, reg. 6",
+      "locator_he": "עמודי הקובץ 2 עד 7 (עמודי הרשומות 696 עד 701): תקנה 1, תקנה 2, תקנה 3(א)-(ג), תקנה 4, תקנה 6",
+      "page": 2,
+      "quote": "דואר חוזר",
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_SecondaryLaw(2136913)",
+      "title": "Knesset, secondary legislation record 2136913",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-11-08",
+      "qualifier": "(official record of publication, not of the text)"
+    }
+  ]
+}

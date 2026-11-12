@@ -6,7 +6,7 @@
 // paper above the lists, and its stub at the screen's foot keeps what is left in sight and leads back to it.
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { invest as c, site } from "../../copy";
-import { fmt } from "../../lib/format";
+import { fmt, wholeSum } from "../../lib/format";
 import { gapListFor, pricedVariable, accountSum, pairCostsKept, type InvestView } from "../../lib/invest";
 import type { FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
@@ -14,7 +14,9 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { receiptAmounts, sharesOf, takenWords } from "../../lib/receipt";
 import { differenceOf, ownBy, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { HelpMark, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
+import { HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
+import { isGroupProvider } from "../../lib/group-pick";
+import { leftOutOf } from "../../lib/left-out";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, barTotalValue, pairVerdict, partName, plus, steadyOf, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
@@ -38,6 +40,8 @@ function RatePartWords({ part, house }: { part: RatePart; house: string }) {
   const per = part.per ? <> {r.per[part.per]}</> : null;
   if (part.kind === "rate") return <>{fig}{per}</>;
   if (part.kind === "cap") return <>{r.cap.before} {fig} {r.cap.after}</>;
+  // "3.30 $ להמרה של עד 99 $": the sum it holds up to is the list's own figure too
+  if (part.kind === "flat" && part.upTo) return <>{fig} {r.flat[part.per ?? "eachTrade"]} <Num value={ownBy({ ...part.upTo } as SiteValue, house)} display={wholeSum(part.upTo.unit)} /></>;
   if (part.kind === "spread") return <>{r.spread} {fig}</>;
   return <>{part.kind === "min" ? r.min : r.max} {fig}{per}</>;
 }
@@ -128,6 +132,9 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const house = providerName(view, pick.house);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const short = house?.short ?? pick.house;
+  const held = view.providers.find((p) => p.id === pick.house);
+  const baseHouse = held && isGroupProvider(held) ? (held as typeof held & { group: { house: string } }).group.house : pick.house;
+  const baseShort = providerName(view, baseHouse)?.short ?? short;
   // the figures each line shows are whole shekels that add up; each opens the figure it stands for, with that figure's sources
   const added = differenceOf([c.pair.baseInput, whole(pc.baseValue)], [c.pair.paidIn, whole(pc.paidIn)], "F-91", { today, about: c.receipt.added });
   const gain = differenceOf([c.receipt.left, whole(pc.left)], [c.pair.paidIn, whole(pc.paidIn)], "F-91", { today, about: c.receipt.gain });
@@ -157,6 +164,8 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
       })}
       {r.remainder !== 0 && <ReceiptLine size="sm" label={pc.units ? c.pair.remainderUnits : c.pair.remainder} value={<Num value={pc.remainder} display={minus(r.remainder)} />} />}
+      {/* what the house's documents hold and its price leaves out, under its lines (D106); a group's account is its house's */}
+      <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === baseHouse))} house={baseShort} />
     </>
   );
   const accountValue = <Num value={account} display={minus(r.account)} />;

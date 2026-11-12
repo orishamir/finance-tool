@@ -1,0 +1,53 @@
+{
+  "id": "BRK-64",
+  "title": "Interactive Brokers: no Tel Aviv trading for a retail client resident in Israel, and no Israeli mutual fund in the inventory it offers residents of Israel",
+  "title_he": "אינטראקטיב ברוקרס: בלי מסחר בבורסת תל אביב ובלי קרנות ישראליות ללקוח פרטי שגר בישראל",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-12",
+  "text_he": "אינטראקטיב ברוקרס כותבת שכרגע היא לא מציעה מסחר בבורסת תל אביב ללקוחות פרטיים שגרים בישראל. ברשימת קרנות הנאמנות שהיא מציעה למי שגר בישראל אין קרן ישראלית ואין קרן בשקלים. לכן לקוח פרטי שגר בישראל לא יכול לקנות שם קרן סל ישראלית או קרן מחקה ישראלית, אף שבמחירון שלה מופיעה עמלה לבורסת תל אביב.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "interactive-brokers",
+      "name_he": "Interactive Brokers"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.interactivebrokers.com/lib/cstools/faq/#/content/56713690",
+      "title": "Interactive Brokers: FAQ, How do I trade stocks on the Tel Aviv Exchange (TASE)?",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "At this moment we do not offer trading on Tel Aviv Exchange (TASE) to retail clients who are a resident of Israel.",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/trading/products-mutual-funds.php",
+      "title": "Interactive Brokers: Mutual Funds, Mutual Fund Inventory Search Tool",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "Use our Mutual Fund Inventory Search Tool to identify funds by country of your residence, commission charged, fund type or fund family.",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/general/communiques/2019/news-at-ibkr-02-2019-vol6.php",
+      "title": "Interactive Brokers: NEWs @ IBKR 2019, Vol. 6",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "IBKR institutional clients globally and retail clients outside of Israel can use their account to trade stocks on the Tel Aviv Stock Exchange",
+      "checked": "2026-11-12"
+    }
+  ]
+}

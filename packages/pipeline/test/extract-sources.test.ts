@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { extractFromLine, findLinks, findQuote, sourceLineOf, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
+import { extractFromLine, findLinks, findQuote, firstPage, pageInUrl, sourceLineOf, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
 import { readRuleBaseIds, urlInBlock } from "../src/references.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -133,10 +133,44 @@ describe("extract-sources: parts", () => {
     expect(toHebrewLocator("reg. 2(א)(7)")).toBe("תקנה 2(א)(7)");
     expect(toHebrewLocator("bylaws p. 3")).toBeUndefined();
   });
-  it("quotes need Hebrew, length and no elision", () => {
+  it("quotes need Hebrew or an English sentence, length and no elision", () => {
     expect(findQuote('"abc def ghi jkl"')).toBeUndefined();
     expect(findQuote('"קצר"')).toBeUndefined();
     expect(findQuote('התשנ"ה "הכנסה חייבת במס בשיעור מיוחד"')).toBe("הכנסה חייבת במס בשיעור מיוחד");
+  });
+  it("an English page's cited sentence is its quote; a quoted title, term or question is not (BRK-64, 2026-11-12)", () => {
+    const sentence = "At this moment we do not offer trading on Tel Aviv Exchange (TASE) to retail clients who are a resident of Israel.";
+    expect(findQuote(`FAQ 56713690, "Trading on TASE" "${sentence}"`)).toBe(sentence);
+    expect(findQuote('the section "Order Execution Policy for Retail Clients"')).toBeUndefined();
+    expect(findQuote('"Can I trade Israeli stocks in my account?"')).toBeUndefined();
+    // Hebrew words come first when both are quoted
+    expect(findQuote(`"${sentence}" and "קרנות נאמנות הנסחרות בבורסה"`)).toBe("קרנות נאמנות הנסחרות בבורסה");
+  });
+  it("an abbreviation's gershayim is no quote mark; quoted words inside a quote stay in it (BANK-07, TXF-10, 2026-11-12)", () => {
+    expect(findQuote("ק״ת 7469, התשע״ה, p.3")).toBeUndefined();
+    expect(findQuote('reg. 2(ד) ("בפסקה (1), במקום "20%" יבוא "25%""; and in para. (2)')).toBe('בפסקה (1), במקום "20%" יבוא "25%"');
+    expect(findQuote('p.10 "הסכומים בטבלה אינם כוללים מע"מ"')).toBe("הסכומים בטבלה אינם כוללים מע״מ");
+    expect(findQuote('s.2(3) "ההגדרות ״מסלול״, ״מסלול בסיסי״ ו״אדם עם מוגבלות״ – בטלות"; s.12')).toBe("ההגדרות ״מסלול״, ״מסלול בסיסי״ ו״אדם עם מוגבלות״ – בטלות");
+  });
+  it("a gazette booklet's link opens at the file's page, never at the page the gazette prints", () => {
+    const booklet = "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7360%2Fheb";
+    expect(firstPage("file p.7 (gazette p.1001), ss.2-4", booklet)).toBe(7);
+    expect(firstPage("gazette p.1001, ss.2-4", booklet)).toBeUndefined();
+    expect(firstPage("p.1001", booklet)).toBeUndefined();
+    expect(firstPage("p.3 (gazette p.1071), s.3(9)", "https://fs.knesset.gov.il/25/law/25_lsr_14375739.pdf")).toBe(3);
+    expect(pageInUrl(`${booklet}#page=4`)).toBe(4);
+    expect(pageInUrl("https://www.inter-il.com/a/#page=4")).toBeUndefined();
+    expect(toHebrewLocator("file p.7 (gazette p.1001), ss.2-4")).toBe("עמוד הקובץ 7 (עמוד הרשומות 1001), סעיפים 2-4");
+    expect(toHebrewLocator("file p.28 (gazette p.244), s.74ב(א)(1) as enacted", "https://fs.knesset.gov.il/20/law/20_lsr_316719.pdf")).toBe(
+      "עמוד הקובץ 28 (עמוד ספר החוקים 244), סעיף 74ב(א)(1) בנוסחו המקורי",
+    );
+    expect(toHebrewLocator("reg. 9(ב) as enacted")).toBe("תקנה 9(ב) בנוסחה המקורי");
+    expect(toHebrewLocator("regs. 1-3 as enacted")).toBe("תקנות 1-3 בנוסחן המקורי");
+    expect(toHebrewLocator("p.10, annex ג")).toBe("עמוד 10, נספח ג");
+  });
+  it("a link opens at the page of the passage its quote comes from (2026-11-12)", () => {
+    const [s] = extractFromLine('[תקנון](https://content.tase.co.il/media/a/274690.pdf), p.4, s.1 definitions; p.8, s.2 "חבר בורסה הוא חברה שהתאגדה" · checked 2026-11-12 · primary', ctx()).sources;
+    expect(s).toMatchObject({ page: 8, quote: "חבר בורסה הוא חברה שהתאגדה" });
   });
   it("writeKeys appends the new keys last and replaces its own on a re-run", () => {
     const text = '{\n  "id": "A-1",\n  "n": 83.0\n}\n';

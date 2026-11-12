@@ -42,10 +42,10 @@ describe("one bank's rate is named where it is quoted", () => {
     expect(t).toMatch(/1\.05%\s*עד\s*3\.25%/);
     expect(t).toMatch(/לפי התעריפון של\s*(<[^>]*>)?\s*פסגות/);
     // PEPPER Invest is part of Leumi Trade, so it is no house of its own
-    expect(t).not.toContain("הוא שקול לתעריפון של");
+    expect(t).not.toContain("התעריפון הזה שקול לתעריפון של");
     expect(t).not.toContain("פפר");
     // with no tie the page crowns its pick (F-80), as the other guide pages do
-    expect(t).toMatch(/הבחירה של האתר:\s*מבין\s*14\s*הבנקים ובתי ההשקעות שנאספו/);
+    expect(t).toMatch(/כי מבין\s*14\s*הבנקים ובתי ההשקעות שנאספו/);
   });
   it("the savings plan's one-off deposit sentence names its bank", () => {
     const sig = buildGuidePage("savings-plan")!.signature!;

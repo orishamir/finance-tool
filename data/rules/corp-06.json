@@ -1,0 +1,61 @@
+{
+  "id": "CORP-06",
+  "title": "What the trustee must do",
+  "title_he": "מה הנאמן לאיגרות חוב חייב לעשות",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק ניירות ערך, הנאמן חייב לפעול לטובת כל מחזיקי איגרות החוב, בזהירות, באמונה ובשקידה. הוא דואג שהבטוחות תקפות לפני שהכסף מועבר למנפיק ובודק אותן לפחות פעם בשנה, בודק אם המנפיק עומד בהתחייבויות שלו, ומודיע למחזיקים כשנודע לו על הפרה מהותית של שטר הנאמנות. אם לדעתו יש חשש סביר שהמנפיק לא יוכל לעמוד בהתחייבויות במועד, הוא בוחן את הנסיבות ופועל להגנת המחזיקים, ויכול גם לנהל איתו משא ומתן על שינוי התנאים. הנאמן מגיש לרשות ניירות ערך ולבורסה דוח שנתי, ומחזיקים של 10% לפחות מהערך הנקוב של הסדרה יכולים לדרוש ממנו דוח על הפעולות שלו.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=44",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.44, s. 35ח(ב)(2)",
+      "locator_he": "עמוד הקובץ 44, סעיף 35ח(ב)(2)",
+      "page": 44,
+      "quote": "ולפחות אחת לשנה",
+      "checked": "2026-11-12",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=45",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.45, s. 35ח1(ב)",
+      "locator_he": "עמוד הקובץ 45, סעיף 35ח1(ב)",
+      "page": 45,
+      "quote": "לפי דרישה סבירה של מחזיקים בעשרה אחוזים לפחות מיתרת הערך הנקוב",
+      "checked": "2026-11-12",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "ss. 35ח, 35ח1, 35ט",
+      "locator_he": "סעיפים 35ח, 35ח1, 35ט",
+      "page": 43,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "CORP-04",
+  "title": "A trustee must be appointed for every public bond offering",
+  "title_he": "איגרות חוב לציבור: חייבים למנות נאמן למחזיקים",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק ניירות ערך, אי אפשר להציע לציבור איגרות חוב בלי שהמנפיק מינה נאמן למחזיקים. הנאמן הראשון מתמנה בשטר הנאמנות בין המנפיק לנאמן, ואחר כך אסיפת מחזיקים ממנה את הנאמן, קובעת את תקופת הכהונה ויכולה למנות אותו שוב. בתוך 14 ימים מהגשת הדוח השנתי השני על ענייני הנאמנות, הנאמן צריך לזמן אסיפת מחזיקים לכל סדרה בנפרד, והאסיפה מתכנסת לא יאוחר מ־60 ימים מהגשת הדוח, עם מינוי הנאמן על סדר היום. החובה לא חלה על נייר ערך מסחרי.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s. 35ב(א), (א1), (ב)",
+      "locator_he": "סעיף 35ב(א), (א1), (ב)",
+      "page": 38,
+      "quote": "האסיפה תכונס לא יאוחר מתום שישים ימים",
+      "checked": "2026-11-12",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

@@ -123,6 +123,46 @@
     ]
   },
   {
+    "id": "clal-insurance",
+    "name_he": "כלל חברה לביטוח",
+    "kind": "insurer",
+    "scope_names": [
+      {
+        "name": "Clal",
+        "only_records": [
+          "INS-08"
+        ]
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "clalbit.co.il"
+    ],
+    "note": "INS-08 cites Clal Insurance's policy 1418 (חיסכון פיננסי לעתיד), an insurance product, not the provident manager's."
+  },
+  {
+    "id": "harel-insurance",
+    "name_he": "הראל חברה לביטוח",
+    "kind": "insurer",
+    "scope_names": [
+      {
+        "name": "Harel",
+        "only_records": [
+          "INS-29"
+        ]
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "harel-group.co.il"
+    ],
+    "note": "INS-29 cites Harel Insurance's executive policy 1286 and its 2016 letter to employers, insurance products, not the provident manager's."
+  },
+  {
     "id": "menora-mivtachim",
     "name_he": "מנורה מבטחים",
     "kind": "provident-manager",
@@ -843,7 +883,8 @@
       {
         "name": "The Phoenix",
         "only_records": [
-          "TXA-29"
+          "TXA-29",
+          "INS-08"
         ]
       }
     ],
@@ -853,7 +894,7 @@
     "own_hosts": [
       "fnx.co.il"
     ],
-    "note": "TXA-29 is about a Phoenix investment policy, an insurance product."
+    "note": "TXA-29 is about a Phoenix investment policy, an insurance product; INS-08 cites The Phoenix's investment-policy FAQ."
   },
   {
     "id": "reit1",
@@ -872,6 +913,41 @@
     ]
   },
   {
+    "id": "midroog",
+    "name_he": "מידרוג",
+    "kind": "other",
+    "scope_names": [
+      {
+        "name": "Midroog"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "midroog.co.il",
+      "midroogcoil.blob.core.windows.net"
+    ],
+    "note": "A credit rating company; CORP-14 and CORP-15 cite its own document on its rating scales and definitions."
+  },
+  {
+    "id": "laya",
+    "name_he": "לאיה גלובל",
+    "kind": "other",
+    "scope_names": [
+      {
+        "name": "LAYA"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "laya.as-invest.co.il"
+    ],
+    "note": "לאיה גלובל בע\"מ (ח.פ. 516490091), which its terms call a payment company licensed by the Securities Authority; FXD-14 cites its own terms. Its site sits on Altshuler Shaham's domain, which lists it; the terms are LAYA's, not Altshuler Shaham's."
+  },
+  {
     "id": "invesco",
     "name_he": "Invesco",
     "kind": "fund-manager",
@@ -885,6 +961,23 @@
     "deposit_bank_id": null,
     "own_hosts": [
       "invesco.com"
+    ]
+  },
+  {
+    "id": "vanguard",
+    "name_he": "Vanguard",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Vanguard"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "vanguard.com",
+      "vanguard.co.uk"
     ]
   }
 ]

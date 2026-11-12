@@ -1,0 +1,48 @@
+{
+  "id": "RG-20",
+  "title": "Foreign physically backed gold ETC: a secured debt security",
+  "title_he": "iShares Physical Gold ETC: התחייבות מגובה בזהב פיזי, שלא מתוארת כקרן UCITS",
+  "strength": "institution",
+  "dimensions": [
+    "protection",
+    "fee-management-balance",
+    "currency",
+    "distribution-policy",
+    "legal-form"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-30",
+  "text_he": "לפי iShares, המוצר iShares Physical Gold ETC מונפק בידי iShares Physical Metals plc באירלנד, מגובה במטילי זהב פיזיים מוקצים ומופרדים, ושואף לעקוב אחרי מחיר הזהב לפי LBMA Gold Price. שיעור ההוצאות השנתי הכולל הוא 0.12%, נכון לספטמבר 2026, המוצר לא משלם הכנסה, והוא רשום למסחר בלונדון בליש״ט ובדולר ובקסטרה ביורו. לפי דף הנתונים, זו התחייבות בזכות חזרה מוגבלת שמשולמת רק מהנכס המשועבד, ואם הוא לא מספיק, תביעות שנשארו לא ישולמו; המחיר בבורסה יכול להיות שונה מהשווי הנכסי. בתיאור המוצר הוא לא נקרא קרן UCITS.",
+  "il_finance_file": "reits-and-gold-funds.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ishares",
+      "name_he": "iShares"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/sgln-ishares-physical-gold-etc-fund-fact-sheet-en-gb.pdf",
+      "title": "iShares Physical Gold ETC factsheet, September 2026, pp.1–4",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1–4",
+      "locator_he": "עמודים 1 עד 4",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/products/258441/ishares-physical-gold-etc",
+      "title": "iShares Physical Gold ETC product page",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

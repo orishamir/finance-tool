@@ -1,0 +1,64 @@
+{
+  "id": "CORP-14",
+  "title": "Israeli ratings are on a local scale",
+  "title_he": "דירוגי מידרוג הם בסולם מקומי",
+  "text_he": "לפי מסמך הסולמות וההגדרות של מידרוג, הדירוגים שלה הם חוות דעת צופות פני עתיד על כושר החזר האשראי ביחס למנפיקים מקומיים אחרים. סולם הדירוג לטווח ארוך הוא Aaa.il, Aa.il, A.il, Baa.il, Ba.il, B.il, Caa.il, Ca.il ו־C.il, ובכל קטגוריה מ־Aa.il עד Caa.il יש מדרגים 1, 2 ו־3, כש־1 הוא הראש של הקטגוריה ו־3 התחתית שלה. לפי מידרוג, למנפיקים בדירוג Baa.il עלולים להיות מאפיינים ספקולטיביים מסוימים, מ־Ba.il ומטה יש להם מאפיינים ספקולטיביים והסיכון עולה ככל שיורדים בסולם, ו־C.il הוא מצב של כשל פירעון עם סיכויים קלושים להחזר קרן וריבית. הסולם לטווח קצר הוא P-1.il, P-2.il, P-3.il ו־NP.il. אופק הדירוג הוא חיובי, יציב, שלילי או נבנה, ובחינת דירוג מסמנת שינוי אפשרי בזמן הקרוב. הסולם המקומי משווה רק למנפיקים ישראליים אחרים ולא זהה לדירוג בינלאומי, ולא נקרא מיפוי ביניהם.",
+  "strength": "institution",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-12",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "midroog",
+      "name_he": "מידרוג"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf#page=2",
+      "title": "מידרוג, \"סולמות והגדרות הדירוג של מידרוג\", August 2026 (footer 06/08/2026)",
+      "title_he": "סולמות והגדרות הדירוג של מידרוג (אוגוסט 2026)",
+      "publisher": "Midroog",
+      "publisher_he": "מידרוג",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "ביחס למנפיקים מקומיים אחרים",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf#page=2",
+      "title": "מידרוג, \"סולמות והגדרות הדירוג של מידרוג\", August 2026 (footer 06/08/2026)",
+      "title_he": "סולמות והגדרות הדירוג של מידרוג (אוגוסט 2026)",
+      "publisher": "Midroog",
+      "publisher_he": "מידרוג",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "עלולים להיות בעלי מאפיינים ספקולטיביים מסוימים",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf#page=2",
+      "title": "מידרוג, \"סולמות והגדרות הדירוג של מידרוג\", August 2026 (footer 06/08/2026)",
+      "title_he": "סולמות והגדרות הדירוג של מידרוג (אוגוסט 2026)",
+      "publisher": "Midroog",
+      "publisher_he": "מידרוג",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.4-5, 12",
+      "locator_he": "עמודים 4 עד 5, 12",
+      "page": 4,
+      "checked": "2026-11-12"
+    }
+  ]
+}

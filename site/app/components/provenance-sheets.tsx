@@ -15,8 +15,9 @@ import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, strengthOf, type S
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { Card, CompanyLinks, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
+import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
+import type { SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleRow, RulesLine, StateTag, StrengthLabel, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, type Item, type ProvenanceData } from "./provenance";
 
 /** What a `RulesChip` opens: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
@@ -150,7 +151,7 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
-      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} data={data} headId={headId} />}
+      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} parts={item.parts} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
@@ -347,14 +348,21 @@ export function ParameterWhy({ value }: { value: SiteValue }) {
 
 const slotUnitWords = ["months", "years", "days", "business_days", "usd", "eur"];
 
-/** A sentence with {ID:figure} slots (the questions' answers, the "הידעת?" facts): each slot is that rule's figure, with its unit in words where the number carries none. */
+/** The month a rule's figure takes effect, as a figure of its own with the figure's source ("{ID:figure.from}"), or null when it has no date. */
+export function ruleFigureFrom(rule: RuleRecord, name: string, today: string): SiteValue | null {
+  const v = ruleFigure(rule, name, today);
+  return v?.effective_from ? { ...v, value: v.effective_from.slice(0, 7), unit: "text" } : null;
+}
+
+/** A sentence with {ID:figure} slots (the questions' answers, the "הידעת?" facts, the flags' words): each slot is that rule's figure, with its unit in words where the number carries none; "{ID:figure.from}" is the month it takes effect. */
 export function SlottedText({ text, rules, today }: { text: string; rules: Record<string, RuleRecord>; today: string }) {
   return (
     <>
       {parseAnswer(text).map((p, k) => {
         if (p.kind === "text") return <span key={k}>{p.text}</span>;
         const rule = rules[p.id];
-        const v = rule ? ruleFigure(rule, p.figure, today) : null;
+        const from = p.figure.endsWith(".from");
+        const v = rule ? (from ? ruleFigureFrom(rule, p.figure.slice(0, -5), today) : ruleFigure(rule, p.figure, today)) : null;
         if (!v) return <span key={k}>—</span>;
         const word = (copy.unit as Record<string, string>)[v.unit];
         return (
@@ -531,7 +539,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           )}
           {value.flags?.map((code) => (
             <Callout key={code} tone="caution">
-              {flagCopy[code] ?? copy.flagOther} <bdi dir="ltr" className="text-xs">{code}</bdi>
+              {/* a flag's words may carry {ID:figure} slots: the rule's figure, from the page's records or those its cards point at */}
+              <SlottedText text={flagCopy[code] ?? copy.flagOther} rules={{ ...data.pointed, ...data.rules }} today={data.today} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
             </Callout>
           ))}
           {mostlyHebrew(value.notes) && <p className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></p>}
@@ -776,11 +785,16 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         {uses && (uses.pages.length > 0 || uses.engine) && (
           <Row label={ruleCardMore.usesLead}>
             <span className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
-              {uses.pages.map((u) => (
-                <Link key={u.href} to={u.href} className="text-link hover:underline">
-                  {u.label}
-                </Link>
-              ))}
+              {/* a page kind with no single page for the rule (the fee pages, one per product) is named, not linked */}
+              {uses.pages.map((u) =>
+                u.href ? (
+                  <Link key={u.href} to={u.href} className="text-link hover:underline">
+                    {u.label}
+                  </Link>
+                ) : (
+                  <span key={u.label}>{u.label}</span>
+                ),
+              )}
               {uses.engine && <span>{ruleCardMore.usesEngine}</span>}
             </span>
           </Row>
@@ -984,11 +998,16 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
           <Row label={ruleCardMore.usesLead}>
             {usesSome ? (
               <span className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
-                {uses.pages.map((u) => (
-                  <Link key={u.href} to={u.href} className="text-link hover:underline">
-                    {u.label}
-                  </Link>
-                ))}
+                {/* a page kind with no single page for the rule (the fee pages, one per product) is named, not linked */}
+                {uses.pages.map((u) =>
+                  u.href ? (
+                    <Link key={u.href} to={u.href} className="text-link hover:underline">
+                      {u.label}
+                    </Link>
+                  ) : (
+                    <span key={u.label}>{u.label}</span>
+                  ),
+                )}
                 {uses.engine && <span>{ruleCardMore.usesEngine}</span>}
               </span>
             ) : (
@@ -1163,7 +1182,18 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
 }
 
 /** Several glossary terms that make up one thing (a column of three fees): its name, a line, then each term's card under a rule. */
-function TermsSheet({ ids, name, lead, data, headId }: { ids: readonly string[]; name: string; lead?: string; data: ProvenanceData; headId: string }) {
+/** One of a sheet's own sentences: what it is about, the sentence, and the document it rests on right under it. */
+const sheetPart = (p: SheetPart) => (
+  <div key={`${p.head ?? ""}${p.text}`} className="flex flex-col">
+    <p className="text-muted-foreground">
+      {p.head && <span className="text-foreground font-medium">{p.head}: </span>}
+      {p.text}
+    </p>
+    {p.doc && <DocLink href={p.doc.href}>{p.doc.title}</DocLink>}
+  </div>
+);
+
+function TermsSheet({ ids, name, lead, parts, data, headId }: { ids: readonly string[]; name: string; lead?: string; parts?: readonly SheetPart[] | undefined; data: ProvenanceData; headId: string }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
@@ -1172,6 +1202,26 @@ function TermsSheet({ ids, name, lead, data, headId }: { ids: readonly string[];
         </h2>
         {lead && <p className="text-muted-foreground">{lead}</p>}
       </div>
+      {/* the sheet's own sentences, each with the document it rests on right under it; then each group under its heading, where a part
+          with no head and no document is a line of a list */}
+      {parts?.filter((p) => p.group === undefined).map(sheetPart)}
+      {[...new Set(parts?.flatMap((p) => (p.group !== undefined ? [p.group] : [])))].map((g) => {
+        const these = parts!.filter((p) => p.group === g);
+        const listed = these.filter((p) => !p.head && !p.doc);
+        return (
+          <section key={g} className={cx("flex flex-col gap-2", g && "border-t border-border pt-4")}>
+            {g && <h3 className="text-base font-semibold">{g}</h3>}
+            {these.filter((p) => p.head || p.doc).map(sheetPart)}
+            {listed.length > 0 && (
+              <ul className="flex list-disc flex-col gap-1 ps-5 text-muted-foreground">
+                {listed.map((p) => (
+                  <li key={p.text}>{p.text}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+        );
+      })}
       {ids.map((id) => (
         <div key={id} className="border-t border-border pt-4">
           <TermCard id={id} data={data} sub />

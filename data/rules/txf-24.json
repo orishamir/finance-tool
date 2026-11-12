@@ -1,0 +1,30 @@
+{
+  "id": "TXF-24",
+  "title": "Return must name the country of foreign income; for securities, the country where traded",
+  "title_he": "בדוח השנתי מציינים את המדינה של ההכנסה מחו״ל",
+  "text_he": "משנת המס 2021 צריך לציין בדוח את המדינה שממנה הופקה ההכנסה מחו״ל. בהכנסה משוק ההון שמדווחת בטופס 867, המדינה היא זו שבה נייר הערך נסחר: למשל, ריבית או דיבידנד מניירות ערך שנסחרים בנאסד״ק מדווחים כארצות הברית. כשהמקור מכסה מדינות רבות ואי אפשר לזהות אותו, בוחרים ״מדינה לא ידוע״.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.85",
+      "locator_he": "עמוד 85",
+      "page": 85,
+      "quote": "רשימת מדינות",
+      "checked": "2026-10-22"
+    }
+  ]
+}

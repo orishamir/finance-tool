@@ -1,8 +1,9 @@
 // An answer with figure slots (data/parameters/pinned-rules.json, `answer_he`) is a sentence with slots "{ID:figure}":
-// the page renders each slot as the figure of that rule, with its unit. Pure, so the split is tested.
+// the page renders each slot as the figure of that rule, with its unit. "{ID:figure.from}" is the month the figure takes effect
+// (its `effective_from`, "יולי 2027"). Pure, so the split is tested.
 export type AnswerPart = { kind: "text"; text: string } | { kind: "slot"; id: string; figure: string };
 
-const slot = /\{([A-Za-z0-9-]+):([A-Za-z0-9_]+)\}/g;
+const slot = /\{([A-Za-z0-9-]+):([A-Za-z0-9_]+(?:\.from)?)\}/g;
 
 export function parseAnswer(text: string): AnswerPart[] {
   const parts: AnswerPart[] = [];

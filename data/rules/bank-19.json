@@ -4,7 +4,8 @@
   "title_he": "הודעה מראש לפני סיום הטבה בנקאית",
   "text_he": "בנק חייב להודיע ללקוח, לפחות מספר ימים מראש, על סיום הטבה בנקאית, כלומר הטבה בריבית או בעמלה שנמשכת יותר משלושה חודשים לפי ההסכם, או על סיום שלב בהטבה מדורגת, גם אם הבנק מחדש אותה אחר כך בתנאים אחרים. ההודעה בכתב, בדרך המהירה ביותר שזמינה ללקוח אלא אם ביקש אחרת, וגם בערוץ ההודעות המוסכם. הכלל חל גם על הטבות ריבית על יתרות זכות ועל פיקדונות, לא רק על עמלות.",
   "figure_names_he": {
-    "notice_days": "ימי הודעה מראש לפני סיום ההטבה"
+    "notice_days": "ימי הודעה מראש לפני סיום ההטבה",
+    "benefit_min_months": "הטבה שמחייבת הודעה: לתקופה של יותר מחודשים אלה"
   },
   "strength": "primary",
   "dimensions": [
@@ -32,12 +33,45 @@
       ],
       "state": "sourced",
       "notes": "A bank must notify the customer at least 21 days before a banking benefit (an interest-rate or fee benefit lasting more than three months) ends, or before a stage of a stepped benefit ends. Effective six months after publication on 28.1.2024 (s.5); the date is not computed here."
+    },
+    "benefit_min_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
+        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024, ספר החוקים 3152, p.2, s.1 (סעיף 5א1א(א), הגדרת \"הטבה בנקאית\"): \"לתקופה העולה על שלושה חודשים\"",
+        "publisher": "הכנסת",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BANK-19"
+      ],
+      "state": "sourced",
+      "notes": "A benefit on an interest rate or a fee counts as a banking benefit only if it is for a period of more than three months; only then does the 21-day notice apply. The words are 'more than', so a benefit of exactly three months is outside."
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-12",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
+      "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024",
+      "title_he": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1, new s.5A1A(א)",
+      "page": 2,
+      "quote": "לתקופה העולה על שלושה חודשים",
+      "checked": "2026-11-12"
+    },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
       "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024",

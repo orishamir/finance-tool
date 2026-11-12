@@ -1,0 +1,43 @@
+{
+  "id": "BANK-30",
+  "title": "What \"פק\"מ\" means",
+  "title_he": "מה זה פק״מ, לפי בנק ירושלים",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "בנק ירושלים מגדיר פק״מ כ״פיקדון קצר מועד״: פיקדון בבנק לתקופה קבועה, בריבית קבועה או משתנה, בדרך כלל לפי הפריים, בלי סיכון לקרן, שלא נסחר בבורסה. לפי הבנק, בפיקדון מובנה, לעומת זאת, הקרן מובטחת במלואה או בחלקה, התשואה תלויה בנכסי בסיס, ובדרך כלל אין נקודות יציאה. ההגדרה היא מכתבה של בנק אחד, ובנקים אחרים יכולים להשתמש בקיצור במובן צר יותר. לא נמצאה הגדרה רשמית לקיצור: בדף של בנק ישראל על פיקדונות, פיקדון קצר מועד הוא רק אחד מסוגי הפיקדונות, למשל פיקדון יומי או שבועי.",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "jerusalem",
+      "name_he": "בנק ירושלים"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/pikadon/",
+      "title": "Bank of Israel, פיקדון בנקאי",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "פיקדון קצר מועד (למשל פיקדון יומי או שבועי)",
+      "checked": "2026-11-07",
+      "qualifier": "(library 47892e9823e8a0e8)"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/deposits-savings/deposit-types-and-differences/",
+      "title": "Bank of Jerusalem, פק\"מ או פיקדון מובנה",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

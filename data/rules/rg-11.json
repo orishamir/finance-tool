@@ -1,0 +1,45 @@
+{
+  "id": "RG-11",
+  "title": "How a saver holds an Israeli REIT, and what it pays out",
+  "title_he": "ריט ישראלי: מחזיקים כמו מניה, והחלוקה היא דיבידנד; המדיניות של ריט 1",
+  "text_he": "קרן להשקעות במקרקעין ישראלית היא חברה שהמניות שלה נסחרות בבורסה בתל אביב, וקונים ומוכרים אותה כמו כל מניה, בחשבון ניירות ערך. החלוקות מגיעות כדיבידנד. לפי עמוד קשרי המשקיעים של ריט 1, הדיבידנד השנתי שלה מחולק כל רבעון באישור הדירקטוריון, והוא לא פחות מכל ההכנסה החייבת השנתית שלה; את סכום הדיבידנד לשנה החברה מפרסמת עם הדוחות הכספיים השנתיים, והדירקטוריון רשאי לשנות את הסכומים בכל עת. זו המדיניות של ריט 1, לא כלל לכל קרן.",
+  "strength": "institution",
+  "dimensions": [
+    "distribution-policy",
+    "fee-trade",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-12",
+  "il_finance_file": "reits-and-gold-funds.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "reit1",
+      "name_he": "ריט 1"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://reit1.co.il/investor-relations/",
+      "title": "ריט 1: קשרי משקיעים",
+      "title_he": "ריט 1: קשרי משקיעים",
+      "publisher": "Reit 1",
+      "publisher_he": "ריט 1",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "שמחולק מדי רבעון בכפוף לאישור הדירקטוריון של החברה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.reit1.co.il/",
+      "title": "Reit 1 home page",
+      "publisher": "Reit 1",
+      "publisher_he": "ריט 1",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

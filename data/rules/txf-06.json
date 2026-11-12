@@ -1,0 +1,33 @@
+{
+  "id": "TXF-06",
+  "title": "\"קרן חוץ\" on TASE: the foreign tax credit is open (a 2019 letter limits it to tax on the fund's distributions, read only in a copy)",
+  "title_he": "קרן חוץ בבורסה: על איזה מס זר מקבלים זיכוי",
+  "text_he": "לא ידוע מטקסט רשמי על איזה מס זר מקבל זיכוי בישראל מי שמחזיק יחידה של קרן חוץ הרשומה בבורסה בתל אביב. בפקודה, מסי חוץ שמזכים הם מסים שתושב ישראל משלם לרשויות המס של מדינה אחרת; מס שנוכה בתוך הקרן על ההחזקות שלה לא משולם על ידי המחזיק, אבל אף מקור לא אומר זאת במילים. מכתב של רשות המסים לבורסה, שלפיו הזיכוי ניתן רק על מס שנוכה מחלוקה של הקרן עצמה, ידוע רק מעותק באתר לא רשמי, ולכן הוא לא מקור. זו שאלה פתוחה.",
+  "strength": "open",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "distribution-policy",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.256, s.199, definition מסי-חוץ",
+      "page": 256,
+      "quote": "מסים המשתלמים על ידי תושב ישראל לרשויות המס של מדינה מחוץ לישראל",
+      "checked": "2026-10-25",
+      "qualifier": "(the law's definition; whether it reaches tax inside a \"קרן חוץ\" is not stated)"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "id": "TXF-27",
   "title": "US estate tax exposure of a non-US person holding US-situs assets",
   "title_he": "מס ירושה אמריקני למי שאינו אמריקני ומחזיק נכסים אמריקניים",
-  "text_he": "מנהל עיזבון של מי שאינו תושב ואינו אזרח ארצות הברית חייב להגיש דוח מס ירושה אמריקני כששווי השוק של הנכסים הממוקמים בארצות הברית במות המנוח עולה על סף הדיווח, הנקוב בדולרים. מניות של חברות שהתאגדו לפי דין ארצות הברית הן נכס אמריקני, בלי קשר למקום התעודות, וכל מניה אחרת היא נכס מחוץ לה; חשבונות בנק שאינם קשורים לעסק אמריקני, ניירות שמניבים ריבית תיק וחלק מתגמולי ביטוח חיים אינם נכס אמריקני. אמנות מס ירושה יכולות לשנות זאת, אבל ישראל אינה ברשימת האמנות של רשות המס האמריקנית, ולכן תושב ישראל שמחזיק קרנות סל אמריקניות חשוף, ואילו מניות של קרן אירית הן מניות של תאגיד לא אמריקני. אם קרן אמריקנית המאוגדת כנאמנות נחשבת מניה של תאגיד אמריקני, וטבלת השיעורים, לא נקראו.",
+  "text_he": "מנהל העיזבון של מי שלא תושב ארצות הברית ולא אזרח שלה חייב להגיש דוח מס ירושה אמריקני כששווי השוק של נכסיו בארצות הברית ביום מותו עולה על סף הדיווח, הנקוב בדולרים. מניות של חברות שהתאגדו לפי דין ארצות הברית הן נכס אמריקני, לא משנה איפה התעודות, וכל מניה אחרת היא נכס מחוץ לה. חשבונות בנק שלא קשורים לעסק בארצות הברית, ניירות שמניבים ריבית תיק וחלק מתגמולי ביטוח חיים לא נחשבים נכס אמריקני. אמנת מס ירושה יכולה לשנות את זה, אבל ישראל לא ברשימת האמנות של רשות המס האמריקנית. לכן תושב ישראל שמחזיק קרנות סל אמריקניות חשוף למס הזה, ואילו מניות של קרן אירית הן מניות של תאגיד לא אמריקני. קרן אמריקנית שמאוגדת כנאמנות ועומדת בהגדרת חברת השקעות מוסדרת של חוק המס האמריקני היא, לפי קריאה של החוק והתקנות האמריקניים, תאגיד אמריקני לעניין המס הפדרלי, ולכן גם היא נכס אמריקני. זו קריאה ולא קביעה: שלב אחד בה לא כתוב באף טקסט שנקרא, רשות המס האמריקנית לא אמרה את זה על קרנות כאלה, ולא נבדק אם קרן מסוימת אכן עומדת בהגדרה. שיעורי המס עולים בהדרגה מ־18% עד 40%, וזיכוי קבוע מקזז את המס על כ־60,000 הדולרים הראשונים.",
   "figure_names_he": {
     "estate_threshold": "סף שווי הנכסים האמריקניים (בדולרים) לדיווח מס ירושה"
   },
@@ -40,6 +40,75 @@
   "checked": "2026-10-22",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://uscode.house.gov/us/usc/t26/s2104/",
+      "title": "26 U.S.C. 2104(a), US Code, Office of the Law Revision Counsel",
+      "publisher": "U.S. Code (Office of the Law Revision Counsel, U.S. House of Representatives)",
+      "publisher_he": "קובץ החוקים הפדרלי של ארצות הברית (U.S. Code)",
+      "kind": "law",
+      "strength": "primary",
+      "quote": "shall be deemed property within the United States only if issued by a domestic corporation",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://uscode.house.gov/us/usc/t26/s2105/",
+      "title": "26 U.S.C. 2105(d)(1), (3)",
+      "publisher": "U.S. Code (Office of the Law Revision Counsel, U.S. House of Representatives)",
+      "publisher_he": "קובץ החוקים הפדרלי של ארצות הברית (U.S. Code)",
+      "kind": "law",
+      "strength": "primary",
+      "quote": "This subsection shall not apply to estates of decedents dying after December 31, 2011",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://uscode.house.gov/us/usc/t26/s851/",
+      "title": "26 U.S.C. 851(a), (g)(1)",
+      "publisher": "U.S. Code (Office of the Law Revision Counsel, U.S. House of Representatives)",
+      "publisher_he": "קובץ החוקים הפדרלי של ארצות הברית (U.S. Code)",
+      "kind": "law",
+      "strength": "primary",
+      "quote": "For purposes of this subtitle, the term “regulated investment company” means any domestic corporation",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://uscode.house.gov/us/usc/t26/s7701/",
+      "title": "26 U.S.C. 7701(a)(3), (4), (7)",
+      "publisher": "U.S. Code (Office of the Law Revision Counsel, U.S. House of Representatives)",
+      "publisher_he": "קובץ החוקים הפדרלי של ארצות הברית (U.S. Code)",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ecfr.gov/current/title-26/section-301.7701-4",
+      "title": "26 CFR 301.7701-4(c)(1), eCFR",
+      "publisher": "eCFR (U.S. Office of the Federal Register)",
+      "publisher_he": "קובץ התקנות הפדרליות של ארצות הברית (eCFR)",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "will not be classified as a trust if there is a power under the trust agreement to vary the investment of the certificate holders",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ecfr.gov/current/title-26/section-301.7701-3",
+      "title": "26 CFR 301.7701-3(a), (b)(1), (c)(1)(v)(B)",
+      "publisher": "eCFR (U.S. Office of the Federal Register)",
+      "publisher_he": "קובץ התקנות הפדרליות של ארצות הברית (eCFR)",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "A partnership if it has two or more members",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.irs.gov/instructions/i706#:~:text=Rate%20of%20tax%20on%20excess%20over%20amount%20in%20column%20A",
+      "title": "IRS, Instructions for Form 706 (07/2026)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-11-06",
+      "qualifier": "(library 8a180bbe72480f0d)"
+    },
     {
       "url": "https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns",
       "title": "IRS, Some nonresidents with U.S. assets must file estate tax returns",

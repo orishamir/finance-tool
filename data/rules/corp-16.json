@@ -1,0 +1,60 @@
+{
+  "id": "CORP-16",
+  "title": "Linkage and coupon types in the market",
+  "title_he": "סוגי הצמדה באג״ח קונצרני: שקלי, צמוד מדד וצמוד מט״ח",
+  "text_he": "מדדי האג״ח הקונצרני של הבורסה בתל אביב מחלקים את השוק לפי הצמדה: אג״ח שקלי לא צמוד בריבית קבועה, אג״ח צמוד למדד המחירים לצרכן, ואג״ח צמוד למטבע חוץ. בהנחיות המסחר של הבורסה, איגרות חוב להמרה הן סוג נפרד. איך עובדת ההצמדה בסדרה מסוימת, למשל מדד הבסיס ומועדי התשלום, קבוע בשטר הנאמנות שלה. לפי הדוח השנתי של הבורסה, ב־2025 גויסו כ־60% מהסכום באג״ח שקלי, כ־39% באג״ח צמוד מדד וכ־1% באג״ח צמוד דולר.",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=10",
+      "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון (274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון (274698)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.10, פרק ג' s. 1(א)(5)",
+      "locator_he": "עמוד 10, פרק ג' סעיף 1(א)(5)",
+      "page": 10,
+      "quote": "תעודת התחייבות ניתנות להמרה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=36",
+      "title": "TASE periodic report 2025",
+      "title_he": "דוח תקופתי לשנת 2025 של הבורסה לניירות ערך בתל אביב בע״מ",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.36, part A s. 1.10.3",
+      "page": 36,
+      "quote": "החוב הקונצרניות הצמודות למדד המחירים",
+      "checked": "2026-10-22",
+      "qualifier": "(TASE Ltd's own annual report: the index names and the 2025 issuance figures)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=36",
+      "title": "TASE periodic report 2025",
+      "title_he": "דוח תקופתי לשנת 2025 של הבורסה לניירות ערך בתל אביב בע״מ",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.37, s. 1.10.3.2",
+      "locator_he": "עמוד 37, סעיף 1.10.3.2",
+      "page": 37,
+      "checked": "2026-10-22",
+      "qualifier": "(TASE Ltd's own annual report: the index names and the 2025 issuance figures)"
+    }
+  ]
+}

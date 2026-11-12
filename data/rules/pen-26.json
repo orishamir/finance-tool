@@ -6,7 +6,8 @@
   "figure_names_he": {
     "early_retirement_age": "גיל פרישה מוקדמת",
     "retirement_age_men": "גיל פרישה לגברים",
-    "retirement_age_women": "גיל פרישה לנשים"
+    "retirement_age_women": "גיל פרישה לנשים",
+    "graded_women_born_until": "עד איזו לידה חל גיל הפרישה המדורג לנשים"
   },
   "strength": "primary",
   "dimensions": [
@@ -75,6 +76,27 @@
       ],
       "state": "sourced",
       "notes": "Retirement age for women born from 1970 (s.3 as amended in 2021; the Tax Authority's 2026 booklet, p.7, gives 65 for women born from January 1970; open question 20 closed 2026-10-25); women born up to December 1969 have a transitional age from 62 to 64 years and 9 months."
+    },
+    "graded_women_born_until": {
+      "value": "1969-12-31",
+      "unit": "text",
+      "source": {
+        "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf#page=174",
+        "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021, p.174, s.73(6) (התוספת לחוק גיל פרישה, חלק ב')",
+        "publisher": "The Knesset",
+        "strength": "primary",
+        "quote": "ינואר 1969 עד דצמבר 1969"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-26"
+      ],
+      "state": "sourced",
+      "notes": "The schedule's graded ages for women run from 62 (born May 1947 to December 1959) up to 64 and 9 months (born January to December 1969); women born from January 1970 retire at 65 (retirement_age_women)."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
@@ -93,6 +115,20 @@
       "locator_he": "עמוד 7",
       "page": 7,
       "quote": "65 ינואר 1970 ואילך",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, s.1",
+      "locator_he": "עמוד 5, סעיף 1",
+      "page": 5,
+      "quote": "גיל פרישה מוקדמת כמשמעותו בחוק גיל פרישה",
       "checked": "2026-10-26"
     },
     {
@@ -135,20 +171,6 @@
       "page": 172,
       "quote": "לגבר וגיל 65 לאישה",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.5, s.1",
-      "locator_he": "עמוד 5, סעיף 1",
-      "page": 5,
-      "quote": "גיל פרישה מוקדמת כמשמעותו בחוק גיל פרישה",
-      "checked": "2026-10-26"
     }
   ]
 }

@@ -168,6 +168,12 @@ export function nearThreshold(v: number, thresholds: readonly number[], within =
  */
 export const joinLead = (lead: string, next: string): string => (lead.endsWith("\u05be") && /^[\u05d0-\u05ea]/.test(next.trimStart()) ? lead.slice(0, -1) : lead);
 
+/**
+ * A `Num` display for the sum a flat price holds up to (F-12, F-13), whole as the price list prints it: a dollar sum with no cents drops
+ * them ("99 $", not "99.00 $", which a dollar price keeps); any other sum keeps its unit's form.
+ */
+export const wholeSum = (unit: string) => (n: number): string | undefined => (/^usd/.test(unit) && Number.isInteger(n) ? fmt.usdWhole(n) : undefined);
+
 /** A figure's text by its unit. Dates and periods arrive as `text` values in ISO form. `state` applies the display rounding to shekel amounts (`nisShown`). */
 export function formatValue(value: number | string | boolean | null, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): string {
   if (value === null) return numbers.unknown;

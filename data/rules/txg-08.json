@@ -1,0 +1,74 @@
+{
+  "id": "TXG-08",
+  "title": "Who can pay less than 25% on capital income (Q16, general rule)",
+  "title_he": "מי יכול לשלם פחות מ־25% על הכנסה הונית",
+  "text_he": "מתחת לגיל 60 הכנסה פסיבית מתחילה ב־31%, ולכן התקרה של 25% קובעת ואין הטבת מדרגות על רווח הון או על ריבית צמודה. מגיל 60 רווח הון ריאלי וריבית צמודה יכולים ליפול במדרגות של 10%, 14% או 20%, ככל שהכנסות אחרות לא מילאו אותן. בכל גיל ריבית על פיקדון לא צמוד נשארת בשיעור קבוע של 15%. הבנק מנכה במקור בשיעור הרגיל בלי קשר לגיל, ואת ההפרש מקבלים בחזרה בדוח שנתי או בבקשת החזר.",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "1",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "2",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "פקיד השומה רשאי להתיר בכתב, כי ניכוי המס לפי תקנות אלה יוקטן, אם היה סבור שעלול להתהוות עודף מניכוי המס לפי השיעורים האמורים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=5",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "פקיד השומה רשאי להתיר בכתב, כי ניכוי המס לפי תקנות אלה יוקטן",
+      "checked": "2026-11-07"
+    }
+  ],
+  "derived_from": [
+    "TXG-03",
+    "TXG-04",
+    "TXG-07"
+  ]
+}

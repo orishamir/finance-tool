@@ -1,0 +1,32 @@
+{
+  "id": "TXP-20",
+  "title": "Severance continuity to a new employer (s.9(7a)(a)(4))",
+  "title_he": "רצף פיצויים למעסיק חדש",
+  "text_he": "עובד שעזב כשבקופת הגמל היו כספי פיצויים, ובחר בכתב ברצף פיצויים, לא נחשב כמי שקיבל אותם, בתנאי שבתוך שנה הוא מתחיל לעבוד אצל מעסיק אחר שמפקיד פיצויים לאותו רכיב, עד תקרה. התקרה היא ארבע פעמים השכר הממוצע כפול שנות העבודה אצל אותו מעסיק, ועוד מה שנדרש לכיסוי ההתחייבות שלו לפי חוק פיצויי פיטורים. כשהוא עוזב שוב בלי רצף, התקופות מצטרפות כאילו כל השנים עבד אצל המעסיק האחרון. אפשר לבטל את הבחירה בתוך שנתיים, משיכה של הכסף הזה לפני העזיבה של המעסיק האחרון חייבת במס, וקבלה של חלק מהמענק ממסה את החלק שהתקבל.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "switching-tax-event",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.38-39, s.9(7a)(a)(4)(a)-(d)",
+      "locator_he": "עמודים 38 עד 39, סעיף 9(7א)(א)(4)(א)-(ד)",
+      "page": 38,
+      "checked": "2026-11-07"
+    }
+  ]
+}

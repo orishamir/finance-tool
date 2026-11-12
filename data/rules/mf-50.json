@@ -1,0 +1,44 @@
+{
+  "id": "MF-50",
+  "title": "Where a saver finds a fund's documents and identity",
+  "title_he": "איפה מוצאים את המסמכים של קרן נאמנות ואת מספר הזיהוי שלה",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לכל קרן נאמנות יש מספר זיהוי שהבורסה בתל אביב נותנת, ומערכות המפיצים משתמשות בו כדי לזהות את הקרן ולקנות אותה. התשקיף, הדוח השנתי, הדוח החודשי והדיווחים המיידיים של הקרן, למשל על שינוי שם, החלפת מנהל, שינוי מדיניות השקעה, החלפת נאמן, תביעות וקנסות, מתפרסמים במגנ״א, מערכת הגילוי של רשות ניירות ערך, שפתוחה לציבור. על שינוי שם של קרן צריך לדווח לרשות ניירות ערך ולבורסה.",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=74",
+      "title": "Joint Investment Trust Law, Securities Authority's consolidated copy, file of 31.8.2026",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "section 112ב",
+      "locator_he": "סעיף 112ב",
+      "page": 74,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+      "title": "ISA investor guide (2017)",
+      "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp. 13, 18-19, 27, 29",
+      "locator_he": "עמודים 13, 18-19, 27, 29",
+      "page": 13,
+      "checked": "2026-10-22",
+      "qualifier": "(dated)"
+    }
+  ]
+}

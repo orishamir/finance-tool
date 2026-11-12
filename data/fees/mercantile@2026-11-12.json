@@ -1,0 +1,1846 @@
+{
+  "id": "mercantile",
+  "provider": {
+    "name_he": "בנק מרכנתיל דיסקונט בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+    "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט",
+    "notes": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט, התעריפון המלא (42 עמ'; אין תאריך כולל למסמך, כל עמוד נושא תאריך עדכון משלו; המאוחר ביותר 01/10/2026, בחלקים 1, 2, 6, 9 ובנספח ד'); חלק 4 - ניירות ערך (עמ' 13-17, 'עודכן 07/02/2025'), חלק 5 - מטבע חוץ (עמ' 18-19, 25/05/2026), חלק 11 - הוצאות צד שלישי (עמ' 29-30, 15/10/2025), נספח א' (עמ' 31-33, 22/06/2026), נספח ה' (עמ' 37-38, 02/09/2026). Read 2026-11-04. This file replaces the one the record cited until 2026-10-31 (media/5sgkpskc/taarifon_private_full.pdf: 42 PDF pages numbered 'מתוך 44', PDF dates 2025-04-01, Last-Modified 2025-04-01, latest page date 01/04/2025), which the tariff page no longer links. The new file: md5 be38595baa337242de5cb4bf471bd2b5, library cc45f15d6d9fec45, CreationDate 2026-09-22, ModDate 2026-09-23, HTTP Last-Modified 2026-09-23; 'published' is the latest page date and the file name '_11026' (1.10.26). Part 4's figures are identical in both files (only the pages moved by one); part 5's conversion rows (5.1.1) are unchanged, while its cheque and transfer rows changed (not read by the site). The separate part-4 file (taarifon_private_4.pdf, Last-Modified 2025-02-06) holds the same figures. The exchange's sheet (list rates 'עדכון אחרון: 04/09/24') prints the same direct-channel trade and custody figures. No account agreement with a securities fee annex is published; the securities terms (part E, library 4076a5e01852724f, p.9) charge 'בהתאם לתעריף העמלות המקובל בבנק' and pass on 'כל עמלות הברוקר ו/או קסטודיאן כפי שידרשו'; the account booklet (library 62474a808f06947d, p.35) executes foreign-currency orders 'בהתאם לשערי החליפין שיקבעו על ידי הבנק'. Re-read 2026-11-12 for the small conversions: the full tariff (taarifon_private_full_11026.pdf) fetched today is identical to the library's copy.",
+    "published": "2026-10-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-12",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "mercantile-buy-sell-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.54,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.1 (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.1 קניה מכירה ופידיון של ניירות 0.54% משווי העסקה ₪ 35 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "'0.54% משווי העסקה', charged on execution ('מיידי - בעת ביצוע הפעולה'). Footnote (1) to 'למעט קרנות נאמנות': includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note (1): a split order pays one minimum per day. Note (2): an unexecuted order pays the minimum only if a clerk acted. Note (7): a zero-coupon government bond issued at a discount for up to one year pays a reduced 0.12% with a reduced minimum of NIS 25. Note (5): also charged on off-exchange trades with cash consideration. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library cc45f15d6d9fec45 (the 01/10/2026 file), PDF page 13 (page 12 of the 2025 file 5fd0b860eaea10ee), line 4.1.1 \"קניה, מכירה ופידיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות(1)...\", footnote (1): \"אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד 1994 וכן של קרן להשקעות משותפות בנאמנות, שיחידותיה רשומות בבורסה לניירות ערך תל אביב\". The same page names \"מרכנתילטרייד\" among the direct channels."
+      },
+      "min": {
+        "value": 35,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.1, גובה העמלה מינימום (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.1 קניה מכירה ופידיון של ניירות 0.54% משווי העסקה ₪ 35 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 35'."
+      },
+      "max": {
+        "value": 7300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.1, גובה העמלה מקסימום (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.1 קניה מכירה ופידיון של ניירות 0.54% משווי העסקה ₪ 35 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,300'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קנייה או מכירה שלא בוצעה) - מניות ואגרות חוב",
+          "מניות ואגרות חוב"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-buy-sell-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.1, הערה (4) (עמ' 13 מתוך 42, עודכן 07/02/2025); נספח ה' - הטבות בערוצי בנקאות בתקשורת, חלק 4, סעיף 4.1.1 (עמ' 38 מתוך 42)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "עבור קניה ומכירה בערוץ ישיר יגבה מחיר מופחת בשיעור 0.40% לפעולה במניות ואגרות חוב בכפוף למינימום של 25 ש\"ח מקסימום 7,150 ש\"ח לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Note (4) in part 4: 'עבור קניה ומכירה בערוץ ישיר יגבה מחיר מופחת בשיעור 0.40% לפעולה במניות ואגרות חוב בכפוף למינימום של 25 ש\"ח מקסימום 7,150 ש\"ח לפעולה'. Direct channels per the part-4 footnote: אינטרנט, אפליקציה סלולרית, מערכות מתקדמות למסחר בני\"ע: מרכנתילטרייד, שלדג, מנת\"ה. An unexecuted order in a direct channel pays no fee ('ללא עמלה'). Same scope as the branch line (ETFs and tracking funds included). Appendix E (page 38 of the 01/10/2026 file, dated 02/09/2026; page 37 of the 2025 file) prints the same price under 'באינטרנט, בסלולר'. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library cc45f15d6d9fec45 (the 01/10/2026 file), PDF page 13 (page 12 of the 2025 file 5fd0b860eaea10ee), line 4.1.1 \"קניה, מכירה ופידיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות(1)...\", footnote (1): \"אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד 1994 וכן של קרן להשקעות משותפות בנאמנות, שיחידותיה רשומות בבורסה לניירות ערך תל אביב\". The same page names \"מרכנתילטרייד\" among the direct channels."
+      },
+      "min": {
+        "value": 25,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.1, הערה (4) (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "עבור קניה ומכירה בערוץ ישיר יגבה מחיר מופחת בשיעור 0.40% לפעולה במניות ואגרות חוב בכפוף למינימום של 25 ש\"ח מקסימום 7,150 ש\"ח לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום של 25 ש\"ח'."
+      },
+      "max": {
+        "value": 7150,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.1, הערה (4) (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "עבור קניה ומכירה בערוץ ישיר יגבה מחיר מופחת בשיעור 0.40% לפעולה במניות ואגרות חוב בכפוף למינימום של 25 ש\"ח מקסימום 7,150 ש\"ח לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 7,150 ש\"ח לפעולה'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קנייה או מכירה שלא בוצעה) - מניות ואגרות חוב",
+          "מניות ואגרות חוב",
+          "באינטרנט, בסלולר",
+          "מרכנתילטרייד",
+          "שלדג",
+          "מנת\"ה"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-buy-sell-makam-branch",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2 (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.2 מכירה ופידיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.1% משווי העסקה', separate row for makam ('מילווה קצר מועד'), charged on execution. Note (5): also charged on the allotted part of a purchase in an issue."
+      },
+      "min": {
+        "value": 25,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מינימום (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.2 מכירה ופידיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 25'."
+      },
+      "max": {
+        "value": 7300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מקסימום (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.2 מכירה ופידיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,300'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ני\"ע הנסחרים בבורסה בתל אביב – מילווה קצר מועד (כולל קניה או מכירה שלא בוצעה)",
+          "מילווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-buy-sell-makam-direct",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.09,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2, הערה (3) (עמ' 13 מתוך 42, עודכן 07/02/2025); נספח ה' - הטבות בערוצי בנקאות בתקשורת, חלק 4, סעיף 4.1.2 (עמ' 38 מתוך 42)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש\"ח מקסימום 7,150 ש\"ח"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (3): 'עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש\"ח, מקסימום 7,150 ש\"ח'. Also printed in appendix E under 'באינטרנט, בסלולר'. Unexecuted order in a direct channel: no fee."
+      },
+      "min": {
+        "value": 22.5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2, הערה (3) (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש\"ח מקסימום 7,150 ש\"ח"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום של 22.5 ש\"ח'."
+      },
+      "max": {
+        "value": 7150,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2, הערה (3) (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש\"ח מקסימום 7,150 ש\"ח"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 7,150 ש\"ח'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ני\"ע הנסחרים בבורסה בתל אביב – מילווה קצר מועד (כולל קניה או מכירה שלא בוצעה)",
+          "מילווה קצר מועד",
+          "באינטרנט, בסלולר"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2 (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.2 מכירה ופידיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4.1.2 names redemption. The reduced direct-channel price (0.09%) names buying and selling only (\"עבור קניה ומכירה בערוץ ישיר\"), so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
+      },
+      "min": {
+        "value": 25,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מינימום (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.2 מכירה ופידיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 25'."
+      },
+      "max": {
+        "value": 7300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מקסימום (עמ' 13 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "4.1.2 מכירה ופידיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,300'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה,מכירה ופדיון של ני\"ע הנסחרים בבורסה בתל אביב –מילווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-buy-sell-foreign-branch",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.79,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1 (עמ' 14 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "4.4.1 קניה מכירה ופידיון של 0.79% משווי העסקה $ 25 $ 10900"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.79% משווי העסקה', charged on execution. Additional expenses column: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (third-party charges on top). Note (7): US TBILL/CD/CP trades pay a reduced 0.15%. Note (9): DR securities may carry third-party costs. Re-read 2026-11-04, unchanged (4.4.1, p.14). Added costs, not limited by the documents: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (the line's 'הוצאות נוספות' column), part 11.9 'משתנה בהתאם לסוג נייר / הסוכן / השוק בו נסחר הנייר / סוג הפעולה' and 11.17 'בהתאם להוצאה הממשית' (p.29)."
+      },
+      "min": {
+        "value": 25,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, גובה העמלה מינימום (עמ' 14 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "4.4.1 קניה מכירה ופידיון של 0.79% משווי העסקה $ 25 $ 10900"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$ 25' per trade (US dollars)."
+      },
+      "max": {
+        "value": 10900,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, גובה העמלה מקסימום (עמ' 14 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "4.4.1 קניה מכירה ופידיון של 0.79% משווי העסקה $ 25 $ 10900"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$ 10900' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (כולל קניה או מכירה שלא בוצעה)",
+          "מניות, אגרות חוב וקרנות נאמנות"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-buy-sell-foreign-direct",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.59,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 14 מתוך 42, עודכן 07/02/2025); נספח ה' - הטבות בערוצי בנקאות בתקשורת, חלק 4, סעיף 4.4.1 (עמ' 38 מתוך 42)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "עבור קניה ומכירה המבוצעת באמצעות ערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (8): 'עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680'. Appendix E prints the same under 'באינטרנט, בסלולר' and adds '(**) השרות ניתן עבור מניות בארה\"ב בלבד' (direct-channel foreign trading is for US shares only). Re-read 2026-11-04, unchanged (4.4.1, p.14). Added costs, not limited by the documents: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (the line's 'הוצאות נוספות' column), part 11.9 'משתנה בהתאם לסוג נייר / הסוכן / השוק בו נסחר הנייר / סוג הפעולה' and 11.17 'בהתאם להוצאה הממשית' (p.29)."
+      },
+      "min": {
+        "value": 23.5,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 14 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "עבור קניה ומכירה המבוצעת באמצעות ערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום של $ 23.5' per trade (US dollars)."
+      },
+      "max": {
+        "value": 10680,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 14 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "עבור קניה ומכירה המבוצעת באמצעות ערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום $ 10,680' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (כולל קניה או מכירה שלא בוצעה)",
+          "מניות, אגרות חוב וקרנות נאמנות",
+          "באינטרנט, בסלולר"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.1 (עמ' 15 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.1 דמי ניהול פיקדון ני\"ע 0.2% לרבעון ₪ 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "'0.2% לרבעון'. Collected at quarter end and/or on a transaction ('סוף רבעון ו/או מועד ביצוע פעולה'). Note (3): during the quarter the fee is charged on every balance reduction (sale, redemption, transfer) pro rata to the holding period from the start of the quarter, on the value in the transaction, subject to the per-security maximum per quarter. Note (4): at quarter end on the securities held on the last day, pro rata, on their value that day. Note (2): not charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note (1): not chargeable on delisted securities (with an interested-party exception). Re-read 2026-11-04 in the 01/10/2026 file, unchanged (4.5.1, p.15). What customers paid (a fact, not a price): the exchange's sheet for Mercantile, 'עמלות ממוצעות בפועל לפי שווי תיק 01/01/26 - 30/06/26', read in Chrome 2026-11-04: Israeli custody 0.25% a year up to 25 thousand NIS, then 0.43, 0.40, 0.35, 0.35, 0.28, 0.23, 0.17, and 0.08% above 1,000 thousand; foreign custody 0.27, 0.44, 0.31, 0.32, 0.32, 0.27, 0.17, 0.12, 0.05. No sheet of its own was found on the bank's tariff page. Not put into `averages` (D56). Offers, none for the ordinary customer: annex A groups (0.1% a quarter, for a limited time) and the salary groups Top and Deluxe on the new-account-groups page ('דמי ניהול חשבון ני\"ע - פטור', for 3 years, new joiners only; see left_out)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.1, גובה העמלה מינימום (עמ' 15 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.1 דמי ניהול פיקדון ני\"ע 0.2% לרבעון ₪ 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line (column 'גובה העמלה מינימום' is empty)."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.1, גובה העמלה מקסימום (עמ' 15 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.1 דמי ניהול פיקדון ני\"ע 0.2% לרבעון ₪ 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,500 לני\"ע לרבעון': maximum per security per quarter. No per-deposit (whole account) maximum is printed."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בארץ"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.25,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.2 (עמ' 15 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.2 דמי ניהול פיקדון ני\"ע 0.25% לרבעון ₪ 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.25% לרבעון' for securities traded abroad (including metals, 'לרבות מתכות'); same collection mechanics as the Israeli line. Additional expenses column: 'הוצאות קסטודיאן בחו\"ל'; note (6): foreign custodian expenses are charged on top. Note (5): US CP/CD/TBILL pay a reduced 0.05% per security per quarter. Re-read 2026-11-04, unchanged (4.5.2, p.15). On top, not limited by the documents: note (6) 'בנוסף, בגין ני\"ע נסחרים ושאינם נסחרים בחו\"ל, יגבו הוצאות הקסטודיאן בחו\"ל', part 11.24 'בהתאם להוצאה הממשית' (p.29), and part E p.9 'כל עמלות הברוקר ו/או קסטודיאן כפי שידרשו'."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.2, גובה העמלה מינימום (עמ' 15 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.2 דמי ניהול פיקדון ני\"ע 0.25% לרבעון ₪ 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.5.2, גובה העמלה מקסימום (עמ' 15 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 15,
+          "quote": "4.5.2 דמי ניהול פיקדון ני\"ע 0.25% לרבעון ₪ 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,500 לני\"ע לרבעון': maximum per security per quarter."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בחוץ לארץ (לרבות מתכות)"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-transfer-out-same-client",
+      "base": "transfer_out",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 5,
+        "unit": "nis_per_transfer",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.6.1 העברת ניירות ערך - לחשבון אותו לקוח בגוף פיננסי אחר (עמ' 16 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 16,
+          "quote": "4.6.1 העברת ניירות ערך - לחשבון אותו לקוח בגוף פיננסי אחר ₪ 5 להעברה (פיקוח)"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-18",
+          "SW-33"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 5 להעברה (פיקוח)', 'מיידי - בעת ביצוע הפעולה'. Added costs: 'בהעברה בחו\"ל - עמלת סוכן', in Israel the exchange's costs (part 11.16 'כמפורט בתעריפון הבורסה'). Note (1): 'חשבון אותו לקוח' includes a joint account with a spouse. To another client's account (4.6.2): 0.69%, 44 NIS minimum, 220 NIS maximum per portfolio (not recorded)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "העברת ניירות ערך",
+          "לחשבון אותו לקוח בגוף פיננסי אחר"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.9.1 (עמ' 16 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 16,
+          "quote": "4.9.1 עמלת הפצה מרוכש יחידת 0.20% לשנה מסוג 1"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.20% לשנה', collected at month end ('סוף חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): 'העמלה תגבה מהלקוח ברכישת/העברת קרן נאמנות לבנק ובמידה ואין לבנק הסכם הפצה עם מנהל הקרן' (charged to the client only when the bank has no distribution agreement with the fund manager). Fund type 1 per the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 1"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.9.3 (עמ' 17 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 17,
+          "quote": "4.9.3 עמלת הפצה מרוכש יחידת 0.35% לשנה מסוג 3"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.35% לשנה', collected at month end ('סוף חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): 'העמלה תגבה מהלקוח ברכישת/העברת קרן נאמנות לבנק ובמידה ואין לבנק הסכם הפצה עם מנהל הקרן' (charged to the client only when the bank has no distribution agreement with the fund manager). Fund type 3 per the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 3"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.9.4 (עמ' 17 מתוך 42, עודכן 07/02/2025)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 17,
+          "quote": "4.9.4 עמלת הפצה מרוכש יחידת 0.10% לשנה מסוג 4"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.10% לשנה', collected at month end ('סוף חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): 'העמלה תגבה מהלקוח ברכישת/העברת קרן נאמנות לבנק ובמידה ואין לבנק הסכם הפצה עם מנהל הקרן' (charged to the client only when the bank has no distribution agreement with the fund manager). Fund type 4 per the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 4"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-fx-conversion-branch",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.19,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "5.1.1 עמלת חליפין מט\"י-מט\"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.19% מסכום העסקה', charged on execution. Footnote (*): FX transactions up to $10 are exempt; up to $100 get a 50% discount including on the minimum ('בעסקאות מט\"ח שסכומן עד 10$ פטור, בעסקאות מט\"ח שסכומן עד 100$ 50% הנחה, לרבות על המינימום'). Exemption for conversions from a Nazi-victims pension account."
+      },
+      "min": {
+        "value": 6.8,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), מינימום",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "5.1.1 עמלת חליפין מט\"י-מט\"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$ 6.8 לפעולה' (US dollars per transaction)."
+      },
+      "max": {
+        "value": 1075,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), מקסימום",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "5.1.1 עמלת חליפין מט\"י-מט\"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$ 1,075 לפעולה' (US dollars per transaction)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "5.1.1 עמלת חליפין מט\"י-מט\"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. The tariff prints only the percentage fee (5.1.1, p.18, unchanged in the 25/05/2026 part 5); the account booklet (library 62474a808f06947d, p.35) executes foreign-currency orders 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.8 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-16). Not zero."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין מט\"י-מט\"ח"
+        ]
+      }
+    },
+    {
+      "id": "mercantile-fx-conversion-direct",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.17,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 38)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "0.17% מסכום העסקה מינימום $ 6.30 בערוץ ישיר לפעולה מקסימום $ 1,055"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Notes column: 'בערוץ ישיר 0.17% מסכום העסקה מינימום $ 6.3 לפעולה, מקסימום $ 1,055 לפעולה'. Appendix E prints the direct price under 'באינטרנט'. Same small-amount exemptions as the branch line (footnote *)."
+      },
+      "min": {
+        "value": 6.3,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר), מינימום",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "0.17% מסכום העסקה מינימום $ 6.30 בערוץ ישיר לפעולה מקסימום $ 1,055"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום $ 6.3 לפעולה' (US dollars)."
+      },
+      "max": {
+        "value": 1055,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר), מקסימום",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "0.17% מסכום העסקה מינימום $ 6.30 בערוץ ישיר לפעולה מקסימום $ 1,055"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום $ 1,055 לפעולה' (US dollars)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+          "publisher": "Mercantile Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 18,
+          "quote": "0.17% מסכום העסקה מינימום $ 6.30 בערוץ ישיר לפעולה מקסימום $ 1,055"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2024-06-16",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. The tariff prints only the percentage fee (5.1.1, p.18, unchanged in the 25/05/2026 part 5); the account booklet (library 62474a808f06947d, p.35) executes foreign-currency orders 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.8 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-16). Not zero."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין מט\"י-מט\"ח",
+          "בערוץ ישיר",
+          "באינטרנט"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "current_account": {
+    "monthly_minimum": {
+      "value": 6.4,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.mercantile.co.il/media/gjwluxm4/taarifon_private_short_osh_11026.pdf",
+        "title": "תעריפון מצומצם עובר ושב - בנק מרכנתיל (01/10/2026), פעולות, (א) פעולה על ידי פקיד",
+        "publisher": "Mercantile Discount Bank Ltd.",
+        "strength": "institution",
+        "page": 1,
+        "quote": "6.40 ₪ לפעולה (בפיקוח)"
+      },
+      "checked": "2026-11-06",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "Row 2(א) 'פעולה על ידי פקיד' at 6.40 NIS an action; note (*): 'הבנק רשאי לגבות בחודש את הגבוה מבין שני אלה ... עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י הפקיד'. The ceiling is counted (D56). Read in the library copy (897991154e216138), 2026-11-06; the same figure as research/2026-11-04-binding-prices/discount-mercantile.md."
+    }
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+        "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט, התעריפון המלא (01/10/2026, 42 עמ')",
+        "checked": "2026-11-04",
+        "page": 13,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+        "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט, התעריפון המלא (01/10/2026, 42 עמ')",
+        "checked": "2026-11-04",
+        "page": 14,
+        "quote": "אגרות חוב וקרנות נאמנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מרכנתיל טופ ודלקס: 'דמי ניהול חשבון ני\"ע - פטור', קניה/מכירה בישראל 0.12% מינימום 10 ₪, בחו\"ל 0.15%",
+      "why": "A promotion on the new-account-groups page (library e83a067b2644e092; on the Wayback Machine since 2025-02-09), not in the tariff: new joiners 'במהלך תקופת המבצע', from age 19, a salary of 12,000 NIS (18,000 joint; Deluxe 20,000/25,000) plus 3,000 NIS a month on a Mercantile credit card; 'תוקף ההטבות - 3 שנים ממועד ההצטרפות'; 'הבנק רשאי לשנות את תנאי המבצע בכל עת'. An offer, not ranked (D56). The rows name no fund.",
+      "why_he": "מי שמצטרף לחשבון טופ או דלקס בזמן המבצע, מעביר משכורת מ־12,000 ₪ (בדלקס מ־20,000 ₪) ומשלם 3,000 ₪ בחודש בכרטיס האשראי של הבנק, פטור מדמי ניהול ניירות ערך ומשלם 0.12% על קנייה ומכירה בארץ, למשך 3 שנים. שורות ההטבה לא מזכירות קרנות. זה מבצע שמופיע רק באתר הבנק והבנק רשאי לשנות אותו בכל עת, ולכן האתר לא מחשב אותו; למי שזכאי המחיר יוצא זול יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "הוצאות צד ג' בחו\"ל: עמלת סוכן, Sec fee, הוצאות קסטודיאן בחו\"ל",
+      "page": 29,
+      "why": "Part 11 prices them 'משתנה' or 'בהתאם להוצאה הממשית'; not limited by the documents, not priced.",
+      "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של צד שלישי: עמלת הסוכן בחו״ל על כל עסקה, עמלה לרשות ניירות הערך האמריקאית והוצאות המשמורן בחו״ל. התעריפון לא נוקב בסכום שלהן אלא ״בהתאם להוצאה הממשית״ או ״משתנה״, ולכן האתר לא מחשב אותן והמחיר בחו״ל יכול לצאת יקר יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "4.11.1 עמלת קסטודיאן 0.1% משווי העסקה, מינימום 50 ₪, מקסימום 10,000 ₪ לני\"ע",
+      "page": 17,
+      "why": "Printed with no scope; not priced for the reader's trades.",
+      "why_he": "התעריפון מדפיס ״עמלת קסטודיאן״ של 0.1% משווי העסקה, מינימום 50 ₪ לנייר, בלי לומר על אילו פעולות היא חלה. האתר לא מחשב אותה; אם היא חלה גם על קנייה או מכירה רגילה, המחיר יקר יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "שימוש במערכת מסחר עצמאי ונתוני מסחר שוטפים (11.20-11.22)",
+      "page": 29,
+      "why": "'בהתאם להוצאה הממשית', for the advanced trading system; the website and app need neither. Optional, not priced.",
+      "why_he": "רישיון למערכת המסחר המתקדמת ונתוני מסחר שוטפים עולים לפי ההוצאה בפועל, אבל רק למי שבוחר במערכת הזו. קנייה דרך האתר או האפליקציה לא צריכה אותם, ולכן הם לא נכללים במחיר.",
+      "could_change_price": false
+    },
+    {
+      "what": "חשבון עו\"ש: פעולה ע\"י פקיד 6.40 ₪, בערוץ ישיר 2.00 ₪, עמלת מינימום חודשית עד מחיר פעולה אחת ע\"י פקיד; מסלול בסיסי 8.50 ₪, מורחב 26.50 ₪",
+      "page": 2,
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Abridged tariff 01/10/2026, library 897991154e216138.",
+      "why_he": "מחשבון העו״ש האתר סופר רק את עמלת המינימום החודשית, 6.40 ₪, כי זה מה שחשבון עולה למי שעושה בו מעט פעולות. עמלות על פעולות נוספות ומסלולי עמלות הם עניין של השימוש בחשבון ולא של ההשקעה. אם סימנתם שזה הבנק שלכם, האתר לא סופר את עמלת המינימום.",
+      "could_change_price": false
+    },
+    {
+      "what": "ממוצעי העמלות שנגבו בפועל, 1-6/2026",
+      "why": "Israeli custody 0.08%-0.43% a year by portfolio size, foreign 0.05%-0.44% (the exchange's sheet). A fact, not a price (D56); kept in the custody line's notes.",
+      "why_he": "לפי הממוצעים שהבורסה מפרסמת על הבנק, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.08% עד 0.43% בשנה על ניירות ערך בארץ, לפי גודל התיק, ובתעריפון כתוב 0.2% לרבעון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "עמלת חליפין בעסקאות קטנות: '(*) בעסקאות מט\"ח שסכומן עד 10$ פטור. עד 100$ 50% הנחה, לרבות על המינימום' (חלק 5)",
+      "page": 19,
+      "why": "Part 5 footnote (*), file p.19 of the full tariff (library cc45f15d6d9fec45), attached to 5.1.1. A discount by the size of the conversion (50% off the line, the minimum included, up to $100) and a free band (up to $10) are not a flat price (`flat_up_to`, F-13), which is all the engine holds for a small conversion; approximating them would be pricing by analogy. So a conversion of $100 or less is priced at the full direct minimum of $6.30, about $3.15 above what the footnote charges, and one of $10 or less is not free. Not priced.",
+      "why_he": "האתר לא מחשב את ההנחה של 50% על המרה של עד 100 דולר, גם על המינימום, ולא את הפטור על המרה של עד 10 דולר. למי שמפקיד כל חודש עד 100 דולר, ההמרה בפועל זולה בכ־3 דולר מהמחיר שמוצג, ועד 10 דולר היא בלי עמלה.",
+      "could_change_price": true
+    }
+  ],
+  "groups": {
+    "state": "prices",
+    "note": "Annex A pp.30-31 read in the filed copy, and p.30 by eye, because the text layer's order of the columns misleads. Senior citizens: the rendered cells on securities are blank; the text layer holds 'אין מידע'. Re-read 2026-11-04 in the newer tariff (taarifon_private_full_11026.pdf, annex A pp.31-33 dated 22/06/2026; pp.31-32 read by eye at 90 dpi): the same groups, eligibility, periods and prices. The custody cells now read '0.1% לנייר ערך לרבעון בכפוף למקסימום' and '0.125% לנייר ערך לרבעון בכפוף למקסימום'. The group pages (youth-banking, solders, discharged-soldiers-benefits, students) print the same figures. The salary groups Pro, Top and Deluxe are a promotion on the new-account-groups page, not in annex A; they are recorded under left_out. Salary plans (2026-11-04, D43 amended): Top and Deluxe from the bank's joining page, whose own printed terms are the source; the tariff has no row for them.",
+    "read": [
+      {
+        "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+        "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה"
+      },
+      {
+        "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+        "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "young",
+        "name_he": "צעירים",
+        "who_he": "מגיל 14 ועד מעבר לקבוצה זכאית אחרת או עד גיל 19, המוקדם מביניהם",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "מגיל 14ועד שיוך הלקוח לקבוצת אוכלוסייה זכאית אחרת או עד גיל ,19לפי המוקדם מבניהם"
+        },
+        "ends_printed": true,
+        "ends_he": "עד גיל 19, או עד מעבר לקבוצה אחרת",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "לפי המוקדם מבניהם"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.4%, אגרות חוב 0.35%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 31,
+              "quote": "קניה ,מכירה ופדיון -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום, מעל גיל 16",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "קניה ,מכירה ופדיון בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter"
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ],
+        "who_short_he": "צעירים בגילאי 14 עד 19",
+        "cheaper_he": "דמי ניהול בארץ 0.1% במקום 0.2%, בחוץ לארץ 0.125% במקום 0.25%",
+        "ends_short_he": "עד גיל 19"
+      },
+      {
+        "kind": "soldier",
+        "name_he": "חיילים / שירות לאומי",
+        "who_he": "חיילים שמקבלים משכורת חובה לחשבון; משרתי שירות לאומי עם אישור על השירות",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "תקופת זכאות להטבות לחיילים :עם זקיפת מת\"ש חובה -משך כל השירות"
+        },
+        "ends_printed": true,
+        "ends_he": "חיילים: כל השירות. שירות לאומי: שנה, ואפשר לשנה נוספת באישור.",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "תקופת זכאות להטבות למשך שנה אחת מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.3%, אגרות חוב 0.3%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.3,
+              "per": "trade"
+            },
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 31,
+              "quote": "קניה ,מכירה ופדיון -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "קניה ,מכירה ופדיון בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter"
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ],
+        "who_short_he": "חיילים ומשרתי שירות לאומי",
+        "cheaper_he": "דמי ניהול 0.1% במקום 0.2%; קנייה ומכירה 0.3% במקום 0.4%",
+        "ends_short_he": "כל השירות, ובשירות לאומי שנה"
+      },
+      {
+        "kind": "released",
+        "name_he": "חיילים משוחררים",
+        "who_he": "בהצגת תעודת השחרור הצבאית או אוטומטית אם חלפו חודשיים בלי משכורת בחשבון חיילים",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "בהצגת תעודת השחרור הצבאית ע\"י הלקוח או אוטומטית"
+        },
+        "ends_printed": true,
+        "ends_he": "שנתיים מיום ההצטרפות לקבוצה",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "תקופת הזכאות -למשך שנתיים מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.4%, אגרות חוב 0.35%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 31,
+              "quote": "קניה ,מכירה ופדיון -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "קניה ,מכירה ופדיון בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter",
+              "for_months": 24
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter",
+              "for_months": 24
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ],
+        "who_short_he": "חיילים משוחררים",
+        "cheaper_he": "דמי ניהול בארץ 0.1% במקום 0.2%, בחוץ לארץ 0.125% במקום 0.25%",
+        "ends_short_he": "שנתיים מההצטרפות לקבוצה"
+      },
+      {
+        "kind": "student",
+        "name_he": "סטודנטים",
+        "who_he": "לומדים לתואר ראשון או שני, עם תעודת סטודנט בתוקף או שובר שכר לימוד ממוסד שאישרה המועצה להשכלה גבוהה. גיל מקסימלי להצטרפות 36.",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "סטודנטים הלומדים לתואר ראשון או שני"
+        },
+        "ends_printed": true,
+        "ends_he": "4 שנים מיום ההצטרפות, עם תעודת סטודנט לכל שנה",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "תקופת הזכאות -למשך 4שנים מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.25%, אגרות חוב 0.25%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.25,
+              "per": "trade",
+              "for_months": 48
+            },
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 31,
+              "quote": "קניה ,מכירה ופדיון -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "קניה ,מכירה ופדיון בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter",
+              "for_months": 48
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter",
+              "for_months": 48
+            },
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ],
+        "who_short_he": "סטודנטים, עד גיל 36",
+        "cheaper_he": "דמי ניהול 0.1% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
+        "ends_short_he": "4 שנים מההצטרפות"
+      },
+      {
+        "kind": "salary",
+        "name_he": "מרכנתיל טופ",
+        "who_he": "מצטרפים חדשים מגיל 19 בתקופת המבצע, שמעבירים משכורת של 12,000 ש״ח ליחיד או 18,000 ש״ח לחשבון משותף ומחויבים ב־3,000 ש״ח בחודש בכרטיס אשראי של הבנק",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "פירוט ההטבות בקבוצת מרכנתיל טופ למעבירי משכורת של 12,000 ש\"ח ליחיד או 18,000 ש\"ח לחשבון משותף"
+        },
+        "ends_printed": true,
+        "ends_he": "3 שנים ממועד ההצטרפות לקבוצה; הבנק רשאי לשנות את תנאי המבצע בכל עת. סוף תקופת ההצטרפות לא כתוב",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "תוקף ההטבות - 3 שנים ממועד ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.12%, מינימום 10 ש״ח",
+            "value": {
+              "rate_pct": 0.12,
+              "per": "trade",
+              "min": 10,
+              "currency": "ILS",
+              "for_months": 36
+            },
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "ני\"ע עמלת קניה/מכירה בישראל 0.12% עמלת מינימום 10 ש\"ח"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.15%, כפוף למינימום",
+            "value": {
+              "rate_pct": 0.15,
+              "per": "trade",
+              "side": "buy",
+              "for_months": 36
+            },
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "עמלת קניה בחו\"ל 0.15% עמלת מינימום כפוף למינימום"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          }
+        ],
+        "inferred": "That 'דמי ניהול חשבון ני\"ע' is the tariff's custody fee ('דמי ניהול פיקדון') for Israel and abroad is inferred: the page uses a name the tariff does not. Only 'קניה' is named abroad. The page says 'כל התנאים וההטבות בקשר לעמלות הם ביחס לתעריפון הבנק'. The joining window ('תקופת המבצע') is not defined; the grant option runs to 31.12.26. Mercantile Pro (7,000 NIS) has no securities benefit.",
+        "who_short_he": "מצטרפים עם משכורת מ־12,000 ₪",
+        "cheaper_he": "באתר הבנק: פטור מדמי ניהול, וקנייה ומכירה בארץ 0.12%, מינימום 10 ₪",
+        "ends_short_he": "3 שנים, והבנק רשאי לשנות"
+      },
+      {
+        "kind": "salary",
+        "name_he": "מרכנתיל דלקס",
+        "who_he": "מצטרפים חדשים מגיל 19 בתקופת המבצע, שמעבירים משכורת של 20,000 ש״ח ליחיד או 25,000 ש״ח לחשבון משותף ומחויבים ב־3,000 ש״ח בחודש בכרטיס אשראי של הבנק",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "פירוט ההטבות בקבוצת דלקס למעבירי משכורת של 20,000 ש\"ח ליחיד או 25,000 ש\"ח לחשבון משותף"
+        },
+        "ends_printed": true,
+        "ends_he": "3 שנים ממועד ההצטרפות לקבוצה; הבנק רשאי לשנות את תנאי המבצע בכל עת. סוף תקופת ההצטרפות לא כתוב",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "תוקף ההטבות - 3 שנים ממועד ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.12%, מינימום 10 ש״ח",
+            "value": {
+              "rate_pct": 0.12,
+              "per": "trade",
+              "min": 10,
+              "currency": "ILS",
+              "for_months": 36
+            },
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "ני\"ע עמלת קניה/מכירה בישראל 0.12% עמלת מינימום 10 ש\"ח"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.15%, כפוף למינימום",
+            "value": {
+              "rate_pct": 0.15,
+              "per": "trade",
+              "side": "buy",
+              "for_months": 36
+            },
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "עמלת קניה בחו\"ל 0.15% עמלת מינימום כפוף למינימום"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          }
+        ],
+        "inferred": "That 'דמי ניהול חשבון ני\"ע' is the tariff's custody fee ('דמי ניהול פיקדון') for Israel and abroad is inferred: the page uses a name the tariff does not. Only 'קניה' is named abroad. The page says 'כל התנאים וההטבות בקשר לעמלות הם ביחס לתעריפון הבנק'. The joining window ('תקופת המבצע') is not defined; the grant option runs to 31.12.26. Mercantile Pro (7,000 NIS) has no securities benefit.",
+        "who_short_he": "מצטרפים עם משכורת מ־20,000 ₪",
+        "cheaper_he": "באתר הבנק: פטור מדמי ניהול, וקנייה ומכירה בארץ 0.12%, מינימום 10 ₪",
+        "ends_short_he": "3 שנים, והבנק רשאי לשנות"
+      }
+    ]
+  }
+}

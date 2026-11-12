@@ -1,0 +1,32 @@
+{
+  "id": "FXD-01",
+  "title": "Who may take deposits and deal in foreign currency",
+  "title_he": "מי יכול לקבל פיקדונות ולסחור במטבע חוץ",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "eligibility",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק הבנקאות (רישוי), בנק יכול לעסוק רק בפעולות שהחוק מונה, ובהן קבלת פיקדונות וקנייה ומכירה של מטבע חוץ. מי שהוא לא בנק או בנק חוץ לא יכול לקבל פיקדונות לחשבון עו״ש שאפשר למשוך ממנו בשיק לפי דרישה, ומי שהוא לא תאגיד בנקאי לא יכול לעסוק גם בקבלת פיקדונות וגם במתן אשראי; קבלת פיקדונות לעניין זה היא מ־30 אנשים או יותר בבת אחת, עם חריגים שהחוק מונה. בין החריגים: גמ״ח ללא ריבית ברישיון ובהיקף מוגבל, כספים שמקבלים מבטח או חברה מנהלת של קופת גמל, ואגודה שנותנת שירותי פיקדון ואשראי בהיקף קטן מזה של בנק.",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/1l3izmkj/124.pdf#page=3",
+      "title": "Banking (Licensing) Law, Bank of Israel's consolidated copy, file of 24.8.2026",
+      "title_he": "חוק הבנקאות (רישוי), התשמ״א-1981",
+      "publisher": "Bank of Israel",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "ss.1, 10(א), 13, 21, 22, 22א, 41, 46",
+      "locator_he": "סעיפים 1, 10(א), 13, 21, 22, 22א, 41, 46",
+      "page": 3,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

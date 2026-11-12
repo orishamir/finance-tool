@@ -162,7 +162,7 @@
     "fund-tax-track": "covered:TXS-24",
     "fee-management-balance": "covered:ETF-13",
     "distribution-policy": "covered:MF-49",
-    "currency": "covered:MF-54",
+    "currency": "covered:MF-43",
     "fee-trade": "covered:ETF-05",
     "protection": "covered:MF-02"
   },

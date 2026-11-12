@@ -17,7 +17,7 @@
   },
   "manager": "Vanguard",
   "domicile": "US",
-  "legal_form": "US-listed ETF; 'passively managed, full-replication strategy'; inception 2010-09-07; dividend schedule quarterly; benchmark 'S&P 500 Index'. The ISIN is not printed on this fact sheet.",
+  "legal_form": "US-listed ETF; 'passively managed, full-replication strategy'; inception 2010-09-07; dividend schedule quarterly; benchmark 'S&P 500 Index'. The ISIN is not printed on this fact sheet. Legal form: an exchange-traded share class of Vanguard 500 Index Fund, a series of Vanguard Index Funds, a Delaware statutory trust. Source: Vanguard prospectus of 28.4.2026, https://fund-docs.vanguard.com/p968.pdf, PDF p.3 'an exchange-traded share class of Vanguard 500' and PDF p.9 'The Fund is a series of Vanguard Index Funds (the \"Trust\")'; the trust's form from Vanguard Index Funds' statement of additional information of 28.4.2014, https://www.sec.gov/Archives/edgar/data/0000036405/000093247114006076/indexfundssai040072014bl.htm, 'reorganized as a Delaware statutory trust in 1998' (an older edition, read through a fetch tool and not re-checked: sec.gov refuses a script, so it is not in the library; the current edition was not read). Checked 2026-11-12.",
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": null,
@@ -47,7 +47,7 @@
         "TXF-29"
       ],
       "state": "sourced",
-      "notes": "Expense ratio 'as reported in the most recent prospectus'. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Its legal form is not printed on this fact sheet, so whether Israeli tax treats it as a company or a trust stays open (tax open question 19, job 1). The prospectus was not opened."
+      "notes": "Expense ratio 'as reported in the most recent prospectus'. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Under US law it is a series of a Delaware statutory trust (legal_form, TXF-37); how Israeli tax classifies such a fund stays open (tax open question 19). The prospectus (p968.pdf) was read for the legal form only."
     },
     "trustee": null,
     "variable_management": null,

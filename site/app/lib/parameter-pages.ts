@@ -5,13 +5,14 @@
 /**
  * A page that reads site parameters: where its link goes, and the route in routes.ts whose code reads them ("" is the index).
  * Its name is the key's entry in `parametersPage.pages` (copy.ts). The guides' link goes to their list; the pages that read are
- * each guide's own.
+ * each guide's own. The fee pages have no link (null): each is one product's (`/fees?wrapper=`), every one reads the parameters, and
+ * `/fees` alone says only that no product was found.
  */
 export const parameterPageRoutes = {
   home: { href: "/", route: "" },
   guide: { href: "/guide", route: "guide/:id" },
   rules: { href: "/rules", route: "rules" },
-  fees: { href: "/fees", route: "fees" },
+  fees: { href: null, route: "fees" },
   indices: { href: "/indices", route: "indices/:slug?" },
   deposits: { href: "/deposits", route: "deposits" },
 } as const;

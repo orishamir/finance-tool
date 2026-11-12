@@ -2,12 +2,15 @@
   "id": "BANK-35",
   "title": "Current-account fee caps set in 2026: payment-account management from 1.7.2027, immediate-debit card from 1.10.2026",
   "title_he": "התקרות החדשות לעמלות העו״ש: ניהול חשבון תשלום וכרטיס חיוב מיידי",
-  "text_he": "צו של נגיד בנק ישראל מכריז על ניהול חשבון תשלום, על דמי כרטיס חיוב מיידי ועל שינוי מועד התשלום החודשי של הלוואה לדיור כשירותים מפוקחים, וקובע תקרה לעמלה של כל אחד מהם; בניהול חשבון התקרה תלויה במספר הפעולות בחודש. הצו מבטל את הצו על מחיר המסלול הבסיסי ואת הצווים על המסלולים המורחבים, ותיקון לכללי העמלות מוחק את ההגדרות של המסלולים ומגדיר חשבון תשלום כך שהוא כולל חשבון עובר ושב. התקרה על כרטיס החיוב המיידי נכנסת לתוקף לפני השאר; עד שהצו נכנס לתוקף במלואו חלים כללי המסלולים ותקרת המחיר של המסלול הבסיסי. איך הכללים המתוקנים סופרים פעולה לצורך התקרה עוד לא נקרא.",
+  "text_he": "צו של נגיד בנק ישראל מכריז על ניהול חשבון תשלום, על דמי כרטיס חיוב מיידי ועל שינוי מועד התשלום החודשי של הלוואה לדיור כשירותים מפוקחים, וקובע תקרה לעמלה של כל אחד מהם; בניהול חשבון התקרה תלויה במספר הפעולות בחודש. הצו מבטל את הצו על מחיר המסלול הבסיסי ואת הצווים על המסלולים המורחבים, ותיקון לכללי העמלות מוחק את ההגדרות של המסלולים ומגדיר חשבון תשלום כך שהוא כולל חשבון עובר ושב. התקרה על כרטיס החיוב המיידי נכנסת לתוקף לפני השאר; עד שהצו נכנס לתוקף במלואו חלים כללי המסלולים ותקרת המחיר של המסלול הבסיסי. התיקון לכללים מפרט אילו שירותים נכללים בניהול החשבון ונספרים כפעולה, למשל הפקדה, משיכה והחלפה של מזומן, העברה לחשבון אחר, שיק, וחיוב בהוראת קבע או בכרטיס אשראי.",
   "figure_names_he": {
     "account_fee_up_to_2_actions": "ניהול חשבון תשלום: תקרה בחודש עם עד שתי פעולות",
     "account_fee_3_to_100_actions": "ניהול חשבון תשלום: תקרה בחודש עם שלוש עד מאה פעולות",
     "account_fee_per_action_above_100": "ניהול חשבון תשלום: תקרה לכל פעולה מעל מאה",
-    "immediate_debit_card_fee": "דמי כרטיס חיוב מיידי: תקרה בחודש"
+    "immediate_debit_card_fee": "דמי כרטיס חיוב מיידי: תקרה בחודש",
+    "action_band_low_max": "ניהול חשבון תשלום: מספר הפעולות המרבי ברמה הראשונה",
+    "action_band_mid_min": "ניהול חשבון תשלום: מספר הפעולות שממנו מתחילה הרמה השנייה",
+    "action_band_mid_max": "ניהול חשבון תשלום: מספר הפעולות שבו נגמרת הרמה השנייה"
   },
   "strength": "primary",
   "dimensions": [
@@ -96,10 +99,70 @@
       ],
       "state": "sourced",
       "notes": "Cap on the immediate-debit card fee. In force 1.10.2026 (order s.2(ב) and s.4)."
+    },
+    "action_band_low_max": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3(1): \"בוצעו 0 עד 2 פעולות בחודש\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": "2027-07-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "The first action band: a month with 0 to 2 actions, capped at NIS 5 (account_fee_up_to_2_actions). In force 1.7.2027."
+    },
+    "action_band_mid_min": {
+      "value": 3,
+      "unit": "count",
+      "source": {
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3(2): \"בוצעו 3 עד 100 פעולות בחודש\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": "2027-07-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "The second action band starts at 3 actions a month, capped at NIS 10 (account_fee_3_to_100_actions). In force 1.7.2027."
+    },
+    "action_band_mid_max": {
+      "value": 100,
+      "unit": "count",
+      "source": {
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3(2) and (3): \"בוצעו 3 עד 100 פעולות בחודש\"; \"מעל 100 הפעולות הראשונות בחודש\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": "2027-07-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "The second action band ends at 100 actions a month; each action above the first 100 is capped at NIS 1 (account_fee_per_action_above_100). In force 1.7.2027."
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-12",
   "scope": "general",
   "sources": [
     {
@@ -110,8 +173,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2246",
-      "locator_he": "עמוד 2246",
+      "locator": "file p.2 (gazette p.2246)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 2246)",
+      "page": 2,
       "quote": "בוצעו 0 עד 2 פעולות בחודש – עד חמישה שקלים חדשים",
       "checked": "2026-10-26"
     },
@@ -123,9 +187,10 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2247",
-      "locator_he": "עמוד 2247",
-      "quote": "ו״אדם עם מוגבלות",
+      "locator": "file p.3 (gazette p.2247)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 2247)",
+      "page": 3,
+      "quote": "ההגדרות ״מסלול״, ״מסלול בסיסי״, ״מסלול מורחב״, ״מסלול מורחב פלוס״ ו״אדם עם מוגבלות״ – בטלות",
       "checked": "2026-10-26"
     }
   ]

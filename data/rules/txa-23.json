@@ -1,0 +1,59 @@
+{
+  "id": "TXA-23",
+  "title": "The \"benefited ceiling\": the first slice of each year's deposits is treated as benefited",
+  "title_he": "״התקרה המוטבת״: השכבה הראשונה של ההפקדות בכל שנה נחשבת מוטבת",
+  "text_he": "לפי החלטת המיסוי של רשות המסים 6849/15, הקופה מסמנת כתשלומים פטורים את ההפקדות של עובד ושל עצמאי שעולות על התקרות המרביות להטבות המס של זיכוי וניכוי, בלי קשר לחבות המס של המפקיד, ולכן השכבה שמתחת לתקרות זהה לכל מפקיד. הקופות מחלקות את ההפקדות העצמיות של כל שנה לשתי שכבות: עד ״התקרה המוטבת״ הכסף נחשב מוטב, ומשיכתו דורשת אישור של פקיד השומה; מעליה, עד תקרת הגיל, הוא תשלומים פטורים, שממוסים במשיכה ב־15% מהרווח הנומינלי. לפי החישוב של הקופות (אלטשולר שחם לשנת 2025, אנליסט ומור לשנת 2026) התקרה המוטבת היא 38,412 שקלים בשנה, והיא מוקפאת עד 2027. החוק עצמו בודק אם היחיד ״אינו זכאי״ לזיכוי או לניכוי, והנוהג של הקופות נשען על ההחלטה.",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "tax-at-deposit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2028-01-15",
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+      "title": "רשות המסים, תמצית החלטת מיסוי 6849/15 (פורסמה 05/05/2015)",
+      "title_he": "רשות המסים, תמצית החלטת מיסוי 6849/15 (פורסמה 05/05/2015)",
+      "publisher": "Israel Tax Authority",
+      "publisher_he": "רשות המסים",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "quote": "הפקדות העובד וההפקדות כעמית עצמאי העולות על התקרות המרביות למתן הטבות מס לפי סעיפים 45א ו- 47 לפקודה (ללא תלות בחבות המס)",
+      "checked": "2026-10-26",
+      "qualifier": "(TXA-30)"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/ob5nzn0o/תקרות-וסכומים-2026.pdf",
+      "title": "Mor 2026 table",
+      "title_he": "תקרות וסכומים לשנת 2026 (מור)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "סכום הפקדה מירבי",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.analyst.co.il/wp-content/uploads/2026/02/טופס-190-2026.pdf",
+      "title": "Analyst forms",
+      "publisher": "Analyst",
+      "publisher_he": "אנליסט",
+      "kind": "circular",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "TXA-22",
+    "TXA-30"
+  ]
+}

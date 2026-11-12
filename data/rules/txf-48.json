@@ -1,0 +1,176 @@
+{
+  "id": "TXF-48",
+  "title": "BlackRock's and Vanguard's Irish S&P 500 funds: the US tax they bore on dividends was about 14% of them, not 30%",
+  "title_he": "קרנות S&P 500 איריות של בלקרוק ושל ואנגארד: המס על הדיבידנדים בתוכן היה כ־14% מהם",
+  "text_he": "בדוחות השנתיים המבוקרים של שלוש קרנות אירית על מדד S&P 500 כתובים הדיבידנדים שהקרן קיבלה והמס שנוכה מהם: בקרן iShares Core S&P 500 המצטברת (CSPX), בקרן iShares Core S&P 500 המחלקת (IUSA) ובקרן Vanguard S&P 500 (VUSA ו־VUAA) המס היה כ־14% מהדיבידנדים בכל אחת משתי השנים האחרונות. זה מה ששיעור האמנה בין ארצות הברית לאירלנד, 15%, נותן, ורחוק מ־30%, ולכן הקרנות האלה מקבלות את שיעור האמנה בפועל. הדוחות לא כותבים את השיעור או את האמנה, וזו קריאה של המספרים שבהם. בקרנות על מדדים של מניות מהרבה מדינות, כמו MSCI World ו־MSCI ACWI, הדוח לא מפריד את המס האמריקני, ולכן זה לא נבדק בהן.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-11-01",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "blackrock",
+      "name_he": "BlackRock"
+    },
+    {
+      "id": "vanguard",
+      "name_he": "Vanguard"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/annual-report/ishares-vii-plc-en-annual-report-2025.pdf#page=104",
+      "title": "iShares VII plc, annual report and audited financial statements, year ended 31 July 2025",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.104",
+      "locator_he": "עמוד 104",
+      "page": 104,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/annual-report/ishares-vii-plc-en-annual-report-2025.pdf#page=119",
+      "title": "p.119",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.119",
+      "locator_he": "עמוד 119",
+      "page": 119,
+      "checked": "2026-11-12",
+      "qualifier": "(library 0527d8b9da405f0d)"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/annual-report/ishares-plc-annual-report-en-28-feb-26.pdf#page=110",
+      "title": "iShares plc, annual report and audited financial statements, year ended 28 February 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.110",
+      "locator_he": "עמוד 110",
+      "page": 110,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/annual-report/ishares-plc-annual-report-en-28-feb-26.pdf#page=128",
+      "title": "p.128",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.128",
+      "locator_he": "עמוד 128",
+      "page": 128,
+      "checked": "2026-11-12",
+      "qualifier": "(library 00ddf8182684c5c3)"
+    },
+    {
+      "url": "https://fund-docs.vanguard.com/etf-annual-report.pdf#page=372",
+      "title": "Vanguard Funds plc, annual report, 30 June 2026",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.372, Vanguard S&P 500 UCITS ETF, Statement of Operations",
+      "page": 372,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fund-docs.vanguard.com/etf-annual-report.pdf#page=1001",
+      "title": "p.1001",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1001",
+      "locator_he": "עמוד 1001",
+      "page": 1001,
+      "quote": "Below is an analysis of the tax charge",
+      "checked": "2026-11-12",
+      "qualifier": "(library 0b167af5a1250c15)"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1775001-1776000/P1775855-00.pdf#page=210",
+      "title": "iShares V plc prospectus, in the Israeli annex for iShares S&P 500 Energy Sector UCITS ETF",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.210",
+      "locator_he": "עמוד 210",
+      "page": 210,
+      "quote": "It is anticipated that the Company may not be able to benefit from reduced rates of withholding tax",
+      "checked": "2026-11-12",
+      "qualifier": "(library 4380001efa9706cd)"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "CSPX factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/iusa-ishares-core-s-p-500-ucits-etf-usd-dist-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "IUSA factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fund-docs.vanguard.com/SandP_500_UCITS_ETF_USD_Distributing_9503_EU_INT_UK_EN.pdf#page=1",
+      "title": "Vanguard S&P 500 UCITS ETF USD Distributing factsheet",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fund-docs.vanguard.com/SandP_500_UCITS_ETF_USD_Accumulating_9694_EU_INT_UK_EN.pdf#page=1",
+      "title": "Vanguard S&P 500 UCITS ETF USD Accumulating factsheet",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/swda-ishares-core-msci-world-ucits-etf-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "SWDA factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/ssac-ishares-msci-all-country-world-ucits-etf-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "SSAC factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    }
+  ]
+}

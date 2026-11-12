@@ -21,6 +21,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: Exceptions include licensed interest-free gemach deposit and credit services within a volume limit (s.21(א1)); money received by an insurer or by a provident-fund managing company (s.22); and an association giving deposit and credit services below banking volume (s.22א). The law's section 1 defines "תאגיד בנקאי" as "בנק, בנק חוץ או חברת שירותים משותפת". "מוסד כספי" appears only in the transitional sections 41(ה), 41(ו) and 46(ב) (see FXD-13).
 - Figures: 30 depositors (s.21(ב)); fixed in law.
 - Source: [Banking (Licensing) Law, Bank of Israel's consolidated copy, file of 24.8.2026](https://boi.org.il/media/1l3izmkj/124.pdf#page=3) (file pages: s.1 3-5; s.10 7-8; s.13 14; s.21 15-18; s.22א 17; s.41 46; s.46 48), ss.1, 10(א), 13, 21, 22, 22א, 41, 46 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+- Scope: general
 - Dimensions: regulator, eligibility, protection
 - Likely to change: no
 - Note: A bank's duty not to refuse unreasonably a deposit "in Israeli or foreign currency" is in `bank-current-account-deposits.md` BANK-01.
@@ -30,6 +31,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: The other deposit rules (agreement contents, renewal and maturity notices, break forms, statements) are recorded in BANK-02 to BANK-11 and are written for deposits generally. No FX-specific section was seen in the pages read (definitions and Part C, ss.1 to 7).
 - Figures: none.
 - Source: [Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy](https://boi.org.il/media/rvzi1ngd/151.pdf), s.1 (definition "מדד"), s.2(ב), 2(ד), 7(א)(5) · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: currency, real-vs-nominal, reporting-obligation
 - Likely to change: no
 
@@ -63,6 +65,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: Part 5 has no line for managing or holding an FX account, or for opening or holding an FX deposit. A bank may charge only for services in the full tariff (BANK-16). The reduced tariffs listed in BANK-16 do not include FX. The rules fix fee types and structure; prices are each bank's, except items marked "(בפיקוח)". Whether a bank may also earn a spread between its own buy and sell rates on top of the conversion fee is not addressed in part 5 as read (open question 2).
 - Figures: NIS 10 cap on transfer to the customer's own account on account closure; fixed in the rules (consolidated to the amendment of 9.4.2025).
 - Source: [Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy](https://boi.org.il/media/jbwnaivp/159a.pdf), First Schedule part 5, items (1) to (12) and notes, pp.18-19 · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: fee-fx, fee-exit, regulator
 - Likely to change: yes. The fee rules have been amended repeatedly.
 
@@ -89,6 +92,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: None of the pages read states a break penalty for an FX deposit, how the FX rate is derived (for example from a foreign benchmark), or the day count (open question 4). Leumi's page shows no date: its date field is an unfilled placeholder. Its rates are therefore not recorded here.
 - Figures: Yahav minimum 2,000 currency units per deposit, effective 06/10/2026; institution, changes at the bank's discretion.
 - Source: [Hapoalim, "שיעורי ריבית בפיקדונות במט"ח"](https://www.bankhapoalim.co.il/he/savings/product-of-the-month/forex-interest-rates) · checked 2026-10-22 · institution. [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution. [Yahav rate board 13_26, effective 06/10/2026](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.3 · checked 2026-10-22 · institution
+- Scope: institution: Bank Hapoalim, Bank Leumi, Bank Yahav
 - Dimensions: currency, liquidity-lockup, minimum, eligibility, real-vs-nominal
 - Likely to change: yes (rates and products change at the bank's discretion)
 
@@ -110,6 +114,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: These are shekel deposits, so they sit under the general deposit rules (FXD-02, BANK-02). Whether the principal can fall with the dollar depends on the product wording ("ללא הבטחת קרן" vs a choice that guarantees the higher). The full terms are in each deposit agreement, which was not read (open question 5). Discount's cut-off times: Monday to Thursday by 13:00, Fridays, holiday eves and Chol Hamoed by 10:00.
 - Figures: Discount linkage base, representative rate + 0.2%; Yahav minimum NIS 1,000 (board effective 06/10/2026). Institution terms.
 - Source: [Discount money-market products page, "הבהרות"](https://www.discountbank.co.il/private/savings-investments/savings-interest/) · checked 2026-10-22 · institution. [Yahav rate board 13_26](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.4 · checked 2026-10-22 · institution. [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution
+- Scope: institution: Discount Bank, Bank Yahav, Bank Leumi
 - Dimensions: currency, protection, real-vs-nominal, fee-fx, liquidity-lockup, minimum
 - Likely to change: yes (product terms)
 
@@ -121,6 +126,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: Reading: a choice deposit that unconditionally pays principal plus the higher of FX linkage and a fixed rate (Leumi "ברירה", FXD-09) fits the exclusion. A deposit whose extra return depends on an index or share price is inside the definition unless the exclusion applies. Discount states that its principal-and-interest-guaranteed USD deposit with a conditional grant "אינו מהווה נכס פיננסי" under this law (FXD-12). Whether a conditional grant on top of guaranteed principal and interest is inside or outside the definition is not settled in any source read (open question 6). The Minister may add or exclude investments by order (definition, final clause). No order was read.
 - Figures: none.
 - Source: [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3) (file pages: s.1 3, 4, 5, 6; s.9 21-22), s.1 (definitions "מוצר מובנה", "נכסים פיננסיים"), s.9(א), 9(ב), 9(ג1); latest amendment listed ס"ח תשפ"ו · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+- Scope: general
 - Dimensions: regulator, protection, eligibility
 - Likely to change: possible (ministerial orders; the IRA draft that would remove structured products is in `ira-self-directed.md` IRA-11)
 
@@ -132,6 +138,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: "ככלל" means a guarantee is not stated for every product. The guarantee is in the base currency, so a USD-based product guarantees dollars, not shekels. The terms of each issue (term, minimum, underlying, formula, break rule) are in its own offer document; none was current on the FIBI or Massad page. Massad's page carries an S&P Dow Jones Indices disclaimer for a FIBI structured deposit, so at least one FIBI-group issue references an S&P index. No BoI directive or disclosure rule specific to structured deposits was read; the BoI's 2003 public-information page is Radware-blocked (open question 7).
 - Figures: none.
 - Source: [FIBI structured deposits page](https://www.fibi.co.il/private/depositsandsavings/structured/) · checked 2026-10-22 · institution. [Massad structured deposits page](https://www.bankmassad.co.il/private/depositsandsavings/structureddeposits/) · checked 2026-10-22 · institution
+- Scope: institution: First International Bank, Bank Massad
 - Dimensions: protection, liquidity-lockup, eligibility, currency, real-vs-nominal
 - Likely to change: yes (issues open and close)
 
@@ -173,7 +180,8 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - Fees are in Appendix A. The home page says 0% conversion fee when loading a listed currency, the rate "כולל את עלויות התפעול (מרווח)", and a 0.9% conversion fee over the Mastercard rate for unlisted currencies.
 - Conditions / exceptions: The terms do not call the balance a deposit, do not name a trust account or the bank holding the funds, and state no interest rate. How the payment-services law protects wallet balances if the provider fails was not read (open question 9). The terms also say the service targets "לקוחות מוסדות פיננסיים" (cl.2.3), which sits oddly with cl.2.8.
 - Figures: as above, terms effective March 2026; set by the company.
-- Source: [LAYA home page](https://laya.as-invest.co.il/) · checked 2026-10-22 · institution. [LAYA "תנאי השימוש בשירות", effective March 2026](https://laya.as-invest.co.il/Pages/additional-info/terms-of-use-service), cl.2.1, 2.3, 2.8, 3.3, 3.4, 3.7, 3.22, 3.24, 5.6, 5.11, 13.1-13.13, Appendices A-B · checked 2026-10-22 · institution. [Altshuler Shaham home page](https://www.as-invest.co.il/) · checked 2026-10-22 · institution
+- Source: [LAYA: תנאי השימוש בשירות, בתוקף ממרץ 2026](https://laya.as-invest.co.il/Pages/additional-info/terms-of-use-service) cl.2.1 "חברת תשלומים, בעלת רישיון למתן שירותי תשלום"; cl.2.3, 2.8, 3.3, 3.4, 3.7, 3.22, 3.24, 5.6, 5.11, 13.1-13.13, Appendices A-B (library copy of 2026-10-31; the site refused a script on 2026-11-12) · checked 2026-10-31 · institution; [LAYA: דף הבית](https://laya.as-invest.co.il/) "19 מטבעות זמינים לשימוש" (library copy of 2026-10-31) · checked 2026-10-31 · institution; [Altshuler Shaham home page](https://www.as-invest.co.il/) (lists LAYA) · checked 2026-10-22 · institution
+- Scope: institution: LAYA
 - Dimensions: regulator, protection, currency, fee-fx, deposit-ceiling, liquidity-lockup, eligibility
 - Likely to change: yes
 

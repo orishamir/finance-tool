@@ -24,7 +24,7 @@
       "strength": "primary",
       "locator": "pp.147-148, s.88; p.161, s.97(א)(5)",
       "locator_he": "עמודים 147 עד 148, סעיף 88; עמוד 161, סעיף 97(א)(5)",
-      "page": 147,
+      "page": 148,
       "quote": "חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון",
       "checked": "2026-10-25"
     },
@@ -36,9 +36,9 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.68",
-      "locator_he": "עמוד 68",
-      "page": 68,
+      "locator": "p.68 (file p.69)",
+      "locator_he": "עמוד 68 (עמוד הקובץ 69)",
+      "page": 69,
       "quote": "מסלול ירוק - העברת ני״ע בין קרובים",
       "checked": "2026-10-25"
     },
@@ -52,6 +52,7 @@
       "strength": "primary",
       "locator": "file p.4 (gazette p.376), reg. 9(ב) as enacted (the assessing officer may allow losses at another portfolio manager after a transfer)",
       "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 376), תקנה 9(ב) בנוסחה המקורי",
+      "page": 4,
       "quote": "פקיד השומה רשאי להתיר קיזוז בשל הפסדים מניירות ערך שנוצרו אצל מנהל תיק ניירות ערך אחר",
       "checked": "2026-11-07"
     },
@@ -65,6 +66,7 @@
       "strength": "primary",
       "locator": "file p.3 (gazette p.1351), reg. 2 (substituting reg. 9(א): only losses the payer managed, in the same tax year)",
       "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1351), תקנה 2 (החלפת תקנה 9(א))",
+      "page": 3,
       "quote": "ההפסד נוצר ממכירת נייר ערך שהיה בניהולו של החייב",
       "checked": "2026-11-07"
     }

@@ -18,7 +18,17 @@ import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDoc
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string } | { kind: "formula"; id: string } | { kind: "question"; id: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "formula"; id: string } | { kind: "question"; id: string };
+
+/** One sentence of a sheet's own text (`Item` "terms", `parts`): what it is about, the sentence, and the document it rests on. */
+export interface SheetPart {
+  head?: string;
+  text: string;
+  doc?: { href: string; title: string };
+  /** A heading the part stands under, after the parts with none ("" for a list with no heading of its own): a part of a group with no
+   *  head and no document is a line of a list (what a price list holds and the price leaves out, D106). */
+  group?: string;
+}
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -64,9 +74,9 @@ export interface ProvenanceData {
   pageCompanies?: readonly string[];
 }
 
-/** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
+/** What a rule affects: links to pages that use it (a null `href`: a kind of page with no single one for the rule, named, not linked), and whether the calculation engine reads it. */
 export interface RuleUses {
-  pages: { href: string; label: string }[];
+  pages: { href: string | null; label: string }[];
   engine: boolean;
 }
 
@@ -713,15 +723,15 @@ export function RuleTitleRow({ id, scope = true, className }: { id: string; /** 
  * `prefix` is the one-letter Hebrew prefix of the word ("ה", "ו", "ב", "ל", "מ", "ש", "כ"; "וה" and the like too): it is
  * rendered inside the same non-breaking span, so a line never breaks between the letter and the term.
  */
-export function Term({ id, children, prefix, name, lead }: { /** Several ids open one sheet of them all, titled `name` (`HelpMark`'s too). */ id: string | readonly string[]; children?: ReactNode; prefix?: string; name?: string; lead?: string }) {
+export function Term({ id, children, prefix, name, lead, parts, rules, className }: { /** Several ids open one sheet of them all, titled `name` (`HelpMark`'s too). */ id: string | readonly string[]; children?: ReactNode; prefix?: string; name?: string; lead?: string; /** With several ids or none: the sheet's own sentences, each with its document (a status word in a row that opens why and the source). */ parts?: readonly SheetPart[]; /** The word rests on rules, not on a glossary term: it opens the rule's card, or the list of them under `name` (a row's status words open the rule that says so, with its sources). */ rules?: readonly string[]; /** Added to the term's own classes (a mark that is an icon widens its touch area). */ className?: string }) {
   const open = useOpen();
-  const item: Item = typeof id === "string" ? { kind: "term", id } : { kind: "terms", ids: id, name: name ?? "", lead };
+  const item: Item = rules?.length ? (rules.length === 1 ? { kind: "rule", id: rules[0]! } : { kind: "rules", ids: rules, ...(name ? { name } : {}) }) : typeof id === "string" ? { kind: "term", id } : { kind: "terms", ids: id, name: name ?? "", lead, ...(parts ? { parts } : {}) };
   // An inline element, not a <button>: a line may break after a button, which left a sentence's full stop alone at the start of the next line.
   const button = (
     <span
       role="button"
       tabIndex={0}
-      className="term"
+      className={className ? `term ${className}` : "term"}
       data-term={typeof id === "string" ? id : undefined}
       onClick={(e) => open(item, e.currentTarget)}
       onKeyDown={(e) => {

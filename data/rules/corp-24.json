@@ -1,0 +1,33 @@
+{
+  "id": "CORP-24",
+  "title": "What protects the holder, and what does not",
+  "title_he": "מה מגן על מחזיק באיגרת חוב קונצרנית, ומה לא",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק ניירות ערך, למחזיק באיגרת חוב קונצרנית יש זכות לדרוש כסף מהגוף שהנפיק אותה, ובשום מקור שנקרא לא כתוב שהמדינה או מישהו אחר משלם אם המנפיק לא משלם; ההוראות שלפיהן המדינה משלמת על מק״מ ועל איגרות חוב ממשלתיות לא חלות כאן. בטוחה יש רק אם שטר הנאמנות קובע אותה, והשטר צריך לפרט כל בטוחה. התפקיד של הנאמן הוא לפקח ולאכוף, לא לשלם. אף מקור ישראלי שנקרא לא מתאר קרן פיצויים למשקיעים.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "ss. 35א, 35ו(א), 35ח",
+      "locator_he": "סעיפים 35א, 35ו(א), 35ח",
+      "page": 37,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ],
+  "derived_from": [
+    "GOV-02"
+  ]
+}

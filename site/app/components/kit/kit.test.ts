@@ -20,7 +20,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });

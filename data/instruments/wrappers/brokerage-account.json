@@ -18,7 +18,7 @@
     "value": "TASE (ISA-supervised exchange) for every member; the Bank of Israel for banks' stability",
     "unit": "text",
     "source": {
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a#page=20",
       "title": "TASE periodic report 2025, 1.7.2, 1.7.2.3, 1.31.6, 1.31.9, pp.17 to 18, 75 to 76",
       "publisher": "Tel Aviv Stock Exchange",
       "strength": "primary"
@@ -50,7 +50,7 @@
       "value": null,
       "unit": "pct_of_trade",
       "source": {
-        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=15",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 4(א)(1)",
         "publisher": "Bank of Israel",
         "strength": "primary"
@@ -75,7 +75,7 @@
       "value": null,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=16",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 4(א)(5) and notes",
         "publisher": "Bank of Israel",
         "strength": "primary"
@@ -100,7 +100,7 @@
       "value": null,
       "unit": "pct_of_trade",
       "source": {
-        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf#page=18",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 5 (עמלת חליפין)",
         "publisher": "Bank of Israel",
         "strength": "primary"
@@ -121,7 +121,7 @@
       "value": null,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+        "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=23",
         "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026), עמוד 23, סעיף 18; עמוד 35, סעיף 29ב, 29ג(2)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
@@ -142,7 +142,7 @@
       "value": null,
       "unit": "pct",
       "source": {
-        "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+        "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=23",
         "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026), עמוד 23, סעיף 18; עמוד 35, סעיף 29ב, 29ג(2)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
@@ -162,7 +162,7 @@
       "value": 10,
       "unit": "nis_per_transfer",
       "source": {
-        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf#page=17",
         "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 9.4.2025, first schedule part 4(א)(6) notes, part 5 item 10",
         "publisher": "Bank of Israel",
         "strength": "primary"

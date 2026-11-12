@@ -79,7 +79,7 @@ describe("the worth-knowing row of the current account", () => {
     expect(text).toContain("שווה לדעת");
     expect(text).toContain("מתוך");
     expect(text).toContain("הבנקים שנאספו משלמים ריבית על יתרה בעו״ש");
-    expect(text).toContain("כולם בתנאים ועל עד");
+    expect(text).toContain("כולם בתנאים ועל יתרה של עד");
     expect(text).toContain("הכי הרבה:");
     expect(text).toContain("אצל דיסקונט");
     expect(html).toContain('href="#current-account-banks"');

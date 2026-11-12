@@ -1,0 +1,54 @@
+{
+  "id": "TXA-22",
+  "title": "How funds run the 15% withdrawal (fund conditions and withholding)",
+  "title_he": "איך הקופות מבצעות היוון של קצבה מוכרת ב־15%",
+  "text_he": "התנאים שבהם קופה מנכה 15% ממרכיב הרווח הנומינלי בהיוון קצבה מוכרת, בלי אישור של פקיד השומה, הם התנאים של החלטת המיסוי של רשות המסים 6849/15. לפי טופסי הקופות, כולם נבדקים ביום המשיכה: גיל 60 ומעלה; קבלת קצבה מעל הקצבה המזערית, עם שלושה תלושים על שם העמית שמוכיחים זאת; יתרת התשלומים הפטורים ביום ההפקדה בתוך התקרה; והצהרה על תשלומים פטורים בקופות אחרות. לפי הטופס של אלטשולר שחם, על סכומים עד התקרה המוטבת ועל הרווחים עליהם צריך אישור של רשות המסים שמופנה לקופה. החלטת מיסוי ניתנת לחברה אחת ולא מחייבת אחרות, אבל רשות המסים מציגה אותה כעמדתה למקרים דומים.",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "reporting-obligation",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+      "title": "רשות המסים, תמצית החלטת מיסוי 6849/15 (פורסמה 05/05/2015)",
+      "title_he": "רשות המסים, תמצית החלטת מיסוי 6849/15 (פורסמה 05/05/2015)",
+      "publisher": "Israel Tax Authority",
+      "publisher_he": "רשות המסים",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "quote": "העמית הינו בן 60 או יותר",
+      "checked": "2026-10-26",
+      "qualifier": "(TXA-30)"
+    },
+    {
+      "url": "https://www.analyst.co.il/wp-content/uploads/2026/02/טופס-190-2026.pdf",
+      "title": "Analyst, \"היוון קצבה מוכרת – תיקון 190\", annex to joining form, form 1018, updated 25.2.2025, headed February 2026",
+      "publisher": "Analyst",
+      "publisher_he": "אנליסט",
+      "kind": "circular",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://as-invest.co.il/media/g3cdn5nu/היוון-קצבה-מוכרת-תיקון-190-לפקודת-מס-הכנסה-020225.pdf",
+      "title": "Altshuler Shaham, \"היוון קצבה מוכרת – תיקון 190\", G1005_020225 (2025 figures)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "TXA-30"
+  ]
+}

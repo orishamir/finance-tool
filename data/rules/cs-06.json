@@ -53,20 +53,6 @@
       "checked": "2026-10-26"
     },
     {
-      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
-      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
-      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.1070), s.1(2), s.74ב(ד)(1א); s.2 (in force 1.1.2025, for a child born from that day)",
-      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(2), סעיף 74ב(ד)(1א); סעיף 2",
-      "page": 2,
-      "quote": "בתוך תקופה של שישה חודשים מיום לידתו של ילד זכאי",
-      "checked": "2026-11-07"
-    },
-    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=8",
       "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016 (קובץ התקנות 7727)",
       "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
@@ -88,6 +74,20 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
+      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.1070), s.1(2), s.74ב(ד)(1א); s.2",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(2), סעיף 74ב(ד)(1א); סעיף 2",
+      "page": 2,
+      "quote": "בתוך תקופה של שישה חודשים מיום לידתו של ילד זכאי",
+      "checked": "2026-11-07"
     }
   ]
 }

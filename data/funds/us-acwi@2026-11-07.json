@@ -17,7 +17,7 @@
   },
   "manager": "BlackRock (iShares)",
   "domicile": "US",
-  "legal_form": "US-listed ETF; launch 03/26/2008; distribution frequency semi-annual; benchmark 'MSCI All Country World Index (Net)'. Replication and ISIN are not printed on this fact sheet.",
+  "legal_form": "US-listed ETF; launch 03/26/2008; distribution frequency semi-annual; benchmark 'MSCI All Country World Index (Net)'. Replication and ISIN are not printed on this fact sheet. Legal form, inferred, not read in the fund's own words: a series of iShares Trust, a Delaware statutory trust. Inferred from iShares MSCI ACWI ETF summary prospectus of 28.11.2025, which names iShares Trust only as a party to the advisory agreement (read through a fetch tool, not in the library: sec.gov refuses a script), https://www.sec.gov/Archives/edgar/data/1100663/000119312525302112/d14758d497k.htm, 'between iShares Trust (the \"Trust\") and BlackRock Fund Advisors'; the trust's form from iShares Trust's statement of additional information for IVV dated 31.7.2026, https://www.blackrock.com/us/individual/literature/sai/sai-ishares-core-s-and-p-500-etf-3-31.pdf, PDF p.4 'The Trust was organized as a Delaware statutory trust'. Checked 2026-11-12.",
   "exposure_id": "index-msci-acwi",
   "currency": "USD",
   "trading_currency_on_tase": null,
@@ -47,7 +47,7 @@
         "TXF-29"
       ],
       "state": "sourced",
-      "notes": "Management fee 0.31% plus other expenses 0.01% on the same page. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Its legal form is not printed on this fact sheet, so whether Israeli tax treats it as a company or a trust stays open (tax open question 19, job 1). The prospectus was not opened."
+      "notes": "Management fee 0.31% plus other expenses 0.01% on the same page. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Under US law it is a series of a Delaware statutory trust (legal_form, TXF-37); how Israeli tax classifies such a fund stays open (tax open question 19). The full prospectus was not opened."
     },
     "trustee": null,
     "variable_management": null,

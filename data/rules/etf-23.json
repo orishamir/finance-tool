@@ -22,8 +22,8 @@
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 2(א)(1)-(6)",
-      "locator_he": "עמוד 2, תקנה 2(א)(1)-(6)",
+      "locator": "p.2 (gazette p.1090), reg. 2(א)(1)-(6)",
+      "locator_he": "עמוד 2 (עמוד הרשומות 1090), תקנה 2(א)(1)-(6)",
       "page": 2,
       "checked": "2026-10-25"
     },
@@ -35,8 +35,8 @@
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.3, reg. 2(א)(7)-(11), 2(ב)",
-      "locator_he": "עמוד 3, תקנה 2(א)(7)-(11), 2(ב)",
+      "locator": "p.3 (gazette p.1091), reg. 2(א)(7)-(11), 2(ב)",
+      "locator_he": "עמוד 3 (עמוד הרשומות 1091), תקנה 2(א)(7)-(11), 2(ב)",
       "page": 3,
       "checked": "2026-10-25"
     },
@@ -48,7 +48,7 @@
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.9, Schedules 1-2",
+      "locator": "p.9 (gazette p.1097), Schedules 1-2",
       "page": 9,
       "checked": "2026-10-25"
     },
@@ -60,8 +60,8 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 2(א)(8)",
-      "locator_he": "עמוד 2, תקנה 2(א)(8)",
+      "locator": "p.2 (gazette p.3134), reg. 2(א)(8)",
+      "locator_he": "עמוד 2 (עמוד הרשומות 3134), תקנה 2(א)(8)",
       "page": 2,
       "checked": "2026-10-25"
     },

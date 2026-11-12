@@ -108,7 +108,7 @@ describe("the parameters page shows only what a live page reads", () => {
   it("links every page to a route the site has, and reads each parameter in that route's code", () => {
     const bad: string[] = [];
     for (const [key, page] of Object.entries(parameterPageRoutes)) {
-      if (!routeOf(page.href)) bad.push(`${key}: ${page.href} is no route in routes.ts`);
+      if (page.href !== null && !routeOf(page.href)) bad.push(`${key}: ${page.href} is no route in routes.ts`);
       if (!routes.some((r) => r.pattern === page.route)) bad.push(`${key}: the reading route "${page.route}" is not in routes.ts`);
     }
     for (const id of shown)

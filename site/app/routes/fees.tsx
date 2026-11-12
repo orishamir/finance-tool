@@ -20,7 +20,7 @@ import { Num, NumberLegend, RulesLine } from "../components/provenance";
 import { anyWeak } from "../lib/value";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Button, Callout, Card, LongestCase, Sentence, useChartPick } from "../components/kit";
+import { Button, Callout, Card, LeftOutLine, LongestCase, Sentence, gershayim, useChartPick } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { buildFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, pageFields, parseSubject, subjectWrapperId, rankedFor, ruleMap, type FeeSensitivity, type FeesData, type FeesResult, type NeedField, type PlanError, type SubjectSpec } from "../lib/fees";
@@ -32,6 +32,7 @@ import { fmt } from "../lib/format";
 import { bundleLinks } from "../lib/bundle";
 import { recordsById } from "../lib/scope";
 import { useHydrated } from "../lib/hooks";
+import { housesOf, leftOutData, type LeftOutData } from "../lib/left-out";
 
 /** The data files this page fetches after it starts, requested with the HTML. */
 export const links = () => bundleLinks("fees-data.json", "compare-bundle.json");
@@ -50,7 +51,12 @@ export async function loader() {
     }
   };
   for (const snap of latestSnapshots()) walk(snap, snap.provider.name_he);
-  return { ...goalFormData(), publisherNames };
+  // what a house's documents hold and its prices leave out (D106), and the house each address a fee line can cite belongs to
+  // (only the houses a product's fees on this page cite: the rest would ship for nothing)
+  const { compareBundle } = await import("../lib/compare.server");
+  const cited = new Set(compareBundle().wrappers.flatMap((w) => Object.values(w.feeValues ?? {}).flatMap((v) => (v?.source?.url ? [v.source.url] : []))));
+  const leftOut = leftOutData(latestSnapshots(), cited);
+  return { ...goalFormData(), publisherNames, leftOut };
 }
 
 export function meta({ location }: MetaPlace) {
@@ -76,12 +82,12 @@ export default function FeesPage() {
   }, [bundle, fees, data.rules, data.today]);
   return (
     <PageShell current="other" data={provenance}>
-      <Page bundle={bundle} fees={fees} failed={failed} form={data.form as FeeForm} publisherNames={data.publisherNames} />
+      <Page bundle={bundle} fees={fees} failed={failed} form={data.form as FeeForm} publisherNames={data.publisherNames} leftOut={data.leftOut} />
     </PageShell>
   );
 }
 
-function Page({ bundle, fees, failed, form, publisherNames }: { bundle: CompareBundle | null; fees: FeesData | null; failed: boolean; form: FeeForm; publisherNames: Record<string, string> }) {
+function Page({ bundle, fees, failed, form, publisherNames, leftOut }: { bundle: CompareBundle | null; fees: FeesData | null; failed: boolean; form: FeeForm; publisherNames: Record<string, string>; leftOut: LeftOutData }) {
   const { ready } = useInputs();
   const { search } = useLocation();
   const subject = useMemo(() => parseSubject(search), [search]);
@@ -106,7 +112,7 @@ function Page({ bundle, fees, failed, form, publisherNames }: { bundle: CompareB
     );
   if (failed) return frame(<Callout tone="caution">{r3fees.failed}</Callout>);
   if (!bundle || !fees || !ready) return frame(<p className="text-muted-foreground">{r3fees.loading}</p>);
-  return <Body bundle={bundle} fees={fees} form={form} publisherNames={publisherNames} subject={subject} frame={frame} />;
+  return <Body bundle={bundle} fees={fees} form={form} publisherNames={publisherNames} leftOut={leftOut} subject={subject} frame={frame} />;
 }
 
 /** Where to go from a page with nothing to show: the link on its own line under the message, not run into its last line. */
@@ -153,7 +159,7 @@ function errorText(e: PlanError, wrapperId: string, missing: NeedField[] = []): 
   }
 }
 
-function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FeeForm; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => React.ReactNode }) {
+function Body({ bundle, fees, form, publisherNames, leftOut, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FeeForm; publisherNames: Record<string, string>; leftOut: LeftOutData; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => React.ReactNode }) {
   const released = useInputs();
   // The page's own numbers: what the person entered on this device, the site's example (P-05) for the rest; never the saved goal
   // . The sliders follow the hand; the run, with the comparison behind "avoid", waits until it rests.
@@ -296,6 +302,10 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
               {rows}
               {omitted.includes("deposit") && <NotReportedRow name={r3fees.names.deposit!} />}
             </ol>
+            {/* under the fees a house's price list sets: what its documents hold and these prices leave out, the house named (D106) */}
+            {housesOf(an.lines, leftOut).map((h) => (
+              <LeftOutLine key={h.house} view={h.view} house={gershayim(h.house)} named className="text-sm" />
+            ))}
             {/* the remainder line comes and goes with the amounts (none while a discount still keeps a fee at 0%); with two lines or
                 more its room stays, or the page below it moves (D63) */}
             {an.lines.length > 1 ? (

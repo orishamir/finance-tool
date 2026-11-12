@@ -47,9 +47,22 @@ cd /home/ori/dev/finance-tool && npm run validate
 
 If it fails, fix your data files and run it again. Never change the schema, the validator or `docs/data-schema.md` to make it pass; if the schema seems wrong for what the source publishes, report that instead. If a problem comes from a file you did not touch, report it and leave it.
 
+### After a price list changes: the ranking scan
+
+If you wrote or changed a file under `data/fees/`, check what it did to the ranking, since a misread line shows up there first (an introducing broker cheaper than the broker that holds the account, two banks of one group far apart, a cost that falls as the money grows). The scan computes the indices page over a grid of plans and takes about three minutes; write its output to a folder outside the repository (the scratchpad), never into it.
+
+```bash
+cd /home/ori/dev/finance-tool && npm run rank-scan -- <scratch>/before      # before you edit the record
+cd /home/ori/dev/finance-tool && npm run rank-scan -- <scratch>/after       # after the record validates
+node tools/rank-diff.mjs <scratch>/before/grid.jsonl <scratch>/after/grid.jsonl
+```
+
+Read the difference and `<scratch>/after/flags.txt`. A flag is a place to look, not an error: whole units make a cost fall, and a ceiling or a minimum makes it jump. For every house whose order against another flipped, and every new flag that names your house, open the record line and the document's page and say in the report whether the document supports it. If you did not scan before the edit, scan once and read the flags that name your house. Do not change a record to make a flag go away; if the document says what the record says, the flag stands.
+
 End with a short report in plain words, in this order:
 
 1. **Collected**: the files written, how many values, the source URL and the date read.
 2. **Missing**: every item you looked for and did not get, with what you tried and why (blocked, not published, unreadable, needs a browser).
 3. **Conflicts and doubts**: anything where sources disagree or a unit or definition is unconfirmed.
 4. **Data check**: the exact output of `npm run validate`, including any failures that remain.
+5. **Ranking** (only after a change under `data/fees/`): which houses' prices moved and by how much on one example plan, which pairs of houses changed order, and for each flip whether the document supports it.

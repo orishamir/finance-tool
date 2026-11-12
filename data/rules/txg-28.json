@@ -15,16 +15,17 @@
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FstatuteBook%2F1522%2Fheb#page=77",
       "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, ספר החוקים 1522 (15.5.1995)",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, ספר החוקים 1522 (15.5.1995)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
       "kind": "law",
       "strength": "primary",
-      "locator": "file p.77, s.345(א)",
-      "locator_he": "עמוד 77, סעיף 345(א)",
+      "locator": "file p.77 (gazette p.283), s.345(א)",
+      "locator_he": "עמוד הקובץ 77 (עמוד הרשומות 283), סעיף 345(א)",
+      "page": 77,
       "quote": "ומי שאינו עובד ואינו עובד עצמאי יראו כהכנסתו השנתית את הכנסתו מהמקורות המפורטים בסעיף 2 האמור",
       "checked": "2026-11-07",
-      "qualifier": "(the consolidated version as published in 1995; later amendments of s.345 were not traced)"
+      "note": "(gazette: the consolidated version as published in 1995; later amendments of s.345 were not traced, and National Insurance's consolidated copy of 7.7.2026, a lead, prints the same words)"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",

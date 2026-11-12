@@ -1,0 +1,30 @@
+{
+  "id": "PF-11",
+  "title": "External management fee cap: each manager sets it per track per year and must publish it",
+  "title_he": "מגבלת עמלת הניהול החיצוני: כל חברה קובעת ומפרסמת אותה בכל שנה",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "לפי תקנות ההוצאות הישירות של קופות הגמל, כל משקיע מוסדי קובע בכל שנה שיעור מרבי לעמלת ניהול חיצוני לכל קופה או מסלול, ומפרסם אותו באתר שלו עד 31 בדצמבר של השנה שלפני; לקופה חדשה ולמיזוג המועד מאוחר יותר, ובמיזוג בתוך 30 ימים מהאישור. השיעור מחושב על סך הנכסים המשוער בסוף השנה הקודמת, בחישוב שנתי, ולא כולל דמי ניהול משתנים. השקעות באפיק השקעה מובטח תשואה לא נכללות בחישוב. המשקיע המוסדי לא יכול לגבות הוצאות ישירות מסוג עמלת ניהול חיצוני מעבר למגבלה שקבע. האתר לא אסף את השיעור שכל חברה קבעה.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022, קובץ התקנות 10377 (30.10.2022) p.212",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.5-6 (gazette pp.215-216), s.4",
+      "locator_he": "עמודי הקובץ 5 עד 6 (עמודי הרשומות 215 עד 216), סעיף 4",
+      "page": 5,
+      "quote": "משקיע מוסדי לא יגבה הוצאות ישירות מסוג עמלת ניהול חיצוני, מעבר למגבלת עמלת הניהול החיצוני",
+      "checked": "2026-11-08"
+    }
+  ]
+}

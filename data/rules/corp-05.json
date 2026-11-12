@@ -1,0 +1,46 @@
+{
+  "id": "CORP-05",
+  "title": "Who may be a trustee, conflicts, and who pays",
+  "title_he": "מי יכול להיות נאמן לאיגרות חוב, ומי משלם לו",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק ניירות ערך, הנאמן לאיגרות חוב צריך לעמוד בתנאי שיש לו שני נוסחים, ולא ברור איזה מהם בתוקף: לפי הנוסח של 1988, חברה רשומה בישראל שמטרתה העיקרית היא נאמנות, ולפי הנוסח של 2012, חברה שרשומה במרשם הנאמנים שרשות ניירות ערך מנהלת. אדם לא יכול להיות נאמן לסדרה אם בעל שליטה, נושא משרה או קרוב שלו מכהן אצל המנפיק, או אם צפוי ניגוד עניינים עם המחזיקים. המנפיק נושא בשכר הנאמן ובהוצאות הסבירות שלו, ושטר הנאמנות קובע את השכר ואיך המחזיקים חולקים בחלק ממנו, אם יש כזה. אם המחזיקים מחליפים את הנאמן, הם נושאים בתוספת לא סבירה בשכר של הנאמן החדש.",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "ss. 35ג, 35ג1, 35ג2, 35ה, 35ה1, 35ו",
+      "locator_he": "סעיפים 35ג, 35ג1, 35ג2, 35ה, 35ה1, 35ו",
+      "page": 38,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/11/law/11_lsr_210594.PDF#page=10",
+      "title": "Securities Law (Amendment 9), 1988, gazette",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.35ג as enacted",
+      "locator_he": "סעיף 35ג בנוסחו המקורי",
+      "page": 10,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette)"
+    }
+  ]
+}

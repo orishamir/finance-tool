@@ -1,0 +1,36 @@
+{
+  "id": "KGL-17",
+  "title": "Beneficiaries and death",
+  "title_he": "מוטבים בקופת גמל להשקעה, ומה קורה כשאין",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-22",
+  "text_he": "לפי התקנון של אלטשולר שחם לקופת גמל להשקעה, עמית יכול למנות מוטבים לכסף שיישאר אחרי מותו, בטופס חתום, דרך בעל רישיון או באופן דיגיטלי לפי כללי הממונה, ואם לא נקבעו חלקים, המוטבים מתחלקים שווה בשווה. צוואה שעוסקת בכספי הקופה נחשבת הוראת מוטבים אם היא מאוחרת להוראה האחרונה והגיעה לפני התשלום, ובלי מוטבים הכסף עובר ליורשים לפי צו קיום צוואה או צו ירושה. החברה יכולה לשלם יתרה קטנה בלי צו אם היא עד 5,000 ₪, בסכום שמתעדכן, עברו שלוש שנים מהפטירה, המבקשים הם בן הזוג, הורה או ילד וחתמו על כתב שיפוי, ואין צו ברשם הירושות.",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    }
+  ],
+  "scope_settle": "the CMA's standard bylaws for kupat gemel lehashkaa or its circular on beneficiaries",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "clauses 22–26",
+      "locator_he": "סעיפים 22–26",
+      "checked": "2026-10-22"
+    }
+  ]
+}

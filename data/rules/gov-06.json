@@ -46,6 +46,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.4, s.3.2.2; Annex ג, p.15",
+      "locator_he": "עמוד 4, סעיף 3.2.2; נספח ג, עמוד 15",
       "page": 4,
       "checked": "2026-10-25"
     }

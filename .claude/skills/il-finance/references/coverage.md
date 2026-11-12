@@ -399,7 +399,7 @@ topic files with links and dates, and the open questions they answer are marked 
 
 | Closed or narrowed | New rule | Was |
 |---|---|---|
-| Full exposure-code scale (0 to 6, A to F) and the "(!)" mark | MF-54 | MF OQ9 |
+| Full exposure-code scale (0 to 6, A to F) and the "(!)" mark | MF-43 (scale), MF-57 ("(!)"); MF-54 folded into them 2026-11-12 | MF OQ9 |
 | Each fund's tax status is on Maya; 2 of 73 money-market funds are **taxable** (Harel dollar 5103403, Migdal monthly-distributing shekel 5137559) | TXS-24 (the count), TXS-26 (the two funds, split 2026-10-26) | F1 (narrowed) |
 | Maya's fund export and its fields (fees, tax status, trustee, distribution-fee class) | CAT-34 | — |
 | 40 foreign funds on TASE (iShares and Invesco), traded in shekels | ETF-32 | ETF OQ4, OQ16 (in part) |

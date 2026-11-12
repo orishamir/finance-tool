@@ -1,0 +1,72 @@
+{
+  "id": "TXK-12",
+  "title": "What changes at 60 in a kupat gemel lehashkaa and what does not (a summary of TXK-01 to TXK-11)",
+  "title_he": "קופת גמל להשקעה בגיל 60: מה משתנה ומה לא",
+  "text_he": "זהו סיכום של הכללים על קופת גמל להשקעה, בלי חוק חדש. בגיל 60 לא משתנה המס על משיכה חד־פעמית: הרווח עדיין נחשב ריבית וממוסה עד 25%, והצמיחה, החלפת מסלול והעברה בין קופות פטורות ממס לפני גיל 60 ואחריו. מה שחדש בגיל 60: אפשר להעביר את היתרה לקופת גמל לקצבה, למסלול של מקבלי קצבה, ואז ההפקדות העצמיות הן תשלומים פטורים והקצבה מהן היא קצבה מוכרת, פטורה ממס כולל הרווחים; היוון שלה, אם יותר, ממוסה ב־15% מחלק הרווח הנומינלי. לכן ההטבה בגיל 60 היא החלפה של סכום חד־פעמי בקצבה, וההשוואה לקרן סל בחשבון השקעות תלויה בשאלה אם רוצים קצבה.",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit",
+    "real-vs-nominal",
+    "switching-tax-event",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "gazette ק״ת תשס״ח p.626, reg. 2, file p.4",
+      "locator_he": "ק״ת תשס״ח עמוד 626, תקנה 2, עמוד הקובץ 4",
+      "page": 4,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=10",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.22, gazette ס״ח תשס״ה p.898, file p.10",
+      "locator_he": "סעיף 22, ס״ח תשס״ה עמוד 898, עמוד הקובץ 10",
+      "page": 10,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
+      "title": "הצעת חוק פ/3539/25 (חשבון השקעה), 19.6.2023",
+      "title_he": "הצעת חוק פ/3539/25 (חשבון השקעה), 19.6.2023",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "TXK-01",
+    "TXK-11",
+    "TXK-07"
+  ]
+}

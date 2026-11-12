@@ -1,0 +1,60 @@
+{
+  "id": "PEN-14",
+  "title": "Qualifying period, medical underwriting and insurance cap",
+  "title_he": "חיתום רפואי, תקופת אכשרה ותקרת הכיסוי הביטוחי בקרן פנסיה",
+  "strength": "primary",
+  "dimensions": [
+    "insurance-cover",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי התקנון האחיד של קרנות הפנסיה המקיפות, הקרן יכולה לדרוש חיתום רפואי רק בהצטרפות, בחידוש ביטוח, בעליית שכר ריאלית של יותר מ־15% או בהגדלת כיסוי. על אירוע שנגרם ממחלה, מתאונה או ממצב שהיו לפני ההצטרפות או החידוש חלה תקופת אכשרה של 60 חודשים, ועל פגיעה עצמית של 12 חודשים. עמית שמשך או העביר כסף מרכיב התגמולים מקבל, לגבי הסכום שנמשך או הועבר ורק לאירוע של פטירה, תקופת אכשרה של 60 חודשי ביטוח רצופים מההפקדה הראשונה שאחרי המשיכה או ההעברה. סך דמי הביטוח הצפויים לא יכול לעבור 35% מסך ההפקדות הצפויות לפני דמי ניהול ודמי ביטוח.",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.16, s.13(ג)-(ד); pp.26-28, ss.34-35",
+      "locator_he": "עמוד 16, סעיף 13(ג)-(ד); עמודים 26 עד 28, סעיפים 34-35",
+      "page": 26,
+      "quote": "תחול תקופת אכשרה של 60 חודשי ביטוח רצופים החל ממועד תשלום דמי הגמולים הראשון שלאחר המשיכה או העברת הכספים, לגבי הסכום שנמשך או הועבר, בשל אירוע מזכה הנובע מפטירת העמית",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.30, s.39(א)",
+      "locator_he": "עמוד 30, סעיף 39(א)",
+      "page": 30,
+      "quote": "לא תעלה על 35% מהסך המצטבר הצפוי של תגמולים לפני ניכוי דמי ניהול ודמי ביטוח",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.34",
+      "locator_he": "סעיף 34",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "SW-12"
+  ]
+}

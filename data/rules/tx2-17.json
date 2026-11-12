@@ -62,19 +62,6 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://fs.knesset.gov.il/8/law/8_lsr_208901.PDF#page=3",
-      "title": "חוק מס ערך מוסף, תשל\"ו-1975 (ספר החוקים 791)",
-      "title_he": "חוק מס ערך מוסף, התשל״ו-1975",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.3, s.4(ב) as enacted",
-      "locator_he": "עמוד 3, סעיף 4(ב)",
-      "page": 3,
-      "checked": "2026-11-07"
-    },
-    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZsA~3yZgyGvixaLSmrNuT9FNV0Dr87ujJ8ymJhX0qnM=#page=2",
       "title": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11179)",
       "title_he": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין), התשס״ה-2005 (קובץ התקנות 6416; תיקון אחרון: קובץ התקנות 11179)",
@@ -128,6 +115,21 @@
       "page": 11,
       "quote": "מי שעסקו במכירת מטבע חוץ",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/8/law/8_lsr_208901.PDF#page=3",
+      "title": "חוק מס ערך מוסף, תשל\"ו-1975 (ספר החוקים 791)",
+      "title_he": "חוק מס ערך מוסף, תשל\"ו-1975 (ספר החוקים 791)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3, s.4(ב) as enacted",
+      "locator_he": "עמוד 3, סעיף 4(ב) בנוסחו המקורי",
+      "page": 3,
+      "quote": "על פעילות בישראל של מוסד כספי יוטל מס שכר וריווח",
+      "checked": "2026-11-07",
+      "qualifier": "(gazette; later amendments of s.4(ב) were not traced; s.4(ג) was added in 2026, above)"
     },
     {
       "url": "https://fs.knesset.gov.il/8/law/8_lsr_208901.PDF",

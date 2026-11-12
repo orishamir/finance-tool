@@ -3,6 +3,9 @@
   "title": "Actuarial balancing",
   "title_he": "האיזון האקטוארי: עודף וגירעון",
   "text_he": "זכויות העמיתים והפנסיונרים מתעדכנות לפי העודף או הגירעון האקטוארי. עודף או גירעון מגורמים דמוגרפיים (תמותה, נכות, שאירים) נזקף כל רבעון: לכל העמיתים בעדכון היתרות ולפנסיונרים בעדכון הקצבאות. עודף או גירעון מתשואות ומשיעורי ההיוון חל רק על מקבלי הקצבה, דרך עתודה למקבלי קצבה שיש לה תקרה, ועתודה נפרדת לכל מסלול קצבה; תשואות על יתרות העמיתים לא יוצרות עודף או גירעון. כך קובעים התקנון האחיד של רשות שוק ההון והקודקס שלה, והרשות מפרסמת כל שנה את העודף או הגירעון של כל קרן.",
+  "figure_names_he": {
+    "balancing_every_months": "תדירות זקיפת העודף או הגירעון הדמוגרפי (חודשים)"
+  },
   "strength": "primary",
   "dimensions": [
     "insurance-cover",
@@ -11,10 +14,59 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
+  "figures": {
+    "balancing_every_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=65",
+        "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, p.65, s.109(א)(1)",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "ייזקף בכל רבעון"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-19"
+      ],
+      "state": "sourced",
+      "notes": "The surplus or deficit from demographic factors (mortality, disability and the like) is credited every quarter: to members by updating the balance, to pensioners by updating the pension. The CMA's standard pension bylaw, which every comprehensive fund adopts (circular 2016-3-4)."
+    }
+  },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
   "checked": "2026-10-25",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_ver3_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+      "title": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
+      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12, table ד-14",
+      "page": 12,
+      "quote": "שיעור העודף או הגירעון האקטוארי בקרנות הפנסיה החדשות",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.65, s.109",
+      "locator_he": "עמוד 65, סעיף 109",
+      "page": 65,
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/guide/information-entities-codex/he/codex6.6_clean_new.pdf",
       "title": "קודקס הרגולציה, חלק 6 – הוראות ספציפיות לקרן פנסיה",
@@ -30,19 +82,6 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
-      "title": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
-      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.12, table ד-14",
-      "page": 12,
-      "quote": "שיעור העודף או הגירעון האקטוארי בקרנות הפנסיה החדשות",
-      "checked": "2026-10-25"
-    },
-    {
       "url": "https://data.gov.il/he/datasets/cma/pensia-net",
       "title": "פנסיה-נט – מאגר המידע של רשות שוק ההון, ביטוח וחיסכון",
       "title_he": "פנסיה-נט – מאגר המידע של רשות שוק ההון, ביטוח וחיסכון",
@@ -50,19 +89,6 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.65, s.109",
-      "locator_he": "עמוד 65, סעיף 109",
-      "page": 65,
       "checked": "2026-10-25"
     }
   ]

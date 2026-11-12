@@ -1,0 +1,40 @@
+{
+  "id": "TXI-23",
+  "title": "Getting back over-withheld tax on interest",
+  "title_he": "איך מקבלים בחזרה מס שנוכה ביותר מריבית",
+  "text_he": "יש שלוש דרכים. לפני השנה או במהלכה, פקיד השומה יכול לאשר בכתב ניכוי בשיעור נמוך יותר, אם השיעור הרגיל יגרום לניכוי ביתר. כשבנק או חבר בורסה ניכו ביתר מריבית על פיקדון או על תוכנית חיסכון בגלל הקלות שבחוק, מנהל רשות המסים יכול להחזיר את המס, כולו או חלקו, ב״מסלול ההחזר האוטומטי״, ומי שמסרב בטופס 2405 להעברת הנתונים לא מקבל את ההחזר הזה. בדוח השנתי מדווחים על הריבית במלואה, והמערכת מחשבת את ההקלות ומזכה את המס שנוכה לפי טופס 867, כך שהסכום הסופי יכול להיות שונה מההחזר האוטומטי, שהוא לא שומה; לאיגרות חוב ולמק״ם לא נמצא מסלול דומה.",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp.42-43",
+      "locator_he": "עמודים 42 עד 43",
+      "page": 42,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-11-07"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "KH-26",
+  "title": "Death of a member: beneficiaries and heirs",
+  "title_he": "מות עמית בקרן השתלמות: מוטבים ויורשים, לפי התקנון של אלטשולר שחם",
+  "text_he": "לפי התקנון של אלטשולר שחם לקרן השתלמות, עמית יכול להגיש לקרן הוראת מינוי מוטבים. בלי הוראה כזו הכסף עובר ליורשים לפי צו ירושה או צו קיום צוואה. החברה רשאית לשלם ליורשים בלי צו אם מתקיימים כל התנאים: היתרה לא עולה על 5,000 ש״ח ביום הבקשה, סכום שמתעדכן לפי ההסדר התחיקתי; עברו שלוש שנים מהפטירה; המבקשים חתמו על כתב שיפוי; המבקשים הם בן הזוג, הורה או ילד של העמית; והחברה בדקה אצל הרשם לענייני ירושה שלא הוצא צו ירושה או צו קיום צוואה. התקנון מונה את מות העמית בין העילות למשיכת הכסף.",
+  "strength": "institution",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-11-12",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    }
+  ],
+  "scope_settle": "the CMA's standard bylaws for keren hishtalmut or its circular on beneficiaries",
+  "sources": [
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf#page=9",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.9, s.15.1.3",
+      "locator_he": "עמוד 9, סעיף 15.1.3",
+      "page": 9,
+      "quote": "החברה המנהלת תאפשר את משיכת הכספים מבלי לדרוש המצאת צו ירושה",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf#page=9",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.7, s.9.1.3",
+      "locator_he": "עמוד 7, סעיף 9.1.3",
+      "page": 7,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf#page=9",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.8-9, ss.11 to 16",
+      "locator_he": "עמודים 8 עד 9, סעיפים 11 עד 16",
+      "page": 8,
+      "checked": "2026-10-31"
+    }
+  ]
+}

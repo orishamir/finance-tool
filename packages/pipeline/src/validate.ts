@@ -396,7 +396,7 @@ interface PremiseSnapshot {
   missing?: boolean;
   price_for_he?: string;
   left_out?: unknown[];
-  lines: { base: string; applies_to: string[]; rate?: { value?: number | null; source?: { url?: string } } | null }[];
+  lines: FlatLineLike[];
   availability?: {
     applies_to: string[];
     available: boolean | "unknown";
@@ -409,6 +409,49 @@ interface PremiseSnapshot {
   tariff?: { url: string };
   advertising?: AdvertisingLike[];
 }
+interface FlatLineLike {
+  id?: string;
+  base: string;
+  applies_to: string[];
+  rate?: { value?: number | null; source?: { url?: string } } | null;
+  min?: { value?: number | null; unit?: string } | null;
+  max?: { value?: number | null; unit?: string } | null;
+  flat_up_to?: { amount: { value?: number | null; unit?: string }; up_to: { value?: number | null; unit?: string } };
+}
+
+const currencyOfUnit = (unit: string | undefined) => (unit && /^usd/.test(unit) ? "usd" : unit && /^nis/.test(unit) ? "nis" : unit);
+
+/**
+ * F-12, F-13: a flat price for an order or a conversion up to a sum is below the line's minimum, in the same currency. The engine settles the
+ * flat price before it iterates (`buyWithCash`, `convertFor`) and counts on the line being dearer just past the sum; a flat price at or above
+ * the minimum would make an order just past the sum cheaper than one under it, which no recorded price list prints.
+ */
+export function checkFlatPrices(snap: { lines: FlatLineLike[] }): string[] {
+  const out: string[] = [];
+  for (const l of snap.lines) {
+    const f = l.flat_up_to;
+    if (!f) continue;
+    const name = l.id ?? l.base;
+    if (!f.amount.unit || !f.up_to.unit) {
+      out.push(`${name}: flat_up_to's amount and up_to each need a unit`);
+      continue;
+    }
+    if (currencyOfUnit(f.amount.unit) !== currencyOfUnit(f.up_to.unit)) out.push(`${name}: flat_up_to's amount and up_to are in different currencies`);
+    // a conversion line's flat price is settled before the iteration, which counts on a numeric minimum above it (`convertFor`)
+    const min = l.min;
+    if (!min || typeof min.value !== "number") {
+      if (l.base === "fx") out.push(`${name}: a flat price on a conversion line needs the line's numeric minimum`);
+      continue;
+    }
+    if (typeof f.amount.value !== "number") continue;
+    if (currencyOfUnit(min.unit) !== currencyOfUnit(f.amount.unit)) out.push(`${name}: flat_up_to is in another currency than the line's minimum; a line holds one`);
+    else if (f.amount.value >= min.value) out.push(`${name}: the flat price ${f.amount.value} is not below the line's minimum ${min.value}`);
+    const max = l.max;
+    if (l.base === "fx" && max && typeof max.value === "number" && currencyOfUnit(max.unit) !== currencyOfUnit(f.amount.unit)) out.push(`${name}: flat_up_to is in another currency than the line's maximum; a line holds one`);
+  }
+  return out;
+}
+
 interface GroupEntryLike {
   kind?: string;
   name_he: string;
@@ -753,6 +796,7 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
     out.push(...checkGroupValues(snap));
   }
   out.push(...checkAdvertising(snap));
+  out.push(...checkFlatPrices(snap));
   const entries = snap.availability ?? [];
   if (snap.lines.some((l) => l.base === "trade" && l.applies_to.some((c) => c === "all" || c === "brokerage-account")))
     out.push("lines: a trade line names every holding or the account, which no availability entry can vouch for; name the kinds");
@@ -841,10 +885,11 @@ export function isCopySource(url: string): boolean {
  * The publishers a `primary` source may sit on: the State's own sites (every
  * gov.il host: gov.il, the Knesset, Reshumot and the Ministry of Justice's services, the Tax Authority, the Capital Market Authority,
  * the Securities Authority, National Insurance outside its Laws1 copies), the Bank of Israel, the Tel Aviv Stock Exchange (its own
- * rules, guidelines and lists; an issuer's filing on Maya is the issuer's, isIssuerFiling), the SEC (for an issuer's own filings there), and foreign regulators and statutory
- * bodies. A source elsewhere marked `primary` is a copy or a company's paper given a strength it does not have, and fails.
+ * rules, guidelines and lists; an issuer's filing on Maya is the issuer's, isIssuerFiling), the SEC (for an issuer's own filings there), the United States Code as
+ * the House's Office of the Law Revision Counsel publishes it and the federal regulations as the Office of the Federal Register publishes
+ * them (the eCFR), and foreign regulators and statutory bodies. A source elsewhere marked `primary` is a copy or a company's paper given a strength it does not have, and fails.
  */
-const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org"];
+const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "uscode.house.gov", "ecfr.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org"];
 /**
  * A company's own document is marked `institution` (data-schema 3.1), never `primary`, so it is not caught here. The one kind kept
  * `primary` off those hosts is the defining text of a publisher's own index or numbering standard, cited for that index or standard:

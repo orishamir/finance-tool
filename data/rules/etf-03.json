@@ -1,0 +1,42 @@
+{
+  "id": "ETF-03",
+  "title": "The ETF must have a market maker, with restrictions on how it trades",
+  "title_he": "לכל קרן סל יש עושה שוק, עם הגבלות על המסחר שלו",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-08",
+  "text_he": "לפי חוק השקעות משותפות בנאמנות ותקנות הקרנות המחקות, מנהל של כל קרן סל צריך להתקשר עם עושה שוק: מי שמתחייב להגיש פקודות קנייה ומכירה ביחידות בכל יום מסחר בבורסה בתל אביב, לפי כללי הבורסה, ולפרסם מחיר קנייה ומחיר מכירה. עושה השוק לא יכול לעסוק בשום דבר מלבד עשיית שוק, לא יכול לשלוט במנהל הקרן או להיות בשליטתו, וצריך לעשות שוק ביחידות בכל יום שבו מחושב מחיר. אסור לו לבצע ביחידות עסקאות מתואמות או עסקאות מחוץ לבורסה, חוץ מעסקאות עם גוף מוסדי שמנהל כספים של אחרים: עסקה מתואמת של 500,000 ₪ לפחות, ועסקה מחוץ לבורסה של 5,000,000 ₪ לפחות. הבורסה מפקחת על כך, וחובות הציטוט של עושה השוק קבועות בכללי הבורסה.",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4",
+      "title": "s.3, gazette ק״ת תשע״ח, 2394",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.3, gazette ק״ת תשע״ח, 2394",
+      "locator_he": "סעיף 3, ק״ת תשע״ח, 2394",
+      "page": 4,
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=43",
+      "title": "Joint Investment Trust Law, Securities Authority's consolidated copy, file of 31.8.2026",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "page": 43,
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

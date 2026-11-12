@@ -325,7 +325,9 @@
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, מינימום (עמ' 4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 4,
+          "quote": "0.4% משווי העסקה עם מינימום 35"
         },
         "checked": "2026-11-04",
         "effective_from": null,
@@ -679,7 +681,7 @@
         "title": "מתווה לפטור מעמלות ברכישת קרנות קסם ומפיצים נוספים"
       },
       {
-        "url": "https://www.xnes.co.il/trading/trading_account_teens/",
+        "url": "https://www.xnes.co.il/trading/teens-account/",
         "title": "חשבון מסחר לנוער"
       },
       {

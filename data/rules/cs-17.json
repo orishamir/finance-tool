@@ -1,0 +1,55 @@
+{
+  "id": "CS-17",
+  "title": "Death of the child",
+  "title_he": "מה קורה לחיסכון לכל ילד אם הילד נפטר",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי הביטוח הלאומי, כשילד נפטר, קצבת הילדים נמשכת בחודש הפטירה ובעוד 3 חודשים, וגם ההפקדות החודשיות לחיסכון נמשכות בזמן הזה; אחר כך שתיהן נפסקות, וההורים יכולים למשוך את הכסף דרך הקופה או הבנק. לפי התקנות, אם הילד נפטר לפני גיל 16 ויש לו שני הורים בחיים, כל הורה יכול למשוך חצי; עם הורה אחד, הוא מושך הכול, ובלי הורים חלים תקנון הקופה, בקופת גמל, או חוק הירושה, בבנק. מגיל 16 חלים תקנון הקופה או חוק הירושה, ומגיל 18 מי שהחיסכון שלו בקופת גמל יכול למנות מוטבים, לפי התקנון התקני של רשות שוק ההון. אם הילד נפטר לפני סוף התקופה לבחירה, הביטוח הלאומי משלם את הסכומים הבסיסיים שמגיעים ישירות להורים.",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.7, s.18.3",
+      "locator_he": "עמוד 7, סעיף 18.3",
+      "page": 7,
+      "quote": "בהגיעו לגיל 18 יהיה העמית רשאי למסור לחברה המנהלת הוראת מינוי מוטבים",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=",
+      "title": "קובץ התקנות 7727",
+      "title_he": "קובץ התקנות 7727",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10",
+      "locator_he": "עמוד הקובץ 10",
+      "page": 10,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette, as enacted)"
+    },
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+      "title": "NII withdrawal page",
+      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

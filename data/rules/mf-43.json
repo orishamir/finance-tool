@@ -1,0 +1,55 @@
+{
+  "id": "MF-43",
+  "title": "Exposure profile code in every fund name (פרופיל חשיפה)",
+  "title_he": "פרופיל החשיפה: שני התווים בשם של כל קרן נאמנות",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), בשם של כל קרן נאמנות יש צמד תווים, פרופיל החשיפה: התו הראשון הוא החשיפה המרבית למניות, והשני, מימינו, החשיפה המרבית למטבע חוץ, לפי מדיניות ההשקעה של הקרן. במניות: 0 בלי חשיפה, 1 עד 10%, 2 עד 30%, 3 עד 50%, 4 עד 120%, 5 עד 200% ו־6 מעל 200%; במטבע חוץ: 0 בלי חשיפה, A עד 10%, B עד 30%, C עד 50%, D עד 120%, E עד 200% ו־F מעל 200%. החשיפה כוללת נגזרים, כאחוז מהנכסים נטו, והמניות כוללות גם סחורות, נכסים דומים למניות ואיגרות חוב להמרה. הקוד הוא תקרה שמנהל הקרן מתחייב אליה ולא מה שהקרן מחזיקה היום, למשל ״קרנית (4B) ת״א 125״.",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=11",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע\"ו-2016, ק״ת 7653 (5.5.2016)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע״ו-2016 (קובץ התקנות 7653)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "regulations 1, 3(א)(4)",
+      "page": 11,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+      "title": "ISA investor guide (2017)",
+      "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp. 15-17",
+      "locator_he": "עמודים 15 עד 17",
+      "page": 15,
+      "checked": "2026-10-31",
+      "qualifier": "(dated; same table)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=26",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007, ק״ת 6625 (28.11.2007), עמ' 152",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "page": 26,
+      "checked": "2026-10-31"
+    }
+  ]
+}

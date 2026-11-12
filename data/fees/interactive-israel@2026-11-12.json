@@ -1,0 +1,645 @@
+{
+  "id": "interactive-israel",
+  "provider": {
+    "name_he": "אינטראקטיב ישראל",
+    "class": "foreign_broker",
+    "regulator": "foreign",
+    "regulator_foreign": {
+      "name": "Cyprus Securities and Exchange Commission (CySEC)",
+      "name_he": "רשות ניירות ערך של קפריסין (CySEC)",
+      "country": "Cyprus"
+    },
+    "tase_member": false,
+    "israeli_tax_service": true,
+    "protection_rule_ids": [
+      "BRK-06",
+      "BRK-14",
+      "BRK-35",
+      "BRK-41",
+      "REG-27"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+    "title": "תעריף עמלות מסחר - אינטראקטיב ישראל",
+    "notes": "תעריף עמלות מסחר (PDF, 8 עמ', 'תעריפון זה מעודכן החל מיום 23.09.2026'), מקושר כ'לתעריפון המלא' מעמוד 'עמלות מסחר' (inter-il.com/commission). Read again 2026-11-04: same bytes as on 2026-10-31 (sha256 58a93837…, library 58a938374a90ac29); PDF CreationDate and ModDate 2026-09-23 17:06 IDT; HTTP Last-Modified 24 Sep 2026. The site's WordPress media list (95 PDFs) has no newer tariff; the 17.09.2026 version (library 716e0344c4fd7233) differs only in the interest table, and the 24.12.2025 version (125ba770013105ff) already printed the same conversion rows. Every page carries a clause that the fees are a personal offer valid if the account is opened and funded within 30 days and that the company may withdraw it; p.7 says 'תעריף זה חל על כל לקוח של החברה' and 'החברה שומרת לעצמה להסיר הטבה אשר ניתנה ללקוח ללא התראה מראש'; p.8 'לחברה הזכות לשנות את תעריפון זה בהתאם לחוק'. No account agreement or fee annex of Interactive Israel is published; the Hebrew site terms have no fee clause. The account itself is at Interactive Brokers LLC or Interactive Brokers Ireland, whose client agreement (form 3203, s.33A) applies 'a separate commission, fee or interest schedule ... based on Client's relationship to ... an introducing broker'. חשבון בפיקוח אמריקאי (Interactive Brokers LLC) או אירי (Interactive Brokers Ireland), אותן עמלות. [2026-11-12] The company's Terms of Use (inter-il.com/terms-and-conditions, re-read 2026-11-12) say 'Please see here for the commissions and fees applicable to your use of the Platform. You hereby acknowledge and agree that the IB may automatically subtract such amounts from your Client Account', the link being the commission page that links this tariff: the tariff is the client's whole price, charged in the Interactive Brokers account, and Interactive Brokers' own published rates are 'for direct clients of IBKR'. The tariff names extra exchange fees only for OTC securities ('בפעולות מסחר בניירות ערך מסוג OTC ייתכנו עמלות בורסה נוספות', p.1).",
+    "published": "2026-09-23",
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-12",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "interactive-israel-buy-sell-us",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.01,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, טבלת 'מניות', שורת USD (Shares)",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 1,
+          "quote": "2.5 USD 0.01 )USD (Shares"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "Printed per share: 'USD (Shares)' 0.01 dollar a share, minimum '2.5 USD' per trade (unit usd_per_share, 2026-10-25 schema S2). Same page: 'עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה' (recorded in cap, not max); the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; for fractional shares in the US and Canada the commission and minimum are computed on the share count rounded up to a whole share. The commission page (inter-il.com/commission) prints the same '0.01$ למניה מינימום 2.5$' for 'חשבון אמריקאי / אירי / עסקי', and its FAQ adds that regulatory fees (SEC/TAF) apply on sales. The regulation page FAQ: the 2.5$ minimum buys up to 250 shares, above that 0.01$ a share. The PDF repeats on every page that the fees are a personal offer valid if the account is opened within 30 days, and also says 'תעריף זה חל על כל לקוח של החברה'. TASE lines (ILS 0.06% minimum 10 ILS, and a 0.08% custody fee on TASE shares and ETFs with no period printed) are not recorded as lines: the company's Israeli-market page says TASE trading is offered 'ללקוחות מוסדיים בלבד' (BRK-41)."
+      },
+      "min": {
+        "value": 2.5,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, טבלת 'מניות', שורת USD (Shares), מינימום לעסקה",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 1,
+          "quote": "2.5 USD 0.01 )USD (Shares"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "'2.5 USD' per trade (unit usd_per_trade since 2026-10-25)."
+      },
+      "max": null,
+      "cap": {
+        "value": 2,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערה לטבלת 'מניות': עמלת מקסימום במניות ארה\"ב",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 1,
+          "quote": "עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "'עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה'. The tariff does not say what applies when the cap is below the minimum (at IBKR the cap wins); at 400 NIS a trade the 2% cap is about USD 2.56, so it does not bite. Commission = min(cap x trade, max(minimum, rate x shares))."
+      },
+      "period": null,
+      "channel": null,
+      "band": "מניות ותעודות סל הנסחרות בארה\"ב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "תעריף עמלות מסחר",
+          "מניות",
+          "USD (Shares)"
+        ]
+      }
+    },
+    {
+      "id": "interactive-israel-buy-sell-europe",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מניות/תעודות סל הנסחרות באירופה",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 1,
+          "quote": "עבור מניות/תעודות סל הנסחרות באירופה 0.15% משווי העסקה מינימום 2.5"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "'עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה'. The table rows agree for EUR and GBP (0.15, minimum 2.5 EUR / 2.5 GBP). This line covers a UCITS ETF on the LSE such as CSPX, which trades in USD there (ETF-27/28)."
+      },
+      "min": {
+        "value": 2.5,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מינימום 2.5 בהתאם למטבע העסקה",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 1,
+          "quote": "עבור מניות/תעודות סל הנסחרות באירופה 0.15% משווי העסקה מינימום 2.5"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "Recorded in USD for a USD-quoted European listing (CSPX on the LSE), on the note's own words 'מינימום 2.5 בהתאם למטבע העסקה'. Doubt: the same page also says the commission is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך', which for the LSE would be GBP (2.5 GBP); the tariff does not say which applies to a USD line on a GBP exchange. For GBP trades the minimum is 2.5 GBP (unit gbp_per_trade exists since 2026-10-25); the USD reading is kept because the note says 'בהתאם למטבע העסקה' and the CSPX line trades in USD. A second reading, 2.5 GBP, is the open doubt."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מניות ותעודות סל הנסחרות באירופה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "תעריף עמלות מסחר",
+          "מניות/תעודות סל הנסחרות באירופה"
+        ]
+      }
+    },
+    {
+      "id": "interactive-israel-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': עמלת אחזקה לניירות ערך בתל אביב בלבד",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 1,
+          "quote": "עבור מניות ותעודות סל הנסחרות בבורסת תל אביב"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "The tariff's only custody fee is 'עמלת אחזקה (Custody Fee) בשיעור של 0.08%' on shares and ETFs traded on TASE (p.1), which a private client cannot buy here (BRK-41); none of the 8 pages prints a custody, holding or management fee on securities abroad, and p.7 says the tariff applies to every customer. The company's pages say the same: 'אנו לא גובים דמי ניהול, בנוסף אין דמי שמירת ניירות ערך' (commission page FAQ), 'אין דמי החזקה כלל' (regulation page). Interactive Brokers' own pass-through custody table (other-fees page) names no US, UK or Irish market. Kept at 0 under the general change clause (p.8)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי שמירת ניירות ערך",
+          "דמי ניהול"
+        ]
+      }
+    },
+    {
+      "id": "interactive-israel-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 7: התעריף חל על כל לקוח",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 7,
+          "quote": "תעריף זה חל על כל לקוח של החברה"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "None of the tariff's 8 pages prints an account, system, management, inactivity, standing-order or dividend-handling fee, and p.7 says the tariff applies to every customer. The company's pages agree: 'דמי מערכת: 0 ש\"ח', 'דמי ניהול: 0 ₪ - דרכינו אין דמי ניהול!' (commission page), 'אין דמי אי פעילות כלל' (regulation and open-account pages). Costs outside the tariff (withdrawals after the first in a month, regulatory fees on US sales, optional market data, Interactive Brokers' inactivity rule for introduced accounts, interest on a positive balance) are in left_out. applies_to names foreign securities only, the classes a private client can trade here (TASE is for institutional clients, BRK-41), so that a zero account fee does not make the tariff look complete for a TASE fund."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי מערכת",
+          "דמי ניהול",
+          "דמי אי פעילות"
+        ]
+      }
+    },
+    {
+      "id": "interactive-israel-fx-ils",
+      "base": "fx",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.002,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח', שורת ILS (%)",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 6,
+          "quote": "10 ILS 0.002 * Trade Value"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.002 * Trade Value' in the column 'עמלת ביצוע' of the row 'ILS (%)'; the row's header says percent, so it is recorded as 0.002%. The commission page agrees with that reading: 'המרה משקל לדולר אמריקאי בעלות של ₪10 בלבד, ולפי שער רציף! בהמרה של עד חצי מליון שקלים' (10 NIS is 0.002% of 500,000 NIS). The PDF: 'עמלת מינימום להמרת שקלים היא 10 ש״ח ותגבה במטבע הבסיס של החשבון'. Other currencies: 0.005 * Trade Value with a minimum per currency (USD: 5 USD)."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח', שורת ILS (%), מינימום לעסקה",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 6,
+          "quote": "10 ILS 0.002 * Trade Value"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "'10 ILS'; 'עמלת מינימום להמרת שקלים היא 10 ש״ח'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "המרות מט\"ח",
+          "ILS (%)"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח'",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 6,
+          "quote": "0.002 * Trade Value"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents (D56). The tariff prints the conversion commission ('0.002 * Trade Value', minimum 10 ILS) but not the rate the conversion is done at. 'לפי שער רציף' is the commission page's advertising, not a binding term. The account is at Interactive Brokers, whose client agreement (form 3203, s.30D) converts 'at then-current rates on the IBKR platform', with no ceiling on a difference from the market rate."
+      }
+    },
+    {
+      "id": "interactive-israel-fx-recurring-plan",
+      "base": "fx",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, הערה לטבלת 'המרות מט\"ח': השקעה אוטומטית קבועה",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 6,
+          "quote": "בזמן ביצוע המרת מטבע במסגרת תכנית השקעה אוטומטית קבועה אין חיוב בגין עמלת המרת מט\"ח"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "'בזמן ביצוע המרת מטבע במסגרת תכנית השקעה אוטומטית קבועה אין חיוב בגין עמלת המרת מט\"ח' (p.6), printed for every plan conversion; outside the plan 'תיגבה עמלת המרה בהתאם לתעריפון'. The plan is open to any customer from the account portal (Recurring Investments), at any frequency from daily to yearly, and buys US and European shares and ETFs at the regular commission ('עמלת המסחר בעת ביצוע פעולה בתוכנית החיסכון הינה עמלת מסחר רגילה', plan FAQ), in fractions where needed. p.7 also says the company may remove 'הטבה אשר ניתנה ללקוח' without notice; the tariff does not call the plan's waiver a benefit."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "השקעה קבועה אוטומטית",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "השקעה קבועה",
+          "תוכנית חיסכון"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+          "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח'",
+          "publisher": "Interactive Israel (MEXEM LTD)",
+          "strength": "institution",
+          "page": 6,
+          "quote": "בזמן ביצוע המרת מטבע במסגרת תכנית השקעה אוטומטית קבועה אין חיוב בגין עמלת המרת מט\"ח"
+        },
+        "checked": "2026-11-12",
+        "effective_from": "2026-09-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-40",
+          "BRK-41"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents (D56). The tariff waives the conversion commission inside the plan (p.6) but prints no rate; the plan page says 'יומרו אוטומטית לדולר ללא עלות' and the FAQ 'אין עמלת המרת שקלים או מט\"ח כלל', with no rate either. No plan terms are published. The conversion is done in the Interactive Brokers account, and that agreement (form 3203, s.30C) says an automatic conversion's rate 'may be adjusted from the rate that otherwise would apply'; Interactive Brokers' own price list adds 'typically ... (at its discretion) 0.03%' on automatic conversions of its direct clients. Whether the plan's conversion is such an automatic conversion is the company's to say."
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 0,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.inter-il.com/question-answer/%D7%9E%D7%94%D7%95-%D7%A1%D7%9B%D7%95%D7%9D-%D7%94%D7%94%D7%A4%D7%A7%D7%93%D7%94-%D7%94%D7%9E%D7%99%D7%A0%D7%99%D7%9E%D7%9C%D7%99-%D7%9C%D7%A4%D7%AA%D7%99%D7%97%D7%AA-%D7%97%D7%A9%D7%91%D7%95%D7%9F/",
+        "title": "אינטראקטיב ישראל, שאלות ותשובות: מהו סכום ההפקדה המינימלי לפתיחת חשבון?",
+        "publisher": "Interactive Israel (MEXEM LTD)",
+        "strength": "institution",
+        "quote": "באינטראקטיב ישראל ניתן לפתוח חשבון השקעות ללא מינימום הפקדה"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-40",
+        "BRK-41"
+      ],
+      "state": "sourced",
+      "notes": "'באינטראקטיב ישראל ניתן לפתוח חשבון השקעות ללא מינימום הפקדה'. The commission page: 'ללא מינימום הפקדה'."
+    }
+  },
+  "notice_rule_ids": [],
+  "availability": [
+    {
+      "applies_to": [
+        "tase_shares_bonds",
+        "tase_bonds",
+        "etf_units",
+        "tase_foreign_fund_units"
+      ],
+      "available": false,
+      "source": {
+        "url": "https://www.inter-il.com/israeli-stock-market/",
+        "title": "אינטראקטיב ישראל: בורסה ישראלית",
+        "checked": "2026-11-12",
+        "quote": "באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד"
+      },
+      "reason_he": "לפי החברה, מסחר בבורסה בתל אביב פתוח אצלה רק ללקוחות מוסדיים. בעמוד אחר שלה כתוב שהוא פתוח גם לחברות ולאנשים פרטיים עם פטור מתשלום מס במקור בניירות ערך.",
+      "note": "Read 2026-11-12. Three of the company's pages say it: the Israeli-market page (dateModified 2026-10-14) 'באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד'; the company-account page (/company-account/, dateModified 2026-06-30) the same words under 'האם אפשר לסחור במניות ותעודות סל בישראל בחשבון חברה?'; and the world-markets page (/world-markets/, dateModified 2026-10-14), row 'בורסת תל אביב', 'מוצרים:מניות ותעודות סל', 'המסחר בישראל מתאפשר לחברות או לפרטים עם פטור מתשלום מס בניירות ערך במקור בלבד'. The pages differ on an individual who holds an exemption from withholding; for a private client without one both say no. Which individuals can hold such an exemption is not in the rule base. The tariff (p.1) prices Tel Aviv 'מניות ותעודות סל' only. The 2026-11-04 note said the tariff prints no mutual-fund line; it does (p.5, see the mutual_fund_units entry).",
+      "rule_ids": [
+        "BRK-65"
+      ]
+    },
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": false,
+      "source": {
+        "url": "https://www.inter-il.com/terms-and-conditions/",
+        "title": "אינטראקטיב ישראל: תנאי שימוש",
+        "checked": "2026-11-12",
+        "quote": "shall mean the IB’s online trading platform located at where you can trade in financial instruments and where your Client Account is located"
+      },
+      "reason_he": "לפי תנאי השימוש של החברה החשבון וכל קנייה הם אצל אינטראקטיב ברוקרס, וברשימת קרנות הנאמנות שהיא מציעה למי שגר בישראל אין קרן ישראלית ואין קרן בשקלים.",
+      "note": "Read 2026-11-12 (second pass). A 'no' from a chain of binding and official texts, not from a sentence of the company: its Terms of Use (dateModified 2026-10-08; the English text prevails) put the client's account and every order at Interactive Brokers ('Platform', 'Orders'); its Order Execution Policy: 'The Company routes client orders for execution to another broker, Interactive Brokers'; Interactive Brokers' fund inventory for residence Israel, on .com and on .ie, holds 14,972 funds, none with an Israeli ISIN and none in shekels (BRK-64); units of an Israeli fund are ordered through a distributor and the clearing house (MF-11), only a clearing-house member submits them (clearing-house bylaws part B ch. י\"ב s.3א), and neither Mexem nor any Interactive Brokers company is on TASE's member or clearing-house lists. The tariff's 'קרנות נאמנות' table (p.5) has an EUR row and a USD row and no ILS row. All pages in the site's sitemaps were searched: none names an Israeli mutual fund. Until this pass the entry was 'unknown'. BRK-65.",
+      "rule_ids": [
+        "BRK-65"
+      ]
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריף עמלות מסחר - אינטראקטיב ישראל",
+        "checked": "2026-11-04",
+        "quote": "עבור מניות/תעודות סל הנסחרות באירופה",
+        "page": 1
+      },
+      "note": "US-listed ETFs (SPY, QQQ) and Irish UCITS ETFs listed in Europe (CSPX, CSNDX, VUSD, IWDA) are listed as tradable (BRK-41). Open: whether an Irish-regulated account blocks US-domiciled ETFs (BRK-44)."
+    }
+  ],
+  "by_amount": [
+    {
+      "venue": "us",
+      "orders": "recurring_plan",
+      "list_only": false,
+      "source": {
+        "url": "https://www.inter-il.com/recurring-transfer/",
+        "title": "השקעה קבועה, אינטראקטיב ישראל: 'השקעה קבועה אוטומטית' ו'איזה ניירות ערך משתתפים בתוכנית?'",
+        "checked": "2026-11-12",
+        "quote": "סכום קבוע שירכוש באופן אוטומטי כל מניה או תעודת סל שתבחרו ... ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה ... תוכלו לרכוש גם שברי מניות בדיוק בסכום שקבעתם"
+      },
+      "note": "The recurring plan only, as in Europe. Read in a browser on 2026-11-12, no stored copy (the page answers scripts with a Cloudflare challenge; library 121e0bc56cfc7437 holds the copy of 2026-10-31). The page says the plan buys 'כל מניה או תעודת סל שתבחרו', 'בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה', in fractions ('וגם אם מחיר המניות שבחרתם גדול מהסכום שהושקע, תוכלו לרכוש גם שברי מניות בדיוק בסכום שקבעתם'), and that the money 'יומרו אוטומטית לדולר ללא עלות'; it names no ticker. Outside the plan the house's words name shares only: the tariff (23.09.2026, p.1) 'במסחר בשברי מניות בארה״ב ובקנדה, חישוב העמלה והמינימום לעסקה נעשה לפי מספר מניות מעוגל כלפי מעלה למניה שלמה', and the open-account page 'אפשרות למסחר בשברי מניות'; for a fund that is silence (D56), so one-off orders are whole units. Doubt as for Europe: Interactive Brokers' fact sheet excludes clients resident in Israel from fractional trading ('Any client type with residency in Israel') and does not say whether that holds for a customer who came through an introducing broker."
+    },
+    {
+      "venue": "europe",
+      "orders": "recurring_plan",
+      "list_only": false,
+      "source": {
+        "url": "https://www.inter-il.com/recurring-transfer/",
+        "title": "השקעה קבועה, אינטראקטיב ישראל: 'השקעה קבועה אוטומטית' ו'איזה ניירות ערך משתתפים בתוכנית?'",
+        "checked": "2026-11-12",
+        "quote": "סכום קבוע שירכוש באופן אוטומטי כל מניה או תעודת סל שתבחרו ... ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה ... תוכלו לרכוש גם שברי מניות בדיוק בסכום שקבעתם"
+      },
+      "note": "The recurring plan only: a one-off fractional order on a European listing is not stated. Read in a browser on 2026-11-12, no stored copy (the page answers scripts with a Cloudflare challenge; library 121e0bc56cfc7437 holds the copy of 2026-10-31). The page says the plan buys 'כל מניה או תעודת סל שתבחרו', 'בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה', in fractions ('וגם אם מחיר המניות שבחרתם גדול מהסכום שהושקע, תוכלו לרכוש גם שברי מניות בדיוק בסכום שקבעתם'), and that the money 'יומרו אוטומטית לדולר ללא עלות'; it names no ticker. Whether a given London line is in the plan is not printed: the page says 'כל מניה או תעודת סל שתבחרו' and names neither CSPX nor CNDX. Doubt: the plan is Interactive Israel's own document and binds it, but interactive Brokers' fact sheet excludes clients resident in Israel from fractional trading ('Any client type with residency in Israel') and does not say whether that holds for a customer who came through an introducing broker. (https://www.interactivebrokers.com/en/general/about/ibkr-fact-sheet.php); IBKR keeps a per-security eligibility list that was not read."
+    }
+  ],
+  "price_for_he": "כל לקוח",
+  "left_out": [
+    {
+      "what": "מסחר בבורסת תל אביב: עמלה 0.06% מינימום 10 ILS, ועמלת אחזקה 0.08%",
+      "page": 1,
+      "why": "Printed in the tariff (p.1) but offered 'ללקוחות מוסדיים בלבד' (israeli-stock-market page, re-read 2026-11-04, BRK-41); a private client cannot buy a TASE fund here.",
+      "why_he": "התעריפון מפרסם עמלה על מסחר בבורסה בתל אביב ועמלת אחזקה, אבל לפי החברה המסחר שם פתוח רק ללקוחות מוסדיים. לכן האתר לא מתמחר אצלה קרן שנסחרת בתל אביב.",
+      "could_change_price": false
+    },
+    {
+      "what": "משיכת כספים: 'משיכה אחת לכל חודש קלנדרי ללא עלות, כל משיכה נוספת תעשה בעמלה של 10$'",
+      "why": "Stated on the regulation and open-account pages only; the tariff prints no withdrawal fee. The landing page says 'העברת כספים או ניירות ערך בחינם'. A reader who withdraws once a month at most pays nothing either way.",
+      "why_he": "משיכת כסף אחת בחודש היא בלי עמלה, וכל משיכה נוספת באותו חודש עולה 10 דולר. מי שמושך כסף לעיתים רחוקות לא משלם אותה.",
+      "could_change_price": false
+    },
+    {
+      "what": "אגרות רגולטוריות במכירה בארה\"ב (SEC, FINRA)",
+      "why": "The commission page FAQ says 'יש לקחת בחשבון עלויות נלוות כגון אגרות רגולטוריות קטנות (SEC/TAF) בעת מכירה'; the tariff names only OTC exchange fees. Interactive Brokers prints the SEC fee at USD 0.0000206 times the value sold and a FINRA fee holiday to 31.12.2026; about 0.002% of a sale, not priced.",
+      "why_he": "לפי החברה, במכירה בארה״ב נוספות אגרות קטנות של הרשויות שם. האתר לא מוסיף אותן, ולכן מכירה עולה בפועל מעט יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "נתוני שוק בזמן אמת",
+      "why": "An optional monthly subscription ('נתוני שוק בזמן אמת ... דורשים מנוי חודשי נפרד למי שמעוניין בהם', commission FAQ); US quotes are 'ללא עלות' (open-account page). Not needed to trade.",
+      "why_he": "שערים בזמן אמת הם מנוי חודשי למי שרוצה בו, ושערים של מניות בארה״ב ניתנים בלי תשלום. לא צריך את המנוי כדי לקנות ולמכור.",
+      "could_change_price": false
+    },
+    {
+      "what": "דמי אי פעילות של Interactive Brokers לחשבון שהופנה דרך ברוקר: עד USD 1 לחודש",
+      "why": "Interactive Brokers' required-minimums page, 'Broker Client Accounts': a USD 1.00 inactivity fee, prorated, on accounts under USD 1,000 net value with under USD 1 of commission in the month, when the introducing broker's clients together fall short. Whether it reaches the client or the company is the company's to say; its pages say 'אין דמי אי פעילות כלל'.",
+      "why_he": "לפי Interactive Brokers, חשבון קטן שנפתח דרך ברוקר ולא היו בו פעולות בחודש עלול לשלם עד דולר בחודש, אם לקוחות הברוקר כולם יחד סחרו מעט. אינטראקטיב ישראל כותבת שאין אצלה דמי אי פעילות, ולכן האתר לא מחשב אותם.",
+      "could_change_price": false
+    },
+    {
+      "what": "ריבית על יתרה חיובית",
+      "page": 7,
+      "why": "'תיתכן גבייה בגין יתרה חיובית בהתאם לריביות הבנקים המרכזיים ברחבי העולם' (p.7): a charge on cash held, with no rate printed. The reader holds funds, not cash.",
+      "why_he": "התעריפון כותב שייתכן חיוב על כסף שיושב בחשבון, לפי הריבית של הבנקים המרכזיים בעולם, בלי לפרסם שיעור. האתר מחשב כסף שמושקע בקרן, לא כסף שנשאר במזומן.",
+      "could_change_price": false
+    },
+    {
+      "what": "סעיף ההצעה האישית: 'העמלות ... תקפות כל עוד הושלם תהליך פתיחת החשבון ... תוך 30 ימים'",
+      "why": "Printed on every page with 'שומרת לעצמה את הזכות לחזור בה מהצעה זו'. A new customer who opens and funds the account within 30 days meets it; recorded as a condition of the whole tariff, not of one line.",
+      "why_he": "בכל עמוד בתעריפון כתוב שהעמלות הן הצעה אישית, בתוקף אם החשבון נפתח והכסף הופקד בתוך 30 ימים, ושהחברה רשאית לחזור בה. האתר מתמחר את העמלות האלה כי באותו תעריפון כתוב שהוא חל על כל לקוח, אבל החברה יכולה לשנות אותן.",
+      "could_change_price": true
+    },
+    {
+      "what": "שברי מניות שנקנו בתוכנית ההשקעה הקבועה",
+      "why": "'לא ניתן להעביר שברי מניות' (securities-transfer page): moving the holding to another broker means selling the fraction first. Incoming transfers cost nothing from the company's side; no outgoing fee is printed.",
+      "why_he": "שבר של מניה או של קרן שנקנה בתוכנית ההשקעה הקבועה אי אפשר להעביר לבית השקעות אחר; צריך למכור אותו קודם. זה משנה רק את מי שמעביר את החשבון.",
+      "could_change_price": false
+    },
+    {
+      "what": "דפי נחיתה עם הטבות: lp432 ('בתוקף עד 3 חודשים', 'מותנת בהפקדה ראשונית של מינימום ₪10,000') ו-lp592 (חברי קהילת 'מיכה סטוקס')",
+      "why": "Offers with conditions (a time limit, a deposit, a community membership that the company re-checks and may end 'ללא צורך במתן הודעה מוקדמת'); neither page prints the price it gives. Not a price for the ordinary customer (D56).",
+      "why_he": "לחברה יש דפי הצטרפות עם הטבות לזמן מוגבל, בהפקדה של לפחות 10,000 ₪ או לחברי קהילה מסוימת, בלי מחיר כתוב. האתר מתמחר את המחיר הרגיל.",
+      "could_change_price": false
+    },
+    {
+      "what": "מינימום העמלה על קרן שנסחרת באירופה: 'מינימום 2.5 בהתאם למטבע העסקה' מול 'עמלת הביצוע ... תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך'",
+      "page": 1,
+      "why": "Both sentences are on p.1 of the tariff of 23.09.2026 (re-read 2026-11-12, same bytes). For a USD-quoted fund on the LSE such as CSPX the record reads the minimum as 2.5 USD (the first sentence); if the second governs, it is 2.5 GBP, the table's GBP row ('GBP (%) 0.15 2.5 GBP'), and every small European purchase costs more. Not settled by any page of the company.",
+      "why_he": "התעריפון לא אומר אם עמלת המינימום על קרן שנסחרת בדולרים בבורסת לונדון היא 2.5 דולר או 2.5 ליש״ט. האתר מחשב 2.5 דולר; אם הכוונה לליש״ט, כל קנייה קטנה באירופה עולה בפועל יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "שער ההמרה בתוכנית ההשקעה הקבועה: 'יומרו אוטומטית לדולר ללא עלות'",
+      "why": "The tariff waives the conversion commission inside the plan (p.6) and prints no rate; the conversion is done in the Interactive Brokers account, whose automatic conversion adds a markup 'typically ... (at its discretion) 0.03%' for direct clients (Spot Currencies page). Whether the same markup applies to the plan's conversions is not printed. Not priced (D65), as the spread of the line says.",
+      "why_he": "בתוכנית ההשקעה הקבועה אין עמלת המרה, אבל החברה לא כותבת באיזה שער ממירים. ההמרה נעשית בחשבון אצל Interactive Brokers, ושם המרה אוטומטית מוסיפה בדרך כלל מרווח לשער; החברה לא כותבת אם כך גם בתוכנית, ולכן ההמרה בפועל עשויה לעלות יותר ממה שהאתר מראה.",
+      "could_change_price": true
+    },
+    {
+      "what": "תוכנית ההשקעה הקבועה קונה לפי סכום, גם בשברים: \"בהשקעה קבועה תוכלו להשקיע סכום קבוע שירכוש באופן אוטומטי כל מניה או תעודת סל שתבחרו\"; \"בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה\"; \"וגם אם מחיר המניות שבחרתם גדול מהסכום שהושקע, תוכלו לרכוש גם שברי מניות בדיוק בסכום שקבעתם\"",
+      "why": "The site prices Interactive Israel's monthly buys by amount (by_amount, recurring plan) on its plan page's words (inter-il.com/recurring-transfer/). Read in a browser on 2026-11-12, no stored copy (the page answers scripts with a Cloudflare challenge; library 121e0bc56cfc7437 holds the copy of 2026-10-31). The page says the plan buys 'כל מניה או תעודת סל שתבחרו', 'בתוכנית חיסכון ניתן לרכוש מניות ותעודות סל בארה”ב ובאירופה', in fractions ('וגם אם מחיר המניות שבחרתם גדול מהסכום שהושקע, תוכלו לרכוש גם שברי מניות בדיוק בסכום שקבעתם'), and that the money 'יומרו אוטומטית לדולר ללא עלות'; it names no ticker. Against it, the broker that holds the account, Interactive Brokers, prints on its fact sheet (re-read live 2026-11-12) that accounts 'are eligible for fractional shares trading permission with the exception of the following: Any client type with residency in Israel', followed by 'Financial Advisors, Money Managers and Introducing Brokers can enable their clients on an all-or-none basis', and does not say whether that holds for a customer who came through an introducing broker; its Recurring Investments page says that service 'uses fractional shares trading'. Not confirmed by any document read: that an Israeli resident gets fractions through Interactive Israel; the plan page names no fund, so CSPX (IE00B5BMR087) and CNDX (IE00B53SZB19) are not named. The rank scan of 2026-11-12 found this entry alone puts Interactive Israel above Interactive Brokers in 77 plans, all on those two funds, because Interactive Brokers is priced in whole units for a resident of Israel. Whether a doubted capability may rank a house higher is for the founder (reported by the audit).",
+      "why_he": "האתר מניח שבתוכנית ההשקעה הקבועה של אינטראקטיב ישראל כל הסכום החודשי נקנה, גם אם יוצא חלק מיחידה של הקרן. כך כתוב בדף התוכנית של החברה, כפי שנקרא ב־12.11.2026: התוכנית קונה ״כל מניה או תעודת סל שתבחרו״ בארה״ב ובאירופה, גם בשברים, וההמרה לדולר בלי עלות. הדף לא מזכיר אף קרן בשמה. מנגד, Interactive Brokers, שמחזיקה את החשבון, כותבת שלקוחות שגרים בישראל לא יכולים לקנות חלקי מניות, ולא כותבת אם זה חל גם על מי שהגיע דרך ברוקר. אם נקנות רק יחידות שלמות, חלק מהכסף מחכה בחשבון עד שמצטבר מספיק ליחידה, ובקרנות CSPX ו־CNDX נשאר לכם פחות.",
+      "could_change_price": true
+    }
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "The tariff (re-read 2026-11-04, p.7: 'תעריף זה חל על כל לקוח של החברה') names no group. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. A referrer's landing page (lp592) offers members of one investment community an unstated 'הטבה בעמלות', checked periodically; it prints no price and is in left_out. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריפון עמלות"
+      }
+    ],
+    "entries": []
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "עמלות המסחר באינטראקטיב ישראל הינן עמלות ביצוע בלבד, אין דמי החזקה כלל",
+      "claim_source": {
+        "url": "https://www.inter-il.com/regulation-and-security/",
+        "title": "אינטראקטיב ישראל: רגולציה ואבטחה",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "עבור מניות ותעודות סל הנסחרות בבורסת תל אביב (TASE), תחול עמלת אחזקה (Custody Fee) בשיעור של 0.08%",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריף עמלות מסחר - אינטראקטיב ישראל, עמוד 1",
+        "page": 1,
+        "dated": "2026-09-23",
+        "dated_from": "printed",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
+}

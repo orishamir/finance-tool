@@ -1,0 +1,30 @@
+{
+  "id": "FXD-02",
+  "title": "The deposit disclosure rules cover FX and FX-linked deposits; \"index\" includes an exchange rate",
+  "title_he": "כללי הגילוי על פיקדונות חלים גם על פיקדון במטבע חוץ או צמוד לו",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "real-vs-nominal",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "text_he": "בכללי הגילוי הנאות של בנק ישראל משנת 1992, ״מדד״ הוא מדד מחירים או שער מטבע חוץ, ולכן חובות הגילוי על הצמדה חלות גם על פיקדון שצמוד למטבע חוץ. הבנק צריך לומר אם ההצמדה חלה רק כשהמדד עולה או גם כשהוא יורד, והסכם של פיקדון צמוד צריך לכלול את סוג ההצמדה והבסיס שלה, את שיעורה, אם היא חלה גם על הריבית, וזמן מינימלי או מרבי שההצמדה תלויה בו. החובה לציין ריבית מתואמת שנתית חלה רק על פיקדונות ואשראי בשקלים שלא צמודים, ולכן לא על פיקדון במטבע חוץ או על פיקדון שקלי צמוד למטבע חוץ.",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "checked": "2026-10-22"
+    }
+  ]
+}

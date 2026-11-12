@@ -1,0 +1,44 @@
+{
+  "id": "CAT-22",
+  "title": "The CMA list of standard tracks: earlier lists, and where the names come from",
+  "title_he": "מאיפה באים השמות הסטנדרטיים של מסלולי ההשקעה",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "השמות הסטנדרטיים של מסלולי ההשקעה, שבשימוש מאז 1.7.2024, באים מרשימת מסלולי ההשקעה של רשות שוק ההון בתיקון מ־17.4.2024, והרשימה קובעת את מדיניות ההשקעה של כל שם. הרשימה הזו מתקנת את רשימת מסלולי ההשקעה שהרשות פרסמה ב־20.12.2022, לצד חוזר על מסלולי השקעה. שמות ההתמחות שבנתוני הרשות הם סיווג, והם לא תמיד זהים לשם ברשימה.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=17",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.17",
+      "locator_he": "עמוד 17",
+      "page": 17,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-6545/he/list-of-investment-tracks_pdf.pdf#page=1",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה (שה. 2022-6545, 20.12.2022)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה (שה. 2022-6545, 20.12.2022)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-07",
+      "qualifier": "(superseded)"
+    }
+  ]
+}

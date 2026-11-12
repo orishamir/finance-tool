@@ -1,0 +1,124 @@
+{
+  "id": "TXG-11",
+  "title": "Surtax is settled through the annual return, not through advances",
+  "title_he": "את המס הנוסף מסדירים בדוח השנתי, לא במקדמות",
+  "text_he": "כללי המקדמות על מכירה, שבהם מדווחים בתוך 30 יום, לא חלים על המס הנוסף. מי שחייב במס נוסף, או שבן הזוג שלו חייב, צריך להגיש דוח שנתי גם אם כל שאר התנאים לפטור מתקיימים. בנקים וחברי בורסה לא מנכים מס נוסף מהכנסה הונית: תקנות הניכוי קובעות את השיעור שהם מנכים, בלי רכיב של מס נוסף. לפי הוראת ביצוע של רשות המסים, גם פקיד השומה לא מתחשב במס הנוסף כשהוא קובע ניכוי או מקדמה על רווחים שחייבים בו.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.201, s.121B(b) לעניין מקדמות",
+      "locator_he": "עמוד 201, סעיף 121ב(ב) לעניין מקדמות",
+      "page": 201,
+      "quote": "לא יחולו הוראות סעיף 91(ד) לעניין מקדמות",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/inst-05-2025/he/IncomeTax_inst-05-2025.pdf",
+      "title": "רשות המסים, הוראת ביצוע 5/2025",
+      "title_he": "רשות המסים, הוראת ביצוע 5/2025",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.4, s.4, s.5",
+      "locator_he": "עמוד 4, סעיף 4, סעיף 5",
+      "page": 4,
+      "quote": "אין להתייחס לחבות במס הנוסף",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5 s.1(g) and p.6 item 6",
+      "page": 5,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "תאגיד בנקאי המשלם ליחיד ריבית ינכה ממנה מס בשיעור של 20%",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "בתקנה 4 לתקנות העיקריות, במקום",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "חייב המשלם למוכר תמורה במכירת ניירות ערך, ינכה מס בשיעור של 15% מרווח ההון הריאלי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "בתקנת משנה (א), אחרי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~AS~aE2hUVRm3+mLSBTCnU=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"ב-2012, קובץ התקנות 7071 (1.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "בתקנה 2(א) לתקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "title": "SH 3342",
+      "title_he": "ספר החוקים 3342 (26.12.2024): חוק ההתייעלות הכלכלית (הקפאת עדכוני מס ומס יסף), התשפ״ה-2024",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2 s.1(2)(d)",
+      "locator_he": "עמוד 2 סעיף 1(2)(ד)",
+      "page": 2,
+      "checked": "2026-10-22"
+    }
+  ]
+}

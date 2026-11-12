@@ -15,7 +15,7 @@ export type FeeLine = FeeType;
 export const feeLineOrder: readonly FeeLine[] = ["deposit", "balance", "direct", "trade", "spread", "custody", "fixed", "account", "fund", "fx", "manager"];
 
 const positive = (n: number | undefined) => (n ?? 0) > 0;
-const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min) || ("perCurrencyUnit" in c && positive(c.perCurrencyUnit)));
+const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min) || ("perCurrencyUnit" in c && positive(c.perCurrencyUnit)) || ("flatUpTo" in c && positive(c.flatUpTo?.amount)));
 
 /** The fee lines this plan charges: those whose input is set and not zero. Deposits (bank) have none. */
 export function feeLines(plan: RunPlan): FeeLine[] {
@@ -232,7 +232,8 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number, keepDiscount: bo
           if (rate === 0) delete tariff.fx;
           else if (typeof tariff.fx === "number") tariff.fx = rate;
           else {
-            // a person's own rate replaces the line, a price per unit of currency too (F-13)
+            // a person's own rate replaces the line's rate and a price per unit of currency; a flat price for a small conversion stays, the rate
+            // pricing the conversions above its sum, so a lower rate never makes a small conversion dearer (F-13)
             const { perCurrencyUnit: _, ...rest } = tariff.fx;
             tariff.fx = { ...rest, rate };
           }

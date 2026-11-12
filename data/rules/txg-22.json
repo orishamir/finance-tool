@@ -1,0 +1,30 @@
+{
+  "id": "TXG-22",
+  "title": "Advances on special-rate income",
+  "title_he": "מקדמות על הכנסות בשיעורים מיוחדים",
+  "text_he": "תושב, גם שכיר, שיש לו הכנסה בשיעורי מס מיוחדים, מישראל או מחו״ל, חייב לשלם עליה מקדמות. ברשימת השיעורים לשנת המס 2026 שבמדריך רשות המסים: ריבית על פיקדון 15% או 25%; ריבית על ניירות ערך ותוכניות חיסכון 15% או 25%; דיבידנד, גם מחברות זרות, 25% או 30%; השכרת מקרקעין בחו״ל 15%; ורווח הון במכירת ניירות ערך 15%, 20%, 25% או 30%. חוץ משכר דירה למגורים בישראל, משלמים עד 30 באפריל בשנה שאחרי. כשמשלם ישראלי ניכה את המס במלואו, אין מקדמה.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.118 s.2, p.119 s.d",
+      "page": 118,
+      "quote": "תשלום מקדמות מס בגין הכנסות בשיעורים מיוחדים ובחו״ל",
+      "checked": "2026-10-22"
+    }
+  ]
+}

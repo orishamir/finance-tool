@@ -47,9 +47,10 @@ export interface ProductRow {
   /**
    * One product sold on several terms under one name (a bank's deposit with and without exit points): one line for each, under one name.
    * The columns named in `columns` take a cell on every line (`rows`, in order); every other column keeps the row's own cell, once,
-   * spanning the lines. The phone row is the caller's and shows the lines its own way.
+   * spanning the lines. The phone row is the caller's and shows the lines its own way. A line's cell can take the room of the cells after it
+   * (`spans`, one number per cell: how many of the line's columns it covers, 1 where left out); the cells it covers are not drawn.
    */
-  lines?: { columns: string[]; rows: { key: string; cells: ReactNode[] }[] };
+  lines?: { columns: string[]; rows: { key: string; cells: ReactNode[]; spans?: number[] }[] };
   /**
    * What else there is to say about the product, folded under its row and closed until the reader opens it: a narrow column at the row's end
    * holds the button. `marks` are small icons on the button for what should not hide silently (a note of the company's, a doubt); `label`
@@ -291,10 +292,19 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
                 // a line's cells sit close to the next line's, with no rule between them: the rule is under the whole row
                 const last = lines.rows.length - 1;
                 return [
-                  ...lines.rows.map((line, k) => (
+                  ...lines.rows.map((line, k) => {
+                    // the line's columns a cell before them covers (`spans`)
+                    const covered = new Set<string>();
+                    line.spans?.forEach((n, j) => {
+                      const at = columns.findIndex((c) => c.id === lines.columns[j]);
+                      for (let d = 1; d < n && at >= 0; d++) if (columns[at + d]) covered.add(columns[at + d]!.id);
+                    });
+                    return (
                     <tr key={`${r.key}-${line.key}`} data-row-of={r.rowOf} className={rowClass}>
                       {columns.map((c, i) => {
                         const j = lines.columns.indexOf(c.id);
+                        if (j >= 0 && covered.has(c.id)) return null;
+                        const span = j >= 0 ? (line.spans?.[j] ?? 1) : 1;
                         if (j < 0)
                           return k === 0 ? (
                             // the table's last row has no rule under it; a cell that spans the lines ends there too
@@ -303,13 +313,14 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
                             </td>
                           ) : null;
                         return (
-                          <td key={c.id} className={cx(cellClass(i), k < last && "!border-b-0 !pb-1", k > 0 && "!pt-1")}>
+                          <td key={c.id} colSpan={span > 1 ? span : undefined} className={cx(cellClass(i), k < last && "!border-b-0 !pb-1", k > 0 && "!pt-1")}>
                             {line.cells[j]}
                           </td>
                         );
                       })}
                     </tr>
-                  )),
+                    );
+                  }),
                   ...detailRow,
                 ];
               }),

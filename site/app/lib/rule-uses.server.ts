@@ -10,9 +10,12 @@ import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { readTextCached } from "./read-cache.server";
+import { compareBundle } from "./compare.server";
+import { feePageAnswers } from "./fees";
 
 export interface RuleUsePage {
-  href: string;
+  /** null: a page kind with no single page for the rule (the fee pages, one per product, where the rule belongs to several or none): named, not linked. */
+  href: string | null;
   label: string;
 }
 
@@ -126,7 +129,7 @@ function build(): Scan {
   const collections = new Map<string, Map<string, number>>();
   const addPage = (id: string, page: RuleUsePage) => {
     const m = pages.get(id) ?? new Map<string, RuleUsePage>();
-    m.set(page.href, page);
+    m.set(page.href ?? page.label, page);
     pages.set(id, m);
   };
   const bump = (m: Map<string, number>, id: string) => m.set(id, (m.get(id) ?? 0) + 1);
@@ -190,17 +193,33 @@ function build(): Scan {
   }
 
   const uses: Record<string, RuleUse> = {};
+  const feePage = feePageOf();
   for (const r of Object.values(rules)) {
     const cols = Object.fromEntries(collections.get(r.id) ?? []);
     const colRefs = Object.values(cols).reduce((a, b) => a + b, 0);
     uses[r.id] = {
-      pages: [...(pages.get(r.id)?.values() ?? [])].sort((a, b) => a.href.localeCompare(b.href)),
+      pages: [...(pages.get(r.id)?.values() ?? [])].map((pg) => (pg.href === table.fees!.href ? feePage(r.id) : pg)).sort((a, b) => (a.href ?? "").localeCompare(b.href ?? "")),
       engine: (engineFiles.get(r.id) ?? 0) > 0,
       collections: cols,
       score: scoreOf(r, engineFiles.get(r.id) ?? 0, siteFiles.get(r.id) ?? 0, colRefs),
     };
   }
   return { uses };
+}
+
+/**
+ * The fee page a rule the fee page's code cites opens: `/fees` alone shows only that no product was found, so the page of the one product
+ * the rule belongs to (`ruleProducts`) whose fee page has an answer; where it belongs to several such products or none, the page is named
+ * and not linked.
+ */
+function feePageOf(): (id: string) => RuleUsePage {
+  const bundle = compareBundle();
+  const answers = new Set<string>(bundle.wrappers.map((w) => w.id).filter((id) => feePageAnswers(bundle, id)));
+  const products = ruleProducts();
+  return (id) => {
+    const mine = (products[id] ?? []).filter((p) => answers.has(p));
+    return { href: mine.length === 1 ? `/fees?wrapper=${mine[0]}` : null, label: r3fees.title };
+  };
 }
 
 /** 3 × engine files + site files + collection references + 2 with a figure + 1 for a tier-1 topic + 1 for a primary source + 1 likely to change. */

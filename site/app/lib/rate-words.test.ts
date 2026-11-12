@@ -30,10 +30,18 @@ describe("a fee's rate as the price list prints it (the receipt's account lines)
     expect(rateWords("trade", priced(lines), 500)!.map((x) => x.standing)).toEqual([true, false]);
     expect(rateWords("trade", priced(lines), 0)!.map((x) => x.standing)).toEqual([false]);
   });
-  it("two regular lines of one base, a flat price for an order up to a sum, or the person's own prices: nothing is said", () => {
+  it("two regular lines of one base, or the person's own prices: nothing is said", () => {
     expect(rateWords("trade", priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade") }), line({ base: "trade", rate: fig(0.2, "pct_of_trade"), id: "x" } as Partial<Line> & Pick<Line, "base" | "rate">)]), 500)).toBeNull();
-    expect(rateWords("trade", priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade"), flat_up_to: { amount: fig(5, "nis"), up_to: fig(1000, "nis") } } as Partial<Line> & Pick<Line, "base" | "rate">)]), 500)).toBeNull();
     expect(rateWords("trade", priced([line({ base: "trade", rate: fig(0.07, "pct_of_trade") })], { entered: true }), 500)).toBeNull();
+  });
+  it("a flat price for an order or a conversion up to a sum is said after the bounds, with the sum; one in a unit the line does not explain says nothing", () => {
+    const trade = rateWords("trade", priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade"), min: fig(26, "nis_per_trade"), flat_up_to: { amount: fig(4, "nis_per_trade"), up_to: fig(30000, "nis") } } as Partial<Line> & Pick<Line, "base" | "rate">)]), 500);
+    expect(trade![0]!.parts.map((p) => p.kind)).toEqual(["rate", "min", "flat"]);
+    expect(trade![0]!.parts[2]).toMatchObject({ value: expect.objectContaining({ value: 4 }), upTo: expect.objectContaining({ value: 30000 }), per: "eachTrade" });
+    const fx = rateWords("fx", priced([line({ base: "fx", rate: fig(0.17, "pct_of_trade"), min: fig(5.7, "usd"), max: fig(2300, "usd"), flat_up_to: { amount: fig(3.3, "usd"), up_to: fig(99, "usd") }, spread: fig(0.3, "pct_of_trade") } as Partial<Line> & Pick<Line, "base" | "rate">)]), 500);
+    expect(fx![0]!.parts.map((p) => p.kind)).toEqual(["rate", "min", "max", "flat", "spread"]);
+    expect(fx![0]!.parts[3]).toMatchObject({ upTo: expect.objectContaining({ value: 99 }), per: "conversion" });
+    expect(rateWords("trade", priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade"), flat_up_to: { amount: fig(4, "pct_of_trade"), up_to: fig(30000, "nis") } } as Partial<Line> & Pick<Line, "base" | "rate">)]), 500)).toBeNull();
   });
   it("a line with an offer (a price for its first months, the price it reverts to, or the offer's words): nothing is said", () => {
     const base = { base: "trade" as const, rate: fig(0, "pct_of_trade") };

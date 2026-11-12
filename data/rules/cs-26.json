@@ -48,6 +48,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.4, annex s.3(א)-(ב), (ד)-(ד2)",
+      "locator_he": "עמוד 4, נספח סעיף 3(א)-(ב), (ד)-(ד2)",
       "page": 4,
       "quote": "תיקבע בידי החברה המנהלת ותאושר בידי הממונה",
       "checked": "2026-10-25"
@@ -74,6 +75,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.11, annex א",
+      "locator_he": "עמוד 11, נספח א",
       "page": 11,
       "quote": "מסלולי השקעה",
       "checked": "2026-10-25"

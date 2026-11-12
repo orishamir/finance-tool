@@ -1,0 +1,42 @@
+{
+  "id": "TXA-12",
+  "title": "Executive insurance is an insurance fund approved as a provident fund; the pension tax rules apply to it",
+  "title_he": "ביטוח מנהלים הוא קופת ביטוח: כללי המס של הפנסיה חלים עליו",
+  "text_he": "בחוק, קופת ביטוח היא תכנית ביטוח שאושרה כקופת גמל לתגמולים, לפיצויים או לקצבה, ובשוק קוראים לה ביטוח מנהלים. כללי המס בפקודה כתובים לכל קופת גמל לקצבה, ולכן הזיכוי והניכוי על ההפקדות, תקרות המעסיק, הפטור על קצבה מזכה, ההיוון וכללי המשיכה שלא כדין חלים על קופת ביטוח לקצבה כמו על קרן פנסיה. השם ״ביטוח מנהלים״ לא מופיע בנוסחי החוק שנקראו. ההבדלים, למשל שלפי לשון החוק הפטור על הרווחים בתוך הקופה לא חל על קופת ביטוח, הם כללים נפרדים.",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "tax-at-deposit",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
+      "title": "s.13(ב), file p.8",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.13(ב)",
+      "locator_he": "סעיף 13(ב)",
+      "checked": "2026-10-31",
+      "qualifier": "(gazette)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1",
+      "title": "Provident Funds Law, gazette ס״ח תשס״ה, 889",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "checked": "2026-10-22"
+    }
+  ]
+}

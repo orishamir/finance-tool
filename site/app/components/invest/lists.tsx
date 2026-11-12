@@ -15,25 +15,25 @@
 // page's own and is named by where it is shown, the receipt (`invest.shownPair`); with a group picked, its house's row keeps its price-list
 // stretch and place (D43), and the fund list is priced at the group's prices, as the receipt is.
 import { useMemo, useState, type ReactNode, type RefObject } from "react";
-import { flags, invest as c } from "../../copy";
+import { flags, invest as c, leftOut as leftOutCopy } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
 import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
 import { isGroupProvider } from "../../lib/group-pick";
+import { leftOutOf } from "../../lib/left-out";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { sourceHref } from "../../lib/sources";
 import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num, Term } from "../provenance";
-import { AlsoChanged, Disclosure, HelpMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
+import { AlsoChanged, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, plus, tieFundCount, tieFunds, bestFor, whyNoPrice, noPriceLine, type Moved, type OnPick, type Pick } from "./pair";
+import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, plus, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, type Moved, type OnPick, type Pick } from "./pair";
 
 const priced = (x: WayPrice | { reason: unknown } | undefined): x is WayPrice => !!x && "valueN" in x;
 
@@ -189,6 +189,16 @@ export function PairLists(props: ListsProps) {
   const nameOf = (p: (typeof providers)[number], selected: boolean) => (
     <span className={cx("min-w-0 text-sm", selected ? "font-semibold" : "font-medium", (p.id === view.yourBroker || p.custom) && "text-entered")}>{p.short}</span>
   );
+  // what an account's documents hold and its price leaves out, where it can change what some reader pays: a quiet mark beside the name
+  // that opens it, so it is seen before the account is chosen (D106); the receipt says it under the chosen account's lines
+  const leftOutAt = new Map(providers.map((p) => [p.id, leftOutOf(snapOf(p.id))]));
+  const marked = providers.some((p) => (leftOutAt.get(p.id)?.warn ?? 0) > 0);
+  const nameWithMark = (p: (typeof providers)[number], selected: boolean) => (
+    <span className="flex min-w-0 items-center gap-1">
+      {nameOf(p, selected)}
+      <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
+    </span>
+  );
   const movedHere = (half: "fund" | "house") =>
     moved?.back && moved.half === half
       ? underRow(
@@ -208,7 +218,7 @@ export function PairLists(props: ListsProps) {
         onSelect: () => pickHalf(view, pick, { house: p.id }, onPick),
         cells: (
           <>
-            {nameOf(p, selected)}
+            {nameWithMark(p, selected)}
             {selected ? chosenWord(chosen, "text-chart-by-account") : figureCell(c.lists.accounts.upTo, priced(best) && <Num animate value={best.value} />, s.best)}
             <StretchBar scale={scale} best={s.best} worst={s.worst} className="h-6 max-xl:h-8" />
             {p.custom && underRow(<BrokerTerms id={p.id} />)}
@@ -230,6 +240,7 @@ export function PairLists(props: ListsProps) {
               {nameOf(p, selected)}
               {/* why its funds are shown and not ranked, in the rule's own words */}
               <HelpMark about={c.lists.accounts.unranked} text={flags["G-18"] ?? ""} />
+              <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
             </span>
             {selected ? chosenWord(chosen, "text-chart-by-account") : <span className="inline-flex items-center gap-1 text-xs text-blocked-foreground whitespace-nowrap"><IconLock size={14} />{c.lists.accounts.unranked}</span>}
             <StretchBar scale={scale} best={null} worst={null} className="h-6 max-xl:h-8" />
@@ -241,10 +252,17 @@ export function PairLists(props: ListsProps) {
     }),
     ...unpricedHouses.map((p): PickRow => {
       const na = noWay(p);
-      const why = na && p.custom ? c.customEntries.notSold : whyNoPrice(bundle, p.id, fund);
       // a house with no price for any fund on the index has nothing to show as a pair: its row stays, with the reason, and is never chosen;
       // one that prices only the other kind is picked with a fund it prices
       const none = !pricesAny(p.id);
+      // its row says why over every kind of fund on the index, not only the chosen fund's kind
+      const whole = none && !p.custom ? whyNoFundAt(bundle, p.id, funds) : null;
+      // what the person typed says it ("the account sells no such fund"): their own words, no document. An account typed over a house carries
+      // the house's record too, and a "no" that is the house's (Interactive Brokers on Tel Aviv) keeps the house's reason and rule
+      const typedNo = p.custom && na?.source.url === "local";
+      // the words that say it are what opens why: the rule the record names for it, or the record's own reasons, each with its document
+      // ("instead of the ? just have the label be clickable for information and source", 2026-11-12)
+      const told = whole ?? (typedNo ? { state: "notSold" as const, parts: [{ text: c.customEntries.notSold }], rules: [] } : whyNoFundAt(bundle, p.id, [fund]));
       return {
         key: p.id,
         selected: false,
@@ -253,21 +271,12 @@ export function PairLists(props: ListsProps) {
         onSelect: none ? () => undefined : () => pickHalf(view, pick, { house: p.id }, onPick),
         cells: (
           <>
-            <span className="flex min-w-0 items-center gap-1">
-              {nameOf(p, false)}
-              {/* why this house gives the index's funds no price, in its record's words */}
-              <HelpMark about={c.pair.noPriceAt.other(p.short)} text={why} />
-            </span>
+            {nameOf(p, false)}
             <span className="text-xs text-muted-foreground whitespace-nowrap">
-              {na ? c.pair.notPossible : c.pair.noData}
-              {na && !p.custom && (
-                <>
-                  {" · "}
-                  <a href={sourceHref(na.source)} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
-                    {c.pair.notPossibleSource} ↗
-                  </a>
-                </>
-              )}
+              <Term id={[]} name={c.pair.noPriceAt.other(p.short)} parts={told.parts} rules={told.rules}>
+                {/* the words follow the reason's own order (a doubt in the record first), so they never differ from the card they open */}
+                {c.pair.noFund[told.state]}
+              </Term>
             </span>
             <span aria-hidden="true" className="w-[9px]" />
             {p.custom && underRow(<BrokerTerms id={p.id} />)}
@@ -410,11 +419,27 @@ export function PairLists(props: ListsProps) {
     const at = f.byHouse[pick.house];
     return !at && f.reason ? reasonText(f.reason, optionClass[f.option]) : `${noPriceLine(bundle, pick.house, f, short)}|${f.best && f.best.providerId !== pick.house ? f.best.providerId : ""}`;
   };
+  // the account's words open why for the funds under them, as an account's row does: the rule the record names, or each kind's reason with
+  // its document (D105; "המחיר בפסגות לא ברור בתעריפון" said nothing of what was unclear)
   const greyWords = (k: string) => {
     if (!k.includes("|")) return k;
     const [line, to] = k.split("|") as [string, string];
-    const many = unpricedFunds.filter((f) => greyKey(f) === k).length > 1;
-    return to ? `${line}. ${many ? c.lists.pickMovesMany(shortOf(to)) : c.pair.pickMoves(shortOf(to))}.` : `${line}.`;
+    const under = unpricedFunds.filter((f) => greyKey(f) === k);
+    // an account the person typed that sells no such fund says it in their words, with no document
+    const typedNo = under.every((f) => { const at = f.byHouse[pick.house]; return !!at && "availability" in at && at.availability?.source.url === "local"; });
+    const told = typedNo ? { parts: [{ text: c.customEntries.notSold }], rules: [] } : whyNoFundAt(bundle, pick.house, under);
+    const said = (
+      <Term id={[]} name={line} parts={told.parts} rules={told.rules}>
+        {line}
+      </Term>
+    );
+    return to ? (
+      <>
+        {said}. {under.length > 1 ? c.lists.pickMovesMany(shortOf(to)) : c.pair.pickMoves(shortOf(to))}.
+      </>
+    ) : (
+      <>{said}.</>
+    );
   };
   const greyRows: PickRow[] = unpricedFunds.map((f, i) => {
     const k = greyKey(f);
@@ -520,6 +545,7 @@ export function PairLists(props: ListsProps) {
   const accountsFoot = (
     <div className="flex flex-col gap-3">
       <p className="text-xs text-muted-foreground">{ruler ? c.lists.accounts.barRuler : c.lists.accounts.barAlone}</p>
+      {marked && <p className="text-xs text-muted-foreground">{leftOutCopy.markKey}</p>}
       <AddEntryButton kind="broker" />
       {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />

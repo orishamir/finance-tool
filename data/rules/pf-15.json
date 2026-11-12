@@ -1,0 +1,30 @@
+{
+  "id": "PF-15",
+  "title": "Changing employer: the better group arrangement applies",
+  "title_he": "מעבר בין מעסיקים: חל הסדר דמי הניהול המיטיב",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "text_he": "לפי חוזר של רשות שוק ההון, עמית שעוזב מקום עבודה שיש לו הסדר דמי ניהול עם גוף מוסדי ומתחיל לעבוד במקום שיש לו הסדר אחר עם אותו גוף, נהנה מהסדר דמי הניהול המיטיב: ההסדר שסך דמי הניהול בו, מהפקדה ומחיסכון, נמוך יותר לפי הנוסחה שבחוזר. אם ההסדר הקודם טוב יותר, ההסדר החדש חל כשתקופת ההנחה של ההסדר הקודם נגמרת, ובמהלך תקופת ההנחה העמית יכול לבקש לעבור להסדר שהיה חל עליו לפי הכלל הזה. הכלל חל רק על מעבר בין שני הסדרים באותו גוף מוסדי.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "title": "CMA circular 2017-9-15, s. 3(ג), 3(ד) (gov.il copy p. 2)",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15: דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "s. 3(ג), 3(ד)",
+      "locator_he": "סעיף 3(ג), 3(ד)",
+      "checked": "2026-10-22"
+    }
+  ]
+}

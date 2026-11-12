@@ -113,6 +113,22 @@
   "minimums": {
     "account_opening": null
   },
+  "left_out": [
+    {
+      "what": "דמי הניהול שנקבעים לעמית בהצטרפות: התקנון קובע רק \"שלא יעלה על\" המרבי (סעיף 35.1)",
+      "page": 10,
+      "why": "Infinity publishes no joining form (joining is online only); the bylaws bind only the ceiling. The rate a joiner is given is not published. The record prices the ceiling (D56: 'up to' is priced at the top). Read 2026-11-12.",
+      "why_he": "המחיר כאן הוא התקרה שהמסמכים המחייבים של החברה מתירים. השיעור שעמית מקבל בפועל נקבע בהצטרפות ולא מתפרסם, ולכן הוא יכול להיות נמוך יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "הוצאות ישירות בשל ביצוע עסקאות בנכסי קופת גמל בהתאם להוראות ההסדר התחיקתי (סעיף 27.1.2)",
+      "page": 9,
+      "why": "Direct transaction expenses come out of the fund's assets on top of the management fees. The document prints no rate; This record prices the management fees only; a track's direct expenses enter a run only from data/funds/ (A-18), otherwise as 0 with a 'not collected' flag. Read 2026-11-12.",
+      "why_he": "מלבד דמי הניהול, החברה רשאית לגבות מכספי הקופה הוצאות ישירות על קנייה ומכירה של השקעות. המסמך לא קובע להן שיעור, ולכן הן לא כלולות במחיר שמוצג כאן, והעלות בפועל יכולה להיות גבוהה ממנו.",
+      "could_change_price": true
+    }
+  ],
   "notice_rule_ids": [
     "PF-16"
   ]

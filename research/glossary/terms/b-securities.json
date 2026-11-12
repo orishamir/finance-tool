@@ -63,7 +63,7 @@
       "statement",
       "guide:brokerage-account"
     ],
-    "notes": "Remote members (foreign firms) are members but may not serve Israeli clients (BRK-02), and some members are not retail brokers (BRK-32). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text. Round 2 (2026-11-07): re-cited from TASE's periodic report (TASE Ltd's own filing) to the exchange's terms page (library 17421afb2b9b4e5a): securities \"ניתן לקנות או למכור באמצעות \"חברי הבורסה\" בלבד - בנקים וחברי בורסה שאינם בנקים\". The name is defined in the TASE rules, part 1, s.1 (p.4).",
+    "notes": "Remote members (foreign firms) are members but may not solicit Israeli clients (BRK-02; the rules do not bar serving one), and some members are not retail brokers (BRK-32). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text. Round 2 (2026-11-07): re-cited from TASE's periodic report (TASE Ltd's own filing) to the exchange's terms page (library 17421afb2b9b4e5a): securities \"ניתן לקנות או למכור באמצעות \"חברי הבורסה\" בלבד - בנקים וחברי בורסה שאינם בנקים\". The name is defined in the TASE rules, part 1, s.1 (p.4).",
     "id": "chbr-bvrsh"
   },
   {
@@ -1406,7 +1406,7 @@
       "חייבת",
       "חיבת"
     ],
-    "explain_he": "קרן נאמנות ישראלית שמשלמת בעצמה מס על רווחיה; המשקיעים לא משלמים מס במכירה, והפסד ממנה לא מקטין מס.",
+    "explain_he": "קרן נאמנות ישראלית שמשלמת בעצמה מס על רווחיה; המשקיעים לא משלמים מס במכירה, והפסד ממנה לא מקטין להם מס על שום רווח או הכנסה.",
     "rule_ids": [
       "TXS-07",
       "TXS-11",

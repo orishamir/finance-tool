@@ -1,0 +1,31 @@
+{
+  "id": "TXP-09",
+  "title": "Self-employed: the duty to deposit and how it meets the benefits",
+  "title_he": "עצמאי: חובת ההפקדה לפנסיה",
+  "text_he": "לפי מדריך רשות המסים לשנת 2025, מאז ינואר 2017 כל עצמאי מעל גיל 21 ועד גיל הפרישה המוקדמת חייב להפקיד לקופת גמל לקצבה: 4.45% מההכנסה עד מחצית השכר הממוצע, ו־12.55% על החלק שבין מחצית השכר הממוצע לשכר הממוצע המלא. ב־2025 מחצית השכר הממוצע הייתה 75,216 שקלים בשנה והשכר הממוצע 150,432 שקלים בשנה; הספים של 2026 לא פורסמו במקורות שנקראו. מפחיתים הפקדות שנעשו כשכיר על הכנסה מבוטחת, מי שלא מפקיד צפוי לקנס של 500 שקלים, ומי שהיה בן 55 ומעלה ב־1.1.2017 פטור מהחובה. ההפקדה מזכה בניכוי ובזיכוי כמו כל הפקדה של עצמאי.",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp.61-62",
+      "locator_he": "עמודים 61 עד 62",
+      "page": 61,
+      "checked": "2026-10-22"
+    }
+  ]
+}

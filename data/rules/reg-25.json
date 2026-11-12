@@ -1,0 +1,34 @@
+{
+  "id": "REG-25",
+  "title": "State Comptroller's Ombudsman for government and public bodies",
+  "title_he": "נציבות תלונות הציבור: תלונה על משרד ממשלתי או גוף ציבורי",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "נציבות תלונות הציבור, במשרד מבקר המדינה, מקבלת תלונות ממי שלא קיבל שירות ממשרד ממשלתי או מגוף ציבורי אחר, ומגישים אותן באתר של מבקר המדינה. האתר לא מפרט אילו גופים הנציבות מכסה, ולכן לא ברור אם בנק ישראל, רשות ניירות ערך, רשות שוק ההון, המוסד לביטוח לאומי ורשות המסים כלולים.",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.mevaker.gov.il/",
+      "title": "State Comptroller home page",
+      "publisher": "State Comptroller",
+      "publisher_he": "מבקר המדינה",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://complaint.mevaker.gov.il/",
+      "title": "complaint form",
+      "publisher": "State Comptroller (Ombudsman)",
+      "publisher_he": "נציב תלונות הציבור (מבקר המדינה)",
+      "kind": "form",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

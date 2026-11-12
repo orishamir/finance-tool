@@ -1,0 +1,46 @@
+{
+  "id": "INS-21",
+  "title": "Protection: life-insurance assets are ring-fenced; no state return guarantee",
+  "title_he": "ההגנה על כספי ביטוח חיים: הנכסים משמשים קודם כול את המבוטחים, בלי הבטחת תשואה של המדינה",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק הפיקוח על הביטוח, נכסים שמוחזקים כנגד התחייבויות של ביטוח חיים משמשים קודם כול לכיסוי ההתחייבויות האלה, גם בהליכי הוצאה לפועל ובפירוק של חברת הביטוח; לפי קריאה של החוק, ביטוח חיים כולל גם פוליסות חיסכון וגם ביטוח מנהלים. בקופת ביטוח חל גם הסעיף בחוק קופות הגמל שלפיו אי אפשר לעקל את נכסי הקופה. השלמת התשואה של המדינה חלה רק על קרנות פנסיה ותיקות ועל קרנות פנסיה מקיפות חדשות, ולא על קופות ביטוח או על פוליסות חיסכון. בפוליסה משתתפת ברווחים המבוטח נושא בתוצאות ההשקעה, ולכן ההגנה היא מפני כישלון של חברת הביטוח, לא מפני הפסד בשוק.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf#page=12",
+      "title": "s.54, gazette ס״ח תשמ״א, 208 (ספר החוקים 1021)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.219, s.54(ב)-(ג), via REG-22",
+      "page": 219,
+      "checked": "2026-11-06",
+      "qualifier": "(gazette)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=21",
+      "title": "s.56, gazette ס״ח תשס״ה, 889",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.909 (file p.21), s.56(א)",
+      "locator_he": "עמוד 909 (עמוד הקובץ 21), סעיף 56(א)",
+      "page": 21,
+      "quote": "30 עד 35",
+      "checked": "2026-11-06",
+      "qualifier": "(gazette, as enacted; later amendments to s.56 not read)"
+    }
+  ],
+  "derived_from": [
+    "REG-21",
+    "GOV-18"
+  ]
+}

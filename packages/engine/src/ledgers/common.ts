@@ -117,8 +117,20 @@ export class Tally {
   flags: Flag[] = [];
   series: MonthPoint[] = [];
 
+  /** F-91 on a run in whole units: each fee in units of the fund's total-return index at the time it was paid (`grow`), so `feesCarried` is what it would be worth at the exit. */
+  private carried = emptyFees();
+  private growth = 1;
+  private grows = false;
+
   fee(type: FeeType, amount: number) {
     this.fees[type] += amount;
+    this.carried[type] += amount / this.growth;
+  }
+
+  /** The fund's total return in a month (its growth less its own costs, a distribution kept in): a ledger that calls it reports `feesCarried`. */
+  grow(factor: number) {
+    this.growth *= factor;
+    this.grows = true;
   }
 
   flag(code: string, month?: number) {
@@ -163,6 +175,7 @@ export class Tally {
       outcome: r.outcome ?? { code: "eligible" },
       formulas: r.formulas,
       rules: book.used(),
+      ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth])) as Record<FeeType, number> } : {}),
     };
   }
 }

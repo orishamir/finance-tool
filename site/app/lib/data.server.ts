@@ -33,6 +33,8 @@ import { readJsonCached, readParsedCached, readTextCached } from "./read-cache.s
 import { sourceHref, type RefLink } from "./sources";
 import { heCollator } from "./format";
 import { isShownParameter } from "./parameter-pages";
+import { parseAnswer } from "./answer-slots";
+import { flags as flagCopy } from "../copy";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -90,6 +92,21 @@ export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleR
     }
   }
   return out;
+}
+
+/**
+ * The records the flags' words read (`{ID:figure}` slots in copy.ts `flags`): a page whose runs can raise a flag passes those it does
+ * not hold as `pointed` (`withFlagSlots`), so the flag's figure is the record's and never "—".
+ */
+export function flagSlotRecords(all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
+  const ids = new Set(Object.values(flagCopy).flatMap((t) => parseAnswer(t).flatMap((p) => (p.kind === "slot" ? [p.id] : []))));
+  return Object.fromEntries([...ids].filter((id) => all[id]).map((id) => [id, all[id]!]));
+}
+
+/** A page's `pointed`: the records its own rules' cards point at, and the flags' slot records it does not hold, with theirs. */
+export function pointedWithFlagSlots(rules: Record<string, RuleRecord>, all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
+  const slots = Object.fromEntries(Object.entries(flagSlotRecords(all)).filter(([id]) => !rules[id]));
+  return { ...slots, ...pointedRecords([...Object.values(rules), ...Object.values(slots)], all) };
 }
 
 export function loadParameters(): ParameterRecord[] {

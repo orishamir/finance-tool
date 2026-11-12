@@ -78,14 +78,15 @@ An IRA is a provident fund (tagmulim or annuity) or a study fund opened for one 
 - Likely to change: yes. These are the company's own terms.
 
 ### IRA-06 Portfolio manager conditions and related parties
-- Rule: A "מנהל תיקים" holds a valid portfolio-manager licence under the Investment Advice Law. Since 2017 this includes a "מנהל תיקים זר", meaning a resident of an approved foreign country licensed there, who is bound by that country's portfolio-manager rules. When the member uses a portfolio manager:
+- Rule: A "מנהל תיקים" holds a valid portfolio-manager licence under the Investment Advice Law. Since 2017 this includes a "מנהל תיקים זר": an individual or company resident in an approved foreign country and licensed there to manage investment portfolios, who must agree that the rules the fund applies to a licensed portfolio manager in that country apply to its actions for the member. When the member uses a portfolio manager:
   - The managing company must tell the member within seven business days whether the manager is a related party or manages money for the company.
   - The company may name the TASE members or other approved bodies where it holds the fund's securities accounts, and the manager may trade only through them.
   - The manager must give the company a written declaration that it accepts the portfolio-manager rules and will invest within the limits of regulation 5.
   - The manager's fee is paid out of the management fee the company collects (IRA-16).
-- Conditions / exceptions: none found
+- Conditions / exceptions: 2026-11-12: the 2017 amendment is now cited in the gazette (קובץ התקנות 7819) in place of a copy on Meitav's site, and the foreign manager's condition is worded as amended reg. 4(א)(3) words it.
 - Figures: none
-- Source: [Reshumot 2017 amendment, regs. 1(2)-(3), 3](https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf) · checked 2026-10-22 · primary; [IRA regulations as made (קובץ התקנות 6820)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=2), reg. 1 p.2, reg. 4 p.3, reg. 7(א)(5) p.4 · checked 2026-11-07 · primary
+- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע"ז-2017, קובץ התקנות 7819](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2), file p.2, reg. 1(2)-(3) "המורשים לנהל תיקי השקעות לפי הדין החל באותה" · checked 2026-11-12 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע"ז-2017, קובץ התקנות 7819](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4), file p.4, reg. 3 (amending reg. 4(א)(3)) · checked 2026-11-12 · primary; [IRA regulations as made (קובץ התקנות 6820)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=2), reg. 1 p.2, reg. 4 p.3, reg. 7(א)(5) p.4 · checked 2026-11-07 · primary
+- Scope: general
 - Dimensions: `regulator`, `fee-management-balance`, `protection`
 - Likely to change: no
 
@@ -98,7 +99,7 @@ An IRA is a provident fund (tagmulim or annuity) or a study fund opened for one 
   - (א)(6) money in a new account under section 23(א)(2א) or (2ב) of the law.
   - (ב) money under (4) to (6) is capped at four times "הסכום הקובע" in total across all the member's IRA accounts, less amounts under (2) and (3).
 - Conditions / exceptions: Reg. 2 lists money by kind and member, not by the fund it comes from; money from a pension fund: IRA-02. How one manager handles money that is not permitted is its own (Meitav's: IRA-29; moved there 2026-10-26, with Meitav's plain-language summary of this regulation dropped as a source). The 2017 amendment's transitional rules for balances deposited before it took effect (30 days after 29.5.2017) are in its reg. 9 and were not worked through here. The tax regulations cited in (2), (3) and (5) were not read (tax file).
-- Figures: cap = 4 × הסכום הקובע; for 2026 see IRA-08
+- Figures: cap = 4 × הסכום הקובע (reg. 2(ב), "ארבע פעמים", p.3; fixed in regulation); for 2026 see IRA-08
 - Source: [תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע"ז-2017 (קובץ התקנות 7819)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2) pp.2-3, s.2 (replaces reg. 2: 2(א)(1)-(6), 2(ב)) "הסכום הקובע" · checked 2026-10-25 · primary; [CMA draft 2025](https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf) p.6, explanatory notes to reg. 2 "סוגי הכספים" · checked 2026-10-25 · primary (draft; not binding)
 - Scope: general
 - Dimensions: `eligibility`, `deposit-ceiling`
@@ -236,6 +237,7 @@ An IRA is a provident fund (tagmulim or annuity) or a study fund opened for one 
 - Conditions / exceptions: Meitav Trade is in the same group as the managing company. The related-party conditions of IRA-18 apply.
 - Figures: none
 - Source: [Meitav joining-form annex](https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf) · checked 2026-10-22 · institution; [Meitav IRA page](https://www.meitav.co.il/provident_pension/ira/) · checked 2026-10-22 · institution
+- Scope: institution: Meitav
 - Dimensions: `fee-trade`, `transfer-switch-process`
 - Likely to change: yes, with each competitive process
 

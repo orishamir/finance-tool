@@ -44,6 +44,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: An insurer may still refuse or condition a deposit. In the Clal terms, one-time deposits and increases need the company's prior written consent (s. 7.1). The Comptroller summary does not cite the legal basis for the absence of a ceiling; no ceiling was found in any source read. For the kupat gemel lehashkaa ceiling, see `kupat-gemel-lehashkaa.md`.
 - Figures: none.
 - Source: [State Comptroller, January 2024](https://library.mevaker.gov.il/sites/DigitalLibrary/Documents/2024/The-cost-of-living/2024-The-cost-of-living-104-Hon.pdf), summary pp. 336 to 337 · checked 2026-10-22 · primary; [Clal 1418](https://www.clalbit.co.il/media/yy5djhg3/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-1418.pdf), s. 7.1 · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: `deposit-ceiling`
 - Likely to change: yes. The Comptroller raised it as a competition problem; any regulatory response would change it.
 
@@ -65,6 +66,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: Applies to savings policies (profit-sharing, not an insurance fund). Insurance funds (executive insurance) fall under it as provident funds in any case. Conditions and exceptions as in PF-08.
 - Figures: 0.3% a year. Fixed.
 - Source: [s.8, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)
+- Scope: general
 - Dimensions: `fee-management-balance`, `fee-change-over-time`, `protection`
 - Likely to change: no
 
@@ -140,10 +142,11 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Likely to change: yes, insurer decision per plan edition
 
 ### INS-08 Tracks: choice, default, switching within 3 business days, closure with 45 days' notice
-- Rule: At joining, the holder splits deposits among the open investment tracks. Without an instruction, money goes to the default track, defined as the track "כללי" or a replacement approved by the Commissioner (Clal 1418 s. 1, 5.4). The holder may move the existing balance between tracks, and it moves "בתוך 3 ימי עסקים" of the request (s. 6.2). Phoenix states the same 3 business days, says a switch cannot be cancelled once made, and says the fee changes to the new track's rate. Tracks are invested under the Provident Funds investment-rules regulations (תקנות כללי השקעה החלים על גופים מוסדיים, 2012) (Clal s. 8.1). Direct expenses may be charged as permitted under Provident Funds Law s. 32 (s. 8.5). The insurer may close a track with CMA approval after at least 45 days' notice. Money of holders who do not choose a replacement goes to the default track (s. 8.6).
-- Conditions / exceptions: No limit on the number of switches was found. The tax treatment of a switch (Clal says switching carries no capital-gains tax) belongs in TXA.
+- Rule: In Clal Insurance's savings policy 1418 (חיסכון פיננסי לעתיד), at joining the holder splits deposits among the open investment tracks. Without an instruction, money goes to the default track, defined as the track "כללי" or a replacement approved by the Commissioner (Clal 1418 s. 1, 5.4). The holder may move the existing balance between tracks, and it moves "בתוך 3 ימי עסקים" of the request (s. 6.2). Phoenix states the same 3 business days, says a switch cannot be cancelled once made, and says the fee changes to the new track's rate. Tracks are invested under the Provident Funds investment-rules regulations (תקנות כללי השקעה החלים על גופים מוסדיים, 2012) (Clal s. 8.1). Direct expenses may be charged as permitted under Provident Funds Law s. 32 (s. 8.5). Clal may close a track with CMA approval after at least 45 days' notice. Money of holders who do not choose a replacement goes to the default track (s. 8.6).
+- Conditions / exceptions: These are Clal Insurance's and The Phoenix's own policy terms; this record cites no regulator's text on how fast a switch in a savings policy must be executed (PF-23 covers provident funds). No limit on the number of switches was found. 2026-11-12: the Scope line names Clal and The Phoenix, with Clal Insurance now in the registry as its own insurer row. The tax treatment of a switch (Clal says switching carries no capital-gains tax) belongs in TXA.
 - Figures: 3 business days; 45 days.
 - Source: [Clal 1418](https://www.clalbit.co.il/media/yy5djhg3/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-1418.pdf), s. 1, 5, 6, 8 · checked 2026-10-22 · institution; [Phoenix Invest FAQ](https://www.fnx.co.il/savings/savings-routes/faq/) · checked 2026-10-22 · institution
+- Scope: institution: Clal, The Phoenix
 - Dimensions: `transfer-switch-process`, `switching-tax-event` (TXA), `fee-change-over-time`
 - Likely to change: yes. The CMA 2026 investment-tracks circular also covers hosting tracks (INS-24).
 
@@ -159,6 +162,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: The policy, its fees and the protection (INS-21) stay with the insurer. Only the investment management is outsourced. Clal's hosted State Street tracks may hold illiquid assets such as real estate, private credit and private-equity funds (Clal product page). Phoenix pays BlackRock dollar deposits made from 01.08.2023 in shekels only (FAQ). Whether a hosting fee is charged on top of the policy fee was not found (open question 6).
 - Figures: NIS 21.4 bn (2025).
 - Source: [Bituach-Net 202609 query](https://data.gov.il/api/3/action/datastore_search?resource_id=c6c62cc7-fe02-4b18-8f3e-813abfbb4647&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_ID,FUND_NAME,PARENT_COMPANY_NAME,FUND_CLASSIFICATION,TOTAL_ASSETS,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE&limit=500&sort=PARENT_COMPANY_NAME%20asc) · checked 2026-10-22 · primary; [ISA, פעילות חברות בעלות רישיון השקעות 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf), p. 19 · checked 2026-11-08 · primary; [Clal product page](https://www.clalbit.co.il/savingandmanagementins/financialsaving/), [Phoenix FAQ](https://www.fnx.co.il/savings/savings-routes/faq/) · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: `regulator`, `currency`, `liquidity-lockup`
 - Likely to change: yes. Tracks are added and closed; the 2026 tracks circular addresses hosting policies.
 
@@ -198,6 +202,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: The term "ביטוח מנהלים" is not defined in the law text read. Presenting an unapproved plan as a provident fund is an offence (s. 49(ב)(2)).
 - Figures: none.
 - Source: [s.1, gazette ס״ח תשס״ה, 889](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1), [s.13](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8), [s.49](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=17) · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found); [Harel, הראל מגוון למנהלים קצבה משלמת, plan 1286, edition 7/2009](https://www.harel-group.co.il/Policies/2010.pdf), p. 3 · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: `regulator`, `eligibility`
 - Likely to change: no
 
@@ -209,6 +214,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
   - IRA-type insurance funds have their own narrower list (s. 57(א)(2)).
 - Figures: none.
 - Source: [s.56, gazette ס״ח תשס״ה, 889](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=21), [s.57](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=21) · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)
+- Scope: general
 - Dimensions: `regulator`, `protection`, `transfer-switch-process`
 - Likely to change: no
 
@@ -222,6 +228,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
   - **Guaranteed-return insurance funds** have their own regime, which was not read (open question 8).
 - Figures: 1.05% of balance and 4% of deposits for policies from 1.1.2013; contractual before that (example 1.7%, no deposit fee).
 - Source: [s.2, gazette תשע״ד, 977](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4), [s.11, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8), [s.12](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=9) · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found); [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf), s. 10 · checked 2026-10-22 · institution; [Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf), p. 3 · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: `fee-management-balance`, `fee-deposit`, `fee-change-over-time`, `issue-cohort` (proposed)
 - Likely to change: no for the cap; contractual fees on old policies can be lowered by the insurer (Harel 1286 s. 10.5)
 
@@ -233,6 +240,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: Whether the old-cohort fee field includes the 15% variable fee is not stated by the CMA (open question 9). Phoenix's page is partly garbled and mixes products. The cohort boundaries are the CMA's; no official text explaining why 1991/1992 and 2003/2004 are the cut-offs was found (open question 9). The CMA return table also splits profit-sharing policies "שהונפקו לפני שנת 2004" and "החל משנת 2004". Returns are history, not a ranking key (product.md section 4).
 - Figures: Phoenix legacy 0.6% + 15% of real return; Bituach-Net values as above, 202609.
 - Source: [Bituach-Net 202609 query](https://data.gov.il/api/3/action/datastore_search?resource_id=c6c62cc7-fe02-4b18-8f3e-813abfbb4647&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_ID,FUND_NAME,PARENT_COMPANY_NAME,FUND_CLASSIFICATION,TOTAL_ASSETS,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE&limit=500&sort=PARENT_COMPANY_NAME%20asc) · checked 2026-10-22 · primary; [Phoenix, פוליסת מניב](https://www.fnx.co.il/life-insurance/meniv/) · checked 2026-10-22 · institution; [Harel June 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf), pp. 2, 4 · checked 2026-10-22 · institution; [CMA report 2024, chapter 4 (gov.il)](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=13), table ד-12, file p. 13 (printed p. 54) · checked 2026-11-08 · primary
+- Scope: general
 - Dimensions: `fee-management-balance`, `real-vs-nominal`, `issue-cohort` (proposed)
 - Likely to change: no (closed cohorts)
 
@@ -249,11 +257,12 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: An employee who does not choose is placed in a pension fund, not an insurance fund (PEN-05, PEN-06). Contribution rates are in PEN-03.
 - Figures: 75%, 7.5%, 5%.
 - Source: [צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=2), file p.2 (gazette p.6939), s. 2(ח), 2(ט), 3(א); file p.3 (gazette p.6940), s. 4(א)(2) · checked 2026-11-08 · primary. (The Hilan text mirror read first is a lead only; it printed "ע"י" where the order says "על ידי", corrected in the quotes 2026-11-08.) [Harel June 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf), p. 1 · checked 2026-10-22 · institution; PEN-03, PEN-05
+- Scope: general
 - Dimensions: `eligibility`, `insurance-cover`
 - Likely to change: yes, if the extension order changes
 
-### INS-19 Insurance components are paid out of the deposit, and pure life-insurance prices vary widely between insurers
-- Rule: In an executive policy the savings deposit is the regular deposit "בניכוי עלות הכיסוי הביטוחי" plus one-time deposits and transfers in (Harel 1286 s. 1.7). The cost of insurance cover is the part of the deposit paid for the insurance covers (s. 1.37). The covers can be extended or cancelled (contents, s. 27 and the cover chapter, not read in detail). A policy can also hold savings only, with no cover: Harel's 2016 differential policy "כוללת רכיב חיסכון בלבד ללא כיסוי ביטוחי". For pure life insurance (death cover), the CMA compared the cost of NIS 1,000,000 cover over 30 years. The gap between the most and least expensive insurer in total premiums over the period was:
+### INS-19 Pure life-insurance prices vary widely between insurers (CMA comparison)
+- Rule: The CMA's 2024 report compared, insurer by insurer, the cost of NIS 1,000,000 of individual life (death) cover over 30 years for an insured aged 35. The gap between the most and the least expensive insurer in total premiums over the period ("הפרמיה המצטברת במשך תקופת הביטוח") was:
 
   | Insured, age 35 | Gap in total premiums |
   |---|---|
@@ -262,11 +271,21 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
   | Smoking man | 107% |
   | Smoking woman | 143% |
 
-- Conditions / exceptions: The CMA tables are for individual life (death) insurance, not for the risk component inside a particular executive policy, and are given here as evidence that the insurance part of the price is worth comparing. Disability-cover prices were not found (open question 11). Comprehensive pension funds price insurance collectively; see PEN-11 to PEN-17.
-- Figures: spreads 46% to 143% (2024).
-- Source: [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf), s. 1.7, 1.37 · checked 2026-10-22 · institution; [Harel June 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf), p. 3 · institution; [CMA report 2024, chapter 4 (gov.il)](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=15), tables ד-14 to ד-17, file pp. 15 to 16 (printed pp. 56 to 57) · checked 2026-11-08 · primary
+- Conditions / exceptions: The CMA tables are for individual life (death) insurance, not for the risk component inside a particular executive or savings policy; they show that the insurance part of a price is worth comparing. Disability-cover prices were not found (open question 11). Comprehensive pension funds price insurance collectively; see PEN-11 to PEN-17. How one insurer's executive policy pays for its covers out of the deposit is INS-29 (Harel). Split on 2026-11-12: Harel's policy definitions moved to INS-29.
+- Figures: spreads 46% to 143% (2024 report, tables ד-14 to ד-17).
+- Source: [דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=15) p.15, tables ד-14, ד-15 "עלות ביטוח חיים לגבר בן"; p.16, tables ד-16, ד-17 (printed pp. 56 to 57) · checked 2026-11-12 · primary
+- Scope: general
 - Dimensions: `insurance-cover`, `fee-insurance-premium` (proposed)
 - Likely to change: yes, premiums are repriced
+
+### INS-29 Harel's executive policy: the insurance covers are paid out of the deposit
+- Rule: In Harel's executive policy (plan 1286) the savings deposit is the regular deposit "בניכוי עלות הכיסוי הביטוחי" plus one-time deposits and transfers in (s.1.7). The cost of insurance cover is the part of the regular deposit paid for the insurance covers (s.1.37). The covers can be extended or cancelled (contents, s.27 and the cover chapter, not read in detail). A policy can also hold savings only, with no cover: Harel's 2016 letter to employers describes its differential policy "הראל מור למנהלים" as one that "כוללת רכיב חיסכון בלבד ללא כיסוי ביטוחי" (annex A, s.3).
+- Conditions / exceptions: Harel's own policy terms; other insurers' executive policies were not read for this. What pure life cover costs across insurers is INS-19. Split from INS-19 on 2026-11-12.
+- Figures: none
+- Source: [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf#page=3) p.3, s.1.7 "בניכוי עלות הכיסוי הביטוחי"; p.5, s.1.37 · checked 2026-11-12 · institution; [Harel June 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf#page=3) p.3, annex A, s.3 "כוללת רכיב חיסכון בלבד ללא כיסוי ביטוחי" (library copy of 2026-10-31) · checked 2026-10-31 · institution
+- Scope: institution: Harel
+- Dimensions: `insurance-cover`
+- Likely to change: no.
 
 ### INS-20 Withdrawal, partial withdrawal and transfer out of an executive policy
 - Rule: Withdrawals from an executive policy follow the Provident Funds Law and its regulations (s. 23 applies via s. 56; Harel 1286 s. 13.2). For example, severance can be withdrawn on leaving a job, and a lump sum from age 60 only if the remaining annuity is not below the minimum annuity amount (s. 13.2.1, 13.2.2; PEN-28 to PEN-30). The holder may transfer all or part of the redemption value to another provident fund under the Transfer Regulations (s. 14.1; PF-17, PF-19). An outstanding loan must be repaid first (s. 14.2). A partial withdrawal or transfer of 90% or more, or one leaving less than NIS 20,000 linked to the October 2008 CPI, may be treated as full (s. 13.3, 14.4). A non-end-of-period payment is made within the times in the regulations under s. 23 or within 30 days, whichever is earlier; at the end of the insurance period, within 7 days (s. 13.9). After a full withdrawal the policy and its covers lapse (s. 13.4).
@@ -281,6 +300,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: In a profit-sharing policy the holder carries the investment result (INS-01), so ring-fencing protects against the insurer's failure, not against market loss. How much of each insurer's old-cohort portfolio still holds ח"ץ bonds was not found (open question 12).
 - Figures: none.
 - Source: [s.54, gazette ס״ח תשמ״א, 208 (ספר החוקים 1021)](https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf#page=12), p.219, s.54(ב)-(ג), via REG-22 (re-read 2026-11-06 in the gazette; the mirror is no longer cited for s.54) · checked 2026-11-06 · primary (gazette); [s.56, gazette ס״ח תשס״ה, 889](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=21), p.909 (file p.21), s.56(א), whose list of sections that apply to an insurance fund includes s.30 ("30 עד 35") · checked 2026-11-06 · primary (gazette, as enacted; later amendments to s.56 not read); REG-21; GOV-18
+- Scope: general
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -318,6 +338,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Conditions / exceptions: The plan says some items may not be completed within the year (PF-31). None of the items sets a fee cap for savings policies.
 - Figures: none.
 - Source: [CMA, תכנית אסדרה לשנת 2026](https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf), pp. 20 to 21 · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `regulator`, `fee-change-over-time`, `liquidity-lockup`
 - Likely to change: yes, by definition. Re-check at the next plan (around December 2026).
 

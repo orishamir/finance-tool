@@ -1,0 +1,25 @@
+{
+  "id": "TXP-28",
+  "title": "Fixing the annuity exemption today: form 161ד through the personal area",
+  "title_he": "קיבוע זכויות היום: טופס 161ד באזור האישי",
+  "text_he": "את הבקשה לקיבוע זכויות, לפטור ממס על קצבה מזכה או להיוון קצבה מזכה, מגישים בטופס 161ד לפקיד השומה דרך האזור האישי באתר רשות המסים, בלי תשלום. השירות מיועד למי שמקבל קצבה מזכה והגיע לגיל הזכאות מ־1.1.2012. גיל הזכאות הוא המאוחר מבין גיל הפרישה, או פרישה מוקדמת בגלל נכות יציבה של יותר מ־75%, לבין המועד שבו הקצבה המזכה מתחילה. מצרפים את תלוש הקצבה האחרון מכל משלם, פרטים על היוונים קודמים וטופס 161 ממעסיקים קודמים.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/he/service/itc-request-for-fixed-rights-at-retirement-age",
+      "title": "Tax Authority, form 161ד service page",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

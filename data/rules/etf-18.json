@@ -6,7 +6,8 @@
   "figure_names_he": {
     "etf_count": "מספר קרנות הסל",
     "open_tracking_fund_count": "מספר הקרנות המחקות הפתוחות",
-    "foreign_fund_count": "מספר קרנות החוץ"
+    "foreign_fund_count": "מספר קרנות החוץ",
+    "counts_as_of": "המועד שאליו נכונים המספרים"
   },
   "strength": "primary",
   "dimensions": [
@@ -72,6 +73,27 @@
         "ETF-18"
       ],
       "state": "sourced"
+    },
+    "counts_as_of": {
+      "value": "2025-12-31",
+      "unit": "text",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf#page=3",
+        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary",
+        "quote": "שווי נכסים לסוף שנה במיליארדי"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-18"
+      ],
+      "state": "sourced",
+      "notes": "The ISA's yearly funds report counts the funds and their assets at the end of the year; the counts in this record are at the end of 2025."
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",

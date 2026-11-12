@@ -1,0 +1,93 @@
+{
+  "id": "BRK-61",
+  "title": "Banks: directive 415 bars a current-account management fee on a \"חשבון תמורה\" that only serves your other accounts; prepaid fees come back pro rata",
+  "title_he": "בנקים: בלי דמי ניהול עו״ש על ״חשבון תמורה״, והחזר יחסי של עמלה ששולמה מראש",
+  "strength": "primary",
+  "dimensions": [
+    "fee-account",
+    "fee-custody",
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "text_he": "לפי הוראת ניהול בנקאי תקין 415 של בנק ישראל, בנק לא יגבה דמי ניהול חשבון עובר ושב על ״חשבון תמורה״. זה חשבון עו״ש שנפתח מלכתחילה רק בשביל חשבונות אחרים של הלקוח, או חשבון שהפך לכזה אחרי שהלקוח הסב לכך את תשומת לב הבנק. האיסור חל רק אם לא נרשמו בחשבון פעולות שלא קשורות ישירות לחשבונות האחרים. ההוראה לא אומרת אם פיקדון ניירות ערך הוא חשבון אחר כזה. היא גם לא מזכירה את עמלת המינימום החודשית בעו״ש, שבכללי העמלות של בנק ישראל רשומה היום כהערה לעמלת הפעולה בפקיד ולא כדמי ניהול. לכן מהנוסח לא ברור אם האיסור חל על עמלת המינימום בחשבון עו״ש שמשמש רק להשקעה. על חשבון פיקדון שאין בו תנועה, העמלה לא יכולה לעבור את היתרה שבו, והבנק רשאי למכור השקעות של הלקוח כדי שלא ייווצר חוב. עמלה ששולמה מראש לתקופה, למשל דמי ניהול רבעוניים, מוחזרת באופן יחסי לפי ימים אם השירות מפסיק לפני סוף התקופה. עמלת מינימום שנשארת לתשלום במקרה כזה מותרת רק באישור מראש של המפקח על הבנקים. על מסירת המידע שכללי הגילוי מחייבים אין עמלה.",
+  "recheck_date": "2027-07-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/n2dlnqyf/415.pdf",
+      "title": "הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)",
+      "title_he": "הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1, s.2(ג)",
+      "locator_he": "עמוד 1, סעיף 2(ג)",
+      "page": 1,
+      "quote": "בדמי ניהול חשבון עובר ושב",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.boi.org.il/media/n2dlnqyf/415.pdf",
+      "title": "הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)",
+      "title_he": "הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.2, s.2(ה)",
+      "locator_he": "עמוד 2, סעיף 2(ה)",
+      "page": 2,
+      "quote": "בסכום העולה על יתרת הזכות בחשבון הפיקדון",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, First Schedule part 1, item 1(א)(1)",
+      "locator_he": "עמוד 6, התוספת הראשונה חלק 1, פרט 1(א)(1)",
+      "page": 6,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "quote": "עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.25, Second Schedule, item 1",
+      "page": 25,
+      "quote": "דמי ניהול (נמחק)",
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "SW-29"
+  ],
+  "examples": [
+    "BRK-66"
+  ]
+}

@@ -210,11 +210,10 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so
     expect(out).toContain(invest.pair.abroadOthers);
     // why One Zero's charge is counted while other written ceilings are not, and on which funds
-    const [before, between, after] = invest.pair.abroadPerDividend.replace("{name}", "וואן זירו").split("{amount}");
-    expect(out).toContain(before);
-    expect(out).toContain(between);
-    expect(out).toContain(after);
+    for (const part of invest.pair.abroadPerDividend.replace("{name}", "וואן זירו").split(/\{amount\}|\{custody\}/)) expect(out).toContain(part);
     expect(out).toContain(fmt.usd(50));
+    // the custody abroad it calls free is the price list's own 0, not typed
+    expect(out).toContain(fmt.pct(0));
   });
 
   it("the fees panel names a bank's current account as an item only where the pair's account charges one", () => {

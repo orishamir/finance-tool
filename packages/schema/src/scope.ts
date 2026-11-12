@@ -68,6 +68,7 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "PF-39": { why: "website terms paragraph", files: [] },
   "KGL-24": { why: "a computation check", files: [] },
   "TXS-22": { why: "a summary", files: [] },
+  "TXK-12": { why: "a summary", files: [] },
   "BANK-23": { why: "\"no rule exists\" record", files: [] },
   "BANK-27": { why: "\"no rule exists\" record", files: [] },
   "IRA-10": { why: "\"no rule exists\" record", files: [] },

@@ -1,0 +1,61 @@
+{
+  "id": "TXG-26",
+  "title": "National Insurance and health contributions on \"income not from work\": who pays, rates",
+  "title_he": "דמי ביטוח לאומי ובריאות על הכנסה שלא מעבודה",
+  "text_he": "תושב שיש לו הכנסה שלא מעבודה משלם עליה בעצמו דמי ביטוח לאומי ודמי ביטוח בריאות. מ־1.1.2026: על הכנסה של עד 3,442 שקלים בחודש לא משלמים; מ־3,442 עד 7,703 שקלים משלמים 12.09% (6.92% ביטוח לאומי ו־5.17% בריאות); מ־7,703 עד 51,910 שקלים משלמים 12.17% (7% ו־5.17%); והכנסה מעל 51,910 שקלים לא נלקחת בחשבון. 3,442 השקלים הראשונים פטורים גם כשההכנסה גבוהה יותר: בדוגמה של הביטוח הלאומי, על שכר דירה של 12,000 שקלים בחודש משלמים דמי ביטוח רק על 8,558 שקלים. שכיר או עצמאי שיש לו גם הכנסה שלא מעבודה משלם עליה בשיעור של מי שאינו עובד, עד ההכנסה המרבית. סוגי הכנסה מסוימים פטורים, וזה כלל נפרד.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-05",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FstatuteBook%2F2126%2Fheb#page=14",
+      "title": "חוק הביטוח הלאומי (תיקון מס' 103), התשס\"ח-2008, ספר החוקים 2126 (7.1.2008)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 103), התשס\"ח-2008, ספר החוקים 2126 (7.1.2008)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.14 (gazette p.136), s.3",
+      "locator_he": "עמוד הקובץ 14 (עמוד הרשומות 136), סעיף 3",
+      "page": 14,
+      "quote": "ישלם דמי ביטוח גם בעד הכנסתו האחרת, בשיעור החל על הכנסה אחרת של מי שאינו עובד ואינו עובד עצמאי",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9E%D7%99%20%D7%A9%D7%90%D7%99%D7%A0%D7%9D%20%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%95%D7%91%D7%A2%D7%9C%D7%99%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%D7%A9%D7%9C%D7%90%20%D7%9E%D7%A2%D7%91%D7%95%D7%93%D7%94.aspx",
+      "title": "NII, \"למי שאינם עובדים ולבעלי הכנסה שלא מעבודה - שיעורי וסכומי דמי ביטוח\"",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "עליך לשלם דמי ביטוח על הכנסה חודשית",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx",
+      "title": "NII, \"חובת תשלום ושיעורי דמי ביטוח\" (income not from work)",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "מי שיש לו הכנסה שאינה מעבודה חייב לשלם דמי ביטוח לאומי ודמי ביטוח בריאות עבור עצמו",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/NotWorking/Pages/ScomNotWorking.aspx",
+      "title": "NII, non-working minimum",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

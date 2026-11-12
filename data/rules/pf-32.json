@@ -1,0 +1,26 @@
+{
+  "id": "PF-32",
+  "title": "Finding lost accounts: the CMA pension-savings search (\"הר הכסף\" route)",
+  "title_he": "איתור חסכונות שנשכחו: השירות של רשות שוק ההון",
+  "strength": "primary",
+  "dimensions": [
+    "dispute-channel"
+  ],
+  "likely_to_change": "no",
+  "text_he": "רשות שוק ההון נותנת שירות שמאתר חשבונות לא פעילים בקופות גמל, בקרנות פנסיה, בביטוח חיים עם רכיב חיסכון, בקרנות השתלמות ובפוליסות ביטוח למקרה מוות בלי חיסכון. צריך מספר תעודת זהות ואת תאריך ההנפקה שלה, והתשובה מיידית ובלי תשלום. השירות מראה רק שאולי יש חשבון, והיתרה והזכויות נמצאות אצל הגופים המוסדיים. חיפוש לפי תעודת זהות של אדם אחר בלי רשותו עלול להיות עבירה פלילית.",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/he/service/pension_savings_search",
+      "title": "CMA, קבלת מידע על חסכונות פנסיוניים",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "המידע שתקבלו מהחיפוש באתר מציג אפשרות לקיומם של חשבונות או של פוליסות",
+      "checked": "2026-11-12"
+    }
+  ]
+}

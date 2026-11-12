@@ -592,7 +592,9 @@
           "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
           "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בארץ, מינימום",
           "publisher": "Bank of Jerusalem Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 6,
+          "quote": "לרבות יחידות השתתפות 0.15%לרבעון בקרנות נאמנות ₪ 10,000"
         },
         "checked": "2026-11-04",
         "effective_from": null,
@@ -674,7 +676,9 @@
           "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
           "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בחוץ לארץ, מינימום",
           "publisher": "Bank of Jerusalem Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 6,
+          "quote": "לארץ 0.15% לרבעון (10,000"
         },
         "checked": "2026-11-04",
         "effective_from": null,
@@ -921,10 +925,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "'0.20% (6.7 $ מינימום, 2,750 $ מקסימום)'. No channel split in part 5. The spread is not printed (BRK-23). Re-read 2026-11-04: part 5 unchanged. The combined file's annex E ('15/07/2025', p.20) prints 'אינטרנט / אפליקציה' 0.18% (6$ minimum, 2,730$ maximum); annex E as its own file, dated 08/06/2026 and the newest, prints no conversion row. Part 5's 0.20% is the most the documents allow."
+        "notes": "'0.20% (6.7 $ מינימום, 2,750 $ מקסימום)'. No channel split in part 5. The spread is not printed (BRK-16). Re-read 2026-11-04: part 5 unchanged. The combined file's annex E ('15/07/2025', p.20) prints 'אינטרנט / אפליקציה' 0.18% (6$ minimum, 2,730$ maximum); annex E as its own file, dated 08/06/2026 and the newest, prints no conversion row. Part 5's 0.20% is the most the documents allow."
       },
       "min": {
         "value": 6.7,
@@ -943,7 +947,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'6.7 $ מינימום'."
@@ -965,7 +969,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'2,750 $ מקסימום'."
@@ -984,7 +988,7 @@
         "value": null,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankjerusalem.co.il/media/2932/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+          "url": "https://www.bankjerusalem.co.il/media/5757/%D7%A0%D7%92%D7%99%D7%A9_%D7%94%D7%A1%D7%9B%D7%9D_%D7%AA%D7%A0%D7%90%D7%99%D7%9D_%D7%9B%D7%9C%D7%9C%D7%99%D7%9D_%D7%9C%D7%A4%D7%AA%D7%99%D7%97%D7%AA_%D7%97%D7%A9%D7%91%D7%95%D7%9F_73813_%D7%A2%D7%91%D7%A8%D7%99%D7%AA_%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%AA_%D7%99%D7%A0%D7%95%D7%90%D7%A8_2024_%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C.pdf",
           "title": "הסכם תנאים כלליים לפתיחת חשבון 73813, מהדורת ינואר 2024, ס' 145.12, עמ' 48",
           "publisher": "Bank of Jerusalem Ltd.",
           "strength": "institution",
@@ -997,10 +1001,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). Library 43f36f509e83fcf3, p.48, checked on the page image."
+        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-16). Library 43f36f509e83fcf3, p.48, checked on the page image."
       }
     },
     {
@@ -1027,7 +1031,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.40% (13.4 $ מינימום, 5,500 $ מקסימום)'."
@@ -1049,7 +1053,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'13.4 $ מינימום'."
@@ -1071,7 +1075,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'5,500 $ מקסימום'."
@@ -1090,7 +1094,7 @@
         "value": null,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankjerusalem.co.il/media/2932/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+          "url": "https://www.bankjerusalem.co.il/media/5757/%D7%A0%D7%92%D7%99%D7%A9_%D7%94%D7%A1%D7%9B%D7%9D_%D7%AA%D7%A0%D7%90%D7%99%D7%9D_%D7%9B%D7%9C%D7%9C%D7%99%D7%9D_%D7%9C%D7%A4%D7%AA%D7%99%D7%97%D7%AA_%D7%97%D7%A9%D7%91%D7%95%D7%9F_73813_%D7%A2%D7%91%D7%A8%D7%99%D7%AA_%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%AA_%D7%99%D7%A0%D7%95%D7%90%D7%A8_2024_%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C.pdf",
           "title": "הסכם תנאים כלליים לפתיחת חשבון 73813, מהדורת ינואר 2024, ס' 145.12, עמ' 48",
           "publisher": "Bank of Jerusalem Ltd.",
           "strength": "institution",
@@ -1103,10 +1107,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). Library 43f36f509e83fcf3, p.48, checked on the page image."
+        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-16). Library 43f36f509e83fcf3, p.48, checked on the page image."
       }
     }
   ],
@@ -1172,27 +1176,45 @@
   "left_out": [
     {
       "what": "הוצאות צד ג' בחו\"ל (חלק 11, 16/09/2026): ברוקר בארה\"ב 'אג\"ח ומניות - לפי חיוב בפועל ועד למקסימום 3% מהעסקה'; ביתר השווקים עד 50$ ליחידה, 'פעילות בקרנות –לפי חיוב בפועל ועד מקסימום 3% מהעסקה'; בנק קורספונדנט 'לפי חיוב בפועל אך לא יותר מ 100 $'; נתוני זמן אמת של בורסות חו\"ל לפי מחירון Interactive Brokers",
-      "why": "Printed for every customer abroad (part 11, library 593f6863c419627e; change notice of 16/09/2026, library 12ce26124d18f424, which replaced a broker cost of 0.015$ a share, 10$ minimum, 0.25% maximum). The amounts are what the broker charges, with a ceiling of 3% of the trade for US shares and for funds elsewhere. General terms s.145.11 (p.48) add the agents' fees for corporate events such as dividends, with no amount. Not priced: no record prices third-party costs (a decision for the lead, as for FIBI, Hapoalim and Mizrahi-Tefahot)."
+      "why": "Printed for every customer abroad (part 11, library 593f6863c419627e; change notice of 16/09/2026, library 12ce26124d18f424, which replaced a broker cost of 0.015$ a share, 10$ minimum, 0.25% maximum). The amounts are what the broker charges, with a ceiling of 3% of the trade for US shares and for funds elsewhere. General terms s.145.11 (p.48) add the agents' fees for corporate events such as dividends, with no amount. Not priced: no record prices third-party costs (a decision for the lead, as for FIBI, Hapoalim and Mizrahi-Tefahot).",
+      "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו את מה שהברוקר בחו״ל גובה בפועל: על מניות ואג״ח בארה״ב ועל קרנות בשאר השווקים עד 3% מהעסקה, ובנק קורספונדנט עד 100 דולר. גם עמלות של סוכנים על אירועים כמו חלוקת דיבידנד מועברות ללקוח בלי סכום. האתר לא מחשב אותן, ולכן המחיר בחו״ל יכול לצאת יקר יותר.",
+      "could_change_price": true
     },
     {
       "what": "עמלת קסטודיאן 0.50% (50 ש\"ח מינימום 10,000 ש\"ח מקסימום), חלק 4 (ב)(4)",
-      "why": "Part 4, special services (PDF p.7). What it is charged on is not printed. Not priced, as at Hapoalim, Leumi, Mizrahi-Tefahot and Meitav Trade."
+      "why": "Part 4, special services (PDF p.7). What it is charged on is not printed. Not priced, as at Hapoalim, Leumi, Mizrahi-Tefahot and Meitav Trade.",
+      "why_he": "התעריפון מדפיס ״עמלת קסטודיאן״ של 0.50%, מינימום 50 ₪, בלי לומר על אילו פעולות היא חלה. האתר לא מחשב אותה; אם היא חלה על קנייה או החזקה רגילה, המחיר יקר יותר.",
+      "could_change_price": true
     },
     {
       "what": "הוצאות צד ג' - תשלומים לבורסה לניירות ערך בתל-אביב, 'מחירון הבורסה': חבילות מידע (מניות, המירים ותעודות סל; נגזרים; מלאה)",
-      "why": "Part 11 row (6) passes on the exchange's data packages at the exchange's prices; nothing printed says an ordinary customer's trading screen needs one. Not priced."
+      "why": "Part 11 row (6) passes on the exchange's data packages at the exchange's prices; nothing printed says an ordinary customer's trading screen needs one. Not priced.",
+      "why_he": "חבילות מידע של הבורסה בתל אביב עולות לפי מחירון הבורסה, אבל שום מסמך לא אומר שצריך אותן כדי לקנות ולמכור באתר או באפליקציה של הבנק. לכן האתר לא מוסיף אותן.",
+      "could_change_price": false
     },
     {
       "what": "עמלת חליפין באינטרנט / אפליקציה 0.18% (6$ מינימום, 2,730$ מקסימום)",
-      "why": "Printed only in the combined file's annex E ('15/07/2025', p.20). Annex E as its own file, dated 08/06/2026 and the newest, has no conversion row, so the conversion is priced at part 5's 0.20% with its 6.7$ minimum."
+      "why": "Printed only in the combined file's annex E ('15/07/2025', p.20). Annex E as its own file, dated 08/06/2026 and the newest, has no conversion row, so the conversion is priced at part 5's 0.20% with its 6.7$ minimum.",
+      "why_he": "גרסה ישנה של נספח הערוצים הישירים מדפיסה המרת מטבע באינטרנט ובאפליקציה ב־0.18%, מינימום 6 דולר. הנספח החדש מ־08/06/2026 כבר לא מדפיס אותה, ולכן האתר מחשב 0.20% במינימום 6.7 דולר מחלק מטבע החוץ; אם הבנק עדיין גובה את המחיר המופחת, ההמרה זולה במעט.",
+      "could_change_price": true
     },
     {
       "what": "חשבון עובר ושב: עמלה חודשית קבועה בגובה פעולה אחת על ידי פקיד, 9.5 ₪ (בפיקוח); פעולה בערוץ ישיר ללא עמלה",
-      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year)."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year).",
+      "why_he": "מחשבון העו״ש האתר סופר את העמלה החודשית הקבועה, 9.5 ₪, שהבנק גובה בלי קשר למספר הפעולות. זה מה שהחשבון עולה, ופעולות בערוץ ישיר לא עולות יותר. אם סימנתם שזה הבנק שלכם, האתר לא סופר את העמלה הזו.",
+      "could_change_price": false
     },
     {
       "what": "עמלות ממוצעות בפועל, ינואר-יוני 2026: דמי ניהול ני\"ע ישראליים וזרים 0.08%-0.15% לשנה; קנייה ומכירה של מניות ואג\"ח 0.07%-0.38%, ני\"ע זרים 0.04%-0.19%",
-      "why": "What customers paid on average by portfolio size (the exchange's sheet, '01/01/26 - 30/06/26', and the bank's own page giluy-sherutim, library 6224e310f339a21f, which labels the same figures January to July 2026): a sourced fact, not a price. The list price is 0.60% a year."
+      "why": "What customers paid on average by portfolio size (the exchange's sheet, '01/01/26 - 30/06/26', and the bank's own page giluy-sherutim, library 6224e310f339a21f, which labels the same figures January to July 2026): a sourced fact, not a price. The list price is 0.60% a year.",
+      "why_he": "לפי הממוצעים שהבנק והבורסה מפרסמים, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.08% עד 0.15% בשנה, לפי גודל התיק, ובתעריפון כתוב 0.15% לרבעון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "נספח ה' (בתוקף מתאריך 08/06/2026): 'קניה מכירה - ני\"ע הנסחרים בחו\"ל - מניות, אג\"ח' באינטרנט – 0.55%, מינימום 45$ מקסימום 9,500$ לעסקה",
+      "why": "Annex E as its own file (library e0fbba6023213674, file page 1, read 2026-11-12) prints the internet price abroad on a row that names shares and bonds only, where part 4(א)(4) names 'מניות, אגרות חוב וקרנות נאמנות'; words that name no fund are silence for a fund (D56), so a fund bought abroad is priced at 4(א)(4)'s 0.6% with a 50 USD minimum, the most the documents allow. The exchange's sheet prints 0.55% and 45 USD under its own label 'מניות, אג\"ח, קרנות נאמנות - כללי', which suggests the bank may apply it to funds; a written answer from the bank would settle it.",
+      "why_he": "באינטרנט הבנק גובה על מניות ואג״ח בחו״ל 0.55% במינימום 45 דולר, אבל הנספח לא מזכיר קרנות, ולכן האתר מחשב קרן שנקנית בחו״ל לפי 0.6% במינימום 50 דולר. אם הבנק נותן את המחיר המופחת גם על קרנות, המחיר זול יותר מזה שמוצג.",
+      "could_change_price": true
     }
   ],
   "groups": {

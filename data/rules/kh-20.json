@@ -1,0 +1,27 @@
+{
+  "id": "KH-20",
+  "title": "Track categories as the CMA classifies them",
+  "title_he": "סוגי המסלולים בקרן השתלמות, לפי הסיווג של רשות שוק ההון",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-22",
+  "text_he": "בנתוני גמל נט של רשות שוק ההון כל מסלול של קרן השתלמות מסווג לפי התמחות ותת־התמחות. בספטמבר 2026 הערכים במסלולים לכלל הציבור היו: כללי, שבו נמצאים גם המסלולים בניהול אישי; מתמחים בניהול אקטיבי (מניות, אשראי ואג״ח, כספי (שקלי), אג״ח ממשלות); עוקבי מדדים (עוקב מדד S&P 500, עוקב מדדי מניות, עוקב מדדים גמיש, עוקב מדדי אג״ח); מתמחים באפיקי השקעה סחירים (משולב סחיר, מניות סחיר, אג״ח סחיר); הלכתי (הלכה יהודית, הלכה איסלאמית); וקיימות.",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קרנות%20השתלמות\",\"TARGET_POPULATION\":\"כלל%20האוכלוסיה\"}&fields=FUND_ID,FUND_NAME,MANAGING_CORPORATION,SPECIALIZATION,SUB_SPECIALIZATION,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,TOTAL_ASSETS&limit=500",
+      "title": "Gemel-Net datastore, resource a30dcbea-a1d2-482c-ae29-8f781f5025fb, filters REPORT_PERIOD=202609, FUND_CLASSIFICATION=קרנות השתלמות, TARGET_POPULATION=כלל האוכלוסיה",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

@@ -22,6 +22,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.4, annex s.4(ב); p.6, s.7(ב)-(ג)",
+      "locator_he": "עמוד 4, נספח סעיף 4(ב); עמוד 6, סעיף 7(ב)-(ג)",
       "page": 4,
       "checked": "2026-10-25"
     },

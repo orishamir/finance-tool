@@ -2,14 +2,15 @@
   "id": "BRK-19",
   "title": "Banks: a fee for a service through a direct channel must be lower than the clerk fee for the same service",
   "title_he": "בנקים: עמלה בערוץ ישיר נמוכה מהעמלה דרך פקיד",
-  "text_he": "עמלה על שירות מהתעריפון המלא שניתן בערוץ ישיר חייבת להיות נמוכה מהעמלה שהבנק קבע לאותו שירות דרך פקיד, אלא אם השירות דרך פקיד ניתן בחינם. הכלל חל על כל שירות בתעריפון, ולכן גם על פעולות בניירות ערך.",
+  "text_he": "עמלה על שירות מהתעריפון המלא שניתן בערוץ ישיר חייבת להיות נמוכה מהעמלה שהבנק קבע לאותו שירות דרך פקיד, אלא אם השירות דרך פקיד ניתן בחינם. הכלל חל על כל שירות בתעריפון, ולכן גם על פעולות בניירות ערך. מ־1 ביולי 2027 תיקון לכללי העמלות מוציא מהכלל את שירות ניהול חשבון תשלום, שיש לו תקרות משלו. פעולות בניירות ערך נשארות בתוך הכלל. בנק רשאי להתחיל לפעול לפי התיקון לפני כן, אבל רק אם הוא מחיל את כולו.",
   "strength": "primary",
   "dimensions": [
     "fee-trade"
   ],
-  "likely_to_change": "no",
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-12",
   "scope": "general",
   "sources": [
     {
@@ -23,7 +24,36 @@
       "locator": "p.4, s.2(ג)",
       "locator_he": "עמוד 4, סעיף 2(ג)",
       "page": 4,
-      "checked": "2026-10-25"
+      "quote": "למעט אם השירות באמצעות פקיד ניתן בלא עלות",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.2247)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 2247)",
+      "page": 3,
+      "quote": "סעיף זה לא יחול על שירות ניהול חשבון",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.9 (gazette p.2253)",
+      "locator_he": "עמוד הקובץ 9 (עמוד הרשומות 2253)",
+      "page": 9,
+      "quote": "ובלבד שיפעל לפי הכללים במלואם",
+      "checked": "2026-11-12"
     }
   ]
 }

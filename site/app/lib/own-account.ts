@@ -320,6 +320,8 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
   }
   const fx = numberOf(own.fxPct);
   if (fx !== null) {
+    // a rate of one's own replaces the conversion's rate and a price per unit of currency, and keeps its bounds and its flat price for a small
+    // conversion: the typed rate prices the conversions above the sum, so it never makes a small one dearer than the list (F-13)
     out.fx = typeof base.fx === "object" ? { ...without(base.fx, "perCurrencyUnit"), rate: fx / 100 } : fx / 100;
     if (base.fxStanding !== undefined) out.cheaperOfStandingFx = true;
   }

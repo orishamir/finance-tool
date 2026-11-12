@@ -557,7 +557,8 @@
           "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
           "title": "תעריפון עמלות פסגות טרייד, חלק 5, סעיף 1, עמלת המרת מט\"ח",
           "publisher": "Psagot Securities Ltd. (Psagot Trade)",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל"
         },
         "checked": "2026-11-04",
         "effective_from": null,
@@ -621,7 +622,8 @@
           "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
           "title": "תעריפון עמלות פסגות טרייד, חלק 5, סעיף 1, עמלת המרת מט\"ח",
           "publisher": "Psagot Securities Ltd. (Psagot Trade)",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "עבור המרה למטבע אחר או ממטבע אחר – עד 0.5% משווי העסקה"
         },
         "checked": "2026-11-04",
         "effective_from": null,
@@ -756,39 +758,63 @@
   "left_out": [
     {
       "what": "דף הנחיתה: \"פטור מלא מדמי ניהול ללא הגבלת זמן\", \"ללא דמי ניהול\"",
-      "why": "Advertising (psagot.co.il/website, created 2026-08-27, modified 2026-09-17, library a7a5c891f62dea4e). The tariff has no line named 'דמי ניהול'; its handling fee is already zero, and its custody line prints 0.12% a year. No binding document waives custody, so custody stays at the list price (D56). 2026-11-04: the landing page en/website1 (library 505596403a04c846) reads 'פטור מלא מדמי טיפול (דמי ניהול חשבון)', so Psagot's own advertising uses 'דמי ניהול' for the account handling fee, which the tariff prints as free."
+      "why": "Advertising (psagot.co.il/website, created 2026-08-27, modified 2026-09-17, library a7a5c891f62dea4e). The tariff has no line named 'דמי ניהול'; its handling fee is already zero, and its custody line prints 0.12% a year. No binding document waives custody, so custody stays at the list price (D56). 2026-11-04: the landing page en/website1 (library 505596403a04c846) reads 'פטור מלא מדמי טיפול (דמי ניהול חשבון)', so Psagot's own advertising uses 'דמי ניהול' for the account handling fee, which the tariff prints as free.",
+      "why_he": "בדף הנחיתה כתוב ״פטור מלא מדמי ניהול ללא הגבלת זמן״. בתעריפון דמי הטיפול בחשבון הם כבר 0, אבל דמי המשמרת הם 0.12% בשנה, והאתר מחשב אותם.",
+      "could_change_price": false
     },
     {
       "what": "מחשבון העמלות של הבורסה: עמלות ממוצעות בפועל 01/01/26-30/06/26, \"דמי ניהול - ני\"ע ישראלים 0%\" ו\"דמי ניהול - ני\"ע זרים 0%\" בכל שווי תיק",
-      "why": "What customers paid on average is a sourced fact, not a price (D56); recorded in the custody line's notes, not in averages, so no calculation reads it."
+      "why": "What customers paid on average is a sourced fact, not a price (D56); recorded in the custody line's notes, not in averages, so no calculation reads it.",
+      "why_he": "במחשבון של הבורסה מופיע שלקוחות החברה שילמו בממוצע 0% דמי משמרת בפועל. זה נתון על העבר ולא מחיר, ולכן האתר מתמחר לפי התעריפון.",
+      "could_change_price": false
     },
     {
       "what": "עמוד trade_heb: המרת מט\"ח \"בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה\"",
-      "why": "Advertising, contradicted by the tariff's conversion line (1.5 agorot per dollar); the spread is not limited by any document."
+      "why": "Advertising, contradicted by the tariff's conversion line (1.5 agorot per dollar); the spread is not limited by any document.",
+      "why_he": "בדף אחר של החברה כתוב שאין עמלות המרה, אבל התעריפון מפרסם עמלת המרה, והאתר מתמחר לפי התעריפון.",
+      "could_change_price": false
     },
     {
       "what": "ני\"ע בחו\"ל: \"עמלת הקורספונדנט ו/או עמלות צד שלישי\" בקנייה, במכירה ו\"בעת חלוקת דיבידנד\"; \"SEC ORF, ECN, TAF TAX ועוד\"",
-      "why": "Charged on top of the commission at whatever the bank or correspondent charges; the tariff sets no amount or limit, so not limited by the documents. Foreign funds are grey on this record anyway."
+      "why": "Charged on top of the commission at whatever the bank or correspondent charges; the tariff sets no amount or limit, so not limited by the documents. Foreign funds are grey on this record anyway.",
+      "why_he": "על ניירות ערך בחו״ל נוספות עמלות של הבנק בחו״ל ושל גופים אחרים, גם בחלוקת דיבידנד, בלי סכום כתוב. האתר לא מוסיף אותן, כמו אצל כל בית השקעות, ולכן המחיר בפועל יקר יותר.",
+      "could_change_price": true
     },
     {
       "what": "העברת ניירות ערך מחשבון בפסגות: ישראליים 0.07% \"מקסימום 70₪ להוראת העברה\"; זרים \"10 דולר לכל נייר\"",
-      "why": "A cost on leaving, not in the holding calculation; at most 70 NIS per instruction for Israeli securities."
+      "why": "A cost on leaving, not in the holding calculation; at most 70 NIS per instruction for Israeli securities.",
+      "why_he": "העברת ניירות ערך לבית השקעות אחר עולה 0.07% מהשווי, עד 70 ₪ להעברה, לניירות ישראליים, ו־10 דולר לכל נייר זר. זו עלות של עזיבה, והאתר לא מחשב אותה.",
+      "could_change_price": false
     },
     {
       "what": "נתוני מסחר בזמן אמת: \"בורסת תל אביב רציף LEVEL 1 – עלות חודשית 4.60₪\", \"LEVEL 2 – עלות חודשית 40.32₪\"",
-      "why": "Optional; delayed TASE data is printed 'ללא תשלום', so the account works without them."
+      "why": "Optional; delayed TASE data is printed 'ללא תשלום', so the account works without them.",
+      "why_he": "שערים בזמן אמת מהבורסה בתל אביב הם מנוי חודשי למי שרוצה בו; שערים מעוכבים ניתנים בלי תשלום. לא צריך את המנוי כדי לקנות ולמכור.",
+      "could_change_price": false
     },
     {
       "what": "העברה בזה\"ב (RTGS) 27₪; משיכת מט\"ח ו\"עלות סוויפט של הבנק\"",
-      "why": "Paid only when that transfer is asked for; the swift and correspondent costs are set by the banks and not limited by the documents."
+      "why": "Paid only when that transfer is asked for; the swift and correspondent costs are set by the banks and not limited by the documents.",
+      "why_he": "עמלות על העברת כסף בזה״ב ועל משיכת מט״ח, רק כשמבקשים אותן. אלה לא חלק מקנייה והחזקה של קרן.",
+      "could_change_price": false
     },
     {
       "what": "הוראת קבע לקנייה חודשית, דמי אי-פעילות, טיפול בדיבידנד מני\"ע ישראליים",
-      "why": "None printed in the tariff or the exchange's sheet. Advertising (psagot.co.il/en/website1, modified 2026-09-16, library 505596403a04c846) offers 'אפשרות להוראת קבע לרכישת ניירות ערך'; no fee for it is printed."
+      "why": "None printed in the tariff or the exchange's sheet. Advertising (psagot.co.il/en/website1, modified 2026-09-16, library 505596403a04c846) offers 'אפשרות להוראת קבע לרכישת ניירות ערך'; no fee for it is printed.",
+      "why_he": "התעריפון לא מפרסם עמלה על הוראת קבע לקנייה, דמי אי פעילות או טיפול בדיבידנד מניירות ערך ישראליים, ולכן האתר לא מחשב כאלה.",
+      "could_change_price": false
     },
     {
       "what": "קבוצות והפניות: עמלת ק/מ 0.06% מינ' 2₪ ומינימום 6$ בארה\"ב לחברי קהילות; מתנת הצטרפות עד 850₪",
-      "why": "Third-party referral pages (financialninja, zekestories, hasolidit) and a community post, not Psagot documents; no promotion terms were found on Psagot's site."
+      "why": "Third-party referral pages (financialninja, zekestories, hasolidit) and a community post, not Psagot documents; no promotion terms were found on Psagot's site.",
+      "why_he": "הטבות שאתרים אחרים ופורומים מתארים לחברי קהילות, בלי מסמך של החברה. האתר מתמחר את המחיר הרגיל.",
+      "could_change_price": false
+    },
+    {
+      "what": "נספח העמלות הכללי שפסגות שלחה בכתב ב־10.11.2026 (\"טבלת מחירים ועמלות\", ללא תאריך): \"דמי שמירת ני\"ע\" פטור; \"עמלת המרת מט\"ח\" פטור, \"בהתאם לשיקול דעת, פסגות עשויה לגבות עמלה נוספת (מרווח) הגלומה בשער ההמרה\"; אירופה \"מינימום של 15 יח' מטבע שלמות בהתאם למטבע שבו בוצעה העסקה\"",
+      "why": "docs/company-answers.md#psagot-2026-11-10. Psagot sent it as 'נספח העמלות הכללי' and said other customers get other agreements by promotions, groups or portfolio size; it carries no date, and Psagot did not say it is current for a new customer. The record still prices the published tariff (dateModified 2026-08-09, re-read 2026-11-12): custody 0.12% a year ('גבייה רבעונית 0.03%'), conversion '1.5 אגורות עבור כל דולר/שקל', Europe 'מינימום 15 יורו'. If the annex is the ordinary new customer's price, as the lead ruled for IBI's confirmed annex (D56, 2026-11-08), Psagot's custody falls to zero on every holding; the exchange's averages (0% custody actually charged in every band) agree with it. For the lead.",
+      "why_he": "בנספח העמלות הכללי שפסגות שלחה בכתב כתוב שאין דמי שמירה על ניירות ערך, ובתעריפון שבאתר החברה כתוב 0.12% בשנה. האתר מחשב לפי התעריפון; אם הנספח הוא המחיר שלכם, החשבון זול בפועל יותר. באותו נספח גם אין עמלת המרה, אבל פסגות ״עשויה לגבות עמלה נוספת (מרווח) הגלומה בשער ההמרה״ לפי שיקול דעתה, והמינימום באירופה הוא 15 במטבע העסקה ולא 15 יורו.",
+      "could_change_price": true
     }
   ],
   "groups": {

@@ -1,0 +1,128 @@
+{
+  "id": "BPN-09",
+  "title": "\"Choice\" and \"dual-track\" deposits: the alternatives differ by bank",
+  "title_he": "פיקדונות ״ברירה״: החלופות והיציאה המוקדמת שונות מבנק לבנק",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal",
+    "liquidity-lockup",
+    "protection",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "text_he": "יש בנקים שמוכרים פיקדון שמשלם בסוף התקופה את הטובה מבין שתיים או שלוש חלופות, והחלופות שונות מבנק לבנק. בבנק יהב, בבנק הבינלאומי, בבנק הפועלים ובבנק מזרחי טפחות יש פיקדונות שבוחרים בין ריבית קבועה לא צמודה לבין הצמדה למדד, כמו ״נבו ברירה מדד״, ״עוז״, ״WIN WIN״, ״קרמבולה״, ״פסיפלורה״ ו״תות״. ביהב, בבינלאומי ובבנק מסד יש גם פיקדונות שבוחרים בין ריבית קבועה לריבית משתנה, כמו ״ארבל״ של מסד; בבינלאומי פיקדון ״תלתן״ בוחר בין לא צמוד, צמוד למדד וצמוד לדולר, ובבנק לאומי יש פיקדון שבוחר בין הצמדה לדולר לבין ריבית קבועה. גם היציאה המוקדמת שונה: ב״קרמבולה״ וב״פסיפלורה״ של מזרחי טפחות משיכה מוקדמת מוחזרת צמודה למדד, בלי ריבית ובלי הבטחה של הסכום הנומינלי שהופקד; ב״WIN WIN״ של בנק הפועלים אי אפשר למשוך לפני סוף התקופה, ובשורות של ״חסכון נבו ברירה״ בבנק יהב כתוב ״אין אפשרות שבירה״.",
+  "il_finance_file": "bank-product-names.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    },
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    },
+    {
+      "id": "mizrahi-tefahot",
+      "name_he": "בנק מזרחי טפחות"
+    },
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "Leumi 447 PDF",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.36",
+      "locator_he": "עמוד 36",
+      "quote": "מבין הצמדה",
+      "checked": "2026-11-09"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "Yahav board",
+      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.4, 8",
+      "locator_he": "עמודים 4, 8",
+      "page": 4,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/win_win_1832025.pdf",
+      "title": "Hapoalim WIN WIN contract",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/choicedeposits/",
+      "title": "FIBI choice deposits",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/carambola-cd/",
+      "title": "Mizrahi Carambola",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/passionfruit-cd/",
+      "title": "Passiflora",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/arbel/",
+      "title": "Massad Arbel",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פיקדון ברירת ריבית לשנה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/saving-accounts/deposits-attractive-offers/cd_strawberry/",
+      "title": "Strawberry",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

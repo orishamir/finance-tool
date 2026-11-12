@@ -71,7 +71,7 @@
       "notes": "CMA standard child bylaw s.10.4-10.5: within four business days of the request reaching the manager, to the member's bank account only; deferral to the 4th business day if the date falls in the month's first three business days; report within 10 business days (s.11). Reg. 41יא of the 1964 rules gives the same 4 business days, since the fund is a kupat gemel lehashkaa (circular 2022-9-29 s.1)."
     }
   },
-  "text_he": "מושכים רק מגיל הפדיון (מסוף חודש יום ההולדת), את כל הכסף או חלק ממנו. עד הגיל שבו נדרשת חתימת הורה ההורה חותם על המשיכה; אחריו הילד מושך לבד. הבקשה מוגשת לקופה או לבנק, לא לביטוח הלאומי. בקופת גמל הכסף משולם לחשבון הבנק של העמית בלבד, בתוך ימי העסקים לתשלום מקופה מהיום שהבקשה הגיעה לחברה; אם המועד חל באחד משלושת ימי העסקים הראשונים של החודש, התשלום יכול לעבור ליום העסקים הרביעי. אין משיכה בשל מצוקה כלכלית, ומועד כללי לתשלום מבנק לא נמצא.",
+  "text_he": "מושכים רק מגיל הפדיון (מסוף חודש יום ההולדת), את כל הכסף או חלק ממנו. עד סוף התקופה שבה נדרשת חתימת הורה, ההורה חותם על המשיכה; אחריה הילד מושך לבד. הבקשה מוגשת לקופה או לבנק, לא לביטוח הלאומי. בקופת גמל הכסף משולם לחשבון הבנק של העמית בלבד, בתוך ימי העסקים לתשלום מקופה מהיום שהבקשה הגיעה לחברה; אם המועד חל באחד משלושת ימי העסקים הראשונים של החודש, התשלום יכול לעבור ליום העסקים הרביעי. אין משיכה בשל מצוקה כלכלית, ומועד כללי לתשלום מבנק לא נמצא.",
   "figure_names_he": {
     "withdrawal_age": "גיל הפדיון",
     "parent_signature_until_age": "גיל שעד אליו נדרשת חתימת הורה",
@@ -133,6 +133,7 @@
       "strength": "primary",
       "locator": "file p.19 (gazette p.873), reg. 44 (substituting reg. 41יא; payment within 5 business days, monthly instalments on a fixed day)",
       "locator_he": "עמוד הקובץ 19 (עמוד הרשומות 873), תקנה 44 (החלפת תקנה 41יא)",
+      "page": 19,
       "quote": "ביקש העמית לקבל את הכספים בתשלומים חודשיים רצופים",
       "checked": "2026-11-07"
     },
@@ -146,6 +147,7 @@
       "strength": "primary",
       "locator": "file p.3 (gazette p.603), reg. 9 (amending reg. 41יא: '5 ימי עסקים' becomes '4 ימי עסקים', and the deferral to the fourth business day)",
       "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 603), תקנה 9 (תיקון תקנה 41יא)",
+      "page": 3,
       "quote": "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש",
       "checked": "2026-11-07"
     },

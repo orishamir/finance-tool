@@ -1,0 +1,63 @@
+{
+  "id": "REG-22",
+  "title": "Insurers (tier 2): assets backing life-insurance liabilities are ring-fenced",
+  "title_he": "הנכסים שמול ביטוח חיים משמשים קודם כול את המבוטחים",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי חוק הפיקוח על הביטוח, בנוסח שנחקק, נכסים שמוחזקים לכיסוי התחייבויות בביטוח חיים משמשים קודם כול לכיסוי ההתחייבויות של המבטח בביטוח חיים, גם בהליכי הוצאה לפועל נגד המבטח ובהליכי פירוק שלו. אם מבטח לא יכול לעמוד בהתחייבויות שלו, הממונה יכול למנות לו מנהל מורשה; הנוסח העדכני של הסעיף הזה לא נקרא. הכלל חשוב לפוליסות חיסכון ולביטוח מנהלים.",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf#page=12",
+      "title": "s.54, gazette ס״ח תשמ״א, 208 (ספר החוקים 1021, 23.4.1981)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.219 (file p.12), s.54(ב)-(ג)",
+      "locator_he": "עמוד 219 (עמוד הקובץ 12), סעיף 54(ב)-(ג)",
+      "page": 12,
+      "checked": "2026-11-06",
+      "qualifier": "(gazette)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf#page=15",
+      "title": "s.68",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.68",
+      "locator_he": "סעיף 68",
+      "page": 15,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/13/law/13_lsr_ec_317365.pdf#page=2",
+      "title": "s.70א, gazette 13_lsr_ec_317365",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.70א, gazette 13_lsr_ec_317365",
+      "page": 2,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette, for the text as enacted or amended there; current wording: open question 27)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016 (ספר החוקים 2582)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-11-06"
+    }
+  ]
+}

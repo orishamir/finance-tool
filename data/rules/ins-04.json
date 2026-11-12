@@ -1,0 +1,31 @@
+{
+  "id": "INS-04",
+  "title": "The lost-contact fee cap of 0.3% applies to profit-sharing life policies",
+  "title_he": "תקרה של 0.3% על חיסכון של מבוטח שהקשר איתו נותק, גם בפוליסת חיסכון",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-change-over-time",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי תקנות דמי הניהול של קופות הגמל, על היתרה של עמית שהקשר איתו נותק או של עמית שנפטר, כשהחברה לא השלימה את פעולות האיתור שנדרשות, דמי הניהול מוגבלים ל־0.3% בשנה או לשיעור שנגבה לאחרונה, הנמוך מביניהם. לעניין התקנה הזו בלבד, קופת גמל כוללת גם ביטוח חיים משתתף ברווחים שאינו קופת ביטוח, ועמית כולל גם מבוטח, ולכן התקרה חלה גם על פוליסות חיסכון. ביטוח מנהלים נכלל בה בכל מקרה, כקופת גמל.",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+      "title": "s.8, gazette ק״ת תשע״ב, 1260",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.8, gazette ק״ת תשע״ב, 1260",
+      "locator_he": "סעיף 8, ק״ת תשע״ב, 1260",
+      "page": 6,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
+    }
+  ]
+}
