@@ -411,7 +411,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - What a trust does not cover, also read and not stated: if trust assets are missing (fraud, error), the saver's claim for the gap is a claim on the company, a general debt under REG-33. The deposit-insurance bill and the broker-dealer bill would change parts of this (REG-05, REG-16); neither is law.
   - Read in the gazette as enacted. Of the four later acts the Knesset's record lists, two were read and touch other sections (the 1979 printing corrections to ss.12(ב) and 14; the 1980 amendment to s.46); the other two (חוק העמותות, ס"ח תש"ם 218; תיקון 6 לחוק החברות, ס"ח תשס"ז 349) were not read.
 - Figures: none.
-- Source: [חוק הנאמנות, התשל"ט-1979 (ספר החוקים 941, 3.8.1979)](https://fs.knesset.gov.il/9/law/9_lsr_210375.pdf#page=1), p.128, ss.2, 3(ב), 3(ג) · checked 2026-11-06 · primary (gazette, as enacted). [תיקון טעויות דפוס, ספר החוקים 946](https://fs.knesset.gov.il/9/law/9_lsr_ec_317342.pdf), p.3; [חוק הנאמנות (תיקון), התש"ם-1980, ספר החוקים 960](https://fs.knesset.gov.il/9/law/9_lsr_210374.pdf), p.64 · checked 2026-11-06 · primary (for what they change)
+- Source: [חוק הנאמנות, התשל"ט-1979 (ספר החוקים 941, 3.8.1979)](https://fs.knesset.gov.il/9/law/9_lsr_210375.pdf#page=1), file p.1 (gazette p.128), ss.2, 3(ב), 3(ג) · checked 2026-11-06 · primary (gazette, as enacted). [תיקון טעויות דפוס, ספר החוקים 946](https://fs.knesset.gov.il/9/law/9_lsr_ec_317342.pdf), file p.1 (gazette p.3); [חוק הנאמנות (תיקון), התש"ם-1980, ספר החוקים 960](https://fs.knesset.gov.il/9/law/9_lsr_210374.pdf), file p.1 (gazette p.64) · checked 2026-11-06 · primary (for what they change)
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no
