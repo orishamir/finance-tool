@@ -36,8 +36,8 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.20, s.82, s.83",
-      "locator_he": "עמוד 20, סעיף 82, סעיף 83",
+      "locator": "p.20, s.82, s.83 and note 38",
+      "locator_he": "עמוד 20, סעיף 82, סעיף 83 והערה 38",
       "page": 20,
       "quote": "כרוכה בקנס משמעותי ששיעורו גדול מהותית מהפסד הריבית",
       "checked": "2026-10-26"

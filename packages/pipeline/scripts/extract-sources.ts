@@ -210,6 +210,33 @@ function isLocatorRemark(part: string): boolean {
   return first !== undefined && !PLACE_WORD.test(first) && !PLACE_REF.test(part);
 }
 
+/**
+ * A link's text as its passages: cut at each "; p.N" or "; file p.N" that stands outside parentheses. A remark in parentheses may
+ * list pages of its own ("(the exemption: p.1, note 9; p.2, note 3)"); cut there, its second half became a passage ending on the
+ * remark's closing bracket.
+ */
+export function splitPassages(body: string): string[] {
+  const out: string[] = [];
+  const cut = /;\s*(?=(?:file\s+)?pp?\.\s*\d)/y;
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < body.length; i++) {
+    const c = body[i];
+    if (c === "(") depth++;
+    else if (c === ")") depth = Math.max(0, depth - 1);
+    else if (c === ";" && depth === 0) {
+      cut.lastIndex = i;
+      const m = cut.exec(body);
+      if (!m) continue;
+      out.push(body.slice(start, i));
+      start = i + m[0].length;
+      i = start - 1;
+    }
+  }
+  out.push(body.slice(start));
+  return out;
+}
+
 /** Cleans the raw text after a link into a locator: sections, regulations, pages; quotes removed. */
 export function cleanLocator(text: string): string {
   // Hebrew abbreviations such as תשע"ה carry a quote mark that is not a quotation; mask it while cutting.
@@ -222,7 +249,11 @@ export function cleanLocator(text: string): string {
   t = t.replace(/\uE000/g, '"');
   // Parenthetical remarks in English ("(gov.il)", "(as amended 2007)", "(link above)") are not part of the locator.
   // ("(gazette p.375)" beside a file's page is kept: it is the page the gazette prints)
-  t = t.replace(/\((?!\s*(?:gazette|file) (?:pp?\.|pages?)\s*\d+(?:\s*(?:–|-|to)\s*\d+)?\s*\))(?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
+  // (a remark that holds brackets of its own, "(iShares Core S&P 500 UCITS ETF USD (Dist))", goes from the inside out)
+  for (let before = ""; before !== t; ) {
+    before = t;
+    t = t.replace(/\((?!\s*(?:gazette|file) (?:pp?\.|pages?)\s*\d+(?:\s*(?:–|-|to)\s*\d+)?\s*\))(?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
+  }
   t = t.replace(/\(\s*\)/g, " ");
   // A remark after "; " ("; the ISA directives list shows no later version") is not part of the locator either: a part that opens on an
   // English word that names no place in a document and holds no reference is dropped, as a parenthesised remark is. It goes before the
@@ -233,7 +264,12 @@ export function cleanLocator(text: string): string {
     .filter((part, i) => i === 0 || !isLocatorRemark(part))
     .join(";");
   // Prose after the reference ("describe Amendment 15 as the law that") is cut off.
-  const prose = /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?|parts?|file|gazette|enacted)\b)[a-z]{4,}\b/.exec(t);
+  // A word that names a place only with its number or name after it ("rows סחורות", "note 6", "chapter 3", "tables 2 to 3") is no
+  // prose there; alone it is ("note that the list…"), and cuts as any other word does.
+  const prose =
+    /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?|parts?|file|gazette|enacted)\b)(?!(?:rows|notes?|chapters?|questions?|tables|footnotes)\s+[\d\u05D0-\u05EA])[a-z]{4,}\b/.exec(
+      t,
+    );
   if (prose) t = t.slice(0, prose.index);
   t = t.replace(/\s+/g, " ").replace(/^[\s,;:.()]+/, "");
   t = t.replace(/(?:[\s,;:.(]|\b(?:definitions?|definition of|of|and|paragraph|footnote|items?|the|read)\b)+$/gi, "");
@@ -292,16 +328,27 @@ export function toHebrewLocator(locator: string, url = ""): string | undefined {
     .replace(/\brows\s+(?=[\d\u05D0-\u05EA])/gi, "שורות ")
     .replace(/\brow\s+(?=[\d\u05D0-\u05EA])/gi, "שורה ")
     .replace(/\btable\b(?!\s*[A-Za-z])/gi, "טבלה")
+    .replace(/\btables\s+(?=[\d\u05D0-\u05EA])/gi, "טבלאות ")
+    .replace(/\bnotes\s+(?=\d)/gi, "הערות ")
+    .replace(/\bnote\s+(?=\d)/gi, "הערה ")
+    .replace(/\bchapters\s+(?=[\d\u05D0-\u05EA])/gi, "פרקים ")
+    .replace(/\b(?:chapter\s+|ch\.\s*)(?=[\d\u05D0-\u05EA])/gi, "פרק ")
+    .replace(/\bquestions\s+(?=\d)/gi, "שאלות ")
+    .replace(/\bquestion\s+(?=\d)/gi, "שאלה ")
     .replace(/\bparts\s+/gi, "חלקים ")
     .replace(/\bpart\s+/gi, "חלק ")
     .replace(/\bitems\s+/gi, "פרטים ")
     .replace(/\bitem\s+/gi, "פרט ")
+    // "note 38 to s.82": a note that belongs to a section
+    .replace(/(\d)\s+to\s+(?=(?:סעיף|תקנה)\s)/g, "$1 ל")
     .replace(/(\d)\s+to\s+(?=[\d(])/gi, "$1 עד ")
     .replace(/\)\s+to\s+(?=[\d(])/gi, ") עד ")
     .replace(/\(([a-e])(\d*)\)/gi, (_m, l: string, d: string) => `(${LATIN_TO_HE[l.toLowerCase()]}${d})`)
     .replace(/(\d)([a-e])(\d*)(?![A-Za-z])/gi, (_m, n: string, l: string, d: string) => `${n}${LATIN_TO_HE[l.toLowerCase()]}${d}`)
     // "s.1 and s.5" once both sides are in Hebrew
-    .replace(/\s+and\s+(?=[\u05D0-\u05EA])/gi, " ו");
+    .replace(/\s+and\s+(?=[\u05D0-\u05EA])/gi, " ו")
+    // "rows 1 and 29": a prefix takes a maqaf before a number
+    .replace(/\s+and\s+(?=\d)/gi, " ו־");
   t = t.replace(/\s+/g, " ").trim();
   if (/[A-Za-z]/.test(t)) return undefined;
   return t || undefined;
@@ -461,7 +508,12 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
       return;
     }
     const afterLink = (rest.includes("·") ? rest.split("·")[0]! : rest.split(";")[0]!).trim();
-    const locator = cleanLocator(afterLink) || locatorFromTitle(link.title);
+    const after = cleanLocator(afterLink);
+    const fromTitle = locatorFromTitle(link.title);
+    // a link titled by its page ("[p.119](…#page=119), note 10") keeps that page before the place the text after it names; a place
+    // in any other title (", s.3" at a document's name's end) stands only when nothing follows the link
+    const titledByPage = /^(?:file )?pp?\.\s*\d/i.test(link.title.trim()) && !/(?:^|[\s,(])pp?\.\s*\d/i.test(after);
+    const locator = after && fromTitle && titledByPage ? `${fromTitle}, ${after}` : after || fromTitle;
     const word0 = word ?? lineStrengthWord ?? (ctx.ruleStrength === "open" || ctx.ruleStrength === "entered" ? "secondary" : ctx.ruleStrength);
     // a copy of an official text is a lead, never a source (CLAUDE.md): a copy host, or a third-party host the line calls a copy (a
     // regulator's or ministry's own host is never a copy, whatever the qualifier says, "government copy"; lead, 2026-10-24)
@@ -518,7 +570,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     // own, with its locator, page and quote. Were the quoted passage merged into the ones before it, the source would open where its
     // words are while its locator, cut at the first prose word or quote mark, named only the first passage's page: BANK-07's
     // "file p.1, amendment list …; file p.18, Schedule E, row "…"" said "file p.1" and opened at 18.
-    const passages = body.split(/;\s*(?=(?:file\s+)?pp?\.\s*\d)/);
+    const passages = splitPassages(body);
     const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
     // a passage whose quote marks hold no quote (a title, a term, an English heading) stays with the passages before it, as before
     const quoteApart = firstQuoted > 0 && findQuote(passages[firstQuoted]!) !== undefined;

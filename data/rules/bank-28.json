@@ -109,8 +109,8 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.20",
-      "locator_he": "עמוד 20",
+      "locator": "p.20, note 38 to s.82",
+      "locator_he": "עמוד 20, הערה 38 לסעיף 82",
       "page": 20,
       "quote": "אם חלק מהפיקדון לזמן קצוב ניתן למשיכה מבלי לגרום לקנס כזה, רק אותו החלק ייחשב לפיקדון לפי דרישה",
       "checked": "2026-10-26"

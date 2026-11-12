@@ -15,6 +15,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "title": "גמל-נט: מילון השדות",
+      "title_he": "גמל-נט: מילון השדות",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "rows 1 and 29",
+      "locator_he": "שורות 1 ו־29",
+      "quote": "אחוז הנזילות של נכסי הקופה",
+      "checked": "2026-11-12"
+    },
+    {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100",
       "title": "פנסיה-נט: מילון השדות",
       "title_he": "פנסיה-נט: מילון השדות",
@@ -28,17 +41,6 @@
       "checked": "2026-11-12"
     },
     {
-      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
-      "title": "גמל-נט: מילון השדות",
-      "title_he": "גמל-נט: מילון השדות",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
-      "kind": "dataset",
-      "strength": "primary",
-      "quote": "אחוז הנזילות של נכסי הקופה",
-      "checked": "2026-11-12"
-    },
-    {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=388992c7-0280-48d8-b147-13e636bd804d&limit=100",
       "title": "ביטוח-נט: מילון השדות",
       "title_he": "ביטוח-נט: מילון השדות",
@@ -46,6 +48,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 1 and 21",
+      "locator_he": "שורות 1 ו־21",
       "checked": "2026-11-12"
     },
     {

@@ -35,8 +35,8 @@
       "publisher_he": "הבנק הבינלאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
+      "locator": "p.2, note 2",
+      "locator_he": "עמוד 2, הערה 2",
       "page": 2,
       "quote": "חשבון עו״ש שנפתח ע״י הלקוח אך ורק לצורך פירעון הלוואה או העברה לתוכנית חסכון",
       "checked": "2026-11-12"
@@ -53,19 +53,6 @@
       "locator_he": "עמוד 2, פרט 1.3.2",
       "page": 2,
       "quote": "השלמה למינימום דמי ניהול",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/media/e11agh3s/חלק-1-חשבון-עובר-ושב-46.pdf",
-      "title": "בנק מסד: תעריפון ליחידים, חלק 1 חשבון עובר ושב",
-      "title_he": "בנק מסד: תעריפון ליחידים, חלק 1 חשבון עובר ושב",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
       "checked": "2026-11-12"
     },
     {
