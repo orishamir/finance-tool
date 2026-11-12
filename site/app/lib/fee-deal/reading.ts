@@ -117,7 +117,8 @@ export interface CurveSeries {
  * at, in shekels: its start, each mark on it, and its axis end. The start, amount 0, costs what the smallest action or value does: a
  * minimum, a sum per action and the sums per period are charged in full there, so the curve starts at them, not at nothing (F-112).
  * Every cost bends only at a mark (a minimum's or a maximum's), so between two amounts it is a straight line. The costs are plain numbers
- * of F-112 resting on `inputs` (the figures of its fees and the rates of F-84 that convert a bound in another currency), named beside it.
+ * of F-112 resting on `inputs` (the figures of its fees and the rates of F-84 that convert a bound in another currency, keyed by
+ * `rateKey`), named beside it.
  */
 export interface Curve {
   on: "action" | "held";
@@ -131,9 +132,19 @@ export interface Curve {
   marks: MarkView[];
   /** Each mark's sum in shekels, in the order of `marks` (a bound in another currency converted at F-84's rate). */
   at: number[];
-  rates: SiteValue[];
+  /** The shekels per one unit of each currency a bound on the curve is typed in (F-84), which the page names beside the curve. */
+  rates: CurveRate[];
   inputs: Record<string, SiteValue>;
 }
+
+/** The rate of F-84 a curve converts a bound in `currency` at. */
+export interface CurveRate {
+  currency: string;
+  rate: SiteValue;
+}
+
+/** The key of a currency's rate among a curve's inputs (`deal:rate:USD`); the copy names each currency a bound may be typed in. */
+export const rateKey = (currency: string): string => `deal:rate:${currency}`;
 
 /** A curve that cannot be drawn: a bound on it is in a currency the site has no rate for. */
 export interface Undrawn {
@@ -188,13 +199,13 @@ function actionCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], act
   const bounded = (x: DealPeriod["prices"][number]["price"] | undefined) => x?.kind === "action" && (x.min !== undefined || x.max !== undefined) && x.currency && x.currency !== "ILS" ? [x.currency] : [];
   const currencies = [...new Set(r.fees.flatMap((_, i) => [p.prices[i]!.price, p.prices[i]!.sale].flatMap(bounded)))];
   const rates: Record<string, number> = {};
-  const rateValues: SiteValue[] = [];
+  const rateValues: CurveRate[] = [];
   for (const c of currencies) {
     const n = fx ? nisPerNumber(fx, c) : null;
     const v = fx ? nisPer(fx, c, r.today) : null;
     if (n === null || !v) return { undrawn: { on: "action", action, side, periods: [at], currency: c } };
     rates[c] = n;
-    rateValues.push(v);
+    rateValues.push({ currency: c, rate: v });
   }
   const shekels = (m: DealMark) => m.amount * (m.currency === "ILS" ? 1 : rates[m.currency]!);
   const cost = (a: number) => actionCost(r.engine, p, action, a, side === "sell" ? "sell" : "buy", rates);
@@ -216,7 +227,7 @@ function drawn(
   marks: readonly DealMark[],
   shekels: (m: DealMark) => number,
   cost: (a: number) => ReturnType<typeof holdingCost>,
-  rates: SiteValue[],
+  rates: CurveRate[],
   action?: DealAction,
 ): Curve {
   const at = marks.map(shekels);
@@ -228,7 +239,7 @@ function drawn(
   const costs = amounts.map(cost);
   const fees = [...new Set(costs.flatMap((c) => c.parts.map((x) => x.fee)))].sort((a, b) => a - b);
   const series = fees.map((i) => ({ fee: refOf(r.fees[i]!), costs: costs.map((c) => c.parts.find((x) => x.fee === i)?.cost ?? 0) }));
-  const inputs = { ...curveInputs(r, p, fees, side), ...Object.fromEntries(rates.map((v, k) => [`rate ${k + 1}`, v])) };
+  const inputs = { ...curveInputs(r, p, fees, side), ...Object.fromEntries(rates.map((x) => [rateKey(x.currency), x.rate])) };
   return {
     on,
     ...(action ? { action } : {}),

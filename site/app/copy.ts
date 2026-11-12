@@ -1771,6 +1771,8 @@ export const feeDeal = {
   failed: "הנתונים של העמוד לא נטענו. אפשר לרענן את הדף ולנסות שוב.",
   /** The four fees the records' bases do not list (shapes.ts), and the name of a fee of the person's own before they name it. */
   names: { fund_management: "דמי הניהול של הקרן", fx_spread: "הפרש שער בהמרה", current_account: "חשבון עובר ושב בבנק", own: "עמלה משלכם" } as Record<string, string>,
+  /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
+  rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
   /** The bar under the page's head: the deal's name, its kind, its start and where it is kept. */
   bar: {
     label: "העסקה",
@@ -1979,6 +1981,8 @@ export const feeDeal = {
  *  fee names above and the guide's are both defined. */
 function dealInputNames(): Record<string, string> {
   const out: Record<string, string> = { cap: "התקרה", account_sums: "הסכומים הקבועים בשנה", custody_rate: "האחוז ממה שמוחזק בשנה" };
+  // the rate a curve converts a bound in another currency at (reading.ts, `rateKey`)
+  for (const [code, name] of Object.entries(feeDeal.rateNames)) out[`deal:rate:${code}`] = name;
   const kinds = [...Object.keys(guideBlocks.fees).filter((k) => typeof guideBlocks.fees[k] === "object" && guideBlocks.fees[k].name), ...Object.keys(feeDeal.names)];
   for (const k of kinds) {
     const name: string = guideBlocks.fees[k]?.name ?? feeDeal.names[k]!;
