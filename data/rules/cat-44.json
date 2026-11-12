@@ -36,6 +36,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.7 and p.1",
+      "locator_he": "עמוד 7 ועמוד 1",
       "page": 7,
       "checked": "2026-11-03"
     },

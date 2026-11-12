@@ -22,6 +22,7 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.6, reg. 1, definitions הכנסת חוץ, הכנסה מנייר ערך",
+      "locator_he": "עמוד 6, תקנה 1, הגדרות הכנסת חוץ, הכנסה מנייר ערך",
       "page": 6,
       "checked": "2026-10-26"
     },
@@ -34,6 +35,7 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.7, reg. 1(5), definition מקדמת מס",
+      "locator_he": "עמוד 7, תקנה 1(5), הגדרת מקדמת מס",
       "page": 7,
       "quote": "מקדמה לפי הוראות תקנות מס הכנסה (מקדמות בשל הכנסת חוץ), התשס״ד-2004, שצורף אליה דו״ח בדבר דרך קביעת המקדמה",
       "checked": "2026-10-26"

@@ -38,6 +38,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.12, s.1, definition אדם",
+      "locator_he": "עמוד 12, סעיף 1, הגדרת אדם",
       "page": 12,
       "quote": "לרבות חברה וחבר בני-אדם",
       "checked": "2026-11-12"
@@ -59,12 +60,13 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=2",
       "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.2 (gazette p.284), s.2(1)(ד), definition מוכר",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 284), סעיף 2(1)(ד), הגדרת מוכר",
       "page": 2,
       "quote": "למעט אדם מן המפורטים בתוספת לתקנות מס הכנסה",
       "checked": "2026-11-12"
@@ -72,9 +74,9 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=3",
       "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.3 (gazette p.285), s.7, reg. 5",

@@ -71,6 +71,7 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.8 (gazette p.292), ss.1-2: reg. 1 and reg. 2(ב)",
+      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 292), סעיפים 1-2: תקנה 1 ותקנה 2(ב)",
       "page": 8,
       "quote": "קרן השתלמות המשלמת לעמית סכומי ריבית חייבת, תנכה מסכומים אלה בעת התשלום",
       "checked": "2026-11-07"
@@ -78,9 +79,9 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=5",
       "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ״ח-1997",
+      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.5 (gazette p.287), s.1",
@@ -91,9 +92,9 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~faBlBOeyeFgfL5Y6ioRiw=#page=2",
       "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשע\"ב-2012, קובץ התקנות 7080 (18.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ״ח-1997",
+      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשע\"ב-2012, קובץ התקנות 7080 (18.1.2012)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.2 (gazette p.660), ss.1-2",

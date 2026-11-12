@@ -23,6 +23,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.9, appendix",
+      "locator_he": "עמוד 9, נספח",
       "page": 9,
       "quote": "הפסדי הון הנובעים מירידת מדד",
       "checked": "2026-11-07"
@@ -49,6 +50,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.149, s.88, definitions סכום אינפלציוני, ריווח הון ריאלי",
+      "locator_he": "עמוד 149, סעיף 88, הגדרות סכום אינפלציוני, ריווח הון ריאלי",
       "page": 149,
       "quote": "חלק ריווח ההון השווה לסכום שבו עולה יתרת המחיר המקורי המתואם על יתרת המחיר המקורי",
       "checked": "2026-10-25"
@@ -62,6 +64,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.146, s.88, definition מדד",
+      "locator_he": "עמוד 146, סעיף 88, הגדרת מדד",
       "page": 146,
       "checked": "2026-10-25"
     }

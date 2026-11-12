@@ -131,6 +131,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.3, appendix, s.2",
+      "locator_he": "עמוד 3, נספח, סעיף 2",
       "page": 3,
       "quote": "פוליסת ביטוח חיים שהוצאה על פי תכנית ביטוח משולבת בחיסכון",
       "checked": "2026-11-06"

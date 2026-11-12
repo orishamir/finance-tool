@@ -21,6 +21,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.10, appendix",
+      "locator_he": "עמוד 10, נספח",
       "page": 10,
       "checked": "2026-10-25"
     },

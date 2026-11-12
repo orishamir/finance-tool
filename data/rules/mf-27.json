@@ -22,8 +22,8 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.9 ; p.11, s.3 item 3",
-      "locator_he": "עמוד 9 ; עמוד 11, סעיף 3 פרט 3",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
       "page": 9,
       "quote": "ביחס לחברי בורסה שאינם בעלי רישיון שיווק, שהם בעיקר בנקים",
       "checked": "2026-11-07"
