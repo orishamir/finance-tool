@@ -217,7 +217,7 @@ Out of scope, see: interest rates, s.125D/125E deductions and real vs nominal in
 - Rule: Tax not paid by the end of the tax year (or by the due date of an advance) carries linkage differentials and interest from the end of the tax year to payment. Interest is 4% a year on the CPI-linked debt. Tax not paid on time also carries a late-payment fine of 0.2% for each week of delay.
 - Conditions / exceptions: The assessing officer may reduce or cancel fines and interest on request in some cases (guide p.119 s.z, not detailed here).
 - Figures: 4% a year; 0.2% a week.
-- Source: [Guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.119 s.d, p.120 s.7, p.121 s.g ("שיעור הריבית הוא 4% לשנה"; "קנס פיגור בשיעור של 0.2% לכל שבוע של פיגור") · checked 2026-10-22 · primary
+- Source: [Guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.119 s.ד; p.120 s.7; p.121 s.ג ("שיעור הריבית הוא 4% לשנה"; "קנס פיגור בתשלום בשיעור של 0.2% לכל שבוע של פיגור או חלק ממנו") · checked 2026-10-22 · primary
 - Scope: general
 - Dimensions: `reporting-obligation`
 - Likely to change: no
