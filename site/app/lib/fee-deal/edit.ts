@@ -25,6 +25,36 @@ export function addFee(deal: FeeDeal, kind: FeeKindId): { deal: FeeDeal; fee: Fe
 
 export const removeFee = (deal: FeeDeal, feeId: string): FeeDeal => ({ ...deal, fees: deal.fees.filter((f) => f.id !== feeId) });
 
+/** A fee taken away and kept for a moment so it can be put back: the fee as it was, its place, whether it was chosen, the deal right after. */
+export interface Removal {
+  fee: Fee;
+  at: number;
+  chosen: boolean;
+  after: FeeDeal;
+}
+
+/**
+ * The deal without a fee, and what puts it back. A removed chosen fee leaves nothing chosen (no other fee opens in its place); another
+ * chosen fee stays chosen. Null where the deal has no such fee.
+ */
+export function removeKept(deal: FeeDeal, feeId: string, chosen: string | null): { deal: FeeDeal; chosen: string | null; removal: Removal } | null {
+  const at = deal.fees.findIndex((f) => f.id === feeId);
+  if (at < 0) return null;
+  const after = removeFee(deal, feeId);
+  const was = chosen === feeId;
+  return { deal: after, chosen: was ? null : chosen, removal: { fee: deal.fees[at]!, at, chosen: was, after } };
+}
+
+/**
+ * The fee put back as it was, in its place, chosen again if it was chosen. Only on the deal the removal left: any change since (another
+ * edit, another deal) ends the undo, and this gives null.
+ */
+export function undoRemoval(deal: FeeDeal, removal: Removal, chosen: string | null): { deal: FeeDeal; chosen: string | null } | null {
+  if (deal !== removal.after) return null;
+  const fees = [...deal.fees.slice(0, removal.at), removal.fee, ...deal.fees.slice(removal.at)];
+  return { deal: { ...deal, fees }, chosen: removal.chosen ? removal.fee.id : chosen };
+}
+
 /** A deal of another kind: what it holds goes where the new kind holds no funds; its fees stay as typed. */
 export function setKind(deal: FeeDeal, kind: ProductId): FeeDeal {
   const { held: _held, ...rest } = deal;

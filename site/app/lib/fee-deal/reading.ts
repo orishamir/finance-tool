@@ -1,11 +1,11 @@
 // The reading of a deal (method §10.6): its periods as cards (F-110), the sums its prices mark as statements (F-112), the two curves' series
 // with their axis end (F-112), and the law rows for the deal's own fees that have a cap on the kind's record (F-113).
-import { actionCost, changeKind, curveEnd, dealMarks, groupAction, holdingCost, type ChangeKind, type DealAction, type DealMark, type DealPeriod, type DealSide } from "@finance-tool/engine";
+import { actionCost, changeKind, curveEnd, dealMarks, groupAction, groupRate, holdingCost, type ChangeKind, type DealAction, type DealMark, type DealPeriod, type DealSide } from "@finance-tool/engine";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import type { SiteValue } from "../value";
 import { capLine, type CapLine } from "./kinds";
 import { monthKey, type MonthKey, type Months, type Stage } from "./model";
-import { markView, monthsValue, priceAt, priceView, refOf, sameStanding, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
+import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, sameStanding, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue } from "./values";
 
@@ -134,6 +134,12 @@ export interface Curve {
   at: number[];
   /** The shekels per one unit of each currency a bound on the curve is typed in (F-84), which the page names beside the curve. */
   rates: CurveRate[];
+  /**
+   * The rate the curve's fees add to (F-111), where they are the whole of their group in the curve's period: every fee on the curve is a
+   * share of the action (or of what is held) with a rate above nothing, and every such fee is on the curve. Absent otherwise: F-111 gives
+   * no rate for part of a group, and a sum on the curve is not a share.
+   */
+  rate?: SiteValue;
   inputs: Record<string, SiteValue>;
 }
 
@@ -239,6 +245,8 @@ function drawn(
   const costs = amounts.map(cost);
   const fees = [...new Set(costs.flatMap((c) => c.parts.map((x) => x.fee)))].sort((a, b) => a - b);
   const series = fees.map((i) => ({ fee: refOf(r.fees[i]!), costs: costs.map((c) => c.parts.find((x) => x.fee === i)?.cost ?? 0) }));
+  const group = groupRate(r.engine, p).find((g) => (on === "held" ? g.on === "held" : g.on === "action" && g.action === action && g.side === side));
+  const whole = !!group && group.fees.length === fees.length && group.fees.every((i) => fees.includes(i));
   const inputs = { ...curveInputs(r, p, fees, side), ...Object.fromEntries(rates.map((x) => [rateKey(x.currency), x.rate])) };
   return {
     on,
@@ -252,6 +260,7 @@ function drawn(
     marks: views,
     at,
     rates,
+    ...(whole && group ? { rate: groupRateValue(r.fees, group, p.from, r.today) } : {}),
     inputs,
   };
 }
