@@ -40,7 +40,8 @@ interface OpenDeposit {
  * opens its own deposit of term n; at maturity the interest is taxed and principal plus net interest rolls
  * into a new deposit. At T the open deposits are treated as matured on the exit day.
  * F-22 Savings plan: the same ladder with the plan's own rate and term (TXI-07, BANK-28).
- * F-41 Deposits at exit: tax was charged at each maturity; the last open deposit matures on the exit day.
+ * F-41 Deposits at exit: tax was charged at each maturity; the last open deposit matures on the exit day, and a run
+ * that holds a piece still inside its term that day raises G-16 (the break is not priced).
  */
 export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx);
@@ -100,6 +101,9 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       if (balance > deposit.balanceCeiling) earning = deposit.balanceCeiling / balance;
     }
     for (const d of due) {
+      // G-16: a piece still inside its term on the exit day is priced as if it matured that day. The records hold whether a break
+      // is allowed, not what it pays, so the break is not priced; the run says so on the number.
+      if (d.startMonth + n - 1 > m) tally.flag("G-16");
       const months = m - d.startMonth + 1;
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
       const interest = depositInterest(indexed * earning, deposit.rate, months);
