@@ -7,7 +7,7 @@
     "fee-management-balance"
   ],
   "likely_to_change": "no",
-  "text_he": "לפי תקנות השקעות משותפות בנאמנות (עמלת הפצה), אסור לגבות עמלת הפצה על יחידות של קרן או של קרן חוץ שרשומות למסחר בבורסה, ועל יחידות שמנהל תיקים קנה ללקוח לפי הסכם ניהול, חוץ מחריג שהתקנה מפרטת. גם על יחידות שנקנו לפני 1.4.2006, כשהתקנות נכנסו לתוקף, אין עמלת הפצה, חוץ מחריג אחד. התקנות תוקנו גם בתיקון שהאתר עוד לא קרא, ואולי יש בו פטורים נוספים.",
+  "text_he": "לפי תקנות השקעות משותפות בנאמנות (עמלת הפצה), אסור לגבות עמלת הפצה על יחידות של קרן או של קרן חוץ שרשומות למסחר בבורסה, ועל יחידות שמנהל תיקים קנה ללקוח לפי הסכם ניהול, חוץ מחריג שהתקנה מפרטת. גם על יחידות שנקנו לפני 1.4.2006, כשהתקנות נכנסו לתוקף, אין עמלת הפצה, חוץ מחריג אחד. התקנות תוקנו גם בתיקונים שהאתר עוד לא קרא, ואולי יש בהם פטורים נוספים.",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-10-31",
   "scope": "general",
@@ -27,6 +27,18 @@
       "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
     },
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",
+      "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013 (קובץ התקנות 7236)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013 (קובץ התקנות 7236)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2 (gazette p.900), regs. 1-2 and footnote 2",
+      "page": 2,
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmfLeg7C4UCrAfbCcchwXa2I=#page=3",
       "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006, ק״ת 6464 (26.2.2006), עמ' 494",
       "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס״ו-2006 (קובץ התקנות 6464; תיקון 2013 בקובץ התקנות 7236)",
@@ -35,7 +47,8 @@
       "kind": "regulation",
       "strength": "primary",
       "page": 3,
-      "checked": "2026-11-12"
+      "checked": "2026-11-12",
+      "qualifier": "(gazette, the text as enacted)"
     }
   ]
 }
