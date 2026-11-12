@@ -21,9 +21,23 @@
       "publisher_he": "רשות המסים",
       "kind": "circular",
       "strength": "primary",
-      "locator": "s.2.2.1, s.5.2.1",
-      "locator_he": "סעיף 2.2.1, סעיף 5.2.1",
+      "locator": "p.3, s.2.2.1; p.13, s.5.2.1",
+      "locator_he": "עמוד 3, סעיף 2.2.1; עמוד 13, סעיף 5.2.1",
+      "page": 3,
       "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=4",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s.1, gazette ס״ח התשס״ה p.889",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.892)",
+      "locator_he": "עמוד הקובץ 4 (עמוד ספר החוקים 892)",
+      "page": 4,
+      "quote": "קרן ותיקה",
+      "checked": "2026-11-08"
     },
     {
       "url": "https://fs.knesset.gov.il/19/law/19_lsr_306600.pdf#page=5",
@@ -38,18 +52,6 @@
       "page": 5,
       "quote": "שאינה קופת ביטוח",
       "checked": "2026-11-08"
-    },
-    {
-      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=4",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s.1, gazette ס״ח התשס״ה p.889",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
-      "quote": "קרן ותיקה",
-      "checked": "2026-10-22"
     }
   ]
 }

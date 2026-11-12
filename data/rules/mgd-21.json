@@ -22,10 +22,36 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.8, ss.6, 8, 11-13; p.9, s.14",
-      "locator_he": "עמוד 8, סעיפים 6, 8, 11-13; עמוד 9, סעיף 14",
+      "locator": "p.8, ss.6, 8, 11-13",
+      "locator_he": "עמוד 8, סעיפים 6, 8, 11-13",
       "page": 8,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
+      "title": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "title_he": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.9, s.14",
+      "locator_he": "עמוד 9, סעיף 14",
+      "page": 9,
       "quote": "ההליך יתבצע כך שלא ניתן יהיה להשלימו מבלי שהלקוח השיב לכל השאלות הנכללות בשאלון בירור הצרכים והמטרות של הלקוח",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
+      "title": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "title_he": "רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.9, ss.15-18",
+      "locator_he": "עמוד 9, סעיפים 15-18",
+      "page": 9,
       "checked": "2026-10-26"
     },
     {

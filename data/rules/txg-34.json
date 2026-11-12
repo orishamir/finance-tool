@@ -22,7 +22,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "quote": "5.17% (החל ב- 01.02.2025)",
-      "checked": "2026-11-08"
+      "checked": "2026-10-31"
     },
     {
       "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9E%D7%99%20%D7%A9%D7%90%D7%99%D7%A0%D7%9D%20%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%95%D7%91%D7%A2%D7%9C%D7%99%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%D7%A9%D7%9C%D7%90%20%D7%9E%D7%A2%D7%91%D7%95%D7%93%D7%94.aspx",
@@ -41,9 +41,10 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.1(1)",
-      "locator_he": "סעיף 1(1)",
-      "quote": "בכל מקום, במקום",
+      "locator": "file p.2 (gazette p.606), s.1(1)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 606), סעיף 1(1)",
+      "page": 2,
+      "quote": "בכל מקום, במקום \"5%\" יבוא \"5.165%\"",
       "checked": "2026-11-08"
     },
     {
@@ -53,8 +54,10 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
+      "locator": "file p.2 (gazette p.180), s.1(1)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 180), סעיף 1(1)",
+      "page": 2,
+      "quote": "במקום \"5.165%\" יבוא \"5.17%\"",
       "checked": "2026-11-08"
     }
   ]

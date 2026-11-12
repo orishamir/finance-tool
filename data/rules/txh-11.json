@@ -63,6 +63,46 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=8",
+      "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס\"ג-2002, קובץ התקנות 6214 (19.12.2002)",
+      "title_he": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה) (תיקון), התשס״ג-2002 (קובץ התקנות 6214)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.8 (gazette p.292), ss.1-2: reg. 1 and reg. 2(ב)",
+      "page": 8,
+      "quote": "קרן השתלמות המשלמת לעמית סכומי ריבית חייבת, תנכה מסכומים אלה בעת התשלום",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=5",
+      "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ״ח-1997",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.5 (gazette p.287), s.1",
+      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 287), סעיף 1",
+      "page": 5,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~faBlBOeyeFgfL5Y6ioRiw=#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשע\"ב-2012, קובץ התקנות 7080 (18.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ״ח-1997",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.660), ss.1-2",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 660), סעיפים 1-2",
+      "page": 2,
+      "quote": "והן יחולו על סכומי ריבית חייבת שהופקו או שנצמחו בשל תשלומים ששולמו לקרן השתלמות ביום התחילה ואילך",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
       "title": "Chief Economist paper Oct 2025",
       "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
@@ -131,47 +171,6 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=8",
-      "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס\"ג-2002, קובץ התקנות 6214 (19.12.2002)",
-      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס״ג-2002, קובץ התקנות 6214 (19.12.2002)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.8 (gazette p.292), ss.1-2: reg. 1 (\"סכומי ריבית חייבת\") and reg. 2(ב) added at 15%",
-      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 292), סעיפים 1-2: תקנה 1 ותקנה 2(ב) שנוספה בשיעור 15%",
-      "page": 8,
-      "quote": "קרן השתלמות המשלמת לעמית סכומי ריבית חייבת, תנכה מסכומים אלה בעת התשלום",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=5",
-      "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.5 (gazette p.287), s.1, amending reg. 2(ב)",
-      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 287), סעיף 1, תיקון תקנה 2(ב)",
-      "page": 5,
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~faBlBOeyeFgfL5Y6ioRiw=#page=2",
-      "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשע\"ב-2012, קובץ התקנות 7080 (18.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות) (תיקון), התשע״ב-2012, קובץ התקנות 7080 (18.1.2012)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.660), ss.1-2, amending reg. 2(ב)",
-      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 660), סעיפים 1-2, תיקון תקנה 2(ב)",
-      "page": 2,
-      "quote": "והן יחולו על סכומי ריבית חייבת שהופקו או שנצמחו בשל תשלומים ששולמו לקרן השתלמות ביום התחילה ואילך",
-      "checked": "2026-11-07"
-    },
-    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
       "title": "Chief Economist paper Oct 2025",
       "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
@@ -207,8 +206,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.359, s.4(2)",
-      "locator_he": "עמוד 359, סעיף 4(2)",
+      "locator": "file p.3 (gazette p.359), s.4(2)",
+      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 359), סעיף 4(2)",
       "page": 3,
       "quote": "בפסקה (13), הסיפה החל במילים ״הוראות פסקה זו״ – תימחק",
       "checked": "2026-10-25"
@@ -221,8 +220,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.363, s.12(א)",
-      "locator_he": "עמוד 363, סעיף 12(א)",
+      "locator": "file p.7 (gazette p.363), s.12(א)",
+      "locator_he": "עמוד הקובץ 7 (עמוד ספר החוקים 363), סעיף 12(א)",
       "page": 7,
       "checked": "2026-10-25"
     }

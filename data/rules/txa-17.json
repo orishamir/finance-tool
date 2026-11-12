@@ -22,11 +22,10 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
-      "locator": "pp.48-49, s.9A(a)",
-      "locator_he": "עמודים 48 עד 49, סעיף 9א(א)",
-      "page": 48,
-      "quote": "לקופת גמל לשקעה",
-      "checked": "2026-10-22"
+      "locator": "p.49, s.9A(a), definition תשלומים פטורים",
+      "page": 49,
+      "quote": "סכומים ששילם יחיד בעד עצמו לקופת גמל לשקעה",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
@@ -36,8 +35,10 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "PDF p.2, s.7 )",
+      "locator": "file p.2 (gazette p.885), s.7(4)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 885), סעיף 7(4)",
       "page": 2,
+      "quote": "סכומים ששילם יחיד בעד עצמו לקופת גמל להשקעה",
       "checked": "2026-11-07"
     }
   ]

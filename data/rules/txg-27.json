@@ -16,13 +16,14 @@
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FstatuteBook%2F2126%2Fheb#page=14",
       "title": "חוק הביטוח הלאומי (תיקון מס' 103), התשס\"ח-2008, ספר החוקים 2126 (7.1.2008)",
-      "title_he": "חוק הביטוח הלאומי (תיקון מס' 103), התשס״ח-2008, ספר החוקים 2126 (7.1.2008)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 103), התשס\"ח-2008, ספר החוקים 2126 (7.1.2008)",
       "publisher": "Reshumot (Ministry of Justice)",
       "publisher_he": "רשומות",
       "kind": "law",
       "strength": "primary",
-      "locator": "file p.14 (gazette p.136), s.2, replacing s.350(א)(6) and (7)",
-      "locator_he": "עמוד הקובץ 14 (עמוד ספר החוקים 136), סעיף 2, החלפת סעיף 350(א)(6) ו־(7)",
+      "locator": "file p.14 (gazette p.136), s.2",
+      "locator_he": "עמוד הקובץ 14 (עמוד הרשומות 136), סעיף 2",
+      "page": 14,
       "quote": "הכנסה החייבת במס לפי הוראות סעיף 125ג(ב) או (ג) לפקודת מס הכנסה",
       "checked": "2026-11-07"
     }
