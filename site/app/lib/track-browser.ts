@@ -4,11 +4,11 @@
 // Pure: no React, no storage. Nothing here ranks a track: the sort is the person's action on a sourced column, and the order of the
 // groups is a way to read the list (F-99, F-100).
 import { companyAssets, groupFeeRange, kindStockMedian } from "@finance-tool/engine";
-import { trackBrowser as t } from "../copy";
+import { companyFocus, trackBrowser as t } from "../copy";
 import { exposureShares, type CompactHoldings, type ExposureShares, type HoldingsTemplate } from "./track-exposure";
 import { trackLabels, youngerThanYears } from "./track-labels";
 import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
-import { fmt, heCollator } from "./format";
+import { countPhrase, fmt, heCollator } from "./format";
 import type { ListSort } from "./list-sort";
 import { computed, depositFeeNoneByRule, expandFee, numberOf, type CompactFee, type SiteValue } from "./value";
 
@@ -363,18 +363,19 @@ export const companiesIn = (list: readonly TbTrack[]): number => new Set(list.ma
 
 // ---------------------------------------------------------------- the words of the page
 
-/** "מסלול אחד", "שני מסלולים", "16 מסלולים": one and two are words, not "1 מסלולים" (copy.md 7.3). */
+/** "אין מסלולים", "מסלול אחד", "שני מסלולים", "16 מסלולים". */
 export function tracksPhrase(k: number): string {
-  return k === 0 ? t.count.tracksNone : k === 1 ? t.count.tracksOne : k === 2 ? t.count.tracksTwo : `${fmt.number(k)} ${t.count.tracksMany}`;
+  return countPhrase(k, { zero: t.count.tracksNone, one: t.count.tracksOne, two: t.count.tracksTwo, many: t.count.tracksMany });
 }
 
+/** "אין חברות", "חברה אחת", "שתי חברות", "12 חברות": the words the companies page counts companies in (`companiesWord`). */
 export function companiesPhrase(k: number): string {
-  return k === 0 ? t.count.companiesNone : k === 1 ? t.count.companiesOne : k === 2 ? t.count.companiesTwo : `${fmt.number(k)} ${t.count.companiesMany}`;
+  return countPhrase(k, { zero: t.count.companiesNone, ...companyFocus.companies });
 }
 
-/** An amount in NIS millions as the page writes it: "19.1 מיליארד ₪" from a thousand million up, else "850 מיליון ₪". */
+/** An amount in NIS millions as the page writes it: "19.14 מיליארד ₪" from a thousand million up (`fmt.nisBillions`), else "850 מיליון ₪". */
 export function assetsText(millions: number): string {
-  return millions >= 1000 ? `${fmt.number(Math.round(millions / 100) / 10)} ${t.assets.billion}` : `${fmt.number(Math.round(millions))} ${t.assets.million}`;
+  return millions >= 1000 ? fmt.nisBillions(millions * 1e6) : `${fmt.number(Math.round(millions))} ${t.assets.million}`;
 }
 
 /** The sort in words, for the line above the list: "דמי הניהול מהחיסכון, מהזול ליקר". The name column is the track's name under a company and the company's under a kind. */
