@@ -15,9 +15,18 @@ export interface DealKind {
   caps: Partial<Record<FeeBase, FeeCap>>;
 }
 
-/** The kinds of the product records, for the fee page's data: every record that lists a fee base. Built at build time. */
+/**
+ * The kinds of the product records, for the fee page's data: every record that lists a fee base. Built at build time; each cap ships
+ * without its record's working notes, which the page does not show.
+ */
 export function dealKindsOf(records: readonly ProductRecord[]): DealKind[] {
-  return records.filter((r) => r.fee_bases_allowed.length > 0).map((r) => ({ id: r.id, name: r.names.he[0]!, bases: [...r.fee_bases_allowed], caps: { ...r.fee_caps } }));
+  const shipped = (c: FeeCap): FeeCap => {
+    const { notes: _notes, ...rest } = c;
+    return rest;
+  };
+  return records
+    .filter((r) => r.fee_bases_allowed.length > 0)
+    .map((r) => ({ id: r.id, name: r.names.he[0]!, bases: [...r.fee_bases_allowed], caps: Object.fromEntries(Object.entries(r.fee_caps ?? {}).map(([b, c]) => [b, shipped(c)])) }));
 }
 
 export const kindById = (kinds: readonly DealKind[], id: ProductId | null): DealKind | null => (id === null ? null : (kinds.find((k) => k.id === id) ?? null));
