@@ -88,11 +88,27 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "pp.44-47",
-      "locator_he": "עמודים 44 עד 47",
+      "locator": "pp.44-47 (gazette pp.392-395), s.2",
+      "locator_he": "עמודים 44 עד 47 (עמודי ספר החוקים 392 עד 395), סעיף 2",
       "page": 44,
       "quote": "בנק בעל היקף פעילות קטן",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "note": "(s.2 amends the Banking (Customer Service) Law: its s.1 definitions of a small bank, a tiny bank and asset value, and its s.5B2(b)(1) and (f))"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+      "title": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ\"ו-2026 (ספר החוקים 3510)",
+      "title_he": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ״ו-2026 (ספר החוקים 3510)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.47 (gazette p.395), s.2",
+      "locator_he": "עמוד 47 (עמוד ספר החוקים 395), סעיף 2",
+      "page": 47,
+      "quote": "או בנק בעל היקף פעילות זעיר",
+      "checked": "2026-10-26",
+      "note": "(s.2 amends the Banking (Customer Service) Law: its s.1 definitions of a small bank, a tiny bank and asset value, and its s.5B2(b)(1) and (f))"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
