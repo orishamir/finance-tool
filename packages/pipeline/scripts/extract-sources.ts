@@ -5,7 +5,9 @@
 // resolved against data/sources/institutions.json. Re-runnable: it strips its own keys from a record and writes them again,
 // never touches any other field and never touches the markdown. Spec: 8dd1f013:research/knowledge/2026-10-24-synthesis.md 3.2,
 // docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (it prints its report; add `--dry` to
-// write nothing).
+// write nothing). After editing blocks, write only their records: `-- --only=KGL-12,MF-25`; every other record stays as it is, so a
+// run never re-dates or reorders a card nobody touched. `-- --drift` writes nothing and lists the records that differ from what
+// their blocks give today (a block edited without its record, or a record edited by hand).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -390,7 +392,10 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     // a segment with no strength word of its own takes the nearest word after it on the line (the trailer "· all checked … · institution"
     // closes a run of links), then the line's last word (lead, 2026-10-24; before, a later unrelated word could win)
     if (!word) word = strengthHits(raw.slice(link.end))[0]?.word;
-    const checked = CHECKED_RE.exec(rest)?.[1] ?? lineChecked ?? ctx.ruleChecked;
+    // a segment with no date of its own takes the next date after it on the line, as with the strength word: the trailer
+    // "· checked … · primary" closes the run of links before it. Until 2026-11-12 it took the line's last date, so a source added at
+    // the end of a line with today's date re-dated every undated source before it.
+    const checked = CHECKED_RE.exec(rest)?.[1] ?? CHECKED_RE.exec(raw.slice(link.end))?.[1] ?? lineChecked ?? ctx.ruleChecked;
     const rawUrl = link.url;
     const url = rawUrl;
     const host = hostOf(url);
@@ -548,7 +553,11 @@ const titleKey = (t: string): string =>
 
 function main() {
   const root = fileURLToPath(new URL("../../../", import.meta.url));
-  const dry = process.argv.includes("--dry");
+  const drift = process.argv.includes("--drift");
+  const dry = process.argv.includes("--dry") || drift;
+  const onlyArg = process.argv.find((a) => a.startsWith("--only="));
+  const only = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean)) : undefined;
+  const drifted: string[] = [];
   const rulesDir = join(root, "data/rules");
   const base = readRuleBaseIds(join(root, ".claude/skills/il-finance/references"));
   const blocks = base.blocks!;
@@ -650,7 +659,13 @@ function main() {
       }
     }
     const out = writeKeys(text, add);
-    if (!dry && out !== text) writeFileSync(path, out);
+    if (out !== text) drifted.push(rec.id);
+    if (!dry && out !== text && (!only || only.has(rec.id))) writeFileSync(path, out);
+  }
+  if (only) for (const id of only) if (!known.has(id)) console.error(`--only: no record for ${id}`);
+  if (drift) {
+    console.log(`${drifted.length} of ${files.length} records differ from what their blocks give today${drifted.length ? `:\n${drifted.join(", ")}` : ""}`);
+    return;
   }
 
   const md = renderReport(rep, { publishers: !!publishers, documents: !!documents });

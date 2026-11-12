@@ -33,9 +33,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.63, s.2(1)",
-      "locator_he": "עמוד 63, סעיף 2(1)",
-      "page": 63,
+      "locator": "file p.5 (gazette p.63), s.2(1)",
+      "locator_he": "עמוד הקובץ 5 (עמוד ספר החוקים 63), סעיף 2(1)",
+      "page": 5,
       "quote": "שאינה קופת ביטוח",
       "checked": "2026-11-08"
     },

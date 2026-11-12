@@ -135,9 +135,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.978, s.1",
-      "locator_he": "עמוד 978, סעיף 1",
-      "page": 978,
+      "locator": "file p.4 (gazette p.978), s.1",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 978), סעיף 1",
+      "page": 4,
       "quote": "במקום \"לתקופה של שנתיים\" יבוא \"לתקופה של שנה\"",
       "checked": "2026-10-26"
     },

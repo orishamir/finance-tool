@@ -60,9 +60,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.416, s.7",
-      "locator_he": "עמוד 416, סעיף 7",
-      "page": 416,
+      "locator": "file p.4 (gazette p.416), s.7",
+      "locator_he": "עמוד הקובץ 4 (עמוד ספר החוקים 416), סעיף 7",
+      "page": 4,
       "checked": "2026-10-22"
     }
   ]

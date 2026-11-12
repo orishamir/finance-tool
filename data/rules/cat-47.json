@@ -22,9 +22,9 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.4, p.5, p.6",
-      "locator_he": "עמוד 4, עמוד 5, עמוד 6",
-      "page": 4,
+      "locator": "p.5, p.4, p.6",
+      "locator_he": "עמוד 5, עמוד 4, עמוד 6",
+      "page": 5,
       "quote": "מסלול אג״ח ממשלות",
       "checked": "2026-11-07"
     }

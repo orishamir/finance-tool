@@ -48,9 +48,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.163, s.12(1)",
-      "locator_he": "עמוד 163, סעיף 12(1)",
-      "page": 163,
+      "locator": "file p.17 (gazette p.163), s.12(1)",
+      "locator_he": "עמוד הקובץ 17 (עמוד ספר החוקים 163), סעיף 12(1)",
+      "page": 17,
       "quote": "מכירה למשכיר",
       "checked": "2026-11-07"
     },
@@ -62,9 +62,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.346, s.1(1)(א)-(ב)",
-      "locator_he": "עמוד 346, סעיף 1(1)(א)-(ב)",
-      "page": 346,
+      "locator": "file p.2 (gazette p.346), s.1(1)(א)-(ב)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 346), סעיף 1(1)(א)-(ב)",
+      "page": 2,
       "quote": "הכנסות חריגות",
       "checked": "2026-10-26"
     }

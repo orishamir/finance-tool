@@ -90,6 +90,26 @@ Numbered, each with what was tried and where the answer probably is.
 Every URL used, with title, publisher, strength and date checked.
 ```
 
+## The Source line and its record
+
+Each rule has a record under `data/rules/`, and the record's sources are
+extracted from the block's `- Source:` line. The block is the one place to
+edit; a record edited by hand no longer matches its block.
+
+- **After editing blocks**, write only their records:
+  `npm run extract:sources -w @finance-tool/pipeline -- --only=KGL-12,MF-25`.
+  Every other record stays as it is. `-- --drift` lists the records that
+  differ from what their blocks give today.
+- **Dates.** A source with no `checked` date of its own takes the next date
+  after it on the line: the trailer `· checked YYYY-MM-DD · strength` closes
+  the run of links before it. Give a source its own date when it was read
+  on another day. The date is the day the document was read at its address;
+  a quote read only in the library's stored copy keeps the copy's date.
+- **Pages.** A page is the page of the file, the one a PDF viewer shows.
+  Write `p.12`, or `file p.12 (gazette p.246)` when the sheet prints another
+  number. A link that carries `#page=` carries the same page; the site opens
+  the link there.
+
 ## The Scope line
 
 Added 2026-10-25 for D30 (`docs/product.md`), from the scope research in

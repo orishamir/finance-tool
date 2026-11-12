@@ -21,9 +21,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.128, ss.2, 3(ב), 3(ג)",
-      "locator_he": "עמוד 128, סעיפים 2, 3(ב), 3(ג)",
-      "page": 128,
+      "locator": "file p.1 (gazette p.128), ss.2, 3(ב), 3(ג)",
+      "locator_he": "עמוד הקובץ 1 (עמוד ספר החוקים 128), סעיפים 2, 3(ב), 3(ג)",
+      "page": 1,
       "checked": "2026-11-06",
       "qualifier": "(gazette, as enacted)"
     },
@@ -35,9 +35,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
-      "page": 3,
+      "locator": "file p.1 (gazette p.3)",
+      "locator_he": "עמוד הקובץ 1 (עמוד ספר החוקים 3)",
+      "page": 1,
       "checked": "2026-11-06"
     },
     {
@@ -48,9 +48,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.64",
-      "locator_he": "עמוד 64",
-      "page": 64,
+      "locator": "file p.1 (gazette p.64)",
+      "locator_he": "עמוד הקובץ 1 (עמוד ספר החוקים 64)",
+      "page": 1,
       "checked": "2026-11-06",
       "qualifier": "(for what they change)"
     }
