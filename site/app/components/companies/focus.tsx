@@ -1,6 +1,7 @@
 // The companies page's two panes (routes/companies.tsx): the list of every company in its three groups, and the company in focus. Both
 // only draw what the page's state says; lib/company-focus.ts holds the logic. Filtering and searching dim rows in place, never move them.
 import { companyFocus as w } from "../../copy";
+import { companyPath } from "../../lib/site-paths";
 import { countMark, countWords, matches, productsOnSite, companyGroups, productTypes, type FocusCompany, type FocusData, type FocusFigures, type FocusProduct, type FocusProductKind, type FocusState } from "../../lib/company-focus";
 import { assetsText } from "../../lib/track-browser";
 import { fmt, formatValue } from "../../lib/format";
@@ -117,7 +118,7 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
   const mine = new Set(c.products.map((p) => p.id));
   const missing = data.kinds.filter((k) => !mine.has(k.id));
   const own = figures?.[c.id];
-  const page = `/companies/${c.id}`;
+  const page = companyPath(c.id);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
@@ -185,14 +186,14 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
           <ul className="flex flex-wrap gap-x-4">
             {c.sections.map((s) => (
               <li key={s.id}>
-                <TextLink look="line" to={`${page}#${s.id}`} className="text-sm">
+                <TextLink look="line" to={companyPath(c.id, { hash: s.id })} className="text-sm">
                   {s.title}
                 </TextLink>
               </li>
             ))}
             {c.terms > 0 && (
               <li>
-                <TextLink look="line" to={`${page}#company-terms`} className="text-sm">
+                <TextLink look="line" to={companyPath(c.id, { hash: "company-terms" })} className="text-sm">
                   {w.terms}
                   <bdi dir="ltr" className="text-muted-foreground tabular-nums">
                     {fmt.number(c.terms)}

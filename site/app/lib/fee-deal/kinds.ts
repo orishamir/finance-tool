@@ -39,45 +39,50 @@ export const capOf = (kind: DealKind | null, fee: FeeKindId): FeeCap | undefined
 
 /**
  * A fee's cap line, as the page states it beside the fee: `value`, a cap with a value (zero where the law allows no such fee), with its
- * unit, whom it binds and its rules; `none`, the record says the law sets no cap (its value is empty); `absent`, the record has no entry
- * for the fee, or the fee is no record base.
+ * unit, whom it binds, the case it holds in alone (`caveat`) and its rules; `none`, the record says the law sets no cap (its value is
+ * empty), with the case where it says one is set all the same; `absent`, the record has no entry for the fee, or the fee is no record base.
  */
-export type CapLine = { state: "value"; value: SiteValue; binds?: FeeCap["binds"]; ruleIds: string[] } | { state: "none"; value: SiteValue; ruleIds: string[] } | { state: "absent" };
+export type CapLine =
+  | { state: "value"; value: SiteValue; binds?: FeeCap["binds"]; caveat?: FeeCap["caveat"]; ruleIds: string[] }
+  | { state: "none"; value: SiteValue; caveat?: FeeCap["caveat"]; ruleIds: string[] }
+  | { state: "absent" };
 
 export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
   const cap = capOf(kind, fee);
   if (!cap) return { state: "absent" };
-  const { binds, ...vo } = cap;
+  const { binds, caveat, ...vo } = cap;
   const value = recordValue(vo);
   const ruleIds = cap.rule_ids ?? [];
-  if (typeof cap.value !== "number") return { state: "none", value, ruleIds };
-  return { state: "value", value, ...(binds ? { binds } : {}), ruleIds };
+  if (typeof cap.value !== "number") return { state: "none", value, ...(caveat ? { caveat } : {}), ruleIds };
+  return { state: "value", value, ...(binds ? { binds } : {}), ...(caveat ? { caveat } : {}), ruleIds };
 }
 
 /**
- * A typed price in its cap's unit (F-113's `x`): a free price is 0; a share of what is held against a yearly cap is its yearly rate
- * (F-111, `rate × 12 / per`), and against a cap per period its share of each charge; a share of an action against a share of a deposit
- * or a trade is its rate; a sum on each action against a sum per transfer or trade is the sum; a sum per period against a monthly sum is
- * its month's part. Where the cap is 0 the unit does not matter: any price above nothing is above it. Undefined where the price's form
- * is not one the cap's unit states.
+ * A typed price in its cap's unit (F-113's `x`), and whether it was `converted` from another period than the cap's by F-111's plain
+ * multiple: a free price is 0; a share of what is held against a yearly cap is its yearly rate (`rate × 12 / per`, converted where `per`
+ * is not a year), and against a cap per period its share of each charge (`rate × every / per`, converted where the two differ); a share of
+ * an action against a share of a deposit or a trade is its rate; a sum on each action against a sum per transfer or trade is the sum; a
+ * sum per period against a monthly sum is its month's part (converted where the period is not a month). Where the cap is 0 the unit does
+ * not matter: any price above nothing is above it. Undefined where the price's form is not one the cap's unit states.
  */
-export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): number | undefined {
-  if (p.form === "free") return 0;
-  if (cap === 0) return mainFigure(p);
+export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: number; converted: boolean } | undefined {
+  const as = (x: number, converted = false) => ({ x, converted });
+  if (p.form === "free") return as(0);
+  if (cap === 0) return as(mainFigure(p));
   switch (unit) {
     case "pct_per_year":
-      return p.form === "held" ? (p.rate.v * 12) / p.per : undefined;
+      return p.form === "held" ? as((p.rate.v * 12) / p.per, p.per !== 12) : undefined;
     case "pct_of_balance_per_period":
-      return p.form === "held" ? (p.rate.v * p.every) / p.per : undefined;
+      return p.form === "held" ? as((p.rate.v * p.every) / p.per, p.every !== p.per) : undefined;
     case "pct_of_deposit":
     case "pct_of_trade":
     case "pct":
-      return p.form === "action" ? p.rate.v : undefined;
+      return p.form === "action" ? as(p.rate.v) : undefined;
     case "nis_per_transfer":
     case "nis_per_trade":
-      return p.form === "perAction" ? p.amount.v : undefined;
+      return p.form === "perAction" ? as(p.amount.v) : undefined;
     case "nis_per_month":
-      return p.form === "sum" ? p.amount.v / p.every : undefined;
+      return p.form === "sum" ? as(p.amount.v / p.every, p.every !== 1) : undefined;
     default:
       return undefined;
   }
@@ -89,11 +94,15 @@ const mainFigure = (p: Exclude<Price, { form: "free" }>): number => (p.form === 
 /** F-113's answer for one price, or `other-form` where the price is typed in a form the cap's unit does not state. */
 export type Standing = CapStanding | { judged: false; why: "other-form" };
 
-/** F-113 One price of a fee against the kind's cap for it, judged for the deal's provider. */
+/**
+ * F-113 One price of a fee against the kind's cap for it, judged for the deal's provider. A cap with a `caveat` is never judged, whatever
+ * the price and the cap's value (an empty one included).
+ */
 export function standingOf(kind: DealKind | null, fee: FeeKindId, p: Price, provider: ProviderKind | undefined): Standing {
   const cap = capOf(kind, fee);
+  if (cap?.caveat !== undefined) return capStanding(undefined, cap, provider);
   if (!cap || typeof cap.value !== "number") return { judged: false, why: "no-cap" };
   const x = inCapUnit(p, cap.unit, cap.value);
   if (x === undefined) return { judged: false, why: "other-form" };
-  return capStanding(x, cap, provider);
+  return capStanding(x.x, cap, provider, x.converted);
 }

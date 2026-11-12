@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
 import { glance } from "../../lib/fee-deal/glance";
+import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
@@ -21,6 +22,7 @@ import { BuilderColumn } from "./builder";
 import { addFee, removeFee, updateFee } from "./edit";
 import { GlanceColumn, READING_ID } from "./glance";
 import { PanelColumn } from "./panel";
+import { ReadingCards } from "./reading";
 import { feeName } from "./words";
 
 /** The device's day, YYYY-MM-DD, on its own calendar. */
@@ -88,6 +90,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     () => ({ glance: glance(deal, data.kinds, today), builder: builder(deal, data.kinds, today), panel: chosen ? panelOf(deal, chosen, data.kinds, today) : null }),
     [deal, chosen, data.kinds, today],
   );
+  const reading = useMemo(() => readingOf(deal, data.kinds, today, data.fx), [deal, data.kinds, data.fx, today]);
   const hasTracks = useMemo(() => templateOptions(deal.kind, data).some((o) => o.source === "track"), [deal.kind, data]);
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
@@ -115,7 +118,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
         </Card>
       </div>
       <Section id={READING_ID} title={copy.reading}>
-        {null}
+        {deal.fees.length === 0 ? <p className="text-muted-foreground">{copy.read.empty}</p> : <ReadingCards reading={reading} saved={saves} fx={data.fx} />}
       </Section>
     </>
   );

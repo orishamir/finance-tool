@@ -95,20 +95,6 @@ export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.na
 export const indexSeenBy = (index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<IndicesBundle, "entered">): IndexRef =>
   index.custom && bundle.entered?.shekelFunds.includes(rec.id) ? { ...index, israeli: true } : index;
 
-/** The index page's address (/indices, with no redirect from /invest): `/indices/<x>` for the exposure `index-<x>`, a custom index at `/indices?custom=<id>`. */
-export const INDICES_PATH = "/indices";
-export const indexPath = (exposureId: string): string => `${INDICES_PATH}/${exposureId.replace(/^index-/, "")}`;
-export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=${encodeURIComponent(id)}`;
-export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
-/** The index page with one house picked, for a house's own page (it replaced the page that ranked the houses on one S&P 500 fund). */
-export const housePath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}`;
-/** A house's own page, opened at its securities account: who its price is for, its fees and where they stand, its offers (D57 amended). */
-/** A house's page opens the index page with the account panel started from its price list (`list`) or one of its groups (`group:<n>`). */
-/** A house's group on the index page, picked (`?group=<n>`, D43 amended (5)): the link under a group on the house's own page. */
-export const groupPath = (houseId: string, key: string, exposureId = "index-sp500"): string => `${housePath(houseId, exposureId)}&group=${encodeURIComponent(key.replace("group:", ""))}`;
-export const ownAccountPath = (houseId: string, key = "list", exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}&own=${encodeURIComponent(houseId)}&from=${encodeURIComponent(key)}`;
-export const brokeragePagePath = (houseId: string): string => `/companies/${encodeURIComponent(houseId)}?product=brokerage`;
-
 export function indexById(bundle: Pick<IndicesBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
   const known = knownIndices(bundle).find((i) => i.id === id);
   if (known) return known;

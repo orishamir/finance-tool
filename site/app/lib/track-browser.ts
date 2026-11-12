@@ -4,6 +4,7 @@
 // Pure: no React, no storage. Nothing here ranks a track: the sort is the person's action on a sourced column, and the order of the
 // groups is a way to read the list (F-99, F-100).
 import { companyAssets, groupFeeRange, kindStockMedian } from "@finance-tool/engine";
+import { trackPath } from "./site-paths";
 import { companyFocus, trackBrowser as t } from "../copy";
 import { exposureShares, type CompactHoldings, type ExposureShares, type HoldingsTemplate } from "./track-exposure";
 import { trackLabels, youngerThanYears } from "./track-labels";
@@ -168,7 +169,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
       selfManaged: r.s === 1,
       stock: numberOf(exposure?.stock),
       twin: false,
-      href: `/companies/${co.id}/${r.f}`,
+      href: trackPath(co.id, r.f),
     };
   });
   const hasKinds = tracks.some((x) => x.sub !== "");

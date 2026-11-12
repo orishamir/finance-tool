@@ -1,6 +1,7 @@
 // Screen: the exposure guide page (flows 6.6, design-spec 2 without the timeline): what the money is invested in,
 // which products can hold it, risks, and the words used for it.
 import { Link, redirect, useLoaderData } from "react-router";
+import { guidePath } from "../lib/site-paths";
 import type { Route } from "./+types/exposure";
 import { exposurePage as copy, guideIndex, invest, pagePreview } from "../copy";
 import { pageMeta } from "../lib/page-meta";
@@ -16,13 +17,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   // D6: makam and the government bonds are the security's own page
   const { exposureFolds } = await import("../lib/instruments.server");
   const into = exposureFolds()[params.id];
-  if (into) throw redirect(`/guide/${into}`);
+  if (into) throw redirect(guidePath(into));
   const { buildExposurePage } = await import("../lib/guide.server");
   const content = exposureContent[params.id];
   const data = buildExposurePage(params.id, content ? [...content.termIds] : []);
   if (!data) throw new Response("Not found", { status: 404 });
   // an equity index has its own page on the indices page (D28), where its accounts and funds are compared
-  const { indexPath } = await import("../lib/invest");
+  const { indexPath } = await import("../lib/site-paths");
   return { ...data, indicesHref: data.record.kind === "equity_index" ? indexPath(data.record.id) : null };
 }
 
@@ -63,7 +64,7 @@ export default function ExposurePage() {
               {data.holders.map((h) => (
                 <li key={h.id}>
                   <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]">
-                    <Link to={`/guide/${h.id}`} className="flex items-center justify-between gap-4">
+                    <Link to={guidePath(h.id)} className="flex items-center justify-between gap-4">
                       <span className="text-lg font-semibold">{gershayim(h.name)}</span>
                       <RowArrow />
                     </Link>

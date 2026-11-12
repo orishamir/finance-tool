@@ -168,7 +168,10 @@ export function newFee(kind: FeeKindId, name?: string): Fee {
 /** A typed percent as the engine's fraction: the one place the two meet. */
 export const fraction = (pct: number): number => pct / 100;
 
-/** A price as the engine reads it (F-110): a held rate becomes the share of each charge, `rate × every / per`. */
+/**
+ * A price as the engine reads it (F-110): a held rate becomes the share of each charge, `rate × every / per`; a bound's currency goes
+ * only with a bound typed, since it prices nothing else (F-110, F-112).
+ */
 export function enginePrice(p: Price): DealPrice {
   switch (p.form) {
     case "free":
@@ -179,7 +182,7 @@ export function enginePrice(p: Price): DealPrice {
         rate: fraction(p.rate.v),
         ...(p.min ? { min: p.min.v } : {}),
         ...(p.max ? { max: p.max.v } : {}),
-        ...(p.currency && p.currency !== "ILS" ? { currency: p.currency } : {}),
+        ...((p.min || p.max) && p.currency && p.currency !== "ILS" ? { currency: p.currency } : {}),
       };
     case "held":
       return { kind: "held", rate: (fraction(p.rate.v) * p.every) / p.per, everyMonths: p.every, ...(p.min ? { min: p.min.v } : {}), ...(p.max ? { max: p.max.v } : {}) };

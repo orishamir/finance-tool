@@ -2,6 +2,7 @@
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { datedDay, tariffDated } from "./tariff-date";
+import { companyPath, documentsPath } from "./site-paths";
 import { depositKindRules, exitPointsOf, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -372,11 +373,11 @@ export interface InstitutionSearchEntry {
 export function institutionSearchEntries(words: { bank: string; broker: string }): InstitutionSearchEntry[] {
   const out: InstitutionSearchEntry[] = [];
   const names = new Map<string, string>(institutionRows().map((r) => [r.id, r.name]));
-  for (const r of institutionRows()) out.push({ name: r.name, line: r.kind === "bank" ? words.bank : words.broker, href: `/companies/${r.id}`, extra: r.id });
+  for (const r of institutionRows()) out.push({ name: r.name, line: r.kind === "bank" ? words.bank : words.broker, href: companyPath(r.id), extra: r.id });
   // a brand member's legal name finds the brand's page (D33)
   for (const r of allInstitutionRows()) {
     const brand = brandOfPage(r.id);
-    if (brand) out.push({ name: r.name, line: brand.name, href: `/companies/${brand.page}`, extra: r.id });
+    if (brand) out.push({ name: r.name, line: brand.name, href: companyPath(brand.page), extra: r.id });
   }
   const wrappers = loadProducts();
   for (const d of loadDepositTerms()) {
@@ -390,7 +391,7 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
       const n = coded ? `${coded[2]} (${coded[1]})` : raw;
       if (seen.has(n)) continue;
       seen.add(n);
-      out.push({ name: n, line, href: `/companies/${d.bank}#product-${d.id}` });
+      out.push({ name: n, line, href: companyPath(d.bank, { hash: `product-${d.id}` }) });
     }
   }
   return out;
@@ -416,7 +417,7 @@ export function companyLinks(): Record<string, CompanyLink> {
     const page = brand ? brand.page : r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
     // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31)
     const docs = { own_hosts: r.own_hosts, ...(r.filing_names ? { filing_names: r.filing_names } : {}) };
-    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/documents#${noPageAnchor(r.id)}`, hasPage: false, docs };
+    out[r.id] = page ? { name: r.name_he, href: companyPath(page), hasPage: true, docs } : { name: r.name_he, href: documentsPath({ hash: noPageAnchor(r.id) }), hasPage: false, docs };
   }
   return out;
 }

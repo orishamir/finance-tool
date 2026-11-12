@@ -2,6 +2,7 @@
 // `/fees?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readDeal`): a
 // broken or hostile value opens an empty deal and never throws.
 import type { FeesData } from "../fee-page-data";
+import { feesPath } from "../site-paths";
 import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
 import { dealFromTrack } from "./templates";
 
@@ -107,8 +108,11 @@ export function decodeDeal(d: string): FeeDeal | null {
   return readDeal({ ...long, id: newDealId(), fees });
 }
 
-/** The address of a deal: the fee page with the deal in `d`. */
+/** The query of a deal's address: the deal in `d`. */
 export const dealSearch = (deal: FeeDeal): string => `?d=${encodeDeal(deal)}`;
+
+/** The address of a deal: the fee page with the deal in `d` (site-paths.ts). */
+export const dealPath = (deal: FeeDeal): string => feesPath({ deal: encodeDeal(deal) });
 
 /**
  * The deal the address opens: a deal in `d` (an empty one where `d` is broken); a new deal of the kind `wrapper` names, where it names a

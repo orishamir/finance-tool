@@ -1,6 +1,7 @@
 // The bank product row (design-system 8.7): one deposit, savings plan or current-account record of a bank, as the
 // 447 page names it, with its terms as a key-value list, every figure a sourced Num with its date.
 import type { ReactNode } from "react";
+import { guidePath } from "../../../lib/site-paths";
 import { r4catalogue as copy } from "../../../copy";
 import { IconAlert } from "../../icons";
 import { Num, RuleRef, RulesLine } from "../../provenance";
@@ -114,7 +115,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
       <p className="text-sm text-muted-foreground max-w-measure">
         {copy.notAnOffer} {known.has("BANK-13") && <RuleRef id="BANK-13" />}
       </p>
-      <GoLink to={`/guide/${p.wrapperId}`} className="self-start">
+      <GoLink to={guidePath(p.wrapperId)} className="self-start">
         {copy.rowLinks.whatIs} {wrapperName}
       </GoLink>
     </Card>

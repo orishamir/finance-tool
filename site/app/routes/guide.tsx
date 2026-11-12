@@ -1,5 +1,6 @@
 // Screen 1: the product guide page (design-spec 2).
 import type { ReactNode } from "react";
+import { guidePath, rulesPath, trackBrowserPath } from "../lib/site-paths";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePreview, scopeWords } from "../copy";
@@ -376,7 +377,7 @@ export default function GuidePage() {
   for (const st of steps) st.rules = gen(st.rules);
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
-  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter: the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
+  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: rulesPath({ product: record.id }) } }; // the rules page's product filter: the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
   const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
   const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;
@@ -416,7 +417,7 @@ export default function GuidePage() {
                 t={copy.heldIn}
                 vars={{
                   account: (
-                    <Link to={`/guide/${data.heldIn.id}`} className="text-link hover:underline">
+                    <Link to={guidePath(data.heldIn.id)} className="text-link hover:underline">
                       {data.heldIn.name}
                     </Link>
                   ),
@@ -458,7 +459,7 @@ export default function GuidePage() {
               </p>
             )}
             {companyTerms().length > 0 && <RuleRows items={companyTerms()} />}
-            <InstitutionChips companies={data.companies} open={content?.companiesOpen} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
+            <InstitutionChips companies={data.companies} open={content?.companiesOpen} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: trackBrowserPath(record.id), name: data.name } : undefined} />
           </GuideSection>
         )}
 

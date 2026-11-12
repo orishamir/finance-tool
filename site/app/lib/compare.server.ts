@@ -17,7 +17,7 @@ import { computedInputs as ci, guideBlocks, r3fees } from "../copy";
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, HOUSE_CHANNELS, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
-import { indexPath } from "./invest";
+import { indexPath } from "./site-paths";
 import { readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref } from "./sources";
 
