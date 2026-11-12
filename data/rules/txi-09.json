@@ -89,6 +89,7 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.5 (gazette p.287), reg. 1, definition מילווה מדינה; file p.6 (gazette p.288), reg. 1, definition ריבית",
+      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 287), תקנה 1, הגדרת מילווה מדינה; עמוד הקובץ 6 (עמוד הרשומות 288), תקנה 1, הגדרת ריבית",
       "page": 5,
       "checked": "2026-11-07"
     },
@@ -109,9 +110,9 @@
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=3",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
       "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.3 (gazette p.601), s.4(1)",

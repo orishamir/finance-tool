@@ -78,6 +78,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "locator": "p.8, footnote 2",
+      "locator_he": "עמוד 8, הערת שוליים 2",
       "page": 8,
       "quote": "בנטרול הפרשי קוואנטו למדד",
       "checked": "2026-10-31",

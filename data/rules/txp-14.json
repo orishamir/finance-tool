@@ -128,6 +128,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.12, s.1 definition `גיל הפרישה`",
+      "locator_he": "עמוד 12, סעיף 1 הגדרת `גיל הפרישה`",
       "page": 12,
       "checked": "2026-10-25"
     },

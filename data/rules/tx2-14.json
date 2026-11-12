@@ -24,6 +24,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.148, s.88, definition נייר ערך",
+      "locator_he": "עמוד 148, סעיף 88, הגדרת נייר ערך",
       "page": 148,
       "quote": "נייר ערך שהונפק מחוץ לישראל",
       "checked": "2026-11-07"
@@ -37,6 +38,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.146, s.88, definition מדד",
+      "locator_he": "עמוד 146, סעיף 88, הגדרת מדד",
       "page": 146,
       "quote": "יראו את שער המטבע כמדד",
       "checked": "2026-11-07"

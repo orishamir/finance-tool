@@ -23,6 +23,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.1, footnote 1",
+      "locator_he": "עמוד 1, הערת שוליים 1",
       "page": 1,
       "checked": "2026-10-26"
     },

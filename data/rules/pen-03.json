@@ -104,6 +104,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.4, s.6(ד) table",
+      "locator_he": "עמוד 4, סעיף 6(ד) טבלה",
       "page": 4,
       "checked": "2026-10-25"
     }

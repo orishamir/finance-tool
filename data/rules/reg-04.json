@@ -69,6 +69,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "locator": "p.2, ss.15, 16; p.1, footnote 1",
+      "locator_he": "עמוד 2, סעיפים 15, 16; עמוד 1, הערת שוליים 1",
       "page": 2,
       "checked": "2026-10-25"
     },

@@ -39,6 +39,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.116 table א.3",
+      "locator_he": "עמוד 116 טבלה א.3",
       "page": 116,
       "quote": "אחוז מסך כל ההפקדות ששולם בשנת הדוח עבור רכישת כיסוי ביטוחי",
       "checked": "2026-11-06"
@@ -79,6 +80,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.117 table א.5",
+      "locator_he": "עמוד 117 טבלה א.5",
       "page": 117,
       "checked": "2026-11-06"
     },

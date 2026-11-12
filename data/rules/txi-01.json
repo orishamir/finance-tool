@@ -22,6 +22,7 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.6 (gazette p.288), reg. 1, definition ריבית",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 288), תקנה 1, הגדרת ריבית",
       "page": 6,
       "quote": "ריבית, הפרשי הצמדה שאינם פטורים ממס על פי כל דין",
       "checked": "2026-11-07"
@@ -35,6 +36,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.204, s.125ג(א), definition ריבית",
+      "locator_he": "עמוד 204, סעיף 125ג(א), הגדרת ריבית",
       "page": 204,
       "quote": "לרבות דמי ניכיון",
       "checked": "2026-10-25"

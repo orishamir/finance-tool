@@ -16,12 +16,13 @@
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=4",
       "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
       "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.4 (gazette p.858), reg. 1, definition 'עמית-עצמאי'",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 858), תקנה 1, הגדרת 'עמית-עצמאי'",
       "page": 4,
       "quote": "עמית יחיד, לרבות עובד בשל תשלום שהוא משלם לקופת גמל בלא תשלום מקביל של מעביד",
       "checked": "2026-11-07"

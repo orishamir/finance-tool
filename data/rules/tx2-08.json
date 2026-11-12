@@ -58,9 +58,9 @@
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6245%2Fheb#page=5",
       "title": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה או יחידה בקרן נאמנות) (תיקון), התשס\"ג-2003, קובץ התקנות 6245 (26.6.2003)",
-      "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס״ג-2002",
+      "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה או יחידה בקרן נאמנות) (תיקון), התשס\"ג-2003, קובץ התקנות 6245 (26.6.2003)",
       "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
       "locator": "gazette p.787, s.5",
@@ -77,8 +77,8 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.5, s.3 ; p.6, s.4.3.3",
-      "locator_he": "עמוד 5, סעיף 3 ; עמוד 6, סעיף 4.3.3",
+      "locator": "p.5, s.3",
+      "locator_he": "עמוד 5, סעיף 3",
       "page": 5,
       "quote": "אילו נמכרו אגרות החוב על ידי אותו מחזיק לצד",
       "checked": "2026-10-31"

@@ -37,6 +37,7 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.15 (gazette p.387), reg. 1(א), definitions הוצאות and ניירות ערך זהים",
+      "locator_he": "עמוד הקובץ 15 (עמוד הרשומות 387), תקנה 1(א), הגדרות הוצאות וניירות ערך זהים",
       "page": 15,
       "quote": "ניירות ערך מאותו סוג ושל אותו מנפיק",
       "checked": "2026-11-07"
@@ -86,9 +87,9 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=3",
       "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.3 (gazette p.285), s.8",

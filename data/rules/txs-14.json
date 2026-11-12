@@ -69,6 +69,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.146, s.88, definition מדד",
+      "locator_he": "עמוד 146, סעיף 88, הגדרת מדד",
       "page": 146,
       "quote": "לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד",
       "checked": "2026-10-26"
@@ -82,6 +83,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.148, definition נייר ערך",
+      "locator_he": "עמוד 148, הגדרת נייר ערך",
       "page": 148,
       "checked": "2026-10-26"
     },

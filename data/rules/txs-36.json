@@ -23,6 +23,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "s.88, definition מדד",
+      "locator_he": "סעיף 88, הגדרת מדד",
       "page": 146,
       "checked": "2026-11-01"
     },
@@ -35,6 +36,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "s.88, definition יתרת המחיר המקורי המתואם",
+      "locator_he": "סעיף 88, הגדרת יתרת המחיר המקורי המתואם",
       "page": 148,
       "checked": "2026-11-01"
     },

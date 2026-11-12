@@ -42,6 +42,7 @@
       "kind": "institution_doc",
       "strength": "institution",
       "locator": "row 4",
+      "locator_he": "שורה 4",
       "checked": "2026-10-25"
     }
   ],

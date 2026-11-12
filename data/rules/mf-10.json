@@ -36,6 +36,7 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.4, appendix A",
+      "locator_he": "עמוד 4, נספח א",
       "page": 4,
       "quote": "יש לתת את ההוראות עד לשעה היעודה בתאריך המוצג",
       "checked": "2026-10-26"
