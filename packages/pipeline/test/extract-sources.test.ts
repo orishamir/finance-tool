@@ -115,6 +115,14 @@ describe("extract-sources: fixture Source lines", () => {
     expect(cleanLocator(", p.110, note 5 (iShares Core S&P 500 UCITS ETF USD (Dist)), ")).toBe("p.110, note 5");
   });
 
+  it("a remark removed before a semicolon leaves no space there, and a closing bracket with none open is dropped (GOV-01, TXK-08, 2026-11-12)", () => {
+    expect(cleanLocator(", p.1, s.1 (the definition); p.2, s.2")).toBe("p.1, s.1; p.2, s.2");
+    expect(cleanLocator(", PDF p.2, s.7 (Ordinance Amendment 225))")).toBe("PDF p.2, s.7");
+    // brackets that pair stay
+    expect(cleanLocator(", p.5, s.3(א)(2)")).toBe("p.5, s.3(א)(2)");
+    expect(cleanLocator(", file p.2 (gazette p.375)")).toBe("file p.2 (gazette p.375)");
+  });
+
   it("a link titled by its page keeps that page before the place the text after it names (TXF-48, 2026-11-12)", () => {
     const line = '- Source: [Annual report 2025](https://example.org/r.pdf#page=104), p.104, note 5, "Dividend income"; [p.119](https://example.org/r.pdf#page=119), note 10, "Non-reclaimable overseas income withholding tax" · checked 2026-11-12 · institution';
     const { sources } = extractFromLine(line, ctx());

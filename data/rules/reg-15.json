@@ -20,8 +20,8 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.94, s.50א(ד) ; p.96, s.50ג",
-      "locator_he": "עמוד 94, סעיף 50א(ד) ; עמוד 96, סעיף 50ג",
+      "locator": "p.94, s.50א(ד); p.96, s.50ג",
+      "locator_he": "עמוד 94, סעיף 50א(ד); עמוד 96, סעיף 50ג",
       "page": 94,
       "checked": "2026-10-25"
     },

@@ -60,8 +60,8 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.6, s.8ד ; p.8, s.8ו; p.10, s.8יא",
-      "locator_he": "עמוד 6, סעיף 8ד ; עמוד 8, סעיף 8ו; עמוד 10, סעיף 8יא",
+      "locator": "p.6, s.8ד; p.8, s.8ו; p.10, s.8יא",
+      "locator_he": "עמוד 6, סעיף 8ד; עמוד 8, סעיף 8ו; עמוד 10, סעיף 8יא",
       "page": 6,
       "checked": "2026-10-25"
     },
