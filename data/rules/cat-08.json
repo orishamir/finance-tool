@@ -37,10 +37,9 @@
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":[202406,202407,202408],\"FUND_CLASSIFICATION\":\"קופת%20גמל%20להשקעה\"}&q=מיטב",
       "title": "Gemel-Net, Meitav gemel lehashkaa tracks, 202406 to 202408",
-      "title_he": "קופת גמל להשקעה: עמוד המוצר של מיטב",
       "publisher": "data.gov.il",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-22"
     },
