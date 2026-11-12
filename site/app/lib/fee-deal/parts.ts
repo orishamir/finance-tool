@@ -92,6 +92,14 @@ export function standingView(r: Pick<DealRead, "kind" | "deal" | "today">, fees:
   return { standing, share: reading(standing.share * 100, "pct", "F-113", inputs, r.today) };
 }
 
+/** Whether two prices stand alike against the cap: judged alike with the same share, or not judged for the same reason. */
+export function sameStanding(a: StandingView, b: StandingView): boolean {
+  const x = a.standing;
+  const y = b.standing;
+  if (x.judged && y.judged) return x.standing === y.standing && x.share === y.share;
+  return !x.judged && !y.judged && x.why === y.why;
+}
+
 /** A fee as a line of a view: its id, kind and the person's name for a fee of their own. */
 export interface FeeRef {
   fee: string;
@@ -99,7 +107,8 @@ export interface FeeRef {
   name?: string;
 }
 
-export const refOf = (f: Fee): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) });
+/** A fee's line, from the deal's fee or from a line of a view that carries more (a period's row). */
+export const refOf = (f: Fee | FeeRef): FeeRef => ({ fee: "id" in f ? f.id : f.fee, kind: f.kind, ...(f.name ? { name: f.name } : {}) });
 
 /** The stage of a fee whose price holds in month `i` (F-110: the first whose end is after it, else the last). */
 export function stageIn(stages: readonly { until?: MonthKey }[], at: CalendarMonth): number {

@@ -6,9 +6,9 @@ import { describe, expect, it } from "vitest";
 import { feeDeal } from "../../copy";
 import { feesData } from "../../lib/fees.server";
 import { newDeal } from "../../lib/fee-deal/model";
-import { dealFromTemplate, HELD_UNSAID, templateLeft } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, HELD_UNSAID, templateOf, templateSource } from "../../lib/fee-deal/templates";
 import { dealLabel } from "./bar-end";
-import { leavesText, TemplateNote, templateSource } from "./picker";
+import { leavesText, TemplateNote } from "./picker";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -27,14 +27,14 @@ describe("a saved deal in the list", () => {
 describe("what a template leaves out", () => {
   const probe = { ...newDeal("brokerage-account"), held: HELD_UNSAID };
   it("counts a price list's lines in the picker, and says where it has none for what the deal holds", () => {
-    expect(leavesText(templateLeft(probe, "house:leumi", data, TODAY)!)).toBe("שתי שורות לא נכנסות");
-    expect(leavesText(templateLeft(probe, "house:psagot", data, TODAY)!)).toBeUndefined();
+    expect(leavesText(templateOf(probe, "house:leumi", data, TODAY)!.left)).toBe("שתי שורות לא נכנסות");
+    expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBeUndefined();
     expect(leavesText([{ why: "no-holding" }])).toBe(feeDeal.picker.noHolding);
   });
   it("names the template a new deal was filled from and lists what it left out, by why", () => {
     const deal = dealFromTemplate(probe, "house:leumi", data, TODAY)!;
     expect(templateSource(deal.template!.id)).toBe("house");
-    const note = text(createElement(TemplateNote, { template: deal.template!, left: templateLeft(deal, deal.template!.id, data, TODAY)! }));
+    const note = text(createElement(TemplateNote, { template: deal.template!, left: templateOf(deal, deal.template!.id, data, TODAY)!.left }));
     expect(note).toContain(`${feeDeal.filled.from.house}${deal.template!.name}`);
     expect(note).toContain(feeDeal.filled.why["share-cap"]);
     expect(note).toContain(feeDeal.filled.why["set-aside"]);
@@ -44,7 +44,7 @@ describe("what a template leaves out", () => {
     const deal = dealFromTemplate(newDeal("keren-hishtalmut"), "track:154", data, TODAY)!;
     expect(templateSource(deal.template!.id)).toBe("track");
     expect(deal.fees.map((f) => f.kind)).toEqual(["balance"]);
-    const note = text(createElement(TemplateNote, { template: deal.template!, left: templateLeft(deal, deal.template!.id, data, TODAY)! }));
+    const note = text(createElement(TemplateNote, { template: deal.template!, left: templateOf(deal, deal.template!.id, data, TODAY)!.left }));
     expect(note).toContain(feeDeal.filled.from.track);
     expect(note).toContain(feeDeal.filled.why["none-by-rule"]);
   });

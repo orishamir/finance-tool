@@ -4,6 +4,7 @@
 // side stores read this file on every page.
 import { productIds, type ProductId, type ValueObject } from "@finance-tool/schema";
 import type { CalendarMonth, Deal, DealFee, DealPrice, DealStage } from "@finance-tool/engine";
+import { newId } from "../ids";
 import { engineBase, FEE_SHAPES, holdsFunds, isFeeKindId, ONE_SIDE, type FeeKindId, type FormId, type Held } from "./shapes";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -97,7 +98,7 @@ export const NAME_MAX = 60;
 const TEXT_MAX = 400;
 /** No typed percent is above this, and no sum above this many shekels: anything larger is not a price and is refused. */
 const PCT_MAX = 100;
-const SUM_MAX = 1_000_000_000;
+export const SUM_MAX = 1_000_000_000;
 const FEES_MAX = 40;
 const STAGES_MAX = 12;
 const MONTH = /^(\d{4})-(0[1-9]|1[0-2])$/;
@@ -127,7 +128,7 @@ export const monthsBetween = (a: CalendarMonth, b: CalendarMonth): number => b.y
 
 // ---------------------------------------------------------------- new things
 
-const newId = (prefix: string) => `${prefix}${Date.now().toString(36)}-${Math.floor(Math.random() * 46656).toString(36)}`;
+// ids never repeat, however many are made in one moment (lib/ids.ts): a deal must have none repeated (readDeal refuses a repeated fee id)
 export const newDealId = () => newId("deal-");
 export const newFeeId = () => newId("fee-");
 

@@ -335,10 +335,18 @@ export function RangeField(props: RangeFieldProps) {
 /** The check for an amount that cannot be below zero: the standard sentence "הסכום לא יכול להיות שלילי.". */
 export const nonNegativeCheck = (n: number): string | null => (n < 0 ? copy.errors.negative : null);
 
+/** The check for an amount that must be above zero (a salary, an income): the standard sentence "הזינו סכום גדול מאפס.". */
+export const aboveZeroCheck = (n: number): string | null => (n <= 0 ? copy.errors.positive : null);
+
+/** A whole number in the range, else the sentence's two halves around the range ("… 1 ל־40."). */
+const wholeInRange = (range: { min: number; max: number }, words: readonly [string, string]) => (n: number): string | null =>
+  n < range.min || n > range.max || !Number.isInteger(n) ? `${words[0]} ${fmt.number(range.min)} ${words[1]}${fmt.number(range.max)}.` : null;
+
 /** The check for a number of years: a whole number in the range, else the standard sentence "הזינו מספר שנים בין … ל־…". */
-export function yearsCheck(range: { min: number; max: number }): (n: number) => string | null {
-  return (n) => (n < range.min || n > range.max || !Number.isInteger(n) ? `${copy.errors.years[0]} ${fmt.number(range.min)} ${copy.errors.years[1]}${fmt.number(range.max)}.` : null);
-}
+export const yearsCheck = (range: { min: number; max: number }) => wholeInRange(range, copy.errors.years);
+
+/** The check for an age: the same test as `yearsCheck`, in the age's words, "הזינו גיל בין … ל־…". */
+export const ageCheck = (range: { min: number; max: number }) => wholeInRange(range, copy.errors.age);
 
 /** The check for a percent field: the number must lie in the range, else the standard sentence "הזינו אחוז בין … ל־…". */
 export function percentCheck(range: { min: number; max: number } = { min: 0, max: 100 }): (n: number) => string | null {

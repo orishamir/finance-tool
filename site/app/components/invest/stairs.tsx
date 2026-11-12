@@ -12,7 +12,7 @@ import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf,
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { LeadTail, Num, Term, type SheetPart } from "../provenance";
-import { wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { Button, wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
@@ -38,9 +38,9 @@ interface Level {
 /** The status line's jump to the top pair: one element for the line and its unseen cases, which must wrap as it does. */
 function JumpLink({ children, onClick }: { children: ReactNode; onClick?: () => void }) {
   return (
-    <button type="button" className="text-link underline underline-offset-[3px] hover:no-underline" onClick={onClick} tabIndex={onClick ? undefined : -1}>
+    <Button variant="inline" onClick={onClick} tabIndex={onClick ? undefined : -1}>
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -227,7 +227,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       head: t.table.account,
       cells: visible.map((l) => (
         <span key={l.stair.pos.f + l.stair.pos.a} className={cx("block min-h-[3lh]", l.stair.lane === "account" ? "font-semibold" : "text-muted-foreground")}>
-          <ProviderLink short p={l.house} className={l.stair.lane === "account" ? undefined : "text-muted-foreground"} />
+          <ProviderLink short p={l.house} muted={l.stair.lane !== "account"} />
         </span>
       )),
     },
@@ -241,7 +241,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const resultCells: Record<string, ReactNode> = {
     what: <span className="inline-flex min-h-7 items-center justify-center font-semibold">{t.result(levels.length - 1)}</span>,
     fund: <span className="block min-h-[3lh] text-muted-foreground"><MixedName>{end.fundName}</MixedName></span>,
-    account: <span className="block min-h-[3lh] text-muted-foreground"><ProviderLink short p={end.house} className="text-muted-foreground" /></span>,
+    account: <span className="block min-h-[3lh] text-muted-foreground"><ProviderLink short p={end.house} muted /></span>,
     ac: own(end.account),
     fc: own(end.fund),
     tx: own(end.tax),
@@ -439,9 +439,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
         <LongestCase className="min-w-0 flex-1" cases={[<PanelHead key="l" kicker={t.title}>{t.panelTitle.lead(STAIRS_SLOTS)} {t.panelTitle.more} {sample} {t.panelTitle.tail}</PanelHead>]}>
           <PanelHead kicker={t.title}>{climbTitle}</PanelHead>
         </LongestCase>
-        <button type="button" onClick={reset} disabled={current.taken.length === 0} className="inline-flex min-h-11 items-center rounded-lg border border-border px-3.5 text-sm text-primary disabled:cursor-default disabled:text-muted-foreground disabled:opacity-50">
+        <Button variant="quiet" onClick={reset} disabled={current.taken.length === 0} className="text-sm">
           {t.reset}
-        </button>
+        </Button>
       </div>
         <p className="text-xs text-muted-foreground">{t.axisNote}</p>
         {/* one legend for the chart, above it, in the order of the steps (charts.md) */}

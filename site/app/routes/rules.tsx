@@ -562,7 +562,7 @@ export default function Rules() {
     <p className="text-sm text-muted-foreground flex items-center gap-x-4 max-lg:overflow-x-auto max-lg:whitespace-nowrap scrollbar-none max-lg:-mx-gutter max-lg:px-gutter lg:flex-wrap">
       <span className="shrink-0">{copy.ask.examplesLead}</span>
       {copy.ask.examples.map((e) => (
-        <Button key={e} variant="quiet" flush className="shrink-0 text-start lg:min-h-7 lg:tap-area" onClick={() => typed(e, true)}>
+        <Button key={e} variant="quiet" flush size="compact" className="shrink-0 text-start" onClick={() => typed(e, true)}>
           {e}
         </Button>
       ))}
@@ -572,7 +572,7 @@ export default function Rules() {
   const detail = (
     <div onKeyDown={onDetailKey} className={cx("min-w-0 flex flex-col gap-2 xl:sticky xl:top-[80px]", !open && "max-xl:hidden")}>
       {open && (
-        <Button variant="quiet" flush className="xl:hidden self-start gap-1.5" onClick={closeRule}>
+        <Button variant="quiet" flush gap="sm" className="xl:hidden self-start" onClick={closeRule}>
           <IconArrowBack size={18} />
           {copy.detail.back}
         </Button>
@@ -815,7 +815,7 @@ function CompanyResults({ company, names, docs, pd, failed }: { company: string[
               <td className="align-top">
                 <span className="flex flex-col lg:flex-row lg:flex-wrap lg:gap-x-2">
                   {d.pages.map((p) => (
-                    <DocLink key={p} href={pageHref(d.url, p)} className="whitespace-nowrap">
+                    <DocLink key={p} look="compact" href={pageHref(d.url, p)} className="whitespace-nowrap">
                       <WithNumber text={words.page} n={p} />
                     </DocLink>
                   ))}

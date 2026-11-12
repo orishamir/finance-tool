@@ -1,7 +1,7 @@
 // Screen 1: the product guide page (design-spec 2).
 import type { ReactNode } from "react";
 import { guidePath, rulesPath, trackBrowserPath } from "../lib/site-paths";
-import { Link, useLoaderData } from "react-router";
+import { useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePreview, scopeWords } from "../copy";
 import { pageMeta } from "../lib/page-meta";
@@ -13,7 +13,7 @@ import { Timeline } from "../components/timeline/Timeline";
 import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../components/guide-signature";
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds, lumpSumIds } from "../lib/guide-signature";
-import { gershayim, Sentence } from "../components/kit";
+import { gershayim, Sentence, TextLink } from "../components/kit";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
 import { omitsSection, sectionTitle, withdrawalRules } from "../lib/guide-nav";
@@ -416,9 +416,9 @@ export default function GuidePage() {
                 t={copy.heldIn}
                 vars={{
                   account: (
-                    <Link to={guidePath(data.heldIn.id)} className="text-link hover:underline">
+                    <TextLink to={guidePath(data.heldIn.id)}>
                       {data.heldIn.name}
-                    </Link>
+                    </TextLink>
                   ),
                 }}
               />
@@ -513,5 +513,4 @@ export default function GuidePage() {
   );
 }
 
-export { Link };
 

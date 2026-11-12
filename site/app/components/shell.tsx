@@ -22,6 +22,7 @@ const doorItems: NavItem[] = [
   byHref("/guide"),
   byHref("/companies"),
   byHref("/indices"),
+  byHref("/deal"), // founder, 2026-11-13: the fee page "should have a link from the header"; placed beside the other tool
   byHref("/rules"), // the header order the founder set: guide, companies, indices, rules
 ];
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
@@ -281,21 +282,21 @@ export function Breadcrumb({ parent, middle, current }: { parent: { href: string
   const back = middle ?? parent;
   return (
     <nav aria-label="מיקום" className="text-sm text-muted-foreground">
-      <Link to={back.href} className="lg:hidden inline-flex items-center gap-0.5 min-h-target hover:underline">
+      <TextLink look="line" tone="muted" to={back.href} className="lg:hidden">
         <IconBack size={16} />
         {gershayim(back.label)}
-      </Link>
-      <Link to={parent.href} className="hidden lg:inline-flex items-center gap-0.5 lg:tap-area hover:underline">
+      </TextLink>
+      <TextLink tone="muted" to={parent.href} className="hidden lg:inline-flex lg:tap-area">
         {gershayim(parent.label)}
-      </Link>
+      </TextLink>
       <span className="hidden lg:inline" aria-hidden="true">
         {" › "}
       </span>
       {middle && (
         <>
-          <Link to={middle.href} className="hidden lg:inline-flex items-center lg:tap-area hover:underline">
+          <TextLink tone="muted" to={middle.href} className="hidden lg:inline-flex lg:tap-area">
             {gershayim(middle.label)}
-          </Link>
+          </TextLink>
           <span className="hidden lg:inline" aria-hidden="true">
             {" › "}
           </span>

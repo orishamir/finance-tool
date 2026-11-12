@@ -10,7 +10,7 @@ import {
   documentsPath,
   exposureIdOfSlug,
   exposurePath,
-  feesPath,
+  dealPagePath,
   groupPath,
   guidePath,
   housePath,
@@ -84,22 +84,22 @@ describe("documentsPath", () => {
   });
 });
 
-describe("feesPath", () => {
+describe("dealPagePath", () => {
   it("writes a product's and a track's fee page", () => {
-    expect(feesPath({ wrapper: "keren-hishtalmut" })).toBe("/fees?wrapper=keren-hishtalmut");
-    expect(feesPath({ track: 13245 })).toBe("/fees?track=13245");
-    expect(feesPath({ track: "13245" })).toBe("/fees?track=13245");
+    expect(dealPagePath({ wrapper: "keren-hishtalmut" })).toBe("/deal?wrapper=keren-hishtalmut");
+    expect(dealPagePath({ track: 13245 })).toBe("/deal?track=13245");
+    expect(dealPagePath({ track: "13245" })).toBe("/deal?track=13245");
   });
   it("writes a whole deal's fee page", () => {
-    expect(feesPath({ deal: "WzEseyJu_-" })).toBe("/fees?d=WzEseyJu_-");
+    expect(dealPagePath({ deal: "WzEseyJu_-" })).toBe("/deal?d=WzEseyJu_-");
   });
 });
 
 describe("siteAddress", () => {
   it("writes a path whole under the site's origin and basename, with or without the basename's last slash", () => {
-    expect(siteAddress("https://example.org", "/finance-tool/", "/fees?d=x")).toBe("https://example.org/finance-tool/fees?d=x");
-    expect(siteAddress("https://example.org", "/finance-tool", "/fees?d=x")).toBe("https://example.org/finance-tool/fees?d=x");
-    expect(siteAddress("http://localhost:5173", "/", "/fees?d=x")).toBe("http://localhost:5173/fees?d=x");
+    expect(siteAddress("https://example.org", "/finance-tool/", "/deal?d=x")).toBe("https://example.org/finance-tool/deal?d=x");
+    expect(siteAddress("https://example.org", "/finance-tool", "/deal?d=x")).toBe("https://example.org/finance-tool/deal?d=x");
+    expect(siteAddress("http://localhost:5173", "/", "/deal?d=x")).toBe("http://localhost:5173/deal?d=x");
   });
 });
 
@@ -126,8 +126,6 @@ describe("the index page's addresses", () => {
 // page's path, or joins a string onto it, or adds a `?product=` to a path held in a variable, builds it by hand. A fixed address
 // written whole ("/guide", "/indices/sp500") is not built.
 const app = fileURLToPath(new URL("../", import.meta.url));
-// files another piece of work owns; their hand-built addresses are listed where that work is handed over
-const notHere = ["components/kit/", "components/transfer/", "copy.ts", "lib/site-paths.ts"];
 const kinds = "guide|companies|tracks|rules|exposure|documents|fees|indices";
 const handBuilt = [
   new RegExp(`\`/(?:${kinds})(?:[/?#][^\`]*)?\\$\\{`),
@@ -137,17 +135,22 @@ const handBuilt = [
 const walk = (d: string): string[] => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
 
 describe("the site's addresses are built in one place", () => {
+  const read = walk(app)
+    .map((file) => relative(app, file).split(sep).join("/"))
+    .filter((rel) => /\.tsx?$/.test(rel) && !/\.test\.tsx?$/.test(rel) && rel !== "lib/site-paths.ts");
   it("no file outside lib/site-paths.ts builds one by hand", () => {
     const hits: string[] = [];
-    for (const file of walk(app)) {
-      const rel = relative(app, file).split(sep).join("/");
-      if (!/\.tsx?$/.test(rel) || /\.test\.tsx?$/.test(rel) || notHere.some((n) => rel === n || (n.endsWith("/") && rel.startsWith(n)))) continue;
-      readFileSync(file, "utf8")
+    for (const rel of read) {
+      readFileSync(join(app, rel), "utf8")
         .split("\n")
         .forEach((line, i) => {
           if (handBuilt.some((r) => r.test(line))) hits.push(`site/app/${rel}:${i + 1}: ${line.trim().slice(0, 160)}`);
         });
     }
     expect(hits, "build these with lib/site-paths.ts").toEqual([]);
+  });
+  it("reads the fee page's files, the kit's and the transfer page's", () => {
+    for (const dir of ["components/fee-deal/", "lib/fee-deal/", "components/kit/", "components/transfer/"]) expect(read.some((f) => f.startsWith(dir)), dir).toBe(true);
+    expect(read).toContain("copy.ts");
   });
 });

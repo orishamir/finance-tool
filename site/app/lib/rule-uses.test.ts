@@ -15,8 +15,8 @@ describe("rule uses", () => {
     const capRules = new Set(loadProducts().flatMap((w) => (w.fee_bases_allowed.length > 0 ? Object.values(w.fee_caps ?? {}).flatMap((c) => c?.rule_ids ?? []) : [])));
     expect(fees.length).toBeGreaterThan(0);
     expect(fees.filter((f) => !capRules.has(f.id))).toEqual([]);
-    expect(fees.some((f) => /^\/fees\?wrapper=[a-z-]+$/.test(f.href))).toBe(true);
-    for (const f of fees) if (f.href !== "/fees") expect(ruleProducts()[f.id]).toContain(f.href.split("=")[1]);
+    expect(fees.some((f) => /^\/deal\?wrapper=[a-z-]+$/.test(f.href))).toBe(true);
+    for (const f of fees) if (f.href !== "/deal") expect(ruleProducts()[f.id]).toContain(f.href.split("=")[1]);
   });
   it("an unknown id has no uses", () => {
     expect(ruleUseOf("ZZZ-99")).toMatchObject({ pages: [], engine: false, collections: {}, score: 0 });

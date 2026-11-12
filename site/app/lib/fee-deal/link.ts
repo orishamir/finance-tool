@@ -1,8 +1,8 @@
-// The fee page's address: `/fees?d=…` carries a whole deal, encoded compactly; `/fees?wrapper=<id>` opens a new deal of that kind and
-// `/fees?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readDeal`): a
+// The fee page's address: `/deal?d=…` carries a whole deal, encoded compactly; `/deal?wrapper=<id>` opens a new deal of that kind and
+// `/deal?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readDeal`): a
 // broken or hostile value opens an empty deal and never throws.
 import type { FeesData } from "../fee-page-data";
-import { feesPath } from "../site-paths";
+import { dealPagePath } from "../site-paths";
 import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
 import { dealFromTrack } from "./templates";
 
@@ -106,23 +106,22 @@ export function decodeDeal(d: string): FeeDeal | null {
   return readDeal({ ...long, id: newDealId(), fees });
 }
 
-/** The query of a deal's address: the deal in `d`. */
-export const dealSearch = (deal: FeeDeal): string => `?d=${encodeDeal(deal)}`;
-
 /** The address of a deal: the fee page with the deal in `d` (site-paths.ts). */
-export const dealPath = (deal: FeeDeal): string => feesPath({ deal: encodeDeal(deal) });
+export const encodedDealPath = (deal: FeeDeal): string => dealPagePath({ deal: encodeDeal(deal) });
 
 /**
- * The deal the address opens: a deal in `d` (an empty one where `d` is broken); a new deal of the kind `wrapper` names, where it names a
- * kind of the data (else an empty one); a new deal filled from the track `track` names (else an empty one). Null where the address names
- * none of them, and the page opens what the device holds.
+ * The deal the address opens: a deal in `d`; a new deal of the kind `wrapper` names, where it names a kind of the data; a new deal filled
+ * from the track `track` names. `given` says the address gave that deal; where `d` is broken or the kind or the track is unknown, an empty
+ * deal opens and `given` is false, so the page keeps nothing of it. Null where the address names none of them, and the page opens what
+ * the device holds.
  */
-export function dealOfAddress(search: string, data: Pick<FeesData, "kinds" | "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
+export function dealOfAddress(search: string, data: Pick<FeesData, "kinds" | "houses" | "tracks" | "templates">, today: string): { deal: FeeDeal; given: boolean } | null {
   const q = new URLSearchParams(search);
   const d = q.get("d");
-  if (d !== null) return decodeDeal(d) ?? newDeal(null);
+  const opened = (deal: FeeDeal | null) => (deal ? { deal, given: true } : { deal: newDeal(null), given: false });
+  if (d !== null) return opened(decodeDeal(d));
   const subject = parseSubject(search);
   if (!subject) return null;
-  if (subject.kind === "wrapper") return isProductId(subject.wrapperId) && data.kinds.some((k) => k.id === subject.wrapperId) ? newDeal(subject.wrapperId) : newDeal(null);
-  return dealFromTrack(subject.trackId, data, today) ?? newDeal(null);
+  if (subject.kind === "wrapper") return opened(isProductId(subject.wrapperId) && data.kinds.some((k) => k.id === subject.wrapperId) ? newDeal(subject.wrapperId) : null);
+  return opened(dealFromTrack(subject.trackId, data, today));
 }

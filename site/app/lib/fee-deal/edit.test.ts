@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { feeInOrder, newDeal, newFee, type Fee, type Num } from "../../lib/fee-deal/model";
+import { feeInOrder, newDeal, newFee, type Fee, type Num } from "./model";
 import { addFee, addStage, editPrice, removeStage, setHeld, setKind, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
