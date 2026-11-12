@@ -148,7 +148,7 @@ export function markView(m: DealMark, fees: readonly Fee[], period: DealPeriod, 
     const rateIn = Object.fromEntries(m.against.map((i) => [inputKey(fees, i, "yearly"), yearly(i)]));
     const sum = m.fees.length === 1 ? yearly(m.fees[0]!) : reading(m.sum, "nis", "F-111", sumIn, today);
     const rate = m.against.length === 1 ? yearly(m.against[0]!) : reading(m.rate * 100, "pct_per_year", "F-111", rateIn, today);
-    return { kind: "meet", on: "held", fees: m.fees.map((i) => refOf(fees[i]!)), against: m.against.map((i) => refOf(fees[i]!)), sum, rate, amount: reading(m.amount, "nis", "F-112", { sum, rate }, today) };
+    return { kind: "meet", on: "held", fees: m.fees.map((i) => refOf(fees[i]!)), against: m.against.map((i) => refOf(fees[i]!)), sum, rate, amount: reading(m.amount, "nis", "F-112", { account_sums: sum, custody_rate: rate }, today) };
   }
   const fee = fees[m.fee]!;
   const price = priceAt(fee, period.from, m.side === "sell");

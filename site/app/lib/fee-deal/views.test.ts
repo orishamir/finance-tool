@@ -154,7 +154,9 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(b.rows[4]!.insideFund).toBe(true);
     expect(b.rows[3]!.saleSame).toBeNull();
     expect(b.suggestions.usual).toEqual(["transfer_out"]);
-    expect(b.suggestions.rarer).toEqual(["distribution_handling", "fx_spread", "corporate_event", "current_account", "own"]);
+    expect(b.suggestions.rarer).toEqual(["fx_spread", "corporate_event", "current_account", "own"]);
+    const paying = builder({ ...account(), held: { place: "abroad", currency: "USD", payout: "distributing" } }, kinds, TODAY);
+    expect(paying.suggestions.usual).toEqual(["distribution_handling", "transfer_out"]);
     expect(b.held).toEqual({ place: "abroad", currency: "USD", payout: "accumulating" });
   });
   it("in the reading: three periods, the sums against custody meeting at 30,000 from 03.2028, and the two curves", () => {

@@ -78,15 +78,15 @@ export const perActionUnit = (fee: Fee): Unit => (fee.kind === "transfer_out" ? 
 export const heldRateUnit = (per: number): Unit => (per === 12 ? "pct_per_year" : "pct_of_balance_per_period");
 
 /**
- * The key a fee's figure takes among a reading's inputs: the fee's kind (its own name for a fee of the person's own), with the field
- * after a dot where it is not the rate or the sum (`trade.min`), and a number after the kind where the deal has two fees of it.
+ * The key a fee's figure takes among a reading's inputs: `deal:` and the fee's kind, with a number after the kind where the deal has two
+ * fees of it, and the field after a dot where it is not the rate or the sum (`deal:trade.min`, `deal:custody 2.yearly`). The prefix keeps
+ * the keys apart from other readings' (`balance` is a run's balance there); the copy names every such key.
  */
 export function inputKey(fees: readonly Fee[], i: number, field?: "min" | "max" | "yearly"): string {
   const fee = fees[i]!;
-  const name = fee.kind === "own" ? fee.name || "own" : fee.kind;
-  const same = fees.filter((f) => f.kind === fee.kind && (f.kind !== "own" || f.name === fee.name));
+  const same = fees.filter((f) => f.kind === fee.kind);
   const n = same.length > 1 ? ` ${same.indexOf(fee) + 1}` : "";
-  return `${name}${n}${field ? `.${field}` : ""}`;
+  return `deal:${fee.kind}${n}${field ? `.${field}` : ""}`;
 }
 
 /** The figures of one price as value objects, each in its unit (a free price has none). */

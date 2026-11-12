@@ -49,6 +49,9 @@ describe("fee shapes", () => {
     expect(s.usual).toEqual(["custody", "fixed_period", "transfer_out", "fund_management"]);
     expect(s.rarer).toContain("fx");
     expect(s.rarer.at(-1)).toBe("own");
+    expect(s.rarer).not.toContain("distribution_handling");
+    const unsaid = suggestions("brokerage-account", ["trade", "distribution_handling"], [], undefined);
+    expect([...unsaid.usual, ...unsaid.rarer]).not.toContain("distribution_handling");
   });
 });
 
@@ -154,13 +157,15 @@ describe("the saved deals", () => {
     expect(parseDeals({ version: 1, deals: [a, { ...a }, { id: "bad" }] })).toEqual([a]);
     expect(parseDeals({ version: 2, deals: [a] })).toEqual([]);
   });
-  it("saves a deal over the one with its id, or first, stamped with the day", () => {
+  it("saves a deal first, in place of the one with its id, stamped with the day", () => {
     const a = account(), b = { ...account(), id: "deal-b" };
     const one = savedWith([], a, "2026-11-12");
     expect(one).toEqual([{ ...a, saved: "2026-11-12" }]);
     const two = savedWith(one, b, "2026-11-12");
     expect(two.map((d) => d.id)).toEqual(["deal-b", "deal-a"]);
-    expect(savedWith(two, { ...a, name: "x" }, "2026-11-13").find((d) => d.id === "deal-a")).toMatchObject({ name: "x", saved: "2026-11-13" });
+    const three = savedWith(two, { ...a, name: "x" }, "2026-11-13");
+    expect(three.map((d) => d.id)).toEqual(["deal-a", "deal-b"]);
+    expect(three[0]).toMatchObject({ name: "x", saved: "2026-11-13" });
     expect(without(two, "deal-a").map((d) => d.id)).toEqual(["deal-b"]);
   });
   it("travels in the export file: read with each deal checked, added by id, written and read back from the device", () => {
