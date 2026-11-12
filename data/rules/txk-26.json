@@ -82,6 +82,46 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.7 (gazette p.289), reg. 3(א)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 3(א)",
+      "page": 7,
+      "quote": "קופת גמל המשלמת ליחיד ריבית, תנכה ממנה מס בשיעור של 20%",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.2-4 (gazette pp.600-602), ss.1-9",
+      "locator_he": "עמודי הקובץ 2 עד 4 (עמודי הרשומות 600 עד 602), סעיפים 1-9",
+      "page": 2,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7907%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ח-2017, קובץ התקנות 7907 (27.12.2017)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.6-7 (gazette pp.444-445), ss.1-2",
+      "locator_he": "עמודי הקובץ 6 עד 7 (עמודי הרשומות 444 עד 445), סעיפים 1-2",
+      "page": 6,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf",
       "title": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
       "title_he": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
@@ -108,44 +148,6 @@
       "page": 2,
       "quote": "לדוחות משנת 2018 ואילך",
       "checked": "2026-11-06"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.7 (gazette p.289), reg. 3(א)",
-      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 3(א)",
-      "page": 7,
-      "quote": "קופת גמל המשלמת ליחיד ריבית, תנכה ממנה מס בשיעור של 20%",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.600), ss.1-9, amending regs. 1, 2, 4, 5, 7, 8, 10, 14 and 20, not reg. 3",
-      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 600), סעיפים 1-9, תיקון תקנות 1, 2, 4, 5, 7, 8, 10, 14 ו־20, לא תקנה 3",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7907%2Fheb#page=6",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ח-2017, קובץ התקנות 7907 (27.12.2017)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ח-2017, קובץ התקנות 7907 (27.12.2017)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.6 (gazette p.444), ss.1-2, replacing reg. 13 and amending reg. 14 (payment and report days), the only amendment after 2012; the Reshumot search lists none later (2026-11-07)",
-      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 444), סעיפים 1-2, החלפת תקנה 13 ותיקון תקנה 14",
-      "checked": "2026-11-07"
     }
   ],
   "derived_from": [

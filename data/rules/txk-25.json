@@ -83,6 +83,7 @@
     }
   ],
   "derived_from": [
+    "TXK-08",
     "TXK-09",
     "TXK-23"
   ]
