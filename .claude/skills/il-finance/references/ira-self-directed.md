@@ -160,7 +160,7 @@ An IRA is a provident fund (tagmulim or annuity) or a study fund opened for one 
 - Rule: In investing under the IRA regulations, the managing company may not take credit of any kind, pledge assets, guarantee obligations or lend to members (reg. 8). The 2025 draft would exclude from "אשראי" a credit line for options, futures or short sales.
 - Conditions / exceptions: Margin trading is therefore not available beyond the collateral limit in IRA-12.
 - Figures: none
-- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש"ע-2009 (קובץ התקנות 6820)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5) p.5, reg. 8 "שעבוד נכסים, הלוואות לעמיתיה" · checked 2026-10-25 · primary; [CMA draft 2025](https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf) p.4, s.7 · checked 2026-10-25 · primary (draft)
+- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש"ע-2009 (קובץ התקנות 6820)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5) p.5, reg. 8 "לקבל אשראי מכל סוג שהוא, לשעבד נכס מנכסיה, לערוב להתחייבויות מכל סוג שהוא ולתת הלוואות לעמיתיה" · checked 2026-10-25 · primary; [CMA draft 2025](https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf) p.4, s.7 · checked 2026-10-25 · primary (draft)
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: yes, the 2025 draft

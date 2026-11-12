@@ -121,8 +121,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.36, s.36 ; p.58, s.80",
-      "locator_he": "עמוד 36, סעיף 36 ; עמוד 58, סעיף 80",
+      "locator": "p.36, s.36; p.58, s.80",
+      "locator_he": "עמוד 36, סעיף 36; עמוד 58, סעיף 80",
       "page": 36,
       "checked": "2026-10-25"
     }

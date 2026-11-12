@@ -47,8 +47,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.1, s.1 ; p.2, s.2",
-      "locator_he": "עמוד 1, סעיף 1 ; עמוד 2, סעיף 2",
+      "locator": "p.1, s.1; p.2, s.2",
+      "locator_he": "עמוד 1, סעיף 1; עמוד 2, סעיף 2",
       "page": 1,
       "checked": "2026-10-25"
     },

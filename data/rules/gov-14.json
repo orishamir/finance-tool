@@ -162,8 +162,8 @@
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 1 ; p.3, regs. 4, 7; p.4, reg. 9",
-      "locator_he": "עמוד 2, תקנה 1 ; עמוד 3, תקנות 4, 7; עמוד 4, תקנה 9",
+      "locator": "p.2, reg. 1; p.3, regs. 4, 7; p.4, reg. 9",
+      "locator_he": "עמוד 2, תקנה 1; עמוד 3, תקנות 4, 7; עמוד 4, תקנה 9",
       "page": 2,
       "checked": "2026-10-25"
     },
