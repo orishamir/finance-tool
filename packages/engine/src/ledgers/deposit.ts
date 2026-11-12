@@ -23,6 +23,12 @@ export interface DepositInput {
      * condition of the offer, not a cap on what the ladder holds.
      */
     balanceCeiling?: number;
+    /**
+     * F-41: the interval of the deposit's exit points in months, counted from each piece's own start (the record's
+     * `exit_points.every_months`, BANK-14, BANK-27). Absent when the deposit has no exit points, or has some at no fixed interval
+     * the record holds. Read only on the last month, for the flag G-16; it changes no amount.
+     */
+    exitEveryMonths?: number;
   };
   profile: Profile;
 }
@@ -41,7 +47,7 @@ interface OpenDeposit {
  * into a new deposit. At T the open deposits are treated as matured on the exit day.
  * F-22 Savings plan: the same ladder with the plan's own rate and term (TXI-07, BANK-28).
  * F-41 Deposits at exit: tax was charged at each maturity; the last open deposit matures on the exit day, and a run
- * that holds a piece still inside its term that day raises G-16 (the break is not priced).
+ * that holds a piece still inside its term that day, and not at one of its exit points, raises G-16 (the break is not priced).
  */
 export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx);
@@ -101,10 +107,14 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       if (balance > deposit.balanceCeiling) earning = deposit.balanceCeiling / balance;
     }
     for (const d of due) {
-      // G-16: a piece still inside its term on the exit day is priced as if it matured that day. The records hold whether a break
-      // is allowed, not what it pays, so the break is not priced; the run says so on the number.
-      if (d.startMonth + n - 1 > m) tally.flag("G-16");
+      // The piece's age on month m: the months it has earned, its start month included. It matures when its age is n
+      // (startMonth + n - 1 === m), and it is at an exit point when its age is a whole multiple of the exit interval.
       const months = m - d.startMonth + 1;
+      // G-16: a piece still inside its term on the exit day is priced as if it matured that day. The records hold whether a break
+      // is allowed, not what it pays, so the break is not priced; the run says so on the number. A piece at one of its exit
+      // points can be taken out that day without a break, so it is not flagged; its amount is still interest to date (F-41).
+      const atExitPoint = deposit.exitEveryMonths !== undefined && months % deposit.exitEveryMonths === 0;
+      if (months < n && !atExitPoint) tally.flag("G-16");
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
       const interest = depositInterest(indexed * earning, deposit.rate, months);
       const tax = rate * interest;
