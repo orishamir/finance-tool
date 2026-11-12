@@ -105,9 +105,10 @@ export default function Invest() {
 /** The known indices by name, as the loader gives them: the title's picker works before the data arrives. */
 const knownOf = (data: Data): IndexRef[] => data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
 
-/** The page's frame: the title row, then what is below it, a little tighter than a page's sections (the sliders and what they move stay in one view). */
+/** The page's frame: the title row (a `PageHead`, which carries the page's top padding), then what is below it, a little tighter than a
+ *  page's sections (the sliders and what they move stay in one view). */
 const Frame = ({ title, children }: { title: React.ReactNode; children: React.ReactNode }) => (
-  <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
+  <div className="flex flex-col gap-5 lg:gap-6">
     {title}
     {children}
   </div>
@@ -336,7 +337,7 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
     railed ? (
       <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} layout="ticket" ref={ticketRef} />
     ) : (
-      <div ref={receiptRef} tabIndex={-1} className="scroll-mt-[112px] outline-none lg:scroll-mt-[88px]">
+      <div ref={receiptRef} tabIndex={-1} className="anchor-target outline-none">
         <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} />
       </div>
     )

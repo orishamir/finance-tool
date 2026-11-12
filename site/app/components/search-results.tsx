@@ -7,7 +7,7 @@ import { formatValue } from "../lib/format";
 import { rememberUncatalogued } from "../lib/inputs";
 import { analyze, contentWords, groupHits, highlightRanges, isRuleKind, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
 import { IconCopy, IconLock } from "./icons";
-import { Button, RowArrow, TextLink, gershayim } from "./kit";
+import { Button, MixedName, RowArrow, TextLink, gershayim } from "./kit";
 
 export interface Found {
   q: string;
@@ -82,9 +82,7 @@ function HitRow({ hit, found, text }: { hit: SearchHit; found: Found; text: stri
       <Link to={r.href} className="flex items-center justify-between gap-3 min-h-12 py-1.5 border-b border-border hover:bg-accent/60 -mx-2 px-2 rounded-md">
         <span className="flex flex-col min-w-0">
           <span className="font-medium inline-flex items-center gap-1.5">
-            <bdi>
-              <Marked text={gershayim(r.name)} query={text} />
-            </bdi>
+            <MixedName show={<Marked text={gershayim(r.name)} query={text} />}>{r.name}</MixedName>
             {isRuleKind(r.kind) && r.st === 4 && <IconLock size={14} className="text-muted-foreground shrink-0" />}
           </span>
           <span className="text-sm text-muted-foreground">
@@ -136,7 +134,7 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
                   ))}
                 </ul>
                 {g.items.length > show.length && (
-                  <Button variant="quiet" className="self-start -ms-2" onClick={() => setExpanded(new Set([...expanded, g.kind]))}>
+                  <Button variant="quiet" flush className="self-start" onClick={() => setExpanded(new Set([...expanded, g.kind]))}>
                     {searchCopy.more}
                   </Button>
                 )}
@@ -164,9 +162,9 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
             <TextLink look="line" to="/companies">
               {searchCopy.empty.links.companies}
             </TextLink>
-            <button type="button" className="text-link min-h-target hover:underline" onClick={() => setText(text.trim().split(/\s+/).slice(0, 2).join(" "))}>
+            <Button variant="quiet" flush onClick={() => setText(text.trim().split(/\s+/).slice(0, 2).join(" "))}>
               {searchCopy.empty.links.shorter}
-            </button>
+            </Button>
           </div>
         </section>
       )}
@@ -186,12 +184,12 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
               {searchMore.empty.questionLink}
             </TextLink>
             {contentWords(q).length > 0 && contentWords(q).join(" ") !== q && (
-              <button type="button" className="text-link min-h-target hover:underline" onClick={() => setText(contentWords(q).join(" "))}>
+              <Button variant="quiet" flush onClick={() => setText(contentWords(q).join(" "))}>
                 {searchMore.empty.mainWords}
-              </button>
+              </Button>
             )}
           </div>
-          <Button variant="quiet" onClick={copy} className="self-start -ms-2">
+          <Button variant="quiet" flush onClick={copy} className="self-start">
             <IconCopy size={18} /> {copied === "done" ? buttons.copied : searchMore.empty.questionCopy}
           </Button>
           <p className="text-sm text-muted-foreground">{copied === "failed" ? searchCopy.empty.copyFailed : searchMore.empty.questionUnder}</p>

@@ -154,10 +154,6 @@ export function RuleRows({ items }: { items: RuleRowItem[] }) {
   return <KeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> }))} />;
 }
 
-/** `RuleRows` under the kit's name, for routes/guide.tsx and the exposure pages' content, which import it so. */
-export { RuleRows as KeyValueList };
-export type KeyValueItem = RuleRowItem;
-
 export interface FeeRow {
   id: string;
   name: string;

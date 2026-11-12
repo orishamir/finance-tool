@@ -4,7 +4,7 @@ import { useId, useMemo, useState } from "react";
 import { invest as c } from "../../copy";
 import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
 import type { IndicesBundle } from "../../lib/providers";
-import { Button, Card, MenuPicker, Tag, type MenuItem } from "../kit";
+import { Button, Card, MenuPicker, PageHead, Tag, type MenuItem } from "../kit";
 
 /** The index name in the picker: it follows the title's "במדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(new RegExp(`^${c.title.indexWord}\\s+`), "");
@@ -55,9 +55,10 @@ export function TitleRow({ known, customs, index, others, bundle, onRemove, onRe
     ...customs.map((i) => ({ id: i.id, label: pillName(i.name), href: customIndexPath(i.id), editable: true })),
   ];
   return (
-    <header className="flex flex-col gap-3">
-      <div className="relative">
-        <h1 className="text-2xl lg:text-3xl font-semibold leading-[1.5]">
+    <PageHead
+      pickerHost={setListHost}
+      title={
+        <>
           {c.title.lead}{" "}
           <MenuPicker
             name={c.title.picker}
@@ -72,9 +73,9 @@ export function TitleRow({ known, customs, index, others, bundle, onRemove, onRe
             listHost={listHost}
           />{" "}
           {c.title.tail}
-        </h1>
-        <div ref={setListHost} className="absolute inset-x-0 top-0" />
-      </div>
+        </>
+      }
+    >
       <div className="grid">
         <div className="[grid-area:1/1]">
           <IndexLine index={index} />
@@ -88,7 +89,7 @@ export function TitleRow({ known, customs, index, others, bundle, onRemove, onRe
           ))}
       </div>
       {adding && bundle && <CustomPanel bundle={bundle} customs={customs} onCancel={() => setAdding(false)} onSave={(x) => { setAdding(false); onSave(x); onGo(customIndexPath(x.id)); }} onKnown={(k) => { setAdding(false); onGo(indexPath(k)); }} />}
-    </header>
+    </PageHead>
   );
 }
 

@@ -61,8 +61,17 @@ export const numbers = {
   unknown: "לא ידוע",
   /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
   nisMillions: "מיליון ₪",
-  /** A shekel figure of a billion or more, in its short form on a phone: `2.3 מיליארד ₪`. */
+  /**
+   * The word of a shekel figure's short form, always with two decimals (`2.30 מיליארד ₪`, lib/format.ts `nisBillions`): a figure of a
+   * billion or more on a phone, of a thousand billion or more on a computer, from a hundred million in a row that writes one of its
+   * figures short, and the track pages' managed money from a thousand million.
+   */
   billion: "מיליארד",
+  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`. */
+  compact: { thousand: "אלף", million: "מיליון" },
+  /** A count of years and of months in words (lib/format.ts `fmt.years`, `fmt.months`): "שנה", "שנתיים", "5 שנים". */
+  yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
+  monthWords: { one: "חודש", two: "חודשיים", many: "חודשים" },
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   parameter: "פרמטר של האתר",
   staleSince: "לא עודכן מאז",
@@ -665,6 +674,8 @@ export const track = {
   sameNameElsewhere: "יש מסלול נוסף באותו שם.",
   toOther: "למסלול השני",
   toGuide: "לעמוד המדריך על",
+  /** The heading over what the site took into account for this track's product. */
+  checklist: "מה לבדוק",
 } as const;
 
 export const notCovered = {
@@ -1333,9 +1344,6 @@ export const trackBrowser = {
     tracksTwo: "שני מסלולים",
     tracksMany: "מסלולים",
     companiesNone: "אין חברות",
-    companiesOne: "חברה אחת",
-    companiesTwo: "שתי חברות",
-    companiesMany: "חברות",
     of: "של",
     outOf: "מתוך",
     whatIs: "מה זה",
@@ -1377,7 +1385,7 @@ export const trackBrowser = {
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
   inAll: (name: string) => `${name} בכל החברות`,
   yield: { phone: "תשואה שנתית ממוצעת", years3: "3 שנים", years5: "5 שנים", young: "אין", missing: "לא דווח", emptyNote: { before: "השדה ריק בנתוני הרשות: לא פורסמה למסלול תשואה שנתית ממוצעת ל־", after: " שנים." }, selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע", selfManagedShort: "כל חוסך מחליט במה להשקיע" },
-  assets: { million: "מיליון ₪", billion: "מיליארד ₪", missing: "לא דווח", emptyNote: "השדה ריק בנתוני הרשות: לא פורסם כמה כסף מנוהל במסלול.", phone: "כסף מנוהל" },
+  assets: { million: "מיליון ₪", missing: "לא דווח", emptyNote: "השדה ריק בנתוני הרשות: לא פורסם כמה כסף מנוהל במסלול.", phone: "כסף מנוהל" },
   /** The sheets' headers of the two group figures (F-99, F-100), and of the whole list's fee range on the count line. */
   about: { assets: "הכסף שהחברה מנהלת במוצר, בכל המסלולים יחד", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה" },
   noResult: { before: "אין מסלולים שמתאימים לחיפוש ״", after: "״." },
@@ -1447,7 +1455,7 @@ export const depositBrowser = {
   columns: { bank: "הבנק והפיקדון", rate: "ריבית בשנה", amount: "סכום להפקדה", access: "גישה לכסף לפני הסוף", interestOn: "על ", beforeTax: "לפני המס על הריבית" },
   /** The phone's sort, where there are no column heads to press. */
   sortPhone: { rate: "ריבית גבוהה קודם", min: "סכום נמוך קודם" },
-  access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
+  access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", locked: "נעול עד סוף התקופה" },
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
   interest: {
@@ -1970,7 +1978,7 @@ export const r4catalogue = {
   tax: { unlinked: "ריבית לא צמודה; השיעור בעמוד המדריך.", linked: "ריבית צמודה; השיעור בעמוד המדריך." },
   /** A deposit's amounts on every page (lib/deposit-kind.ts `amountRangeForm`): "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪", "ללא מינימום". */
   amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום" },
-  breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה ללא קנס" },
+  breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" },
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits
   breakAtExits: "אין אפשרות שבירה; אפשר למשוך רק בתחנות היציאה",
   breakDisclosure: "הבנק כותב:",

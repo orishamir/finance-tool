@@ -118,9 +118,7 @@ patterns["a button styled by hand as a link"] = {
   kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
   allowed: {
     "components/invest/stairs.tsx": 1,
-    "components/search-results.tsx": 2,
     "root.tsx": 1,
-    "routes/not-found.tsx": 1,
   },
 };
 
@@ -157,7 +155,6 @@ const scriptFiles = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?
 const HAND_TITLE: Record<string, number> = {
     "components/fees/parts.tsx": 1,
     "components/home/body.tsx": 1,
-    "components/invest/title.tsx": 1,
     "components/transfer/panel.tsx": 1,
     "root.tsx": 1,
     "routes/fees.tsx": 2,
@@ -171,7 +168,6 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/timeline/Timeline.tsx": 1,
     "components/tracks/browser.tsx": 1,
     "components/tracks/company-browser.tsx": 1,
-    "routes/invest.tsx": 1,
 };
 const HAND_SITE_LINK: Record<string, number> = {
     "components/fees/parts.tsx": 5,
@@ -194,7 +190,6 @@ const BANG_OVERRIDE: Record<string, number> = {
     "components/fees/parts.tsx": 2,
     "components/invest/plan-card.tsx": 1,
     "components/provenance-sheets.tsx": 1,
-    "components/search.tsx": 1,
     "routes/fees.tsx": 2,
 };
 const MATCH_MEDIA: Record<string, number> = {

@@ -217,7 +217,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             aria-autocomplete="list"
             autoComplete="off"
             placeholder={site.searchPlaceholder}
-            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input !text-start", resting && "xl:w-0 xl:flex-none")}
+            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input", resting && "xl:w-0 xl:flex-none")}
             onFocus={(e) => {
               preloadSearch();
               setFocused(true);

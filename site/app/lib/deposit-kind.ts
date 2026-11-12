@@ -66,11 +66,14 @@ export const exitsText = (e: ExitPoints, conditions: string | null): string => (
 /** How a deposit may be broken before its end, as its record holds it (`break_terms.penalty`). */
 export type BreakPenalty = keyof typeof copy.breakWord;
 
+/** A deposit that cannot be broken but has exit points: its money comes out only at them, which every page says apart from a locked one. */
+export const onlyAtExits = (penalty: BreakPenalty, hasExits: boolean): boolean => penalty === "not_allowed" && hasExits;
+
 /**
- * A deposit's break in words: a deposit that cannot be broken but has exit points says where the money comes out ("אין אפשרות שבירה"
- * alone read as locked beside its exits).
+ * A deposit's break in words, on the deposits page and the bank pages alike: a deposit that cannot be broken but has exit points says
+ * where the money comes out ("אין אפשרות שבירה" alone read as locked beside its exits).
  */
-export const breakText = (penalty: BreakPenalty, hasExits: boolean): string => (penalty === "not_allowed" && hasExits ? copy.breakAtExits : copy.breakWord[penalty]);
+export const breakText = (penalty: BreakPenalty, hasExits: boolean): string => (onlyAtExits(penalty, hasExits) ? copy.breakAtExits : copy.breakWord[penalty]);
 
 /** Whether a deposit renews by itself, in words: "כן", "לא", or "עד 3 פעמים" where the bank sets a number of renewals. */
 export const renewText = (renews: boolean, maxRenewals: number | null): string =>
