@@ -1,7 +1,8 @@
 // The fee page's top (method §10.6): the head, the bar of the deal, and its three columns: the builder, the chosen fee's panel and the deal
 // at a glance. The deal is kept on this device and saved as it changes. It opens from the address (a deal in `?d=`, a kind in `?wrapper=`,
 // a track in `?track=`), else the deal last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read
-// after the page loads: the pre-rendered page shows the head and the words that it is loading, never a deal of another day.
+// after the page loads: the pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end
+// opens another saved deal or a new one, copies the deal's link, and opens the template picker; a template opens a new deal beside this one.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
@@ -11,17 +12,19 @@ import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { dealStore, savedWith } from "../../lib/fee-deal/store";
-import { templateOptions } from "../../lib/fee-deal/templates";
+import { dealStore, savedWith, without } from "../../lib/fee-deal/store";
+import { dealFromTemplate, HELD_UNSAID, templateLeft, templateOptions, type LeftOut } from "../../lib/fee-deal/templates";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { Callout, Card, PageHead, Section } from "../kit";
 import { DealBar } from "./bar";
+import { BarEnd, useCopyLink } from "./bar-end";
 import { BuilderColumn } from "./builder";
 import { addFee, removeFee, updateFee } from "./edit";
 import { GlanceColumn, READING_ID } from "./glance";
 import { PanelColumn } from "./panel";
+import { TemplatePicker, templateSource } from "./picker";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
 
@@ -59,6 +62,9 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   }
   const [deal, setDeal] = useState<FeeDeal>(opened.current.deal);
   const [chosen, setChosen] = useState<string | null>(deal.fees[0]?.id ?? null);
+  const [said, setSaid] = useState<string | null>(null);
+  const [picker, setPicker] = useState<HTMLElement | null>(null);
+  const link = useCopyLink();
 
   // a deal the address opened is saved at once and the address cleared, so a reload opens the deal as it is now, not the link again
   useEffect(() => {
@@ -85,13 +91,55 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setChosen(next.fees[Math.min(at, next.fees.length - 1)]?.id ?? null);
   };
 
+  // another deal on screen: a saved one, a new one or one a template filled; a new deal is saved at its first change
+  const open = (next: FeeDeal) => {
+    setDeal(next);
+    setChosen(next.fees[0]?.id ?? null);
+    setSaid(null);
+    link.closeBlocked();
+  };
+  const onOpen = (id: string) => {
+    const d = saved.find((x) => x.id === id);
+    if (d) open(d);
+  };
+  const onRename = (id: string, name: string) => {
+    if (id === deal.id) return change({ ...deal, name });
+    const d = saved.find((x) => x.id === id);
+    if (d) dealStore.update((ds) => ds.map((x) => (x.id === id ? { ...d, name } : x)));
+  };
+  // deleting the deal on screen opens the next saved deal, or a new one
+  const onDelete = (id: string) => {
+    const rest = without(saved, id);
+    dealStore.update((ds) => without(ds, id));
+    if (id === deal.id) open(rest[0] ?? newDeal(null));
+  };
+  const options = useMemo(() => templateOptions(deal.kind, data), [deal.kind, data]);
+  const onPick = (id: string) => {
+    const next = dealFromTemplate(deal, id, data, today);
+    setPicker(null);
+    if (!next) return;
+    dealStore.update((ds) => savedWith(ds, next, today));
+    open(next);
+    const name = next.template?.name ?? "";
+    setSaid(copy.end.opened[templateSource(id)](name) + (writable ? copy.end.kept : ""));
+  };
+  // what each price list leaves out of a deal of this kind and holding, for the picker; a track's the new deal says
+  const pickerLeft = useMemo(() => {
+    const m = new Map<string, LeftOut[]>();
+    if (!picker) return m;
+    const probe: FeeDeal = { ...newDeal(deal.kind), held: deal.held ?? HELD_UNSAID };
+    for (const o of options) if (o.source === "house") m.set(o.id, templateLeft(probe, o.id, data, today) ?? []);
+    return m;
+  }, [picker, options, deal.kind, deal.held, data, today]);
+  const left = useMemo(() => (deal.template ? templateLeft(deal, deal.template.id, data, today) : null), [deal, data, today]);
+
   const kind = kindById(data.kinds, deal.kind);
   const views = useMemo(
     () => ({ glance: glance(deal, data.kinds, today), builder: builder(deal, data.kinds, today), panel: chosen ? panelOf(deal, chosen, data.kinds, today) : null }),
     [deal, chosen, data.kinds, today],
   );
   const reading = useMemo(() => readingOf(deal, data.kinds, today, data.fx), [deal, data.kinds, data.fx, today]);
-  const hasTracks = useMemo(() => templateOptions(deal.kind, data).some((o) => o.source === "track"), [deal.kind, data]);
+  const hasTracks = options.some((o) => o.source === "track");
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
   const nameOf = (feeId: string) => {
@@ -102,11 +150,46 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
 
   return (
     <>
-      <DealBar deal={deal} kind={kind} writable={writable} onDeal={change} />
+      <DealBar
+        deal={deal}
+        kind={kind}
+        writable={writable}
+        onDeal={change}
+        end={
+          <BarEnd
+            deal={deal}
+            saved={saved}
+            kindName={(d) => kindById(data.kinds, d.kind)?.name ?? null}
+            copied={link.copied}
+            onCopy={() => void link.copyLink(deal)}
+            onOpen={onOpen}
+            onNew={() => open(newDeal(null))}
+            onRename={onRename}
+            onDelete={onDelete}
+            onTemplates={options.length > 0 ? setPicker : null}
+          />
+        }
+      />
+      {/* what the bar's end just did, for a screen reader: a template opened a new deal, the link was copied */}
+      <p role="status" className="sr-only">
+        {said ?? (link.copied ? copy.end.copied : "")}
+      </p>
+      {(said || link.blocked) && (
+        <div className="flex flex-col gap-1.5 text-sm">
+          {said && <p>{said}</p>}
+          {link.blocked && (
+            <>
+              <p className="text-muted-foreground">{copy.end.copyBlocked}</p>
+              <textarea readOnly dir="ltr" rows={2} aria-label={copy.end.linkField} value={link.blocked} onFocus={(e) => e.currentTarget.select()} className="w-full rounded-md border border-input bg-card p-3 font-mono text-base select-all" />
+            </>
+          )}
+        </div>
+      )}
+      <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} onPick={onPick} />
       {/* a phone stacks the builder, the panel and the glance; a computer sets the glance at the start (the right), the panel at the end */}
       <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_minmax(0,28rem)]">
         <Card className="flex flex-col gap-4 xl:col-start-2 xl:row-start-1">
-          <BuilderColumn deal={deal} view={views.builder} kinds={data.kinds} chosen={chosen} hasTracks={hasTracks} onDeal={change} onChoose={setChosen} onAdd={onAdd} />
+          <BuilderColumn deal={deal} view={views.builder} kinds={data.kinds} chosen={chosen} onPickTrack={hasTracks ? setPicker : null} left={left} onDeal={change} onChoose={setChosen} onAdd={onAdd} />
         </Card>
         {deal.kind && (
           <Card edge={chosenFee ? "accent" : undefined} className="flex flex-col gap-4 xl:col-start-3 xl:row-start-1">

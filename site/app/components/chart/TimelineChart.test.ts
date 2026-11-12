@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { fmt } from "../../lib/format";
-import { niceYearTicks } from "./TimelineChart";
+import { niceYearTicks } from "../kit";
 
 describe("niceYearTicks", () => {
   const cases: [number, number[]][] = [

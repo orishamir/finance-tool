@@ -7,11 +7,13 @@ import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import type { Fee, FeeDeal } from "../../lib/fee-deal/model";
+import type { LeftOut } from "../../lib/fee-deal/templates";
 import { FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
 import { AddLine, Button, Card, ChoiceChips, PickCard, Section, SegmentedControl, Step, Tag, When, monthText, type AddItem } from "../kit";
 import { Num } from "../provenance";
 import { setHeld, setKind, updateFee } from "./edit";
 import { PriceFigure } from "./figures";
+import { TemplateNote, templateSource } from "./picker";
 import { FeeName, StandingTag, feeName, refName } from "./words";
 
 const b = copy.builder;
@@ -118,13 +120,15 @@ function HeldChoices({ held, onHeld }: { held: Held | undefined; onHeld: (h: Hel
   );
 }
 
-export function BuilderColumn({ deal, view, kinds, chosen, hasTracks, onDeal, onChoose, onAdd }: {
+export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, onDeal, onChoose, onAdd }: {
   deal: FeeDeal;
   view: Builder;
   kinds: readonly DealKind[];
   chosen: string | null;
-  /** The kind is of the provident family, whose deal may name a company and a track. */
-  hasTracks: boolean;
+  /** Opens the track picker from the button tapped, where the deal's kind has tracks (the provident family); null elsewhere. */
+  onPickTrack: ((from: HTMLElement) => void) | null;
+  /** What the template the deal was filled from left out; null where no template filled it. */
+  left: readonly LeftOut[] | null;
   onDeal: (deal: FeeDeal) => void;
   onChoose: (feeId: string) => void;
   onAdd: (kind: FeeKindId) => void;
@@ -135,6 +139,7 @@ export function BuilderColumn({ deal, view, kinds, chosen, hasTracks, onDeal, on
   const onFee = (f: Fee) => onDeal(updateFee(deal, f.id, () => f));
   const rows = new Map(view.rows.map((r) => [r.fee, r]));
   const adds: AddItem[] = [...view.suggestions.usual.map((k) => ({ id: k, label: feeName(k), usual: true })), ...view.suggestions.rarer.map((k) => ({ id: k, label: feeName(k) }))];
+  const track = deal.template && templateSource(deal.template.id) === "track" ? deal.template : null;
   let n = 1;
   return (
     <Section title={b.title} level="kick" heading="h2">
@@ -184,9 +189,22 @@ export function BuilderColumn({ deal, view, kinds, chosen, hasTracks, onDeal, on
             {(!view.held || heldOpen) && <HeldChoices held={view.held} onHeld={(h) => onDeal(setHeld(deal, h))} />}
           </Step>
         )}
-        {kind && !view.holdsFunds && hasTracks && <Step n={n++} title={b.track} value={b.trackNone} />}
+        {kind && !view.holdsFunds && onPickTrack && (
+          <Step
+            n={n++}
+            done={!!track}
+            title={b.track}
+            value={track ? track.name : b.trackNone}
+            action={
+              <Button variant="quiet" size="sm" onClick={(e) => onPickTrack(e.currentTarget)}>
+                {b.trackPick}
+              </Button>
+            }
+          />
+        )}
         {kind && (
           <Step n={n++} done={deal.fees.length > 0} title={b.fees}>
+            {deal.template && left && <TemplateNote template={deal.template} left={left} />}
             {deal.fees.length > 0 && <p className="text-sm text-muted-foreground">{b.feesLead}</p>}
             <ul className="flex flex-col gap-3">
               {deal.fees.map((fee) => {

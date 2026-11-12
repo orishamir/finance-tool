@@ -1,5 +1,5 @@
-// The comparison bundle (lib/compare.server.ts, served as /compare-bundle.json), fetched once per visit and shared
-// by the fee page and the indices page.
+// The comparison bundle (lib/compare.server.ts, served as /compare-bundle.json), fetched once per visit by the indices page,
+// and the preload links of the data files a page fetches after it starts.
 import type { CompareBundle } from "./compare";
 
 let bundlePromise: Promise<CompareBundle> | null = null;

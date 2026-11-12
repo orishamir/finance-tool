@@ -3,7 +3,7 @@
 // Server-only. The sources of a rule are read loosely: the `sources` field is W1's, and a record without it contributes
 // only its figures' own sources.
 import { existsSync } from "node:fs";
-import { companyPath, feesPath, rulesPath } from "./site-paths";
+import { companyPath, rulesPath } from "./site-paths";
 import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy } from "../copy";
@@ -280,14 +280,6 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const snaps = latestSnapshots();
   const institutions = new Set(institutionIds());
   const { providerCompany } = companyLinks(snaps);
-  // `/fees` alone shows only that no product was found: a price list with no company page opens the fee page of the one product that reads it
-  const { compareBundle } = await import("./compare.server");
-  const { feePageAnswers } = await import("./fees");
-  const bundle = compareBundle();
-  const feePageOf = (id: string): string | null => {
-    const reading = bundle.wrappers.filter((w) => w.providers?.[id] && feePageAnswers(bundle, w.id));
-    return reading.length === 1 ? feesPath({ wrapper: reading[0]!.id }) : null;
-  };
   const tariffs = snaps
     .map((s) => ({
       key: s.id,
@@ -295,9 +287,8 @@ export async function loadDocumentData(): Promise<DocumentData> {
       dated: tariffDated(s.tariff, s.snapshot),
       missing: s.missing,
       lines: s.lines.length,
-      // banks and brokers have their own page; a manager has its company page when the regulator's data names it; else the fee page of the
-      // one product whose fee page reads the price list, and no link where none or several do
-      href: institutions.has(s.id) ? companyPath(s.id) : providerCompany[s.id] ? companyPath(providerCompany[s.id]!) : feePageOf(s.id),
+      // banks and brokers have their own page; a manager has its company page when the regulator's data names it; else no link
+      href: institutions.has(s.id) ? companyPath(s.id) : providerCompany[s.id] ? companyPath(providerCompany[s.id]!) : null,
     }))
     .sort((a, b) => heCollator.compare(a.title, b.title));
   const funds = loadFunds()

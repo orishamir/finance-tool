@@ -84,7 +84,7 @@ describe("every chip on a page's rule cards opens its record", () => {
     expect(bad).toEqual([]);
   }, 300000);
 
-  it("the rules shelves, the not-covered page and the goal form the fee page reads", async () => {
+  it("the rules shelves, the not-covered page and the goal form the indices page reads", async () => {
     const n = (await notCoveredLoader()) as { rules: Map_; pointed: Map_ };
     const g = goalFormData();
     const shelves = shelfIds.flatMap((s) => unopened(shelfBundle(s).rules, {}).map((x) => `${s}: ${x}`));
