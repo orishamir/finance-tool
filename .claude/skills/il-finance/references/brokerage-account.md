@@ -617,7 +617,7 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Rule: The leaflet for the club prints 0.1%, minimum 5 NIS, for buying a tracking fund by standing order, and says the benefits are given until 31.12.2026. The site prices First International on its tariff, not on these.
 - Conditions / exceptions: Moved into the rules on 2026-11-06 from below the Sources table, where it shared its id with a Bank of Israel rule now numbered BRK-60 or BRK-61; the id stays because `data/rules/` and the fee records cite it.
 - Figures: as quoted
-- Source: [הטבות אטרקטיביות לפעילים עצמאית בשוק ההון](https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf), p.3 · checked 2026-10-31 · institution
+- Source: [הטבות אטרקטיביות לפעילים עצמאית בשוק ההון (מועדון HighTech 10)](https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf), p.3 "קניה של קרן מחקה באמצעות הוראות קבע" · checked 2026-10-31 · institution
 - Scope: institution: First International Bank
 - Dimensions: fee-trade
 - Likely to change: yes, it ends on 31.12.2026
