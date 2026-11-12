@@ -2,7 +2,7 @@
   "id": "KGL-12",
   "title": "What kinds of tracks a gemel lehashkaa may offer (regulator's categories)",
   "title_he": "אילו מסלולים מותר לנהל בקופת גמל להשקעה",
-  "text_he": "לפי החוזר של רשות שוק ההון על מסלולי השקעה בקופות גמל, בנוסח שבתוקף מינואר 2024, בקופת גמל להשקעה, בקרן השתלמות ובפוליסה שאינה קופת ביטוח מותר לנהל מסלול כללי ומסלולים מתמחים מחמש קבוצות שברשימת מסלולי ההשקעה של הרשות: ניהול אקטיבי; ניהול אקטיבי בדמי ניהול משתנים, רק אם יש גם מסלול אקטיבי באותה התמחות; נכסים סחירים; עוקבי מדדים; ואמונה וקיימות, מסלול אחד מכל סוג. הדירקטוריון צריך לאשר, עם נימוקים, שהמדיניות של כל מסלול מתמחה שונה באופן מובהק מזו של המסלולים המתמחים האחרים. בתקנון של קופת גמל להשקעה נקבע מסלול ברירת מחדל. מי שבוחר מסלול כספי בוחר תקופה של שישה, שנים עשר או עשרים וארבעה חודשים ואת המסלול שהכסף יעבור אליו בסופה, ומקבל הודעה חודש עד חודשיים לפני הסוף. שם של מסלול צריך להתאים למדיניות שלו לפי הרשימה, ואסור שיבטיח איכות או תוצאה או ירמוז על אופן ההשקעה. שינוי התמחות דורש אישור דירקטוריון והודעה לעמיתים לפחות 45 יום ולכל היותר שלושה חודשים מראש, ומסלול נסגר רק אם אין בו עמיתים ונכסים או במיזוג. בנוסח של 2020 הייתה מגבלה של עשרה מסלולים מתמחים לכל היותר, ובנוסח הנוכחי אין אותה. הכללים האלה לא חלים על קופות החיסכון לכל ילד.",
+  "text_he": "לפי החוזר של רשות שוק ההון על מסלולי השקעה בקופות גמל, בנוסח שבתוקף מינואר 2024, בקופת גמל להשקעה, בקרן השתלמות ובפוליסה שאינה קופת ביטוח מותר לנהל מסלול כללי ומסלולים מתמחים מחמש קבוצות שברשימת מסלולי ההשקעה של הרשות: ניהול אקטיבי; ניהול אקטיבי בדמי ניהול משתנים, רק אם יש גם מסלול אקטיבי באותה התמחות; נכסים סחירים; עוקבי מדדים; ואמונה וקיימות, מסלול אחד מכל סוג. הדירקטוריון צריך לאשר, עם נימוקים, שהמדיניות של כל מסלול מתמחה שונה באופן מובהק מזו של המסלולים המתמחים האחרים. בתקנון של קופת גמל להשקעה נקבע מסלול ברירת מחדל. מי שבוחר מסלול כספי בוחר תקופה של שישה, שנים עשר או עשרים וארבעה חודשים ואת המסלול שהכסף יעבור אליו בסופה, ומקבל הודעה חודש עד חודשיים לפני הסוף. שם של מסלול צריך להתאים למדיניות שלו לפי הרשימה, ואסור שיבטיח איכות או תוצאה או ירמוז על אופן ההשקעה. שינוי התמחות דורש אישור דירקטוריון והודעה לעמיתים לפחות 45 יום ולכל היותר שלושה חודשים מראש, ומסלול נסגר רק אם אין בו עמיתים ונכסים או במיזוג. בנוסח של 2020 הייתה מגבלה של עשרה מסלולים מתמחים לכל היותר, ובנוסח הנוכחי אין אותה. הכללים בחוזר על המסלולים שמותר לנהל ועל מסלול ברירת המחדל לא חלים על קופות החיסכון לכל ילד, שפועלות לפי חוזר אחר.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -36,20 +36,6 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.5, s.6",
-      "locator_he": "עמוד 5, סעיף 6",
-      "page": 5,
-      "quote": "מסלולי השקעה מתמחים בהתאם לאשכולות הבאים",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6",
-      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון, 20.12.2022",
-      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
       "locator": "p.6, s.6א",
       "locator_he": "עמוד 6, סעיף 6א",
       "page": 6,
@@ -64,6 +50,34 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
+      "locator": "p.6, s.7(ה)",
+      "locator_he": "עמוד 6, סעיף 7(ה)",
+      "page": 6,
+      "quote": "הוראות סעיף זה לא יחולו על חברה מנהלת",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=5",
+      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון, 20.12.2022",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, s.6",
+      "locator_he": "עמוד 5, סעיף 6",
+      "page": 5,
+      "quote": "מסלולי השקעה מתמחים בהתאם לאשכולות הבאים",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=7",
+      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון, 20.12.2022",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
       "locator": "p.7, ss.8-11",
       "locator_he": "עמוד 7, סעיפים 8-11",
       "page": 7,
@@ -71,7 +85,7 @@
       "checked": "2026-11-12"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=8",
       "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון, 20.12.2022",
       "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
@@ -85,7 +99,7 @@
       "checked": "2026-11-12"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=12",
       "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון, 20.12.2022",
       "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
@@ -95,10 +109,11 @@
       "locator": "p.12",
       "locator_he": "עמוד 12",
       "page": 12,
+      "quote": "עד לכניסתן לתוקף של כל הוראות החוזר",
       "checked": "2026-11-12"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=1",
       "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון, 20.12.2022",
       "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
