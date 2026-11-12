@@ -76,7 +76,7 @@ function ErrorNote({ children }: { children: ReactNode }) {
   );
 }
 
-const countItems = (c: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number }) => [
+const countItems = (c: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number; deals?: number }) => [
   { n: c.goals, forms: copy.forms.goals },
   { n: c.holdings, forms: copy.forms.holdings },
   { n: c.names, forms: copy.forms.names },
@@ -85,6 +85,7 @@ const countItems = (c: { goals: number; holdings: number; names: number; compari
   { n: c.variants, forms: copy.forms.variants },
   { n: c.ticks, forms: copy.forms.ticks },
   { n: c.ownRates, forms: copy.forms.ownRates },
+  { n: c.deals ?? 0, forms: copy.forms.deals },
 ];
 
 export function TransferPanel({ site }: { site: Site }) {
