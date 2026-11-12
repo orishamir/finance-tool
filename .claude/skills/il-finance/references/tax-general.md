@@ -235,7 +235,7 @@ Out of scope, see: interest rates, s.125D/125E deductions and real vs nominal in
 - Rule: A refund request for a given tax year can be filed up to 6 years after the end of that year (for example, tax year 2020 until 31.12.2026). Someone not required to file who overpaid (for example, a 60+ saver taxed at the full rate at source, or someone with losses at one bank and gains at another) can claim through a full return or the shortened refund form 0135.
 - Conditions / exceptions: Form 0135 is not for people with business income, foreign income, controlling shareholders, capital gains other than from traded securities, and others listed on p.7 of the guide. A refund carries linkage and interest as set in law (guide p.9).
 - Figures: 6 years.
-- Source: [Guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.7 ("החזר מס"), p.9 s.4 ("טופס מקוצר - בקשה להחזר מס"), p.11 s.11 ("לא יאוחר מתום 6 שנים מתום שנת המס הרלוונטית") · checked 2026-10-22 · primary
+- Source: [Guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.7 ("טופס 0135 אינו מיועד לבעל הכנסות מעסק"); p.9 s.4 ("טופס מקוצר - בקשה להחזר מס"); p.11 s.11 ("לא יאוחר מתום 6 שנים מתום שנת המס הרלוונטית") · checked 2026-10-22 · primary
 - Scope: general
 - Dimensions: `reporting-obligation`, `age-or-use-exemption`, `loss-offset`
 - Likely to change: no
