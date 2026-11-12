@@ -137,7 +137,8 @@ describe("the link", () => {
     ["too long", "a".repeat(13_000)],
   ])("opens nothing from a link that is %s", (_, d) => {
     expect(decodeDeal(d)).toBeNull();
-    expect(dealOfAddress(`?d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ kind: null, fees: [] });
+    // an empty deal opens, and the address gave none: the page keeps nothing of it
+    expect(dealOfAddress(`?d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
   });
   it("sets no stray key from a hostile link", () => {
     const hostile = Buffer.from('[1,{"n":"","k":null,"f":[],"__proto__":{"polluted":1},"constructor":{"x":1}},[]]').toString("base64url");
@@ -146,11 +147,12 @@ describe("the link", () => {
     expect(({} as { polluted?: number }).polluted).toBeUndefined();
     expect(Object.keys(d).sort()).toEqual(["fees", "id", "kind", "name"]);
   });
-  it("opens a new deal of the kind ?wrapper= names, and an empty one for a kind that is none", () => {
+  it("opens a new deal of the kind ?wrapper= names, and an empty one the address did not give for a kind or a track that is none", () => {
     const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
-    expect(dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")).toMatchObject({ kind: "brokerage-account", fees: [] });
-    expect(dealOfAddress("?wrapper=nothing", data, "2026-11-12")).toMatchObject({ kind: null });
-    expect(dealOfAddress("?track=999", data, "2026-11-12")).toMatchObject({ kind: null });
+    expect(dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
+    expect(dealOfAddress("?wrapper=nothing", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(dealOfAddress("?track=999", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
     expect(dealOfAddress("", data, "2026-11-12")).toBeNull();
     expect(dealSearch(account())).toMatch(/^\?d=[A-Za-z0-9_-]+$/);
     expect(parseSubject("?track=12")).toEqual({ kind: "track", trackId: 12 });

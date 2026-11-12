@@ -135,8 +135,14 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, on
   onAdd: (kind: FeeKindId) => void;
 }) {
   const kind = kinds.find((k) => k.id === deal.kind) ?? null;
-  const [picking, setPicking] = useState(false);
-  const [heldOpen, setHeldOpen] = useState(false);
+  // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with both closed. The column
+  // is not remounted for it, so the track button the picker opened from keeps the focus it gets back.
+  const [pickingIn, setPickingIn] = useState<string | null>(null);
+  const [heldOpenIn, setHeldOpenIn] = useState<string | null>(null);
+  const picking = pickingIn === deal.id;
+  const heldOpen = heldOpenIn === deal.id;
+  const setPicking = (open: boolean) => setPickingIn(open ? deal.id : null);
+  const setHeldOpen = (open: boolean) => setHeldOpenIn(open ? deal.id : null);
   const onFee = (f: Fee) => onDeal(updateFee(deal, f.id, () => f));
   const rows = new Map(view.rows.map((r) => [r.fee, r]));
   const adds: AddItem[] = [...view.suggestions.usual.map((k) => ({ id: k, label: feeName(k), usual: true })), ...view.suggestions.rarer.map((k) => ({ id: k, label: feeName(k) }))];
@@ -152,7 +158,7 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, on
           value={kind?.name}
           action={
             kind && (
-              <Button variant="quiet" size="sm" onClick={() => setPicking((x) => !x)} aria-expanded={picking}>
+              <Button variant="quiet" size="sm" onClick={() => setPicking(!picking)} aria-expanded={picking}>
                 {picking ? b.close : b.kindChange}
               </Button>
             )
@@ -181,13 +187,13 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, on
             value={view.held && [b.heldSaid[view.held.place], b.heldSaid[view.held.currency] ?? view.held.currency, b.heldSaid[view.held.payout]].join(" · ")}
             action={
               view.held && (
-                <Button variant="quiet" size="sm" onClick={() => setHeldOpen((x) => !x)} aria-expanded={heldOpen}>
+                <Button variant="quiet" size="sm" onClick={() => setHeldOpen(!heldOpen)} aria-expanded={heldOpen}>
                   {heldOpen ? b.close : b.heldChange}
                 </Button>
               )
             }
           >
-            {(!view.held || heldOpen) && <HeldChoices held={view.held} onHeld={(h) => onDeal(setHeld(deal, h))} />}
+            {(!view.held || heldOpen) && <HeldChoices key={deal.id} held={view.held} onHeld={(h) => onDeal(setHeld(deal, h))} />}
           </Step>
         )}
         {kind && !view.holdsFunds && onPickTrack && (

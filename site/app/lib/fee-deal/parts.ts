@@ -92,6 +92,14 @@ export function standingView(r: Pick<DealRead, "kind" | "deal" | "today">, fees:
   return { standing, share: reading(standing.share * 100, "pct", "F-113", inputs, r.today) };
 }
 
+/** Whether two prices stand alike against the cap: judged alike with the same share, or not judged for the same reason. */
+export function sameStanding(a: StandingView, b: StandingView): boolean {
+  const x = a.standing;
+  const y = b.standing;
+  if (x.judged && y.judged) return x.standing === y.standing && x.share === y.share;
+  return !x.judged && !y.judged && x.why === y.why;
+}
+
 /** A fee as a line of a view: its id, kind and the person's name for a fee of their own. */
 export interface FeeRef {
   fee: string;

@@ -1,13 +1,17 @@
 // The fee page's shared words and marks: a fee's name and its one colour, a price written out around its figures, and a price's standing
 // against its cap (F-113) as a tag and as a sentence. Every column of the page writes these through here, so a fee reads the same in each.
 import type { ReactNode } from "react";
+import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
+import type { CapLine } from "../../lib/fee-deal/kinds";
+import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef, PriceView, StandingView } from "../../lib/fee-deal/parts";
+import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { CapBar, Swatch, Tag, When, cx } from "../kit";
-import { Num } from "../provenance";
+import { Num, RulesLine } from "../provenance";
 
 /** A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's. */
 export function feeName(kind: FeeKindId, own?: string): string {
@@ -186,6 +190,74 @@ export function FeeCapBar({ kind, now, later, cap, className }: { kind: FeeKindI
 export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
   const words = caveat ? copy.standing.caveat[caveat] : undefined;
   return words ? <>. {words}</> : null;
+}
+
+/** The cap's line with its rules: its figure and its caveat, or that the law sets none (F-113); nothing where the kind has no line for the fee. */
+export function CapRules({ cap }: { cap: CapLine }) {
+  if (cap.state === "absent") return null;
+  return (
+    <RulesLine
+      ids={cap.ruleIds}
+      lead={
+        <span>
+          {cap.state === "none" ? (
+            copy.standing.tag.none
+          ) : (
+            <>
+              {copy.standing.capLine}
+              <CapFigure value={cap.value} />
+            </>
+          )}
+          <CapCaveat caveat={cap.caveat} />
+        </span>
+      }
+    />
+  );
+}
+
+/**
+ * Each price of a fee in the reading against its cap, a line each: the side where a sale is priced apart, and where a side has several
+ * prices, "now" for the one in the reading's first month (`first`) and its month for each later one; then the price and its standing.
+ */
+function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
+  const binds = row.cap.state === "value" ? row.cap.binds : undefined;
+  const many = (side: DealSide) => row.prices.filter((x) => x.side === side).length > 1;
+  return (
+    <ul className="flex flex-col gap-1 text-sm text-muted-foreground">
+      {row.prices.map((x, k) => {
+        const side = x.side === "all" ? "" : `${copy.sides[x.side]} `;
+        const lead = !many(x.side) ? side : x.from === first ? `${side}${copy.standing.now}` : null;
+        return (
+          <li key={k}>
+            {lead === null ? <When iso={x.from} lead={`${side}${copy.read.law.from}`} /> : lead}
+            {lead === null && " "}
+            <PriceWords price={x.price} kind={row.kind} saved={saved} />
+            <StandingWords standing={x.standing} {...(binds ? { binds } : {})} />
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/**
+ * A fee against its cap as the reading reads it (F-113), the same in the chosen fee's panel and in the law card: its name and the tag of
+ * its standing (or of the first later one that differs, with its month), the bar, each price from the reading's month on, and the cap's
+ * line. Its container lays the pieces out as a column. Nothing where the cap has no figure.
+ */
+export function LawBlock({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
+  if (row.cap.state !== "value") return null;
+  return (
+    <>
+      <span className="flex flex-wrap items-center gap-2">
+        <FeeName fee={row} className="font-medium" />
+        {row.later ? <StandingTag standing={row.later.standing} from={row.later.at} /> : row.now && <StandingTag standing={row.now} />}
+      </span>
+      {row.now && <FeeCapBar kind={row.kind} now={row.now} {...(row.later ? { later: row.later.standing } : {})} cap={row.cap.value} />}
+      <LawPrices row={row} saved={saved} first={first} />
+      <CapRules cap={row.cap} />
+    </>
+  );
 }
 
 /** A cap's figure with its unit's words ("1.05% בשנה"), as the guide writes a cap. */

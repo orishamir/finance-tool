@@ -55,10 +55,10 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const { search } = useLocation();
   const navigate = useNavigate();
   // the deal is opened once, when the page has what it needs: later changes to the address (the page clears it) do not reopen it
-  const opened = useRef<{ deal: FeeDeal; fromAddress: boolean } | null>(null);
+  const opened = useRef<{ deal: FeeDeal; fromAddress: boolean; given: boolean } | null>(null);
   if (!opened.current) {
     const fromAddress = dealOfAddress(search, data, today);
-    opened.current = { deal: fromAddress ?? saved[0] ?? newDeal(null), fromAddress: fromAddress !== null };
+    opened.current = { deal: fromAddress?.deal ?? saved[0] ?? newDeal(null), fromAddress: fromAddress !== null, given: !!fromAddress?.given };
   }
   const [deal, setDeal] = useState<FeeDeal>(opened.current.deal);
   const [chosen, setChosen] = useState<string | null>(deal.fees[0]?.id ?? null);
@@ -66,10 +66,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const [picker, setPicker] = useState<HTMLElement | null>(null);
   const link = useCopyLink();
 
-  // a deal the address opened is saved at once and the address cleared, so a reload opens the deal as it is now, not the link again
+  // a deal the address gave is saved at once, and the address is cleared, so a reload opens the deal as it is now, not the link again; the
+  // empty deal a broken or unknown address opens is saved only at its first change, as a new deal is
   useEffect(() => {
     if (!opened.current?.fromAddress) return;
-    dealStore.update((ds) => savedWith(ds, opened.current!.deal, today));
+    if (opened.current.given) dealStore.update((ds) => savedWith(ds, opened.current!.deal, today));
     navigate({ search: "" }, { replace: true, preventScrollReset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -193,7 +194,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
         </Card>
         {deal.kind && (
           <Card edge={chosenFee ? "accent" : undefined} className="flex flex-col gap-4 xl:col-start-3 xl:row-start-1">
-            <PanelColumn panel={views.panel} fee={chosenFee} onFee={onFee} onRemove={onRemove} />
+            <PanelColumn panel={views.panel} fee={chosenFee} law={reading.law.find((r) => r.fee === chosen) ?? null} first={reading.from} saved={saves} onFee={onFee} onRemove={onRemove} />
           </Card>
         )}
         <Card className="flex flex-col gap-4 lg:col-span-2 xl:col-span-1 xl:col-start-1 xl:row-start-1">

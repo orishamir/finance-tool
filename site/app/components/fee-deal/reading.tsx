@@ -10,9 +10,9 @@ import type { MonthKey } from "../../lib/fee-deal/model";
 import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
 import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from "../../lib/fee-deal/reading";
 import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, When, cx } from "../kit";
-import { Num, RulesLine } from "../provenance";
+import { Num } from "../provenance";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "./reading-heads";
-import { CapCaveat, CapFigure, FeeCapBar, FeeName, PriceWords, StandingTag, StandingWords, feeColour, refName } from "./words";
+import { CapRules, FeeName, LawBlock, PriceWords, StandingTag, feeColour, refName } from "./words";
 
 const w = copy.read;
 
@@ -392,58 +392,17 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
 }
 
 function LawRowView({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
-  const cap = row.cap;
-  if (cap.state === "absent") return null;
-  if (cap.state === "none")
+  if (row.cap.state === "absent") return null;
+  if (row.cap.state === "none")
     return (
       <li className="flex flex-col gap-1">
         <FeeName fee={row} className="font-medium" />
-        <RulesLine
-          ids={cap.ruleIds}
-          lead={
-            <span>
-              {copy.standing.tag.none}
-              <CapCaveat caveat={cap.caveat} />
-            </span>
-          }
-        />
+        <CapRules cap={row.cap} />
       </li>
     );
-  const judged = row.prices.filter((x) => x.standing.standing.judged);
-  const now = judged[0];
-  const later = judged.find((x) => x !== now && JSON.stringify(x.standing.standing) !== JSON.stringify(now?.standing.standing));
-  const many = (side: DealSide) => row.prices.filter((x) => x.side === side).length > 1;
   return (
     <li className="flex flex-col gap-2">
-      <span className="flex flex-wrap items-center gap-2">
-        <FeeName fee={row} className="font-medium" />
-        {later ? <StandingTag standing={later.standing} from={later.from} /> : now && <StandingTag standing={now.standing} />}
-      </span>
-      {now && <FeeCapBar kind={row.kind} now={now.standing} {...(later ? { later: later.standing } : {})} cap={cap.value} />}
-      <ul className="flex flex-col gap-1 text-sm text-muted-foreground">
-        {row.prices.map((x, k) => {
-          const side = x.side === "all" ? "" : `${copy.sides[x.side]} `;
-          const lead = !many(x.side) ? side : x.from === first ? `${side}${copy.standing.now}` : null;
-          return (
-            <li key={k}>
-              {lead === null ? <When iso={x.from} lead={`${side}${w.law.from}`} /> : lead}
-              {lead === null && " "}
-              <PriceWords price={x.price} kind={row.kind} saved={saved} />
-              <StandingWords standing={x.standing} {...(cap.binds ? { binds: cap.binds } : {})} />
-            </li>
-          );
-        })}
-      </ul>
-      <RulesLine
-        ids={cap.ruleIds}
-        lead={
-          <span>
-            {copy.standing.capLine}
-            <CapFigure value={cap.value} />
-            <CapCaveat caveat={cap.caveat} />
-          </span>
-        }
-      />
+      <LawBlock row={row} saved={saved} first={first} />
     </li>
   );
 }
