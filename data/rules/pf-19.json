@@ -60,8 +60,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.6-7, reg. 6 ; reg. 7 on p.7",
-      "page": 6,
+      "locator": "file pp.6-7 (gazette pp.630-631), reg. 6; file p.7 (gazette p.631), reg. 7",
+      "locator_he": "עמודי הקובץ 6 עד 7 (עמודי הרשומות 630 עד 631), תקנה 6; עמוד הקובץ 7 (עמוד הרשומות 631), תקנה 7",
+      "page": 7,
       "quote": "העברת כספים בין קופות תתבצע ישירות בין הגופים המנהלים של הקופות",
       "checked": "2026-10-25"
     },

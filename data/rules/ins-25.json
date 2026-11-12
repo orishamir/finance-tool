@@ -96,9 +96,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.3-4",
-      "locator_he": "עמודים 3 עד 4",
-      "page": 3,
+      "locator": "file p.4 (gazette p.1096)",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 1096)",
+      "page": 4,
       "quote": "ובלבד שלא יגבה דמי ניהול מכל סוג שהוא אלא כשיעור מהשווי המשוערך של תיק ההשקעות",
       "checked": "2026-10-25"
     },
@@ -122,9 +122,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.7-8, reg. 1",
-      "locator_he": "עמודים 7 עד 8, תקנה 1",
-      "page": 7,
+      "locator": "file p.8 (gazette p.608), reg. 1",
+      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 608), תקנה 1",
+      "page": 8,
       "checked": "2026-10-25"
     },
     {
