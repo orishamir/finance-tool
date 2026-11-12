@@ -10,7 +10,8 @@ import { groupKey, type GroupOn, type MarkView } from "../../lib/fee-deal/parts"
 import type { LawRow } from "../../lib/fee-deal/reading";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { GroupHead, Section, Tag, TextLink, When, fill } from "../kit";
+import { IconArrowDown } from "../icons";
+import { GroupHead, Section, Tag, TextLink, TypedPlain, When, fill } from "../kit";
 import { Num } from "../provenance";
 import { CapBlock, FeeName, MeetSentence, PriceWords, StandingWords, refName } from "./words";
 
@@ -125,8 +126,24 @@ function Group({ group, rows, saved, lead }: { group: GlanceGroup; rows: LawRows
   );
 }
 
-/** A change at a date: "{name}: {the new price}, במקום {the old}", and the new price's standing where it is judged. */
+/**
+ * A change at a date: "{name}: {the new price}, במקום {the old}", and the new price's standing where it is judged. A fee that starts after a
+ * free time says so before its name, the verb agreeing with the name ("מתחילים דמי חשבון קבועים, 10 ₪ בחודש"); a fee of the person's own
+ * keeps the first form, which agrees with nothing.
+ */
 function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow | undefined; saved: boolean }) {
+  const form = change.change === "starts" && change.kind !== "own" ? copy.nameForms[change.kind] : undefined;
+  const standing = change.standing.standing.judged && row?.cap.state === "value" ? <StandingWords standing={change.standing} /> : ".";
+  if (form)
+    return (
+      <li className="flex flex-wrap items-baseline gap-x-1">
+        <FeeName fee={change} before={`${change.side === "all" ? "" : `${copy.sides[change.side]} `}${copy.glance.starts[form.g]}`} after=", " />
+        <span>
+          <PriceWords price={change.to} kind={change.kind} saved={saved} />
+          {standing}
+        </span>
+      </li>
+    );
   return (
     <li className="flex flex-wrap items-baseline gap-x-1">
       <FeeName fee={change} after={copy.price.sep} />
@@ -135,26 +152,24 @@ function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow 
         <PriceWords price={change.to} kind={change.kind} saved={saved} />
         {copy.glance.instead}
         <PriceWords price={change.from} kind={change.kind} saved={saved} />
-        {change.standing.standing.judged && row?.cap.state === "value" ? <StandingWords standing={change.standing} /> : "."}
+        {standing}
       </span>
     </li>
   );
 }
 
 /**
- * The column. `law`: the reading's law rows, which a fee with a cap draws its block from; `saved`: the deal's product saves, so a share of
- * what is held reads "what has built up".
+ * The column, for a deal with a fee. `law`: the reading's law rows, which a fee with a cap draws its block from; `saved`: the deal's product
+ * saves, so a share of what is held reads "what has built up". The figures the person typed read as plain words here: the builder's boxes
+ * beside it carry their blue.
  */
-export function GlanceColumn({ glance, law, saved, empty, names }: { glance: Glance; law: readonly LawRow[]; saved: boolean; empty: boolean; names: (feeId: string) => string }) {
+export function GlanceColumn({ glance, law, saved, names }: { glance: Glance; law: readonly LawRow[]; saved: boolean; names: (feeId: string) => string }) {
   const rows: LawRows = new Map(law.map((r) => [r.fee, r]));
   // a fee that is free now is said by its date's change; a group of such fees alone stays where its fees that hold throughout add to a rate today
   const changing = glance.changing.map((g) => ({ ...g, fees: g.fees.filter((f) => f.price.form !== "free") })).filter((g) => g.fees.length > 0 || g.rates.some((r) => r.fees.length > 1));
   return (
     <Section title={copy.glance.title} level="kick" heading="h2">
-      {empty ? (
-        <p className="text-sm text-muted-foreground">{copy.glance.empty}</p>
-      ) : (
-        <>
+      <TypedPlain className="flex flex-col gap-4">
           {glance.throughout.length > 0 && (
             <Section title={copy.glance.throughout} level="card" heading="h3" gap="snug">
               {glance.throughout.map((g) => (
@@ -200,10 +215,10 @@ export function GlanceColumn({ glance, law, saved, empty, names }: { glance: Gla
               {glance.unread.map(names).join(", ")}
             </p>
           )}
-        </>
-      )}
-      <TextLink to={`#${READING_ID}`} className="text-sm">
+      </TypedPlain>
+      <TextLink to={`#${READING_ID}`} className="inline-flex items-center gap-1 self-start text-sm">
         {copy.glance.toReading}
+        <IconArrowDown size={14} aria-hidden="true" />
       </TextLink>
     </Section>
   );

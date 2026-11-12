@@ -7,10 +7,12 @@ import { builder, panel } from "./builder";
 import { glance } from "./glance";
 import { capLine, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
-import { newDeal, readDeal, typed, type FeeDeal } from "./model";
+import { NAME_MAX, newDeal, readDeal, typed, untouched, type FeeDeal } from "./model";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { dealFromTemplate, dealFromTrack, fillDeal, houseTemplate, lineFees, templateOf, templateOptions } from "./templates";
+import { dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, pickTrack, templateOf, templateOptions } from "./templates";
+import { matching, rowTitle } from "../../components/fee-deal/picker";
+import { updateFee, withFigure, editPrice } from "./edit";
 import { latestSnapshots } from "../providers.server";
 
 const data = feesData();
@@ -56,7 +58,7 @@ describe("the page's data", () => {
           else walk(v);
         }
     };
-    walk([data.kinds, data.templates, data.houses, data.fx]);
+    walk([data.kinds, data.templates, data.houses, data.fx, data.terms]);
     expect(cited.size).toBeGreaterThan(0);
     expect(data.rules.map((r) => r.id).sort()).toEqual([...cited].sort());
   });
@@ -198,16 +200,35 @@ describe("templates", () => {
     expect(templateOf({ ...account(), held: undefined }, "house:leumi", data, TODAY)?.left).toEqual(leumi.holdings.israel!.left.map((l) => ({ line: l.lineId, why: l.why })));
     const abroadOnly = data.houses.find((x) => !x.holdings.israel && x.holdings.abroad);
     if (abroadOnly) expect(templateOf({ ...account(), held: undefined }, `house:${abroadOnly.id}`, data, TODAY)?.left).toEqual([{ why: "no-holding" }]);
-    // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out
+    // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out; a figure of zero
+    // fills nothing and is not left out
     for (const t of data.tracks.filter((x) => x.wrapperId === "keren-hishtalmut").slice(0, 20)) {
       const deal = newDeal("keren-hishtalmut");
       const filled = fillDeal(deal, `track:${t.id}`, data, TODAY)!;
       const out = templateOf(deal, `track:${t.id}`, data, TODAY)!.left;
-      expect(out.length + filled.fees.length, `track ${t.id}`).toBe(2);
+      const zeros = [t.b, t.d].filter((c) => c.value === 0).length;
+      expect(out.length + filled.fees.length + zeros, `track ${t.id}`).toBe(2);
     }
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
     expect(templateOf(newDeal("keren-hishtalmut"), `track:${t.id}`, data, TODAY)).toBeNull();
     expect(templateOf(account(), "nothing", data, TODAY)).toBeNull();
+  });
+  it("fills nothing for a track's fee of zero and lists nothing left out for it; a fee above zero fills as given", () => {
+    const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa" && typeof x.b.value === "number" && x.b.value > 0)!;
+    const free = { ...t, id: -1, d: { ...t.d, value: 0 } };
+    const paid = { ...t, id: -2, d: { ...t.d, value: 0.5 } };
+    const freeAll = { ...t, id: -3, b: { ...t.b, value: 0 }, d: { ...t.d, value: 0 } };
+    const withThem = { ...data, tracks: [...data.tracks, free, paid, freeAll] };
+    const deal = newDeal("kupat-gemel-lehashkaa");
+    const a = templateOf(deal, "track:-1", withThem, TODAY)!;
+    expect(a.fees.map((f) => f.kind)).toEqual(["balance"]);
+    expect(a.left).toEqual([]);
+    expect(dealFromTemplate(deal, "track:-1", withThem, TODAY)!.fees.map((f) => f.kind)).toEqual(["balance"]);
+    const b = templateOf(deal, "track:-2", withThem, TODAY)!;
+    expect(b.fees.map((f) => f.kind)).toEqual(["balance", "deposit"]);
+    expect(b.fees[1]!.stages[0]!.price).toMatchObject({ form: "action", rate: { v: 0.5 } });
+    expect(b.left).toEqual([]);
+    expect(templateOf(deal, "track:-3", withThem, TODAY)).toMatchObject({ fees: [], left: [] });
   });
   it("opens a new deal from a track, its yearly fee charged each month, both figures sourced", () => {
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
@@ -408,5 +429,117 @@ describe("a deal the views cannot read whole", () => {
       expect(c.rates).toHaveLength(1);
       expect(c.at[0]).toBeGreaterThan(7000);
     }
+  });
+});
+
+describe("a track picked in the builder, on the deal on screen", () => {
+  const both = data.tracks.filter((x) => x.wrapperId === "kupat-gemel-lehashkaa" && typeof x.b.value === "number" && x.b.value > 0 && typeof x.d.value === "number" && x.d.value > 0);
+  const [a, b] = [both[0]!, both.find((x) => x.b.value !== both[0]!.b.value)!];
+  const kept = (d: FeeDeal) => ({ id: d.id, start: d.start, saved: d.saved });
+
+  it("keeps a typed name and typed fees, and records the track", () => {
+    const deal: FeeDeal = { ...provident(), name: "ההצעה של הסוכן", start: "2026-01", saved: "2026-11-10" };
+    const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
+    expect(kept(next)).toEqual(kept(deal));
+    expect(next.name).toBe("ההצעה של הסוכן");
+    expect(next.fees).toEqual(deal.fees);
+    expect(next.template).toMatchObject({ id: `track:${a.id}`, feesKept: true });
+    expect(readDeal(JSON.parse(JSON.stringify(next)))).toEqual(next);
+    expect(decodeDeal(encodeDeal(next))?.template).toEqual(next.template);
+  });
+  it("fills and names an empty deal, keeping its id", () => {
+    const deal = newDeal("kupat-gemel-lehashkaa");
+    const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
+    const t = templateOf(deal, `track:${a.id}`, data, TODAY)!;
+    expect(next.id).toBe(deal.id);
+    expect(next.name).toBe(t.name.slice(0, NAME_MAX));
+    expect(next.template).toEqual({ id: `track:${a.id}`, name: t.name });
+    expect(next.fees.map(({ id: _id, ...f }) => f)).toEqual(t.fees);
+    expect(next.fees.every(untouched)).toBe(true);
+  });
+  it("refills a deal filled from one track and left untouched from another, and its name with it", () => {
+    const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const next = pickTrack(first, `track:${b.id}`, data, TODAY)!;
+    const t = templateOf(first, `track:${b.id}`, data, TODAY)!;
+    expect(next.id).toBe(first.id);
+    expect(next.name).toBe(t.name.slice(0, NAME_MAX));
+    expect(next.template).toEqual({ id: `track:${b.id}`, name: t.name });
+    expect(next.fees.map(({ id: _id, ...f }) => f)).toEqual(t.fees);
+    expect(next.fees.map((f) => f.id)).toEqual(first.fees.map((f) => f.id));
+    // a name the person typed over the first track's stays
+    expect(pickTrack({ ...first, name: "שלי" }, `track:${b.id}`, data, TODAY)!.name).toBe("שלי");
+  });
+  it("keeps every fee where one among the filled ones is typed or changed", () => {
+    const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const deposit = first.fees.find((f) => f.kind === "deposit")!;
+    const changed = updateFee(first, deposit.id, (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.1)));
+    expect(untouched(changed.fees.find((f) => f.id === deposit.id)!)).toBe(false);
+    const next = pickTrack(changed, `track:${b.id}`, data, TODAY)!;
+    expect(next.fees).toEqual(changed.fees);
+    expect(next.template).toMatchObject({ id: `track:${b.id}`, feesKept: true });
+    // the name the first track gave is still the template's, so it follows the track picked
+    expect(next.name).toBe(templateOf(first, `track:${b.id}`, data, TODAY)!.name.slice(0, NAME_MAX));
+    const added = { ...first, fees: [...first.fees, { id: "fee-own", kind: "own" as const, name: "x", stages: [{ price: { form: "free" as const } }] }] };
+    expect(pickTrack(added, `track:${b.id}`, data, TODAY)!.fees).toEqual(added.fees);
+  });
+  it("calls a fee untouched only as a template fills it: one price, every figure sourced", () => {
+    const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const f = first.fees[0]!;
+    expect(untouched(f)).toBe(true);
+    expect(untouched(editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 99)))).toBe(false);
+    expect(untouched({ ...f, stages: [{ ...f.stages[0]!, until: "2027-01" }, f.stages[0]!] })).toBe(false);
+    expect(untouched({ ...f, stages: [{ price: { form: "free" } }] })).toBe(false);
+    expect(provident().fees.some(untouched)).toBe(false);
+  });
+});
+
+describe("the track picker's rows", () => {
+  const kindsWithTracks = [...new Set(data.tracks.map((t) => t.wrapperId).filter((k): k is NonNullable<typeof k> => !!k))];
+
+  it("lists for a kind only tracks of that kind", () => {
+    for (const k of kindsWithTracks) {
+      const ids = new Set(templateOptions(k as FeeDeal["kind"], data).map((o) => o.id));
+      for (const t of data.tracks) if (ids.has(`track:${t.id}`)) expect(t.wrapperId).toBe(k);
+    }
+  });
+  it("names a track in its company's group by its short name, and finds it by its company's name", () => {
+    const options = templateOptions("kupat-gemel-lehashkaa", data);
+    const cut = options.filter((o) => o.source === "track" && o.short);
+    expect(cut.length).toBeGreaterThan(0);
+    for (const o of cut) {
+      if (o.source !== "track") continue;
+      expect(rowTitle(o)).toBe(o.short);
+      expect(o.short!.length).toBeLessThan(o.name.length);
+    }
+    const one = cut[0]!;
+    if (one.source !== "track") throw new Error("a track");
+    const found = matching(options, one.company);
+    expect(found.some((o) => o.id === one.id)).toBe(true);
+    expect(found.every((o) => o.source === "track" && (o.company.includes(one.company) || o.name.includes(one.company) || o.short?.includes(one.company)))).toBe(true);
+    expect(matching(options, one.name).some((o) => o.id === one.id)).toBe(true);
+    expect(matching(options, one.short!).some((o) => o.id === one.id)).toBe(true);
+  });
+  it("names the deal by the track's full name once picked", () => {
+    const o = templateOptions("kupat-gemel-lehashkaa", data).find((x) => x.source === "track" && x.short)!;
+    const next = pickTrack(newDeal("kupat-gemel-lehashkaa"), o.id, data, TODAY)!;
+    // the full name, with its company after it, as the template names it; never the short name the picker's row shows
+    const full = templateOf(newDeal("kupat-gemel-lehashkaa"), o.id, data, TODAY)!.name;
+    expect(full.startsWith(o.name)).toBe(true);
+    expect(next.name).toBe(full.slice(0, NAME_MAX));
+    expect(next.template?.name).toBe(full);
+  });
+});
+
+describe("one fee filled from a price list", () => {
+  it("offers only the houses with a line for the fee, and fills that fee alone, keeping its id, place and sources", () => {
+    const deal = account();
+    const houses = feePriceLists(deal, "trade", data);
+    expect(houses.length).toBeGreaterThan(0);
+    const next = fillFee(deal, "fee-trade", houses[0]!.id, data)!;
+    expect(next.fees.map((f) => f.id)).toEqual(deal.fees.map((f) => f.id));
+    expect(next.fees.filter((f) => f.id !== "fee-trade")).toEqual(deal.fees.filter((f) => f.id !== "fee-trade"));
+    expect({ name: next.name, template: next.template, provider: next.provider }).toEqual({ name: deal.name, template: deal.template, provider: deal.provider });
+    expect(untouched(next.fees[0]!)).toBe(true);
+    expect(feePriceLists(provident(), "balance", data)).toEqual([]);
   });
 });

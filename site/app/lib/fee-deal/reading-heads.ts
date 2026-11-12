@@ -5,6 +5,7 @@ import type { ChangeKind, DealAction, DealSide } from "@finance-tool/engine";
 import type { Curve, LawRow, PeriodCard, Reading, Undrawn } from "./reading";
 import type { MonthKey } from "./model";
 import { refOf, type FeeRef, type MarkView } from "./parts";
+import type { SiteValue } from "../value";
 
 // ---------------------------------------------------------------- the periods
 
@@ -104,21 +105,23 @@ export function firstChoice(choices: readonly { from: MonthKey }[], current: Mon
 }
 
 /**
- * What a curve's headline says: where one minimum, or one maximum, or one of each binds, at its sum; where the sums per period stop being
- * the larger cost of holding; otherwise how many sums the cost bends at.
+ * What a curve's headline says: where one minimum, or one maximum, or one of each binds, at its sum (a minimum with the rate above it,
+ * where the curve has one, `Curve.rate`); where the sums per period stop being the larger cost of holding; otherwise how many sums the cost
+ * bends at.
  */
 export type CurveHead =
-  | { kind: "min" | "max"; mark: MarkView }
+  | { kind: "min"; mark: MarkView; rate?: SiteValue }
+  | { kind: "max"; mark: MarkView }
   | { kind: "min-max"; min: MarkView; max: MarkView }
   | { kind: "meet"; mark: MarkView }
   | { kind: "marks"; n: number };
 
-export function curveHead(curve: Pick<Curve, "marks" | "at">): CurveHead {
+export function curveHead(curve: Pick<Curve, "marks" | "at" | "rate">): CurveHead {
   const meet = curve.marks.find((m) => m.kind === "meet");
   if (meet) return { kind: "meet", mark: meet };
   const mins = curve.marks.filter((m) => m.kind === "min");
   const maxes = curve.marks.filter((m) => m.kind === "max");
-  if (mins.length === 1 && maxes.length === 0) return { kind: "min", mark: mins[0]! };
+  if (mins.length === 1 && maxes.length === 0) return { kind: "min", mark: mins[0]!, ...(curve.rate ? { rate: curve.rate } : {}) };
   if (maxes.length === 1 && mins.length === 0) return { kind: "max", mark: maxes[0]! };
   if (mins.length === 1 && maxes.length === 1) {
     const at = (m: MarkView) => curve.at[curve.marks.indexOf(m)] ?? 0;

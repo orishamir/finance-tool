@@ -6,7 +6,7 @@ import { brands, companyFocus, feeDeal as dealWords, formulaKeys, groupPrices as
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
-import { IconAlert, IconClose, IconExternal, IconLock } from "../icons";
+import { IconAlert, IconBin, IconClose, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -105,6 +105,25 @@ function Basics() {
             </Button>
             <Button variant="destructive" flush>
               {g.sample.hello}
+            </Button>
+          </div>
+        </State>
+        <State label="outline: a bordered button on the card's surface, the face MenuPicker has, beside one in a bar">
+          <div className="flex flex-wrap items-center gap-2">
+            <MenuPicker name={dealWords.end.dealsName} items={[]} value={null} placeholder={dealWords.end.deals} />
+            <Button variant="outline">
+              <IconCopy size={18} /> {dealWords.end.link}
+            </Button>
+          </div>
+        </State>
+        <State label={'ghost: a removal that can be undone at once, muted, the danger colour only under the pointer or the focus; size="sm" an icon alone, 36 px round with a 44 px tap area'}>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="ghost">
+              <IconBin size={18} />
+              {dealWords.panel.remove}
+            </Button>
+            <Button variant="ghost" size="sm" aria-label={dealWords.panel.remove}>
+              <IconBin size={18} />
             </Button>
           </div>
         </State>
@@ -992,6 +1011,9 @@ function Fields() {
           <State label={`inline: a name typed in place in a line of other facts, ${g.states.interactive}`}>
             <TextField inline label={dealWords.bar.label} value={typed} onChange={setTyped} placeholder={dealWords.bar.namePlaceholder(null)} />
           </State>
+          <State label={`inline with an icon in its box: a pencil says the name is typed in place, ${g.states.interactive}`}>
+            <TextField inline label={dealWords.bar.label} value={typed} onChange={setTyped} placeholder={dealWords.bar.namePlaceholder(null)} icon={<IconPencil size={16} />} />
+          </State>
         </Grid>
       </Demo>
       <Demo name="CheckField" use={g.uses.CheckField}>
@@ -1770,6 +1792,9 @@ function Lists({ today }: { today: string }) {
         <State label="labelHidden, no all: beside a figure whose words already say what it chooses (a rate's period); the label is for a screen reader" wide>
           <InlineSelectHiddenDemo />
         </State>
+        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron; nothing chosen yet shows `all` in the muted ink" wide>
+          <InlineSelectChipDemo />
+        </State>
       </Demo>
       <Demo name="GroupHead, ListRow, RowList" use={g.uses.ListRow}>
         <State label="rows in one box: a plain row, the chosen one, one with chips and a muted line" wide>
@@ -2399,6 +2424,24 @@ function InlineSelectHiddenDemo() {
   return <InlineSelect label={dealWords.panel.per} labelHidden value={per} onChange={setPer} options={Object.entries(dealWords.panel.perOptions).map(([id, name]) => ({ id, name }))} />;
 }
 
+function InlineSelectCurrency() {
+  const [c, setC] = useState<string | null>("ILS");
+  return <InlineSelect label={dealWords.panel.currency} labelHidden options={Object.entries(dealWords.panel.signs).map(([id, name]) => ({ id, name }))} value={c} onChange={setC} />;
+}
+
+function InlineSelectChipDemo() {
+  const [place, setPlace] = useState<string | null>("abroad");
+  const [payout, setPayout] = useState<string | null>(null);
+  const b = dealWords.builder;
+  const opts = (ids: string[]) => ids.map((id) => ({ id, name: b.heldSaid[id]! }));
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <InlineSelect chip label={b.place.label!} all={b.place.label!} options={opts(["israel", "abroad"])} value={place} onChange={setPlace} />
+      <InlineSelect chip label={b.payout.label!} all={b.payout.label!} options={opts(["accumulating", "distributing"])} value={payout} onChange={setPayout} />
+    </div>
+  );
+}
+
 /** The pieces the fee page built for a deal and lent the kit: a figure and a month typed in place, a price against its cap, a step, and
  *  the line that adds. */
 function DealDemos({ today }: { today: string }) {
@@ -2429,6 +2472,12 @@ function DealDemos({ today }: { today: string }) {
           <State label={g.states.error}>
             <FigureField value={ent} label={g.sample.field} unit="₪" onCommit={() => undefined} validate={() => g.sample.error} />
           </State>
+          <State label={`inside: the words in the box after the unit, a row of a list, ${g.states.interactive}`}>
+            <FigureField value={mine} label={g.sample.percent} unit="%" words={dealWords.price.perAction.default} inside onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
+          </State>
+          <State label="the unit a choice of its own (a bound's currency), an InlineSelect with its label hidden; not given, a dash in the dashed box">
+            <FigureField value={null} label={g.sample.field} unit={<InlineSelectCurrency />} placeholder={dealWords.panel.empty} onCommit={() => undefined} onClear={() => undefined} />
+          </State>
         </Grid>
       </Demo>
       <Demo name="MonthField" use={g.uses.MonthField}>
@@ -2438,6 +2487,23 @@ function DealDemos({ today }: { today: string }) {
           </State>
           <State label={g.states.empty}>
             <MonthField value={null} label={g.sample.field} onCommit={() => undefined} />
+          </State>
+          <State label={`lead: words in the box before the month, a price that holds until it, ${g.states.interactive}`}>
+            <MonthField value={month} lead={`${dealWords.price.free} ${dealWords.standing.until.trim()}`} label={g.sample.field} onCommit={setMonth} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="TypedPlain" use={g.uses.TypedPlain}>
+        <Grid>
+          <State label="the same entered figure: in its box, and as plain words in a summary beside the boxes">
+            <span className="flex flex-col gap-2">
+              <span>
+                <Num value={typedRate} /> {dealWords.price.perAction.default}
+              </span>
+              <TypedPlain as="span">
+                <Num value={typedRate} /> {dealWords.price.perAction.default}
+              </TypedPlain>
+            </span>
           </State>
         </Grid>
       </Demo>
