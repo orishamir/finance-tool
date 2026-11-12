@@ -18,7 +18,8 @@ import { Fees } from "./funds";
 import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
-import { allFunds, pairVerdict, partName, phoneOf, plus, tieSet, type OnPick, type Pick, type PairVerdict } from "./pair";
+import { allFunds, pairVerdict, phoneOf, tieSet, type OnPick, type Pick, type PairVerdict } from "./pair";
+import { partName } from "./cost-lines";
 import { RateLine } from "./receipt";
 
 type Share = { min: number; max: number; step: number; start: number };
@@ -236,7 +237,7 @@ function OtherPair({ view, bundle, pick, v, onPick }: { view: InvestView; bundle
   ) : (
     // the pick in the tie set: the other pair is not "the cheap one", only the other one
     <>
-      <Num value={moreIfOther!} display={plus} /> {tied ? vsMine : c.pair.moreIfCheapest}
+      <Num value={moreIfOther!} display={fmt.signedNisWhole} /> {tied ? vsMine : c.pair.moreIfCheapest}
     </>
   );
   // why there is no order, counted as the badge counts; the pairs of the tie not named here follow, one and a count

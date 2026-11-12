@@ -16,8 +16,6 @@ import { wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigur
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
-/** A signed whole-shekel figure isolated for a Hebrew line: "+4,875 ₪", "−1,524 ₪", "0 ₪". */
-const signedNis = (n: number) => (Math.round(n) === 0 ? fmt.nisWhole(0) : `⁦${n > 0 ? "+" : "−"}${fmt.nisWhole(Math.abs(n))}⁩`);
 /** The lock after a name, held to its last word by `LeadTail` so it never stands alone on a line. */
 const lockIcon = (label: string) => <IconLock size={14} aria-label={label} className="inline-block align-[-1px] mx-0.5 text-blocked" />;
 const NONE: Taken[] = [];
@@ -158,7 +156,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       id: `${fold + i}|${s.pos.a}|${s.pos.f}`,
       level: s.v,
       from: first || !prevLevel ? s.v : prevLevel.stair.v,
-      top: first ? fmt.nisWhole(s.v) : signedNis(s.d ?? 0),
+      top: first ? fmt.nisWhole(s.v) : fmt.signedNisWhole(s.d ?? 0),
       hue: hueOf(s.lane),
       loses: (s.d ?? 0) < 0,
       taken: s.taken,
@@ -200,7 +198,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     if (!l.dParts) return <span className="text-muted-foreground">{t.table.notSplit}</span>;
     return (
       <span className={tone(l, k)}>
-        <Num value={partOf(l, prev, k)} display={signedNis} />
+        <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} />
       </span>
     );
   };
@@ -254,7 +252,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const steps: StairStep[] = levels.map((l, i) => {
     const s = l.stair;
     const prev = levels[i - 1];
-    const parts = prev && l.dParts ? ([0, 1, 2] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{[t.table.accountCost, t.table.fundCost, t.table.tax][k]} <Num value={partOf(l, prev, k)} display={signedNis} /></span>) : null;
+    const parts = prev && l.dParts ? ([0, 1, 2] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{[t.table.accountCost, t.table.fundCost, t.table.tax][k]} <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} /></span>) : null;
     const what = !s.lane ? `${t.stepStart} ${l.fundName}, ${l.house.short}` : `${t.lanes[s.lane].word}: ${s.lane === "account" ? l.house.short : l.fundName}`;
     return {
       id: `${s.pos.a}|${s.pos.f}|${i}`,
@@ -265,7 +263,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           {s.open ? <LeadTail lead={what}>{lockIcon(t.lockLabel)}</LeadTail> : what}
         </>
       ),
-      delta: s.lane && prev ? <Num value={diffOf(l, prev)} display={signedNis} /> : <Num value={l.left} />,
+      delta: s.lane && prev ? <Num value={diffOf(l, prev)} display={fmt.signedNisWhole} /> : <Num value={l.left} />,
       parts: parts && parts.length ? <>{parts}</> : null,
       next: !s.taken,
       label: what,

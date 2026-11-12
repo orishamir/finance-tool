@@ -202,7 +202,6 @@ const HAND_SITE_LINK: Record<string, number> = {
     "components/guide-signature/keren-hishtalmut.tsx": 1,
     "components/guide-signature/money-market-daily.tsx": 1,
     "components/home/body.tsx": 2,
-    "components/invest/sections.tsx": 1,
     "components/provenance-sheets.tsx": 2,
     "components/search-results.tsx": 3,
     "components/shell.tsx": 1,
@@ -220,9 +219,7 @@ const HAND_LINK_OUT: Record<string, number> = {
     "components/decoder/institutions/brokerage-card.tsx": 1,
     "components/decoder/institutions/page.tsx": 1,
     "components/fees/parts.tsx": 1,
-    "components/invest/dollar.tsx": 1,
-    "components/invest/no-fund.tsx": 1,
-    "components/invest/pair.tsx": 2,
+    "components/invest/pair.tsx": 1,
     "components/provenance-sheets.tsx": 5,
     "routes/rules.tsx": 1,
 };
@@ -234,7 +231,7 @@ const BANG_OVERRIDE: Record<string, number> = {
     "components/decoder/tracks.tsx": 1,
     "components/deposits/list.tsx": 8,
     "components/fees/parts.tsx": 2,
-    "components/invest/plan-card.tsx": 3,
+    "components/invest/plan-card.tsx": 1,
     "components/provenance-sheets.tsx": 1,
     "components/search.tsx": 1,
     "routes/companies.tsx": 1,
@@ -252,8 +249,6 @@ const FOLD_AS_LINK: Record<string, number> = {
     "components/company/bank-views.tsx": 1,
     "components/decoder/institutions/product-row.tsx": 2,
     "components/guide/sections.tsx": 4,
-    "components/invest/lists.tsx": 1,
-    "components/invest/pair.tsx": 1,
 };
 
 patterns["a page title written by hand"] = {
