@@ -235,7 +235,7 @@ describe("a year chart's pointer is the kit's", () => {
 
 describe("a chart's motion is the kit's", () => {
   it("no chart has an animation loop of its own", () => {
-    const charts = /^components\/(chart|compare|fees|workbench\/providers|guide-signature|invest|timeline|exposure-mode)\//;
+    const charts = /^components\/(chart|compare|fees|workbench\/providers|guide-signature|invest|timeline)\//;
     const hits = files.filter((f) => /\.tsx$/.test(f) && charts.test(rel(f)) && /<svg[\s>]/.test(code(read(f))) && /requestAnimationFrame/.test(code(read(f)))).map(rel);
     expect(hits).toEqual([]);
   });

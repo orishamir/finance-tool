@@ -89,7 +89,6 @@ const componentKey: Record<string, string> = {
   fees: "fees",
   tracks: "tracks",
   invest: "indices",
-  "exposure-mode": "shared",
   transfer: "transfer",
   decoder: "companies",
 };
@@ -97,7 +96,6 @@ const componentKey: Record<string, string> = {
 /** lib/<file> → page, by file-name prefix (the pages' own logic lives there: the fee tables …). */
 const libPrefixes: [string, string][] = [
   ["compare", "shared"],
-  ["exposure-mode", "shared"],
   ["goal", "shared"],
   ["holdings", "shared"],
   ["fees", "fees"],

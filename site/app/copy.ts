@@ -630,7 +630,6 @@ export const company = {
   /** The track page's note when another track has its name (the company page's same-name banners went with its old list). */
   sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות" },
   oldData: "נתוני הרשות לא עודכנו מאז",
-  paste: { title: "לא מצאתם שם?", label: "הקלידו או הדביקו את השם כמו שהוא מופיע באפליקציה, בפרסומת או בדוח.", placeholder: "למשל: גמל להשקעה כללי" },
   default: "ברירת המחדל",
   /** D34: the exposure rings in the last column of the track table, and two rows of the track page (F-87, F-88). */
   stock: {
