@@ -165,7 +165,6 @@ const HAND_TITLE: Record<string, number> = {
     "components/transfer/panel.tsx": 1,
     "root.tsx": 1,
     "routes/companies.tsx": 1,
-    "routes/fees.tsx": 2,
     "routes/rules.tsx": 1,
 };
 const HAND_SECTION_HEADING: Record<string, number> = {
@@ -174,7 +173,6 @@ const HAND_SECTION_HEADING: Record<string, number> = {
     "components/company/template.tsx": 1,
     "components/decoder/institutions/page.tsx": 1,
     "components/deposits/browser.tsx": 1,
-    "routes/fees.tsx": 3,
 };
 const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/company/bank-views.tsx": 1,
@@ -211,7 +209,6 @@ const HAND_SITE_LINK: Record<string, number> = {
     "content/guide/government-bond.tsx": 3,
     "content/guide/makam.tsx": 3,
     "routes/companies.tsx": 1,
-    "routes/fees.tsx": 3,
     "routes/guide.tsx": 1,
     "routes/rules.tsx": 1,
 };
@@ -235,7 +232,6 @@ const BANG_OVERRIDE: Record<string, number> = {
     "components/provenance-sheets.tsx": 1,
     "components/search.tsx": 1,
     "routes/companies.tsx": 1,
-    "routes/fees.tsx": 2,
     "routes/rules.tsx": 5,
 };
 const MATCH_MEDIA: Record<string, number> = {
@@ -356,6 +352,10 @@ const CHART_ROLES: Record<string, string[]> = {
   "the indices page's two kinds of fund": ["chart-kind-unhedged", "chart-kind-hedged"],
   "a guide page's visual (10)": ["chart-value", "chart-alt"],
   "the pension deposit bar (10)": ["chart-value", "chart-alt", "chart-fee-4"],
+  "the fee page, a securities account's fees": ["fee-trade", "fee-custody", "fee-fx", "fee-fixed", "fee-fund", "fee-spread", "fee-account", "fee-other"],
+  "the fee page, a pension or provident product's fees": ["fee-balance", "fee-deposit", "fee-direct", "fee-other"],
+  "the fee page, a money-market fund's fees": ["fee-balance", "fee-manager", "fee-trade", "fee-custody", "fee-other"],
+  "the fee page, a fund held in a personally managed provident or study fund": ["fee-balance", "fee-trade", "fee-custody", "fee-fx", "fee-direct", "fee-fund", "fee-spread", "fee-account", "fee-other"],
   LabelChip: ["label-held", "label-trade", "label-follow", "label-currency", "label-tax", "label-payout"],
 };
 /** Today's pairs below the line, as "chart: role / role". */

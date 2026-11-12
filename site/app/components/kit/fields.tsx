@@ -425,17 +425,21 @@ export function SearchField({ label, labelHidden, value, onChange, clearLabel, i
   );
 }
 
-/** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; className?: string }) {
+/**
+ * One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`.
+ * `inline`: the label beside the box in muted small words and the words in the box bold, for a name typed in place in a line of other
+ * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]").
+ */
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; className?: string }) {
   const id = useId();
   return (
-    <div className={cx("field", className)}>
-      <label htmlFor={id} className="field-label">
+    <div className={cx(inline ? "flex flex-wrap items-center gap-2" : "field", className)}>
+      <label htmlFor={id} className={inline ? "text-sm text-muted-foreground" : "field-label"}>
         {label}
       </label>
       <div className="field-body">
-        <div className={cx("field-box", error ? "field-box-error" : false)}>
-          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-start text-mixed" />
+        <div className={cx("field-box", inline && "field-box-compact w-56 max-w-full", error ? "field-box-error" : false)}>
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold")} />
         </div>
         {error ? (
           <span id={`${id}-err`} className="text-xs text-destructive">
@@ -474,17 +478,20 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
 
 /**
  * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
- * select, no field box. `all` is the first option, chosen when `value` is null.
+ * select, no field box. `all` is the first option, chosen when `value` is null; without it one of the options is always chosen.
+ * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
+ * period beside its rate: "0.6% לשנה").
  */
-export function InlineSelect({ label, all, options, value, onChange }: { label: string; all: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void }) {
+export function InlineSelect({ label, all, options, value, onChange, labelHidden }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean }) {
   const id = useId();
   return (
     <span className="inline-flex items-center gap-1 text-sm">
-      <label htmlFor={id} className="text-muted-foreground">
-        {label}:
+      <label htmlFor={id} className={labelHidden ? "sr-only" : "text-muted-foreground"}>
+        {label}
+        {labelHidden ? "" : ":"}
       </label>
       <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="min-h-target max-w-48 truncate bg-transparent font-medium text-foreground rounded-md px-1 hover:bg-accent/50 cursor-pointer">
-        <option value="">{all}</option>
+        {all !== undefined && <option value="">{all}</option>}
         {options.map((o) => (
           <option key={o.id} value={o.id}>
             {o.name}

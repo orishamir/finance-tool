@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
-import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
+import { brands, companyFocus, feeDeal as dealWords, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -212,6 +212,13 @@ function Basics() {
                 <p>{g.sample.body}</p>
               </Section>
             </div>
+          </State>
+          <State label='level="kick": the small name over a column of a tool, its parts with their own headings under it'>
+            <Section level="kick" as="div" title={dealWords.builder.title}>
+              <Section level="card" as="div" heading="h3" title={g.sample.title}>
+                <p>{g.sample.body}</p>
+              </Section>
+            </Section>
           </State>
         </Grid>
       </Demo>
@@ -921,6 +928,9 @@ function Fields() {
           </State>
           <State label={g.states.error}>
             <TextField label={g.sample.text.label} value="" onChange={() => undefined} error={g.sample.error} />
+          </State>
+          <State label={`inline: a name typed in place in a line of other facts, ${g.states.interactive}`}>
+            <TextField inline label={dealWords.bar.label} value={typed} onChange={setTyped} placeholder={dealWords.bar.namePlaceholder(null)} />
           </State>
         </Grid>
       </Demo>
@@ -1688,6 +1698,9 @@ function Lists({ today }: { today: string }) {
         <State label="a choice in a line of other controls: the label and the chosen name, no field box" wide>
           <InlineSelectDemo />
         </State>
+        <State label="labelHidden, no all: beside a figure whose words already say what it chooses (a rate's period); the label is for a screen reader" wide>
+          <InlineSelectHiddenDemo />
+        </State>
       </Demo>
       <Demo name="GroupHead, ListRow, RowList" use={g.uses.ListRow}>
         <State label="rows in one box: a plain row, the chosen one, one with chips and a muted line" wide>
@@ -1904,6 +1917,7 @@ function Lists({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
+      <DealDemos today={today} />
       <Demo name="PeriodStrip" use={g.uses.PeriodStrip}>
         <State label="three stretches: all of a group's prices, one of them, then the price list" wide>
           <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 1, label: g.sample.strip.first, tone: "first" }, { from: 1, to: 4, label: g.sample.strip.middle, tone: "middle" }, { from: 4, to: 10, label: g.sample.strip.after, tone: "after" }]} />
@@ -2276,6 +2290,91 @@ function SideNavDemo() {
 function InlineSelectDemo() {
   const [on, setOn] = useState<string | null>(null);
   return <InlineSelect label={rulesFront.claim.question} all={rulesFront.claim.all} value={on} onChange={setOn} options={Object.entries(rulesFront.shelves).map(([id, sh]) => ({ id, name: sh.name }))} />;
+}
+
+function InlineSelectHiddenDemo() {
+  const [per, setPer] = useState<string | null>("12");
+  return <InlineSelect label={dealWords.panel.per} labelHidden value={per} onChange={setPer} options={Object.entries(dealWords.panel.perOptions).map(([id, name]) => ({ id, name }))} />;
+}
+
+/** The pieces the fee page built for a deal and lent the kit: a figure and a month typed in place, a price against its cap, a step, and
+ *  the line that adds. */
+function DealDemos({ today }: { today: string }) {
+  const { rate, ent } = samples(today);
+  const typedRate = entered(0.25, "pct_of_trade", today, g.sampleAbout);
+  const [mine, setMine] = useState<SiteValue>(typedRate);
+  const [bound, setBound] = useState<SiteValue | null>(null);
+  const [month, setMonth] = useState<string | null>("2027-03");
+  const [added, setAdded] = useState<string[]>([]);
+  const items = [
+    { id: "a", label: g.sample.phoneFold.chips[0]!, usual: true },
+    { id: "b", label: g.sample.phoneFold.chips[1]!, usual: true },
+    { id: "c", label: g.sample.phoneFold.chips[2]! },
+  ].filter((i) => !added.includes(i.id));
+  return (
+    <>
+      <Demo name="FigureField" use={g.uses.FigureField}>
+        <Grid>
+          <State label={`entered: typed by the person, ${g.states.interactive}`}>
+            <FigureField value={mine} label={g.sample.percent} unit="%" words={dealWords.price.perAction.default} onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
+          </State>
+          <State label="sourced: filled from a price list and left as it was; the mark opens its source">
+            <FigureField value={rate} label={g.sample.percent} unit="%" words={dealWords.price.per[12]} onCommit={() => undefined} />
+          </State>
+          <State label={`optional and not given: a dashed box; emptying a given one clears it, ${g.states.interactive}`}>
+            <FigureField value={bound} label={g.sample.field} unit="₪" words={dealWords.builder.minWord} onCommit={(n) => setBound(entered(n, "nis_per_trade", today, g.sampleAbout))} onClear={() => setBound(null)} validate={nonNegativeCheck} />
+          </State>
+          <State label={g.states.error}>
+            <FigureField value={ent} label={g.sample.field} unit="₪" onCommit={() => undefined} validate={() => g.sample.error} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="MonthField" use={g.uses.MonthField}>
+        <Grid>
+          <State label={`a month given, ${g.states.interactive}: type 3.2028 and leave the box`}>
+            <MonthField value={month} label={g.sample.field} onCommit={setMonth} onClear={() => setMonth(null)} />
+          </State>
+          <State label={g.states.empty}>
+            <MonthField value={null} label={g.sample.field} onCommit={() => undefined} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="CapBar" use={g.uses.CapBar}>
+        <div className="flex max-w-sm flex-col gap-4">
+          <State label="below the cap, a later price at it (outline)" wide>
+            <CapBar share={0.57} later={1} fill="bg-fee-balance" edge="border-fee-balance" cap="1.05%" />
+          </State>
+          <State label="a quarter of the cap" wide>
+            <CapBar share={0.25} fill="bg-fee-deposit" edge="border-fee-deposit" cap="4%" />
+          </State>
+          <State label="above the cap: the part above in the blocked red's stripes" wide>
+            <CapBar share={1.3} fill="bg-fee-trade" edge="border-fee-trade" cap="0.1%" />
+          </State>
+        </div>
+      </Demo>
+      <Demo name="Step" use={g.uses.Step}>
+        <div className="flex max-w-md flex-col gap-4">
+          <Step n={1} done title={dealWords.builder.kind} value={g.sample.title} action={<Button variant="quiet" size="sm">{dealWords.builder.kindChange}</Button>} />
+          <Step n={2} title={dealWords.builder.track} value={dealWords.builder.trackNone} />
+          <Step n={3} title={dealWords.builder.fees}>
+            <p className="text-sm text-muted-foreground">{g.sample.body}</p>
+          </Step>
+        </div>
+      </Demo>
+      <Demo name="AddLine" use={g.uses.AddLine}>
+        <State label={`two usual things and a rarer one; a chip adds its thing, ${g.states.interactive}`} wide>
+          <div className="flex max-w-md flex-col gap-2">
+            <AddLine lead={dealWords.builder.add} items={items} onAdd={(id) => setAdded((a) => [...a, id])} />
+            {added.length > 0 && (
+              <Button variant="quiet" flush size="sm" className="self-start" onClick={() => setAdded([])}>
+                {g.sample.hello}
+              </Button>
+            )}
+          </div>
+        </State>
+      </Demo>
+    </>
+  );
 }
 
 function PeriodBarsDemo() {
