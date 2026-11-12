@@ -7,6 +7,7 @@ export * from "./formulas/fund-withholding.ts";
 export * from "./formulas/study-story.ts";
 export * from "./formulas/step-effect.ts";
 export * from "./formulas/fees.ts";
+export * from "./formulas/deal.ts";
 export * from "./formulas/holding-tax.ts";
 export * from "./formulas/exit-tax.ts";
 export * from "./formulas/deposit-side.ts";

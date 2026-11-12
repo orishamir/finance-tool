@@ -15,12 +15,21 @@ export type CompanyTermRef = z.infer<typeof companyTermRef>;
 /** The record id of a `company_terms` entry. */
 export const companyTermRule = (ref: CompanyTermRef): string => (typeof ref === "string" ? ref : ref.rule);
 
+/**
+ * A legal cap on one fee base (data-schema §3.3): a value object, and `binds` where the cap binds only some providers. `banks`: the
+ * cap binds banks only (the price of moving securities out, BRK-18; the ban on custody of makam, BRK-17). The fee page judges such a
+ * cap only where the deal names a provider of that kind (F-113).
+ */
+export const feeCap = valueObject.safeExtend({ binds: z.enum(["banks"]).optional() });
+
+export type FeeCap = z.infer<typeof feeCap>;
+
 /** The fields a wrapper and a security share: what the product's guide page, checklist and run read (data-schema §3.3). */
 const productFields = {
   names: z.strictObject({ he: z.array(z.string().min(1)), statement: z.array(z.string()), app: z.array(z.string()) }),
   regulator: valueObject,
   fee_bases_allowed: z.array(feeBase),
-  fee_caps: z.partialRecord(feeBase, valueObject),
+  fee_caps: z.partialRecord(feeBase, feeCap),
   ceiling: z.strictObject({ per: z.string().min(1), amount: valueObject }).nullable(),
   deposit_side_tax: taxStep,
   tax_during: taxStep,

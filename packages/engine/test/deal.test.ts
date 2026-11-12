@@ -1,0 +1,274 @@
+// docs/method.md §10.6, F-110 to F-113: a deal read on its own, with no plan. Every expected figure is worked by hand from the formula.
+import { describe, expect, it } from "vitest";
+import {
+  actionCost,
+  capStanding,
+  changeKind,
+  chargedOn,
+  curveEnd,
+  dealMarks,
+  dealPeriods,
+  groupRate,
+  holdingCost,
+  perYear,
+  type Deal,
+  type DealCap,
+  type DealPrice,
+} from "../src/index.ts";
+
+const today = { y: 2026, m: 11 };
+const commission: DealPrice = { kind: "action", rate: 0.0025, min: 15 };
+const custodyYear: DealPrice = { kind: "held", rate: 0.004, everyMonths: 12 };
+const fundFee: DealPrice = { kind: "held", rate: 0.0007, everyMonths: 12 };
+const free: DealPrice = { kind: "free" };
+
+/** The deal of the page's example: a fund abroad, custody free for a while, a monthly account fee from a date. */
+const example: Deal = {
+  foreign: true,
+  fees: [
+    { base: { key: "trade" }, stages: [{ price: commission }] },
+    { base: { key: "custody" }, stages: [{ price: free, until: { y: 2028, m: 3 } }, { price: custodyYear }] },
+    { base: { key: "fixed_period" }, stages: [{ price: free, until: { y: 2027, m: 3 } }, { price: { kind: "sum", amount: 10, everyMonths: 1 } }] },
+    { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002 } }] },
+    { base: { name: "fund" }, stages: [{ price: fundFee }] },
+  ],
+};
+
+describe("F-110 a deal's periods", () => {
+  it("cuts time at each fee's end, ends on different months giving three periods", () => {
+    const r = dealPeriods(example, today);
+    expect(r.from).toEqual(today);
+    expect(r.periods.map((p) => [p.from, p.to])).toEqual([
+      [today, { y: 2027, m: 3 }],
+      [{ y: 2027, m: 3 }, { y: 2028, m: 3 }],
+      [{ y: 2028, m: 3 }, null],
+    ]);
+    expect(r.periods.map((p) => p.prices[1]!.price.kind)).toEqual(["free", "free", "held"]);
+    expect(r.periods.map((p) => p.prices[2]!.price.kind)).toEqual(["free", "sum", "sum"]);
+    expect(r.fees.map((f) => f.holds)).toEqual([true, false, false, true, true]);
+    expect(r.fees[1]!.changes).toEqual([{ at: { y: 2028, m: 3 }, side: "all", from: free, to: custodyYear, kind: "starts" }]);
+  });
+
+  it("does not read a price whose end has passed", () => {
+    const deal: Deal = {
+      foreign: false,
+      fees: [{ base: { key: "custody" }, stages: [{ price: free, until: { y: 2026, m: 6 } }, { price: custodyYear }] }],
+    };
+    const r = dealPeriods(deal, today);
+    expect(r.periods).toHaveLength(1);
+    expect(r.periods[0]!.prices[0]!.price).toEqual(custodyYear);
+    expect(r.fees[0]).toEqual({ holds: true, changes: [] });
+    // an end on the reading's own month has passed too: the month starts with the later price
+    const atToday = dealPeriods({ ...deal, fees: [{ ...deal.fees[0]!, stages: [{ price: free, until: today }, { price: custodyYear }] }] }, today);
+    expect(atToday.periods[0]!.prices[0]!.price).toEqual(custodyYear);
+    expect(atToday.fees[0]!.holds).toBe(true);
+  });
+
+  it("reads the deal from its start where the start is later than today", () => {
+    const deal: Deal = {
+      foreign: false,
+      start: { y: 2027, m: 1 },
+      fees: [
+        // ends after today but before the start: passed by the start
+        { base: { key: "custody" }, stages: [{ price: free, until: { y: 2026, m: 12 } }, { price: custodyYear }] },
+        { base: { key: "trade" }, stages: [{ price: commission, until: { y: 2027, m: 7 } }, { price: { kind: "action", rate: 0.001, min: 15 } }] },
+      ],
+    };
+    const r = dealPeriods(deal, today);
+    expect(r.from).toEqual({ y: 2027, m: 1 });
+    expect(r.periods.map((p) => [p.from, p.to])).toEqual([
+      [{ y: 2027, m: 1 }, { y: 2027, m: 7 }],
+      [{ y: 2027, m: 7 }, null],
+    ]);
+    expect(r.periods[0]!.prices[0]!.price).toEqual(custodyYear);
+    expect(r.fees[1]!.changes[0]!.kind).toBe("falls");
+    // a start earlier than today does not move the reading
+    expect(dealPeriods({ ...deal, start: { y: 2025, m: 1 } }, today).from).toEqual(today);
+  });
+
+  it("reads a sale's own prices as their own side", () => {
+    const deal: Deal = {
+      foreign: false,
+      fees: [{ base: { key: "trade" }, stages: [{ price: commission }], sale: [{ price: free, until: { y: 2027, m: 1 } }, { price: commission }] }],
+    };
+    const r = dealPeriods(deal, today);
+    expect(r.periods[0]!.prices[0]).toEqual({ price: commission, sale: free });
+    expect(r.periods[1]!.prices[0]).toEqual({ price: commission, sale: commission });
+    expect(r.fees[0]!.changes).toEqual([{ at: { y: 2027, m: 1 }, side: "sell", from: free, to: commission, kind: "starts" }]);
+  });
+
+  it("names a change by the two prices around it", () => {
+    expect(changeKind(free, custodyYear)).toBe("starts");
+    expect(changeKind(custodyYear, free)).toBe("ends");
+    expect(changeKind(custodyYear, { kind: "held", rate: 0.005, everyMonths: 12 })).toBe("rises");
+    // 0.1% a quarter is 0.4% a year: the yearly figure is the same, the charging period is not
+    expect(changeKind({ kind: "held", rate: 0.001, everyMonths: 3 }, custodyYear)).toBe("changes");
+    expect(changeKind({ kind: "sum", amount: 30, everyMonths: 3 }, { kind: "sum", amount: 10, everyMonths: 1 })).toBe("changes");
+    expect(changeKind({ kind: "sum", amount: 10, everyMonths: 1 }, { kind: "sum", amount: 10, everyMonths: 1 })).toBe("same");
+    expect(changeKind({ kind: "sum", amount: 30, everyMonths: 3 }, { kind: "sum", amount: 15, everyMonths: 1 })).toBe("rises");
+    expect(changeKind(commission, { kind: "action", rate: 0.0025, min: 10 })).toBe("changes");
+    expect(changeKind(commission, { kind: "action", rate: 0.0025, min: 15, currency: "USD" })).toBe("changes");
+    expect(changeKind(commission, { kind: "action", rate: 0.0025, min: 15, currency: "ILS" })).toBe("same");
+    expect(changeKind(commission, { kind: "perAction", amount: 15 })).toBe("changes");
+  });
+
+  it("refuses prices that do not end in order or a last price with an end", () => {
+    const deal = (stages: Deal["fees"][number]["stages"]): Deal => ({ foreign: false, fees: [{ base: { key: "custody" }, stages }] });
+    expect(() => dealPeriods(deal([]), today)).toThrow(RangeError);
+    expect(() => dealPeriods(deal([{ price: free, until: { y: 2027, m: 1 } }]), today)).toThrow(RangeError);
+    expect(() => dealPeriods(deal([{ price: free }, { price: custodyYear }]), today)).toThrow(RangeError);
+    expect(() =>
+      dealPeriods(deal([{ price: free, until: { y: 2028, m: 1 } }, { price: commission, until: { y: 2027, m: 1 } }, { price: custodyYear }]), today),
+    ).toThrow(RangeError);
+  });
+});
+
+describe("F-111 what a fee is charged on, and what adds", () => {
+  it("says what each fee is charged on", () => {
+    expect(chargedOn({ key: "trade" }, commission)).toEqual({ on: "action", action: "trade" });
+    expect(chargedOn({ key: "fx" }, free)).toEqual({ on: "action", action: "conversion" });
+    expect(chargedOn({ key: "custody" }, free)).toEqual({ on: "held" });
+    expect(chargedOn({ key: "custody" }, { kind: "sum", amount: 30, everyMonths: 3 })).toEqual({ on: "account" });
+    expect(chargedOn({ key: "fixed_period" }, free)).toEqual({ on: "account" });
+    expect(chargedOn({ name: "fund" }, fundFee)).toEqual({ on: "held" });
+    expect(chargedOn({ name: "other" }, commission)).toEqual({ on: "action", action: null });
+    expect(chargedOn({ name: "other" }, free)).toBeNull();
+  });
+
+  it("states custody of 0.1% a quarter as 0.4% a year, and a sum every month as twelve a year", () => {
+    expect(perYear({ kind: "held", rate: 0.001, everyMonths: 3 })).toBeCloseTo(0.004, 12);
+    expect(perYear({ kind: "sum", amount: 10, everyMonths: 1 })).toBe(120);
+    expect(perYear(commission)).toBeNull();
+  });
+
+  it("adds 0.25% and 0.2% on one action to 0.45% where what is held is not in shekels", () => {
+    const [p] = dealPeriods(example, today).periods;
+    const trade = groupRate(example, p!).find((g) => g.on === "action");
+    expect(trade).toMatchObject({ on: "action", action: "trade", side: "all", fees: [0, 3] });
+    expect(trade!.rate).toBeCloseTo(0.0045, 12);
+    // in shekels the conversion is not part of a purchase
+    const groups = groupRate({ ...example, foreign: false }, p!);
+    expect(groups.find((g) => g.on === "action" && g.action === "trade")!.rate).toBeCloseTo(0.0025, 12);
+    expect(groups.find((g) => g.on === "action" && g.action === "conversion")!.rate).toBeCloseTo(0.002, 12);
+  });
+
+  it("gives a held group of 0.07% while custody is free, and 0.47% after it", () => {
+    const held = dealPeriods(example, today).periods.map((p) => groupRate(example, p).find((g) => g.on === "held")!);
+    expect(held.map((g) => g.fees)).toEqual([[4], [4], [1, 4]]);
+    expect(held[0]!.rate).toBeCloseTo(0.0007, 12);
+    expect(held[2]!.rate).toBeCloseTo(0.0047, 12);
+  });
+
+  it("splits an action's group by side where a sale has its own price", () => {
+    const deal: Deal = {
+      foreign: true,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: commission }], sale: [{ price: { kind: "action", rate: 0.001 } }] },
+        { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002 } }] },
+      ],
+    };
+    const groups = groupRate(deal, dealPeriods(deal, today).periods[0]!);
+    expect(groups.map((g) => (g.on === "action" ? g.side : g.on))).toEqual(["buy", "sell"]);
+    expect(groups[0]!.rate).toBeCloseTo(0.0045, 12);
+    expect(groups[1]!.rate).toBeCloseTo(0.003, 12);
+  });
+});
+
+describe("F-112 the sums a deal's prices mark", () => {
+  it("marks a commission of 0.25% with a 15 ₪ minimum binding below 6,000 ₪", () => {
+    const [p] = dealPeriods(example, today).periods;
+    expect(dealMarks(example, p!)).toEqual([{ kind: "min", on: "action", fee: 0, side: "all", amount: 6000, currency: "ILS" }]);
+    expect(actionCost(example, p!, "trade", 5000).total).toBeCloseTo(15 + 10, 10);
+    const at8000 = actionCost(example, p!, "trade", 8000);
+    expect(at8000.parts.map((x) => x.fee)).toEqual([0, 3]);
+    expect(at8000.parts[0]!.cost).toBeCloseTo(20, 10);
+    expect(at8000.total).toBeCloseTo(36, 10);
+  });
+
+  it("marks 10 ₪ a month against custody of 0.4% a year meeting at 30,000 ₪", () => {
+    const periods = dealPeriods(example, today).periods;
+    expect(dealMarks(example, periods[1]!).filter((m) => m.kind === "meet")).toEqual([]);
+    const meet = dealMarks(example, periods[2]!).find((m) => m.kind === "meet")!;
+    expect(meet).toMatchObject({ on: "held", fee: 2, against: 1, currency: "ILS" });
+    expect(meet.amount).toBeCloseTo(30000, 8);
+    const at = holdingCost(example, periods[2]!, 30000);
+    expect(at.parts.map((x) => x.fee)).toEqual([1, 2, 4]);
+    expect(at.parts[0]!.cost).toBeCloseTo(120, 10);
+    expect(at.parts[1]!.cost).toBe(120);
+    expect(at.total).toBeCloseTo(120 + 120 + 21, 10);
+  });
+
+  it("marks a maximum and a minimum per charge of a held share, and prices each charge of a year", () => {
+    const deal: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3, min: 10, max: 100 } }] }] };
+    const [p] = dealPeriods(deal, today).periods;
+    expect(dealMarks(deal, p!).map((m) => [m.kind, m.on, Math.round(m.amount)])).toEqual([["min", "held", 10000], ["max", "held", 100000]]);
+    expect(holdingCost(deal, p!, 5000).total).toBeCloseTo(40, 10);
+    expect(holdingCost(deal, p!, 50000).total).toBeCloseTo(200, 10);
+    expect(holdingCost(deal, p!, 500000).total).toBeCloseTo(400, 10);
+  });
+
+  it("gives a bound typed in another currency its sum in that currency, and converts it only for a cost", () => {
+    const deal: Deal = { foreign: true, fees: [{ base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.0019, min: 6.7, max: 2700, currency: "USD" } }] }] };
+    const [p] = dealPeriods(deal, today).periods;
+    const marks = dealMarks(deal, p!);
+    expect(marks.map((m) => m.currency)).toEqual(["USD", "USD"]);
+    expect(marks[0]!.amount).toBeCloseTo(6.7 / 0.0019, 8);
+    // 100 ₪ converted: 0.19 ₪ at the rate, the minimum 6.70 $ × 3.70 = 24.79 ₪ instead (F-13's example)
+    expect(actionCost(deal, p!, "trade", 100, "buy", { USD: 3.7 }).total).toBeCloseTo(24.79, 10);
+    expect(() => actionCost(deal, p!, "trade", 100)).toThrow(RangeError);
+  });
+
+  it("marks nothing for a bound with no rate or a free price, and no meeting where custody is free", () => {
+    const deal: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: { kind: "perAction", amount: 7 } }] },
+        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0, everyMonths: 3, min: 10 } }] },
+        { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] },
+      ],
+    };
+    const [p] = dealPeriods(deal, today).periods;
+    expect(dealMarks(deal, p!)).toEqual([]);
+    expect(actionCost(deal, p!, "trade", 1000).total).toBe(7);
+  });
+
+  it("ends an axis at 1, 2 or 5 times a power of ten, at least three times the largest mark", () => {
+    expect(curveEnd(6000)).toBe(20000);
+    expect(curveEnd(30000)).toBe(100000);
+    expect(curveEnd(1000)).toBe(5000);
+    expect(curveEnd(10000 / 3)).toBe(10000);
+    expect(() => curveEnd(0)).toThrow(RangeError);
+  });
+});
+
+describe("F-113 a typed price against the legal cap", () => {
+  const cap = (value: DealCap["value"], more: Partial<DealCap> = {}): DealCap => ({ value, state: "sourced", ...more });
+
+  it("judges a price below, at or above the cap, with its share of it", () => {
+    const below = capStanding(0.6, cap(1.05));
+    expect(below).toMatchObject({ judged: true, standing: "below" });
+    expect(below.judged && Math.round(below.share! * 100)).toBe(57);
+    expect(capStanding(1.05, cap(1.05))).toEqual({ judged: true, standing: "at", share: 1 });
+    expect(capStanding(1, cap(4))).toEqual({ judged: true, standing: "below", share: 0.25 });
+    expect(capStanding(1.2, cap(1.05))).toMatchObject({ judged: true, standing: "above" });
+  });
+
+  it("calls any positive price above a cap of 0", () => {
+    expect(capStanding(0.01, cap(0))).toEqual({ judged: true, standing: "above", share: null });
+    expect(capStanding(0, cap(0))).toEqual({ judged: true, standing: "at", share: null });
+  });
+
+  it("judges nothing with no value, no cap, or a cap not sourced", () => {
+    expect(capStanding(undefined, cap(1.05))).toEqual({ judged: false, why: "no-price" });
+    expect(capStanding(0.5, cap(null))).toEqual({ judged: false, why: "no-cap" });
+    expect(capStanding(0.5, undefined)).toEqual({ judged: false, why: "no-cap" });
+    expect(capStanding(0.5, cap(1.05, { state: "computed" }))).toEqual({ judged: false, why: "not-sourced" });
+  });
+
+  it("judges a cap that binds banks only where the deal names a bank", () => {
+    const banks = cap(10, { binds: "banks" });
+    expect(capStanding(25, banks)).toEqual({ judged: false, why: "binds" });
+    expect(capStanding(25, banks, "non-bank")).toEqual({ judged: false, why: "binds" });
+    expect(capStanding(25, banks, "bank")).toEqual({ judged: true, standing: "above", share: 2.5 });
+  });
+});
