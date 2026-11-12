@@ -214,7 +214,9 @@ function isLocatorRemark(part: string): boolean {
 export function cleanLocator(text: string): string {
   // Hebrew abbreviations such as תשע"ה carry a quote mark that is not a quotation; mask it while cutting.
   let t = text.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "\uE000");
-  t = t.replace(/\(\s*["“״][^)]*\)/g, " ");
+  // a quote in parentheses goes whole, up to its closing mark: one that holds a parenthesis of its own ("…לפי סעיף 91(ד)…") used to
+  // end at that parenthesis and leave its last words in the locator
+  t = t.replace(/\(\s*["“״][^"”״]*["”״]\s*\)/g, " ").replace(/\(\s*["“״][^)]*\)/g, " ");
   const q = t.search(/["“]/);
   if (q >= 0) t = t.slice(0, q);
   t = t.replace(/\uE000/g, '"');
@@ -278,6 +280,18 @@ export function toHebrewLocator(locator: string, url = ""): string | undefined {
     .replace(/\bfirst schedule\b/gi, "התוספת הראשונה")
     .replace(/\bannex\s+(?=[\u05D0-\u05EA])/gi, "נספח ")
     .replace(/\bannex\s+([a-e])\b/gi, (_m, l: string) => `נספח ${LATIN_TO_HE[l.toLowerCase()]}`)
+    .replace(/\bannex\s+(?=\d)/gi, "נספח ")
+    .replace(/\bappendix\s+([a-e])\b/gi, (_m, l: string) => `נספח ${LATIN_TO_HE[l.toLowerCase()]}`)
+    .replace(/\bappendix\b(?!\s*[A-Za-z])/gi, "נספח")
+    // "reg. 1, definition 'עמית-עצמאי'", "p.2, footnote 1", "p.5 row 11", "table ד-12": until 2026-11-12 any of these words left the
+    // whole locator in English on the card
+    .replace(/\bdefinitions\b/gi, "הגדרות")
+    .replace(/\bdefinition(?: of)?\b/gi, "הגדרת")
+    .replace(/\bfootnotes\s+(?=\d)/gi, "הערות שוליים ")
+    .replace(/\bfootnote\s+(?=\d)/gi, "הערת שוליים ")
+    .replace(/\brows\s+(?=[\d\u05D0-\u05EA])/gi, "שורות ")
+    .replace(/\brow\s+(?=[\d\u05D0-\u05EA])/gi, "שורה ")
+    .replace(/\btable\b(?!\s*[A-Za-z])/gi, "טבלה")
     .replace(/\bparts\s+/gi, "חלקים ")
     .replace(/\bpart\s+/gi, "חלק ")
     .replace(/\bitems\s+/gi, "פרטים ")
@@ -285,7 +299,9 @@ export function toHebrewLocator(locator: string, url = ""): string | undefined {
     .replace(/(\d)\s+to\s+(?=[\d(])/gi, "$1 עד ")
     .replace(/\)\s+to\s+(?=[\d(])/gi, ") עד ")
     .replace(/\(([a-e])(\d*)\)/gi, (_m, l: string, d: string) => `(${LATIN_TO_HE[l.toLowerCase()]}${d})`)
-    .replace(/(\d)([a-e])(\d*)(?![A-Za-z])/gi, (_m, n: string, l: string, d: string) => `${n}${LATIN_TO_HE[l.toLowerCase()]}${d}`);
+    .replace(/(\d)([a-e])(\d*)(?![A-Za-z])/gi, (_m, n: string, l: string, d: string) => `${n}${LATIN_TO_HE[l.toLowerCase()]}${d}`)
+    // "s.1 and s.5" once both sides are in Hebrew
+    .replace(/\s+and\s+(?=[\u05D0-\u05EA])/gi, " ו");
   t = t.replace(/\s+/g, " ").trim();
   if (/[A-Za-z]/.test(t)) return undefined;
   return t || undefined;
@@ -509,7 +525,9 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
     const lead = quoteApart ? passages.slice(0, firstQuoted) : covered;
     // a lead before a quoted passage takes its locator from its own text alone; with no place of its own it is no source
-    const leadLocator = quoteApart ? cleanLocator(lead.join("; ")) : locator;
+    // (so does a first passage whose quote stands in parentheses: the locator of the whole text would name every later passage too,
+    // each of which is a source of its own below)
+    const leadLocator = quoteApart || lead.length < passages.length ? cleanLocator(lead.join("; ")) : locator;
     locate(entry, leadLocator, lead.join("; "));
     if (note) {
       if (note.length <= 120) entry.qualifier = note;
