@@ -1,20 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { loadRuleUses, ruleProducts, ruleScores, ruleUseOf, scoreOf } from "./rule-uses.server";
-import { r3fees } from "../copy";
+import { feeDeal } from "../copy";
+import { loadProducts } from "./data.server";
 
 describe("rule uses", () => {
   it("TXI-03 is read by the engine and shown on at least one page", () => {
     const u = ruleUseOf("TXI-03");
     expect(u.engine).toBe(true);
     expect(u.pages.length).toBeGreaterThan(0);
-    expect(u.pages.every((p) => (p.href === null || p.href.startsWith("/")) && p.label.length > 0)).toBe(true);
+    expect(u.pages.every((p) => p.href.startsWith("/") && p.label.length > 0)).toBe(true);
   });
-  it("a rule the fee page cites opens its one product's fee page, never a bare /fees; with no single product it is named, not linked", () => {
-    const fees = Object.entries(loadRuleUses()).flatMap(([id, u]) => u.pages.filter((p) => p.label === r3fees.title).map((p) => ({ id, href: p.href })));
+  it("the fee page is a use of the rules its products' caps cite: a cap of one product opens a new deal of it, any other the page as it is", () => {
+    const fees = Object.entries(loadRuleUses()).flatMap(([id, u]) => u.pages.filter((p) => p.label === feeDeal.title).map((p) => ({ id, href: p.href })));
+    const capRules = new Set(loadProducts().flatMap((w) => (w.fee_bases_allowed.length > 0 ? Object.values(w.fee_caps ?? {}).flatMap((c) => c?.rule_ids ?? []) : [])));
     expect(fees.length).toBeGreaterThan(0);
-    expect(fees.filter((f) => f.href === "/fees")).toEqual([]);
-    expect(fees.some((f) => f.href !== null && /^\/fees\?wrapper=[a-z-]+$/.test(f.href))).toBe(true);
-    for (const f of fees) if (f.href) expect(ruleProducts()[f.id]).toContain(f.href.split("=")[1]);
+    expect(fees.filter((f) => !capRules.has(f.id))).toEqual([]);
+    expect(fees.some((f) => /^\/fees\?wrapper=[a-z-]+$/.test(f.href))).toBe(true);
+    for (const f of fees) if (f.href !== "/fees") expect(ruleProducts()[f.id]).toContain(f.href.split("=")[1]);
   });
   it("an unknown id has no uses", () => {
     expect(ruleUseOf("ZZZ-99")).toMatchObject({ pages: [], engine: false, collections: {}, score: 0 });

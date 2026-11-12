@@ -10,7 +10,6 @@ export const SIDE_EFFECT_MODULES = [
   "site/app/entry.client.tsx", // starts the app
   "site/app/copy.ts", // adds a name to its own parameters page list
   "site/app/lib/providers.ts", // adds formula names and flags to copy.ts
-  "site/app/lib/fees.ts", // adds formula names to copy.ts
   "site/app/lib/compare.ts", // adds formula names to copy.ts
 ] as const;
 

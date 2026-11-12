@@ -90,18 +90,11 @@ export default function Parameters() {
                 <dd className="text-sm">{p.why}</dd>
                 <dt className="text-sm text-muted-foreground">{copy.rows.usedIn}</dt>
                 <dd className="flex flex-wrap gap-x-4">
-                  {/* a page kind with no single page (the fee pages, one per product) is named, not linked */}
-                  {p.pages.map((pg) =>
-                    pg.to ? (
-                      <GoLink key={pg.name} to={pg.to}>
-                        {pg.name}
-                      </GoLink>
-                    ) : (
-                      <span key={pg.name} className="text-sm min-h-target inline-flex items-center">
-                        {pg.name}
-                      </span>
-                    ),
-                  )}
+                  {p.pages.map((pg) => (
+                    <GoLink key={pg.name} to={pg.to}>
+                      {pg.name}
+                    </GoLink>
+                  ))}
                 </dd>
               </dl>
             </Card>

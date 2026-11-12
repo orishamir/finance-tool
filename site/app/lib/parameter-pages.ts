@@ -5,14 +5,12 @@
 /**
  * A page that reads site parameters: where its link goes, and the route in routes.ts whose code reads them ("" is the index).
  * Its name is the key's entry in `parametersPage.pages` (copy.ts). The guides' link goes to their list; the pages that read are
- * each guide's own. The fee pages have no link (null): each is one product's (`/fees?wrapper=`), every one reads the parameters, and
- * `/fees` alone says only that no product was found.
+ * each guide's own.
  */
 export const parameterPageRoutes = {
   home: { href: "/", route: "" },
   guide: { href: "/guide", route: "guide/:id" },
   rules: { href: "/rules", route: "rules" },
-  fees: { href: null, route: "fees" },
   indices: { href: "/indices", route: "indices/:slug?" },
   deposits: { href: "/deposits", route: "deposits" },
 } as const;
@@ -23,12 +21,10 @@ export type ParameterPage = keyof typeof parameterPageRoutes;
 export const parameterPages: Readonly<Record<string, readonly ParameterPage[]>> = {
   // the tie between two price lists: the indices page's pairs, and the guides that name the account that leaves the most (F-80)
   "P-01": ["indices", "guide"],
-  // the fee page's "what moves the answer" panel; the indices page's range for the dollar against the shekel
-  "P-02": ["fees", "indices"],
-  // the fee page's verdicts
-  "P-03": ["fees"],
-  // the starting plan of the guides' graphs, the fee page and the indices page, and the amount the deposits page starts at
-  "P-05": ["guide", "fees", "indices", "deposits"],
+  // the indices page's range for the dollar against the shekel
+  "P-02": ["indices"],
+  // the starting plan of the guides' graphs and the indices page, and the amount the deposits page starts at
+  "P-05": ["guide", "indices", "deposits"],
   // the rules page's did-you-know facts and each guide's worth-knowing block
   "P-09": ["rules", "guide"],
   // the kinds of saving the first page names

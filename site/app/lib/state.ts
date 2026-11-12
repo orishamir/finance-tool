@@ -163,7 +163,7 @@ export interface InputsLike {
   entered: Record<string, number>;
   age: number | null;
   employment: Employment | null;
-  /** A-17, entered on the fee page of a pension fund: the insurance cost as a percent of each deposit (G-12). Absent: not entered. */
+  /** A-17: the insurance cost of a pension fund as a percent of each deposit (G-12), as the saved state holds it; no page enters it. Absent: not entered. */
   insurance?: number | null;
 }
 

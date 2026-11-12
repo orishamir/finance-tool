@@ -1,14 +1,14 @@
 // The comparison in the browser: the bundle's shapes (compare.server.ts), the person's numbers as a run goal, and the engine's
-// candidate set (F-83) and ranking (F-80) over them, which the fee page and the indices page run on. No rate, fee or rule figure is
+// candidate set (F-83) and ranking (F-80) over them. No rate, fee or rule figure is
 // written here: everything comes from the bundle or from the person, and every number leaves as a value object so the provenance
 // sheet can open it.
-import { buildCandidateSet, coverageLine, withHeldRate, withFeeScaled, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext, type RunResult, type UsedRule } from "@finance-tool/engine";
+import { buildCandidateSet, coverageLine, withHeldRate, withFeeScaled, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext, type RunResult } from "@finance-tool/engine";
 import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
-import { computedInputs as ci, formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
+import { formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
 import type { Employment } from "./inputs";
 import type { FieldKey, PresetId, Presets } from "./goal";
 import { fitOf, type FitTableData } from "./fit";
-import { computed, entered as enteredValue, sumOf as sumValues, weaker, type SiteValue, type Strength } from "./value";
+import { entered as enteredValue, sumOf as sumValues, type SiteValue } from "./value";
 
 
 // Formula names this screen's numbers use that the release 1 table does not hold yet (method.md F-30, F-61, F-80, F-81).
@@ -174,11 +174,6 @@ export interface RunGoal {
   forecastFall?: number | null;
 }
 
-/** Everything compared is the amount now less the part kept available, plus the monthly deposit. */
-export function nothingToCompare(g: RunGoal): boolean {
-  return g.amountNow - g.available <= 0 && g.monthly <= 0;
-}
-
 export function parameterOf(bundle: CompareBundle, method: string): ParameterRecord {
   const p = bundle.parameters.find((x) => (x as { method_id?: string }).method_id === method);
   if (!p) throw new Error(`the bundle holds no parameter ${method}`);
@@ -195,18 +190,14 @@ export function asParameter(p: ParameterRecord, v: ValueObject): SiteValue {
 const fundsWithReturn = new Set(["israeli-fund", "tase-foreign-fund", "foreign-fund"]);
 
 /** Whether a wrapper's run rests on the person's return (A-01); the others rest on a cash rate. */
-export function needsReturn(w: WrapperEntry): boolean {
+function needsReturn(w: WrapperEntry): boolean {
   if (w.family === "provident" || w.family === "pension") return true;
   if (w.family === "securities") return fundsWithReturn.has(w.terms?.fund?.kind ?? "") || w.id === "ira-hishtalmut";
   return false;
 }
 
-export function isCashLike(w: WrapperEntry): boolean {
-  return !needsReturn(w) && (w.family === "deposit" || w.family === "makam" || w.family === "bond" || w.family === "securities");
-}
-
 /** The rate a deposit-family wrapper runs on: the person's own (entered, A8), else the bank's published one. */
-export function cashRateFor(w: WrapperEntry, g: RunGoal, today: string): SiteValue | undefined {
+function cashRateFor(w: WrapperEntry, g: RunGoal, today: string): SiteValue | undefined {
   const own = g.ownRates?.[w.id];
   if (own !== undefined && Number.isFinite(own)) return enteredValue(own, "pct_per_year", today, r2.result.ownRate.about);
   return w.cashRate;
@@ -335,7 +326,7 @@ export function applyProviders(bundle: CompareBundle, g: RunGoal): CompareBundle
   return out;
 }
 
-export type FeeKind = "balance" | "deposit" | "direct" | "fund" | "trade" | "custody";
+type FeeKind = "balance" | "deposit" | "direct" | "fund" | "trade" | "custody";
 
 function scaleTerms(terms: InstrumentTerms, id: string, scale: Record<string, number>): InstrumentTerms {
   const k = (kind: FeeKind) => scale[`${id}:${kind}`] ?? 1;
@@ -529,208 +520,6 @@ export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions
 
 const realOf = (run: RunResult) => run.real;
 const sumOf = (r: Record<string, number>) => Object.values(r).reduce((a, b) => a + b, 0);
-
-const strengthOfUsed = (u: UsedRule): Strength => u.figures.reduce<Strength>((w, f) => weaker(w, f.strength as Strength) ?? w, u.strength);
-
-// ---------------------------------------------------------------- value objects of the goal and of a result
-
-export interface GoalValues {
-  horizon: SiteValue;
-  amountNow: SiteValue;
-  monthly: SiteValue;
-  available: SiteValue;
-  inflation: SiteValue;
-  returnV: SiteValue | null;
-}
-
-export function cashRateOf(bundle: CompareBundle): SiteValue {
-  const p05 = parameterOf(bundle, "P-05");
-  return asParameter(p05, (p05 as unknown as { inputs: Record<string, ValueObject> }).inputs.cash_rate!);
-}
-
-/** Goal fields as value objects: entered by the person, or the site parameter a preset filled (design-spec 6.2). */
-export function goalValueObjects(bundle: CompareBundle, g: RunGoal): GoalValues {
-  const today = bundle.runDate;
-  const p05 = parameterOf(bundle, "P-05");
-  const inputs = (p05 as unknown as { inputs: Record<string, ValueObject> }).inputs;
-  // A number a preset filled (P-07) stays a site parameter until the person edits it (D7).
-  const p07 = bundle.parameters.find((x) => (x as { method_id?: string }).method_id === "P-07");
-  const presetRec = g.preset === "none" ? undefined : (p07 as unknown as { presets?: Record<string, Record<string, ValueObject>> } | undefined)?.presets?.[g.preset];
-  const fromPreset = (field: string, value: number, unit: ValueObject["unit"], notes: string): SiteValue | null => {
-    const v = presetRec?.[field];
-    return v && p07 ? asParameter(p07, { ...v, value, unit, notes }) : null;
-  };
-  return {
-    horizon: (g.fromPreset.horizon && fromPreset("horizon_years", g.horizonYears, "years", "")) || enteredValue(g.horizonYears, "years", today, ci.years),
-    amountNow: enteredValue(g.amountNow, "nis", today, ci.amountNow),
-    monthly: (g.fromPreset.monthly && fromPreset("monthly_deposit", g.monthly, "nis_per_month", "")) || enteredValue(g.monthly, "nis_per_month", today, ci.monthly),
-    available: (g.fromPreset.available && fromPreset("must_stay_available_share", g.available, "nis", `${presetRec?.must_stay_available_share?.value}% מהסכום היום, לפי נקודת ההתחלה`)) || enteredValue(g.available, "nis", today, ""),
-    inflation: g.inflationPct !== null ? enteredValue(g.inflationPct, "pct_per_year", today, ci.inflation) : asParameter(p05, inputs["A-02"]!),
-    returnV: g.returnPct !== null ? enteredValue(g.returnPct, "pct_per_year", today, ci.grossReturn) : null,
-  };
-}
-
-// ---------------------------------------------------------------- what a run reads
-
-/** The goal's numbers as the values their sheets open: the comparison's own (`goalValueObjects`) or the fee page's fields. */
-export interface PlanValues {
-  amount: SiteValue;
-  monthly: SiteValue;
-  years: SiteValue;
-  inflation: SiteValue;
-  /** The return (A-01) a run that rests on one takes; null while none is entered. */
-  returnV: SiteValue | null;
-  /** The part kept available: every run starts from the amount now less it. */
-  available?: SiteValue;
-  /** A-17, the insurance inside a pension fund, when it was entered. */
-  insurance?: SiteValue;
-  /** The income the runs take when it is not the goal's monthly salary (the fee page's yearly income, entered or the scenario's), with its name. */
-  income?: { name: string; value: SiteValue };
-}
-
-/** The money every run of the goal reads: the amount now, what stays available when part does (each run starts from the difference), the deposit, the years and the inflation. */
-export function planMoney(g: Pick<RunGoal, "available">, v: PlanValues): Record<string, SiteValue> {
-  return { [ci.amountNow]: v.amount, ...(g.available > 0 && v.available ? { [ci.names.keep!]: v.available } : {}), [ci.monthly]: v.monthly, [ci.years]: v.years, [ci.inflation]: v.inflation };
-}
-
-/** The rate a cash-like option's run takes (method 2.4, F-67): the person's own or the bank's published one (`cashRateFor`), else P-05's cash rate as a site parameter. Undefined for an option that rests on the return. */
-export function runRateOf(bundle: CompareBundle, w: WrapperEntry, g: RunGoal): SiteValue | undefined {
-  if (needsReturn(w)) return undefined;
-  return cashRateFor(w, g, bundle.runDate) ?? (isCashLike(w) && bundle.parameters.length ? cashRateOf(bundle) : undefined);
-}
-
-/** The current account's balance ceiling (F-26), when the run takes it (no rate of the person's, which applies to the whole balance) and the money compared can pass it. */
-function ceilingRead(w: WrapperEntry, g: RunGoal): SiteValue | undefined {
-  const ceiling = w.terms?.deposit?.balanceCeiling;
-  if (ceiling === undefined || !w.cashCeiling || g.ownRates?.[w.id] !== undefined) return undefined;
-  return g.amountNow - g.available + 12 * g.horizonYears * g.monthly > ceiling ? w.cashCeiling : undefined;
-}
-
-/**
- * The person's age, income, deposits through work and pension insurance, each only where the run reads it: a pension's (A-12, A-17,
- * PEN-26), the study fund's (its deposits, TXH-05, the shorter lock at retirement age TXH-10), a lock to an age (B3), the reduced brackets
- * from 60 over the other income (F-42: the run cites TXG-07 only then) and the low-income deduction on deposit interest (TXI-20).
- */
-function profileInputs(g: RunGoal, w: WrapperEntry | undefined, used: readonly UsedRule[], today: string, v: PlanValues): Record<string, SiteValue> {
-  const out: Record<string, SiteValue> = {};
-  if (!w) return out;
-  const cited = (id: string) => used.some((u) => u.id === id);
-  const pension = w.family === "pension";
-  const studyFund = w.id === "keren-hishtalmut";
-  const fromSixty = cited("TXG-07");
-  if (g.age !== null && (pension || studyFund || w.record.lawful_exit?.kind === "at_age" || fromSixty)) out[ci.age] = enteredValue(g.age, "years", today, ci.age);
-  const salary = g.salary !== null && g.salary > 0 ? g.salary : null;
-  const income = v.income ?? (salary !== null ? { name: ci.salary, value: enteredValue(salary, "nis_per_month", today, ci.salary) } : null);
-  if (income && (pension || studyFund || fromSixty || cited("TXI-20"))) out[income.name] = income.value;
-  if (pension && g.employment === "employee" && salary !== null) {
-    if (g.pensionEmployee !== null) out[ci.pensionEmployee] = enteredValue(g.pensionEmployee, "pct", today, ci.pensionEmployee);
-    if (g.pensionEmployer !== null && g.pensionEmployer > 0) out[ci.pensionEmployer] = enteredValue(g.pensionEmployer, "pct", today, ci.pensionEmployer);
-  }
-  const insurance = v.insurance ?? (g.insurancePct !== null ? enteredValue(g.insurancePct, "pct", today, ci.insurance) : undefined);
-  if (pension && w.id !== "provident-for-annuity" && insurance) out[ci.insurance] = insurance;
-  return out;
-}
-
-/**
- * What one candidate's run reads, each as the value its sheet opens, so a figure of that run lists only what it rests on: the
- * goal's money (`planMoney`); the return for a run that rests on one,
- * or the option's own rate for a cash-like one (method 2.4, F-67), with the current account's balance ceiling when it bites (F-26); and
- * the person's profile where the run reads it. `rate` is the return the run took when it is the run's own (an exposure's, F-71).
- * The one helper behind every figure of a run: the comparison's (`makeValues`) and the fee page's (`factory`).
- */
-export function runInputs(bundle: CompareBundle, g: RunGoal, v: PlanValues, w: WrapperEntry | undefined, used: readonly UsedRule[] = [], rate?: SiteValue): Record<string, SiteValue> {
-  const out = planMoney(g, v);
-  if (w && !needsReturn(w)) {
-    const r = rate ?? runRateOf(bundle, w, g);
-    if (r) out[ci.cashRate] = r;
-    const ceiling = ceilingRead(w, g);
-    if (ceiling) out[guideBlocks.terms.labels.balanceCeiling!] = ceiling;
-  } else {
-    const r = rate ?? v.returnV;
-    if (r) out[ci.grossReturn] = r;
-  }
-  return Object.assign(out, profileInputs(g, w, used, bundle.runDate, v));
-}
-
-/**
- * What the run of the part kept available reads (`enteredGoal(goal, keep, 0)`, the view's `kept`): that part alone, with no deposit, the
- * years, the inflation, the rate of where it is kept (the current account's, with its ceiling when the part passes it, or the money-market
- * fund's, P-05's cash rate) and the profile where that run reads it. `runInputs` over the part as the run's whole amount.
- */
-export function keptInputs(bundle: CompareBundle, g: RunGoal, v: PlanValues, w: WrapperEntry | undefined, used: readonly UsedRule[] = []): Record<string, SiteValue> {
-  const { [ci.amountNow]: _amount, [ci.monthly]: _monthly, ...rest } = runInputs(bundle, { ...g, amountNow: g.available, available: 0, monthly: 0 }, v, w, used);
-  return { [ci.names.keep!]: v.available ?? v.amount, ...rest };
-}
-
-/** The run a figure comes from: the wrapper it ran (its id), the rules it cited, and the return it ran at when that is its own (an exposure's). */
-export interface RunRef {
-  id?: string;
-  usedRules: readonly UsedRule[];
-  flags?: readonly { code: string }[];
-  labels?: readonly { code: string; ruleId: string }[];
-  rate?: SiteValue;
-}
-
-/** A computed number (D7) with the inputs it came from, for every figure the result shows. */
-export function makeValues(bundle: CompareBundle, g: RunGoal) {
-  const today = bundle.runDate;
-  const gv = goalValueObjects(bundle, g);
-  const plan: PlanValues = { amount: gv.amountNow, monthly: gv.monthly, years: gv.horizon, inflation: gv.inflation, returnV: gv.returnV, available: gv.available };
-  const byId = new Map(bundle.wrappers.map((w) => [w.id as string, w]));
-  const rulesOf = (used: readonly UsedRule[]) => used.map((u) => ({ id: u.id, strength: strengthOfUsed(u) }));
-  /** What the run behind a figure reads (`runInputs`); with no run named, the goal's money and its return: what every run of the comparison shares. */
-  const inputsOf = (run?: RunRef): Record<string, SiteValue> => runInputs(bundle, g, plan, run?.id ? byId.get(run.id) : undefined, run?.usedRules ?? [], run?.rate);
-  /** A figure of one run (a NIS amount at the horizon): its inputs are what that run read. */
-  const nis = (value: number, formula: string, about: string, run?: RunRef, extra?: Record<string, SiteValue>): SiteValue =>
-    computed(value, "nis", formula, { ...inputsOf(run), ...(extra ?? {}) }, { today, about, rules: run ? rulesOf(run.usedRules) : [], flags: run?.flags?.map((f) => f.code), labels: run?.labels?.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
-  type Tied = { name: string; real: number; run?: RunRef | undefined };
-  return {
-    goal: gv,
-    /** The money every run reads (`planMoney`): what a figure over the goal's amounts alone starts from. */
-    money: planMoney(g, plan),
-    inputsOf,
-    nis,
-    /** F-80's gap between the first and the last of a tie, % of the larger real value: it lists those two values, each from its own run. */
-    tieGap(gap: number, a: Tied, b: Tied): SiteValue {
-      return computed(gap, "pct", "F-80", { [a.name]: nis(a.real, "F-06", r2.realLabel, a.run), [b.name]: nis(b.real, "F-06", r2.realLabel, b.run) }, { today, about: r2.result.tieMid });
-    },
-    /** A figure of the run of the part kept available, kept `where` (`keptInputs`). */
-    keptNis(value: number, formula: string, about: string, where: string, run?: RunRef): SiteValue {
-      return computed(value, "nis", formula, keptInputs(bundle, g, plan, byId.get(where), run?.usedRules ?? []), { today, about, rules: run ? rulesOf(run.usedRules) : [], flags: run?.flags?.map((f) => f.code), labels: run?.labels?.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
-    },
-    /** A figure over exactly the inputs given: arithmetic over a few of the goal's numbers, or a gap between two figures on the page. */
-    of(value: number, unit: ValueObject["unit"], formula: string, about: string, inputs: Record<string, SiteValue>): SiteValue {
-      return computed(value, unit, formula, inputs, { today, about });
-    },
-    /** A rate or a multiplier or a number of years that a sensitivity row reports: F-81 re-runs the whole comparison, so it rests on what every run shares. */
-    plain(value: number, unit: ValueObject["unit"], formula: string, about: string, extra?: Record<string, SiteValue>): SiteValue {
-      return computed(value, unit, formula, { ...inputsOf(), ...(extra ?? {}) }, { today, about });
-    },
-    date(iso: string, about: string): SiteValue {
-      return { ...computed(null, "text", "B3", {}, { today, about }), value: iso };
-    },
-    count(value: number, about: string): SiteValue {
-      return computed(value, "count", "F-83", {}, { today, about });
-    },
-  };
-}
-
-// ---------------------------------------------------------------- places and the sensitivity axes (F-80, F-81)
-
-/**
- * Place groups for ranked entries in order (F-80): the tie set is pairwise with the top (the engine's
- * `ranking.tieSet`), not transitive. Its members share the first place; every other entry has its own place by the engine's order.
- */
-export function placeGroups(entries: readonly { id: string }[], tieSet: readonly string[]): number[] {
-  const tied = new Set(tieSet.length > 1 ? tieSet : []);
-  return entries.map((e, i) => (tied.has(e.id) ? 0 : i));
-}
-
-/** F-81: the shortest holding period the horizon axis tests, P-05's slider minimum, so a page never says "0 years" (fee page). */
-export function horizonFloorOf(bundle: CompareBundle): number | undefined {
-  const min = (parameterOf(bundle, "P-05") as unknown as { sliders?: Record<string, { min?: ValueObject }> }).sliders?.horizon_years?.min?.value;
-  return typeof min === "number" ? min : undefined;
-}
 
 export { realOf, sumOf };
 export type { PresetId, Presets };

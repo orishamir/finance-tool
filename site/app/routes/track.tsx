@@ -2,7 +2,7 @@
 import { useLoaderData } from "react-router";
 import { companyPath, feesPath, guidePath, trackBrowserPath, trackPath } from "../lib/site-paths";
 import type { Route } from "./+types/track";
-import { catalogue, companies as companiesCopy, company as companyCopy, pagePreview, r3workbench, trackBrowser, track as copy } from "../copy";
+import { catalogue, companies as companiesCopy, company as companyCopy, feePageLink, pagePreview, trackBrowser, track as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
 import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
@@ -81,10 +81,8 @@ export async function loader({ params }: Route.LoaderArgs) {
   const names = catalog
     .filter((c) => c.maps_to.track_ids.length === 1 && c.maps_to.track_ids[0] === track.fundId && owner.get(c.institution) === track.companyId)
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
-  // the fee page is linked only where it can answer for the track's wrapper (a child savings track ended in "no terms")
-  const { compareBundle } = await import("../lib/compare.server");
-  const { feePageAnswers } = await import("../lib/fees");
-  const feePage = !!track.wrapperId && feePageAnswers(compareBundle(), track.wrapperId);
+  // the fee page fills a deal from the track where the track's product record lists a fee base (method §10.6)
+  const feePage = loadWrappers().some((p) => p.id === track.wrapperId && p.fee_bases_allowed.length > 0);
   const isDefault = catalog.some((c) => c.default_at_joining && c.maps_to.track_ids.includes(track.fundId) && owner.get(c.institution) === track.companyId);
   return {
     track,
@@ -193,7 +191,7 @@ export default function TrackPage() {
           </dl>
           {data.feePage && <div className="pt-1 border-t border-border">
             <TextLink look="line" to={feesPath({ track: track.fundId })}>
-              {r3workbench.links.fees}
+              {feePageLink}
               <IconDrillIn size={16} />
             </TextLink>
           </div>}

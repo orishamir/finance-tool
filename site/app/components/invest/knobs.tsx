@@ -1,4 +1,4 @@
-// The plan controls of the indices and fee pages: the four plan numbers as plain sliders, the rest behind a
+// The plan controls of the indices page: the four plan numbers as plain sliders, inflation behind a
 // button; they write the values the person entered on this device (lib/inputs.tsx, the guide pages' own), never the saved goal
 // (only the goal page speaks of a goal). In a tab of the indices page, what each number changed by the same share does to the result
 // (F-89, F-90).
@@ -6,16 +6,15 @@ import { useMemo } from "react";
 import { changedByShare, sweep } from "@finance-tool/engine";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
-import type { FeeInputs, FieldNeed } from "../../lib/fees";
+import type { EnteredPlan } from "../../lib/entered-plan";
 import { fmt } from "../../lib/format";
-import { pctBoundsFor } from "../../lib/goal";
-import { useInputs, type Employment } from "../../lib/inputs";
+import { useInputs } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
 import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
-import { ChangeChart, KnobStrip, NumberField, PanelHead, SegmentedControl, percentCheck, type Knob } from "../kit";
+import { ChangeChart, KnobStrip, NumberField, PanelHead, percentCheck, type Knob } from "../kit";
 
 type Range = { min: number; max: number; step: number };
 export type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
@@ -55,17 +54,17 @@ function useSetKnob() {
   return (id: Id, n: number | null) => setEntered(KEY[id], n);
 }
 
-const valueOf = (fi: FeeInputs, id: Id) => {
-  const v = fi.values[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"];
+const valueOf = (entered: EnteredPlan, id: Id) => {
+  const v = entered.plan.values[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"];
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-export function PlanKnobs({ fi, ranges, pct, stacked }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number }; /** One under the other (the index page's side card). */ stacked?: boolean }) {
+export function PlanKnobs({ entered, ranges, pct, stacked }: { entered: EnteredPlan; ranges: KnobRanges; pct: { min: number; max: number }; /** One under the other (the index page's side card). */ stacked?: boolean }) {
   const setKnob = useSetKnob();
   const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
   const field = (id: Id) => {
-    const v = valueOf(fi, id);
-    return { id, label: labelOf[id], value: v.value, start: fi.starts?.[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"], isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
+    const v = valueOf(entered, id);
+    return { id, label: labelOf[id], value: v.value, start: entered.starts[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"], isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
   };
   const negative = (n: number) => (n < 0 ? valuesCopy.errors.negative : null);
   const knobs: Knob[] = [
@@ -201,33 +200,13 @@ const LINE = [
 /** The shares a tap sets, in percent: inputs the person picks, not figures. */
 const CHOICES = [-20, -10, 10, 20, 50];
 
-/**
- * What the button beside the sliders opens: inflation, and where the page's product needs them, employment and age; written to the
- * same entered values. The page leaves out what it never reads (every control earns its place).
- */
-export function OtherAssumptions({ inflation, inflationStart, pct, employment, age, need, insurance }: { inflation: SiteValue; /** The inflation field's start value (P-05): its reset says "חזרה ל־2.5%". */ inflationStart?: number; pct: { min: number; max: number }; employment?: boolean; age?: { min: number; max: number }; need?: { age?: FieldNeed; employment?: FieldNeed }; insurance?: FieldNeed }) {
-  const { state, ready, setEntered, setAge, setEmployment, setInsurance } = useInputs();
-  const ageCheck = (r: { min: number; max: number }) => (n: number) => (!Number.isInteger(n) ? valuesCopy.errors.nan : n < r.min || n > r.max ? `${valuesCopy.errors.age[0]} ${fmt.number(r.min)} ${valuesCopy.errors.age[1]}${fmt.number(r.max)}.` : null);
-  // a field the run cannot go without says "required" and why; the others stay "not required"
-  // on a page whose run reads them (the fee page), an optional field says it changes the result, not what it marks on a graph
-  const mark = (required: boolean | undefined) => <span className="text-muted-foreground font-normal">{required ? valuesCopy.required : valuesCopy.optional}</span>;
-  const h = valuesCopy.hints;
+/** What the button beside the sliders opens: inflation, written to the same entered values. */
+export function OtherAssumptions({ inflation, inflationStart, pct }: { inflation: SiteValue; /** The inflation field's start value (P-05): its reset says "חזרה ל־2.5%". */ inflationStart?: number; pct: { min: number; max: number } }) {
+  const { state, ready, setEntered } = useInputs();
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
       {/* the hint is the field's own, under its box */}
       <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} start={inflationStart} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
-      {employment && (
-        <div className="field">
-          <span className="field-label" id="plan-emp-label">
-            {valuesCopy.fields.employment} {mark(need?.employment === "required")}
-          </span>
-          <SegmentedControl<Employment> labelledBy="plan-emp-label" options={[{ value: "employee", label: valuesCopy.employment.employee }, { value: "self-employed", label: valuesCopy.employment["self-employed"] }]} value={state.employment} onChange={(v) => setEmployment(state.employment === v ? null : v)} />
-          <span className="text-xs text-muted-foreground">{need?.employment === "required" ? h.employmentNeeded : need?.employment === "optional" ? h.employmentChanges : h.employment}</span>
-        </div>
-      )}
-      {age && <NumberField label={<>{valuesCopy.fields.age} {mark(need?.age === "required")}</>} unit="years" value={state.age} isEntered={state.age !== null} validate={ageCheck(age)} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={need?.age === "required" ? h.ageNeeded : need?.age === "optional" ? h.ageChanges : h.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
-      {/* A-17 has no default (G-12): the field starts empty, and an empty field is "not entered" */}
-      {insurance && <NumberField label={<>{r2.form.insurance} {mark(insurance === "required")}</>} unit="pct" value={state.insurance ?? null} isEntered={typeof state.insurance === "number"} validate={percentCheck(pctBoundsFor("insurance", pct))} onCommit={(n) => setInsurance(n)} onReset={() => setInsurance(null)} hint={insurance === "required" ? h.insurance : h.insuranceOptional} optional disabled={!ready} />}
     </div>
   );
 }

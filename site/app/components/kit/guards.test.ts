@@ -235,7 +235,7 @@ describe("a year chart's pointer is the kit's", () => {
 
 describe("a chart's motion is the kit's", () => {
   it("no chart has an animation loop of its own", () => {
-    const charts = /^components\/(chart|compare|fees|workbench\/providers|guide-signature|invest|timeline)\//;
+    const charts = /^components\/(chart|compare|fee-deal|workbench\/providers|guide-signature|invest|timeline)\//;
     const hits = files.filter((f) => /\.tsx$/.test(f) && charts.test(rel(f)) && /<svg[\s>]/.test(code(read(f))) && /requestAnimationFrame/.test(code(read(f)))).map(rel);
     expect(hits).toEqual([]);
   });
@@ -634,7 +634,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
   });
   it("the files that read it use ReadingTag", () => {
     const readers = files.filter((f) => f.endsWith(".tsx") && /===\s*["']reading["']|hasReading\(|\.readingRules\b/.test(read(f)));
-    expect(readers.length).toBeGreaterThan(2);
+    expect(readers.length).toBeGreaterThan(1);
     for (const f of readers) expect(read(f), rel(f)).toMatch(/ReadingTag/);
   });
   // the goal comparison collected only "secondary-source" labels, so a run resting on a reading showed no
