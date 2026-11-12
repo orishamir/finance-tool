@@ -43,6 +43,8 @@ const MIN_PLOT = 200;
 /** Over a mark's point, its label's baseline; a second label that would meet the first stands a row higher. */
 const MARK_LABEL = 10;
 const MARK_ROW = 16;
+/** The least room between two amounts written under the plot. */
+const X_LABEL_GAP = 8;
 
 /** A cost the chart reads at an amount: whole shekels, with the agorot under 10 ₪ (wording.md, "Numbers"). */
 const cost = (v: number) => (Math.abs(v) < 10 ? fmt.nis(Math.round(v * 100) / 100) : fmt.nisWhole(v));
@@ -109,9 +111,21 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
   const over = ends.length ? ends.at(-1)!.y + 5 - base : 0;
   if (over > 0) for (const e of ends) e.y -= over;
 
-  // the amounts under the plot: the nice steps, the last one with its sign
-  const xTicks = ticksTo(end).filter((v) => v <= end);
+  // the amounts under the plot: the nice steps, the last one with its sign. The first and the last are always written; one between them
+  // only where its words clear the one written before it and the last (a phone's plot has no room for every step)
+  const steps = ticksTo(end).filter((v) => v <= end);
   const xText = (v: number, last: boolean) => (last ? fmt.nisWhole(v) : fmt.number(v));
+  const xSpan = (i: number): [number, number] => {
+    const at = x(steps[i]!);
+    const wide = chartTextWidth(xText(steps[i]!, i === steps.length - 1), CHART_TEXT_PX);
+    return i === 0 ? [at, at + wide] : i === steps.length - 1 ? [at - wide, at] : [at - wide / 2, at + wide / 2];
+  };
+  const written: number[] = [];
+  steps.forEach((_, i) => {
+    const edge = i === 0 || i === steps.length - 1;
+    const before = written.length ? xSpan(written.at(-1)!)[1] : -Infinity;
+    if (edge || (xSpan(i)[0] >= before + X_LABEL_GAP && xSpan(i)[1] + X_LABEL_GAP <= xSpan(steps.length - 1)[0])) written.push(i);
+  });
 
   // a mark's label over its point, held inside the plot; one that would meet the label before it goes a row higher
   const placed: { m: AmountMark; cx: number; cy: number; lx: number; row: number }[] = [];
@@ -166,8 +180,9 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
           ))}
           <line x1={0} x2={plotR} y1={base} y2={base} className="stroke-chart-axis" strokeWidth={1} />
           <AxisLabels ticks={ticksOn(yTicks, y, [TOP, base])} y={y} />
-          {xTicks.map((v, i) => {
-            const last = i === xTicks.length - 1;
+          {written.map((i) => {
+            const v = steps[i]!;
+            const last = i === steps.length - 1;
             return (
               <text key={v} x={x(v)} y={base + 18} textAnchor={i === 0 ? "start" : last ? "end" : "middle"} className="fill-chart-text text-xs tabular-nums">
                 {xText(v, last)}

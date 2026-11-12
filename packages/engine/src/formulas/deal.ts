@@ -512,7 +512,8 @@ export type CapStanding =
 
 /**
  * How far below and above the cap a converted price is still at it, as shares of the cap (F-113): compounding a yearly cap into a
- * monthly one only lowers the converted figure, and rounding a monthly figure to four decimals of a percent raises it by at most 0.08%.
+ * monthly one only lowers the converted figure, and rounding the plain twelfth of a cap the records hold to four decimals of a percent
+ * raises it by at most 0.08% of that cap.
  */
 const CONVERTED_BELOW = 0.005;
 const CONVERTED_ABOVE = 0.001;

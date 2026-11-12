@@ -490,6 +490,15 @@ describe("F-113 a typed price against the legal cap", () => {
     expect(capStanding(0.1667 * 12, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "at" });
     // 0.1675% a month is 2.01% a year: 0.5% over
     expect(capStanding(0.1675 * 12, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "above" });
+    // 0.08708% a month is 1.04496% a year: 0.48% under the cap of 1.05%, the compounded twelfth computed as PEN-21's
+    expect(capStanding(0.08708 * 12, cap(1.05), undefined, true)).toMatchObject({ judged: true, standing: "at" });
+    // the two ends of the band are at the cap: 0.5% below it and 0.1% above it
+    expect(capStanding(2 * 0.995, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "at" });
+    expect(capStanding(2 * 1.001, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "at" });
+    expect(capStanding(2 * 0.994, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "below" });
+    expect(capStanding(2 * 1.002, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "above" });
+    // a price in the cap's own period is compared as typed: 0.1% above is above
+    expect(capStanding(2 * 1.001, cap(2))).toMatchObject({ judged: true, standing: "above" });
     // 0.0414% a month is 0.4968% a year: 0.64% under
     expect(capStanding(0.0414 * 12, cap(0.5), undefined, true)).toMatchObject({ judged: true, standing: "below" });
     // 0.045% a month is 0.54% a year: 8% over

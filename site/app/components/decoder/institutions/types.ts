@@ -84,7 +84,7 @@ export interface TariffLineRow {
   band: string | null;
   /** A conversion between two foreign currencies, by the price list's words (the ranking reads the shekel line, lib/invest `isFxToFx`). */
   fxToFx: boolean;
-  /** A distribution fee ("עמלת הפצה"), by the price list's words: the fund manager pays it (MF-24); grouped and named apart. */
+  /** A distribution fee ("עמלת הפצה"), by the price list's words: the fund manager pays it under a distribution agreement (MF-24), and a bank may charge the holder without one (MF-26); grouped and named apart. */
   distribution: boolean;
   rate: SiteValue;
   period: "month" | "quarter" | "year" | null;

@@ -1806,7 +1806,8 @@ export const feeDeal = {
       above: { one: "עמלה אחת גבוהה ממה שמותר לגבות", two: "שתי עמלות גבוהות ממה שמותר לגבות", many: "{n} עמלות גבוהות ממה שמותר לגבות" },
       at: { one: "עמלה אחת מגיעה למקסימום שמותר לגבות", two: "שתי עמלות מגיעות למקסימום שמותר לגבות", many: "{n} עמלות מגיעות למקסימום שמותר לגבות" },
       below: "העמלות שנבדקו מול התקרה מתחתיה",
-      noCap: { one: "לעמלה שבעסקה אין תקרה בחוק", two: "לעמלות שבעסקה אין תקרה בחוק", many: "לעמלות שבעסקה אין תקרה בחוק" },
+      /** No number in it: one fee, or several. */
+      noCap: { one: "לעמלה שבעסקה אין תקרה בחוק", several: "לעמלות שבעסקה אין תקרה בחוק" },
       notJudged: "אף מחיר בעסקה לא נבדק מול תקרה",
       /** Before a price after the first: the month it starts. */
       from: "מ־",
@@ -2188,10 +2189,15 @@ export const r4catalogue = {
       fixed_period: "בלי קשר לסכום שבחשבון",
       transfer_out: "כשמעבירים את ניירות הערך לחשבון שלכם בגוף פיננסי אחר",
     },
-    /** a distribution fee (MF-24): the fund manager pays it to the house the units are held through, under a distribution agreement (MF-26 says what applies without one) */
+    /**
+     * a distribution fee (MF-24): the fund manager pays it to the house the units are held through, under a distribution agreement. A
+     * bank's price list prints it as a line charged to the unit's buyer ("עמלת הפצה מרוכש יחידת השתתפות"): without an agreement for the
+     * fund a bank may charge the holder up to that fee (MF-26), which `withoutAgreement` says on a bank's card
+     */
     distribution: {
       name: "עמלת הפצה",
       who: (to: string) => `מנהל הקרן משלם אותה ${to} על יחידות הקרן שמחזיקים דרכו, כשיש ביניהם הסכם הפצה.`,
+      withoutAgreement: "בלי הסכם כזה הבנק רשאי לגבות אותה מכם.",
       toBank: "לבנק",
       toBroker: "לבית ההשקעות",
     },

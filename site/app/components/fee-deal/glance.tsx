@@ -96,8 +96,7 @@ function FeeLine({ fee, kind, saved, lead, later }: { fee: GlanceFee; kind: Deal
     );
   return (
     <li className="flex flex-wrap items-baseline gap-x-1">
-      <FeeName fee={fee} />
-      <span>{copy.price.sep}</span>
+      <FeeName fee={fee} after={copy.price.sep} />
       {fee.sale ? (
         <span>
           {copy.sides.buy} {price}; {copy.sides.sell} <PriceWords price={fee.sale.price} kind={fee.kind} saved={saved} />
@@ -145,9 +144,8 @@ function ChangeLine({ change, kind, saved }: { change: GlanceChange; kind: DealK
   const cap = capLine(kind, change.kind);
   return (
     <li className="flex flex-wrap items-baseline gap-x-1">
-      <FeeName fee={change} />
+      <FeeName fee={change} after={copy.price.sep} />
       <span>
-        {copy.price.sep}
         <SideLead side={change.side} />
         <PriceWords price={change.to} kind={change.kind} saved={saved} />
         {copy.glance.instead}

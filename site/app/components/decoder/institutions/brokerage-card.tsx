@@ -384,6 +384,7 @@ function FeeNotes({ lines, kind, byChannel }: { lines: readonly TariffLineRow[];
         <p className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>
             {copy.card.distribution.name}: {copy.card.distribution.who(kind === "bank" ? copy.card.distribution.toBank : copy.card.distribution.toBroker)}
+            {kind === "bank" && ` ${copy.card.distribution.withoutAgreement}`}
           </span>
           <RulesChip ids={distributionRuleIds(kind)} name={copy.card.distribution.name} />
         </p>

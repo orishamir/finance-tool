@@ -51,11 +51,14 @@ const COLOUR: Record<FeeKindId, { bg: string; border: string; fill: string; stro
 export const feeColour = (kind: FeeKindId) => COLOUR[kind];
 
 /** A fee's swatch and name, the swatch never alone. */
-export function FeeName({ fee, className }: { fee: FeeRef; className?: string }) {
+export function FeeName({ fee, className, after }: { fee: FeeRef; className?: string; after?: string }) {
   return (
     <span className={cx("inline-flex items-center gap-2 min-w-0", className)}>
       <Swatch shape="box" className={cx("shrink-0", COLOUR[fee.kind].bg)} />
-      <span className="min-w-0">{refName(fee)}</span>
+      <span className="min-w-0">
+        {refName(fee)}
+        {after}
+      </span>
     </span>
   );
 }
