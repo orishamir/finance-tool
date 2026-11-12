@@ -39,6 +39,29 @@ describe("extract-sources: fixture Source lines", () => {
     expect(other.kind).toBe("regulation");
   });
 
+  it("an amendment keeps its own title: a documents row names the document it amends, not the amendment's booklet (2026-11-12)", () => {
+    const documents = [
+      { id: "regs-2005", match: ["ניכוי מריבית, מדיבידנד ומרווחים מסוימים"], title_he: "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005", publisher_he: "שר האוצר", kind: "regulation" as const, official_url: null },
+      { id: "funds-law-31", match: ["חוק השקעות משותפות בנאמנות (תיקון מס' 31)"], title_he: "חוק השקעות משותפות בנאמנות (תיקון מס׳ 31), התשפ״ד-2024", publisher_he: "הכנסת", kind: "law" as const, official_url: null },
+    ];
+    const publishers = { "api.justice.gov.il": { publisher: "Reshumot", publisher_he: "רשומות", kind: "law" as const } };
+    const at = (title: string) => extractFromLine(`[${title}](https://api.justice.gov.il/reshumot/resolver?path=x) · checked 2026-11-12 · primary`, ctx({ documents, publishers })).sources[0]!;
+    // the regulations themselves take the row
+    expect(at("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005").title_he).toBe("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005");
+    // their 2012 amendment came out under the 2005 regulations' title and "שר האוצר"; it is its own booklet
+    const amendment = at("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)");
+    expect(amendment.title_he).toBe("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)");
+    expect(amendment.publisher_he).toBe("רשומות");
+    expect(amendment.kind).toBe("regulation");
+    expect(at("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון מס' 2), התשע\"ח-2017").publisher_he).toBe("רשומות");
+    // a row whose own token names the amendment still labels it
+    expect(at("חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024").title_he).toBe("חוק השקעות משותפות בנאמנות (תיקון מס׳ 31), התשפ״ד-2024");
+    // a circular whose name ends "– תיקון" and a consolidated text are not amendments of the row's document
+    expect(at("חוזר (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) – תיקון").publisher_he).toBe("שר האוצר");
+    // an amendment titled in English has no Hebrew title of its own to show, so it keeps the row's until its block names it in Hebrew
+    expect(at("ניכוי מריבית, מדיבידנד ומרווחים מסוימים, the 2016 amendment (KT 7653)").title_he).toBe("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005");
+  });
+
   it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
     const line =
       '[Irish Revenue, Tax and Duty Manual Part 27-01a-02](https://www.revenue.ie/x/27-01a-02.pdf), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system"; p.11, s.4.2.8 "an appropriate non-resident declaration" · checked 2026-10-26 · primary (foreign tax authority)';

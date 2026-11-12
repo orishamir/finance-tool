@@ -186,6 +186,12 @@ function strengthHits(text: string): StrengthHit[] {
 }
 
 const CHECKED_RE = /checked (\d{4}-\d{2}-\d{2})/;
+/**
+ * A title that names an amendment as the document itself, the way legislation does: "(תיקון)", "(תיקון מס' 10)", "(Amendment 9)", "the 2016
+ * amendment", "Amendment Regulations". A circular whose own name ends "– תיקון", a text "consolidated (amendments to 30.12.2014)" and a circular
+ * about "תיקון 190" are not amendments of the document a row names.
+ */
+const NAMES_AMENDMENT = /\((?:תיקון|amendment)(?:\)|\s+(?:מס|no\b|\d))|\bthe \d{4} amendment\b|\bamendment regulations\b/i;
 
 // ---------------------------------------------------------------- locator, page, quote
 
@@ -453,11 +459,17 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
 
     const pub = ctx.publishers?.[host];
     const title = link.title.replace(/\s+/g, " ").trim() || host;
-    // the longest matching token wins across the table (tokens nest); a tie keeps the table's order
+    // the longest matching token wins across the table (tokens nest); a tie keeps the table's order. A link whose title names an
+    // amendment is not the document a row names, unless the row's own token names the amendment: an amendment's title holds the name
+    // of what it amends, and the row would give the card the amended regulations' title and date for the amendment's booklet
+    // ("…(ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012" came out as the 2005 regulations; 2026-11-12).
+    // Only where the link's own title is Hebrew, so that it can be the card's title: an amendment titled in English keeps the row's
+    // Hebrew title until its block names it in Hebrew.
+    const amends = NAMES_AMENDMENT.test(title) && /[א-ת]/.test(title) && !/[A-Za-z]/.test(title);
     const doc = (ctx.documents ?? [])
       .filter((d) => !d.hosts || d.hosts.includes(host))
       .flatMap((d) => d.match.filter(Boolean).map((tok) => ({ d, tok })))
-      .filter((c) => title.toLowerCase().includes(c.tok.toLowerCase()))
+      .filter((c) => title.toLowerCase().includes(c.tok.toLowerCase()) && (!amends || /תיקון|amend/i.test(c.tok)))
       .sort((a, b) => b.tok.length - a.tok.length)[0]?.d;
     const entry: ExtractedSource = {
       url,
