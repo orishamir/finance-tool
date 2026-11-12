@@ -23,7 +23,7 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, s.1(4) (reg. 1, definition)",
+      "locator": "p.2, s.1(4)",
       "locator_he": "עמוד 2, סעיף 1(4)",
       "page": 2,
       "quote": "למעט קרן פנסיה",
@@ -37,8 +37,8 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, reg. 1 (as made)",
-      "locator_he": "עמוד 2, תקנה 1 (בנוסח המקורי)",
+      "locator": "p.2, reg. 1",
+      "locator_he": "עמוד 2, תקנה 1",
       "page": 2,
       "quote": "למעט קופת גמל משלמת לקצבה",
       "checked": "2026-11-02"
@@ -86,6 +86,19 @@
       "checked": "2026-11-02"
     },
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.4-6, regs. 2-4",
+      "locator_he": "עמודים 4 עד 6, תקנות 2-4",
+      "page": 4,
+      "checked": "2026-11-02"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
@@ -107,24 +120,24 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.2-3, s.2 (reg. 2 as replaced)",
+      "locator": "pp.2-3, s.2",
       "locator_he": "עמודים 2 עד 3, סעיף 2",
       "page": 2,
-      "quote": "הכספים שניתן",
+      "quote": "בקופת גמל בניהול אישי ניתן לנהל את הכספים כמפורט",
       "checked": "2026-11-02"
     },
     {
-      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=3",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), ספר החוקים 2507",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
       "strength": "primary",
-      "locator": "p.3, s.2 (definition of קרן פנסיה added to s.1)",
-      "locator_he": "עמוד 3, סעיף 2",
-      "page": 3,
-      "quote": "קרן ותיקה, קרן חדשה כללית וקרן חדשה מקיפה",
-      "checked": "2026-11-07"
+      "locator": "p.26, s.33(א)(3); p.27, s.34(ג); p.28, s.36(ג)(2)",
+      "locator_he": "עמוד 26, סעיף 33(א)(3); עמוד 27, סעיף 34(ג); עמוד 28, סעיף 36(ג)(2)",
+      "page": 26,
+      "checked": "2026-11-02"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
@@ -141,17 +154,45 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=3",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015, ספר החוקים 2507",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.26, s.33(א)(3); p.27, s.34(ג); p.28, s.36(ג)(2)",
-      "locator_he": "עמוד 26, סעיף 33(א)(3); עמוד 27, סעיף 34(ג); עמוד 28, סעיף 36(ג)(2)",
-      "page": 26,
-      "checked": "2026-11-02"
+      "locator": "file p.3 (gazette p.15), s.1(10)",
+      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 15), סעיף 1(10)",
+      "page": 3,
+      "quote": "קופת גמל לקצבה שאינה קופת ביטוח",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=3",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015, ספר החוקים 2507",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3, s.1(10)",
+      "locator_he": "עמוד 3, סעיף 1(10)",
+      "page": 3,
+      "quote": "קרן ותיקה, קרן חדשה כללית וקרן חדשה מקיפה",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.8 (gazette p.896), s.13(א) as enacted",
+      "locator_he": "עמוד הקובץ 8 (עמוד ספר החוקים 896), סעיף 13(א) בנוסחו המקורי",
+      "page": 8,
+      "checked": "2026-11-07"
     }
   ]
 }

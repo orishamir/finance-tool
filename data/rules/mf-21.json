@@ -14,14 +14,30 @@
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=26",
-      "title": "s.3, gazette ק״ת תשס״ח, 152",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007 (קובץ התקנות 6625, 28.11.2007)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
-      "locator": "s.3",
-      "locator_he": "סעיף 3",
-      "checked": "2026-10-31"
+      "locator": "file p.26 (gazette p.154), reg. 3(א) as enacted",
+      "locator_he": "עמוד הקובץ 26 (עמוד הרשומות 154), תקנה 3(א) בנוסחה המקורי",
+      "page": 26,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=11",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653, 5.5.2016)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע״ו-2016 (קובץ התקנות 7653)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.11 (gazette p.1099), s.4, reg. 3(א)(8)",
+      "locator_he": "עמוד הקובץ 11 (עמוד הרשומות 1099), סעיף 4, תקנה 3(א)(8)",
+      "page": 11,
+      "quote": "שיעור הוספה בקרן אם נגבית הוספה",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
@@ -75,20 +91,6 @@
       "page": 6,
       "checked": "2026-10-25",
       "qualifier": "(dated; still linked by the ISA as its full guide)"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=11",
-      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653, עמ' 1098)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע״ו-2016 (קובץ התקנות 7653)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.11, reg. 3(א)(8) as added",
-      "locator_he": "עמוד 11, תקנה 3(א)(8)",
-      "page": 11,
-      "quote": "שיעור הוספה בקרן אם נגבית הוספה",
-      "checked": "2026-11-07"
     }
   ]
 }

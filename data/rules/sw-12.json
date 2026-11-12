@@ -60,6 +60,33 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=26",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.26, s.34(א)",
+      "locator_he": "עמוד 26, סעיף 34(א)",
+      "page": 26,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=27",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.27, s.34(ג)",
+      "locator_he": "עמוד 27, סעיף 34(ג)",
+      "page": 27,
+      "quote": "לגבי הסכום שנמשך או הועבר, בשל אירוע מזכה הנובע מפטירת העמית",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=7",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
@@ -67,7 +94,8 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.7, reg. 8(א)-(ג) (to p.8)",
+      "locator": "p.7, reg. 8(א)-(ג)",
+      "locator_he": "עמוד 7, תקנה 8(א)-(ג)",
       "page": 7,
       "quote": "שאירע במועד הקובע או לאחריו",
       "checked": "2026-10-25"
@@ -96,20 +124,6 @@
       "locator_he": "עמוד 18, נספח ב",
       "page": 18,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=27",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.26, s.34(א); p.27, s.34(ג)",
-      "locator_he": "עמוד 26, סעיף 34(א); עמוד 27, סעיף 34(ג)",
-      "page": 27,
-      "quote": "לגבי הסכום שנמשך או הועבר",
-      "checked": "2026-11-07"
     }
   ]
 }

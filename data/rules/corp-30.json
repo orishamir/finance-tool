@@ -43,6 +43,7 @@
     }
   ],
   "derived_from": [
+    "CORP-24",
     "REG-04"
   ]
 }
