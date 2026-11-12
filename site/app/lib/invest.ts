@@ -9,7 +9,7 @@ import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
-import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type WorkbenchInputs } from "./providers";
+import { houseSnapshots, instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type WorkbenchInputs } from "./providers";
 import { computed, differenceOf, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
@@ -361,8 +361,7 @@ const investProviders = new WeakMap<readonly FeesSnapshot[], readonly FeesSnapsh
 export function providersOfInvest(bundle: Pick<IndicesBundle, "snapshots">): readonly FeesSnapshot[] {
   let out = investProviders.get(bundle.snapshots);
   if (!out) {
-    // a house that is part of another (PEPPER of Leumi, D43) is not a house of its own here: its prices stand under that house
-    out = bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.provider.part_of).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+    out = houseSnapshots(bundle.snapshots);
     investProviders.set(bundle.snapshots, out);
   }
   return out;

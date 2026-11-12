@@ -20,6 +20,7 @@ import type { AccountBank } from "./guide-signature";
 import { runWith, sideOf } from "./guide-signature-g2";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees, loadParameters } from "./data.server";
+import { latestOf, latestSnapshots } from "./providers.server";
 import { onlyWhatCanBeDone, shortName } from "./providers";
 import { computed, ownBy, type SiteValue, type Strength } from "./value";
 import { publisherHe } from "./publisher-he.server";
@@ -209,7 +210,7 @@ export function buildInstrumentBundle(
   // D31: the guide page's terms block names the company each figure belongs to, so the figure is that company's own: the fund's figures
   // its manager's, the tariff's lines its provider's, the deposit's terms its bank's (the source's host would name Maya for a fund report)
   const fundRec = spec?.fund ? loadFunds().find((f) => f.id === spec.fund) : undefined;
-  const tariffSnap = spec?.tariff ? loadFees().filter((f) => f.id === spec.tariff).sort((a, b) => b.snapshot.localeCompare(a.snapshot))[0] : undefined;
+  const tariffSnap = spec?.tariff ? latestOf(spec.tariff) : undefined;
   const depositRec = spec?.deposit_terms ? deposits.find((d) => d.id === spec.deposit_terms) : undefined;
   const ownerOf = (key: string, v: SiteValue): string =>
     fundRec && (key.startsWith("fund") || key === "ninetyPercentTest") ? shortName("", fundRec.manager) : tariffSnap && !depositRec ? shortName(tariffSnap.id, tariffSnap.provider.name_he) : depositRec ? shortName(depositRec.bank, depositRec.bank) : publisherHe(v);
@@ -262,9 +263,8 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
   const months = 12 * p05Number(p05, "horizon_years");
   const plan = { amount_now: p05Number(p05, "amount_now"), monthly_deposit: p05Number(p05, "monthly_deposit") };
   const rows: AccountRun[] = [];
-  const all = loadFees();
-  for (const id of new Set(all.map((f) => f.id))) {
-    const latest = all.filter((x) => x.id === id).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1)!;
+  for (const latest of latestSnapshots()) {
+    const id = latest.id;
     // a house that is part of another (PEPPER of Leumi) is not a house of its own, as in providersOf
     if (latest.missing || latest.provider.part_of) continue;
     if (record.id !== "brokerage-account" && latest.provider.class === "foreign_broker") continue;

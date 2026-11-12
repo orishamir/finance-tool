@@ -5,6 +5,8 @@
 import { crossRate } from "@finance-tool/engine";
 import { computed, type SiteValue } from "./value";
 import { signatureFacts } from "../copy";
+import { daysBetween } from "./dates";
+import { fmt } from "./format";
 
 /** The ECB series as the pages carry it: the reference day, every currency per one euro, and the source. */
 export interface FxSnapshot {
@@ -24,12 +26,6 @@ export interface FxSnapshot {
 /** The shekel's code, which records write either way. */
 export const isShekel = (code: string): boolean => code === "ILS" || code === "NIS";
 const norm = (code: string) => (isShekel(code) ? "ILS" : code.toUpperCase());
-
-/** Whole days between two YYYY-MM-DD dates. */
-const daysBetween = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86400000);
-
-/** `23.10.2026` from `2026-10-23`. */
-const dmy = (iso: string) => iso.split("-").reverse().join(".");
 
 /** The ECB prints no rate for this code (or no shekel rate): the site cannot price a fund in it. */
 export function hasRate(fx: FxSnapshot, code: string): boolean {
@@ -54,7 +50,7 @@ export function fxRunInput(fx: FxSnapshot): Record<string, number> {
 
 /** The label the page shows beside a rate, e.g. "מחושב משערי הייחוס של הבנק המרכזי האירופי, 23.10.2026". */
 export function fxLabel(fx: FxSnapshot): string {
-  return `מחושב משערי הייחוס של הבנק המרכזי האירופי, ${dmy(fx.date)}`;
+  return `מחושב משערי הייחוס של הבנק המרכזי האירופי, ${fmt.date(fx.date)}`;
 }
 
 /**

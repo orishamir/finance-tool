@@ -2,7 +2,8 @@
 // Nothing here types a rate or a date: a figure is a record's value object, a rule's figure or a P-05 parameter, and a missing one
 // becomes a `gap` (shown as "עוד לא חושב" with its reason).
 import type { CatalogEntry, ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
-import { loadCma, loadCmaFees, loadFees } from "./data.server";
+import { loadCma, loadCmaFees } from "./data.server";
+import { latestOf } from "./providers.server";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
 import type { SignatureData } from "./guide-signature";
@@ -169,7 +170,8 @@ function addBrokerRange(d: SignatureData, c: SignatureCtx) {
   d.facts.brokerBestName = ownBy(textFact(best.name, best, signatureFacts.brokerBest), best.name);
   // F-80 on the guide pages: the pick is named with how many tariffs were compared
   d.facts.brokerCount = computed(rows.length, "count", "F-80", documentInputs(rows), { today: c.t, about: signatureFacts.brokerCount });
-  const own = loadFees().filter((x) => x.id === c.p05.instruments?.["brokerage-account"]?.tariff).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1);
+  const ownId = c.p05.instruments?.["brokerage-account"]?.tariff;
+  const own = ownId ? latestOf(ownId) : undefined;
   if (own) d.facts.brokerName = ownBy(textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך"), own.provider.name_he);
 }
 

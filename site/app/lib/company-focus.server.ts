@@ -17,7 +17,7 @@ import { depositCount } from "./bank-table";
 import { withoutLtd } from "./company-name";
 import { addressId } from "./company-page";
 import type { FocusCompany, FocusData, FocusFigures, FocusLine, FocusProduct, FocusProductKind } from "./company-focus";
-import type { SiteValue } from "./value";
+import { numberOf } from "./value";
 
 /** The provident products in the designer's order: the six with a page, then the regulator's two types the site has no page for. */
 const savingsOrder = ["keren-hishtalmut", "kupat-gemel-lehashkaa", "provident-for-annuity", "מרכזית לפיצויים", "child-savings-provident", "pension-comprehensive", "pension-general", "מטרה אחרת"];
@@ -30,7 +30,6 @@ const bankProducts: { id: string; name: string; unit: FocusProductKind["unit"] }
 ];
 
 type Built = { kind: FocusProductKind; product: FocusProduct; figures?: FocusFigures[string]["products"][string] };
-const num = (v: SiteValue | null | undefined): number | null => (v && typeof v.value === "number" ? v.value : null);
 
 /** A managing company's provident products, from the same data its page's list reads. */
 function savingsProducts(tb: TbData, pageId: string): Built[] {
@@ -40,7 +39,7 @@ function savingsProducts(tb: TbData, pageId: string): Built[] {
     const fees = feeRangeOf(view.tracks, tb.today);
     return {
       kind: { id: p.id, name: p.name, type: "savings", unit: "tracks" },
-      product: { id: p.id, count: view.tracks.length, assets: num(assets), fees: fees ? { low: num(fees.low)!, high: num(fees.high)! } : null, href: companyPath(pageId, { product: addressId(p.id) }) },
+      product: { id: p.id, count: view.tracks.length, assets: numberOf(assets), fees: fees ? { low: numberOf(fees.low)!, high: numberOf(fees.high)! } : null, href: companyPath(pageId, { product: addressId(p.id) }) },
       figures: { assets, fees },
     };
   });

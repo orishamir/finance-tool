@@ -215,8 +215,13 @@ export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteV
   if (year !== undefined && !("by_tax_year" in f)) return null;
   const v = "by_tax_year" in f ? (year !== undefined ? f.by_tax_year[year] : f.by_tax_year[today.slice(0, 4)] ?? Object.values(f.by_tax_year).at(-1)) : f;
   if (!v) return null;
-  const stale = rule.recheck_date && rule.recheck_date < today ? { since: rule.checked, cadence: "yearly" as const } : null;
+  const stale = recheckStale(rule, today) ? { since: rule.checked, cadence: "yearly" as const } : null;
   return { ...v, stale, rule_ids: v.rule_ids ?? [rule.id] };
+}
+
+/** Whether a rule's re-check date has passed by `today` (YYYY-MM-DD); a rule with none never has. */
+export function recheckStale(rule: { recheck_date?: string | null }, today: string): boolean {
+  return !!rule.recheck_date && rule.recheck_date < today;
 }
 
 export function staleCma(reportPeriod: string, today: string): Staleness | null {

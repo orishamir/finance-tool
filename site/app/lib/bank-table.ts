@@ -2,7 +2,7 @@
 // the amount deposited, stand as one row with a rate for each amount; rows stand under their kind (פיקדון יומי, שבועי…); what is true of every
 // row is said once over the table. Pure: no React, no I/O.
 import type { ProductRowData } from "../components/decoder/institutions/types";
-import type { SiteValue } from "./value";
+import { numberOf, type SiteValue } from "./value";
 import { r4catalogue as copy } from "../copy";
 import { onlyAtExits, termWords } from "./deposit-kind";
 
@@ -18,10 +18,9 @@ export interface KindGroup {
   rows: TableRow[];
 }
 
-const num = (v: SiteValue | null | undefined): number | null => (v && typeof v.value === "number" ? v.value : null);
 
 /** An amount range as one key: "1000-99999", "250000-". */
-export const rangeKey = (p: ProductRowData): string => `${num(p.amountMin) ?? 0}-${num(p.amountMax) ?? ""}`;
+export const rangeKey = (p: ProductRowData): string => `${numberOf(p.amountMin) ?? 0}-${numberOf(p.amountMax) ?? ""}`;
 
 /** Everything about a record but its amount, its rate, its date and its doubt: two records that share it are one deposit at two amounts. */
 const sameDeposit = (p: ProductRowData): string =>
@@ -29,7 +28,7 @@ const sameDeposit = (p: ProductRowData): string =>
 
 /** How many days a period is, roughly, to order kinds and rows from the shortest. */
 const termDays = (p: ProductRowData): number => {
-  const v = num(p.term);
+  const v = numberOf(p.term);
   if (v === null) return Infinity;
   return p.term.unit === "days" ? v : p.term.unit === "years" ? v * 365 : v * 30.4;
 };
@@ -43,7 +42,7 @@ export function tableRows(products: readonly ProductRowData[]): TableRow[] {
   for (const p of products) by.set(sameDeposit(p), [...(by.get(sameDeposit(p)) ?? []), p]);
   const out: TableRow[] = [];
   for (const list of by.values()) {
-    const sorted = [...list].sort((a, b) => (num(a.amountMin) ?? 0) - (num(b.amountMin) ?? 0) || (a.id < b.id ? -1 : 1));
+    const sorted = [...list].sort((a, b) => (numberOf(a.amountMin) ?? 0) - (numberOf(b.amountMin) ?? 0) || (a.id < b.id ? -1 : 1));
     if (new Set(sorted.map(rangeKey)).size < sorted.length) out.push(...sorted.map((p) => ({ key: p.id, lines: [p] })));
     else out.push({ key: sorted[0]!.id, lines: sorted });
   }
@@ -134,9 +133,9 @@ export const depositCount = (products: readonly ProductRowData[]): number => tab
 
 /** The lowest and highest rate among the records (the overview's line); null when none prints a number. */
 export function rateRange(products: readonly ProductRowData[]): { low: SiteValue; high: SiteValue } | null {
-  const rated = products.filter((p) => num(p.rate) !== null);
+  const rated = products.filter((p) => numberOf(p.rate) !== null);
   if (rated.length === 0) return null;
-  const sorted = [...rated].sort((a, b) => num(a.rate)! - num(b.rate)!);
+  const sorted = [...rated].sort((a, b) => numberOf(a.rate)! - numberOf(b.rate)!);
   return { low: sorted[0]!.rate, high: sorted.at(-1)!.rate };
 }
 
