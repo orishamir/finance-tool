@@ -13,7 +13,7 @@ import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
 import { loadDepositTerms } from "./instruments.server";
 import { loadInstitutionRegistry } from "./institutions.server";
-import { depositName, exitPointsOf, exitWords } from "./deposit-kind";
+import { depositName, exitNameWords, exitPointsOf, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
 import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
@@ -134,8 +134,8 @@ export function depositSheetNames(records: DepositTerms[]): Map<string, string> 
     let key = base(r);
     if ((count.get(key) ?? 0) > 1) {
       const code = /-(\d{3,4})$/.exec(r.id)?.[1];
-      const exits = r.exit_points.exists ? exitWords(exitPointsOf(r.exit_points)) : null;
-      const kind = [words[r.rate_type], r.linkage === "none" ? null : words[r.linkage], exits ? `${words.exits} ${exits}` : null].filter(Boolean).join(", ");
+      const exits = r.exit_points.exists ? exitNameWords(exitPointsOf(r.exit_points)) : null;
+      const kind = [words[r.rate_type], r.linkage === "none" ? null : words[r.linkage], exits].filter(Boolean).join(", ");
       key = `${key} · ${code ?? kind}`;
     }
     // a name still taken gets a number, replacing the last one tried ("x (3)", never "x (2) (3)")

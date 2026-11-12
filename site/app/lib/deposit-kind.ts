@@ -27,10 +27,13 @@ export const exitFirstOf = (e: ExitPoints): number | null => (e.firstMonths !== 
 /**
  * When a deposit's exit points come, in words, or null where the record does not say: "כל 3 חודשים" (the interval alone, or a first that
  * falls one interval after the start), "אחרי 6 חודשים, ואז כל 3 חודשים" (a later first, then the interval), "הראשונה אחרי 6 חודשים" (a first
- * with no interval). A bank that prints only how often they come is said in its own words, every so many months.
+ * with no interval). A bank that prints only how often they come is said in its own words, every so many months. Null too where the first
+ * is a figure the words cannot say.
  */
 export function exitTiming(e: ExitPoints): string | null {
   const first = exitFirstOf(e);
+  // a first the words cannot say (a week, 0.25 of a month) leaves the timing unsaid: the interval alone would read as the whole of it
+  if (e.firstMonths !== null && first === null) return null;
   const every = e.everyMonths;
   if (first !== null && every) return first === every ? `${copy.exits.every} ${fmt.months(every)}` : copy.exits.afterThen(fmt.months(first), fmt.months(every));
   if (first !== null) return copy.exits.firstAfter(fmt.months(first));
@@ -41,6 +44,18 @@ export function exitTiming(e: ExitPoints): string | null {
 export function exitWords(e: ExitPoints): string {
   if (!e.exists) return copy.exits.none;
   return exitTiming(e) ?? copy.exits.some;
+}
+
+/**
+ * A deposit's exit points as part of its name on a sheet line, where the name repeats at the bank: "תחנת יציאה כל 3 חודשים", "תחנת יציאה
+ * אחרי 6 חודשים, ואז כל 3 חודשים", "תחנת יציאה ראשונה אחרי 6 חודשים", and "עם תחנות יציאה" where the record gives no timing the words can say.
+ */
+export function exitNameWords(e: ExitPoints): string {
+  const timing = exitTiming(e);
+  if (timing === null) return copy.depositKind.exitsSome;
+  const first = exitFirstOf(e);
+  if (first !== null && !e.everyMonths) return copy.depositKind.exitFirstAfter(fmt.months(first));
+  return `${copy.depositKind.exits} ${timing}`;
 }
 
 /** A bank page's exit points: as `exitWords`, and where they exist with no timing in the record but the bank prints conditions, a pointer to them. */

@@ -39,9 +39,12 @@ describe("exitWords", () => {
     expect(exitTiming(e(true, null, 1))).toBe("הראשונה אחרי חודש");
   });
 
-  it("does not word a first that is not a whole number of months, and falls back to the interval", () => {
+  it("does not word a first that is not a whole number of months, nor the interval alone after it", () => {
     expect(exitWords(e(true, null, 0.25))).toBe(r4catalogue.exits.some);
-    expect(exitWords(e(true, 1, 0.25))).toBe("כל חודש");
+    // "כל חודש" alone would hide that the first exit comes after a week
+    expect(exitWords(e(true, 1, 0.25))).toBe(r4catalogue.exits.some);
+    expect(exitTiming(e(true, 1, 0.25))).toBeNull();
+    expect(exitsText(e(true, 1, 0.25), "x")).toBe(r4catalogue.exits.someCard);
   });
 
   it("points a bank page to the bank's conditions only where the record gives no timing", () => {
@@ -113,5 +116,20 @@ describe("the bank page and the guide's sheet", () => {
     ] as unknown as DepositTerms[]);
     expect(names.get("a")).toMatch(/תחנת יציאה כל 12 חודשים$/);
     expect(names.get("b")).toMatch(/תחנת יציאה אחרי 120 חודשים, ואז כל 12 חודשים$/);
+  });
+
+  it("names a deposit by its exit points in whole Hebrew, whatever the record gives", () => {
+    const twin = { bank: "x", names: { "447": ["פיקדון"] }, type_447: "t", rate_type: "fixed", linkage: "cpi" };
+    const names = depositSheetNames([
+      { ...twin, id: "a", exit_points: { exists: true, every_months: null, first_after_months: 6 } },
+      { ...twin, id: "b", exit_points: { exists: true, every_months: null, first_after_months: null } },
+      { ...twin, id: "c", exit_points: { exists: true, every_months: null, first_after_months: 0.25 } },
+      { ...twin, id: "d", exit_points: { exists: false, every_months: null } },
+    ] as unknown as DepositTerms[]);
+    // "תחנת יציאה הראשונה אחרי 6 חודשים" and "תחנת יציאה יש" were what the two parts gave when joined
+    expect(names.get("a")).toMatch(/ריבית קבועה, צמוד למדד, תחנת יציאה ראשונה אחרי 6 חודשים$/);
+    expect(names.get("b")).toMatch(/ריבית קבועה, צמוד למדד, עם תחנות יציאה$/);
+    expect(names.get("c")).toMatch(/עם תחנות יציאה( \(\d\))?$/);
+    expect(names.get("d")).toMatch(/ריבית קבועה, צמוד למדד$/);
   });
 });
