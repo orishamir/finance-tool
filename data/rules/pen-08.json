@@ -41,6 +41,46 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.860), reg. 1, definitions 'שכר חודשי ממוצע לעובד שכיר', 'תקרה חודשית של השכר המבוטח', 'תקרת הפקדה חודשית'",
+      "page": 6,
+      "quote": "20.5% מהתקרה החודשית של השכר המבוטח",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F10716%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון), התשפ\"ג-2023, קובץ התקנות 10716 (12.7.2023), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.2098), reg. 1",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 2098), תקנה 1",
+      "page": 2,
+      "quote": "הפקדות המעביד והעובד בקרן חדשה מקיפה לא יעלו על תקרת ההפקדה החודשית",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5953%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשנ\"ט-1999, קובץ התקנות 5953 (22.2.1999), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.6, תוספת שביעית",
+      "locator_he": "עמוד הקובץ 6, תוספת שביעית",
+      "page": 6,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
       "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
       "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
@@ -52,32 +92,6 @@
       "locator_he": "עמוד 2, סעיף 2(ד)",
       "page": 2,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=6",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.6 (gazette p.860), reg. 1 (substituting reg. 1), definitions 'שכר חודשי ממוצע לעובד שכיר', 'תקרה חודשית של השכר המבוטח', 'תקרת הפקדה חודשית'",
-      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 860), תקנה 1 (החלפת תקנה 1), ההגדרות 'שכר חודשי ממוצע לעובד שכיר', 'תקרה חודשית של השכר המבוטח', 'תקרת הפקדה חודשית'",
-      "quote": "20.5% מהתקרה החודשית של השכר המבוטח",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F10716%2Fheb#page=2",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון), התשפ\"ג-2023, קובץ התקנות 10716 (12.7.2023), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון), התשפ\"ג-2023, קובץ התקנות 10716 (12.7.2023), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.2098), reg. 1 (substituting reg. 19(ב1)), reg. 19(ב1)(1)",
-      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 2098), תקנה 1 (החלפת תקנה 19(ב1)), תקנה 19(ב1)(1)",
-      "quote": "הפקדות המעביד והעובד בקרן חדשה מקיפה לא יעלו על תקרת ההפקדה החודשית",
-      "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
@@ -94,6 +108,20 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.10, s.1",
+      "locator_he": "עמוד 10, סעיף 1",
+      "page": 10,
+      "quote": "תקרת הפקדה חודשית",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%9E%D7%95%D7%A6%D7%A2.aspx",
       "title": "ביטוח לאומי: שכר ממוצע לפי סעיפים 1 ו-2 לחוק הביטוח הלאומי",
       "title_he": "ביטוח לאומי: שכר ממוצע לפי סעיפים 1 ו-2 לחוק הביטוח הלאומי",
@@ -101,32 +129,6 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5953%2Fheb#page=6",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשנ\"ט-1999, קובץ התקנות 5953 (22.2.1999)",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשנ\"ט-1999",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.6, תוספת שביעית (formula for the monthly ceiling of insured wages)",
-      "locator_he": "עמוד 6, תוספת שביעית",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.10, s.1",
-      "locator_he": "עמוד 10, סעיף 1",
-      "page": 10,
-      "quote": "תקרת הפקדה חודשית",
       "checked": "2026-10-25"
     }
   ]

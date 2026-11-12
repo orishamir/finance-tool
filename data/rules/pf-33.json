@@ -110,10 +110,23 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.2-5, ss.1-10; p.35",
-      "locator_he": "עמודים 2 עד 5, סעיפים 1-10; עמוד 35",
+      "locator": "pp.2-5, ss.1-10",
+      "locator_he": "עמודים 2 עד 5, סעיפים 1-10",
       "page": 2,
       "quote": "מדי שנה, תוך שלושה חודשים מתום השנה, דוח שנתי מקוצר בגין השנה שהסתיימה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+      "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.35",
+      "locator_he": "עמוד 35",
+      "page": 35,
       "checked": "2026-10-25"
     },
     {
