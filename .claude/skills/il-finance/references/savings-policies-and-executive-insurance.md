@@ -142,10 +142,11 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Likely to change: yes, insurer decision per plan edition
 
 ### INS-08 Tracks: choice, default, switching within 3 business days, closure with 45 days' notice
-- Rule: At joining, the holder splits deposits among the open investment tracks. Without an instruction, money goes to the default track, defined as the track "כללי" or a replacement approved by the Commissioner (Clal 1418 s. 1, 5.4). The holder may move the existing balance between tracks, and it moves "בתוך 3 ימי עסקים" of the request (s. 6.2). Phoenix states the same 3 business days, says a switch cannot be cancelled once made, and says the fee changes to the new track's rate. Tracks are invested under the Provident Funds investment-rules regulations (תקנות כללי השקעה החלים על גופים מוסדיים, 2012) (Clal s. 8.1). Direct expenses may be charged as permitted under Provident Funds Law s. 32 (s. 8.5). The insurer may close a track with CMA approval after at least 45 days' notice. Money of holders who do not choose a replacement goes to the default track (s. 8.6).
-- Conditions / exceptions: No limit on the number of switches was found. The tax treatment of a switch (Clal says switching carries no capital-gains tax) belongs in TXA.
+- Rule: In Clal Insurance's savings policy 1418 (חיסכון פיננסי לעתיד), at joining the holder splits deposits among the open investment tracks. Without an instruction, money goes to the default track, defined as the track "כללי" or a replacement approved by the Commissioner (Clal 1418 s. 1, 5.4). The holder may move the existing balance between tracks, and it moves "בתוך 3 ימי עסקים" of the request (s. 6.2). Phoenix states the same 3 business days, says a switch cannot be cancelled once made, and says the fee changes to the new track's rate. Tracks are invested under the Provident Funds investment-rules regulations (תקנות כללי השקעה החלים על גופים מוסדיים, 2012) (Clal s. 8.1). Direct expenses may be charged as permitted under Provident Funds Law s. 32 (s. 8.5). Clal may close a track with CMA approval after at least 45 days' notice. Money of holders who do not choose a replacement goes to the default track (s. 8.6).
+- Conditions / exceptions: These are Clal Insurance's and The Phoenix's own policy terms; this record cites no regulator's text on how fast a switch in a savings policy must be executed (PF-23 covers provident funds). No limit on the number of switches was found. 2026-11-12: the Scope line names Clal and The Phoenix, with Clal Insurance now in the registry as its own insurer row. The tax treatment of a switch (Clal says switching carries no capital-gains tax) belongs in TXA.
 - Figures: 3 business days; 45 days.
 - Source: [Clal 1418](https://www.clalbit.co.il/media/yy5djhg3/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-1418.pdf), s. 1, 5, 6, 8 · checked 2026-10-22 · institution; [Phoenix Invest FAQ](https://www.fnx.co.il/savings/savings-routes/faq/) · checked 2026-10-22 · institution
+- Scope: institution: Clal, The Phoenix
 - Dimensions: `transfer-switch-process`, `switching-tax-event` (TXA), `fee-change-over-time`
 - Likely to change: yes. The CMA 2026 investment-tracks circular also covers hosting tracks (INS-24).
 
@@ -260,8 +261,8 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Dimensions: `eligibility`, `insurance-cover`
 - Likely to change: yes, if the extension order changes
 
-### INS-19 Insurance components are paid out of the deposit, and pure life-insurance prices vary widely between insurers
-- Rule: In an executive policy the savings deposit is the regular deposit "בניכוי עלות הכיסוי הביטוחי" plus one-time deposits and transfers in (Harel 1286 s. 1.7). The cost of insurance cover is the part of the deposit paid for the insurance covers (s. 1.37). The covers can be extended or cancelled (contents, s. 27 and the cover chapter, not read in detail). A policy can also hold savings only, with no cover: Harel's 2016 differential policy "כוללת רכיב חיסכון בלבד ללא כיסוי ביטוחי". For pure life insurance (death cover), the CMA compared the cost of NIS 1,000,000 cover over 30 years. The gap between the most and least expensive insurer in total premiums over the period was:
+### INS-19 Pure life-insurance prices vary widely between insurers (CMA comparison)
+- Rule: The CMA's 2024 report compared, insurer by insurer, the cost of NIS 1,000,000 of individual life (death) cover over 30 years for an insured aged 35. The gap between the most and the least expensive insurer in total premiums over the period ("הפרמיה המצטברת במשך תקופת הביטוח") was:
 
   | Insured, age 35 | Gap in total premiums |
   |---|---|
@@ -270,11 +271,21 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
   | Smoking man | 107% |
   | Smoking woman | 143% |
 
-- Conditions / exceptions: The CMA tables are for individual life (death) insurance, not for the risk component inside a particular executive policy, and are given here as evidence that the insurance part of the price is worth comparing. Disability-cover prices were not found (open question 11). Comprehensive pension funds price insurance collectively; see PEN-11 to PEN-17.
-- Figures: spreads 46% to 143% (2024).
-- Source: [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf), s. 1.7, 1.37 · checked 2026-10-22 · institution; [Harel June 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf), p. 3 · institution; [CMA report 2024, chapter 4 (gov.il)](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=15), tables ד-14 to ד-17, file pp. 15 to 16 (printed pp. 56 to 57) · checked 2026-11-08 · primary
+- Conditions / exceptions: The CMA tables are for individual life (death) insurance, not for the risk component inside a particular executive or savings policy; they show that the insurance part of a price is worth comparing. Disability-cover prices were not found (open question 11). Comprehensive pension funds price insurance collectively; see PEN-11 to PEN-17. How one insurer's executive policy pays for its covers out of the deposit is INS-29 (Harel). Split on 2026-11-12: Harel's policy definitions moved to INS-29.
+- Figures: spreads 46% to 143% (2024 report, tables ד-14 to ד-17).
+- Source: [דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=15) p.15, tables ד-14, ד-15 "עלות ביטוח חיים לגבר בן"; p.16, tables ד-16, ד-17 (printed pp. 56 to 57) · checked 2026-11-12 · primary
+- Scope: general
 - Dimensions: `insurance-cover`, `fee-insurance-premium` (proposed)
 - Likely to change: yes, premiums are repriced
+
+### INS-29 Harel's executive policy: the insurance covers are paid out of the deposit
+- Rule: In Harel's executive policy (plan 1286) the savings deposit is the regular deposit "בניכוי עלות הכיסוי הביטוחי" plus one-time deposits and transfers in (s.1.7). The cost of insurance cover is the part of the regular deposit paid for the insurance covers (s.1.37). The covers can be extended or cancelled (contents, s.27 and the cover chapter, not read in detail). A policy can also hold savings only, with no cover: Harel's 2016 letter to employers describes its differential policy "הראל מור למנהלים" as one that "כוללת רכיב חיסכון בלבד ללא כיסוי ביטוחי" (annex A, s.3).
+- Conditions / exceptions: Harel's own policy terms; other insurers' executive policies were not read for this. What pure life cover costs across insurers is INS-19. Split from INS-19 on 2026-11-12.
+- Figures: none
+- Source: [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf#page=3) p.3, s.1.7 "בניכוי עלות הכיסוי הביטוחי"; p.5, s.1.37 · checked 2026-11-12 · institution; [Harel June 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf#page=3) p.3, annex A, s.3 "כוללת רכיב חיסכון בלבד ללא כיסוי ביטוחי" (library copy of 2026-10-31) · checked 2026-10-31 · institution
+- Scope: institution: Harel
+- Dimensions: `insurance-cover`
+- Likely to change: no.
 
 ### INS-20 Withdrawal, partial withdrawal and transfer out of an executive policy
 - Rule: Withdrawals from an executive policy follow the Provident Funds Law and its regulations (s. 23 applies via s. 56; Harel 1286 s. 13.2). For example, severance can be withdrawn on leaving a job, and a lump sum from age 60 only if the remaining annuity is not below the minimum annuity amount (s. 13.2.1, 13.2.2; PEN-28 to PEN-30). The holder may transfer all or part of the redemption value to another provident fund under the Transfer Regulations (s. 14.1; PF-17, PF-19). An outstanding loan must be repaid first (s. 14.2). A partial withdrawal or transfer of 90% or more, or one leaving less than NIS 20,000 linked to the October 2008 CPI, may be treated as full (s. 13.3, 14.4). A non-end-of-period payment is made within the times in the regulations under s. 23 or within 30 days, whichever is earlier; at the end of the insurance period, within 7 days (s. 13.9). After a full withdrawal the policy and its covers lapse (s. 13.4).

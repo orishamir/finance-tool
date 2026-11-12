@@ -399,7 +399,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.15 אחוז, מינימום 5 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב', charged on execution. No channel split. The spread is not printed, and no general rule limits a conversion spread or says how it is disclosed (FXD OQ2, open); the spreads some non-bank price lists print beside or instead of the conversion fee are BRK-48. Under annex ו' the ONE and ONE PLUS plans are exempt from this fee (see the plan line). 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
@@ -421,7 +421,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מינימום 5 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
@@ -443,7 +443,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מקסימום 3,000 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
@@ -474,7 +474,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents (D56). The tariff prints a conversion fee but no spread; the general terms define 'שער הבנק הדיגיטלי' as the rate the bank publishes, 'נקבע על ידי הבנק בהתאם לנהלים ולכללים הנהוגים בבנק מעת לעת', with the conversion fee added on top. The securities standing-order terms (4.4.2): 'תבוצע המרה של סכום ההשקעה בהתאם לשער של הבנק הדיגטלי'. Advertising 'ללא עמלת המרת מט\"ח' (lp/tradenew) holds for the One plans only (annex ו'); for ZERO the fee is 0.15%, minimum 5 USD."
@@ -504,7 +504,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.3 אחוז, מינימום 10 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
@@ -526,7 +526,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מינימום 10 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
@@ -548,7 +548,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מקסימום 3,000 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
@@ -579,7 +579,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents (D56). The tariff prints a conversion fee but no spread; the general terms define 'שער הבנק הדיגיטלי' as the rate the bank publishes, 'נקבע על ידי הבנק בהתאם לנהלים ולכללים הנהוגים בבנק מעת לעת', with the conversion fee added on top. The securities standing-order terms (4.4.2): 'תבוצע המרה של סכום ההשקעה בהתאם לשער של הבנק הדיגטלי'. Advertising 'ללא עמלת המרת מט\"ח' (lp/tradenew) holds for the One plans only (annex ו'); for ZERO the fee is 0.15%, minimum 5 USD."

@@ -17,7 +17,7 @@
   },
   "manager": "BlackRock (iShares)",
   "domicile": "US",
-  "legal_form": "US-listed ETF; launch 05/15/2000; distribution frequency quarterly; benchmark 'S&P 500 Index (USD)'. Replication and ISIN are not printed on this fact sheet.",
+  "legal_form": "US-listed ETF; launch 05/15/2000; distribution frequency quarterly; benchmark 'S&P 500 Index (USD)'. Replication and ISIN are not printed on this fact sheet. Legal form: a series of iShares Trust, a Delaware statutory trust; the fund intends to qualify as a separate regulated investment company. Source: iShares Core S&P 500 ETF statement of additional information dated 31.7.2026, https://www.blackrock.com/us/individual/literature/sai/sai-ishares-core-s-and-p-500-etf-3-31.pdf, PDF p.4 'The Trust was organized as a Delaware statutory trust on December 16, 1999 and is authorized to have multiple series or portfolios', PDF p.71 'The Fund intends to qualify for treatment as a separate RIC'. Checked 2026-11-12.",
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": null,
@@ -47,7 +47,7 @@
         "TXF-29"
       ],
       "state": "sourced",
-      "notes": "The link served the June edition on 2026-10-31, one quarter older than the ACWI fact sheet from the same site. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Its legal form is not printed on this fact sheet, so whether Israeli tax treats it as a company or a trust stays open (tax open question 19, job 1). The prospectus was not opened."
+      "notes": "The link served the June edition on 2026-10-31, one quarter older than the ACWI fact sheet from the same site. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Under US law it is a series of a Delaware statutory trust (legal_form, TXF-37); how Israeli tax classifies such a fund stays open (tax open question 19). The prospectus was not opened."
     },
     "trustee": null,
     "variable_management": null,

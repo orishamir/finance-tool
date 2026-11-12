@@ -1,0 +1,48 @@
+{
+  "id": "MGD-19",
+  "title": "Meitav Manager: the one digital portfolio with published terms",
+  "title_he": "מיטב מנג'ר: התנאים שמיטב מפרסמת לתיק הדיגיטלי שלה",
+  "text_he": "לפי האתר של מיטב, מיטב מנג'ר הוא תיק השקעות דיגיטלי שנותנות מיטב ניהול תיקים ומיטב טרייד, ומנהלים אותו מנהלי השקעות בעלי רישיון. התיק מושקע רק בקרנות נאמנות של מיטב, ומיטב כותבת שהיא עוסקת בשיווק השקעות ולא בייעוץ ויש לה זיקה לנכסים. ההשקעה המזערית היא 25,000 ש״ח, החשבון מוגבל לנכסים של עד מיליון ש״ח, והשירות ניתן מגיל 18 לתושבי ישראל עם חשבון בנק ישראלי פעיל, לפי שיקול הדעת של מיטב. העלות היחידה היא דמי הניהול בתוך הקרנות: אין דמי משמרת, עמלות קנייה ומכירה או דמי ניהול ישירים. משיכה מלאה או חלקית אפשרית בכל עת, והכסף מגיע תוך 7 ימי עסקים לחשבון הבנק שממנו הופקד. במסלול קרנות הגידור ההשקעה המזערית 50,000 ש״ח ודמי ההצלחה בקרנות 20%. האתר לא מפרסם את דמי הניהול של הקרנות בכל מסלול.",
+  "strength": "institution",
+  "dimensions": [
+    "minimum",
+    "deposit-ceiling",
+    "eligibility",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-12",
+  "il_finance_file": "managed-and-robo-portfolios.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/portfolio_management/manager/",
+      "title": "מיטב מנג'ר: תיק השקעות דיגיטלי",
+      "title_he": "מיטב מנג'ר: תיק השקעות דיגיטלי",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "החשבון יוגבל לסך נכסים של עד 1 מיליון ₪",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.meitav.co.il/portfolio_management/investment-routes_manager/",
+      "title": "מיטב מנג'ר: מסלולי השקעה",
+      "title_he": "מיטב מנג'ר: מסלולי השקעה",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "דמי ההצלחה יעמדו על 20%",
+      "checked": "2026-11-12"
+    }
+  ]
+}

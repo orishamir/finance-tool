@@ -180,7 +180,8 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - Fees are in Appendix A. The home page says 0% conversion fee when loading a listed currency, the rate "כולל את עלויות התפעול (מרווח)", and a 0.9% conversion fee over the Mastercard rate for unlisted currencies.
 - Conditions / exceptions: The terms do not call the balance a deposit, do not name a trust account or the bank holding the funds, and state no interest rate. How the payment-services law protects wallet balances if the provider fails was not read (open question 9). The terms also say the service targets "לקוחות מוסדות פיננסיים" (cl.2.3), which sits oddly with cl.2.8.
 - Figures: as above, terms effective March 2026; set by the company.
-- Source: [LAYA home page](https://laya.as-invest.co.il/) · checked 2026-10-22 · institution. [LAYA "תנאי השימוש בשירות", effective March 2026](https://laya.as-invest.co.il/Pages/additional-info/terms-of-use-service), cl.2.1, 2.3, 2.8, 3.3, 3.4, 3.7, 3.22, 3.24, 5.6, 5.11, 13.1-13.13, Appendices A-B · checked 2026-10-22 · institution. [Altshuler Shaham home page](https://www.as-invest.co.il/) · checked 2026-10-22 · institution
+- Source: [LAYA: תנאי השימוש בשירות, בתוקף ממרץ 2026](https://laya.as-invest.co.il/Pages/additional-info/terms-of-use-service) cl.2.1 "חברת תשלומים, בעלת רישיון למתן שירותי תשלום"; cl.2.3, 2.8, 3.3, 3.4, 3.7, 3.22, 3.24, 5.6, 5.11, 13.1-13.13, Appendices A-B (library copy of 2026-10-31; the site refused a script on 2026-11-12) · checked 2026-10-31 · institution; [LAYA: דף הבית](https://laya.as-invest.co.il/) "19 מטבעות זמינים לשימוש" (library copy of 2026-10-31) · checked 2026-10-31 · institution; [Altshuler Shaham home page](https://www.as-invest.co.il/) (lists LAYA) · checked 2026-10-22 · institution
+- Scope: institution: LAYA
 - Dimensions: regulator, protection, currency, fee-fx, deposit-ceiling, liquidity-lockup, eligibility
 - Likely to change: yes
 

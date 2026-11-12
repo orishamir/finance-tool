@@ -3,6 +3,9 @@
   "title": "One Zero: breaking its deposits and its monthly savings plan",
   "title_he": "וואן זירו: שבירת הפיקדונות ותוכנית החיסכון החודשית",
   "text_he": "בטבלת התנאים של וואן זירו, את ״חיסכון יומי״ אפשר לשבור בכל יום עסקים בלי קנס. את ״חיסכון חודשי״ ואת שני החיסכונות השנתיים אפשר לשבור עם קנס: ״הלקוח מקבל 10% מהריבית הצבורה עד למועד השבירה בפועל״. בתנאים של החיסכון החודשי השבירה תלויה בהחלטת הבנק, והיא סוגרת את החיסכון. הטבלה לא אומרת מה קורה בשבירה לסכום שהופקד, ואת התנאים של החיסכונות השנתיים האתר לא קרא.",
+  "figure_names_he": {
+    "break_interest_share": "חלק הריבית שנצברה שהלקוח מקבל בשבירה"
+  },
   "strength": "institution",
   "dimensions": [
     "liquidity-lockup",
@@ -10,6 +13,28 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-05-09",
+  "figures": {
+    "break_interest_share": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+        "title": "ONE ZERO: פיקדונות, טבלת תנאי הפיקדונות (נוצרה 28.10.2026), עמודה \"אפשרות לשבירת החיסכון\": \"הלקוח מקבל 10% מהריבית הצבורה עד למועד השבירה בפועל\"",
+        "publisher": "One Zero Bank",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-49"
+      ],
+      "state": "sourced",
+      "notes": "Share of the interest accrued up to a break that the customer receives, in One Zero's words, for the monthly plan and the variable and fixed annual deposits; the plan's terms v11, s.8.1, say the same ('תעמוד על 10% מסך הריבית שנצברה', regardless of when the break is made). Read in the founder's Chrome; set by the bank."
+    }
+  },
   "il_finance_file": "bank-current-account-deposits.md",
   "checked": "2026-11-09",
   "scope": "institution",

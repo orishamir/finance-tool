@@ -162,7 +162,7 @@ Read on 2026-11-12 through FlareSolverr, in TASE's own pages:
 
 ### Leads (not cited)
 
-- A search listing (financefeeds.com) titled "Interactive Brokers aims to join Tel Aviv Stock Exchange as remote member". TASE's list of 2026-11-12 has no Interactive Brokers company, and a remote member may not serve Israeli clients (BRK-02).
+- A search listing (financefeeds.com) titled "Interactive Brokers aims to join Tel Aviv Stock Exchange as remote member". TASE's list of 2026-11-12 has no Interactive Brokers company, and a remote member may not solicit Israeli clients (BRK-02; corrected 2026-11-12: the exchange's rules say "לא ישדל", not that it may not serve one).
 - A search summary saying a company named Interactive is investment manager of some Migdal funds. Not followed: an investment manager of a fund is not a distributor, and the brokerage account is Mexem's.
 
 ### Tried

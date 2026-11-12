@@ -148,13 +148,11 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 - Likely to change: yes. Agreements are renewed from time to time.
 
 ### RG-11 How a saver holds an Israeli REIT, and what it pays out
-- Rule: An Israeli REIT is a company whose shares trade on TASE (RG-02). A saver buys and sells it like any listed share, in a brokerage account. Commissions, custody and the rest of the wrapper are in `brokerage-account.md`. Distributions arrive as dividends. Example from Reit 1:
-  - a dividend of about NIS 44.5 m (22 agorot per share) for Q2 2026;
-  - expected 2026 dividends of at least about NIS 178 m;
-  - a dividend yield of about 4.2% at the 10 August 2026 closing price, as the company puts it.
-- Conditions / exceptions: The example comes from a press report of the company's H1 2026 results, not from the filing itself. Reit 1's own site, which is undated, describes about 58 income-producing properties worth about NIS 9.6 bn and a growing dividend stream kept "במינוף נמוך".
-- Figures: as stated, August 2026.
-- Source: [Funder, Reit 1 H1 2026 results, 12.8.2026](https://funder.co.il/article/207322) · checked 2026-10-22 · secondary. [Reit 1 home page](https://www.reit1.co.il/) · checked 2026-10-22 · institution
+- Rule: An Israeli REIT is a company whose shares trade on TASE (RG-02). A saver buys and sells it like any listed share, in a brokerage account. Commissions, custody and the rest of the wrapper are in `brokerage-account.md`. Distributions arrive as dividends. Example, Reit 1's dividend policy on its investor-relations page: the annual dividend, "שמחולק מדי רבעון בכפוף לאישור הדירקטוריון של החברה", is not less than the company's full annual taxable income; each year the company publishes that year's dividend amount with its annual financial statements; and the board may change the amounts at any time, given business considerations and the law. The page says Reit 1 has distributed about NIS 1.8 bn to its investors since it was founded.
+- Conditions / exceptions: Reit 1's own policy, not a rule for every REIT (what the law requires a REIT to distribute is RG-07; the tax on distributions is in the tax files). The figures for H1 2026 that this rule used to give came from a press report (Funder, 12.8.2026), which is a lead only and is no longer cited; Reit 1's own filings for that half were not read. Reit 1's home page, which is undated, describes about 58 income-producing properties worth about NIS 9.6 bn and a growing dividend stream kept "במינוף נמוך" (read 2026-10-22).
+- Figures: dividend at least the full annual taxable income, paid quarterly (Reit 1's policy).
+- Source: [ריט 1: קשרי משקיעים](https://reit1.co.il/investor-relations/) "שמחולק מדי רבעון בכפוף לאישור הדירקטוריון של החברה" · checked 2026-11-12 · institution; [Reit 1 home page](https://www.reit1.co.il/) · checked 2026-10-22 · institution
+- Scope: institution: Reit 1
 - Dimensions: distribution-policy, fee-trade, liquidity-lockup
 - Likely to change: yes
 - *2026-10-24 R5 pass:* Reit 1's investor-relations page (read directly) states a quarterly dividend policy, expected 2026 dividends of about NIS 178 m (88 agorot a share, about 3.5% at the decision-day price, per its Q1 2026 directors' report), and a tax FAQ: the profit component of each distribution is withheld at the top marginal rate and the depreciation component at 25%, with form 867 for a refund (TX2-21; the rates by law are TX2-20). The page links each Maya filing by report number (for example P1740921-00 for the Q1 2026 presentation), so a browser pass can reach the distribution reports from there.

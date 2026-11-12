@@ -1,0 +1,95 @@
+{
+  "id": "KGL-18",
+  "title": "Pledging rights, loans and attachment",
+  "title_he": "שעבוד, הלוואות ועיקול בקופת גמל להשקעה",
+  "text_he": "תיקון 15 לחוק קופות הגמל הוסיף את קופת הגמל להשקעה לסעיף שמתיר לשעבד את הזכויות של עמית. לפי התקנון התקני של רשות שוק ההון, הזכויות ניתנות לשעבוד ולא ניתנות להעברה לאדם אחר, חוץ מהעברה לנושה שמממש שעבוד, שנחשבת משיכה של העמית, או לפי החוק על חלוקת חיסכון פנסיוני בין בני זוג שנפרדו. אי אפשר להעביר את הכסף לקופה אחרת כשיש עיקול או שעבוד על כל היתרה, או כשיש הלוואה שלא נפרעה; כשרק חלק מהיתרה מעוקל או משועבד, החלק הזה נשאר בקופה. הקופה רשאית, לפי שיקול דעתה, לתת הלוואות לעמיתים: כל ההלוואות יחד עד 10% מנכסי הקופה, כל הלוואה עד 80% מהיתרה של העמית, לתקופה של עד 7 שנים, עם התחייבות בכתב של העמית, אפשרות לפירעון מוקדם בתנאים שמקובלים בשוק, ותחילת פירעון לא יאוחר משנה. במשיכה מנכים מהיתרה את ההלוואות שלא נפרעו.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf#page=9",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, ביטוח וחיסכון, 29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.9, s.28",
+      "locator_he": "עמוד 9, סעיף 28",
+      "page": 9,
+      "quote": "ניתנות לשעבוד",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf#page=9",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, ביטוח וחיסכון, 29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.6, ss.17.1, 18.2",
+      "locator_he": "עמוד 6, סעיפים 17.1, 18.2",
+      "page": 6,
+      "quote": "מוטל עיקול או שעבוד שנעשה כדין",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf#page=9",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, ביטוח וחיסכון, 29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.11, s.38",
+      "locator_he": "עמוד 11, סעיף 38",
+      "page": 11,
+      "quote": "קופת הגמל רשאית על פי שיקול",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf#page=2",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.4",
+      "locator_he": "עמוד 2, סעיף 4",
+      "page": 2,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "clauses 17.1, 28",
+      "locator_he": "סעיפים 17.1, 28",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
+      "title": "Infinity bylaws",
+      "title_he": "תקנון קופת הגמל להשקעה של אינפיניטי (בתוקף מ־1.7.2024)",
+      "publisher": "Infinity",
+      "publisher_he": "אינפיניטי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "clause 38",
+      "locator_he": "סעיף 38",
+      "checked": "2026-10-22"
+    }
+  ]
+}

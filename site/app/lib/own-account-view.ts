@@ -96,6 +96,11 @@ export function layersOf(bundle: IndicesBundle, plan: WorkbenchInputs, b: Custom
       const own = (v: unknown) => ownBy(v as SiteValue, b.base?.houseName ?? house.provider.name_he);
       const per = l.period ?? (fee === "trade" || fee === "conversion" ? "trade" : "month");
       listFigures.push({ kind: "rate", per, value: own(l.rate) });
+      // a flat price for an order or a conversion up to a sum (F-12, F-13), in the order and words the group's price uses
+      if (l.flat_up_to) {
+        listFigures.push({ kind: "flat", per: "trade", value: own(l.flat_up_to.amount) });
+        listFigures.push({ kind: "flat_up_to", value: own(l.flat_up_to.up_to) });
+      }
       if (l.min && l.min.value !== null) listFigures.push({ kind: "min", value: own(l.min) });
       if (l.max && l.max.value !== null) listFigures.push({ kind: "max", value: own(l.max) });
     }

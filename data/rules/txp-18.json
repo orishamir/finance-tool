@@ -6,7 +6,8 @@
   "figure_names_he": {
     "minimum_rate": "שיעור המס המזערי על משיכה שלא כדין",
     "low_income_one": "הכנסה מזערית: יחיד, או זוג בלי ילדים מתחת לגיל 18",
-    "low_income_double": "הכנסה מזערית: יחיד או זוג עם ילד מתחת לגיל 18"
+    "low_income_double": "הכנסה מזערית: יחיד או זוג עם ילד מתחת לגיל 18",
+    "child_age_limit": "גיל הילד: עד הגיל הזה ההכנסה המזערית כפולה"
   },
   "strength": "primary",
   "dimensions": [
@@ -75,6 +76,26 @@
       ],
       "state": "sourced",
       "notes": "Twice the monthly minimum wage, as of 4/2025 as the letter prints it."
+    },
+    "child_age_limit": {
+      "value": 18,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
+        "title": "רשות המסים, משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025, p.1 s.ב.3, table: \"יחיד עם ילד אחד לפחות שטרם מלאו לו גיל 18\", \"זוג עם ילד אחד לפחות שטרם מלאו לו לגיל 18\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXP-18"
+      ],
+      "state": "sourced",
+      "notes": "The minimum income is doubled (low_income_double) for a single person or a couple with at least one child who has not yet turned 18; a couple whose children have all turned 18 takes one minimum wage (low_income_one)."
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",

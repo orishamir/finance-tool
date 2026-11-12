@@ -1,0 +1,63 @@
+{
+  "id": "INS-29",
+  "title": "Harel's executive policy: the insurance covers are paid out of the deposit",
+  "title_he": "ביטוח מנהלים של הראל: עלות הכיסוי הביטוחי יורדת מההפקדה",
+  "text_he": "בפוליסת ביטוח המנהלים של הראל (תוכנית 1286), ההפקדה לחיסכון היא ההפקדה השוטפת אחרי שמנכים ממנה את עלות הכיסוי הביטוחי, בתוספת הפקדות חד פעמיות והעברות. עלות הכיסוי הביטוחי היא החלק מההפקדה השוטפת שמשולם בעד הכיסויים הביטוחיים. לפי מכתב של הראל למעסיקים משנת 2016, יש לה גם פוליסה הפרשית, הראל מור למנהלים, שכוללת רכיב חיסכון בלבד בלי כיסוי ביטוחי.",
+  "strength": "institution",
+  "dimensions": [
+    "insurance-cover"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "harel-insurance",
+      "name_he": "הראל חברה לביטוח"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.harel-group.co.il/Policies/2010.pdf#page=3",
+      "title": "Harel plan 1286",
+      "title_he": "הראל מגוון למנהלים קצבה משלמת (תוכנית 1286, מהדורת 7/2009)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, s.1.7",
+      "locator_he": "עמוד 3, סעיף 1.7",
+      "page": 3,
+      "quote": "בניכוי עלות הכיסוי הביטוחי",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.harel-group.co.il/Policies/2010.pdf#page=3",
+      "title": "Harel plan 1286",
+      "title_he": "הראל מגוון למנהלים קצבה משלמת (תוכנית 1286, מהדורת 7/2009)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5, s.1.37",
+      "locator_he": "עמוד 5, סעיף 1.37",
+      "page": 5,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf#page=3",
+      "title": "Harel June 2016 letter",
+      "title_he": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה (מכתב הראל, יוני 2016)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, annex A, s.3",
+      "locator_he": "עמוד 3, נספח א, סעיף 3",
+      "page": 3,
+      "quote": "כוללת רכיב חיסכון בלבד ללא כיסוי ביטוחי",
+      "checked": "2026-10-31"
+    }
+  ]
+}

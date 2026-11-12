@@ -3,12 +3,104 @@
   "title": "Fridays since 5 January 2026: creations and redemptions only in funds limited in foreign securities, executed on the Sunday",
   "title_he": "יום שישי: קנייה ופדיון רק בקרן מוגבלת בניירות ערך זרים, והביצוע ביום ראשון",
   "text_he": "מאז שהבורסה עברה למסחר בימים שני עד שישי, ב־5.1.2026, אפשר לקנות ולפדות יחידות של קרן נאמנות בכל יום מסחר, גם ביום שישי, חוץ מקרן שאינה מוגבלת בניירות ערך זרים, כלומר קרן שמותר לה להיות חשופה לניירות ערך זרים ביותר מעשירית מנכסיה: בה קונים ופודים רק בימים שני עד חמישי. הוראה שמגיעה למסלקה ביום שישי עד השעה היעודה מתבצעת ביום ראשון לפי מחירי הסגירה של יום שישי, והיחידות או כסף הפדיון מופיעים בחשבון בדרך כלל ביום שני. בקרנות סל על מדדים זרים ובקרנות חוץ נסחרות אפשר לקנות ולמכור בבורסה ביום שישי, אבל לא ליצור או לפדות יחידות מול מנהל הקרן.",
+  "figure_names_he": {
+    "trading_week_from": "תחילת המסחר בימים שני עד שישי",
+    "fund_days": "ימי הקנייה והפדיון בקרן נאמנות",
+    "unlimited_fund_days": "ימי הקנייה והפדיון בקרן שאינה מוגבלת בניירות ערך זרים",
+    "foreign_limit_line": "הקו בין קרן מוגבלת לקרן שאינה מוגבלת בניירות ערך זרים"
+  },
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-15",
+  "figures": {
+    "trading_week_from": {
+      "value": "2026-01-05",
+      "unit": "text",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=3",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.3",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary",
+        "quote": "מעודכנים החל מיום"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-68"
+      ],
+      "state": "sourced",
+      "notes": "From Monday 5 January 2026 TASE trades Monday to Friday and no longer on Sunday."
+    },
+    "fund_days": {
+      "value": "שני עד שישי",
+      "unit": "text",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=12",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.12, s.5.2",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary",
+        "quote": "כלומר בימים שני עד שישי"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-68"
+      ],
+      "state": "sourced",
+      "notes": "Mutual funds are open for purchase and redemption on every trading day, Monday to Friday, except funds not limited in foreign securities."
+    },
+    "unlimited_fund_days": {
+      "value": "שני עד חמישי",
+      "unit": "text",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=12",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.12, s.5.2",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary",
+        "quote": "בימים שני עד חמישי בלבד"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-68"
+      ],
+      "state": "sourced",
+      "notes": "Funds not limited in foreign securities are open for purchase and redemption Monday to Thursday only, as before."
+    },
+    "foreign_limit_line": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=12",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.12, s.5.2",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary",
+        "quote": "עשרה אחוזים מהשווי הנקי של נכסי"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-68"
+      ],
+      "state": "sourced",
+      "notes": "A fund not limited in foreign securities is one whose policy lets its exposure to foreign securities exceed ten percent of the fund's net assets."
+    }
+  },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-11-07",
   "scope": "general",

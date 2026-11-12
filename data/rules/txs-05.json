@@ -5,7 +5,10 @@
   "text_he": "בנק או חבר בורסה שמשלם ליחיד תמורה ממכירת נייר ערך מנכה במקור את הניכוי מרווח ריאלי, ובנייר ערך לא צמוד את הניכוי מרווח על נייר לא צמוד, מהרווח הנומינלי. התקנות לא קובעות שיעור נמוך יותר לפי גיל או הכנסה נמוכה. במכירת ניירות ערך סחירים אין צורך בדיווח נפרד אם נוכה מלוא המס כחוק; אם לא נוכה, למשל אצל ברוקר שלא מנכה, חייבים להגיש דוח שנתי ולדווח פעמיים בשנה עם תשלום מקדמה. הנוסח שנקרא, הנוסח המשולב של התקנות באתר הביטוח הלאומי, מציג תיקונים עד סוף 2017; אם תוקנו מאז זו שאלה פתוחה.",
   "figure_names_he": {
     "withholding_rate_real_gain": "ניכוי במקור מהרווח הריאלי",
-    "withholding_rate_unlinked": "ניכוי במקור מהרווח על נייר לא צמוד"
+    "withholding_rate_unlinked": "ניכוי במקור מהרווח על נייר לא צמוד",
+    "reports_per_year": "מספר הדיווחים והמקדמות בשנה כשלא נוכה מס",
+    "report_due_first_half": "המועד לדיווח על מכירות בינואר עד יוני",
+    "report_due_second_half": "המועד לדיווח על מכירות ביולי עד דצמבר (בינואר שאחרי שנת המס)"
   },
   "strength": "primary",
   "dimensions": [
@@ -53,6 +56,66 @@
       ],
       "state": "sourced",
       "notes": "For a security not linked to the index it withholds 15% of the (nominal) capital gain (reg. 2(b)): unlinked government bonds and makam sold before redemption."
+    },
+    "reports_per_year": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=48",
+        "title": "רשות המסים, דע זכויותיך וחובותיך 2025, printed p.46 (file p.48): \"עד ה-31 ביולי של שנת המס וב-31 בינואר שלאחר שנת המס בשל מכירות ניירות ערך סחירים שהיו בששת החודשים שקדמו לחודש הדיווח כאמור ובתשלום מקדמה\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-05"
+      ],
+      "state": "sourced",
+      "notes": "Where the tax on a sale of traded securities was not withheld in full, the seller reports the capital gain twice a year, each report covering the six months before it, and pays an advance with each; the annual return is filed besides."
+    },
+    "report_due_first_half": {
+      "value": "31 July",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=48",
+        "title": "רשות המסים, דע זכויותיך וחובותיך 2025, printed p.46 (file p.48): \"עד ה-31 ביולי של שנת המס\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-05"
+      ],
+      "state": "sourced",
+      "notes": "For sales in January to June of the tax year."
+    },
+    "report_due_second_half": {
+      "value": "31 January",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=48",
+        "title": "רשות המסים, דע זכויותיך וחובותיך 2025, printed p.46 (file p.48): \"וב-31 בינואר שלאחר שנת המס\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-05"
+      ],
+      "state": "sourced",
+      "notes": "For sales in July to December, by 31 January after the tax year."
     }
   },
   "il_finance_file": "tax-securities-israeli.md",

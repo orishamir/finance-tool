@@ -1,0 +1,58 @@
+{
+  "id": "IRA-06",
+  "title": "Portfolio manager conditions and related parties",
+  "title_he": "מנהל תיקים בקופה בניהול אישי: מי יכול, ומה החברה המנהלת חייבת",
+  "text_he": "לפי התקנות של קופת גמל בניהול אישי, מנהל תיקים הוא בעל רישיון מנהל תיקים לפי חוק הייעוץ להשקעות, ומ־2017 גם מנהל תיקים זר: תושב של מדינה זרה מאושרת שיש לו רישיון שם, ושמסכים שיחולו על הפעולות שלו הכללים שהקופה מחילה על מנהל תיקים במדינה ההיא. כשעמית עובד עם מנהל תיקים, החברה המנהלת צריכה להגיד לו בתוך שבעה ימי עסקים אם המנהל קשור אליה או מנהל בשבילה כסף. החברה יכולה לקבוע אצל אילו חברי בורסה או גופים מאושרים מוחזקים חשבונות הקופה, ואז מנהל התיקים סוחר רק דרכם. מנהל התיקים מצהיר בכתב שהוא מקבל את הכללים ומשקיע בגבולות התקנות, והשכר שלו משולם מדמי הניהול שהחברה גובה.",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "fee-management-balance",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017, קובץ התקנות 7819",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017, קובץ התקנות 7819",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2, reg. 1(2)-(3)",
+      "locator_he": "עמוד הקובץ 2, תקנה 1(2)-(3)",
+      "page": 2,
+      "quote": "המורשים לנהל תיקי השקעות לפי הדין החל באותה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017, קובץ התקנות 7819",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017, קובץ התקנות 7819",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.4, reg. 3",
+      "locator_he": "עמוד הקובץ 4, תקנה 3",
+      "page": 4,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=2",
+      "title": "IRA regulations as made (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "reg. 1 p.2, reg. 4 p.3, reg. 7(א)(5) p.4",
+      "locator_he": "תקנה 1 עמוד 2, תקנה 4 עמוד 3, תקנה 7(א)(5) עמוד 4",
+      "page": 2,
+      "checked": "2026-11-07"
+    }
+  ]
+}

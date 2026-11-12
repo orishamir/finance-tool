@@ -1001,7 +1001,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents. PEPPER's general terms (08.25) define 'שער בל\"ל' as a rate 'שייקבע על ידי הבנק' (s.51.35, p.52), and its securities-deposit section converts foreign proceeds 'לפי שער בל\"ל'; the tariff prints only the fee. No document caps the gap from the representative rate (BRK-23). Not zero."

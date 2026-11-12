@@ -1,0 +1,59 @@
+{
+  "id": "FXD-14",
+  "title": "LAYA: an FX payment wallet, not a deposit",
+  "title_he": "LAYA: ארנק תשלומים במטבע חוץ, לא פיקדון",
+  "text_he": "לפי תנאי השימוש של LAYA, את השירות מפעילה לאיה גלובל, שכותבת שהיא חברת תשלומים עם רישיון למתן שירותי תשלום מרשות ניירות ערך. חשבון הלקוח נרשם בספרי החברה תחת חשבון שלה שמנוהל לטובת הלקוחות, והחברה מפרידה בין החשבון התפעולי שלה לחשבון הלקוחות. ריבית משולמת רק אם היתרה עומדת בתנאי מדיניות שהחברה רשאית לפרסם ולשנות, ואין הבטחה לריבית בכל מטבע. אפשר למשוך כסף זמין בכל עת, כולו או חלקו. השירות מיועד ללקוחות ישראלים מעל גיל 18. במסלול הרגיל היתרה המרבית וסכום הטעינה השנתי הם 50,000 ש״ח, ובמסלול המורחב 200,000 ש״ח. לפי דף הבית יש 19 מטבעות, אין עמלת המרה בטעינה של מטבע מהרשימה והשער כולל מרווח, ובמטבע שלא ברשימה יש עמלת המרה של 0.9% מעל שער מאסטרקארד. התנאים לא קוראים ליתרה פיקדון ולא מציינים חשבון נאמנות או את הבנק שמחזיק את הכסף.",
+  "strength": "institution",
+  "dimensions": [
+    "regulator",
+    "protection",
+    "currency",
+    "fee-fx",
+    "deposit-ceiling",
+    "liquidity-lockup",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-12",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "laya",
+      "name_he": "לאיה גלובל"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://laya.as-invest.co.il/Pages/additional-info/terms-of-use-service",
+      "title": "LAYA: תנאי השימוש בשירות, בתוקף ממרץ 2026",
+      "publisher": "Altshuler Shaham (LAYA)",
+      "publisher_he": "אלטשולר שחם (LAYA)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "cl.2.1",
+      "quote": "חברת תשלומים, בעלת רישיון למתן שירותי תשלום",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://laya.as-invest.co.il/",
+      "title": "LAYA: דף הבית",
+      "publisher": "Altshuler Shaham (LAYA)",
+      "publisher_he": "אלטשולר שחם (LAYA)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "19 מטבעות זמינים לשימוש",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.as-invest.co.il/",
+      "title": "Altshuler Shaham home page",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

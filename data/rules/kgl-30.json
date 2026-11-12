@@ -1,8 +1,8 @@
 {
   "id": "KGL-30",
-  "title": "Altshuler Shaham and Infinity: a two-year discount and a raise without notice (bylaws out of date)",
-  "title_he": "אלטשולר שחם ואינפיניטי: הנחה לשנתיים והעלאה בלי הודעה, לפי תקנון ישן",
-  "text_he": "בתקנונים של אלטשולר שחם ואינפיניטי לקופת גמל להשקעה, הנחה בדמי ניהול מובטחת לשנתיים בלבד, ומותר להעלות את דמי הניהול בלי ההודעה הרגילה אם העמית ובעל הרישיון קיבלו מסמך נפרד על הזכות לבטל את ההנחה. הנוסח הזה הוא של התקנון התקני של רשות שוק ההון משנת 2016, וכל תקנון שהעתיק אותו נושא אותו. חוזר מאוחר של הרשות קובע תקופה ארוכה יותר, אין בו חריג כזה, והוא חל גם על החברות האלה, ולכן החוזר גובר.",
+  "title": "Nine companies' kupat gemel lehashkaa bylaws: a two-year discount and a raise without notice (bylaws out of date)",
+  "title_he": "תקנונים ישנים של תשע חברות: הנחה לשנתיים והעלאה בלי הודעה מראש",
+  "text_he": "בתקנונים של קופת גמל להשקעה של אלטשולר שחם, אינפיניטי, הראל, מיטב, מגדל, כלל, אנליסט, מור וילין לפידות, הנחה בדמי הניהול צריכה לעמוד בתוקף שנתיים לפחות. החברה רשאית להעלות את דמי הניהול לפני תום ההנחה בשני מקרים: משיכה או העברה של כסף, גם למסלול אחר, או מנגנון בהסכם שמשנה את דמי הניהול לפי היתרה או לפי משתנה אחר שהממונה אישר, חוץ מוותק. במקרים האלה מותר לה להעלות בלי ההודעה הרגילה מראש, בשני תנאים: העמית קיבל מסמך נפרד, לא יאוחר משלושה חודשים אחרי שניתנה ההנחה, על הזכות של החברה לבטל אותה; והעמית ובעל הרישיון שמייעץ לו או משווק לו באופן מתמשך מקבלים מסמך נפרד עד חודשיים אחרי ההעלאה. הנוסח הזה הוא של התקנון התקני של רשות שוק ההון משנת 2016, וכל תקנון שהעתיק אותו נושא אותו. חוזר מאוחר של הרשות קובע חמש שנים לפחות, אין בו חריג כזה, והוא חל גם על החברות האלה, ולכן החוזר גובר.",
   "strength": "institution",
   "dimensions": [
     "fee-change-over-time",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-12",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -51,6 +51,29 @@
     }
   ],
   "sources": [
+    {
+      "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
+      "title": "Yalin Lapidot 16.10.2025",
+      "publisher": "yl-invest.co.il",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.36.1",
+      "locator_he": "עמוד 10, סעיף 36.1",
+      "page": 10,
+      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים או יותר",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
+      "title": "Yalin Lapidot 16.10.2025",
+      "publisher": "yl-invest.co.il",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, s.37.3.1-37.3.2",
+      "locator_he": "עמוד 11, סעיף 37.3.1-37.3.2",
+      "page": 11,
+      "checked": "2026-11-12"
+    },
     {
       "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/investment-routes/doclib/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%94%D7%A7%D7%95%D7%A4%D7%94/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%A2%D7%93%D7%9B%D7%A0%D7%99/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F%20%D7%A7%D7%95%D7%A4%D7%AA%20%D7%92%D7%9E%D7%9C%20%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94%2007.2024.pdf",
       "title": "Harel 07/2024",
@@ -104,16 +127,32 @@
       "checked": "2026-11-07"
     },
     {
-      "url": "https://www.yl-invest.co.il/uploads/n/1760865079.1166.pdf",
-      "title": "Yalin Lapidot 16.10.2025",
-      "publisher": "yl-invest.co.il",
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
       "locator": "p.10, s.36.1",
       "locator_he": "עמוד 10, סעיף 36.1",
       "page": 10,
-      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים או יותר",
-      "checked": "2026-11-07"
+      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, s.37.3",
+      "locator_he": "עמוד 11, סעיף 37.3",
+      "page": 11,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-10-31"
     },
     {
       "url": "https://media.harel-group.co.il/media/zzqn4mnc/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%94%D7%A8%D7%90%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2021.pdf",
@@ -203,19 +242,6 @@
       "page": 10,
       "quote": "אף אם לא שלחה אליו הודעה",
       "checked": "2026-10-31"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clauses 36–37",
-      "locator_he": "סעיפים 36–37",
-      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים",
-      "checked": "2026-10-25"
     },
     {
       "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",

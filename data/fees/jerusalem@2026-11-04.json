@@ -925,10 +925,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "'0.20% (6.7 $ מינימום, 2,750 $ מקסימום)'. No channel split in part 5. The spread is not printed (BRK-23). Re-read 2026-11-04: part 5 unchanged. The combined file's annex E ('15/07/2025', p.20) prints 'אינטרנט / אפליקציה' 0.18% (6$ minimum, 2,730$ maximum); annex E as its own file, dated 08/06/2026 and the newest, prints no conversion row. Part 5's 0.20% is the most the documents allow."
+        "notes": "'0.20% (6.7 $ מינימום, 2,750 $ מקסימום)'. No channel split in part 5. The spread is not printed (BRK-16). Re-read 2026-11-04: part 5 unchanged. The combined file's annex E ('15/07/2025', p.20) prints 'אינטרנט / אפליקציה' 0.18% (6$ minimum, 2,730$ maximum); annex E as its own file, dated 08/06/2026 and the newest, prints no conversion row. Part 5's 0.20% is the most the documents allow."
       },
       "min": {
         "value": 6.7,
@@ -947,7 +947,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'6.7 $ מינימום'."
@@ -969,7 +969,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'2,750 $ מקסימום'."
@@ -1001,10 +1001,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). Library 43f36f509e83fcf3, p.48, checked on the page image."
+        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-16). Library 43f36f509e83fcf3, p.48, checked on the page image."
       }
     },
     {
@@ -1031,7 +1031,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.40% (13.4 $ מינימום, 5,500 $ מקסימום)'."
@@ -1053,7 +1053,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'13.4 $ מינימום'."
@@ -1075,7 +1075,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'5,500 $ מקסימום'."
@@ -1107,10 +1107,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). Library 43f36f509e83fcf3, p.48, checked on the page image."
+        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-16). Library 43f36f509e83fcf3, p.48, checked on the page image."
       }
     }
   ],

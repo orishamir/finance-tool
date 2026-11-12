@@ -1161,7 +1161,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.19%'. Note (1): charged on every transaction involving a conversion, in addition to the fee for the specific transaction. Note (6): small amounts: up to $10 exempt, up to $50 a flat $3.00. Note (4): a sale at the 'known' rate uses the last low uniform rate less 2.00%, a purchase the last high uniform rate plus 2.00% (a rate margin printed in the tariff, recorded under spread)."
@@ -1183,7 +1183,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$6.00' per transaction (US dollars)."
@@ -1205,7 +1205,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$2,500.00' per transaction (US dollars)."
@@ -1227,7 +1227,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents. Part 5 ('11.7.2025', p.14) charges the conversion fee 'בשער ציטוט/אחיד/ידוע': the quoted rate is set during the day 'ע\"י חדר עסקות מט\"ח', the uniform rate once at midday by the same room (notes 2-3), and the general account terms (August 2025, library 75ad7686ca92ccd9, p.6) define 'שער אחיד' as the rate 'המתפרסם על ידי הבנק'. No document limits the distance of these rates from the representative rate (BRK-23). Note (4) adds a printed margin only for a deal at the 'known' rate: the last uniform rate 'בתוספת 2.00%' on a purchase and 'בהפחתה של 2.00%' on a sale, on top of the bank's own rate. Annex A gives the young, soldier, released-soldier and student groups '3 פרומיל הטבת שער ברכישה ובהמרת מט\"ח', a rate benefit that only a margin of at least that size could carry. The January 2026 terms (library 9c29d0681b4ab0e2) are page images and were not read."
@@ -1260,6 +1260,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1282,6 +1283,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1313,7 +1315,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23",
+          "BRK-16",
           "BRK-19"
         ],
         "state": "sourced",
@@ -1336,7 +1338,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מזערי $ 5.40' (US dollars)."
@@ -1358,7 +1360,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מירבי $ 2,250.00' (US dollars)."
@@ -1380,7 +1382,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents. Part 5 ('11.7.2025', p.14) charges the conversion fee 'בשער ציטוט/אחיד/ידוע': the quoted rate is set during the day 'ע\"י חדר עסקות מט\"ח', the uniform rate once at midday by the same room (notes 2-3), and the general account terms (August 2025, library 75ad7686ca92ccd9, p.6) define 'שער אחיד' as the rate 'המתפרסם על ידי הבנק'. No document limits the distance of these rates from the representative rate (BRK-23). Note (4) adds a printed margin only for a deal at the 'known' rate: the last uniform rate 'בתוספת 2.00%' on a purchase and 'בהפחתה של 2.00%' on a sale, on top of the bank's own rate. Annex A gives the young, soldier, released-soldier and student groups '3 פרומיל הטבת שער ברכישה ובהמרת מט\"ח', a rate benefit that only a margin of at least that size could carry. The January 2026 terms (library 9c29d0681b4ab0e2) are page images and were not read."
@@ -1413,6 +1415,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16",
             "BRK-19"
           ],
@@ -1436,6 +1439,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16",
             "BRK-19"
           ],

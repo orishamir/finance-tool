@@ -1,0 +1,44 @@
+{
+  "id": "KH-23",
+  "title": "Fees actually charged: the CMA's reported averages, and how long a discount lasts",
+  "title_he": "דמי הניהול בפועל בקרנות השתלמות: הממוצעים שמדווחים לרשות",
+  "text_he": "בגמל נט, מאגר הנתונים של רשות שוק ההון, כל מסלול מדווח את דמי הניהול השנתיים הממוצעים שגבה בפועל בשנה הקלנדרית האחרונה. בנתוני ספטמבר 2026, במסלולי קרנות השתלמות לציבור הרחב שלא מנוהלים באופן אישי, השיעור נע בין 0.34% ל־0.74% מהחיסכון בשנה, ובמסלולים בניהול אישי בין 0.24% ל־0.36%; 16 מסלולים לא דיווחו, ואף מסלול לא דיווח על דמי ניהול מהפקדה. מה שעמית מסוים משלם נקבע במשא ומתן ויכול להיות שונה מהממוצע. לפי חוזר רשות שוק ההון, הנחה בדמי ניהול נמשכת לפחות חמש שנים, ואפשר להעלות את דמי הניהול מוקדם רק במקרים שהחוזר מונה, למשל שישה חודשים אחרי שההפקדות נפסקות מסיבה שלא קשורה למעסיק, ובהודעה מראש.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, s.5(א)",
+      "locator_he": "עמוד 3, סעיף 5(א)",
+      "page": 3,
+      "quote": "חוזר זה יחול על כל הגופים המוסדיים, למעט חברה מנהלת של קופת גמל ענפית, חברה מנהלת של קופת גמל מבטיחת תשואה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://data.gov.il/he/datasets/cma/gemelnet",
+      "title": "Gemel-Net",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "KH-20"
+  ]
+}

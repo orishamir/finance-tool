@@ -1,0 +1,45 @@
+{
+  "id": "KGL-31",
+  "title": "Meitav Kids: Meitav's children's gemel lehashkaa",
+  "title_he": "מיטב קידס: קופת גמל להשקעה לילדים של מיטב",
+  "text_he": "מיטב משווקת את ״מיטב קידס״ כקופת גמל לילדים שפועלת באמצעות קופת גמל להשקעה, וכותבת שתקרת ההפקדה השנתית היא 83,641 ₪ לאדם, נכון ל־2026. הדוגמאות באתר שלה לכמה ילדים לא עקביות: כ־245 אלף וכ־237 אלף ₪ לשלושה ילדים, לעומת 250,923 ₪ לפי התקרה לאדם. בנתוני רשות שוק ההון לספטמבר 2026 יש למיטב 4 מסלולים של תוכנית חיסכון לכל ילד, לצד 16 מסלולים של קופת גמל להשקעה.",
+  "strength": "institution",
+  "dimensions": [
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb",
+      "title": "גמל-נט: מסלולי מיטב, 202609",
+      "title_he": "גמל-נט: מסלולי מיטב, 202609",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
+      "title": "Meitav Kids page",
+      "title_he": "חיסכון לכל ילד: עמוד המוצר של מיטב",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "תקרת הפקדה שנתית של 83,641 שקלים לאדם (נכון לשנת 2026)",
+      "checked": "2026-10-22"
+    }
+  ]
+}
