@@ -62,6 +62,17 @@ describe("extract-sources: fixture Source lines", () => {
     expect(at("ניכוי מריבית, מדיבידנד ומרווחים מסוימים, the 2016 amendment (KT 7653)").title_he).toBe("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005");
   });
 
+  it("a first passage whose quote stands in parentheses names only its own place; the later passages are their own sources (2026-11-12)", () => {
+    const res = extractFromLine('[חוזר מס הכנסה 1/2020](https://www.gov.il/x/hoz1-2020.pdf), p.5, s.3 ("הכנסה מריבית תחויב במס"); p.6, s.4.3.3 "ניכוי במקור" · checked 2026-11-12 · primary', ctx());
+    expect(res.sources.map((x) => x.locator)).toEqual(["p.5, s.3", "p.6, s.4.3.3"]);
+    expect(res.sources.map((x) => x.page)).toEqual([5, 6]);
+    expect(res.sources.map((x) => x.quote)).toEqual(["הכנסה מריבית תחויב במס", "ניכוי במקור"]);
+  });
+
+  it("a quote in parentheses that holds a parenthesis of its own leaves no words in the locator (2026-11-12)", () => {
+    expect(cleanLocator('p.155, s.92(א)(3) ("רווח הון כאמור בסעיף 91(ד) יקוזז תחילה כנגד רווח הון מחוץ לישראל")')).toBe("p.155, s.92(א)(3)");
+  });
+
   it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
     const line =
       '[Irish Revenue, Tax and Duty Manual Part 27-01a-02](https://www.revenue.ie/x/27-01a-02.pdf), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system"; p.11, s.4.2.8 "an appropriate non-resident declaration" · checked 2026-10-26 · primary (foreign tax authority)';

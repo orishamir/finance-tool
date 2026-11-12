@@ -214,7 +214,9 @@ function isLocatorRemark(part: string): boolean {
 export function cleanLocator(text: string): string {
   // Hebrew abbreviations such as תשע"ה carry a quote mark that is not a quotation; mask it while cutting.
   let t = text.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "\uE000");
-  t = t.replace(/\(\s*["“״][^)]*\)/g, " ");
+  // a quote in parentheses goes whole, up to its closing mark: one that holds a parenthesis of its own ("…לפי סעיף 91(ד)…") used to
+  // end at that parenthesis and leave its last words in the locator
+  t = t.replace(/\(\s*["“״][^"”״]*["”״]\s*\)/g, " ").replace(/\(\s*["“״][^)]*\)/g, " ");
   const q = t.search(/["“]/);
   if (q >= 0) t = t.slice(0, q);
   t = t.replace(/\uE000/g, '"');
@@ -509,7 +511,9 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
     const lead = quoteApart ? passages.slice(0, firstQuoted) : covered;
     // a lead before a quoted passage takes its locator from its own text alone; with no place of its own it is no source
-    const leadLocator = quoteApart ? cleanLocator(lead.join("; ")) : locator;
+    // (so does a first passage whose quote stands in parentheses: the locator of the whole text would name every later passage too,
+    // each of which is a source of its own below)
+    const leadLocator = quoteApart || lead.length < passages.length ? cleanLocator(lead.join("; ")) : locator;
     locate(entry, leadLocator, lead.join("; "));
     if (note) {
       if (note.length <= 120) entry.qualifier = note;
