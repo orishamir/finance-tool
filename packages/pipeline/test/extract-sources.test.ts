@@ -121,6 +121,16 @@ describe("extract-sources: fixture Source lines", () => {
     expect(by("example.org/b").quote).toBeUndefined();
     expect(by("example.org/c").quote).toBeUndefined();
   });
+  it("a source with no date of its own takes the next date after it on the line, not the line's last (2026-11-12)", () => {
+    // the trailer "· checked … · primary" closes the run of links before it; a source added at the end with a newer date re-dates nothing
+    const line =
+      "[A](https://www.gov.il/a.pdf), p.1; [B](https://www.gov.il/b.pdf), p.2 · checked 2026-10-22 · primary; [C](https://www.boi.org.il/c.pdf), p.3 · checked 2026-11-12 · primary";
+    const dates = Object.fromEntries(extractFromLine(line, ctx()).sources.map((s) => [s.title, s.checked]));
+    expect(dates).toEqual({ A: "2026-10-22", B: "2026-10-22", C: "2026-11-12" });
+    // a link after the last date on the line still takes that last date
+    const tail = Object.fromEntries(extractFromLine("[A](https://www.gov.il/a.pdf), p.1 · checked 2026-10-22 · primary; [B](https://www.gov.il/b.pdf), p.2", ctx()).sources.map((s) => [s.title, s.checked]));
+    expect(tail).toEqual({ A: "2026-10-22", B: "2026-10-22" });
+  });
 });
 
 describe("extract-sources: parts", () => {
