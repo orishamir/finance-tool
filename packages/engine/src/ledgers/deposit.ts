@@ -24,9 +24,16 @@ export interface DepositInput {
      */
     balanceCeiling?: number;
     /**
-     * F-41: the interval of the deposit's exit points in months (the record's `exit_points.every_months`, BANK-14, BANK-27).
-     * Absent when the deposit has no exit points, or has some at no fixed interval the record holds. Read only on the last
-     * month, to choose between the flags G-16 and G-34; it changes no amount.
+     * F-41: a piece's age in months at its first exit point (the record's `exit_points.first_after_months`, BANK-14, BANK-27).
+     * Absent when the deposit has no exit points or the record does not say when the first one falls: the run then knows no
+     * exit point, whatever the interval. Read only on the last month, to choose between the flags G-16 and G-34; it changes
+     * no amount. Anything but a positive whole number is taken as absent.
+     */
+    exitFirstMonth?: number;
+    /**
+     * F-41: the interval between exit points in months, after the first (the record's `exit_points.every_months`). Without
+     * it the first exit point is the only one the run knows. Read only with `exitFirstMonth`; anything but a positive whole
+     * number is taken as absent.
      */
     exitEveryMonths?: number;
   };
@@ -39,6 +46,18 @@ interface OpenDeposit {
   baseIndex: number;
   /** First month the deposit earns. */
   startMonth: number;
+}
+
+/** A count of months the run can use: a positive whole number, or nothing. */
+const wholeMonths = (x: number | undefined): number | undefined => (x !== undefined && Number.isInteger(x) && x > 0 ? x : undefined);
+
+/**
+ * F-41: whether an age in months falls on an exit point: the first one, or one a whole number of intervals after it. With no
+ * first there is none; with no interval the first is the only one.
+ */
+function onExitPoint(age: number, first: number | undefined, every: number | undefined): boolean {
+  if (first === undefined || age < first) return false;
+  return age === first || (every !== undefined && (age - first) % every === 0);
 }
 
 /**
@@ -60,6 +79,9 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const C = contributions(goal, I);
   const linked = deposit.linkage === "cpi";
   const isCurrentAccount = deposit.kind === "current-account";
+  // F-41: the exit points, as positive whole months or not at all; without a first exit point the run knows none
+  const exitFirst = wholeMonths(deposit.exitFirstMonth);
+  const exitEvery = wholeMonths(deposit.exitEveryMonths);
   const tally = new Tally();
 
   // The bank withholds at maturity (TXI-07, TXI-08): 25% of the real interest on a fully linked deposit with
@@ -109,17 +131,19 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
     }
     for (const d of due) {
       // The piece's age on month m: the months it has earned, its start month included. It matures when its age is n
-      // (startMonth + n - 1 === m), and it is at an exit point when its age is a whole multiple of the exit interval.
+      // (startMonth + n - 1 === m), and it is at an exit point when its age is the first exit point's, or past it by a whole
+      // number of intervals.
       const months = m - d.startMonth + 1;
       // G-16: a piece still inside its term on the exit day is priced as if it matured that day. The records hold whether a break
       // is allowed, not what it pays, so the break is not priced; the run says so on the number.
       // G-34: a piece at one of its exit points can be taken out that day without a break (BANK-27), so it is not stuck. Its amount
       // is still interest to date, and the records do not hold what an exit point pays (some products pay a share of the
       // interest there), so the run says that instead. A deposit's exit points count from the deposit's own start. A savings
-      // plan's may count from the plan's start (BPN-10) or from the instalment's, and the record does not say which: a plan's
-      // piece is at an exit point only when both counts agree, the run's first month being the plan's.
-      const every = deposit.exitEveryMonths;
-      const atExitPoint = every !== undefined && months % every === 0 && (deposit.kind !== "savings-plan" || m % every === 0);
+      // plan's may count from the plan's start (BPN-10) or from each instalment's, and the record does not say which: a plan's
+      // piece is at an exit point only when both counts agree. The plan's age on month m is ((m - 1) % n) + 1, because the
+      // run renews a plan every n months from its first month; the piece's own age is `months`.
+      const atExitPoint =
+        onExitPoint(months, exitFirst, exitEvery) && (deposit.kind !== "savings-plan" || onExitPoint(((m - 1) % n) + 1, exitFirst, exitEvery));
       if (months < n) tally.flag(atExitPoint ? "G-34" : "G-16");
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
       const interest = depositInterest(indexed * earning, deposit.rate, months);
