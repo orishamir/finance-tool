@@ -30,7 +30,7 @@ export interface PeriodCard {
   started: boolean;
   /** Its length in months, where it ends (F-110). */
   length: SiteValue | null;
-  /** The months from today's month to its end, for the current period where it ends (F-110). */
+  /** The months from the device's month to its end, for the current period where it ends (F-110). */
   left: SiteValue | null;
   rows: PeriodRow[];
 }
@@ -114,8 +114,10 @@ export interface CurveSeries {
 /**
  * One curve of F-112 for the periods (by their first month) whose prices give it the same series: the cost of one action of an amount
  * (`action`, on a side where a sale is priced apart) or the yearly cost of holding a value (`held`). `amounts` are the amounts it is read
- * at, in shekels: 0, each mark on it, and its axis end; between two of them every cost is a straight line. The costs are plain numbers of
- * F-112 resting on `inputs` (the figures of its fees and the rates of F-84 that convert a bound in another currency), named beside it.
+ * at, in shekels: its start, each mark on it, and its axis end. The start, amount 0, costs what the smallest action or value does: a
+ * minimum, a sum per action and the sums per period are charged in full there, so the curve starts at them, not at nothing (F-112).
+ * Every cost bends only at a mark (a minimum's or a maximum's), so between two amounts it is a straight line. The costs are plain numbers
+ * of F-112 resting on `inputs` (the figures of its fees and the rates of F-84 that convert a bound in another currency), named beside it.
  */
 export interface Curve {
   on: "action" | "held";
@@ -182,7 +184,9 @@ function actionCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], act
   const on = marks.filter((m) => onActionCurve(r, p, m, action, side));
   if (!on.length) return null;
   const at = monthKey(p.from);
-  const currencies = [...new Set(r.fees.flatMap((_, i) => [p.prices[i]!.price, p.prices[i]!.sale].flatMap((x) => (x?.kind === "action" && x.currency && x.currency !== "ILS" ? [x.currency] : []))))];
+  // a currency needs its rate only where a bound is typed in it (F-112)
+  const bounded = (x: DealPeriod["prices"][number]["price"] | undefined) => x?.kind === "action" && (x.min !== undefined || x.max !== undefined) && x.currency && x.currency !== "ILS" ? [x.currency] : [];
+  const currencies = [...new Set(r.fees.flatMap((_, i) => [p.prices[i]!.price, p.prices[i]!.sale].flatMap(bounded)))];
   const rates: Record<string, number> = {};
   const rateValues: SiteValue[] = [];
   for (const c of currencies) {

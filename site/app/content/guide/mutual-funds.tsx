@@ -7,7 +7,7 @@ import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import { Num, RulesLine, Term } from "../../components/provenance";
 import { Callout, FixedTable, ProseList, Sentence } from "../../components/kit";
-import { INDICES_PATH } from "../../lib/invest";
+import { INDICES_PATH } from "../../lib/site-paths";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import type { ContentProps } from "./types";

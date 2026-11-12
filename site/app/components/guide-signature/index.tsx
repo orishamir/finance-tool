@@ -5,6 +5,7 @@
 // already answers what the timeline would, with more of the person's money in it, has no fold (D50).
 // Builder G2 adds its visuals to `signatureRegistry` (and its data builders to `builders` in lib/guide-signature.server.ts).
 import type { ComponentType, ReactNode } from "react";
+import { guidePath } from "../../lib/site-paths";
 import { guideSignature as copy } from "../../copy";
 import type { SignatureData } from "../../lib/guide-signature";
 import { Card, Disclosure, TextLink } from "../kit";
@@ -50,7 +51,7 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
       {page.altId ? (
         <p className="text-sm max-w-measure">
           {copy.altBefore} <span className="font-medium">{page.alt}</span>. {page.altLine}{" "}
-          <TextLink to={`/guide/${page.altId}`}>
+          <TextLink to={guidePath(page.altId)}>
             {copy.altLinkBefore} {page.alt}
           </TextLink>
         </p>

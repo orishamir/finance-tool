@@ -6,7 +6,7 @@ import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { Cost, Kinds, Safety, Tax, Trade, What, termIds } from "../content/guide/mutual-funds";
 import { RelatedProducts } from "../components/guide/sections";
 import { ProseGuide } from "../components/guide/prose-guide";
-import { INDICES_PATH } from "../lib/invest";
+import { guidePath, INDICES_PATH } from "../lib/site-paths";
 
 const ruleIds = [
   "MF-01", "MF-02", "MF-03", "MF-04", "MF-05", "MF-07", "MF-09", "MF-10", "MF-11", "MF-13", "MF-15", "MF-16", "MF-17", "MF-20", "MF-21", "MF-27",
@@ -25,7 +25,7 @@ export async function loader() {
     const names = products.find((p) => p.id === id)?.names.he ?? [id];
     return (id === "money-market-fund-daily" ? names[1] : names[0]) ?? id;
   };
-  const related = relatedIds.map((id) => ({ href: `/guide/${id}`, label: nameOf(id) }));
+  const related = relatedIds.map((id) => ({ href: guidePath(id), label: nameOf(id) }));
   return { ...proseGuideData({ ruleIds, termIds, product: "brokerage-account" }), related };
 }
 

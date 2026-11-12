@@ -72,12 +72,12 @@
       "value": 0,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, ק\"ת 7131, p.1262 (file p.6), reg. 4: a keren hishtalmut or an IRA may charge from the balance \"בשיעור שלא יעלה על 2% לשנה\"",
-        "publisher": "Reshumot (Ministry of Justice)",
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.37, chapter 1 sign ב, direction ג.1: the deposit-fee row is 0% \"למעט במקרים בהם לא ניתן לגבות דמי ניהול מהפקדה כגון: קופה בניהול אישי, קרן השתלמות, קופה לפי הוצאות בפועל\"",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-11-07",
+      "checked": "2026-10-26",
       "effective_from": "2013-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -87,7 +87,7 @@
         "IRA-17"
       ],
       "state": "sourced",
-      "notes": "Reading, not a quoted figure: regulation 4 authorises a fee from the balance only and has no fee-from-deposits item, and law s.32(א) forbids any charge not allowed (PF-06). No IRA fund reports a deposit fee in Gemel-Net 202609 (IRA-17)."
+      "notes": "Regulation 4 authorises a fee from the balance only and has no fee-from-deposits item, and law s.32(א) forbids any charge not allowed. The regulator states it: its statement circular shows the deposit-fee row as 0% where no deposit fee may be charged, an IRA (קופה בניהול אישי) among them (circular 2020-9-22, p.37; PF-06). No IRA fund reports a deposit fee in Gemel-Net 202609 (IRA-17)."
     },
     "trade": {
       "value": null,

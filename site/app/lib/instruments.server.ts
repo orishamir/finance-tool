@@ -3,6 +3,7 @@
 // `InstrumentTerms`. Server-only. Nothing here holds a rate or a term: every number comes from a record under
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { invest as investCopy } from "../copy";
+import { exposurePath, guidePath } from "./site-paths";
 import { fundOf, gapListOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
 import {
@@ -61,7 +62,7 @@ export function exposureFolds(): Record<string, string> {
 /** Where a link to an exposure goes: its own page, or the page of the security it is. */
 export function exposureHref(id: string): string {
   const into = exposureFolds()[id];
-  return into ? `/guide/${into}` : `/exposure/${id}`;
+  return into ? guidePath(into) : exposurePath(id);
 }
 
 /** data/catalog/: the institution-facing names (data-schema 3.10). */

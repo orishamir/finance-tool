@@ -4,6 +4,7 @@
 // search (at most about twenty tracks of a product). The order is in the address (`?sort=`), read once the page is in the browser, as on
 // the tracks page.
 import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
+import { guidePath, trackBrowserPath } from "../../lib/site-paths";
 import { trackBrowser as t } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
 import { useAddressSort } from "../../lib/list-sort";
@@ -82,8 +83,8 @@ export function CompanyTracks({ data, product, defaults, foot }: { data: TbData;
       </div>
       {!view.noPage && (
         <p className="flex flex-wrap gap-x-6">
-          <GoLink to={`/tracks/${view.id}`}>{t.inAll(view.name)}</GoLink>
-          <GoLink to={`/guide/${view.id}`}>
+          <GoLink to={trackBrowserPath(view.id)}>{t.inAll(view.name)}</GoLink>
+          <GoLink to={guidePath(view.id)}>
             {t.count.whatIs} {view.name}
           </GoLink>
         </p>

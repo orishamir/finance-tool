@@ -1,5 +1,6 @@
 // The guide list (flows 6.4): where the money is held, what it is invested in, and the not-covered card.
 import type { ReactNode } from "react";
+import { exposurePath, guidePath } from "../lib/site-paths";
 import { Link, useLoaderData } from "react-router";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
@@ -22,15 +23,15 @@ export async function loader() {
   const exposures: ExposureItem[] = [];
   for (const e of loadExposures()) {
     const into = securities.find((x) => x.id === folds[e.id]);
-    if (!into) exposures.push({ key: e.id, name: e.names.he[0] ?? e.id, line: e.one_line_he ?? line(e.names.he[0] ?? ""), href: `/exposure/${e.id}`, kinds: [] });
+    if (!into) exposures.push({ key: e.id, name: e.names.he[0] ?? e.id, line: e.one_line_he ?? line(e.names.he[0] ?? ""), href: exposurePath(e.id), kinds: [] });
     // an exposure that a security held directly is has that security's page (makam; both kinds of government bond share one)
-    else if (!exposures.some((x) => x.key === into.id)) exposures.push({ key: into.id, name: into.names.he[0]!, line: line(into.names.he[0]!) ?? line(e.names.he[0] ?? ""), href: `/guide/${into.id}`, kinds: [] });
+    else if (!exposures.some((x) => x.key === into.id)) exposures.push({ key: into.id, name: into.names.he[0]!, line: line(into.names.he[0]!) ?? line(e.names.he[0] ?? ""), href: guidePath(into.id), kinds: [] });
   }
   // the money-market funds are one entry: a fund held as units, whose kinds each have a page
   const funds = securities.filter((x) => x.held_as === "fund_units");
   if (funds.length > 0) {
     const name = funds[0]!.names.he[0]!;
-    exposures.push({ key: "money-market-funds", name, line: line(name), href: `/guide/${funds[0]!.id}`, kinds: funds.map((f) => ({ href: `/guide/${f.id}`, label: copy.fundKinds[f.id] ?? f.names.he[0]! })) });
+    exposures.push({ key: "money-market-funds", name, line: line(name), href: guidePath(funds[0]!.id), kinds: funds.map((f) => ({ href: guidePath(f.id), label: copy.fundKinds[f.id] ?? f.names.he[0]! })) });
   }
   // a guide of its own, no product id: not an option in the comparison
   exposures.push({ key: "limited-bond-fund", name: limitedBondFund.title, line: limitedBondFund.indexLine, href: "/guide/limited-bond-fund", kinds: [] });
@@ -99,7 +100,7 @@ export default function GuideIndex() {
                 <GuideList>
                   {g.ids.map((id) => {
                     const w = data.wrappers.find((x) => x.id === id)!;
-                    return <InstrumentCard key={w.id} href={`/guide/${w.id}`} name={w.name} line={w.line} plain={w.plain} />;
+                    return <InstrumentCard key={w.id} href={guidePath(w.id)} name={w.name} line={w.line} plain={w.plain} />;
                   })}
                 </GuideList>
               </div>

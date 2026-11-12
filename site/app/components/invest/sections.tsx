@@ -1,5 +1,6 @@
 // A house on the index page: its name as a link to its page, and its record by id.
-import { brokeragePagePath, type InvestView, type ProviderInfo } from "../../lib/invest";
+import type { InvestView, ProviderInfo } from "../../lib/invest";
+import { brokeragePagePath } from "../../lib/site-paths";
 import { TextLink } from "../kit";
 
 export const providerName = (view: InvestView, id: string): ProviderInfo | undefined => view.providers.find((p) => p.id === id);

@@ -10,7 +10,7 @@ import { Button, ChoiceChips, GroupHead, KeyValueList, MonthField, Section, Segm
 import { RulesLine } from "../provenance";
 import { addStage, editPrice, removeStage, setFeeName, setSaleApart, setUntil, withCurrency, withForm, withMonths, type Side } from "./edit";
 import { PriceFigure } from "./figures";
-import { CapFigure, FeeCapBar, FeeName, PriceWords, StandingTag, StandingWords, refName } from "./words";
+import { CapCaveat, CapFigure, FeeCapBar, FeeName, PriceWords, StandingTag, StandingWords, refName } from "./words";
 
 const p = copy.panel;
 
@@ -113,14 +113,25 @@ function Stages({ fee, side, stages, forms, onFee }: { fee: Fee; side: Side; sta
   );
 }
 
-/** "מול החוק": the bar of the price now (and a later price's outline), each price's standing, and the cap's line with its rules. */
+/**
+ * "מול החוק": the bar of the price now (and a later price's outline), each price's standing, and the cap's line with its rules. A cap with
+ * a caveat judges no price (F-113): no tag, no bar, and its line says the caveat after the figure.
+ */
 function Law({ panel }: { panel: Panel }) {
   const cap = panel.cap;
   if (cap.state === "absent") return null;
   if (cap.state === "none")
     return (
       <Section title={p.law} level="card" heading="h3" className="gap-2 border-t border-border pt-4">
-        <RulesLine ids={cap.ruleIds} lead={<span>{copy.standing.tag.none}</span>} />
+        <RulesLine
+          ids={cap.ruleIds}
+          lead={
+            <span>
+              {copy.standing.tag.none}
+              <CapCaveat caveat={cap.caveat} />
+            </span>
+          }
+        />
       </Section>
     );
   const judged = panel.stages.filter((s) => s.standing.standing.judged);
@@ -152,6 +163,7 @@ function Law({ panel }: { panel: Panel }) {
           <span>
             {copy.standing.capLine}
             <CapFigure value={cap.value} />
+            <CapCaveat caveat={cap.caveat} />
           </span>
         }
       />

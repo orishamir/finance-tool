@@ -1,5 +1,6 @@
 // The track page (flows 6.12): the fund's official record and its date, what to check, and the guide link.
 import { useLoaderData } from "react-router";
+import { companyPath, feesPath, guidePath, trackBrowserPath, trackPath } from "../lib/site-paths";
 import type { Route } from "./+types/track";
 import { catalogue, companies as companiesCopy, company as companyCopy, pagePreview, r3workbench, trackBrowser, track as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
@@ -91,7 +92,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     names,
     isDefault,
     feePage,
-    others: others.map((o) => ({ fundId: o.fundId, href: `/companies/${o.companyId}/${o.fundId}` })),
+    others: others.map((o) => ({ fundId: o.fundId, href: trackPath(o.companyId, o.fundId) })),
     wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]! } : null,
     checklist,
     rules: citedRules,
@@ -131,7 +132,7 @@ export default function TrackPage() {
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
       <div className="flex flex-col gap-8">
         <PageHead
-          crumb={<Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: gershayim(track.companyName) }} current={gershayim(track.name)} />}
+          crumb={<Breadcrumb parent={{ href: companyPath(track.companyId), label: gershayim(track.companyName) }} current={gershayim(track.name)} />}
           title={<bdi>{gershayim(track.name)}</bdi>}
           marks={
             (data.isDefault || trackLabels(track).length > 0) && (
@@ -160,18 +161,18 @@ export default function TrackPage() {
         </PageHead>
         <Card>
           <dl className="flex flex-col">
-            {row(copy.labels.manager, <TextLink to={`/companies/${track.companyId}`}><bdi>{gershayim(track.companyName)}</bdi></TextLink>)}
+            {row(copy.labels.manager, <TextLink to={companyPath(track.companyId)}><bdi>{gershayim(track.companyName)}</bdi></TextLink>)}
             {row(
               copy.labels.product,
               <span className="flex flex-wrap items-center gap-x-3">
                 <bdi>{gershayim(track.classification)}</bdi>
                 {data.wrapper && (
                   <span className="flex flex-wrap items-center gap-x-3 text-sm">
-                    <TextLink look="line" to={`/guide/${data.wrapper.id}`}>
+                    <TextLink look="line" to={guidePath(data.wrapper.id)}>
                       {copy.toGuide} {data.wrapper.name}
                       <IconDrillIn size={16} />
                     </TextLink>
-                    <TextLink look="line" to={`/tracks/${data.wrapper.id}`}>
+                    <TextLink look="line" to={trackBrowserPath(data.wrapper.id)}>
                       {trackBrowser.guideLink.before}
                       {data.wrapper.name}
                       {trackBrowser.guideLink.after}
@@ -191,7 +192,7 @@ export default function TrackPage() {
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>
           {data.feePage && <div className="pt-1 border-t border-border">
-            <TextLink look="line" to={`/fees?track=${track.fundId}`}>
+            <TextLink look="line" to={feesPath({ track: track.fundId })}>
               {r3workbench.links.fees}
               <IconDrillIn size={16} />
             </TextLink>

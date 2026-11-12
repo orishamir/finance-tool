@@ -4,6 +4,7 @@
 // the claim typed). From 1024 px the name stands at the start with the search at the end, and the three groups stand side by side; under
 // it everything is one column, the groups' rows in one box each, not cards in cards.
 import type { ReactNode } from "react";
+import { guidePath, rulesPath } from "../../lib/site-paths";
 import { companies, depositBrowser, home as copy, invest, knowledgeEntry, rulesFront, site, trackBrowser } from "../../copy";
 import { PageSearchField } from "../shell";
 import { Num } from "../provenance";
@@ -25,7 +26,7 @@ export interface HomeDeposit {
 export const HOME_CLAIMS = rulesFront.ask.examples.slice(0, 2);
 
 /** The rules page with a claim typed in its field (`?q=`), the address its own example buttons leave. */
-export const claimHref = (claim: string): string => `/rules${filtersToSearch({ ...emptyFilters, q: claim })}`;
+export const claimHref = (claim: string): string => rulesPath({ search: filtersToSearch({ ...emptyFilters, q: claim }) });
 
 /** "הריבית הקבועה הגבוהה לשנה על 10,000 ₪: 3.25% בבנק ירושלים"; with no pick, what the page answers, in words. */
 export function DepositLine({ deposit }: { deposit: HomeDeposit | null }) {
@@ -84,7 +85,7 @@ export function HomeBody({ guideTypes, deposit }: { guideTypes: { id: string; na
             <ChipList
               heading={u.title}
               headingHidden
-              items={guideTypes.map((t) => ({ id: t.id, label: t.name, href: `/guide/${t.id}` }))}
+              items={guideTypes.map((t) => ({ id: t.id, label: t.name, href: guidePath(t.id) }))}
               value={null}
               footer={
                 <GoLink to={u.href} className="self-start">

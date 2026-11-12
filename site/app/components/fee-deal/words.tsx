@@ -131,7 +131,7 @@ export function StandingTag({ standing, from }: { standing: StandingView; from?:
 /**
  * What one price's standing says, after the price: below the cap, its share ("שהם 57% מהתקרה"); at it, that it is the most that may be
  * charged; above it, that the law allows less and the typed price stays; not judged, why. `binds` says whom a cap binds where it binds
- * some providers only.
+ * some providers only. A cap with a caveat says nothing per price: the cap's line says it once, in the caveat's words (`CapCaveat`).
  */
 export function StandingWords({ standing, binds }: { standing: StandingView; binds?: string }) {
   const s = standing.standing;
@@ -175,6 +175,12 @@ export function FeeCapBar({ kind, now, later, cap, className }: { kind: FeeKindI
       className={className}
     />
   );
+}
+
+/** What a cap that holds only in a case the deal does not state says, after the cap's figure or "אין תקרה בחוק" (F-113); none without one. */
+export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
+  const words = caveat ? copy.standing.caveat[caveat] : undefined;
+  return words ? <>. {words}</> : null;
 }
 
 /** A cap's figure with its unit's words ("1.05% בשנה"), as the guide writes a cap. */

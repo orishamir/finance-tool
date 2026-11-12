@@ -7,7 +7,8 @@
 import { groupPrices, invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import { isCustomFund } from "../../lib/custom-entries";
-import { accountSum, asideLines, brokeragePagePath, gapListFor, type InvestView } from "../../lib/invest";
+import { accountSum, asideLines, gapListFor, type InvestView } from "../../lib/invest";
+import { brokeragePagePath } from "../../lib/site-paths";
 import { pickableGroups } from "../../lib/group-pick";
 import { brokerLabels } from "../../lib/labels";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
