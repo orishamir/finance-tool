@@ -931,7 +931,7 @@ export const flags: Record<string, string> = {
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה, ועוד לא נבדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
   "G-16": "בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה, ולכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured and prices no break; a piece at an exit point takes G-34 instead (method G-16)
-  "G-34": "בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים, ביום שהוא תחנת יציאה שלו. בתחנת יציאה אפשר למשוך את הכסף בלי לשבור את הפיקדון. החישוב מחשיב את כל הריבית שנצברה עד אותו יום. יש פיקדונות שמשלמים בתחנת יציאה רק חלק מהריבית, ולכן הסכום כאן יכול להיות גבוה ממה שמקבלים באותו יום.", // F-41: a piece at an exit point on the last day is priced with interest to date; the records do not hold what an exit point pays (method G-34)
+  "G-34": "הסכום כאן יכול להיות גבוה ממה שמקבלים באותו יום. בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים, ביום שהוא תחנת יציאה שלו. בתחנת יציאה אפשר למשוך את הכסף בלי לשבור את הפיקדון, ויש בנקים שדורשים הודעה מראש. החישוב מחשיב את כל הריבית שנצברה עד אותו יום, ויש פיקדונות שמשלמים בתחנת יציאה רק חלק ממנה.", // F-41: a piece at an exit point on the last day is priced with interest to date; without a break there (BANK-27), some on notice (BANK-38); what an exit point pays is not in the records (BANK OQ20, method G-34)
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
   "PF-13": "בחישוב, ההנחה בדמי הניהול נמשכת {PF-13:min_discount_years}, התקופה הקצרה ביותר שחוזר רשות שוק ההון מתיר, גם אם החברה כתבה תקופה קצרה יותר.",
   // D87, now the cautious reading (guidelines/research.md step 6): one deposit and no more, the run ends the discount after six months (PF OQ18)
@@ -1448,7 +1448,7 @@ export const depositBrowser = {
   columns: { bank: "הבנק והפיקדון", rate: "ריבית בשנה", amount: "סכום להפקדה", access: "גישה לכסף לפני הסוף", interestOn: "על ", beforeTax: "לפני המס על הריבית" },
   /** The phone's sort, where there are no column heads to press. */
   sortPhone: { rate: "ריבית גבוהה קודם", min: "סכום נמוך קודם" },
-  access: { every: "יציאה כל ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
+  access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
   /** "מ־1,000 ₪", "1,000 עד 50,000 ₪". */
@@ -1977,7 +1977,16 @@ export const r4catalogue = {
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits
   breakAtExits: "אין אפשרות שבירה; אפשר למשוך רק בתחנות היציאה",
   breakDisclosure: "הבנק כותב:",
-  exits: { every: "כל", none: "אין", some: "יש", someCard: "יש; המועדים בתנאי הבנק" },
+  exits: {
+    every: "כל",
+    none: "אין",
+    some: "יש",
+    someCard: "יש; המועדים בתנאי הבנק",
+    // a first exit point later than the interval after it (Leumi's prime plan: "בתום 6 חודשים, וכל 3 חודשים לאחר מכן")
+    afterThen: (first: string, every: string) => `אחרי ${first}, ואז כל ${every}`,
+    // a first exit point with no interval in the record
+    firstAfter: (first: string) => `הראשונה אחרי ${first}`,
+  },
   // a deposit's kind (`variant`) as a label chip on the bank page: what sets it apart from the bank's plain deposit
   kindLabels: {
     "deposit-campaign": { text: "מבצע", explain: "בטבלת הריביות של הבנק הפיקדון הזה מסומן כמבצע. מה צריך כדי לקבל את הריבית שלו כתוב בתנאי הבנק." },

@@ -6,7 +6,7 @@
 import { Fragment, useId, useMemo, useState, type ReactNode } from "react";
 import { companyPage as w, r4catalogue as copy } from "../../copy";
 import { breakKey, kindGroups, lineAt, rangeKey, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
-import { depositLabels, exitWords, termWords } from "../../lib/deposit-kind";
+import { depositLabels, exitsText, termWords } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { IconAlert, IconFile } from "../icons";
@@ -82,7 +82,7 @@ function Rate({ p, inline }: { p: ProductRowData; inline?: boolean }) {
   );
 }
 
-const exitsText = (p: ProductRowData) => (p.exitPoints.exists && !p.exitPoints.everyMonths && p.conditions ? copy.exits.someCard : exitWords(p.exitPoints.exists, p.exitPoints.everyMonths));
+const exitsOf = (p: ProductRowData) => exitsText(p.exitPoints, p.conditions);
 const breakText = (p: ProductRowData) => (breakKey(p) === "atExits" ? copy.breakAtExits : copy.breakWord[p.breakTerms.penalty]);
 const renewText = (p: ProductRowData) => (p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? `${copy.autoRenewWord.upTo} ${fmt.number(p.autoRenew.maxRenewals)} ${copy.autoRenewWord.times}` : copy.autoRenewWord.yes) : copy.autoRenewWord.no);
 const taxWord = (p: ProductRowData) => (p.taxBucket.value === "unlinked_15" ? copy.tax.unlinked : p.taxBucket.value === "linked_25" ? copy.tax.linked : undefined);
@@ -216,7 +216,7 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
   const say = w.deposits.say;
   const renew = p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? say.renew.upTo(fmt.number(p.autoRenew.maxRenewals)) : say.renew.yes) : say.renew.no;
   const brk = products.every((x) => breakKey(x) === "atExits") ? copy.breakAtExits : copy.breakWord[p.breakTerms.penalty];
-  const first = [say.rate, shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? say.and(brk, renew) : shared.breakTerms ? `${brk}.` : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsText(p)) : null].filter(Boolean).join(" ");
+  const first = [say.rate, shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? say.and(brk, renew) : shared.breakTerms ? `${brk}.` : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsOf(p)) : null].filter(Boolean).join(" ");
   const rules = [...(shared.tax ? (p.taxBucket.rule_ids ?? []) : []), ...(shared.taxByLinkage ? (taxPerLinkage(products) ?? []).flatMap((x) => x.taxBucket.rule_ids ?? []) : []), ...(shared.breakTerms ? p.breakTerms.rules : []), "BANK-13"];
   const shown = [...new Set(rules)].filter((r) => known.has(r));
   const items: { key: string; text: ReactNode }[] = [
@@ -276,7 +276,7 @@ function PhoneRow({ row, shared, known, bands, amount, fromOnly }: { row: TableR
   const [open, setOpen] = useState(false);
   const detail = rowDetail(row, shared, known);
   const id = useId();
-  const facts = [!shared.rateType && (p.rateType === "variable" ? w.deposits.variable : w.deposits.fixed), !shared.exits && `${copy.labels.exits}: ${exitsText(p)}`].filter(Boolean);
+  const facts = [!shared.rateType && (p.rateType === "variable" ? w.deposits.variable : w.deposits.fixed), !shared.exits && `${copy.labels.exits}: ${exitsOf(p)}`].filter(Boolean);
   const tiles = bands
     ? bands.flatMap((b) => {
         const x = lineAt(row, b.key);
@@ -329,7 +329,7 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
     ...(!shared.rateType ? [<RateType p={p} />] : []),
     ...(amountColumn ? [<Range min={p.amountMin} max={p.amountMax} />] : []),
     ...(bands ? bands.map((b) => { const x = lineAt(row, b.key); return x ? <Rate p={x} /> : <span className={muted}>—</span>; }) : [<Rate p={p} />]),
-    ...(!shared.exits ? [exitsText(p)] : []),
+    ...(!shared.exits ? [exitsOf(p)] : []),
   ];
   const tableRow = (row: TableRow): ProductRow => {
     const p = row.lines[0]!;

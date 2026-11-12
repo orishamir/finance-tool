@@ -37,10 +37,13 @@ describe("flag slots", () => {
     expect(flags["G-16"]).toContain("שבירת פיקדון");
   });
 
-  it("the exit-point flag says the money can come out and that the number may still run high (G-34, 2026-11-12)", () => {
-    // the run knows the day is an exit point, not what the exit point pays: the sentence holds whether it pays all the interest or a share
+  it("the exit-point flag opens with the number running high, then says the money can come out, on notice at some banks (G-34, 2026-11-12)", () => {
+    // conclusion first (guidelines/wording.md); the run knows the day is an exit point, not what it pays (BANK OQ20) nor the notice it
+    // needs (BANK-38): the sentence holds whether the exit point pays all the interest or a share, with notice or without
+    expect(flags["G-34"]).toMatch(/^הסכום כאן יכול להיות גבוה ממה שמקבלים באותו יום\./);
     expect(flags["G-34"]).toContain("בלי לשבור את הפיקדון");
-    expect(flags["G-34"]).toContain("רק חלק מהריבית");
-    expect(flags["G-34"]).toContain("יכול להיות גבוה");
+    expect(flags["G-34"]).toContain("הודעה מראש");
+    expect(flags["G-34"]).toContain("רק חלק ממנה");
+    expect(flags["G-34"]).not.toContain("אפשר למשוך את הכסף.");
   });
 });
