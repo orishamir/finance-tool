@@ -931,7 +931,7 @@ export const flags: Record<string, string> = {
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה, ועוד לא נבדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
   "G-16": "בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה, ולכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured and prices no break; a piece at an exit point takes G-34 instead (method G-16)
-  "G-34": "הסכום כאן יכול להיות גבוה ממה שמקבלים באותו יום. בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים, ביום שהוא תחנת יציאה שלו. בתחנת יציאה אפשר למשוך את הכסף בלי לשבור את הפיקדון, ויש בנקים שדורשים הודעה מראש. החישוב מחשיב את כל הריבית שנצברה עד אותו יום, ויש פיקדונות שמשלמים בתחנת יציאה רק חלק ממנה.", // F-41: a piece at an exit point on the last day is priced with interest to date; without a break there (BANK-27), some on notice (BANK-38); what an exit point pays is not in the records (BANK OQ20, method G-34)
+  "G-34": "הסכום שמקבלים באותו יום יכול להיות שונה מהסכום כאן. בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים, ובאותו יום יש לו תחנת יציאה: מועד שבו אפשר למשוך את הכסף בלי לשבור את הפיקדון. החישוב מניח שמקבלים בתחנת היציאה את כל הריבית שנצברה, אבל מה משלמים בה, ואם צריך להודיע מראש, קובע כל בנק בתנאי הפיקדון.", // F-41: a piece at an exit point on the last day is priced with interest to date; it can be withdrawn there without a break (BANK-27); what an exit point pays and the notice it needs are each product's terms, not in the records, and a product may pay less or more (BANK OQ20, method G-34)
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
   "PF-13": "בחישוב, ההנחה בדמי הניהול נמשכת {PF-13:min_discount_years}, התקופה הקצרה ביותר שחוזר רשות שוק ההון מתיר, גם אם החברה כתבה תקופה קצרה יותר.",
   // D87, now the cautious reading (guidelines/research.md step 6): one deposit and no more, the run ends the discount after six months (PF OQ18)
@@ -2000,7 +2000,16 @@ export const r4catalogue = {
   /** The record's own conditions (`conditions_he`), on its card. */
   conditionsLead: "בתנאי הבנק:",
   // a deposit's kind on a sheet line, where its name repeats at the bank and its table prints no code (F-104)
-  depositKind: { fixed: "ריבית קבועה", variable: "ריבית משתנה", cpi: "צמוד למדד", fx: "צמוד למטבע חוץ", exits: "תחנת יציאה" },
+  depositKind: {
+    fixed: "ריבית קבועה",
+    variable: "ריבית משתנה",
+    cpi: "צמוד למדד",
+    fx: "צמוד למטבע חוץ",
+    exits: "תחנת יציאה",
+    // a first exit point with no interval in the record, and exit points whose timing the record does not give
+    exitFirstAfter: (first: string) => `תחנת יציאה ראשונה אחרי ${first}`,
+    exitsSome: "עם תחנות יציאה",
+  },
   autoRenewWord: { yes: "כן", no: "לא", upTo: "עד", times: "פעמים" },
   currentConditions: "תנאי הריבית, כפי שהבנק כותב",
   notAnOffer: "הריבית המוצעת היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
