@@ -198,16 +198,35 @@ describe("templates", () => {
     expect(templateOf({ ...account(), held: undefined }, "house:leumi", data, TODAY)?.left).toEqual(leumi.holdings.israel!.left.map((l) => ({ line: l.lineId, why: l.why })));
     const abroadOnly = data.houses.find((x) => !x.holdings.israel && x.holdings.abroad);
     if (abroadOnly) expect(templateOf({ ...account(), held: undefined }, `house:${abroadOnly.id}`, data, TODAY)?.left).toEqual([{ why: "no-holding" }]);
-    // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out
+    // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out; a figure of zero
+    // fills nothing and is not left out
     for (const t of data.tracks.filter((x) => x.wrapperId === "keren-hishtalmut").slice(0, 20)) {
       const deal = newDeal("keren-hishtalmut");
       const filled = fillDeal(deal, `track:${t.id}`, data, TODAY)!;
       const out = templateOf(deal, `track:${t.id}`, data, TODAY)!.left;
-      expect(out.length + filled.fees.length, `track ${t.id}`).toBe(2);
+      const zeros = [t.b, t.d].filter((c) => c.value === 0).length;
+      expect(out.length + filled.fees.length + zeros, `track ${t.id}`).toBe(2);
     }
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
     expect(templateOf(newDeal("keren-hishtalmut"), `track:${t.id}`, data, TODAY)).toBeNull();
     expect(templateOf(account(), "nothing", data, TODAY)).toBeNull();
+  });
+  it("fills nothing for a track's fee of zero and lists nothing left out for it; a fee above zero fills as given", () => {
+    const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa" && typeof x.b.value === "number" && x.b.value > 0)!;
+    const free = { ...t, id: -1, d: { ...t.d, value: 0 } };
+    const paid = { ...t, id: -2, d: { ...t.d, value: 0.5 } };
+    const freeAll = { ...t, id: -3, b: { ...t.b, value: 0 }, d: { ...t.d, value: 0 } };
+    const withThem = { ...data, tracks: [...data.tracks, free, paid, freeAll] };
+    const deal = newDeal("kupat-gemel-lehashkaa");
+    const a = templateOf(deal, "track:-1", withThem, TODAY)!;
+    expect(a.fees.map((f) => f.kind)).toEqual(["balance"]);
+    expect(a.left).toEqual([]);
+    expect(dealFromTemplate(deal, "track:-1", withThem, TODAY)!.fees.map((f) => f.kind)).toEqual(["balance"]);
+    const b = templateOf(deal, "track:-2", withThem, TODAY)!;
+    expect(b.fees.map((f) => f.kind)).toEqual(["balance", "deposit"]);
+    expect(b.fees[1]!.stages[0]!.price).toMatchObject({ form: "action", rate: { v: 0.5 } });
+    expect(b.left).toEqual([]);
+    expect(templateOf(deal, "track:-3", withThem, TODAY)).toMatchObject({ fees: [], left: [] });
   });
   it("opens a new deal from a track, its yearly fee charged each month, both figures sourced", () => {
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;

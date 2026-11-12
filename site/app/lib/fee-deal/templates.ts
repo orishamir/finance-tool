@@ -239,19 +239,22 @@ export type LeftOut = { line: string; why: LeftWhy } | { why: "no-holding" } | {
 
 /**
  * A regulated track as a template (CMA averages, F-68's source): its yearly fee on the savings, charged each month (F-15), and its fee on
- * each deposit; a deposit fee the product may not charge (PF-06) and a fee the regulator's data has no figure for fill nothing and are
- * left out, with why.
+ * each deposit. A fee the data gives as exactly zero fills nothing and is not left out: a price of zero charges nothing (F-110), so the
+ * deal without it is the same deal. A deposit fee the product may not charge (PF-06) and a fee the regulator's data has no figure for
+ * fill nothing and are left out, with why.
  */
 function trackTemplate(track: TrackLite, data: Pick<FeesData, "templates">, today: string): { fees: TemplateFee[]; left: LeftOut[] } {
   const v = trackFees(track, data, today);
+  if (!v) return { fees: [], left: [{ fee: "balance", why: "no-value" }, { fee: "deposit", why: "no-value" }] };
   const num = (x: SiteValue): Num => ({ v: x.value as number, src: sourcedOf(x) });
+  const known = (x: SiteValue): x is SiteValue & { value: number } => typeof x.value === "number" && x.value >= 0;
   const fees: TemplateFee[] = [];
   const left: LeftOut[] = [];
-  if (v && typeof v.balance.value === "number" && v.balance.value >= 0) fees.push({ kind: "balance", stages: [{ price: { form: "held", rate: num(v.balance), per: 12, every: 1 } }] });
-  else left.push({ fee: "balance", why: "no-value" });
-  if (v && depositFeeNoneByRule(v.deposit)) left.push({ fee: "deposit", why: "none-by-rule" });
-  else if (v && typeof v.deposit.value === "number" && v.deposit.value >= 0) fees.push({ kind: "deposit", stages: [{ price: { form: "action", rate: num(v.deposit) } }] });
-  else left.push({ fee: "deposit", why: "no-value" });
+  if (!known(v.balance)) left.push({ fee: "balance", why: "no-value" });
+  else if (v.balance.value > 0) fees.push({ kind: "balance", stages: [{ price: { form: "held", rate: num(v.balance), per: 12, every: 1 } }] });
+  if (depositFeeNoneByRule(v.deposit)) left.push({ fee: "deposit", why: "none-by-rule" });
+  else if (!known(v.deposit)) left.push({ fee: "deposit", why: "no-value" });
+  else if (v.deposit.value > 0) fees.push({ kind: "deposit", stages: [{ price: { form: "action", rate: num(v.deposit) } }] });
   return { fees, left };
 }
 
