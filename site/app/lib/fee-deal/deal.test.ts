@@ -3,7 +3,7 @@
 import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
 import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
-import { blankPrice, engineDeal, feeInOrder, newDeal, newFee, readDeal, typed, type FeeDeal, type Sourced } from "./model";
+import { blankPrice, engineDeal, feeInOrder, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Sourced } from "./model";
 import { DEALS_KEY, parseDeals, savedWith, without } from "./store";
 import { engineBase, FEE_KIND_IDS, FEE_SHAPES, fitsHeld, suggestions } from "./shapes";
 
@@ -109,6 +109,16 @@ describe("readDeal", () => {
   });
   it("refuses what is not a deal at all", () => {
     for (const x of [null, 1, "x", [], {}, { id: "deal-a" }]) expect(readDeal(x)).toBeNull();
+  });
+});
+
+describe("new ids", () => {
+  it("never repeat, however many are made in one moment, so a deal filled or opened at once keeps every fee (readDeal refuses a repeated id)", () => {
+    const fees = Array.from({ length: 20_000 }, newFeeId);
+    expect(new Set(fees).size).toBe(fees.length);
+    const deals = Array.from({ length: 2_000 }, newDealId);
+    expect(new Set(deals).size).toBe(deals.length);
+    for (const id of [...fees.slice(0, 50), ...deals.slice(0, 50)]) expect(id).toMatch(/^[a-z0-9-]{1,40}$/);
   });
 });
 
