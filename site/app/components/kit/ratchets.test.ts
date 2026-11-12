@@ -27,7 +27,7 @@ const CARD: Record<string, number> = {
 const INPUT: Record<string, number> = {
     "components/decoder/tracks.tsx": 1,
     "components/invest/title.tsx": 1,
-    "components/search.tsx": 2,
+    "components/search.tsx": 1,
     "components/transfer/panel.tsx": 1,
   };
 const SELECT: Record<string, number> = {
@@ -200,8 +200,6 @@ const HAND_SITE_LINK: Record<string, number> = {
     "components/guide-signature/money-market-daily.tsx": 1,
     "components/home/body.tsx": 2,
     "components/provenance-sheets.tsx": 2,
-    "components/search-results.tsx": 3,
-    "components/shell.tsx": 1,
     "components/tracks/browser.tsx": 1,
     "content/exposure/shekel-cash.tsx": 2,
     "content/guide/bank-deposit.tsx": 2,
@@ -218,7 +216,6 @@ const HAND_LINK_OUT: Record<string, number> = {
     "components/provenance-sheets.tsx": 5,
 };
 const BANG_OVERRIDE: Record<string, number> = {
-    "components/Sheet.tsx": 8,
     "components/company/bank-views.tsx": 2,
     "components/company/overview.tsx": 3,
     "components/decoder/institutions/brokerage-card.tsx": 1,
@@ -231,9 +228,7 @@ const BANG_OVERRIDE: Record<string, number> = {
     "routes/fees.tsx": 2,
 };
 const MATCH_MEDIA: Record<string, number> = {
-    "components/Sheet.tsx": 1,
     "components/deposits/browser.tsx": 2,
-    "components/search.tsx": 1,
 };
 const FOLD_AS_LINK: Record<string, number> = {
     "components/company/bank-views.tsx": 1,
