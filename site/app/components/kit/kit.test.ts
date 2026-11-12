@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { Disclosure, Sentence, Stat, StatRow } from "./index";
+import { Button, Disclosure, DocLink, PageHead, SearchField, Sentence, Stat, StatRow, Tag, TextLink, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -20,7 +20,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag", "PageHead", "TextLink", "SearchField"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -140,5 +140,57 @@ describe("a glossary card writes every abbreviation with its gershayim (copy 10.
     expect(out).toContain("מק״מ");
     expect(out).toContain("ני״ע · קופ״ג");
     expect(out).not.toMatch(/[א-ת](?:"|&quot;)[א-ת]/);
+  });
+});
+
+describe("the shared pieces' choices are props, never an overriding class", () => {
+  it("a flush quiet button has no side padding, and no piece carries a ! override", () => {
+    const flush = html(createElement(Button, { variant: "quiet", flush: true, children: "x" }));
+    expect(flush).toContain("px-0");
+    expect(flush).not.toContain("px-2");
+    // the piece alone, before the provenance sheet the test frame draws after it
+    const own = (h: string) => h.split("<dialog")[0]!;
+    for (const el of [flush, html(createElement(Tag, { tone: "primary", children: "x" })), html(createElement(Tag, { tone: "outline", children: "x" })), html(createElement(Tag, { shape: "pill", size: "sm", children: "x" }))]) expect(own(el)).not.toMatch(/class="[^"]*(?<=["\s])!/);
+  });
+  it("a pill is round, and a tag of the primary tone is a pill by default", () => {
+    expect(html(createElement(Tag, { shape: "pill", children: "x" }))).toContain("rounded-full");
+    expect(html(createElement(Tag, { tone: "primary", children: "x" }))).toContain("rounded-full");
+    expect(html(createElement(Tag, { children: "x" }))).toContain("rounded-sm");
+  });
+  it("a fold with the link look draws its label in the link colour", () => {
+    expect(html(createElement(Disclosure, { look: "link", label: "more", children: "body" }))).toMatch(/<span class="text-link">more<\/span>/);
+  });
+  it("a link out builds the address of its cited place", () => {
+    expect(html(createElement(DocLink, { source: { url: "https://example.com/a.pdf", page: 2 }, children: "doc" }))).toContain('href="https://example.com/a.pdf#page=2"');
+  });
+  it("a link within the site has one look inline and a 44 px target on its own line", () => {
+    expect(html(createElement(TextLink, { to: "/a", children: "a" }))).toContain('class="text-link hover:underline"');
+    expect(html(createElement(TextLink, { to: "/a", look: "line", children: "a" }))).toContain("min-h-target");
+  });
+  it("a page's head has one h1, its lede and its aside", () => {
+    const out = html(createElement(PageHead, { title: "T", lede: "L", aside: createElement("span", null, "A") }));
+    expect(out.match(/<h1/g)).toHaveLength(1);
+    expect(out).toContain('<p class="text-muted-foreground max-w-measure text-pretty">L</p>');
+    expect(out).toContain("min-w-[16rem]");
+    expect(html(createElement(PageHead, { title: "T", aside: false }))).not.toContain("min-w-[16rem]");
+  });
+  it("a search field has its label, and × only while it holds words", () => {
+    const empty = html(createElement(SearchField, { label: "L", value: "", onChange: () => undefined, clearLabel: "clear" }));
+    expect(empty).toContain(">L</label>");
+    expect(empty).not.toContain('aria-label="clear"');
+    expect(html(createElement(SearchField, { label: "L", value: "x", onChange: () => undefined, clearLabel: "clear" }))).toContain('aria-label="clear"');
+  });
+});
+
+describe("the field checks say one message each", () => {
+  it("nonNegativeCheck refuses a number below zero only", () => {
+    expect(nonNegativeCheck(0)).toBeNull();
+    expect(nonNegativeCheck(-1)).toBe("הסכום לא יכול להיות שלילי.");
+  });
+  it("yearsCheck refuses a number outside its range, and a part of a year, with the range in its words", () => {
+    const check = yearsCheck({ min: 1, max: 40 });
+    expect(check(1)).toBeNull();
+    expect(check(40)).toBeNull();
+    for (const n of [0, 41, 2.5]) expect(check(n)).toBe("הזינו מספר שנים בין 1 ל־40.");
   });
 });

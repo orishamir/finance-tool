@@ -20,7 +20,7 @@ export interface DisclosureProps {
   /** Controlled: the parent owns the state (a hash link opens a group). Pair with `onOpenChange`. */
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  /** The anchor of an in-page link; add the scroll margin with `className`. */
+  /** The anchor of an in-page link; give `className` the `anchor-target` utility for its scroll margin. */
   id?: string;
   /** Chevron at the far end of the row (a list-group header); the default keeps it beside the label. */
   spread?: boolean;
@@ -33,11 +33,18 @@ export interface DisclosureProps {
   summaryClassName?: string;
   /** A footnote fold: the native marker, no chevron, no minimum height. */
   plain?: boolean;
+  /**
+   * `link`: the label in the link colour, underlined under the pointer, with the chevron close after it at the line's start: a fold that
+   * reads as a link to more (the rest of a list, a deposit's printed terms). Its words take the size of the text around it, or
+   * `summaryClassName`'s.
+   */
+  look?: "link";
   detailsRef?: Ref<HTMLDetailsElement>;
 }
 
 /** A fold. The default for anything the reader may open: a table, a longer note, a list group. */
-export function Disclosure({ label, openLabel, children, className, defaultOpen, open: controlled, onOpenChange, id, spread, size = "target", as, labelClassName, summaryClassName, plain, detailsRef }: DisclosureProps) {
+export function Disclosure({ label, openLabel, children, className, defaultOpen, open: controlled, onOpenChange, id, spread, size = "target", as, labelClassName, summaryClassName, plain, look, detailsRef }: DisclosureProps) {
+  const link = look === "link";
   const [inner, setInner] = useState(!!defaultOpen);
   const open = controlled ?? inner;
   const shown = open ? (openLabel ?? label) : label;
@@ -56,8 +63,8 @@ export function Disclosure({ label, openLabel, children, className, defaultOpen,
       {plain ? (
         <summary className={cx("cursor-pointer", summaryClassName)}>{shown}</summary>
       ) : (
-        <summary className={cx("flex items-center", spread ? "justify-between gap-3" : "gap-2", size === "field" ? "min-h-12" : "min-h-target", SUMMARY_BASE, "select-none rounded-md", summaryClassName)}>
-          {as ? <LabelAs as={as} className={labelClassName}>{shown}</LabelAs> : <span className={labelClassName}>{shown}</span>}
+        <summary className={cx("flex items-center", spread ? "justify-between gap-3" : link ? "justify-start gap-1" : "gap-2", size === "field" ? "min-h-12" : "min-h-target", SUMMARY_BASE, "select-none rounded-md", link && "hover:underline", summaryClassName)}>
+          {as ? <LabelAs as={as} className={cx(link && "text-link", labelClassName)}>{shown}</LabelAs> : <span className={cx(link && "text-link", labelClassName)}>{shown}</span>}
           <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
         </summary>
       )}
@@ -81,7 +88,7 @@ export interface FoldGroupProps {
   /** Controlled: the parent owns the state (an address names a card inside, a filter opens the group). Pair with `onOpenChange`. */
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  /** The anchor of an in-page link; add the scroll margin with `className`. */
+  /** The anchor of an in-page link; give `className` the `anchor-target` utility for its scroll margin. */
   id?: string;
   /**
    * `list` (the default): a group inside a coverage list, a medium heading with "(3)". `section`: a topic of cards on a page (the

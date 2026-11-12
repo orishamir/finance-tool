@@ -6,8 +6,9 @@
 // link in the strip (the company's page) still opens. The cells and the phone rows are the caller's; the shell, the banner, the heading
 // and the widths are here. `RowArrow` is the arrow at the end of a row that opens a page of the site. The body and the phone card are the
 // lists `useFlip` slides when the rows are sorted or filtered again.
-import { Fragment, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { Fragment, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { brands, invest, kit, trackBrowser } from "../../copy";
+import { MQ, useMedia } from "../../lib/hooks";
 import type { SiteValue } from "../../lib/value";
 import { IconAlert, IconChevronDown, IconDrillIn, IconExternal } from "../icons";
 import { LeadTail, Num, RulesLine, Term } from "../provenance";
@@ -95,24 +96,14 @@ function bandRuns(columns: readonly ProductColumn[]): { key: string; band: strin
   return out;
 }
 
-const WIDE = "(min-width: 48rem)";
-const subscribe = (onChange: () => void) => {
-  const m = window.matchMedia(WIDE);
-  m.addEventListener("change", onChange);
-  return () => m.removeEventListener("change", onChange);
-};
-
 /**
  * Which of the two layouts the screen shows. Both are in the pre-rendered page (the page cannot know the width), and in the browser's
  * first render, so hydration matches; from then on only the one the screen shows is built: a list of 180 rows drawn twice was half of
  * the time a click took.
  */
 function usePlace(): "phone" | "table" | null {
-  return useSyncExternalStore(
-    subscribe,
-    () => (window.matchMedia(WIDE).matches ? "table" : "phone"),
-    () => null,
-  );
+  const wide = useMedia(MQ.md, null);
+  return wide === null ? null : wide ? "table" : "phone";
 }
 
 /** Whether the table fits the width of its card: then nothing scrolls sideways, and a sticky head can stick to the page (a scrolling card would hold it). */

@@ -13,10 +13,18 @@ export function useHydrated(): boolean {
 }
 
 /**
- * Whether a media query matches, following it as the window changes. False on the pre-rendered page: use it where the page renders only
- * in the browser (the index page's body), so its first render already has the answer and nothing moves after it.
+ * The site's widths by name, the stylesheet's own breakpoints (`md`, `lg`, `xl`): a page or a kit piece that asks the width asks it with
+ * these, so a hook and a class switch at the same pixel.
  */
-export function useMedia(query: string): boolean {
+export const MQ = { md: "(min-width: 48rem)", lg: "(min-width: 64rem)", xl: "(min-width: 80rem)" } as const;
+
+/**
+ * Whether a media query matches, following it as the window changes. The pre-rendered page and the render that hydrates it cannot know
+ * the screen, so they take `serverValue` (false unless given) and the browser's answer follows at once. Give `true` where the computer's
+ * layout is the pre-rendered one, and `null` where the caller draws both until it knows (a list built for the screen it is on). Where the
+ * page renders only in the browser (the index page's body), the first render already has the answer and nothing moves after it.
+ */
+export function useMedia<S extends boolean | null = false>(query: string, serverValue: S = false as S): boolean | S {
   const subscribe = useCallback(
     (on: () => void) => {
       const m = window.matchMedia(query);
@@ -25,7 +33,7 @@ export function useMedia(query: string): boolean {
     },
     [query],
   );
-  return useSyncExternalStore(subscribe, () => window.matchMedia(query).matches, () => false);
+  return useSyncExternalStore<boolean | S>(subscribe, () => window.matchMedia(query).matches, () => serverValue);
 }
 
 const EMPTY = new URLSearchParams();
