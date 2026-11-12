@@ -182,25 +182,38 @@ describe("G-16 and exit points", () => {
     // on month 17 the instalment of month 13 is 5 months old in a plan opened that month: both counts are on an exit point
     expect(said(dep(17, 500, 12, { first: 5, every: 5 }, "savings-plan", "unlinked", 0))).toBe("G-16 G-34");
     // an instalment paid in month 7 of a three-year plan with a first exit point after a year is 12 months old on month 18,
-    // which is no exit point of a plan begun in month 1
+    // which is no exit point of a plan begun in month 1 and still running
     expect(said(dep(18, 500, 36, { first: 12, every: 12 }, "savings-plan", "unlinked", 0))).toBe("G-16");
     expect(said(dep(12, 0, 36, { first: 12, every: 12 }, "savings-plan"))).toBe("G-34");
   });
 
-  it("counts a plan's instalment from the plan it was paid into, however long it runs on", () => {
+  it("counts a plan's instalment from the plan it was paid into, and no exit point past that plan's end", () => {
     const plan = { kind: "savings-plan" as const, termMonths: 12, exitFirstMonth: 5, exitEveryMonths: 5 };
-    // paid in month 8 of the plan opened on month 1: on month 17 it is 10 months old, an exit point by its own count, and in the
-    // seventeenth month of its plan, which is none. Counting month 17 as the fifth month of the plan opened on month 13 let it out.
-    expect(pieceAtExitPoint(17, 8, plan)).toBe(false);
-    expect(pieceAtExitPoint(17, 8, { ...plan, kind: "deposit" })).toBe(true);
+    // inside the plan's term both counts must be on an exit point
+    expect([5, 10].map((m) => pieceAtExitPoint(m, 1, plan))).toEqual([true, true]); // paid in month 1: both counts alike
+    expect(pieceAtExitPoint(7, 3, plan)).toBe(false); // 5 months old, in its plan's seventh month
+    expect(pieceAtExitPoint(10, 6, plan)).toBe(true); // 5 months old, in its plan's tenth month
+    expect(pieceAtExitPoint(11, 7, plan)).toBe(false); // 5 months old, in its plan's eleventh month
+    expect(pieceAtExitPoint(7, 3, { ...plan, kind: "deposit" })).toBe(true); // a deposit counts from its own start alone
     // paid in month 13, the first month of the next plan: 5 months old by both counts
     expect(pieceAtExitPoint(17, 13, plan)).toBe(true);
-    // paid in month 1: months 5 and 10 by both counts; month 15 is past its term
-    expect([5, 10].map((m) => pieceAtExitPoint(m, 1, plan))).toEqual([true, true]);
-    expect(pieceAtExitPoint(7, 3, plan)).toBe(false); // 5 months old, in its plan's seventh month
-    // a plan whose exit points fall on a divisor of its term agrees on both counts for an instalment paid on an exit point
-    expect(pieceAtExitPoint(16, 9, { ...plan, exitFirstMonth: 4, exitEveryMonths: 4 })).toBe(true); // 8 months old, plan month 16
-    expect(pieceAtExitPoint(15, 8, { ...plan, exitFirstMonth: 4, exitEveryMonths: 4 })).toBe(false); // 8 months old, plan month 15
+    // paid in month 8 of the plan opened on month 1: on month 17 it is 10 months old, an exit point by its own count, and its plan
+    // ended on month 12. That plan's count holds it no longer; month 17 is not counted as "month 17" of a twelve-month plan, nor as
+    // the fifth month of the plan opened on month 13.
+    expect(pieceAtExitPoint(17, 8, plan)).toBe(true);
+    expect(pieceAtExitPoint(16, 8, plan)).toBe(false); // 9 months old: no exit point by its own count, whatever the plan's
+    // Bank Leumi's prime plan (36 months, first exit after 6, then every 3): paid in month 31, on month 39 it is 9 months old and
+    // its plan ended on month 36
+    const leumi = { kind: "savings-plan" as const, termMonths: 36, exitFirstMonth: 6, exitEveryMonths: 3 };
+    expect(pieceAtExitPoint(39, 31, leumi)).toBe(true);
+    expect(pieceAtExitPoint(35, 31, leumi)).toBe(false); // 5 months old
+    expect(pieceAtExitPoint(18, 7, leumi)).toBe(true); // 12 months old, plan month 18: both on exit points
+    expect(pieceAtExitPoint(18, 8, leumi)).toBe(false); // 11 months old
+    expect(pieceAtExitPoint(15, 7, leumi)).toBe(true); // 9 months old, plan month 15
+    expect(pieceAtExitPoint(12, 7, leumi)).toBe(true); // 6 months old, plan month 12
+    expect(pieceAtExitPoint(12, 6, { ...leumi, exitEveryMonths: 12, exitFirstMonth: 6 })).toBe(false); // 7 months old
+    expect(pieceAtExitPoint(18, 13, { ...leumi, exitEveryMonths: 12, exitFirstMonth: 6 })).toBe(true); // 6 months old, plan month 18
+    expect(pieceAtExitPoint(17, 12, { ...leumi, exitEveryMonths: 12, exitFirstMonth: 6 })).toBe(false); // 6 months old, plan month 17
     // no first, no exit point; bad figures are no figures
     expect(pieceAtExitPoint(6, 1, { kind: "deposit", termMonths: 12, exitEveryMonths: 3 })).toBe(false);
     expect(pieceAtExitPoint(6, 1, { kind: "deposit", termMonths: 12, exitFirstMonth: 1.5, exitEveryMonths: 1.5 })).toBe(false);

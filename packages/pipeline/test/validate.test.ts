@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -655,14 +655,36 @@ describe("a link opens the page it cites (2026-11-12)", () => {
 
 describe("a deposit's first exit point (2026-11-12)", () => {
   const rec = (exit_points: unknown, notes: string) => ({ exit_points, rate_offered: { notes } });
+  const noFirst = { exists: true, every_months: 12, first_after_months: null };
   it("a record with no first exit point may not quote the bank dating one", () => {
-    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: null }, "'תחנות יציאה בתום 5 שנים, ולאחר מכן כל שנה'"))).toEqual([expect.stringContaining("dates an exit point")]);
-    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: null }, "'תחנת יציאה ראשונה לאחר 36 חודשים'"))).toHaveLength(1);
-    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: null }, "'מתום שנתיים תחנות כל שנה'"))).toHaveLength(1);
+    expect(checkFirstExitPoint(rec(noFirst, "'תחנות יציאה בתום 5 שנים, ולאחר מכן כל שנה'"))).toEqual([expect.stringContaining("dates an exit point")]);
+    expect(checkFirstExitPoint(rec(noFirst, "'תחנת יציאה ראשונה לאחר 36 חודשים'"))).toHaveLength(1);
+    expect(checkFirstExitPoint(rec(noFirst, "'מתום שנתיים תחנות כל שנה'"))).toHaveLength(1);
+    // the words as the records hold them: the bank's, quoted inside the collector's English
+    expect(checkFirstExitPoint(rec(noFirst, "break 'אין אפשרות לשבירת הפיקדון', exit points 'קיימת' 'לאחר 120 חודשים וכל 12 חודשים בהמשך', remark '-'"))).toHaveLength(1);
+    expect(checkFirstExitPoint(rec(noFirst, "exit points 'בתום שנה וחצי'"))).toHaveLength(1);
+    expect(checkFirstExitPoint(rec(noFirst, "exit points 'קיימת' 'מ 25 חודש ובכל יום בהמשך לפי תנאי העסקה'"))).toHaveLength(1);
+    expect(checkFirstExitPoint(rec(noFirst, "Exit points on the product page: 'תחנות מתום חצי שנה וכל חצי שנה לאחר מכן'"))).toHaveLength(1);
   });
   it("passes a record that carries its first, one whose bank prints only how often they come, and one without exit points", () => {
     expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: 60 }, "'תחנות יציאה בתום 5 שנים, ולאחר מכן כל שנה'"))).toEqual([]);
-    expect(checkFirstExitPoint(rec({ exists: true, every_months: 6, first_after_months: null }, "ExitPointsFreq 'חצי שנתית'; החל מ-50 ₪ בחודש; בתום תקופת החיסכון הפיקדון מתחדש"))).toEqual([]);
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 6, first_after_months: null }, "ExitPointsFreq 'חצי שנתית'; amount 'החל מ-50 ₪'. בתום תקופת החיסכון הפיקדון מתחדש"))).toEqual([]);
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 1, first_after_months: null }, "amount 'החל מ-1000 ₪', exit points 'קיימת' 'כל חודש', remark 'בעת משיכה לפני סוף תקופת החיסכון יתקבלו 100% מהריבית הצבורה'"))).toEqual([]);
+    expect(checkFirstExitPoint(rec({ exists: true, every_months: 12, first_after_months: null }, "product page 'תחנות יציאה מדי שנה'"))).toEqual([]);
     expect(checkFirstExitPoint(rec({ exists: false, every_months: null }, "'אין תחנות יציאה; בתום 5 שנים הפיקדון נפרע'"))).toEqual([]);
+  });
+
+  it("catches every collected record that carries a first, were its first taken away, and none that has none", () => {
+    const dir = fileURLToPath(new URL("../../../data/terms/deposits/", import.meta.url));
+    let withFirst = 0;
+    for (const f of readdirSync(dir).filter((x) => x.endsWith(".json"))) {
+      const r = JSON.parse(readFileSync(dir + f, "utf8")) as { exit_points: { exists: boolean; every_months: number | null; first_after_months?: number | null } };
+      if (!r.exit_points.exists) continue;
+      expect(checkFirstExitPoint(r), f).toEqual([]);
+      if (typeof r.exit_points.first_after_months !== "number") continue;
+      withFirst++;
+      expect(checkFirstExitPoint({ ...r, exit_points: { ...r.exit_points, first_after_months: null } }), f).toHaveLength(1);
+    }
+    expect(withFirst).toBeGreaterThan(40);
   });
 });

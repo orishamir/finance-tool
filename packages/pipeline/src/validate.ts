@@ -938,15 +938,21 @@ function hostOf(url: string): string {
   }
 }
 
-/** The words by which a bank's table or terms date an exit point: "בתום 3 שנים", "מתום שנתיים", "לאחר 36 חודשים", "כעבור שנה". */
-const EXIT_WHEN = "(?:בתום|מתום|לאחר|אחרי|כעבור)\\s+(?:\\d+|שנה|שנתיים|חצי שנה|חודש|חודשיים|שבוע|שלוש|ארבע|חמש|שש|שבע|עשר)";
-const PRINTS_FIRST_EXIT = new RegExp(`(?:תחנ\\S*|יציאה)[^.'"]{0,60}${EXIT_WHEN}|${EXIT_WHEN}[^.'"]{0,40}תחנ`);
+/**
+ * The words by which a bank's table or terms date an exit point: "בתום 3 שנים", "מתום שנתיים", "לאחר 36 חודשים", "מ 25 חודש", "בתום שנה
+ * וחצי", beside the word for an exit point in Hebrew or in the collector's English ("exit points 'לאחר 120 חודשים וכל 12 חודשים
+ * בהמשך'"). A number counts only with its unit, so an amount ("החל מ-1000 ₪") is no date.
+ */
+const EXIT_UNIT = "(?:חודש(?:ים|יים)?|שנה|שנים|שנתיים|שבוע(?:ות|יים)?|יום|ימים)";
+const EXIT_WHEN = `(?:בתום|מתום|לאחר|אחרי|כעבור|החל מ|מ)[\\s־-]*(?:ה[\\s־-]*)?(?:\\d+\\s*${EXIT_UNIT}|חצי שנה|שנה|שנתיים|חודש|חודשיים|שבוע|(?:שלוש|ארבע|חמש|שש|שבע|שמונה|תשע|עשר)\\s+שנים)`;
+const PRINTS_FIRST_EXIT = new RegExp(`(?:תחנ\\S*|יציאה|exit (?:points?|stations?))[^.]{0,60}?${EXIT_WHEN}|${EXIT_WHEN}[^.]{0,40}?תחנ`, "i");
 
 /**
  * A deposit with exit points whose record gives no first one (`exit_points.first_after_months` null: the bank prints only how often
  * they come) must not itself quote the bank dating the first: "תחנות יציאה בתום 5 שנים, ואחר כך כל שנה" beside a null first leaves
- * the site saying "כל 12 חודשים" of a plan that lets nothing out for five years (2026-11-12; 41 records print such words and each now
- * carries its first). Returns one line when the record's own text prints when an exit point falls and the first is null.
+ * the site saying "כל 12 חודשים" of a plan that lets nothing out for five years. On 2026-11-12, 48 records carry a first and the
+ * text of each is caught by this pattern when its first is taken away; no record with a null first is. Returns one line when the
+ * record's own text dates an exit point and the first is null.
  */
 export function checkFirstExitPoint(record: unknown): string[] {
   const e = (record as { exit_points?: { exists?: boolean; first_after_months?: number | null } }).exit_points;

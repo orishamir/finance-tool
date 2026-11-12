@@ -93,10 +93,17 @@ export const depositTerms = z.strictObject({
   snapshot: isoDate,
   source,
 })
-  // an exit point is a day inside the term: a first one at the term's end or after it is the maturity, or a misread figure
-  .refine((d) => !(typeof d.exit_points.first_after_months === "number" && typeof d.term_months.value === "number" && d.term_months.unit === "months" && d.exit_points.first_after_months >= d.term_months.value), {
-    message: "the first exit point falls at or after the end of the term",
-    path: ["exit_points", "first_after_months"],
-  });
+  // an exit point is a day inside the term: a first one at the term's end or after it is the maturity, or a misread figure. A term
+  // in days is set against the first in months by the average month (365.25 / 12 days).
+  .refine(
+    (d) => {
+      const first = d.exit_points.first_after_months;
+      const term = d.term_months.value;
+      if (typeof first !== "number" || typeof term !== "number") return true;
+      const months = d.term_months.unit === "months" ? term : d.term_months.unit === "days" ? term / (365.25 / 12) : null;
+      return months === null || first < months;
+    },
+    { message: "the first exit point falls at or after the end of the term", path: ["exit_points", "first_after_months"] },
+  );
 
 export type DepositTerms = z.infer<typeof depositTerms>;

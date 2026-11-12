@@ -115,7 +115,8 @@ describe("the bank page and the guide's sheet", () => {
       { ...twin, id: "b", exit_points: { exists: true, every_months: 12, first_after_months: 120 } },
     ] as unknown as DepositTerms[]);
     expect(names.get("a")).toMatch(/תחנת יציאה כל 12 חודשים$/);
-    expect(names.get("b")).toMatch(/תחנת יציאה אחרי 120 חודשים, ואז כל 12 חודשים$/);
+    // inside a name the words carry no comma of their own: the name's parts are joined by commas
+    expect(names.get("b")).toMatch(/ריבית קבועה, תחנת יציאה אחרי 120 חודשים ואז כל 12 חודשים$/);
   });
 
   it("names a deposit by its exit points in whole Hebrew, whatever the record gives", () => {

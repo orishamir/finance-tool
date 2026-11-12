@@ -38,15 +38,17 @@ describe("flag slots", () => {
   });
 
   it("the exit-point flag opens by saying the sum received may differ, then why, in words that hold for every bank (G-34, 2026-11-12)", () => {
-    // conclusion first (guidelines/wording.md). The run knows the day is an exit point, not what it pays nor the notice it needs: both
-    // are each product's terms (BANK-27, BANK OQ20). One bank's deposit pays a share of the interest there, another's adds to the rate
-    // at each exit point, so the sum may be lower or higher: the sentence says "different", and names no bank's term as the product's.
-    expect(flags["G-34"]).toMatch(/^הסכום שמקבלים באותו יום יכול להיות שונה מהסכום כאן\./);
-    expect(flags["G-34"]).toContain("בלי לשבור את הפיקדון");
+    // conclusion first, with the day named (guidelines/wording.md). The run knows the day is an exit point, not what it pays nor the
+    // notice it needs: both are each product's terms (BANK-27, BANK OQ20). One bank's plan pays a lower rate there, another's adds
+    // to the rate at each exit point, so the sum may be lower or higher: the sentence says "different", and names no bank's term as
+    // the product's.
+    expect(flags["G-34"]).toMatch(/^הסכום שמקבלים בסוף התקופה יכול להיות שונה מהסכום כאן, כי /);
+    expect(flags["G-34"]).toContain("בתחנת יציאה");
     expect(flags["G-34"]).toContain("קובע כל בנק בתנאי הפיקדון");
     expect(flags["G-34"]).not.toMatch(/גבוה|נמוך/);
     expect(flags["G-34"]).not.toMatch(/יש בנקים|יש פיקדונות/);
-    // a note, not a page: three sentences at most
-    expect(flags["G-34"]!.split(/\.(?:\s|$)/).filter(Boolean).length).toBeLessThanOrEqual(3);
+    expect(flags["G-34"]).not.toMatch(/באותו יום/); // no day is named before it
+    // a note, not a page: the conclusion with its reason, and the one caveat
+    expect(flags["G-34"]!.split(/\.(?:\s|$)/).filter(Boolean)).toHaveLength(2);
   });
 });

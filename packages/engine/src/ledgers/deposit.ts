@@ -64,18 +64,21 @@ function onExitPoint(age: number, first: number | undefined, every: number | und
  * F-41: whether a piece that began on `startMonth` is at one of its exit points on month `m`. Its own age is `m − startMonth + 1`,
  * the months it has earned with its first month included. A deposit's exit points count from the deposit's own start. A savings
  * plan's may count from the plan's start (one bank's plans are read so, BPN-10) or from each instalment's, and the record does not
- * say which, so a plan's piece is at an exit point only when both counts agree: its own age, and its age counted from the start of
- * the plan it was paid into. The run opens a plan on its first month and a new one every `termMonths` months, so that plan began
- * on month `startMonth − ((startMonth − 1) mod termMonths)`, and it stays the piece's plan however long the piece runs on: an
- * instalment paid in month 8 of a twelve-month plan is counted on month 17 as in that plan's seventeenth month, not as in the
- * fifth month of the plan opened on month 13.
+ * say which, so a plan's piece is at an exit point only when its own count says so and the plan's count does not say otherwise.
+ * The run opens a plan on its first month and a new one every `termMonths` months, so the plan a piece was paid into began on
+ * month `startMonth − ((startMonth − 1) mod termMonths)`, and by that plan's count the piece is in the plan's month
+ * `age + ((startMonth − 1) mod termMonths)`. Inside the plan's term that month must be an exit point too. From the plan's last
+ * month on, the plan's count holds the money no longer (by it the plan has paid out), and the piece's own count stands alone:
+ * exit points lie inside a term, so none is counted past the plan's end.
  */
 export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<DepositInput["deposit"], "kind" | "termMonths" | "exitFirstMonth" | "exitEveryMonths">): boolean {
   const first = wholeMonths(deposit.exitFirstMonth);
   const every = wholeMonths(deposit.exitEveryMonths);
   const age = m - startMonth + 1;
   if (!onExitPoint(age, first, every)) return false;
-  return deposit.kind !== "savings-plan" || onExitPoint(age + ((startMonth - 1) % deposit.termMonths), first, every);
+  if (deposit.kind !== "savings-plan") return true;
+  const planMonth = age + ((startMonth - 1) % deposit.termMonths);
+  return planMonth >= deposit.termMonths || onExitPoint(planMonth, first, every);
 }
 
 /**

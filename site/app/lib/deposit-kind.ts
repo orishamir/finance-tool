@@ -48,13 +48,14 @@ export function exitWords(e: ExitPoints): string {
 
 /**
  * A deposit's exit points as part of its name on a sheet line, where the name repeats at the bank: "תחנת יציאה כל 3 חודשים", "תחנת יציאה
- * אחרי 6 חודשים, ואז כל 3 חודשים", "תחנת יציאה ראשונה אחרי 6 חודשים", and "עם תחנות יציאה" where the record gives no timing the words can say.
+ * אחרי 6 חודשים ואז כל 3 חודשים" (no comma: the name is part of a comma-joined list), "תחנת יציאה ראשונה אחרי 6 חודשים", and "עם תחנות יציאה" where the record gives no timing the words can say.
  */
 export function exitNameWords(e: ExitPoints): string {
   const timing = exitTiming(e);
   if (timing === null) return copy.depositKind.exitsSome;
   const first = exitFirstOf(e);
   if (first !== null && !e.everyMonths) return copy.depositKind.exitFirstAfter(fmt.months(first));
+  if (first !== null && e.everyMonths && first !== e.everyMonths) return copy.depositKind.exitAfterThen(fmt.months(first), fmt.months(e.everyMonths));
   return `${copy.depositKind.exits} ${timing}`;
 }
 

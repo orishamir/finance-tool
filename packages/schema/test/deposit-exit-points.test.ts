@@ -46,5 +46,9 @@ describe("a deposit's exit points", () => {
     expect(withExits(plan, { exists: true, every_months: 12, first_after_months: 179 }).success).toBe(true);
     expect(paths(withExits(plan, { exists: true, every_months: 12, first_after_months: 180 }))).toEqual(["exit_points.first_after_months"]);
     expect(paths(withExits(plan, { exists: true, every_months: 12, first_after_months: 240 }))).toEqual(["exit_points.first_after_months"]);
+    // a term in days: a week inside a 30-day deposit passes, two months do not
+    const days = { ...plan, term_months: { ...(plan.term_months as object), value: 30, unit: "days" } };
+    expect(withExits(days, { exists: true, every_months: null, first_after_months: 0.25 }).success).toBe(true);
+    expect(paths(withExits(days, { exists: true, every_months: null, first_after_months: 2 }))).toEqual(["exit_points.first_after_months"]);
   });
 });
