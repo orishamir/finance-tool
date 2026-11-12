@@ -30,7 +30,8 @@ function rowWords(kind: FeeKindId, s: StageView, later: boolean): string {
   const unit =
     p.form === "action" || p.form === "perAction" ? perActionWord(kind) : p.form === "held" ? copy.price.per[p.per!]! : p.form === "sum" ? copy.price.per[p.every!]! : "";
   const when = s.until ? `${copy.standing.until}${monthText(s.until)}` : later ? b.then : "";
-  return [unit, when].filter(Boolean).join(", ");
+  // "0.4% בשנה, עד 03.2028" but "0.4% בשנה אחר כך"
+  return [unit, when].filter(Boolean).join(s.until ? ", " : " ");
 }
 
 /** A row's standing against the cap, after the fee's name: the first later price whose standing differs, else the share of the cap or the standing now. */
