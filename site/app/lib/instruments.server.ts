@@ -22,6 +22,7 @@ import {
   type ValueObject,
 } from "@finance-tool/schema";
 import { loadSecurities, readDirFiles } from "./data.server";
+import { latestOf } from "./providers.server";
 import { exposureFoldedInto } from "./guide-nav";
 import { cmaFeeValue, computed, depositFeeNoneByRule, ownBy, ruleFigure, type SiteValue } from "./value";
 
@@ -258,7 +259,7 @@ export function buildHishtalmutTerms(wrapperId: string, spec: InstrumentSpec | u
 
 /** F-14: the member kind of the provider whose latest snapshot P-05's tariff entry names (`memberKindOf` its class). */
 function memberOf(src: InstrumentSources, provider: string | undefined): InstrumentTerms["memberKind"] | undefined {
-  const snap = provider ? src.fees.filter((f) => f.id === provider).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1) : undefined;
+  const snap = provider ? latestOf(provider, src.fees) : undefined;
   return snap ? memberKindOf(snap.provider.class) : undefined;
 }
 
@@ -272,9 +273,7 @@ function snapshotOf(src: InstrumentSources, provider: string | undefined, what: 
     missing.push(`${wrapperId}: P-05 instruments names no ${what}`);
     return null;
   }
-  // data/fees/ files are <provider>@<date>.json and each carries its provider id; the latest snapshot wins.
-  const all = src.fees.filter((f) => f.id === provider).sort((a, b) => a.snapshot.localeCompare(b.snapshot));
-  const snap = all.at(-1);
+  const snap = latestOf(provider, src.fees);
   if (!snap) missing.push(`${wrapperId}: data/fees/ has no snapshot of "${provider}"`);
   else if (snap.missing) missing.push(`${wrapperId}: the ${provider} snapshot is marked missing (${snap.missing_reason ?? "no reason given"})`);
   return snap && !snap.missing ? snap : null;

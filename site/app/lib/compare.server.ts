@@ -16,7 +16,7 @@ import { computedInputs as ci, guideBlocks } from "../copy";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, HOUSE_CHANNELS, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
-import { latestSnapshots } from "./providers.server";
+import { latestOf, latestSnapshots } from "./providers.server";
 import { indexPath } from "./site-paths";
 import { readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref } from "./sources";
@@ -65,14 +65,9 @@ type FeeLine = FeesSnapshot["lines"][number];
 
 /** A provident wrapper's collected list fees (F-105): the latest snapshot of each manager whose list prints both a balance and a deposit fee for it. */
 export function providentLists(id: string, snapshots: FeesSnapshot[]): { snap: FeesSnapshot; balance: ValueObject; deposit: ValueObject; lines: { balance: FeeLine; deposit: FeeLine } }[] {
-  const latest = new Map<string, FeesSnapshot>();
-  for (const s of snapshots) {
-    if (!s.lines.some((l) => l.applies_to.includes(id) && l.level === "list")) continue;
-    const prev = latest.get(s.id);
-    if (!prev || s.snapshot >= prev.snapshot) latest.set(s.id, s);
-  }
+  const latest = latestSnapshots(snapshots.filter((s) => s.lines.some((l) => l.applies_to.includes(id) && l.level === "list")));
   const out: { snap: FeesSnapshot; balance: ValueObject; deposit: ValueObject; lines: { balance: FeeLine; deposit: FeeLine } }[] = [];
-  for (const snap of latest.values()) {
+  for (const snap of latest) {
     const line = (base: string) => snap.lines.find((l) => l.applies_to.includes(id) && l.level === "list" && l.base === base && typeof l.rate.value === "number");
     const balance = line("balance");
     const deposit = line("deposit");
@@ -166,7 +161,8 @@ export function providentTerms(
   const covering = [...new Set(snapshots.filter((f) => f.lines.some((l) => l.applies_to.includes(id) && l.level === "list")).map((f) => f.id))];
   const pick = covering.length > 1 ? providentPick(id, snapshots, spec as { tariff?: string } | undefined, allRules) : null;
   if (covering.length > 1 && !pick) return { feeValues: {}, missing: [`${id}: ${covering.length} managers' list fees cover it and none is the lowest on both bases; F-80 picks none`] };
-  const snap = snapshots.filter((f) => f.id === (pick?.id ?? covering[0]) && f.lines.some((l) => l.applies_to.includes(id) && l.level === "list")).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1);
+  const who = pick?.id ?? covering[0];
+  const snap = who ? latestOf(who, snapshots.filter((f) => f.lines.some((l) => l.applies_to.includes(id) && l.level === "list"))) : undefined;
   const line = (base: string) => snap?.lines.find((l) => l.applies_to.includes(id) && l.level === "list" && l.base === base);
   const balance = line("balance");
   const deposit = line("deposit");
@@ -278,7 +274,7 @@ function representativeOf(
   if (spec.fund !== undefined) name = funds.find((f) => f.id === String(spec.fund))?.names.he[0];
   else if (spec.track !== undefined) name = tracks.find((t) => t.fundId === Number(spec.track))?.name;
   if (!name) return null;
-  const provider = spec.tariff ? fees.find((f) => f.id === spec.tariff)?.provider.name_he : undefined;
+  const provider = spec.tariff ? latestOf(spec.tariff, fees)?.provider.name_he : undefined;
   return { name, ...(provider ? { provider } : {}) };
 }
 
@@ -493,7 +489,7 @@ export function buildCompareBundle(): CompareBundle {
     const named = p05.instruments?.[w.id]?.tariff;
     // the channel of the trade line the site's own tariff read: the list trade line whose rate and minimum are the ones the run takes
     const rate = w.feeValues.tradeRate?.value;
-    const snap = named ? latestSnapshots().find((x) => x.id === named) : undefined;
+    const snap = named ? latestOf(named) : undefined;
     const channel = snap?.lines.find((l) => l.level === "list" && l.base === "trade" && l.band !== STANDING_ORDER_BAND && l.band !== REDEMPTION_BAND && l.rate.value === rate && (w.feeValues.tradeMin === undefined || l.min?.value === w.feeValues.tradeMin.value))?.channel;
     // D31: the card names the fund and the provider whose tariff it reads; their figures are those companies' own
     const fundRecord = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));

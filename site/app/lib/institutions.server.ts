@@ -6,7 +6,7 @@ import { companyPath, documentsPath } from "./site-paths";
 import { depositKindRules, exitPointsOf, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { companyTermRule, feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
+import { companyTermRule, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
   AvailabilityRow,
   InstitutionKind,
@@ -32,6 +32,7 @@ import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.s
 import { sourceHref, type TextFragment } from "./sources";
 import { heCollator } from "./format";
 import { leftOutOf } from "./left-out";
+import { latestSnapshots } from "./providers.server";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -42,20 +43,8 @@ function daysBetween(from: string, to: string): number {
 
 const isStale = (snapshot: string, t: string) => daysBetween(snapshot, t) > staleDays;
 
-/** Of the dated files of one provider (`<id>@<date>.json`), the newest. */
-export function latestSnapshots(): FeesSnapshot[] {
-  const dir = join(root, "data/fees");
-  if (!existsSync(dir)) return [];
-  const best = new Map<string, { date: string; record: FeesSnapshot }>();
-  for (const f of readdirSync(dir).filter((x) => x.endsWith(".json")).sort()) {
-    const record = readParsedCached(join(dir, f), feesSnapshot);
-    const date = /@(\d{4}-\d{2}-\d{2})\.json$/.exec(f)?.[1] ?? record.snapshot;
-    const prev = best.get(record.id);
-    if (!prev || date > prev.date) best.set(record.id, { date, record });
-  }
-  return [...best.values()].map((b) => b.record);
-}
-
+// the company pages read the newest snapshots through here
+export { latestSnapshots };
 
 /** Banks and brokers only: a provident manager's snapshot stays with the manager's page (design-spec 20). */
 function institutionSnapshots(): (FeesSnapshot & { kind: InstitutionKind })[] {
