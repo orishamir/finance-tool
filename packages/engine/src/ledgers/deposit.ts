@@ -26,8 +26,8 @@ export interface DepositInput {
     /**
      * F-41: a piece's age in months at its first exit point (the record's `exit_points.first_after_months`, BANK-14, BANK-27).
      * Absent when the deposit has no exit points or the record does not say when the first one falls: the run then knows no
-     * exit point, whatever the interval. Read only on the last month, to choose between the flags G-16 and G-34; it changes
-     * no amount. Anything but a positive whole number is taken as absent.
+     * exit point, whatever the interval. Read only on the last month and only for an unlinked deposit, to choose between the
+     * flags G-16 and G-34; it changes no amount. Anything but a positive whole number is taken as absent.
      */
     exitFirstMonth?: number;
     /**
@@ -74,7 +74,7 @@ function onExitPoint(age: number, first: number | undefined, every: number | und
  *   out, so it lets the piece out on any day, and the piece's own count decides alone. The plan's count names no exit point
  *   there (a month past the plan's term is not one of its exit points).
  * "Has paid out" is true of a plan that does not renew. The run does not read whether a plan renews: the site hands a savings
- * plan's exit points to the run only where its record says it does not renew (`instrumentTerms`).
+ * plan's exit points to the run only where its record says it does not renew (`buildInstrumentTerms`).
  */
 export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<DepositInput["deposit"], "kind" | "termMonths" | "exitFirstMonth" | "exitEveryMonths">): boolean {
   const first = wholeMonths(deposit.exitFirstMonth);

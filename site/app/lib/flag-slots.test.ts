@@ -42,10 +42,13 @@ describe("flag slots", () => {
     // notice it needs: both are each product's terms (BANK-27, BANK OQ20). One bank's plan pays a lower rate there, another's adds
     // to the rate at each exit point, so the sum may be lower or higher: the sentence says "different", and names no bank's term as
     // the product's.
-    expect(flags["G-34"]).toMatch(/^הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים, /);
-    // that the money leaves at the exit point is what the run counts, said as G-16 says its own assumption, not as a fact
-    expect(flags["G-34"]).toContain("החישוב מחשיב אותו כאילו נמשך אז בתחנת יציאה");
-    expect(flags["G-34"]).not.toMatch(/יוצא אז|משלמים בתחנת יציאה את/);
+    expect(flags["G-34"]).toMatch(/^הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים, /);
+    // "יש כסף", not "חלק מהכסף": in a run of one sum all the money is in the open deposit
+    expect(flags["G-16"]).toMatch(/^בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים\. /);
+    // that the money leaves at the exit point is what the run assumes, said as an assumption, not as a fact; "מושכים", since
+    // "נמשך" beside a deposit that has not ended reads as "lasts"
+    expect(flags["G-34"]).toContain("החישוב מניח שמושכים אותו אז בתחנת יציאה");
+    expect(flags["G-34"]).not.toMatch(/יוצא אז|משלמים בתחנת יציאה את|נמשך/);
     // the term opens its meaning where it first stands (wording.md), in the glossary's words
     expect(flags["G-34"]).toContain("תחנת יציאה היא מועד שבו אפשר למשוך בלי לשבור את הפיקדון");
     expect(flags["G-34"]).toContain("בתחנת יציאה");
