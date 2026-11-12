@@ -6,6 +6,7 @@
 // opens it (`PhoneFold`), closing again once an item is chosen, and the content takes the full width.
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Link } from "react-router";
+import { MQ } from "../../lib/hooks";
 import { cx } from "./cx";
 import { PhoneFold } from "./phone-fold";
 
@@ -98,8 +99,6 @@ export function SidePage({ nav, summary, more, less, chosen, children }: { /** T
   );
 }
 
-const LG = "(min-width: 64rem)";
-const XL = "(min-width: 80rem)";
 const remPx = () => parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
 /**
@@ -117,9 +116,9 @@ function useSideFits(chosen: string, boxRef: RefObject<HTMLDivElement | null>, c
     if (!box || !content) return;
     let frame = 0;
     const measure = () => {
-      if (!window.matchMedia(LG).matches) return setValue(null);
+      if (!window.matchMedia(MQ.lg).matches) return setValue(null);
       const rem = remPx();
-      const room = box.clientWidth - (window.matchMedia(XL).matches ? 16.5 : 15) * rem - 2 * rem;
+      const room = box.clientWidth - (window.matchMedia(MQ.xl).matches ? 16.5 : 15) * rem - 2 * rem;
       let need = needs.current.get(chosen) ?? 0;
       for (const t of content.querySelectorAll("table")) {
         need = Math.max(need, parseFloat(getComputedStyle(t).minWidth) || 0);

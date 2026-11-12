@@ -1,7 +1,7 @@
 // The track browser's pure logic over the real September 2026 tracks (data/cma/): the order of the groups (F-99, F-100), the filter, the
 // search, the sort and its missing figures, and the group headings' figures.
 import { describe, expect, it } from "vitest";
-import { SORTS, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
+import { SORTS, assetsText, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
 import { pressSort } from "./list-sort";
 import { buildTrackBrowser, defaultProduct, trackProductIds } from "./track-browser.server";
 
@@ -229,5 +229,13 @@ describe("rows", () => {
   it("a track's own page is under its company's", () => {
     const x = gemel.tracks[0]!;
     expect(x.href).toBe(`/companies/${data.companies[x.company]!.id}/${x.id}`);
+  });
+});
+
+describe("the page's words", () => {
+  it("writes assets of a billion or more with the site's two decimals, and millions whole", () => {
+    expect(assetsText(19_137.4)).toBe("19.14 מיליארד ₪");
+    expect(assetsText(19_000)).toBe("19.00 מיליארד ₪");
+    expect(assetsText(850.4)).toBe("850 מיליון ₪");
   });
 });

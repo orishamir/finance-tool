@@ -1,6 +1,7 @@
 // A list to choose one row from (the index page's two lists beside the ruler, and a custom index's account list): every row is a radio,
 // the chosen one marked; the rows' cells are the caller's, on a grid the caller names, and a head row can name the columns.
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { MQ } from "../../lib/hooks";
 import { useFlip } from "./chart-glide";
 import { cx } from "./cx";
 import { foldShown, heldFoldHeight, type FoldOrder } from "./pick-list-hold";
@@ -156,10 +157,10 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
       list.style.minHeight = "";
       const h = (el: Element) => el.getBoundingClientRect().height;
       const rowEls = [...list.querySelectorAll<HTMLElement>(":scope > [data-pick-key]")];
-      const inFlow = rowEls.filter((el) => el.dataset.folded === undefined || window.matchMedia("(min-width: 48rem)").matches);
+      const inFlow = rowEls.filter((el) => el.dataset.folded === undefined || window.matchMedia(MQ.md).matches);
       const now = inFlow.reduce((a, el) => a + h(el), 0);
       let most = now;
-      if (folds && !window.matchMedia("(min-width: 48rem)").matches) {
+      if (folds && !window.matchMedia(MQ.md).matches) {
         // a row's height, folded rows included (laid out unseen): the fold holds the tallest rows it can show
         const byKey = new Map(rowEls.map((el) => [el.dataset.pickKey!, h(el)]));
         const height = (k: string) => byKey.get(k) ?? 0;

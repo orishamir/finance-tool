@@ -150,6 +150,15 @@
   }
 }
 
+/* An in-page anchor (a section, a card or a row an address or a link scrolls to): it stops clear of the sticky header, which is 56 px
+   tall on a phone and 64 px from lg, with room above it. Every anchor uses this one margin (kit ratchet). */
+@utility anchor-target {
+  scroll-margin-top: 112px;
+  @media (width >= 64rem) {
+    scroll-margin-top: 88px;
+  }
+}
+
 /* A receipt's torn bottom edge (the index page's receipt): teeth 14 px wide and 7 px deep, cut by a mask so the paper's own fill shows
    through, with the page under the teeth. A shadow goes on a wrapper (a mask clips the element's own). */
 @utility receipt-edge {

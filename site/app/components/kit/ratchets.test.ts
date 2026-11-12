@@ -7,6 +7,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
+import { classTokens, findElements } from "../../lib/jsx-scan";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const walk = (d: string): string[] => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
@@ -125,10 +126,193 @@ patterns["a button styled by hand as a link"] = {
   },
 };
 
-for (const [name, p] of Object.entries(patterns)) {
+// The duplicated text pieces the kit now has a shared piece for (PageHead, Section, TextLink, DocLink, the anchor-target utility,
+// Button flush, Tag shape, Disclosure look, useMedia). Each counts the hand-written copies left, per file; the pages adopt the shared
+// piece and lower their numbers.
+/** Every class token of every className-like attribute or property (`className`, `summaryClassName`, a column's `cellClassName: "…"`). */
+const classValueTokens = (s: string): string[] => {
+  const out: string[] = [];
+  for (const m of s.matchAll(/\b[a-zA-Z]*[cC]lassName\s*[=:]\s*/g)) {
+    const at = m.index + m[0].length;
+    const c = s[at];
+    let expr = "";
+    if (c === '"' || c === "'" || c === "`") expr = s.slice(at, s.indexOf(c, at + 1) + 1);
+    else if (c === "{" || /^cx\(|^\(/.test(s.slice(at, at + 3))) {
+      let depth = 0;
+      let j = at;
+      for (; j < s.length; j++) {
+        if (s[j] === "{" || s[j] === "(") depth++;
+        else if ((s[j] === "}" || s[j] === ")") && --depth === 0) break;
+      }
+      expr = s.slice(at, j + 1);
+    }
+    for (const lit of expr.matchAll(/"([^"]*)"|`([^`]*)`|'([^']*)'/g)) out.push(...(lit[1] ?? lit[2] ?? lit[3] ?? "").split(/\s+/).filter(Boolean));
+  }
+  return out;
+};
+/** A Tailwind important modifier, at the front (`!px-0`, `hover:!text-foreground`) or at the end (`px-0!`). */
+const isBang = (t: string) => /^(?:[^\s:]+:)*!/.test(t) || /[\w\]]!$/.test(t);
+const LINK_COLOUR = /^text-(link|primary)$/;
+/** Source files the address-and-width ratchet reads: .ts and .tsx outside the kit, and outside the hook that owns matchMedia. */
+const scriptFiles = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && !rel(f).startsWith("components/kit/") && rel(f) !== "lib/hooks.ts");
+
+const HAND_TITLE: Record<string, number> = {
+    "components/company/template.tsx": 1,
+    "components/fees/parts.tsx": 1,
+    "components/guide/sections.tsx": 1,
+    "components/home/body.tsx": 1,
+    "components/invest/title.tsx": 1,
+    "components/transfer/panel.tsx": 1,
+    "root.tsx": 1,
+    "routes/companies.tsx": 1,
+    "routes/fees.tsx": 2,
+    "routes/rules.tsx": 1,
+};
+const HAND_SECTION_HEADING: Record<string, number> = {
+    "components/companies/focus.tsx": 1,
+    "components/company/overview.tsx": 1,
+    "components/company/template.tsx": 1,
+    "components/decoder/institutions/page.tsx": 1,
+    "components/deposits/browser.tsx": 1,
+    "routes/fees.tsx": 3,
+};
+const HAND_SCROLL_MARGIN: Record<string, number> = {
+    "components/company/bank-views.tsx": 1,
+    "components/company/docs.tsx": 1,
+    "components/company/template.tsx": 1,
+    "components/decoder/company-terms.tsx": 1,
+    "components/decoder/institutions/page.tsx": 1,
+    "components/decoder/institutions/product-row.tsx": 1,
+    "components/deposits/browser.tsx": 1,
+    "components/guide-signature/current-account.tsx": 1,
+    "components/timeline/Timeline.tsx": 1,
+    "components/tracks/browser.tsx": 1,
+    "components/tracks/company-browser.tsx": 1,
+    "routes/invest.tsx": 1,
+};
+const HAND_SITE_LINK: Record<string, number> = {
+    "components/companies/focus.tsx": 3,
+    "components/decoder/brand-funds.tsx": 1,
+    "components/decoder/institutions/brokerage-card.tsx": 1,
+    "components/decoder/institutions/product-row.tsx": 1,
+    "components/fees/parts.tsx": 5,
+    "components/fees/sensitivity.tsx": 1,
+    "components/guide/sections.tsx": 4,
+    "components/guide-signature/index.tsx": 1,
+    "components/guide-signature/keren-hishtalmut.tsx": 1,
+    "components/guide-signature/money-market-daily.tsx": 1,
+    "components/home/body.tsx": 2,
+    "components/provenance-sheets.tsx": 2,
+    "components/search-results.tsx": 3,
+    "components/shell.tsx": 1,
+    "components/tracks/browser.tsx": 1,
+    "content/exposure/shekel-cash.tsx": 2,
+    "content/guide/bank-deposit.tsx": 2,
+    "content/guide/government-bond.tsx": 3,
+    "content/guide/makam.tsx": 3,
+    "routes/companies.tsx": 1,
+    "routes/fees.tsx": 3,
+    "routes/guide.tsx": 1,
+    "routes/rules.tsx": 1,
+};
+const HAND_LINK_OUT: Record<string, number> = {
+    "components/decoder/institutions/brokerage-card.tsx": 1,
+    "components/decoder/institutions/page.tsx": 1,
+    "components/fees/parts.tsx": 1,
+    "components/invest/pair.tsx": 1,
+    "components/provenance-sheets.tsx": 5,
+    "routes/rules.tsx": 1,
+};
+const BANG_OVERRIDE: Record<string, number> = {
+    "components/Sheet.tsx": 8,
+    "components/company/bank-views.tsx": 2,
+    "components/company/overview.tsx": 3,
+    "components/decoder/institutions/brokerage-card.tsx": 1,
+    "components/decoder/tracks.tsx": 1,
+    "components/deposits/list.tsx": 8,
+    "components/fees/parts.tsx": 2,
+    "components/invest/plan-card.tsx": 1,
+    "components/provenance-sheets.tsx": 1,
+    "components/search.tsx": 1,
+    "routes/companies.tsx": 1,
+    "routes/fees.tsx": 2,
+    "routes/rules.tsx": 5,
+};
+const MATCH_MEDIA: Record<string, number> = {
+    "components/Sheet.tsx": 1,
+    "components/deposits/browser.tsx": 2,
+    "components/search.tsx": 1,
+    "routes/companies.tsx": 1,
+    "routes/rules.tsx": 1,
+};
+const FOLD_AS_LINK: Record<string, number> = {
+    "components/company/bank-views.tsx": 1,
+    "components/decoder/institutions/product-row.tsx": 2,
+    "components/guide/sections.tsx": 4,
+};
+
+patterns["a page title written by hand"] = {
+  kit: "PageHead (an <h1> of its own)",
+  count: (s) => findElements(s, ["h1"]).length,
+  allowed: HAND_TITLE,
+};
+patterns["a section heading written by hand"] = {
+  kit: "Section (level=\"page\" draws the text-xl lg:text-2xl heading)",
+  count: (s) => findElements(s, ["h2", "h3"]).filter((e) => { const t = classTokens(e.open); return t.includes("text-xl") && t.includes("lg:text-2xl"); }).length,
+  allowed: HAND_SECTION_HEADING,
+};
+patterns["a scroll margin written by hand"] = {
+  kit: "the anchor-target utility (app.css) for an in-page anchor, or Section's id",
+  count: (s) => (s.match(/(?<![\w:-])scroll-mt-|\bscrollMarginTop\s*:/g) ?? []).length,
+  allowed: HAND_SCROLL_MARGIN,
+};
+patterns["a link within the site styled by hand"] = {
+  kit: "TextLink (look=\"inline\" in running text, \"line\" on a line of its own), GoLink or LinkButton",
+  count: (s) => findElements(s, ["Link", "NavLink"]).filter((e) => classTokens(e.open).some((t) => LINK_COLOUR.test(t))).length,
+  allowed: HAND_SITE_LINK,
+};
+patterns["a link out written by hand"] = {
+  kit: "DocLink (source={…} builds the address with sourceHref; href for any other address)",
+  count: (s) => (s.match(/\btarget=(?:"_blank"|\{\s*"_blank"\s*\})/g) ?? []).length,
+  allowed: HAND_LINK_OUT,
+};
+patterns["a ! override of a class"] = {
+  kit: "the piece's own prop (Button flush, Tag shape and size, Disclosure look, Card pad); a choice it lacks is added to the kit",
+  count: (s) => classValueTokens(s).filter(isBang).length,
+  allowed: BANG_OVERRIDE,
+};
+patterns["a fold label painted as a link"] = {
+  kit: "Disclosure look=\"link\"",
+  count: (s) => findElements(s, ["Disclosure"]).filter((e) => /\btext-(link|primary)\b/.test(e.open)).length,
+  allowed: FOLD_AS_LINK,
+};
+const scriptPatterns: Record<string, { kit: string; count: (s: string) => number; allowed: Record<string, number> }> = {
+  "a media query asked by hand": {
+    kit: "useMedia(query, serverValue) with MQ.md, MQ.lg or MQ.xl (lib/hooks.ts); a reduced-motion check is left to its caller",
+    count: (s) => (s.match(/\bmatchMedia\((?!\s*["'`]\(prefers-reduced-motion)/g) ?? []).length,
+    allowed: MATCH_MEDIA,
+  },
+};
+
+describe("the duplicated text pieces' scans", () => {
+  it("see each planted copy and leave the shared piece", () => {
+    const n = (name: string, src: string) => (patterns[name] ?? scriptPatterns[name])!.count(code(src));
+    expect(n("a page title written by hand", '<h1 className="text-2xl">T</h1> <PageHead title="T" />')).toBe(1);
+    expect(n("a section heading written by hand", '<h2 id="a"\n className="text-xl lg:text-2xl font-semibold">T</h2> <h2 className="text-lg">T</h2>')).toBe(1);
+    expect(n("a scroll margin written by hand", 'className="scroll-mt-[112px] lg:scroll-mt-[88px]" style={{ scrollMarginTop: "124px" }} getComputedStyle(el).scrollMarginTop className="anchor-target"')).toBe(2);
+    expect(n("a link within the site styled by hand", '<Link to={x.map((y) => y)} className="text-link hover:underline">a</Link> <TextLink to="/a">b</TextLink> <Link to="/" className="font-medium">c</Link>')).toBe(1);
+    expect(n("a link out written by hand", '<a href={u} target="_blank" rel="noopener"> <DocLink source={s}>')).toBe(1);
+    expect(n("a ! override of a class", '<Button className="!px-0 hover:!text-foreground" /> <Tag className={cx("px-0!", a && "b")} /> { cellClassName: "!whitespace-normal" } {!open && x}')).toBe(4);
+    expect(n("a fold label painted as a link", '<Disclosure label={c.unpriced(list.map((f) => f.id))} labelClassName="text-sm text-link">a</Disclosure> <Disclosure look="link" label="x">b</Disclosure>')).toBe(1);
+    expect(n("a media query asked by hand", 'window.matchMedia("(min-width: 64rem)"); matchMedia("(prefers-reduced-motion: reduce)"); useMedia(MQ.lg)')).toBe(1);
+  });
+});
+
+const runs = [...Object.entries(patterns).map(([name, p]) => ({ name, p, read: files })), ...Object.entries(scriptPatterns).map(([name, p]) => ({ name, p, read: scriptFiles }))];
+for (const { name, p, read } of runs) {
   describe(`ratchet: ${name}`, () => {
     const now: Record<string, number> = {};
-    for (const f of files) {
+    for (const f of read) {
       const n = p.count(code(readFileSync(f, "utf8")));
       if (n) now[rel(f)] = n;
     }

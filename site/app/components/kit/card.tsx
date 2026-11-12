@@ -38,7 +38,7 @@ export function Section({ id, title, lead, level = "page", action, children, cla
   const headId = id ? `${id}-h` : `${uid}-h`;
   const Wrapper = as as ElementType;
   return (
-    <Wrapper id={id} aria-labelledby={headId} className={cx("flex flex-col gap-4", id && "scroll-mt-[112px] lg:scroll-mt-[88px]", className)}>
+    <Wrapper id={id} aria-labelledby={headId} className={cx("flex flex-col gap-4", id && "anchor-target", className)}>
       <div className="flex flex-wrap items-baseline justify-between gap-x-4">
         <H id={headId} className={HEADING[level]}>
           {title}

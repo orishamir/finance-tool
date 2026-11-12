@@ -17,7 +17,7 @@ export function unitText(path: string, v: SiteValue): { display?: string; suffix
   if (v.value === null) return { display: copy.noCeiling, suffix: "" };
   if (n === null) return { suffix: "" };
   if (v.unit === "years") {
-    if (path.startsWith("bounds.horizon.")) return { display: `${n < 0 ? "−" : "+"}${Math.abs(n)} ${copy.yearsWord}`, suffix: "" };
+    if (path.startsWith("bounds.horizon.")) return { display: `${fmt.signedNumber(n)} ${copy.yearsWord}`, suffix: "" };
     return { display: fmt.years(n), suffix: "" };
   }
   if (v.unit === "count") return { display: `×${fmt.number(n)}`, suffix: "" };

@@ -5,13 +5,11 @@
 import { useLoaderData } from "react-router";
 import { notCovered as copy, provenance } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
-import { Tpl } from "../components/exposure-mode/tpl";
 import { RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Disclosure, DocLink, LinkButton, RowList, gershayim, When } from "../components/kit";
+import { Disclosure, DocLink, LinkButton, PageHead, RowList, Section, Tpl, fill, gershayim, When } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
 import type { NotCoveredRow } from "../lib/data.server";
-import { sourceHref } from "../lib/sources";
 import { sourceLabel } from "../lib/source-label";
 
 export async function loader() {
@@ -41,7 +39,7 @@ function OpenLine({ s, titles }: { s: GraduationStatusView; titles: Record<strin
     ) : s.open.length > 1 ? (
       <Tpl t={copy.openMany} vars={{ n: <bdi dir="ltr">{s.open.length}</bdi> }} />
     ) : (
-      <Tpl t={copy.remaining} vars={{ list: (s.remaining ?? []).map((x) => copy.remainingItems[x]).join(" · ") }} />
+      fill(copy.remaining, { list: (s.remaining ?? []).map((x) => copy.remainingItems[x]).join(" · ") })
     );
   return <p className="text-sm text-muted-foreground max-w-measure">{text}</p>;
 }
@@ -91,7 +89,7 @@ function Known({ s, r, titles }: { s: GraduationStatusView; r: NotCoveredRow; ti
       {r.source && (
         <section className="flex flex-col gap-1 text-sm">
           <h3 className="text-muted-foreground">{copy.sourceLead}</h3>
-          <DocLink href={sourceHref(r.source)} className="self-start">
+          <DocLink source={r.source} className="self-start">
             {sourceLabel(r.source, provenance.sourced.localFile).text}
           </DocLink>
           <span className="flex flex-wrap items-center gap-2 text-muted-foreground">
@@ -111,22 +109,20 @@ export default function NotCovered() {
   const data = useLoaderData<typeof loader>();
   return (
     <PageShell current="other" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: {}, today: data.today }}>
-      <div className="flex flex-col gap-section pt-6 lg:pt-10">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-          <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
+      <div className="flex flex-col gap-section">
+        <PageHead title={copy.title} lede={copy.lede}>
           {/* what the site does cover, so the page is not only a list of gaps */}
           <p className="max-w-measure flex flex-wrap items-center gap-x-3 gap-y-2">
             <span>{copy.covered.line}</span>
             <LinkButton to="/guide">{copy.covered.link}</LinkButton>
           </p>
-        </header>
+        </PageHead>
         {data.cards.length === 0 ? (
           <p>{copy.empty}</p>
         ) : (
           <RowList label={copy.title}>
             {data.cards.map(({ status: s, row: r }) => (
-              <li key={s.id} id={s.id} className="flex flex-col gap-2 p-4 md:p-5 scroll-mt-[112px] lg:scroll-mt-[88px]">
+              <li key={s.id} id={s.id} className="anchor-target flex flex-col gap-2 p-4 md:p-5">
                 <h2 className="text-lg font-semibold">
                   <bdi>{gershayim(r.he)}</bdi>
                 </h2>
@@ -138,7 +134,7 @@ export default function NotCovered() {
                 <div className="flex flex-col max-w-measure">
                   <p>{gershayim(r.explanation)}</p>
                   {r.source && (
-                    <DocLink href={sourceHref(r.source)} className="self-start text-sm">
+                    <DocLink source={r.source} className="self-start text-sm">
                       {copy.toSource}
                     </DocLink>
                   )}
@@ -151,15 +147,13 @@ export default function NotCovered() {
             ))}
           </RowList>
         )}
-        <section id="wont-do" className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
-          <h2 className="text-xl lg:text-2xl font-semibold">{copy.wontDo.title}</h2>
-          <p className="text-muted-foreground max-w-measure">{copy.wontDo.lede}</p>
+        <Section id="wont-do" title={copy.wontDo.title} lead={copy.wontDo.lede}>
           <ul className="flex flex-col gap-1.5 max-w-measure list-disc ps-5">
             {copy.wontDo.items.map((x) => (
               <li key={x}>{x}</li>
             ))}
           </ul>
-        </section>
+        </Section>
       </div>
     </PageShell>
   );

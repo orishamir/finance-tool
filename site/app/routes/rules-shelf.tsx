@@ -1,11 +1,12 @@
 // `/rules/<shelf>`: the five addresses that were live for an hour before the rules became one page with filters. A line and a
 // link, and on mount a replace-navigation to `/rules?shelf=<shelf>` (the query and the hash it came with are kept).
 import { useEffect } from "react";
-import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
+import { useLoaderData, useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/rules-shelf";
 import { pagePreview, rulesFront as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
 import { PageShell } from "../components/shell";
+import { PageHead, TextLink } from "../components/kit";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 
 export function loader({ params }: Route.LoaderArgs) {
@@ -33,11 +34,11 @@ export default function RulesShelf() {
   }, [navigate, target]);
   return (
     <PageShell current="rules" data={{ rules: {}, terms: {}, dimensions: {}, today: "" }}>
-      <div className="pt-2 lg:pt-8 flex flex-col gap-2">
-        <h1 className="text-2xl lg:text-3xl font-semibold">{copy.shelves[shelf]?.name}</h1>
-        <Link to={target} replace className="text-link min-h-target inline-flex items-center hover:underline self-start">
+      <div className="flex flex-col gap-2">
+        <PageHead title={copy.shelves[shelf]?.name} />
+        <TextLink look="line" to={target} replace>
           {copy.presetAll}
-        </Link>
+        </TextLink>
       </div>
     </PageShell>
   );
