@@ -183,6 +183,26 @@ describe("a share of a whole", () => {
   });
 });
 
+describe("an isolated figure without a sign", () => {
+  const LRI = "\u2066";
+  const PDI = "\u2069";
+  it("writes whole shekels bare by default and isolated when asked, the minus sign the true one", () => {
+    expect(fmt.nisWhole(1234)).toBe("1,234 ₪");
+    expect(fmt.nisWhole(1234, { isolate: true })).toBe(`${LRI}1,234 ₪${PDI}`);
+    expect(fmt.nisWhole(-5, { isolate: true })).toBe(`${LRI}\u200e\u22125 ₪${PDI}`);
+    expect(fmt.nisWhole(-5, { isolate: true })).not.toMatch(/-/);
+  });
+  it("writes a percent with one decimal and no sign, up or down, isolated by default", () => {
+    expect(fmt.unsignedPct(18.5, 1)).toBe(`${LRI}18.5%${PDI}`);
+    expect(fmt.unsignedPct(-18.5, 1)).toBe(`${LRI}18.5%${PDI}`);
+    expect(fmt.unsignedPct(-0.04, 1)).toBe(`${LRI}0.0%${PDI}`);
+    expect(fmt.unsignedPct(3, 1)).toBe(`${LRI}3.0%${PDI}`);
+    expect(fmt.unsignedPct(1234.56, 1, { isolate: false })).toBe("1,234.6%");
+    expect(fmt.unsignedPct(-2.38, undefined, { isolate: false })).toBe("2.38%");
+    for (const v of [-18.5, -0.04, -1234.5]) expect(fmt.unsignedPct(v, 1)).not.toMatch(/[-\u2212\u200e\u200f]/);
+  });
+});
+
 describe("a count in words", () => {
   const companies = { one: "חברה אחת", two: "שתי חברות", many: "חברות" };
   it("says one and two in words and any other count as the number and the plural", () => {

@@ -172,7 +172,7 @@ function addBrokerRange(d: SignatureData, c: SignatureCtx) {
   d.facts.brokerCount = computed(rows.length, "count", "F-80", documentInputs(rows), { today: c.t, about: signatureFacts.brokerCount });
   const ownId = c.p05.instruments?.["brokerage-account"]?.tariff;
   const own = ownId ? latestOf(ownId) : undefined;
-  if (own) d.facts.brokerName = ownBy(textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך"), own.provider.name_he);
+  if (own) d.facts.brokerName = ownBy(textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, signatureFacts.ownHouse), own.provider.name_he);
 }
 
 /**

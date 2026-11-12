@@ -50,7 +50,7 @@ export function fxRunInput(fx: FxSnapshot): Record<string, number> {
 
 /** The label the page shows beside a rate, e.g. "מחושב משערי הייחוס של הבנק המרכזי האירופי, 23.10.2026". */
 export function fxLabel(fx: FxSnapshot): string {
-  return `מחושב משערי הייחוס של הבנק המרכזי האירופי, ${fmt.date(fx.date)}`;
+  return signatureFacts.fxLabel(fmt.date(fx.date));
 }
 
 /**
