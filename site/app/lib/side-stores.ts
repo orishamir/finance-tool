@@ -14,9 +14,9 @@
 import { valueObject } from "@finance-tool/schema";
 import { readDeal, type FeeDeal } from "./fee-deal/model";
 import { DEALS_KEY, dealsDoc, parseDeals } from "./fee-deal/store";
-import { parseOwnRates, type OwnRates } from "./own-rate";
+import { OWN_RATES_KEY, parseOwnRates, type OwnRates } from "./own-rate";
 
-export const SIDE_KEYS = { offers: "mekor.v2.offers", variants: "mekor.v2.variants", ticks: "mekor.v2.playbook-ticks", ownRates: "mekor.v2.own-rates", deals: DEALS_KEY } as const;
+export const SIDE_KEYS = { offers: "mekor.v2.offers", variants: "mekor.v2.variants", ticks: "mekor.v2.playbook-ticks", ownRates: OWN_RATES_KEY, deals: DEALS_KEY } as const;
 /** What the last "add" imports put into the side stores (a `SideStores` holding only those items), so "מחיקת מה שיובא" can take exactly them out. */
 export const IMPORTED_SIDE_KEY = "mekor.v2.imported-side";
 

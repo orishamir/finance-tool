@@ -82,7 +82,9 @@ export function splitOwnTerms(terms: Record<string, OwnTerms>): { ownRates: Reco
   return { ownRates, ownFees, ownProviders, ownIndices };
 }
 
-const store = deviceStore<OwnRates>("mekor.v2.own-rates", {}, parseOwnRates, (v) => v);
+/** Where the device keeps the entered terms; side-stores.ts names it in `SIDE_KEYS` (which imports this file, so the key is defined here). */
+export const OWN_RATES_KEY = "mekor.v2.own-rates";
+const store = deviceStore<OwnRates>(OWN_RATES_KEY, {}, parseOwnRates, (v) => v);
 
 type Patch = { rate?: number | undefined; fee?: number | undefined; provider?: string | undefined; index?: string | undefined };
 
