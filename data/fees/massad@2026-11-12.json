@@ -1618,7 +1618,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.175%'. Note 2: small conversions: cash up to $50 a flat $3.3, cash up to $100 $5.5, in-account conversions up to $100 $3.0. Note 8: conversions up to $10 exempt. Note 7: certain pension recipients exempt. Statement code 002014 (936)."
@@ -1640,7 +1640,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מינ' - 6.25$' (US dollars)."
@@ -1662,7 +1662,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מקס' - 2,700.0$' (US dollars)."
@@ -1684,10 +1684,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "The tariff prints a percentage conversion fee only; the spread between the bank's rates and the representative rate is not published (BRK-23). Re-read 2026-11-04: not limited by the documents. The general terms (library bddb14e343170642) convert at 'שער מוסכם, או שער העברות והמחאות' (p.25), the latter 'שער העברות והמחאות הגבוה ... שיפורסם על ידי הבנק' (p.8); no spread or ceiling is printed."
+        "notes": "The tariff prints a percentage conversion fee only; the spread between the bank's rates and the representative rate is not published (BRK-16). Re-read 2026-11-04: not limited by the documents. The general terms (library bddb14e343170642) convert at 'שער מוסכם, או שער העברות והמחאות' (p.25), the latter 'שער העברות והמחאות הגבוה ... שיפורסם על ידי הבנק' (p.8); no spread or ceiling is printed."
       },
       "period": null,
       "channel": "branch",
@@ -1717,6 +1717,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1739,6 +1740,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1770,7 +1772,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23",
+          "BRK-16",
           "BRK-19"
         ],
         "state": "sourced",
@@ -1793,7 +1795,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מינ' - 5.0$' (US dollars)."
@@ -1815,7 +1817,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מקס' - $2,500' (US dollars)."
@@ -1837,10 +1839,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Fee only; the spread is not published (BRK-23). Re-read 2026-11-04: not limited by the documents. The general terms (library bddb14e343170642) convert at 'שער מוסכם, או שער העברות והמחאות' (p.25), the latter 'שער העברות והמחאות הגבוה ... שיפורסם על ידי הבנק' (p.8); no spread or ceiling is printed."
+        "notes": "Fee only; the spread is not published (BRK-16). Re-read 2026-11-04: not limited by the documents. The general terms (library bddb14e343170642) convert at 'שער מוסכם, או שער העברות והמחאות' (p.25), the latter 'שער העברות והמחאות הגבוה ... שיפורסם על ידי הבנק' (p.8); no spread or ceiling is printed."
       },
       "period": null,
       "channel": "direct",
@@ -1872,6 +1874,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16",
             "BRK-19"
           ],
@@ -1895,6 +1898,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16",
             "BRK-19"
           ],

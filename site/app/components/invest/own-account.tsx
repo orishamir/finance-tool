@@ -6,7 +6,7 @@ import type { FeeLine } from "@finance-tool/engine";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root, r4catalogue } from "../../copy";
 import { brokerErrors, brokerFromDraft, brokerTerms, NAME_MAX, newBrokerId, type BrokerDraft, type CustomBroker, type EntryError } from "../../lib/custom-entries";
-import { fmt } from "../../lib/format";
+import { fmt, wholeSum } from "../../lib/format";
 import { accountSum, buildInvest, type PairCosts } from "../../lib/invest";
 import { baseOf, startingPointsOf, withAdopted, type GroupCopy } from "../../lib/own-account";
 import { pointOfBroker, startDraft, stretchesOf } from "../../lib/own-account-panel";
@@ -52,7 +52,7 @@ function Figures({ figs, asEntered, today, about }: { figs: LayerFigure[]; /** T
         return (
           <span key={`${f.kind}-${f.per ?? ""}`} className="whitespace-normal">
             {word && f.kind !== "rate" && f.kind !== "exempt" && <>{word} </>}
-            <Num value={value} size="cell" {...(f.kind === "exempt" ? { display: p.exempt } : {})} />
+            <Num value={value} size="cell" {...(f.kind === "exempt" ? { display: p.exempt } : f.kind === "flat_up_to" ? { display: wholeSum(value.unit) } : {})} />
             {f.kind === "rate" && f.per && f.per !== "trade" && <span className="text-muted-foreground"> {r4catalogue.card.period[f.per]}</span>}
           </span>
         );

@@ -217,8 +217,12 @@ const cardRuleIds = (s: FeesSnapshot) => [
 
 
 function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffUrl: string): TariffLineRow {
-  const src = l.rate.source as { url?: string; title?: string; page?: number; fragment?: TextFragment };
   const docOf = (u: string) => u.replace(/#.*$/, "");
+  /** Where a figure of the line stands: its document, the page of a PDF, the words of a web page; `tariff` when it is the record's own price list. */
+  const whereOf = (v: ValueObject): TariffLineRow["where"] => {
+    const src = v.source as { url?: string; title?: string; page?: number; fragment?: TextFragment };
+    return src.url && src.title ? { url: src.url, title: src.title, ...(src.page ? { page: src.page } : {}), ...(src.fragment ? { fragment: src.fragment } : {}), tariff: docOf(src.url) === docOf(tariffUrl) } : null;
+  };
   // a spread the documents do not limit is said so, never shown as zero (D56)
   const spread = l.base !== "fx" || l.spread === undefined ? null : l.spread === null || l.spread.value === null ? ("not_limited" as const) : site(l.spread, t, snapshot, owner);
   return {
@@ -233,7 +237,9 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,
     max: l.max ? site(l.max, t, snapshot, owner) : null,
-    where: src.url && src.title ? { url: src.url, title: src.title, ...(src.page ? { page: src.page } : {}), ...(src.fragment ? { fragment: src.fragment } : {}), tariff: docOf(src.url) === docOf(tariffUrl) } : null,
+    where: whereOf(l.rate),
+    // a flat price for a small order or conversion (F-12, F-13) stands on its own place in the documents
+    flat: l.flat_up_to ? { amount: site(l.flat_up_to.amount, t, snapshot, owner), upTo: site(l.flat_up_to.up_to, t, snapshot, owner), where: whereOf(l.flat_up_to.amount) } : null,
     spread,
   };
 }

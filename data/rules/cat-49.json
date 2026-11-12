@@ -2,19 +2,189 @@
   "id": "CAT-49",
   "title": "Index-tracking tracks (cluster 4) other than S&P 500: at least three indices, none above 50% of assets",
   "title_he": "מסלולים שעוקבים אחרי מדדים, חוץ מ־S&P 500: לפחות שלושה מדדים, ואף אחד מהם לא מעל חצי מהנכסים",
-  "text_he": "לפי רשימת מסלולי ההשקעה של רשות שוק ההון, מסלול עוקב מדדי מניות משקיע בין 75% ל־100% מהנכסים, באמצעות מכשירים שעוקבים אחרי מדד, במדדי מניות, ולפחות בשלושה מדדים שאינם דומים. כל אחד משלושת המדדים הגדולים במסלול הוא בין 10% ל־50% מהנכסים, ולכן אף מדד אחד לא מגיע ליותר מחצי. מדדים נחשבים דומים כשנכסי הבסיס שלהם חופפים ב־60% לפחות. הרשימה לא נותנת שם לאף מדד, ולא קובעת חלוקה בין ישראל לחו״ל או גידור מטבע. אותם כללים חלים על מסלול עוקב מדדי אג״ח ועל מסלול עוקב מדדי אג״ח ממשלות, ובמסלול עוקב מדדים עם מניות עד רבע מהנכסים במניות.",
+  "text_he": "לפי רשימת מסלולי ההשקעה של רשות שוק ההון, מסלול עוקב מדדי מניות משקיע בין 75% ל־100% מהנכסים, באמצעות מכשירים שעוקבים אחרי מדד, במדדי מניות, ולפחות בשלושה מדדים שאינם דומים. כל אחד משלושת המדדים הגדולים במסלול הוא בין 10% ל־50% מהנכסים, ולכן אף מדד אחד לא מגיע ליותר מחצי. מדדים נחשבים דומים כשנכסי הבסיס שלהם חופפים ב־60% לפחות. הרשימה לא נותנת שם לאף מדד, ולא קובעת חלוקה בין ישראל לחו״ל או גידור מטבע. אותם כללים חלים על מסלול עוקב מדדי אג״ח, וגם על מסלול עוקב מדדי אג״ח ממשלות, אלא ששם הרשימה לא דורשת שהמדדים לא יהיו דומים. במסלול עוקב מדדים של אג״ח עם מניות, לפחות 75% מהנכסים עוקבים אחרי מדדי אג״ח, בשלושה מדדים לפחות, והחשיפה למניות היא עד 25% מהנכסים; הכלל של 10% עד 50% למדד לא נקבע בו.",
+  "figure_names_he": {
+    "tracking_min": "החלק המזערי מהנכסים שעוקב אחרי מדדים",
+    "min_indices": "המספר המזערי של מדדים",
+    "top_index_min": "החלק המזערי של כל אחד משלושת המדדים הגדולים",
+    "top_index_max": "החלק המרבי של כל אחד משלושת המדדים הגדולים",
+    "similar_overlap": "החפיפה שממנה מדדים נחשבים דומים"
+  },
   "strength": "primary",
   "dimensions": [
     "currency"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
+  "figures": {
+    "tracking_min": {
+      "value": 75,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), p.13, \"מסלול עוקב מדדי מניות\"",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "יעקבו באמצעות מכשירים עוקבי מדד ובשיעור שלא יפחת"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "In the equity, bond and government-bond tracker names, 75% to 100% of the assets follow the indices through index-tracking instruments."
+    },
+    "min_indices": {
+      "value": 3,
+      "unit": "count",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), p.13, \"מסלול עוקב מדדי מניות\"",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "ולכל הפחות בשלושה מדדים"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "At least three indices that are not similar (the government-bond tracker does not say not similar)."
+    },
+    "top_index_min": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), p.13, \"מסלול עוקב מדדי מניות\"",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "הוא הגדול ביותר"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "Each of the three largest indices is at least 10% of the track's assets."
+    },
+    "top_index_max": {
+      "value": 50,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), p.13, \"מסלול עוקב מדדי מניות\"",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "ולא יעלה על 50%"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "Each of the three largest indices is at most 50% of the track's assets, so no single index is above half."
+    },
+    "similar_overlap": {
+      "value": 60,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=18",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), p.18, דברי הסבר, \"מסלולים עוקבי מדדים\"",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "בשיעור של 60%"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "Indices count as similar when the value of the underlying assets of one overlaps 60% of another's in the track (explanatory notes)."
+    }
+  },
   "il_finance_file": "tracks-catalogue-and-decoder.md",
   "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=9",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "quote": "מסלולים עוקבי מדדים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.10",
+      "locator_he": "עמוד 10",
+      "page": 10,
+      "quote": "ולכל הפחות אחר בשלושה מדדים כאמור",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=11",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "quote": "ולכל הפחות אחר בשלושה מדדים כאמור",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=12",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "quote": "ולכל הפחות אחר שלושה מדדים כאמור",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=13",
       "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
       "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
       "publisher": "gov.il",
@@ -24,7 +194,21 @@
       "locator": "p.13",
       "locator_he": "עמוד 13",
       "page": 13,
-      "quote": "אחר מדדי מניות ולכל הפחות בשלושה מדדים כאמור שאינם דומים",
+      "quote": "ולכל הפחות בשלושה מדדים",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=18",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.18",
+      "locator_he": "עמוד 18",
+      "page": 18,
+      "quote": "מדדים ייחשבו לדומים",
       "checked": "2026-11-07"
     }
   ]

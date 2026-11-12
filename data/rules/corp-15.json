@@ -1,0 +1,36 @@
+{
+  "id": "CORP-15",
+  "title": "What a rating agency counts as default, including a debt settlement",
+  "title_he": "מה מידרוג סופרת ככשל פירעון, כולל הסדר חוב",
+  "text_he": "לפי מידרוג, שלושה סוגי אירועים נחשבים כשל פירעון בחוב: אי תשלום או איחור בתשלום קרן או ריבית לפי מסמכי המימון, חוץ מאי תשלום שתוקן בתקופת חסד שבחוזה; הליכים משפטיים בגלל כשל של המנפיק, כמו בקשה לפירוק, מפרק זמני, כינוס נכסים או הקפאת הליכים, כשסביר שתשלומי החוב המתוכננים יפסקו או לא ישולמו; והסדר חוב שבו המנפיק מציע למחזיקים ניירות ערך חדשים, מזומן או נכסים שהם התחייבות מופחתת לעומת המקורית, כשמטרת ההסדר לעזור למנפיק להימנע מכשל. כשל טכני שתוקן מהר, בדרך כלל תוך יום או יומיים עסקים, לא נספר. זו הגדרה של חברת דירוג אחת לצורך הסטטיסטיקה שלה, לא הגדרה משפטית.",
+  "strength": "institution",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "midroog",
+      "name_he": "מידרוג"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf#page=13",
+      "title": "Midroog scales and definitions, August 2026",
+      "title_he": "סולמות והגדרות הדירוג של מידרוג (אוגוסט 2026)",
+      "publisher": "Midroog",
+      "publisher_he": "מידרוג",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.13",
+      "locator_he": "עמוד 13",
+      "page": 13,
+      "quote": "הגדרת כשל פירעון",
+      "checked": "2026-11-12"
+    }
+  ]
+}

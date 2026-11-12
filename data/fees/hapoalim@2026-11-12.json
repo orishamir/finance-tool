@@ -939,7 +939,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.19%' for transactions above $99; transactions up to $99 pay a flat '$5.50'. Note (03): no fee on zeroing balances under $10. Note (04): direct-channel prices in appendix E."
@@ -959,7 +959,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$6.70' per transaction (US dollars)."
@@ -979,7 +979,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$2,700.00' per transaction (US dollars)."
@@ -1001,10 +1001,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. The fee is charged 'לפי השער הידוע מיידי וצהריים'; the general terms define the bank's own rates, 'שער המכירה המקובל בבנק' and 'שער הקנייה המקובל בבנק', as the 'העברות/ המחאות / מזומנים' rates 'המתפרסם מדי פעם על ידי הבנק', plus or minus the conversion fee (definitions 34.61-34.62, p.15). No document limits the distance from the representative rate (BRK-23)."
+        "notes": "Not limited by the documents. The fee is charged 'לפי השער הידוע מיידי וצהריים'; the general terms define the bank's own rates, 'שער המכירה המקובל בבנק' and 'שער הקנייה המקובל בבנק', as the 'העברות/ המחאות / מזומנים' rates 'המתפרסם מדי פעם על ידי הבנק', plus or minus the conversion fee (definitions 34.61-34.62, p.15). No document limits the distance from the representative rate (BRK-16)."
       },
       "period": null,
       "channel": "branch",
@@ -1033,6 +1033,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1054,6 +1055,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1083,7 +1085,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23",
+          "BRK-16",
           "BRK-19"
         ],
         "state": "sourced",
@@ -1104,7 +1106,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'5.7 $' (clerk $6.7)."
@@ -1124,7 +1126,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'2,300 $' (clerk $2,700)."
@@ -1146,10 +1148,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. The fee is charged 'לפי השער הידוע מיידי וצהריים'; the general terms define the bank's own rates, 'שער המכירה המקובל בבנק' and 'שער הקנייה המקובל בבנק', as the 'העברות/ המחאות / מזומנים' rates 'המתפרסם מדי פעם על ידי הבנק', plus or minus the conversion fee (definitions 34.61-34.62, p.15). No document limits the distance from the representative rate (BRK-23)."
+        "notes": "Not limited by the documents. The fee is charged 'לפי השער הידוע מיידי וצהריים'; the general terms define the bank's own rates, 'שער המכירה המקובל בבנק' and 'שער הקנייה המקובל בבנק', as the 'העברות/ המחאות / מזומנים' rates 'המתפרסם מדי פעם על ידי הבנק', plus or minus the conversion fee (definitions 34.61-34.62, p.15). No document limits the distance from the representative rate (BRK-16)."
       },
       "period": null,
       "channel": "direct",
@@ -1179,6 +1181,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16",
             "BRK-19"
           ],
@@ -1201,6 +1204,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
+            "BRK-68",
             "BRK-16",
             "BRK-19"
           ],

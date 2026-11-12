@@ -7,7 +7,9 @@
     "multiplier_up_to_67": "מכפיל השכר הממוצע בתקרה, עד גיל 67",
     "multiplier_after_67": "מכפיל השכר הממוצע בתקרה, אחרי גיל 67",
     "factor_age_60_or_under": "מקדם להפקדה בגיל 60 או פחות",
-    "factor_age_67": "מקדם להפקדה בגיל 67"
+    "factor_age_67": "מקדם להפקדה בגיל 67",
+    "minimum_age": "הגיל המזערי לניכוי במקור בהיוון בלי אישור פקיד השומה",
+    "payslips_shown": "מספר תלושי השכר שהעמית מציג"
   },
   "strength": "primary",
   "dimensions": [
@@ -99,6 +101,46 @@
       ],
       "state": "sourced",
       "notes": "Factor for a deposit at age 67."
+    },
+    "minimum_age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+        "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 \"הסדר ניכוי מס במקור בעת היוון קצבה מוכרת – החלטת מיסוי בהסכם\" (פורסמה 05/05/2015), p.1, fact 1.4: \"העמית הינו בן 60 או יותר.\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXA-30"
+      ],
+      "state": "sourced",
+      "notes": "The member is 60 or older: one of the facts on which the ruling lets the managing company withhold on commuting a recognized annuity without the assessing officer's approval. Read in the library copy of the ruling (78973fb4e5795fd5, p.1), from the page image."
+    },
+    "payslips_shown": {
+      "value": 3,
+      "unit": "count",
+      "source": {
+        "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+        "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 (פורסמה 05/05/2015), p.1, fact 1.5: \"העמית מקבל קצבה מזערית כהגדרתה בחוק הפיקוח על קופות גמל והציג שלושה תלושי שכר.\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-12",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXA-30"
+      ],
+      "state": "sourced",
+      "notes": "The member receives the minimum annuity and has shown three payslips (fact 1.5). Read in the library copy of the ruling (78973fb4e5795fd5, p.1), from the page image."
     }
   },
   "il_finance_file": "tax-insurance-and-amendment-190.md",

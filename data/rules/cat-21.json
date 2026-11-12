@@ -1,0 +1,51 @@
+{
+  "id": "CAT-21",
+  "title": "Changes to a track's specialization, deviations, and notice to members",
+  "title_he": "שינוי ההתמחות של מסלול: הודעה לעמיתים מראש",
+  "text_he": "לפי חוזר רשות שוק ההון, גוף מוסדי יכול לשנות התמחות של מסלול מתמחה רק אם הדירקטוריון אישר שהשינוי משקף טוב יותר את תמהיל ההשקעות שהמסלול ניהל בפועל. הוא צריך להודיע לעמיתים לפחות 45 ימים ולכל היותר שלושה חודשים לפני השינוי, עם הנימוקים, מה השינוי אומר על גמישות ניהול ההשקעות, השוואה בין המדיניות לפני השינוי ואחריו, והזכות לעבור לכל מסלול או לקופה אחרת. בשנה הראשונה של מסלול חדש מותר לחרוג ממדיניות ההשקעה כל עוד הנכסים בו קטנים מכדי לנהל אותו לפיה.",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=8",
+      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.8, ss.12 to 13",
+      "locator_he": "עמוד 8, סעיפים 12 עד 13",
+      "page": 8,
+      "quote": "לפחות 45 ימים ולכל היותר שלושה חודשים לפני המועד המתוכנן לביצועו",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/53vlo3zc/שינוי-התמחות-גמל-להשקעה-7980.pdf",
+      "title": "Meitav notice 7980",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22",
+      "qualifier": "(Meitav's own notice, an example)"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/sisdprky/שינוי-התמחות-גמל-להשקעה-7861.pdf",
+      "title": "Meitav notice 7861",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22",
+      "qualifier": "(Meitav's own notice, an example)"
+    }
+  ]
+}

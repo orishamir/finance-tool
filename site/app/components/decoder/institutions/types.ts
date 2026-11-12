@@ -92,6 +92,8 @@ export interface TariffLineRow {
   max: SiteValue | null;
   /** Where the rate stands (D57): its document, the page of a PDF, the quoted words of a web page; `tariff` when it is the record's own price list. */
   where: { url: string; title: string; page?: number; fragment?: TextFragment; tariff: boolean } | null;
+  /** A flat price for an order or a conversion up to a sum (the record's `flat_up_to`, F-12, F-13), with where it stands; a larger one pays the rate and its bounds. */
+  flat: { amount: SiteValue; upTo: SiteValue; where: TariffLineRow["where"] } | null;
   /** A conversion's spread: printed ("עד 0.7%"), or not limited by the documents (D56: never zero); null when the line has none. */
   spread: SiteValue | "not_limited" | null;
 }

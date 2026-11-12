@@ -1313,7 +1313,7 @@ function Lists({ today }: { today: string }) {
             ]}
           />
         </State>
-        <State label="a product on two terms under one name (lines): the figure column takes a line for each, the other cells span them once" wide>
+        <State label="a product on two terms under one name (lines): the figure column takes a line for each, the other cells span them once; in the last row a line's cell takes the room of the cells after it (spans), as a fee's flat price for a small order does on a company's card" wide>
           <ProductTable
             columns={[
               { id: "name", head: p.name },
@@ -1330,6 +1330,10 @@ function Lists({ today }: { today: string }) {
                     lines: { columns: ["figure"], rows: [0.35, 0.2].map((r) => ({ key: String(r), cells: [<ProductFigures key="f" items={[{ id: "a", figure: <Num value={{ ...s.rate, value: r }} size="cell" />, word: p.figure }]} />] })) },
                   },
                   row("e", p.b, "1209444", 0.1, false),
+                  (() => {
+                    const r = row("f", p.c, "1148162", 0.8, false);
+                    return { ...r, lines: { columns: ["number", "link", "figure"], rows: [{ key: "a", cells: r.cells.slice(1) }, { key: "b", cells: [<ProductFigures key="f" items={[{ id: "a", figure: <Num value={{ ...s.rate, value: 0.4 }} size="cell" />, word: p.figure }]} />, null, null], spans: [3] }] } };
+                  })(),
                 ],
               },
             ]}

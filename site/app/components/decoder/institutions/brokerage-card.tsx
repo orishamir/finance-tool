@@ -17,6 +17,7 @@ import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, LeftOutLine, MixedNam
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 import { isPdfUrl, sourceHref, withoutCodes, type CitedPlace } from "../../../lib/sources";
+import { wholeSum } from "../../../lib/format";
 import { accountSectionIds, feeKindName, feeKindOf, feeKinds } from "./sections";
 
 /** What a kind of fee is charged on, in the guides' words ("מכל המרה של שקלים למטבע זר או חזרה"). */
@@ -73,6 +74,17 @@ function Bound({ l, side }: { l: TariffLineRow; side: "min" | "max" }) {
   const v = l[side];
   if (v) return figure(side, v, boundWord(l, v));
   return <span className="text-sm text-muted-foreground">{bounded(l) ? copy.card.noBound[side] : "—"}</span>;
+}
+
+/** A flat price for a small conversion or order (F-12, F-13), its amount first as every price's: "3.30 $ להמרה של עד 99 $"; nothing where the line has none. */
+function FlatFigure({ l, inline }: { l: TariffLineRow; inline?: boolean }) {
+  if (!l.flat) return null;
+  const word = (
+    <>
+      {copy.card.flatUpTo[l.base === "fx" ? "fx" : "trade"]} <Num value={l.flat.upTo} display={wholeSum(l.flat.upTo.unit)} />
+    </>
+  );
+  return <ProductFigures inline={inline} items={[{ id: "flat", figure: <Num value={l.flat.amount} size="cell" />, word }]} />;
 }
 
 /** A bound on a phone, where no head names it: "מינימום 27.00 ₪ לפעולה"; nothing where the kind has none. */
@@ -141,7 +153,7 @@ type Channel = "direct" | "branch";
 /** Two lines of one fee that differ only by where the order is given. */
 const channelKey = (l: TariffLineRow) => JSON.stringify([l.base, l.classes, l.band, l.fxToFx, l.distribution, l.period]);
 const sameValue = (a: SiteValue | null, b: SiteValue | null) => (a?.value ?? null) === (b?.value ?? null) && (a?.unit ?? null) === (b?.unit ?? null);
-const samePrice = (a: TariffLineRow, b: TariffLineRow) => sameValue(a.rate, b.rate) && sameValue(a.min, b.min) && sameValue(a.max, b.max);
+const samePrice = (a: TariffLineRow, b: TariffLineRow) => sameValue(a.rate, b.rate) && sameValue(a.min, b.min) && sameValue(a.max, b.max) && sameValue(a.flat?.amount ?? null, b.flat?.amount ?? null) && sameValue(a.flat?.upTo ?? null, b.flat?.upTo ?? null);
 
 /**
  * The lines as the table's rows: a fee the price list prices once for the direct channels and once at a branch is one row, holding both,
@@ -194,9 +206,22 @@ function FeeTable({ lines, channel }: { lines: TariffLineRow[]; /** Where the or
         rows: channelRows(lines.filter((l) => feeKindOf(l) === k)).map((r) => {
           // a fee priced by channel shows the chosen channel's line, laid over the other's room: switching changes its numbers, never a height
           const held = (f: (l: TariffLineRow) => ReactNode) => (r.pair && !r.same ? <LongestCase cases={[f(r.pair.direct), f(r.pair.branch)]}>{f(r.pair[channel])}</LongestCase> : f(r.pair ? r.pair[channel] : r.line));
+          const cells = [held((l) => <Covers l={l} noChannel={r.same} />), held((l) => figure("price", l.rate, priceWord(l))), held((l) => <Bound l={l} side="min" />), held((l) => <Bound l={l} side="max" />), held((l) => <WhereCell w={l.where} />)];
+          // a flat price for a small order or conversion is the row's second line: its price across the price and bound columns, its own place in the documents
+          const flat = r.pair ? !!(r.pair.direct.flat || r.pair.branch.flat) : !!r.line.flat;
+          const lines = flat
+            ? {
+                columns: ["price", "min", "max", "where"],
+                rows: [
+                  { key: "rate", cells: cells.slice(1) },
+                  { key: "flat", cells: [held((l) => <FlatFigure l={l} />), null, null, held((l) => (l.flat ? <WhereCell w={l.flat.where} /> : null))], spans: [3, 1, 1, 1] },
+                ],
+              }
+            : undefined;
           return {
             key: r.key,
-            cells: [held((l) => <Covers l={l} noChannel={r.same} />), held((l) => figure("price", l.rate, priceWord(l))), held((l) => <Bound l={l} side="min" />), held((l) => <Bound l={l} side="max" />), held((l) => <WhereCell w={l.where} />)],
+            cells,
+            ...(lines ? { lines } : {}),
             phone: <ProductPhoneRow stacked>{held((l) => <PhoneFee l={l} same={r.same} />)}</ProductPhoneRow>,
           };
         }),
@@ -206,7 +231,8 @@ function FeeTable({ lines, channel }: { lines: TariffLineRow[]; /** Where the or
 }
 
 /** A fee's lines on a phone: what it is charged on, the price with where it stands at the line's end, as the table's column ("עמוד 30 ↗"); the
- *  two bounds on the next line (each keeps its words whole, and no bound drops alone); a conversion's spread. */
+ *  two bounds on the next line (each keeps its words whole, and no bound drops alone); a flat price for a small order or conversion with
+ *  where it stands; a conversion's spread. */
 function PhoneFee({ l, same }: { l: TariffLineRow; same: boolean }) {
   return (
     <span className="flex flex-col gap-1">
@@ -219,6 +245,13 @@ function PhoneFee({ l, same }: { l: TariffLineRow; same: boolean }) {
         <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
           <PhoneBound l={l} side="min" />
           <PhoneBound l={l} side="max" />
+        </span>
+      )}
+      {/* a flat price for a small order or conversion, with where it stands at the line's end, as the price's line */}
+      {l.flat && (
+        <span className="flex flex-wrap items-center justify-between gap-x-3">
+          <FlatFigure l={l} inline />
+          {l.flat.where && <WhereCell w={l.flat.where} />}
         </span>
       )}
       <Spread l={l} />

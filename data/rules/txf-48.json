@@ -94,6 +94,7 @@
       "locator": "p.1001",
       "locator_he": "עמוד 1001",
       "page": 1001,
+      "quote": "Below is an analysis of the tax charge",
       "checked": "2026-11-12",
       "qualifier": "(library 0b167af5a1250c15)"
     },
@@ -107,8 +108,69 @@
       "locator": "p.210",
       "locator_he": "עמוד 210",
       "page": 210,
+      "quote": "It is anticipated that the Company may not be able to benefit from reduced rates of withholding tax",
       "checked": "2026-11-12",
       "qualifier": "(library 4380001efa9706cd)"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "CSPX factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/iusa-ishares-core-s-p-500-ucits-etf-usd-dist-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "IUSA factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fund-docs.vanguard.com/SandP_500_UCITS_ETF_USD_Distributing_9503_EU_INT_UK_EN.pdf#page=1",
+      "title": "Vanguard S&P 500 UCITS ETF USD Distributing factsheet",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fund-docs.vanguard.com/SandP_500_UCITS_ETF_USD_Accumulating_9694_EU_INT_UK_EN.pdf#page=1",
+      "title": "Vanguard S&P 500 UCITS ETF USD Accumulating factsheet",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/swda-ishares-core-msci-world-ucits-etf-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "SWDA factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/ssac-ishares-msci-all-country-world-ucits-etf-fund-fact-sheet-en-gb.pdf#page=1",
+      "title": "SSAC factsheet, October 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "page": 1,
+      "checked": "2026-11-12"
     }
   ]
 }

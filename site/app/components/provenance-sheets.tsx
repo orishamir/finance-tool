@@ -785,11 +785,16 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         {uses && (uses.pages.length > 0 || uses.engine) && (
           <Row label={ruleCardMore.usesLead}>
             <span className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
-              {uses.pages.map((u) => (
-                <Link key={u.href} to={u.href} className="text-link hover:underline">
-                  {u.label}
-                </Link>
-              ))}
+              {/* a page kind with no single page for the rule (the fee pages, one per product) is named, not linked */}
+              {uses.pages.map((u) =>
+                u.href ? (
+                  <Link key={u.href} to={u.href} className="text-link hover:underline">
+                    {u.label}
+                  </Link>
+                ) : (
+                  <span key={u.label}>{u.label}</span>
+                ),
+              )}
               {uses.engine && <span>{ruleCardMore.usesEngine}</span>}
             </span>
           </Row>
@@ -993,11 +998,16 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
           <Row label={ruleCardMore.usesLead}>
             {usesSome ? (
               <span className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
-                {uses.pages.map((u) => (
-                  <Link key={u.href} to={u.href} className="text-link hover:underline">
-                    {u.label}
-                  </Link>
-                ))}
+                {/* a page kind with no single page for the rule (the fee pages, one per product) is named, not linked */}
+                {uses.pages.map((u) =>
+                  u.href ? (
+                    <Link key={u.href} to={u.href} className="text-link hover:underline">
+                      {u.label}
+                    </Link>
+                  ) : (
+                    <span key={u.label}>{u.label}</span>
+                  ),
+                )}
                 {uses.engine && <span>{ruleCardMore.usesEngine}</span>}
               </span>
             ) : (

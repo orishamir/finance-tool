@@ -1008,7 +1008,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'0.19% מסכום העסקה', charged on execution. Footnote (*): FX transactions up to $10 are exempt; up to $100 get a 50% discount including on the minimum ('בעסקאות מט\"ח שסכומן עד 10$ פטור, בעסקאות מט\"ח שסכומן עד 100$ 50% הנחה, לרבות על המינימום'). Exemption for conversions from a Nazi-victims pension account."
@@ -1030,7 +1030,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$ 6.8 לפעולה' (US dollars per transaction)."
@@ -1052,7 +1052,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$ 1,075 לפעולה' (US dollars per transaction)."
@@ -1074,10 +1074,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין, 5.1.1, p.17); the general terms booklet (library 36453fb2c2b8e702, p.39) executes a purchase or sale of foreign currency 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.9 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-23). Not zero. Digital Premium (annex A p.40) waives the fee ('עמלת חליפין ... פטור'), not the rate."
+        "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין, 5.1.1, p.17); the general terms booklet (library 36453fb2c2b8e702, p.39) executes a purchase or sale of foreign currency 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.9 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-16). Not zero. Digital Premium (annex A p.40) waives the fee ('עמלת חליפין ... פטור'), not the rate."
       },
       "period": null,
       "channel": "branch",
@@ -1113,7 +1113,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23",
+          "BRK-16",
           "BRK-19"
         ],
         "state": "sourced",
@@ -1136,7 +1136,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מינימום $ 6 לפעולה' (US dollars)."
@@ -1158,7 +1158,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מקסימום $ 1,055 לפעולה' (US dollars)."
@@ -1180,10 +1180,10 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין, 5.1.1, p.17); the general terms booklet (library 36453fb2c2b8e702, p.39) executes a purchase or sale of foreign currency 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.9 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-23). Not zero. Digital Premium (annex A p.40) waives the fee ('עמלת חליפין ... פטור'), not the rate."
+        "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין, 5.1.1, p.17); the general terms booklet (library 36453fb2c2b8e702, p.39) executes a purchase or sale of foreign currency 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.9 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-16). Not zero. Digital Premium (annex A p.40) waives the fee ('עמלת חליפין ... פטור'), not the rate."
       },
       "period": null,
       "channel": "direct",

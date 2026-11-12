@@ -6,7 +6,7 @@
 // paper above the lists, and its stub at the screen's foot keeps what is left in sight and leads back to it.
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { invest as c, site } from "../../copy";
-import { fmt } from "../../lib/format";
+import { fmt, wholeSum } from "../../lib/format";
 import { gapListFor, pricedVariable, accountSum, pairCostsKept, type InvestView } from "../../lib/invest";
 import type { FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
@@ -40,6 +40,8 @@ function RatePartWords({ part, house }: { part: RatePart; house: string }) {
   const per = part.per ? <> {r.per[part.per]}</> : null;
   if (part.kind === "rate") return <>{fig}{per}</>;
   if (part.kind === "cap") return <>{r.cap.before} {fig} {r.cap.after}</>;
+  // "3.30 $ להמרה של עד 99 $": the sum it holds up to is the list's own figure too
+  if (part.kind === "flat" && part.upTo) return <>{fig} {r.flat[part.per ?? "eachTrade"]} <Num value={ownBy({ ...part.upTo } as SiteValue, house)} display={wholeSum(part.upTo.unit)} /></>;
   if (part.kind === "spread") return <>{r.spread} {fig}</>;
   return <>{part.kind === "min" ? r.min : r.max} {fig}{per}</>;
 }

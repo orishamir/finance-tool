@@ -1050,7 +1050,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Printed as 0.185% (cell 0.00185), part 5 'עמלת חליפין'; annex E (p.43) prints it as the clerk price ('מחיר פקיד'). Note (02): the FX services that count as a clerk operation for the part-1 minimum. The 16/09/2026 change notice (library 27bd3cacbc773066) raised this fee from 0.175% to 0.185% and its maximum from $1,200 to $2,000 from 01/10/2026. Note (03): third-party fees are added. An automatic conversion for a purchase abroad (agreement ch.5 s.15.1) is bought by the bank 'בתוספת עמלת מס חליפין' and names no channel, so the most the documents allow for it is this clerk price. The spread is recorded in 'spread'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1072,7 +1072,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$6.75'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1094,7 +1094,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Cell prints '2000' without a currency sign; the change notice of 16/09/2026 prints the new maximum as '$ 2,000.00', so the unit is US dollars. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1126,7 +1126,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."
@@ -1156,7 +1156,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Annex E: '@ עמלת חליפין', channel 'אינטרנט / יישומון', '0.13%, מינימום 5.00$, מקסימום 1,300$' against the clerk price '0.185%, מינימום 6.75$, מקסימום 2,000$'. The change notice of 16/09/2026 (p.2) moved it from 0.1225% (min 4.72$, max 1,000$, channel 'אינטרנט') to 0.13% (min 5$, max 1,300$, channel 'אינטרנט/יישומון') from 01/10/2026. It is the fee on a conversion the reader makes in the site or app ('המרת מט\"ח בדיגיטל', foreign-currency page: 'בגין פעולת המרה בדיגיטל ניתנת הנחה בעמלת חליפין'), for example before buying a fund abroad; a conversion the bank makes itself for a purchase pays the clerk line. Third-party fees are added (part 5 note 03). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1178,7 +1178,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מינימום 5.00$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1200,7 +1200,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מקסימום 1,300$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1232,7 +1232,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."
@@ -1262,7 +1262,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Printed as 0.37% (cell 0.0037); raised from 0.35% on 01/10/2026 per the change notice; annex E (p.43) prints it as the clerk price. The spread is recorded in 'spread'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1284,7 +1284,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'$13.50'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1306,7 +1306,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Cell prints '4000'; the change notice prints '$ 4,000.00'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1338,7 +1338,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."
@@ -1368,7 +1368,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Annex E: '@ עמלת חליפין-המרה בין שני מטבעות זרים', channel 'אינטרנט / יישומון', '0.26%, מינימום 10.00$, מקסימום 2,600$' against the clerk price '0.37%, מינימום 13.5$, מקסימום 4,000$'; set from 01/10/2026 by the change notice (before: 0.245%, 9.45$, 2,000$, channel 'אינטרנט'). 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1390,7 +1390,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מינימום 10.00$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1412,7 +1412,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "'מקסימום 2,600$'. 2026-11-12: the file at the price list's address is byte for byte the library copy (md5 3998663c…), and this value was seen on its page again."
@@ -1444,7 +1444,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23"
+          "BRK-16"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents. For a purchase abroad without enough foreign currency in the account the bank buys it 'לפי שער ההזמנה להעברות והמחאות שבו הבנק נוהג למכור ללקוחותיו ... בתוספת עמלת מס חליפין', on the day the security is bought, the day payment is demanded or the day it is paid, 'הכל לפי השער הגבוה יותר' (s.15.1); proceeds are converted at the rate at which the bank buys transfers and cheques, less the conversion fee (s.15.2). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). The foreign-currency page says a digital conversion is done 'בשער מיידי ובשער הזמנה'. Library 322ff632b328571c, p.44, checked on the page image."

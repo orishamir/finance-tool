@@ -2030,6 +2030,8 @@ export const r4catalogue = {
     perTrade: "לפעולה",
     /** a percentage fee whose documents print no bound: the site charges none, and says so rather than leave the cell blank */
     noBound: { min: "ללא מינימום", max: "ללא מקסימום" },
+    /** a flat price for a small conversion or order (F-12, F-13), after its amount and before the sum it holds up to: "3.30 $ להמרה של עד 99 $" */
+    flatUpTo: { fx: "להמרה של עד", trade: "לפעולה של עד" },
     factsTitle: "פתיחת חשבון ופיקוח",
     regulator: "הגוף המפקח",
     tase: "חבר בורסה",
@@ -2163,7 +2165,6 @@ export const r4workbench = {
     /** the engine cannot read the tariff without guessing */
     recordError: "האתר לא מצליח לקרוא את התעריפון הזה בלי לנחש, ולכן לא מחשב לו מחיר.",
   },
-  recordedReason: "הסיבה כפי שנרשמה בקובץ הנתונים",
   noAverage: "אין ממוצע שנאסף",
   noAverageReason: "ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור: הפרסום מחדש דורש הסכמה בכתב.",
   noAverageLinks: { boi: "ללוח הנתונים של בנק ישראל", tase: "למחשבון העמלות של הבורסה" },
@@ -2912,6 +2913,8 @@ export const invest = {
     min: "מינימום",
     max: "מקסימום",
     cap: { before: "עד", after: "מסכום הפעולה" },
+    /** a flat price for a small order or conversion, after its amount and before the sum it holds up to, as the company's card says it (r4catalogue.card.flatUpTo) */
+    flat: { conversion: "להמרה של עד", eachTrade: "לפעולה של עד" } as Record<string, string>,
     spread: "מרווח המרה עד",
     standing: "בהוראת קבע:",
     regular: "בפעולה אחרת:",

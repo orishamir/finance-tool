@@ -1,8 +1,9 @@
 // A fee's rate as the price list prints it, for the line of the index page's receipt that says what the account charged: the very
 // record lines the calculation priced for this fund (`PairCosts.priced`: the venue, the standing order or the trade, read as the engine
-// read them), never a figure from elsewhere. Only what the record says plainly is said; where a line cannot be stated without reading
-// into it (two lines where the run priced one way or another, a price for an order up to a sum, a bound in a unit the line does not
-// explain, an offer's price for a first stretch, prices the person typed), the answer is null and the receipt shows the amount with no rate under it.
+// read them), never a figure from elsewhere. Only what the record says plainly is said, a flat price for an order or a conversion up to a sum
+// among it (F-12, F-13: the list prints both prices, and the line says both); where a line cannot be stated without reading into it (two lines
+// where the run priced one way or another, a bound in a unit the line does not explain, an offer's price for a first stretch, prices the person
+// typed), the answer is null and the receipt shows the amount with no rate under it.
 import { REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, type FeeLine } from "@finance-tool/engine";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import type { PairCosts } from "./invest";
@@ -13,10 +14,12 @@ type Figure = NonNullable<SnapLine["rate"]>;
 /** What a rate is of: each trade (a share of it, or an amount for it), each share, each conversion, or a period of the balance. */
 export type RatePer = "trade" | "eachTrade" | "share" | "conversion" | "month" | "quarter" | "year";
 
-/** One figure of a rate as the record prints it: the rate itself, a bound, a ceiling as a share of the trade, a conversion spread. */
+/** One figure of a rate as the record prints it: the rate itself, a bound, a ceiling as a share of the trade, a flat price up to a sum, a conversion spread. */
 export interface RatePart {
-  kind: "rate" | "min" | "max" | "cap" | "spread";
+  kind: "rate" | "min" | "max" | "cap" | "flat" | "spread";
   value: Figure;
+  /** A flat price's sum: an order or a conversion up to it pays `value` (the record's `flat_up_to`). */
+  upTo?: Figure;
   /** What the figure is of; null where its unit already says it ("1.5 אגורות לדולר") or where a bound needs no word. */
   per: RatePer | null;
 }
@@ -37,9 +40,17 @@ const bound = (v: Figure | null | undefined): Figure | null => (num(v) ? v : nul
 /** Bounds of a trade or a conversion that read as "for each one" beside a rate that says so: shekels, dollars, euros or pounds. */
 const PER_ORDER = new Set(["nis", "nis_per_trade", "usd", "usd_per_trade", "eur", "gbp_per_trade"]);
 
-/** A trade line: a share of the trade, an amount for it or an amount a share, with its bounds and its ceiling; null for a price for an order up to a sum. */
+/** A flat price for an order or a conversion up to a sum, in the line's own currency (F-12, F-13); none where the line has none. */
+function flatPart(l: SnapLine, per: RatePer): RatePart[] | null {
+  const f = l.flat_up_to;
+  if (!f) return [];
+  if (!num(f.amount) || !num(f.up_to) || !PER_ORDER.has(f.amount.unit) || !PER_ORDER.has(f.up_to.unit)) return null;
+  return [{ kind: "flat", value: f.amount, upTo: f.up_to, per }];
+}
+
+/** A trade line: a share of the trade, an amount for it or an amount a share, with its bounds, its ceiling and its flat price for a small order. */
 function tradeParts(l: SnapLine): RatePart[] | null {
-  if (!num(l.rate) || l.flat_up_to) return null;
+  if (!num(l.rate)) return null;
   const per: RatePer | null = l.rate.unit === "pct_of_trade" ? "trade" : l.rate.unit === "nis_per_trade" ? "eachTrade" : l.rate.unit === "usd_per_share" ? "share" : null;
   if (!per) return null;
   const parts: RatePart[] = [{ kind: "rate", value: l.rate, per }];
@@ -55,7 +66,8 @@ function tradeParts(l: SnapLine): RatePart[] | null {
     if (cap.unit !== "pct_of_trade") return null;
     parts.push({ kind: "cap", value: cap, per: null });
   }
-  return parts;
+  const flat = flatPart(l, "eachTrade");
+  return flat ? [...parts, ...flat] : null;
 }
 
 /** A custody line: a share of the balance for its period, with bounds for that period or a month; null for a bound in any other unit. */
@@ -75,7 +87,7 @@ function custodyParts(l: SnapLine): RatePart[] | null {
   return parts;
 }
 
-/** A conversion line: a share of the amount converted or agorot a dollar, its bounds, and the spread the list limits. */
+/** A conversion line: a share of the amount converted or agorot a dollar, its bounds, its flat price for a small conversion, and the spread the list limits. */
 function fxParts(l: SnapLine): RatePart[] | null {
   if (!num(l.rate)) return null;
   const per: RatePer | null | undefined = l.rate.unit === "pct_of_trade" ? "conversion" : l.rate.unit === "nis_per_usd" ? null : undefined;
@@ -87,6 +99,9 @@ function fxParts(l: SnapLine): RatePart[] | null {
     if (!PER_ORDER.has(b.unit)) return null;
     parts.push({ kind, value: b, per: null });
   }
+  const flat = flatPart(l, "conversion");
+  if (!flat) return null;
+  parts.push(...flat);
   const spread = bound(l.spread);
   if (spread) {
     if (spread.unit !== "pct_of_trade") return null;
