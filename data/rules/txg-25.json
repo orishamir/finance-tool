@@ -22,10 +22,38 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.7, p.9 s.4, p.11 s.11",
-      "locator_he": "עמוד 7, עמוד 9 סעיף 4, עמוד 11 סעיף 11",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
       "page": 7,
+      "quote": "טופס 0135 אינו מיועד לבעל הכנסות מעסק",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.9 s.4",
+      "locator_he": "עמוד 9 סעיף 4",
+      "page": 9,
       "quote": "טופס מקוצר - בקשה להחזר מס",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.11 s.11",
+      "locator_he": "עמוד 11 סעיף 11",
+      "page": 11,
+      "quote": "לא יאוחר מתום 6 שנים מתום שנת המס הרלוונטית",
       "checked": "2026-10-22"
     }
   ]
