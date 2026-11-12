@@ -12,7 +12,7 @@ import type { FitTableData } from "./fit";
 import { computed, ownBy, ownEach, ruleFigure, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
 import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-signature-bundle.server";
-import { computedInputs as ci, guideBlocks, r3fees } from "../copy";
+import { computedInputs as ci, guideBlocks } from "../copy";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, HOUSE_CHANNELS, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
@@ -339,7 +339,7 @@ function providerTariffs(productId: string, instrumentClass: string): Record<str
         } else if (l.base === "fixed_period" && tariff.monthlyFee !== undefined) {
           // F-17 (method 2.4): an account fee printed per period is the printed line divided by the months in its period
           const printed = ownBy({ ...l.rate } as SiteValue, snap.provider.name_he);
-          const period: Record<string, SiteValue> = l.period ? { [ci.names.period!]: { ...printed, value: r3fees.periods[l.period], unit: "text", about: ci.names.period! } } : {};
+          const period: Record<string, SiteValue> = l.period ? { [ci.names.period!]: { ...printed, value: ci.periods[l.period], unit: "text", about: ci.names.period! } } : {};
           feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : computed(tariff.monthlyFee, "nis_per_month", "F-17", { [ci.names.fee_line!]: printed, ...period }, { today: today(), about: guideBlocks.terms.labels.monthlyFee! });
         }
       }
@@ -450,7 +450,7 @@ export function buildCompareBundle(): CompareBundle {
     const base = { id: record.id, name: record.names.he[0]!, family, record, feeValues: {} as Record<string, SiteValue>, missing: [] as string[] };
     if (family === "provident" || family === "pension") {
       const r = providentTerms(record.id, fees, p05.instruments?.[record.id], allRules, t);
-      // a run on a manager's list is not the track P-05 names: that track only names the class the fee page compares with (D88)
+      // a run on a manager's list is not the track P-05 names: that track is the run's only where no list is collected
       const onList = "listBalance" in r.feeValues || "discountBalance" in r.feeValues;
       const rep = onList ? null : repOf(record.id);
       const hold = r.terms ? ownFeeHoldOf(record.id, r.terms, r.feeValues, allRules, t) : null;
@@ -560,7 +560,7 @@ export function compareBundle(): CompareBundle {
   return (cached ??= buildCompareBundle());
 }
 
-/** What the fee page and the indices page read besides the bundle: the presets (P-07), the ranges, P-05's inflation, PEN-36's text. */
+/** What the indices page reads besides the bundle: the presets (P-07), the ranges, P-05's inflation, PEN-36's text. */
 export function goalFormData() {
   const t = today();
   const parameters = loadParameters();

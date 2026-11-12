@@ -26,7 +26,7 @@ import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
-import { feeInputs } from "../lib/fees";
+import { enteredPlan } from "../lib/entered-plan";
 import { useSettled } from "../lib/settled";
 import { useInputs } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
@@ -141,29 +141,12 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   const exposureId = exposureIdOf(useParams().slug, data.indices);
   const released = useInputs();
   const invest = useInvestState();
-  // The numbers the person entered on this device, each one not entered taking the site's example (P-05); never the saved goal
-  // (only the goal page speaks of a goal).
-  const fi = useMemo(() => feeInputs(compare, null, released.state), [compare, released.state]);
+  // The numbers the person entered on this device, each one not entered taking the site's example (P-05)
+  const entered = useMemo(() => enteredPlan(compare, released.state), [compare, released.state]);
   const ownBank = ownBankOf(wb, invest.bank);
   const currentAccounts = useMemo(() => ({ own: ownBank }), [ownBank]);
-  const livePlan: WorkbenchInputs = useMemo(
-    () => ({
-      // the whole amount today: what stays available is the comparison's question, not this page's
-      amountNow: fi.g.amountNow,
-      monthly: fi.g.monthly,
-      years: fi.g.horizonYears,
-      grossReturn: (fi.g.returnPct ?? 0) / 100,
-      inflation: (fi.values.inflation.value as number) / 100,
-      age: fi.g.age,
-      income: fi.g.salary !== null && fi.g.salary > 0 ? 12 * fi.g.salary : null,
-      values: fi.values,
-      fromGoal: fi.fromGoal,
-      returnFromParameter: fi.returnFromParameter,
-      // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
-      currentAccounts,
-    }),
-    [fi, currentAccounts],
-  );
+  // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
+  const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts }), [entered, currentAccounts]);
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider live; the two lists price every
   // account and fund (about 200 ms) and wait until the slider rests. A bank
   // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
@@ -319,16 +302,16 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
     />
   );
 
-  // the knobs write the same current goal the fees page and the assumptions write: a value set here is the value there
+  // the knobs write the same entered values the assumptions write: a value set here is the value there
   const planCard = (
     <PlanCard
-      knobs={<PlanKnobs fi={fi} ranges={data.form.knobs} pct={data.form.pct} stacked />}
+      knobs={<PlanKnobs entered={entered} ranges={data.form.knobs} pct={data.form.pct} stacked />}
       onOpen={() => setPanelOpen(true)}
       fx={wb.fx}
       today={data.today}
       example={Object.keys(released.state.entered).length === 0}
       dollar={!index?.israeli}
-      inflation={fi.values.inflation}
+      inflation={entered.plan.values.inflation}
       returnHelp={view ? returnHelpOf(view) : undefined}
     />
   );
@@ -424,7 +407,7 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
         </h2>
         {/* what the results are and what they rest on, said here once (the plan card's line keeps to the return, the inflation and the dollar) */}
         <p className="text-sm text-muted-foreground mb-3">{c.plan.knobs.assumptions}</p>
-        {panelOpen && <OtherAssumptions inflation={fi.values.inflation} inflationStart={fi.starts?.inflation} pct={data.form.pct} />}
+        {panelOpen && <OtherAssumptions inflation={entered.plan.values.inflation} inflationStart={entered.starts.inflation} pct={data.form.pct} />}
       </Sheet>
       </CustomEntriesHost>
     </LabelSheetHost>

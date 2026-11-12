@@ -6,17 +6,14 @@ import { existsSync, readdirSync, statSync } from "node:fs";
 import { feesPath, guidePath } from "./site-paths";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { guideIndex, invest, limitedBondFund, mutualFunds, r3fees, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
+import { feeDeal, guideIndex, invest, limitedBondFund, mutualFunds, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { readTextCached } from "./read-cache.server";
-import { compareBundle } from "./compare.server";
-import { feePageAnswers } from "./fees";
 
 export interface RuleUsePage {
-  /** null: a page kind with no single page for the rule (the fee pages, one per product, where the rule belongs to several or none): named, not linked. */
-  href: string | null;
+  href: string;
   label: string;
 }
 
@@ -55,7 +52,7 @@ function idsIn(text: string, re: RegExp, known: Set<string>): Set<string> {
 /** The pages a rule can be used on: the address and the label of each. */
 function pageTable(): Record<string, RuleUsePage> {
   const t: Record<string, RuleUsePage> = {
-    fees: { href: "/fees", label: r3fees.title },
+    fees: { href: "/fees", label: feeDeal.title },
     transfer: { href: "/transfer", label: r3transfer.title },
     companies: { href: "/companies", label: companiesCopy.title },
     guide: { href: "/guide", label: guideIndex.title },
@@ -68,7 +65,7 @@ function pageTable(): Record<string, RuleUsePage> {
 
 /**
  * routes/<name>.tsx → a key of `pageTable`; a route not listed (home, rules, documents, search, parameters …) is not a use. `shared`
- * (here and below) is code several pages share, such as the comparison code of the indices, fee and exposure pages: it counts towards a
+ * (here and below) is code several pages share, such as the comparison code of the indices and exposure pages: it counts towards a
  * rule's score but names no page.
  */
 const routeKey: Record<string, string> = {
@@ -87,19 +84,18 @@ const routeKey: Record<string, string> = {
 /** components/<dir>/ → the page that renders it. */
 const componentKey: Record<string, string> = {
   compare: "shared",
-  fees: "fees",
+  "fee-deal": "fees",
   tracks: "tracks",
   invest: "indices",
   transfer: "transfer",
   decoder: "companies",
 };
 
-/** lib/<file> → page, by file-name prefix (the pages' own logic lives there: the fee tables …). */
+/** lib/<file> → page, by file-name prefix (the pages' own logic lives there: the track tables …). */
 const libPrefixes: [string, string][] = [
   ["compare", "shared"],
   ["goal", "shared"],
   ["holdings", "shared"],
-  ["fees", "fees"],
   ["track-browser", "tracks"],
   ["track-names", "tracks"],
   ["track-labels", "tracks"],
@@ -107,6 +103,11 @@ const libPrefixes: [string, string][] = [
   ["providers", "indices"],
   ["invest", "indices"],
 ];
+
+/** lib/<dir>/ → the page whose logic it holds. */
+const libFolderKey: Record<string, string> = {
+  "fee-deal": "fees",
+};
 
 interface Scan {
   uses: Record<string, RuleUse>;
@@ -128,7 +129,7 @@ function build(): Scan {
   const collections = new Map<string, Map<string, number>>();
   const addPage = (id: string, page: RuleUsePage) => {
     const m = pages.get(id) ?? new Map<string, RuleUsePage>();
-    m.set(page.href ?? page.label, page);
+    m.set(page.href, page);
     pages.set(id, m);
   };
   const bump = (m: Map<string, number>, id: string) => m.set(id, (m.get(id) ?? 0) + 1);
@@ -155,6 +156,8 @@ function build(): Scan {
       key = routeKey[base];
     } else if (rel[0] === "components" && rel.length > 2) {
       key = componentKey[rel[1]!];
+    } else if (rel[0] === "lib" && rel.length > 2) {
+      key = libFolderKey[rel[1]!];
     } else if (rel[0] === "lib") {
       key = libPrefixes.find(([p]) => base.startsWith(p))?.[1];
     }
@@ -191,34 +194,29 @@ function build(): Scan {
     }
   }
 
+  // the fee page states each fee's legal cap with the rules the cap cites, for every product record that lists a fee base (method §10.6, F-113)
+  const capKinds = new Map<string, Set<string>>();
+  for (const w of wrappers.filter((x) => x.fee_bases_allowed.length > 0))
+    for (const id of Object.values(w.fee_caps ?? {}).flatMap((c) => c?.rule_ids ?? [])) if (known.has(id)) capKinds.set(id, (capKinds.get(id) ?? new Set()).add(w.id));
+  for (const id of capKinds.keys()) addPage(id, table.fees!);
+  // a cap of one product opens the page on a new deal of that product; any other rule opens the page as it is
+  const feePage = (id: string): RuleUsePage => {
+    const kinds = [...(capKinds.get(id) ?? [])];
+    return { href: kinds.length === 1 ? feesPath({ wrapper: kinds[0]! }) : table.fees!.href, label: table.fees!.label };
+  };
+
   const uses: Record<string, RuleUse> = {};
-  const feePage = feePageOf();
   for (const r of Object.values(rules)) {
     const cols = Object.fromEntries(collections.get(r.id) ?? []);
     const colRefs = Object.values(cols).reduce((a, b) => a + b, 0);
     uses[r.id] = {
-      pages: [...(pages.get(r.id)?.values() ?? [])].map((pg) => (pg.href === table.fees!.href ? feePage(r.id) : pg)).sort((a, b) => (a.href ?? "").localeCompare(b.href ?? "")),
+      pages: [...(pages.get(r.id)?.values() ?? [])].map((pg) => (pg.href === table.fees!.href ? feePage(r.id) : pg)).sort((a, b) => a.href.localeCompare(b.href)),
       engine: (engineFiles.get(r.id) ?? 0) > 0,
       collections: cols,
       score: scoreOf(r, engineFiles.get(r.id) ?? 0, siteFiles.get(r.id) ?? 0, colRefs),
     };
   }
   return { uses };
-}
-
-/**
- * The fee page a rule the fee page's code cites opens: `/fees` alone shows only that no product was found, so the page of the one product
- * the rule belongs to (`ruleProducts`) whose fee page has an answer; where it belongs to several such products or none, the page is named
- * and not linked.
- */
-function feePageOf(): (id: string) => RuleUsePage {
-  const bundle = compareBundle();
-  const answers = new Set<string>(bundle.wrappers.map((w) => w.id).filter((id) => feePageAnswers(bundle, id)));
-  const products = ruleProducts();
-  return (id) => {
-    const mine = (products[id] ?? []).filter((p) => answers.has(p));
-    return { href: mine.length === 1 ? feesPath({ wrapper: mine[0]! }) : null, label: r3fees.title };
-  };
 }
 
 /** 3 × engine files + site files + collection references + 2 with a figure + 1 for a tier-1 topic + 1 for a primary source + 1 likely to change. */

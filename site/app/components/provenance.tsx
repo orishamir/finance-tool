@@ -74,9 +74,9 @@ export interface ProvenanceData {
   pageCompanies?: readonly string[];
 }
 
-/** What a rule affects: links to pages that use it (a null `href`: a kind of page with no single one for the rule, named, not linked), and whether the calculation engine reads it. */
+/** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
 export interface RuleUses {
-  pages: { href: string | null; label: string }[];
+  pages: { href: string; label: string }[];
   engine: boolean;
 }
 

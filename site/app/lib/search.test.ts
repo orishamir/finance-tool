@@ -169,7 +169,7 @@ describe("the nineteen queries (top href)", () => {
   const cases: [string, string][] = [
     ["TXG-02", "/rules#TXG-02"],
     ["txg 2", "/rules#TXG-02"],
-    ["P-03", "/parameters#P-03"],
+    ["P-02", "/parameters#P-02"],
     ["סף תיקו", "/parameters#P-01"],
     ["מעבר מסלול", "/rules#TXH-17"],
     ["כמה מס על פיקדון", "/guide/bank-deposit#tax"],

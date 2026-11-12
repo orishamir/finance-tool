@@ -41,9 +41,6 @@ const STRIP = 12;
 const TOP = 20; // room for the top axis label above its gridline
 const BOTTOM = 26;
 
-// the fee chart and the year-tick tests read the axis parts from here
-export { AxisLabels, niceYearTicks, yearTicksIn } from "../kit";
-
 const ROW_KEYS = ["net", "tax", "fees", "contributions"] as const;
 
 export function TimelineChart({ points, hover, onHover, markers = [], blocked, enteredReturn, ariaLabel, dimmed, highlight }: TimelineChartProps) {

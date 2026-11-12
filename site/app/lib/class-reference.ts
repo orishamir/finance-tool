@@ -1,4 +1,4 @@
-// F-68 for one class, the same way on every page (B12): the fee page (fees.server.ts) and the
+// F-68 for one class, the same way on every page (B12): the fee page's data (fees.server.ts) and the
 // track workbench (through the engine's `trackWorkbench`, which calls the same function) all take the latest-period tracks of
 // `latestTracks` and one class key, the classification and specialization trimmed. What the line says "from N tracks" about
 // is the number of tracks that report that fee, so a mean over 80 tracks never reads "83": `tracksBehind`.

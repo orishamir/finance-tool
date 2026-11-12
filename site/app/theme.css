@@ -222,12 +222,7 @@
   --chart-value: var(--palette-teal-500); /* growth, net of fees and tax */
   --chart-net: var(--palette-teal-200); /* the headline line: net value at each month */
   --chart-fee: var(--palette-orange-500);
-  /* Fee kinds (fee-drag bands, cost-by-type bars, cumulative-cost lines): four clearly different hues in a fixed order,
-     orange first; blue and violet stay out because they are the entered and computed number inks, and blue the dashed line
-     of an entered return (2026-10-24 evening; were orange-700 → 400). */
-  --chart-fee-1: var(--palette-orange-500);
-  --chart-fee-2: var(--palette-gold-200);
-  --chart-fee-3: var(--palette-teal-300);
+  /* the severance part of the pension deposit bar (design-system 10) */
   --chart-fee-4: var(--palette-magenta-400);
   /* the indices page's change chart (2026-10-28): one line per plan number; the second line near-white, not gold, since amber and its
      neighbours mean status, never a series (charts.md) */
@@ -235,7 +230,6 @@
   --chart-lever-2: var(--palette-neutral-100);
   --chart-lever-3: var(--palette-teal-300);
   --chart-lever-4: var(--palette-magenta-400);
-  --chart-fee-total: var(--palette-neutral-50); /* the fee-drag chart's total line over the bands: a reference line, not a fee kind (2026-10-24 evening); neutral-200 until 2026-10-26, 4.9 ΔE from fee kind 3 under protanopia */
   --chart-tax: var(--palette-rose-600);
   --chart-tax-1: var(--palette-rose-600); /* tax during */
   --chart-tax-2: var(--palette-rose-400); /* tax at exit */
@@ -487,11 +481,7 @@
   --color-chart-lever-4: var(--chart-lever-4);
   --color-chart-kind-unhedged: var(--chart-kind-unhedged);
   --color-chart-kind-hedged: var(--chart-kind-hedged);
-  --color-chart-fee-1: var(--chart-fee-1);
-  --color-chart-fee-2: var(--chart-fee-2);
-  --color-chart-fee-3: var(--chart-fee-3);
   --color-chart-fee-4: var(--chart-fee-4);
-  --color-chart-fee-total: var(--chart-fee-total);
   --color-chart-tax: var(--chart-tax);
   --color-chart-tax-1: var(--chart-tax-1);
   --color-chart-tax-2: var(--chart-tax-2);
