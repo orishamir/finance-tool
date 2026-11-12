@@ -1,25 +1,19 @@
-// The data the fee page needs besides the comparison bundle (flows 20, 21, 27), built at build time and served
-// as /fees-data.json: P-03, the rule records the page quotes and the caps read, the F-68 regulator reference of
-// every provident-family class, the regulator's tracks in compact form (for ?track=), where P-05 sends each
-// wrapper, whose tariff a securities wrapper uses, the link-outs (D20), the kinds a deal can be with their caps, every house's latest
-// price list as a template, and the ECB's reference rates (method §10.6). Server-only.
+// The fee page's data (method §10.6), built at build time and served as /fees-data.json: the kinds a deal can be with their caps, every
+// house's latest price list and the regulator's tracks in compact form as templates that fill a deal, the ECB's reference rates, and the
+// rule records the page's figures and cap lines cite with the records their cards point at. Server-only.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { cmaPeriodFile, type ParameterRecord, type RuleRecord, type ValueObject } from "@finance-tool/schema";
+import { cmaPeriodFile, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import { latestTracks, type CmaTrack } from "@finance-tool/engine";
-import { referenceOfClass } from "./class-reference";
-import { classificationToWrapper, loadFees, loadParameters, loadProducts, loadRules, pointedRecords, refLink, root, today } from "./data.server";
+import { classificationToWrapper, loadProducts, loadRules, pointedRecords, root } from "./data.server";
 import { dealKindsOf } from "./fee-deal/kinds";
 import { houseTemplate } from "./fee-deal/templates";
-import { classKey, type FeesData, type TrackLite } from "./fee-page-data";
+import type { FeesData, TrackLite } from "./fee-page-data";
 import { loadFx } from "./fx.server";
 import { BROKERAGE, onlyWhatCanBeDone, providersOf } from "./providers";
 import { latestSnapshots } from "./providers.server";
 import { compactFee } from "./value";
 import { readParsedCached } from "./read-cache.server";
-
-/** The rules the page quotes (negotiation, caps, references, link-outs) and the cap and run rules read; the kinds' cap rules join them. */
-const quoted = ["PF-02", "PF-04", "PF-05", "PF-06", "PF-11", "PF-13", "PF-16", "PF-39", "PEN-21", "PEN-22", "KH-22", "KH-23", "MF-55", "MF-18", "MF-19", "ETF-17", "BRK-26", "BRK-33", "BRK-37", "CAT-35", "CAT-36", "CAT-37", "CAT-40", "BANK-32"];
 
 function cmaFiles() {
   const dir = join(root, "data/cma");
@@ -30,70 +24,45 @@ function cmaFiles() {
     .map((f) => readParsedCached(join(dir, f), cmaPeriodFile));
 }
 
+/** Every `rule_ids` and `ruleIds` inside a node: the rules a figure's sheet or a cap's line cites. */
+function ruleIdsIn(node: unknown, into: Set<string>): Set<string> {
+  if (Array.isArray(node)) {
+    for (const x of node) ruleIdsIn(x, into);
+  } else if (node !== null && typeof node === "object") {
+    for (const [k, v] of Object.entries(node)) {
+      if ((k === "rule_ids" || k === "ruleIds") && Array.isArray(v)) {
+        for (const id of v) if (typeof id === "string") into.add(id);
+      } else ruleIdsIn(v, into);
+    }
+  }
+  return into;
+}
+
 export function buildFeesData(): FeesData {
-  const t = today();
-  const parameters = loadParameters();
-  const p03 = parameters.find((p) => (p as { method_id?: string }).method_id === "P-03") as ParameterRecord | undefined;
-  if (!p03) throw new Error("data/parameters/ holds no P-03 record");
-  const p05 = parameters.find((p) => (p as { method_id?: string }).method_id === "P-05") as ParameterRecord | undefined;
-  if (!p05) throw new Error("data/parameters/ holds no P-05 record");
-  const allRules = loadRules();
-  const rules: RuleRecord[] = quoted.map((id) => allRules[id]).filter((r): r is RuleRecord => !!r);
-
-  const files = cmaFiles();
-  const tracks: CmaTrack[] = latestTracks(files);
-  const mapped = tracks.filter((x) => classificationToWrapper[x.fund_classification.trim()] != null);
-  const keys = new Map<string, { fund_classification: string; specialization: string }>();
-  for (const x of mapped) keys.set(classKey(x.fund_classification, x.specialization), { fund_classification: x.fund_classification.trim(), specialization: x.specialization.trim() });
-  const references: FeesData["references"] = {};
-  for (const [k, key] of keys) references[k] = referenceOfClass(mapped, key.fund_classification, key.specialization);
-
+  const mapped: CmaTrack[] = latestTracks(cmaFiles()).filter((x) => classificationToWrapper[x.fund_classification.trim()] != null);
   const templates: FeesData["templates"] = {};
-  const lite: TrackLite[] = [];
+  const tracks: TrackLite[] = [];
   for (const x of mapped) {
     const tpl = (templates[x.dataset] ??= { balance: { ...x.fees.avg_annual_management_fee } as ValueObject, deposit: { ...x.fees.avg_deposit_fee } as ValueObject });
-    const company = x.managing_corporation;
-    lite.push({
+    tracks.push({
       id: x.fund_id,
       name: x.names.cma[0]!.trim(),
-      company: company.name.trim(),
-      companyId: company.legal_id,
-      classification: x.fund_classification.trim(),
-      specialization: x.specialization.trim(),
+      company: x.managing_corporation.name.trim(),
       wrapperId: classificationToWrapper[x.fund_classification.trim()] ?? null,
       dataset: x.dataset,
-      period: x.report_period,
       b: compactFee(x.fees.avg_annual_management_fee, tpl.balance),
       d: compactFee(x.fees.avg_deposit_fee, tpl.deposit),
     });
   }
-
-  const wrapperTrack: Record<string, number> = {};
-  const tariffClass: Record<string, string> = {};
-  const snapshots = new Map(loadFees().map((s) => [s.id, s]));
-  const instruments = (p05.instruments ?? {}) as Record<string, { track?: number; tariff?: string }>;
-  for (const [id, spec] of Object.entries(instruments)) {
-    if (spec.track !== undefined) wrapperTrack[id] = spec.track;
-    const snap = spec.tariff ? snapshots.get(spec.tariff) : undefined;
-    if (snap) tariffClass[id] = (snap.provider as { class?: string }).class ?? "";
-    // the money-market funds are modelled at a bank (MF-26, BANK-18), any bank: P-05 names none
-    if (id.startsWith("money-market-fund")) tariffClass[id] = "bank";
-  }
-
-  const links: FeesData["links"] = {
-    boi: refLink("brokerage-account.md", "BRK-26", /FEES_DASH/),
-    tase: refLink("brokerage-account.md", "BRK-37", /market\.tase\.co\.il|trading_fees/),
-    isa: refLink("mutual-funds-and-money-market-funds.md", "MF-55", /Funds_Report2025/),
-  };
   const kinds = dealKindsOf(loadProducts());
-  // the rules behind every kind's caps, which the fee page's cap lines cite
-  const capRules = [...new Set(kinds.flatMap((k) => Object.values(k.caps).flatMap((c) => c?.rule_ids ?? [])))].filter((id) => !quoted.includes(id) && allRules[id]).map((id) => allRules[id]!);
-  rules.push(...capRules);
   // the houses a securities account's deal can start from: the ones the comparison ranks, each read as it can be done (providers.ts)
   const houses = providersOf({ snapshots: latestSnapshots().map(onlyWhatCanBeDone) }, BROKERAGE)
     .filter((s) => !s.missing)
     .map(houseTemplate);
-  return { today: t, p03, rules, pointed: Object.values(pointedRecords(rules, allRules)), references, templates, tracks: lite, wrapperTrack, tariffClass, links, kinds, houses, fx: loadFx() };
+  const fx = loadFx();
+  const allRules = loadRules();
+  const rules: RuleRecord[] = [...ruleIdsIn({ kinds, templates, houses, fx }, new Set())].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
+  return { rules, pointed: Object.values(pointedRecords(rules, allRules)), templates, tracks, kinds, houses, fx };
 }
 
 let cached: FeesData | null = null;

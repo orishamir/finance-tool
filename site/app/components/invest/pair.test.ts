@@ -68,7 +68,7 @@ describe("wholeParts refuses a target a part away (independent check of pass 6: 
 describe("a click on a house moves to a way it has (founder, 2026-10-31)", () => {
   const bundle = buildIndicesBundle();
   const t = bundle.today;
-  const plan: WorkbenchInputs = { amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null, fromGoal: false, returnFromParameter: false,
+  const plan: WorkbenchInputs = { amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null, returnFromParameter: false,
     values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) } };
   const pricedAt = (f: ReturnType<typeof allFunds>[number] | undefined, house: string) => { const at = f?.byHouse[house]; return !!at && "valueN" in at; };
 

@@ -184,7 +184,7 @@ The parameters and their fields:
 - `fund` (a `data/funds/` id) and `tariff` (a `data/fees/` provider id whose `list` lines are the tariff) for the securities family; `ira_fees` (a fees provider id; only `ira-hishtalmut`); `tariff` alone for `makam`; `tariff` with `series_rule` (a `data/rules/` GOV rule id) for `government-bond`.
 - `track` (a CMA `fund_id`) for a provident-family wrapper that no managing company publishes a list fee for (`keren-hishtalmut`, `pension-general` and `provident-for-annuity` today): the run takes the track's `avg_annual_management_fee` and `avg_deposit_fee` (§3.13) as its balance and deposit fees, labelled as an average actually charged, not a list price.
 - `employment` (`self-employed` or `employee`; `keren-hishtalmut` only): the employment type the illustrative run uses.
-- `chosen_by` (text): an entry chosen after the record says who chose it (2026-11-07: `kupat-gemel-lehashkaa`'s `track`, which names only the class the fee page compares with, D88; its run prices the collected lists, F-80).
+- `chosen_by` (text): an entry chosen after the record says who chose it (2026-11-07: `kupat-gemel-lehashkaa`'s `track`, D88; its run prices the collected lists, F-80).
 - The two money-market funds name a `fund` and no `tariff`: their trade and custody lines are 0 under MF-26 and BANK-18.
 
 A product with no entry has no timeline on its guide page, and the build logs which input is missing. The validator checks that every id the map names exists, and that a `track` is a `fund_id` of the latest period in `data/cma/` (§4). The mapping is in `docs/method.md` §2.4 "Instrument terms". The values are the founder's (`docs/parameters-rationale.md`).

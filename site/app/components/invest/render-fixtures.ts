@@ -23,7 +23,7 @@ export const t = bundle.today;
 export const plan: WorkbenchInputs = {
   amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
   values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  fromGoal: true, returnFromParameter: false,
+  returnFromParameter: false,
 };
 export const data = { rules: {}, terms: {}, dimensions: {}, today: t };
 /** What the reader sees: the page's text without the unseen longest cases that only hold a block's height (LongestCase). */

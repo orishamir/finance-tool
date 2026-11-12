@@ -2,7 +2,7 @@
 //  1. no <details> outside the kit: a fold is the kit's Disclosure, which keeps its label and chevron in React;
 //  2. no `group-open:` anywhere: the CSS variant matches any open ancestor, so a closed fold inside an open one read as open;
 //  3. a <p>, or a <span> with words of its own, that holds a <Num> is flowed text: never a flex or grid container, whose children
-//     (each piece of text, each number) become separate items and lines (the fees page's "שווה … ב־8 שנים." sentence);
+//     (each piece of text, each number) become separate items and lines, and the sentence breaks apart;
 //  4. the gallery at /kit stays out of the menu and the search;
 //  5. every open question the site names is in data/open-questions.json: an answered one is deleted from the rule base;
 //  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip;
@@ -17,9 +17,9 @@
 // 15. a record's printed conditions or doubt go through the kit's PrintedText or DoubtNote, which isolate their figures (the
 //     bank-deposit visual printed `conditions` raw).
 // 16. a figure the engine labels "reading" is the site's reading, never a secondary source: no file that reads the "reading" label
-//     renders StrengthLabel strength="secondary"; it renders ReadingTag (the fees page showed a reading as "מקור משני").
-//     A file that picks "secondary-source" labels out of a run for display picks "reading" too (the goal comparison
-//     dropped readings). A figure's sheet shows ReadingTag for a value with the label, and every figure that carries a run's flags
+//     renders StrengthLabel strength="secondary", which would call a reading "מקור משני"; it renders ReadingTag.
+//     A file that picks "secondary-source" labels out of a run for display picks "reading" too, so no figure resting on a reading
+//     loses its mark. A figure's sheet shows ReadingTag for a value with the label, and every figure that carries a run's flags
 //     carries its labels, checked per figure (leftover files by name; a file with one figure carrying
 //     them can hide another that drops them).
 // 17. a price list's date line is the kit's TariffDate, and no copy string says only that a date is missing ("ללא תאריך פרסום" on three rows, where the documents date each part or print nothing).
@@ -235,7 +235,7 @@ describe("a year chart's pointer is the kit's", () => {
 
 describe("a chart's motion is the kit's", () => {
   it("no chart has an animation loop of its own", () => {
-    const charts = /^components\/(chart|compare|fee-deal|workbench\/providers|guide-signature|invest|timeline)\//;
+    const charts = /^components\/(chart|fee-deal|guide-signature|invest|timeline)\//;
     const hits = files.filter((f) => /\.tsx$/.test(f) && charts.test(rel(f)) && /<svg[\s>]/.test(code(read(f))) && /requestAnimationFrame/.test(code(read(f)))).map(rel);
     expect(hits).toEqual([]);
   });
@@ -637,9 +637,8 @@ describe("a reading is the site's reading, not a secondary source", () => {
     expect(readers.length).toBeGreaterThan(1);
     for (const f of readers) expect(read(f), rel(f)).toMatch(/ReadingTag/);
   });
-  // the goal comparison collected only "secondary-source" labels, so a run resting on a reading showed no
-  // mark there while the fees page showed one. Any file that picks the secondary-source labels out of a run for display picks the
-  // reading labels too.
+  // A file that picks the secondary-source labels out of a run for display picks the reading labels too: a file that picked only
+  // the first would show no mark on a run resting on a reading.
   const PICKS_SECONDARY = /code\s*===\s*["']secondary-source["']/;
   const PICKS_READING = /code\s*===\s*["']reading["']/;
   const drops = (sources: { name: string; text: string }[]) => sources.filter((s) => PICKS_SECONDARY.test(s.text) && !PICKS_READING.test(s.text)).map((s) => s.name);

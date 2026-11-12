@@ -207,7 +207,10 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
 
 // ---------------------------------------------------------------- the tariff
 
-/** A distribution fee, by the price list's own words ("עמלת הפצה"): the fund manager pays it to the distributor (MF-24), not a charge of the account. */
+/**
+ * A distribution fee, by the price list's own words ("עמלת הפצה"): the fund manager pays it to the distributor under a distribution
+ * agreement (MF-24); a bank's line is what it may charge the unit's holder where it has no agreement for the fund (MF-26).
+ */
 const isDistributionFee = (l: FeeLine) => l.base === "distribution_handling" && /עמלת הפצ/.test(l.names.tariff.join(" "));
 /** The records the account's card cites beside the snapshot's own: those over its distribution fees. */
 const cardRuleIds = (s: FeesSnapshot) => [

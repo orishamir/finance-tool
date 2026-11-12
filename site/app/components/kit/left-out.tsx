@@ -8,12 +8,12 @@ import { Term } from "../provenance";
 import { cx } from "./cx";
 
 /** "לא נכלל במחיר: 2 דברים שיכולים לשנות אותו" (or, where the record marks nothing so, "7 דברים מהמסמכים"); null with nothing left out. */
-export function LeftOutLine({ view, house, named = false, className }: { view: LeftOutView | null; house: string; /** The lead names the house, where the prices above it are not one house's alone (the fees page). */ named?: boolean; className?: string }) {
+export function LeftOutLine({ view, house, className }: { view: LeftOutView | null; house: string; className?: string }) {
   if (!view) return null;
   return (
     // the words wrap as the line does: a term keeps itself on one line elsewhere
     <p className={cx("text-xs text-muted-foreground [&_.term]:whitespace-normal", className)} data-left-out={view.warn}>
-      {named ? c.leadOf(house) : c.lead}{" "}
+      {c.lead}{" "}
       <Term id={[]} name={c.title(house)} lead={view.lead} parts={view.parts}>
         {view.warn > 0 ? c.canChange(view.warn) : c.some(view.other)}
       </Term>
