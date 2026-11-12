@@ -3,6 +3,7 @@
 // a track in `?track=`), else the deal last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read
 // after the page loads: the pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end
 // opens another saved deal or a new one, copies the deal's link, and opens the template picker; a template opens a new deal beside this one.
+// The builder's track step opens the same picker, and the track it picks is set on the deal on screen (`pickTrack`).
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
@@ -15,7 +16,7 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedWith, without } from "../../lib/fee-deal/store";
-import { dealFromTemplate, HELD_UNSAID, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, HELD_UNSAID, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -64,7 +65,14 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const [deal, setDeal] = useState<FeeDeal>(opened.current.deal);
   const [chosen, setChosen] = useState<string | null>(deal.fees[0]?.id ?? null);
   const [said, setSaid] = useState<string | null>(null);
+  // the template picker, open at the button it was opened from; `pickFrom` says which, and outlives the sheet's closing: the bar's (a pick
+  // opens a new deal) or the builder's track step (a pick sets the track on this deal)
   const [picker, setPicker] = useState<HTMLElement | null>(null);
+  const [pickFrom, setPickFrom] = useState<"bar" | "track">("bar");
+  const openPicker = (from: "bar" | "track") => (anchor: HTMLElement) => {
+    setPickFrom(from);
+    setPicker(anchor);
+  };
   const link = useCopyLink();
 
   // a deal the address gave is saved at once, and the address is cleared, so a reload opens the deal as it is now, not the link again; the
@@ -117,8 +125,16 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   };
   const options = useMemo(() => templateOptions(deal.kind, data), [deal.kind, data]);
   const onPick = (id: string) => {
-    const next = dealFromTemplate(deal, id, data, today);
     setPicker(null);
+    if (pickFrom === "track") {
+      const next = pickTrack(deal, id, data, today);
+      if (!next) return;
+      change(next);
+      if (!next.fees.some((f) => f.id === chosen)) setChosen(next.fees[0]?.id ?? null);
+      setSaid(null);
+      return;
+    }
+    const next = dealFromTemplate(deal, id, data, today);
     if (!next) return;
     dealStore.update((ds) => savedWith(ds, next, today));
     open(next);
@@ -133,7 +149,8 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     for (const o of options) if (o.source === "house") m.set(o.id, templateOf(probe, o.id, data, today)?.left ?? []);
     return m;
   }, [picker, options, deal.kind, deal.held, data, today]);
-  const left = useMemo(() => (deal.template ? (templateOf(deal, deal.template.id, data, today)?.left ?? null) : null), [deal, data, today]);
+  // what the template left out, only where it filled the deal's fees: a track set on a deal whose fees it kept left nothing out of them
+  const left = useMemo(() => (deal.template && !deal.template.feesKept ? (templateOf(deal, deal.template.id, data, today)?.left ?? null) : null), [deal, data, today]);
 
   const kind = kindById(data.kinds, deal.kind);
   // the deal is read once for every view; choosing another fee builds only its panel again
@@ -168,7 +185,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
             onNew={() => open(newDeal(null))}
             onRename={onRename}
             onDelete={onDelete}
-            onTemplates={options.length > 0 ? setPicker : null}
+            onTemplates={options.length > 0 ? openPicker("bar") : null}
           />
         }
       />
@@ -187,11 +204,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
           )}
         </div>
       )}
-      <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} onPick={onPick} />
+      <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} newDeal={pickFrom === "bar"} onPick={onPick} />
       {/* a phone stacks the builder, the panel and the glance; a computer sets the glance at the start (the right), the panel at the end */}
       <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_minmax(0,28rem)]">
         <Card className="flex flex-col gap-4 xl:col-start-2 xl:row-start-1">
-          <BuilderColumn deal={deal} view={views.builder} kinds={data.kinds} chosen={chosen} onPickTrack={hasTracks ? setPicker : null} left={left} onDeal={change} onChoose={setChosen} onAdd={onAdd} />
+          <BuilderColumn deal={deal} view={views.builder} kinds={data.kinds} chosen={chosen} onPickTrack={hasTracks ? openPicker("track") : null} left={left} onDeal={change} onChoose={setChosen} onAdd={onAdd} />
         </Card>
         {deal.kind && (
           <Card edge={chosenFee ? "accent" : undefined} className="flex flex-col gap-4 xl:col-start-3 xl:row-start-1">

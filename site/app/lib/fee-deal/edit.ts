@@ -1,5 +1,6 @@
 // The changes the fee page makes to a deal, each a pure function from a deal to the next: the screen calls them and saves what they
-// return. A figure the person types becomes theirs (`retyped`): it loses a template's source unless it is the same number.
+// return. A figure the person types becomes theirs (`retyped`): it loses a template's source unless it is the same number. A price whose
+// terms the person changes (its months, its bounds' currency, its form) becomes theirs whole (`owned`): the source states another price.
 import type { ProductId } from "@finance-tool/schema";
 import { blankPrice, newFee, retyped, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Stage } from "./model";
 import { holdsFunds, type FeeKindId, type FormId, type Held } from "./shapes";
@@ -59,29 +60,52 @@ export function withFigure(p: Price, figure: Figure, n: number | null): Price {
   }
 }
 
-/** A price in another form: the rate or the sum typed so far carries over where the new form has one; the rest starts empty. */
+/**
+ * A price the person changed the terms of is theirs: every figure in it loses a template's source, which states the price as it was (the
+ * same percent for another period, or the same sum in another currency, is a price the source does not give).
+ */
+function owned(p: Price): Price {
+  switch (p.form) {
+    case "action":
+    case "held":
+      return { ...p, rate: typed(p.rate.v), ...(p.min ? { min: typed(p.min.v) } : {}), ...(p.max ? { max: typed(p.max.v) } : {}) };
+    case "sum":
+    case "perAction":
+      return { ...p, amount: typed(p.amount.v) };
+    default:
+      return p;
+  }
+}
+
+/**
+ * A price in another form: the rate or the sum typed so far carries over where the new form has one, as the person's own figure (`owned`);
+ * the rest starts empty.
+ */
 export function withForm(p: Price, form: FormId): Price {
   if (p.form === form) return p;
   const next = blankPrice(form);
   const rate = p.form === "action" || p.form === "held" ? p.rate : null;
   const amount = p.form === "sum" || p.form === "perAction" ? p.amount : null;
-  if ((next.form === "action" || next.form === "held") && rate) return { ...next, rate };
-  if ((next.form === "sum" || next.form === "perAction") && amount) return { ...next, amount };
+  if ((next.form === "action" || next.form === "held") && rate) return owned({ ...next, rate });
+  if ((next.form === "sum" || next.form === "perAction") && amount) return owned({ ...next, amount });
   return next;
 }
 
-/** A held price's months: the rate's period (`per`) or how often it is charged (`every`); a sum's period (`every`). */
+/**
+ * A held price's months: the rate's period (`per`) or how often it is charged (`every`); a sum's period (`every`). Months that differ
+ * from the price's make it the person's (`owned`).
+ */
 export function withMonths(p: Price, which: "per" | "every", months: Months): Price {
-  if (p.form === "held") return { ...p, [which]: months };
-  if (p.form === "sum" && which === "every") return { ...p, every: months };
+  if (p.form === "held") return p[which] === months ? p : owned({ ...p, [which]: months });
+  if (p.form === "sum" && which === "every") return p.every === months ? p : owned({ ...p, every: months });
   return p;
 }
 
-/** An action's bounds in another currency: the shekel is left unsaid. */
+/** An action's bounds in another currency: the shekel is left unsaid. A currency that differs from the price's makes it the person's (`owned`). */
 export function withCurrency(p: Price, currency: BoundCurrency): Price {
-  if (p.form !== "action") return p;
+  if (p.form !== "action" || (p.currency ?? "ILS") === currency) return p;
   const { currency: _c, ...rest } = p;
-  return currency === "ILS" ? rest : { ...rest, currency };
+  return owned(currency === "ILS" ? rest : { ...rest, currency });
 }
 
 /** A fee with the price of one stage replaced by `fn` of it. */
