@@ -268,8 +268,11 @@ export type DealGroup =
   | { on: "held"; rate: number; fees: number[] }
   | { on: "action"; action: DealAction; side: DealSide; rate: number; fees: number[] };
 
-/** The action a fee's price is grouped under: a conversion is part of the purchase or sale of a holding not in shekels (F-111). */
-function groupAction(deal: Deal, base: DealBase, price: DealPrice): DealAction | null {
+/**
+ * F-111 The action a fee's price is grouped under, or null where it is on no action §10.6 names: a conversion is part of the purchase or
+ * sale of a holding not in shekels.
+ */
+export function groupAction(deal: Pick<Deal, "foreign">, base: DealBase, price: DealPrice): DealAction | null {
   const c = chargedOn(base, price);
   if (c?.on !== "action" || c.action === null) return null;
   return c.action === "conversion" && deal.foreign ? "trade" : c.action;
