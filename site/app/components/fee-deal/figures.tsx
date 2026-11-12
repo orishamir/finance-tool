@@ -23,7 +23,7 @@ function signOf(view: PriceView, figure: Figure): string {
  * bound not given is an empty dashed box with a dash in it only where `optional` asks for one. `unit` replaces the sign in the box (a
  * bound's currency as a choice); `inside` draws `words` in the box.
  */
-export function PriceFigure({ fee, side, k, view, figure, label, words, inside, unit, optional, onFee }: {
+export function PriceFigure({ fee, side, k, view, figure, label, words, inside, tight, unit, optional, onFee }: {
   fee: Fee;
   side: Side;
   k: number;
@@ -33,6 +33,7 @@ export function PriceFigure({ fee, side, k, view, figure, label, words, inside, 
   label: string;
   words?: ReactNode;
   inside?: boolean;
+  tight?: boolean;
   unit?: ReactNode;
   optional?: boolean;
   onFee: (fee: Fee) => void;
@@ -48,6 +49,7 @@ export function PriceFigure({ fee, side, k, view, figure, label, words, inside, 
       unit={unit ?? signOf(view, figure)}
       words={words}
       inside={inside}
+      tight={tight}
       {...(optional ? { placeholder: copy.panel.empty } : {})}
       onCommit={(n) => set(n)}
       {...(bound ? { onClear: () => set(null) } : {})}

@@ -74,11 +74,21 @@ export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord,
   );
 }
 
-/** How every panel under the cards opens: a small line naming the analysis in the action colour, then its conclusion as the headline. */
-export function PanelHead({ kicker, children }: { kicker: ReactNode; /** The conclusion. */ children: ReactNode }) {
+/**
+ * How every panel under the cards opens: a small line naming the analysis in the action colour, then its conclusion as the headline.
+ * `end`: a control at the end of the small line's row (a chart card's switch between periods), which wraps under it where the row is short.
+ */
+export function PanelHead({ kicker, end, children }: { kicker: ReactNode; end?: ReactNode; /** The conclusion. */ children: ReactNode }) {
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-sm text-primary">{kicker}</p>
+      {end ? (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <p className="text-sm text-primary">{kicker}</p>
+          <div className="ms-auto">{end}</div>
+        </div>
+      ) : (
+        <p className="text-sm text-primary">{kicker}</p>
+      )}
       <h3 className="text-xl font-semibold leading-snug">{children}</h3>
     </div>
   );

@@ -197,10 +197,11 @@ export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
 }
 
 /** The cap's line with its rules: its figure and its caveat, or that the law sets none (F-113); nothing where the kind has no line for the fee. */
-export function CapRules({ cap }: { cap: CapLine }) {
+export function CapRules({ cap, dense }: { cap: CapLine; /** One of a list of one-line rows (RulesLine's `dense`). */ dense?: boolean }) {
   if (cap.state === "absent") return null;
   return (
     <RulesLine
+      dense={dense}
       ids={cap.ruleIds}
       lead={
         <span>

@@ -494,24 +494,30 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
  * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
  * select, no field box. `all` is the first option, chosen when `value` is null; without it one of the options is always chosen.
  * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
- * period beside its rate: "0.6% לשנה"). `chip`: the select drawn as a bordered pill with a chevron and its label for a screen reader only,
- * one of a row of facts each chosen in place (what a fee page's deal holds: "קרן שנקנית בחו״ל ▾", "צוברת ▾"); while nothing is chosen
- * it shows `all` in the muted ink.
+ * period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron and its label for a screen reader only, one of a row of
+ * facts each chosen in place (what a fee page's deal holds: "קרן שנקנית בחו״ל ▾", "צוברת ▾"): as wide as its chosen words, the native
+ * select laid unseen over them; a chosen value in the entered blue with its edge, while nothing is chosen `all` in the muted ink.
  */
 export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean }) {
   const id = useId();
-  if (chip)
+  if (chip) {
+    const shown = options.find((o) => o.id === value)?.name ?? all ?? "";
+    // the words are drawn in a span, the select laid over it unseen: a native select is as wide as its longest option, the chip as its chosen one
     return (
-      <span className="relative inline-flex max-w-full items-center">
+      <span
+        className={cx(
+          "relative inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm hover:bg-accent has-[select:focus-visible]:outline-2 has-[select:focus-visible]:outline-ring",
+          value === null ? "border-input text-muted-foreground" : "border-entered/70",
+        )}
+      >
+        <span aria-hidden="true" className={cx("truncate", value !== null && "font-medium text-entered")}>
+          {shown}
+        </span>
+        <IconChevronDown size={16} aria-hidden="true" className="shrink-0 text-muted-foreground" />
         <label htmlFor={id} className="sr-only">
           {label}
         </label>
-        <select
-          id={id}
-          value={value ?? ""}
-          onChange={(e) => onChange(e.target.value || null)}
-          className={cx("min-h-target max-w-full appearance-none truncate rounded-full border border-input bg-card ps-3.5 pe-8 text-sm cursor-pointer hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring", value === null ? "text-muted-foreground" : "font-medium text-foreground")}
-        >
+        <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-full opacity-0">
           {all !== undefined && (
             <option value="" disabled>
               {all}
@@ -523,9 +529,9 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
             </option>
           ))}
         </select>
-        <IconChevronDown size={16} aria-hidden="true" className="pointer-events-none absolute end-3 text-muted-foreground" />
       </span>
     );
+  }
   return (
     <span className="inline-flex items-center gap-1 text-sm">
       <label htmlFor={id} className={labelHidden ? "sr-only" : "text-muted-foreground"}>

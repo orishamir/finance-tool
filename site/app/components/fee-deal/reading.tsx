@@ -271,10 +271,9 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
     ) : null;
   return (
     <Card className="flex min-w-0 flex-col gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <PanelHead kicker={kicker}>{curve && <CurveHeadline head={curveHead(curve)} noun={noun} above={c.head.minRate.above[group.on === "held" ? "held" : (group.action ?? "none")] ?? ""} of={copy.glance.of[group.on === "held" ? (saved ? "heldSaved" : "held") : `action:${group.action ?? "none"}`] ?? ""} />}</PanelHead>
-        {choice}
-      </div>
+      <PanelHead kicker={kicker} end={choice}>
+        {curve && <CurveHeadline head={curveHead(curve)} noun={noun} above={c.head.minRate.above[group.on === "held" ? "held" : (group.action ?? "none")] ?? ""} of={copy.glance.of[group.on === "held" ? (saved ? "heldSaved" : "held") : `action:${group.action ?? "none"}`] ?? ""} />}
+      </PanelHead>
       {curve && (
         <AmountChart
           amounts={curve.amounts}
@@ -393,13 +392,13 @@ function LawRowView({ row, saved, first }: { row: LawRow; saved: boolean; first:
   // a fee the law sets no cap for is one line: its name, the words and the rules
   if (row.cap.state === "none")
     return (
-      <li className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+      <li className="flex flex-wrap items-center gap-x-3">
         <FeeName fee={row} className="font-medium" />
-        <CapRules cap={row.cap} />
+        <CapRules cap={row.cap} dense />
       </li>
     );
   return (
-    <li className="flex flex-col gap-2">
+    <li className="flex flex-col gap-2 py-2 first:pt-0 last:pb-0">
       <LawBlock row={row} saved={saved} first={first} />
     </li>
   );
@@ -411,7 +410,8 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
       <PanelHead kicker={w.law.kicker}>
         <LawHeadline rows={reading.law} />
       </PanelHead>
-      <ul className="flex flex-col gap-4">
+      {/* one-line rows a short list, about 35 px apart; a fee with a cap keeps room around its bar */}
+      <ul className="flex flex-col gap-2">
         {reading.law.map((r) => (
           <LawRowView key={r.fee} row={r} saved={saved} first={reading.from} />
         ))}

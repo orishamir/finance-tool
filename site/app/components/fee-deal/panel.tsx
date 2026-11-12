@@ -121,31 +121,31 @@ function PriceRows({ fee, side, k, s, forms, onFee }: { fee: Fee; side: Side; k:
 }
 
 /**
- * A fee's prices on one side. One price: its lines, and "עד מתי": always, or for a time after which the fee is free (a second, free price
- * that starts at the month typed). Several prices otherwise: each under its head ("בהתחלה", "אחר כך") with the month it ends, and a later
- * one added or taken away.
+ * A fee's prices on one side. One price: its lines, then `between` (the sale's line), then "עד מתי": always, or for a time after which the
+ * fee is free (a second, free price that starts at the month typed), with the way to add a later price beside it. Several prices
+ * otherwise: each under its head ("בהתחלה", "אחר כך") with the month it ends, then `between`, and a later one added or taken away.
  */
-function Stages({ fee, side, stages, forms, onFee }: { fee: Fee; side: Side; stages: readonly PanelStage[]; forms: readonly FormId[]; onFee: (f: Fee) => void }) {
+function Stages({ fee, side, stages, forms, between, onFee }: { fee: Fee; side: Side; stages: readonly PanelStage[]; forms: readonly FormId[]; between?: ReactNode; onFee: (f: Fee) => void }) {
   const name = refName(refOf(fee));
   const note = orderNote(stages);
   const typed = side === "sell" && fee.sale ? fee.sale : fee.stages;
   const untilField = (k: number) => (
     <MonthField value={stages[k]!.until ?? null} label={copy.builder.fieldName(name, p.until)} onCommit={(m) => onFee(setUntil(fee, side, k, m))} onClear={() => onFee(setUntil(fee, side, k, null))} />
   );
-  const addLater = (
-    <Across>
-      <Button variant="quiet" flush onClick={() => onFee(addStage(fee, side))}>
-        + {stages.length === 1 ? p.addLater : p.addStage}
-      </Button>
-    </Across>
+  const addButton = (
+    <Button variant="quiet" flush onClick={() => onFee(addStage(fee, side))}>
+      + {stages.length === 1 ? p.addLater : p.addStage}
+    </Button>
   );
+  const addLater = <Across>{addButton}</Across>;
   // one price that holds always, or one that holds up to a month and then the fee is free
   const limited = stages.length === 2 && typed[0]!.price.form !== "free" && typed[1]!.price.form === "free";
   if (stages.length === 1 || limited)
     return (
       <>
         <PriceRows fee={fee} side={side} k={0} s={stages[0]!} forms={forms} onFee={onFee} />
-        {typed[0]!.price.form !== "free" && (
+        {between}
+        {typed[0]!.price.form !== "free" ? (
           <Row label={p.when}>
             <SegmentedControl
               label={copy.builder.fieldName(name, p.when)}
@@ -161,14 +161,16 @@ function Stages({ fee, side, stages, forms, onFee }: { fee: Fee; side: Side; sta
               }}
             />
             {limited && untilField(0)}
+            {addButton}
           </Row>
+        ) : (
+          addLater
         )}
         {limited && note && (
           <Across>
             <Caption>{note}</Caption>
           </Across>
         )}
-        {addLater}
       </>
     );
   return (
@@ -190,6 +192,7 @@ function Stages({ fee, side, stages, forms, onFee }: { fee: Fee; side: Side; sta
           <Caption>{note}</Caption>
         </Across>
       )}
+      {between}
       {addLater}
     </>
   );
@@ -255,6 +258,21 @@ export function PanelColumn({ panel, fee, law, first, saved, fill, onFee, onRemo
   const term = fee.kind === "own" ? null : feeName(fee.kind);
   const explained = term && terms?.[term] ? term : null;
   const noCap = panel.cap.state === "none";
+  // a sale priced as a purchase or apart: its line stands after the price's figures, before how long the price holds
+  const sale = panel.sale.allowed ? (
+    <Row label={p.sale}>
+      <SegmentedControl
+        label={copy.builder.fieldName(refName(panel), p.sale)}
+        fit
+        options={[
+          { value: "same", label: p.saleSame },
+          { value: "apart", label: p.saleApart },
+        ]}
+        value={panel.sale.stages ? "apart" : "same"}
+        onChange={(v) => onFee(setSaleApart(fee, v === "apart"))}
+      />
+    </Row>
+  ) : null;
   return (
     <Section title={p.title} level="kick" heading="h2" gap="tight">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -263,7 +281,7 @@ export function PanelColumn({ panel, fee, law, first, saved, fill, onFee, onRemo
         </h3>
         {panel.oneSide && <Tag tone="outline">{p.oneSide[panel.oneSide]}</Tag>}
         {explained && (
-          <Button variant="quiet" size="sm" flush gap="sm" onClick={(e) => open({ kind: "term", id: explained }, e.currentTarget)}>
+          <Button variant="quiet" size="sm" flush gap="sm" className="ms-auto" onClick={(e) => open({ kind: "term", id: explained }, e.currentTarget)}>
             {p.whatIs}
             <IconExternal size={14} />
           </Button>
@@ -278,21 +296,7 @@ export function PanelColumn({ panel, fee, law, first, saved, fill, onFee, onRemo
         </p>
       )}
       <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2">
-        <Stages fee={fee} side="buy" stages={panel.stages} forms={forms} onFee={onFee} />
-        {panel.sale.allowed && (
-          <Row label={p.sale}>
-            <SegmentedControl
-              label={copy.builder.fieldName(refName(panel), p.sale)}
-              fit
-              options={[
-                { value: "same", label: p.saleSame },
-                { value: "apart", label: p.saleApart },
-              ]}
-              value={panel.sale.stages ? "apart" : "same"}
-              onChange={(v) => onFee(setSaleApart(fee, v === "apart"))}
-            />
-          </Row>
-        )}
+        <Stages fee={fee} side="buy" stages={panel.stages} forms={forms} between={sale} onFee={onFee} />
         {panel.sale.stages && (
           <>
             <Across>

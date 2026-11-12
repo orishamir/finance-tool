@@ -58,7 +58,7 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   if (row.stages[0]!.price.form === "action" && FEE_SHAPES[fee.kind].fields.action?.includes("min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
   return (
-    <ul className="flex flex-col items-start gap-1 text-sm text-muted-foreground sm:items-end">
+    <ul className="flex flex-col items-start gap-1 whitespace-nowrap text-sm text-muted-foreground sm:items-end">
       {notes.map((n, k) => (
         <li key={k}>{n}</li>
       ))}
@@ -72,7 +72,7 @@ function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f:
   // the row shows the prices from the reading's month on: the passed ones are a prefix of the fee's prices
   const offset = fee.stages.length - row.stages.length;
   return (
-    <div className="flex flex-wrap items-start gap-2">
+    <div className="flex flex-wrap items-center gap-1.5">
       {row.stages.map((s, j) => {
         const k = offset + j;
         const words = rowWords(fee.kind, s, j > 0);
@@ -83,6 +83,7 @@ function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f:
               key={k}
               value={s.until}
               lead={`${copy.price.free} ${copy.standing.until.trim()}`}
+              tight
               label={b.fieldName(name, copy.panel.until)}
               onCommit={(m) => onFee(setUntil(fee, "buy", k, m))}
             />
@@ -97,11 +98,11 @@ function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f:
             </span>
           );
         const main = s.price.form === "action" || s.price.form === "held" ? "rate" : "amount";
-        return <PriceFigure key={k} fee={fee} side="buy" k={k} view={s.price} figure={main} label={b.fieldName(name, copy.panel.howMuch)} words={words} inside onFee={onFee} />;
+        return <PriceFigure key={k} fee={fee} side="buy" k={k} view={s.price} figure={main} label={b.fieldName(name, copy.panel.howMuch)} words={words} inside tight onFee={onFee} />;
       })}
       {row.stages.length === 1 &&
         (["min", "max"] as const).map((m) =>
-          row.stages[0]!.price.figures[m] ? <PriceFigure key={m} fee={fee} side="buy" k={offset} view={row.stages[0]!.price} figure={m} label={b.fieldName(name, copy.panel[m])} words={m === "min" ? b.minWord : b.maxWord} inside onFee={onFee} /> : null,
+          row.stages[0]!.price.figures[m] ? <PriceFigure key={m} fee={fee} side="buy" k={offset} view={row.stages[0]!.price} figure={m} label={b.fieldName(name, copy.panel[m])} words={m === "min" ? b.minWord : b.maxWord} inside tight onFee={onFee} /> : null,
         )}
     </div>
   );
@@ -115,13 +116,13 @@ function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f:
 function FeeRowCard({ id, chosen, label, onChoose, children }: { id: string; chosen: boolean; label: string; onChoose: () => void; children: ReactNode }) {
   if (chosen)
     return (
-      <Card pad="snug" edge="accent" as="li" data-fee={id} tabIndex={-1} className="group outline-none">
+      <Card pad="tight" edge="accent" as="li" data-fee={id} tabIndex={-1} className="group outline-none">
         {children}
       </Card>
     );
   return (
     <li data-fee={id}>
-      <PickCard label={label} onPick={onChoose} pad="snug" className="group">
+      <PickCard label={label} onPick={onChoose} pad="tight" className="group">
         {children}
       </PickCard>
     </li>
@@ -148,7 +149,7 @@ function RemovedLine({ fee, height, onUndo }: { fee: Fee; height: number | undef
   const line = useRef<HTMLElement>(null);
   useEffect(() => line.current?.querySelector("button")?.focus({ preventScroll: true }), []);
   return (
-    <Card ref={line} pad="snug" as="li" className="flex flex-wrap items-center gap-x-3 gap-y-1 border-dashed" style={height ? { minHeight: height } : undefined}>
+    <Card ref={line} pad="tight" as="li" className="flex flex-wrap items-center gap-x-3 gap-y-1 border-dashed" style={height ? { minHeight: height } : undefined}>
       <span className="text-sm text-muted-foreground">
         {b.removed}
         <FeeName fee={refOf(fee)} after="." />
@@ -285,7 +286,8 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, re
                 const on = fee.id === chosen;
                 const card = (
                   <FeeRowCard key={fee.id} id={fee.id} chosen={on} label={b.open(name)} onChoose={() => onChoose(fee.id)}>
-                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                    {/* the note and the bin at the card's end, beside the boxes where the card has room; else on a line of their own under them */}
+                    <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-2">
                       <div className="flex min-w-0 flex-col gap-2">
                         <span className="flex flex-wrap items-center gap-2">
                           <FeeName fee={refOf(fee)} className="font-semibold" />
@@ -294,7 +296,7 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, re
                         </span>
                         {row ? <RowFigures row={row} fee={fee} onFee={onFee} /> : <p className="text-sm text-muted-foreground">{b.unread}</p>}
                       </div>
-                      <div className="flex items-center justify-between gap-2 sm:justify-end">
+                      <div className="ms-auto flex shrink-0 items-center gap-1">
                         {row && <RowNotes row={row} fee={fee} />}
                         <RemoveFee chosen={on} onRemove={() => onRemove(fee.id)} />
                       </div>

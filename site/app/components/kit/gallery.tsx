@@ -409,6 +409,14 @@ function Choices() {
         <State label={g.states.interactive}>
           <SegmentedControl label={g.sample.title} options={g.sample.option.map((o, i) => ({ value: (["a", "b", "c"] as const)[i]!, label: o }))} value={seg} onChange={setSeg} />
         </State>
+        <State label="fit, in a 220 px column: as wide as its options, their words never wrap; a disabled option is faint">
+          <div className="w-[220px]">
+            <SegmentedControl fit label={g.sample.title} options={[{ value: "a", label: dealWords.panel.always }, { value: "b", label: dealWords.panel.limited }]} value="a" onChange={() => undefined} />
+          </div>
+        </State>
+        <State label="a disabled option among three (a period with nothing to draw)">
+          <SegmentedControl fit label={g.sample.title} options={[{ value: "a", label: dealWords.read.periods.today }, { value: "b", label: g.sample.option[1]!, disabled: true }, { value: "c", label: g.sample.option[2]! }]} value="c" onChange={() => undefined} />
+        </State>
       </Demo>
       <Demo name="PickCard" use={g.uses.PickCard}>
         <State label={g.states.interactive}>
@@ -1763,7 +1771,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="TabCards, PanelHead" use={g.uses.TabCards}>
-        <State label={g.states.interactive} wide>
+        <State label={`${g.states.interactive}; the panel's head with a switch at the end of its small line (end)`} wide>
           <TabCardsDemo />
         </State>
       </Demo>
@@ -2335,7 +2343,9 @@ function TabCardsDemo() {
   return (
     <TabCards idBase="kit-tab-cards" ariaLabel={t.label} openWord={t.open} current={on} onChange={setOn} tabs={t.questions.map((q, i) => ({ key: String(i), question: q, answer: t.answers[i]!, note: t.note }))}>
       <Card pad="roomy" className="flex flex-col gap-3">
-        <PanelHead kicker={t.kicker}>{t.head}</PanelHead>
+        <PanelHead kicker={t.kicker} end={<SegmentedControl fit label={t.label} options={g.sample.option.slice(0, 2).map((o, i) => ({ value: String(i), label: o }))} value={on === "1" ? "1" : "0"} onChange={setOn} />}>
+          {t.head}
+        </PanelHead>
         <p>{t.body}</p>
       </Card>
     </TabCards>
